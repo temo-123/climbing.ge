@@ -19,7 +19,6 @@
                         @del_sector="del_sector"
                         @del_route="del_route"
                         @del_multi_pitch="del_multi_pitch"
-                        @del_pitch="del_pitch"
 
                         @sector_modal="show_sector_model"
                         @mtp_modal="show_mtp_model"
@@ -225,7 +224,7 @@
             },
             get_mtp(){
                 axios
-                .get("../api/mtp/")
+                .get("/mtp/")
                 .then(response => {
                     this.mtp = response.data
 
@@ -268,7 +267,7 @@
                                                 }
                                             },
                                         });
-                    this.get_mtp_pitch()
+                    // this.get_mtp_pitch()
                 })
                 .catch(
                     error => console.log(error)
@@ -285,68 +284,11 @@
                     })
                 }
             },
-            get_mtp_pitch(){
-                axios
-                .get("../api/mtp/mtp_pitch/")
-                .then(response => {
-                    this.mtp_pitchs = response.data
-
-                    this.data_for_tab.push({
-                                            'id': 4,
-                                            'table_name': 'Pitches', 
-                                            'add_action': {
-                                                'action': 'route',
-                                                'link': 'MTPPitchAdd', 
-                                                'class': 'btn btn-primary',
-                                                'name': 'Add Route'
-                                            },
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Grade',
-                                                        'Height',
-                                                        'Bolts',
-                                                        'Edit',
-                                                        'Delite',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['name']],
-                                                        ['data', ['grade'], ['or_grade']],
-                                                        ['data', ['height']],
-                                                        ['data', ['bolts']],
-                                                        ['action_router', 'MTPPitchEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_pitch', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['mtp_pitch', 'edit'],
-                                                        ['mtp_pitch', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        });
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-
-            // update(id){
-            //     this.get_sectors()
-            // },
 
             del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/sector/del_sector_sector/'+id, {
+                    .post('/sector/del_sector/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -387,18 +329,6 @@
             },
             show_mtp_model(sector_id){
                 this.$refs.mtp_modal.show_mtp_modal(sector_id)
-            },
-            del_pitch(pitch_id){
-                if(confirm('Are you sure, you want delite it?')){
-                    axios
-                    .post('../../api/mtp/mtp_pitch/del_pitch/'+pitch_id, {
-                        _method: 'DELETE'
-                    })
-                    .then(Response => {
-                        this.get_sectors()
-                    })
-                    .catch(error => console.log(error))
-                }
             },
         }
     }

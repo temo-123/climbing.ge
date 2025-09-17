@@ -37,7 +37,10 @@ class SectorController extends Controller
         
         $sectors = [];
         foreach ($categoryed_articles as $categoryed_article) {
-            array_push($sectors, $categoryed_article->sectors);
+            // dd($categoryed_article->sectors);
+            foreach ($categoryed_article->sectors as $sector) {
+                array_push($sectors, $sector);
+            }
         }
         return $sectors;
     }

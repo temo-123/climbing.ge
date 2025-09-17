@@ -123,6 +123,28 @@ export default {
                 grad = "Error";
             }
             return grade;
-        }
+        },
+        alpine(grade_russ) {
+            var grad = "";
+            if (localStorage.getItem("EU") == "yds" || localStorage.getItem("grade") == "eu") {
+                if (grade_russ == "1A") grad = "F";
+                else if (grade_russ == "1B") grad = "F+";
+                else if (grade_russ == "2A") grad = "PD";
+                else if (grade_russ == "2B") grad = "PD+";
+                else if (grade_russ == "3A") grad = "AD";
+                else if (grade_russ == "3B") grad = "AD+";
+                else if (grade_russ == "4A") grad = "D";
+                else if (grade_russ == "4B") grad = "D+";
+                else if (grade_russ == "5A") grad = "TD";
+                else if (grade_russ == "5B") grad = "TD+/ED1";
+                else if (grade_russ == "6A") grad = "ED2";
+                else if (grade_russ == "6B") grad = "ED2+";
+                else if (grade_russ == "7A") grad = "ED3";
+                else grad = "?";
+            } else {
+                grad = "Error";
+            }
+            return grad;
+        },
     }
 }

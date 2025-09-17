@@ -32,8 +32,8 @@
 
                         @del_article="del_article"
                         @del_region="del_region"
-                        @del_ice_route="del_ice_route"
-                        @del_ice_sector="del_ice_sector"
+                        @del_route="del_route"
+                        @del_sector="del_sector"
 
                         @filtr_outdoors="filtr_outdoors"
                         @show_spot_sectors_modal="show_spot_sectors_modal"
@@ -151,7 +151,7 @@
                                                 'table_name': 'Ice sectors', 
                                                 'add_action': {
                                                     'action': 'route',
-                                                    'link': 'iceSectorAdd', 
+                                                    'link': 'sectorAdd', 
                                                     'class': 'btn btn-primary'
                                                 },
                                                 'tab_data': {
@@ -168,8 +168,8 @@
                                                             ['data', ['id']],
                                                             ['data', ['name']],
                                                             ['data', ['published'], 'bool'],
-                                                            ['action_router', 'iceSectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                            ['action_fun_id', 'del_ice_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                            ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                            ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                         ],
                                                         'perm': [
                                                             ['no'],
@@ -199,7 +199,7 @@
                                             'table_name': 'Ice routes', 
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'iceRouteAdd', 
+                                                'link': 'routeAdd', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -214,8 +214,8 @@
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['name']],
-                                                        ['action_router', 'iceRouteEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_ice_route', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['action_router', 'routeEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'del_route', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -431,27 +431,30 @@
                 }
             },
 
-            del_ice_route(id){
+            del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/ice_routes/del_route/'+id, {
+                    .post('/route/del_route/'+id, {
+                        id: id,
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.get_articles()
+                        // this.update(this.tab_num)
+
+                        this.get_sectors()
                     })
                     .catch(error => console.log(error))
                 }
             },
 
-            del_ice_sector(id){
+            del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/ice_sectors/del_sector/'+id, {
+                    .post('/sector/del_sector/'+id, {
                         _method: 'DELETE'
                     })
-                    .then(Response => {                        
-                        this.get_articles()
+                    .then(Response => {
+                        this.get_sectors()
                     })
                     .catch(error => console.log(error))
                 }
