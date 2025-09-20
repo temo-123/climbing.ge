@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('sector_local_images_json_sectors', function (Blueprint $table) {
             $table->id();
 
-            $table->unsignedBigInteger('sector_local_image_json_id')->unique();
-            $table->foreign('sector_local_image_json_id')->references('id')->on('sector_local_images_jsons');
+            $table->unsignedBigInteger('sect_loc_img_json_id')->unique();
+            $table->foreign('sect_loc_img_json_id')->references('id')->on('sector_local_images_jsons');
 
-            $table->foreignId('ice_sector_id')->constrained()->onDelete('cascade');
+            $table->foreignId('sector_id')->constrained()->onDelete('cascade');
 
             $table->timestamps();
         });

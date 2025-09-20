@@ -519,6 +519,54 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'product_brand',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'warehouse',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'warehouse',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'warehouse',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'live_camera',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'live_camera',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'live_camera',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'post',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'post',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'post',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'team',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'team',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'team',
+                'action' => 'del',
+            ],
         );
 
         foreach ($permissions as $permission) {

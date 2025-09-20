@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('routes_jsons', function (Blueprint $table) {
+        Schema::create('climbing_routes_jsons', function (Blueprint $table) {
             $table->id();
             
             $table->json('json');
@@ -31,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('route_lines');
+        Schema::dropIfExists('climbing_routes_jsons');
     }
 };

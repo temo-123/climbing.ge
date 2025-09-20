@@ -11,10 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->dropForeign(['topic_id_foreign']);
-            $table->dropColumn('sector_id', 'route_id', 'mtp_id', 'region_id', 'topic_id');
-        });
+        Schema::dropIfExists('forum_posts');
     }
 
     /**
@@ -22,13 +19,21 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
+        Schema::create('forum_posts', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->text('text')->nullable();
+            $table->string('image')->nullable();
+
             $table->string('sector_id')->nullable();
             $table->string('route_id')->nullable();
             $table->string('mtp_id')->nullable();
             $table->string('region_id')->nullable();
 
             $table->foreignId('topic_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+
+            $table->timestamps();
         });
     }
 };

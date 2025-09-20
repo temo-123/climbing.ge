@@ -9,33 +9,8 @@
         <pre class="language-vue">
             <form v-on:submit.prevent="add_warehouse" id="add_warehouse">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
-                <input type="url" class="form-control" v-model="data.url" name="url" placeholder="url" title="url" required>
 
-                <select class="form-control" v-model="data.published" name="published" required> 
-                    <option :value="0">Not public</option> 
-                    <option :value="1">Public</option> 
-                </select> 
-
-                <select
-                    class="form-control"
-                    name="article_id"
-                    v-model="data.article_id"
-                    required
-                >
-                    <option
-                        v-bind:value="0"
-                        disabled
-                    >
-                        Select outdoor area
-                    </option>
-                    <option
-                        v-for="region in regions"
-                        :key="region"
-                        v-bind:value="region.id"
-                    >
-                        {{ region.url_title }}
-                    </option>
-                </select>
+                <input type="radio" class="form-control" v-model="data.general" name="general" title="General Warehouse" required>
             </form>
         </pre>
         <div slot="modal-footer">

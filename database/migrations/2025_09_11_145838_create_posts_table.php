@@ -11,8 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            Schema::rename('forum_posts', 'posts');
+        Schema::create('post', function (Blueprint $table) {
+            $table->bigIncrements('id');
+
+            $table->text('text')->nullable();
+            $table->string('image')->nullable();
+
+            $table->foreignId('user_id')->constrained();
+
+            $table->timestamps();
         });
     }
 
@@ -21,8 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            Schema::rename('posts', 'forum_posts');
-        });
+        Schema::dropIfExists('post');
     }
 };
