@@ -4,12 +4,8 @@
             <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
-            <!-- <icePage 
-                :article_prop="ice" 
-                ref="article_page"
-            /> -->
             <outdoor 
-                :article_prop="outdoor" 
+                :article_prop="ice" 
                 ref="article_page"
             />
 

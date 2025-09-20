@@ -7,136 +7,29 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <div class="col-md-12">
-    
-                <div class="row justify-content-center" v-if="is_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
-                </div>
-            
-                <div class="form-group clearfix row" v-if="problem_status != ''">
-                    <div class="col-md-12">
-                        <div class="alert alert-danger" role="alert">
-                            {{ problem_status }}
-                        </div>
-                    </div>
-                </div>
-            
-                <div class="wrapper container-fluid container" v-if="!is_loading">
-                    <form id="mtp_edit_form" @submit.prevent="save()">
-                
-                        <div class="form-group clearfix row" v-if="errors.sector_id">
-                            <div class="col-md-12">
-                                <div class="alert alert-danger" role="alert">
-                                {{ errors.sector_id[0] }}
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2> Grade </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-5">
-                                <select class="form-control"  v-model="data.category" required>
-                                    <option value="" disabled>Please select mtp type</option>
-                                    <option value="sport climbing">Sport climbing</option>
-                                    <option value="tred">Tred Climbing</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'">
-                            <div class="col-md-6">
-                                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.grade" required>
-                                    <option value=""> No grade </option>
-                                    <option value="Project">Project</option>
-                                    <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.or_grade">
-                                    <option value=""> No grade </option>
-                                    <option value="Project">Project</option>
-                                    <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
-                                </select>
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row" v-if="errors.grade">
-                            <div class="col-md-12">
-                                <div class="alert alert-danger" role="alert">
-                                {{ errors.grade[0] }}
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2> Route name </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-10">
-                            <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Route name.." required> 
-                                <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                {{ errors.name[0] }}
-                                </div>
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2> Description (Text) </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-10">
-                                <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2> Bolts & height </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-6" v-if="data.category != '' && data.category == 'sport climbing'">
-                                <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
-                            </div>
-                
-                            <div class="col-md-6">
-                                <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
-                            </div>
-                
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2> Author & Creation date </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-6">
-                                <input type="text" name="title" class="form-control" v-model="data.author" placeholder="Bolter"> 
-                            </div>
-                            <div class="col-md-6">
-                                <input type="date" name="title" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
-                            </div>
-                        </div>
-                
-                        <div class="form-group clearfix row">
-                            <h2>Firs Ascent </h2>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-6">
-                                <input type="text" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
-                            </div>
-                        </div>
-        
-                    </form>
-                </div>
-            </div>
+            <form id="mtp_edit_form" @submit.prevent="save()">
+                <select class="form-control"  v-model="data.category" required>
+                    <option value="" disabled>Please select mtp type</option>
+                    <option value="sport climbing">Sport climbing</option>
+                    <option value="tred">Tred Climbing</option>
+                </select>
+                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.grade" required>
+                    <option value=""> No grade </option>
+                    <option value="Project">Project</option>
+                    <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
+                </select>
+                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.or_grade">
+                    <option value=""> No grade </option>
+                    <option value="Project">Project</option>
+                    <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
+                </select>
+                <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+                <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
+                <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
+                <input type="text" name="title" class="form-control" v-model="data.author" placeholder="Bolter"> 
+                <input type="date" name="title" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
+                <input type="text" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+            </form>
         </pre>
         <div slot="modal-footer">
             <div class="modal-footer">

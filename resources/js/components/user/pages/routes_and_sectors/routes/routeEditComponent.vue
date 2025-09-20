@@ -7,7 +7,7 @@
         </div>
     </div>
 
-    <div class="row" v-if="!is_loading">
+    <div class="row"  v-if="!is_loading">
         <div class="form-group">
             <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
         </div>
@@ -15,51 +15,32 @@
 
     <div class="row" v-if="!is_loading">
         <div class="form-group">  
-            <button form='route_add_form' type="submit" class="btn btn-primary" >Save and go back</button>
-            <p>Save and go to route tab page</p>
+            <button form='route_edit_form' type="submit" class="btn btn-primary" @click="is_back_action_query = true" >Save and go back</button>
+            <!-- <p>Save and go to route tab page</p> -->
         </div>
     </div>
 
-    <div class="row" v-show="!is_loading">
+    <div class="row" v-show="!is_loading" v-if="problem_status.length != 0">
         <validator_alerts_component
-            :errors_prop="errors"
+            :errors_prop="problem_status"
         />
     </div>
 
     <div class="wrapper container-fluid container" v-if="!is_loading">
-      <form id="route_add_form" @submit.prevent="save_editing_route()">
+      <form id="route_edit_form" @submit.prevent="save_new_route()">
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Region </label>
           <div class="col-md-5">
-            <select class="form-control" v-model="data.article_id" @click="filter_sectors()" required>
+            <select class="form-control" v-model="article_id" @click="filter_sectors()" required>
               <option value="" disabled>Select outdoor article</option>
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-md-5">
-            <select class="form-control" v-if="data.article_id != ''" v-model="data.sector_id" required>
+            <select class="form-control" v-if="article_id != ''" v-model="data.sector_id" required>
               <option value="" disabled>Select sector</option>
               <option v-for="sector in sectors" :key="sector.id" v-bind:value="sector.id">{{ sector.name }}</option>
             </select>
-          </div>
-        </div>
-
-        <div class="form-group clearfix row" v-if="data.sector_id != ''">
-          <div class="col-md-12">
-            <div class="row">
-              <h2>Select Routes Image</h2>
-            </div>
-            <div class="row">
-              <span v-for="image in sector_images" :key="image.id" :class="'sector_images sector_images_' + sector_images.length">
-                <input type="radio" :id="image.id" name="fav_language" :value=image.id v-model="image_num" @click="change_image(image.image, image.id)">
-                <label :for="image.id">
-                  <img
-                    :src="'/public/images/sector_img/' + image.image"
-                    :alt="image.image"
-                  />
-                </label>
-              </span>
-            </div>
           </div>
         </div>
         
@@ -67,69 +48,40 @@
           <div class="col-md-12">
             <div class="row">
                 <Editor 
-                    @canvas_data="update_canvas_data"
-
-                    ref="canvasEditor"
+                
                 />
             </div>
           </div>
         </div>
 
-        <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Grade </label>
-          <div class="col-md-5">
-            <select class="form-control"  v-model="data.category" required>
-              <option value="" disabled>Please select route type</option>
-              <option value="sport climbing">Stort climbing</option>
-              <option value="bouldering">Bouldering</option>
-              <option value="tred">Tred Climbing</option>
-              <option value="top">Top Roupe</option>
-            </select>
-          </div>
-
-          <div class="col-md-5" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'">
-            <div class="row">
-              <div class="col-md-6">
-                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
-                  <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
-                  <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
-                </select>
+        <div class="form-group clearfix row" v-if="errors.sector_id">
+            <div class="col-md-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.sector_id[0] }}
               </div>
             </div>
-          </div>
+        </div>
 
-          <div class="col-md-5" v-if="data.category != '' && data.category == 'bouldering'">
-            <div class="row">
-              <div class="col-md-6">
-                <select class="form-control" v-if="data.category != '' && data.category == 'bouldering'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
-                  <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
-                </select>
-              </div>
-              <div class="col-md-6">
-                <select class="form-control" v-if="data.category != '' && data.category == 'bouldering'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
-                  <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
-                </select>
+        <grades_form 
+            :category_prop="this.$route.params.category"
+            @update:data="data = Object.assign({}, data, $event)"
+        />
+
+        <div class="form-group clearfix row" v-if="errors.grade">
+            <div class="col-md-12">
+              <div class="alert alert-danger" role="alert">
+                {{ errors.grade[0] }}
               </div>
             </div>
-          </div>
         </div>
 
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Route name </label>
           <div class="col-md-10">
             <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Route name.." required> 
+              <div class="alert alert-danger" role="alert" v-if="errors.name">
+                {{ errors.name[0] }}
+              </div>
           </div>
         </div>
 
@@ -164,9 +116,10 @@
           <div class="col-md-2" v-if="data.category != '' && data.category != 'bouldering'">
             <label for="name" class='col-md-12 control-label'> Anchor type: </label>
           </div>
+
           <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.anchor_type">
-              <option value="" disabled>Anchor type</option>
+              <option value="">Anchor type</option>
               <option :value=null>?</option>
               <option value="Chain">Chain</option>
               <option value="Chain with carabiner">Chain with carabiner</option>
@@ -183,7 +136,7 @@
 
           <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.bolts_type">
-              <option value="" disabled>Bolts type</option>
+              <option value="">Bolts type</option>
               <option :value=null>?</option>
               <option value="glued">Glued-in bolts</option>
               <option value="hangerr">Hangerr bolts</option>
@@ -214,106 +167,107 @@
 </template>
 
 <script>
-    import Editor from '../../../items/canvas/EditorComponent.vue'
-    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+  import Editor from '../../../items/canvas/EditorComponent.vue'
+  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+  import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+  import grades_form from './assets/gradingFormComponent.vue'
 
-    export default {
-        mixins: [
-            editor_config
-        ],
-        components: {
-            Editor,
-            validator_alerts_component
-        },
+  export default {
+      mixins: [
+          editor_config,
+      ],
+      components: {
+          Editor,
+          validator_alerts_component,
+          grades_form
+      },
     data() {
       return {
         description_editor: editor_config.get_small_editor_config(),
+
+        // routes_category: [],
         errors: [],
 
         regions: [],
         all_sectors: [],
         sectors: [],
 
-        data: [],
-        canvas_data: {
-          json: '',
-          route_id: 0,
-          sector_image_id: 0,
+        status: "",
+        problem_status: "",
+
+        article_id: "",
+        
+        data: {
+          sector_id: "",
+
+          grade: "",
+          or_grade: "",
+
+          name: "",
+          text: "",
+          
+          height: "",
+          bolts: "",
+
+          author: "",
+          creation_data: "",
+          first_ascent: "",
+
+          anchor_type: "",
+          bolts_type: "",
+
+          category: "",
         },
 
-        sector_images: [],
-
-        image_num: 0,
-
         is_loading: false,
-        is_back_action_query: true,
 
-        sport_route_grade: [
-          "4",
-          "5a", "5b", "5c", "5c+",
-          "6a", "6a+", "6b", "6b+", "6c", "6c+",
-          "7a", "7a+", "7b", "7b+", "7c", "7c+",
-          "8a", "8a+", "8b", "8b+", "8c", "8c+",
-          "9a", "9a+", "9b", "9b+", "9c", "9c+",
-        ],
-        boulder_route_grade: [
-          "V1",
-          "V2",
-          "V3",
-          "V4",
-          "V5",
-          "V6",
-          "V7",
-          "V8",
-          "V9",
-          "V10", 
-          "V11", 
-          "V12", 
-          "V13", 
-          "V14", 
-          "V15", 
-          "V16", 
-          "V17", 
-          "V18", 
-        ],
-
-        ice_climbing: [
-          "WI1", "WI2", "WI3", "WI4", "WI5", "WI6",
-        ],
-        dry_tooling: [
-          "M1","M2","M3","M4","M5","M6","M7","M8","M9","M10","M11","M12",
-        ],
+        is_back_action_query: false,
       }
     },
 
     mounted() {
-        this.get_region_data()
+      // this.get_region_data()
+      this.get_route_editing_data()
         
-        document.querySelector('body').style.marginLeft = '0';
-        document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+      document.querySelector('body').style.marginLeft = '0';
+      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
     },
 
     beforeRouteLeave (to, from, next) {
-      if(this.is_back_action_query == true){
-          if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
-              this.is_back_action_query = false;
-              next()
-          } else {
-              next(false)
-          }
-      }else {
-          next()
-      }
+        if(this.is_back_action_query == true){
+            if (window.confirm('edited information will be deleted!!! Are you sure, you want go back?')) {
+                this.is_back_action_query = false;
+                next()
+            } else {
+                next(false)
+            }
+        }else {
+            next()
+        }
     },
-
     methods: {
-      get_region_data: function(){
+      get_region_data: function(active_article){
         axios
-        .get("/article/get_category_articles/outdoor")
+        .get("/article/get_category_articles/" + active_article.category)
         .then(response => {
           this.regions = response.data
-          this.get_sectors_data()
+          
+          let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
+          let action_article = this.regions.find(item => item.id === sector.article_id);
+          this.article_id = action_article.id;
+
+          this.filter_sectors()
+        })
+        .catch(
+          error => console.log(error)
+        );
+      },
+
+      get_article_global_data(id){
+        axios
+        .get("/articles/get_editing_data/" + id)
+        .then(response => {
+          this.get_region_data(response.data.global_article);
         })
         .catch(
           error => console.log(error)
@@ -325,13 +279,16 @@
         .get("/sector/")
         .then(response => {
           this.all_sectors = response.data
-          this.get_route_editing_data()
+
+          let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
+          
+          this.get_article_global_data(sector.article_id)
         })
         .catch(
           error => console.log(error)
         );
       },
-      
+
       get_route_editing_data: function(){
         this.is_loading = true
 
@@ -340,14 +297,11 @@
         .then(response => {
           this.data = response.data
 
-          let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
-          let action_article = this.regions.find(item => item.id === sector.article_id);
-          this.data.article_id = action_article.id;
+          this.get_sectors_data()
 
-          this.filter_sectors()
-          this.get_actyve_sector_images(this.data.sector_id, this.data.id)
+          // this.get_active_sector_images(this.data.sector_id, this.data.id)
 
-          this.import_json_in_editor(this.data.json.json)
+          // this.import_json_in_editor(this.data.json.json)
         })
         .catch(
           error => console.log(error)
@@ -358,118 +312,58 @@
       filter_sectors(){
         let vm = this;
         this.sectors = this.all_sectors.filter(function (item){
-            return item.article_id == vm.data.article_id
+            return item.article_id == vm.article_id
         })
       },
 
-      get_actyve_sector_images(sector_img, id){
-        axios
-        .get("/sector/get_sector_images/" + sector_img)
-        .then(response => {
-          this.sector_images = response.data
-          this.get_route_json(id)
-        })
-        .catch(
-          error => console.log(error)
-        );
-      },
+      save_new_route: function () {
+        this.is_loading = true
 
-      get_route_json(route_id){
         axios
-        .get("/route_json/get_editing_route_json/" + route_id)
+        .post('../../api/route/edit_route/', {
+            data: this.data,
+        })
         .then(response => {
-                
-          if(response.data.length == 0){
-            this.canvas_data.route_id = this.data.id
+          if(!this.is_back_action_query){
+            alert('Saving completed')
+            this.clear_form()
           }
           else{
-            this.canvas_data.json = response.data.json
-            this.canvas_data.route_id = response.data.route_id
-            this.canvas_data.sector_image_id = response.data.sector_image_id
-
-            this.image_num = this.canvas_data.sector_image_id
-
-            const vm = this
-            const image = this.sector_images.find(item => item.id === vm.canvas_data.sector_image_id);
-            
-            this.change_image(image.image, this.image_num)
+            this.go_back(true)
           }
-        })
-        .catch(
-          error => console.log(error)
-        );
-      },
-
-      import_json_in_editor(json){
-        // this.$refs.canvasEditor.change_image
-        console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor.change_image:", this.$refs.canvasEditor)
-          // this.$refs.canvasEditor.import_json_in_editor(json)
-          // console.log("🚀 ~ import_json_in_editor ~ this.$refs.canvasEditor:", this.$refs)
-      },
-
-      change_image(image, image_id){
-        this.$refs.canvasEditor.change_image(image);
-        this.canvas_data.sector_image_id = image_id
-      },
-
-      update_canvas_data(event) {
-        this.canvas_data.json = event
-      },
-
-      save_editing_route: function () {
-        axios
-        .post("/route/edit_route/"+this.$route.params.id, {
-            data: [this.data, this.canvas_data],
-        })
-        .then(response => {
-          this.go_back(true)
         })
         .catch(error =>{
             this.status = "error"
         })
+        .finally(() => this.is_loading = false);
       },
 
-      go_back: function(action = false) {
-          this.is_back_action_query = this.$going.back(this, action)
+      clear_form(){
+        this.data = {
+
+          grade: "",
+          or_grade: "",
+
+          name: "",
+          text: "",
+          
+          height: "",
+          bolts: "",
+
+          author: "",
+          creation_data: "",
+          first_ascent: "",
+
+          anchor_type: "",
+          bolts_type: "",
+
+          anchor_type: "",
+        }
+      },
+
+      go_back(back_action = false) {
+        this.is_back_action_query = this.$going.back(this, back_action)
       },
     }
   }
 </script>
-
-
-<style>
-.sector_images {
-    float: left;
-    margin: 0.45%;
-}
-.sector_images_1 {
-    width: 99% !important;
-}
-.sector_images_2 {
-    width: 49% !important;
-}
-.sector_images_3 {
-    width: 32% !important;
-}
-.sector_images_4 {
-    width: 24% !important;
-}
-.sector_images_5 {
-    width: 19% !important;
-}
-.sector_images_6 {
-    width: 16% !important;
-}
-.sector_images_7 {
-    width: 14% !important;
-}
-.sector_images_8 {
-    width: 12% !important;
-}
-.sector_images_9 {
-    width: 10% !important;
-}
-.sector_images_10 {
-    width: 9% !important;
-}
-</style>

@@ -516,7 +516,7 @@
 
             get_region_data: function () {
                 axios
-                .get("/article/get_category_articles/outdoor")
+                .get("/article/get_category_articles/" + this.$route.params.category)
                 .then(response => {
                     this.regions = response.data
                 })

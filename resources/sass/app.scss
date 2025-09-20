@@ -2655,13 +2655,12 @@ select:focus {
 .modal-dialog {
     width: 60% !important;
     max-width: 100% !important;
-    margin-top: 5% !important;
+    // margin-top: 5% !important;
 }
 
-.modal-content {
-    margin-top: 25% !important;
-    // margin-top: 50% !important;
-}
+// .modal-content {
+//     margin-top: 25% !important;
+// }
 
 @media screen and (max-width: 704px) {
     .modal-content {
@@ -2671,7 +2670,7 @@ select:focus {
     .modal-dialog {
         width: 90% !important;
         max-width: 100% !important;
-        margin-top: 10% !important;
+        // margin-top: 10% !important;
     }
 }
 .fade {

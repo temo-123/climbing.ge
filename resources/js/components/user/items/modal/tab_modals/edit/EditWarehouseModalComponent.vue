@@ -1,13 +1,13 @@
 <template>
     <stack-modal
-            :show="is_live_camera_edit_model"
-            title="Edit order live_camera"
+            :show="is_warehouse_edit_model"
+            title="Edit order warehouse"
             @close="close_modal"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <form v-on:submit.prevent="edit_live_camera" id="edit_live_camera">
+            <form v-on:submit.prevent="edit_warehouse" id="edit_warehouse">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
                 <input type="url" class="form-control" v-model="data.url" name="url" placeholder="url" title="url" required>
 
@@ -42,10 +42,10 @@
             <div class="modal-footer">
                 <button
                     type="submit"
-                    form="edit_live_camera"
+                    form="edit_warehouse"
                     :class="{'btn btn-primary': true}"
                 >
-                edit live_camera
+                Add warehouse
                 </button>
             </div>
         </div>
@@ -70,8 +70,8 @@
         },
         data(){
             return{
-                is_live_camera_edit_model: false,
-                is_live_camera_edit_model: false,
+                is_warehouse_edit_model: false,
+                is_warehouse_edit_model: false,
 
                 editing_camera_id: 0,
 
@@ -94,14 +94,14 @@
             },
             get_editing_region_data: function () {
                 axios
-                .get("/live_camera/get_editing_live_camera/" + this.editing_camera_id)
+                .get("/warehouse/get_editing_warehouse/" + this.editing_camera_id)
                 .then(response => {
                     this.data = response.data
                 })
             },
-            edit_live_camera(){
+            edit_warehouse(){
                     axios
-                    .post('/live_camera/edit_live_camera/' + this.editing_camera_id, {
+                    .post('/warehouse/edit_warehouse/' + this.editing_camera_id, {
                         data: this.data,
                         _method: 'post',
                     })
@@ -109,7 +109,7 @@
                     .then(Response => {
                         alert('Edited successfully')
                         this.$emit('update')
-                        this.is_live_camera_edit_model = false
+                        this.is_warehouse_edit_model = false
                         this.clear_form()
                     })
                     .catch(error => console.log(error))
@@ -123,7 +123,7 @@
                 }
             },
             show_modal(id){
-                this.is_live_camera_edit_model = true
+                this.is_warehouse_edit_model = true
 
                 this.editing_camera_id = id
 
@@ -131,7 +131,7 @@
             },
             close_modal(){
                 if(confirm('Are you sure, you want close form? All data whil deleted!')){
-                    this.is_live_camera_edit_model = false
+                    this.is_warehouse_edit_model = false
                     this.clear_form()
                 }
             }

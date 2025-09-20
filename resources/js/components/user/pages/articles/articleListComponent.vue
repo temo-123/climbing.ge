@@ -38,6 +38,8 @@
                         @filtr_outdoors="filtr_outdoors"
                         @show_spot_sectors_modal="show_spot_sectors_modal"
                         @quick_wiev_action="quick_wiev_action"
+
+                        @sector_modal="show_sector_model"
                     />
                 </div>
             </div>
@@ -45,6 +47,7 @@
         <spot_sectors_modal
             ref="show_spot_sectors_modal"
         />
+        <sectorModal ref="sector_modal" />
     </div>
 </template>
 
@@ -53,11 +56,13 @@
     import { ContentLoader } from 'vue-content-loader'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import spot_sectors_modal from "../../items/modal/tab_modals/ArticleSectorSequenceModalComponent.vue";
+    import sectorModal from "../../items/modal/tab_modals/SectorModalComponent.vue";
     export default {
         components: {
             breadcrumb,
             tabsComponent,
             ContentLoader,
+            sectorModal,
 
             spot_sectors_modal
         },
@@ -150,8 +155,8 @@
                                                 'id': 2,
                                                 'table_name': 'Ice sectors', 
                                                 'add_action': {
-                                                    'action': 'route',
-                                                    'link': 'sectorAdd', 
+                                                    'action': 'url',
+                                                    'link': '../sector/add/ice',
                                                     'class': 'btn btn-primary'
                                                 },
                                                 'tab_data': {
@@ -161,6 +166,7 @@
                                                             'ID',
                                                             'Name',
                                                             'Public',
+                                                            'Edit routes',
                                                             'Edit',
                                                             'Delite',
                                                         ],
@@ -168,6 +174,7 @@
                                                             ['data', ['id']],
                                                             ['data', ['name']],
                                                             ['data', ['published'], 'bool'],
+                                                            ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
                                                             ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                             ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                         ],
@@ -175,6 +182,7 @@
                                                             ['no'],
                                                             ['no'],
                                                             ['no'],
+                                                            ['ice_sector', 'edit'],
                                                             ['ice_sector', 'edit'],
                                                             ['ice_sector', 'del'],
                                                         ]
@@ -198,8 +206,8 @@
                                             'id': 3,
                                             'table_name': 'Ice routes', 
                                             'add_action': {
-                                                'action': 'route',
-                                                'link': 'routeAdd', 
+                                                'action': 'url',
+                                                'link': '../route/add/ice', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -208,16 +216,25 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
+                                                        'Grade',
+                                                        'Height',
+                                                        'Bolts',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['name']],
+                                                        ['data', ['grade'], ['or_grade']],
+                                                        ['data', ['height']],
+                                                        ['data', ['bolts']],
                                                         ['action_router', 'routeEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_route', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['article', 'edit'],
@@ -404,6 +421,10 @@
                 );
             },
 
+            show_sector_model(sector_id){
+                this.$refs.sector_modal.show_sector_modal(sector_id)
+            },
+
             del_article(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -439,9 +460,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        // this.update(this.tab_num)
-
-                        this.get_sectors()
+                        this.get_articles()
                     })
                     .catch(error => console.log(error))
                 }
@@ -454,7 +473,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.get_sectors()
+                        this.get_articles()
                     })
                     .catch(error => console.log(error))
                 }

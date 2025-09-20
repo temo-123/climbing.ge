@@ -105,8 +105,8 @@
                                             'id': 1,
                                             'table_name': 'Sectors', 
                                             'add_action': {
-                                                'action': 'route',
-                                                'link': 'sectorAdd', 
+                                                'action': 'url',
+                                                'link': 'sector/add/outdoor', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -167,8 +167,8 @@
                                             'id': 2,
                                             'table_name': 'Routes', 
                                             'add_action': {
-                                                'action': 'route',
-                                                'link': 'routeAdd', 
+                                                'action': 'url',
+                                                'link': '/route/add/outdoor', 
                                                 'class': 'btn btn-primary',
                                                 'name': 'Add Route'
                                             },

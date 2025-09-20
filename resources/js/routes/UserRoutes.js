@@ -90,10 +90,10 @@ const router = new VueRouter({
 
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: load('routes_and_sectors/routeAndSectorListComponent') },
 
-        { path: '/route/add', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },
+        { path: '/route/add/:category', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },
         { path: '/route/edit/:id', name: 'routeEdit', component: load('routes_and_sectors/routes/routeEditComponent') },
 
-        { path: '/sector/add', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent') },
+        { path: '/sector/add/:category', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent') },
         { path: '/sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent') },
 
         { path: '/MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent') },

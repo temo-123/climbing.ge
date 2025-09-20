@@ -508,6 +508,7 @@ class SectorController extends Controller
         $sector = Sector::where('id',strip_tags($request->sector_id))->first();
         $data = [
             'sector' => $sector,
+            'article' => $sector->article,
             'images' => $sector->images,
         ];
         return $data;

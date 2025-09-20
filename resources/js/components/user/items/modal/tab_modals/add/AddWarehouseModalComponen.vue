@@ -1,37 +1,51 @@
 <template>
     <stack-modal
-            :show="is_order_sale_code_add_model"
-            title="Add order sale_code"
+            :show="is_warehouse_add_model"
+            title="Add order warehouse"
             @close="close_modal"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <h1>Add shiped sale_code</h1>
-            <form v-on:submit.prevent="add_sale_code" id="add_sale_code">
-                <input type="text" class="form-control" v-model="data.code" name="sale code" placeholder="Code" title="Code" required>
+            <form v-on:submit.prevent="add_warehouse" id="add_warehouse">
+                <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
+                <input type="url" class="form-control" v-model="data.url" name="url" placeholder="url" title="url" required>
 
-                <button
-                    type="botton"
-                    :class="{'btn btn-primary': true}"
-                    @click="generate_code()"
+                <select class="form-control" v-model="data.published" name="published" required> 
+                    <option :value="0">Not public</option> 
+                    <option :value="1">Public</option> 
+                </select> 
+
+                <select
+                    class="form-control"
+                    name="article_id"
+                    v-model="data.article_id"
+                    required
                 >
-                Generation Random code
-                </button>
-
-                <input type="number" max="100" min="1" class="form-control" v-model="data.discount" name="discount" placeholder="Discount" title="Discount" required> %
-                <input type="checkbox" id="scales" v-model="data.one_time_code" name="scales" placeholder="One time code" title="One time code"> One time cde
-                <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" placeholder="Action_data" title="Action_data" v-if="!data.one_time_code">
+                    <option
+                        v-bind:value="0"
+                        disabled
+                    >
+                        Select outdoor area
+                    </option>
+                    <option
+                        v-for="region in regions"
+                        :key="region"
+                        v-bind:value="region.id"
+                    >
+                        {{ region.url_title }}
+                    </option>
+                </select>
             </form>
         </pre>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
                     type="submit"
-                    form="add_sale_code"
+                    form="add_warehouse"
                     :class="{'btn btn-primary': true}"
                 >
-                Add sale_code
+                Add warehouse
                 </button>
             </div>
         </div>
@@ -50,66 +64,54 @@
         props: [
             'table_info',
         ],
-        mountid(){
+        mounted(){
             // console.log(this.table_info)
+            // this.get_region_data()
         },
         data(){
             return{
-                is_order_sale_code_edit_model: false,
-                is_order_sale_code_add_model: false,
+                is_warehouse_edit_model: false,
+                is_warehouse_add_model: false,
 
+                regions: [],
                 data: {
-                    code: '',
-                    discount: '',
-                    one_time_code: null,
-                    action_data: ''
+                    name: '',
+                    url: '',
+                    published: 0,
+                    article_id: 0
                 }
             }
         },
         methods: {
-            generate_code(){
-                var code = '';
-                var randomchar = function() {
-                    var n = Math.floor(Math.random() * 62);
-                    if (n < 10) return n; //1-10
-                    if (n < 36) return String.fromCharCode(n + 55); //A-Z
-                    return String.fromCharCode(n + 61); //a-z
-                }
-                while (code.length < 6){
-                    code += randomchar();
-                }
-
-                this.data.code = code
-            },
-            add_sale_code(){
+            add_warehouse(){
                     axios
-                    .post('/sale_code/', {
+                    .post('/warehouse/add_warehouse/', {
                         data: this.data,
 
                         _method: 'Post'
                     })
                     .then(Response => {
-                        alert('Code added socsesfuly')
+                        alert('Added successfully')
                         this.$emit('update')
-                        this.is_order_sale_code_add_model = false
+                        this.is_warehouse_add_model = false
                         this.clear_form()
                     })
                     .catch(error => console.log(error))
             },
             clear_form(){
                 this.data = {
-                    code: '',
-                    discount: '',
-                    one_time_code: null,
-                    action_data: ''
+                    name: '',
+                    url: '',
+                    published: 0,
+                    article_id: 0
                 }
             },
             show_modal(){
-                this.is_order_sale_code_add_model = true
+                this.is_warehouse_add_model = true
             },
             close_modal(){
                 if(confirm('Are you sure, you want close form? All data whil deleted!')){
-                    this.is_order_sale_code_add_model = false
+                    this.is_warehouse_add_model = false
                     this.clear_form()
                 }
             }

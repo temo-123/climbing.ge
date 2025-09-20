@@ -509,7 +509,6 @@
             };
         },
         mounted() {
-            this.get_region_data();
             this.get_editing_sector_data();
         
             document.querySelector('body').style.marginLeft = '0';
@@ -568,9 +567,9 @@
                 }
             },
 
-            get_region_data: function () {
+            get_region_data: function (category) {
                 axios
-                    .get("/article/get_category_articles/outdoor")
+                    .get("/article/get_category_articles/" + category)
                     .then(response => {
                         this.regions = response.data
                     })
@@ -585,6 +584,8 @@
                 .get("/sector/get_sector_editing_data/"+this.$route.params.id)
                 .then(response => {
                     this.data = response.data.sector
+                    // console.log(response.data.article.category);
+                    this.get_region_data(response.data.article.category);
                     this.get_sector_images()
                     // this.sector_old_images = response.data.images
                 })

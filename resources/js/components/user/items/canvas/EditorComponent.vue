@@ -54,7 +54,10 @@
 
                     ref="childCanvas"
 
-                    :style="{ backgroundImage: 'url(' + image + ')' }"
+                    :style="{
+                        backgroundImage: 'url(' + image + ')',
+                        backgroundSize: '100%'
+                    }"
                     @canvas_data="canvas_data"
                 />
             </div>
@@ -69,9 +72,16 @@
         components: {
             Canvas
         },
-        props: [
-            'json_prop'
-        ],
+        props: {
+            image_prop: {
+                type: String,
+                default: null
+            },
+            json_prop: {
+                type: Object,
+                default: null
+            }
+        },
         data: () => ({
             image: '',
 
@@ -89,7 +99,13 @@
             //     // alert(this.width + 'x' + this.height);
             //     alert(this.img_w + 'x' + this.img_h);
             // }
+            this.change_image(this.image_prop)
         },
+        // watch: {
+        //     image_prop: function(newVal, oldVal) { 
+              
+        //     },
+        // },
         methods: {
             reset() {
                 if (confirm('Do you want clear area?')) {

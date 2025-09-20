@@ -62,6 +62,7 @@
                                     <a
                                         v-else-if="action_data.add_action.action == 'url' "
                                         :href="action_data.add_action.link"
+                                        :class="action_data.add_action.class"
                                         @click="$emit(action_data.add_action.link)"
                                     >
                                         <span v-if="action_data.add_action.btn_title">{{ action_data.add_action.btn_title }}</span>
