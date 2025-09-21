@@ -1,32 +1,32 @@
 <template>
     <stack-modal
         :show="is_modal"
-        title="Task status"
+        title="Task details"
         @close="close_modal()"
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
 
-            <div class="container">
-                <div class="row justify-content-center" v-show="is_loading">
+            <div class="container" v-show="is_loading">
+                <div class="row justify-content-center">
                     <div class="col-md-4">
                         <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
             </div>
             <div class="container" v-show="!is_loading">
-                <div class="row">
-                    <div class="col-xs-12 modal_text">
-                        <p>{{ task.title }}</p>
-                        <p>{{ task.deadline }}</p>
-                        <p>{{ task.text }}</p>
-                        <p>{{ task.status }}</p>
+                <!-- <div class="row">
+                    <div class="col-xs-12 modal_text"> -->
+                        <h1>{{ task.title }}</h1>
+                        <h3>{{ task.deadline }}</h3>
+                        <h3>{{ task.text }}</h3>
+                        <h3>{{ task.status }}</h3>
                         <hr>
                         <p>category - {{ task.category_id }}</p>
                         <p>user - {{ task.user_id }}</p>
-                    </div>
-                </div>
+                    <!-- </div>
+                </div> -->
             </div>
         </pre>
         <div slot="modal-footer">

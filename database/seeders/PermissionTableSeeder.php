@@ -507,6 +507,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'product',
                 'action' => 'show_all',
             ],
+
             [
                 'subject' => 'product_brand',
                 'action' => 'add',
@@ -519,6 +520,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'product_brand',
                 'action' => 'del',
             ],
+
             [
                 'subject' => 'warehouse',
                 'action' => 'add',
@@ -531,6 +533,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'warehouse',
                 'action' => 'del',
             ],
+
             [
                 'subject' => 'live_camera',
                 'action' => 'add',
@@ -543,6 +546,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'live_camera',
                 'action' => 'del',
             ],
+
             [
                 'subject' => 'post',
                 'action' => 'add',
@@ -555,6 +559,7 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'post',
                 'action' => 'del',
             ],
+
             [
                 'subject' => 'team',
                 'action' => 'add',
@@ -565,6 +570,19 @@ class PermissionTableSeeder extends Seeder
             ],
             [
                 'subject' => 'team',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'task_category',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'task_category',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'task_category',
                 'action' => 'del',
             ],
         );

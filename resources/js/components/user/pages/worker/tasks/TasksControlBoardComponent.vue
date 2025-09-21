@@ -46,7 +46,7 @@
 
             <div class="row" v-if="task_tab_num == 2">
                 <div class="col-md-12 mb-2">
-                    <button class="btn btn-primary pull-left" @click="show_add_task_category_modal">Create new tsk type</button>
+                    <button class="btn btn-primary pull-left" @click="show_add_task_category_modal" v-if="$can('add', 'task_category')">Create new tsk type</button>
                     <button class="btn btn-success pull-right" @click="get_all_tasks_category">Refresh</button>
                 </div>
                 <div class="col-md-12 mb-2">
@@ -81,11 +81,11 @@
                                 <td class="cursor_pointer" @click="show_task_category_modal(task_category.id)">{{ task_category.title }}</td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-primary" @click="show_edit_task_category_modal(task_category.id)"  v-if="$can('del', 'shiping_country')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                    <button type="submit" class="btn btn-primary" @click="show_edit_task_category_modal(task_category.id)"  v-if="$can('del', 'task_category')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                                 </td>
                                 <td>|</td>
                                 <td>
-                                    <button class="btn btn-danger" type="submit" @click="del_task_category(task_category.id)" v-if="$can('edit', 'shiping_country')"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                    <button class="btn btn-danger" type="submit" @click="del_task_category(task_category.id)" v-if="$can('edit', 'task_category')"><i class="fa fa-trash" aria-hidden="true"></i></button>
                                 </td>
                             </tr>
                         </tbody>

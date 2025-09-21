@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="is_modal"
-        title="Task"
+        title="Task Category details"
         @close="is_modal=false"
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
@@ -10,7 +10,7 @@
             <div class="container">
                 <div class="row"> 
                     <div class="col-xs-12 modal_text">
-                        <p>{{ task_cat.title }}</p>
+                        <h1>{{ task_cat.title }}</h1>
                         <p>{{ task_cat.text }}</p>
                     </div>
                 </div>

@@ -18,8 +18,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="container">
-                        <div class="row justify-content-center" v-show="is_loading">
+                    <div class="container" v-show="is_loading">
+                        <div class="row justify-content-center">
                             <div class="col-md-4">
                                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                             </div>
@@ -27,27 +27,16 @@
                     </div>
                     <form id="edit_task_status" class="modal_form" v-on:submit.prevent="edit_task_status" v-show="!is_loading">
 
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-12 control-label'> Task for worker </label>
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="filter" v-model="data.status" required>
-                                    <option value="" disabled>Task status</option> 
+                        <select class="form-control" name="filter" v-model="data.status" required>
+                            <option value="" disabled>Task status</option> 
 
-                                    <option value="problem">A problem has occurred</option> 
-                                    <option value="finished">Finished</option> 
-                                    <option value="confirmation_completion">Confirmation completion</option> 
-                                </select> 
-                            </div>
-                        </div> 
-
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-12 control-label'> Your comment </label>
-                            <div v-if="data.status == 'problem'" class="col-md-12 image_add_modal_form" >
-                                <textarea rows="6" name="worker_comment" v-model="data.worker_comment" id="worker_comment" maxlength="500" placeholder="Task" class="form-control textarea" required></textarea>
-                            </div><div v-else class="col-md-12 image_add_modal_form">
-                                <textarea rows="6" name="worker_comment" v-model="data.worker_comment" id="worker_comment" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
-                            </div>
-                        </div>
+                            <option value="problem">A problem has occurred</option> 
+                            <option value="finished">Finished</option> 
+                            <option value="confirmation_completion">Confirmation completion</option> 
+                        </select> 
+                    
+                        <textarea v-if="data.status == 'problem'" rows="6" name="worker_comment" v-model="data.worker_comment" id="worker_comment" placeholder="Task" class="form-control textarea" required></textarea>
+                        <textarea v-if="data.status != 'problem'" rows="6" name="worker_comment" v-model="data.worker_comment" id="worker_comment" placeholder="Task" class="form-control textarea"></textarea>
 
                     </form>
                 </div>

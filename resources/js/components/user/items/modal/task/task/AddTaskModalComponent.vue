@@ -15,52 +15,24 @@
                 </div>
             </div>
             <form id="create_task" v-on:submit.prevent="create_task" v-show="!is_loading">
-                <div class="container">
+                <input type="text" v-model="data.title" name="deadline" class="form-control" required> 
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> titlee </label>
-                        <div class="col-xs-12">
-                            <input type="text" v-model="data.title" name="deadline" class="form-control" required> 
-                        </div>
-                    </div>
+                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Task description" class="form-control textarea"></textarea>
+            
+                <input type="date" v-model="data.deadline" name="deadline" class="form-control" required> 
+            
+                <select class="form-control" name="filter" v-model="data.category_id" required>
+                    <option value="0" disabled>Select category</option> 
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> Task </label>
-                        <div class="col-xs-12">
-                            <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
-                        </div>
-                    </div>
+                    <option v-for="tasks_category in tasks_categories" :kay="tasks_category.id" :value="tasks_category.id">{{ tasks_category.title }}</option>
+                </select> 
+            
+                <select class="form-control" name="filter" v-model="data.user_id" required>
+                    <option value="0" disabled>Select user</option> 
 
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> Task deadline </label>
-                        <div class="col-xs-12">
-                            <input type="date" v-model="data.deadline" name="deadline" class="form-control" required> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> Task category </label>
-                        <div class="col-md-12 image_add_modal_form">
-                            <select class="form-control" name="filter" v-model="data.category_id" required>
-                                <option value="0" disabled>Select category</option> 
-
-                                <option v-for="tasks_category in tasks_categories" :kay="tasks_category.id" :value="tasks_category.id">{{ tasks_category.title }}</option>
-                            </select> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> User </label>
-                        <div class="col-md-12 image_add_modal_form">
-                            <select class="form-control" name="filter" v-model="data.user_id" required>
-                                <option value="0" disabled>Select user</option> 
-
-                                <option v-for="user in users" :kay="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
-                            </select> 
-                        </div>
-                    </div>
-
-                </div>
+                    <option v-for="user in users" :kay="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
+                </select> 
+                        
             </form>
         </pre>
         <div slot="modal-footer">
@@ -70,7 +42,7 @@
                     form="create_task"
                     :class="{'btn btn-primary': true}"
                 >
-                Send
+                Save
                 </button>
             </div>
         </div>

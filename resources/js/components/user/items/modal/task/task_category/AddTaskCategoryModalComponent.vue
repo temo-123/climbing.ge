@@ -8,23 +8,9 @@
     >
         <pre class="language-vue">
             <form id="create_task_category" v-on:submit.prevent="create_task_category" >
-                <div class="container">
-
-                    <div class="form-group clearfix">
-                        <label for="title" class='col-xs-12 control-label'> Title </label>
-                        <div class="col-xs-12">
-                            <input type="text" v-model="data.title" title="dedline" class="form-control" required> 
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix">
-                        <label for="name" class='col-xs-12 control-label'> Short description </label>
-                        <div class="col-xs-12">
-                            <textarea rows="6" name="text" v-model="data.short_description" id="text" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
-                        </div>
-                    </div>
-
-                </div>
+                <input type="text" v-model="data.title" title="dedline" class="form-control" placeholder="Title / Name" required> 
+            
+                <textarea rows="6" name="text" v-model="data.short_description" id="text" maxlength="500" placeholder="Description" class="form-control textarea"></textarea>
             </form>
         </pre>
         <div slot="modal-footer">
