@@ -93,7 +93,7 @@
                 <button
                     type="button"
                     :class="'btn btn-success'"
-                    @click="edit_team_member()"
+                    @click="show_team_member_modal()"
                 >
                 Edit Team member
                 </button>
@@ -113,14 +113,14 @@
 
 
 <script>
-    import MemberStatusModal from './EditUserMemberStatusModalComponent.vue'
+    // import MemberStatusModal from './EditUserMemberStatusModalComponent.vue'
 
     // import breadcrumb from '../items/BreadcrumbComponent.vue'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
         components: {
             StackModal,
-            MemberStatusModal,
+            // MemberStatusModal,
             // breadcrumb,
         },
         data(){
@@ -175,6 +175,11 @@
                 this.user_id = ''
             },
 
+            show_team_member_modal(){
+                this.$emit('show_team_member_modal', this.user_id);
+                this.close_modal();
+            },
+
             edit_permissions(){
                 this.is_loading = true
                 axios
@@ -183,7 +188,9 @@
                     role: this.user_role,
                 })
                 .then(response => {
-                    this.close_role_editing_modal()
+                    this.close_modal()
+
+                    this.$emit('update');
                 })
                 .catch(
                     error => console.log(error)

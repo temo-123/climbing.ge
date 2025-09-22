@@ -1,7 +1,7 @@
 <template>
     <stack-modal
-            :show="is_role_editing_modal"
-            title="Edit members and status"
+            :show="is_member_editing_modal"
+            title="Edit Team Member Status"
             @close="close_modal()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
@@ -12,199 +12,110 @@
                     <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                 </div>
             </span>
-            <span v-show="!is_loading">
-                <h2>User role</h2>
+            <form v-show="!is_loading">
+                <div class="form-group mt-3">
+                    <input type="checkbox" id="is_team_member" name="is_team_member" v-model="data.is_team_member">
+                    <label for="is_team_member">Is this user your team member?</label>
+                </div>
 
-                
-            </span>
+                <textarea v-if="data.is_team_member" v-model="data.member_status" class="form-control" placeholder="Enter member status" id="member_status" rows="2"></textarea>
+            </form>
         </pre>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
                     type="button"
-                    :class="'btn btn-success '"
+                    :class="'btn btn-primary'"
                     @click="edit_team_member()"
                 >
                 Save And Close
                 </button>
-
                 <button
                     v-show="!is_loading"
                     type="button"
-                    :class="{'btn btn-primary float-right': true}"
-                    @click="edit_permissions(user_id)"
+                    :class="'btn btn-success'"
+                    @click="edit_team_member(true)"
                 >
                 Save And Go Back
+                </button>
+                <button
+                    v-show="!is_loading"
+                    type="button"
+                    :class="'btn btn-danger'"
+                    @click="go_back()"
+                >
+                Go Back
                 </button>
             </div>
         </div>
     </stack-modal>
 </template>
 
-
 <script>
-    // import tabsComponent  from '../items/data_table/TabsComponent.vue'
-
-    // import breadcrumb from '../items/BreadcrumbComponent.vue'
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-    export default {
-        components: {
-            StackModal,
-            // tabsComponent ,
-            // breadcrumb,
-        },
-        data(){
-            return {
-                is_role_editing_modal: false,
-
-                perm_loading: false,
-                role_loading: false,
-                is_loading: false,
-
-                user_role: 'no_role',
-                user_permissions: [],
-
-                roles: [],
-                permissions: [],
-
-                permissions_array: [],
-
-                user_id: '',
-                // danger_color: ''
-            }
-        },
-        mounted() {
-            // this.get_users()
-        },
-        watch: {
-            // '$route' (to, from) {
-            //     this.data_for_tab = [],
-            //     // this.get_users()
-            //     window.scrollTo(0,0)
-            // }
-        },
-        methods: {
-            show_modal(id){
-                this.is_role_editing_modal = true
-                this.user_id = id
-                this.get_user_permissions_and_roles()
-                this.get_roles()
-                this.get_permissions()
-            },
-            close_modal(){
-                this.is_role_editing_modal = false
-
-                this.user_role = 'no_role'
-                this.user_permissions = []
-
-                this.roles = []
-                this.permissions = []
-
-                this.permissions_array = []
-
-                this.user_id = ''
-            },
-
-            edit_permissions(){
-                this.is_loading = true
-                axios
-                .post("/role/edit_permissions_and_role/"+this.user_id, {
-                    new_permissions: this.permissions_array,
-                    role: this.user_role,
-                })
-                .then(response => {
-                    this.close_role_editing_modal()
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_loading = false);
-            },
-
-            del_user_pemisino_from_db(id){
-                if(confirm('Are you sure, you want delite it?')){
-                    axios
-                    .post('/role/del_user_pemisino/'+id+'/'+this.user_id, {
-                        _method: 'DELETE'
-                    })
-                    .then(Response => {
-                        this.get_user_permissions_and_roles()
-                    })
-                    .catch(error => console.log(error))
-                }
-            },
-
-            get_user_permissions_and_roles(){
-                axios
-                .get("/role/get_user_permissions/"+this.user_id)
-                .then(response => {
-                    
-                    if(response.data.role.length != 0){
-                        this.user_role  = response.data.role.id
-                    }
-
-                    if(response.data.permissions.length != 0){
-                        this.user_permissions = response.data.permissions
-                    }
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-                
-            get_roles(){
-                this.role_loading = true
-
-                axios
-                .get("/role/")
-                .then(response => {
-                    this.roles = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.role_loading = false);
-            },
-
-            get_permissions(){
-                this.perm_loading = true
-
-                axios
-                .get("/parmisions_list/")
-                .then(response => {
-                    this.permissions = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.perm_loading = false);
-            },
-
-
-            onFileChange(event, item_id){
-                let permisson = event.target.value
-                let id = item_id - 1 
-                this.permissions_array[id]['permission_id'] = permisson
-            },
-            add_permission_value(){
-                var new_item_id = this.permissions_array.length+1
-                this.permissions_array.push(
-                    {
-                        id: new_item_id,
-                        permission_id: ''
-                    }
-                );
-            },
-
-            del_bisnes_value(id){
-                this.removeObjectWithId(this.permissions_array, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
+import StackModal from '@innologica/vue-stackable-modal'
+import { get } from 'jquery'
+export default {
+    components: {
+        StackModal,
+    },
+    data(){
+        return {
+            is_member_editing_modal: false,
+            is_loading: false,
+            user_id: '',
+            data: {
+                is_team_member: false,
+                member_status: '',
             },
         }
+    },
+    methods: {
+        show_modal(id){
+            this.user_id = id
+
+            this.get_team_member_status()
+        },
+        close_modal(){
+            this.is_member_editing_modal = false
+            this.member_status = 'member'
+            this.user_id = ''
+        },
+        go_back(){
+            this.$emit('go_back', this.user_id);
+            this.close_modal()
+        },
+        get_team_member_status(){
+            this.is_loading = true
+            axios
+            .get("/user/team/get_member_status/" + this.user_id)
+            .then(response => {
+                this.is_member_editing_modal = true
+
+                this.data = response.data;
+            })
+            .catch(error => console.log(error))
+            .finally(() => this.is_loading = false)
+        },
+        edit_team_member(is_back = false){
+            this.is_loading = true
+            axios
+                .post("/user/team/edit_member_status/" + this.user_id, {
+                    is_team_member: this.data.is_team_member,
+                    member_status: this.data.member_status,
+                })
+                .then(response => {
+                    this.$emit('update');
+
+                    if(is_back){
+                        this.go_back();
+                    }
+                    else if(!is_back){
+                        this.close_modal()
+                    }
+                })
+                .catch(error => console.log(error))
+                .finally(() => this.is_loading = false)
+        },
     }
+}
 </script>

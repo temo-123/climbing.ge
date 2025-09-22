@@ -23,21 +23,23 @@ class ArticleGalleryController extends Controller
             }
         }
         
-        $items = array_rand($images, 16);
-        $imgs = [];
-        foreach ($items as $item) {
-            array_push($imgs, $images[$item]);
-        }
+        if(count($images) > 0) {
+            $items = array_rand($images, 16);
+            $imgs = [];
+            foreach ($items as $item) {
+                array_push($imgs, $images[$item]);
+            }
 
-        $returned_images = [];
-        foreach ($imgs as $image) {
-            $img = Article_image::where('id', '=', $image->id)->first();
+            $returned_images = [];
+            foreach ($imgs as $image) {
+                $img = Article_image::where('id', '=', $image->id)->first();
 
-            $img_art = $img->article;
-            array_push($returned_images, $img);
+                $img_art = $img->article;
+                array_push($returned_images, $img);
+            }
+            
+            return $returned_images;
         }
-        
-        return $returned_images;
     }
 
     public function get_editing_images(Request $request)

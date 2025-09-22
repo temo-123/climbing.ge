@@ -1,6 +1,6 @@
 <template>
   <div class="swiper">
-    <div class="swiper_sizing" :style="'margin-left: ' + (-1 - (100 * current_slider_index * current_slider_index)) + '%; '">
+    <div class="swiper_sizing" v-if="slides.length > 0" :style="'margin-left: ' + (-1 - (100 * current_slider_index * current_slider_index)) + '%; '">
       <div v-for="(slide, index) in slides" :key="slide.id" class="head_slider" >
         <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
 

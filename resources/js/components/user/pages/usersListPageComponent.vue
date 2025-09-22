@@ -28,16 +28,29 @@
             </div>
         </div>
 
-        <EditUserRoleAndPermissionsModel ref="edit_user_role_modal"/>
+        <EditUserRoleAndPermissionsModel ref="edit_user_role_modal"
+
+            @show_team_member_modal="$refs.teamMemberStatusModal.show_modal($event)"
+            @update="get_users"
+        />
         <UserBunModel ref="user_ban_modal"/>
         <UserInfoModal ref="user_info_modal"/>
 
         <EditRoleModel ref="edit_role_model"/>
+
+        <MemberStatusModal 
+            ref="teamMemberStatusModal"
+
+            @go_back="show_edit_user_role_modal($event)"
+            @update="get_users"
+        />
     </div>
 </template>
 
 <script>
     import tabsComponent  from '../items/data_table/TabsComponent.vue'
+
+    import MemberStatusModal from '../items/modal/tab_modals/edit/EditUserMemberStatusModalComponent.vue'
 
     import EditUserRoleAndPermissionsModel from "../items/modal/tab_modals/edit/EditUserRoleAndPermissionsModelComponent"
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
@@ -49,6 +62,8 @@
         components: {
             tabsComponent ,
             breadcrumb,
+
+            MemberStatusModal,
 
             EditUserRoleAndPermissionsModel,
             EditRoleModel,
@@ -94,6 +109,7 @@
                                                         'Name',
                                                         'Email',
                                                         'Verifay',
+                                                        'Team',
                                                         'Role',
                                                         'Ban',
                                                         'Delite',
@@ -102,12 +118,14 @@
                                                         ['data', ['id']],
                                                         ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
                                                         ['data', ['email']],
+                                                        ['data', ['is_team_member'],'bool'],
                                                         ['data', ['email_verified_at'],'bool_2'],
                                                         ['action_fun_id', 'edit_user_role', 'btn btn-primary', 'Edit Role'],
                                                         ['action_fun_id', 'user_ban', 'btn btn-warning', '<i class="fa fa-times" aria-hidden="true"></i>'],
                                                         ['action_fun_id', 'del_user', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],

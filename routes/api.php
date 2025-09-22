@@ -686,6 +686,12 @@ Route::group(['namespace'=>'Api'], function() {
             Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
                 Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
             });
+
+
+            Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
+                Route::get('/get_member_status/{id}', 'get_member_status');
+                Route::post('/edit_member_status/{id}', 'edit_member_status');
+            });
         });
         
         /*
