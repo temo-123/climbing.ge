@@ -11,11 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->text('text')->nullable();
+            $table->integer('published')->nullable();
+
+            $table->string('url_title')->nullable();
+
             $table->string('image')->nullable();
+
+            $table->unsignedBigInteger('us_post_id');
+            $table->foreign('us_post_id')->references('id')->on('locale_posts')->constrained()->onDelete('cascade');
+
+            $table->unsignedBigInteger('ka_post_id');
+            $table->foreign('ka_post_id')->references('id')->on('locale_posts')->constrained()->onDelete('cascade');
 
             $table->foreignId('user_id')->constrained();
 
@@ -28,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post');
+        Schema::dropIfExists('posts');
     }
 };

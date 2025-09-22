@@ -36,8 +36,8 @@ const router = new VueRouter({
         { path: '/order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
 
         { path: '/posts', name: 'posts', component: load('posts/PostsListComponent') },
-        { path: '/add_post', name: 'add_post', component: load('posts/AddPostFormComponent') },
-        { path: '/edit_post', name: 'edit_post', component: load('posts/EditPostFormComponent') },
+        { path: '/post/add', name: 'add_post', component: load('posts/AddPostFormComponent') },
+        { path: '/post/edit/:id', name: 'edit_post', component: load('posts/EditPostFormComponent') },
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
         { path: '/head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage') },

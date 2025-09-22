@@ -289,9 +289,9 @@ export const navbar = {
                         name: "Warehouses",
                         route: "/warehouses",
                         permissions: [
-                            ['add', 'warehouses'],
-                            ['edit', 'warehouses'],
-                            ['del', 'warehouses']
+                            ['add', 'warehouse'],
+                            ['edit', 'warehouse'],
+                            ['del', 'warehouse']
                         ]
                     },
                     {

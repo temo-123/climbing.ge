@@ -82,7 +82,6 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Name',
                                                         'Title',
                                                         'Public',
                                                         'Edit',
@@ -90,9 +89,9 @@
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data', ['title']],
-                                                        ['data', ['Published']],
-                                                        ['action_fun_id', 'edit_post', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['data', ['url_title']],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['action_router', 'edit_post', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_post', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [

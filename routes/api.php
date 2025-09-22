@@ -716,7 +716,7 @@ Route::group(['namespace'=>'Api'], function() {
         */
         Route::controller(PostController::class)->prefix('post')->group( function() {
             Route::get('/get_posts', 'get_posts');
-            Route::post('/add_posts', 'add_posts');
+            Route::post('/add_post', 'add_post');
             Route::post('/edit_post/{id}', 'edit_post');
             Route::get('/get_editing_post/{id}', 'get_editing_post');
             Route::get('/get_activ_post/{id}', 'get_activ_post');

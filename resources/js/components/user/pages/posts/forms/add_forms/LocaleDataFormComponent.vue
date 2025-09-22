@@ -1,190 +1,87 @@
 <template>
-    <!-- <div class="col-md-12" > -->
-        <!-- <div class="row"> -->
-        <div class="col-md-12">
-            <div class="jumbotron width_100">
-                <div class="container">
-                    <h2 class="display-4"><span style="text-transform: capitalize">{{this.category}}</span> {{ this.title }}</h2>
-                    <p class="lead">{{ this.description }}</p>
+    <div class="col-md-12">
+        <div class="jumbotron width_100">
+            <div class="container">
+                <h2 class="display-4"><span style="text-transform: capitalize"> {{ this.title }} </span></h2>
+                <p class="lead">{{ this.description }}</p>
+            </div>
+        </div>
+
+        <form method="POST" @submit.prevent="add_article">
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Title </label>
+                <div class="col-md-10">
+                    <input type="text" name="name" v-model="data.title"  class="form-control"> 
+                    <div class="alert alert-danger" role="alert" v-if="errors.title">
+                        {{ errors.title[0] }}
+                    </div>
                 </div>
             </div>
 
-            <div class="wrapper container-fluid container">
-                <form method="POST" @submit.prevent="add_article">
-                    <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> Title </label>
-                        <div class="col-md-10">
-                            <input type="text" name="name" v-model="data.title"  class="form-control"> 
-                            <div class="alert alert-danger" role="alert" v-if="errors.title">
-                                {{ errors.title[0] }}
-                            </div>
-                        </div>
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> Short description </label>
+                <div class="col-md-10">
+                    <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
+                    <div class="alert alert-danger" role="alert" v-if="errors.short_description">
+                        {{ errors.short_description[0] }}
                     </div>
-
-                    <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> Short description </label>
-                        <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.short_description">
-                                {{ errors.short_description[0] }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> text </label>
-                        <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.text"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                {{ errors.text[0] }}
-                            </div> -->
-
-                            <!-- <ckeditor v-model="data.text" /> -->
-
-                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="editor_config.text" ></ckeditor>
-                        </div>
-                    </div>
-
-                </form>
+                </div>
             </div>
-        <!-- </div> -->
+
+            <div class="form-group clearfix row">
+                <label for="name" class='col-md-2 control-label'> text </label>
+                <div class="col-md-10">
+
+                    <ckeditor id="text" :editor="'text'" v-model="data.text" :config="editor_config.text" ></ckeditor>
+                </div>
+            </div>
+
+        </form>
     </div>
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort';
-    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
     import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
-    // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
-            // StackModal,
             GlobalInfoFormBlock,
-            // SlickItem,
-            // SlickList,
         },
         mixins: [
             // editor_config
         ],
         props: [
-            // 'info_block_prop',
-            // 'routes_info_prop',
-            // 'what_need_info_prop',
-            // 'best_time_prop',
             'locale_prop',
-
-            'global_blocks_prop',
 
             'title',
             'description'
         ],
         data(){
             return {
-                // category: 'this.$route.params.article_category',
-                category: this.$route.params.article_category,
-
                 errors: [],
-                error: [],
                 
                 editor_config: {
                     short_description_text: this.$editor_config.get_small_editor_config(),
                     text: this.$editor_config.get_big_editor_config(),
-                    how_get: this.$editor_config.get_big_editor_config(),
-                    price_text: this.$editor_config.get_big_editor_config(),
                 },
 
                 data: {
                     title: '',
                     short_description: '',
                     text: '',
-                    route: '',
-                    how_get: '',
-                    best_time: '',
-                    what_need: '',
-                    info: '',
-                    // time: '',
                 },
-
-                general_infos: [],
-
-                global_blocks: {
-                    info_block: '',
-                    routes_info: '',
-                    what_need_info: '',
-                    best_time: '',
-
-                    info_block_id: 0,
-                    routes_info_id: 0,
-                    what_need_info_id: 0,
-                    best_time_id: 0,
-                }
             }
         },
         mounted() {
-            this.global_blocks = this.global_blocks_prop
-            // this.routes_info = this.routes_info_prop
-            // this.what_need_info = this.what_need_info_prop
-            // this.best_time = this.best_time_prop
-
-            this.get_general_info()
-
             this.$emit('locale_form_data', this.data)
         },
         watch: {
-            global_block: function(){
-                this.global_blocks = this.global_blocks_prop
-            },
+            // global_block: function(){
+            //     this.global_blocks = this.global_blocks_prop
+            // },
         },
         methods: {
-            get_value_insert_text({locale, form_data, form_value_name}) {
-                this.data[form_value_name] = form_data
-                this.send_data()
-            },
-            get_global_blocks_status_action({value_name, block_action}) {
-                this.global_blocks[value_name] = block_action
-                this.$emit('global_blocks', this.global_blocks)
-            },
-            get_global_blocks_id({value_name, block_id}) {
-                this.global_blocks[value_name+"_id"] = block_id
-                this.$emit('global_blocks', this.global_blocks)
-            },
-            
-            uploader(editor)
-            {
-                editor.plugins.get( 'FileRepository' ).createUploadAdapter = ( loader ) => {
-                    return new UploadAdapter( loader );
-                };
-            },
-
-            get_general_info(){
-                axios
-                .get('../../../api/general_info/')
-                .then(response => {
-                    this.general_infos = response.data                
-                })
-                .catch(
-                    errors => console.log(errors)
-                );
-            },
-
-            info_block_action(status){
-                this.global_blocks.info_block = status
-                this.$emit('global_blocks', this.global_blocks)
-            },
-            best_time_action(status){
-                this.global_blocks.best_time = status
-                this.$emit('global_blocks', this.global_blocks)
-            },
-            routes_action(status){
-                this.global_blocks.routes_info = status
-                this.$emit('global_blocks', this.global_blocks)
-            },
-            what_need_block_action(status){
-                this.global_blocks.what_need_info = status
-                this.$emit('global_blocks', this.global_blocks)
-            }
+            // 
         }
     }
 </script>
