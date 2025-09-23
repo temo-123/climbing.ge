@@ -753,6 +753,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
             Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
             Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
+            Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
             Route::delete('/del_warehouse/{id}', 'del_warehouse');
 
             // Product option management in warehouses

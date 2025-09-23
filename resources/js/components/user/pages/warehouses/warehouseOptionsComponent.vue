@@ -21,28 +21,45 @@
                 </div>
             </div>
 
-            <!-- Product Options List -->
-            <div v-else-if="product_options.length > 0" class="row">
-                <div v-for="option in product_options" :key="option.id" class="col-md-4 mb-3">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ option.name }}</h5>
-                            <p class="card-text">
-                                <strong>Price:</strong> {{ option.price }} {{ option.currency }}<br>
-                                <strong>Available Quantity:</strong> {{ getWarehouseQuantity(option.id) }}<br>
-                                <strong>Product:</strong> {{ option.product ? option.product.name : 'N/A' }}
-                            </p>
-                            <div class="d-flex justify-content-between">
-                                <button class="btn btn-sm btn-warning" @click="editQuantity(option)">
-                                    Edit Quantity
-                                </button>
+            <!-- Product Options Table -->
+            <div v-else-if="product_options.length > 0" class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Product Name</th>
+                            <th>Option Name</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="option in product_options" :key="option.id">
+                            <td>
+                                <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
+                            </td>
+                            <td>{{ option.product ? option.product.name : 'N/A' }}</td>
+                            <td>{{ option.name }}</td>
+                            <td>{{ option.price }} {{ option.currency }}</td>
+                            <td>
+                                <input
+                                    type="number"
+                                    v-model="option.pivot.quantity"
+                                    @change="updateQuantityQuick(option)"
+                                    class="form-control form-control-sm"
+                                    style="width: 80px;"
+                                    min="0"
+                                />
+                            </td>
+                            <td>
                                 <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
                                     Delete
                                 </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <!-- Empty state -->
@@ -65,13 +82,19 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form @submit.prevent="addProductOption">
+                        <div v-if="availableProducts.length === 0" class="alert alert-warning">
+                            No products available. Please add products first.
+                        </div>
+                        <div v-else-if="availableOptions.length === 0 && newOption.product_id" class="alert alert-warning">
+                            No options available for the selected product.
+                        </div>
+                        <form v-else @submit.prevent="addProductOption">
                             <div class="form-group">
                                 <label for="product_id">Select Product</label>
-                                <select v-model="newOption.product_id" class="form-control" required>
+                                <select v-model="newOption.product_id" @click="getAvailableProducts()" class="form-control" required>
                                     <option value="">Choose a product...</option>
-                                    <option v-for="product in availableProducts" :key="product.id" :value="product.id">
-                                        {{ product.name }}
+                                    <option v-for="product in availableProducts" :key="product.product.id" :value="product.product.id">
+                                        {{ product.product.url_title }}
                                     </option>
                                 </select>
                             </div>
@@ -92,38 +115,13 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" @click="closeAddModal">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="addProductOption">Add Option</button>
+                        <button type="button" class="btn btn-primary" @click="addProductOption" :disabled="availableProducts.length === 0 || (newOption.product_id && availableOptions.length === 0)">Add Option</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Quantity Modal -->
-        <div v-if="showEditModal" class="modal" tabindex="-1" role="dialog" style="display: block;">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Quantity</h5>
-                        <button type="button" class="close" @click="closeEditModal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <p><strong>Product Option:</strong> {{ editingOption.name }}</p>
-                        <form @submit.prevent="updateQuantity">
-                            <div class="form-group">
-                                <label for="edit_quantity">New Quantity</label>
-                                <input type="number" v-model="editingOption.newQuantity" class="form-control" min="0" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="closeEditModal">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="updateQuantity">Update Quantity</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+
     </div>
 </template>
 
@@ -135,7 +133,7 @@
             StackModal,
         },
         props: [
-            'warehouse_id'
+            // 'warehouse_id'
         ],
         data(){
             return {
@@ -144,23 +142,17 @@
                 availableOptions: [],
                 loading: false,
                 showAddOptionModal: false,
-                showEditModal: false,
                 newOption: {
                     product_id: '',
                     product_option_id: '',
                     quantity: 0
-                },
-                editingOption: {
-                    id: null,
-                    name: '',
-                    newQuantity: 0
                 }
             }
         },
 
         mounted() {
             this.getWarehouseProductOptions();
-            this.getAvailableProducts();
+            // this.getAvailableProducts();
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
@@ -174,11 +166,13 @@
 
             getWarehouseProductOptions() {
                 this.loading = true;
-                axios.get(`/api/user/warehouse/get_warehouse_product_options`, {
-                    params: { warehouse_id: this.warehouse_id }
-                })
+                axios.get(`/warehouse/get_warehouse_product_options/${this.$route.params.id}`)
                 .then(response => {
-                    this.product_options = response.data;
+                    // Filter to only show product options that are actually related to this warehouse
+                    this.product_options = response.data.filter(option => {
+                        // Only show options that have a relationship with this warehouse
+                        return option.pivot && option.pivot.warehouse_id == this.warehouse_id;
+                    });
                     this.loading = false;
                 })
                 .catch(error => {
@@ -188,7 +182,7 @@
             },
 
             getAvailableProducts() {
-                axios.get('/api/shop/product/get_all_products')
+                axios.get('/product_option/get_activ_product_options' + newOption.product_id)
                 .then(response => {
                     this.availableProducts = response.data;
                 })
@@ -199,7 +193,7 @@
 
             getAvailableOptions() {
                 if (this.newOption.product_id) {
-                    axios.get(`/api/shop/product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                     })
@@ -211,14 +205,15 @@
             },
 
             addProductOption() {
-                if (!this.newOption.product_id || !this.newOption.product_option_id || !this.newOption.quantity) {
-                    alert('Please fill in all fields');
+                if (!this.newOption.product_id || !this.newOption.product_option_id) {
+                    alert('Please select both product and product option');
                     return;
                 }
 
                 axios.post('/api/user/warehouse/add_product_option_to_warehouse', {
                     warehouse_id: this.warehouse_id,
-                    product_option_id: this.newOption.product_option_id
+                    product_option_id: this.newOption.product_option_id,
+                    quantity: this.newOption.quantity || 0
                 })
                 .then(response => {
                     this.closeAddModal();
@@ -230,32 +225,11 @@
                 });
             },
 
-            editQuantity(option) {
-                this.editingOption = {
-                    id: option.id,
-                    name: option.name,
-                    newQuantity: this.getWarehouseQuantity(option.id)
-                };
-                this.showEditModal = true;
-            },
 
-            updateQuantity() {
-                axios.post(`/api/user/warehouse/edit_product_option_quantity/${this.warehouse_id}/${this.editingOption.id}`, {
-                    quantity: this.editingOption.newQuantity
-                })
-                .then(response => {
-                    this.closeEditModal();
-                    this.getWarehouseProductOptions();
-                })
-                .catch(error => {
-                    console.error('Error updating quantity:', error);
-                    alert('Error updating quantity');
-                });
-            },
 
             deleteOption(option) {
                 if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
-                    axios.delete(`/api/user/warehouse/delete_product_option_from_warehouse/${this.warehouse_id}/${option.id}`)
+                    axios.delete(`/api/user/warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
                     .then(response => {
                         this.getWarehouseProductOptions();
                     })
@@ -267,9 +241,44 @@
             },
 
             getWarehouseQuantity(optionId) {
-                // This would need to be implemented based on how quantities are stored
-                // For now, returning a placeholder
-                return 0;
+                // Find the option in our filtered list and get its quantity from pivot
+                const option = this.product_options.find(opt => opt.id === optionId);
+                return option && option.pivot ? option.pivot.quantity || 0 : 0;
+            },
+
+            getOptionImage(option) {
+                // Get the first image for the option
+                if (option.images && option.images.length > 0) {
+                    return '/images/product_option_img/' + option.images[0].image;
+                }
+                // Fallback to a default image or placeholder
+                return '/images/placeholder.jpg'; // You can change this to your default image path
+            },
+
+            updateQuantityQuick(option) {
+                const newQuantity = parseInt(option.pivot.quantity) || 0;
+
+                if (newQuantity <= 0) {
+                    // Automatically delete the option if quantity is 0 or negative
+                    this.deleteOption(option);
+                } else {
+                    // Update the quantity
+                    axios.post(`/api/user/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                        quantity: newQuantity
+                    })
+                    .then(response => {
+                        // Update successful
+                        console.log('Quantity updated successfully');
+                        // Refresh the list to get updated data
+                        this.getWarehouseProductOptions();
+                    })
+                    .catch(error => {
+                        console.error('Error updating quantity:', error);
+                        alert('Error updating quantity');
+                        // Revert the change on error
+                        this.getWarehouseProductOptions();
+                    });
+                }
             },
 
             closeAddModal() {
@@ -280,26 +289,6 @@
                     quantity: 0
                 };
                 this.availableOptions = [];
-            },
-
-            closeEditModal() {
-                this.showEditModal = false;
-                this.editingOption = {
-                    id: null,
-                    name: '',
-                    newQuantity: 0
-                };
-            }
-        },
-
-        watch: {
-            'newOption.product_id': function(newVal) {
-                if (newVal) {
-                    this.getAvailableOptions();
-                } else {
-                    this.availableOptions = [];
-                    this.newOption.product_option_id = '';
-                }
             }
         }
     }

@@ -4,6 +4,7 @@ namespace App\Models\User;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Shop\Product_option;
 
 class Warehouse extends Model
 {
@@ -16,6 +17,6 @@ class Warehouse extends Model
     ];
 
     public function productOptions() {
-        return $this->belongsToMany(ProductOption::class, 'product_option_warehouse');
+        return $this->belongsToMany(Product_option::class, 'warehouses_product_options');
     }
 }
