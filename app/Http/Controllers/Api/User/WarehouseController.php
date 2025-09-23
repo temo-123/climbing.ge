@@ -72,4 +72,57 @@ class WarehouseController extends Controller
         }
         return $warehouse->productOptions;
     }
+
+    public function edit_product_option_quantity(Request $request) {
+        $warehouse = Warehouse::find($request->warehouse_id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 404);
+        }
+
+        $productOption = ProductOption::find($request->product_option_id);
+        if (!$productOption) {
+            return response()->json(['error' => 'Product option not found'], 404);
+        }
+
+        // Update the quantity in the pivot table
+        $warehouse->productOptions()->updateExistingPivot($request->product_option_id, [
+            'quantity' => $request->quantity
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Quantity updated successfully']);
+    }
+
+    public function delete_product_option_from_warehouse(Request $request) {
+        $warehouse = Warehouse::find($request->warehouse_id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 404);
+        }
+
+        $productOption = ProductOption::find($request->product_option_id);
+        if (!$productOption) {
+            return response()->json(['error' => 'Product option not found'], 404);
+        }
+
+        $warehouse->productOptions()->detach($request->product_option_id);
+        return response()->json(['success' => true, 'message' => 'Product option removed from warehouse']);
+    }
+
+    public function get_product_option_details(Request $request) {
+        $warehouse = Warehouse::find($request->warehouse_id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 404);
+        }
+
+        $productOption = ProductOption::find($request->product_option_id);
+        if (!$productOption) {
+            return response()->json(['error' => 'Product option not found'], 404);
+        }
+
+        // Get the pivot data for this warehouse and product option
+        $pivotData = $warehouse->productOptions()->where('product_option_id', $request->product_option_id)->first();
+        return response()->json([
+            'product_option' => $productOption,
+            'warehouse_quantity' => $pivotData ? $pivotData->pivot->quantity : 0
+        ]);
+    }
 }
