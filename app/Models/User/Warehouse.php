@@ -12,6 +12,7 @@ class Warehouse extends Model
     protected $fillable = [
         // Add all column names from your warehouses table, for example:
         'name',
+        'general'
     ];
 
     public function productOptions() {

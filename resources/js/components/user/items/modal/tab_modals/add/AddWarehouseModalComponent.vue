@@ -10,7 +10,10 @@
             <form v-on:submit.prevent="add_warehouse" id="add_warehouse">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
 
-                <input type="radio" class="form-control" v-model="data.general" name="general" title="General Warehouse" required>
+                <div class="form-group">
+                    <input type="checkbox" id="general" name="general" v-model="data.general">
+                    <label for="general">Is this warehouse is general?</label>
+                </div>
             </form>
         </pre>
         <div slot="modal-footer">
@@ -45,15 +48,12 @@
         },
         data(){
             return{
-                is_warehouse_edit_model: false,
                 is_warehouse_add_model: false,
 
                 regions: [],
                 data: {
                     name: '',
-                    url: '',
-                    published: 0,
-                    article_id: 0
+                    general: false,
                 }
             }
         },
@@ -66,7 +66,7 @@
                         _method: 'Post'
                     })
                     .then(Response => {
-                        alert('Added successfully')
+                        // alert('Added successfully')
                         this.$emit('update')
                         this.is_warehouse_add_model = false
                         this.clear_form()
@@ -76,9 +76,7 @@
             clear_form(){
                 this.data = {
                     name: '',
-                    url: '',
-                    published: 0,
-                    article_id: 0
+                    general: false,
                 }
             },
             show_modal(){

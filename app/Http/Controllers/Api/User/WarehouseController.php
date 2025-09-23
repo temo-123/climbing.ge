@@ -14,7 +14,7 @@ class WarehouseController extends Controller
         return Warehouse::all();
     }
 
-    public function add_warehouses (Request $request) {
+    public function add_warehouse (Request $request) {
         $warehouse = Warehouse::create($request->all('data')['data']);
         return response()->json($warehouse, 201);
     }
@@ -32,11 +32,15 @@ class WarehouseController extends Controller
         return Warehouse::find($request->id);
     }
 
+    public function get_warehouse_data(Request $request) {
+        return Warehouse::find($request->id);
+    }
+
     public function get_activ_warehouse (Request $request) {
         return Warehouse::find($request->id);
     }
 
-    public function del_warehouses (Request $request) {
+    public function del_warehouse (Request $request) {
         $deleted = Warehouse::where('id', $request->id)->delete();
         return response()->json(['deleted' => $deleted > 0], $deleted ? 200 : 404);
     }

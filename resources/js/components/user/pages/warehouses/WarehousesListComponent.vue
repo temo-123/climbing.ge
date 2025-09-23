@@ -25,11 +25,11 @@
 
         <warehouse_add_medal
             ref="show_warehouse_add_medal"
-            @update="get_warehouse_data"
+            @update="get_warehouses_data"
         />
         <warehouse_edit_medal
             ref="show_warehouse_edit_medal"
-            @update="get_warehouse_data"
+            @update="get_warehouses_data"
         />
     </div>
 </template>
@@ -88,11 +88,12 @@
                                                         ['data', ['id']],
                                                         ['data', ['name']],
                                                         ['data', ['general'], 'bool'],
-                                                        ['action_fun_id', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'warehouseEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_router', 'warehouseOptions', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>'],
+                                                        ['action_fun_id', 'show_warehouse_edit_medal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_warehouse', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['warehouse', 'edit'],
@@ -119,7 +120,7 @@
             del_warehouse(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/warehous/del_warehouse/'+id, {
+                    .post('/warehouse/del_warehouse/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

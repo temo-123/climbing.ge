@@ -748,11 +748,12 @@ Route::group(['namespace'=>'Api'], function() {
         */
         Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
             Route::get('/get_warehouses', 'get_warehouses');
-            Route::post('/add_warehouses', 'add_warehouses');
-            Route::post('/edit_warehouse/{warehouse_id}', 'edit_warehouse');
-            Route::get('/get_editing_warehouse/{warehouse_id}', 'get_editing_warehouse');
-            Route::get('/get_activ_warehouse/{warehouse_id}', 'get_activ_warehouse');
-            Route::delete('/del_warehouse/{warehouse_id}', 'del_warehouse');
+            Route::post('/add_warehouse', 'add_warehouse');
+            Route::post('/edit_warehouse/{id}', 'edit_warehouse');
+            Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
+            Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
+            Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
+            Route::delete('/del_warehouse/{id}', 'del_warehouse');
         });
 
         /*
