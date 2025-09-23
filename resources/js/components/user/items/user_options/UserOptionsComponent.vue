@@ -411,7 +411,7 @@
                 var myFormData = new FormData(this.$refs.myForm)
                 axios({
                     method: 'post',
-                    url: '/user_image_update/'+this.user.id,
+                    url: '/user/user_image_update/'+this.user.id,
                     data: myFormData,
                     config: { 
                         headers: {'Content-Type': 'multipart/form-data' },

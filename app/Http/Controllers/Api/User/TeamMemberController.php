@@ -32,4 +32,14 @@ class TeamMemberController extends Controller
         $user->save();
         return response()->json(['success' => true]);
     }
+
+    public function get_team_members()
+    {
+        return User::where('is_team_member', '!=', null)->get();
+    }
+
+    public function get_team_member_data(Request $request)
+    {
+        return User::where('id', '=', $request->id)->get();
+    }
 }

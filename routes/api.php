@@ -691,6 +691,8 @@ Route::group(['namespace'=>'Api'], function() {
             Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
                 Route::get('/get_member_status/{id}', 'get_member_status');
                 Route::post('/edit_member_status/{id}', 'edit_member_status');
+                Route::get('/get_team_members', 'get_team_members');
+                Route::get('/get_team_members/{id}', 'get_team_members');
             });
         });
         

@@ -20,16 +20,10 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-12 col-md-12 cursor_pointer" @click="show_guide_modal(tour.user.id)">
-                <h2>{{ $t('shop.tour.guide') }}</h2>
-                <div class="row">
-                    <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='guide_img' v-if='tour.user.image == null'> </div>
-                    <div :style="'background-image: url(/public/images/user_profil_img/' + tour.user.image + ');'" class='guide_img' v-else> </div>
-                </div>
-                <div class="row">
-                    <span class="guide_name">{{ tour.user.name }} {{ tour.user.surname }}</span>
-                </div>
-            </div>
+            <h2>{{ $t('shop.tour.guide') }}</h2>
+            <usersIconsComponent 
+                :users_prop="[tour.user]"
+            />
         </div>
         
         <tourMessageForm 
@@ -66,10 +60,6 @@
             :image = "'/'"
         />
 
-        <guide_modal 
-            ref="open_guide_modal"
-            @show_guide_modal="show_guide_modal"
-        />
     </div>
 </template>
 
@@ -79,7 +69,8 @@
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import gallery from '../../items/GalleryComponent.vue'
     import tourMessageForm from '../../items/reservation_forms/TourMessageFormComponent.vue'
-    import guide_modal from "../../items/modals/GuideModalComponent.vue";
+
+    import usersIconsComponent from '../../../global_components/UsersIconsComponent.vue'
 
     export default {
         components: {
@@ -88,7 +79,7 @@
             breadcrumb,
             gallery,
             tourMessageForm,
-            guide_modal
+            usersIconsComponent
         },
         props:[
             'data'
@@ -101,19 +92,14 @@
         },
         watch: {
             '$route' (to, from) {
-                // this.get_tours()
                 this.get_tour()
                 window.scrollTo(0,0);
             }
         },
         mounted() {
-            // this.get_tours()
             this.get_tour()
         },
         methods: {
-            show_guide_modal(user_id){
-                this.$refs.open_guide_modal.show_guide_modal(user_id)
-            },
             get_tours(activ_tour_id){
                 axios
                 .get('/tour/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_tour_id)
@@ -136,15 +122,3 @@
         }
     }
 </script>
-<style>
-.guide_name{
-    font-size: 1.5em;
-}
-.guide_img{
-    width: 15em;
-    height: 15em;
-    border-radius: 50%;
-    background-repeat: no-repeat;
-    background-position: center center;
-}
-</style>

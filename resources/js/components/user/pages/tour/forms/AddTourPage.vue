@@ -54,15 +54,11 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_tour.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
-                            </div>
-                        </div>
+
+                        <published_item 
+                            :published_prop = data.published
+                            @item_data="data.global_tour.published = $event" 
+                        />
 
                         <div class="form-group clearfix">
                             <label for="category" class='col-xs-2 control-label '> Category </label>
@@ -215,9 +211,12 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+
     export default {
         components: {
-            validator_alerts_component
+            validator_alerts_component,
+            published_item
         },
         mixins: [
             editor_config

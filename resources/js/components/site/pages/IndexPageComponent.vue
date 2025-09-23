@@ -65,6 +65,21 @@
 
         <!-- <instaPost /> -->
 
+        
+        <div class="h-recent-work services" id="services">
+            <div class="container">
+
+                <h2 class='index_h2'>Team Members</h2>
+
+                <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
+                <h3 class='article_list_short_description'> Climbing.ge team members </h3>
+                        
+                <usersIconsComponent 
+                    :users_prop="team_members"
+                />
+            </div>
+        </div>
+
         <div class="row" v-if="products.length > 0">
 
             <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
@@ -112,6 +127,8 @@
     import bigNewsCard from '../items/cards/BigNewsCardComponent'
     import specialArticleComponent from '../items/SpecialArticleComponent'
 
+    import usersIconsComponent from '../../global_components/UsersIconsComponent.vue'
+
     // import instaPost from '../../global_components/InstaPostsComponent.vue'
 
     import catalogItem from '../items/shop_items_for_guide/CatalogItemComponent'
@@ -123,7 +140,9 @@
             return {
                 newses: [],
                 lastNews: [],
-                products: []
+                products: [],
+
+                team_members: [],
             };
         },
         components: {
@@ -137,21 +156,37 @@
             bigNewsCard,
             whatWeDoComponent,
             specialArticleComponent,
+            usersIconsComponent,
             // instaPost,
             catalogItem
         },
         mounted() {
-            this.get_news()
-            this.get_products()
+            this.get_data()
         },
         watch: {
             '$route' (to, from) {
-                this.get_news()
+                this.get_data()
 
                 window.scrollTo(0,0)
             }
         },
         methods: {
+            get_data(){
+                this.get_news()
+                this.get_products()
+                this.get_team_members()
+            },
+            
+            get_team_members(){
+                axios
+                .get('/user/team/get_team_members')
+                .then(response => {
+                    this.team_members = response.data
+                })
+                .catch(error =>{
+                })
+            },
+
             get_news(){
                 axios
                 .get('articles/news/'+localStorage.getItem('lang'))
