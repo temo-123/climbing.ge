@@ -7,6 +7,12 @@
         </div>
 
         <div class="col-md-12">
+            <div class="form-group">
+                <button class="btn btn-success float-right" @click="get_data()">Refresh</button>
+            </div>
+        </div>
+
+        <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Warehouse Product Options</h3>
                 <button class="btn btn-primary" @click="showAddOptionModal = true">
@@ -23,10 +29,11 @@
 
             <!-- Product Options Table -->
             <div v-else-if="product_options.length > 0" class="table-responsive">
-                <table class="table table-striped">
+                <table class="table table-striped" style="overflow-x: hidden;">
                     <thead>
                         <tr>
                             <th>Image</th>
+                            <th>ID</th>
                             <th>Product Name</th>
                             <th>Option Name</th>
                             <th>Price</th>
@@ -39,18 +46,32 @@
                             <td>
                                 <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                             </td>
-                            <td>{{ option.product ? option.product.name : 'N/A' }}</td>
+                            <td>{{ option.id }}</td>
+                            <td>{{ option.product.url_title }}</td>
                             <td>{{ option.name }}</td>
                             <td>{{ option.price }} {{ option.currency }}</td>
                             <td>
-                                <input
-                                    type="number"
-                                    v-model="option.pivot.quantity"
-                                    @change="updateQuantityQuick(option)"
-                                    class="form-control form-control-sm"
-                                    style="width: 80px;"
-                                    min="0"
-                                />
+                                <div class="row">
+                                    <span class="input-group-btn col">
+                                        <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
+                                            <span class="glyphicon glyphicon-minus"></span>
+                                        </button>
+                                    </span>
+                                    <input
+                                        type="number"
+                                        v-model="option.pivot.quantity"
+                                        @change="updateQuantityQuick(option)"
+                                        class="form-control form-control-sm col"
+                                        style="width: 80px;"
+                                        min="0"
+                                    />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
+                                            <span class="glyphicon glyphicon-plus col"></span>
+                                        </button>
+                                    </span>
+                                </div>
+
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
@@ -91,7 +112,7 @@
                         <form v-else @submit.prevent="addProductOption">
                             <div class="form-group">
                                 <label for="product_id">Select Product</label>
-                                <select v-model="newOption.product_id" @click="getAvailableProducts()" class="form-control" required>
+                                <select v-model="newOption.product_id" @change="getAvailableOptions()" class="form-control" required>
                                     <option value="">Choose a product...</option>
                                     <option v-for="product in availableProducts" :key="product.product.id" :value="product.product.id">
                                         {{ product.product.url_title }}
@@ -120,7 +141,6 @@
                 </div>
             </div>
         </div>
-
 
     </div>
 </template>
@@ -151,8 +171,8 @@
         },
 
         mounted() {
-            this.getWarehouseProductOptions();
-            // this.getAvailableProducts();
+            this.get_data()
+
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
@@ -164,15 +184,17 @@
                 }
             },
 
+            get_data(){
+                this.getWarehouseProductOptions();
+                this.getAvailableProducts();
+            },
+
             getWarehouseProductOptions() {
                 this.loading = true;
                 axios.get(`/warehouse/get_warehouse_product_options/${this.$route.params.id}`)
                 .then(response => {
-                    // Filter to only show product options that are actually related to this warehouse
-                    this.product_options = response.data.filter(option => {
-                        // Only show options that have a relationship with this warehouse
-                        return option.pivot && option.pivot.warehouse_id == this.warehouse_id;
-                    });
+                    this.product_options = response.data
+                    
                     this.loading = false;
                 })
                 .catch(error => {
@@ -182,7 +204,7 @@
             },
 
             getAvailableProducts() {
-                axios.get('/product_option/get_activ_product_options' + newOption.product_id)
+                axios.get(`/product/get_all_products/`)
                 .then(response => {
                     this.availableProducts = response.data;
                 })
@@ -192,6 +214,7 @@
             },
 
             getAvailableOptions() {
+                // alert(this.newOption.product_id)
                 if (this.newOption.product_id) {
                     axios.get(`/product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
@@ -210,8 +233,7 @@
                     return;
                 }
 
-                axios.post('/api/user/warehouse/add_product_option_to_warehouse', {
-                    warehouse_id: this.warehouse_id,
+                axios.post('/warehouse/add_product_option_to_warehouse/' + this.$route.params.id, {
                     product_option_id: this.newOption.product_option_id,
                     quantity: this.newOption.quantity || 0
                 })
@@ -229,7 +251,7 @@
 
             deleteOption(option) {
                 if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
-                    axios.delete(`/api/user/warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
+                    axios.delete(`/warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
                     .then(response => {
                         this.getWarehouseProductOptions();
                     })
@@ -263,7 +285,7 @@
                     this.deleteOption(option);
                 } else {
                     // Update the quantity
-                    axios.post(`/api/user/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
                     .then(response => {

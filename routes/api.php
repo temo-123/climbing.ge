@@ -753,13 +753,14 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
             Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
             Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
-            Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
             Route::delete('/del_warehouse/{id}', 'del_warehouse');
 
             // Product option management in warehouses
-            Route::post('/edit_product_option_quantity/{warehouse_id}/{product_option_id}', 'edit_product_option_quantity');
-            Route::delete('/delete_product_option_from_warehouse/{warehouse_id}/{product_option_id}', 'delete_product_option_from_warehouse');
-            Route::get('/get_product_option_details/{warehouse_id}/{product_option_id}', 'get_product_option_details');
+            Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+            Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
+            Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
+            Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
+            Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
         });
 
         /*
