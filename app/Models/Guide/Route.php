@@ -21,19 +21,16 @@ class Route extends Model
         "height",
         "bolts",
         "anchor_type",
-        
+
         "author",
         "creation_data",
 
         "first_ascent",
+        "route_json", // Add json field for canvas data
     ];
 
     public function review()
     {
         return $this->hasMany(Sport_route_review::class);
-    }
-
-    public function json() {
-        return $this->hasOne(Routes_json::class);
     }
 }

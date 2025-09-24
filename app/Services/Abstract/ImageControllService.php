@@ -131,6 +131,12 @@ class ImageControllService
      */
     private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): void
     {
+        // Ensure the output directory exists
+        $outputDir = dirname($outputFile);
+        if (!file_exists($outputDir)) {
+            mkdir($outputDir, 0755, true);
+        }
+
         $inputFile_2 = $inputFile;
         $fileType = exif_imagetype($inputFile);
 
@@ -156,12 +162,15 @@ class ImageControllService
             default:
                 return;
         }
-        
-        // if ($resize == 1) {
-        //     ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
-        // } else {
-            // imagewebp($image, $outputFile, $quality);
-        // }
+
+        if ($resize == 1) {
+            ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
+        } else {
+            if (!imagewebp($image, $outputFile, $quality)) {
+                // Log error if imagewebp fails
+                error_log("Failed to save WebP image: $outputFile");
+            }
+        }
 
         imagedestroy($image);
     }
@@ -177,8 +186,14 @@ class ImageControllService
      * https://honarsystems.com/php-resize-image/
      * https://www.google.com/search?q=resizing+webp+image+in+php&sca_esv=a03deeebd4ceaea7&sxsrf=AE3TifNVHDNensST_nOYoEh4wyVAdcbVZw%3A1748585712813&ei=8Ew5aOO0MYGGxc8P5MyugQM&oq=+resizing+webp+image+php&gs_lp=Egxnd3Mtd2l6LXNlcnAiGCByZXNpemluZyB3ZWJwIGltYWdlIHBocCoCCAAyCBAhGKABGMMEMggQIRigARjDBEjjgwFQkAlYjm9wAngBkAEAmAGIAqABww2qAQYwLjEwLjG4AQHIAQD4AQH4AQKYAg2gAr8OwgIKEAAYsAMY1gQYR8ICBhAAGAcYHsICCxAAGIAEGIYDGIoFwgIFEAAY7wXCAgoQIRigARjDBBgKwgIIEAAYgAQYogSYAwCIBgGQBgiSBwYyLjEwLjGgB_8ZsgcGMC4xMC4xuAehDsIHBzAuMS42LjbIB1k&sclient=gws-wiz-serp
      */
-    private static function resize_webp_image($source_file, $destination_file, $width = 1920, $height = 1080, $quality = 80, $crop = FALSE) 
+    private static function resize_webp_image($source_file, $destination_file, $width = 1920, $height = 1080, $quality = 80, $crop = FALSE)
         {
+            // Ensure the destination directory exists
+            $destination_dir = dirname($destination_file);
+            if (!file_exists($destination_dir)) {
+                mkdir($destination_dir, 0755, true);
+            }
+
             // dd('resize_webp_image function is deprecated, use resize_image_webp instead');
             list($current_width, $current_height) = getimagesize($source_file);
             $rate = $current_width / $current_height;
@@ -202,12 +217,15 @@ class ImageControllService
             $src_file = @imagecreatefromwebp($source_file);
             if (!$src_file) {
                 // If unable to create WebP image (e.g., missing GD WebP support), skip resizing
+                error_log("Failed to create WebP image from source: $source_file");
                 return;
             }
             $dst_file = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
 
-            imagewebp($dst_file, $destination_file, $quality);
+            if (!imagewebp($dst_file, $destination_file, $quality)) {
+                error_log("Failed to save resized WebP image: $destination_file");
+            }
             imagedestroy($src_file);
             imagedestroy($dst_file);
         }

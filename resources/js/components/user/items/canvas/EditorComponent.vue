@@ -55,7 +55,7 @@
                     ref="childCanvas"
 
                     :style="{
-                        backgroundImage: 'url(' + image + ')',
+                        backgroundImage: image ? 'url(' + image + ')' : 'none',
                         backgroundSize: '100%'
                     }"
                     @canvas_data="canvas_data"
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-    import Canvas from "./PaperComponent.vue";
+import Canvas from "./PaperComponent.vue";
     export default {
         components: {
             Canvas
@@ -78,7 +78,7 @@
                 default: null
             },
             json_prop: {
-                type: Object,
+                type: String,
                 default: null
             }
         },
@@ -91,21 +91,25 @@
             action: 1,
         }),
         mounted() {
-            // var img = new Image();
-            // img.src = this.image
-            // img.onload = function() {
-            //     this.img_h = this.height/2
-            //     this.img_w = this.width/2
-            //     // alert(this.width + 'x' + this.height);
-            //     alert(this.img_w + 'x' + this.img_h);
-            // }
-            this.change_image(this.image_prop)
+            if (this.image_prop) {
+                // this.change_image(this.image_prop);
+                this.image = this.image_prop;
+            }
         },
-        // watch: {
-        //     image_prop: function(newVal, oldVal) { 
-              
-        //     },
-        // },
+        watch: {
+            image_prop: function(newVal, oldVal) {
+                if (newVal && newVal !== oldVal) {
+                    // this.change_image(newVal);
+                    this.image = this.newVal;
+                }
+            },
+            json_prop: function(newVal, oldVal) {
+                if (newVal && newVal !== oldVal && this.$refs.childCanvas) {
+                    // Pass the JSON data to the PaperComponent
+                    this.$refs.childCanvas.json_prop = newVal;
+                }
+            }
+        },
         methods: {
             reset() {
                 if (confirm('Do you want clear area?')) {
@@ -129,12 +133,35 @@
                 this.action = 4
             },
 
-            change_image(event){
-                this.image = '/public/images/sector_img/' + event
-            },
+            // change_image(event){
+            //     if (event) {
+            //         this.image = '/public/images/sector_img' + event;
+            //     } else {
+            //         this.image = '';
+            //     }
+            // },
 
             canvas_data(event){
                 this.$emit('canvas_data', event)
+            },
+
+            // Method to trigger canvas data emission
+            emitCanvasData() {
+                if (this.$refs.childCanvas && typeof this.$refs.childCanvas.saveCanvasData === 'function') {
+                    this.$refs.childCanvas.saveCanvasData();
+                } else {
+                    console.log('Canvas ref not available or saveCanvasData method not found');
+                }
+            },
+
+            // Method to get current canvas data and emit it
+            getAndEmitCanvasData() {
+                if (this.$refs.childCanvas && this.$refs.childCanvas.scope) {
+                    const canvasData = JSON.stringify(this.$refs.childCanvas.scope.project.exportJSON());
+                    this.$emit('canvas_data', canvasData);
+                } else {
+                    console.log('Canvas not available for data extraction');
+                }
             },
 
             import_json_in_editor(event){

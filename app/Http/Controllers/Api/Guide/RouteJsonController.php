@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Guide\Route;
-use App\Models\Guide\Routes_json;
+use App\Models\Guide\ClimbingRoutesJson;
+use App;
 
 use Validator;
 
@@ -19,16 +20,16 @@ class RouteJsonController extends Controller
 
     public static function add_route_json($data) {
         $route_validate = (new static)->add_route_json_validate($data);
-        if ($route_validate != null) { 
+        if ($route_validate != null) {
             return response()->json([
                 $route_validate
             ], 422);
         }
         else{
-            $saved = Routes_json::insertGetId($data);
-                
+            $saved = ClimbingRoutesJson::insertGetId($data);
+
             if(!$saved){
-                App::abort(500, 'Error');
+                return response()->json(['error' => 'Error saving route JSON'], 500);
             }
             else{
                 return $saved;
@@ -37,23 +38,24 @@ class RouteJsonController extends Controller
     }
 
     public static function edit_route_json($data) {
-        $ceck_json_count = Routes_json::where('id', '=', $data['route_id'])->count();
-        if($ceck_json_count >= 0){
-            (new static)->add_route_json($data);
+        $existing_json = ClimbingRoutesJson::where('route_id', '=', $data['route_id'])->first();
+
+        if(!$existing_json){
+            // Create new record
+            return (new static)->add_route_json($data);
         }
         else{
             $route_validate = (new static)->edit_route_json_validate($data);
-            if ($route_validate != null) { 
+            if ($route_validate != null) {
                 return response()->json([
                     $route_validate
                 ], 422);
             }
             else{
-                $ceck_json = Routes_json::where('id', '=', $data['route_id'])->first();
-                $saved = $ceck_json->update($request->$data); 
+                $saved = $existing_json->update($data);
 
                 if(!$saved){
-                    return 'Error';
+                    return response()->json(['error' => 'Error updating route JSON'], 500);
                 }
 
                 return $saved;
@@ -68,10 +70,10 @@ class RouteJsonController extends Controller
     public static function add_route_json_validate($data) {
         $validator = Validator::make($data, [
             'json' => 'required',
-            'route_id' => 'required|unique:routes_jsons,route_id',
+            'route_id' => 'required|unique:climbing_routes_jsons,route_id',
             'sector_image_id' => 'required',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }

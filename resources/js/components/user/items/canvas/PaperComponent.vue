@@ -1,12 +1,12 @@
 <template>
-    <div>
+    <!-- <div> -->
         <canvas 
             :id="canvas_id_prop" 
             class="canvas-style" 
             v-on:mousedown="mouseDown"
             v-on:mouseup="mouseUp"
         />
-    </div>
+    <!-- </div> -->
 </template>
 
 <script>
@@ -23,11 +23,27 @@
             path: null,
             scope: null,
             canvasData: null, // store canvas data
-            old_json: null
+            old_json: null,
+
         }),
         watch: {
-            json_prop: function(){
-                this.old_json = this.json_prop
+            json_prop: {
+                handler: function(newVal){
+                    if (newVal && this.scope) {
+                        try {
+                            let jsonData = newVal;
+                            if (typeof newVal === 'string') {
+                                jsonData = JSON.parse(newVal);
+                            }
+                            this.scope.project.clear();
+                            this.scope.project.importJSON(this.test_json);
+                            this.scope.view.update();
+                        } catch (error) {
+                            console.log('Error importing JSON:', error);
+                        }
+                    }
+                },
+                immediate: true
             },
         },
         mounted() {
@@ -112,7 +128,8 @@
                 };
                 
                 this.tool.onMouseUp = () => {
-                    this.path = []
+                    this.path = [];
+                    this.saveCanvasData(); // Save canvas data after drawing
                 }
             },
 

@@ -11,6 +11,7 @@ use App\Models\Guide\Article;
 
 use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
+use App\Models\Guide\ClimbingRoutesJson;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
 
@@ -85,15 +86,15 @@ class RouteController extends Controller
     }
 
     public function add_route(Request $request)
-    {        
+    {
         $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) { 
+        if ($route_validate != null) {
             return response()->json([
                 $route_validate
             ], 422);
         }
         else{
-            
+
             $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
             if($sector_route_count == 0){
                 $new_route_num = 1;
@@ -102,13 +103,27 @@ class RouteController extends Controller
                 $new_route_num = $sector_route_count+1;
             }
 
-            $saved = Route::insertGetId($request->data);
-            
+            // Save route data (without JSON)
+            $routeData = $request->data;
+            unset($routeData['route_json']); // Remove JSON from route data
+
+            $saved = Route::insertGetId($routeData);
+
+            // Save JSON data separately if provided
+            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+                $jsonData = [
+                    'route_id' => $saved,
+                    'json' => $request->data['route_json'],
+                    'sector_image_id' => $request->data['sector_id'] // Assuming sector_id is the image reference
+                ];
+                RouteJsonController::add_route_json($jsonData);
+            }
+
             if(!$saved){
-                App::abort(500, 'Error');
+                return response()->json(['error' => 'Error saving route'], 500);
             }
             else{
-                return $saved;
+                return response()->json(['success' => true, 'route_id' => $saved]);
             }
         }
     }
@@ -116,8 +131,8 @@ class RouteController extends Controller
     public function edit_route(Request $request)
     {
         // dd($request->data);
-        $route_validate = $this->route_validate($request->data[0]);
-        if ($route_validate != null) { 
+        $route_validate = $this->route_validate($request->data);
+        if ($route_validate != null) {
             return response()->json([
                 $route_validate
             ], 422);
@@ -125,15 +140,29 @@ class RouteController extends Controller
         else{
             $route = route::where('id', '=', $request->route_id)->first();
 
-            $saved = $route->update($request->data[0]); 
+            // Save route data (without JSON)
+            $routeData = $request->data;
+            unset($routeData['route_json']); // Remove JSON from route data
 
+            $saved = $route->update($routeData);
+
+            // Save JSON data separately if provided
+            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+                $jsonData = [
+                    'route_id' => $request->route_id,
+                    'json' => $request->data['route_json'],
+                    'sector_image_id' => $request->data['sector_id'] // Assuming sector_id is the image reference
+                ];
+                RouteJsonController::edit_route_json($jsonData);
+            }
+            
             if(!$saved){
                 return response()->json([
                     'errors' => "Saving error",
                 ], 500);
             }
 
-            return RouteJsonController::edit_route_json($request->data[1]);
+            return response()->json(['success' => true]);
         }
     }
 
@@ -152,7 +181,13 @@ class RouteController extends Controller
     public function get_route_editing_data(Request $request)
     {
         $route = Route::where('id',strip_tags($request->route_id))->first();
-        $route->json;
+
+        // Fetch JSON data from the separate table
+        $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
+        if ($routeJson) {
+            $route->json = $routeJson->json;
+        }
+
         return $route;
     }
 

@@ -69,8 +69,10 @@
             <div class="row">
                 <div class="col-md-12" v-for="image in sector_images" :key="image.id" 
                     v-if="images_tab_num == image.id" >
-                    <Editor 
-                      :image_prop="image.image"
+                    <Editor
+                      ref="editorComponent"
+                      :image_prop="'/public/images/sector_img/' + image.image"
+                      @canvas_data="handleCanvasData"
                     />
                 </div>
             </div>    
@@ -228,7 +230,7 @@
 
           name: "",
           text: "",
-          
+
           height: "",
           bolts: "",
 
@@ -240,6 +242,7 @@
           bolts_type: "",
 
           category: "",
+          route_json: null, // Add canvas JSON data
         },
 
         is_loading: false,
@@ -312,23 +315,41 @@
       save_new_route: function () {
         this.is_loading = true
 
-        axios
-        .post('../../api/route/add_route/', {
-            data: this.data,
-        })
-        .then(response => {
-          if(!this.is_back_action_query){
-            alert('Saving completed')
-            this.clear_form()
+        // Ensure canvas data is captured before saving
+        this.$nextTick(() => {
+          try {
+            if (this.$refs.editorComponent && typeof this.$refs.editorComponent.getAndEmitCanvasData === 'function') {
+              this.$refs.editorComponent.getAndEmitCanvasData();
+            }
+          } catch (error) {
+            console.log('Canvas data emission failed:', error);
           }
-          else{
-            this.go_back(true)
-          }
-        })
-        .catch(error =>{
-            this.status = "error"
-        })
-        .finally(() => this.is_loading = false);
+
+          // Include canvas JSON data in the route data
+          const routeData = {
+              ...this.data,
+              route_json: this.data.route_json
+          };
+
+          axios
+          .post('/route/add_route/', {
+              data: routeData,
+          })
+          .then(response => {
+            if(!this.is_back_action_query){
+              alert('Saving completed')
+              this.clear_form()
+            }
+            else{
+              this.go_back(true)
+            }
+          })
+          .catch(error =>{
+              this.status = "error"
+              console.log('Save route error:', error);
+          })
+          .finally(() => this.is_loading = false);
+        });
       },
 
       clear_form(){
@@ -339,7 +360,7 @@
 
           name: "",
           text: "",
-          
+
           height: "",
           bolts: "",
 
@@ -349,14 +370,20 @@
 
           anchor_type: "",
           bolts_type: "",
-
-          anchor_type: "",
+          route_json: null,
         }
       },
 
 
       go_back(back_action = false) {
         this.is_back_action_query = this.$going.back(this, back_action)
+      },
+
+      // Handle canvas data from Editor component
+      handleCanvasData(canvasData) {
+        console.log('Canvas data received:', canvasData);
+        this.data.route_json = canvasData;
+        console.log('Canvas data stored in route_json:', this.data.route_json);
       },
     }
   }
