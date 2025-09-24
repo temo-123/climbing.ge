@@ -4244,9 +4244,9 @@ a:active {
     }
 }
 
-.container {
-    max-width: 1200px;
-}
+// .container {
+//     max-width: 1200px;
+// }
 
 .header {
     width: 100%;
@@ -4588,47 +4588,46 @@ a:active {
     margin-top: 8px;
 }
 
-.container {
-    max-width: 1200px;
-}
-.container-1 {
-    width: 100%;
-    height: auto;
-    margin: 50px auto;
-    margin-bottom: 20px;
-    float: left;
-    /*portfolio*/
-}
-.container-1 h1 {
-    font-size: 24px;
-    color: #000000;
-    text-align: center;
-    font-family: "Average Sans", sans-serif;
-}
-// .container-1 h6 {
-.container-1 h3 {
-    font-size: 18px;
-    color: #999999;
-    text-align: center;
-    font-family: "Average Sans", sans-serif;
-    margin-bottom: 30px;
-}
-.container-1 .portfolio {
-    width: 100%;
-    height: auto;
-    /*h1*/
-}
-.container-1 .portfolio h1 {
-    font-size: 36px;
-    color: #000;
-    font-family: "Average Sans", sans-serif;
-}
-.container-1 .portfolio h1 .title span {
-    background: #fff;
-    padding-left: 20px;
-    padding-right: 20px;
-    display: inline-block;
-}
+// .container {
+//     max-width: 1200px;
+// }
+// .container-1 {
+//     width: 100%;
+//     height: auto;
+//     margin: 50px auto;
+//     margin-bottom: 20px;
+//     float: left;
+//     /*portfolio*/
+// }
+// .container-1 h1 {
+//     font-size: 24px;
+//     color: #000000;
+//     text-align: center;
+//     font-family: "Average Sans", sans-serif;
+// }
+// .container-1 h3 {
+//     font-size: 18px;
+//     color: #999999;
+//     text-align: center;
+//     font-family: "Average Sans", sans-serif;
+//     margin-bottom: 30px;
+// }
+// .container-1 .portfolio {
+//     width: 100%;
+//     height: auto;
+//     /*h1*/
+// }
+// .container-1 .portfolio h1 {
+//     font-size: 36px;
+//     color: #000;
+//     font-family: "Average Sans", sans-serif;
+// }
+// .container-1 .portfolio h1 .title span {
+//     background: #fff;
+//     padding-left: 20px;
+//     padding-right: 20px;
+//     display: inline-block;
+// }
 .portfolio-img {
     max-width: 100%;
     height: auto;

@@ -157,11 +157,11 @@ class ImageControllService
                 return;
         }
         
-        if ($resize == 1) {
-            ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
-        } else {
-            imagewebp($image, $outputFile, $quality);
-        }
+        // if ($resize == 1) {
+        //     ImageControllService::resize_webp_image($inputFile_2, $outputFile, $quality);
+        // } else {
+            // imagewebp($image, $outputFile, $quality);
+        // }
 
         imagedestroy($image);
     }
@@ -199,11 +199,17 @@ class ImageControllService
                     $newwidth = $width;
                 }
             }
-            $src_file = imagecreatefromwebp($source_file);
+            $src_file = @imagecreatefromwebp($source_file);
+            if (!$src_file) {
+                // If unable to create WebP image (e.g., missing GD WebP support), skip resizing
+                return;
+            }
             $dst_file = imagecreatetruecolor($newwidth, $newheight);
             imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
 
             imagewebp($dst_file, $destination_file, $quality);
+            imagedestroy($src_file);
+            imagedestroy($dst_file);
         }
 
     // function resize_image_webp($source_file,$destination_file, $width, $height, $quality, $crop=FALSE) {

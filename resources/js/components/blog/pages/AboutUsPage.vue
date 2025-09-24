@@ -1,44 +1,26 @@
 <template>
-    <div class="container top_menu_margin">
-        <div class="aboutus-section">
+  <div>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-8 blog-main">
+          <section class="hero">
             <div class="container">
-                <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="aboutus">
-                            <h1 class="text-center">Georgian climbing forum</h1>
-
-                            <span v-html="this.$siteData.forum_description_us"></span>
-                            
-                        </div>
-                    </div>
-                </div>
+              <div class="row">
+                <h1>About Us</h1>
+                <p>Welcome to our blog! We are passionate about sharing knowledge and stories.</p>
+                <p>Our mission is to provide valuable content on various topics.</p>
+              </div>
             </div>
+          </section>
         </div>
-
-        <servicesListComponent />
-        
-        <messageComponent />
-
-    </div>
+        <rightMenu />
+      </div>
+    </main>
+  </div>
 </template>
 
 <script>
-    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
-    import messageComponent from '../../global_components/MessageComponent.vue'
-    export default {
-        data: function () {
-            return {
-                cart_products: [],
-                site_data: [],
-            };
-        },
-        components: {
-            messageComponent,
-            servicesListComponent,
-        },
-        mounted() {
-        },
-        methods: {
-        }
-    }
+  export default {
+    name: 'AboutUsPage'
+  }
 </script>

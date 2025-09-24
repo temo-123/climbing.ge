@@ -628,22 +628,7 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Blog posts routes
         */
-        // Route::apiResource('/post', 'PostController');
-
-
-        // Route::post('/posts/add_post', 'PostController@add_post');
-        // Route::get('/posts/get_likes/{post_id}', 'PostController@get_likes');
-        // Route::get('/posts/get_route_posts/{route_id}', 'PostController@get_route_posts');
-        // Route::get('/posts/get_mtp_posts/{mtp_id}', 'PostController@get_mtp_posts');
-        // Route::post('/posts/get_posts_for_outdoor_region/{article_id}', 'PostController@get_posts_for_outdoor_region');
-        
-        // Route::apiResource('/posts_topic', 'PostsTopicController');
-        // Route::get('/posts_topic/list/{lang}', 'PostsTopicController@get_local_topics');
-
-        // Route::get('/post_comment/get_post_comment/{post_id}', 'PostCommentsController@get_post_comment');
-        // Route::post('/post_comment/add_post_comment/{post_id}', 'PostCommentsController@add_post_comment');
-        // Route::post('/post_comment/edit_post_comment/{comment_id}', 'PostCommentsController@edit_post_comment');
-        // Route::delete('/post_comment/edit_post_comment/{comment_id}', 'PostCommentsController@edit_post_comment');
+        Route::apiResource('/post', 'PostController');
     });
 
     Route::group(['namespace'=>'User'], function() {

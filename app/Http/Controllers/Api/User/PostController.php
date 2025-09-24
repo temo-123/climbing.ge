@@ -13,7 +13,22 @@ use App\Services\PostService;
 class PostController extends Controller
 {
     function get_posts(Request $request) {
-        return Post::all();
+        $posts = Post::with(['us_post', 'ka_post'])->orderBy('created_at', 'desc')->get();
+        $resp = [];
+        foreach ($posts as $post) {
+            $user = User::where('id', $post->user_id)->first();
+            array_push($resp, [
+                "id" => $post->id,
+                "title" => $post->us_post->title ?? $post->ka_post->title ?? '',
+                "content" => $post->us_post->text ?? $post->ka_post->text ?? '',
+                "short_description" => $post->us_post->short_description ?? $post->ka_post->short_description ?? '',
+                "image" => $post->image,
+                "published" => $post->published,
+                "created_at" => $post->created_at,
+                "user" => $user
+            ]);
+        }
+        return $resp;
     }
 
     function add_post(Request $request) {
@@ -48,7 +63,21 @@ class PostController extends Controller
     }
 
     function get_activ_post(Request $request) {
-        return Post::find($request->id);
+        $post = Post::with(['us_post', 'ka_post'])->find($request->id);
+        if (!$post) {
+            return null;
+        }
+        $user = User::where('id', $post->user_id)->first();
+        return [
+            "id" => $post->id,
+            "title" => $post->us_post->title ?? $post->ka_post->title ?? '',
+            "content" => $post->us_post->text ?? $post->ka_post->text ?? '',
+            "short_description" => $post->us_post->short_description ?? $post->ka_post->short_description ?? '',
+            "image" => $post->image,
+            "published" => $post->published,
+            "created_at" => $post->created_at,
+            "user" => $user
+        ];
     }
 
     function del_post(Request $request) {
