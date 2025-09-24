@@ -51,27 +51,35 @@
                             <td>{{ option.name }}</td>
                             <td>{{ option.price }} {{ option.currency }}</td>
                             <td>
-                                <div class="row">
-                                    <span class="input-group-btn col">
-                                        <button type="button" class="btn btn-danger btn-number"  data-type="minus" data-field="quant[2]">
-                                            <span class="glyphicon glyphicon-minus"></span>
-                                        </button>
-                                    </span>
+                                <div class="quantity-controls d-flex align-items-center">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-sm btn-danger"
+                                        @click="decrementQuantity(option)"
+                                        :disabled="option.pivot.quantity <= 0"
+                                        title="Decrease quantity"
+                                    >
+                                        -
+                                    </button>
+                                    
                                     <input
                                         type="number"
                                         v-model="option.pivot.quantity"
                                         @change="updateQuantityQuick(option)"
-                                        class="form-control form-control-sm col"
-                                        style="width: 80px;"
+                                        class="form-control form-control-sm quantity-input mx-2"
                                         min="0"
+                                        style="width: 100px; text-align: center; height: 36px;"
                                     />
-                                    <span class="input-group-btn">
-                                        <button type="button" class="btn btn-success btn-number" data-type="plus" data-field="quant[2]">
-                                            <span class="glyphicon glyphicon-plus col"></span>
-                                        </button>
-                                    </span>
+                                    
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-sm btn-info"
+                                        @click="incrementQuantity(option)"
+                                        title="Increase quantity"
+                                    >
+                                        +
+                                    </button>
                                 </div>
-
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
@@ -311,7 +319,51 @@
                     quantity: 0
                 };
                 this.availableOptions = [];
+            },
+
+            incrementQuantity(option) {
+                const currentQuantity = parseInt(option.pivot.quantity) || 0;
+                const newQuantity = currentQuantity + 1;
+                option.pivot.quantity = newQuantity;
+                this.updateQuantity(option, newQuantity);
+            },
+
+            decrementQuantity(option) {
+                const currentQuantity = parseInt(option.pivot.quantity) || 0;
+                if (currentQuantity > 0) {
+                    const newQuantity = currentQuantity - 1;
+                    option.pivot.quantity = newQuantity;
+                    this.updateQuantity(option, newQuantity);
+                }
+            },
+
+            updateQuantity(option, newQuantity) {
+                if (newQuantity <= 0) {
+                    // Automatically delete the option if quantity is 0 or negative
+                    this.deleteOption(option);
+                } else {
+                    // Update the quantity
+                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                        quantity: newQuantity
+                    })
+                    .then(response => {
+                        console.log('Quantity updated successfully');
+                        // Refresh the list to get updated data
+                        this.getWarehouseProductOptions();
+                    })
+                    .catch(error => {
+                        console.error('Error updating quantity:', error);
+                        alert('Error updating quantity');
+                        // Revert the change on error
+                        this.getWarehouseProductOptions();
+                    });
+                }
             }
         }
-    }
+}
 </script>
+
+<style scoped>
+
+
+</style>
