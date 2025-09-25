@@ -1,0 +1,5 @@
+- [x] Fix margin-left calculation in template to properly slide slides
+- [x] Add touch event listeners for swipe support (touchstart, touchend)
+- [x] Add dot indicators at the bottom for navigation
+- [x] Pause auto-slide on hover over the swiper
+- [x] Add ARIA labels for accessibility

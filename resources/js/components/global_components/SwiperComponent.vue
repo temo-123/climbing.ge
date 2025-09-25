@@ -1,7 +1,7 @@
 <template>
-  <div class="swiper">
-    <div class="swiper_sizing" v-if="slides.length > 0" :style="'margin-left: ' + (-1 - (100 * current_slider_index * current_slider_index)) + '%; '">
-      <div v-for="(slide, index) in slides" :key="slide.id" class="head_slider" >
+  <div class="swiper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
+    <div class="swiper_sizing" v-if="slides.length > 0" :style="'margin-left: ' + (-100 * current_slider_index) + '%; '" @touchstart="handleTouchStart" @touchend="handleTouchEnd">
+      <div v-for="(slide, index) in slides" :key="slide.id" class="head_slider" :aria-label="'Slide ' + (index + 1) + ' of ' + slides.length">
         <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
 
         <div class="slide_title text_shadow">{{ slide.title }}</div>
@@ -15,12 +15,16 @@
       </div>
     </div>
 
-    <div class="prev_slide_bottom" @click="prev_slide">
+    <div class="prev_slide_bottom" @click="prev_slide" aria-label="Previous slide">
       <i class="fa fa-chevron-left" aria-hidden="true"></i>
     </div>
 
-    <div class="next_slide_bottom" @click="next_slide">
+    <div class="next_slide_bottom" @click="next_slide" aria-label="Next slide">
       <i class="fa fa-chevron-right" aria-hidden="true"></i>
+    </div>
+
+    <div class="dots" v-if="slides.length > 1">
+      <span v-for="(slide, index) in slides" :key="'dot-' + index" :class="['dot', { active: index === current_slider_index }]" @click="goToSlide(index)" :aria-label="'Go to slide ' + (index + 1)"></span>
     </div>
   </div>
 </template>
@@ -31,7 +35,10 @@
       return {
         slides: [],
         slide_count: 0,
-        current_slider_index: 1,
+        current_slider_index: 0,
+        touchStartX: 0,
+        touchEndX: 0,
+        autoSlideInterval: null,
       };
     },
     props: [
@@ -40,7 +47,6 @@
     ],
     mounted() {
       this.get_slider_images();
-      // setInterval(this.next_slide, 10000); // Change slide every 10 seconds
     },
     methods: {
       next_slide() {
@@ -67,11 +73,42 @@
           this.slides = response.data;
           this.slide_count = this.slides.length;
 
-          setInterval(this.next_slide, 10000); // Change slide every 10 seconds
+          if (this.slide_count > 1) {
+            this.autoSlideInterval = setInterval(this.next_slide, 10000); // Change slide every 10 seconds
+          }
         })
         .catch((error) => {
           // console.log(error);
         });
+      },
+      pauseAutoSlide() {
+        if (this.autoSlideInterval) {
+          clearInterval(this.autoSlideInterval);
+          this.autoSlideInterval = null;
+        }
+      },
+      resumeAutoSlide() {
+        if (this.slide_count > 1 && !this.autoSlideInterval) {
+          this.autoSlideInterval = setInterval(this.next_slide, 10000);
+        }
+      },
+      handleTouchStart(e) {
+        this.touchStartX = e.changedTouches[0].screenX;
+      },
+      handleTouchEnd(e) {
+        this.touchEndX = e.changedTouches[0].screenX;
+        this.handleSwipe();
+      },
+      handleSwipe() {
+        if (this.touchEndX < this.touchStartX) {
+          this.next_slide();
+        }
+        if (this.touchEndX > this.touchStartX) {
+          this.prev_slide();
+        }
+      },
+      goToSlide(index) {
+        this.current_slider_index = index;
       },
     },
   };
@@ -180,5 +217,31 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  .dots {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .dot.active {
+    background-color: #fff;
+  }
+
+  .dot:hover {
+    background-color: rgba(255, 255, 255, 0.8);
   }
 </style>
