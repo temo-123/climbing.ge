@@ -131,6 +131,11 @@ class ImageControllService
      */
     private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): void
     {
+        $dir = dirname($outputFile);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
         $fileType = exif_imagetype($inputFile);
 
         switch ($fileType) {
