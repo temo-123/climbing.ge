@@ -66,7 +66,7 @@
         <!-- <instaPost /> -->
 
         
-        <div class="h-recent-work services" id="services">
+        <div class="h-recent-work services" id="services" v-if="team_members != []">
             <div class="container">
 
                 <h2 class='index_h2'>Team Members</h2>
