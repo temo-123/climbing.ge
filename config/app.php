@@ -179,7 +179,7 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
 
-        Intervention\Image\ImageServiceProvider::class,
+        // Intervention\Image\ImageServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -282,7 +282,7 @@ return [
         'OrderService' => App\Services\OrderService::class,
         'FilmService' => App\Services\FilmService::class,
 
-        'Image' => Intervention\Image\Facades\Image::class,
+        // 'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
