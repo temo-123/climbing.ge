@@ -123,9 +123,9 @@
         />
         <!-- {{ sector.sector_imgs[0] }} -->
 
-        <route_json 
+        <!-- <route_json 
         
-        />
+        /> -->
 
         <table
             class="table col-md-12 table table-hover"

@@ -116,8 +116,8 @@
                         <option value="$" disabled>$</option> 
                         <option value="€" disabled>€</option> 
                     </select> 
-                    Quantity
-                    <input type="text" v-model="adding_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required>
+                    <!-- Quantity
+                    <input type="text" v-model="adding_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required> -->
                 </form>
 
                 <span v-show="!is_loading">
@@ -180,8 +180,8 @@
                         <option value="$" disabled>$</option> 
                         <option value="€" disabled>€</option> 
                     </select> 
-                    Quantity
-                    <input type="text" v-model="editing_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required>
+                    <!-- Quantity
+                    <input type="text" v-model="editing_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required> -->
                 </form>
 
                 <span v-show="!is_loading">
