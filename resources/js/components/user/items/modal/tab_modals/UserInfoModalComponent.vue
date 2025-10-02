@@ -3,7 +3,7 @@
             :show="user_modal"
             title="User info"
             @close="user_modal=false"
-            :modal-class="{ [modalClass]: true }"
+            :modal-class="{ 'modal-lg': true }"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >

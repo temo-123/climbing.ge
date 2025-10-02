@@ -105,14 +105,19 @@
                                     <div class="col-sm-6 col-md-6">
                                         <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
                                             <option>All</option>
-                                            <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option> 
-                                        </select> 
+                                            <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" :disabled="option.option.quantity <= 0" >{{ option.option.name }} - Stock: {{ option.option.quantity }}</option>
+                                        </select>
                                     </div>
-                                    <div class="col-sm-4 col-md-4" v-if="product_modification_for_cart != 'All'">
+                                    <div class="col-sm-4 col-md-4" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0">
                                         <input type="number" class="form-control" min="1" :max="select_product_max_quantyty" v-model="products_quantity" />
                                     </div>
-                                    <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All' && user.length != 0">
-                                        <a @click="add_to_cart()" class='text-center' v-if="user.length != 0"> 
+                                    <div class="col-sm-4 col-md-4" v-else-if="product_modification_for_cart != 'All' && select_product_max_quantyty == 0">
+                                        <div class="alert alert-danger" role="alert">
+                                            Out of Stock
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0 && user.length != 0">
+                                        <a @click="add_to_cart()" class='text-center' v-if="user.length != 0">
                                             <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
                                         </a>
                                     </div>
@@ -193,11 +198,11 @@
 
         <div class="container" v-if="!is_loading">
             <div class="row">
-                <feedbackForm 
+                <feedbackForm
                     :product_id_prop="product.global_product.id"
 
-                    :reviews_count_prop = "product.reviews.count"
-                    :reviews_stars_prop = "product.reviews.stars"
+                    :reviews_count_prop = "product.reviews ? product.reviews.count : 0"
+                    :reviews_stars_prop = "product.reviews ? product.reviews.stars : 0"
                 />
             </div>
         </div>
@@ -419,7 +424,11 @@
                         this.is_adding_in_cart_socsesful = true
                     })
                     .catch(error =>{
-                        this.add_to_cart_message = 'Something went wrong. Try login.'
+                        if (error.response && error.response.data && error.response.data.error) {
+                            this.add_to_cart_message = error.response.data.error;
+                        } else {
+                            this.add_to_cart_message = 'Something went wrong. Try login.';
+                        }
                     })
                 }
             },

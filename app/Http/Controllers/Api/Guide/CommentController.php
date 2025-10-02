@@ -87,14 +87,14 @@ class CommentController extends Controller
                 foreach ($comment->answers as $ans) {
                     array_push($answers_array, [
                         'answer' => $ans,
-                        'user' => $ans->user->first(),
+                        'user' => $ans->user ? $ans->user->first() : null,
                     ]);
                 }
             }
 
             array_push($comment_array, [
-                'comment' => $comment, 
-                'user' => $comment->user->first(),
+                'comment' => $comment,
+                'user' => $comment->user ? $comment->user->first() : null,
                 'answers' => $answers_array
             ]);
         }

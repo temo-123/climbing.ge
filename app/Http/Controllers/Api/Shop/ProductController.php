@@ -51,8 +51,49 @@ class ProductController extends Controller
 
     public function get_local_products(Request $request)
     {
-        $global_products = product::latest('id')->where('published', '=', 1)->get();
-        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+        $global_products = Product::latest('id')->where('published', '=', 1)->get();
+        $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+
+        // Add quantity to product options
+        foreach ($products as $product) {
+            if (isset($product['product_option'])) {
+                foreach ($product['product_option'] as &$option) {
+                    if (isset($option['option'])) {
+                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
+                    }
+                }
+            }
+        }
+
+        return $products;
+    }
+
+    public function get_products_for_custom_order()
+    {
+        $products = Product::where('published', '=', 1)->with('product_options')->get();
+        $returned_products = [];
+        foreach($products as $product){
+            $locale_product = ProductService::get_locale_product_in_page_use_locale($product, 'en'); // assuming english for admin
+            array_push($returned_products, [
+                'id' => $product->id,
+                'title' => $locale_product['locale_product']->title ?? 'No title',
+                'options' => $product->product_options->map(function($option) {
+                    return [
+                        'id' => $option->id,
+                        'name' => $option->name ?? 'Option ' . $option->id,
+                        'price' => $option->price,
+                        'quantity' => $option->quantity,
+                        'images' => $option->images->map(function($image) {
+                            return [
+                                'id' => $image->id,
+                                'image' => $image->image
+                            ];
+                        })
+                    ];
+                })
+            ]);
+        }
+        return $returned_products;
     }
     public function get_local_saled_products(Request $request)
     {

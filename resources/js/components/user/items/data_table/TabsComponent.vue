@@ -23,13 +23,17 @@
                 </div>
 
                 <div class="row">
-                    <SearchComponent />
+                    <div class="col-md-12">
+                        <div class="search-container">
+                            <SearchComponent @search="onSearch" />
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
                     <div
                         class="col-md-12"
-                        v-for="(action_data, action_data_id) in table_data"
+                        v-for="(action_data, action_data_id) in filteredTableData"
                         :key="action_data_id"
                         v-if="tab_num == action_data.id"
                     >
@@ -92,7 +96,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-groupe float-right">
-                                    <button class="btn btn-danger" disabled>
+                                    <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="deleteSelected">
                                         Del selected items
                                     </button>
                                 </div>
@@ -114,28 +118,32 @@
                             />
                         </div>
 
-                        <div class="row">
-                            <PaginationComponent 
-                                @next_page_pagination = next_page_pagination
-                                @privies_page_pagination = privies_page_pagination
-                                @nomber_page_pagination = nomber_page_pagination
-                            />
-                        </div>
+                        <PaginationComponent
+                            :current-page="currentPage"
+                            :total-pages="getMaxPage()"
+                            :itemsPerPage="itemsPerPage"
+                            :itemsPerPageOptions="itemsPerPageOptions"
+                            @next_page_pagination = next_page_pagination
+                            @privies_page_pagination = privies_page_pagination
+                            @nomber_page_pagination = nomber_page_pagination
+                            @update:itemsPerPage="updateItemsPerPage"
+                        />
                     </div>
                 </div>
 
                 <div class="row">
                     <div
                         class="col-md-12 data_tab"
-                        v-for="(tab_data, tab_data_id) in table_data"
+                        v-for="(tab_data, tab_data_id) in filteredTableData"
                         :key="tab_data_id"
                         v-if="tab_num == tab_data.id"
                     >
                         <table class="table table-hover" id="dev-table">
-                            <TabHeaderComponent :head_data_prop="tab_data.tab_data"/>
+                            <TabHeaderComponent :head_data_prop="tab_data.tab_data" :selected-items="selectedItems" :total-items="tab_data.tab_data.data.length" @toggle-select-all="toggleSelectAll"/>
                             
-                            <TabBodyComponent 
+                            <TabBodyComponent
                                 :body_data_prop="tab_data.tab_data"
+                                :selected-items.sync="selectedItems"
 
                                 @action_for_perent_component_with_option="action_for_perent_component_with_option"
                                 @action_for_perent_component="action_for_perent_component"
@@ -144,15 +152,16 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <PaginationComponent 
-                            @next_page_pagination = next_page_pagination
-                            @privies_page_pagination = privies_page_pagination
-                            @nomber_page_pagination = nomber_page_pagination
-                        />
-                    </div>
-                </div>
+                <PaginationComponent
+                    :current-page="currentPage"
+                    :total-pages="getMaxPage()"
+                    :itemsPerPage="itemsPerPage"
+                    :itemsPerPageOptions="itemsPerPageOptions"
+                    @next_page_pagination = next_page_pagination
+                    @privies_page_pagination = privies_page_pagination
+                    @nomber_page_pagination = nomber_page_pagination
+                    @update:itemsPerPage="updateItemsPerPage"
+                />
             </div>
         </div>
     </div>
@@ -180,12 +189,53 @@ export default {
     data() {
         return {
             tab_num: 1,
+            searchQuery: '',
+            currentPage: 1,
+            itemsPerPage: 10,
+            itemsPerPageOptions: [10, 20, 30, 50, 100, 'All'],
+            selectedItems: []
         };
     },
 
     mounted() {
         // this.tab_num = 1;
     },
+    watch: {
+        tab_num() {
+            this.currentPage = 1;
+            this.searchQuery = '';
+        }
+    },
+        computed: {
+            filteredTableData() {
+                return this.table_data.map(tab => {
+                    const query = this.searchQuery.trim().toLowerCase();
+                    let filteredData = tab.tab_data.data;
+                    if (query !== '') {
+                        filteredData = filteredData.filter(item => {
+                            return Object.values(item).some(value => {
+                                if (typeof value === 'string') {
+                                    return value.toLowerCase().includes(query);
+                                }
+                                return false;
+                            });
+                        });
+                    }
+                    // Pagination logic
+                    const start = (this.currentPage - 1) * this.itemsPerPage;
+                    const end = start + this.itemsPerPage;
+                    const paginatedData = filteredData.slice(start, end);
+                    return {
+                        ...tab,
+                        tab_data: {
+                            ...tab.tab_data,
+                            data: paginatedData,
+                            totalItems: filteredData.length
+                        }
+                    };
+                });
+            }
+        },
 
     methods: {
         update() {
@@ -203,30 +253,64 @@ export default {
         action_for_perent_component(event){
             this.$emit(event[0])
         },
-
-        // next_page_pagination(){
-        //     alert('next_page')
-        //     // this.$emit('pagechanged', this.totalPages);
-        // },
-        // privies_page_pagination(){
-        //     alert('provies_page')
-        // },
-        // nomber_page_pagination(page_id){
-        //     alert(page_id + '_page')
-        // },
+        toggleSelectAll() {
+            const tab = this.filteredTableData.find(t => t.id === this.tab_num);
+            if (!tab || !tab.tab_data.data) return;
+            if (this.selectedItems.length === tab.tab_data.data.length) {
+                this.selectedItems = [];
+            } else {
+                this.selectedItems = tab.tab_data.data.map(item => item.id);
+            }
+            this.$nextTick(() => {
+                this.$emit('update-indeterminate');
+            });
+        },
+        deleteSelected() {
+            alert('Delete selected: ' + this.selectedItems.join(', ') + '. It is just a demo. No items were actually deleted.');
+        },
 
         privies_page_pagination(){
-            alert('provies_page')
-            this.$emit('pagechanged', this.currentPage - 1);
+            if(this.currentPage > 1){
+                this.currentPage--;
+            }
         },
         nomber_page_pagination(page_id){
-            alert(page_id + '_page')
-            this.$emit('pagechanged', page_id);
-        }, 
-        next_page_pagination(){
-            alert('next_page')
-            this.$emit('pagechanged', this.currentPage + 1);
+            this.currentPage = page_id;
         },
+        next_page_pagination(){
+            const maxPage = this.getMaxPage();
+            if(this.currentPage < maxPage){
+                this.currentPage++;
+            }
+        },
+        onSearch(query) {
+            this.searchQuery = query;
+            this.currentPage = 1; // Reset to first page on search
+        },
+        updateItemsPerPage(newItemsPerPage) {
+            if (newItemsPerPage === 'All') {
+                this.itemsPerPage = 999999;
+            } else {
+                this.itemsPerPage = parseInt(newItemsPerPage);
+            }
+            this.currentPage = 1; // Reset to first page when changing items per page
+        },
+        getMaxPage() {
+            if(this.table_data.length === 0) return 1;
+            const tab = this.filteredTableData.find(t => t.id === this.tab_num);
+            if(!tab || !tab.tab_data.totalItems) return 1;
+            if (this.itemsPerPage >= tab.tab_data.totalItems) return 1;
+            return Math.ceil(tab.tab_data.totalItems / this.itemsPerPage);
+        }
     },
 };
 </script>
+
+<style>
+.search-container .form-control {
+    font-size: 16px;
+    padding: 10px 15px;
+    height: auto;
+    border-radius: 5px;
+}
+</style>

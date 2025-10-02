@@ -83,8 +83,16 @@ class OrderController extends Controller
     public function create_order(Request $request)
     {
         if (Auth::user()) {
+            // Validate stock before creating order
+            foreach ($request->order_product_list as $product) {
+                $option = Product_option::find($product['option']['id']);
+                if (!$option || $option->quantity < $product['quantity']) {
+                    return response()->json(['error' => 'Not enough stock for ' . $product['option']['name']], 400);
+                }
+            }
+
             $new_order = new Order;
-            
+
             $new_order['user_id'] = Auth::user()->id;
             $new_order['adres_id'] = $request->adres;
             $new_order['shiping'] = $request->shiping;
@@ -121,6 +129,54 @@ class OrderController extends Controller
         else{
             return 'Plees login';
         }
+    }
+
+    public function add_custom_order(Request $request)
+    {
+        // Validate stock before creating custom order
+        foreach ($request->order_product_list as $product) {
+            $option = Product_option::find($product['product_option_id']);
+            if (!$option || $option->quantity < $product['quantity']) {
+                return response()->json(['error' => 'Not enough stock for option ID ' . $product['product_option_id']], 400);
+            }
+        }
+
+        // Admin adds custom order for themselves (active user)
+        $new_order = new Order;
+
+        $new_order['user_id'] = auth()->user()->id;
+        $new_order['adres_id'] = $request->adres_id;
+        $new_order['shiping'] = $request->shiping;
+        $new_order['payment'] = $request->payment;
+
+        $new_order['confirm'] = 1; // Auto confirm for admin added orders
+        $new_order['status'] = 'pending';
+        $new_order['status_updating_data'] = date("Y-m-d H:I:s");
+
+        $saved = $new_order->save();
+
+        if(!$saved){
+            return response()->json(['error' => 'Error saving order'], 500);
+        }
+        else{
+            foreach ($request->order_product_list as $product) {
+                $new_order_product_item = new Order_products;
+                $new_order_product_item['order_id'] = $new_order->id;
+                $new_order_product_item['product_id'] = $product['product_id'];
+                $new_order_product_item['product_option_id'] = $product['product_option_id'];
+                $new_order_product_item['quantity'] = $product['quantity'];
+
+                $new_order_product_item->save();
+
+                //subtraction number of products
+                (new static)->subtraction_products($product['product_option_id'], $product['quantity']);
+            }
+
+            // Send notification to user
+            (new static)->send_order_confirm_mail_to_user($new_order->id);
+        }
+
+        return response()->json(['message' => 'Custom order added successfully', 'order_id' => $new_order->id]);
     }
 
     public function del_cart_items($user_id)

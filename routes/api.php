@@ -447,6 +447,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('product_price_interval', 'get_product_price_interval');
             Route::get('/get_user_favorite_products', 'get_user_favorite_products');
             Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
+            Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
         });
 
         Route::apiResource('/product_category', 'ProductCategoryController');
@@ -551,6 +552,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::controller(OrderController::class)->prefix('order')->group( function() {
             Route::get('/get_all_orders', 'get_all_orders');
             Route::post('/create_order', 'create_order');
+            Route::post('/add_custom_order', 'add_custom_order');
 
             Route::get('/order/get_order_status/{order_id}', 'get_order_status');
             Route::get('/get_user_purchases', 'get_user_purchases');
@@ -561,7 +563,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_order_detals/{order_id}', 'get_order_detals');
             Route::get('/get_order_products/{order_id}', 'get_order_products');
             Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
-        
+
             Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
             Route::post('/check_sale_code', 'check_sale_code');
             Route::post('/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
@@ -628,7 +630,9 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Blog posts routes
         */
-        Route::apiResource('/post', 'PostController');
+        Route::controller(PostController::class)->prefix('blog_post')->group( function() {
+            Route::post('/get_all_posts_for_blog', 'get_all_posts_for_blog');
+        });
     });
 
     Route::group(['namespace'=>'User'], function() {

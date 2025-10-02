@@ -11,7 +11,7 @@ use App\User;
 
 class PostController extends Controller
 {
-    public function index()
+    public function get_all_posts_for_blog()
     {
         $posts = Post::get();
         $resp = [];

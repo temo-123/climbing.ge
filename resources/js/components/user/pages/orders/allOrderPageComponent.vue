@@ -23,7 +23,7 @@
                             @show_order_status_modal="show_order_status_modal"
                             @show_order_tracking_odal="show_order_tracking_odal"
 
-                            @addCostomOrder="add_costom_order"
+                            @add_costom_order="add_costom_order"
                         />
                     </div>
                 </div>
@@ -31,6 +31,8 @@
             <orderDetalsModal ef='orderDetalsModal' @update="get_orders"/>
             <orderStatusModal ef='orderStatusModal' @update="get_orders"/>
             <editOrderStatusModal ef='editOrderStatusModal' @update="get_orders"/>
+
+            <addCustomOrderModal ref="addCustomOrderModal" @orderAdded="get_orders" />
 
             <shipedRegionEditModal ref='shipedRegionEditModal' @update="get_orders"/>
             <shipedRegionAddModal ref='shipedRegionAddModal' @update="get_orders"/>
@@ -44,6 +46,7 @@
     import orderDetalsModal from '../../items/modal/orders/orderDetalsModal.vue'
     import orderStatusModal from '../../items/modal/orders/orderStatusModal.vue'
     import editOrderStatusModal from '../../items/modal/orders/editOrderStatusModal.vue'
+    import addCustomOrderModal from '../../items/modal/orders/AddCustomOrderModal.vue'
 
     import shipedRegionEditModal from "../../items/modal/tab_modals/edit/EditShipingRegionModalComponent.vue";
     import shipedRegionAddModal from "../../items/modal/tab_modals/add/AddShipingRegionModalComponent.vue";
@@ -55,6 +58,7 @@
             orderDetalsModal,
             orderStatusModal,
             editOrderStatusModal,
+            addCustomOrderModal,
 
             shipedRegionEditModal,
             shipedRegionAddModal
@@ -202,7 +206,7 @@
             },
 
             add_costom_order(){
-                alert('costom function add functional')
+                this.$refs.addCustomOrderModal.show_modal()
             },
 
         }

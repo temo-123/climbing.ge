@@ -1,6 +1,9 @@
 <template>
     <div class="grid-tile">
-        <div class="item">
+        <div class="item" :class="{ 'out-of-stock': isOutOfStock }">
+            <div v-if="isOutOfStock" class="out-of-stock-overlay">
+                <span>Out of Stock</span>
+            </div>
             <div class="product_image">
                 <div class="previes_image" v-if="image_num > 0">
                     <a @click="previes_product_image()"><</a>
@@ -81,6 +84,14 @@
                 image_num: 0,
                 image_length: 0,
             };
+        },
+        computed: {
+            isOutOfStock() {
+                if (!this.product_data.product_option || this.product_data.product_option.length === 0) {
+                    return false;
+                }
+                return this.product_data.product_option.every(option => option.option.quantity <= 0);
+            }
         },
         mounted() {
             //
@@ -202,5 +213,29 @@
         left: 4px;
         top: 0;
         margin: 5px 5px 0 0;
+    }
+
+    .out-of-stock {
+        position: relative;
+    }
+
+    .out-of-stock-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    .out-of-stock-overlay span {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 </style>

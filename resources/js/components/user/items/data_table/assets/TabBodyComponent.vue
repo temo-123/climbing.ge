@@ -2,7 +2,7 @@
     <tbody>
         <tr :class="danger_color" v-for="(datas, datas_key) in tab_data.data" :key="datas_key">
             <td style="text-align: center">
-                <input type="checkbox" />
+                <input type="checkbox" :checked="selectedItems.includes(datas.id)" @change="toggleSelection(datas.id)" />
             </td>
 
             <td
@@ -163,7 +163,8 @@ export default {
         tabDataItem,
     },
     props: [
-        "body_data_prop"
+        "body_data_prop",
+        "selectedItems"
     ],
     data(){
         return{
@@ -185,6 +186,16 @@ export default {
         },
         send_action_to_tab(emit_fun) {
             this.$emit('action_for_perent_component', [emit_fun]);
+        },
+        toggleSelection(id) {
+            let newSelected = [...this.selectedItems];
+            const index = newSelected.indexOf(id);
+            if (index > -1) {
+                newSelected.splice(index, 1);
+            } else {
+                newSelected.push(id);
+            }
+            this.$emit('update:selectedItems', newSelected);
         },
 
         // https://medium.com/@obapelumi/pagination-with-vuejs-1f505ce8d15b
