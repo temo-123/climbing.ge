@@ -8,7 +8,7 @@
 
         <div class="row" v-if="products.length > 0">
 
-            <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
+            <h2 class="index_h2">{{ $t('shop.title.products') }}</h2>
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
@@ -33,7 +33,7 @@
         </div>
         
         <div class="row" v-if="services.length > 0">
-            <h2 class="page_title">{{ $t('shop.title.services') }}</h2>
+            <h2 class="index_h2">{{ $t('shop.title.services') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
@@ -50,7 +50,7 @@
         </div>
 
         <div class="row" v-if="tours.length > 0">
-            <h2 class="page_title">{{ $t('shop.title.tours') }}</h2>
+            <h2 class="index_h2">{{ $t('shop.title.tours') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 

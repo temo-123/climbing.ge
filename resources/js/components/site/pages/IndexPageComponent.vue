@@ -82,7 +82,7 @@
 
         <div class="row" v-if="products.length > 0">
 
-            <h2 class="page_title">{{ $t('shop.title.products') }}</h2>
+            <h2 class="index_h2">{{ $t('shop.title.products') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 

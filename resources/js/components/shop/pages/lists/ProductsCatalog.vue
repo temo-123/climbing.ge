@@ -1,7 +1,7 @@
 <template>
     <div class="col-sm-12">
 
-        <h1 class="page_title">{{ $t('shop.title.products') }}</h1>
+        <h1 class="index_h2">{{ $t('shop.title.products') }}</h1>
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">

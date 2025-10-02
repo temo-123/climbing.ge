@@ -2,7 +2,7 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="page_title index_h2">{{ $t('guide.title.outdoor climbing')}}</h1>
+            <h1 class="index_h2">{{ $t('guide.title.outdoor climbing')}}</h1>
                         
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
