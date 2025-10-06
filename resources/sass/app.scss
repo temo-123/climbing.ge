@@ -1343,31 +1343,31 @@ tr td:last-child {
 *
 */
 
-.preloader {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background: #279fbb;
-    z-index: 1035;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 1s all;
-    opacity: 1;
-    --duration: 1s;
-    transition: var(--duration);
-}
-.loader {
-    width: 75px;
-    height: 75px;
-    border: 5px solid #11768e;
-    border-radius: 50%;
-    border-top-color: blue;
-    position: absolute;
-    animation: 1s spin infinite linear;
-}
+// .preloader {
+//     position: fixed;
+//     left: 0;
+//     top: 0;
+//     width: 100%;
+//     height: 100%;
+//     background: #279fbb;
+//     z-index: 1035;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     transition: 1s all;
+//     opacity: 1;
+//     --duration: 1s;
+//     transition: var(--duration);
+// }
+// .loader {
+//     width: 75px;
+//     height: 75px;
+//     border: 5px solid #11768e;
+//     border-radius: 50%;
+//     border-top-color: blue;
+//     position: absolute;
+//     animation: 1s spin infinite linear;
+// }
 @keyframes spin {
     from {
         transform: translate(-50%, -50%) rotate(0deg);

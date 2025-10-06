@@ -32,16 +32,11 @@
         }
     </style>
 
-    <div id="page-preloader" class="preloader">
-        <div class="loader"></div>
-    </div>
-
     <div id="app">
         @yield('content')
-
         {{-- @include('errors.components.footer') --}}
     </div>
     
-    <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
+    <!-- <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script> -->
 </body>
 </html>

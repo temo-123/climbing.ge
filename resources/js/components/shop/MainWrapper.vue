@@ -1,5 +1,6 @@
 <template>
     <div>
+        <preloader />
         <navbar />
         <div class="container top_menu_margin h-recent-work">
             <router-view />
@@ -10,6 +11,7 @@
         ></div>
         <footter />
         <loginModal />
+        <go_to_top />
     </div>
 </template>
 
@@ -17,6 +19,8 @@
 import navbar from "./items/navbars/NavbarComponent.vue";
 import footter from "./items/FooterComponent";
 import loginModal from "../global_components/LoginModalComponent.vue";
+import go_to_top from "../global_components/GoOnTopComponent.vue";
+import Preloader from "../global_components/PreloaderComponent.vue";
 
 export default {
     data: function () {
@@ -29,9 +33,43 @@ export default {
     components: {
         navbar,
         footter,
-        loginModal
+        loginModal,
+        Preloader,
+        go_to_top
     },
     mounted() {},
     methods: {},
 };
 </script>
+
+
+<style>
+    /* Navbar collor */
+    .top_menu {
+        background-color: #27bb7d;
+    }
+    .preloader {
+        background: #27bb7d;
+    }
+
+    .navbar {
+        background-color: #09bb80 !important;
+        border-color: #6a8991;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a{
+        background-color: #0e9f6f !important;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+        background-color: #0c8a60 !important;
+    }
+
+    .navbar-inverse .navbar-collapse{
+        border-color: #838383;
+    }
+
+    .navbar-collapse {
+        max-height: none !important;
+    }
+</style>

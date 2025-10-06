@@ -16,46 +16,15 @@
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
     <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
 
-    <style>
-        /* Firefox scrollbar color*/
-        html {
-            scrollbar-color: #777777 white;
-            scrollbar-width: thin;
-            border-radius: 0%
-        }
-        /* Other brouser scrollbar color*/
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-            background-color: white;
-            border-radius: 0%
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #777777;
-            border-radius: 5px;
-            border-radius: 0%
-        }
-        /* Navbar collor */
-        .top_menu {
-            background-color: #777777;
-        }
-        .preloader {
-            background: #777777;
-        }
-    </style>
 </head>
 <body>
-    <div id="page-preloader" class="preloader">
-        <div class="loader"></div>
-    </div>
-
     <div id="app">
         @yield('content')
     </div>
     
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="{{ asset('assets/js/app.js') }}"></script>
-    <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script>
+    <!-- <script src="{{ asset('assets/js/my_js/my_scripts.js') }}" type="text/javascript" ></script> -->
     
 </body>
 </html>

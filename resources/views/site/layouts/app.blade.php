@@ -7,41 +7,14 @@
     <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-    <style>         
-        .navbar {
-            background-color: #279fbb !important;
-            border-color: #6a8991;
-        }
-
-        .navbar-inverse .navbar-nav>.open>a{
-            background-color: #2f869b !important;
-        }
-
-        .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-            background-color: #287386 !important;
-        }
-
-        .navbar-inverse .navbar-collapse{
-            border-color: #838383;
-        }
-
-        .navbar-collapse {
-            max-height: none !important;
-        }
-    </style>
 </head>
 <body>
-    <div id="page-preloader" class="preloader">
-        <div class="loader"></div>
-    </div>
-
     <div id="app">
         @yield('content')
     </div>
 
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
-    <script src="{{ asset('assets/main_js/my_scripts.js') }}" type="text/javascript" ></script>
+    <!-- <script src="{{ asset('assets/main_js/my_scripts.js') }}" type="text/javascript" ></script> -->
     <script src="{{ mix('assets/js/app.js') }}"></script>
 </body>
 </html>

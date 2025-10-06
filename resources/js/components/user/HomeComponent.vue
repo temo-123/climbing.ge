@@ -1,5 +1,6 @@
 <template>
     <div>
+        <preloader />
         <navbar />
 
         <div class="container top_menu_margin">
@@ -7,11 +8,14 @@
                 <router-view />
             </div>
         </div>
+        <go_to_top />
     </div>
 </template>
 
 <script>
 import navbar from "./items/navbars/NavbarComponent.vue";
+import Preloader from "../global_components/PreloaderComponent.vue";
+import go_to_top from "../global_components/GoOnTopComponent.vue";
 
 import { mapState } from 'vuex'
 export default {
@@ -26,6 +30,8 @@ export default {
     },
     components: {
         navbar,
+        Preloader,
+        go_to_top
     },
 
     mounted() {

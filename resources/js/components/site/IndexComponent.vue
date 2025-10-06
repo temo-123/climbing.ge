@@ -1,5 +1,6 @@
 <template>
     <div>
+        <preloader />
         <navbar @grade="grade_action"/>
         <div class="container top_menu_margin h-recent-work">
             <router-view />
@@ -20,6 +21,7 @@ import navbar from "./items/navbars/NavbarComponent";
 import footter from "./items/FooterComponent";
 import loginModal from "../global_components/LoginModalComponent.vue";
 import go_to_top from "../global_components/GoOnTopComponent.vue";
+import Preloader from "../global_components/PreloaderComponent.vue";
 
 // import { mapState } from 'vuex'
 export default {
@@ -35,7 +37,8 @@ export default {
         navbar,
         footter,
         loginModal,
-        go_to_top
+        go_to_top,
+        Preloader
     },
     mounted() {
         
@@ -48,3 +51,26 @@ export default {
     },
 };
 </script>
+
+<style>         
+    .navbar {
+        background-color: #279fbb !important;
+        border-color: #6a8991;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a{
+        background-color: #2f869b !important;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+        background-color: #287386 !important;
+    }
+
+    .navbar-inverse .navbar-collapse{
+        border-color: #838383;
+    }
+
+    .navbar-collapse {
+        max-height: none !important;
+    }
+</style>

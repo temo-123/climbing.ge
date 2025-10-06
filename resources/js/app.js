@@ -147,7 +147,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
         config: { id: process.env.MIX_FILMS_ANALITICS_ID },
     });
 } else if (window.location.hostname == process.env.MIX_blog_URL) {
-    homeComponent = blog;
+    homeComponent = Blog;
     serviceRoutes = blog_routes;
     // analytic_id = process.env.MIX_blog_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_blog_URL
