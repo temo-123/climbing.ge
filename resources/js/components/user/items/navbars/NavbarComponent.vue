@@ -242,9 +242,9 @@
         font-size: 200%;
         top: 0;
     }
-    .bg-perple {
+    /* .bg-perple {
         background-color: #7427bb !important;
-    }
+    } */
     /*@media (max-width: 993px) {
         .dropdown-menu .dropdown-item{
             color: #2b2a2a !important;

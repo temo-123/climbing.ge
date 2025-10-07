@@ -73,4 +73,7 @@ export default {
     .navbar-collapse {
         max-height: none !important;
     }
+    /* .navbar-inverse .navbar-nav>.open>a{
+        background-color: #23788c !important;
+    } */
 </style>

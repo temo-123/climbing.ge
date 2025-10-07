@@ -42,31 +42,37 @@ export default {
 };
 </script>
 
-
-<style>
-    /* Firefox scrollbar color*/
-    html {
-        scrollbar-color: #777777 white;
-        scrollbar-width: thin;
-        border-radius: 0%
-    }
-    /* Other brouser scrollbar color*/
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background-color: white;
-        border-radius: 0%
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #777777;
-        border-radius: 5px;
-        border-radius: 0%
-    }
-    /* Navbar collor */
+<style scoped>
     .top_menu {
-        background-color: #777777;
+        background-color: #777777 !important;
     }
-    .preloader {
-        background: #777777;
+
+    .preloader_background {
+        background: radial-gradient(circle, #777777 0% 0%, #595959 100%) !important;
+    }
+
+    .loader {
+        border-top-color: #777777;
+    }
+
+    .navbar {
+        background-color: #777777 !important;
+        border-color: #6a8991;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a{
+        background-color: #777777 !important;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+        background-color: #777777 !important;
+    }
+
+    .navbar-inverse .navbar-collapse{
+        border-color: #838383 !important;
+    }
+
+    .navbar-collapse {
+        max-height: none !important;
     }
 </style>

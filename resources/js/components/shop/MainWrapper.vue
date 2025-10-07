@@ -42,14 +42,17 @@ export default {
 };
 </script>
 
-
-<style>
-    /* Navbar collor */
+<style scoped>
     .top_menu {
-        background-color: #27bb7d;
+        background-color: #27bb7d !important;
     }
-    .preloader {
-        background: #27bb7d;
+
+    .preloader_background {
+        background: radial-gradient(circle, #27bb7d 0% 0%, #1d8a5d 100%) !important;
+    }
+
+    .loader {
+        border-top-color: #27bb7d;
     }
 
     .navbar {
@@ -65,8 +68,12 @@ export default {
         background-color: #0c8a60 !important;
     }
 
+    .navbar-inverse .navbar-nav>.open>a{
+        background-color: #23788c;
+    }
+    
     .navbar-inverse .navbar-collapse{
-        border-color: #838383;
+        border-color: #838383 !important;
     }
 
     .navbar-collapse {

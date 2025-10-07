@@ -39,30 +39,37 @@
   }
 </script>
 
-<style>
-    /* Firefox scrollbar color*/
-    html {
-        scrollbar-color: #005f43 white;
-        scrollbar-width: thin;
-        border-radius: 0%
-    }
-    /* Other brouser scrollbar color*/
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-        background-color: white;
-        border-radius: 0%
-    }
-    ::-webkit-scrollbar-thumb {
-        background: #005f43;
-        border-radius: 5px;
-        border-radius: 0%
-    }
-    /* Navbar collor */
+<style scoped>
     .top_menu {
-        background-color: #005f43;
+        background-color: #005f43 !important;
     }
-    .preloader {
-        background: #005f43;
+
+    .preloader_background {
+        background: radial-gradient(circle, #005f43 0% 0%, #018b62 100%) !important;
+    }
+
+    .loader {
+        border-top-color: #005f43 !important;
+    }
+
+    .navbar {
+        background-color: #005f43 !important;
+        border-color: #6a8991;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a{
+        background-color: #005f43 !important;
+    }
+
+    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
+        background-color: #005f43 !important;
+    }
+
+    .navbar-inverse .navbar-collapse{
+        border-color: #838383 !important;
+    }
+
+    .navbar-collapse {
+        max-height: none !important;
     }
 </style>
