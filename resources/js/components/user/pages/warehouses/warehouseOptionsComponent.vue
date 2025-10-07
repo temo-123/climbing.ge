@@ -1,6 +1,9 @@
 <template>
     <div class="row">
         <div class="col-md-12">
+            <h1>Warehouse: {{ warehouse.name || 'Loading...' }}</h1>
+        </div>
+        <div class="col-md-12">
             <div class="form-group">
                 <button class="btn btn-success float-right" @click="go_back()">Go back</button>
             </div>
@@ -15,7 +18,7 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Warehouse Product Options</h3>
-                <button class="btn btn-primary" @click="showAddOptionModal = true">
+                <button class="btn btn-primary" @click="showAddOptionModal()">
                     Add Product Option
                 </button>
             </div>
@@ -38,7 +41,8 @@
                             <th>Option Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
-                            <th>Actions</th>
+                            <th>Migration</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,6 +86,11 @@
                                 </div>
                             </td>
                             <td>
+                                <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
+                                    Migrate
+                                </button>
+                            </td>
+                            <td>
                                 <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
                                     Delete
                                 </button>
@@ -94,71 +103,26 @@
             <!-- Empty state -->
             <div v-else class="text-center">
                 <p>No product options found in this warehouse.</p>
-                <button class="btn btn-primary" @click="showAddOptionModal = true">
+                <button class="btn btn-primary" @click="showAddOptionModal()">
                     Add First Product Option
                 </button>
             </div>
         </div>
 
-        <!-- Add Product Option Modal -->
-        <div v-if="showAddOptionModal" class="modal" tabindex="-1" role="dialog" style="display: block;">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Add Product Option</h5>
-                        <button type="button" class="close" @click="closeAddModal">
-                            <span>&times;</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <div v-if="availableProducts.length === 0" class="alert alert-warning">
-                            No products available. Please add products first.
-                        </div>
-                        <div v-else-if="availableOptions.length === 0 && newOption.product_id" class="alert alert-warning">
-                            No options available for the selected product.
-                        </div>
-                        <form v-else @submit.prevent="addProductOption">
-                            <div class="form-group">
-                                <label for="product_id">Select Product</label>
-                                <select v-model="newOption.product_id" @change="getAvailableOptions()" class="form-control" required>
-                                    <option value="">Choose a product...</option>
-                                    <option v-for="product in availableProducts" :key="product.product.id" :value="product.product.id">
-                                        {{ product.product.url_title }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="option_id">Select Product Option</label>
-                                <select v-model="newOption.product_option_id" class="form-control" required>
-                                    <option value="">Choose an option...</option>
-                                    <option v-for="option in availableOptions" :key="option.id" :value="option.id">
-                                        {{ option.name }} - {{ option.price }} {{ option.currency }}
-                                    </option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input type="number" v-model="newOption.quantity" class="form-control" min="0" required>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="closeAddModal">Cancel</button>
-                        <button type="button" class="btn btn-primary" @click="addProductOption" :disabled="availableProducts.length === 0 || (newOption.product_id && availableOptions.length === 0)">Add Option</button>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <addOptionModal ref="addOptionModalRef" @update="get_data()" />
+        <migrateOptionModal ref="migrateOptionModalRef" @update="get_data()" />
 
     </div>
 </template>
 
 <script>
-    import StackModal from '@innologica/vue-stackable-modal'
+    import addOptionModal from './modals/addProductOptionModalComponent.vue'
+    import migrateOptionModal from './modals/migratePtroductOptionModalComponent.vue'
 
     export default {
         components: {
-            StackModal,
+            addOptionModal,
+            migrateOptionModal
         },
         props: [
             // 'warehouse_id'
@@ -166,15 +130,8 @@
         data(){
             return {
                 product_options: [],
-                availableProducts: [],
-                availableOptions: [],
                 loading: false,
-                showAddOptionModal: false,
-                newOption: {
-                    product_id: '',
-                    product_option_id: '',
-                    quantity: 0
-                }
+                warehouse: []
             }
         },
 
@@ -194,7 +151,11 @@
 
             get_data(){
                 this.getWarehouseProductOptions();
-                this.getAvailableProducts();
+                this.getCurentWarehouse();
+            },
+
+            showAddOptionModal(){
+                this.$refs.addOptionModalRef.show_modal();
             },
 
             getWarehouseProductOptions() {
@@ -206,19 +167,18 @@
                     this.loading = false;
                 })
                 .catch(error => {
-                    console.error('Error fetching warehouse product options:', error);
+                    alert(error);
                     this.loading = false;
                 });
             },
 
-            getAvailableProducts() {
-                axios.get(`/product/get_all_products/`)
+            getCurentWarehouse(){
+                axios
+                .get('/warehouse/get_warehouse_data/' + this.$route.params.id)
                 .then(response => {
-                    this.availableProducts = response.data;
+                    this.warehouse = response.data
                 })
-                .catch(error => {
-                    console.error('Error fetching products:', error);
-                });
+                .catch(error => console.log(error))
             },
 
             getAvailableOptions() {
@@ -229,33 +189,34 @@
                         this.availableOptions = response.data.options || [];
                     })
                     .catch(error => {
-                        console.error('Error fetching product options:', error);
+                        alert(error);
                         this.availableOptions = [];
                     });
                 }
             },
 
-            addProductOption() {
-                if (!this.newOption.product_id || !this.newOption.product_option_id) {
-                    alert('Please select both product and product option');
-                    return;
-                }
+            // addProductOption() {
+            //     if (!this.newOption.product_id || !this.newOption.product_option_id) {
+            //         alert('Please select both product and product option');
+            //         return;
+            //     }
 
-                axios.post('/warehouse/add_product_option_to_warehouse/' + this.$route.params.id, {
-                    product_option_id: this.newOption.product_option_id,
-                    quantity: this.newOption.quantity || 0
-                })
-                .then(response => {
-                    this.closeAddModal();
-                    this.getWarehouseProductOptions();
-                })
-                .catch(error => {
-                    console.error('Error adding product option:', error);
-                    alert('Error adding product option');
-                });
+            //     axios.post('/warehouse/add_product_option_to_warehouse/' + this.$route.params.id, {
+            //         product_option_id: this.newOption.product_option_id,
+            //         quantity: this.newOption.quantity || 0
+            //     })
+            //     .then(response => {
+            //         this.closeAddModal();
+            //         this.getWarehouseProductOptions();
+            //     })
+            //     .catch(error => {
+            //         alert(error);
+            //     });
+            // },
+
+            openMigrateModal(option, maxQuantity) {
+                this.$refs.migrateOptionModalRef.show_modal(option, maxQuantity);
             },
-
-
 
             deleteOption(option) {
                 if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
@@ -264,8 +225,7 @@
                         this.getWarehouseProductOptions();
                     })
                     .catch(error => {
-                        console.error('Error deleting product option:', error);
-                        alert('Error deleting product option');
+                        alert(error);
                     });
                 }
             },
@@ -300,25 +260,13 @@
                         // Update successful
                         console.log('Quantity updated successfully');
                         // Refresh the list to get updated data
-                        this.getWarehouseProductOptions();
                     })
                     .catch(error => {
-                        console.error('Error updating quantity:', error);
-                        alert('Error updating quantity');
-                        // Revert the change on error
-                        this.getWarehouseProductOptions();
+                        alert(error);
                     });
+                        
+                    this.getWarehouseProductOptions();
                 }
-            },
-
-            closeAddModal() {
-                this.showAddOptionModal = false;
-                this.newOption = {
-                    product_id: '',
-                    product_option_id: '',
-                    quantity: 0
-                };
-                this.availableOptions = [];
             },
 
             incrementQuantity(option) {
@@ -348,22 +296,14 @@
                     })
                     .then(response => {
                         console.log('Quantity updated successfully');
-                        // Refresh the list to get updated data
-                        this.getWarehouseProductOptions();
                     })
                     .catch(error => {
-                        console.error('Error updating quantity:', error);
-                        alert('Error updating quantity');
-                        // Revert the change on error
-                        this.getWarehouseProductOptions();
+                        alert(error);
                     });
+
+                    this.getWarehouseProductOptions();
                 }
-            }
+            },
         }
 }
 </script>
-
-<style scoped>
-
-
-</style>

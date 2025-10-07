@@ -63,7 +63,7 @@
                     .get('/warehouse/get_warehouse_data/' + this.warehouse_id)
                     .then(response => {
 
-                this.is_warehouse_edit_model = true
+                        this.is_warehouse_edit_model = true
                         this.data = response.data
                     })
                     .catch(error => console.log(error))

@@ -750,6 +750,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
             Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
             Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+            Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
         });
 
         /*
