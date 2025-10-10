@@ -54,7 +54,8 @@
                         <ul class="dropdown-menu shadows search_window" role="menu">
                             <li>
                                 <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="Search climbing spot here. (English words only!)" autocomplete="off" autofocus="autofocus" type="text" lang="en">
+                                    <input v-if="activ_lang == 'us' || activ_lang == 'en'" class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="Search climbing spot here. (English words only!)" autocomplete="off" autofocus="autofocus" type="text" lang="en-US">
+                                    <input v-else-if="activ_lang == 'ka'" class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="რისი მოძებნა გსურთ? (გამოიყენეთ მხოლოდ ქართული ალფავიტი)" autocomplete="off" autofocus="autofocus" type="text" lang="ka-GE">
                                 </form>
                                 <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
                                     <span class="glyphicon glyphicon-search"></span>

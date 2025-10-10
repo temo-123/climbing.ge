@@ -1,44 +1,45 @@
 <template>
     <div class="col-md-4 col-sm-12">
       <div class="tours">
-          <div class="tourcard">
+          <article class="tourcard" role="article">
               <figure>
                   <div class="tourpic">
-                      <shop-img width="320" height="180" v-if="tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="tour_data_prop.global_data.url_title" />
-                      <shop-img width="320" height="180" v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="tour_data_prop.global_data.url_title" />
+                      <shop-img v-if="tour_data_prop.image.length > 0" :src="'/public/images/tour_img/'+tour_data_prop.image" :alt="'Tour image for ' + tour_data_prop.locale_data.title" />
+                      <shop-img v-else :src="'/public/images/site_img/demo_imgs/tour_demo.jpg'" :alt="'Demo image for ' + tour_data_prop.locale_data.title" />
 
-                      <!-- <span class="tourcat hot" v-if="tour_data_prop.locale_data.location">{{ tour_data_prop.locale_data.location }}</span> -->
-                      <span class="tourday hot" v-if="tour_data_prop.global_data.min_price">From {{ tour_data_prop.global_data.min_price }} / par</span>
+                      <span class="tourday hot" v-if="tour_data_prop.global_data.min_price" aria-label="Price starting from">{{ tour_data_prop.global_data.min_price }} / par</span>
                   </div>
 
-                  <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">
+                  <router-link :to="'../tour/'+tour_data_prop.global_data.url_title" aria-label="View tour details">
                     <figcaption class="actyve_panel">
                         <h3 class="entry-title">
-                          <router-link :to="'../tour/'+tour_data_prop.global_data.url_title">{{ tour_data_prop.locale_data.title }}</router-link>
+                          <router-link :to="'../tour/'+tour_data_prop.global_data.url_title" aria-label="Tour title">{{ tour_data_prop.locale_data.title }}</router-link>
                         </h3>
-                        <span class="description" v-if="tour_data_prop.locale_data.description" v-html="tour_data_prop.locale_data.short_description"></span>
+                        <div class="description" v-if="tour_data_prop.locale_data.short_description" v-html="tour_data_prop.locale_data.short_description"></div>
 
-                        <span class="tourprice">
-                          <span class="currency" v-if="tour_data_prop.locale_data.location">{{ tour_data_prop.locale_data.location }}</span>
-                        </span>
-                        <span class="tourprice">
-                          <span class="currency" v-if="tour_data_prop.locale_data.duration">{{ tour_data_prop.locale_data.duration }}</span>
-                        </span>
-                        <!-- <span class="tourprice">
-                          <span class="currency" v-if="tour_data_prop.global_data.min_price">From. </span>
-                          <span class="price">{{ tour_data_prop.global_data.min_price }}</span>
-                          <span v-if="tour_data_prop.global_data.min_price"> / par</span>
-                        </span> -->
+                        <div class="tour-details">
+                          <span class="tourprice location" v-if="tour_data_prop.locale_data.location">
+                            <i class="fa fa-map-marker" aria-hidden="true"></i> {{ tour_data_prop.locale_data.location }}
+                          </span>
+                          <span class="tourprice duration" v-if="tour_data_prop.locale_data.duration">
+                            <i class="fa fa-clock-o" aria-hidden="true"></i> {{ tour_data_prop.locale_data.duration }}
+                          </span>
+                        </div>
                     </figcaption>
                   </router-link>
 
-                  <div class="tourbtn">
-                      <router-link class="btn btn-default123" :to="'../tour/'+tour_data_prop.global_data.url_title">
-                          <span class="text-muted">{{ $t('shop.tour.more') }}</span>
-                      </router-link>
+                  <div class="tourfooter">
+                    <div class="tour">
+                      {{ tour_data_prop.locale_data.title }}
+                    </div>
+                    <div class="tourbtn">
+                        <router-link class="btn" :to="'../tour/'+tour_data_prop.global_data.url_title" aria-label="Learn more about this tour">
+                            <span>{{ $t('shop.tour.more') }}</span>
+                        </router-link>
+                    </div>
                   </div>
               </figure>
-          </div>
+          </article>
       </div>
   </div>
 </template>
@@ -69,41 +70,58 @@ export default {
 <style lang="scss" scoped>
 a {
     color: #363636;
+    text-decoration: none;
 }
+
 .btn {
+    // background-color: #787878de;
+    // background-color: #8b8b8bc2;
+    background-color : rgb(160 158 158 / 87%) !important;
     background: transparent;
-    margin: 3px;
+    margin: 5px;
     border: 1px solid #eaeaea;
-    border-radius: 0px;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1em;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
 }
+
 .btn:hover {
-    background: #eaeaea;
+    background: #dddddd;
     color: black;
+    transform: translateY(-2px);
 }
+
 .tours {
   display: flex;
   padding: 0;
   flex-flow: row wrap;
-//   align-content: center;
-//   align-items: stretch;
-//   justify-content: center;
+  justify-content: center;
 }
+
 .tours > .tourcard {
   -webkit-transition: all .3s ease-in-out;
   -moz-transition: all .3s ease-in-out;
   -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,.1);
   flex: 0 1 100%;
-  margin: 15px;
+  // margin: 20px;
   padding: 0;
+  border-radius: 8px;
+  overflow: hidden;
 }
+
 .tours > .tourcard:hover {
   background: #fff;
-  box-shadow: 0 1px 5px rgba(0,0,0,.5);
+  box-shadow: 0 4px 16px rgba(0,0,0,.2);
   cursor: pointer;
+  transform: translateY(-5px);
 }
+
 .tours > .tourcard figure {
     margin: 0;
     padding: 0;
@@ -111,123 +129,192 @@ a {
   flex: 1;
   display: flex;
   flex-flow: column nowrap;
-  justify-content: space-around;
+  justify-content: space-between;
   width: 100%;
+  height: 100%;
 }
+
 .tourpic {
   background: #444;
   position: relative;
+  height: 100%;
+  min-height: 9em;
+  overflow: hidden;
 }
+
 .tourbtn {
     margin: 0;
-    padding: 0;
+    padding: 10px;
+    text-align: center;
 }
+
 .tourbtn:after {
     clear: both;
 }
+
 .tours > .tourcard figure .tourpic img {
-  -webkit-transition: all .1s ease-in-out;
-  -moz-transition: all .1s ease-in-out;
-  -o-transition: all .1s ease-in-out;
-  transition: all .1s ease-in-out;    
+  -webkit-transition: all .3s ease-in-out;
+  -moz-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
   width: 100%;
-  height: auto;
+  height: 100%;
+  object-fit: cover;
   margin: 0;
   padding: 0;
-  opacity: .50;
+  opacity: 1;
 }
+
 .tours > .tourcard:hover figure .tourpic img {
-    opacity: 0.1;
+    opacity: 0.3;
+    transform: scale(1.05);
 }
-.tours > .tourcard figure .tourpic .tourcat {
-  color: #fff;
-  font-size: .8em;
-  padding: 3px 5px;
-  position: absolute;
-  right: 15px;
-  text-transform: uppercase;
-  bottom: 15px;
-}
+
 .tours > .tourcard figure .tourpic .tourday {
   text-transform: uppercase;
   color: #fff;
-  font-size: .8em;
+  font-size: 0.9em;
   position: absolute;
   left: 15px;
   bottom: 15px;
-  padding: 3px 5px;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-weight: bold;
 }
+
 .tours > .tourcard figure .tourpic .tourday.hot {
-  background: #000;
-  background: red;
-  background: -webkit-linear-gradient(0deg,red,orange);
-  background: linear-gradient(90deg,red,orange);
+  // background: linear-gradient(90deg, red, orange);
+  background: linear-gradient(90deg, #09bb80, #09bb808c);
   background-size: 200% 200%;
-  -webkit-animation: hot 10s ease infinite;
-  -moz-animation: hot 10s ease infinite;
-  -o-animation: hot 10s ease infinite;
   animation: hot 10s ease infinite;
 }
+
+@keyframes hot {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
 .tours > .tourcard figure .tourbtn {
   background: transparent;
   display: flex;
   width: 100%;
-  flex-flow: row wrap;
-  align-content: center;
+  justify-content: center;
 }
+
 .tours > .tourcard figure .tourbtn a {
-  flex: 1;
+  flex: 0 1 auto;
 }
+
 .tours > .tourcard figure figcaption {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
-  padding: 15px;
-  margin: 0 0 44px;
+  padding: 20px;
+  margin: 0;
   display: flex;
   flex-flow: column nowrap;
   color: white;
+  background: rgb(0 0 0 / 86%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
+
+.tours > .tourcard:hover figure figcaption {
+  opacity: 1;
+}
+
+figcaption h3 {
+    margin-bottom: 10px;
+}
+
 figcaption h3 a {
     text-decoration: none;
     color: white;
-    background-color: #535353;
+    background-color: rgba(83, 83, 83, 0.8);
+    border-radius: 4px;
+    display: inline-block;
+    font-size: 1.2em;
+    font-weight: bold;
 }
+
 .description {
-    opacity: 0;
-    display: none;
-
-    transition: all .1s ;    
-}
-.tourprice {
-    opacity: 0;
-    display: none;
-    font-size: .8em;
-}
-.currency {
-    font-weight: 300;
-}
-.price {
-    font-size: 2em;
-    font-weight: 300;
-}
-.tourcard:hover figure figcaption .description
-, .tourcard:hover figure figcaption .tourprice 
-{   
-    display: block;
+    margin-bottom: 15px;
+    font-size: 0.9em;
+    line-height: 1.4;
     opacity: 1;
-
-    transition: all .1s;  
+    display: block;
+    transition: all 0.3s ease;
 }
 
-.tourcard:hover h3 a{
+.tour-details {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.tourprice {
+    font-size: 0.9em;
+    font-weight: 300;
+    opacity: 1;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.tourprice i {
+    font-size: 1em;
+}
+
+.location, .duration {
+    opacity: 1;
+    display: flex;
+}
+
+.tourcard:hover h3 a {
   background-color: transparent;
 }
 
-.actyve_panel:hover{
-    transition: all 0.5s; 
-    background-color: #000000e5;
+.actyve_panel:hover {
+    transition: all 0.5s;
+    background-color: rgba(0,0,0,0.8);
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .tours > .tourcard {
+        margin: 10px;
+    }
+
+    .tours > .tourcard figure {
+        height: 250px;
+    }
+
+    .tourpic {
+        height: 150px;
+    }
+
+    .tours > .tourcard figure figcaption {
+        padding: 15px;
+    }
+
+    figcaption h3 a {
+        font-size: 1em;
+    }
+
+    .description {
+        font-size: 0.8em;
+    }
+
+    .tourprice {
+        font-size: 0.8em;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
 }
 </style>

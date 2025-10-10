@@ -49,6 +49,27 @@ class ProductController extends Controller
         return $returned_array;
     }
 
+    public function get_product_options(Request $request, $product_id)
+    {
+        $product = Product::where('id', '=', $product_id)->first();
+        if ($product) {
+            $product_options = $product->product_options;
+            $product_option = $product_options->map(function($option) {
+                return [
+                    'id' => $option->id,
+                    'name' => $option->name ?? 'Option ' . $option->id,
+                    'price' => $option->price,
+                    'quantity' => $option->quantity,
+                    'images' => $option->images->first()->image,
+                    'quantity' => $option->warehouse->where('general', '=', 1)->first()->pivot->quantity ?? 0,
+                ];
+            });
+            return $product_option;
+        } else {
+            return response()->json(['error' => 'Product not found'], 400);
+        }
+    }
+
     public function get_local_products(Request $request)
     {
         $global_products = Product::latest('id')->where('published', '=', 1)->get();

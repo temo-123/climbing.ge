@@ -1,0 +1,7 @@
+- [x] Add card styling: background, shadow, border-radius, hover effects
+- [x] Improve image area: set aspect-ratio to 16:9, better background positioning
+- [x] Enhance typography: larger title, better price layout
+- [x] Add better spacing and padding throughout
+- [x] Improve mobile responsiveness
+- [x] Add accessibility features like aria-labels and article tag
+- [x] Clean up and organize CSS, remove commented code

@@ -2,6 +2,7 @@
     <div class="row">
         <div class="col-md-12">
             <h1>Warehouse: {{ warehouse.name || 'Loading...' }}</h1>
+            <h2 v-if="warehouse.general">This warehouse is general!</h2>
         </div>
         <div class="col-md-12">
             <div class="form-group">
@@ -41,6 +42,7 @@
                             <th>Option Name</th>
                             <th>Price</th>
                             <th>Quantity</th>
+                            <th v-if="warehouse.general">Task</th>
                             <th>Migration</th>
                             <th>Delete</th>
                         </tr>
@@ -84,6 +86,11 @@
                                         +
                                     </button>
                                 </div>
+                            </td>
+                            <td  v-if="warehouse.general">
+                                <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
+                                    Make task
+                                </button>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
@@ -144,9 +151,13 @@
 
         methods: {
             go_back(){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                // if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
                     this.$router.go(-1)
-                }
+                // }
+            },
+
+            make_prodaction_task(){
+                alert('This feature is coming soon!')
             },
 
             get_data(){

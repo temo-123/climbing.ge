@@ -13,51 +13,60 @@
             <div class="model-body">
                 <div class="container">
                     <div class="row">
-                        <h2>{{ $t("guide.route.route_rewiev") }}</h2>
-                         
+                        <!-- <h2 class="main-title">{{ $t("guide.route.route_rewiev") }}</h2> -->
+
                         <div class="row justify-content-center" v-show="is_loading">
-                            <div class="col-md-4">
+                            <div class="col-md-4 friendly-loading">
                                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                             </div>
                         </div>
 
                         <form method="POST" id="route_review_form" v-on:submit.prevent="add_route_review" v-show="!is_loading">
-                            <div>
-                                Did you climb this route?
-                                <input type="checkbox" v-model="data.climbed" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                            <div class="modal-section climbing-status">
+                                <h3 class="section-title">Climbing Status</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Did you climb this route?</label>
+                                    <input type="checkbox" v-model="data.climbed" name="scales" class="form-check-input">
+                                </div>
                             </div>
 
-                            <div v-if="data.climbed">
-                                <span>Insert climb data</span>
-                                <input type="date" class="form-control" v-model="data.climbed_data" name="climbed_data" placeholder="Climbed data" title="Climbed data">
+                            <div class="modal-section climb-details" v-if="data.climbed">
+                                <h3 class="section-title">Climb Details</h3>
+                                <div class="form-group">
+                                    <label class="form-label">Insert climb date</label>
+                                    <input type="date" class="form-control friendly-input" v-model="data.climbed_data" name="climbed_data">
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Route ascent style</label>
+                                    <select class="form-control friendly-input" v-model="data.ascent_style" name="ascent_style" required>
+                                        <option value="" disabled>Select ascent style</option>
+                                        <option value="onsite">Onsite</option>
+                                        <option value="flash">Flash</option>
+                                        <option value="second_go">Second go</option>
+                                        <option value="redpoint">Redpoint</option>
+                                        <option value="top_rope">Top rope</option>
+                                    </select>
+                                </div>
                             </div>
 
-                            <div v-if="data.climbed">
-                                <span >Route ascent style</span>
-                                <select class="form-control" v-model="data.ascent_style" name="comment delete cause" required> 
-                                    <option value="" disabled>Select ascent style</option>
-                                    <option value="onsite">Onsite</option>
-                                    <option value="flesh">Flesh</option>
-                                    <option value="second_go">Second go</option>
-                                    <option value="redpoint">Redpoint</option>
-                                    <option value="top_rope">Top rope</option>
-                                </select>
+                            <div class="modal-section rating">
+                                <h3 class="section-title">Rating</h3>
+                                <div class="form-group">
+                                    <label class="form-label">How did you like this route?</label>
+                                    <starReitingInsert @get_stars="update_stars"/>
+                                </div>
                             </div>
 
-                            <div>
-                                <span>How did you like this route?</span>
-                                <span v-if="data.stars > 0"></span>
-
-                                <starReitingInsert @get_stars="update_stars"/>
+                            <div class="modal-section feedback">
+                                <h3 class="section-title">Feedback</h3>
+                                <div class="form-group">
+                                    <label class="form-label">What do you think about this route?</label>
+                                    <textarea id="feedback" name="feedback" class="form-control friendly-input" placeholder="Share your thoughts about the route..." v-model="data.text" rows="4"></textarea>
+                                </div>
                             </div>
 
-                            <div>
-                                <span>What do you think about this route?</span>
-                                <textarea id="feadback" name="feadback" class="form-control" placeholder="Make feadback" v-model="data.text" rows="4"></textarea>
-                            </div>
-
-                            <vue-recaptcha 
-                                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                            <vue-recaptcha
+                                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
                                 :loadRecaptchaScript="true"
                                 ref="recaptcha"
                                 type="invisible"
@@ -71,7 +80,7 @@
                 </div>
             </div>
             <div slot="modal-footer">
-                <div class="modal-footer">
+                <div class="modal-footer d-flex justify-content-between">
                     <button
                         class="btn btn-warning float-left"
                         @click="close_route_review_modal(route_id)"
@@ -189,5 +198,60 @@ export default {
 .rating-header {
     margin-top: -10px;
     margin-bottom: 10px;
+}
+
+.model-body {
+    /* max-height: 60vh; */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Friendly modal styles */
+.modal-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.main-title {
+    font-weight: 600;
+    font-size: 1.8rem;
+    color: #495057;
+    margin-bottom: 1.5rem;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+.section-title {
+    font-weight: 600;
+    font-size: 1.4rem;
+    color: #495057;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 0.5rem;
+}
+
+.form-label {
+    font-weight: 500;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.friendly-input {
+    font-size: 1.1rem;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ced4da;
+}
+
+.friendly-loading img {
+    max-width: 100%;
+}
+
+.modal-footer {
+    padding: 1rem;
 }
 </style>

@@ -1,63 +1,73 @@
 <template>
-    <div class="container top_menu_margin h-recent-work">
-        <h1 class="page_title">{{ tour.locale_data.title }}</h1>
+    <div class="tour-container container h-recent-work">
+        <div class="tour-header">
+            <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
+        </div>
 
         <!-- <breadcrumb /> -->
 
-        <div class="row" v-if="tour.tour_images.length != 0">
-            <img class="service_page_image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title">
+        <div class="tour-image-section" v-if="tour.tour_images.length != 0">
+            <img class="tour-image" :src="'../../images/tour_img/'+tour.tour_images[0].image" :alt="tour.locale_data.title" />
         </div>
 
-        <div class="row service_page_text" v-if="tour.locale_data.location">
-            <strong>{{ $t('shop.tour.location') }} - <span v-html="tour.locale_data.location"></span></strong>
-        </div>
-        <div class="row service_page_text" v-if="tour.locale_data.duration">
-            <strong>{{ $t('shop.tour.duration') }} - <span v-html="tour.locale_data.duration"></span></strong>
-        </div>
-
-        <div class="row service_page_text">
-            <span v-html="tour.locale_data.text"></span>
+        <div class="tour-details-section">
+            <div class="tour-detail" v-if="tour.locale_data.location">
+                <strong>{{ $t('shop.tour.location') }} - <span v-html="tour.locale_data.location"></span></strong>
+            </div>
+            <div class="tour-detail" v-if="tour.locale_data.duration">
+                <strong>{{ $t('shop.tour.duration') }} - <span v-html="tour.locale_data.duration"></span></strong>
+            </div>
         </div>
 
-        <div class="row">
-            <h2>{{ $t('shop.tour.guide') }}</h2>
-            <usersIconsComponent 
+        <div class="tour-description-section">
+            <div class="tour-description" v-html="tour.locale_data.text"></div>
+        </div>
+
+        <div class="tour-guide-section">
+            <h2 class="section-title">{{ $t('shop.tour.guide') }}</h2>
+            <usersIconsComponent
                 :users_prop="[tour.user]"
             />
         </div>
-        
-        <tourMessageForm 
-            :tour_id_prop = tour.global_data.id
-        />
-        
-        <gallery 
-            :images_prop="tour.tour_images"
-            :folder_path_prop="'/public/images/tour_img/'"
-        />
 
-        <div class="row" v-if="this.tours.length != 0">
-            <hr>
-
-            <h2 class="other_servces">{{ $t('shop.title.similar.tours') }}</h2>
-
-            <tourItem
-                v-for="tr in tours"
-                :key='tr.global_data.id'
-                :tour_data_prop="tr">
-            </tourItem>
+        <div class="tour-form-section">
+            <tourMessageForm
+                :tour_id_prop="tour.global_data.id"
+            />
         </div>
 
-        <metaData 
+        <div class="gallery-section">
+            <gallery
+                :images_prop="tour.tour_images"
+                :folder_path_prop="'/public/images/tour_img/'"
+            />
+        </div>
+
+        <div class="similar-tours-section" v-if="this.tours.length != 0">
+            <hr class="section-divider" />
+
+            <h2 class="section-title">{{ $t('shop.title.similar.tours') }}</h2>
+
+            <div class="tours-list">
+                <tourItem
+                    v-for="tr in tours"
+                    :key='tr.global_data.id'
+                    :tour_data_prop="tr">
+                </tourItem>
+            </div>
+        </div>
+
+        <metaData
             v-if="tour.tour_images.length != 0"
-            :title = "tour.locale_data.title"
-            :description = "tour.locale_data.short_description"
-            :image = "'/images/tour_img/'+tour.tour_images[0].image"
+            :title="tour.locale_data.title"
+            :description="tour.locale_data.short_description"
+            :image="'/images/tour_img/'+tour.tour_images[0].image"
         />
-        <metaData 
+        <metaData
             v-else
-            :title = "tour.locale_data.title"
-            :description = "tour.locale_data.short_description"
-            :image = "'/'"
+            :title="tour.locale_data.title"
+            :description="tour.locale_data.short_description"
+            :image="'/'"
         />
 
     </div>
@@ -122,3 +132,128 @@
         }
     }
 </script>
+
+<style scoped>
+    .tour-container {
+        width: 100%;
+        /* padding: 20px; */
+    }
+
+    .tour-header {
+        margin-bottom: 20px;
+    }
+
+    .tour-title {
+        text-align: center;
+    }
+
+    .tour-image-section {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .tour-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .tour-details-section {
+        margin-bottom: 20px;
+    }
+
+    .tour-detail {
+        margin-bottom: 10px;
+    }
+
+    .tour-description-section {
+        margin-bottom: 20px;
+    }
+
+    .tour-description {
+        /* max-width: 800px; */
+        margin: 0 auto;
+    }
+
+    .tour-guide-section {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .tour-form-section {
+        margin-bottom: 20px;
+    }
+
+    .gallery-section {
+        margin-bottom: 20px;
+    }
+
+    .similar-tours-section {
+        margin-top: 20px;
+    }
+
+    .section-divider {
+        margin-bottom: 20px;
+    }
+
+    .tours-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .tour-container {
+            padding: 15px;
+        }
+
+        .tour-header {
+            margin-bottom: 15px;
+        }
+
+        .tour-image-section {
+            margin-bottom: 15px;
+        }
+
+        .tour-details-section {
+            margin-bottom: 15px;
+        }
+
+        .tour-detail {
+            margin-bottom: 8px;
+        }
+
+        .tour-description-section {
+            margin-bottom: 15px;
+        }
+
+        .tour-guide-section {
+            margin-bottom: 15px;
+        }
+
+        .section-title {
+            margin-bottom: 8px;
+        }
+
+        .tour-form-section {
+            margin-bottom: 15px;
+        }
+
+        .gallery-section {
+            margin-bottom: 15px;
+        }
+
+        .similar-tours-section {
+            margin-top: 15px;
+        }
+
+        .tours-list {
+            gap: 15px;
+        }
+    }
+</style>

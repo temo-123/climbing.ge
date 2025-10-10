@@ -30,7 +30,7 @@
                         <div class="card-counter primary">
                             <i class="fa fa-language" aria-hidden="true"></i>
                             <span class="count-numbers">{{this.counts['ru_articles_count']}}</span>
-                            <span class="count-name">Russion articles</span>
+                            <span class="count-name">Russian articles</span>
                         </div>
                     </div>
 
@@ -45,34 +45,34 @@
                 </div>
 
                 <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
-                    <div class="col" v-if="this.counts['us_article_errors']"> 
-                        <i class="fa fa-bug" aria-hidden="true"></i> 
-                        us_articles error_count - {{this.counts['us_article_errors']}} 
+                    <div class="col" v-if="this.counts['us_article_errors']">
+                        <i class="fa fa-bug" aria-hidden="true"></i>
+                        us_articles error_count - {{this.counts['us_article_errors']}}
 
                         <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bag (delete all this articles)
+                            Fix bug (delete all these articles)
                         </button>
                     </div>
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
-                    <div class="col" v-if="this.counts['us_article_errors']"> 
-                        <i class="fa fa-bug" aria-hidden="true"></i> 
-                        ru_articles error_count - {{this.counts['us_article_errors']}} 
+                <div class="alert alert-danger" role="alert" v-if="this.counts['ru_article_errors']">
+                    <div class="col" v-if="this.counts['ru_article_errors']">
+                        <i class="fa fa-bug" aria-hidden="true"></i>
+                        ru_articles error_count - {{this.counts['ru_article_errors']}}
 
                         <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bag (delete all this articles)
+                            Fix bug (delete all these articles)
                         </button>
                     </div>
                 </div>
-                
-                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
-                    <div class="col" v-if="this.counts['us_article_errors']"> 
-                        <i class="fa fa-bug" aria-hidden="true"></i> 
-                        ka_articles error_count - {{this.counts['us_article_errors']}} 
+
+                <div class="alert alert-danger" role="alert" v-if="this.counts['ka_article_errors']">
+                    <div class="col" v-if="this.counts['ka_article_errors']">
+                        <i class="fa fa-bug" aria-hidden="true"></i>
+                        ka_articles error_count - {{this.counts['ka_article_errors']}}
 
                         <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bag (delete all this articles)
+                            Fix bug (delete all these articles)
                         </button>
                     </div>
                 </div>
@@ -108,7 +108,7 @@
                             <div class="card-counter primary">
                                 <i class="fa fa-bicycle" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['other_antyvity']}}</span>
-                                <span class="count-name">Other antyvity</span>
+                            <span class="count-name">Other activities</span>
                             </div>
                         </router-link>
                     </div>
@@ -132,6 +132,38 @@
                                 <i class="fa fa-shield" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['techtip']}}</span>
                                 <span class="count-name">Techtip</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <h2>Shop / Products</h2>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'productsList'}">
+                            <div class="card-counter light">
+                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                                <span class="count-numbers">{{this.counts['products']}}</span>
+                                <span class="count-name">Products</span>
+                            </div>
+                        </router-link>
+                    </div>
+
+                    <div class="col-md-6">
+                        <router-link :to="{name: 'productsList'}">
+                            <div class="card-counter light">
+                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
+                                <span class="count-numbers">{{this.counts['product_categories']}}</span>
+                                <span class="count-name">Product categories</span>
                             </div>
                         </router-link>
                     </div>
@@ -195,7 +227,7 @@
                             <div class="card-counter primary">
                                 <i class="fa fa-area-chart" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['mount_masives']}}</span>
-                                <span class="count-name">Mount masiv</span>
+                            <span class="count-name">Mount massif</span>
                             </div>
                         </router-link>
                     </div>
@@ -295,7 +327,7 @@
                             <div class="card-counter sectors">
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['mtp_count']}}</span>
-                                <span class="count-name">Multy-pitch</span>
+                            <span class="count-name">Multi-pitch</span>
                             </div>
                         </router-link>
                     </div>
@@ -305,7 +337,7 @@
                             <div class="card-counter sectors">
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['mtp_pitch_count']}}</span>
-                                <span class="count-name">Multy-pitch pitchs</span>
+                            <span class="count-name">Multi-pitch pitches</span>
                             </div>
                         </router-link>
                     </div>
@@ -354,7 +386,7 @@
                             <div class="card-counter sectors">
                                 <i class="fa fa-heartbeat" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['tred_routes_count']}}</span>
-                                <span class="count-name">Tred climbing</span>
+                            <span class="count-name">Trad climbing</span>
                             </div>
                         </router-link>
                     </div>
@@ -386,7 +418,7 @@
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['gallery_images']}}</span>
-                                <span class="count-name">Gellry images</span>
+                            <span class="count-name">Gallery images</span>
                             </div>
                         </router-link>
                     </div>
@@ -402,65 +434,10 @@
                     </div>
 
                 </div>
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'gallery'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['index_gallery_images'] }}</span>
-                                <span class="count-name">Index gallery</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'gallery'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['article_gallery_images']}}</span>
-                                <span class="count-name">Article gallery images</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
             </div>
         </div>
 
-        <hr>
 
-        <h2>Shop / Products</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'productsList'}">
-                            <div class="card-counter light">
-                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['products']}}</span>
-                                <span class="count-name">Products</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'productsList'}">
-                            <div class="card-counter light">
-                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['product_categories']}}</span>
-                                <span class="count-name">Product categories</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
 
         <h2>Conflicts (Comments complaints)</h2>
 
@@ -473,7 +450,7 @@
                             <div class="card-counter danger">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
                                 <span class="count-numbers">{{ this.counts['article_comment_complaint_count'] }}</span>
-                                <span class="count-name">Active competitions</span>
+                                <span class="count-name">Active complaints</span>
                             </div>
                         </router-link>
                     </div>
@@ -483,7 +460,7 @@
                             <div class="card-counter danger">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
                                 <span class="count-numbers">XXX</span>
-                                <span class="count-name">Completed competitions</span>
+                                <span class="count-name">Completed complaints</span>
                             </div>
                         </router-link>
                     </div>
@@ -537,7 +514,7 @@
                             <div class="card-counter success">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['users']}}</span>
-                                <span class="count-name">users</span>
+                            <span class="count-name">Users</span>
                             </div>
                         </router-link>
                     </div>
@@ -587,7 +564,7 @@
                             <div class="card-counter success">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['guid_follovers']}}</span>
-                                <span class="count-name">Guid folowers</span>
+                            <span class="count-name">Guide followers</span>
                             </div>
                         </router-link>
                     </div>
@@ -597,7 +574,7 @@
                             <div class="card-counter success">
                                 <i class="fa fa-user-circle-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['shop_follovers']}}</span>
-                                <span class="count-name">Shop folowers</span>
+                            <span class="count-name">Shop followers</span>
                             </div>
                         </router-link>
                     </div>
@@ -617,7 +594,7 @@
                             <div class="card-counter success">
                                 <i class="fa fa-key" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['roles']}}</span>
-                                <span class="count-name">Role</span>
+                            <span class="count-name">Roles</span>
                             </div>
                         </router-link>
                     </div>
@@ -662,7 +639,7 @@ export default {
         },
 
         fix_article_bug(){
-            if (window.confirm('This action whil delite all conflictebel items! Are you shore?')) {
+            if (window.confirm('This action will delete all conflicting items! Are you sure?')) {
                 axios
                 .get('../api/siteData/fix_article_bugs')
                 .then(response => {

@@ -452,3 +452,37 @@ export default {
     width: 9% !important;
 }
 </style>
+
+<style scoped>
+/* Friendly styles for SectorComponent */
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #343a40;
+    margin-bottom: 1rem;
+}
+
+.sun_svg, .relief_svg {
+    height: 40px;
+    margin: 0.25rem;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+.sector_walking_time {
+    float: right;
+    font-size: 1.5em;
+    color: #495057;
+    font-weight: 500;
+}
+
+.sector_images {
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.sector_images:hover {
+    transform: scale(1.05);
+}
+</style>

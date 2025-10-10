@@ -31,9 +31,32 @@
             <div class="col-sm-12 ">
                 <!-- <section class="inner"> -->
                     <section class="portfolio inner" id="portfolio">
-
-                            <button type="submit" class="btn btn-default btn-send main-btn" @click="open_menu()">Filter products</button>
-
+                            <div class="filters-bar">
+                                <button type="button" class="btn btn-primary filter-btn" @click="open_menu()">
+                                    <i class="fa fa-filter"></i> Filter products
+                                    <span v-if="activeFilterCount > 0" class="filter-count">({{ activeFilterCount }})</span>
+                                </button>
+                                <div v-if="hasActiveFilters" class="filter-summary">
+                                    <span>Filtered by:</span>
+                                    <span v-if="currentFilters.brand_id" class="filter-tag">
+                                        Brand: {{ currentFilters.brand_id }}
+                                        <button @click="removeFilter('brand_id')" class="remove-btn">×</button>
+                                    </span>
+                                    <span v-if="currentFilters.sale_type" class="filter-tag">
+                                        Sale Type: {{ currentFilters.sale_type }}
+                                        <button @click="removeFilter('sale_type')" class="remove-btn">×</button>
+                                    </span>
+                    <span v-if="currentFilters.subcategory_id" class="filter-tag">
+                        Subcategory: {{ currentFilters.subcategory_id }}
+                        <button @click="removeFilter('subcategory_id')" class="remove-btn">×</button>
+                    </span>
+                    <span v-if="currentFilters.price_min || currentFilters.price_max" class="filter-tag">
+                        Price: {{ currentFilters.price_min ? '$' + currentFilters.price_min : 'Min' }} - {{ currentFilters.price_max ? '$' + currentFilters.price_max : 'Max' }}
+                        <button @click="removePriceFilter()" class="remove-btn">×</button>
+                    </span>
+                                    <button @click="clear_filtrs()" class="clear-all-btn">Clear All</button>
+                                </div>
+                            </div>
                             <div class="layout" v-if="filtred_products.length > 0">
                                 <!-- <section class="inner"> -->
                                     <div class="grid">
@@ -55,13 +78,10 @@
                 <!-- </section> -->
             </div>
 
-            <productLeftMenu 
+            <productLeftMenu
                 ref="left_menu"
 
-                @sort_by_sale_type="sort_by_sale_type"
-                @sort_by_brand="sort_by_brand"
-                @sort_by_subcategories="sort_by_subcategories"
-                @clear_filtrs="clear_filtrs"
+                @apply_filters="applyFilters"
             />
         </div>
         
@@ -77,7 +97,6 @@
     import catalogItem from '../../items/cards/CatalogItemComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import { ContentLoader } from 'vue-content-loader'
-    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import metaData from '../../items/MetaDataComponent'
 
     import productLeftMenu from '../../items/navbars/LeftMenuComponent'
@@ -85,7 +104,6 @@
     export default {
         components: {
             metaData,
-            lingallery,
             catalogItem,
             emptyPageComponent,
             ContentLoader,
@@ -94,16 +112,47 @@
         data: function () {
             return {
                 products: [],
-                filtred_products: [],
-                
                 products_loading: true,
-                product_modal: false,
-                modalClass: '',
+                currentFilters: {
+                    sale_type: null,
+                    brand_id: null,
+                    subcategory_id: null,
+                    price_min: null,
+                    price_max: null
+                }
             };
         },
         mounted() {
-            this.get_products()
+            this.currentFilters = { ...this.$route.query };
+            this.get_products();
             // this.get_categories()
+        },
+        computed: {
+            filtred_products() {
+                let filtered = this.products;
+                if (this.currentFilters.sale_type) {
+                    filtered = filtered.filter(p => p.global_product.sale_type == this.currentFilters.sale_type);
+                }
+                if (this.currentFilters.brand_id) {
+                    filtered = filtered.filter(p => p.global_product.brand_id == this.currentFilters.brand_id);
+                }
+                if (this.currentFilters.subcategory_id) {
+                    filtered = filtered.filter(p => p.global_product.subcategory_id == this.currentFilters.subcategory_id);
+                }
+                if (this.currentFilters.price_min) {
+                    filtered = filtered.filter(p => p.global_product.price >= this.currentFilters.price_min);
+                }
+                if (this.currentFilters.price_max) {
+                    filtered = filtered.filter(p => p.global_product.price <= this.currentFilters.price_max);
+                }
+                return filtered;
+            },
+            hasActiveFilters() {
+                return this.currentFilters.sale_type || this.currentFilters.brand_id || this.currentFilters.subcategory_id || this.currentFilters.price_min || this.currentFilters.price_max;
+            },
+            activeFilterCount() {
+                return Object.values(this.currentFilters).filter(v => v !== null && v !== undefined).length;
+            }
         },
         methods: {
             get_products(){
@@ -112,8 +161,6 @@
                 .get('../api/products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data
-
-                    this.filtred_products = this.products
                     // this.sortByCategories()
                 })
                 .catch(error =>{
@@ -124,63 +171,47 @@
             open_menu(){
                 this.$refs.left_menu.open_menu()
             },
-            
-            sort_by_sale_type(sale_type){
-                if(sale_type == 0){
-                    this.get_products()
-                }
-                else{
-                    // if(this.filtred_products.length == this.products.length){
-                        this.filtred_products = this.products.filter(function (item){
-                            return item.global_product.sale_type == sale_type
-                        })
-                    // }
-                    // else{
-                    //     this.filtred_products = this.filtred_products.filter(function (item){
-                    //         return item.global_product.sale_type == sale_type
-                    //     })
-                    // }
-                }
-            },
-            
-            sort_by_brand(filter_brand){
-                if(filter_brand == 0){
-                    this.get_products()
-                }
-                else{
-                    // if(this.filtred_products.length == this.products.length){
-                        this.filtred_products = this.products.filter(function (item){
-                            return item.global_product.brand_id == id
-                        })
-                    // }
-                    // else{
-                    //     this.filtred_products = this.filtred_products.filter(function (item){
-                    //         return item.global_product.brand_id == filter_brand
-                    //     })
-                    // }
-                }
+
+            updateUrl(){
+                let query = {};
+                if (this.currentFilters.sale_type) query.sale_type = this.currentFilters.sale_type;
+                if (this.currentFilters.brand_id) query.brand_id = this.currentFilters.brand_id;
+                if (this.currentFilters.subcategory_id) query.subcategory_id = this.currentFilters.subcategory_id;
+                if (this.currentFilters.price_min) query.price_min = this.currentFilters.price_min;
+                if (this.currentFilters.price_max) query.price_max = this.currentFilters.price_max;
+                this.$router.replace({ query });
             },
 
-            sort_by_subcategories(subcategory_id){
-                if(subcategory_id == 0){
-                    this.get_products()
-                }
-                else{
-                    // if(this.filtred_products.length == this.products.length){
-                        this.filtred_products = this.products.filter(function (item){
-                            return item.global_product.subcategory_id == subcategory_id
-                        })
-                    // }
-                    // else{
-                    //     this.filtred_products = this.filtred_products.filter(function (item){
-                    //         return item.global_product.subcategory_id == subcategory_id
-                    //     })
-                    // }
-                }
+            applyFilters(filters) {
+                this.currentFilters = {
+                    sale_type: filters.sale_type || null,
+                    brand_id: filters.brand_id || null,
+                    subcategory_id: filters.subcategory_id || null,
+                    price_min: filters.price_min || null,
+                    price_max: filters.price_max || null
+                };
+                this.updateUrl();
             },
 
             clear_filtrs(){
-                this.get_products()
+                this.currentFilters = {
+                    sale_type: null,
+                    brand_id: null,
+                    subcategory_id: null,
+                    price_min: null,
+                    price_max: null
+                };
+                this.updateUrl();
+            },
+
+            removeFilter(filterKey) {
+                this.currentFilters[filterKey] = null;
+                this.updateUrl();
+            },
+            removePriceFilter() {
+                this.currentFilters.price_min = null;
+                this.currentFilters.price_max = null;
+                this.updateUrl();
             },
         }
     }
@@ -253,5 +284,79 @@
 
     .modal-content {
         margin-top: 50% !important;
+    }
+
+    .filter-summary {
+        margin: 10px 0;
+        padding: 10px;
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .filter-summary span {
+        font-weight: bold;
+    }
+
+    .filter-tag {
+        background-color: #007bff;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .remove-btn {
+        background: none;
+        border: none;
+        color: white;
+        cursor: pointer;
+        font-size: 16px;
+        line-height: 1;
+    }
+
+    .clear-all-btn {
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .clear-all-btn:hover {
+        background-color: #c82333;
+    }
+
+    .filter-btn {
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover {
+        transform: scale(1.05);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .filter-count {
+        background-color: #dc3545;
+        color: white;
+        border-radius: 50%;
+        padding: 2px 6px;
+        font-size: 0.8em;
+        margin-left: 5px;
+    }
+
+    .filters-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
     }
 </style>

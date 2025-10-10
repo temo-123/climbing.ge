@@ -2,17 +2,22 @@
     <div :class="'navbar_box'">
         <div class="navbar_ampty_space" @click="open_menu()"></div>
         <div class="sidebar left_sidebar">
-            <header>Filtred</header>
+            <header>
+                <i class="fa fa-filter"></i> Filters
+                <button @click="open_menu()" class="close-btn"><i class="fa fa-times"></i></button>
+            </header>
 
             <ul  style="padding-left: 0px;">
                 <li>
-                    <a href="#" @click="show_item('category')" class="dropdown-toggle" >Categories</a>
+                    <a href="#" @click="show_item('category')" class="dropdown-toggle" >
+                        <i class="fa fa-list"></i> Categories <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
                     <ul :class="'category'" style="background-color: #04354b; display: none; transition: .4s;">
                         <span >
                             <li class="menu_item" style="height: 104px; padding-top: 35px;">
-                                <select class="form-control" v-model="filter_category" @click="get_category_subcategories()" name="sort_by_categories" >
+                                <select class="form-control" v-model="filter_category" @change="get_category_subcategories()" name="sort_by_categories" >
                                     <option :value="0">All</option>
-                                    <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option> 
+                                    <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option>
                                 </select>
                             </li>
 
@@ -25,10 +30,12 @@
                 </li>
 
                 <li >
-                    <a href="#" @click="show_item('brand')" class="dropdown-toggle" >Filtr by brand</a>
+                    <a href="#" @click="show_item('brand')" class="dropdown-toggle" >
+                        <i class="fa fa-tag"></i> Filter by brand <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
                     <ul :class="'brand menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
-                            <select class="form-control" v-model="filter_brand" name="sort_by_brand" @click="sort_by_brand()">
+                            <select class="form-control" v-model="filter_brand" name="sort_by_brand" @change="updateBrand()">
                                 <option :value="0">All</option>
                                 <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
                             </select>
@@ -37,13 +44,15 @@
                 </li>
 
                 <li >
-                    <a href="#" @click="show_item('sale_type')" class="dropdown-toggle" >Filtr by sale type</a>
+                    <a href="#" @click="show_item('sale_type')" class="dropdown-toggle" >
+                        <i class="fa fa-shopping-cart"></i> Filter by sale type <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
                     <ul :class="'sale_type menu_opening_height_list'" style="display: none;">
                         <li class="menu_item">
-                            <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @click="sort_by_sale_type()">
+                            <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @change="updateSaleType()">
                                 <option :value="0">All</option>
-                                <option :value="'custom_production'">Custom production</option> 
-                                <option :value="'online_order'">Online sale</option> 
+                                <option :value="'custom_production'">Custom production</option>
+                                <option :value="'online_order'">Online sale</option>
                             </select>
                         </li>
                     </ul>
@@ -89,15 +98,28 @@
                             </div>
                         </li>
                     </ul>
+                </li>
+
+                <li>
+                    <a @click="show_item('price')" class="toggle-btn">
+                        <i class="fa fa-dollar"></i> Filter by price <i class="fa fa-chevron-down toggle-icon"></i>
+                    </a>
+                    <ul class="price" style="display: none;">
+                        <li class="menu_item">
+                            <input type="number" v-model="min_price" placeholder="Min price" class="form-control">
+                        </li>
+                        <li class="menu_item">
+                            <input type="number" v-model="max_price" placeholder="Max price" class="form-control">
+                        </li>
+                    </ul>
                 </li> -->
 
             </ul>
 
-            <ul style="padding-left: 0px;">
-                <li>
-                    <a @click="clear_filtrs()">Clear filtrs</a>
-                </li>
-            </ul>
+            <div class="filter-actions">
+                <button @click="applyFilters()" class="btn btn-primary apply-btn">Apply Filters</button>
+                <button @click="resetFilters()" class="btn btn-secondary reset-btn">Reset</button>
+            </div>
             
         </div>
     </div>
@@ -120,7 +142,10 @@
                 filter_category: 0,
                 filter_brand: 0,
                 sale_type: 0,
-                
+                selected_subcategory: 0,
+                min_price: '',
+                max_price: '',
+
                 categories: [],
                 brands: [],
                 subcategories: [],
@@ -154,40 +179,37 @@
               }
             },
 
-            sort_by_brand(){
-                // this.filter_brand = 0
-                this.sale_type = 0
-                this.filter_category = 0
-
-                this.$emit('sort_by_brand', this.filter_brand)
-                this.open_menu()
+            updateBrand(){
+                // just update the model
             },
 
             sort_by_subcategories(subcat_id){
-                // this.filter_brand = 0
-                // this.sale_type = 0
-                // this.filter_category = 0
-
-                this.$emit('sort_by_subcategories', subcat_id)
-                this.open_menu()
+                this.selected_subcategory = subcat_id == 0 ? 0 : subcat_id;
             },
 
-            sort_by_sale_type(){
-                this.filter_brand = 0
-                // this.sale_type = 0
-                this.filter_category = 0
-
-                this.$emit('sort_by_sale_type', this.sale_type)
-                this.open_menu()
+            updateSaleType(){
+                // just update the model
             },
 
-            clear_filtrs(){
+            resetFilters(){
                 this.filter_brand = 0
                 this.sale_type = 0
                 this.filter_category = 0
+                this.selected_subcategory = 0
+                this.min_price = ''
+                this.max_price = ''
+            },
 
-                this.$emit('clear_filtrs')
-                this.open_menu()
+            applyFilters(){
+                const filters = {
+                    brand_id: this.filter_brand == 0 ? null : this.filter_brand,
+                    sale_type: this.sale_type == 0 ? null : this.sale_type,
+                    subcategory_id: this.selected_subcategory == 0 ? null : this.selected_subcategory,
+                    price_min: this.min_price ? parseFloat(this.min_price) : null,
+                    price_max: this.max_price ? parseFloat(this.max_price) : null
+                };
+                this.$emit('apply_filters', filters);
+                this.open_menu();
             },
 
             get_product_categories: function(){
@@ -299,6 +321,46 @@
   text-align: center;
   background: #063146;
   user-select: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.toggle-icon {
+  float: right;
+  transition: transform 0.3s;
+}
+
+.filter-actions {
+  padding: 20px;
+  text-align: center;
+}
+
+.apply-btn, .reset-btn {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.apply-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.reset-btn {
+  background-color: #6c757d;
+  color: white;
 }
 .menu_item{
   display: block;

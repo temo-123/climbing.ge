@@ -20,13 +20,19 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="row">
-                                <div class="col-md-10 product_page_title">
-                                    <h1>{{ product.locale_product.title }}</h1>
+                            <div class="product-header">
+                                <div class="product-title-section">
+                                    <h1 class="product-title">{{ product.locale_product.title }}</h1>
                                     <breadcrumb />
                                 </div>
-                                <div class="col-md-2 favorites_icon" @click="add_to_faworite(product.global_product.id)">
-                                    <i class="fa fa-heart-o" aria-hidden="true" style="font-size: 250%;"></i>
+                                <div class="action-icons">
+                                    <button class="icon-btn share-btn" @click="shareProduct" aria-label="Share product" title="Share product">
+                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
+                                    </button>
+                                    <button class="icon-btn favorite-btn" @click="add_to_faworite(product.global_product.id)" :class="{ disabled: addingToFavorite }" aria-label="Add to favorites" title="Add to favorites">
+                                        <i v-if="addingToFavorite" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                        <i v-else class="fa fa-heart-o" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
 
@@ -90,16 +96,20 @@
 
                             <div class="row" v-if="product.global_product.sale_type == 'online_order'">
                                 <div class="row">
-                                    <span v-if="products_quantity == select_product_max_quantyty">
-                                        <div class="alert alert-danger" role="alert">
-                                            {{ $t('shop.max products') }}
-                                        </div>
-                                    </span>
-                                    <span v-if="is_adding_in_cart_socsesful">
-                                        <div class="alert alert-success" role="alert">
-                                            {{ $t('shop.add successful') }}
-                                        </div>
-                                    </span>
+                                    <div v-if="products_quantity == select_product_max_quantyty && showMaxProductsAlert" class="alert alert-danger alert-dismissible alert-with-icon" role="alert">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        {{ $t('shop.max products') }}
+                                        <button type="button" class="close" @click="hideAlert('maxProducts')" aria-label="Close alert">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
+                                    <div v-if="is_adding_in_cart_socsesful && showAddSuccessAlert" class="alert alert-success alert-dismissible alert-with-icon" role="alert">
+                                        <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                        {{ $t('shop.add successful') }}
+                                        <button type="button" class="close" @click="hideAlert('addSuccess')" aria-label="Close alert">
+                                            <span>&times;</span>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6">
@@ -109,17 +119,23 @@
                                         </select>
                                     </div>
                                     <div class="col-sm-4 col-md-4" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0">
-                                        <input type="number" class="form-control" min="1" :max="select_product_max_quantyty" v-model="products_quantity" />
+                                        <div class="quantity-controls">
+                                            <button @click="decreaseQuantity" class="quantity-btn" :disabled="products_quantity <= 1" aria-label="Decrease quantity">-</button>
+                                            <input type="number" class="quantity-input" min="1" :max="select_product_max_quantyty" v-model="products_quantity" aria-label="Quantity" />
+                                            <button @click="increaseQuantity" class="quantity-btn" :disabled="products_quantity >= select_product_max_quantyty" aria-label="Increase quantity">+</button>
+                                        </div>
                                     </div>
                                     <div class="col-sm-4 col-md-4" v-else-if="product_modification_for_cart != 'All' && select_product_max_quantyty == 0">
-                                        <div class="alert alert-danger" role="alert">
+                                        <div class="alert alert-danger alert-with-icon" role="alert">
+                                            <i class="fa fa-times-circle" aria-hidden="true"></i>
                                             Out of Stock
                                         </div>
                                     </div>
                                     <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0 && user.length != 0">
-                                        <a @click="add_to_cart()" class='text-center' v-if="user.length != 0">
-                                            <i class="fa fa-cart-plus" aria-hidden="true" style="font-size: 250%;"></i>
-                                        </a>
+                                        <button @click="add_to_cart()" class="add-to-cart-btn" :class="{ disabled: addingToCart }" aria-label="Add to cart" title="Add to cart">
+                                            <i v-if="addingToCart" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                            <i v-else class="fa fa-cart-plus" aria-hidden="true"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -133,7 +149,8 @@
                             </div>
 
                            <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
-                                <div :class="'alert alert-success'" role="alert">
+                                <div class="alert alert-success alert-with-icon" role="alert">
+                                    <i class="fa fa-info-circle" aria-hidden="true"></i>
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
                                         <p>{{ $t('shop.product.castom_prodaction') }}</p>
                                     </div>
@@ -143,8 +160,8 @@
                                     user.length != 0 &&
                                     (user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null)
                                 ">
-                                    
-                                    <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
+                                    <div class="alert alert-danger alert-with-icon cursor-pointer" @click="goTo('/options')" role="alert">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <strong>{{ $t('shop.product.warning') }}</strong>
@@ -162,7 +179,8 @@
                             </div>
                             
                             <div class="row" v-if="user.length == 0">
-                                <div v-if="user.length == 0" :class="'alert alert-danger cursor_pointer'" role="alert" @click="goTo('/login')">
+                                <div v-if="user.length == 0" class="alert alert-danger alert-with-icon cursor-pointer" role="alert" @click="goTo('/login')">
+                                    <i class="fa fa-sign-in" aria-hidden="true"></i>
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
                                         <p>{{ $t('shop.product.ples_castom_login') }}</p>
                                     </div>
@@ -177,11 +195,11 @@
                 </div>
             </div>
         </div>
-        <div class="container" v-if="product.locale_product && !is_loading">
+        <div class="container product-description-section" v-if="product.locale_product && !is_loading">
             <div class="row" v-if="product.locale_product.text">
                 <div class="col-md-12">
-                    <h2 class='text-center'>{{ $t('shop.product description') }}</h2>
-                    <span v-html="product.locale_product.text"></span>
+                    <h2 class="section-title text-center">{{ $t('shop.product description') }}</h2>
+                    <div class="description-content" v-html="product.locale_product.text"></div>
                 </div>
             </div>
             
@@ -191,36 +209,33 @@
                 </div>
             </div>
 
-            <p v-if="product.global_product.material">{{ $t('shop.product.product_desc.material') }} - {{ product.global_product.material }}</p>
-            <p v-if="product.global_product.weight">{{ $t('shop.product.product_desc.weight') }} - {{ product.global_product.weight }}</p>
+            <div class="product-details">
+                <p v-if="product.global_product.material" class="detail-item"><strong>{{ $t('shop.product.product_desc.material') }}:</strong> {{ product.global_product.material }}</p>
+                <p v-if="product.global_product.weight" class="detail-item"><strong>{{ $t('shop.product.product_desc.weight') }}:</strong> {{ product.global_product.weight }}</p>
+            </div>
 
         </div>
 
-        <div class="container" v-if="!is_loading">
+        <div class="container reviews-section" v-if="!is_loading">
             <div class="row">
                 <feedbackForm
                     :product_id_prop="product.global_product.id"
-
-                    :reviews_count_prop = "product.reviews ? product.reviews.count : 0"
-                    :reviews_stars_prop = "product.reviews ? product.reviews.stars : 0"
+                    :reviews_count_prop="product.reviews ? product.reviews.count : 0"
+                    :reviews_stars_prop="product.reviews ? product.reviews.stars : 0"
                 />
             </div>
         </div>
 
-        <div class="container" v-if="!is_loading">
-            <similarProduct :activ_product_id_prop=product.global_product.id />
+        <div class="container similar-products-section" v-if="!is_loading">
+            <similarProduct :activ_product_id_prop="product.global_product.id" />
         </div>
-        
-        <div class="container">
+
+        <div class="container all-products-section">
             <div class="row">
                 <div class="more-products" id="more-products-wrap">
-                    <li style="list-style-type: none">
-                        <router-link :to="{name: 'catalog'}" exact>  
-                            <span>
-                                {{ $t('shop.all products') }}  
-                            </span>
-                        </router-link>
-                    </li>
+                    <router-link :to="{name: 'catalog'}" exact class="all-products-link">
+                        {{ $t('shop.all products') }}
+                    </router-link>
                 </div>
             </div>
         </div>
@@ -256,6 +271,10 @@
             return {
                 is_adding_in_cart_socsesful: false,
                 is_loading: false,
+                addingToCart: false,
+                addingToFavorite: false,
+                showMaxProductsAlert: true,
+                showAddSuccessAlert: true,
 
                 select_product_max_quantyty: 0,
                 product_modification_for_cart: 'All',
@@ -414,6 +433,7 @@
                 }
                 else{
                     this.is_adding_in_cart_socsesful = false
+                    this.addingToCart = true
                     axios
                     .put('/cart/'+this.product_modification_for_cart, {
                         modification_id: this.product_modification_for_cart,
@@ -430,18 +450,56 @@
                             this.add_to_cart_message = 'Something went wrong. Try login.';
                         }
                     })
+                    .finally(() => {
+                        this.addingToCart = false
+                    })
                 }
             },
 
             add_to_faworite(product_id){
+                this.addingToFavorite = true
                 axios
                 .post('/add_to_favorite/'+ product_id)
                 .then(response => {
-                    alert("Product addid in your favorite list!");
+                    alert("Product added to your favorite list!");
                 })
                 .catch(error =>{
                     alert(error);
                 })
+                .finally(() => {
+                    this.addingToFavorite = false
+                })
+            },
+            increaseQuantity() {
+                if (this.products_quantity < this.select_product_max_quantyty) {
+                    this.products_quantity++;
+                }
+            },
+            decreaseQuantity() {
+                if (this.products_quantity > 1) {
+                    this.products_quantity--;
+                }
+            },
+            hideAlert(type) {
+                if (type === 'maxProducts') {
+                    this.showMaxProductsAlert = false;
+                } else if (type === 'addSuccess') {
+                    this.showAddSuccessAlert = false;
+                }
+            },
+            shareProduct() {
+                const url = window.location.href;
+                const title = this.product.locale_product.title;
+                if (navigator.share) {
+                    navigator.share({
+                        title: title,
+                        url: url
+                    });
+                } else {
+                    navigator.clipboard.writeText(url).then(() => {
+                        alert('Product link copied to clipboard!');
+                    });
+                }
             }
         }
     }
@@ -452,13 +510,261 @@
         height: 100% !important;
     }
 
-    .mead_in_geo_img{
+    .mead_in_geo_img {
         width: 20%;
         height: auto;
         margin-left: 40%;
     }
 
-    .favorites_icon{
+    .product-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 20px;
+    }
+
+    .product-title-section {
+        flex: 1;
+    }
+
+    .product-title {
+        font-size: 2em;
+        font-weight: bold;
+        margin-bottom: 10px;
+        line-height: 1.2;
+    }
+
+    .action-icons {
+        display: flex;
+        gap: 15px;
+    }
+
+    .icon-btn {
+        border: none;
+        background: none;
+        font-size: 1.5em;
         cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .icon-btn:hover {
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    .share-btn, .favorite-btn, .add-to-cart-btn {
+        font-size: 1.5em;
+    }
+
+    .quantity-controls {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    .quantity-btn {
+        width: 40px;
+        height: 40px;
+        border: 1px solid #ccc;
+        background: #f8f9fa;
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .quantity-btn:hover:not(:disabled) {
+        background-color: #e9ecef;
+    }
+
+    .quantity-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .quantity-input {
+        text-align: center;
+        width: 60px;
+        height: 40px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 1em;
+    }
+
+    .add-to-cart-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 10px;
+        border-radius: 5px;
+        transition: background-color 0.3s;
+    }
+
+    .add-to-cart-btn:hover {
+        background-color: rgba(0,0,0,0.1);
+    }
+
+    .alert-with-icon {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 15px;
+    }
+
+    .alert-with-icon i {
+        font-size: 1.2em;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .section-title {
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    .description-content {
+        line-height: 1.6;
+        font-size: 1.1em;
+        margin-bottom: 20px;
+    }
+
+    .product-details {
+        margin-top: 20px;
+    }
+
+    .detail-item {
+        margin: 10px 0;
+        font-size: 1em;
+    }
+
+    .product-description-section,
+    .reviews-section,
+    .similar-products-section,
+    .all-products-section {
+        padding: 30px 0;
+        border-top: 1px solid #eee;
+    }
+
+    .all-products-link {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #f8f9fa;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+
+    .all-products-link:hover {
+        background-color: #e9ecef;
+    }
+
+    .disabled {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    /* Desktop enhancements */
+    @media (min-width: 769px) {
+        .product-detail .container {
+            padding: 20px;
+        }
+
+        .big {
+            margin-bottom: 20px;
+        }
+
+        .price-shipping {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .product-description-section,
+        .reviews-section,
+        .similar-products-section,
+        .all-products-section {
+            padding: 40px 0;
+        }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .product-detail .cols {
+            flex-direction: column;
+        }
+
+        .product-header {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .action-icons {
+            margin-top: 15px;
+        }
+
+        .product-title {
+            font-size: 1.5em;
+        }
+
+        .icon-btn {
+            font-size: 1.2em;
+            padding: 8px;
+        }
+
+        .share-btn, .favorite-btn, .add-to-cart-btn {
+            font-size: 1.2em;
+        }
+
+        .price-shipping {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .quantity-btn {
+            width: 35px;
+            height: 35px;
+            font-size: 1em;
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 35px;
+            font-size: 1em;
+        }
+
+        .alert-with-icon {
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+        }
+
+        .description-content {
+            font-size: 1em;
+        }
+
+        .mead_in_geo_img {
+            width: 50%;
+            margin-left: 25%;
+        }
+
+        .product-description-section,
+        .reviews-section,
+        .similar-products-section,
+        .all-products-section {
+            padding: 20px 0;
+        }
     }
 </style>

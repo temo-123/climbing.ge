@@ -347,4 +347,72 @@ class OrderController extends Controller
     //     return $randomString;
     // }
 
+    public function get_order_statistics(Request $request)
+    {
+        $period = $request->route('period');
+
+        $startDate = null;
+        switch($period){
+            case '30days':
+                $startDate = now()->subDays(30);
+                break;
+            case '1month':
+                $startDate = now()->subMonth();
+                break;
+            case '3months':
+                $startDate = now()->subMonths(3);
+                break;
+            case '6months':
+                $startDate = now()->subMonths(6);
+                break;
+            case '1year':
+                $startDate = now()->subYear();
+                break;
+            case '2years':
+                $startDate = now()->subYears(2);
+                break;
+            case '3years':
+                $startDate = now()->subYears(3);
+                break;
+            case 'all':
+                // no start date
+                break;
+            default:
+                return response()->json(['error' => 'Invalid period'], 400);
+        }
+
+        $query = \App\Models\Shop\Order::query();
+        if($startDate){
+            $query->where('created_at', '>=', $startDate);
+        }
+
+        if(in_array($period, ['30days', '1month'])){
+            $orders = $query->selectRaw('DATE(created_at) as date, COUNT(*) as count')
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            $data = [['Day', 'Orders']];
+            $i = 1;
+            foreach($orders as $order){
+                $data[] = [$i, (int)$order->count];
+                $i++;
+            }
+        } else {
+            $orders = $query->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
+                ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+                ->orderByRaw('YEAR(created_at), MONTH(created_at)')
+                ->get();
+
+            $data = [['Month', 'Orders']];
+            $i = 1;
+            foreach($orders as $order){
+                $data[] = [$i, (int)$order->count];
+                $i++;
+            }
+        }
+
+        return response()->json($data);
+    }
+
 }

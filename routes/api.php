@@ -437,6 +437,8 @@ Route::group(['namespace'=>'Api'], function() {
 
             Route::post('/change_user_relation', 'change_user_relation');
             Route::delete('/del_product/{product_id}', 'del_product');
+
+            Route::get('/get_product_options/{product_id}', 'get_product_options');
         });
         Route::controller(ProductController::class)->group( function() {
             // Route::apiResource('/product', 'ProductController');
@@ -567,6 +569,8 @@ Route::group(['namespace'=>'Api'], function() {
             Route::post('/order_is_confirm/{order_id}', 'order_is_confirm');
             Route::post('/check_sale_code', 'check_sale_code');
             Route::post('/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
+
+            Route::get('/get_order_statistics/{period}', 'get_order_statistics');
         });
         Route::apiResource('/sale_code', 'SaleCodeController');
 

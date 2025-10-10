@@ -9,6 +9,8 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
+use LanguageDetection\Language;
+
 // use View;
 // use URL;
 // use App\User;
@@ -23,7 +25,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(\LanguageDetection\Language::class, function ($app) {
+            return new \LanguageDetection\Language(['en', 'ka']);
+        });
     }
 
     /**

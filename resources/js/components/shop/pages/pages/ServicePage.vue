@@ -1,39 +1,44 @@
 <template>
-    <div class="container top_menu_margin h-recent-work">
-        <h1 class="page_title">{{ service.locale_data.title }}</h1>
+    <div class="service-container container h-recent-work">
+        <div class="service-header">
+            <h1 class="service-title">{{ service.locale_data.title }}</h1>
+        </div>
 
         <!-- <breadcrumb /> -->
 
-        <div class="row" v-if="service.service_images.length > 0">
-            <img class="service_page_image" :src="'../../images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title">
+        <div class="service-image-section" v-if="service.service_images.length > 0">
+            <img class="service-image" :src="'../../images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
         </div>
 
-        <div class="row service_page_text">
-            <!-- {{ service.locale_data.text }} -->
-            <span v-html="service.locale_data.text"></span>
+        <div class="service-description-section">
+            <div class="service-description" v-html="service.locale_data.text"></div>
         </div>
 
-        <gallery 
-            :images_prop="service.service_images"
-            :folder_path_prop="'/public/images/service_img/'"
-        />
-
-        <div class="row" v-if="this.services.length > 0">
-            <hr>
-
-            <h2 class="other_servces">{{ $t('shop.title.similar.services') }}</h2>
-
-            <ServiceItem
-                v-for="service in services"
-                :key='service.global_data.id'
-                :service_data="service">
-            </ServiceItem>
+        <div class="gallery-section">
+            <gallery
+                :images_prop="service.service_images"
+                :folder_path_prop="'/public/images/service_img/'"
+            />
         </div>
 
-        <metaData 
-            :title = "service.locale_data.title"
-            :description = "service.locale_data.short_description"
-            :image = "'/images/service_img/'+service.service_images[0].image"
+        <div class="similar-services-section" v-if="this.services.length > 0">
+            <hr class="section-divider" />
+
+            <h2 class="section-title">{{ $t('shop.title.similar.services') }}</h2>
+
+            <div class="services-list">
+                <ServiceItem
+                    v-for="service in services"
+                    :key='service.global_data.id'
+                    :service_data="service">
+                </ServiceItem>
+            </div>
+        </div>
+
+        <metaData
+            :title="service.locale_data.title"
+            :description="service.locale_data.short_description"
+            :image="'/images/service_img/'+service.service_images[0].image"
         />
     </div>
 </template>
@@ -93,3 +98,91 @@
         }
     }
 </script>
+
+<style scoped>
+    .service-container {
+        width: 100%;
+    }
+
+    .service-header {
+        margin-bottom: 20px;
+    }
+
+    .service-title {
+        text-align: center;
+    }
+
+    .service-image-section {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .service-image {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .service-description-section {
+        margin-bottom: 20px;
+    }
+
+    .service-description {
+        /* max-width: 800px; */
+        margin: 0 auto;
+    }
+
+    .gallery-section {
+        margin-bottom: 20px;
+    }
+
+    .similar-services-section {
+        margin-top: 20px;
+    }
+
+    .section-divider {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .services-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .service-header {
+            margin-bottom: 15px;
+        }
+
+        .service-image-section {
+            margin-bottom: 15px;
+        }
+
+        .service-description-section {
+            margin-bottom: 15px;
+        }
+
+        .gallery-section {
+            margin-bottom: 15px;
+        }
+
+        .similar-services-section {
+            margin-top: 15px;
+        }
+
+        .section-title {
+            margin-bottom: 15px;
+        }
+
+        .services-list {
+            gap: 15px;
+        }
+    }
+</style>

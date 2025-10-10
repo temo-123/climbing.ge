@@ -35,11 +35,6 @@ import sector_and_local_area_images from "./items/SectorsAndAreaLocalImageCompon
 
 import openImg from "../ImageOpenComponent.vue";
 
-// import { site_data } from './mixins/site_data_mixin.js'
-
-// // Vue.mixin(site_data); 
-// import mixin from './mixin.js'
-// import { site_data } from './mixins/site_data_mixin.js'
 import  grade_chart  from '../../../../mixins/grade_chart_mixin.js'
 
 export default {
@@ -59,11 +54,6 @@ export default {
         "article_id_prop"
     ],
     watch: {
-        // $route(to, from) {
-        //     this.get_outdoor_routes();
-        //     this.get_spot_rocks_images();
-        // },
-        
         article_id_prop: function(){
             this.article_id_prop = this.id
             this.get_outdoor_routes();
@@ -137,15 +127,6 @@ export default {
                 })
                 .catch((error) => {});
         },
-        // get_route_posts(route_id) {
-        //     this.route_posts = [];
-        //     axios
-        //         .get("../api/posts/get_route_posts/" + route_id)
-        //         .then((response) => {
-        //             this.route_posts = response.data;
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
         show_mtp_madel(id) {
             this.show_mtp_modal = true;
             this.mtp_detals = [];
@@ -158,15 +139,58 @@ export default {
                 })
                 .catch((error) => {});
         },
-        // get_mtp_posts(mtp_id) {
-        //     this.mtp_posts = [];
-        //     axios
-        //         .get("../api/posts/get_mtp_posts/" + mtp_id)
-        //         .then((response) => {
-        //             this.mtp_posts = response.data;
-        //         })
-        //         .catch((error) => console.log(error));
-        // },
     },
 };
 </script>
+
+<style scoped>
+#sectors {
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.sector_images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sector_images img {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    max-width: 100%;
+    height: auto;
+}
+
+.sector_images_1 {
+    justify-content: center;
+}
+
+.sector_images_2 {
+    justify-content: space-around;
+}
+
+.sector_images_3,
+.sector_images_4 {
+    justify-content: space-between;
+}
+
+/* Add spacing between areas */
+#sectors > div {
+    margin-bottom: 2rem;
+}
+
+/* Improve readability */
+#sectors h1, #sectors h2, #sectors h3 {
+    color: #495057;
+    margin-bottom: 1rem;
+}
+
+#sectors p {
+    line-height: 1.6;
+    color: #343a40;
+}
+</style>
