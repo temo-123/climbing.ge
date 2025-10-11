@@ -6,12 +6,14 @@
         <div class="row" v-if="!article_loading">
             <div class="offset-md-3 col-md-offset-3" v-if="!(!end_day) && start_time_h > 0">
                 <p class="calendar start_calendar">
+                    <i class="fa fa-calendar"></i>
                     {{ start_day }}
                     <span class="calendar_monthe">{{ start_month }}</span>
                     <span class="calendar_monthe">{{ start_time }}</span>
                     <em>Start</em>
                 </p>
                 <p class="calendar end_calendar">
+                    <i class="fa fa-calendar"></i>
                     {{ end_day }}
                     <span class="calendar_monthe">{{ end_month }}</span>
                     <span class="calendar_monthe">{{ end_time }}</span>
@@ -20,6 +22,7 @@
             </div>
             <div class="offset-md-6 col-md-offset-6" v-else>
                 <p class="calendar start_calendar">
+                    <i class="fa fa-calendar"></i>
                     {{ start_month }}
                     <span class="calendar_monthe">{{ start_year }}</span>
                     <em>Start</em>
@@ -69,7 +72,7 @@
 
             </div>
         </div>
-        <div class="row" v-if="!article_loading">
+        <!-- <div class="row" v-if="!article_loading">
             <div class="col-md-12"> 
                 <div class="row">
                     <div style="text-align: center; margin: 4% 30%;">
@@ -77,7 +80,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         
         <metaData 
             :title = "event.locale_event.title"
@@ -178,23 +181,95 @@
 </script>
 
 <style scoped>
-    .add_to_favorite{
-        float: right; 
+    .container {
+        margin-top: 20px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        color: #555;
+        margin-bottom: 20px;
+        font-weight: 300;
+    }
+
+    .add_to_favorite {
+        float: right;
         cursor: pointer;
+        color: #ccc;
+        transition: color 0.3s ease;
+        font-size: 24px;
     }
 
-    .calendar_monthe{
-        display: block;  
-        margin-top: -30px;
-        margin-bottom: -10px;
-        font-size: 60%;
+    .add_to_favorite:hover {
+        color: #999;
     }
 
-    /* .start_calendar{
+    .calendar {
+        background: #f0f8ff;
+        border-radius: 5px;
+        /* padding: 12px; */
+        display: inline-block;
+        margin: 10px;
+        color: #31708f;
+        font-size: 20px;
+        /* line-height: 1.3; */
+        text-align: center;
+    }
 
-    } */
-    .end_calendar{
+    .calendar i {
+        margin-right: 5px;
+        color: #6c757d;
+        font-size: 16px;
+    }
+
+    .calendar em {
+        color: #6c757d;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 12px;
+        display: block;
+        margin-top: 3px;
+    }
+
+    .calendar_monthe {
+        display: block;
+        margin-top: -20px;
+        margin-bottom: -3px;
+        font-size: 12px;
+    }
+
+    .end_calendar {
         float: right;
         margin-right: 25%;
+    }
+
+    h2 {
+        color: #666;
+        margin-top: 30px;
+        font-size: 1.8em;
+        font-weight: 300;
+    }
+
+    .row {
+        margin-bottom: 20px;
+    }
+
+    .btn-success {
+        background: #e9ecef;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        padding: 15px 30px;
+        font-size: 18px;
+        color: #495057;
+        transition: background-color 0.2s ease;
+    }
+
+    .btn-success:hover {
+        background: #dee2e6;
+    }
+
+    span {
+        line-height: 1.6;
+        font-size: 16px;
     }
 </style>

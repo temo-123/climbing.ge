@@ -74,32 +74,44 @@
                 axios
                 .get("/event/get_all_events/")
                 .then(response => {
+                    response.data.forEach(event => {
+                        event.completed = new Date(event.end_data) < new Date();
+                    });
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Events', 
+                                            'table_name': 'Events',
                                             'add_action': {
                                                 'action': 'eventAdd',
-                                                'link': 'spot_category_add', 
+                                                'link': 'spot_category_add',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
                                                         'ID',
                                                         'Title',
+                                                        'Start Date',
+                                                        'End Date',
                                                         'Public',
+                                                        'Completed',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['url_title']],
-                                                        ['data', ['pulished'], 'bool'],
+                                                        ['data', ['start_data']],
+                                                        ['data', ['end_data']],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['data', ['completed'], 'bool'],
                                                         ['action_router', 'eventEdit', 'btn btn-primary', 'Edit'],
                                                         ['action_fun_id', 'del_event', 'btn btn-danger', 'Del'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
@@ -120,32 +132,44 @@
                 axios
                 .get("/competition/get_all_competitions/")
                 .then(response => {
+                    response.data.forEach(competition => {
+                        competition.completed = new Date(competition.end_data) < new Date();
+                    });
                     this.data_for_tab.push({
                                             'id': 2,
-                                            'table_name': 'Competitions', 
+                                            'table_name': 'Competitions',
                                             'add_action': {
                                                 'action': 'competitionAdd',
-                                                'link': 'spot_category_add', 
+                                                'link': 'spot_category_add',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
                                                         'ID',
                                                         'Title',
+                                                        'Start Date',
+                                                        'End Date',
                                                         'Public',
+                                                        'Completed',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['url_title']],
-                                                        ['data', ['pulished'], 'bool'],
-                                                        ['action_router', 'eventEdit', 'btn btn-primary', 'Edit'],
+                                                        ['data', ['start_data']],
+                                                        ['data', ['end_data']],
+                                                        ['data', ['published'], 'bool'],
+                                                        ['data', ['completed'], 'bool'],
+                                                        ['action_router', 'competitionEdit', 'btn btn-primary', 'Edit'],
                                                         ['action_fun_id', 'del_event', 'btn btn-danger', 'Del'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
+                                                        ['no'],
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],

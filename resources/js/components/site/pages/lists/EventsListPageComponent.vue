@@ -453,4 +453,51 @@ header h1{
     text-align: left;
   }
 }
+
+.index_h2 {
+  color: #555;
+  margin-bottom: 10px;
+}
+
+.article_list_short_description {
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.articles_filter_bar {
+  background: #e6f3ff;
+  padding: 15px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.timeline:before {
+  background: linear-gradient(to bottom, rgba(39,159,187,0) 0%, #279fbb 8%, #279fbb 92%, rgba(39,159,187,0) 100%);
+}
+
+.timeline .hexa {
+  background: #279fbb;
+}
+
+.timeline .hexa:before {
+  border-bottom-color: #279fbb;
+}
+
+.timeline .hexa:after {
+  border-top-color: #279fbb;
+}
+
+.desc {
+  background: #e6f3ff;
+  transition: box-shadow 0.3s ease;
+}
+
+.desc:hover {
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.time {
+  background: #279fbb;
+  color: #fff;
+}
 </style>
