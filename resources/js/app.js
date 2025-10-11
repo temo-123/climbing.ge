@@ -61,18 +61,18 @@ Vue.mixin(going);
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 import store from "./store";
-import site_img from "./components/site/items/ImageComponent.vue";
+import guide_img from "./components/guide/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
 // import blog_img from "./components/blog/items/ImageComponent.vue";
 
-Vue.component("site-img", site_img);
+Vue.component("site-img", guide_img);
 Vue.component("shop-img", shop_img);
 // Vue.component("blog-img", blog_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goToAdminPage", goToAdminPage);
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
-import Index from "./components/site/IndexComponent.vue";
+import Index from "./components/guide/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
 import Blog from "./components/blog/BlogMainComponent.vue";
@@ -91,7 +91,7 @@ Vue.component(
 );
 Vue.component(
     "index-component",
-    require("./components/site/IndexComponent.vue").default
+    require("./components/guide/IndexComponent.vue").default
 );
 Vue.component(
     "home-component",

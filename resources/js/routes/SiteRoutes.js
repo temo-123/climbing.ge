@@ -8,7 +8,7 @@ import UnfollowComponent from "../components/global_components/varification_page
 import CommentEmailVerificationePage from "../components/global_components/varification_pages/CommentEmailVerificationePage.vue";
 
 function load(component) {
-    return () => import(`../components/site/pages/${component}.vue`);
+    return () => import(`../components/guide/pages/${component}.vue`);
 }
 
 function getLocaleRegex() {
