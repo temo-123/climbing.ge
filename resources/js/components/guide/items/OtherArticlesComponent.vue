@@ -9,7 +9,7 @@
             </h2>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
-            <h3 class="article_list_short_description"> <span v-html="$siteData.other_activity_description"></span> </h3>
+            <h3 class="article_list_short_description"> <span v-html="$siteData.data.other_activity_description"></span> </h3>
             
             <div class="article_card_container">
                 <articleCardComponent 

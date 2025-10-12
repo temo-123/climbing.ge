@@ -170,8 +170,8 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 // });
 
 Vue.config.productionTip = false;
-Vue.prototype.$siteData = [];
-Vue.prototype.$globalSiteData = [];
+Vue.prototype.$siteData = Vue.observable({ data: [] });
+Vue.prototype.$globalSiteData = Vue.observable({ data: [] });
 
 Vue.prototype.$going = going
 Vue.prototype.$editor_config = editor_config
@@ -213,8 +213,8 @@ const app = new Vue({
             axios
             .get("/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
             .then((response) => (
-                Vue.prototype.$siteData = response.data.locale_data,
-                Vue.prototype.$globalSiteData = response.data.global_data
+                this.$siteData.data = response.data.locale_data,
+                this.$globalSiteData.data = response.data.global_data
             ));
         },
     },

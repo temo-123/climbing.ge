@@ -10,7 +10,7 @@
                 </h2>
 
                 <div class="bar"><i class="fa fa-calendar"></i></div>
-                <h3 class='article_list_short_description'> {{this.$siteData.event_description}}</h3>
+                <h3 class='article_list_short_description'> {{this.$siteData.data.event_description}}</h3>
 
                 <div class="container">
                     <div class="row event-list">

@@ -1,10 +1,13 @@
- - [x] Add friendly scoped styles to EventPageComponent.vue (background, title, calendar, button, spacing)
-- [x] Adjust styles per user feedback: remove container background, change colors to softer neutrals, simplify calendar styling
-- [x] Enhance calendar in EventPageComponent.vue with light backgrounds, rounded corners, icons, and soft neutral colors
-- [x] Improve proportions and text styles in calendar sections (font sizes, padding, margins, line-height)
-- [x] Revise calendar style with light blue-gray background, balanced padding, centered text, and cleaner proportions
-- [x] Add friendly UI enhancements to EventsListPageComponent.vue (soft colors, spacing, hover effects, filter bar styling)
-- [x] Adjust colors in EventsListPageComponent.vue to shades of #279fbb (timeline, hexa, desc, time)
-- [x] Add more data columns ('Start Date', 'End Date') to Events and Competitions tabs in eventsAndCompetitionsListComponent.vue
-- [x] Add 'Completed' column to Events and Competitions tabs in eventsAndCompetitionsListComponent.vue
-- [x] Add calculation logic for 'Completed' based on end_data < today in eventsAndCompetitionsListComponent.vue
+- [x] Change slider transition to smoother cubic-bezier easing
+- [x] Add dot indicators below the slider for navigation
+- [x] Add hover effects on partner items
+- [x] Add goToSlide method for dot clicks
+- [x] Style the dots with CSS
+- [x] Remove dot indicators
+- [x] Add auto-slide functionality
+- [x] Enhance animation easing
+- [x] Add fade-in effect on items
+- [x] Add mouse wheel support
+- [x] Add bounce effect to animation
+- [x] Pause auto-slide on interaction
+- [ ] Test the improved slider

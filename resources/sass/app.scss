@@ -9,10 +9,6 @@
 *   Site global styles
 *
 */
-.thumbnail{
-    background-color: #e1dede;
-    margin-bottom: 18px;
-}
 .functional_block_title {
     color: #333;
 }
@@ -718,134 +714,6 @@ time {
     padding: 5px;
     text-align: center;
     text-transform: uppercase;
-}
-
-time.pink {
-    background-color: rgb(197, 44, 102);
-}
-time.purple {
-    background-color: rgb(165, 82, 167);
-}
-
-time.dkblue {
-    background-color: #336699;
-}
-
-time.blue_green_2 {
-    background-color: #117086;
-}
-
-time.blue_green {
-    background-color: #148aa5;
-}
-time.blue_violet {
-    background-color: #3714a4;
-}
-time.brown {
-    background-color: #964b00;
-}
-time.crimson {
-    background-color: #a50516;
-}
-time.deep_pink {
-    background-color: #fb3c8f;
-}
-time.forest_green {
-    background-color: #1b4f15;
-}
-time.fuchsia {
-    background-color: #a51497;
-}
-time.gray {
-    background-color: #686868;
-}
-time.green {
-    background-color: #3aa03a;
-}
-time.hotpink {
-    background-color: #ff0080;
-}
-time.lemon {
-    background-color: #fee233;
-}
-time.ligh_blue {
-    background-color: #8bbdeb;
-}
-time.light_red {
-    background-color: #fc6a6c;
-}
-time.lime {
-    background-color: #c1fd33;
-}
-time.lime_green {
-    background-color: #2bfd2f;
-}
-time.magenta {
-    background-color: #fc1cad;
-}
-time.maroon {
-    background-color: #7f2b14;
-}
-time.midnight {
-    background-color: #000066;
-}
-time.olive {
-    background-color: #2b4726;
-}
-time.orange {
-    background-color: #fd7222;
-}
-time.orange_red {
-    background-color: #fc331c;
-}
-time.orange_yellow {
-    background-color: #ffcc00;
-}
-time.peach {
-    background-color: #ffe5b4;
-}
-time.pink {
-    background-color: #fc5ab8;
-}
-time.purple {
-    background-color: #af31f2;
-}
-time.red {
-    background-color: #fc0d1b;
-}
-time.red_orange {
-    background-color: #d7462c;
-}
-time.salmon {
-    background-color: #f69e94;
-}
-time.tan {
-    background-color: #f2ddbf;
-}
-time.teal {
-    background-color: #2b8a6d;
-}
-time.violet {
-    background-color: #6b28ce;
-}
-time.violet_blue {
-    background-color: #6041fa;
-}
-time.white {
-    background-color: #ffffff;
-}
-time.yellow {
-    background-color: #feee35;
-}
-time.yellow_green {
-    background-color: #defd35;
-}
-time.yellow_orange {
-    background-color: #fec42e;
-}
-
-.time {
-    background-color: rgb(165, 82, 167);
 }
 
 time > span {
@@ -1969,7 +1837,7 @@ a.socialIcon:hover,
 }
 
 .indoor_img img {
-    border-radius: 0px 0px 0px 30px;
+    border-radius: 12px 0px 0px 12px;
 }
 .indoor_text p {
     margin: 2%;
@@ -3927,11 +3795,11 @@ body.modal-open {
     /*margin-top: 7%;*/
 }
 
-.services h1 {
-    font-size: 64px;
-    /*color: #333;*/
-    text-align: center;
-}
+// .services h1 {
+//     font-size: 64px;
+//     /*color: #333;*/
+//     text-align: center;
+// }
 
 .bar {
     border-bottom: 1px solid #d8d8d8;
@@ -4655,7 +4523,7 @@ ul.portfolioFilter a.current {
     margin-bottom: 20%;
     box-shadow: 0px 16px 38px -27px #000000;
     border-radius: 10px;
-    border: solid 1px #97fffe;
+    // border: solid 1px #97fffe;
 }
 .view img {
     display: block;
@@ -4835,4 +4703,95 @@ ul.portfolioFilter a.current {
 }
 .product-image .discount-percent-badge.discount-badge-fourty {
     background: #f54d5c !important;
+}
+
+/*
+*
+*   Migrated common styles from components
+*
+*/
+.complaint_icon{
+    float: right;
+    cursor: pointer;
+    font-size: 130%;
+}
+.height-100{
+    height:100vh;
+}
+.rating-header {
+    margin-top: -10px;
+}
+.footer_input, .footer_re_capcha{
+    margin-bottom: 1.5%;
+}
+.navbar-collapse {
+    max-height: none !important;
+}
+.navbar-inverse .navbar-collapse{
+    border-color: #838383 !important;
+}
+.model-body {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-footer {
+    padding: 1rem;
+}
+
+.friendly-loading img {
+    max-width: 100%;
+}
+
+.modal-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+/*
+*
+*   Friendly Card Components Styles
+*
+*/
+.portfolio-img {
+    margin-bottom: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    background-color: #fff;
+    position: relative;
+}
+
+.portfolio-img:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+}
+
+.portfolio-img img {
+    transition: transform 0.3s ease;
+}
+
+.portfolio-img:hover img {
+    transform: scale(1.05);
+}
+
+.isotope-item-dtls {
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 0 0 10px 10px;
+}
+
+.isotope-item-dtls h3 {
+    margin-bottom: 10px;
+    color: #333;
+    font-size: 18px;
+}
+
+.article_size, .mount_size {
+    color: #666;
+    line-height: 1.5;
 }

@@ -65,11 +65,5 @@
         background-color: #005f43 !important;
     }
 
-    .navbar-inverse .navbar-collapse{
-        border-color: #838383 !important;
-    }
 
-    .navbar-collapse {
-        max-height: none !important;
-    }
 </style>

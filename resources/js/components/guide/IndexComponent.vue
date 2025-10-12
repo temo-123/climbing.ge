@@ -69,10 +69,6 @@ export default {
     .navbar-inverse .navbar-collapse{
         border-color: #838383;
     }
-
-    .navbar-collapse {
-        max-height: none !important;
-    }
     /* .navbar-inverse .navbar-nav>.open>a{
         background-color: #23788c !important;
     } */

@@ -6,7 +6,7 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="aboutus">
 
-                            <span v-html="this.$siteData.shop_description"></span>
+                            <span v-html="this.$siteData.data.shop_description"></span>
                             
                         </div>
                     </div>

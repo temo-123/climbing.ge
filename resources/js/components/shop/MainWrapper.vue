@@ -72,11 +72,5 @@ export default {
         background-color: #23788c;
     }
     
-    .navbar-inverse .navbar-collapse{
-        border-color: #838383 !important;
-    }
 
-    .navbar-collapse {
-        max-height: none !important;
-    }
 </style>

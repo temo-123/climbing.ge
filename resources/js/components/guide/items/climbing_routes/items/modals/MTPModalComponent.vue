@@ -138,11 +138,6 @@ export default {
 </script>
 
 <style>
-.model-body {
-    /* max-height: 70vh; */
-    overflow-y: auto;
-}
-
 /* Friendly modal styles */
 .modal-section {
     margin-bottom: 1.5rem;

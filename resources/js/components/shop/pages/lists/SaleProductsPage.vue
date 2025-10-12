@@ -5,7 +5,7 @@
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.shop_short_description"></span>
+            <span v-html="this.$siteData.data.shop_short_description"></span>
         </h2>
 
         <div class="col-md-12" v-if="products_loading">

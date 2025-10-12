@@ -127,11 +127,6 @@ export default {
 </script>
 
 <style>
-.complaint_icon{
-    float: right;
-    cursor: pointer;
-    font-size: 130%;
-}
 .comentator_name{
     margin: 0px;
     /* margin-left: 18%; */
@@ -145,16 +140,6 @@ export default {
     border-radius: 3px 0 0 5px;
 
     margin-bottom: 22px;
-}
-
-.model-body {
-    /* max-height: 60vh; */
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
-.friendly-loading img {
-    max-width: 100%;
 }
 
 .reviews-list {
@@ -209,8 +194,6 @@ export default {
     color: #6c757d;
 }
 
-.modal-footer {
-    padding: 1rem;
-}
+
 
 </style>

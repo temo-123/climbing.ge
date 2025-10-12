@@ -180,7 +180,7 @@
         <div class="model-body">
             <div class="container">
                 <div class="row">
-                    <span v-html="this.$siteData.terms_of_use"></span>
+                    <span v-html="this.$siteData.data.terms_of_use"></span>
                 </div>
             </div>
         </div>

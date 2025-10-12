@@ -644,13 +644,13 @@
         font-size: 1em;
     }
 
-    .product-description-section,
+    /* .product-description-section,
     .reviews-section,
     .similar-products-section,
-    .all-products-section {
-        padding: 30px 0;
-        border-top: 1px solid #eee;
-    }
+    .all-products-section { */
+        /* padding: 30px 0; */
+        /* border-top: 1px solid #eee; */
+    /* } */
 
     .all-products-link {
         display: inline-block;

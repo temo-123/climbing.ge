@@ -157,10 +157,6 @@ export default {
 </script>
 
 <style>
-.rating-header {
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
 .star_review_button{
     border: none;
     background: none;

@@ -12,7 +12,7 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.shop_short_description"></span>
+                <span v-html="this.$siteData.data.shop_short_description"></span>
             </h3>
 
             <div class="col-sm-12">
@@ -38,7 +38,7 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.services_description"></span>
+                <span v-html="this.$siteData.data.services_description"></span>
             </h3>
             <div class="col-sm-12">
                 <ServiceItem
@@ -55,7 +55,7 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.tour_description"></span>
+                <span v-html="this.$siteData.data.tour_description"></span>
             </h3>
             <div class="col-sm-12">
                 <!-- <div class="row"> -->

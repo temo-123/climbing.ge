@@ -10,7 +10,7 @@
                         <h4 class="footer_title">{{ $t('global.footer.about us')}}</h4>
 
                         <div class="footer_description_block">
-                            <span v-html="this.$siteData.shop_short_description"></span>
+                            <span v-html="this.$siteData.data.shop_short_description"></span>
 
                             <router-link :to="{name: 'about_store'}" exact>{{ $t("global.footer.more") }}</router-link>
                         </div>

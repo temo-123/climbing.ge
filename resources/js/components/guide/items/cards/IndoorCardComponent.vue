@@ -1,6 +1,9 @@
 <template>
-    <div class='row featurette' style='margin-bottom: 7%'>
+    <div class='row featurette indoor-card'>
         <div class='col-md-6 indoor_img'>
+            <div class="product-image" v-if="indoor.global_data.new_flag">
+                <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
+            </div>
             <router-link :to="'indoor/'+indoor.global_data.url_title">
                 <!-- <img :src="'images/indoor_img/'+indoor.image" alt="$indoor.locale_data -> title}}"> -->
 
@@ -10,9 +13,6 @@
         </div>
         <div class='col-md-6 indoor_text indoot_text_for_mobile'>
             <div class="container">
-                <div class="product-image" v-if="indoor.global_data.new_flag">
-                    <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
-                </div>
                 <div class='row'>
                     <router-link :to="'indoor/'+indoor.global_data.url_title">
                     <!-- <a href=" route('indoor_page', array('title'=>$indoor['url_title'])) }}"> -->
@@ -107,12 +107,133 @@
     }
 </script>
 
-<style>
-    .deanger_text{
-        font-size: 120%; 
-        color: red;
+<style scoped>
+    .indoor-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 7%;
+        padding: 20px;
     }
+
+    .indoor-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transform: translateY(-5px);
+    }
+
+    .indoor_img {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .indoor_img img {
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .indoor_img:hover img {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        filter: brightness(1.05);
+    }
+
+    .product-image {
+        position: relative;
+    }
+
+    .discount_percent_badge_for_indoor {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        margin: 0;
+        background: #279fbb;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .indoor_text {
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .indoor_text h2 {
+        font-size: 1.8em;
+        margin: 1.5em 0 1em 0;
+        color: #333;
+        font-weight: bold;
+    }
+
+    .indoor_text span {
+        font-size: 1em;
+        line-height: 1.6;
+        color: #666;
+        margin-bottom: 1em;
+    }
+
+    .indoor_text b {
+        font-size: 1.2em;
+        color: #279fbb;
+        margin-bottom: 0.5em;
+    }
+
+    .indoor_text p {
+        font-size: 1em;
+        color: #555;
+        margin: 0.5em 0;
+    }
+
+    .deanger_text {
+        font-size: 1.2em;
+        color: #e74c3c;
+        font-weight: bold;
+    }
+
     .discount_percent_badge_for_indoor {
         margin: 5px 18px 0 0;
+        background: #279fbb;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .indoor-card {
+            flex-direction: column;
+            padding: 15px;
+        }
+
+        .indoor_img {
+            margin-bottom: 20px;
+        }
+
+        .indoor_text {
+            padding-left: 0;
+        }
+
+        .indoor_text h2 {
+            font-size: 1.5em;
+            margin: 1em 0;
+        }
+
+        .indoor_text b {
+            font-size: 1.1em;
+        }
+
+        .indoor_text p {
+            font-size: 0.9em;
+        }
     }
 </style>

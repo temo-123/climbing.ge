@@ -39,9 +39,9 @@
             </ul>
         </nav>
 
-        <!-- <div class="row local_bisnes" v-if="this.$globalSiteData.ad">
+        <!-- <div class="row local_bisnes" v-if="this.$globalSiteData.data.ad">
             <div class="col-sm-12 col-md-10">
-                <span v-html="this.$globalSiteData.ad"></span>
+                <span v-html="this.$globalSiteData.data.ad"></span>
             </div>
         </div> -->
 

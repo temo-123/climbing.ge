@@ -5,7 +5,7 @@
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.tour_description"></span>
+            <span v-html="this.$siteData.data.tour_description"></span>
         </h2>
 
         <span v-if="tours.length">

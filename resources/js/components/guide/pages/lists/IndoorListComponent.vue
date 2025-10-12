@@ -7,7 +7,7 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
             
             <h2 class="article_list_short_description">
-                {{this.$siteData.indoor_description}}
+                {{this.$siteData.data.indoor_description}}
             </h2>
 
             <div class="row" v-if="this.indoors.length > 0">
@@ -35,7 +35,7 @@
         
         <metaData 
             :title = "$t('guide.meta.indoor climbing')"
-            :description = "this.$siteData.indoor_description"
+            :description = "this.$siteData.data.indoor_description"
             :image = "'/public/images/meta_images/indoor.jpg'"
         />
     </div>

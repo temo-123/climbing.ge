@@ -2,19 +2,14 @@
     <div>
         <div>
             <div class="col-md-8">
+                <h2 id='comments' class="section-title">{{ $t('guide.article.title.comments')}}</h2>
                 <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
-                                    
-                    <div class="row">
-                        <div class="col-md-12">
-                            <h2 id='comments'>{{ $t('guide.article.title.comments')}}</h2>
-                        </div>
-                    </div>
 
                     <div v-if="user.length == 0">
                         <div class="row" >
                             <div class="col-md-4">
                                 <div class="form-group">
-                                    <input type="text" name="name" v-model="data.name" class="form-control textarea" placeholder="Name"><br>
+                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" placeholder="Name"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors['data.name']">
                                         Name is validation
                                     </div>
@@ -22,7 +17,7 @@
                             </div>
                             <div class="col-md-8">
                                 <div class="form-group">
-                                    <input type="text" name="surname" v-model="data.surname" class="form-control textarea" placeholder="Surname"><br>
+                                    <input type="text" name="surname" v-model="data.surname" class="form-control friendly-input" placeholder="Surname"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors['data.surname']">
                                         Surname is validation
                                     </div>
@@ -33,7 +28,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <input type="email" name="email" v-model="data.email" class="form-control textarea" placeholder="E_mail"><br>
+                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" placeholder="E_mail"><br>
                                     <div class="alert alert-danger" role="alert" v-if="errors['data.email']">
                                         Email is validation
                                     </div>
@@ -60,7 +55,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your comment (Write comments only in English, no more than 500 characters!)" class="form-control textarea"></textarea>
+                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your comment (Write comments only in English, no more than 500 characters!)" class="form-control friendly-input"></textarea>
                                 <div class="alert alert-danger" role="alert" v-if="errors['data.text']">
                                     Comment text is validation
                                 </div>
@@ -129,60 +124,69 @@
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
                             <div class="row">
                                 <div class="col-xs-2 col-md-2" v-if="comment.user == null || comment.user.image == null">
-                                    <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" />
+                                    <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
                                 </div>
                                 <div class="col-xs-2 col-md-2" v-else>
-                                    <img :src="'/public/images/user_profil_img/' + comment.user.image" />
+                                    <img :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
                                 </div>
 
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
                                         <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
-                                        
+
                                         <span v-if="user.length != 0">
                                             <div @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id || comment.comment.email != user.email" >
                                                 <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                             </div>
-                                            <button @click="del_comment(comment.comment.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
-                                                del
-                                            </button>
                                         </span>
                                     </div>
                                     <div class="row">
                                         <p>{{comment.comment.text}}</p>
                                     </div>
-                                </div>
-                                <div class="pull-right">
-                                    <a @click="crete_comment_answer(comment.comment.id)">Reply to comment</a>
+                                    <div class="row" v-if="user.length != 0">
+                                        <div class="col-xs-6">
+                                            <a @click="crete_comment_answer(comment.comment.id)"><i class="fa fa-reply"></i> Reply</a>
+                                        </div>
+                                        <div class="col-xs-6 text-right" v-if="comment.user && comment.user.id == user.id">
+                                            <button @click="del_comment(comment.comment.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
+                                                <i aria-hidden="true" class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <ul>
-                                <li v-for="answer in comment.answers" :key="answer.answer.id" class="comment_board">
+
+                            <ul class="" v-if="comment.answers.length != 0">
+                                <li v-for="answer in comment.answers" :key="answer.answer.id" class="comment_board coment_answer_modal">
                                     <div class="row">
 
                                         <div class="col-xs-2 col-md-2" v-if="answer.user == null || answer.user.image == null">
-                                            <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" />
+                                            <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
                                         </div>
                                         <div class="col-xs-2 col-md-2" v-else>
-                                            <img :src="'/public/images/user_profil_img/' + answer.user.image" />
+                                            <img :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
                                         </div>
 
                                         <div class="col-xs-10 col-md-10">
                                             <div class="row">
                                                 <h6>Answer</h6>
                                                 <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
-                                                
+
                                                 <span v-if="user.length != 0">
                                                     <div @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id">
                                                         <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
                                                     </div>
-                                                    <button @click="del_comment(answer.answer.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger pull-right">
-                                                        del
-                                                    </button>
                                                 </span>
                                             </div>
                                             <div class="row">
                                                 <p>{{answer.answer.text}}</p>
+                                            </div>
+                                            <div class="row" v-if="user.length != 0 && answer.user && answer.user.id == user.id">
+                                                <div class="col-xs-12 text-right">
+                                                    <button @click="del_comment(answer.answer.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
+                                                        <i aria-hidden="true" class="fa fa-trash"></i>
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -203,33 +207,43 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div class="model-body">
                 <div class="row justify-content-center" v-if="complaint_loader">
-                    <div class="col-md-4">
+                    <div class="col-md-4 friendly-loading">
                         <img :src="'../public/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 
-                <span v-if="!complaint_loader">
-                    <h1>You can file a complaint for this comment</h1>
-                    <p>Please select a reason for deleting the comment!!!</p>
-                    
-                    <form v-on:submit.prevent="make_complaint" id="make_complaint" class="form">
-                        <input v-if="user.length == 0" type="email" name="complainter email" v-model="complainter_email" class="form-control textarea" placeholder="Your email">
+                <div v-if="!complaint_loader">
+                    <div class="modal-section">
+                        <h2 class="section-title">File a Complaint</h2>
+                        <p>You can file a complaint for this comment. Please select a reason for deleting the comment.</p>
+                    </div>
 
-                        <select class="form-control" v-model="selected_comment_complaint" name="comment delete cause" required> 
-                            <option value="" disabled>Select complaint cause</option>
-                            <option value="Hostile remarks">Hostile remarks</option>
-                            <option value="Does not match the theme of the site">Does not match the theme of the site</option>
-                            <option value="Spam">Spam</option>
-                            <option value="Sexual content">Sexual content</option>
-                            <option value="Expression of anger">Expression of anger</option>
-                            <option value="Conflict with other members of the site">Conflict with other members of the site</option>
-                            <option value="The language of the comments does not match the requirements of the site">The language of the comments does not match the requirements of the site</option>
-                        </select>
+                    <form v-on:submit.prevent="make_complaint" id="make_complaint" class="form">
+                        <div class="modal-section">
+                            <div class="form-group" v-if="user.length == 0">
+                                <label class="form-label">Your Email</label>
+                                <input type="email" name="complainter email" v-model="complainter_email" class="form-control friendly-input" placeholder="Your email">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Reason for Complaint</label>
+                                <select class="form-control friendly-input" v-model="selected_comment_complaint" name="comment delete cause" required>
+                                    <option value="" disabled>Select complaint cause</option>
+                                    <option value="Hostile remarks">Hostile remarks</option>
+                                    <option value="Does not match the theme of the site">Does not match the theme of the site</option>
+                                    <option value="Spam">Spam</option>
+                                    <option value="Sexual content">Sexual content</option>
+                                    <option value="Expression of anger">Expression of anger</option>
+                                    <option value="Conflict with other members of the site">Conflict with other members of the site</option>
+                                    <option value="The language of the comments does not match the requirements of the site">The language of the comments does not match the requirements of the site</option>
+                                </select>
+                            </div>
+                        </div>
                     </form>
-                </span>
-            </pre>
+                </div>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
@@ -242,6 +256,8 @@
                 </div>
             </div>
         </stack-modal>
+
+        <user-modal ref="userModal" :modalClass="'user-modal'"></user-modal>
     </div>
 </template>
 
@@ -250,12 +266,14 @@
     //http://www.blog.tonyswierz.com/javascript/add-and-use-google-recaptcha-in-a-vuejs-laravel-project/
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import UserModal from '../../../global_components/modals/UserModalComponent.vue'
     export default {
         components: {
             StackModal,
             SlickItem,
             SlickList,
-            VueRecaptcha 
+            VueRecaptcha,
+            UserModal
         },
         props: [
             "article_id",
@@ -434,16 +452,19 @@
                 this.is_refresh = false
                 this.refresh_id++ 
             },
+
+            handleUserImageClick(user) {
+                if (user && user.id) {
+                    this.$refs.userModal.show_modal(user.id);
+                } else {
+                    alert("This user is not registered on our website");
+                }
+            },
         }
     }
 </script>
 
 <style scoped>
-    .complaint_icon{
-        float: right;
-        cursor: pointer;
-        font-size: 130%;
-    }
     .comentator_name{
         margin: 0px;
         /* margin-left: 18%; */
@@ -451,15 +472,35 @@
         color: #000;
     }
     .comment_board{
-        border: solid;
-            /* border-top-width: medium;
-            border-right-width: medium;
-            border-bottom-width: medium;
-            border-left-width: medium; */
-        border: 0, 1, 0;
-        border-width: 2px 0 0 2px;
-        border-radius: 3px 0 0 5px;
-
-        margin-bottom: 22px;
+        /* background-color: #f8f9fa;     */
+        background-color: #d6e4f2;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+    }
+    .comment_board .btn {
+        margin: 2px 5px;
+    }
+    .comment_board a {
+        margin: 2px 5px;
+    }
+    .comment_board {
+        position: relative;
+    }
+    .comment_board img {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .coment_answer_modal{
+        margin-top: 1rem; 
+        list-style-type: none; 
+        padding-left: 0px;     
+        background-color: #d3d3d3;
+        padding: 1rem;
+        border-radius: 8px;
     }
 </style>

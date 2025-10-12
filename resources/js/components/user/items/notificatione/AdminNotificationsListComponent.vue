@@ -42,12 +42,12 @@
                 
                 <span v-if="$can('edit', 'site_data')">
                     <div class="alert alert-danger" role="alert" v-if="
-                            !this.$siteData['text'] ||
-                            !this.$siteData['text_ru'] ||
-                            !this.$siteData['text_ka'] ||
-                            !this.$siteData['short_description_ru'] ||
-                            !this.$siteData['short_description_ka'] ||
-                            !this.$siteData['short_description']
+                            !this.$siteData.data.data['text'] ||
+                            !this.$siteData.data.data['text_ru'] ||
+                            !this.$siteData.data.data['text_ka'] ||
+                            !this.$siteData.data.data['short_description_ru'] ||
+                            !this.$siteData.data.data['short_description_ka'] ||
+                            !this.$siteData.data.data['short_description']
                         ">
                         <strong>Danger!</strong> 
                         Web-site information is not fool. check page "

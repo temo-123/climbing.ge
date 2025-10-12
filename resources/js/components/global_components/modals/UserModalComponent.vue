@@ -10,7 +10,7 @@
             :cancelButton="{
                 visible: true,
                 title: 'Close',
-                btnClass: { 'btn btn-danger': true },
+                btnClass: { 'btn btn-danger float-right': true },
             }"
         >
             <div class="p-6">
@@ -19,10 +19,10 @@
                 </div>
                 <div v-else class="max-w-2xl mx-auto">
                     <div class="flex flex-col items-center mb-6">
-                        <img v-if='user.image' :src="'/public/images/user_profil_img/' + user.image" class="w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-4 border-gray-200 mb-4" :alt="'Profile image of ' + user.name + ' ' + user.surname" />
-                        <div v-else class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-200 flex items-center justify-center mb-4">
+                        <img v-if='user.image' :src="'/public/images/user_profil_img/' + user.image" class="modal_profil_image" :alt="'Profile image of ' + user.name + ' ' + user.surname" />
+                        <!-- <div v-else class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-200 flex items-center justify-center mb-4">
                             <span class="text-gray-500 text-4xl">👤</span>
-                        </div>
+                        </div> -->
                         <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800">{{ user.name }} {{ user.surname }}</h1>
                         <p class="text-lg text-gray-600 text-center">{{ user.city }}, {{ user.country }}</p>
                     </div>
@@ -49,6 +49,8 @@ export default {
         StackModal,
     },
     props: [
+        'modalClass',
+        'user',
         // "sector",
     ],
     data: function () {
@@ -90,5 +92,12 @@ export default {
 </script>
 
 <style>
+.modal_profil_image {
+    border: 4px solid #edf2f7;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
 
+    max-width: 70%;
+    margin-left: 15%;
+}
 </style>

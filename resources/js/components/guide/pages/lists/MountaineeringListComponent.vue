@@ -7,7 +7,7 @@
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
             <h2 class="article_list_short_description">
-                {{this.$siteData.mount_description}}
+                {{this.$siteData.data.mount_description}}
             </h2>
 
             <div class="row" v-if="this.mounts.length > 0">
@@ -77,7 +77,7 @@
         
         <metaData 
             :title = "$t('guide.meta.mountaineering')"
-            :description = "this.$siteData.mount_description"
+            :description = "this.$siteData.data.mount_description"
             :image = "'/public/images/meta_img/mount.jpg'"
         />
     </div>

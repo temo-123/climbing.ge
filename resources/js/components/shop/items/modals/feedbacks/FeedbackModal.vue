@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_modal"
-            title="Product feedack"
+            title="Product Feedback"
             @close="close_model()"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
@@ -15,7 +15,7 @@
                     <div class="row">
 
                         <div class="row justify-content-center" v-show="is_loading">
-                            <div class="col-md-4">
+                            <div class="col-md-4 friendly-loading">
                                 <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
                             </div>
                         </div>
@@ -24,31 +24,36 @@
                             <form @submit.prevent="add_feedback" id="feedback_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
                                 <div v-if="user.length == 0">
-                                    <div class="row" >
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <input type="text" name="name" v-model="data.name" class="form-control textarea" placeholder="Name" required><br>
-                                                <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                                    Name is validation
+                                    <div class="modal-section">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="form-label">Name</label>
+                                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" placeholder="Name" required><br>
+                                                    <div class="alert alert-danger" role="alert" v-if="errors.name">
+                                                        Name is validation
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="form-group">
+                                                    <label class="form-label">Surname</label>
+                                                    <input type="text" name="surname" v-model="data.surname" class="form-control friendly-input" placeholder="Surname" required><br>
+                                                    <div class="alert alert-danger" role="alert" v-if="errors.surname">
+                                                        Surname is validation
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-8">
-                                            <div class="form-group">
-                                                <input type="text" name="surname" v-model="data.surname" class="form-control textarea" placeholder="Surname" required><br>
-                                                <div class="alert alert-danger" role="alert" v-if="errors.surname">
-                                                    Surname is validation
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <input type="email" name="email" v-model="data.email" class="form-control textarea" placeholder="E_mail" required><br>
-                                                <div class="alert alert-danger" role="alert" v-if="errors.email">
-                                                    Email is validation
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <label class="form-label">Email</label>
+                                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" placeholder="E_mail" required><br>
+                                                    <div class="alert alert-danger" role="alert" v-if="errors.email">
+                                                        Email is validation
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -70,34 +75,41 @@
                                 </div>
                                 
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your feedback (Write feedbacks only in English, no more than 500 characters!)" class="form-control textarea" required></textarea>
-                                            <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                                feedback text is validation
+                                <div class="modal-section">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Your Feedback</label>
+                                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your feedback (Write feedbacks only in English, no more than 500 characters!)" class="form-control friendly-input" required></textarea>
+                                                <div class="alert alert-danger" role="alert" v-if="errors.text">
+                                                    feedback text is validation
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                             
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            Do you have this product?
-                                            <input type="checkbox" v-model="data.have_product" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                                <div class="modal-section">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">Do you have this product?</label>
+                                                <input type="checkbox" v-model="data.have_product" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <span>How did you like this route?</span>
-                                            <span v-if="data.stars > 0"></span>
+                                <div class="modal-section">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="form-label">How did you like this product?</label>
+                                                <span v-if="data.stars > 0"></span>
 
-                                            <starReitingInsert @get_stars="update_stars"/>
+                                                <starReitingInsert @get_stars="update_stars"/>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

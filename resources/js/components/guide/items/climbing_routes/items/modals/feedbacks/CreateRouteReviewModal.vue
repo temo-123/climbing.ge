@@ -195,25 +195,7 @@ export default {
 </script>
 
 <style>
-.rating-header {
-    margin-top: -10px;
-    margin-bottom: 10px;
-}
-
-.model-body {
-    /* max-height: 60vh; */
-    overflow-y: auto;
-    overflow-x: hidden;
-}
-
 /* Friendly modal styles */
-.modal-section {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-}
 
 .main-title {
     font-weight: 600;
@@ -247,11 +229,6 @@ export default {
     border: 1px solid #ced4da;
 }
 
-.friendly-loading img {
-    max-width: 100%;
-}
 
-.modal-footer {
-    padding: 1rem;
-}
+
 </style>

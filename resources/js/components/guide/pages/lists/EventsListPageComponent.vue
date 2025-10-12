@@ -3,7 +3,7 @@
         <h1 class='index_h2'>{{ $t('guide.title.events')}}</h1>
 
         <h2 class="article_list_short_description">
-            {{this.$siteData.event_description}}
+            {{this.$siteData.data.event_description}}
         </h2>
 
         <div v-if="events == []">
@@ -47,7 +47,7 @@
         
         <metaData 
             :title = "$t('guide.meta.events')"
-            :description = "this.$siteData.event_description"
+            :description = "this.$siteData.data.event_description"
             :image = "'/public/images/meta_img/competition.jpg'"
         />
     </div>

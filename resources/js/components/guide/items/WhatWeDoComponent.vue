@@ -7,68 +7,64 @@
             <div class="bar"><i class="fa fa-book"></i></div>
 
             <h3 class="article_list_short_description">
-                {{ this.$siteData.what_we_do_description }}
+                {{ this.$siteData.data.what_we_do_description }}
             </h3>
                 
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <ul class="right-text">
-                        <li>
+                        <li class="friendly-item" @click="$router.push({name: 'outdoors'})" style="cursor: pointer;">
                             <img alt='Outdoor climbing in Georgia' class="index_category_right what_we_do_title_image" src="/images/site_img/outdoor.png">
 
                             <h4 class="what_we_do_title">
-                                <router-link :to="{name: 'outdoors'}" exact>
-                                    <strong>{{ $t('guide.title.outdoor climbing')}}</strong>
-                                </router-link>
+                                <strong>{{ $t('guide.title.outdoor climbing')}}</strong>
                             </h4>
 
                             <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.indoor_description"></span>
+                                <span v-html="this.$siteData.data.outdoor_description"></span>
                             </div>
                         </li>
-                        <div class="clearfix"></div>
-                        <li>
+                        
+                        <!-- <div class="clearfix"></div> -->
+
+                        <li class="friendly-item" @click="$router.push({name: 'indoors'})" style="cursor: pointer;">
                             <img alt='Indoor climbing' class="index_category_right what_we_do_title_image" src="/images/site_img/indoor.png">
 
                             <h4 class="what_we_do_title">
-                                <router-link :to="{name: 'indoors'}" exact> 
-                                    <strong>{{ $t('guide.title.indoor climbing')}}</strong>
-                                </router-link>
+                                <strong>{{ $t('guide.title.indoor climbing')}}</strong>
                             </h4>
 
                             <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.indoor_description"></span>
+                                <span v-html="this.$siteData.data.indoor_description"></span>
                             </div>
                         </li>
                     </ul>
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
                     <ul class="left-text">
-                        <li>
+                        <li class="friendly-item" @click="$router.push({name: 'ices'})" style="cursor: pointer;">
                             <img alt='Mountaineering in Georgia' class="index_category_left what_we_do_title_image" src="/images/site_img/ice.png">
 
                             <h4 class="what_we_do_title">
-                                <router-link :to="{name: 'ices'}" exact>
-                                    <strong>{{ $t('guide.title.ice climbing')}}</strong>
-                                </router-link>
+                                <strong>{{ $t('guide.title.ice climbing')}}</strong>
                             </h4>
 
                             <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.ice_description"></span>
+                                <span v-html="this.$siteData.data.ice_description"></span>
                             </div>
                         </li>
-                        <div class="clearfix"></div>
-                        <li>
+
+                        <!-- <div class="clearfix"></div> -->
+
+                        <li class="friendly-item" @click="$router.push({name: 'mountaineerings'})" style="cursor: pointer;">
                             <img alt='Ice climbing in Georgia' class="index_category_left what_we_do_title_image" src="/images/site_img/mount.png">
 
                             <h4 class="what_we_do_title">
-                                <router-link :to="{name: 'mountaineerings'}" exact>
-                                    <strong>{{ $t('guide.title.mountaineering')}}</strong>
-                                </router-link>
+                                <strong>{{ $t('guide.title.mountaineering')}}</strong>
                             </h4>
 
                             <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.mount_description"></span>
+                                <span v-html="this.$siteData.data.mount_description"></span>
                             </div>
                         </li>
                     </ul>
@@ -93,8 +89,6 @@ export default {
     }
 
     .right-text h4 {
-        /* font-size: 18px; */
-        /* font-size: 1.5em; */
         color: #4b4b4b;
         line-height: 60px !important;
     }
@@ -111,16 +105,9 @@ export default {
         margin-right: 0;
         color: #279fbb;
         border: 1px solid #279fbb;
-        /* font-size: 22px; */
         line-height: 60px !important;
         text-align: center;
     }
-
-    /* .right-text {
-        margin-top: -14px;
-        margin-left: 0;
-        margin-right: 80px;
-    } */
 
     ul.left-text {
         padding: 0;
@@ -130,9 +117,8 @@ export default {
     }
 
     .left-text h4 {
-        /* font-size: 18px; */
         color: #4b4b4b;
-        line-height: 60px  !important;
+        line-height: 60px !important;
     }
 
     .left-text h4 i {
@@ -147,47 +133,69 @@ export default {
         margin-left: 0;
         color: #279fbb;
         border: 1px solid #279fbb;
-        /* font-size: 22px; */
         line-height: 60px !important;
         text-align: center;
         transition: all 0.4s ease 0s;
     }
 
-    /* .left-text .content-text {
-        margin-top: -14px;
-        margin-right: 0;
-        margin-left: 80px;
-    } */
-
-    .what_we_do_title{
+    .what_we_do_title {
         font-size: 1.5em;
     }
 
+    .friendly-item {
+        background: #f9f9f9;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        min-height: 120px;
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    }
+
+    .friendly-item:hover {
+        background: #f0f0f0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .what_we_do_title a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+    }
+
+    .what_we_do_title a:hover {
+        color: #279fbb;
+    }
+
     @media (max-width: 765px) {
-        .what_we_do_title{
+        .what_we_do_title {
             text-align: center;
             float: none;
         }
-        .what_we_do_title_image{
+        .what_we_do_title_image {
             float: none !important;
             margin-left: 40% !important;
             margin-right: 40% !important;
         }
-        .what_we_do_text_description{
+        .what_we_do_text_description {
             text-align: center;
             margin: 0;
         }
+        .friendly-item {
+            padding: 10px;
+        }
     }
-
 
     .index_category_right {
         width: 20%;
         float: right;
         margin: 5px;
+        border-radius: 5px;
     }
     .index_category_left {
         width: 20%;
         float: left;
         margin: 5px;
+        border-radius: 5px;
     }
 </style>

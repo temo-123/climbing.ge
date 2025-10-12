@@ -259,15 +259,6 @@ export default {
 </script>
 
 <style>
-.height-100{
-    height:100vh;
-}
-
-.model-body {
-    /* max-height: 70vh; */
-    overflow-y: auto;
-}
-
 .card{
     width:380px;
     border:none;
@@ -285,13 +276,6 @@ export default {
 }
 
 /* Friendly modal styles */
-.modal-section {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-}
 
 .section-title {
     font-weight: 600;

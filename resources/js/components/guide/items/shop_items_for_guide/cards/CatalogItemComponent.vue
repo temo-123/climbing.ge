@@ -1,0 +1,322 @@
+<template>
+    <div class="grid-tile">
+        <article class="product-card" role="article">
+            <div class="product-image-container">
+                <div class="image-nav prev-image" v-if="image_num > 0">
+                    <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
+                </div>
+                <a class="cursor_pointer" @click="go_to_service('product/'+product_data.global_product.url_title)" aria-label="View product details">
+                    <div class="item-img">
+                        <shop-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
+                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product.title" />
+                    </div>
+                </a>
+                <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
+                    <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
+                </div>
+                <div class="badge discount-badge" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
+                <div class="badge new-badge" v-if="product_data.global_product.new_flag">NEW</div>
+            </div>
+            <div class="product-info">
+                <div class="product-title">
+                    <a class="cursor_pointer" @click="go_to_service('product/'+product_data.global_product.url_title)" aria-label="View product details">
+                        <h2>{{ product_data.locale_product.title }}</h2>
+                    </a>
+                </div>
+                <div class="product-price" v-if="product_data.global_product.discount != null && product_data.global_product.discount > 0">
+                    <span class="current-price">
+                        <span v-if="product_data.new_min_price != product_data.new_max_price">{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
+                        <span v-else>{{ product_data.new_max_price }} ₾</span>
+                    </span>
+                    <span class="old-price">
+                        <span v-if="product_data.min_price != product_data.max_price">{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
+                        <span v-else>{{ product_data.max_price }} ₾</span>
+                    </span>
+                </div>
+                <div class="product-price" v-else>
+                    <span class="current-price">
+                        <span v-if="product_data.min_price != product_data.max_price">{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
+                        <span v-else>{{ product_data.max_price }} ₾</span>
+                    </span>
+                </div>
+                <div class="product-actions">
+                    <button class="favorite-btn" @click="favorite_product(product_data.global_product.id)" aria-label="Add to favorites">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
+                </div>
+            </div>
+        </article>
+    </div>
+</template>
+
+<script>
+    // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
+
+
+    export default {
+        components: {
+            //
+        },
+        props:[
+            'product_data',
+        ],
+        data: function () {
+            return {
+                image_num: 0,
+                image_length: 0,
+
+                MIX_SITE_URL: process.env.MIX_SITE_URL,
+                MIX_APP_SSH: process.env.MIX_APP_SSH,
+            };
+        },
+        mounted() {
+            //
+        },
+        methods: {
+            go_to_service(service){
+                window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '/' + service)
+            },
+            product_quick_view(product_id){
+                this.$refs.quick_view_modal.quick_view_modal(product_id)
+            },
+
+            favorite_product(product_id){
+                axios
+                .post('../api/add_to_favorite/'+ product_id)
+                .then(response => {
+                    alert("Product addid in your favorite list!");
+                })
+                .catch(error =>{
+                    alert("Error");
+                })
+            },
+
+            next_product_image(){
+                var test_num = 0
+                test_num = this.image_num
+                this.test_num += 1
+                if(test_num < (this.image_length - 1)){
+                    this.image_num += 1
+                }
+            },
+
+            previes_product_image(){
+                var test_num = 0
+                test_num = this.image_num
+                this.test_num -= 1
+                if(test_num > 0){
+                    this.image_num -= 1
+                }
+            },
+
+            get_product_image(){
+                this.image_length = this.product_data.product_images.length
+                var active_image = this.product_data.product_images[this.image_num]
+                // alert(active_image);
+                return(active_image);
+            },
+
+        }
+    }
+</script>
+
+<style scoped>
+    .lingalleryContainer[data-v-40681078] .lingallery figure {
+        height: 100% !important;
+    }
+
+    .out-of-stock-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+    }
+
+    .out-of-stock-overlay span {
+        color: white;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .product-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transform: translateY(-5px);
+    }
+
+    .product-image-container {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+    }
+
+    .item-img {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .item-img shop-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .image-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+    }
+
+    .prev-image {
+        left: 10px;
+    }
+
+    .next-image {
+        right: 10px;
+    }
+
+    .nav-btn {
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #f54d5c;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .new-badge {
+        left: auto;
+        right: 10px;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-title h2 {
+        font-size: 1.4em;
+        margin: 0 0 10px 0;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .product-title a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .product-title a:hover {
+        color: #007bff;
+    }
+
+    .product-price {
+        margin-bottom: 10px;
+    }
+
+    .current-price {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .old-price {
+        font-size: 0.9em;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 10px;
+    }
+
+    .product-actions {
+        text-align: right;
+    }
+
+    .favorite-btn {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .favorite-btn:hover {
+        color: #f54d5c;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .product-card {
+            margin-bottom: 15px;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-title h2 {
+            font-size: 1em;
+        }
+
+        .current-price {
+            font-size: 1em;
+        }
+
+        .old-price {
+            font-size: 0.8em;
+        }
+
+        .favorite-btn {
+            font-size: 1.2em;
+        }
+
+        .nav-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 3px 6px;
+        }
+    }
+</style>

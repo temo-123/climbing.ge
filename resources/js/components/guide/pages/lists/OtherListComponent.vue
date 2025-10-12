@@ -7,7 +7,7 @@
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
             <h2 class="article_list_short_description">
-                {{this.$siteData.other_activity_description}}
+                {{this.$siteData.data.other_activity_description}}
             </h2>
 
             <div v-if="other_article_loading">
@@ -37,7 +37,7 @@
 
         <metaData 
             :title = "$t('guide.meta.other')"
-            :description = "this.$siteData.other_activity_description"
+            :description = "this.$siteData.data.other_activity_description"
             :image = "'/public/images/meta_img/other.jpg'"
         />
     </div>

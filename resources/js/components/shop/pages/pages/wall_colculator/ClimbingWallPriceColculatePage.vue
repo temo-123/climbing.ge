@@ -18,7 +18,7 @@
         
         <h1 class="page_title">{{ $t('shop.wall.title')}}</h1>
         <div class="bar"><i class="fa fa-calculator" aria-hidden="true"></i></div>
-        <h3> <span v-html="this.$siteData.message"></span> </h3>
+        <h3> <span v-html="this.$siteData.data.message"></span> </h3>
 
         <div class="row">
             <div class="col-md-6">

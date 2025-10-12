@@ -7,7 +7,7 @@
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h2 class="article_list_short_description">
-                {{this.$siteData.outdoor_description}}
+                {{this.$siteData.data.outdoor_description}}
             </h2>
 
             <sectorQuantyt />
@@ -154,7 +154,7 @@
 
         <metaData 
             :title = "$t('guide.meta.outdoor climbing')"
-            :description = "this.$siteData.outdoor_description"
+            :description = "this.$siteData.data.outdoor_description"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
     </div>
