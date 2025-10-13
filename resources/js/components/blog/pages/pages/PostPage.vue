@@ -24,14 +24,24 @@
         <rightMenu />
       </div>
     </main>
+
+    <metaData 
+        :title = " $t('blog.meta.post') "
+        :description = "this.$siteData.data.guid_short_description"
+        :image = "'/public/images/meta_img/outdoor.jpg'"
+    />
   </div>
 </template>
 
 <script>
   import axios from 'axios'
+  import metaData from '../../items/MetaDataComponent'
 
   export default {
     name: 'PostPage',
+    components: {
+      metaData
+    },
     data() {
       return {
         post: null,
@@ -42,16 +52,18 @@
       this.fetchPost()
     },
     methods: {
-      async fetchPost() {
-        try {
-          const postId = this.$route.params.id
-          const response = await axios.get(`/api/post/get_activ_post/${postId}`)
-          this.post = response.data
-        } catch (error) {
-          console.error('Error fetching post:', error)
-        } finally {
-          this.loading = false
-        }
+      fetchPost() {
+        const postId = this.$route.params.id
+        axios.get(`/post/get_post/${postId}`)
+          .then(response => {
+            this.post = response.data
+          })
+          .catch(error => {
+            console.error('Error fetching post:', error)
+          })
+          .finally(() => {
+            this.loading = false
+          })
       }
     }
   }

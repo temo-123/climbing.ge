@@ -88,6 +88,14 @@
                     <localeSwitcher />
 
                     <li>
+                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
                         <a @click="go_to_service('shop')" class="cursor_pointer"> 
                             <span>
                                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
@@ -107,8 +115,12 @@
 <script>
     import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
+    import go_to_service_mixin from '../../../../mixins/go_to_service_mixin.js'
 
     export default {
+        mixins: [
+            go_to_service_mixin
+        ],
         data: function () {
             return {
                 search_query: null,
@@ -153,33 +165,6 @@
         },
 
         methods: {
-            go_to_service(service){
-                if(service == "shop"){
-                    if(window.location.href == this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '/about_us'){
-                        this.$router.push({name: 'catalog'});
-                    }
-                    else{
-                        window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '')
-                    }
-                }
-                else if(service == "guid"){
-                    if(window.location.href == this.MIX_APP_SSH + this.MIX_SITE_URL + '/about_us'){
-                        this.$router.push({name: 'index'});
-                    }
-                    else{
-                        window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
-                    }
-                }
-                else if(service == "films"){
-                    if(window.location.href == this.MIX_APP_SSH + 'films.' + this.MIX_SITE_URL + '/about_us'){
-                        this.$router.push({name: 'studia'});
-                    }
-                    else{
-                        window.open(this.MIX_APP_SSH  + 'films.' + this.MIX_SITE_URL + '/')
-                    }
-                }
-            },
-
             search(){
                 this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
                 this.search_query = ''

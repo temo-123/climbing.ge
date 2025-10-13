@@ -1,64 +1,43 @@
 <template>
-<div>
     <main role="main" class="container">
+        <div class="container">
 
-      <div class="row">
-        <div class="col-md-8 blog-main">
-            <section class="hero">
-                <div class="container">
-                    <div class="row">	
+            <h1 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h1>
 
-                      <div v-if="loading" class="text-center">
-                        <p>Loading posts and news...</p>
-                      </div>
-                      <div v-else>
-                        <h2>Latest Blog Posts and News</h2>
-                        <div v-for="item in sortedItems" :key="item.id" class="mb-4 post-item">
-                          <div @click="openModal(item)" class="post-content">
-                            <h3>{{ item.title }}</h3>
-                            <p>{{ item.short_description }}</p>
-                            <small>{{ new Date(item.created_at).toLocaleDateString() }}</small>
-                          </div>
-                          <div class="post-actions">
-                            <button @click.stop="viewFullPost(item.id)" class="btn btn-primary">Read More</button>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <!-- <instaPost /> -->
-                    </div>
-                </div>
-            </section>
+            <div class="bar"><i class="fa fa-dribbble"></i></div>
+            
+            <h2 class="article_list_short_description">
+                {{this.$siteData.data.ice_description}}
+            </h2>
+
+            <bigPost :items="sortedItems" />
         </div>
 
-        <rightMenu />
+        <PostModal :show="showModal" :post="selectedPost" @close="closeModal" @view-full-post="handleViewFullPost" />
 
-      </div>
+        <metaData 
+            :title = " $t('blog.meta.index') "
+            :description = "this.$siteData.data.guid_short_description"
+            :image = "'/public/images/meta_img/outdoor.jpg'"
+        />
     </main>
-
-    <PostModal :show="showModal" :post="selectedPost" @close="closeModal" @view-full-post="handleViewFullPost" />
-</div>
 </template>
 
 <script>
   import axios from 'axios'
-  import PostModal from '../items/PostModal.vue'
-  // import addBlock from '../items/AddBlockComponent.vue'
-  // import post from '../items/PostComponent.vue'
-  // import instaPost from '../items/InstaPostsComponent.vue'
-  // import rightMenu from '../items/RightMenuComponent.vue'
+  import bigPost from '../items/cards/BigPostCardComponent.vue'
+  import PostModal from '../items/Modals/PostModal.vue'
+  import metaData from '../items/MetaDataComponent'
+
   export default {
     components: {
-      // addBlock,
-      // post,
-      // rightMenu,
-      // instaPost,
-      PostModal
+      metaData,
+      PostModal,
+      bigPost
     },
     data() {
       return {
-        posts: [],
-        news: [],
+        items: [],
         loading: true,
         showModal: false,
         selectedPost: {}
@@ -66,27 +45,25 @@
     },
     computed: {
       sortedItems() {
-        const allItems = [...this.posts, ...this.news]
-        return allItems.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+        return this.items.sort((a, b) => new Date(b.data.created_at) - new Date(a.data.created_at))
       }
     },
     mounted() {
-      this.fetchPostsAndNews()
+      this.get_all_posts_and_news_for_blog()
     },
     methods: {
-      async fetchPostsAndNews() {
-        try {
-          const [postsResponse, newsResponse] = await Promise.all([
-            axios.get('/api/post/get_posts'),
-            axios.get('/api/last_news/en') // Assuming 'en' for English, adjust as needed
-          ])
-          this.posts = postsResponse.data
-          this.news = newsResponse.data
-        } catch (error) {
-          console.error('Error fetching posts and news:', error)
-        } finally {
-          this.loading = false
-        }
+      get_all_posts_and_news_for_blog() {
+        const lang = localStorage.getItem('lang') || 'en'; // Get lang from route params
+        axios.get(`/post/get_all_posts_and_news_for_blog/` + lang )
+          .then(response => {
+            this.items = response.data
+          })
+          .catch(error => {
+            console.error('Error fetching posts and news:', error)
+          })
+          .finally(() => {
+            this.loading = false
+          })
       },
       openModal(post) {
         this.selectedPost = post

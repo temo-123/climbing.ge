@@ -106,7 +106,7 @@
     import MountRouteImagesForm from './forms/add_forms/MountRouteImageFormComponent.vue'
 
     // import gallery_images_add from './items/galleryImageAddComponent.vue'
-    import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
+    import gallery_images_add from '../../items/gallery/galleryImageAddComponent.vue'
 
     import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {

@@ -113,7 +113,6 @@ var analytic_id = "";
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
-    // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + '/api'
 
     Vue.use(VueGtag, {
@@ -122,7 +121,6 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes;
-    // analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/api'
 
     Vue.use(VueGtag, {
@@ -131,7 +129,6 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
-    // analytic_id = process.env.MIX_USER_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
 
     Vue.use(VueGtag, {
@@ -140,17 +137,15 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes;
-    // analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_FILMS_URL
+    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_FILMS_URL + '/api'
 
     Vue.use(VueGtag, {
         config: { id: process.env.MIX_FILMS_ANALITICS_ID },
     });
-} else if (window.location.hostname == process.env.MIX_blog_URL) {
+} else if (window.location.hostname == process.env.MIX_BLOG_URL) {
     homeComponent = Blog;
     serviceRoutes = blog_routes;
-    // analytic_id = process.env.MIX_blog_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_blog_URL
+    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_BLOG_URL + '/api'
 
     Vue.use(VueGtag, {
         config: { id: process.env.MIX_blog_ANALITICS_ID },
@@ -211,7 +206,7 @@ const app = new Vue({
     methods: {
         get_site_data() {
             axios
-            .get("/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
+            .get("/siteData/get_site_locale_data/"+localStorage.getItem('lang') || 'en')
             .then((response) => (
                 this.$siteData.data = response.data.locale_data,
                 this.$globalSiteData.data = response.data.global_data

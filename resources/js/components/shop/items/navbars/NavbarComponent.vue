@@ -52,18 +52,26 @@
 
                     <localeSwitcher />
 
+                    <li>
+                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a @click="go_to_service('guid')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-map-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
                     <goToAdminPage :go_to_page="'/cart'" icon='<i class="fa fa-shopping-cart" aria-hidden="true"></i>'/>
 
                     <goToAdminPage :go_to_page="'/'" />
                 </ul>
-
-                <!-- Search -->
-                <!-- <form class="navbar-form navbar-right" role="search">
-                    <div class="form-group">
-                    <input type="text" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-default">Search</button>
-                </form> -->
 
             </div>
 
@@ -75,8 +83,12 @@
     import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
     // import search from './SearchComponent'
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
+    import go_to_service_mixin from '../../../../mixins/go_to_service_mixin.js'
 
     export default {
+        mixins: [
+            go_to_service_mixin
+        ],
         data: function () {
             return {
                 search_query: '',

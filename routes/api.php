@@ -77,7 +77,7 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/articles/upload_spot_rock_images', 'ArticleController@upload_spot_rock_images');
         Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
 
-        Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
+        // Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
         Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
         Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
         Route::post('/articles/upload_image', 'ArticleController@image_upload');
@@ -304,7 +304,7 @@ Route::group(['namespace'=>'Api'], function() {
             
         });
 
-        Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
+        // Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
         Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
         Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
 
@@ -329,7 +329,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::delete('/del_route/{route_id}', 'del_route');
         });
 
-        Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
+        // Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
         Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
 
         Route::controller(RouteJsonController::class)->prefix('route_json')->group( function() {
@@ -345,7 +345,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/', 'index');
             Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
             Route::get('/get_mtp_for_modal/{mtp_id}', 'get_mtp_for_modal');
-            Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
+            // Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
 
             Route::post('/mtp_add', 'mtp_add');
             Route::post('/mtp_edit/{mtp_id}', 'mtp_edit');
@@ -634,8 +634,8 @@ Route::group(['namespace'=>'Api'], function() {
         /*
         *   Blog posts routes
         */
-        Route::controller(PostController::class)->prefix('blog_post')->group( function() {
-            Route::post('/get_all_posts_for_blog', 'get_all_posts_for_blog');
+        Route::controller(PostController::class)->prefix('post')->group( function() {
+            Route::get('/get_all_posts_and_news_for_blog/{locale}', 'get_all_posts_and_news_for_blog');
         });
     });
 

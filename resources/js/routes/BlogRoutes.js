@@ -1,47 +1,70 @@
-import VueRouter from 'vue-router'
-import Vue from 'vue'
+import VueRouter from "vue-router";
 
-import blog_index from '../components/blog/pages/IndexPage.vue'
-import about_us from '../components/blog/pages/AboutUsPage.vue'
+import NotFound from "../components/errors/404Component.vue";
 
-// import i18n from "../services/localization/i18n";
+import i18n from "../services/localization/i18n";
 
-// function load(component) {
-//     return () => import(`../components/site/pages/${component}.vue`);
-// }
+function load(component) {
+    return () => import(`../components/blog/pages/${component}.vue`);
+}
 
-import NotFound from '../components/errors/404Component.vue'
+function getLocaleRegex() {
+    let reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE
+    
+    return `(${reg})`;
+}
+
 const router = new VueRouter({
     routes: [
-        { path: '/', name: 'blog_index', component: blog_index },
+        {
+            path: `/:locale${getLocaleRegex()}?`,
+            component: {
+                render: (h) => h("router-view"),
+            },
+            beforeEnter: (to, from, next) => {
+                let storage_locale = localStorage.getItem("lang")
 
-        { path: '/about_us', name: 'about_blog', component: about_us,},
+                if(storage_locale){
+                    to.params.locale = storage_locale;
+                }
+                else{
+                    to.params.locale = 'en';
+                }
 
-        { path: '*', name: 'NotFound', component: NotFound }
+                const locale = to.params.locale;
+
+                localStorage.setItem("lang", locale);
+
+                const supported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|");
+
+                if (!supported_locales.includes(locale)) {
+                    return next("/");
+                }
+
+                if (i18n.locale !== locale) {
+                    i18n.locale = locale;
+                }
+
+                return next();
+            },
+            children: [
+                { path: "", name: "index", component: load("IndexPage"),},
+                { path: "about_us", name: "about_us", component: load("AboutUsPage"),},
+
+                { path: "post/:url_title", name: "post", component: load("pages/PostPage"),},
+                { path: "news/:url_title", name: "news", component: load("pages/NewsPage"),},
+
+                { path: "*", name: "NotFound", component: NotFound },
+            ],
+        },
     ],
-    mode: 'history',
+    mode: "history",
 });
 
+router.beforeEach((to, from, next) => {
+    to.params.locale = localStorage.getItem("lang");
 
-// Vue.prototype.$siteData = [];
-router.beforeEach((to, from, next)=>{
-    localStorage.setItem('lang', 'en')
-    // axios
-    // .get('/api/auth_user')
-    // .then((response)=>{
-    //     Vue.prototype.$authUser = response.data
-    //     localStorage.setItem('user', 'are login')
-    // })
-    // .catch(function (error) {
-    //     if (error.request.status === 401) {
-    //         if (localStorage.getItem("user") !== null) {
-    //             localStorage.removeItem('user')
-    //             location.reload();
-    //         }
-    //     }
-    // });
+    next();
+});
 
-    next()
-})
-
-export default router
+export default router;

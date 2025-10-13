@@ -5,62 +5,61 @@
         "name": "Climbing Guidebook",
 
         "meta": {
-            "index": "Rock Climbing & mountaineering in georgia",
-            "indoor climbing": "Indoor climbing",
-            "outdoor climbing": "Outdoor climbing",
-            "ice climbing": "Ice and mix climbing",
-            "events": "Events & competitions",
+            "index": "Rock Climbing & Mountaineering in Georgia",
+            "indoor climbing": "Indoor Climbing",
+            "outdoor climbing": "Outdoor Climbing",
+            "ice climbing": "Ice and Mixed Climbing",
+            "events": "Events & Competitions",
             "mountaineering": "Mountaineering",
             "other": "Other",
-            "about us": "About us",
-            "search": "Search climbing spots in Georgia",
-            "spots projects": "New outdoor spots project"
+            "about us": "About Us",
+            "search": "Search Climbing Spots in Georgia",
+            "spots projects": "New Outdoor Spots Project"
         },
 
         "menu": {
-            "climbing": "Rock climbing",
-            "indoor climbing": "Indoor climbing",
-            "outdoor climbing": "Outdoor climbing",
-            "ice climbing": "Ice & mix",
-            "events": "Events & competitions",
+            "climbing": "Rock Climbing",
+            "indoor climbing": "Indoor Climbing",
+            "outdoor climbing": "Outdoor Climbing",
+            "ice climbing": "Ice & Mix",
+            "events": "Events & Competitions",
             "mountaineering": "Mountaineering",
             "other": "Other",
-            "about us": "About us",
-            "login" :"Login",
+            "about us": "About Us",
+            "login": "Login",
             "sitemap": "Sitemap",
-            "spots projects": "Spots project",
+            "spots projects": "Spots Project",
             "shop": "Shop"
         },
 
-        "article_right_nabar": {
+        "article_right_navbar": {
             "menu_title": "Navigation Menu",
             "similar_articles": "Similar Articles",
             "gallery": "Gallery",
             "comments": "Comments",
             "description": "Description",
-            "sectors": "Climbing sectors & routes",
-            "recomended_services": "Recommended services"
+            "sectors": "Climbing Sectors & Routes",
+            "recomended_services": "Recommended Services"
         },
 
         "title": {
             "news": "News",
             "special_article": "Warning",
             "topo": "Topo",
-            "what we do": "What we do",
-            "gallery" :"Gallery",
-            "tech tips" :"Tech tips",
-            "events" :"Events and Cometitions",
+            "what we do": "What We Do",
+            "gallery": "Gallery",
+            "tech tips": "Tech Tips",
+            "events": "Events and Competitions",
             "climbing": "Climbing",
-            "indoor climbing": "Indoor climbing",
-            "outdoor climbing": "Outdoor climbing",
-            "spots projects": "New outdoor spots project",
-            "ice climbing": "Ice and mix climbing",
+            "indoor climbing": "Indoor Climbing",
+            "outdoor climbing": "Outdoor Climbing",
+            "spots projects": "New Outdoor Spots Project",
+            "ice climbing": "Ice and Mixed Climbing",
             "mountaineering": "Mountaineering",
             "other": "Other",
-            "about us": "About us",
+            "about us": "About Us",
             "partner": "Partners",
-
-            "message": "Send message"
+            "message": "Send Message"
         },
 
         "route": {
@@ -68,72 +67,64 @@
             "height": "Height",
             "bolts": "Bolts",
             "grade": "Grade",
-            "screws": "Ice screws",
+            "screws": "Ice Screws",
             "grade fr": "Grade FR",
             "grade yds": "Grade YDS",
             "grade uiaa": "Grade UIAA",
-
-            "mtp name": "Multy-pitch name",
+            "mtp name": "Multi-Pitch Name",
             "author": "Author",
-            "creating_data": "Creating data",
-            "first_ascent": "First ascent",
+            "creating_data": "Creation Date",
+            "first_ascent": "First Ascent",
             "top rope": "Top Rope",
-            "tred": "Tred Gear",
-
+            "tred": "Trad Gear",
             "more": "More",
-            "route detals": "Routes detals",
-            "anchor_type": "Routes anchor",
-            "mtp detals": "Multy-pitch detals",
-
+            "route detals": "Route Details",
+            "anchor_type": "Route Anchor",
+            "mtp detals": "Multi-Pitch Details",
             "back_to_modal": "Back",
             "close_modal": "Close",
-
-            "make_review": "Add review",
-            "route_rewiev": "Create route rewiev",
-            "show_feedbacks": "Feedbacks",
-
-            "pleas_login": "Pleas login for add route feedback!",
-            "no_feedbacks": "No feedbacks"
+            "make_review": "Add Review",
+            "route_rewiev": "Create Route Review",
+            "show_feedbacks": "Show Feedbacks",
+            "pleas_login": "Please log in to add route feedback!",
+            "no_feedbacks": "No Feedbacks"
         },
 
         "sector": {
-            "name": "Sector name",
-            "shade after 10.00 am": "In shade after 10.00 am",
-            "shade after 15.00 pm": "In shade after 15.00 pm",
-            "shade befor noon": "In shade befor noon",
-            "shade in the afternoon": "In shade in the afternoon",
-            "shade whole day": "In the shade whole day",
-            "sun the whole day": "In the sun the whole day",
-
+            "name": "Sector Name",
+            "shade after 10.00 am": "Shaded after 10:00 AM",
+            "shade after 15.00 pm": "Shaded after 3:00 PM",
+            "shade befor noon": "Shaded before noon",
+            "shade in the afternoon": "Shaded in the afternoon",
+            "shade whole day": "Shaded all day",
+            "sun the whole day": "Sunny all day",
             "overhang": "Overhang",
             "slabby": "Slabby",
             "vertical": "Vertical",
             "roof": "Roof",
-
-            "for_family": "This sector recomendidi family climbing. It`s seifty for kids",
-            "for_kids": "This sector recomendidi family climbing. It`s seifty for kids",
-            "walking": "Wolging time from car stoping to climbin sector",
-
-            "authers_list": "Alse you can see sport climbing routes authers and them conts",
-            "authers_list_button": "Check routes authers",
-            "auther_name": "Author name",
-            "auther_routes_quantity": "Routes quantity"
+            "for_family": "This sector is recommended for family climbing. It's safe for kids.",
+            "for_kids": "This sector is recommended for family climbing. It's safe for kids.",
+            "walking": "Walking time from car parking to climbing sector",
+            "authers_list": "You can also see sport climbing route authors and their contacts",
+            "authers_list_button": "Check Route Authors",
+            "auther_name": "Author Name",
+            "auther_routes_quantity": "Number of Routes"
         },
 
         "article": {
             "title": {
-                "mount massive": "Mountain Massive",
-                "best time": "Best time to climb",
-                "how get": "How to get there",
-                "what need": "What you need",
+                "mount massive": "Massive Mountain",
+                "best time": "Best Time to Climb",
+                "how get": "How to Get There",
+                "what need": "What You Need",
                 "comments": "Comments",
                 "gallery": "Gallery",
                 "info": "Info",
                 "map": "Map",
                 "locatione": "Location",
-                "interested event": "Interested",
+                "interested event": "Interested Events",
                 "similar articles": "Similar Articles",
-                "sector name": "Sector name",
+                "sector name": "Sector Name",
                 "address": "Address",
                 "price": "Price",
                 "route": "Routes",
@@ -141,118 +132,110 @@
                 "all articles": "All Articles"
             },
 
-            "route_quantyty": "In Georgia are {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, {mtps} multy pitch. You can see all outdoor climbing arias info on this page.",
-            "other_sites": "For more activities visit other themed websites",
-            "prices_from": "Prices from",
-            "closed": "Temporarily closed",
-
-            "working_time": "Working hours",
-            "no_info_working_time": "There is no information about the work of the gym!",
-
-            "mount_route_filtr": "Select mount System and filtred routes",
-            "region_filtr": "Select region and filtred spots by region"
+            "route_quantyty": "Georgia has {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, and {mtps} multi-pitch routes. Find all outdoor climbing area info on this page.",
+            "other_sites": "For more activities, visit our other themed websites",
+            "prices_from": "Prices From",
+            "closed": "Temporarily Closed",
+            "working_time": "Working Hours",
+            "no_info_working_time": "No information available about the gym's working hours.",
+            "mount_route_filtr": "Select Mount System and Filter Routes",
+            "region_filtr": "Select Region and Filter Spots by Region"
         },
 
         "breadcrumb home": "Home",
 
         "news_flag": "News",
-        "atention_flag": "Atention",
+        "atention_flag": "Attention",
 
-        "serch": ""
+        "serch": "Search"
     },
 
     "shop": {
-        "name": "Climbing shop",
+        "name": "Climbing Shop",
 
         "meta": {
-            "products": "Products list",
-            "services": "Services list",
+            "products": "Product List",
+            "services": "Service List",
             "categories": "Categories",
-            "about us": "About us",
-            "search": "Search product",
-            "tours": "Tours list",
-            "mein page": "Climbing.ge product, services & tours.",
-            "climbing wall": "Climbing wall price colculator"
+            "about us": "About Us",
+            "search": "Search Products",
+            "tours": "Tour List",
+            "mein page": "Climbing.ge: Products, Services & Tours",
+            "climbing wall": "Climbing Wall Price Calculator"
         },
 
         "menu": {
             "products": "Products",
-            "sale_products": "Sale",
+            "sale_products": "Sale Products",
             "services": "Services",
             "categories": "Categories",
-            "about us": "About us",
+            "about us": "About Us",
             "climbing wall": "Climbing Wall",
             "tours": "Tours"
         },
 
         "title": {
-            "services": "Ouer services",
+            "services": "Our Services",
             "products": "Products",
-            "sale_products": "Seled products",
-            "search": "Search products",
+            "sale_products": "Sale Products",
+            "search": "Search Products",
             "gallery": "Gallery",
-            "climbing wall colculator": "Climbing Wall Colculator",
+            "climbing wall colculator": "Climbing Wall Calculator",
             "tours": "Tours",
 
             "similar": {
                 "products": "You might also like",
-                "services": "Other services",
-                "tours": "Other tours"
+                "services": "Other Services",
+                "tours": "Other Tours"
             }
         },
 
         "wall": {
-            "title" : "Climbing wall price colculator",
-            "wall_colculate_title" : "Insert climbing wall size",
+            "title": "Climbing Wall Price Calculator",
+            "wall_colculate_title": "Enter Climbing Wall Size",
             "height": "Wall Height",
-            "width": "Wall Hidth",
+            "width": "Wall Width",
             "depth": "Wall Depth",
-
-            "mat_colculate_title" : "Mat size colculate automaticly.",
+            "mat_colculate_title": "Mat size is calculated automatically.",
             "mat_height": "Mat Height",
-            "mat_width": "Mat Hidth",
+            "mat_width": "Mat Width",
             "mat_depth": "Mat Depth",
-
-            "wall_so_height": "wall is more then 5 meter, it is so height for mat. after 5 meters you need rops and belay system for this height.",
-            "inser_sizes": "You need insert wall size!",
-            "holds": "Do you want includ holds in price?",
-            "holds_on_1m2": "How many holds you want on 1m2™ on wall?",
-
-            "wall_holds_squareness": "Squareness of the wall",
-            "wall_price": "Wall price",
-            "mat_price": "Mat price",
-            "holds_qouantyty": "Holds qouantyty for 1 m",
-            "total_holds": "Holds total quantity ",
-            "total_holds_price": "Holds total price",
-            "wall_square": "Square of the wall",
-            "total_price": "Total price",
-
-            "colculate_price": "Colculate price"
+            "wall_so_height": "If the wall is more than 5 meters high, it's too high for the mat. After 5 meters, you need ropes and a belay system.",
+            "inser_sizes": "Please enter the wall size!",
+            "holds": "Do you want to include holds in the price?",
+            "holds_on_1m2": "How many holds per square meter on the wall?",
+            "wall_holds_squareness": "Wall Squareness",
+            "wall_price": "Wall Price",
+            "mat_price": "Mat Price",
+            "holds_qouantyty": "Holds Quantity per m²",
+            "total_holds": "Total Holds Quantity",
+            "total_holds_price": "Total Holds Price",
+            "wall_square": "Wall Area",
+            "total_price": "Total Price",
+            "colculate_price": "Calculate Price"
         },
 
         "product": {
-            "castom_prodaction": "This product is sold prior to ordering! For order you need send message us and we will contact you!",
-            "enter_full_information": "Your private information is not a complete. Please go to user option page and enter full information!",
-            "befor_enter_full_information": "Before that you don't can make order!",
-            "castom_prodaction_login": "Please login or register for make castam order!",
-            "online_order_login": "Please login or register for add product in cart and create order!",
-
+            "castom_prodaction": "This product is made to order! Please send us a message, and we'll contact you.",
+            "enter_full_information": "Your profile information is incomplete. Please go to your user options and complete your details!",
+            "befor_enter_full_information": "You cannot place an order until your information is complete!",
+            "castom_prodaction_login": "Please log in or register to place a custom order!",
+            "online_order_login": "Please log in or register to add products to your cart and place an order!",
             "warning": "Warning",
-            "quick_view": "Quick view",
-            "open_product": "Open product page",
+            "quick_view": "Quick View",
+            "open_product": "Open Product Page",
 
             "message": {
-                "title": "Send message",
-                "form_title": "Write us a message about the desired product!",
-                "form_alert": "Please enter your product castam order message! It is preferable to indicate the product variety and quantity! We will answer you soon!",
-                "form_number_area": "Your number",
-                "form_text_area": "Message area",
-
-                "send": "Send email"
+                "title": "Send Message",
+                "form_title": "Write us a message about the product you're interested in!",
+                "form_alert": "Please enter your custom order message! It's helpful to specify the product variety and quantity. We'll get back to you soon!",
+                "form_number_area": "Your Phone Number",
+                "form_text_area": "Message",
+                "send": "Send Email"
             },
 
-            "revew": {
-                "send": "Send email"
+            "review": {
+                "send": "Send Email"
             },
 
             "product_desc": {
@@ -264,18 +247,16 @@
 
         "tour": {
             "warning": "Warning",
-            "more": "Read more",
-            "location": "Locatione",
+            "more": "Read More",
+            "location": "Location",
             "duration": "Duration",
             "guide": "Guide",
 
             "message": {
-                "enter_full_information": "Your private information is not a complete. Please go to user option page and enter full information!",
-                "befor_enter_full_information": "Before that you don't can make order!",
-
-                "title": "Send message",
-
-                "check_in": "Check in",
+                "enter_full_information": "Your profile information is incomplete. Please go to your user options and complete your details!",
+                "befor_enter_full_information": "You cannot place an order until your information is complete!",
+                "title": "Send Message",
+                "check_in": "Check-In",
                 "persons": "Number of Persons",
                 "name": "Name & Surname",
                 "email": "Email",
@@ -283,70 +264,103 @@
                 "country": "Country",
                 "city": "City",
                 "message": "Describe Your Travel Requirements",
-
-                "send": "Send email"
+                "send": "Send Email"
             }
         },
 
         "seller": {
-            "seller_contact": "Contacts",
+            "seller_contact": "Seller Contacts",
             "email": "Email",
-            "phone": "Phone number"
+            "phone": "Phone Number"
         },
 
-        "limited quantity": "Limited quantity ",
-        "out of stock": "Out of stock",
-    
-        "product description": "Description",
-    
-        "add to cart": "Add to cart",
+        "limited quantity": "Limited Quantity",
+        "out of stock": "Out of Stock",
 
-        "all products": "All products",
-        "max products": "This is maximal quantyty for this product!!!",
-        "add successful": "Product add successful!!!",
-        "custom product": "Custom production"
+        "product description": "Description",
+
+        "add to cart": "Add to Cart",
+
+        "all products": "All Products",
+        "max products": "This is the maximum quantity for this product!",
+        "add successful": "Product added successfully!",
+        "custom product": "Custom Product"
+    },
+
+    "blog": {
+        "name": "Climbing Blog",
+
+        "meta": {
+            "index": "Rock Climbing & Mountaineering Blog from Georgia",
+            "about us": "About Us",
+            "search": "Search Posts"
+        },
+
+        "menu": {
+            "articles": "Articles",
+            "about us": "About Us",
+            "login": "Login",
+            "sitemap": "Sitemap"
+        },
+
+        "title": {
+            "about us": "About Us",
+            "partner": "Partners",
+            "message": "Send Message"
+        },
+
+        "article_right_navbar": {
+            "menu_title": "Navigation Menu"
+        },
+
+        "breadcrumb home": "Home",
+
+        "news_flag": "News",
+        "blog_flag": "Blog",
+
+        "serch": "Search"
     },
 
     "user": {
-        "name": "User panel",
+        "name": "User Panel",
 
         "menu": {
-            "favorite products": "My favorite products",
-            "favorite films": "My favorite films",
-            "admin dashboard": "Admin dashboard",
-            "home": "My page",
-            "cart": "My cart",
+            "favorite products": "My Favorite Products",
+            "favorite films": "My Favorite Films",
+            "admin dashboard": "Admin Dashboard",
+            "home": "My Page",
+            "cart": "My Cart",
             "orders": "Orders",
             "my orders": "My Orders",
-            "total orders": "All orders",
-            "films": "Films list",
-            "my interested events": "Interested events",
-            "followers": "Followers & following",
+            "total orders": "All Orders",
+            "films": "Film List",
+            "my interested events": "My Interested Events",
+            "followers": "Followers & Following",
             "products & category": "Products & Category",
             "services": "Services",
-            "all comments": "All comments",
-            "my comments": "My comments",
-            "my posts": "My posts",
-            "all posts": "All posts",
-            "users": "Users & Parmissions",
+            "all comments": "All Comments",
+            "my comments": "My Comments",
+            "my posts": "My Posts",
+            "all posts": "All Posts",
+            "users": "Users & Permissions",
             "options": "Options",
-            "indoor climbing": "Indoor climbing",
-            "outdoor climbing": "Outdoor climbing",
-            "ice climbing": "Ice & Mix",
+            "indoor climbing": "Indoor Climbing",
+            "outdoor climbing": "Outdoor Climbing",
+            "ice climbing": "Ice & Mixed",
             "mountaineering": "Mountaineering",
             "other": "Other",
-            "security": "Security (Tech tips)",
+            "security": "Security (Tech Tips)",
             "partners": "Partners",
             "events": "Events",
             "news": "News",
             "gallery": "Gallery",
-            "about": "About us",
-            "login" :"Login",
+            "about": "About Us",
+            "login": "Login",
             "logout": "Logout",
             "sectors & routes": "Sectors & Routes",
-            "sectors local images": "Sectors local images",
-            "local bisnes" : "Suport local bisnes",
-            "my favorite outdoor area": "My favorite outdoor areas"
+            "sectors local images": "Sector Local Images",
+            "local bisnes": "Support Local Business",
+            "my favorite outdoor area": "My Favorite Outdoor Areas"
         }
     },
 
@@ -355,8 +369,8 @@
             "links": "Links",
             "share": "Share",
             "more": "More",
-            "about us": "About us",
-            "follow": "Follow us",
+            "about us": "About Us",
+            "follow": "Follow Us",
             "qr": "QR Code"
         },
 
@@ -369,35 +383,35 @@
             "form": {
                 "name": "Name *",
                 "surname": "Surname *",
-                "email": "E_mail *",
-                "number": "Phone number",
-                "country": "Yout country",
-                "message text": "Your message"
+                "email": "Email *",
+                "number": "Phone Number",
+                "country": "Your Country",
+                "message text": "Your Message"
             },
             "send": "Send"
         },
 
         "login": "Login",
         "comments": "Comments",
-        "page is empty": "Page is empty",
+        "page is empty": "This page is empty",
         "services": "Services"
     },
 
     "error": {
         "404": {
             "title": "Oops! Error 404! Page Not Found",
-            "description": "Sorry, an error has occured, Requested page not found!",
-            "go_home": "Go to home page"
+            "description": "Sorry, an error has occurred. The requested page was not found!",
+            "go_home": "Go to Home Page"
         },
         "host_error": {
-            "title": "Oops! Site configuratuion or hoste have some error!!!",
-            "description": "Sorry, an error has occured, Site configuratuion or hoste have some error! Contact to suport!"
+            "title": "Oops! There is a site configuration or hosting error!",
+            "description": "Sorry, an error has occurred. There is a site configuration or hosting error. Please contact support!"
         }
     },
 
     "unfollow": {
         "title": "Unfollow",
-        "description": "We are sorry that you are no longer with us!",
-        "go_home": "Go to home page"
+        "description": "We're sorry to see you go!",
+        "go_home": "Go to Home Page"
     }
 }

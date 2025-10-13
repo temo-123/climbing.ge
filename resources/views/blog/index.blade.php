@@ -1,7 +1,7 @@
-@extends('forum.layouts.app')
+@extends('blog.layouts.app')
 
 @section('content')
 
-    <forum-component />
+    <blog-component />
         
 @endsection

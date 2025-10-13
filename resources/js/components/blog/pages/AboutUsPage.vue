@@ -16,11 +16,22 @@
         <rightMenu />
       </div>
     </main>
+
+    <metaData 
+        :title = " $t('blog.meta.index') "
+        :description = "this.$siteData.data.guid_short_description"
+        :image = "'/public/images/meta_img/outdoor.jpg'"
+    />
   </div>
 </template>
 
 <script>
+  import metaData from '../items/MetaDataComponent'
+
   export default {
-    name: 'AboutUsPage'
+    name: 'AboutUsPage',
+    components: {
+      metaData
+    },
   }
 </script>

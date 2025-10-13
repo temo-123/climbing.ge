@@ -141,7 +141,7 @@
                     </div>
 
                     <button
-                        class="btn btn-primary float-right"
+                        class="btn btn-primary pool-right"
                         @click="show_route_all_review_modal(route.id)"
                         v-if="route.reviews_count > 0"
                     >
