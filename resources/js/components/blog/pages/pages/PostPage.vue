@@ -1,36 +1,40 @@
 <template>
-  <div>
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8 blog-main">
-          <section class="hero">
-            <div class="container">
-              <div class="row">
-                <div v-if="loading" class="text-center">
-                  <p>Loading post...</p>
-                </div>
-                <div v-else-if="post">
-                  <h1>{{ post.title }}</h1>
-                  <p>{{ post.content }}</p>
-                  <small>Created at: {{ post.created_at }}</small>
-                </div>
-                <div v-else>
-                  <p>Post not found.</p>
-                </div>
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8 blog-main">
+        <section class="hero">
+          <div class="container">
+            <div class="row">
+              <div v-if="loading" class="text-center">
+                <p>Loading post...</p>
+              </div>
+              <div v-else-if="post">
+                <article class="blog-post">
+                  <header class="mb-4">
+                    <h1 class="display-4">{{ post.title }}</h1>
+                    <div class="d-flex align-items-center text-muted">
+                      <small>Created • {{ formatDate(post.created_at) }}</small>
+                    </div>
+                  </header>
+                  <div class="content" v-html="post.content"></div>
+                </article>
+              </div>
+              <div v-else>
+                <p>post not found.</p>
               </div>
             </div>
-          </section>
-        </div>
-        <rightMenu />
+          </div>
+        </section>
       </div>
-    </main>
+      <rightMenu />
+    </div>
 
-    <metaData 
-        :title = " $t('blog.meta.post') "
-        :description = "this.$siteData.data.guid_short_description"
-        :image = "'/public/images/meta_img/outdoor.jpg'"
+    <metaData
+        :title="post ? post.title : $t('blog.meta.post')"
+        :description="post ? post.short_description : this.$siteData.data.guid_short_description"
+        :image="post && post.image ? post.image : '/public/images/meta_img/outdoor.jpg'"
     />
-  </div>
+  </main>
 </template>
 
 <script>
@@ -53,8 +57,8 @@
     },
     methods: {
       fetchPost() {
-        const postId = this.$route.params.id
-        axios.get(`/post/get_post/${postId}`)
+        // const postId = this.$route.params.id
+        axios.get(`/post/get_post/${this.$route.params.url_title}`)
           .then(response => {
             this.post = response.data
           })
@@ -64,6 +68,14 @@
           .finally(() => {
             this.loading = false
           })
+      },
+      formatDate(dateString) {
+        const date = new Date(dateString)
+        return date.toLocaleDateString('en-US', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        })
       }
     }
   }

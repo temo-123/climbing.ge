@@ -1,13 +1,7 @@
-- [x] Change slider transition to smoother cubic-bezier easing
-- [x] Add dot indicators below the slider for navigation
-- [x] Add hover effects on partner items
-- [x] Add goToSlide method for dot clicks
-- [x] Style the dots with CSS
-- [x] Remove dot indicators
-- [x] Add auto-slide functionality
-- [x] Enhance animation easing
-- [x] Add fade-in effect on items
-- [x] Add mouse wheel support
-- [x] Add bounce effect to animation
-- [x] Pause auto-slide on interaction
-- [ ] Test the improved slider
+- [x] Add get_post method to PostController (updated to use url_title)
+- [x] Add get_news method to PostController (updated to use url_title, fixed array access)
+- [x] Add routes for get_post and get_news in api.php (updated to use url_title)
+- [x] Test the new endpoints (code review completed, ready for testing)
+- [x] Enhance API to return image, short_description, user for posts; image, category for news
+- [x] Update PostPage.vue with friendly layout, author, date formatting, image display
+- [x] Update NewsPage.vue with friendly layout, category, date formatting, image display

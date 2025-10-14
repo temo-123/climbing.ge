@@ -2,7 +2,7 @@
   <section class="m-component-stack mm-component-stack--is-stacked">
     <div class="m-image-hero mm-image-hero--ssr" v-if="items && items.length > 0">
       <div v-for="(item, index) in items" :key="index" class="big-post-item">
-        <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.id">
+        <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.url_title">
           <div class="m-image-hero--media">
             <div>
               <div class="is-loaded">
@@ -21,7 +21,7 @@
                 </div>
               </div>
               <div class="m-image-hero--text-panel">
-                <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.id">
+                <router-link :to="item.type === 'news' ? '/news/' + item.data.global_data.url_title : '/post/' + item.data.global_data.url_title">
                   <div>
                     <h2 class="m-ellipsis m-image-hero--header-text mm-image-hero--no-background">
                       <span class="m-ellipsis--text">{{ item.data.locale_data.title }}</span>
