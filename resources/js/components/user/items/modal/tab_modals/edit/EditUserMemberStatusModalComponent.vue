@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_member_editing_modal"
-            title="Edit Team Member Status"
+            title="Manage Team Member Status"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
         >
         <pre class="language-vue">
             <span v-show="is_loading">
@@ -13,12 +13,17 @@
                 </div>
             </span>
             <form v-show="!is_loading">
-                <div class="form-group mt-3">
+                <div class="form-group">
                     <input type="checkbox" id="is_team_member" name="is_team_member" v-model="data.is_team_member">
-                    <label for="is_team_member">Is this user your team member?</label>
+                    <label for="is_team_member">Is this user a team member?</label>
+                    <small class="form-text text-muted">Check this box if the user is part of your team.</small>
                 </div>
 
-                <textarea v-if="data.is_team_member" v-model="data.member_status" class="form-control" placeholder="Enter member status" id="member_status" rows="2"></textarea>
+                <div v-if="data.is_team_member" class="form-group">
+                    <label for="member_status">Member Status</label>
+                    <textarea v-model="data.member_status" class="form-control" placeholder="Describe the member's role or status (e.g., 'Active contributor', 'Lead developer')" id="member_status" rows="3"></textarea>
+                    <small class="form-text text-muted">Provide a brief description of the member's status or role within the team.</small>
+                </div>
             </form>
         </pre>
         <div slot="modal-footer">
@@ -28,7 +33,7 @@
                     :class="'btn btn-primary'"
                     @click="edit_team_member()"
                 >
-                Save And Close
+                Save and Close
                 </button>
                 <button
                     v-show="!is_loading"
@@ -36,15 +41,15 @@
                     :class="'btn btn-success'"
                     @click="edit_team_member(true)"
                 >
-                Save And Go Back
+                Save and Return to Permissions
                 </button>
                 <button
                     v-show="!is_loading"
                     type="button"
-                    :class="'btn btn-danger'"
+                    :class="'btn btn-secondary'"
                     @click="go_back()"
                 >
-                Go Back
+                Back to Permissions
                 </button>
             </div>
         </div>
@@ -93,7 +98,7 @@ export default {
 
                 this.data = response.data;
             })
-            .catch(error => console.log(error))
+            .catch(error => console.log('Error fetching team member status:', error))
             .finally(() => this.is_loading = false)
         },
         edit_team_member(is_back = false){
@@ -113,7 +118,7 @@ export default {
                         this.close_modal()
                     }
                 })
-                .catch(error => console.log(error))
+                .catch(error => console.log('Error saving team member status:', error))
                 .finally(() => this.is_loading = false)
         },
     }

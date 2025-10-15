@@ -89,9 +89,9 @@ class ProductController extends Controller
         return $products;
     }
 
-    public function get_products_for_custom_order()
+    public function get_current_products()
     {
-        $products = Product::where('published', '=', 1)->with('product_options')->get();
+        $products = Product::where('published', '=', 1)->whereHas('product_options')->with('product_options')->get();
         $returned_products = [];
         foreach($products as $product){
             $locale_product = ProductService::get_locale_product_in_page_use_locale($product, 'en'); // assuming english for admin

@@ -37,7 +37,8 @@
                     <div class="form-group">
                         <label for="payment">Payment Method <span class="text-danger">*</span></label>
                         <select class="form-control" v-model="form.payment_type" name="currency" required> 
-                            <option value="deliverd_payment">Payment on delivery</option> 
+                            <option value="deliverd_payment">Payment on delivery</option>
+                            <option value="mony_transfer">Money transfer</option>
                             <option value="online_payment" disabled>Online payment (coming soon)</option> 
                         </select>
                         <small class="form-text text-muted">Payment method used for the order</small>
@@ -155,7 +156,7 @@ export default {
     },
     methods: {
         fetchProducts() {
-            axios.get('/get_products_for_custom_order')
+            axios.get('/product/get_current_products')
                 .then(response => {
                     this.products = response.data;
                 })

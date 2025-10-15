@@ -18,13 +18,16 @@
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
                 <div class="badge discount-badge" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
-                <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.new') }}</div>
+                <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
             <div class="product-info">
                 <div class="product-title">
                     <router-link :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
                         <h2>{{ product_data.locale_product.title }}</h2>
                     </router-link>
+                </div>
+                <div class="product-made-in-georgia" v-if="product_data.global_product.made_in_georgia">
+                    {{ $t('shop.product.made_in_georgia') }}
                 </div>
                 <div class="product-price" v-if="product_data.global_product.discount != null && product_data.global_product.discount > 0">
                     <span class="current-price">
@@ -132,6 +135,13 @@
 <style scoped>
     .lingalleryContainer[data-v-40681078] .lingallery figure {
         height: 100% !important;
+    }
+
+    .product-made-in-georgia {
+        color: #a65e5e;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin: 5px 0;
     }
 
     .out-of-stock-overlay {

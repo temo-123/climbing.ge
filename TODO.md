@@ -1,7 +1,0 @@
-- [x] Add get_post method to PostController (updated to use url_title)
-- [x] Add get_news method to PostController (updated to use url_title, fixed array access)
-- [x] Add routes for get_post and get_news in api.php (updated to use url_title)
-- [x] Test the new endpoints (code review completed, ready for testing)
-- [x] Enhance API to return image, short_description, user for posts; image, category for news
-- [x] Update PostPage.vue with friendly layout, author, date formatting, image display
-- [x] Update NewsPage.vue with friendly layout, category, date formatting, image display

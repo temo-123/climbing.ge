@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
 use App\Models\Blog\Post;
 use App\Models\Blog\Locale_post;
 

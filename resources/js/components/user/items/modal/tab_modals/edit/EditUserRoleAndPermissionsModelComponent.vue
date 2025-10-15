@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_role_editing_modal"
-            title="Edit user role & permissions"
+            title="Manage User Roles and Permissions"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
         >
         <pre class="language-vue">
             <span v-show="is_loading">
@@ -13,11 +13,11 @@
                 </div>
             </span>
             <span v-show="!is_loading">
-                <h2>User role</h2>
+                <h2>Select User Role</h2>
 
-                <select class="form-control" v-model="user_role" v-if="!role_loading"> 
-                    <option value="no_role" disabled>Select user role</option> 
-                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option> 
+                <select class="form-control" v-model="user_role" v-if="!role_loading">
+                    <option value="no_role" disabled>Choose a role for the user</option>
+                    <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
 
                 <div class="row justify-content-center" v-if="role_loading">
@@ -26,15 +26,15 @@
                     </div>
                 </div>
 
-                <h2>Additional permissions</h2>
+                <h2>Additional Permissions</h2>
 
-                <h3 v-if="user_permissions.length != 0">Alredy addid</h3>
+                <h3 v-if="user_permissions.length != 0">Currently Assigned Permissions</h3>
                 <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
+                            <th>Permission</th>
+                            <th></th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
 
@@ -43,9 +43,9 @@
                             <td>
                                 {{ permission.subject }} {{ permission.action }}
                             </td>
-                            <td>|</td>
+                            <td></td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_user_pemisino_from_db(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger" @click="del_user_permission_from_db(permission.id)" title="Remove this permission"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -53,14 +53,14 @@
 
                 <h3>Add More Permissions</h3>
 
-                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
+                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add New Permission</button>
 
                 <table class="table table-hover" id="dev-table" v-if="!perm_loading">
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>|</th>
-                            <th>Delite</th>
+                            <th>Permission</th>
+                            <th></th>
+                            <th>Remove</th>
                         </tr>
                     </thead>
 
@@ -68,15 +68,15 @@
                         <tr v-for="permission in permissions_array" :key="permission.id">
                             <td>
                                 <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                        <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
+                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">
+                                        <option disabled selected>Choose a permission to add</option>
+                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option>
                                     </select>
-                                </form> 
+                                </form>
                             </td>
-                            <td>|</td>
+                            <td></td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger" @click="del_permission_value(permission.id)" title="Remove this entry"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -95,7 +95,7 @@
                     :class="'btn btn-success'"
                     @click="show_team_member_modal()"
                 >
-                Edit Team member
+                Edit Team Member
                 </button>
 
                 <button
@@ -104,7 +104,7 @@
                     :class="{'btn btn-primary': true}"
                     @click="edit_permissions(user_id)"
                 >
-                Save prermissions
+                Save Permissions
                 </button>
             </div>
         </div>
@@ -193,21 +193,21 @@
                     this.$emit('update');
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error saving permissions and role:', error)
                 )
                 .finally(() => this.is_loading = false);
             },
 
-            del_user_pemisino_from_db(id){
-                if(confirm('Are you sure, you want delite it?')){
+            del_user_permission_from_db(id){
+                if(confirm('Are you sure you want to remove this permission from the user? This action cannot be undone.')){
                     axios
-                    .post('/role/del_user_pemisino/'+id+'/'+this.user_id, {
+                    .post('/role/del_user_permission/'+id+'/'+this.user_id, {
                         _method: 'DELETE'
                     })
-                    .then(Response => {
+                    .then(response => {
                         this.get_user_permissions_and_roles()
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => console.log('Error removing permission:', error))
                 }
             },
 
@@ -225,7 +225,7 @@
                     }
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error fetching user permissions and roles:', error)
                 );
             },
                 
@@ -238,7 +238,7 @@
                     this.roles = response.data
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error fetching roles:', error)
                 )
                 .finally(() => this.role_loading = false);
             },
@@ -247,12 +247,12 @@
                 this.perm_loading = true
 
                 axios
-                .get("/parmisions_list/")
+                .get("/permissions_list/")
                 .then(response => {
                     this.permissions = response.data
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error fetching permissions:', error)
                 )
                 .finally(() => this.perm_loading = false);
             },
@@ -273,7 +273,7 @@
                 );
             },
 
-            del_bisnes_value(id){
+            del_permission_value(id){
                 this.removeObjectWithId(this.permissions_array, id);
             },
             removeObjectWithId(arr, id) {

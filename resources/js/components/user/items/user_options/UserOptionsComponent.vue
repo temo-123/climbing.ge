@@ -6,7 +6,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <strong>Warning</strong>
-                            <p>Your private information is not a complete. Please enter full information!</p>
+                    <p>Your private information is not complete. Please enter full information!</p>
                         </div>
                     </div>
                 </div>
@@ -18,14 +18,14 @@
                     <p class="user_image_update_bot" @click="open_edit_image_modal()">Edit image</p>
                 </div>
                 <div class="col-md-6 col-sm-12 details">
-                    <p>Name - {{this.user.name}}</p>
-                    <p>Surname - {{this.user.surname}}</p>
+                    <p>Name: {{this.user.name}}</p>
+                    <p>Surname: {{this.user.surname}}</p>
 
-                    <p>Email - {{this.user.email}}</p>
-                    <p>phone - {{this.user.phone_number}}</p>
+                    <p>Email: {{this.user.email}}</p>
+                    <p>Phone: {{this.user.phone_number}}</p>
 
-                    <p>Country - {{this.user.country}}</p>
-                    <p>City - {{this.user.city}}</p>
+                    <p>Country: {{this.user.country}}</p>
+                    <p>City: {{this.user.city}}</p>
 
                     <!-- <p>Your Status = {{this.status}}</p> -->
 
@@ -54,7 +54,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button @click="edit_password_model()" class="btn btn-primary">Edit my passeord</button>
+                            <button @click="edit_password_model()" class="btn btn-primary">Edit My Password</button>
                     </div>
                 </div>
             </div>
@@ -84,24 +84,24 @@
                     <table class="table table-hover" id="dev-table">
                         <thead>
                             <tr>
-                                <th>Site</th>
-                                <th>|</th>
-                                <th>Edit</th>
-                                <th>|</th>
-                                <th>Delete</th>
+                        <th>Site</th>
+                        <th></th>
+                        <th>Edit</th>
+                        <th></th>
+                        <th>Delete</th>
                             </tr>
                         </thead>
                         
                         <tbody>
                             <tr v-for="site in user_sites" :key="site.id">
                                 <td @click="go_to_user_site(site.url)"><p class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p></td>
-                                <td>|</td>
+                                <td></td>
                                 <td>
                                     <button class="btn btn-primary" @click="get_editing_user_site(site.id)">Edit</button>
                                 </td>
-                                <td>|</td>
+                                <td></td>
                                 <td>
-                                    <button class="btn btn-danger" @click="del_user_site(site.id)">Del</button>
+                                    <button class="btn btn-danger" @click="del_user_site(site.id)">Delete</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -121,7 +121,7 @@
                 <form class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" required>
+                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
             </pre>
             <div slot="modal-footer">
@@ -148,7 +148,7 @@
                 <form class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
+                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
             </pre>
             <div slot="modal-footer">
@@ -158,7 +158,7 @@
                         :class="{'btn btn-primary': true}"
                         form="edit_site"
                     >
-                    update
+                    Update
                     </button>
                 </div>
             </div>
@@ -174,12 +174,12 @@
             <pre class="language-vue">
                 <form class="form" method="POST" id="registrationForm">
 
-                    <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="name" title="enter your name">
-                    <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" placeholder="last name" title="enter your last name">
-                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="enter phone number" title="enter your phone number">
-                    <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="email" title="enter your email.">
-                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="city" title="enter your city.">
-                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="country" title="enter a country.">
+                    <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="Enter your name" title="Enter your name">
+                    <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" placeholder="Enter your last name" title="Enter your last name">
+                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="Enter your phone number" title="Enter your phone number">
+                    <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="Enter your email" title="Enter your email">
+                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
+                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="Enter your country" title="Enter your country">
 
                 </form>
             </pre>
@@ -241,14 +241,14 @@
                     <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
                         Your password is incorrect!
                     </div>
-                    <input type="password" class="form-control" name="Olde password" placeholder="Olde password" v-model="password_edit_data.old_pass" title="Olde password" required>
+                    <input type="password" class="form-control" name="Old password" placeholder="Enter your old password" v-model="password_edit_data.old_pass" title="Enter your old password" required>
                     <hr>
-                    <input type="password" class="form-control" name="New password" placeholder="New password" v-model="password_edit_data.new_pass" title="New password" required>
-                    
+                    <input type="password" class="form-control" name="New password" placeholder="Enter your new password" v-model="password_edit_data.new_pass" title="Enter your new password" required>
+
                     <div class="alert alert-danger" role="alert" v-if="is_password_cofirming_error">
-                        Password confirming error
+                        Password confirmation error
                     </div>
-                    <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat new password" v-model="password_edit_data.confirm_new_pass" title="Repeat new password" required>
+                    <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat your new password" v-model="password_edit_data.confirm_new_pass" title="Repeat your new password" required>
                 </form>
             </pre>
             <div slot="modal-footer">
@@ -506,16 +506,16 @@
                 );
             },
             del_user_site(site_id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm('Are you sure you want to delete this site? This action cannot be undone.')){
                     axios
                     .post('/user_site/'+site_id, {
                         _method: 'DELETE'
                     })
-                    .then(Response => {
+                    .then(response => {
                         this.get_user_sites()
                     })
                     .catch(error => {
-                        //
+                        console.log('Error deleting site:', error)
                     })
                 }
             },

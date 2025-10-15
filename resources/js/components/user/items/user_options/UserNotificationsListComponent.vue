@@ -2,19 +2,19 @@
     <div class="col-md-12">
         <div class="row edit_buttom">
             <div class="col-md-12">
-                <p class="text-center">This your notifications. You can select only this notifications which one you want get on your email.</p>
+                <p class="text-center">Manage your email notifications. Select the notifications you want to receive via email.</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-primary" @click="activate_all_notifications">Activate all notifications</button>
+                    <button class="btn btn-primary" @click="activate_all_notifications">Enable All Notifications</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-danger float-right" @click="cancel_all_notifications">Cancel all notifications</button>
+                    <button class="btn btn-danger float-right" @click="cancel_all_notifications">Disable All Notifications</button>
                 </div>
             </div>
         </div>
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-primary" @click="update_user_notification_data" >Save</button>
+                    <button class="btn btn-primary" @click="update_user_notification_data" >Save Preferences</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -37,37 +37,37 @@
             <table class="table table-hover" id="dev-table">
                 <thead>
                     <tr>
-                        <th>Notification</th>
-                        <th>|</th>
-                        <th>Action</th>
+                        <th>Notification Type</th>
+                        <th></th>
+                        <th>Enable</th>
                     </tr>
                 </thead>
                 
                 <tbody >
                     <tr>
-                        <td>Favorite outdoor</td>
-                        <td>|</td>
+                        <td>Favorite Outdoor Activity</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_outdoor">
                         </td>
                     </tr>
                     <tr>
-                        <td>favorite product</td>
-                        <td>|</td>
+                        <td>Favorite Product</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_product">
                         </td>
                     </tr>
                     <tr>
-                        <td>Favorite film</td>
-                        <td>|</td>
+                        <td>Favorite Film</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_film">
                         </td>
                     </tr>
                     <tr>
-                        <td>interested event</td>
-                        <td>|</td>
+                        <td>Interested Event</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.interested_event">
                         </td>
@@ -78,8 +78,8 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>New sector</td>
-                        <td>|</td>
+                        <td>New Sector Added</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_sector">
                         </td>
@@ -90,36 +90,36 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>News</td>
-                        <td>|</td>
+                        <td>News Updates</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.news">
                         </td>
                     </tr>
                     <tr>
-                        <td>New outdoor climbing spot</td>
-                        <td>|</td>
+                        <td>New Outdoor Climbing Spot</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_outdoor_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>New ice climbing spot</td>
-                        <td>|</td>
+                        <td>New Ice Climbing Spot</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_ice_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>New techtip</td>
-                        <td>|</td>
+                        <td>New Tech Tip</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_techtip">
                         </td>
                     </tr>
                     <tr>
-                        <td>New gym</td>
-                        <td>|</td>
+                        <td>New Gym Added</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_gym">
                         </td>
@@ -130,15 +130,15 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>New product</td>
-                        <td>|</td>
+                        <td>New Product Added</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_product">
                         </td>
                     </tr>
                     <tr>
-                        <td>New service</td>
-                        <td>|</td>
+                        <td>New Service Added</td>
+                        <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_service">
                         </td>
@@ -212,7 +212,7 @@
                     this.notification_reset_id++
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error fetching notification data:', error)
                 );
             },
 
@@ -228,12 +228,12 @@
                     this.get_user_notification_data()
                 })
                 .catch(
-                    error => console.log(error)
+                    error => console.log('Error updating notification data:', error)
                 );
             },
 
             activate_all_notifications(){
-                if (window.confirm('Are you sure, you want activate all notifications?')) {
+                if (window.confirm('Are you sure you want to enable all notifications? This will send emails for all types of updates.')) {
                     this.data = {
                         add_new_gym: true,
                         news: true,
@@ -253,7 +253,7 @@
             },
 
             cancel_all_notifications(){
-                if (window.confirm('Are you sure, you want canceled all notifications?')) {
+                if (window.confirm('Are you sure you want to disable all notifications? You will no longer receive email updates.')) {
                     this.data = {
                         add_new_gym: false,
                         news: false,

@@ -22,8 +22,8 @@
                     <label for="product_id">Select Product</label>
                     <select v-model="newOption.product_id" @change="getAvailableOptions()" class="form-control" :class="{ 'is-invalid': errors.product }" required>
                         <option value="">Choose a product...</option>
-                        <option v-for="product in availableProducts" :key="product.product.id" :value="product.product.id">
-                            {{ product.product.url_title }}
+                        <option v-for="product in availableProducts" :key="product.id" :value="product.id">
+                            {{ product.title }}
                         </option>
                     </select>
                     <div v-if="errors.product" class="invalid-feedback">{{ errors.product }}</div>
@@ -104,7 +104,7 @@
             },
 
             getAvailableProducts() {
-                axios.get(`/product/get_all_products/`)
+                axios.get(`/product/get_current_products/`)
                 .then(response => {
                     this.availableProducts = response.data;
                 })

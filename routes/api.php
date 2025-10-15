@@ -439,6 +439,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::delete('/del_product/{product_id}', 'del_product');
 
             Route::get('/get_product_options/{product_id}', 'get_product_options');
+            Route::get('/get_current_products', 'get_current_products');
         });
         Route::controller(ProductController::class)->group( function() {
             // Route::apiResource('/product', 'ProductController');
@@ -449,7 +450,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('product_price_interval', 'get_product_price_interval');
             Route::get('/get_user_favorite_products', 'get_user_favorite_products');
             Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
-            Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
+            // Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
         });
 
         Route::apiResource('/product_category', 'ProductCategoryController');

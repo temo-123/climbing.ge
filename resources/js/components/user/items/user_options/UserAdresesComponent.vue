@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="row edit_buttom">
             <div class="col-md-12">
-                <p class="text-center">This adreses for your order declarations</p>
+                <p class="text-center">These addresses are used for your order declarations. Manage them here to ensure accurate delivery.</p>
             </div>
         </div>
 
@@ -15,7 +15,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                <button class="btn btn-primary" @click="open_add_modal()">Add new adres</button>
+                <button class="btn btn-primary" @click="open_add_modal()">Add New Address</button>
                 </div>
             </div>
             <div class="col-md-6">
@@ -36,13 +36,13 @@
                         <th>|</th>
                         <th>ID</th>
                         <th>|</th>
-                        <th>Demo name</th>
+                        <th>Address Name</th>
 
-                        <th>|</th>
+                        <th></th>
                         <th>Edit</th>
-                        
-                        <th>|</th>
-                        <th>Delite</th>
+
+                        <th></th>
+                        <th>Delete</th>
                         
                     </tr>
                 </thead>
@@ -52,18 +52,18 @@
                         <td class='align-center'>
                             <input type="checkbox">
                         </td>
-                        <td>|</td>
-                        <td>id</td>
+                        <td></td>
+                        <td>{{ adres.id }}</td>
 
-                        <td>|</td>
-                        <td @click="quick_viwe_adres(adres.id)" :style="'cursor: zoom-in'">{{ adres.name }}</td>
+                        <td></td>
+                        <td @click="quick_viwe_adres(adres.id)" :style="'cursor: zoom-in'" title="Click to view details">{{ adres.name }}</td>
 
-                        <td>|</td>
+                        <td></td>
                         <td>
                             <a :href="'#'" class="btn btn-primary" type="submit" @click="open_edit_modal(adres.id)">Edit</a>
                         </td>
-                        
-                        <td>|</td>
+
+                        <td></td>
                         <td>
                             <button type="submit" class="btn btn-danger" @click="del_adres(adres.id)">Delete</button>
                         </td>
@@ -74,33 +74,33 @@
 
         <stack-modal
                 :show="is_add_adres"
-                title="Add user adres"
+                title="Add New Address"
                 @close="is_add_adres=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
                 <form class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
-                    <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
-                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>
+                    <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
+                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
 
                     <select class="form-control" v-model="adding_data.country_id" name="Currency"> 
                         <option :value="0" disabled>Country</option>
                         <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
                     </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Enter country!!!</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Please select a country.</div>
 
                     <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <div class="alert alert-danger" role="alert" v-if="errors.city">Enter city!!!</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" placeholder="Enter your strit" title="Enter your strit">
-                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Enter strit!!!</div>
+                    <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" placeholder="Enter your street" title="Enter your street">
+                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Please enter your street.</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" placeholder="Enter your number" title="Enter your number">
-                    <div class="alert alert-danger" role="alert" v-if="errors.number">Enter number!!!</div>
+                    <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" placeholder="Enter your house number" title="Enter your house number">
+                    <div class="alert alert-danger" role="alert" v-if="errors.number">Please enter your house number.</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" placeholder="Enter your floor" title="Enter your floor">
-                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Enter floor!!!</div>
+                    <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" placeholder="Enter your floor (optional)" title="Enter your floor">
+                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Please enter your floor.</div>
 
                     <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
                     <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
@@ -137,7 +137,7 @@
 
         <stack-modal
                 :show="is_edit_adres"
-                title="Edit user adres"
+                title="Edit Address"
                 @close="is_edit_adres=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
@@ -145,26 +145,26 @@
             <pre class="language-vue">
                 <form class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres" >
 
-                    <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter adres demo name" title="Enter adres demo name">
-                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Enter adres demo name!!!</div>
+                    <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
+                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
 
                     <select class="form-control" v-model="edit_data.country_id" name="Currency"> 
                         <option :value="0" disabled>Country</option>
                         <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
                     </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Enter country!!!</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Please select a country.</div>
 
                     <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <div class="alert alert-danger" role="alert" v-if="errors.city">Enter city!!!</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.strit" name="strit" id="strit" placeholder="Enter your strit" title="Enter your strit">
-                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Enter strit!!!</div>
+                    <input type="text" class="form-control" v-model="edit_data.strit" name="strit" id="strit" placeholder="Enter your street" title="Enter your street">
+                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Please enter your street.</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.number" name="number" id="number" placeholder="Enter your number" title="Enter your number">
-                    <div class="alert alert-danger" role="alert" v-if="errors.number">Enter number!!!</div>
+                    <input type="text" class="form-control" v-model="edit_data.number" name="number" id="number" placeholder="Enter your house number" title="Enter your house number">
+                    <div class="alert alert-danger" role="alert" v-if="errors.number">Please enter your house number.</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.floor" name="floor" id="floor" placeholder="Enter your floor" title="Enter your floor">
-                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Enter floor!!!</div>
+                    <input type="text" class="form-control" v-model="edit_data.floor" name="floor" id="floor" placeholder="Enter your floor (optional)" title="Enter your floor">
+                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Please enter your floor.</div>
 
                     <input type="text" class="form-control" v-model="edit_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
                     <input type="text" class="form-control" v-model="edit_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
@@ -201,20 +201,20 @@
 
         <stack-modal
                 :show="is_quick_viwe_adres_model"
-                :title="'User adres (' + quick_adres.name + ')'" 
+                :title="'Address Details: ' + quick_adres.name"
                 @close="is_quick_viwe_adres_model=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <pre class="language-vue">
-                Country - {{ quick_adres.country }}
-                City - {{ quick_adres.city }}
-                Strit - {{ quick_adres.strit }}
-                Number - {{ quick_adres.number }}
-                Floor - {{ quick_adres.floor }}
-                Flat - {{ quick_adres.flat }}
-                Entrance - {{ quick_adres.entrance }}
-                Zip Code - {{ quick_adres.zip_code }}
+                Country: {{ quick_adres.country }}
+                City: {{ quick_adres.city }}
+                Street: {{ quick_adres.strit }}
+                House Number: {{ quick_adres.number }}
+                Floor: {{ quick_adres.floor }}
+                Flat: {{ quick_adres.flat }}
+                Entrance: {{ quick_adres.entrance }}
+                Zip Code: {{ quick_adres.zip_code }}
             </pre>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -492,13 +492,13 @@
             },
 
             del_adres(id) {
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm('Are you sure you want to delete this address? This action cannot be undone.')){
                     axios
                     .delete('/del_user_adreses/'+id)
-                    .then(Response => {
+                    .then(response => {
                         this.get_adres()
                     })
-                    .catch(error => console.log(error))
+                    .catch(error => console.log('Error deleting address:', error))
                 }
             },
 
