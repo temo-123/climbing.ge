@@ -47,7 +47,7 @@
                 />
             </div>
 
-            <articleRightMenu />
+                <articleRightMenu :article_id="this.article_prop.global_data.id" />
             
         </div>
 

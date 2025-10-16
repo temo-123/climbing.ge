@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <span>
-            <h2 style="font-size: 160%">
+            <h2 :id="'sector-' + sector.sector.id" style="font-size: 160%">
                 {{ $t("guide.article.title.sector name") }} -
                 <strong>{{ sector.sector.name }}</strong>
             </h2>
@@ -112,20 +112,16 @@
 
         <span v-html="sector.sector.text"></span>
 
-        <openImg
+        <div
             v-for="image in sector.sector_imgs"
             :key="image.id"
-            :img="'/public/images/sector_img/' + image.image"
-            :img_alt="image.image"
-            :img_class="
-                'sector_images sector_images_' + sector.sector_imgs.length
-            "
-        />
-        <!-- {{ sector.sector_imgs[0] }} -->
-
-        <!-- <route_json 
-        
-        /> -->
+            :class="'sector_images sector_images_' + sector.sector_imgs.length"
+        >
+            <route_json
+                :sector_image_id="image.id"
+                :image_src="'/public/images/sector_img/' + image.image"
+            />
+        </div>
 
         <table
             class="table col-md-12 table table-hover"
@@ -162,12 +158,12 @@
                     </td>
                     <td v-else >?</td>
 
-                    <td v-if="route.or_grade != NULL">
+                    <td v-if="route.or_grade != null">
                         {{ route.grade }} / {{ route.or_grade }}
                     </td>
                     <td v-else>{{ route.grade }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != NULL">
+                    <td class="display-none-720px" v-if="route.or_grade != null">
                         {{ lead_grade_chart(route.grade) }} /
                         {{ lead_grade_chart(route.or_grade) }}
                     </td>
@@ -204,7 +200,7 @@
                     </td>
                     <td>{{ route.height }}</td>
 
-                    <td v-if="route.or_grade != NULL">
+                    <td v-if="route.or_grade != null">
                         {{ boulder_grade_chart(route.grade) }} /
                         {{ boulder_grade_chart(route.or_grade) }}
                     </td>
@@ -212,7 +208,7 @@
                         {{ boulder_grade_chart(route.grade) }}
                     </td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != NULL">
+                    <td class="display-none-720px" v-if="route.or_grade != null">
                         {{ route.grade }} / {{ route.or_grade }}
                     </td>
                     <td class="display-none-720px" v-else>{{ route.grade }}</td>
@@ -289,13 +285,13 @@
                         </td>
                         <td v-else>?</td>
 
-                        <td v-if="pitch.or_grade != NULL">
+                        <td v-if="pitch.or_grade != null">
                             {{ pitch.grade }} /
                             {{ pitch.or_grade }}
                         </td>
                         <td v-else>{{ pitch.grade }}</td>
 
-                        <td class="display-none-720px" v-if="pitch.or_grade != NULL">
+                        <td class="display-none-720px" v-if="pitch.or_grade != null">
                             {{ lead_grade_chart(pitch.grade) }} /
                             {{ lead_grade_chart(pitch.or_grade) }}
                         </td>

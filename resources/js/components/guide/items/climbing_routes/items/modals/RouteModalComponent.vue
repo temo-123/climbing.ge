@@ -35,7 +35,7 @@
                             <!-- <p v-else><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p> -->
 
                             <p class="route-detail"><strong>{{ $t("guide.route.grade fr") }}</strong> -
-                                <span v-if="route.or_grade != NULL">
+                                <span v-if="route.or_grade != null">
                                     {{ route.grade }} / {{ route.or_grade }}
                                 </span>
                                 <span v-else>
@@ -48,7 +48,7 @@
                                 <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'"><strong>{{ $t("guide.route.grade yds") }}</strong></span>
                                     -
 
-                                <span v-if="route.or_grade != NULL">
+                                <span v-if="route.or_grade != null">
                                     {{ lead_grade_chart(route.grade) }} /
                                     {{ lead_grade_chart(route.or_grade) }}
                                 </span>

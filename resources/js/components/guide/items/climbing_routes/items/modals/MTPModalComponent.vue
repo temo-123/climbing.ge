@@ -61,13 +61,13 @@
                                         </td>
                                         <td v-else>?</td>
 
-                                        <td v-if="pitch.or_grade != NULL">
+                                        <td v-if="pitch.or_grade != null">
                                             {{ pitch.grade }} /
                                             {{ pitch.or_grade }}
                                         </td>
                                         <td v-else>{{ pitch.grade }}</td>
 
-                                        <td v-if="pitch.or_grade != NULL">
+                                        <td v-if="pitch.or_grade != null">
                                             {{ lead_grade_chart(pitch.grade) }} /
                                             {{ lead_grade_chart(pitch.or_grade) }}
                                         </td>

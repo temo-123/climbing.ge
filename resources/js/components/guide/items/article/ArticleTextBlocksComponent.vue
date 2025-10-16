@@ -1,6 +1,6 @@
 <template>
     <div>
-        <span v-html="this.article_prop.locale_data.text" id="description" v-if="this.article_prop.locale_data.text != NUll"></span>
+        <span v-html="this.article_prop.locale_data.text" id="description" v-if="this.article_prop.locale_data.text != null"></span>
 
         <h3 class="navbar_title display-smaller-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
 
@@ -27,12 +27,12 @@
 
         <!-- Best time for climbing block -->
         <div v-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0">
-            <div v-if="(this.article_prop.global_data.weather == NULL && this.article_prop.locale_data.best_time != NULL)">
+            <div v-if="(this.article_prop.global_data.weather == null && this.article_prop.locale_data.best_time != null)">
                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                 <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
             </div>  
-            <div v-else-if="this.article_prop.global_data.weather != NULL && this.article_prop.locale_data.best_time != NULL">
+            <div v-else-if="this.article_prop.global_data.weather != null && this.article_prop.locale_data.best_time != null">
                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                 <div class="row">
@@ -49,28 +49,28 @@
         </div>
 
         <!-- addres -->
-        <div v-if="this.article_prop.locale_data.address != NUll">
+        <div v-if="this.article_prop.locale_data.address != null">
             <h2 id="how_to_get_there">{{ $t('guide.article.title.address')}}</h2>
             <span v-html="this.article_prop.locale_data.address"></span>
         </div>
         
         <!-- how get -->
-        <h2 v-if="(this.article_prop.locale_data.how_get != NUll && this.article_prop.locale_data.how_get != '') || (this.article_prop.global_data.map != NULL && this.article_prop.global_data.map != '')" id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
+        <h2 v-if="(this.article_prop.locale_data.how_get != null && this.article_prop.locale_data.how_get != '') || (this.article_prop.global_data.map != null && this.article_prop.global_data.map != '')" id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2>
 
-        <div v-if="this.article_prop.locale_data.how_get != NUll && this.article_prop.locale_data.how_get != ''">
+        <div v-if="this.article_prop.locale_data.how_get != null && this.article_prop.locale_data.how_get != ''">
             <!-- <h2 id="how_to_get_there">{{ $t('guide.article.title.how get')}}</h2> -->
             <span v-html="this.article_prop.locale_data.how_get"></span>
         </div>
 
         <!-- map -->
-        <div v-if="this.article_prop.global_data.map != NULL">
+        <div v-if="this.article_prop.global_data.map != null">
             <div class="article_map">
                 <span v-html="this.article_prop.global_data.map"></span>
             </div>
         </div>
 
         <!-- price -->
-        <div v-if="this.article_prop.locale_data.prices_text != NUll">
+        <div v-if="this.article_prop.locale_data.prices_text != null">
             <h2 id="how_to_get_there">{{ $t('guide.article.title.price')}}</h2>
             <span v-html="this.article_prop.locale_data.prices_text"></span>
         </div>

@@ -44,13 +44,38 @@
           </div>
         </div>
         
+        <div class="form-group clearfix row" v-if="show_alert_modal">
+          <div role="alert" class="alert alert-danger cursor_pointer">
+            <div class="row">
+              <div class="col-md-12">
+                <p>This route doesn't have a drawing yet. You can create one by adding a new route or editing an existing one with drawing tools.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="form-group clearfix row" v-if="data.sector_id != ''">
           <div class="col-md-12">
             <div class="row" v-if="sector_images.length > 0">
+                <div class="tabs">
+                    <input
+                        v-for="(image, index) in sector_images"
+                        :key="'input-' + image.id + '-' + index"
+                        type="radio"
+                        :id="'input-' + image.id"
+                        :value="image.id"
+                        v-model="images_tab_num"
+                        @change="updateSectorImageId"
+                    />
+                    <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'input-' + image.id">
+                        Image ID -> {{ image.id }}
+                    </label>
+                </div>
                 <Editor
                   ref="editorComponent"
                   :image_prop="getSectorImage()"
                   :json_prop="data.route_json"
+                  :related_jsons="related_jsons"
                   @canvas_data="handleCanvasData"
                 />
             </div>
@@ -205,9 +230,12 @@
         problem_status: "",
 
         article_id: "",
-        
+        images_tab_num: "",
+        related_jsons: [], // Add related routes JSONs
+
         data: {
           sector_id: "",
+          sector_image_id: "",
 
           grade: "",
           or_grade: "",
@@ -232,6 +260,8 @@
         is_loading: false,
 
         is_back_action_query: false,
+        show_no_json_alert: false,
+        show_alert_modal: false,
       }
     },
 
@@ -317,12 +347,26 @@
           // Load route JSON data if available
           if (response.data.json) {
             this.data.route_json = response.data.json;
+            this.show_no_json_alert = false;
+            this.show_alert_modal = false;
           } else {
             this.data.route_json = null;
+            this.show_no_json_alert = false;
+            this.show_alert_modal = true;
+          }
+
+          // Set sector_image_id if available from response
+          if (response.data.sector_image_id) {
+            this.data.sector_image_id = response.data.sector_image_id;
+            this.images_tab_num = response.data.sector_image_id;
           }
 
           this.get_sectors_data()
           this.get_sector_images(this.data.sector_id)
+          // Fetch related routes JSONs after loading route data
+          if (this.data.sector_image_id) {
+            this.get_related_routes_jsons(this.data.sector_image_id, this.data.id);
+          }
         })
         .catch(
           error => console.log(error)
@@ -353,7 +397,8 @@
           // Include canvas JSON data in the route data
           const routeData = {
               ...this.data,
-              route_json: this.data.route_json
+              route_json: this.data.route_json,
+              sector_image_id: this.data.sector_image_id
           };
 
           axios
@@ -379,6 +424,8 @@
 
       clear_form(){
         this.data = {
+          sector_id: "",
+          sector_image_id: "",
 
           grade: "",
           or_grade: "",
@@ -410,6 +457,10 @@
         .get("/sector/get_sector_images/" + sectorId)
         .then(response => {
           this.sector_images = response.data
+          if (this.sector_images.length > 0 && !this.data.sector_image_id) {
+            this.data.sector_image_id = this.sector_images[0].id;
+            this.images_tab_num = this.sector_images[0].id;
+          }
         })
         .catch(
           error => console.log(error)
@@ -418,6 +469,10 @@
 
       getSectorImage() {
         if (this.sector_images.length > 0) {
+          const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
+          if (selectedImage) {
+            return '/public/images/sector_img/' + selectedImage.image;
+          }
           return '/public/images/sector_img/' + this.sector_images[0].image;
         }
         return null;
@@ -429,6 +484,33 @@
         this.data.route_json = canvasData;
         console.log('Canvas data stored in route_json:', this.data.route_json);
       },
+
+      updateSectorImageId() {
+        this.data.sector_image_id = this.images_tab_num;
+        // Fetch related routes JSONs when sector image changes
+        this.get_related_routes_jsons(this.data.sector_image_id, this.data.id);
+      },
+
+      get_related_routes_jsons(sectorImageId, excludeRouteId) {
+        axios
+        .get("/route/get_related_routes_jsons", {
+          params: {
+            sector_image_id: sectorImageId,
+            exclude_route_id: excludeRouteId
+          }
+        })
+        .then(response => {
+          this.related_jsons = response.data;
+          console.log('Related routes JSONs loaded (excluding current):', this.related_jsons);
+        })
+        .catch(
+          error => console.log('Error fetching related routes JSONs:', error)
+        );
+      },
+
+      // closeAlertModal() {
+      //   this.show_alert_modal = false;
+      // },
     }
   }
 </script>

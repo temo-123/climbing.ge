@@ -44,7 +44,7 @@
             </select>
           </div>
           <div class="col-md-5">
-            <select class="form-control" v-if="article_id != ''" v-model="data.sector_id" @click="get_sector_images(data.sector_id)" required>
+            <select class="form-control" v-if="article_id != ''" v-model="data.sector_id" @change="get_sector_images(data.sector_id)" required>
               <option value="" disabled>Select sector</option>
               <option v-for="sector in sectors" :key="sector.id" v-bind:value="sector.id">{{ sector.name }}</option>
             </select>
@@ -53,14 +53,15 @@
 
         <div class="tabs form-group clearfix">
             <div class="row">
-              <div class="col" v-for="image in sector_images" :key="image.id" >
+              <div class="col" v-for="(image, index) in sector_images" :key="'col-' + image.id + '-' + index" >
                   <input
                       type="radio"
-                      :id="image.id"
+                      :id="'input-' + image.id"
                       :value="image.id"
                       v-model="images_tab_num"
+                      @change="updateSectorImageId"
                   />
-                  <label :for="image.id">
+                  <label :for="'input-' + image.id">
                       Image ID -> {{ image.id }}
                   </label>
               </div>
@@ -69,11 +70,12 @@
             <div class="row">
                 <div class="col-md-12" v-for="image in sector_images" :key="image.id" 
                     v-if="images_tab_num == image.id" >
-                    <Editor
-                      ref="editorComponent"
-                      :image_prop="'/public/images/sector_img/' + image.image"
-                      @canvas_data="handleCanvasData"
-                    />
+                <Editor
+                  ref="editorComponent"
+                  :image_prop="'/public/images/sector_img/' + image.image"
+                  :related_jsons="related_jsons"
+                  @canvas_data="handleCanvasData"
+                />
                 </div>
             </div>    
         </div>
@@ -224,6 +226,7 @@
         
         data: {
           sector_id: "",
+          sector_image_id: "",
 
           grade: "",
           or_grade: "",
@@ -243,6 +246,7 @@
 
           category: "",
           route_json: null, // Add canvas JSON data
+          related_jsons: [], // Add related routes JSONs
         },
 
         is_loading: false,
@@ -299,6 +303,12 @@
         .get("/sector/get_sector_images/" + id)
         .then(response => {
           this.sector_images = response.data
+          if (this.sector_images.length > 0) {
+            this.data.sector_image_id = this.sector_images[0].id;
+            this.images_tab_num = this.sector_images[0].id;
+            // Fetch related routes JSONs for the selected sector image
+            this.get_related_routes_jsons(this.data.sector_image_id);
+          }
         })
         .catch(
           error => console.log(error)
@@ -328,7 +338,8 @@
           // Include canvas JSON data in the route data
           const routeData = {
               ...this.data,
-              route_json: this.data.route_json
+              route_json: this.data.route_json,
+              sector_image_id: this.data.sector_image_id
           };
 
           axios
@@ -354,6 +365,8 @@
 
       clear_form(){
         this.data = {
+          sector_id: "",
+          sector_image_id: "",
 
           grade: "",
           or_grade: "",
@@ -384,6 +397,26 @@
         console.log('Canvas data received:', canvasData);
         this.data.route_json = canvasData;
         console.log('Canvas data stored in route_json:', this.data.route_json);
+      },
+
+      updateSectorImageId() {
+        this.data.sector_image_id = this.images_tab_num;
+        // Fetch related routes JSONs when sector image changes
+        this.get_related_routes_jsons(this.data.sector_image_id);
+      },
+
+      get_related_routes_jsons(sectorImageId) {
+        axios
+        .get("/route/get_related_routes_jsons", {
+          params: { sector_image_id: sectorImageId }
+        })
+        .then(response => {
+          this.related_jsons = response.data;
+          console.log('Related routes JSONs loaded:', this.related_jsons);
+        })
+        .catch(
+          error => console.log('Error fetching related routes JSONs:', error)
+        );
       },
     }
   }

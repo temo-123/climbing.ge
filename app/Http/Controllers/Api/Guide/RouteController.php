@@ -106,6 +106,7 @@ class RouteController extends Controller
             // Save route data (without JSON)
             $routeData = $request->data;
             unset($routeData['route_json']); // Remove JSON from route data
+            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
             $saved = Route::insertGetId($routeData);
 
@@ -114,7 +115,7 @@ class RouteController extends Controller
                 $jsonData = [
                     'route_id' => $saved,
                     'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_id'] // Assuming sector_id is the image reference
+                    'sector_image_id' => $request->data['sector_image_id']
                 ];
                 RouteJsonController::add_route_json($jsonData);
             }
@@ -143,6 +144,7 @@ class RouteController extends Controller
             // Save route data (without JSON)
             $routeData = $request->data;
             unset($routeData['route_json']); // Remove JSON from route data
+            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
             $saved = $route->update($routeData);
 
@@ -151,7 +153,7 @@ class RouteController extends Controller
                 $jsonData = [
                     'route_id' => $request->route_id,
                     'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_id'] // Assuming sector_id is the image reference
+                    'sector_image_id' => $request->data['sector_image_id']
                 ];
                 RouteJsonController::edit_route_json($jsonData);
             }
@@ -169,7 +171,11 @@ class RouteController extends Controller
     public function del_route(Request $request)
     {
         $route = Route::where('id',strip_tags($request->route_id))->first();
-        $route -> delete();
+
+        // Delete related JSON data first to avoid foreign key constraint
+        ClimbingRoutesJson::where('route_id', $route->id)->delete();
+
+        $route->delete();
     }
 
     public function get_routes_quantity(Request $request)
@@ -186,11 +192,45 @@ class RouteController extends Controller
         $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
         if ($routeJson) {
             $route->json = $routeJson->json;
+            $route->sector_image_id = $routeJson->sector_image_id;
         }
 
         return $route;
     }
 
+    public function get_related_routes_jsons(Request $request)
+    {
+        $sectorImageId = strip_tags($request->sector_image_id);
+        $excludeRouteId = $request->has('exclude_route_id') ? strip_tags($request->exclude_route_id) : null;
+
+        $query = ClimbingRoutesJson::where('sector_image_id', $sectorImageId);
+
+        if ($excludeRouteId) {
+            $query->where('route_id', '!=', $excludeRouteId);
+        }
+
+        $relatedJsons = $query->with('route')->get();
+
+        // Return only the JSON data
+        return $relatedJsons->pluck('json');
+    }
+
+    public function get_route_jsons_for_sector_image(Request $request)
+    {
+        $sectorImageId = strip_tags($request->sector_image_id);
+
+        $routeJsons = ClimbingRoutesJson::where('sector_image_id', $sectorImageId)
+            ->with('route')
+            ->get();
+
+        return $routeJsons->map(function($item) {
+            return [
+                'route_id' => $item->route_id,
+                'json' => $item->json,
+                'route_name' => $item->route ? $item->route->name : null
+            ];
+        });
+    }
 
     private function route_validate($request)
     {

@@ -16,6 +16,13 @@
                     <a @click.prevent="scrollToSection('routes')">
                         <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
+                    <ul v-if="sectors.length > 0" class="submenu">
+                        <li v-for="sector in sectors" :key="sector.sector.id">
+                            <a @click.prevent="scrollToSection('sector-' + sector.sector.id)">
+                                <span class="text-primary cursor_pointer">{{ sector.sector.name }}</span>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li>
@@ -73,11 +80,15 @@
 
 <script>
     export default {
-        name: "Article Right Navigation Menu",
+        name: "article-right-navigation-menu",
+        props: [
+            'article_id'
+        ],
         data(){
             return{
                 right_navbar_class: '',
                 local_businesses: [],
+                sectors: [],
                 margin_bottom_position: 0,
                 document_body_offsetHeight: document.body.offsetHeight,
                 window_scrollY: window.scrollY,
@@ -85,11 +96,18 @@
         },
         mounted() {
             this.get_local_bisnes_for_article()
+            this.get_sectors_for_article()
             this.handleScroll()
         },
         watch: {
             '$route' (to, from) {
                 this.get_local_bisnes_for_article()
+                this.get_sectors_for_article()
+            },
+            'article_id' (newVal, oldVal) {
+                if (newVal !== oldVal) {
+                    this.get_sectors_for_article()
+                }
             }
         },
         methods: {
@@ -110,6 +128,18 @@
                 })
                 .catch(error =>{
                 })
+            },
+
+            get_sectors_for_article(){
+                if (this.article_id) {
+                    axios
+                    .get('/sector/get_sector_and_routes/' + this.article_id)
+                    .then(response => {
+                        this.sectors = response.data
+                    })
+                    .catch(error =>{
+                    })
+                }
             },
 
             handleScroll (event) {
@@ -167,5 +197,13 @@
     }
     .fading-side-menu{
         margin-bottom: 4%;
+    }
+    .submenu {
+        list-style: none;
+        padding-left: 20px;
+        margin: 0;
+    }
+    .submenu li {
+        margin: 5px 0;
     }
 </style>

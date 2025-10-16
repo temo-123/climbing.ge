@@ -41,8 +41,8 @@
                                 <td>{{ route.id }}</td>
                                 <td>{{ route.num }}</td>
                                 <td>{{ route.name }}</td>
-                                <td v-if="route.or_grade != NULL">{{route.grade}} / {{ route.or_grade }}</td>
-                                <td v-if="route.or_grade == NULL">{{route.grade}}</td>
+                                <td v-if="route.or_grade != null">{{route.grade}} / {{ route.or_grade }}</td>
+                                <td v-if="route.or_grade == null">{{route.grade}}</td>
                                 <td><router-link class="btn btn-primary" :to="{ name: 'routeEdit', params: { id: route.id } }" >Edit</router-link></td>
                             </SlickItem>
                         </SlickList>

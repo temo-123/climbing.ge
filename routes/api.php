@@ -323,6 +323,9 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('/get_routes_by_category/{category}', 'get_routes_by_category');
             Route::get('/get_routes_by_category_array', 'get_routes_by_category_array');
 
+            Route::get('/get_related_routes_jsons', 'get_related_routes_jsons');
+            Route::get('/get_route_jsons_for_sector_image', 'get_route_jsons_for_sector_image');
+
             Route::post('/add_route', 'add_route');
             Route::post('/edit_route/{route_id}', 'edit_route');
 
