@@ -110,12 +110,10 @@
 </template>
 
 <script>
-    import Editor from '../../items/canvas/EditorComponent.vue'
-    import addSectorModal from './addSectorModalComponent.vue'
+    import addSectorModal from './assets/addSectorModalComponent.vue'
 
     export default {
         components: {
-            Editor,
             addSectorModal
         },
         props: [

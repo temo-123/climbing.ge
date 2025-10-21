@@ -74,18 +74,21 @@
                                                     'head': [
                                                         'ID',
                                                         'Name',
+                                                        'Options',
                                                         'Edit',
                                                         'Delite',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data_action_id', ['title'], 'show_local_image_modal'],
+                                                        ['action_router', 'sectorLocalImagesOptions', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>'],
                                                         ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
+                                                        ['sector_local_images', 'edit'],
                                                         ['sector_local_images', 'edit'],
                                                         ['sector_local_images', 'del'],
                                                     ]

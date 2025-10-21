@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_sector_local_image_modal"
-            title="Multy-pitch"
+            title="Sector local image info"
             @close="close_modal()"
             :modal-class="{ [MTPModalClass]: true }"
             :saveButton="{ visible: true }"

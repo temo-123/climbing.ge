@@ -376,6 +376,10 @@ Route::group(['namespace'=>'Api'], function() {
         Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'SectorLocalImagesController@del_image_sector_from_db');
         Route::controller(SectorLocalImagesController::class)->prefix('sector_local_img')->group( function() {
             Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
+            Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
+            Route::get('/get_layout/{layout_id}', 'get_layout');
+            Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
+            Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
         });
 
 
@@ -830,8 +834,17 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
             Route::delete('del_non_registered_commenter/{id}', 'del_non_registered_commenter');
         });
+
+        /*
+        *   Export routes
+        */
+        Route::controller(ExportController::class)->prefix('export')->group(function() {
+            Route::get('/categories', 'getUniqueCategories');
+            Route::get('/articles/{category}', 'getArticlesByCategory');
+            Route::post('/articles_pdf', 'exportArticlesPdf');
+        });
     });
-    
+
     Route::group(['namespace'=>'Meil'], function() {
         /*
         *   Mails routes

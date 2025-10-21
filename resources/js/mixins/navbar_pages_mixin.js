@@ -259,6 +259,19 @@ export const navbar = {
                             ['del', 'live_camera'],
                         ]
                     },
+                    
+                    {
+                        name: "Expert tips",
+                        route: "/export_tips",
+                        permissions: [
+                        //     ['show', 'worker']
+                        ]
+                        // permissions: [
+                        //     ['add', 'live_camera'],
+                        //     ['edit', 'live_camera'],
+                        //     ['del', 'live_camera'],
+                        // ]
+                    },
                 ]
             },
             {

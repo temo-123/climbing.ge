@@ -17,7 +17,6 @@ class Route extends Model
         "title",
         "text",
 
-        // "last_carabin",
         "height",
         "bolts",
         "anchor_type",
@@ -26,7 +25,6 @@ class Route extends Model
         "creation_data",
 
         "first_ascent",
-        "route_json", // Add json field for canvas data
     ];
 
     public function review()

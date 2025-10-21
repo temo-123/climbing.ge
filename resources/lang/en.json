@@ -1,0 +1,25 @@
+{
+    "guide": {
+        "title": {
+            "export": "Export"
+        },
+        "article": {
+            "title": {
+                "description": "Short Description",
+                "route": "Routes",
+                "how get": "How to Get There",
+                "best time": "Best Time to Climb",
+                "what need": "What You Need",
+                "info": "Info",
+                "price": "Price",
+                "address": "Address",
+                "url_title": "URL Title",
+                "category": "Category",
+                "published": "Published",
+                "yes": "Yes",
+                "no": "No",
+                "sectors": "Sectors"
+            }
+        }
+    }
+}

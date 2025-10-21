@@ -18,4 +18,9 @@ class Sector_local_image extends Model
     {
 		return $this->hasMany(Sector_local_image_sector::class, 'image_id', 'id');
     }
+
+    public function jsons()
+    {
+        return $this->hasMany(SectorLocalImagesJson::class, 'sector_local_image_id');
+    }
 }

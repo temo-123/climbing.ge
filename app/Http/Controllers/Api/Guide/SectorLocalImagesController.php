@@ -9,6 +9,9 @@ use App\Services\Abstract\ImageControllService;
 
 use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
+use App\Models\Guide\SectorLocalImagesJson;
+use App\Models\Guide\SectorLocalImagesJsonSector;
+use App\Models\Guide\Sector;
 
 class SectorLocalImagesController extends Controller
 {
@@ -39,7 +42,8 @@ class SectorLocalImagesController extends Controller
 
         $data = [
             "image" => $sector_local_image,
-            "sectors" => $sector_local_image->sectors
+            "sectors" => $sector_local_image->sectors,
+            "related_jsons" => $sector_local_image->jsons
         ];
 
         return $data;
@@ -91,24 +95,88 @@ class SectorLocalImagesController extends Controller
         return $data;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function sector()
     {
-        //
+        return $this->belongsTo(Sector::class, 'sector_id');
+    }
+    
+    public function save_canvas_data(Request $request, $sector_id)
+    {
+        $json = json_encode($request->canvasData);
+
+        // Find the sector_local_image
+        $sectorLocalImage = Sector_local_image::find($request->sector_local_image_id ?? $sector_id);
+
+        $jsonRecord = null;
+        if ($request->layoutId) {
+            // Update existing layout
+            $jsonRecord = SectorLocalImagesJson::find($request->layoutId);
+            if ($jsonRecord) {
+                $jsonRecord->json = $json;
+                $jsonRecord->save();
+            }
+        } else {
+            // Create new layout - check if there's an existing layout for the first selected sector
+            $existingLayout = null;
+            if ($request->selectedSectors && count($request->selectedSectors) > 0) {
+                $firstSectorId = $request->selectedSectors[0];
+                $existingLayout = SectorLocalImagesJson::whereHas('sectors', function($query) use ($firstSectorId) {
+                    $query->where('sector_id', $firstSectorId);
+                })->where('sector_local_image_id', $sectorLocalImage->id)->first();
+            }
+
+            if ($existingLayout) {
+                // Update existing layout with the same sector name
+                $existingLayout->json = $json;
+                $existingLayout->save();
+                $jsonRecord = $existingLayout;
+            } else {
+                // Create new layout
+                $jsonRecord = SectorLocalImagesJson::create([
+                    'sector_local_image_id' => $sectorLocalImage->id,
+                    'json' => $json
+                ]);
+            }
+        }
+
+        // Update sector relations for this layout
+        if ($jsonRecord && $request->selectedSectors) {
+            // Remove existing relations
+            SectorLocalImagesJsonSector::where('sect_loc_img_json_id', $jsonRecord->id)->delete();
+            // Add new relations
+            foreach ($request->selectedSectors as $sectorId) {
+                SectorLocalImagesJsonSector::create([
+                    'sect_loc_img_json_id' => $jsonRecord->id,
+                    'sector_id' => $sectorId
+                ]);
+            }
+        }
+
+        return response()->json(['message' => 'Canvas data saved successfully']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    public function get_layout($layout_id)
+    {
+        $layout = SectorLocalImagesJson::with('sectors')->find($layout_id);
+
+        return response()->json(['layout' => $layout]);
+    }
+
+    public function get_layouts($sector_local_image_id)
+    {
+        $layouts = SectorLocalImagesJson::where('sector_local_image_id', $sector_local_image_id)->with('sectors')->get();
+
+        return response()->json(['layouts' => $layouts]);
+    }
+
+    public function get_layout_old($sector_id)
+    {
+        $sector = Sector::find($sector_id);
+        $jsons = $sector->sector_local_images_jsons;
+
+        return response()->json(['jsons' => $jsons]);
+    }
+    
     public function update_image(Request $request, $id)
     {
         $editing_sector_local_image = Sector_local_image::where("id", "=", $id)->first();

@@ -14,14 +14,14 @@
     </div>
 
     <div class="row" v-if="!is_loading">
-        <div class="form-group">  
+        <div class="form-group">
             <button form='route_add_form' type="submit" class="btn btn-primary" @click="is_back_action_query = true" >Save and go back</button>
             <!-- <p>Save and go to route tab page</p> -->
         </div>
     </div>
 
     <div class="row" v-if="!is_loading">
-        <div class="form-group">  
+        <div class="form-group">
             <button form='route_add_form' type="submit" class="btn btn-primary" @click="is_back_action_query = false" >Save and add more reoute</button>
             <!-- <p>Save and add more route</p> -->
         </div>

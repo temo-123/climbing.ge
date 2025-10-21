@@ -83,21 +83,23 @@
                 <!-- Layers Table under canvas -->
                 <div class="layers-panel mt-3">
                     <div class="d-flex justify-content-between align-items-center mb-2">
-                        <!-- <button type="button" class="btn btn-sm btn-info" @click="showLayersList">Show layouts list</button> -->
-                        <div>
-                            <button type="button" class="btn btn-sm btn-info me-1" @click="updateLayersList">Refresh</button>
-                            <button type="button" class="btn btn-sm btn-secondary" @click="toggleLayersVisibility">
-                                <i class="fa fa-eye" aria-hidden="true"></i> Show/Hide All
+                        <button type="button" class="btn btn-sm btn-info" @click="toggleLayersTable">
+                            <i class="fa fa-list" aria-hidden="true"></i> {{ showLayersTable ? 'Hide' : 'Show' }} Layers Table
+                        </button>
+                        <div v-if="showLayersTable">
+                            <button type="button" class="btn btn-sm btn-info" @click="updateLayersList">Refresh</button>
+                            <button type="button" class="btn btn-sm btn-success" @click="toggleLayersVisibility">
+                                <i class="fa fa-eye" aria-hidden="true"></i> Show / Hide All
                             </button>
                         </div>
                     </div>
-                    <div class="layers-list" style="max-height: 200px; overflow-y: auto;">
+                    <div v-if="showLayersTable" class="layers-list" style="max-height: 200px; overflow-y: auto; background-color: #c2c2c2;">
                         <div v-for="layer in layers" :key="layer.name" class="layer-item d-flex align-items-center justify-content-between p-2 border-bottom">
                             <span class="layer-name flex-grow-1">{{ layer.name }}</span>
                             <div class="layer-controls">
                                 <button
                                     type="button"
-                                    class="btn btn-sm btn-outline-secondary me-1"
+                                    class="btn btn-xs btn-secondary"
                                     @click="toggleLayerVisibility(layer)"
                                     :title="layer.visible ? 'Hide item' : 'Show item'"
                                 >
@@ -105,7 +107,7 @@
                                 </button>
                                 <button
                                     type="button"
-                                    class="btn btn-sm btn-outline-warning me-1"
+                                    class="btn btn-xs btn-warning"
                                     @click="toggleLayerLock(layer)"
                                     :disabled="layer.layerName === 'main'"
                                     :title="layer.locked ? 'Unlock item' : 'Lock item'"
@@ -114,7 +116,7 @@
                                 </button>
                                 <button
                                     type="button"
-                                    class="btn btn-sm btn-outline-danger"
+                                    class="btn btn-xs btn-danger"
                                     @click="deleteLayerItem(layer)"
                                     :disabled="layer.layerName && layer.layerName.startsWith('related')"
                                     :title="layer.layerName && layer.layerName.startsWith('related') ? 'Cannot delete related route items' : 'Delete item'"
@@ -162,6 +164,7 @@ import Canvas from "./PaperComponent.vue";
 
             action: 1,
             layers: [],
+            showLayersTable: false,
         }),
         mounted() {
             if (this.image_prop) {
@@ -434,6 +437,10 @@ import Canvas from "./PaperComponent.vue";
                         console.log('Canvas not available for item deletion');
                     }
                 }
+            },
+
+            toggleLayersTable() {
+                this.showLayersTable = !this.showLayersTable;
             }
 
 

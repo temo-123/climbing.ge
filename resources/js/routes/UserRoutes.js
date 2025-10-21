@@ -105,6 +105,7 @@ const router = new VueRouter({
         { path: '/sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent') },
         { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },
         { path: '/sector_local_images/edit/:id', name: 'sectorLocalImagesListEdit', component: load('sector_local_images/sectorLocalImageEditComponent') },
+        { path: '/sector_local_images/options/:id', name: 'sectorLocalImagesOptions', component: load('sector_local_images/sectorLocaleImageEditorComponent') },
 
         { path: '/local_bisnes', name: 'localBisnesList', component: load('local_bisnes/localBisnesListComponent') },
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
@@ -114,6 +115,8 @@ const router = new VueRouter({
         { path: '/warehouse/options/:id', name: 'warehouseOptions', component: load('warehouses/warehouseOptionsComponent') },
 
         { path: '/live_cameras', name: 'liveCamerasList', component: load('live_camera/LiveCamerasListComponent') },
+
+        { path: '/export_tips', name: 'exportTips', component: load('expoet/exportComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },

@@ -69,6 +69,12 @@
                     />
                     <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'input-' + image.id">
                         Image ID -> {{ image.id }}
+
+                        <img
+                            :src="'/public/images/sector_img/' + image.image"
+                            :alt="'Sector Image ' + image.id"
+                            class="img-thumbnail"
+                            style="max-width: 100px; max-height: 100px; margin-left: 10px;" />
                     </label>
                 </div>
                 <Editor

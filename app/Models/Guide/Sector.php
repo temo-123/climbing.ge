@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Sector extends Model
 {
-    
+
     protected $fillable = [
         "name",
         "text",
@@ -71,4 +71,9 @@ class Sector extends Model
 	{
         return $this->hasMany(sector_local_image_sector::class, 'sector_id', 'id');
 	}
+
+    public function sector_local_images_jsons()
+    {
+        return $this->belongsToMany(SectorLocalImagesJson::class, 'sector_local_images_json_sectors', 'sector_id', 'sect_loc_img_json_id');
+    }
 }
