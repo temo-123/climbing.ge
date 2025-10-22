@@ -1,147 +1,79 @@
 <template>
     <div>
-        <div class="row ">
-
+        <div class="row">
             <div class="col-md-2">
-                <button type="button" class="btn btn-danger btn-block" @click.prevent="reset">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-
-                <button type="button" class="btn btn-warning btn-block" @click.prevent="back">
-                    <i class="fa fa-step-backward" aria-hidden="true"></i>
-                </button>
-
-                <hr />
-
-                <button type="button" class="btn btn-primary btn-block but_action" @click.prevent="line" v-if="action == 1">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-block" @click.prevent="line" v-else>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                </button>
-
-                <button type="button" class="btn btn-primary btn-block but_action" @click.prevent="point" v-if="action == 2">
-                    <i class="fa fa-circle" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-block" @click.prevent="point" v-else>
-                    <i class="fa fa-circle" aria-hidden="true"></i>
-                </button>
-
-                <button type="button" class="btn btn-primary btn-block but_action" @click.prevent="number" v-if="action == 3">
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                     +
-                    <i class="fa fa-circle" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-block" @click.prevent="number" v-else>
-                    <i class="fa fa-pencil" aria-hidden="true"></i>
-                     +
-                    <i class="fa fa-circle" aria-hidden="true"></i>
-                </button>
-
-                <button type="button" class="btn btn-primary btn-block but_action" @click.prevent="rectangle" v-if="action == 4">
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-primary btn-block" @click.prevent="rectangle" v-else>
-                    <i class="fa fa-square-o" aria-hidden="true"></i>
-                </button>
-
-                <hr />
-
-                <button type="button" class="btn btn-warning btn-block but_action" @click.prevent="eraser" v-if="action == 5">
-                    <i class="fa fa-eraser" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-warning btn-block" @click.prevent="eraser" v-else>
-                    <i class="fa fa-eraser" aria-hidden="true"></i>
-                </button>
-
-                <button type="button" class="btn btn-danger btn-block but_action" @click.prevent="erase_segment" v-if="action == 6">
-                    <i class="fa fa-scissors" aria-hidden="true"></i>
-                </button>
-                <button type="button" class="btn btn-danger btn-block" @click.prevent="erase_segment" v-else>
-                    <i class="fa fa-scissors" aria-hidden="true"></i>
-                </button>
+                <ToolbarComponent
+                    :action="action"
+                    :history-length="history.length"
+                    :redo-length="redoStack.length"
+                    @reset="handleReset"
+                    @undo="handleUndo"
+                    @redo="handleRedo"
+                    @line="handleLine"
+                    @point="handlePoint"
+                    @number="handleNumber"
+                    @rectangle="handleRectangle"
+                    @combined="handleCombined"
+                    @eraser="handleEraser"
+                    @erase_segment="handleEraseSegment"
+                    @move="handleMove"
+                />
             </div>
 
             <div class="col-md-10">
-                <Canvas
-                    :canvas_id_prop="'canvas-one'"
-                    :action_prop="action"
+                <CanvasContainerComponent
+                    :action="action"
                     :json_prop="json_prop"
                     :related_jsons="related_jsons"
-
-                    ref="childCanvas"
-
-                    :style="{
-                        backgroundImage: image ? 'url(' + image + ')' : 'none',
-                        backgroundSize: '100%'
-                    }"
-                    @canvas_data="canvas_data"
+                    :image="image"
+                    ref="canvasContainer"
+                    @canvas_data="handleCanvasData"
                     @layers_updated="updateLayersList"
                     @layers_ready="updateLayersList"
                 />
 
-                <!-- Layers Table under canvas -->
-                <div class="layers-panel mt-3">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                        <button type="button" class="btn btn-sm btn-info" @click="toggleLayersTable">
-                            <i class="fa fa-list" aria-hidden="true"></i> {{ showLayersTable ? 'Hide' : 'Show' }} Layers Table
-                        </button>
-                        <div v-if="showLayersTable">
-                            <button type="button" class="btn btn-sm btn-info" @click="updateLayersList">Refresh</button>
-                            <button type="button" class="btn btn-sm btn-success" @click="toggleLayersVisibility">
-                                <i class="fa fa-eye" aria-hidden="true"></i> Show / Hide All
-                            </button>
-                        </div>
-                    </div>
-                    <div v-if="showLayersTable" class="layers-list" style="max-height: 200px; overflow-y: auto; background-color: #c2c2c2;">
-                        <div v-for="layer in layers" :key="layer.name" class="layer-item d-flex align-items-center justify-content-between p-2 border-bottom">
-                            <span class="layer-name flex-grow-1">{{ layer.name }}</span>
-                            <div class="layer-controls">
-                                <button
-                                    type="button"
-                                    class="btn btn-xs btn-secondary"
-                                    @click="toggleLayerVisibility(layer)"
-                                    :title="layer.visible ? 'Hide item' : 'Show item'"
-                                >
-                                    <i :class="layer.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-xs btn-warning"
-                                    @click="toggleLayerLock(layer)"
-                                    :disabled="layer.layerName === 'main'"
-                                    :title="layer.locked ? 'Unlock item' : 'Lock item'"
-                                >
-                                    <i :class="layer.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
-                                </button>
-                                <button
-                                    type="button"
-                                    class="btn btn-xs btn-danger"
-                                    @click="deleteLayerItem(layer)"
-                                    :disabled="layer.layerName && layer.layerName.startsWith('related')"
-                                    :title="layer.layerName && layer.layerName.startsWith('related') ? 'Cannot delete related route items' : 'Delete item'"
-                                >
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div v-if="layers.length === 0" class="text-center text-muted p-3">
-                            No items drawn yet
-                        </div>
-                    </div>
-                </div>
+                <LayersPanelComponent
+                    :layers="layers"
+                    :show-layers-table="showLayersTable"
+                    @toggle-layers-table="toggleLayersTable"
+                    @refresh-layers="updateLayersList"
+                    @toggle-all-visibility="toggleLayersVisibility"
+                    @delete-all-layers="deleteAllLayers"
+                    @move-layer-up="moveLayerUp"
+                    @move-layer-down="moveLayerDown"
+                    @create-group-from-layer="createGroupFromLayer"
+                    @show-move-to-group-modal="showMoveToGroupModal"
+                    @ungroup-layer="ungroupLayer"
+                    @toggle-layer-visibility="toggleLayerVisibility"
+                    @toggle-layer-lock="toggleLayerLock"
+                    @delete-layer-item="deleteLayerItem"
+                    @move-child-out-of-group="moveChildOutOfGroup"
+                    @toggle-child-visibility="toggleChildVisibility"
+                    @toggle-child-lock="toggleChildLock"
+                    @delete-child-item="deleteChildItem"
+                    @toggle-group-expansion="toggleGroupExpansion"
+                    @finish-editing-layer-name="finishEditingLayerName"
+                    @cancel-editing-layer-name="cancelEditingLayerName"
+                    @finish-editing-child-name="finishEditingChildName"
+                    @cancel-editing-child-name="cancelEditingChildName"
+                />
             </div>
-
         </div>
     </div>
 </template>
 
 <script>
-import Canvas from "./PaperComponent.vue";
-    export default {
-        components: {
-            Canvas
-        },
+import ToolbarComponent from "./assets/toolbar/ToolbarComponent.vue";
+import LayersPanelComponent from "./assets/layers/LayersPanelComponent.vue";
+import CanvasContainerComponent from "./assets/canvas/CanvasContainerComponent.vue";
+import paper from 'paper';
+
+export default {
+    components: {
+        ToolbarComponent,
+        LayersPanelComponent,
+        CanvasContainerComponent
+    },
         props: {
             image_prop: {
                 type: String,
@@ -165,6 +97,13 @@ import Canvas from "./PaperComponent.vue";
             action: 1,
             layers: [],
             showLayersTable: false,
+            history: [], // Store drawing history for undo functionality
+            redoStack: [], // Store undone states for redo functionality
+            moveToGroupModal: {
+                show: false,
+                layer: null,
+                targetGroup: null
+            }
         }),
         mounted() {
             if (this.image_prop) {
@@ -195,9 +134,9 @@ import Canvas from "./PaperComponent.vue";
             },
             json_prop: {
                 handler: function(newVal, oldVal) {
-                    if (newVal && newVal !== oldVal && this.$refs.childCanvas) {
-                        // Pass the JSON data to the PaperComponent
-                        this.$refs.childCanvas.json_prop = newVal;
+                    if (newVal && newVal !== oldVal && this.$refs.canvasContainer) {
+                        // Pass the JSON data to the CanvasContainerComponent
+                        this.$refs.canvasContainer.json_prop = newVal;
                         console.log('JSON prop updated in EditorComponent:', newVal);
                     }
                     // Update layers list when JSON changes
@@ -211,9 +150,9 @@ import Canvas from "./PaperComponent.vue";
             },
             related_jsons: {
                 handler: function(newVal, oldVal) {
-                    if (newVal && newVal !== oldVal && this.$refs.childCanvas) {
-                        // Pass the related JSONs to the PaperComponent
-                        this.$refs.childCanvas.related_jsons = newVal;
+                    if (newVal && newVal !== oldVal && this.$refs.canvasContainer) {
+                        // Pass the related JSONs to the CanvasContainerComponent
+                        this.$refs.canvasContainer.related_jsons = newVal;
                         console.log('Related JSONs prop updated in EditorComponent:', newVal);
                     }
                     // Update layers list when related JSONs change
@@ -226,91 +165,129 @@ import Canvas from "./PaperComponent.vue";
                 immediate: true
             }
         },
+        computed: {
+            availableGroups() {
+                return this.layers.filter(layer => layer.isGroup);
+            }
+        },
         methods: {
-            reset() {
+            // Toolbar event handlers
+            handleReset() {
                 if (confirm('Do you want clear area?')) {
-                    this.$refs.childCanvas.reset();
+                    this.$refs.canvasContainer.reset();
                 }
             },
 
-            point(){
-                this.action = 2
+            handlePoint() {
+                this.action = 2;
             },
 
-            line(){
-                this.action = 1
+            handleLine() {
+                this.action = 1;
             },
 
-            number(){
-                this.action = 3
+            handleNumber() {
+                this.action = 3;
             },
 
-            rectangle(){
-                this.action = 4
+            handleRectangle() {
+                this.action = 4;
             },
 
-            eraser(){
-                this.action = 5
+            handleEraser() {
+                this.action = 5;
             },
 
-            erase_segment(){
-                this.action = 6
+            handleEraseSegment() {
+                this.action = 6;
             },
 
-            // change_image(event){
-            //     if (event) {
-            //         this.image = '/public/images/sector_img' + event;
-            //     } else {
-            //         this.image = '';
-            //     }
-            // },
+            handleCombined() {
+                this.action = 7;
+            },
 
-            canvas_data(event){
-                this.$emit('canvas_data', event)
+            handleMove() {
+                this.action = 8;
+            },
+
+            handleUndo() {
+                this.$refs.canvasContainer.undoLastAction();
+            },
+
+            handleRedo() {
+                this.$refs.canvasContainer.redoLastAction();
+            },
+
+            // Canvas event handlers
+            handleCanvasData(event) {
+                this.$emit('canvas_data', event);
             },
 
             // Method to trigger canvas data emission
             emitCanvasData() {
-                if (this.$refs.childCanvas && typeof this.$refs.childCanvas.saveCanvasData === 'function') {
-                    this.$refs.childCanvas.saveCanvasData();
-                } else {
-                    console.log('Canvas ref not available or saveCanvasData method not found');
-                }
+                this.$refs.canvasContainer.saveCanvasData();
             },
 
             // Method to get current canvas data and emit it
             getAndEmitCanvasData() {
-                if (this.$refs.childCanvas && this.$refs.childCanvas.scope) {
-                    const canvasData = JSON.stringify(this.$refs.childCanvas.scope.project.exportJSON());
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) {
+                    const canvasData = JSON.stringify(scope.project.exportJSON());
                     this.$emit('canvas_data', canvasData);
                 } else {
                     console.log('Canvas not available for data extraction');
                 }
             },
 
-            import_json_in_editor(event){
-                console.log("🚀 ~ import_json_in_editor ~ event:", event)
-                // this.$refs.childCanvas.import_json(json)
+            import_json_in_editor(event) {
+                console.log("🚀 ~ import_json_in_editor ~ event:", event);
+                // this.$refs.canvasContainer.import_json(json)
             },
 
             updateLayersList() {
-                console.log('updateLayersList called');
-                if (this.$refs.childCanvas && this.$refs.childCanvas.scope && this.$refs.childCanvas.scope.project) {
-                    console.log('Canvas project found, layers:', this.$refs.childCanvas.scope.project.layers.length);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
+                    // Preserve expanded states before resetting layers
+                    const expandedStates = {};
+                    this.layers.forEach(layer => {
+                        if (layer.isGroup && layer.expanded) {
+                            expandedStates[layer.name] = true;
+                        }
+                    });
                     this.layers = [];
-                    this.$refs.childCanvas.scope.project.layers.forEach(layer => {
+                    scope.project.layers.forEach(layer => {
                         layer.children.forEach(item => {
-                            this.layers.push({
-                                name: item.name || 'unnamed',
-                                visible: item.visible !== false,
-                                locked: item.locked || false,
-                                layerName: layer.name // Keep track of which layer the item belongs to
-                            });
+                            if (item.name && item.name.startsWith('group ')) {
+                                // Handle groups: add the group itself and its children
+                                this.layers.push({
+                                    name: item.name || 'unnamed',
+                                    displayName: item.name ? item.name.replace('group ', '') : 'unnamed',
+                                    visible: item.visible !== false,
+                                    locked: item.locked || false,
+                                    layerName: layer.name,
+                                    isGroup: true,
+                                    expanded: expandedStates[item.name] || false,
+                                    children: item.children.map(child => ({
+                                        name: child.name || 'unnamed',
+                                        displayName: child.name || 'unnamed',
+                                        visible: child.visible !== false,
+                                        locked: child.locked || false,
+                                        parentGroup: item.name
+                                    }))
+                                });
+                            } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
+                                // Only add non-group items or items not already included in groups
+                                this.layers.push({
+                                    name: item.name || 'unnamed',
+                                    displayName: item.name || 'unnamed',
+                                    visible: item.visible !== false,
+                                    locked: item.locked || false,
+                                    layerName: layer.name
+                                });
+                            }
                         });
                     });
-                    console.log('Items updated:', this.layers);
                 } else {
-                    console.log('Canvas not ready for layers update, retrying...');
                     this.layers = [];
                     // Retry after a short delay if canvas is not ready
                     setTimeout(() => {
@@ -321,10 +298,11 @@ import Canvas from "./PaperComponent.vue";
 
             toggleLayerVisibility(layer) {
                 console.log('toggleLayerVisibility called for item:', layer);
-                if (this.$refs.childCanvas && this.$refs.childCanvas.scope && this.$refs.childCanvas.scope.project) {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
                     // Find the item by name across all layers
                     let foundItem = null;
-                    this.$refs.childCanvas.scope.project.layers.forEach(paperLayer => {
+                    scope.project.layers.forEach(paperLayer => {
                         paperLayer.children.forEach(item => {
                             if (item.name === layer.name) {
                                 foundItem = item;
@@ -336,7 +314,7 @@ import Canvas from "./PaperComponent.vue";
                         // Toggle the visibility
                         foundItem.visible = !foundItem.visible;
                         console.log('Toggled item visibility to:', foundItem.visible);
-                        this.$refs.childCanvas.scope.view.update();
+                        scope.view.update();
                         console.log('Item visibility updated');
                         // Refresh the layers list to reflect changes
                         this.updateLayersList();
@@ -350,10 +328,11 @@ import Canvas from "./PaperComponent.vue";
 
             toggleLayerLock(layer) {
                 console.log('toggleLayerLock called for item:', layer);
-                if (this.$refs.childCanvas && this.$refs.childCanvas.scope && this.$refs.childCanvas.scope.project) {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
                     // Find the item by name across all layers
                     let foundItem = null;
-                    this.$refs.childCanvas.scope.project.layers.forEach(paperLayer => {
+                    scope.project.layers.forEach(paperLayer => {
                         paperLayer.children.forEach(item => {
                             if (item.name === layer.name) {
                                 foundItem = item;
@@ -365,7 +344,7 @@ import Canvas from "./PaperComponent.vue";
                         // Toggle the lock status
                         foundItem.locked = !foundItem.locked;
                         console.log('Toggled item lock to:', foundItem.locked);
-                        this.$refs.childCanvas.scope.view.update();
+                        scope.view.update();
                         console.log('Item lock updated');
                         // Refresh the layers list to reflect changes
                         this.updateLayersList();
@@ -381,20 +360,21 @@ import Canvas from "./PaperComponent.vue";
 
             toggleLayersVisibility() {
                 console.log('toggleLayersVisibility called');
-                if (this.$refs.childCanvas && this.$refs.childCanvas.scope && this.$refs.childCanvas.scope.project) {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
                     // Check if all items are currently visible
                     const allVisible = this.layers.every(layer => layer.visible);
 
                     // Set all items to the opposite state
                     const newVisibility = !allVisible;
 
-                    this.$refs.childCanvas.scope.project.layers.forEach(paperLayer => {
+                    scope.project.layers.forEach(paperLayer => {
                         paperLayer.children.forEach(item => {
                             item.visible = newVisibility;
                         });
                     });
 
-                    this.$refs.childCanvas.scope.view.update();
+                    scope.view.update();
                     console.log('All items visibility set to:', newVisibility);
                     // Refresh the layers list to reflect changes
                     this.updateLayersList();
@@ -405,17 +385,228 @@ import Canvas from "./PaperComponent.vue";
 
             deleteLayerItem(layer) {
                 console.log('deleteLayerItem called for item:', layer);
-                if (layer.layerName && layer.layerName.startsWith('related')) {
-                    console.log('Cannot delete related route items');
-                    return;
-                }
 
-                if (confirm(`Are you sure you want to delete "${layer.name}"? This action cannot be undone.`)) {
-                    if (this.$refs.childCanvas && this.$refs.childCanvas.scope && this.$refs.childCanvas.scope.project) {
+                const itemType = layer.isGroup ? 'group' : 'item';
+                if (confirm(`Are you sure you want to delete the ${itemType} "${layer.name}"? This action cannot be undone.`)) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
                         // Find and remove the item
                         let foundItem = null;
                         let foundLayer = null;
-                        this.$refs.childCanvas.scope.project.layers.forEach(paperLayer => {
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if ((item.name || 'unnamed') === layer.name) {
+                                    foundItem = item;
+                                    foundLayer = paperLayer;
+                                }
+                            });
+                        });
+
+                        if (foundItem && foundLayer) {
+                            foundItem.remove();
+                            scope.view.update();
+                            console.log(`${itemType} deleted successfully`);
+                            // Refresh the layers list to reflect changes
+                            this.updateLayersList();
+                            // Save the canvas data
+                            this.saveCanvasData();
+                        } else {
+                            console.log(`${itemType} not found for deletion`);
+                        }
+                    } else {
+                        console.log('Canvas not available for item deletion');
+                    }
+                } else {
+                    console.log(`Delete ${itemType} cancelled by user`);
+                }
+            },
+
+            toggleLayersTable() {
+                this.showLayersTable = !this.showLayersTable;
+            },
+
+            toggleGroupExpansion(layer) {
+                this.$set(layer, 'expanded', !layer.expanded);
+            },
+
+            toggleChildVisibility(layer, child) {
+                console.log('toggleChildVisibility called for child:', child, 'in group:', layer);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
+                    // Find the group by name
+                    let foundGroup = null;
+                    scope.project.layers.forEach(paperLayer => {
+                        paperLayer.children.forEach(item => {
+                            if (item.name === layer.name) {
+                                foundGroup = item;
+                            }
+                        });
+                    });
+
+                    if (foundGroup) {
+                        // Find the child item within the group
+                        foundGroup.children.forEach(item => {
+                            if (item.name === child.name) {
+                                item.visible = !item.visible;
+                                console.log('Toggled child visibility to:', item.visible);
+                            }
+                        });
+                        scope.view.update();
+                        // Refresh the layers list to reflect changes
+                        this.updateLayersList();
+                    } else {
+                        console.log('Group not found');
+                    }
+                } else {
+                    console.log('Canvas not available for child visibility toggle');
+                }
+            },
+
+            toggleChildLock(layer, child) {
+                console.log('toggleChildLock called for child:', child, 'in group:', layer);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
+                    // Find the group by name
+                    let foundGroup = null;
+                    scope.project.layers.forEach(paperLayer => {
+                        paperLayer.children.forEach(item => {
+                            if (item.name === layer.name) {
+                                foundGroup = item;
+                            }
+                        });
+                    });
+
+                    if (foundGroup) {
+                        // Find the child item within the group
+                        foundGroup.children.forEach(item => {
+                            if (item.name === child.name) {
+                                item.locked = !item.locked;
+                                console.log('Toggled child lock to:', item.locked);
+                            }
+                        });
+                        scope.view.update();
+                        // Refresh the layers list to reflect changes
+                        this.updateLayersList();
+                    } else {
+                        console.log('Group not found');
+                    }
+                } else {
+                    console.log('Canvas not available for child lock toggle');
+                }
+            },
+
+            deleteChildItem(layer, child) {
+                console.log('deleteChildItem called for child:', child, 'in group:', layer);
+                if (confirm(`Are you sure you want to delete "${child.name}" from group "${layer.name}"? This action cannot be undone.`)) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        // Find the group by name
+                        let foundGroup = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name) {
+                                    foundGroup = item;
+                                }
+                            });
+                        });
+
+                        if (foundGroup) {
+                            // Find and remove the child item from the group
+                            let childToRemove = null;
+                            foundGroup.children.forEach(item => {
+                                if (item.name === child.name) {
+                                    childToRemove = item;
+                                }
+                            });
+
+                            if (childToRemove) {
+                                childToRemove.remove();
+                                scope.view.update();
+                                console.log('Child item deleted successfully');
+                                // Refresh the layers list to reflect changes
+                                this.updateLayersList();
+                            } else {
+                                console.log('Child item not found for deletion');
+                            }
+                        } else {
+                            console.log('Group not found');
+                        }
+                    } else {
+                        console.log('Canvas not available for child item deletion');
+                    }
+                }
+            },
+
+            moveLayerUp(index) {
+                if (index > 0) {
+                    // Check if the layer above is in the same group (same layerName)
+                    const currentLayer = this.layers[index];
+                    const aboveLayer = this.layers[index - 1];
+
+                    if (currentLayer.layerName === aboveLayer.layerName) {
+                        // Swap the layer with the one above it
+                        const temp = this.layers[index];
+                        this.layers.splice(index, 1);
+                        this.layers.splice(index - 1, 0, temp);
+                        // Update the actual Paper.js layer order
+                        this.updatePaperLayerOrder();
+                    }
+                }
+            },
+
+            moveLayerDown(index) {
+                if (index < this.layers.length - 1) {
+                    // Check if the layer below is in the same group (same layerName)
+                    const currentLayer = this.layers[index];
+                    const belowLayer = this.layers[index + 1];
+
+                    if (currentLayer.layerName === belowLayer.layerName) {
+                        // Swap the layer with the one below it
+                        const temp = this.layers[index];
+                        this.layers.splice(index, 1);
+                        this.layers.splice(index + 1, 0, temp);
+                        // Update the actual Paper.js layer order
+                        this.updatePaperLayerOrder();
+                    }
+                }
+            },
+
+            updatePaperLayerOrder() {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
+                    // Group the UI layers by their layerName (paper layer name)
+                    const layersByName = {};
+                    this.layers.forEach(layer => {
+                        if (!layersByName[layer.layerName]) layersByName[layer.layerName] = [];
+                        layersByName[layer.layerName].push(layer);
+                    });
+
+                    // For each paper layer, reorder its top-level children based on the UI order
+                    scope.project.layers.forEach(paperLayer => {
+                        const orderedLayers = layersByName[paperLayer.name];
+                        if (orderedLayers) {
+                            const orderedChildren = [];
+                            orderedLayers.forEach(layer => {
+                                const child = paperLayer.children.find(c => c.name === layer.name);
+                                if (child) orderedChildren.push(child);
+                            });
+                            paperLayer.children = orderedChildren;
+                        }
+                    });
+
+                    scope.view.update();
+                    this.saveCanvasData();
+                }
+            },
+
+            createGroupFromLayer(layer) {
+                if (confirm(`Create a new group containing "${layer.name}"?`)) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        // Find the item in Paper.js
+                        let foundItem = null;
+                        let foundLayer = null;
+                        scope.project.layers.forEach(paperLayer => {
                             paperLayer.children.forEach(item => {
                                 if (item.name === layer.name) {
                                     foundItem = item;
@@ -425,26 +616,284 @@ import Canvas from "./PaperComponent.vue";
                         });
 
                         if (foundItem && foundLayer) {
+                            // Create a new group
+                            const newGroup = new paper.Group();
+                            newGroup.name = `group ${this.$refs.canvasContainer.groupCounter + 1}`;
+                            this.$refs.canvasContainer.groupCounter++;
+
+                            // Move the item into the group
                             foundItem.remove();
-                            this.$refs.childCanvas.scope.view.update();
-                            console.log('Item deleted successfully');
-                            // Refresh the layers list to reflect changes
+                            newGroup.addChild(foundItem);
+
+                            // Add the group to the layer
+                            foundLayer.addChild(newGroup);
+
+                            scope.view.update();
                             this.updateLayersList();
-                        } else {
-                            console.log('Item not found for deletion');
+                            this.saveCanvasData();
                         }
-                    } else {
-                        console.log('Canvas not available for item deletion');
                     }
                 }
             },
 
-            toggleLayersTable() {
-                this.showLayersTable = !this.showLayersTable;
+            ungroupLayer(layer) {
+                if (confirm(`Ungroup "${layer.name}"? All items will become individual layers.`)) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        // Find the group in Paper.js
+                        let foundGroup = null;
+                        let foundLayer = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name && item instanceof paper.Group) {
+                                    foundGroup = item;
+                                    foundLayer = paperLayer;
+                                }
+                            });
+                        });
+
+                        if (foundGroup && foundLayer) {
+                            // Move all children out of the group
+                            const children = foundGroup.children.slice(); // Copy the children array
+                            children.forEach(child => {
+                                child.remove();
+                                foundLayer.addChild(child);
+                            });
+
+                            // Remove the empty group
+                            foundGroup.remove();
+
+                            scope.view.update();
+                            this.updateLayersList();
+                            this.saveCanvasData();
+                        }
+                    }
+                } else {
+                    console.log('Ungroup cancelled by user');
+                }
+            },
+
+            showMoveToGroupModal(layer) {
+                this.moveToGroupModal.layer = layer;
+                this.moveToGroupModal.show = true;
+                // For simplicity, we'll just move to the first available group
+                // In a real implementation, you'd show a modal to select the target group
+                if (this.availableGroups.length > 0) {
+                    this.moveLayerToGroup(layer, this.availableGroups[0]);
+                }
+            },
+
+            moveLayerToGroup(layer, targetGroup) {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope && scope.project) {
+                    // Find the item and target group in Paper.js
+                    let foundItem = null;
+                    let foundGroup = null;
+                    scope.project.layers.forEach(paperLayer => {
+                        paperLayer.children.forEach(item => {
+                            if (item.name === layer.name) {
+                                foundItem = item;
+                            }
+                            if (item.name === targetGroup.name && item instanceof paper.Group) {
+                                foundGroup = item;
+                            }
+                        });
+                    });
+
+                    if (foundItem && foundGroup) {
+                        // Move the item into the group
+                        foundItem.remove();
+                        foundGroup.addChild(foundItem);
+
+                        scope.view.update();
+                        this.updateLayersList();
+                        this.saveCanvasData();
+                    }
+                }
+                this.moveToGroupModal.show = false;
+            },
+
+            moveChildOutOfGroup(layer, child) {
+                if (confirm(`Move "${child.name}" out of group "${layer.name}"?`)) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        // Find the group in Paper.js
+                        let foundGroup = null;
+                        let foundLayer = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name && item instanceof paper.Group) {
+                                    foundGroup = item;
+                                    foundLayer = paperLayer;
+                                }
+                            });
+                        });
+
+                        if (foundGroup && foundLayer) {
+                            // Find and move the child out of the group
+                            foundGroup.children.forEach(item => {
+                                if (item.name === child.name) {
+                                    item.remove();
+                                    foundLayer.addChild(item);
+                                }
+                            });
+
+                            scope.view.update();
+                            this.updateLayersList();
+                            this.saveCanvasData();
+                        }
+                    }
+                }
+            },
+
+            deleteAllLayers() {
+                if (confirm('Are you sure you want to delete ALL layers? This action cannot be undone.')) {
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        // Clear all layers except the main layer if it exists
+                        scope.project.layers.forEach(layer => {
+                            if (layer.name !== 'main') {
+                                layer.removeChildren();
+                            }
+                        });
+                        scope.view.update();
+                        this.updateLayersList();
+                        this.saveCanvasData();
+                    }
+                } else {
+                    console.log('Delete all layers cancelled by user');
+                }
+            },
+
+            startEditingLayerName(layer, event) {
+                // Stop editing any other layer first
+                this.layers.forEach(l => {
+                    if (l.isEditing) {
+                        this.cancelEditingLayerName(l);
+                    }
+                });
+                this.$set(layer, 'isEditing', true);
+                this.$set(layer, 'originalName', layer.name);
+                this.$nextTick(() => {
+                    if (event && event.target) {
+                        event.target.focus();
+                        // Select all text
+                        const range = document.createRange();
+                        range.selectNodeContents(event.target);
+                        const selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    }
+                });
+            },
+
+            finishEditingLayerName(layer, newName) {
+                if (newName && newName !== layer.originalName) {
+                    // Update the name in Paper.js
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        let foundItem = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.originalName) {
+                                    foundItem = item;
+                                }
+                            });
+                        });
+
+                        if (foundItem) {
+                            // For groups, ensure the name starts with 'group '
+                            if (layer.isGroup && !newName.startsWith('group ')) {
+                                foundItem.name = `group ${newName}`;
+                            } else {
+                                foundItem.name = newName;
+                            }
+                            layer.name = foundItem.name;
+                            layer.displayName = layer.isGroup ? newName : foundItem.name;
+                            this.saveCanvasData();
+                            // Update layers list to reflect the change
+                            this.updateLayersList();
+                        }
+                    }
+                }
+                this.$set(layer, 'isEditing', false);
+                delete layer.originalName;
+            },
+
+            cancelEditingLayerName(layer) {
+                this.$set(layer, 'isEditing', false);
+                delete layer.originalName;
+                this.updateLayersList(); // Refresh to reset the display
+            },
+
+            startEditingChildName(layer, child, event) {
+                // Stop editing any other child first
+                this.layers.forEach(l => {
+                    if (l.children) {
+                        l.children.forEach(c => {
+                            if (c.isEditing) {
+                                this.cancelEditingChildName(c);
+                            }
+                        });
+                    }
+                });
+                this.$set(child, 'isEditing', true);
+                this.$set(child, 'originalName', child.name);
+                this.$nextTick(() => {
+                    if (event && event.target) {
+                        event.target.focus();
+                        // Select all text
+                        const range = document.createRange();
+                        range.selectNodeContents(event.target);
+                        const selection = window.getSelection();
+                        selection.removeAllRanges();
+                        selection.addRange(range);
+                    }
+                });
+            },
+
+            finishEditingChildName(layer, child, newName) {
+                if (newName && newName !== child.originalName) {
+                    // Update the name in Paper.js
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        let foundGroup = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name && item instanceof paper.Group) {
+                                    foundGroup = item;
+                                }
+                            });
+                        });
+
+                        if (foundGroup) {
+                            foundGroup.children.forEach(item => {
+                                if (item.name === child.originalName) {
+                                    item.name = newName;
+                                    child.name = newName;
+                                    child.displayName = newName;
+                                    this.saveCanvasData();
+                                    // Update layers list to reflect the change
+                                    this.updateLayersList();
+                                }
+                            });
+                        }
+                    }
+                }
+                this.$set(child, 'isEditing', false);
+                delete child.originalName;
+            },
+
+            cancelEditingChildName(child) {
+                this.$set(child, 'isEditing', false);
+                delete child.originalName;
+                this.updateLayersList(); // Refresh to reset the display
+            },
+
+            saveCanvasData() {
+                this.$refs.canvasContainer.saveCanvasData();
             }
-
-
-        },
+        }
     }
 </script>
 

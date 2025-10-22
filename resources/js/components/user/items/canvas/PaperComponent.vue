@@ -1,10 +1,9 @@
-<template>
+ut<template>
     <!-- <div> -->
-        <canvas 
-            :id="canvas_id_prop" 
-            class="canvas-style" 
+        <canvas
+            :id="canvas_id_prop"
+            class="canvas-style"
             v-on:mousedown="mouseDown"
-            v-on:mouseup="mouseUp"
         />
     <!-- </div> -->
 </template>
@@ -25,10 +24,14 @@
             scope: null,
             canvasData: null, // store canvas data
             old_json: null,
+            selectedItem: null, // for move action
+            group: null, // for grouping multiple objects as sublayers
+            groupCounter: 0, // counter for unique group names
             layerCounters: {
                 line: 0,
                 point: 0,
-                rectangle: 0
+                rectangle: 0,
+                group: 0
             }
 
         }),
@@ -62,11 +65,15 @@
                 this.importJsonData(this.json_prop);
             }
 
+            // Save initial empty state for undo functionality
+            this.saveCanvasData();
+
             // paperjsLayersPanel.create();
         },
         methods: {
             reset() {
                 this.scope.project.activeLayer.removeChildren();
+                this.selectedItem = null; // Clear selection on reset
                 this.saveCanvasData()
             },
 
@@ -84,6 +91,10 @@
                     strokeColor: '#ff0000',
                     name: `point ${this.layerCounters.point}`
                 });
+                // If a group is active, add the point as a sublayer to the group
+                if (this.group) {
+                    this.group.addChild(point);
+                }
                 return point;
             },
 
@@ -95,8 +106,245 @@
                     strokeJoin: 'round',
                     name: `line ${this.layerCounters.line}`
                 });
+                // If a group is active, add the line as a sublayer to the group
+                if (this.group) {
+                    this.group.addChild(this.path);
+                }
+                return this.path;
             },
 
+            createGroup() {
+                // Create a new group for grouping multiple objects as sublayers
+                this.groupCounter++;
+                this.group = new paper.Group();
+                this.group.name = `group ${this.groupCounter}`;
+                // Add the new group to the active layer
+                this.scope.project.activeLayer.addChild(this.group);
+            },
+
+            add_line_and_point(){
+
+            },
+
+            add_line_for_combined(mousePoint){
+                this.layerCounters.line++;
+                this.currentLine = new paper.Path({
+                    strokeColor: "#ff0000",
+                    strokeWidth: 3,
+                    strokeJoin: 'round',
+                    name: `line ${this.layerCounters.line}`
+                });
+                // Start the line from the closest point on the rectangle perimeter to the mouse position
+                if (this.path && this.path.data && this.path.data.isRectangle) {
+                    const rectBounds = this.path.bounds;
+                    const startPoint = this.getClosestPerimeterPoint(rectBounds, mousePoint);
+                    this.currentLine.add(startPoint);
+                }
+                return this.currentLine;
+            },
+
+            getClosestPerimeterPoint(rectBounds, mousePoint) {
+                // Define corners and midpoints of sides
+                const points = [
+                    { point: new paper.Point(rectBounds.left, rectBounds.top), direction: new paper.Point(-1, -1) },         // top-left corner
+                    { point: new paper.Point(rectBounds.center.x, rectBounds.top), direction: new paper.Point(0, -1) },     // top middle
+                    { point: new paper.Point(rectBounds.right, rectBounds.top), direction: new paper.Point(1, -1) },      // top-right corner
+                    { point: new paper.Point(rectBounds.right, rectBounds.center.y), direction: new paper.Point(1, 0) },   // right middle
+                    { point: new paper.Point(rectBounds.right, rectBounds.bottom), direction: new paper.Point(1, 1) },    // bottom-right corner
+                    { point: new paper.Point(rectBounds.center.x, rectBounds.bottom), direction: new paper.Point(0, 1) },  // bottom middle
+                    { point: new paper.Point(rectBounds.left, rectBounds.bottom), direction: new paper.Point(-1, 1) },    // bottom-left corner
+                    { point: new paper.Point(rectBounds.left, rectBounds.center.y), direction: new paper.Point(-1, 0) }    // left middle
+                ];
+
+                let closestPoint = points[0];
+                let minDistance = mousePoint.getDistance(closestPoint.point);
+
+                points.forEach(point => {
+                    const distance = mousePoint.getDistance(point.point);
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                        closestPoint = point;
+                    }
+                });
+
+                // Return a point slightly outside the rectangle from the closest point
+                const offset = 3; // Small offset to ensure line starts outside
+                return new paper.Point(
+                    closestPoint.point.x + (closestPoint.direction.x * offset),
+                    closestPoint.point.y + (closestPoint.direction.y * offset)
+                );
+            },
+
+            mouseDown() {
+                this.tool = this.createTool(this.scope);
+
+                this.tool.onMouseDown = (event) => {
+                    if (this.action_prop == 1) {
+                        this.add_line();
+                    }
+                    else if (this.action_prop == 2){
+                        this.add_point(event);
+                    }
+                    else if (this.action_prop == 3){
+                        // Combined action: line + point, create new group for grouping
+                        this.createGroup();
+                        this.add_line();
+                        // this.add_point(event);
+                    }
+                    else if (this.action_prop == 4){
+                        this.add_rectangle(event)
+                    }
+                    else if (this.action_prop == 5){
+                        this.erase_at_point(event);
+                    }
+                    else if (this.action_prop == 6){
+                        this.erase_segment_at_point(event);
+                    }
+                    else if (this.action_prop == 7){
+                        // Combined action: small rectangle + line + point, create new group for grouping
+                        this.createGroup();
+                        this.currentLine = null; // Reset any previous line
+                        this.add_small_rectangle(event);
+                        // Don't start line yet, wait for drag to determine start position
+                    }
+                    else if (this.action_prop == 8){
+                        // Move action: select and move objects
+                        this.selectItemForMove(event);
+                        return; // Don't execute other actions when in move mode
+                    }
+                };
+
+                this.tool.onMouseDrag = (event) => {
+                    if (this.action_prop == 1 || this.action_prop == 3) {
+                        if (this.path) {
+                            this.path.add(event.point);
+                        }
+                    } else if (this.action_prop == 4) {
+                        // Update rectangle corners for live preview
+                        if (this.path && this.path.data && this.path.data.isRectangle) {
+                            const startPoint = this.path.data.startPoint;
+                            // Update all four corners to create rectangle
+                            this.path.segments[0].point = startPoint; // top-left
+                            this.path.segments[1].point = new paper.Point(event.point.x, startPoint.y); // top-right
+                            this.path.segments[2].point = event.point; // bottom-right
+                            this.path.segments[3].point = new paper.Point(startPoint.x, event.point.y); // bottom-left
+                        }
+                    } else if (this.action_prop == 7) {
+                        // For combined action, start line on first drag and add points during drag but avoid going inside rectangle
+                        if (!this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
+                            // Start the line from the closest perimeter point to the current mouse position
+                            this.add_line_for_combined(event.point);
+                        }
+                        if (this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
+                            const rectBounds = this.path.bounds;
+                            // Check if the point is inside the rectangle
+                            const isInsideRect = event.point.x >= rectBounds.left &&
+                                               event.point.x <= rectBounds.right &&
+                                               event.point.y >= rectBounds.top &&
+                                               event.point.y <= rectBounds.bottom;
+
+                            // Only add the point if it's not inside the rectangle
+                            if (!isInsideRect) {
+                                this.currentLine.add(event.point);
+                            }
+                        }
+                    } else if (this.action_prop == 8) {
+                        // Move action: drag selected item
+                        if (this.selectedItem) {
+                            this.selectedItem.position = this.selectedItem.position.add(event.delta);
+                            // Also move associated text label if it exists
+                            if (this.selectedItem.data && this.selectedItem.data.textLabel) {
+                                this.selectedItem.data.textLabel.position = this.selectedItem.data.textLabel.position.add(event.delta);
+                            }
+                        }
+                    }
+                };
+
+                this.tool.onMouseUp = (event) => {
+                    if (this.action_prop == 1 || this.action_prop == 3) {
+                        if (this.path) {
+                            this.add_point(event);
+                        }
+                    }
+                    if (this.action_prop == 4 && this.path && this.path.data && this.path.data.isRectangle) {
+                        // Update text label position to center of rectangle
+                        const bounds = this.path.bounds;
+                        const center = bounds.center;
+                        if (this.path.data.textLabel) {
+                            this.path.data.textLabel.point = center;
+                        }
+                    }
+                    // For action_prop == 7, text is already centered inside the small rectangle
+                    if (this.action_prop == 7) {
+                        // For combined action, add point on mouse up
+                        this.add_point(event);
+                        this.currentLine = null; // Reset current line
+                    }
+                    if (this.action_prop == 8) {
+                        // Move action: save canvas data after moving
+                        if (this.selectedItem) {
+                            this.saveCanvasData();
+                        }
+                    }
+                    this.path = null;
+                    // Only save canvas data for actions that actually create/modify items
+                    if (this.action_prop !== 5 && this.action_prop !== 6) { // Don't save for erase actions
+                        // For combined actions (3 and 7), only save once at the end
+                        if (this.action_prop !== 3 && this.action_prop !== 7 && this.action_prop !== 8) {
+                            this.saveCanvasData(); // Save canvas data after drawing
+                        }
+                    }
+                    // For combined actions (3 and 7), save after all objects are added and reset group
+                    if (this.action_prop == 3 || this.action_prop == 7) {
+                        this.saveCanvasData();
+                        this.group = null; // Reset group after combined action
+                    }
+                    // Emit event to update layers list in parent component
+                    this.$emit('layers_updated');
+                }
+            },
+
+            selectItemForMove(event) {
+                // Find item at click point for moving (only editable items, not locked ones)
+                const hitResult = this.scope.project.hitTest(event.point, {
+                    fill: true,
+                    stroke: true,
+                    segments: true,
+                    tolerance: 15 // Increased tolerance for easier clicking
+                });
+
+                if (hitResult && hitResult.item) {
+                    let itemToSelect = hitResult.item;
+
+                    // If clicked on a text label, select the associated rectangle instead
+                    if (itemToSelect instanceof paper.PointText && itemToSelect.name && itemToSelect.name.startsWith('text ')) {
+                        // Find the associated rectangle by matching the number
+                        const textNumber = itemToSelect.name.replace('text ', '');
+                        this.scope.project.layers.forEach(layer => {
+                            layer.children.forEach(item => {
+                                if (item.name === `rectangle ${textNumber}` && !item.locked) {
+                                    itemToSelect = item;
+                                }
+                            });
+                        });
+                    }
+
+                    // Only select if the item is not locked (related routes are locked)
+                    if (!itemToSelect.locked) {
+                        this.selectedItem = itemToSelect;
+                        console.log('Item selected for moving:', this.selectedItem.name);
+                    } else {
+                        console.log('Cannot move locked item (related route)');
+                        this.selectedItem = null;
+                    }
+                } else {
+                    console.log('No item found at click point');
+                    this.selectedItem = null;
+                }
+            },
+
+
+            
             add_rectangle(event){
                 this.layerCounters.rectangle++;
                 // Create a custom rectangle path with 4 corners
@@ -117,6 +365,64 @@
                 // Mark this path as a rectangle for drag handling
                 rect.data = { isRectangle: true, startPoint: event.point };
                 this.path = rect;
+
+                // Add text label with route number at the center
+                const text = new paper.PointText({
+                    point: event.point, // Will be updated to center in onMouseUp
+                    content: this.layerCounters.rectangle.toString(),
+                    fillColor: '#ff0000',
+                    fontFamily: 'Arial',
+                    fontSize: 14,
+                    justification: 'center'
+                });
+                text.name = `text ${this.layerCounters.rectangle}`;
+                rect.data.textLabel = text;
+                // Position text at the bottom of the rectangle initially
+                text.point = new paper.Point(event.point.x, event.point.y + 20); // Adjust Y to place below
+
+                return rect;
+            },
+
+            add_small_rectangle(event){
+                this.layerCounters.rectangle++;
+                const size = 20; // Fixed small size
+                const halfSize = size / 2;
+                const center = event.point;
+
+                // Create a small rectangle centered at event.point with rounded corners
+                const rect = new paper.Path.Rectangle({
+                    point: [center.x - halfSize, center.y - halfSize],
+                    size: [size, size],
+                    radius: 3, // Rounded corners
+                    strokeColor: '#ff0000',
+                    strokeWidth: 3,
+                    fillColor: null,
+                    name: `rectangle ${this.layerCounters.rectangle}`
+                });
+
+                // Mark this path as a rectangle
+                rect.data = { isRectangle: true, isSmall: true };
+                this.path = rect;
+
+                // Add text label with route number inside the rectangle (bigger and stronger)
+                const text = new paper.PointText({
+                    point: new paper.Point(center.x, center.y + 3), // Adjust Y slightly for better vertical centering
+                    content: this.layerCounters.rectangle.toString(),
+                    fillColor: '#ff0000',
+                    fontFamily: 'Arial',
+                    fontSize: 20,
+                    fontWeight: 'bold',
+                    justification: 'center'
+                });
+                text.name = `text ${this.layerCounters.rectangle}`;
+                rect.data.textLabel = text;
+
+                // If a group is active, add the rectangle and text as sublayers to the group
+                if (this.group) {
+                    this.group.addChild(rect);
+                    this.group.addChild(text);
+                }
+
                 return rect;
             },
 
@@ -162,6 +468,20 @@
                                     if (item instanceof paper.Path && item.closed) {
                                         this.layerCounters.rectangle++;
                                         item.name = `rectangle ${this.layerCounters.rectangle}`;
+                                        // Add text label for imported rectangle
+                                        const bounds = item.bounds;
+                                        const bottomCenter = new paper.Point(bounds.center.x, bounds.bottom);
+                                        const text = new paper.PointText({
+                                            point: bottomCenter,
+                                            content: this.layerCounters.rectangle.toString(),
+                                            fillColor: '#ff0000',
+                                            fontFamily: 'Arial',
+                                            fontSize: 14,
+                                            justification: 'center'
+                                        });
+                                        text.name = `text ${this.layerCounters.rectangle}`;
+                                        item.data = item.data || {};
+                                        item.data.textLabel = text;
                                     } else if (item instanceof paper.Path) {
                                         this.layerCounters.line++;
                                         item.name = `line ${this.layerCounters.line}`;
@@ -177,6 +497,20 @@
                             if (importedItems instanceof paper.Path && importedItems.closed) {
                                 this.layerCounters.rectangle++;
                                 importedItems.name = `rectangle ${this.layerCounters.rectangle}`;
+                                // Add text label for imported rectangle
+                                const bounds = importedItems.bounds;
+                                const bottomCenter = new paper.Point(bounds.center.x, bounds.bottom);
+                                const text = new paper.PointText({
+                                    point: bottomCenter,
+                                    content: this.layerCounters.rectangle.toString(),
+                                    fillColor: '#ff0000',
+                                    fontFamily: 'Arial',
+                                    fontSize: 14,
+                                    justification: 'center'
+                                });
+                                text.name = `text ${this.layerCounters.rectangle}`;
+                                importedItems.data = importedItems.data || {};
+                                importedItems.data.textLabel = text;
                             } else if (importedItems instanceof paper.Path) {
                                 this.layerCounters.line++;
                                 importedItems.name = `line ${this.layerCounters.line}`;
@@ -292,71 +626,6 @@
             //     });
             // },
             
-            mouseDown() {
-                this.tool = this.createTool(this.scope);
-
-                this.tool.onMouseDown = (event) => {
-                    if (this.action_prop == 1) {
-                        this.add_line();
-                    }
-                    else if (this.action_prop == 2){
-                        this.add_point(event);
-                    }
-                    else if (this.action_prop == 3){
-                        this.add_line();
-                        this.add_point(event);
-                    }
-                    else if (this.action_prop == 4){
-                        this.add_rectangle(event)
-                    }
-                    else if (this.action_prop == 5){
-                        this.erase_at_point(event);
-                    }
-                    else if (this.action_prop == 6){
-                        this.erase_segment_at_point(event);
-                    }
-                };
-
-                this.tool.onMouseDrag = (event) => {
-                    if (this.action_prop == 1 || this.action_prop == 3) {
-                        if (this.path) {
-                            this.path.add(event.point);
-                        }
-                    } else if (this.action_prop == 4) {
-                        // Update rectangle corners for live preview
-                        if (this.path && this.path.data && this.path.data.isRectangle) {
-                            const startPoint = this.path.data.startPoint;
-                            // Update all four corners to create rectangle
-                            this.path.segments[0].point = startPoint; // top-left
-                            this.path.segments[1].point = new paper.Point(event.point.x, startPoint.y); // top-right
-                            this.path.segments[2].point = event.point; // bottom-right
-                            this.path.segments[3].point = new paper.Point(startPoint.x, event.point.y); // bottom-left
-                        }
-                    }
-                };
-                
-                this.tool.onMouseUp = () => {
-                    this.path = null;
-                    this.saveCanvasData(); // Save canvas data after drawing
-                    // Emit event to update layers list in parent component
-                    this.$emit('layers_updated');
-                }
-            },
-
-            mouseUp(){
-                this.tool.onMouseUp = (event) => {
-                    if (this.action_prop == 3){
-                        this.add_point(event);
-                    }
-                    else if (this.action_prop == 4){
-                        paper.Path.Rectangle({
-                            to: [event.event.offsetX, event.event.offsetY],
-                        })
-                    }
-                }
-
-                this.saveCanvasData()
-            },
 
             erase_at_point(event){
                 // Find items at the click point and remove them completely (only editable items, not locked ones)
@@ -370,6 +639,10 @@
                 if (hitResult && hitResult.item) {
                     // Only erase if the item is not locked (related routes are locked)
                     if (!hitResult.item.locked) {
+                        // Also remove associated text label if it exists
+                        if (hitResult.item.data && hitResult.item.data.textLabel) {
+                            hitResult.item.data.textLabel.remove();
+                        }
                         hitResult.item.remove();
                         this.scope.view.update(); // Update the canvas view to show changes
                         this.saveCanvasData();
@@ -424,12 +697,20 @@
                             } else if (closestSegment && hitResult.item.segments.length <= 2) {
                                 // If only 2 segments left, remove the entire path
                                 console.log('Path has <=2 segments, removing entire path');
+                                // Also remove associated text label if it exists
+                                if (hitResult.item.data && hitResult.item.data.textLabel) {
+                                    hitResult.item.data.textLabel.remove();
+                                }
                                 hitResult.item.remove();
                                 console.log('Small path erased completely');
                             }
                         } else {
                             // For non-path items (like circles), remove the entire item
                             console.log('Item is not a path, removing entire item');
+                            // Also remove associated text label if it exists
+                            if (hitResult.item.data && hitResult.item.data.textLabel) {
+                                hitResult.item.data.textLabel.remove();
+                            }
                             hitResult.item.remove();
                             console.log('Item erased completely');
                         }
@@ -446,7 +727,76 @@
 
             saveCanvasData() {
                 const canvasData = JSON.stringify( this.scope.project.exportJSON());
+                // Store current state in history before saving
+                if (this.$parent && this.$parent.history) {
+                    // Only add to history if the canvas has actually changed
+                    const currentState = JSON.parse(canvasData);
+                    const lastState = this.$parent.history.length > 0 ? this.$parent.history[this.$parent.history.length - 1] : null;
+
+                    // Compare states to avoid duplicate entries
+                    if (!lastState || JSON.stringify(currentState) !== JSON.stringify(lastState)) {
+                        this.$parent.history.push(currentState);
+                        // Limit history to last 10 states
+                        if (this.$parent.history.length > 10) {
+                            this.$parent.history.shift();
+                        }
+                        // Clear redo stack when new action is performed
+                        if (this.$parent.redoStack) {
+                            this.$parent.redoStack = [];
+                        }
+                    }
+                }
                 this.$emit('canvas_data', canvasData)
+            },
+
+            undoLastAction() {
+                if (this.$parent && this.$parent.history && this.$parent.history.length > 0) {
+                    // Save current state to redo stack before undoing
+                    const currentState = JSON.stringify(this.scope.project.exportJSON());
+                    this.$parent.redoStack.push(JSON.parse(currentState));
+
+                    const lastState = this.$parent.history.pop();
+                    // Restore the previous state
+                    this.scope.project.clear();
+                    if (lastState) {
+                        this.scope.project.importJSON(lastState);
+                    }
+                    this.scope.view.update();
+                    this.$emit('layers_updated');
+                    // Emit the restored canvas data
+                    this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
+                } else {
+                    console.log('No more actions to undo');
+                }
+                // Limit redo stack to last 10 states
+                if (this.$parent.redoStack && this.$parent.redoStack.length > 10) {
+                    this.$parent.redoStack = this.$parent.redoStack.slice(-10);
+                }
+            },
+
+            redoLastAction() {
+                if (this.$parent && this.$parent.redoStack && this.$parent.redoStack.length > 0) {
+                    // Save current state to history before redoing
+                    const currentState = JSON.stringify(this.scope.project.exportJSON());
+                    this.$parent.history.push(JSON.parse(currentState));
+
+                    const nextState = this.$parent.redoStack.pop();
+                    // Restore the next state
+                    this.scope.project.clear();
+                    if (nextState) {
+                        this.scope.project.importJSON(nextState);
+                    }
+                    this.scope.view.update();
+                    this.$emit('layers_updated');
+                    // Emit the restored canvas data
+                    this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
+                } else {
+                    console.log('No more actions to redo');
+                }
+                // Limit history to last 10 states
+                if (this.$parent.history && this.$parent.history.length > 10) {
+                    this.$parent.history = this.$parent.history.slice(-10);
+                }
             }
         },
     }
