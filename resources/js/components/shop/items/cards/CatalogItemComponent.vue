@@ -1,10 +1,10 @@
 <template>
     <div class="grid-tile">
         <article class="product-card" :class="{ 'out-of-stock': isOutOfStock }" role="article">
-            <div v-if="isOutOfStock" class="out-of-stock-overlay">
-                <span>{{ $t('shop.out_of_stock') }}</span>
-            </div>
             <div class="product-image-container">
+                <div v-if="isOutOfStock" class="out-of-stock-shadow">
+                    <span>{{ $t('shop.product.out_of_stock') }}</span>
+                </div>
                 <div class="image-nav prev-image" v-if="image_num > 0">
                     <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
                 </div>
@@ -82,6 +82,8 @@
                     return false;
                 }
                 return this.product_data.product_option.every(option => option.option.quantity <= 0);
+
+                // return true // test asset
             }
         },
         mounted() {
@@ -144,21 +146,21 @@
         margin: 5px 0;
     }
 
-    .out-of-stock-overlay {
+    .out-of-stock-shadow {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0, 0, 0, 0.7);
+        background: linear-gradient(to bottom, rgb(0 0 0 / 80%) 0%, #00000073 100%);
         display: flex;
         justify-content: center;
         align-items: center;
-        z-index: 10;
+        z-index: 15;
     }
 
-    .out-of-stock-overlay span {
-        color: white;
+    .out-of-stock-shadow span {
+        color: #f0f0f0;
         font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;

@@ -1,3 +1,0 @@
-- Update deleteLayerItem in EditorComponent.vue to prevent deletion if layerName starts with 'related' or 'route-'.
-- Update LayersPanelComponent.vue to disable delete button and update title for route and related items.
-- Test the functionality to ensure route items cannot be deleted.

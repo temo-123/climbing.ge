@@ -96,6 +96,10 @@
 
                             <div class="row" v-if="product.global_product.sale_type == 'online_order'">
                                 <div class="row">
+                                    <div v-if="isOutOfStock" class="alert alert-danger alert-with-icon" role="alert">
+                                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                        {{ $t('shop.product.out_of_stock') }}
+                                    </div>
                                     <div v-if="products_quantity == select_product_max_quantyty && showMaxProductsAlert" class="alert alert-danger alert-dismissible alert-with-icon" role="alert">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         {{ $t('shop.max products') }}
@@ -315,6 +319,11 @@
         mounted() {
             this.get_product()
             this.get_user_info()
+        },
+        computed: {
+            isOutOfStock() {
+                return this.product.product_option.every(option => option.option.quantity <= 0);
+            }
         },
         methods: {
             get_user_info() {
