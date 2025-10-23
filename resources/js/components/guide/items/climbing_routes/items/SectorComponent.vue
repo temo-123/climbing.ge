@@ -1,11 +1,24 @@
 <template>
     <div class="row">
-        <span>
-            <h2 :id="'sector-' + sector.sector.id" style="font-size: 160%">
-                {{ $t("guide.article.title.sector name") }} -
-                <strong>{{ sector.sector.name }}</strong>
-            </h2>
-        </span>
+        <div class="row">
+            <div class="col-md-10">
+                <h2 :id="'sector-' + sector.sector.id" style="font-size: 160%">
+                    {{ $t("guide.article.title.sector name") }} -
+                    <strong>{{ sector.sector.name }}</strong>
+                </h2>
+            </div>
+            <div class="col-md-2">
+                <a
+                    @click="show_sector_canvas_modal()"
+                    data-toggle="modal"
+                    data-target="#squarespaceModal_route_info_"
+
+                    class="show_sector_canvas_modal_link"
+                >
+                    <i class="fa fa-list-alt show_sector_canvas_modal_icon" aria-hidden="true"></i>
+                </a>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-6">
                 <img
@@ -112,7 +125,7 @@
 
         <span v-html="sector.sector.text"></span>
 
-        <div
+        <!-- <div
             v-for="image in sector.sector_imgs"
             :key="image.id"
             :class="'sector_images sector_images_' + sector.sector_imgs.length"
@@ -121,7 +134,17 @@
                 :sector_image_id="image.id"
                 :image_src="'/public/images/sector_img/' + image.image"
             />
-        </div>
+        </div> -->
+
+        <openImg
+            v-for="image in sector.sector_imgs"
+            :key="image.id"
+            :img="'/public/images/sector_img/' + image.image"
+            :img_alt="image.image"
+            :img_class="
+                'sector_images sector_images_' + sector.sector_imgs.length
+            "
+        />
 
         <table
             class="table col-md-12 table table-hover"
@@ -319,8 +342,14 @@
             @back_route_modal="show_route_modal"
         />
 
-        <mtp_modal 
+        <mtp_modal
             ref="open_mtp_modal"
+        />
+
+        <sector_canvas_modal
+            ref="sector_canvas_modal"
+            :sector="sector"
+            @show_route_modal="show_route_modal"
         />
 
     </div>
@@ -331,6 +360,7 @@ import route_modal from "./modals/RouteModalComponent.vue";
 import create_route_review_modal from "./modals/feedbacks/CreateRouteReviewModal.vue";
 import route_all_reviews_modal from "./modals/feedbacks/RouteAllReviewsModal.vue";
 import mtp_modal from "./modals/MTPModalComponent.vue";
+import sector_canvas_modal from "./modals/SectorCanvasModalComponent.vue";
 
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
@@ -347,7 +377,8 @@ export default {
         mtp_modal,
         create_route_review_modal,
         route_all_reviews_modal,
-        route_json
+        route_json,
+        sector_canvas_modal
     },
     props: [
         "sector",
@@ -387,6 +418,9 @@ export default {
         },
         show_mtp_madel(mtp_id) {
             this.$refs.open_mtp_modal.show_mtp_modal(mtp_id)
+        },
+        show_sector_canvas_modal() {
+            this.$refs.sector_canvas_modal.show_modal(this.sector)
         },
     }
 }
@@ -480,5 +514,20 @@ h2 {
 
 .sector_images:hover {
     transform: scale(1.05);
+}
+
+.show_sector_canvas_modal_icon {
+    transition: color 0.3s ease;
+
+    font-size: 3em;
+    color: #000;
+}
+.show_sector_canvas_modal_icon:hover {
+    color: #007bff;
+    cursor: pointer;
+}
+
+.show_sector_canvas_modal_link {
+    float: right;
 }
 </style>
