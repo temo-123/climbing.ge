@@ -37,9 +37,15 @@
 
 <script>
     export default {
-        props: [
-            'speciales_prop',
-        ],
+        props: {
+            speciales_prop: {
+                type: Object,
+                default: () => ({
+                    global_data: {},
+                    locale_data: {}
+                }),
+            },
+        },
         data: function () {
             return {
             };

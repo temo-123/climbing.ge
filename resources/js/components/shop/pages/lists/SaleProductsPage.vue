@@ -64,14 +64,12 @@
     import catalogItem from '../../items/cards/CatalogItemComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import { ContentLoader } from 'vue-content-loader'
-    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import metaData from '../../items/MetaDataComponent'
     import productLeftMenu from '../../items/navbars/LeftMenuComponent'
 
     export default {
         components: {
             metaData,
-            lingallery,
             catalogItem,
             emptyPageComponent,
             ContentLoader,

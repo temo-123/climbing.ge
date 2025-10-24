@@ -11,8 +11,35 @@
                     <div class="cols">
                         <div class="col-md-6">
                             <div class="big">
-                                <div class="container" v-if="items.length">
-                                    <lingallery :items="items"/>
+                                <div class="custom-image-gallery" v-if="items.length">
+                                    <div class="main-image-container">
+                                        <img
+                                            :src="currentImage.src"
+                                            :alt="currentImage.caption || product.locale_product.title"
+                                            class="main-gallery-image"
+                                            :class="{ 'zoomed': isZoomed }"
+                                            @click="toggleZoom"
+                                        />
+                                        <div v-if="items.length > 1 && !isZoomed" class="gallery-nav prev">
+                                            <button class="nav-btn" @click="prevImage">‹</button>
+                                        </div>
+                                        <div v-if="items.length > 1 && !isZoomed" class="gallery-nav next">
+                                            <button class="nav-btn" @click="nextImage">›</button>
+                                        </div>
+                                    </div>
+                                    <div v-if="items.length > 1" class="gallery-thumbnails">
+                                        <div class="thumbnails-wrapper">
+                                            <img
+                                                v-for="(item, index) in items"
+                                                :key="index"
+                                                :src="item.thumbnail"
+                                                :alt="item.caption || 'Product image ' + (index + 1)"
+                                                class="thumbnail-image"
+                                                :class="{ active: index === currentImageIndex }"
+                                                @click="setCurrentImage(index)"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="container" v-else>
                                     <shop-img :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product.locale_product.title" />
@@ -244,27 +271,26 @@
             </div>
         </div>
 
-        <metaData 
+        <metaData
             :title = "product.locale_product.title"
             :description = "product.locale_product.short_description"
             :image = "'/public/images/meta_img/shop.jpg'"
         />
+
+
     </div>
 </template>
 
 <script>
-    import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
     import VueMeta from 'vue-meta'
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import similarProduct from '../../items/SimilarProductComponent.vue'
     import feedbackForm from '../../items/FeedbacksComponent.vue'
     import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
-
     export default {
         components: {
             metaData,
-            lingallery,
             VueMeta,
             breadcrumb,
             similarProduct,
@@ -285,6 +311,8 @@
                 products_quantity: 1,
                 add_to_cart_message: '',
                 items: [],
+                currentImageIndex: 0,
+                isZoomed: false,
                 actyve_price: {
                     price: '',
                     new_price: ''
@@ -320,9 +348,20 @@
             this.get_product()
             this.get_user_info()
         },
+        watch: {
+            items: {
+                handler() {
+                    this.currentImageIndex = 0;
+                },
+                deep: true
+            }
+        },
         computed: {
             isOutOfStock() {
                 return this.product.product_option.every(option => option.option.quantity <= 0);
+            },
+            currentImage() {
+                return this.items[this.currentImageIndex] || {};
             }
         },
         methods: {
@@ -509,14 +548,129 @@
                         alert('Product link copied to clipboard!');
                     });
                 }
+            },
+            prevImage() {
+                if (this.items.length > 1) {
+                    this.currentImageIndex = this.currentImageIndex > 0
+                        ? this.currentImageIndex - 1
+                        : this.items.length - 1;
+                }
+            },
+            nextImage() {
+                if (this.items.length > 1) {
+                    this.currentImageIndex = this.currentImageIndex < this.items.length - 1
+                        ? this.currentImageIndex + 1
+                        : 0;
+                }
+            },
+            setCurrentImage(index) {
+                this.currentImageIndex = index;
+                this.isZoomed = false; // Reset zoom when switching images
+            },
+            toggleZoom() {
+                this.isZoomed = !this.isZoomed;
             }
         }
     }
 </script>
 
 <style>
-    .lingalleryContainer[data-v-40681078] .lingallery figure {
-        height: 100% !important;
+    .custom-image-gallery {
+        position: relative;
+    }
+
+    .main-image-container {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        overflow: hidden;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .main-gallery-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        cursor: zoom-in;
+        transition: transform 0.3s ease;
+    }
+
+    .main-gallery-image.zoomed {
+        cursor: zoom-out;
+        transform: scale(1.5);
+    }
+
+    .main-gallery-image:hover:not(.zoomed) {
+        transform: scale(1.02);
+    }
+
+    .gallery-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+        pointer-events: none;
+    }
+
+    .gallery-nav button {
+        pointer-events: auto;
+    }
+
+    .gallery-nav.prev {
+        left: 10px;
+    }
+
+    .gallery-nav.next {
+        right: 10px;
+    }
+
+    .nav-btn {
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .nav-btn:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .gallery-thumbnails {
+        margin-top: 15px;
+    }
+
+    .thumbnails-wrapper {
+        display: flex;
+        gap: 10px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .thumbnail-image {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 3px solid transparent;
+        border-radius: 4px;
+        transition: border-color 0.3s ease;
+    }
+
+    .thumbnail-image.active {
+        border-color: #007bff;
+    }
+
+    .thumbnail-image:hover {
+        border-color: #0056b3;
     }
 
     .mead_in_geo_img {

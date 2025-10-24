@@ -1,6 +1,6 @@
 <template>
     <div class="grid-tile">
-        <article class="product-card" role="article">
+        <article class="product-card" :class="{ 'out-of-stock': isOutOfStock }" role="article">
             <div class="product-image-container">
                 <div class="image-nav prev-image" v-if="image_num > 0">
                     <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
@@ -15,13 +15,26 @@
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
                 <div class="badge discount-badge" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
-                <div class="badge new-badge" v-if="product_data.global_product.new_flag">NEW</div>
+                <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
+            </div>
+            <div class="image-dots" v-if="image_length > 1">
+                <button
+                    v-for="(image, index) in product_data.product_images"
+                    :key="index"
+                    :class="{ active: index === image_num }"
+                    @click="goToImage(index)"
+                    class="dot"
+                    :aria-label="'Go to image ' + (index + 1)"
+                ></button>
             </div>
             <div class="product-info">
                 <div class="product-title">
                     <a class="cursor_pointer" @click="go_to_service('product/'+product_data.global_product.url_title)" aria-label="View product details">
                         <h2>{{ product_data.locale_product.title }}</h2>
                     </a>
+                </div>
+                <div class="product-made-in-georgia" v-if="product_data.global_product.made_in_georgia">
+                    {{ $t('shop.product.made_in_georgia') }}
                 </div>
                 <div class="product-price" v-if="product_data.global_product.discount != null && product_data.global_product.discount > 0">
                     <span class="current-price">
@@ -40,22 +53,27 @@
                     </span>
                 </div>
                 <div class="product-actions">
+                    <!-- <button class="quick-view-btn" @click="product_quick_view(product_data.global_product.id)" aria-label="Quick view">
+                        <i class="fa fa-eye"></i>
+                    </button> -->
                     <button class="favorite-btn" @click="favorite_product(product_data.global_product.id)" aria-label="Add to favorites">
                         <i class="fa fa-heart-o"></i>
                     </button>
                 </div>
             </div>
         </article>
+        <!-- <productQuickViewModal
+            ref="quick_view_modal"
+        /> -->
     </div>
 </template>
 
 <script>
-    // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
-
+    import productQuickViewModal from '../../../../global_components/modals/ProductQuickViewModal'
 
     export default {
         components: {
-            //
+            productQuickViewModal,
         },
         props:[
             'product_data',
@@ -68,6 +86,16 @@
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
             };
+        },
+        computed: {
+            isOutOfStock() {
+                if (!this.product_data.product_option || this.product_data.product_option.length === 0) {
+                    return false;
+                }
+                return this.product_data.product_option.every(option => option.option.quantity <= 0);
+
+                // return true // test asset
+            }
         },
         mounted() {
             //
@@ -116,13 +144,42 @@
                 return(active_image);
             },
 
+            goToImage(index){
+                this.image_num = index;
+            },
+
         }
     }
 </script>
 
 <style scoped>
-    .lingalleryContainer[data-v-40681078] .lingallery figure {
-        height: 100% !important;
+
+
+    .product-made-in-georgia {
+        color: #a65e5e;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin: 5px 0;
+    }
+
+    .out-of-stock-shadow {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgb(0 0 0 / 80%) 0%, #00000073 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 15;
+    }
+
+    .out-of-stock-shadow span {
+        color: #f0f0f0;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
     }
 
     .out-of-stock-overlay {
@@ -210,6 +267,32 @@
         background: rgba(0,0,0,0.8);
     }
 
+    .image-dots {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        background: #fff;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: none;
+        background: #ddd;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .dot.active {
+        background: #007bff;
+    }
+
+    .dot:hover {
+        background: #0056b3;
+    }
+
     .badge {
         position: absolute;
         top: 10px;
@@ -267,6 +350,22 @@
 
     .product-actions {
         text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .quick-view-btn {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .quick-view-btn:hover {
+        color: #007bff;
     }
 
     .favorite-btn {

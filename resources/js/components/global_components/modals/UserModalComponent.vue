@@ -48,14 +48,19 @@ export default {
     components: {
         StackModal,
     },
-    props: [
-        'modalClass',
-        'user',
+    props: {
+        modalClass: {
+            type: String,
+            default: '',
+        },
+        user: {
+            type: Object,
+            default: () => ({}),
+        },
         // "sector",
-    ],
+    },
     data: function () {
         return {
-            user: '',
             is_show_mtp_modal: false,
             loading: false
         };
