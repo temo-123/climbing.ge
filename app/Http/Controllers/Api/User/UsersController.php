@@ -52,6 +52,10 @@ class UsersController extends Controller
         return $prmishened_users;
     }
 
+    public function get_team_members() {
+        return User::where('is_team_member', '!=', null)->get();
+    }
+
     public function create_user_by_admin(Request $request)
     {
         $validator = Validator::make($request['data'], [

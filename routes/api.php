@@ -806,7 +806,7 @@ Route::group(['namespace'=>'Api'], function() {
             Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
         });
 
-        Route::prefix('task')->group( function() {
+        Route::group(['namespace'=>'User', 'prefix'=>'task'], function() {
             Route::controller(TaskController::class)->group( function() {
                 Route::get('/get_all_tasks', 'get_all_tasks');
                 Route::get('/get_user_tasks', 'get_user_tasks');
@@ -817,16 +817,6 @@ Route::group(['namespace'=>'Api'], function() {
                 Route::post('/update_task_status/{task_id}', 'update_task_status');
 
                 Route::delete('/del_task/{task_id}', 'del_task');
-            });
-
-            Route::controller(TaskCategoryController::class)->prefix('task_category')->group( function() {
-                Route::get('/get_all_task_categories', 'get_all_task_categories');
-                Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
-
-                Route::post('/create_task_category', 'create_task_category');
-                Route::post('/update_task_category/{task_category_id}', 'update_task_category');
-
-                Route::delete('/del_task_category/{task_category_id}', 'del_task_category');
             });
         });
 

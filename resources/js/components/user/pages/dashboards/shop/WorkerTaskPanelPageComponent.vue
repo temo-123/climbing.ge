@@ -59,10 +59,10 @@
 </template>
 
 <script>
-    import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import breadcrumb from '../../../items/BreadcrumbComponent.vue'
 
-    import taskStatusModal from '../items/modal/task/task/TaskStatusModalComponent.vue'
-    import showTaskModal from '../items/modal/task/task/ShowTaskModalComponent.vue'
+    import taskStatusModal from '../../../items/modal/task/task/TaskStatusModalComponent.vue'
+    import showTaskModal from '../../../items/modal/task/task/ShowTaskModalComponent.vue'
 
     export default {
         components: {

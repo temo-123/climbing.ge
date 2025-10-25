@@ -17,13 +17,11 @@ function load(component) {
 const router = new VueRouter({
     routes: [
         { path: '/', name: 'home', component: load('HomePageComponent') },
-        { path: '/admin_page', name: 'adminPage', component: load('AdminPageComponent'), 
-        meta: {
-            can: 'show dashboard',
-            fail: '/'
-        }},
 
-        { path: '/task_panel', name: 'taskPanel', component: load('WorkerTaskPanelPageComponent') },
+        { path: '/shop_task_panel', name: 'shopTaskPanel', component: load('dashboards/shop/ShopTaskPanelComponent') },
+        { path: '/shop_dashboard_page', name: 'shopDashboardPage', component: load('dashboards/shop/ShopDashboardPageComponent') },
+        { path: '/guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent') },
+        { path: '/guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent') },
 
         { path: '/purchases', name: 'userPurchases', component: load('PurchasesPage') },
         { path: '/order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent') },

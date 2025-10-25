@@ -19,17 +19,7 @@
                                     <div class="col">
                                         <input type="radio" id="1" :value="1" v-model="tab_num">
                                         
-                                        <label for="1" >Tasks</label>
-                                    </div>
-                                    <div class="col" >
-                                        <input type="radio" id="2" :value="2" v-model="tab_num">
-                                        
-                                        <label for="2" >Orders (beta)</label>
-                                    </div>
-                                    <div class="col" >
-                                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                                        
-                                        <label for="3" >Workers</label>
+                                        <label for="1" >Team members tasks</label>
                                     </div>
                                     <div class="col" >
                                         <input type="radio" id="4" :value="4" v-model="tab_num">
@@ -47,15 +37,7 @@
                         </div>
 
                         <div class="row" v-if="tab_num == 1">
-                            <tasks_panel />
-                        </div>
-
-                        <div class="row" v-if="tab_num == 2">
-                            <order_list />
-                        </div>
-
-                        <div class="row" v-if="tab_num == 3">
-                            <worker_list />
+                            <tam_members_tasks_panel />
                         </div>
 
                         <div class="row" v-if="tab_num == 4">
@@ -87,16 +69,14 @@
 </template>
 
 <script>
-    import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import breadcrumb from '../../../items/BreadcrumbComponent.vue'
 
-    import user_notifications_modal from './../items/modal/notifications/UserMailNotificationModelComponent.vue'
+    import user_notifications_modal from '../../../items/modal/notifications/UserMailNotificationModelComponent.vue'
 
-    import admin_notifications_list from '../items/notificatione/AdminNotificationsListComponent.vue'
-    import order_list from '../items/dashboards/OrderDiogramComponent.vue'
-    import data_counts_list from '../items/dashboards/SiteDataCountListComponent.vue'
+    import admin_notifications_list from '../../../items/notificatione/AdminNotificationsListComponent.vue'
+    import data_counts_list from '../../../items/dashboards/SiteDataCountListComponent.vue'
 
-    import tasks_panel from './worker/tasks/TasksControlBoardComponent.vue'
-    import worker_list from './worker/WorkerListComponent.vue'
+    import tam_members_tasks_panel from './assets/TeamMembersTaskControlComponent.vue'
 
     export default {
         components: {
@@ -105,10 +85,8 @@
             user_notifications_modal,
 
             admin_notifications_list,
-            order_list,
             data_counts_list,
-            tasks_panel,
-            worker_list,
+            tam_members_tasks_panel,
         },
         data(){
             return{

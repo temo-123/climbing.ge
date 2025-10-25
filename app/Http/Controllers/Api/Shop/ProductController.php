@@ -59,9 +59,8 @@ class ProductController extends Controller
                     'id' => $option->id,
                     'name' => $option->name ?? 'Option ' . $option->id,
                     'price' => $option->price,
-                    'quantity' => $option->quantity,
-                    'images' => $option->images->first()->image,
                     'quantity' => $option->warehouse->where('general', '=', 1)->first()->pivot->quantity ?? 0,
+                    'image' => $option->images->first()->image ?? null,
                 ];
             });
             return $product_option;

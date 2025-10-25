@@ -94,7 +94,7 @@ class OrderController extends Controller
             $new_order = new Order;
 
             $new_order['user_id'] = Auth::user()->id;
-            $new_order['adres_id'] = $request->adres;
+            // $new_order['adres_id'] = $request->adres;
             $new_order['shiping'] = $request->shiping;
 
             $new_order['payment'] = $request->payment_tupe;
@@ -133,11 +133,14 @@ class OrderController extends Controller
 
     public function add_custom_order(Request $request)
     {
-        // Validate stock before creating custom order
-        foreach ($request->order_product_list as $product) {
-            $option = Product_option::find($product['product_option_id']);
-            if (!$option || $option->quantity < $product['quantity']) {
-                return response()->json(['error' => 'Not enough stock for option ID ' . $product['product_option_id']], 400);
+        // Validate stock before creating custom order, unless production task is enabled
+        if (!$request->create_production_task) {
+            foreach ($request->order_product_list as $product) {
+                $option = Product_option::find($product['product_option_id']);
+                $warehouse_quantity = $option->warehouse->where('general', '=', 1)->first()->pivot->quantity ?? 0;
+                if (!$option || $warehouse_quantity < $product['quantity']) {
+                    return response()->json(['error' => 'Not enough stock for option ID ' . $product['product_option_id']], 400);
+                }
             }
         }
 
@@ -145,9 +148,12 @@ class OrderController extends Controller
         $new_order = new Order;
 
         $new_order['user_id'] = auth()->user()->id;
-        $new_order['adres_id'] = $request->adres_id;
-        $new_order['shiping'] = $request->shiping;
-        $new_order['payment'] = $request->payment;
+        // $new_order['adres_id'] = $request->adres_id ?? null; // Optional address
+        $new_order['shiping'] = $request->delivery_type;
+        $new_order['payment'] = $request->payment_type;
+        // Optional fields
+        $new_order['phone_number'] = $request->phone_number ?? null;
+        $new_order['email'] = $request->email ?? null;
 
         $new_order['confirm'] = 1; // Auto confirm for admin added orders
         $new_order['status'] = 'pending';
@@ -168,12 +174,23 @@ class OrderController extends Controller
 
                 $new_order_product_item->save();
 
-                //subtraction number of products
-                (new static)->subtraction_products($product['product_option_id'], $product['quantity']);
+                //subtraction number of products from warehouse only if not production task
+                if (!$request->create_production_task) {
+                    (new static)->subtraction_products_from_warehouse($product['product_option_id'], $product['quantity']);
+                }
             }
 
             // Send notification to user
             (new static)->send_order_confirm_mail_to_user($new_order->id);
+        }
+
+        // If production task is enabled, create production tasks for the options
+        if ($request->create_production_task) {
+            foreach ($request->order_product_list as $product) {
+                // Logic to create production task (placeholder)
+                // You can add code here to create a production task for the option
+                // For example, insert into a production_tasks table or notify relevant parties
+            }
         }
 
         return response()->json(['message' => 'Custom order added successfully', 'order_id' => $new_order->id]);
@@ -203,6 +220,18 @@ class OrderController extends Controller
 
         $option_item['quantity'] = $new_qut;
         $option_item -> save();
+    }
+
+    public function subtraction_products_from_warehouse($option_id, $qut)
+    {
+        $option_item = Product_option::where('id', '=', $option_id)->first();
+        $warehouse = $option_item->warehouse->where('general', '=', 1)->first();
+        if ($warehouse) {
+            $current_quantity = $warehouse->pivot->quantity;
+            $new_quantity = max(0, $current_quantity - $qut);
+            $warehouse->pivot->quantity = $new_quantity;
+            $warehouse->pivot->save();
+        }
     }
 
     public function send_order_mail_ot_admin()

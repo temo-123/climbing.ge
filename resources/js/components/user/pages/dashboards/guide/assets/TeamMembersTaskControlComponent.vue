@@ -9,11 +9,7 @@
                             
                             <label for="task_1" >Tasks</label>
                         </div>
-                        <div class="col" >
-                            <input type="radio" id="task_2" :value="2" v-model="task_tab_num">
-                            
-                            <label for="task_2" >Tasks type</label>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -44,75 +40,26 @@
 
             </div>
 
-            <div class="row" v-if="task_tab_num == 2">
-                <div class="col-md-12 mb-2">
-                    <button class="btn btn-primary pull-left" @click="show_add_task_category_modal" v-if="$can('add', 'task_category')">Create new tsk type</button>
-                    <button class="btn btn-success pull-right" @click="get_all_tasks_category">Refresh</button>
-                </div>
-                <div class="col-md-12 mb-2">
-                    <table class="table table-hover" id="dev-table" >
-                        <thead>
-                            <tr>
-                                <th style="text-align: center">
-                                    <input type="checkbox" class="all" />
-                                </th>
-                                <th>|</th>
-
-                                <th>ID</th>
-                                <th>|</th>
-
-                                <th>Title / Name</th>
-                                <th>|</th>
-
-                                <th>Edit</th>
-                                <th>|</th>
-
-                                <th>Del</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="task_category in task_categorys" :kay="task_category.id">
-                                <td :style='"text-align: center;"'>
-                                    <input type="checkbox">
-                                </td>
-                                <td>|</td>
-                                <td>{{ task_category.id }}</td>
-                                <td>|</td>
-                                <td class="cursor_pointer" @click="show_task_category_modal(task_category.id)">{{ task_category.title }}</td>
-                                <td>|</td>
-                                <td>
-                                    <button type="submit" class="btn btn-primary" @click="show_edit_task_category_modal(task_category.id)"  v-if="$can('del', 'task_category')"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                                </td>
-                                <td>|</td>
-                                <td>
-                                    <button class="btn btn-danger" type="submit" @click="del_task_category(task_category.id)" v-if="$can('edit', 'task_category')"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
             <addTaskModal ref="show_add_task_modal" @restart="get_all_tasks"/>
             <editTaskModal ref="show_edit_task_modal" @restart="get_all_tasks"/>
             <showTaskModal ref="show_task_modal" />
             <adminTaskStatusModal ref="task_status_modal" @restart="get_all_tasks"/>
 
-            <addTaskCategoryModal ref="show_add_task_category_modal" @restart="get_all_tasks_category"/>
+            <!-- <addTaskCategoryModal ref="show_add_task_category_modal" @restart="get_all_tasks_category"/>
             <editTaskCategoryModal ref="show_edit_task_category_modal" @restart="get_all_tasks_category"/>
-            <showTaskCategoryModal ref="show_task_category_modal" />
+            <showTaskCategoryModal ref="show_task_category_modal" /> -->
         </div>
     </div>
 </template>
 <script>
-    import addTaskModal from '../../../items/modal/task/task/AddTaskModalComponent.vue'
-    import editTaskModal from '../../../items/modal/task/task/EditTaskModalComponent.vue'
-    import showTaskModal from '../../../items/modal/task/task/ShowTaskModalComponent.vue'
-    import adminTaskStatusModal from '../../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
+    import addTaskModal from '../../../../items/modal/task/task/AddTaskModalComponent.vue'
+    import editTaskModal from '../../../../items/modal/task/task/EditTaskModalComponent.vue'
+    import showTaskModal from '../../../../items/modal/task/task/ShowTaskModalComponent.vue'
+    import adminTaskStatusModal from '../../../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
 
-    import addTaskCategoryModal from '../../../items/modal/task/task_category/AddTaskCategoryModalComponent.vue'
-    import editTaskCategoryModal from '../../../items/modal/task/task_category/EditTaskCategoryModalComponent.vue'
-    import showTaskCategoryModal from '../../../items/modal/task/task_category/ShowTaskCategoryModalComponent.vue'
+    // import addTaskCategoryModal from '../../../items/modal/task/task_category/AddTaskCategoryModalComponent.vue'
+    // import editTaskCategoryModal from '../../../items/modal/task/task_category/EditTaskCategoryModalComponent.vue'
+    // import showTaskCategoryModal from '../../../items/modal/task/task_category/ShowTaskCategoryModalComponent.vue'
 
     export default {
         components: {
@@ -121,9 +68,9 @@
             showTaskModal,
             adminTaskStatusModal,
 
-            addTaskCategoryModal,
-            editTaskCategoryModal,
-            showTaskCategoryModal,
+            // addTaskCategoryModal,
+            // editTaskCategoryModal,
+            // showTaskCategoryModal,
         },
         data(){
             return{
