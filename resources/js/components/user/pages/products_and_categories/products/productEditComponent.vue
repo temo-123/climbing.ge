@@ -83,11 +83,11 @@
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_product.mead_in_georgia" >
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> discount (%) </label>
+                            <label for="name" class='col-xs-2 control-label'> Is donation product </label>
                             <div class="col-xs-8">
-                                <input type="number" max="100" min="1"  v-model="data.global_product.discount" name="discount" class="form-control"> 
+                                <input type="checkbox" id="is_donation_product" name="is_donation_product" v-model="data.global_product.is_donation_product" >
                             </div>
                         </div>
     
@@ -270,7 +270,7 @@
 
                         mead_in_georgia: null,
                         // material: "",
-                        discount: 0,
+                        is_donation_product: null,
                     },
 
                     us_product: [],
@@ -325,15 +325,12 @@
 
             edit_product() {
                 this.is_loading = true
-                if(this.data.global_product.discount == 0 || this.data.global_product.discount == ''){
-                    this.data.global_product.discount = null
-                }
                 axios
-                .post('/product/edit_product/'+this.$route.params.id, {        
+                .post('/product/edit_product/'+this.$route.params.id, {
                     data: JSON.stringify(this.data),
                     change_url_title: this.change_url_title,
                 })
-                .then((response)=> { 
+                .then((response)=> {
                     this.go_back(true)
                 })
                 .catch(error =>{

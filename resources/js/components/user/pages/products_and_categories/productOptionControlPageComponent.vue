@@ -111,11 +111,13 @@
                     Price
                     <input type="number" v-model="adding_data.price" class="form-control" name="name" placeholder="Price" title="enter your name" required>
                     Currency
-                    <select class="form-control" v-model="adding_data.currency" name="currency"> 
-                        <option value="₾">₾</option> 
-                        <option value="$" disabled>$</option> 
-                        <option value="€" disabled>€</option> 
-                    </select> 
+                    <select class="form-control" v-model="adding_data.currency" name="currency">
+                        <option value="₾">₾</option>
+                        <option value="$" disabled>$</option>
+                        <option value="€" disabled>€</option>
+                    </select>
+                    Discount (%)
+                    <input type="number" max="100" min="0" v-model="adding_data.discount" class="form-control" name="discount" placeholder="Discount" title="enter discount">
                     <!-- Quantity
                     <input type="text" v-model="adding_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required> -->
                 </form>
@@ -175,11 +177,13 @@
                     Price
                     <input type="number" v-model="editing_data.price" class="form-control" name="name" placeholder="Price" title="enter your name" required>
                     Currency
-                    <select class="form-control" v-model="editing_data.currency" name="currency"> 
-                        <option value="₾">₾</option> 
-                        <option value="$" disabled>$</option> 
-                        <option value="€" disabled>€</option> 
-                    </select> 
+                    <select class="form-control" v-model="editing_data.currency" name="currency">
+                        <option value="₾">₾</option>
+                        <option value="$" disabled>$</option>
+                        <option value="€" disabled>€</option>
+                    </select>
+                    Discount (%)
+                    <input type="number" max="100" min="0" v-model="editing_data.discount" class="form-control" name="discount" placeholder="Discount" title="enter discount">
                     <!-- Quantity
                     <input type="text" v-model="editing_data.quantity" class="form-control" name="name" placeholder="quantity" title="enter your name" required> -->
                 </form>
@@ -286,6 +290,7 @@
                     currency: '₾',
                     name: '',
                     price: '',
+                    discount: 0,
                     quantity: 10
                 },
 
@@ -297,6 +302,7 @@
                     currency: '₾',
                     name: '',
                     price: '',
+                    discount: 0,
                     quantity: 10
                 },
                 editing_option_id: 0,
@@ -353,6 +359,7 @@
                         currency: response.data.option.currency,
                         name: response.data.option.name,
                         price: response.data.option.price,
+                        discount: response.data.option.discount || 0,
                         quantity: response.data.option.quantity
                     }
 
@@ -405,12 +412,13 @@
                         this.editing_option_images = [],
                         this.adding_option_images = [],
 
-                        this.editing_data = {
-                            currency: '₾',
-                            name: '',
-                            price: '',
-                            quantity: 10
-                        }
+                    this.editing_data = {
+                        currency: '₾',
+                        name: '',
+                        price: '',
+                        discount: 0,
+                        quantity: 10
+                    }
                         this.editing_option_id = 0
                     }
                 }
@@ -491,6 +499,7 @@
                             currency: '₾',
                             name: '',
                             price: '',
+                            discount: 0,
                             quantity: 10
                         }
                         this.adding_option_images = []
@@ -502,6 +511,7 @@
                             currency: '₾',
                             name: '',
                             price: '',
+                            discount: 0,
                             quantity: 10
                         }
                         this.adding_option_images = []

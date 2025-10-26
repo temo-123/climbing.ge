@@ -1,23 +1,12 @@
-# Task Customization Plan
+# TODO: Delete discount from product system, add discount to product_options, add is_donation_product checkbox to product model
 
-## 1. Update Task Model
-- [x] Modify `app/Models/User/Task.php` to use `from_user` and `for_user` relationships
-- [x] Add relationships for orders and product_options via pivot tables
-
-## 2. Modify TaskController
-- [x] Update `create_task` method for new fields: `from_user_id`, `for_user_id`, `global_category`, `category`
-- [x] Update `get_user_tasks` to fetch tasks where user is sender or receiver
-- [x] Update `update_task` and `update_task_status` for new fields
-- [x] Rename 'worker_comment' to 'team_member_comment' for guide context
-- [x] Add logic for global_category and category based on context (guide vs shop)
-
-## 3. Update UsersController
-- [x] Rename `get_worker_users` to `get_team_members` for guide, keep `get_worker_users` for shop
-- [x] Add `get_team_members` method returning users where `is_team_member` is not null
-
-## 4. Add New API Routes
-- [x] Update `routes/api.php` for team members and workers selection
-- [x] Ensure routes for task creation with new parameters
-
-## 5. Update Notifications (if needed)
-- [x] Ensure notifications use correct user fields
+## Tasks
+- [x] Update Product model: remove 'discount' from fillable, add 'is_donation_product'
+- [x] Update Product_option model: add 'discount' to fillable
+- [x] Update productAddComponent.vue: remove discount input, add is_donation_product checkbox
+- [x] Update productEditComponent.vue: remove discount input, add is_donation_product checkbox
+- [x] Update productOptionControlPageComponent.vue: add discount input in add/edit option modals
+- [x] Update ProductOptionController.php: modify add_option and edit_option to handle discount field
+- [x] Run migrations: php artisan migrate
+- [ ] Update frontend components that display discounts to use product_options discount instead of product discount
+- [ ] Test the functionality

@@ -15,16 +15,17 @@ class Product extends Model
 	    'published',
       'url_title',
 
-      'discount',
+      // 'discount',
       // 'material',
-    
+
       'mead_in_georgia',
+      'is_donation_product',
 
       'sale_type',
 
       'subcategory_id',
       'brand_id',
-      
+
       'us_product_id',
       'ka_product_id'
       // 'ru_product_id'

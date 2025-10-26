@@ -13,6 +13,7 @@ class Product_option extends Model
 
     protected $fillable = [
 	    'published',
+	    'discount',
 	];
 
 

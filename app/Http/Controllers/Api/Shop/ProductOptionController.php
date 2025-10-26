@@ -56,6 +56,7 @@ class ProductOptionController extends Controller
             $add_option['name'] = $data['name'];
             $add_option['price'] = $data['price'];
             $add_option['currency'] = $data['currency'];
+            $add_option['discount'] = $data['discount'] ?? 0;
             // $add_option['quantity'] = $data['quantity'];
             $add_option['product_id'] = $request['product_id'];
             $add_option->save();
@@ -125,6 +126,7 @@ class ProductOptionController extends Controller
             $edit_option['name'] = $data['name'];
             $edit_option['price'] = $data['price'];
             $edit_option['currency'] = $data['currency'];
+            $edit_option['discount'] = $data['discount'] ?? 0;
             // $edit_option['quantity'] = $data['quantity'];
             $edit_option->save();
 
@@ -173,6 +175,7 @@ class ProductOptionController extends Controller
             'name' => 'required',
             'price' => 'required | numeric',
             'currency' => 'required',
+            'discount' => 'nullable | numeric | min:0 | max:100',
             // 'quantity' => 'required',
         ]);
         if ($validator->fails()) {
