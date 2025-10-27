@@ -86,14 +86,20 @@ class RouteServiceProvider extends ServiceProvider
             ->middleware('api')
             ->namespace($this->namespace)
             ->group(function () {
-                require base_path('routes/api_groups/auth.php');
-                require base_path('routes/api_groups/guide.php');
-                require base_path('routes/api_groups/shop.php');
-                require base_path('routes/api_groups/films.php');
-                require base_path('routes/api_groups/blog.php');
-                require base_path('routes/api_groups/user.php');
-                require base_path('routes/api_groups/meil.php');
-                require base_path('routes/api_groups/general.php');
+                require base_path('routes/api/auth.php');
+                require base_path('routes/api/guide.php');
+                require base_path('routes/api/shop.php');
+                require base_path('routes/api/films.php');
+                require base_path('routes/api/blog.php');
+                require base_path('routes/api/user.php');
+                require base_path('routes/api/meil.php');
+                require base_path('routes/api/general.php');
+
+                require base_path('routes/api/admin/blog.php');
+                require base_path('routes/api/admin/films.php');
+                require base_path('routes/api/admin/guide.php');
+                require base_path('routes/api/admin/shop.php');
+                require base_path('routes/api/admin/user.php');
             });
     }
 }

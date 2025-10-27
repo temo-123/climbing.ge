@@ -24,7 +24,6 @@ Route::group(['namespace'=>'Api\User'], function() {
     Route::apiResource('/user_site', 'UserSiteController');
 
     Route::controller(UsersController::class)->prefix('user')->group( function() {
-        Route::post('/update_password', 'update_password');
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');
         Route::get('/get_user_data/{user_id}', 'get_user_data');
@@ -32,12 +31,7 @@ Route::group(['namespace'=>'Api\User'], function() {
 
         Route::get('/get_worker_users', 'get_worker_users');
 
-        Route::post('/create_user_by_admin', 'create_user_by_admin');
-
-        Route::delete('/del_user/{user_id}', 'del_user');
-
         Route::get('/post_user/{user_id}', 'get_post_user');
-        Route::post('/user_image_update/{user_id}', 'user_image_update');
 
         Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
             Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
@@ -63,9 +57,8 @@ Route::group(['namespace'=>'Api\User'], function() {
     Route::controller(UserOptionController::class)->prefix('options')->group( function() {
         // Route::get('/get_user_data', 'get_user_data');
         Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
-        Route::post('/user_info_update/{user_id}', 'user_info_update');
-
         Route::get('/get_user_notification_data', 'get_user_notification_data');
+        Route::post('/user_info_update/{user_id}', 'user_info_update');
         Route::post('/update_user_notification_data', 'update_user_notification_data');
     });
 
@@ -80,10 +73,10 @@ Route::group(['namespace'=>'Api\User'], function() {
     */
     Route::controller(PostController::class)->prefix('post')->group( function() {
         Route::get('/get_posts', 'get_posts');
-        Route::post('/add_post', 'add_post');
-        Route::post('/edit_post/{id}', 'edit_post');
         Route::get('/get_editing_post/{id}', 'get_editing_post');
         Route::get('/get_activ_post/{id}', 'get_activ_post');
+        Route::post('/add_post', 'add_post');
+        Route::post('/edit_post/{id}', 'edit_post');
         Route::delete('/del_post/{id}', 'del_post');
     });
 
@@ -92,10 +85,10 @@ Route::group(['namespace'=>'Api\User'], function() {
     */
     Route::controller(LiveCameraController::class)->prefix('live_camera')->group( function() {
         Route::get('/get_live_cameras', 'get_live_cameras');
-        Route::post('/add_live_camera', 'add_live_camera');
-        Route::post('/edit_live_camera/{id}', 'edit_live_camera');
         Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
         Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+        Route::post('/add_live_camera', 'add_live_camera');
+        Route::post('/edit_live_camera/{id}', 'edit_live_camera');
         Route::delete('/del_live_camera/{id}', 'del_live_camera');
     });
 
@@ -104,19 +97,19 @@ Route::group(['namespace'=>'Api\User'], function() {
     */
     Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
         Route::get('/get_warehouses', 'get_warehouses');
-        Route::post('/add_warehouse', 'add_warehouse');
-        Route::post('/edit_warehouse/{id}', 'edit_warehouse');
         Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
         Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
         Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
-        Route::delete('/del_warehouse/{id}', 'del_warehouse');
 
         // Product option management in warehouses
         Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+        Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+        Route::post('/add_warehouse', 'add_warehouse');
+        Route::post('/edit_warehouse/{id}', 'edit_warehouse');
+        Route::delete('/del_warehouse/{id}', 'del_warehouse');
         Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
         Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
         Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
-        Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
         Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
     });
 
@@ -125,10 +118,10 @@ Route::group(['namespace'=>'Api\User'], function() {
     */
     Route::controller(UserAdresesController::class)->group( function() {
         Route::get('/get_user_adreses', 'get_user_adreses');
-        Route::post('/add_user_adreses', 'add_user_adreses');
-        Route::post('/edit_adres/{adres_id}', 'edit_adres');
         Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');
         Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
+        Route::post('/add_user_adreses', 'add_user_adreses');
+        Route::post('/edit_adres/{adres_id}', 'edit_adres');
         Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
     });
 
@@ -141,14 +134,14 @@ Route::group(['namespace'=>'Api\User'], function() {
 
         Route::get('get_editing_role/{role_id}', 'get_editing_role');
         Route::get('get_editing_role_permissions/{role_id}', 'get_editing_role_permissions');
-        Route::post('create_role', 'create_role');
-        Route::post('edit_role/{role_id}', 'edit_role');
-        Route::delete('del_role_permission/{role_id}/{permission_id}', 'del_role_permission');
-        Route::delete('del_role/{role_id}', 'del_role');
 
         Route::get('get_user_permissions/{user_id}', 'get_user_permissions');
-        Route::post('edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
-        Route::delete('del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');
+        Route::post('/create_role', 'create_role');
+        Route::post('/edit_role/{role_id}', 'edit_role');
+        Route::delete('/del_role_permission/{role_id}/{permission_id}', 'del_role_permission');
+        Route::delete('/del_role/{role_id}', 'del_role');
+        Route::post('/edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
+        Route::delete('/del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');
     });
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
@@ -163,7 +156,7 @@ Route::group(['namespace'=>'Api\User'], function() {
 
     Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
         Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
-        Route::delete('del_non_registered_commenter/{id}', 'del_non_registered_commenter');
+        Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
     });
 
     /*

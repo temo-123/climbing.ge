@@ -17,7 +17,11 @@ Route::group(['namespace'=>'Api\Films'], function() {
     Route::apiResource('film_tags', 'FilmTagsController');
     // Route::apiResource('film_categories', 'FilmCategoryController');
 
-    Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
     Route::get('/film/get_faworite_film_list', 'FilmsController@get_faworite_film_list');
+
+    /*
+    *   Editing routes
+    */
+    Route::post('/film/add_to_faworite', 'FilmsController@add_to_faworite');
     Route::delete('/film/del_from_faworite/{film_id}', 'FilmsController@del_from_faworite');
 });
