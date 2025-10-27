@@ -1,12 +1,10 @@
-# TODO: Delete discount from product system, add discount to product_options, add is_donation_product checkbox to product model
+# TODO: Import Multiple API Route Files
 
-## Tasks
-- [x] Update Product model: remove 'discount' from fillable, add 'is_donation_product'
-- [x] Update Product_option model: add 'discount' to fillable
-- [x] Update productAddComponent.vue: remove discount input, add is_donation_product checkbox
-- [x] Update productEditComponent.vue: remove discount input, add is_donation_product checkbox
-- [x] Update productOptionControlPageComponent.vue: add discount input in add/edit option modals
-- [x] Update ProductOptionController.php: modify add_option and edit_option to handle discount field
-- [x] Run migrations: php artisan migrate
-- [ ] Update frontend components that display discounts to use product_options discount instead of product discount
-- [ ] Test the functionality
+## Steps to Complete
+- [x] Edit app/Providers/RouteServiceProvider.php to load multiple API route files from routes/api_groups/ instead of single routes/api.php
+- [x] Run php artisan route:list to verify routes are loaded correctly
+- [x] Check for any routes in routes/api.php not covered by api_groups (e.g., token route) and handle if needed
+- [x] Optionally, remove duplicated routes from routes/api.php to avoid conflicts
+- [x] Fixed missing TaskController routes by removing them
+- [x] Fixed SearchController namespace
+- [x] Fixed CKEditorController namespace

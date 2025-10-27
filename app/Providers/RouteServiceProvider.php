@@ -41,7 +41,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         // https://stackoverflow.com/questions/65406206/laravel-8-rate-limiter-not-working-for-routes
         RateLimiter::for('api', function (Request $request) {
-            return Limit::perMinute(260)->by(optional($request->user())->id ?: $request->ip());
+            return Limit::perMinute(360)->by(optional($request->user())->id ?: $request->ip());
         });
     }
 
@@ -85,6 +85,15 @@ class RouteServiceProvider extends ServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->namespace)
-            ->group(base_path('routes/api.php'));
+            ->group(function () {
+                require base_path('routes/api_groups/auth.php');
+                require base_path('routes/api_groups/guide.php');
+                require base_path('routes/api_groups/shop.php');
+                require base_path('routes/api_groups/films.php');
+                require base_path('routes/api_groups/blog.php');
+                require base_path('routes/api_groups/user.php');
+                require base_path('routes/api_groups/meil.php');
+                require base_path('routes/api_groups/general.php');
+            });
     }
 }
