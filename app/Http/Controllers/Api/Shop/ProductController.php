@@ -88,6 +88,25 @@ class ProductController extends Controller
         return $products;
     }
 
+    public function get_donation_products(Request $request)
+    {
+        $global_products = Product::latest('id')->where('published', '=', 1)->where('is_donation_product', '=', 1)->get();
+        $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+
+        // Add quantity to product options
+        foreach ($products as $product) {
+            if (isset($product['product_option'])) {
+                foreach ($product['product_option'] as &$option) {
+                    if (isset($option['option'])) {
+                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
+                    }
+                }
+            }
+        }
+
+        return $products;
+    }
+
     public function get_current_products()
     {
         $products = Product::where('published', '=', 1)->whereHas('product_options')->with('product_options')->get();

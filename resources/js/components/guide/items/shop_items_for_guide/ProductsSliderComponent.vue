@@ -1,12 +1,12 @@
 <template>
     <div class="h-recent-work products" v-if="products.length > 0">
         <div class="container">
-            <h2 class="index_h2">{{ $t('shop.title.products') }}</h2>
+            <h2 class="index_h2">{{ $t('guide.title.donation_products') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
             <h3 class="article_list_short_description">
-                <span v-html="this.$siteData.data.shop_short_description"></span>
+                <span v-html="this.$siteData.data.donation_product_short_description"></span>
             </h3>
 
             <div class="products-slider-container">
@@ -88,7 +88,7 @@
 
             get_products(){
                 return axios
-                .get('/products/'+localStorage.getItem('lang'))
+                .get('/donation_products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data.slice(0, 12);
 

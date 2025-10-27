@@ -22,10 +22,30 @@ class ProductService extends LocaleContentService
         foreach ($products as $product) {
             if($product['global_data']->product_options->count() > 0){
 
-                $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
-                $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
+                $options = $product['global_data']->product_options;
 
-                if($product['global_data']->discount != null || $product['global_data']->discount != 0){
+                $discounted_prices = [];
+                $original_prices = [];
+
+                foreach ($options as $option) {
+                    $price = $option->price;
+                    $original_prices[] = $price;
+                    if ($option->discount > 0) {
+                        $discounted_price = $price - ($price * $option->discount / 100);
+                        $discounted_prices[] = $discounted_price;
+                    } else {
+                        $discounted_prices[] = $price;
+                    }
+                }
+
+                $old_min_price = min($original_prices);
+                $old_max_price = max($original_prices);
+                $new_min_price = min($discounted_prices);
+                $new_max_price = max($discounted_prices);
+
+                $has_discount = $options->contains('discount', '>', 0);
+
+                if($has_discount){
                     array_push($reponce, [
                         "global_product"=>$product['global_data'],
                         "locale_product"=>$product['locale_data'],
@@ -35,10 +55,11 @@ class ProductService extends LocaleContentService
 
                         "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
 
-                        "new_max_price"=>(new static)->colculate_product_discount($old_max_price, $product['global_data']->discount),
-                        "new_min_price"=>(new static)->colculate_product_discount($old_min_price, $product['global_data']->discount),
+                        "new_max_price"=>$new_max_price,
+                        "new_min_price"=>$new_min_price,
 
                         "product_images"=>(new static)->get_product_images($product['global_data']),
+                        "has_discount" => $has_discount,
                     ]);
                 }
                 else{
@@ -49,11 +70,12 @@ class ProductService extends LocaleContentService
                         "max_price"=>(new static)->get_product_price($product['global_data'], 'max'),
                         "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
                         "product_images"=>(new static)->get_product_images($product['global_data']),
+                        "has_discount" => $has_discount,
                     ]);
                 }
             }
         }
-        
+
         return $reponce;
     }
 
@@ -65,20 +87,40 @@ class ProductService extends LocaleContentService
         $product = (new static)->get_locale_content_in_page($product, Locale_product::class, '_product_id', $locale);
 
         $options = product_option::where('product_id', '=', $product['global_data']->id)->get();
-        
+
         foreach($options as $option){
             $product_image = [];
             $product_images = Option_image::where('option_id', '=', $option->id)->get();
-            array_push($product_option, [ 
-                'option' => $option, 
+            array_push($product_option, [
+                'option' => $option,
                 'images' => $product_images
             ]);
         }
 
-        $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
-        $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
-        
-        if($product['global_data']->discount != null || $product['global_data']->discount != 0){
+        $options = $product['global_data']->product_options;
+
+        $discounted_prices = [];
+        $original_prices = [];
+
+        foreach ($options as $option) {
+            $price = $option->price;
+            $original_prices[] = $price;
+            if ($option->discount > 0) {
+                $discounted_price = $price - ($price * $option->discount / 100);
+                $discounted_prices[] = $discounted_price;
+            } else {
+                $discounted_prices[] = $price;
+            }
+        }
+
+        $old_min_price = min($original_prices);
+        $old_max_price = max($original_prices);
+        $new_min_price = min($discounted_prices);
+        $new_max_price = max($discounted_prices);
+
+        $has_discount = $options->contains('discount', '>', 0);
+
+        if($has_discount){
             array_push($product_data, [
                 "global_product"=>$product['global_data'],
                 "locale_product"=>$product['locale_data'],
@@ -87,10 +129,11 @@ class ProductService extends LocaleContentService
 
                 "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
 
-                "new_max_price"=>(new static)->colculate_product_discount($old_max_price, $product['global_data']->discount),
-                "new_min_price"=>(new static)->colculate_product_discount($old_min_price, $product['global_data']->discount),
+                "new_max_price"=>$new_max_price,
+                "new_min_price"=>$new_min_price,
 
                 'product_option' => $product_option,
+                'has_discount' => $has_discount,
             ]);
         }
         else{
@@ -101,8 +144,9 @@ class ProductService extends LocaleContentService
                 "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
 
                 "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
-                
+
                 'product_option' => $product_option,
+                'has_discount' => $has_discount,
             ]);
         }
 

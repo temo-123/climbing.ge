@@ -17,7 +17,7 @@
                 <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
-                <div class="badge discount-badge" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
+                <div class="badge discount-badge" v-if="hasDiscount">-{{ maxDiscount }}%</div>
                 <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
             <div class="image-dots" v-if="image_length > 1">
@@ -97,6 +97,13 @@
                 return this.product_data.product_option.every(option => option.option.quantity <= 0);
 
                 // return true // test asset
+            },
+            hasDiscount() {
+                return this.product_data.product_option && this.product_data.product_option.some(option => option.option.discount > 0);
+            },
+            maxDiscount() {
+                if (!this.hasDiscount) return 0;
+                return Math.max(...this.product_data.product_option.map(option => option.option.discount));
             }
         },
         mounted() {

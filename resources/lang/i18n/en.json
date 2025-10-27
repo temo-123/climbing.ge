@@ -59,7 +59,9 @@
             "other": "Other",
             "about us": "About Us",
             "partner": "Partners",
-            "message": "Send Message"
+            "message": "Send Message",
+
+            "donation_products": "Donation Products"
         },
 
         "route": {
@@ -245,6 +247,8 @@
             "add_to_favorite": "Add to Favorite",
             "remove_from_favorite": "Remove from Favorite",
             "share": "Share",
+
+            "donation": "Donation Product",
 
             "message": {
                 "title": "Send Message",

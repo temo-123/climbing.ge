@@ -127,6 +127,10 @@
                                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                                         {{ $t('shop.product.out_of_stock') }}
                                     </div>
+                                    <div v-if="isOutOfStockGlobal" class="alert alert-danger alert-with-icon" role="alert">
+                                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                                        {{ $t('shop.product.out_of_stock') }}
+                                    </div>
                                     <div v-if="products_quantity == select_product_max_quantyty && showMaxProductsAlert" class="alert alert-danger alert-dismissible alert-with-icon" role="alert">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         {{ $t('shop.max products') }}
@@ -144,9 +148,9 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-sm-6 col-md-6">
-                                        <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
+                                        <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
                                             <option>All</option>
-                                            <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" :disabled="option.option.quantity <= 0" >{{ option.option.name }} - Stock: {{ option.option.quantity }}</option>
+                                            <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option>
                                         </select>
                                     </div>
                                     <div class="col-sm-4 col-md-4" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0">
@@ -159,7 +163,7 @@
                                     <div class="col-sm-4 col-md-4" v-else-if="product_modification_for_cart != 'All' && select_product_max_quantyty == 0">
                                         <div class="alert alert-danger alert-with-icon" role="alert">
                                             <i class="fa fa-times-circle" aria-hidden="true"></i>
-                                            Out of Stock
+                                            {{ $t('shop.product.out_of_stock') }}
                                         </div>
                                     </div>
                                     <div class="col-sm-2 col-md-2" v-if="product_modification_for_cart != 'All' && select_product_max_quantyty > 0 && user.length != 0">
@@ -172,10 +176,10 @@
                             </div>
                             <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
                                 <div class="col-sm-6 col-md-6">
-                                    <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @click="select_option()">
+                                    <select class="form-control" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
                                         <option>All</option>
-                                        <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option> 
-                                    </select> 
+                                        <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id" >{{ option.option.name }}</option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -322,8 +326,8 @@
                 user: [],
 
                 product: {
-                    global_product: [],
-                    locale_product: [],
+                    global_product: {},
+                    locale_product: {},
                     max_price: 0,
                     min_price: 0,
                     product_option: []
@@ -360,6 +364,9 @@
             isOutOfStock() {
                 return this.product.product_option.every(option => option.option.quantity <= 0);
             },
+            isOutOfStockGlobal() {
+                return this.product.product_option.every(option => option.option.quantity <= 0);
+            },
             currentImage() {
                 return this.items[this.currentImageIndex] || {};
             }
@@ -390,8 +397,8 @@
                 this.prices = [],
 
                 this.product = {
-                    global_product: [],
-                    locale_product: [],
+                    global_product: {},
+                    locale_product: {},
                     max_price: 0,
                     min_price: 0,
                     product_option: []
@@ -438,23 +445,21 @@
             select_option(){
                 this.items = [];
                 this.is_adding_in_cart_socsesful = false
+                this.select_product_max_quantyty = 0; // Reset quantity
                 if (this.product_modification_for_cart == "All") {
                     this.get_product_options_images()
                 }
                 else{
                     this.product.product_option.forEach(option => {
-
-                        this.select_product_max_quantyty = option.option.quantity
-
                         if (this.product_modification_for_cart == option.option.id) {
+                            this.select_product_max_quantyty = this.product.global_product.quantity
 
                             this.actyve_price.price = option.option.price
-                            if(this.product.global_product.discount != null){
-                                this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, this.product.global_product.discount)
+                            if(option.option.discount > 0){
+                                this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, option.option.discount)
+                            } else {
+                                this.actyve_price.new_price = option.option.price
                             }
-                            // else{
-                            //     this.actyve_price.new_price = 0
-                            // }
                             option.images.forEach(image => {
                                 this.items.push({
                                     src: this.publicPath + '/public/images/product_option_img/'+image.image,

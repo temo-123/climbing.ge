@@ -2,6 +2,9 @@
     <div class="grid-tile">
         <article class="product-card" :class="{ 'out-of-stock': isOutOfStock }" role="article">
             <div class="product-image-container">
+                <div v-if="isOutOfStock" class="out-of-stock-shadow">
+                    <span>{{ $t('shop.product.out_of_stock') }}</span>
+                </div>
                 <div class="image-nav prev-image" v-if="image_num > 0">
                     <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
                 </div>
@@ -14,7 +17,8 @@
                 <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
-                <div class="badge discount-badge" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
+                <div class="badge discount-badge" v-if="hasDiscount">-{{ maxDiscount }}%</div>
+                <div class="badge donation-badge" v-if="product_data.global_product.is_donation_product">{{ $t('shop.product.donation') }}</div>
                 <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
             <div class="image-dots" v-if="image_length > 1">
@@ -95,6 +99,13 @@
                 return this.product_data.product_option.every(option => option.option.quantity <= 0);
 
                 // return true // test asset
+            },
+            hasDiscount() {
+                return this.product_data.product_option && this.product_data.product_option.some(option => option.option.discount > 0);
+            },
+            maxDiscount() {
+                if (!this.hasDiscount) return 0;
+                return Math.max(...this.product_data.product_option.map(option => option.option.discount));
             }
         },
         mounted() {
@@ -306,9 +317,18 @@
         z-index: 10;
     }
 
+    .donation-badge {
+        background: #28a745;
+        left: auto;
+        right: 10px;
+        top: 10px;
+        font-size: 16px;
+    }
+
     .new-badge {
         left: auto;
         right: 10px;
+        top: 40px;
     }
 
     .product-info {
