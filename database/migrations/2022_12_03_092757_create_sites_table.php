@@ -15,12 +15,6 @@ class CreateSitesTable extends Migration
     {
         Schema::create('sites', function (Blueprint $table) {
             $table->bigIncrements('id');
-            
-            // $table->string('fb_link')->nullable();
-            // $table->string('inst_link')->nullable();
-            // $table->string('google_link')->nullable();
-            // $table->string('twit_link')->nullable();
-
             $table->string('email')->nullable();
             $table->string('number')->nullable();
 
@@ -32,9 +26,6 @@ class CreateSitesTable extends Migration
 
             $table->unsignedBigInteger('ka_info_id');
             $table->foreign('ka_info_id')->references('id')->on('locale_sites')->onDelete('cascade');
-
-            // $table->unsignedBigInteger('ru_info_id');
-            // $table->foreign('ru_info_id')->references('id')->on('locale_sites')->onDelete('cascade');
 
             $table->timestamps();
         });
