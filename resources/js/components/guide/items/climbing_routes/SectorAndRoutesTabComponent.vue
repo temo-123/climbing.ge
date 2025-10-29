@@ -97,7 +97,7 @@ export default {
         get_spot_rocks_images() {
             this.spot_images = []
             axios
-                .get("../../api/get_spot_rocks_images/" + this.id)
+                .get("/sector/get_spot_rocks_images/" + this.id)
                 .then((response) => {
                     this.spot_images = response.data;
                 })

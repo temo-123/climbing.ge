@@ -24,7 +24,37 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Route::get('/get_editing_data/{id}', 'get_editing_data');
         // Moved to adminAction.php
         Route::get('/last_news/{lang}', 'get_last_news');
+        Route::post('/similar_article/{lang}', 'get_similar_locale_article');
     });
+
+
+    // Route::controller(ArticleController::class)->prefix('article')->group( function() {
+    //     // Route::apiResource('/', 'ArticleController');
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+        
+    //     Route::get('/get_category_articles/{category}', 'get_category_articles');
+    //     Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
+    //     Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
+    //     Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+
+    //     Route::post('/add_article/{category}', 'add_article');
+    //     Route::post('/edit_article/{article_id}', 'edit_article');
+    //     Route::delete('/del_article/{article_id}', 'del_article');
+    //     Route::post('/similar_article/{lang}', 'get_similar_locale_article');
+    //     Route::post('/upload_spot_rock_images', 'upload_spot_rock_images');
+    //     Route::post('/get_article_global_data/{leng}/{article_id}', 'get_article_global_data');
+    //     Route::post('/upload_image', 'image_upload');
+
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+    //     // Route::get('/{category}/{lang}', 'get_locale_articles');
+    //     // Route::post('/upload_image', 'image_upload');
+    //     Route::get('/last_news/{lang}', 'get_last_news');
+
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+    //     // Route::get('/{category}/{lang}', 'get_locale_articles');
+    //     // Route::post('/upload_image', 'image_upload');
+    //     Route::get('/last_news/{lang}', 'get_last_news');
+    // });
 
     /*
     *   Outdoor regions

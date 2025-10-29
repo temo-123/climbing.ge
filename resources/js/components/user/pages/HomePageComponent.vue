@@ -14,6 +14,8 @@
                 </div>
             </div>
 
+            <!-- <servicesListComponent /> -->
+
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -43,9 +45,13 @@
 
 <script>
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
+
+    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
+
     export default {
         components: {
             user_notifications_list,
+            servicesListComponent
         },
         data(){
             return{

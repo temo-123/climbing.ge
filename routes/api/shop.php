@@ -82,15 +82,15 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     *   Services routes
     */
     Route::controller(ServicesController::class)->prefix('service')->group( function() {
-        Route::apiResource('/', 'ServicesController');
-        Route::get('/get_editing_service/{service_id}', 'get_editing_service');
+        // Route::apiResource('/', 'ServicesController');
+        // Route::get('/get_editing_service/{service_id}', 'get_editing_service');
         Route::get('/get_service_images/{service_id}', 'get_service_images');
         Route::get('/get_service/{service_id}', 'get_service');
 
-        Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
-
-        Route::get('/services/{lang}', 'get_local_services');
+        Route::get('/get_local_services/{lang}', 'get_local_services');
         Route::get('/similar_services/{lang}/{id}', 'get_similar_service');
+
+        Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
     });
     // Route::get('/services/{lang}', 'ServicesController@get_local_services');
     // Route::get('/similar_services/{lang}/{id}', 'ServicesController@get_similar_service');

@@ -96,7 +96,12 @@
 
     import metaData from '../items/MetaDataComponent'
 
+    import axios_mixin from '../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 newses: [],
@@ -138,14 +143,17 @@
             },
 
             get_news(){
-                axios
-                .get('articles/news/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.newses = response.data.splice(1, 7);
-                    this.lastNews = response.data[0]
-                })
-                .catch(error =>{
-                })
+                this.get_articles('ice', localStorage.getItem('lang'),
+                    (data) => {
+                        this.ices = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.indoor_article_loading = false;
+                    }
+                );
             },
         }
     }

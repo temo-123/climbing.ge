@@ -59,7 +59,7 @@
             get_same_articles() {
                 // console.log(this.id);
                 axios
-                .post('./similar_article/'+localStorage.getItem('lang'), {
+                .post('/article/similar_article/'+localStorage.getItem('lang'), {
                     article_id: this.id,
                     article_category: this.article_category,
                 })

@@ -72,7 +72,7 @@
         methods: {
             get_services(){
                 axios
-                .get('/services/'+localStorage.getItem('lang'))
+                .get('/service/get_local_services/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.services = response.data;
                 })

@@ -27,12 +27,12 @@
                     <span v-html="this.$siteData.data.shop_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-4 text-center service-item" @click="go_to_service('blog')">
+            <div class="col-md-4 col-xs-4 text-center service-item" @click="go_to_service('blog')">
                 <div class="row service_icon" >
                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
                 </div>
                 <div class="row">
-                    <h2>Blog</h2>
+                    <h2>{{ $t('shop.blog') }}</h2>
                     <span v-html="this.$siteData.data.blog_short_description"></span>
                 </div>
             </div>

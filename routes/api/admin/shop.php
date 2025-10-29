@@ -113,10 +113,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     });
 
     Route::controller(ServicesController::class)->prefix('service')->group( function() {
-        Route::apiResource('/', 'ServicesController');
+        // Route::apiResource('/', 'ServicesController');
         Route::get('/get_editing_service/{service_id}', 'get_editing_service');
-        Route::get('/get_service_images/{service_id}', 'get_service_images');
-        Route::get('/get_service/{service_id}', 'get_service');
+        // Route::get('/get_service_images/{service_id}', 'get_service_images');
+        // Route::get('/get_service/{service_id}', 'get_service');
         Route::post('/add_service', 'add_service');
         Route::post('/edit_service/{service_id}', 'edit_service');
         Route::delete('/del_service/{service_id}', 'del_service');
@@ -124,7 +124,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
 
         Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
     });
-    Route::get('/services/{lang}', 'ServicesController@get_local_services');
+    // Route::get('/services/{lang}', 'ServicesController@get_local_services');
 
     /*
     *   Cart and orders routes

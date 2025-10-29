@@ -37,7 +37,12 @@
 </template>
 
 <script>
+    import axios_mixin from '../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         props: [
             // 'partners',
         ],
@@ -77,13 +82,17 @@
                 this.pauseAutoSlide();
             },
             get_partners(){
-                axios
-                .get('/articles/partners/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.partners = response.data
-                })
-                .catch(error =>{
-                })
+                this.get_articles('partners', localStorage.getItem('lang'),
+                    (data) => {
+                        this.partners = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.indoor_article_loading = false;
+                    }
+                );
             },
             startAutoSlide() {
                 this.autoSlide = setInterval(() => {
