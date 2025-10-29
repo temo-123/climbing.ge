@@ -48,7 +48,12 @@
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
 
+    import axios_mixin from '../../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 ices: [],
@@ -72,14 +77,17 @@
         },
         methods: {
             get_ices(){
-                axios
-                .get('../api/articles/ice/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.ices = response.data
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.indoor_article_loading = false)
+                this.get_articles('ice', localStorage.getItem('lang'),
+                    (data) => {
+                        this.ices = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.indoor_article_loading = false;
+                    }
+                );
             }
         }
     }

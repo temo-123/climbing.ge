@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Shop;
+namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -17,20 +17,20 @@ class ProductCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return $categories = Product_category::latest('id')->get();
-    }
+    // public function index()
+    // {
+    //     return $categories = Product_category::latest('id')->get();
+    // }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    // /**
+    //  * Show the form for creating a new resource.
+    //  *
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -62,21 +62,21 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        return Product_category::where("id", "=", $id)->first();
-    }
+    // public function show($id)
+    // {
+    //     return Product_category::where("id", "=", $id)->first();
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Shop'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Product and product categories routes
     */
@@ -21,10 +21,10 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
-    });
-    Route::controller(ProductController::class)->group( function() {
+    // });
+    // Route::controller(ProductController::class)->group( function() {
         // Route::apiResource('/product', 'ProductController');
-        Route::get('/products/{lang}', 'get_local_products');
+        Route::get('/{lang}', 'get_local_products');
         Route::get('/donation_products/{lang}', 'get_donation_products');
         Route::get('/sale_products/{lang}', 'get_local_saled_products');
         Route::get('/page_product/{lang}/{url_title}', 'get_local_product_in_page');
@@ -63,6 +63,27 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::delete('/del_option_image/{image_id}', 'del_option_image');
     });
 
+    /*
+    *   Warehouse
+    */
+    Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+        Route::get('/get_warehouses', 'get_warehouses');
+        Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
+        Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
+        Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
+
+        // Product option management in warehouses
+        Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+        Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+        Route::post('/add_warehouse', 'add_warehouse');
+        Route::post('/edit_warehouse/{id}', 'edit_warehouse');
+        Route::delete('/del_warehouse/{id}', 'del_warehouse');
+        Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
+        Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
+        Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
+        Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
+    });
+    
     Route::controller(TourController::class)->prefix('tour')->group( function() {
         Route::get('/get_all_tours', 'get_all_tours');
         Route::get('/get_tour/{id}', 'get_tour');

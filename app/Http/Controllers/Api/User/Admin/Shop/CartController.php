@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Shop;
+namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;

@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Api\Guide;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Validator;
+use App\Services\PermissionService;
 
 use App\Models\Guide\Article;
 
@@ -87,6 +88,8 @@ class RouteController extends Controller
 
     public function add_route(Request $request)
     {
+        $auth = PermissionService::authorize('route', 'add');
+        // if ($auth) return $auth;
         $route_validate = $this->route_validate($request->data);
         if ($route_validate != null) {
             return response()->json([
@@ -131,6 +134,8 @@ class RouteController extends Controller
 
     public function edit_route(Request $request)
     {
+        $auth = PermissionService::authorize('route', 'edit');
+        // if ($auth) return $auth;
         // dd($request->data);
         $route_validate = $this->route_validate($request->data);
         if ($route_validate != null) {
@@ -170,6 +175,8 @@ class RouteController extends Controller
 
     public function del_route(Request $request)
     {
+        $auth = PermissionService::authorize('route', 'del');
+        // if ($auth) return $auth;
         $route = Route::where('id',strip_tags($request->route_id))->first();
 
         // Delete related JSON data first to avoid foreign key constraint

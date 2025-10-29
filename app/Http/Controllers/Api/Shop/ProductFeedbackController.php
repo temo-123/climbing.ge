@@ -85,19 +85,19 @@ class ProductFeedbackController extends Controller
         }
     }
 
-    public function del_feedback($id)
-    {
-        return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
-    }
+    // public function del_feedback($id)
+    // {
+    //     return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
+    // }
 
-    public function hide_feedback(Request $request)
-    {
-        $data = $request['data'];
+    // public function hide_feedback(Request $request)
+    // {
+    //     $data = $request['data'];
 
-        $actyve_feedback = Product_feedback::where("id", '=', $data['comment_id'])->first();
+    //     $actyve_feedback = Product_feedback::where("id", '=', $data['comment_id'])->first();
 
-        return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_feedback->id, $data['comment_id'], Product_feedback::class, Product_feedback::class, 'product', 'feedback');
-    }
+    //     return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_feedback->id, $data['comment_id'], Product_feedback::class, Product_feedback::class, 'product', 'feedback');
+    // }
 
     public function add_feedback_complaint(Request $request)
     {
@@ -109,15 +109,15 @@ class ProductFeedbackController extends Controller
         return Product_feedback::where('id',strip_tags($request->feedback_id))->first();
     }
 
-    public function get_feedbacks_complaints(Request $request)
-    {
-        return Product_feedback_complaint::get();
-    }
+    // public function get_feedbacks_complaints(Request $request)
+    // {
+    //     return Product_feedback_complaint::get();
+    // }
 
-    public function make_decision(Request $request)
-    {
-        return CommentService::make_decision($request, Feedback::class, Product_feedback_complaint::class, Product::class, 'product', 'feedback');
-    }
+    // public function make_decision(Request $request)
+    // {
+    //     return CommentService::make_decision($request, Feedback::class, Product_feedback_complaint::class, Product::class, 'product', 'feedback');
+    // }
 
     public function confirm_email(Request $request) 
     {        

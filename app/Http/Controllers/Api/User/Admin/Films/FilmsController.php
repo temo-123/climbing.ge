@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Films;
+namespace App\Http\Controllers\Api\User\Admin\Films;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,6 +10,7 @@ use App\Models\Films\Film_category;
 use App\Models\Films\Favorite_film;
 
 use App\Services\FilmService;
+use App\Services\PermissionService;
 use Auth;
 
 class FilmsController extends Controller
@@ -166,6 +167,8 @@ class FilmsController extends Controller
      */
     public function create()
     {
+        $auth = PermissionService::authorize('film', 'add');
+        // if ($auth) return $auth;
         //
     }
 
@@ -177,6 +180,8 @@ class FilmsController extends Controller
      */
     public function store(Request $request)
     {
+        $auth = PermissionService::authorize('film', 'add');
+        // if ($auth) return $auth;
         //
     }
 
@@ -199,6 +204,8 @@ class FilmsController extends Controller
      */
     public function edit($id)
     {
+        $auth = PermissionService::authorize('film', 'edit');
+        // if ($auth) return $auth;
         //
     }
 
@@ -211,6 +218,8 @@ class FilmsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $auth = PermissionService::authorize('film', 'edit');
+        // if ($auth) return $auth;
         //
     }
 
@@ -222,6 +231,8 @@ class FilmsController extends Controller
      */
     public function destroy($id)
     {
+        $auth = PermissionService::authorize('film', 'del');
+        // if ($auth) return $auth;
         //
     }
 }

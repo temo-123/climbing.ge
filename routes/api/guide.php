@@ -12,20 +12,19 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
         Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
+        
+        Route::get('/get_locale_articles/{category}/{lang}', 'get_locale_articles');
         Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
 
         // Editing routes moved to adminAction.php
 
         // Route::post('/edit_article/{article_id}', 'edit_article');
+
+        // Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
+        // Route::get('/get_editing_data/{id}', 'get_editing_data');
+        // Moved to adminAction.php
+        Route::get('/last_news/{lang}', 'get_last_news');
     });
-
-    // Moved to adminAction.php
-
-    // Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
-    Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
-    Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
-    // Moved to adminAction.php
-    Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
 
     /*
     *   Outdoor regions
@@ -101,9 +100,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_event_on_site_list/{lang}/', 'get_event_on_site_list');
         Route::get('/get_event_on_site_page/{lang}/{url_title}', 'get_event_on_site_page');
 
-        Route::post('add_to_interested_events/', 'FaworitesController@add_to_interested_events');
-        Route::get('get_interested_events/', 'FaworitesController@get_interested_events');
-        Route::delete('del_interested_event/{article_id}', 'FaworitesController@del_interested_event');
     });
 
     /*
@@ -138,8 +134,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
 
         // Editing routes moved to adminAction.php
+        Route::get('/get_locale_mounts/{lang}', 'get_locale_mounts');
     });
-    Route::get('/mounts/{lang}', 'MountController@get_locale_mounts');
 
     /*
     *   Local bisnes routes
@@ -194,8 +190,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Editing routes moved to adminAction.php
 
         Route::get('/fix_article_bugs', 'fix_article_bugs');
+        Route::get('/site_data_counts', 'SiteDataController@site_data_counts');
     });
-    Route::get('/site_data_counts', 'SiteDataController@site_data_counts');
 
     Route::apiResource('/general_info', 'GeneralInfoController');
 
@@ -214,11 +210,14 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
         Route::get('/get_spot_sectors_data_for_model/{article_id}', 'get_spot_sectors_data_for_model');
 
+        Route::get('/sectors_and_routes_quantity', 'get_sectors_and_routes_quantity');
+        Route::get('/get_spot_rocks_images/{article_id}', 'get_spot_rocks_images');
+
     });
 
     // Route::get('/get_sectors_for_forum/{article_id}', 'SectorController@get_sectors_for_forum');
-    Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
-    Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
+    // Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
+    // Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
 
     Route::controller(SpotRockController::class)->prefix('spot_rock_images')->group( function() {
         Route::get('/get_spot_rock_images/{article_id}', 'get_spot_rock_images');
@@ -237,12 +236,13 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
         Route::get('/get_related_routes_jsons', 'get_related_routes_jsons');
         Route::get('/get_route_jsons_for_sector_image', 'get_route_jsons_for_sector_image');
+        Route::get('/get_routes_quantity/{article_id}', 'get_routes_quantity');
 
         // Editing routes moved to adminAction.php
     });
 
     // Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
-    Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
+    // Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
 
     Route::controller(RouteJsonController::class)->prefix('route_json')->group( function() {
         Route::get('/get_editing_route_json/{route_id}', 'get_editing_route_json');
@@ -270,18 +270,32 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
 
     Route::apiResource('/sector_local_images', 'SectorLocalImagesController');
-    Route::get('/get_editing_sectors/{image_id}', 'SectorLocalImagesController@get_editing_sectors');
+    // Route::get('/get_editing_sectors/{image_id}', 'SectorLocalImagesController@get_editing_sectors');
     Route::controller(SectorLocalImagesController::class)->prefix('sector_local_img')->group( function() {
         Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
         // Editing routes moved to adminAction.php
         Route::get('/get_layout/{layout_id}', 'get_layout');
         Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
         Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
+
+        Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
     });
 
 
-    Route::controller(FaworitesController::class)->prefix('outdoor')->group( function() {
+    Route::controller(FaworitesController::class)->prefix('faworite')->group( function() {
         Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
+        Route::post('add_to_interested_events/', 'add_to_interested_events');
+        Route::get('get_interested_events/', 'get_interested_events');
+        Route::delete('del_interested_event/{article_id}', 'del_interested_event');
+        
+        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
+        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
+        Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+        
+        Route::post('event/add_to_interested_events/', 'add_to_interested_events');
+        Route::delete('event/del_interested_event/{article_id}', 'del_interested_event');
+        Route::post('/outdoor/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
+        Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
     });
 
     /*

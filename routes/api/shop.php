@@ -88,9 +88,12 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_service/{service_id}', 'get_service');
 
         Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
+
+        Route::get('/services/{lang}', 'get_local_services');
+        Route::get('/similar_services/{lang}/{id}', 'get_similar_service');
     });
-    Route::get('/services/{lang}', 'ServicesController@get_local_services');
-    Route::get('/similar_services/{lang}/{id}', 'ServicesController@get_similar_service');
+    // Route::get('/services/{lang}', 'ServicesController@get_local_services');
+    // Route::get('/similar_services/{lang}/{id}', 'ServicesController@get_similar_service');
 
     /*
     *   Cart and orders routes
@@ -102,7 +105,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
     Route::controller(OrderController::class)->prefix('order')->group( function() {
         Route::get('/get_all_orders', 'get_all_orders');
-        Route::get('/order/get_order_status/{order_id}', 'get_order_status');
+        Route::get('/get_order_status/{order_id}', 'get_order_status');
         Route::get('/get_user_purchases', 'get_user_purchases');
         Route::get('/get_user_orders', 'get_user_orders');
         Route::get('/get_user_purchules', 'get_user_purchules');

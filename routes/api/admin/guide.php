@@ -2,36 +2,38 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Guide'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
 
     /*
     *   Article routes
     */
-    Route::controller(ArticleController::class)->prefix('article')->group( function() {
-        // Route::apiResource('/', 'ArticleController');
-        Route::get('/get_category_articles/{category}', 'get_category_articles');
-        Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
-        Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
-        Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+    // Route::controller(ArticleController::class)->prefix('article')->group( function() {
+    //     // Route::apiResource('/', 'ArticleController');
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+        
+    //     Route::get('/get_category_articles/{category}', 'get_category_articles');
+    //     Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
+    //     Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
+    //     Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
 
-        Route::post('/add_article/{category}', 'add_article');
-        Route::post('/edit_article/{article_id}', 'edit_article');
+    //     Route::post('/add_article/{category}', 'add_article');
+    //     Route::post('/edit_article/{article_id}', 'edit_article');
+    //     Route::delete('/del_article/{article_id}', 'del_article');
+    //     Route::post('/similar_article/{lang}', 'get_similar_locale_article');
+    //     Route::post('/upload_spot_rock_images', 'upload_spot_rock_images');
+    //     Route::post('/get_article_global_data/{leng}/{article_id}', 'get_article_global_data');
+    //     Route::post('/upload_image', 'image_upload');
 
-        Route::delete('/del_article/{article_id}', 'del_article');
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+    //     // Route::get('/{category}/{lang}', 'get_locale_articles');
+    //     // Route::post('/upload_image', 'image_upload');
+    //     Route::get('/last_news/{lang}', 'get_last_news');
 
-        // Route::post('/edit_article/{article_id}', 'edit_article');
-    });
-
-    Route::post('/similar_article/{lang}', 'ArticleController@get_similar_locale_article');
-    Route::post('/articles/upload_spot_rock_images', 'ArticleController@upload_spot_rock_images');
-    Route::post('/get_article_global_data/{leng}/{article_id}', 'ArticleController@get_article_global_data');
-
-    // Route::get('/get_articles_for_forum/{category}/{lang}', 'ArticleController@get_articles_for_forum');
-    Route::get('/articles/get_editing_data/{id}', 'ArticleController@get_editing_data');
-    Route::get('/articles/{category}/{lang}', 'ArticleController@get_locale_articles');
-    Route::post('/articles/upload_image', 'ArticleController@image_upload');
-    Route::get('/last_news/{lang}', 'ArticleController@get_last_news');
-
+    //     Route::get('/get_editing_data/{id}', 'get_editing_data');
+    //     // Route::get('/{category}/{lang}', 'get_locale_articles');
+    //     // Route::post('/upload_image', 'image_upload');
+    //     Route::get('/last_news/{lang}', 'get_last_news');
+    // });
     /*
     *   Outdoor regions
     */
@@ -59,13 +61,18 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
     });
 
+        Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
+            // Route::get('/get_member_status/{id}', 'get_member_status');
+            Route::post('/edit_member_status/{id}', 'edit_member_status');
+            // Route::get('/get_team_members', 'get_team_members');
+            // Route::get('/get_team_members/{id}', 'get_team_members');
+        });
 
-    Route::controller(FaworitesController::class)->prefix('outdoor')->group( function() {
-        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+
+    Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
+        Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
+        Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
     });
-
     /*
     *   Guid Coments routes get_article_comments
     */
@@ -107,15 +114,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Editing routes
     */
-    Route::controller(ArticleController::class)->group( function() {
-        Route::post('/article/add_article/{category}', 'add_article');
-        Route::post('/article/edit_article/{article_id}', 'edit_article');
-        Route::delete('/article/del_article/{article_id}', 'del_article');
-        Route::post('/similar_article/{lang}', 'get_similar_locale_article');
-        Route::post('/articles/upload_spot_rock_images', 'upload_spot_rock_images');
-        Route::post('/get_article_global_data/{leng}/{article_id}', 'get_article_global_data');
-        Route::post('/articles/upload_image', 'image_upload');
-    });
 
     Route::controller(OutdoorController::class)->group( function() {
         Route::post('/outdoor/add_spot', 'add_spot');
@@ -129,18 +127,11 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::delete('/event/del_event/{event_id}', 'del_event');
     });
 
-    Route::controller(CompetitionController::class)->group( function() {
-        Route::post('/competition/add_competition', 'add_competition');
-        Route::post('/competition/edit_competition/{competition_id}', 'edit_competition');
-        Route::delete('/competition/del_competition/{competition_id}', 'del_competition');
-    });
-
-    Route::controller(FaworitesController::class)->group( function() {
-        Route::post('event/add_to_interested_events/', 'add_to_interested_events');
-        Route::delete('event/del_interested_event/{article_id}', 'del_interested_event');
-        Route::post('/outdoor/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
-    });
+    // Route::controller(CompetitionController::class)->group( function() {
+    //     Route::post('/competition/add_competition', 'add_competition');
+    //     Route::post('/competition/edit_competition/{competition_id}', 'edit_competition');
+    //     Route::delete('/competition/del_competition/{competition_id}', 'del_competition');
+    // });
 
     Route::controller(MountController::class)->group( function() {
         Route::post('/mount/edit_mount_massive/{mount_id}', 'edit_mount_massive');
@@ -190,6 +181,27 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::post('/route/add_route', 'add_route');
         Route::post('/route/edit_route/{route_id}', 'edit_route');
         Route::delete('/route/del_route/{route_id}', 'del_route');
+    });
+
+    /*
+    *   Live camera routes
+    */
+    // Route::controller(LiveCameraController::class)->prefix('live_camera')->group( function() {
+    //     Route::get('/get_live_cameras', 'get_live_cameras');
+    //     Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
+    //     Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+    // });
+
+    /*
+    *   Live camera routes
+    */
+    Route::controller(LiveCameraController::class)->prefix('live_camera')->group( function() {
+        Route::get('/get_live_cameras', 'get_live_cameras');
+        Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
+        Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+        Route::post('/add_live_camera', 'add_live_camera');
+        Route::post('/edit_live_camera/{id}', 'edit_live_camera');
+        Route::delete('/del_live_camera/{id}', 'del_live_camera');
     });
 
     Route::controller(RouteJsonController::class)->group( function() {

@@ -48,7 +48,13 @@
     
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
+
+    import axios_mixin from '../../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 indoors: [],
@@ -72,14 +78,17 @@
         },
         methods: {
             get_indoors(){
-                axios
-                .get('../api/articles/indoor/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.indoors = response.data
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.indoor_article_loading = false)
+                this.get_articles('indoor', localStorage.getItem('lang'),
+                    (data) => {
+                        this.indoors = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.indoor_article_loading = false;
+                    }
+                );
             }
         }
     }

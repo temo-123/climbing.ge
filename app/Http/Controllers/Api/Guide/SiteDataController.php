@@ -153,31 +153,31 @@ class SiteDataController extends Controller
         return $counts;
     }
 
-    public function fix_article_bugs(Request $request)
-    {
-        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_us;
+    // public function fix_article_bugs(Request $request)
+    // {
+    //     foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
+    //         $active_global_article = $local_article->global_article_us;
 
-            if (!$active_global_article) {
-                // dd($local_article->global_article_us);
-                $local_article -> delete();
-            }
-        }
-        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ka;
+    //         if (!$active_global_article) {
+    //             // dd($local_article->global_article_us);
+    //             $local_article -> delete();
+    //         }
+    //     }
+    //     foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
+    //         $active_global_article = $local_article->global_article_ka;
 
-            if (!$active_global_article) {
-                $local_article -> delete();
-            }
-        }
-        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-        //     $active_global_article = $local_article->global_article_ru;
+    //         if (!$active_global_article) {
+    //             $local_article -> delete();
+    //         }
+    //     }
+    //     // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+    //     //     $active_global_article = $local_article->global_article_ru;
 
-        //     if (!$active_global_article) {
-        //         $local_article -> delete();
-        //     }
-        // }
-    }
+    //     //     if (!$active_global_article) {
+    //     //         $local_article -> delete();
+    //     //     }
+    //     // }
+    // }
 
     public function get_site_locale_data(Request $request)
     {
@@ -220,103 +220,103 @@ class SiteDataController extends Controller
         return Locale_site::where("locale", "=", 'us')->first();
     }
 
-    public function edit_site_data(Request $request)
-    {
-        $global_data = Site::first();
-        $ka_data = Locale_site::where("locale", "=", 'ka')->first();
-        // $ru_data = Locale_site::where("locale", "=", 'ru')->first();
-        $us_data = Locale_site::where("locale", "=", 'us')->first();
+    // public function edit_site_data(Request $request)
+    // {
+    //     $global_data = Site::first();
+    //     $ka_data = Locale_site::where("locale", "=", 'ka')->first();
+    //     // $ru_data = Locale_site::where("locale", "=", 'ru')->first();
+    //     $us_data = Locale_site::where("locale", "=", 'us')->first();
 
-        $this->edit_global_data($request, $global_data);
-        $this->edit_local_data($request, $ka_data, 'ka');
-        // $this->edit_local_data($request, $ru_data, 'ru');
-        $this->edit_local_data($request, $us_data, 'us');
-    }
+    //     $this->edit_global_data($request, $global_data);
+    //     $this->edit_local_data($request, $ka_data, 'ka');
+    //     // $this->edit_local_data($request, $ru_data, 'ru');
+    //     $this->edit_local_data($request, $us_data, 'us');
+    // }
 
-    public function edit_site_global_data(Request $request){
-        $global_data = Site::first();
-        $this->edit_global_data($request, $global_data);
-    }
-    public function edit_site_ka_data(Request $request){
-        $ka_data = Locale_site::where("locale", "=", 'ka')->first();
-        $this->edit_local_data($request, $ka_data, 'ka');
-    }
+    // public function edit_site_global_data(Request $request){
+    //     $global_data = Site::first();
+    //     $this->edit_global_data($request, $global_data);
+    // }
+    // public function edit_site_ka_data(Request $request){
+    //     $ka_data = Locale_site::where("locale", "=", 'ka')->first();
+    //     $this->edit_local_data($request, $ka_data, 'ka');
+    // }
     // public function edit_site_ru_data(Request $request){
     //     $ru_data = Locale_site::where("locale", "=", 'ru')->first();
     //     $this->edit_local_data($request, $ru_data, 'ru');
     // }
-    public function edit_site_us_data(Request $request){
-        $us_data = Locale_site::where("locale", "=", 'us')->first();
-        $this->edit_local_data($request, $us_data, 'us');
-    }
+    // public function edit_site_us_data(Request $request){
+    //     $us_data = Locale_site::where("locale", "=", 'us')->first();
+    //     $this->edit_local_data($request, $us_data, 'us');
+    // }
 
-    public function edit_local_data($request, $model, $locale)
-    {
-        $model['guid_title']=$request['site_'.$locale.'_info']["guid_title"];
-        $model['guid_description']=$request['site_'.$locale.'_info']["guid_description"];
-        $model['guid_short_description']=$request['site_'.$locale.'_info']["guid_short_description"];
-        $model['films_title']=$request['site_'.$locale.'_info']["films_title"];
-        $model['films_description']=$request['site_'.$locale.'_info']["films_description"];
-        $model['films_short_description']=$request['site_'.$locale.'_info']["films_short_description"];
-        $model['forum_title']=$request['site_'.$locale.'_info']["forum_title"];
-		$model['forum_description']=$request['site_'.$locale.'_info']["forum_description"];
-		$model['forum_short_description']=$request['site_'.$locale.'_info']["forum_short_description"];
-		$model['shop_title']=$request['site_'.$locale.'_info']["shop_title"];
-		$model['shop_description']=$request['site_'.$locale.'_info']["shop_description"];
-		$model['shop_short_description']=$request['site_'.$locale.'_info']["shop_short_description"];
-		$model['other_activity_description']=$request['site_'.$locale.'_info']["other_activity_description"];
-		$model['mount_description']=$request['site_'.$locale.'_info']["mount_description"];
-		$model['event_description']=$request['site_'.$locale.'_info']["event_description"];
-		$model['tech_tips_description']=$request['site_'.$locale.'_info']["tech_tips_description"];
-		$model['news_description']=$request['site_'.$locale.'_info']["news_description"];
-		$model['index_gallery_description']=$request['site_'.$locale.'_info']["index_gallery_description"];
-		$model['outdoor_description']=$request['site_'.$locale.'_info']["outdoor_description"];
-		$model['indoor_description']=$request['site_'.$locale.'_info']["indoor_description"];
-		$model['ice_description']=$request['site_'.$locale.'_info']["ice_description"];
-		$model['topo_description']=$request['site_'.$locale.'_info']["topo_description"];
-		$model['what_we_do_description']=$request['site_'.$locale.'_info']["what_we_do_description"];
-		$model['products_description']=$request['site_'.$locale.'_info']["products_description"];
-		$model['services_description']=$request['site_'.$locale.'_info']["services_description"];
-		$model['terms_of_use']=$request['site_'.$locale.'_info']["terms_of_use"];
+    // public function edit_local_data($request, $model, $locale)
+    // {
+    //     $model['guid_title']=$request['site_'.$locale.'_info']["guid_title"];
+    //     $model['guid_description']=$request['site_'.$locale.'_info']["guid_description"];
+    //     $model['guid_short_description']=$request['site_'.$locale.'_info']["guid_short_description"];
+    //     $model['films_title']=$request['site_'.$locale.'_info']["films_title"];
+    //     $model['films_description']=$request['site_'.$locale.'_info']["films_description"];
+    //     $model['films_short_description']=$request['site_'.$locale.'_info']["films_short_description"];
+    //     $model['forum_title']=$request['site_'.$locale.'_info']["forum_title"];
+	// 	$model['forum_description']=$request['site_'.$locale.'_info']["forum_description"];
+	// 	$model['forum_short_description']=$request['site_'.$locale.'_info']["forum_short_description"];
+	// 	$model['shop_title']=$request['site_'.$locale.'_info']["shop_title"];
+	// 	$model['shop_description']=$request['site_'.$locale.'_info']["shop_description"];
+	// 	$model['shop_short_description']=$request['site_'.$locale.'_info']["shop_short_description"];
+	// 	$model['other_activity_description']=$request['site_'.$locale.'_info']["other_activity_description"];
+	// 	$model['mount_description']=$request['site_'.$locale.'_info']["mount_description"];
+	// 	$model['event_description']=$request['site_'.$locale.'_info']["event_description"];
+	// 	$model['tech_tips_description']=$request['site_'.$locale.'_info']["tech_tips_description"];
+	// 	$model['news_description']=$request['site_'.$locale.'_info']["news_description"];
+	// 	$model['index_gallery_description']=$request['site_'.$locale.'_info']["index_gallery_description"];
+	// 	$model['outdoor_description']=$request['site_'.$locale.'_info']["outdoor_description"];
+	// 	$model['indoor_description']=$request['site_'.$locale.'_info']["indoor_description"];
+	// 	$model['ice_description']=$request['site_'.$locale.'_info']["ice_description"];
+	// 	$model['topo_description']=$request['site_'.$locale.'_info']["topo_description"];
+	// 	$model['what_we_do_description']=$request['site_'.$locale.'_info']["what_we_do_description"];
+	// 	$model['products_description']=$request['site_'.$locale.'_info']["products_description"];
+	// 	$model['services_description']=$request['site_'.$locale.'_info']["services_description"];
+	// 	$model['terms_of_use']=$request['site_'.$locale.'_info']["terms_of_use"];
 
-        $model->save();
-    }
+    //     $model->save();
+    // }
 
-    public function edit_global_data($request, $model)
-    {
-        $model['map'] = $request->site_global_info["map"];
-        $model['email'] = $request->site_global_info["email"];
-        $model['ad'] = $request->site_global_info["ad"];
-        $model['number'] = $request->site_global_info["number"];
+    // public function edit_global_data($request, $model)
+    // {
+    //     $model['map'] = $request->site_global_info["map"];
+    //     $model['email'] = $request->site_global_info["email"];
+    //     $model['ad'] = $request->site_global_info["ad"];
+    //     $model['number'] = $request->site_global_info["number"];
 
-        $model->save();
-    }
+    //     $model->save();
+    // }
 
-    private function validation_local_data()
-    {
-        $validator = Validator::make($data, [
-            'guid_title' => 'max:70',
-            'films_title' => 'max:70',
-            'forum_title' => 'max:70',
-            'shop_title' => 'max:70',
+    // private function validation_local_data()
+    // {
+    //     $validator = Validator::make($data, [
+    //         'guid_title' => 'max:70',
+    //         'films_title' => 'max:70',
+    //         'forum_title' => 'max:70',
+    //         'shop_title' => 'max:70',
 
-            'guid_short_description' => 'max:190',
-            'films_short_description' => 'max:190',
-            'forum_short_description' => 'max:190',
-            'shop_short_description' => 'max:190',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
+    //         'guid_short_description' => 'max:190',
+    //         'films_short_description' => 'max:190',
+    //         'forum_short_description' => 'max:190',
+    //         'shop_short_description' => 'max:190',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return $validator->messages();
+    //     }
+    // }
 
-    private function validation_global_data()
-    {
-        $validator = Validator::make($data, [
-            'email' => 'required | string | email',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
+    // private function validation_global_data()
+    // {
+    //     $validator = Validator::make($data, [
+    //         'email' => 'required | string | email',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return $validator->messages();
+    //     }
+    // }
 }

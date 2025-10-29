@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -50,21 +50,21 @@ class ServiceFollowing extends Controller
     //     return following_users::latest('id')->get();
     // }
 
-    function del_follower(Request $request){
-        $del_follower = following_users::where('id','=',$request->id)->count();
+    // function del_follower(Request $request){
+    //     $del_follower = following_users::where('id','=',$request->id)->count();
 
-        if($del_follower != 0){
-            $del_follower = following_users::where('id','=',$request->id)->first();
-            $del_follower -> delete();
-            return 'Unfollow completed!';
-        }
-        else if($del_follower == 0){
-            return 'Email whith this ID is not finded!';
-        }
-    }
+    //     if($del_follower != 0){
+    //         $del_follower = following_users::where('id','=',$request->id)->first();
+    //         $del_follower -> delete();
+    //         return 'Unfollow completed!';
+    //     }
+    //     else if($del_follower == 0){
+    //         return 'Email whith this ID is not finded!';
+    //     }
+    // }
 
-    public function get_following_users_list()
-    {
-        return following_users::latest('id')->get();
-    }
+    // public function get_following_users_list()
+    // {
+    //     return following_users::latest('id')->get();
+    // }
 }

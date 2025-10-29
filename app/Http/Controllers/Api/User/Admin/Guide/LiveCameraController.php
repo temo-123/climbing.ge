@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,9 +9,9 @@ use App\Models\User\LiveCamera;
 
 class LiveCameraController extends Controller
 {
-    function get_live_cameras(Request $request) {
-        return LiveCamera::all();
-    }
+    // function get_live_cameras(Request $request) {
+    //     return LiveCamera::all();
+    // }
 
     function add_live_camera(Request $request) {
         $liveCamera = LiveCamera::create($request->all('data')['data']);
@@ -31,9 +31,9 @@ class LiveCameraController extends Controller
         return LiveCamera::where('id', '=', $request->id)->first();
     }
 
-    function get_activ_live_camera(Request $request) {
-        return LiveCamera::where('id', '=', $request->id)->first();
-    }
+    // function get_activ_live_camera(Request $request) {
+    //     return LiveCamera::where('id', '=', $request->id)->first();
+    // }
 
     function del_live_camera(Request $request) {
         // dd($request->id);

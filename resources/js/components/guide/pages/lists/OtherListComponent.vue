@@ -49,7 +49,13 @@
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import metaData from '../../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
+
+    import axios_mixin from '../../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 other_articles: [],
@@ -73,14 +79,17 @@
         },
         methods: {
             get_other_articles(){
-                axios
-                .get('../api/articles/other/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.other_articles = response.data
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.other_article_loading = false)
+                this.get_articles('other', localStorage.getItem('lang'),
+                    (data) => {
+                        this.other_articles = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.other_article_loading = false;
+                    }
+                );
             }
         }
     }

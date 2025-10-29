@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Guide;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -22,23 +22,23 @@ use App\Notifications\comments\CommentAnswerNotification;
 
 class CommentController extends Controller
 {
-    public function get_all_comments()
-    {
-        if(Comment::count() > 0){
-            $all_comments = Comment::latest()->get();
+    // public function get_all_comments()
+    // {
+    //     if(Comment::count() > 0){
+    //         $all_comments = Comment::latest()->get();
 
-            $comments = [];
-            foreach ($all_comments as $comment) {
+    //         $comments = [];
+    //         foreach ($all_comments as $comment) {
                 
-                array_push($comments, [
-                    'comment' => $comment, 
-                    'global_article' => $comment->article,
-                ]);
-            }
+    //             array_push($comments, [
+    //                 'comment' => $comment, 
+    //                 'global_article' => $comment->article,
+    //             ]);
+    //         }
             
-            return $comments;
-        }
-    }
+    //         return $comments;
+    //     }
+    // }
 
     public function get_user_comments()
     {
@@ -102,30 +102,30 @@ class CommentController extends Controller
         return $comment_array;
     }
 
-    public function create_comment(Request $request)
-    {
-        $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
+    // public function create_comment(Request $request)
+    // {
+    //     $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
 
-        if($request->answer_array['answer']){
-            $new_answer = new Article_comment_answer;
-            $new_answer['answer_id'] = $return['new_comment_id'];
-            $new_answer['comment_id'] = $request->answer_array['comment_id'];
-            $new_answer->save();
+    //     if($request->answer_array['answer']){
+    //         $new_answer = new Article_comment_answer;
+    //         $new_answer['answer_id'] = $return['new_comment_id'];
+    //         $new_answer['comment_id'] = $request->answer_array['comment_id'];
+    //         $new_answer->save();
 
-            $comment = Comment::where("id", '=', $new_answer['comment_id'])->first();
-            $article = Article::where("id", '=', $comment['article_id'])->first();
-            $us_article = $article->global_article_us;
+    //         $comment = Comment::where("id", '=', $new_answer['comment_id'])->first();
+    //         $article = Article::where("id", '=', $comment['article_id'])->first();
+    //         $us_article = $article->global_article_us;
             
-            $info = [
-                'us_article_title' => $us_article['title'],
-                'url_title' => $article->url_title,
-                'category' => $article->category
-            ];
-            Notification::route('mail', $comment->email)->notify(new CommentAnswerNotification($info));
-        }
+    //         $info = [
+    //             'us_article_title' => $us_article['title'],
+    //             'url_title' => $article->url_title,
+    //             'category' => $article->category
+    //         ];
+    //         Notification::route('mail', $comment->email)->notify(new CommentAnswerNotification($info));
+    //     }
 
-        return $return['message'];
-    }
+    //     return $return['message'];
+    // }
 
     public function del_comment($id)
     {
@@ -152,15 +152,15 @@ class CommentController extends Controller
         return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
     }
 
-    public function get_actyve_comment(Request $request)
-    {
-        return Comment::where('id',strip_tags($request->comment_id))->first();
-    }
+    // public function get_actyve_comment(Request $request)
+    // {
+    //     return Comment::where('id',strip_tags($request->comment_id))->first();
+    // }
 
-    public function add_comment_complaint(Request $request)
-    {
-        return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
-    }
+    // public function add_comment_complaint(Request $request)
+    // {
+    //     return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
+    // }
 
     public function get_comments_complaints(Request $request)
     {
@@ -172,8 +172,8 @@ class CommentController extends Controller
         return CommentService::make_decision($request, Comment::class, Article_comment_complaint::class, Article::class, 'article', 'comment');
     }
 
-    public function confirm_email(Request $request) 
-    {        
-        return CommentService::confirm_email($request->email);
-    }
+    // public function confirm_email(Request $request) 
+    // {        
+    //     return CommentService::confirm_email($request->email);
+    // }
 }

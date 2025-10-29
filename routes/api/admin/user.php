@@ -2,26 +2,26 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\User'], function() {
+Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Login verify routes
     */
-    Route::group(['middleware'=>'auth:sanctum'], function() {
-        // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
-        Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
-        Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
-    });
+    // Route::group(['middleware'=>'auth:sanctum'], function() {
+    //     // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
+    //     Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
+    //     Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
+    // });
 
-    Route::controller(SocialLinkController::class)->prefix('site_social_links')->group( function() {
-        Route::get('/get_site_social_links', 'get_site_social_links');
-        Route::post('/add_site_social_links', 'add_site_social_links');
-        Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
-    });
+    // Route::controller(SocialLinkController::class)->prefix('site_social_links')->group( function() {
+    //     Route::get('/get_site_social_links', 'get_site_social_links');
+    //     Route::post('/add_site_social_links', 'add_site_social_links');
+    //     Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
+    // });
 
     /*
     *   Users routes
     */
-    Route::apiResource('/user_site', 'UserSiteController');
+    // Route::apiResource('/user_site', 'UserSiteController');
 
     Route::controller(UsersController::class)->prefix('user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
@@ -38,12 +38,12 @@ Route::group(['namespace'=>'Api\User'], function() {
         });
 
 
-        Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
-            Route::get('/get_member_status/{id}', 'get_member_status');
-            Route::post('/edit_member_status/{id}', 'edit_member_status');
-            Route::get('/get_team_members', 'get_team_members');
-            Route::get('/get_team_members/{id}', 'get_team_members');
-        });
+        // Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
+        //     Route::get('/get_member_status/{id}', 'get_member_status');
+        //     // Editing routes moved to adminAction.php
+        //     Route::get('/get_team_members', 'get_team_members');
+        //     Route::get('/get_team_members/{id}', 'get_team_members');
+        // });
     });
 
     /*
@@ -54,76 +54,58 @@ Route::group(['namespace'=>'Api\User'], function() {
     // Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
 
 
-    Route::controller(UserOptionController::class)->prefix('options')->group( function() {
-        // Route::get('/get_user_data', 'get_user_data');
-        Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
-        Route::get('/get_user_notification_data', 'get_user_notification_data');
-        Route::post('/user_info_update/{user_id}', 'user_info_update');
-        Route::post('/update_user_notification_data', 'update_user_notification_data');
-    });
 
     Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
-        Route::post('/{service_id}', 'follow');
+        // Route::post('/{service_id}', 'follow');
         Route::delete('/del_follower/{id}', 'del_follower');
-        Route::get('/following_users_list', 'get_following_users_list');
+        // Route::get('/following_users_list', 'get_following_users_list');
     });
 
     /*
     *   Blog posts routes
     */
-    Route::controller(PostController::class)->prefix('post')->group( function() {
-        Route::get('/get_posts', 'get_posts');
-        Route::get('/get_editing_post/{id}', 'get_editing_post');
-        Route::get('/get_activ_post/{id}', 'get_activ_post');
-        Route::post('/add_post', 'add_post');
-        Route::post('/edit_post/{id}', 'edit_post');
-        Route::delete('/del_post/{id}', 'del_post');
-    });
+    // Route::controller(PostController::class)->prefix('post')->group( function() {
+    //     Route::get('/get_posts', 'get_posts');
+    //     Route::get('/get_editing_post/{id}', 'get_editing_post');
+    //     Route::get('/get_activ_post/{id}', 'get_activ_post');
+    //     Route::post('/add_post', 'add_post');
+    //     Route::post('/edit_post/{id}', 'edit_post');
+    //     Route::delete('/del_post/{id}', 'del_post');
+    // });
 
-    /*
-    *   Live camera routes
-    */
-    Route::controller(LiveCameraController::class)->prefix('live_camera')->group( function() {
-        Route::get('/get_live_cameras', 'get_live_cameras');
-        Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
-        Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
-        Route::post('/add_live_camera', 'add_live_camera');
-        Route::post('/edit_live_camera/{id}', 'edit_live_camera');
-        Route::delete('/del_live_camera/{id}', 'del_live_camera');
-    });
 
     /*
     *   Warehouse
     */
-    Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
-        Route::get('/get_warehouses', 'get_warehouses');
-        Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
-        Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
-        Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
+    // Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+    //     Route::get('/get_warehouses', 'get_warehouses');
+    //     Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
+    //     Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
+    //     Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
 
-        // Product option management in warehouses
-        Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
-        Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
-        Route::post('/add_warehouse', 'add_warehouse');
-        Route::post('/edit_warehouse/{id}', 'edit_warehouse');
-        Route::delete('/del_warehouse/{id}', 'del_warehouse');
-        Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
-        Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
-        Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
-        Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
-    });
+    //     // Product option management in warehouses
+    //     Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+    //     Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+    //     Route::post('/add_warehouse', 'add_warehouse');
+    //     Route::post('/edit_warehouse/{id}', 'edit_warehouse');
+    //     Route::delete('/del_warehouse/{id}', 'del_warehouse');
+    //     Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
+    //     Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
+    //     Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
+    //     Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
+    // });
 
     /*
     *   User adresses
     */
-    Route::controller(UserAdresesController::class)->group( function() {
-        Route::get('/get_user_adreses', 'get_user_adreses');
-        Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');
-        Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
-        Route::post('/add_user_adreses', 'add_user_adreses');
-        Route::post('/edit_adres/{adres_id}', 'edit_adres');
-        Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
-    });
+    // Route::controller(UserAdresesController::class)->group( function() {
+    //     Route::get('/get_user_adreses', 'get_user_adreses');
+    //     Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');
+    //     Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
+    //     Route::post('/add_user_adreses', 'add_user_adreses');
+    //     Route::post('/edit_adres/{adres_id}', 'edit_adres');
+    //     Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
+    // });
 
     /*
     *   User roles and pormisions routes
@@ -154,11 +136,12 @@ Route::group(['namespace'=>'Api\User'], function() {
 
     // Task routes removed as TaskController does not exist
 
-    Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
-        Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
-        Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
-    });
 
+
+    // Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
+    //     Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
+    //     Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
+    // });
     /*
     *   Export routes
     */
@@ -166,5 +149,53 @@ Route::group(['namespace'=>'Api\User'], function() {
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         Route::post('/articles_pdf', 'exportArticlesPdf');
+    });
+
+
+    // /*
+    // *   Warehouse
+    // */
+    // Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+    //     Route::get('/get_warehouses', 'get_warehouses');
+    //     Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
+    //     Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
+    //     Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
+
+    //     // Product option management in warehouses
+    //     Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+    //     Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+    // });
+
+    /*
+    *   User roles and pormisions routes
+    */
+    // Route::apiResource('/role', 'RolesController');
+    Route::controller(RolesController::class)->prefix('role')->group( function() {
+        Route::apiResource('/', 'RolesController');
+
+        Route::get('get_editing_role/{role_id}', 'get_editing_role');
+        Route::get('get_editing_role_permissions/{role_id}', 'get_editing_role_permissions');
+
+        Route::get('get_user_permissions/{user_id}', 'get_user_permissions');
+    });
+    Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
+
+    /*
+    *   Permissions
+    */
+    Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
+        Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
+    });
+
+    // Task routes removed as TaskController does not exist
+
+
+    /*
+    *   Export routes
+    */
+    Route::controller(ExportController::class)->prefix('export')->group(function() {
+        Route::get('/categories', 'getUniqueCategories');
+        Route::get('/articles/{category}', 'getArticlesByCategory');
+        // Editing routes moved to adminAction.php
     });
 });

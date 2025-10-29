@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Shop;
+namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,10 +9,10 @@ use App\Models\Shop\Tour_category;
 
 class TourCategoryController extends Controller
 {
-    public function get_all_categories()
-    {
-        return Tour_category::latest('id')->get();
-    }
+    // public function get_all_categories()
+    // {
+    //     return Tour_category::latest('id')->get();
+    // }
 
     public function get_editing_category($category_id)
     {

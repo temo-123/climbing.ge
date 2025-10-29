@@ -24,10 +24,10 @@ class FilmTagsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -35,16 +35,16 @@ class FilmTagsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $new_tag = new Film_tag;
+    // public function store(Request $request)
+    // {
+    //     $new_tag = new Film_tag;
 
-        $new_tag['us_name'] = $request->data['us_name'];
-        $new_tag['ka_name'] = $request->data['ka_name'];
-        $new_tag['ru_name'] = $request->data['ru_name'];
+    //     $new_tag['us_name'] = $request->data['us_name'];
+    //     $new_tag['ka_name'] = $request->data['ka_name'];
+    //     $new_tag['ru_name'] = $request->data['ru_name'];
 
-        $new_tag -> save();
-    }
+    //     $new_tag -> save();
+    // }
 
     /**
      * Display the specified resource.
@@ -63,10 +63,10 @@ class FilmTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -75,16 +75,16 @@ class FilmTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $editing_tag = Film_tag::where("id", "=", $id)->first();
+    // public function update(Request $request, $id)
+    // {
+    //     $editing_tag = Film_tag::where("id", "=", $id)->first();
         
-        $editing_tag['us_name'] = $request->editing_data['us_name'];
-        $editing_tag['ka_name'] = $request->editing_data['ka_name'];
-        $editing_tag['ru_name'] = $request->editing_data['ru_name'];
+    //     $editing_tag['us_name'] = $request->editing_data['us_name'];
+    //     $editing_tag['ka_name'] = $request->editing_data['ka_name'];
+    //     $editing_tag['ru_name'] = $request->editing_data['ru_name'];
 
-        $editing_tag -> save();
-    }
+    //     $editing_tag -> save();
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -92,9 +92,9 @@ class FilmTagsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
-    {
-        $deleted_tag = Film_tag::where("id", "=", $id)->first();
-        $deleted_tag -> delete();
-    }
+    // public function destroy($id)
+    // {
+    //     $deleted_tag = Film_tag::where("id", "=", $id)->first();
+    //     $deleted_tag -> delete();
+    // }
 }

@@ -10,7 +10,7 @@
                 {{this.$siteData.data.project_description}}
             </h2>
 
-            <div v-if="indoor_article_loading">
+            <div v-if="project_loading">
                 <content-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
@@ -48,11 +48,16 @@
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
 
+    import axios_mixin from '../../../../mixins/axios_mixin'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 projects: [],
-                indoor_article_loading: true
+                project_loading: true
             };
         },
         components: {
@@ -72,14 +77,17 @@
         },
         methods: {
             get_projects(){
-                axios
-                .get('/articles/spot_projects/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.projects = response.data
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.indoor_article_loading = false)
+                this.get_articles('spot_projects', localStorage.getItem('lang'),
+                    (data) => {
+                        this.projects = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.project_loading = false;
+                    }
+                );
             }
         }
     }

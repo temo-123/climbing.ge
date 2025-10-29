@@ -39,44 +39,44 @@ class ServicesController extends Controller
         // return abort(404);
     }
 
-    public function add_service(Request $request)
-    {
-        $data = json_decode($request->data, true );
+    // public function add_service(Request $request)
+    // {
+    //     $data = json_decode($request->data, true );
 
-        $service_adding = ServicesService::add_content($data, Service::class, Locale_service::class, '_service', $request);
+    //     $service_adding = ServicesService::add_content($data, Service::class, Locale_service::class, '_service', $request);
 
-        if (!array_key_exists('validation', $service_adding->original)) {
-            if($request->hasFile('service_images')){
-                GalleryService::add_gallery_images(
-                    $request['service_images'], 
-                    $service_adding->original['global_service_id'],
-                    Service_image::class, 
-                    'image', 
-                    'service_id', 
-                    '/images/service_img/'
-                );
-            }
-        }
-        else {
-            return $service_adding;
-        }
-    }
+    //     if (!array_key_exists('validation', $service_adding->original)) {
+    //         if($request->hasFile('service_images')){
+    //             GalleryService::add_gallery_images(
+    //                 $request['service_images'], 
+    //                 $service_adding->original['global_service_id'],
+    //                 Service_image::class, 
+    //                 'image', 
+    //                 'service_id', 
+    //                 '/images/service_img/'
+    //             );
+    //         }
+    //     }
+    //     else {
+    //         return $service_adding;
+    //     }
+    // }
 
-    public function get_editing_service(Request $request)
-    {
-        $service = Service::where('id', '=', $request->service_id)->first();
+    // public function get_editing_service(Request $request)
+    // {
+    //     $service = Service::where('id', '=', $request->service_id)->first();
         
-        $data = [
-            'global_service' => $service,
-            'us_service' => $service->us_service,
-            'ka_service' => $service->ka_service,
-            // 'ru_service' => $service->ru_service,
+    //     $data = [
+    //         'global_service' => $service,
+    //         'us_service' => $service->us_service,
+    //         'ka_service' => $service->ka_service,
+    //         // 'ru_service' => $service->ru_service,
 
-            'service_images' => $service->service_images,
-        ];
+    //         'service_images' => $service->service_images,
+    //     ];
 
-        return $data;
-    }
+    //     return $data;
+    // }
     
     public function get_service_images(Request $request)
     {
@@ -88,29 +88,29 @@ class ServicesController extends Controller
         return [];
     }
 
-    public function edit_service(Request $request)
-    {
-        // $data = json_decode($request->data, true );
-        // dd($data['global_service']['id']);
+    // public function edit_service(Request $request)
+    // {
+    //     // $data = json_decode($request->data, true );
+    //     // dd($data['global_service']['id']);
 
-        $article_editing = ServicesService::edit_content(Service::class, Locale_service::class, '_service', $request, 'images/service_img/');
+    //     $article_editing = ServicesService::edit_content(Service::class, Locale_service::class, '_service', $request, 'images/service_img/');
 
-        if(!array_key_exists('validation', $article_editing->original)){
-            if($request->hasFile('service_new_images')){
-                GalleryService::add_gallery_images(
-                    $request['service_new_images'], 
-                    $article_editing->original['global_service_id'], 
-                    Service_image::class, 
-                    'image', 
-                    'service_id', 
-                    '/images/service_img/'
-                );
-            }
-        }
-        else{
-            return $article_editing;
-        } 
-    }
+    //     if(!array_key_exists('validation', $article_editing->original)){
+    //         if($request->hasFile('service_new_images')){
+    //             GalleryService::add_gallery_images(
+    //                 $request['service_new_images'], 
+    //                 $article_editing->original['global_service_id'], 
+    //                 Service_image::class, 
+    //                 'image', 
+    //                 'service_id', 
+    //                 '/images/service_img/'
+    //             );
+    //         }
+    //     }
+    //     else{
+    //         return $article_editing;
+    //     } 
+    // }
 
     public function get_local_service_in_page(Request $request)
     { 
@@ -135,29 +135,29 @@ class ServicesController extends Controller
         return $services = ServicesService::get_locale_services($global_services);
     }
 
-    public function del_service(Request $request)
-    {
-        $service = Service::where('id', '=', $request->service_id)->first();
-        $service_images_count = Service_image::where('service_id', '=', $service->id)->count();
+    // public function del_service(Request $request)
+    // {
+    //     $service = Service::where('id', '=', $request->service_id)->first();
+    //     $service_images_count = Service_image::where('service_id', '=', $service->id)->count();
 
-        if($service_images_count > 0){
-            $service_images = Service_image::where('service_id', '=', $service->id)->get();
-            // dd($service_images);
-            foreach ($service_images as $image) {
-                ImageControllService::image_delete('images/service_img/', $image, 'image');
-                $image ->delete();
-            }
-        }
-        $service ->delete();
-    }
+    //     if($service_images_count > 0){
+    //         $service_images = Service_image::where('service_id', '=', $service->id)->get();
+    //         // dd($service_images);
+    //         foreach ($service_images as $image) {
+    //             ImageControllService::image_delete('images/service_img/', $image, 'image');
+    //             $image ->delete();
+    //         }
+    //     }
+    //     $service ->delete();
+    // }
 
-    public function del_service_image(Request $request)
-    {
-        $image = Service_image::where('id', '=', $request->image_id)->first();
-        if($image){
-            ImageControllService::image_delete('images/service_img/', $image, 'image');
-            $image ->delete();
-        }
-    }
+    // public function del_service_image(Request $request)
+    // {
+    //     $image = Service_image::where('id', '=', $request->image_id)->first();
+    //     if($image){
+    //         ImageControllService::image_delete('images/service_img/', $image, 'image');
+    //         $image ->delete();
+    //     }
+    // }
 
 }

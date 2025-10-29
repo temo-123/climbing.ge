@@ -54,6 +54,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'article',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'article',
+                'action' => 'show',
+            ],
 
             [
                 'subject' => 'product',
@@ -93,6 +97,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'event',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'event',
+                'action' => 'show',
+            ],
             
             [
                 'subject' => 'sector',
@@ -106,6 +114,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'sector',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'sector',
+                'action' => 'show',
+            ],
 
             [
                 'subject' => 'route',
@@ -119,6 +131,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'route',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'route',
+                'action' => 'show',
+            ],
 
             [
                 'subject' => 'mtp',
@@ -131,6 +147,10 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'mtp',
                 'action' => 'del',
+            ],
+            [
+                'subject' => 'mtp',
+                'action' => 'show',
             ],
 
             [

@@ -54,6 +54,28 @@ trait HasRolesAndPermissions
     //     return $this->hasPermission($permission);
         return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission->slug);
     }
+
+    /**
+     * @param string $subject
+     * @param string $action
+     * @return bool
+     */
+    public function hasPermissionFor($subject, $action)
+    {
+        // Check direct permissions
+        if ($this->permissions->where('subject', $subject)->where('action', $action)->count() > 0) {
+            return true;
+        }
+
+        // Check through roles
+        foreach ($this->roles as $role) {
+            if ($role->permissions->where('subject', $subject)->where('action', $action)->count() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
  
 
     /**

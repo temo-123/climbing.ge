@@ -20,3 +20,11 @@ Route::controller('Api\CKEditorController')->prefix('ckeditor')->group( function
 Route::post('/productSearch/{query_request}', 'Api\SearchController@productSearch');
 Route::post('/articleSearch/{query_request}', 'Api\SearchController@articleSearch');
 Route::post('/filmSearch/{query_request}', 'Api\SearchController@filmSearch');
+
+
+Route::get('/following_users_list', 'Api\ServiceFollowing@get_following_users_list');
+
+// Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
+//     // Editing routes moved to adminAction.php
+//     Route::get('/following_users_list', 'get_following_users_list');
+// });

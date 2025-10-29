@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Guide;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,24 +19,24 @@ class MTPPitchController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return Mtp_pitch::latest('id')->get();
-    }
+    // public function index()
+    // {
+    //     return Mtp_pitch::latest('id')->get();
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_pitchs(Request $request)
-    {
+    // public function get_pitchs(Request $request)
+    // {
 
-        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-        // $mtp = Mtp_pitch::where('id', $request->mtp_id)->first();
-        // dd($mtp);
-        // return $mtp->pitchs;
-    }
+    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+    //     // $mtp = Mtp_pitch::where('id', $request->mtp_id)->first();
+    //     // dd($mtp);
+    //     // return $mtp->pitchs;
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -44,10 +44,10 @@ class MTPPitchController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.
@@ -55,10 +55,10 @@ class MTPPitchController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    // public function show($id)
+    // {
+    //     //
+    // }
 
 
     public function pitch_sequence(Request $request)
@@ -75,11 +75,11 @@ class MTPPitchController extends Controller
         }
     }
 
-    public function get_mtp_pitchs(Request $request)
-    {
-        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-        // return( $mtp_pitchs );
-    }
+    // public function get_mtp_pitchs(Request $request)
+    // {
+    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+    //     // return( $mtp_pitchs );
+    // }
 
     /**
      * Show the form for editing the specified resource.

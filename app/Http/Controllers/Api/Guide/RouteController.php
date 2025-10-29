@@ -85,98 +85,98 @@ class RouteController extends Controller
         return $route;
     }
 
-    public function add_route(Request $request)
-    {
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) {
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
+    // public function add_route(Request $request)
+    // {
+    //     $route_validate = $this->route_validate($request->data);
+    //     if ($route_validate != null) {
+    //         return response()->json([
+    //             $route_validate
+    //         ], 422);
+    //     }
+    //     else{
 
-            $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
-            if($sector_route_count == 0){
-                $new_route_num = 1;
-            }
-            else{
-                $new_route_num = $sector_route_count+1;
-            }
+    //         $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
+    //         if($sector_route_count == 0){
+    //             $new_route_num = 1;
+    //         }
+    //         else{
+    //             $new_route_num = $sector_route_count+1;
+    //         }
 
-            // Save route data (without JSON)
-            $routeData = $request->data;
-            unset($routeData['route_json']); // Remove JSON from route data
-            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+    //         // Save route data (without JSON)
+    //         $routeData = $request->data;
+    //         unset($routeData['route_json']); // Remove JSON from route data
+    //         unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
-            $saved = Route::insertGetId($routeData);
+    //         $saved = Route::insertGetId($routeData);
 
-            // Save JSON data separately if provided
-            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
-                $jsonData = [
-                    'route_id' => $saved,
-                    'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
-                ];
-                RouteJsonController::add_route_json($jsonData);
-            }
+    //         // Save JSON data separately if provided
+    //         if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+    //             $jsonData = [
+    //                 'route_id' => $saved,
+    //                 'json' => $request->data['route_json'],
+    //                 'sector_image_id' => $request->data['sector_image_id']
+    //             ];
+    //             RouteJsonController::add_route_json($jsonData);
+    //         }
 
-            if(!$saved){
-                return response()->json(['error' => 'Error saving route'], 500);
-            }
-            else{
-                return response()->json(['success' => true, 'route_id' => $saved]);
-            }
-        }
-    }
+    //         if(!$saved){
+    //             return response()->json(['error' => 'Error saving route'], 500);
+    //         }
+    //         else{
+    //             return response()->json(['success' => true, 'route_id' => $saved]);
+    //         }
+    //     }
+    // }
 
-    public function edit_route(Request $request)
-    {
-        // dd($request->data);
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) {
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
-            $route = route::where('id', '=', $request->route_id)->first();
+    // public function edit_route(Request $request)
+    // {
+    //     // dd($request->data);
+    //     $route_validate = $this->route_validate($request->data);
+    //     if ($route_validate != null) {
+    //         return response()->json([
+    //             $route_validate
+    //         ], 422);
+    //     }
+    //     else{
+    //         $route = route::where('id', '=', $request->route_id)->first();
 
-            // Save route data (without JSON)
-            $routeData = $request->data;
-            unset($routeData['route_json']); // Remove JSON from route data
-            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+    //         // Save route data (without JSON)
+    //         $routeData = $request->data;
+    //         unset($routeData['route_json']); // Remove JSON from route data
+    //         unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
-            $saved = $route->update($routeData);
+    //         $saved = $route->update($routeData);
 
-            // Save JSON data separately if provided
-            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
-                $jsonData = [
-                    'route_id' => $request->route_id,
-                    'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
-                ];
-                RouteJsonController::edit_route_json($jsonData);
-            }
+    //         // Save JSON data separately if provided
+    //         if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+    //             $jsonData = [
+    //                 'route_id' => $request->route_id,
+    //                 'json' => $request->data['route_json'],
+    //                 'sector_image_id' => $request->data['sector_image_id']
+    //             ];
+    //             RouteJsonController::edit_route_json($jsonData);
+    //         }
             
-            if(!$saved){
-                return response()->json([
-                    'errors' => "Saving error",
-                ], 500);
-            }
+    //         if(!$saved){
+    //             return response()->json([
+    //                 'errors' => "Saving error",
+    //             ], 500);
+    //         }
 
-            return response()->json(['success' => true]);
-        }
-    }
+    //         return response()->json(['success' => true]);
+    //     }
+    // }
 
-    public function del_route(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
+    // public function del_route(Request $request)
+    // {
+    //     $route = Route::where('id',strip_tags($request->route_id))->first();
 
-        // Delete related JSON data first to avoid foreign key constraint
-        ClimbingRoutesJson::where('route_id', $route->id)->delete();
+    //     // Delete related JSON data first to avoid foreign key constraint
+    //     ClimbingRoutesJson::where('route_id', $route->id)->delete();
 
-        $route->delete();
-    }
+    //     $route->delete();
+    // }
 
     public function get_routes_quantity(Request $request)
     {
@@ -184,19 +184,19 @@ class RouteController extends Controller
     }
 
 
-    public function get_route_editing_data(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
+    // public function get_route_editing_data(Request $request)
+    // {
+    //     $route = Route::where('id',strip_tags($request->route_id))->first();
 
-        // Fetch JSON data from the separate table
-        $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
-        if ($routeJson) {
-            $route->json = $routeJson->json;
-            $route->sector_image_id = $routeJson->sector_image_id;
-        }
+    //     // Fetch JSON data from the separate table
+    //     $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
+    //     if ($routeJson) {
+    //         $route->json = $routeJson->json;
+    //         $route->sector_image_id = $routeJson->sector_image_id;
+    //     }
 
-        return $route;
-    }
+    //     return $route;
+    // }
 
     public function get_related_routes_jsons(Request $request)
     {
@@ -232,17 +232,17 @@ class RouteController extends Controller
         });
     }
 
-    private function route_validate($request)
-    {
-        $validator = Validator::make($request, [
-            'name' => 'required|max:190',
-            'grade' => 'required',
-            'sector_id' => 'required',
-        ]);
+    // private function route_validate($request)
+    // {
+    //     $validator = Validator::make($request, [
+    //         'name' => 'required|max:190',
+    //         'grade' => 'required',
+    //         'sector_id' => 'required',
+    //     ]);
         
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-    }
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
+    // }
 }
 

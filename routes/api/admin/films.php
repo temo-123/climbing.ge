@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Films'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Films'], function() {
     /*
     *   Films routes
     */

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Guide;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -19,25 +19,25 @@ class MTPController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return MTP::latest('id')->get();
-    }
+    // public function index()
+    // {
+    //     return MTP::latest('id')->get();
+    // }
 
-    public function get_mtps_for_forum($sector_id)
-    {
-        return MTP::where('sector_id','=', $sector_id)->get();
-    }
+    // public function get_mtps_for_forum($sector_id)
+    // {
+    //     return MTP::where('sector_id','=', $sector_id)->get();
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -45,10 +45,10 @@ class MTPController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
     /**
      * Display the specified resource.
@@ -61,23 +61,23 @@ class MTPController extends Controller
     //     return Mtp::where('id',strip_tags($id))->get();
     // }
 
-    public function get_mtp_for_modal(Request $request)
-    {
-        $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
-        $mtp_pitchs = $mtp->pitchs;
-        // dd($mtp_pitchs);
+    // public function get_mtp_for_modal(Request $request)
+    // {
+    //     $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
+    //     $mtp_pitchs = $mtp->pitchs;
+    //     // dd($mtp_pitchs);
 
-        $mtp_model_info = [];
+    //     $mtp_model_info = [];
 
-        array_push($mtp_model_info, 
-            array(
-                'mtp' => $mtp,
-                'mtp_pitchs' => $mtp_pitchs,
-            )
-        );
+    //     array_push($mtp_model_info, 
+    //         array(
+    //             'mtp' => $mtp,
+    //             'mtp_pitchs' => $mtp_pitchs,
+    //         )
+    //     );
 
-        return $mtp_model_info[0];
-    }
+    //     return $mtp_model_info[0];
+    // }
 
     /**
      * Show the form for editing the specified resource.

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Guide;
+namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -20,121 +20,121 @@ use Validator;
 
 class LocalBisnesController extends Controller
 {
-    public function get_local_bisnes_for_article(Request $request)
-    {
-        $action_data = date("Y/m/d H:i:s");
-        $data = [];
+    // public function get_local_bisnes_for_article(Request $request)
+    // {
+    //     $action_data = date("Y/m/d H:i:s");
+    //     $data = [];
 
-        $article = Article::where('url_title', '=', $request->article_url_title)->first();
-        $article_bisnes_global_data = $article->businesses->where('published', '=', 1)->take(2);
+    //     $article = Article::where('url_title', '=', $request->article_url_title)->first();
+    //     $article_bisnes_global_data = $article->businesses->where('published', '=', 1)->take(2);
         
-        if($article_bisnes_global_data){
-            foreach($article_bisnes_global_data as $article_bisne_global_data){
-                $pulic_year = $article_bisne_global_data->published_data;
-                $public_month = $article_bisne_global_data->published_data;
-                $pulic_day = $article_bisne_global_data->published_data;
+    //     if($article_bisnes_global_data){
+    //         foreach($article_bisnes_global_data as $article_bisne_global_data){
+    //             $pulic_year = $article_bisne_global_data->published_data;
+    //             $public_month = $article_bisne_global_data->published_data;
+    //             $pulic_day = $article_bisne_global_data->published_data;
 
-                if ($article_bisne_global_data->public_totaly) {
-                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
+    //             if ($article_bisne_global_data->public_totaly) {
+    //                 $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
 
-                    $bisnes_images = [];
+    //                 $bisnes_images = [];
 
-                    if(isset($article_bisne_global_data->bisnes_images[0]) && 
-                        $article_bisne_global_data->bisnes_images[0] != '' &&
-                        $article_bisne_global_data->bisnes_images[0] != []
-                    ){
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0]->image;
-                    }
+    //                 if(isset($article_bisne_global_data->bisnes_images[0]) && 
+    //                     $article_bisne_global_data->bisnes_images[0] != '' &&
+    //                     $article_bisne_global_data->bisnes_images[0] != []
+    //                 ){
+    //                     $bisnes_images = $article_bisne_global_data->bisnes_images[0]->image;
+    //                 }
 
-                    array_push($data,[
-                        'global_data' => $article_bisne_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ]);
-                }
-                else if(
-                    date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
-                    date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
-                ){
+    //                 array_push($data,[
+    //                     'global_data' => $article_bisne_global_data,
+    //                     'local_data' => $article_bisnes_local_data,
+    //                     'image' => $bisnes_images
+    //                 ]);
+    //             }
+    //             else if(
+    //                 date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
+    //                 date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
+    //             ){
 
-                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
+    //                 $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
 
-                    if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
+    //                 if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
+    //                     $bisnes_images = $article_bisne_global_data->bisnes_images[0];
 
-                        array_push($data,[
-                            'global_data' => $article_bisne_global_data,
-                            'local_data' => $article_bisnes_local_data,
-                            'image' => $bisnes_images
-                        ]);
-                    }
-                    elseif (
-                            date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
-                            date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
-                        ) {
+    //                     array_push($data,[
+    //                         'global_data' => $article_bisne_global_data,
+    //                         'local_data' => $article_bisnes_local_data,
+    //                         'image' => $bisnes_images
+    //                     ]);
+    //                 }
+    //                 elseif (
+    //                         date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
+    //                         date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
+    //                     ) {
 
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
+    //                     $bisnes_images = $article_bisne_global_data->bisnes_images[0];
 
-                        array_push($data,[
-                            'global_data' => $article_bisne_global_data,
-                            'local_data' => $article_bisnes_local_data,
-                            'image' => $bisnes_images
-                        ]);
-                    }
-                }
-            }
-            return $data;
-        }
-    }
+    //                     array_push($data,[
+    //                         'global_data' => $article_bisne_global_data,
+    //                         'local_data' => $article_bisnes_local_data,
+    //                         'image' => $bisnes_images
+    //                     ]);
+    //                 }
+    //             }
+    //         }
+    //         return $data;
+    //     }
+    // }
 
-    private function get_article_bisnes_local_data($lang, $article_bisnes_global_data){
-        $article_bisnes_local_data = [];
+    // private function get_article_bisnes_local_data($lang, $article_bisnes_global_data){
+    //     $article_bisnes_local_data = [];
 
-        if($lang == 'ka'){
-            $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
-        }
-        // else if($lang == 'ru'){
-        //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
-        // }
-        else{
-            $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
-        }
+    //     if($lang == 'ka'){
+    //         $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
+    //     }
+    //     // else if($lang == 'ru'){
+    //     //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
+    //     // }
+    //     else{
+    //         $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
+    //     }
 
-        return $article_bisnes_local_data;
-    }
+    //     return $article_bisnes_local_data;
+    // }
 
-    public function get_local_bisnes_in_page(Request $request)
-    {
-        $article_bisnes_global_data = Suport_local_bisnes::where('url_title', '=', $request->url_title)->first();
-        if ($article_bisnes_global_data) {
-            if($request->locale == 'ka'){
-                $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
-            }
-            // else if($request->locale == 'ru'){
-            //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
-            // }
-            else{
-                $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
-            }
+    // public function get_local_bisnes_in_page(Request $request)
+    // {
+    //     $article_bisnes_global_data = Suport_local_bisnes::where('url_title', '=', $request->url_title)->first();
+    //     if ($article_bisnes_global_data) {
+    //         if($request->locale == 'ka'){
+    //             $article_bisnes_local_data = $article_bisnes_global_data->ka_bisnes;
+    //         }
+    //         // else if($request->locale == 'ru'){
+    //         //     $article_bisnes_local_data = $article_bisnes_global_data->ru_bisnes;
+    //         // }
+    //         else{
+    //             $article_bisnes_local_data = $article_bisnes_global_data->us_bisnes;
+    //         }
     
-            $bisnes_images = $article_bisnes_global_data->bisnes_images;
+    //         $bisnes_images = $article_bisnes_global_data->bisnes_images;
     
-            $data = [
-                'global_data' => $article_bisnes_global_data,
-                'locale_data' => $article_bisnes_local_data,
-                'images' => $bisnes_images
-            ];
-            return $data;
-        }
-        // else{
-        //     return 'No ';
-        // }
-    }
+    //         $data = [
+    //             'global_data' => $article_bisnes_global_data,
+    //             'locale_data' => $article_bisnes_local_data,
+    //             'images' => $bisnes_images
+    //         ];
+    //         return $data;
+    //     }
+    //     // else{
+    //     //     return 'No ';
+    //     // }
+    // }
 
-    public function get_local_bisneses(Request $request)
-    {
-        return Suport_local_bisnes::get();
-    }
+    // public function get_local_bisneses(Request $request)
+    // {
+    //     return Suport_local_bisnes::get();
+    // }
 
     public function add_local_bisnes(Request $request)
     {
@@ -239,18 +239,18 @@ class LocalBisnesController extends Controller
 
         return $data;
     }
-    public function get_bisnes_images(Request $request)
-    {
-        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
+    // public function get_bisnes_images(Request $request)
+    // {
+    //     $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
-        return $bisnes->bisnes_images;
-    }
-    public function get_bisnes_article_relation(Request $request)
-    {
-        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
+    //     return $bisnes->bisnes_images;
+    // }
+    // public function get_bisnes_article_relation(Request $request)
+    // {
+    //     $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
-        return $bisnes->bisnes_article;
-    }
+    //     return $bisnes->bisnes_article;
+    // }
     public function del_local_bisnes(Request $request)
     {
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();

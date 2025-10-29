@@ -50,98 +50,98 @@ class SectorController extends Controller
         return Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
     }
 
-    public function save_sector_sequence(Request $request)
-    {
-        $sectors_num=0;
-        foreach ($request->new_sector_sequence as $sector) {
-            $sector_id = $sector['id'];
-            $sector = Sector::where('id',strip_tags($sector_id))->first();
-            $sectors_num++;
-            $sector['num'] = $sectors_num;
-            $sector->update();
-        }
-    }
+    // public function save_sector_sequence(Request $request)
+    // {
+    //     $sectors_num=0;
+    //     foreach ($request->new_sector_sequence as $sector) {
+    //         $sector_id = $sector['id'];
+    //         $sector = Sector::where('id',strip_tags($sector_id))->first();
+    //         $sectors_num++;
+    //         $sector['num'] = $sectors_num;
+    //         $sector->update();
+    //     }
+    // }
 
-    public function add_sector(Request $request)
-    {
-        $data = json_decode($request->data, true );
-        $validate = $this->sector_validate($data);
+    // public function add_sector(Request $request)
+    // {
+    //     $data = json_decode($request->data, true );
+    //     $validate = $this->sector_validate($data);
 
-        if ($validate != null) {
-            return response()->json($validate, 422);
-        }
-        else{
-            $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
-            $new_sector = new Sector();
+    //     if ($validate != null) {
+    //         return response()->json($validate, 422);
+    //     }
+    //     else{
+    //         $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
+    //         $new_sector = new Sector();
 
-            $new_sector['num'] = $spot_sector_count++;
-            $new_sector['published'] = $data['published'];
-            $new_sector['article_id'] = $data['article_id'];
-            $new_sector['name'] = $data['name'];
-            $new_sector['text'] = $data['text'];
-            $new_sector['all_day_in_shade'] = $data['all_day_in_shade'];
-            $new_sector['all_day_in_sun'] = $data['all_day_in_sun'];
-            $new_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
-            $new_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
-            $new_sector['in_shade_after_10'] = $data['in_shade_after_10'];
-            $new_sector['in_shade_after_15'] = $data['in_shade_after_15'];
-            $new_sector['slabby'] = $data['slabby'];
-            $new_sector['vertical'] = $data['vertical'];
-            $new_sector['overhang'] = $data['overhang'];
-            $new_sector['roof'] = $data['roof'];
+    //         $new_sector['num'] = $spot_sector_count++;
+    //         $new_sector['published'] = $data['published'];
+    //         $new_sector['article_id'] = $data['article_id'];
+    //         $new_sector['name'] = $data['name'];
+    //         $new_sector['text'] = $data['text'];
+    //         $new_sector['all_day_in_shade'] = $data['all_day_in_shade'];
+    //         $new_sector['all_day_in_sun'] = $data['all_day_in_sun'];
+    //         $new_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
+    //         $new_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
+    //         $new_sector['in_shade_after_10'] = $data['in_shade_after_10'];
+    //         $new_sector['in_shade_after_15'] = $data['in_shade_after_15'];
+    //         $new_sector['slabby'] = $data['slabby'];
+    //         $new_sector['vertical'] = $data['vertical'];
+    //         $new_sector['overhang'] = $data['overhang'];
+    //         $new_sector['roof'] = $data['roof'];
 
-            $new_sector['for_family'] = $data['for_family'];
-            $new_sector['for_kids'] = $data['for_kids'];
-            $new_sector['wolking_time'] = $data['wolking_time'];
+    //         $new_sector['for_family'] = $data['for_family'];
+    //         $new_sector['for_kids'] = $data['for_kids'];
+    //         $new_sector['wolking_time'] = $data['wolking_time'];
 
-            $save_sector = $new_sector -> save();
+    //         $save_sector = $new_sector -> save();
 
-            if($request->sector_images){
-                if(!$save_sector){
-                    App::abort(500, 'Saiving error');
-                }
-                else{
-                    $this->add_sector_images($request->sector_images, $new_sector->id);
-                }
-            }
-        }
-    }
+    //         if($request->sector_images){
+    //             if(!$save_sector){
+    //                 App::abort(500, 'Saiving error');
+    //             }
+    //             else{
+    //                 $this->add_sector_images($request->sector_images, $new_sector->id);
+    //             }
+    //         }
+    //     }
+    // }
 
     public function get_spot_rocks_images(Request $request)
     {
         return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     }
 
-    public function add_sector_images($images, $sector_id)
-    {
-        foreach ($images as $image) {
-            $file_new_name;
-            $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
-            if(file_exists(public_path('images/sector_img/') . $file_new_name)){
-                $new_option_image = new Sector_image;
+    // public function add_sector_images($images, $sector_id)
+    // {
+    //     foreach ($images as $image) {
+    //         $file_new_name;
+    //         $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
+    //         if(file_exists(public_path('images/sector_img/') . $file_new_name)){
+    //             $new_option_image = new Sector_image;
 
-                $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-                if($sector_images_count == 0){
-                    $new_route_num = 1;
-                }
-                else{
-                    $new_option_image['num'] = $sector_images_count+1;
-                }
+    //             $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
+    //             if($sector_images_count == 0){
+    //                 $new_route_num = 1;
+    //             }
+    //             else{
+    //                 $new_option_image['num'] = $sector_images_count+1;
+    //             }
 
-                $new_option_image['image'] = $file_new_name;
-                $new_option_image['sector_id'] = $sector_id;
+    //             $new_option_image['image'] = $file_new_name;
+    //             $new_option_image['sector_id'] = $sector_id;
         
-                $saiving = $new_option_image -> save();
+    //             $saiving = $new_option_image -> save();
 
-                if($saiving){
-                    echo 'Upload socsesful \n';
-                }
-            }
-            else{
-                echo 'Upload error \n';
-            }
-        }
-    }
+    //             if($saiving){
+    //                 echo 'Upload socsesful \n';
+    //             }
+    //         }
+    //         else{
+    //             echo 'Upload error \n';
+    //         }
+    //     }
+    // }
 
     public function get_sector_and_routes(Request $request)
     {
@@ -297,48 +297,48 @@ class SectorController extends Controller
     //     return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     // }
 
-    public function edit_sector(Request $request, )
-    {
-        $data = json_decode($request->data, true );
-        $validate = $this->sector_validate($data);
+    // public function edit_sector(Request $request, )
+    // {
+    //     $data = json_decode($request->data, true );
+    //     $validate = $this->sector_validate($data);
 
-        if ($validate != null) {
-            return response()->json($validate, 422);
-        }
-        else{
-            $edit_sector = Sector::where("id", "=", $request->sector_id)->first();
+    //     if ($validate != null) {
+    //         return response()->json($validate, 422);
+    //     }
+    //     else{
+    //         $edit_sector = Sector::where("id", "=", $request->sector_id)->first();
 
-            $edit_sector['published'] = $data['published'];
-            $edit_sector['article_id'] = $data['article_id'];
-            $edit_sector['name'] = $data['name'];
-            $edit_sector['text'] = $data['text'];
-            $edit_sector['all_day_in_shade'] = $data['all_day_in_shade'];
-            $edit_sector['all_day_in_sun'] = $data['all_day_in_sun'];
-            $edit_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
-            $edit_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
-            $edit_sector['in_shade_after_10'] = $data['in_shade_after_10'];
-            $edit_sector['in_shade_after_15'] = $data['in_shade_after_15'];
-            $edit_sector['slabby'] = $data['slabby'];
-            $edit_sector['vertical'] = $data['vertical'];
-            $edit_sector['overhang'] = $data['overhang'];
-            $edit_sector['roof'] = $data['roof'];
+    //         $edit_sector['published'] = $data['published'];
+    //         $edit_sector['article_id'] = $data['article_id'];
+    //         $edit_sector['name'] = $data['name'];
+    //         $edit_sector['text'] = $data['text'];
+    //         $edit_sector['all_day_in_shade'] = $data['all_day_in_shade'];
+    //         $edit_sector['all_day_in_sun'] = $data['all_day_in_sun'];
+    //         $edit_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
+    //         $edit_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
+    //         $edit_sector['in_shade_after_10'] = $data['in_shade_after_10'];
+    //         $edit_sector['in_shade_after_15'] = $data['in_shade_after_15'];
+    //         $edit_sector['slabby'] = $data['slabby'];
+    //         $edit_sector['vertical'] = $data['vertical'];
+    //         $edit_sector['overhang'] = $data['overhang'];
+    //         $edit_sector['roof'] = $data['roof'];
 
-            $edit_sector['for_family'] = $data['for_family'];
-            $edit_sector['for_kids'] = $data['for_kids'];
-            $edit_sector['wolking_time'] = $data['wolking_time'];
+    //         $edit_sector['for_family'] = $data['for_family'];
+    //         $edit_sector['for_kids'] = $data['for_kids'];
+    //         $edit_sector['wolking_time'] = $data['wolking_time'];
 
-            $save_sector = $edit_sector -> save();
+    //         $save_sector = $edit_sector -> save();
             
-            if($request->sector_new_images){
-                if(!$save_sector){
-                    App::abort(500, 'Saiving error');
-                }
-                else{
-                    $this->add_sector_images($request->sector_new_images, $edit_sector->id);
-                }
-            }
-        }
-    }
+    //         if($request->sector_new_images){
+    //             if(!$save_sector){
+    //                 App::abort(500, 'Saiving error');
+    //             }
+    //             else{
+    //                 $this->add_sector_images($request->sector_new_images, $edit_sector->id);
+    //             }
+    //         }
+    //     }
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -346,26 +346,26 @@ class SectorController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function del_sector(Request $request)
-    {
-        $sector_id=$request->sector_id;
+    // public function del_sector(Request $request)
+    // {
+    //     $sector_id=$request->sector_id;
 
-        $sector = Sector::where('id',strip_tags($sector_id))->first();
+    //     $sector = Sector::where('id',strip_tags($sector_id))->first();
 
-        // delete product file
-        $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
+    //     // delete product file
+    //     $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
         
-        if ($sector_images_count > 0) {
-            $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
-            foreach ($sector_images as $sector_image) {
-                imageControllService::image_delete('images/sector_img/', $sector_image, $request);
-                $sector_image ->delete();
-            }
-        }
+    //     if ($sector_images_count > 0) {
+    //         $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
+    //         foreach ($sector_images as $sector_image) {
+    //             imageControllService::image_delete('images/sector_img/', $sector_image, $request);
+    //             $sector_image ->delete();
+    //         }
+    //     }
 
-        // delete product from db
-        $sector ->delete();
-    }
+    //     // delete product from db
+    //     $sector ->delete();
+    // }
 
 
     public function get_region_sectors(Request $request)
@@ -375,24 +375,24 @@ class SectorController extends Controller
 
 
 
-    public function sector_image_validate($request)
-    {
-        $request->validate([
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-    }
+    // public function sector_image_validate($request)
+    // {
+    //     $request->validate([
+    //         // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+    //     ]);
+    // }
 
-    private function sector_validate($sector_data)
-    {
-        $validator = Validator::make($sector_data, [
-            'name' => 'required|max:190',
-            'article_id' => 'required',
-        ]);
+    // private function sector_validate($sector_data)
+    // {
+    //     $validator = Validator::make($sector_data, [
+    //         'name' => 'required|max:190',
+    //         'article_id' => 'required',
+    //     ]);
 
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
+    //     if ($validator->fails()) {
+    //         return $validator->messages();
+    //     }
+    // }
 
     public function routes_sequence(Request $request)
     {
@@ -444,12 +444,12 @@ class SectorController extends Controller
         return $data;
     }
 
-    public function del_sector_image_from_db(Request $request)
-    {
-        $image = Sector_image::where('id', '=', $request->image_id)->first();
-        ImageControllService::image_delete('images/sector_img/', $image, 'image');
-        $image ->delete();
-    }
+    // public function del_sector_image_from_db(Request $request)
+    // {
+    //     $image = Sector_image::where('id', '=', $request->image_id)->first();
+    //     ImageControllService::image_delete('images/sector_img/', $image, 'image');
+    //     $image ->delete();
+    // }
 
     public function get_routes_for_model(Request $request)
     {
@@ -503,16 +503,16 @@ class SectorController extends Controller
         return( $data );
     }
 
-    public function get_sector_editing_data(Request $request)
-    {
-        $sector = Sector::where('id',strip_tags($request->sector_id))->first();
-        $data = [
-            'sector' => $sector,
-            'article' => $sector->article,
-            'images' => $sector->images,
-        ];
-        return $data;
-    }
+    // public function get_sector_editing_data(Request $request)
+    // {
+    //     $sector = Sector::where('id',strip_tags($request->sector_id))->first();
+    //     $data = [
+    //         'sector' => $sector,
+    //         'article' => $sector->article,
+    //         'images' => $sector->images,
+    //     ];
+    //     return $data;
+    // }
 
     public function get_sector_images(Request $request)
     {

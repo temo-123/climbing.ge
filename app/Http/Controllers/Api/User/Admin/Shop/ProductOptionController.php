@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Shop;
+namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,17 +28,17 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductOptionController extends Controller
 {
-    public function get_activ_product_options(Request $request)
-    {
-        $product = Product::where('id', '=', $request->product_id)->first();
-        $data = [
-            'product' => $product,
-            'options' => $product->product_options,
-            'category' => $product->product_category,
-            'us_product' => $product->us_product,
-        ];
-        return $data;
-    }
+    // public function get_activ_product_options(Request $request)
+    // {
+    //     $product = Product::where('id', '=', $request->product_id)->first();
+    //     $data = [
+    //         'product' => $product,
+    //         'options' => $product->product_options,
+    //         'category' => $product->product_category,
+    //         'us_product' => $product->us_product,
+    //     ];
+    //     return $data;
+    // }
 
     public function add_option(Request $request)
     {

@@ -163,7 +163,7 @@
 
             get_mounts(){
                 axios
-                .get('/mounts/'+localStorage.getItem('lang'))
+                .get('/mount/get_locale_mounts/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mounts = response.data
                 })
