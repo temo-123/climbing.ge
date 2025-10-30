@@ -9,18 +9,25 @@ class Site extends Model
 {
     use Notifiable;
 
-	public function us_site()
-	{
-		return $this->hasOne(Locale_site::class, 'id', 'us_info_id');
-	}
+    public function getLocaleData($locale)
+    {
+        $localeData = [];
+        $localeRecords = Locale_site::all();
 
-	public function ka_site()
-	{
-		return $this->hasOne(Locale_site::class, 'id', 'ka_info_id');
-	}
+        foreach ($localeRecords as $record) {
+            $localeData[$record->slug] = $record->{$locale . '_data'};
+        }
 
-	// public function ru_site()
-	// {
-	// 	return $this->hasOne(Locale_site::class, 'id', 'ru_info_id');
-	// }
+        return $localeData;
+    }
+
+    public function getUsSite()
+    {
+        return $this->getLocaleData('us');
+    }
+
+    public function getKaSite()
+    {
+        return $this->getLocaleData('ka');
+    }
 }

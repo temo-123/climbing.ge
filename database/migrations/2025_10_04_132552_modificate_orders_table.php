@@ -13,7 +13,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('orders', function (Blueprint $table) {
-            $table->dropColumn('is_order_costome');
+            // $table->dropColumn('is_order_costome');
             $table->boolean('is_custom')->default(false)->after('shiping');
 
             $table->dropColumn('status_updating_data');
@@ -34,7 +34,7 @@ return new class extends Migration
     {
         Schema::table('orders', function (Blueprint $table) {
             $table->dropColumn('is_custom');
-            $table->boolean('is_order_costome')->default(false)->after('shiping');
+            // $table->boolean('is_order_costome')->default(false)->after('shiping');
 
             $table->string('status')->nullable()->after('shiping');
             $table->timestamp('status_updating_data')->nullable()->after('shiping');

@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('products', function (Blueprint $table) {
+        Schema::table('user_notifications', function (Blueprint $table) {
             $table->dropColumn('favorite_outdoor');
             $table->dropColumn('favorite_product');
             $table->dropColumn('favorite_film');

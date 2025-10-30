@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Drop the foreign key from tasks table first
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-        });
-
-        // Then drop the task_categories table
+        // Drop the task_categories table
         Schema::dropIfExists('task_categories');
     }
 

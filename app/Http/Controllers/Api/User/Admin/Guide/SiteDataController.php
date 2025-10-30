@@ -223,14 +223,9 @@ class SiteDataController extends Controller
     public function edit_site_data(Request $request)
     {
         $global_data = Site::first();
-        $ka_data = Locale_site::where("locale", "=", 'ka')->first();
-        // $ru_data = Locale_site::where("locale", "=", 'ru')->first();
-        $us_data = Locale_site::where("locale", "=", 'us')->first();
 
         $this->edit_global_data($request, $global_data);
-        $this->edit_local_data($request, $ka_data, 'ka');
-        // $this->edit_local_data($request, $ru_data, 'ru');
-        $this->edit_local_data($request, $us_data, 'us');
+        $this->edit_locale_data($request);
     }
 
     public function edit_site_global_data(Request $request){
@@ -238,48 +233,50 @@ class SiteDataController extends Controller
         $this->edit_global_data($request, $global_data);
     }
     public function edit_site_ka_data(Request $request){
-        $ka_data = Locale_site::where("locale", "=", 'ka')->first();
-        $this->edit_local_data($request, $ka_data, 'ka');
+        $this->edit_locale_data_by_locale($request, 'ka');
     }
     // public function edit_site_ru_data(Request $request){
-    //     $ru_data = Locale_site::where("locale", "=", 'ru')->first();
-    //     $this->edit_local_data($request, $ru_data, 'ru');
+    //     $this->edit_locale_data_by_locale($request, 'ru');
     // }
     public function edit_site_us_data(Request $request){
-        $us_data = Locale_site::where("locale", "=", 'us')->first();
-        $this->edit_local_data($request, $us_data, 'us');
+        $this->edit_locale_data_by_locale($request, 'us');
     }
 
-    public function edit_local_data($request, $model, $locale)
+    private function edit_locale_data_by_locale($request, $locale)
     {
-        $model['guid_title']=$request['site_'.$locale.'_info']["guid_title"];
-        $model['guid_description']=$request['site_'.$locale.'_info']["guid_description"];
-        $model['guid_short_description']=$request['site_'.$locale.'_info']["guid_short_description"];
-        $model['films_title']=$request['site_'.$locale.'_info']["films_title"];
-        $model['films_description']=$request['site_'.$locale.'_info']["films_description"];
-        $model['films_short_description']=$request['site_'.$locale.'_info']["films_short_description"];
-        $model['forum_title']=$request['site_'.$locale.'_info']["forum_title"];
-		$model['forum_description']=$request['site_'.$locale.'_info']["forum_description"];
-		$model['forum_short_description']=$request['site_'.$locale.'_info']["forum_short_description"];
-		$model['shop_title']=$request['site_'.$locale.'_info']["shop_title"];
-		$model['shop_description']=$request['site_'.$locale.'_info']["shop_description"];
-		$model['shop_short_description']=$request['site_'.$locale.'_info']["shop_short_description"];
-		$model['other_activity_description']=$request['site_'.$locale.'_info']["other_activity_description"];
-		$model['mount_description']=$request['site_'.$locale.'_info']["mount_description"];
-		$model['event_description']=$request['site_'.$locale.'_info']["event_description"];
-		$model['tech_tips_description']=$request['site_'.$locale.'_info']["tech_tips_description"];
-		$model['news_description']=$request['site_'.$locale.'_info']["news_description"];
-		$model['index_gallery_description']=$request['site_'.$locale.'_info']["index_gallery_description"];
-		$model['outdoor_description']=$request['site_'.$locale.'_info']["outdoor_description"];
-		$model['indoor_description']=$request['site_'.$locale.'_info']["indoor_description"];
-		$model['ice_description']=$request['site_'.$locale.'_info']["ice_description"];
-		$model['topo_description']=$request['site_'.$locale.'_info']["topo_description"];
-		$model['what_we_do_description']=$request['site_'.$locale.'_info']["what_we_do_description"];
-		$model['products_description']=$request['site_'.$locale.'_info']["products_description"];
-		$model['services_description']=$request['site_'.$locale.'_info']["services_description"];
-		$model['terms_of_use']=$request['site_'.$locale.'_info']["terms_of_use"];
+        $localeData = $request->get('site_' . $locale . '_info');
 
-        $model->save();
+        if ($localeData) {
+            foreach ($localeData as $slug => $value) {
+                $record = Locale_site::where('slug', $slug)->first();
+                if ($record) {
+                    $record->{$locale . '_data'} = $value;
+                    $record->save();
+                }
+            }
+        }
+    }
+
+    public function edit_locale_data($request)
+    {
+        $locales = ['ka', 'us'];
+
+        foreach ($locales as $locale) {
+            $localeData = $request->get('site_' . $locale . '_info');
+
+            if ($localeData) {
+                $localeRecord = Locale_site::where('slug', 'guid_title')->first(); // Assuming all slugs exist, use one to update
+
+                // Update each slug with the corresponding locale data
+                foreach ($localeData as $slug => $value) {
+                    $record = Locale_site::where('slug', $slug)->first();
+                    if ($record) {
+                        $record->{$locale . '_data'} = $value;
+                        $record->save();
+                    }
+                }
+            }
+        }
     }
 
     public function edit_global_data($request, $model)

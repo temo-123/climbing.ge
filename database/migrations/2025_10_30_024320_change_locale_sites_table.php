@@ -42,9 +42,12 @@ return new class extends Migration
                 'terms_of_use'
             ]);
 
-            $table->string('slug')->unique();
-            $table->text('us_data')->nullable();
-            $table->text('ka_data')->nullable();
+            $table->text('ka_data')->nullable()->after('id');
+            $table->text('us_data')->nullable()->after('id');
+            $table->string('slug')->nullable()->after('id');
+
+            // $table->string('slug')->unique()->after('id');
+            // $table->unique('slug');
         });
     }
 

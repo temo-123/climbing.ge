@@ -184,19 +184,19 @@ class SiteDataController extends Controller
         $site_global_data = Site::first();
 
         $local_data = [];
-        
+
         if($request->locale == 'ka'){
-            $local_data = $site_global_data->ka_site;
+            $local_data = $site_global_data->getKaSite();
         }
         // else if($request->locale == 'ru'){
-        //     $local_data = $site_global_data->ru_site;
+        //     $local_data = $site_global_data->getRuSite();
         // }
         else{
-            $local_data = $site_global_data->us_site;
+            $local_data = $site_global_data->getUsSite();
         }
 
         $data = [
-            'locale_data' => $local_data, 
+            'locale_data' => $local_data,
             'global_data'=>$site_global_data
         ];
         // array_push($data[0], $site_global_data);
