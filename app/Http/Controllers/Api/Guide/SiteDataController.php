@@ -18,6 +18,7 @@ use App\Models\Guide\Mount;
 
 use App\Models\Site;
 use App\Models\Locale_site;
+use App\Services\SiteDataService;
 
 use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
@@ -179,46 +180,26 @@ class SiteDataController extends Controller
     //     // }
     // }
 
-    public function get_site_locale_data(Request $request)
+    public function get_site_locale_data(Request $request, $locale)
     {
-        $site_global_data = Site::first();
-
-        $local_data = [];
-
-        if($request->locale == 'ka'){
-            $local_data = $site_global_data->getKaSite();
-        }
-        // else if($request->locale == 'ru'){
-        //     $local_data = $site_global_data->getRuSite();
-        // }
-        else{
-            $local_data = $site_global_data->getUsSite();
-        }
-
-        $data = [
-            'locale_data' => $local_data,
-            'global_data'=>$site_global_data
-        ];
-        // array_push($data[0], $site_global_data);
-        // dd($data);
-
-        return $data;
+        // dd('site locale data');
+        return SiteDataService::getSiteData($locale ?? 'us');
     }
 
 
 
-    public function get_site_global_data(){
-        return Site::first();
-    }
-    public function get_site_ka_data(){
-        return Locale_site::where("locale", "=", 'ka')->first();
-    }
-    // public function get_site_ru_data(){
-    //     return Locale_site::where("locale", "=", 'ru')->first();
+    // public function get_site_global_data(){
+    //     return SiteDataService::getSiteData()['global_data'] ?? null;
     // }
-    public function get_site_us_data(){
-        return Locale_site::where("locale", "=", 'us')->first();
-    }
+    // public function get_site_ka_data(){
+    //     return SiteDataService::getSiteData('ka')['locale_data'] ?? null;
+    // }
+    // public function get_site_us_data(){
+    //     return SiteDataService::getSiteData('us')['locale_data'] ?? null;
+    // }
+
+
+
 
     // public function edit_site_data(Request $request)
     // {

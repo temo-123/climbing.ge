@@ -17,7 +17,7 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
 
-            Locale_sitesSeeder::class,
+            LocaleSiteSeeder::class,
             SiteTableSeeder::class,
 
             UserTableSeeder::class,

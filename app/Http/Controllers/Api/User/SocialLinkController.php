@@ -7,12 +7,13 @@ use Illuminate\Http\Request;
 
 use App\Models\Site_social_link;
 use Validator;
+use App\Services\SiteDataService;
 
 class SocialLinkController extends Controller
 {
     public function get_site_social_links()
     {
-        return Site_social_link::get();
+        return SiteDataService::getSocialLinks();
     }
     
     public function add_site_social_links(Request $request)
@@ -23,22 +24,13 @@ class SocialLinkController extends Controller
             return($validate);
         }
         else{
-            $new_social_site = new Site_social_link;
-
-            $new_social_site['url']=$request->data["url"];
-
-            if($request->data["title"]){
-                $new_social_site['title']=$request->data["title"];
-            }
-
-            $new_social_site -> save();
+            return SiteDataService::addSocialLink($request->data);
         }
     }
 
     public function del_site_social_links(Request $request)
     {
-        $delited_item = Site_social_link::where('id', '=', $request->link_id)->first();
-        $delited_item ->delete();
+        return SiteDataService::deleteSocialLink($request->link_id);
     }
 
     private function site_social_links_validate($data)

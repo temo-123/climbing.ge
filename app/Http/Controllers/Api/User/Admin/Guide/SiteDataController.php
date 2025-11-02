@@ -18,6 +18,7 @@ use App\Models\Guide\Mount;
 
 use App\Models\Site;
 use App\Models\Locale_site;
+use App\Services\SiteDataService;
 
 use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
@@ -179,67 +180,64 @@ class SiteDataController extends Controller
         // }
     }
 
-    // public function get_site_locale_data(Request $request)
-    // {
-    //     $site_global_data = Site::first();
-
-    //     $local_data = [];
-        
-    //     if($request->locale == 'ka'){
-    //         $local_data = $site_global_data->ka_site;
-    //     }
-    //     // else if($request->locale == 'ru'){
-    //     //     $local_data = $site_global_data->ru_site;
-    //     // }
-    //     else{
-    //         $local_data = $site_global_data->us_site;
-    //     }
-
-    //     $data = [
-    //         'locale_data' => $local_data, 
-    //         'global_data'=>$site_global_data
-    //     ];
-    //     // array_push($data[0], $site_global_data);
-    //     // dd($data);
-
-    //     return $data;
-    // }
+    public function get_site_locale_data(Request $request, $locale)
+    {
+        return SiteDataService::getSiteData($locale ?? 'us');
+    }
 
 
 
     // public function get_site_global_data(){
-    //     return Site::first();
+    //     return SiteDataService::getSiteData()['global_data'] ?? null;
     // }
     // public function get_site_ka_data(){
-    //     return Locale_site::where("locale", "=", 'ka')->first();
+    //     return SiteDataService::getSiteData('ka')['locale_data'] ?? null;
     // }
     // // public function get_site_ru_data(){
-    // //     return Locale_site::where("locale", "=", 'ru')->first();
+    // //     return SiteDataService::getSiteData('ru')['locale_data'] ?? null;
     // // }
     // public function get_site_us_data(){
-    //     return Locale_site::where("locale", "=", 'us')->first();
+    //     return SiteDataService::getSiteData('us')['locale_data'] ?? null;
     // }
 
     public function edit_site_data(Request $request)
     {
-        $global_data = Site::first();
+        $data = [];
 
-        $this->edit_global_data($request, $global_data);
-        $this->edit_locale_data($request);
+        if ($request->has('site_global_info')) {
+            $data['global_data'] = $request->site_global_info;
+        }
+
+        $locales = ['ka', 'us'];
+        foreach ($locales as $locale) {
+            if ($request->has('site_' . $locale . '_info')) {
+                $data['locale_data'] = $request->get('site_' . $locale . '_info');
+                SiteDataService::updateSiteData($data, $locale);
+            }
+        }
+
+        return response()->json(['message' => 'Site data updated successfully']);
     }
 
     public function edit_site_global_data(Request $request){
-        $global_data = Site::first();
-        $this->edit_global_data($request, $global_data);
+        $data = ['global_data' => $request->site_global_info];
+        SiteDataService::updateSiteData($data);
+        return response()->json(['message' => 'Global site data updated successfully']);
     }
     public function edit_site_ka_data(Request $request){
-        $this->edit_locale_data_by_locale($request, 'ka');
+        $data = ['locale_data' => $request->get('site_ka_info')];
+        SiteDataService::updateSiteData($data, 'ka');
+        return response()->json(['message' => 'KA site data updated successfully']);
     }
     // public function edit_site_ru_data(Request $request){
-    //     $this->edit_locale_data_by_locale($request, 'ru');
+    //     $data = ['locale_data' => $request->get('site_ru_info')];
+    //     SiteDataService::updateSiteData($data, 'ru');
+    //     return response()->json(['message' => 'RU site data updated successfully']);
     // }
     public function edit_site_us_data(Request $request){
-        $this->edit_locale_data_by_locale($request, 'us');
+        $data = ['locale_data' => $request->get('site_us_info')];
+        SiteDataService::updateSiteData($data, 'us');
+        return response()->json(['message' => 'US site data updated successfully']);
     }
 
     private function edit_locale_data_by_locale($request, $locale)

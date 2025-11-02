@@ -1,0 +1,1 @@
+- [x] Update API URL in resources/js/app.js to http://climbing.loc/api/siteData/get_site_locale_data/
