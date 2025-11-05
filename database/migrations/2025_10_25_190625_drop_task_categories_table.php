@@ -29,8 +29,9 @@ return new class extends Migration
         });
 
         // Add back the foreign key to tasks table
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('task_categories');
-        });
+        // Schema::table('tasks', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('category_id');
+        //     $table->foreign('category_id')->references('id')->on('task_categories');
+        // });
     }
 };

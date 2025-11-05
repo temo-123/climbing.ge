@@ -272,10 +272,10 @@ export const navbar = {
                     },
                     
                     {
-                        name: "Expert tips",
+                        name: "Export tips",
                         route: "/export_tips",
                         permissions: [
-                        //     ['show', 'worker']
+                            ['show', 'export']
                         ]
                     },
                     {

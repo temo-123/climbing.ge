@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -42,9 +43,21 @@ return new class extends Migration
                 'terms_of_use'
             ]);
 
-            $table->text('ka_data')->nullable()->after('id');
-            $table->text('us_data')->nullable()->after('id');
-            $table->string('slug')->unique()->after('id');
+            // $table->text('ka_data')->nullable()->after('id');
+            // $table->text('us_data')->nullable()->after('id');
+            // $table->string('slug')->unique()->after('id');
+
+            // Add new columns if not present
+            if (!Schema::hasColumn('locale_sites', 'ka_data')) {
+                $table->text('ka_data')->nullable()->after('id');
+            }
+            if (!Schema::hasColumn('locale_sites', 'us_data')) {
+                $table->text('us_data')->nullable()->after('id');
+            }
+            if (!Schema::hasColumn('locale_sites', 'slug')) {
+                $table->string('slug')->nullable()->after('id');
+                $table->unique('slug');
+            }
 
             // $table->string('slug')->nullable()->after('id');
 
@@ -89,5 +102,11 @@ return new class extends Migration
             $table->text('services_description')->nullable();
             $table->text('terms_of_use')->nullable();
         });
+
+        // Insert two rows with location "ka" and "en"
+        DB::table('locale_sites')->insert([
+            ['locale' => 'ka'],
+            ['locale' => 'en'],
+        ]);
     }
 };

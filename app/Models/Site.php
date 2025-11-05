@@ -9,6 +9,8 @@ class Site extends Model
 {
     use Notifiable;
 
+    protected $fillable = ['us_info_id', 'ka_info_id'];
+
     public function getLocaleData($locale)
     {
         $localeData = [];
