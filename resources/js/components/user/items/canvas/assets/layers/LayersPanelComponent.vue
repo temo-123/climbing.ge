@@ -52,18 +52,39 @@
                         </button>
                         <i v-else class="fa fa-file-o mr-2" style="color: #6c757d;"></i>
 
-                        <span
-                            class="layer-name flex-grow-1"
-                            :class="{ 'font-weight-bold': layer.isGroup }"
-                            @click="startEditingLayerName(layer, $event)"
-                            :contenteditable="layer.isEditing"
-                            @blur="finishEditingLayerName(layer, $event)"
-                            @keydown.enter.prevent="finishEditingLayerName(layer, $event)"
-                            @keydown.esc.prevent="cancelEditingLayerName(layer)"
-                            style="cursor: pointer; outline: none; min-width: 100px;"
-                        >
-                            {{ layer.displayName || layer.name }}
-                        </span>
+                        <div v-if="!layer.isText" class="layer-name flex-grow-1">
+                            <span
+                                :class="{ 'font-weight-bold': layer.isGroup }"
+                                @click="startEditingLayerName(layer, $event)"
+                                :contenteditable="layer.isEditing"
+                                @blur="finishEditingLayerName(layer, $event)"
+                                @keydown.enter.prevent="finishEditingLayerName(layer, $event)"
+                                @keydown.esc.prevent="cancelEditingLayerName(layer)"
+                                style="cursor: pointer; outline: none; min-width: 100px;"
+                            >
+                                {{ layer.displayName || layer.name }}
+                            </span>
+                        </div>
+                        <div v-else class="layer-name flex-grow-1">
+                            <div class="d-flex flex-column">
+                                <small class="text-muted" style="font-size: 10px; line-height: 1;">
+                                    {{ layer.displayName || layer.name }}
+                                </small>
+                                <div v-if="!layer.isEditing" @click="startEditingText(layer)" style="cursor: pointer; font-size: 12px;">
+                                    "{{ layer.textContent || 'Empty text' }}"
+                                </div>
+                                <input
+                                    v-else
+                                    v-model="layer.editText"
+                                    @blur="onTextBlur(layer)"
+                                    @keydown.enter.prevent="finishEditingText(layer)"
+                                    @keydown.esc.prevent="cancelEditingText(layer)"
+                                    :ref="'textInput-' + layer.name"
+                                    class="form-control form-control-sm"
+                                    style="font-size: 12px; padding: 2px 4px; height: auto;"
+                                />
+                            </div>
+                        </div>
                     </div>
 
                     <div class="layer-controls d-flex">
@@ -148,17 +169,38 @@
                     <div v-for="child in layer.children" :key="child.name" class="layer-item d-flex align-items-center justify-content-between p-2 border-bottom" style="padding-left: 60px; background-color: rgb(240 240 240);">
                         <div class="d-flex align-items-center flex-grow-1">
                             <i class="fa fa-file-o mr-2" style="color: #6c757d;"></i>
-                            <span
-                                class="layer-name flex-grow-1"
-                                @click="startEditingChildName(layer, child, $event)"
-                                :contenteditable="child.isEditing"
-                                @blur="finishEditingChildName(layer, child, $event)"
-                                @keydown.enter.prevent="finishEditingChildName(layer, child, $event)"
-                                @keydown.esc.prevent="cancelEditingChildName(child)"
-                                style="cursor: pointer; outline: none; min-width: 100px;"
-                            >
-                                {{ child.displayName || child.name }}
-                            </span>
+                            <div v-if="!child.isText" class="layer-name flex-grow-1">
+                                <span
+                                    @click="startEditingChildName(layer, child, $event)"
+                                    :contenteditable="child.isEditing"
+                                    @blur="finishEditingChildName(layer, child, $event)"
+                                    @keydown.enter.prevent="finishEditingChildName(layer, child, $event)"
+                                    @keydown.esc.prevent="cancelEditingChildName(child)"
+                                    style="cursor: pointer; outline: none; min-width: 100px;"
+                                >
+                                    {{ child.displayName || child.name }}
+                                </span>
+                            </div>
+                            <div v-else class="layer-name flex-grow-1">
+                                <div class="d-flex flex-column">
+                                    <small class="text-muted" style="font-size: 10px; line-height: 1;">
+                                        {{ child.displayName || child.name }}
+                                    </small>
+                                    <div v-if="!child.isEditing" @click="startEditingChildText(layer, child)" style="cursor: pointer; font-size: 12px;">
+                                        "{{ child.textContent || 'Empty text' }}"
+                                    </div>
+                                    <input
+                                        v-else
+                                        v-model="child.editText"
+                                        @blur="onChildTextBlur(layer, child)"
+                                        @keydown.enter.prevent="finishEditingChildText(layer, child)"
+                                        @keydown.esc.prevent="cancelEditingChildText(child)"
+                                        :ref="'childTextInput-' + child.name"
+                                        class="form-control form-control-sm"
+                                        style="font-size: 12px; padding: 2px 4px; height: auto;"
+                                    />
+                                </div>
+                            </div>
                         </div>
                         <div class="layer-controls d-flex">
                             <button
@@ -315,6 +357,103 @@ export default {
             this.$set(child, 'isEditing', false);
             delete child.originalName;
             this.$emit('cancel-editing-child-name');
+        },
+
+        // Text editing methods
+        startEditingText(layer) {
+            // Stop editing any other layer first
+            this.layers.forEach(l => {
+                if (l.isEditing) {
+                    this.cancelEditingText(l);
+                }
+            });
+            this.$set(layer, 'isEditing', true);
+            this.$set(layer, 'originalText', layer.textContent);
+            this.$set(layer, 'editText', layer.textContent || '');
+            this.$nextTick(() => {
+                const inputRef = this.$refs['textInput-' + layer.name];
+                if (inputRef && inputRef.length > 0) {
+                    inputRef[0].focus();
+                    inputRef[0].select();
+                }
+            });
+        },
+
+        onTextBlur(layer) {
+            // Delay to allow for potential click events
+            setTimeout(() => {
+                this.finishEditingText(layer);
+            }, 100);
+        },
+
+        finishEditingText(layer) {
+            const newText = layer.editText.trim();
+            if (newText !== layer.originalText) {
+                this.$emit('finish-editing-text', layer, newText);
+            } else {
+                // Revert to original text if no change
+                layer.textContent = layer.originalText;
+            }
+            this.$set(layer, 'isEditing', false);
+            delete layer.originalText;
+            delete layer.editText;
+        },
+
+        cancelEditingText(layer) {
+            this.$set(layer, 'isEditing', false);
+            delete layer.originalText;
+            delete layer.editText;
+            this.$emit('cancel-editing-text');
+        },
+
+        startEditingChildText(layer, child) {
+            // Stop editing any other child first
+            this.layers.forEach(l => {
+                if (l.children) {
+                    l.children.forEach(c => {
+                        if (c.isEditing) {
+                            this.cancelEditingChildText(c);
+                        }
+                    });
+                }
+            });
+            this.$set(child, 'isEditing', true);
+            this.$set(child, 'originalText', child.textContent);
+            this.$set(child, 'editText', child.textContent || '');
+            this.$nextTick(() => {
+                const inputRef = this.$refs['childTextInput-' + child.name];
+                if (inputRef && inputRef.length > 0) {
+                    inputRef[0].focus();
+                    inputRef[0].select();
+                }
+            });
+        },
+
+        onChildTextBlur(layer, child) {
+            // Delay to allow for potential click events
+            setTimeout(() => {
+                this.finishEditingChildText(layer, child);
+            }, 100);
+        },
+
+        finishEditingChildText(layer, child) {
+            const newText = child.editText.trim();
+            if (newText !== child.originalText) {
+                this.$emit('finish-editing-child-text', layer, child, newText);
+            } else {
+                // Revert to original text if no change
+                child.textContent = child.originalText;
+            }
+            this.$set(child, 'isEditing', false);
+            delete child.originalText;
+            delete child.editText;
+        },
+
+        cancelEditingChildText(child) {
+            this.$set(child, 'isEditing', false);
+            delete child.originalText;
+            delete child.editText;
+            this.$emit('cancel-editing-child-text');
         }
     }
 }

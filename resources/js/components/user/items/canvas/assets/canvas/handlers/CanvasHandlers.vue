@@ -31,6 +31,18 @@ export default {
                 } else if (this.action == 8) {
                     this.selectItemForMove(event);
                     return;
+                } else if (this.action == 9) {
+                    this.startPan(event);
+                } else if (this.action == 10) {
+                    this.add_circle(event);
+                } else if (this.action == 11) {
+                    this.add_ellipse(event);
+                } else if (this.action == 12) {
+                    this.add_polygon(event);
+                } else if (this.action == 13) {
+                    this.add_text(event);
+                } else if (this.action == 14) {
+                    this.selectMultipleItems(event);
                 }
             };
 
@@ -69,6 +81,30 @@ export default {
                             this.selectedItem.data.textLabel.position = this.selectedItem.data.textLabel.position.add(event.delta);
                         }
                     }
+                } else if (this.action == 9) {
+                    this.panCanvas(event);
+                } else if (this.action == 10) {
+                    if (this.path && this.path.data && this.path.data.isCircle) {
+                        const center = this.path.data.center;
+                        const radius = center.getDistance(event.point);
+                        this.path.remove();
+                        this.add_circle_at_point(center, radius);
+                    }
+                } else if (this.action == 11) {
+                    if (this.path && this.path.data && this.path.data.isEllipse) {
+                        const startPoint = this.path.data.startPoint;
+                        const width = Math.abs(event.point.x - startPoint.x);
+                        const height = Math.abs(event.point.y - startPoint.y);
+                        this.path.remove();
+                        this.add_ellipse_at_point(startPoint, width, height);
+                    }
+                } else if (this.action == 12) {
+                    if (this.path && this.path.data && this.path.data.isPolygon) {
+                        // Update polygon preview
+                        this.update_polygon_preview(event.point);
+                    }
+                } else if (this.action == 14) {
+                    this.updateSelectionRectangle(event);
                 }
             };
 
@@ -94,9 +130,27 @@ export default {
                         this.saveCanvasData();
                     }
                 }
+                if (this.action == 9) {
+                    this.endPan();
+                }
+                if (this.action == 10) {
+                    // Circle creation handled in onMouseDrag
+                }
+                if (this.action == 11) {
+                    // Ellipse creation handled in onMouseDrag
+                }
+                if (this.action == 12) {
+                    this.finish_polygon(event);
+                }
+                if (this.action == 13) {
+                    // Text creation handled in onMouseDown
+                }
+                if (this.action == 14) {
+                    this.finishSelection(event);
+                }
                 this.path = null;
                 if (this.action !== 5 && this.action !== 6) {
-                    if (this.action !== 3 && this.action !== 7 && this.action !== 8) {
+                    if (this.action !== 3 && this.action !== 7 && this.action !== 8 && this.action !== 9) {
                         this.saveCanvasData();
                     }
                 }
@@ -106,6 +160,75 @@ export default {
                 }
                 this.$emit('layers_updated');
             };
+        },
+
+        // New methods for enhanced features
+        startPan(event) {
+            this.isPanning = true;
+            this.panStartPoint = event.point;
+            this.scope.view.element.style.cursor = 'grabbing';
+        },
+
+        panCanvas(event) {
+            if (this.isPanning && this.panStartPoint) {
+                const delta = event.point.subtract(this.panStartPoint);
+                this.scope.view.center = this.scope.view.center.subtract(delta);
+                this.panStartPoint = event.point;
+            }
+        },
+
+        endPan() {
+            this.isPanning = false;
+            this.panStartPoint = null;
+            this.scope.view.element.style.cursor = 'crosshair';
+        },
+
+        selectMultipleItems(event) {
+            // Start selection rectangle
+            this.selectionRect = new paper.Path.Rectangle(event.point, event.point);
+            this.selectionRect.strokeColor = '#007bff';
+            this.selectionRect.strokeWidth = 1;
+            this.selectionRect.dashArray = [5, 5];
+            this.selectionRect.fillColor = new paper.Color(0, 0.5, 1, 0.1);
+            this.path = this.selectionRect;
+            this.path.data = { isSelection: true };
+        },
+
+        updateSelectionRectangle(event) {
+            if (this.path && this.path.data && this.path.data.isSelection) {
+                const startPoint = this.path.segments[0].point;
+                this.path.segments[1].point = new paper.Point(event.point.x, startPoint.y);
+                this.path.segments[2].point = event.point;
+                this.path.segments[3].point = new paper.Point(startPoint.x, event.point.y);
+            }
+        },
+
+        finishSelection(event) {
+            if (this.path && this.path.data && this.path.data.isSelection) {
+                const bounds = this.path.bounds;
+                const selectedItems = [];
+
+                this.scope.project.layers.forEach(layer => {
+                    layer.children.forEach(item => {
+                        if (!item.locked && item.isInside(bounds)) {
+                            selectedItems.push(item);
+                        }
+                    });
+                });
+
+                // Create a group from selected items if multiple
+                if (selectedItems.length > 1) {
+                    const group = new paper.Group(selectedItems);
+                    group.name = `group ${this.groupCounter + 1}`;
+                    this.groupCounter++;
+                    this.selectedItem = group;
+                } else if (selectedItems.length === 1) {
+                    this.selectedItem = selectedItems[0];
+                }
+
+                this.path.remove();
+                this.saveCanvasData();
+            }
         },
 
         selectItemForMove(event) {

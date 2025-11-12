@@ -30,6 +30,26 @@ export default {
         relatedJsons: {
             type: Array,
             default: () => []
+        },
+        strokeColor: {
+            type: String,
+            default: '#ff0000'
+        },
+        fillColor: {
+            type: String,
+            default: null
+        },
+        strokeWidth: {
+            type: Number,
+            default: 3
+        },
+        zoomLevel: {
+            type: Number,
+            default: 1
+        },
+        panOffset: {
+            type: Object,
+            default: () => ({ x: 0, y: 0 })
         }
     },
     data: () => ({
@@ -43,8 +63,16 @@ export default {
             line: 0,
             point: 0,
             rectangle: 0,
+            circle: 0,
+            ellipse: 0,
+            polygon: 0,
+            text: 0,
             group: 0
-        }
+        },
+        // New properties for enhanced features
+        isPanning: false,
+        panStartPoint: null,
+        selectionRect: null
     }),
     watch: {
         jsonProp: {
@@ -60,28 +88,41 @@ export default {
             immediate: true
         }
     },
-    mounted() {
-        this.scope = new paper.PaperScope();
-        this.scope.setup(this.canvasId);
-        this.scope.activate();
+        mounted() {
+            this.scope = new paper.PaperScope();
+            this.scope.setup(this.canvasId);
+            this.scope.activate();
 
-        // Initialize with empty project
-        this.scope.project.clear();
+            // Initialize with empty project
+            this.scope.project.clear();
 
-        // Import related JSONs first (background)
-        this.importRelatedJsons();
+            // Set initial zoom and pan
+            this.updateView(this.zoomLevel, this.panOffset);
 
-        // Import JSON if it was passed during initialization (foreground, editable)
-        if (this.jsonProp) {
-            this.importJsonData(this.jsonProp);
-        }
+            // Import related JSONs first (background)
+            this.importRelatedJsons();
 
-        // Save initial empty state for undo functionality
-        this.saveCanvasData();
+            // Import JSON if it was passed during initialization (foreground, editable)
+            if (this.jsonProp) {
+                this.importJsonData(this.jsonProp);
+            }
 
-        // Emit event to notify parent that layers are ready
-        this.$emit('layers_ready');
-    },
+            // Save initial empty state for undo functionality
+            this.saveCanvasData();
+
+            // Add mouse wheel event for zoom
+            this.addMouseWheelListener();
+
+            // Emit event to notify parent that layers are ready
+            this.$emit('layers_ready');
+        },
+
+        beforeDestroy() {
+            // Remove mouse wheel listener
+            if (this.scope && this.scope.view && this.scope.view.element) {
+                this.scope.view.element.removeEventListener('wheel', this.handleMouseWheel);
+            }
+        },
     methods: {
         handleMouseDown(event) {
             this.mouseDown(event);
@@ -162,6 +203,125 @@ export default {
 
         setGroupCounter(value) {
             this.groupCounter = value;
+        },
+
+        // New methods for enhanced features
+        updateView(zoomLevel, panOffset) {
+            if (this.scope && this.scope.view) {
+                this.scope.view.zoom = zoomLevel;
+                this.scope.view.center = new paper.Point(
+                    this.scope.view.viewSize.width / 2 + panOffset.x,
+                    this.scope.view.viewSize.height / 2 + panOffset.y
+                );
+            }
+        },
+
+        addMouseWheelListener() {
+            if (this.scope && this.scope.view && this.scope.view.element) {
+                this.scope.view.element.addEventListener('wheel', this.handleMouseWheel, { passive: false });
+            }
+        },
+
+        handleMouseWheel(event) {
+            event.preventDefault();
+            const delta = event.deltaY > 0 ? 0.9 : 1.1;
+            const newZoom = this.scope.view.zoom * delta;
+            // Limit zoom between 0.1 and 10
+            if (newZoom >= 0.1 && newZoom <= 10) {
+                this.scope.view.zoom = newZoom;
+                this.$emit('zoom-changed', newZoom);
+            }
+        },
+
+        exportCanvas(format) {
+            if (this.scope && this.scope.project) {
+                if (format === 'png') {
+                    const canvas = this.scope.view.element;
+                    const link = document.createElement('a');
+                    link.download = 'canvas-drawing.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                } else if (format === 'svg') {
+                    const svg = this.scope.project.exportSVG({ asString: true });
+                    const blob = new Blob([svg], { type: 'image/svg+xml' });
+                    const link = document.createElement('a');
+                    link.download = 'canvas-drawing.svg';
+                    link.href = URL.createObjectURL(blob);
+                    link.click();
+                }
+            }
+        },
+
+        updateColors(strokeColor, fillColor, strokeWidth) {
+            // This will be used by drawing tools to get current colors
+            this.currentStrokeColor = strokeColor;
+            this.currentFillColor = fillColor;
+            this.currentStrokeWidth = strokeWidth;
+        },
+
+        // Enhanced zoom methods
+        zoomIn() {
+            if (this.scope && this.scope.view) {
+                const newZoom = this.scope.view.zoom * 1.2;
+                if (newZoom <= 10) {
+                    this.scope.view.zoom = newZoom;
+                    this.$emit('zoom-changed', newZoom);
+                }
+            }
+        },
+
+        zoomOut() {
+            if (this.scope && this.scope.view) {
+                const newZoom = this.scope.view.zoom / 1.2;
+                if (newZoom >= 0.1) {
+                    this.scope.view.zoom = newZoom;
+                    this.$emit('zoom-changed', newZoom);
+                }
+            }
+        },
+
+        saveImageToServer() {
+            if (this.scope && this.scope.project) {
+                const canvas = this.scope.view.element;
+                const imageData = canvas.toDataURL('image/png');
+
+                // Create a form data to send to server
+                const formData = new FormData();
+                formData.append('image', this.dataURLToBlob(imageData), 'canvas-image.png');
+
+                // Send to server endpoint (you'll need to create this endpoint)
+                fetch('/api/save-canvas-image', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Image saved successfully to public/images folder!');
+                    } else {
+                        alert('Failed to save image: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saving image:', error);
+                    alert('Error saving image to server');
+                });
+            }
+        },
+
+        dataURLToBlob(dataURL) {
+            const arr = dataURL.split(',');
+            const mime = arr[0].match(/:(.*?);/)[1];
+            const bstr = atob(arr[1]);
+            let n = bstr.length;
+            const u8arr = new Uint8Array(n);
+            while (n--) {
+                u8arr[n] = bstr.charCodeAt(n);
+            }
+            return new Blob([u8arr], { type: mime });
         }
     }
 }

@@ -24,6 +24,9 @@ Route::post('/filmSearch/{query_request}', 'Api\SearchController@filmSearch');
 
 Route::get('/following_users_list', 'Api\ServiceFollowing@get_following_users_list');
 
+// Canvas image save route
+Route::post('/save-canvas-image', 'Api\CanvasController@saveImage');
+
 // Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
 //     // Editing routes moved to adminAction.php
 //     Route::get('/following_users_list', 'get_following_users_list');

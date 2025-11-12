@@ -5,6 +5,11 @@
             :action="action"
             :json-prop="json_prop"
             :related-jsons="related_jsons"
+            :stroke-color="strokeColor"
+            :fill-color="fillColor"
+            :stroke-width="strokeWidth"
+            :zoom-level="zoomLevel"
+            :pan-offset="panOffset"
             ref="canvasManager"
             :style="{
                 backgroundImage: image ? 'url(' + image + ')' : 'none',
@@ -41,6 +46,26 @@ export default {
         image: {
             type: String,
             default: null
+        },
+        strokeColor: {
+            type: String,
+            default: '#ff0000'
+        },
+        fillColor: {
+            type: String,
+            default: null
+        },
+        strokeWidth: {
+            type: Number,
+            default: 3
+        },
+        zoomLevel: {
+            type: Number,
+            default: 1
+        },
+        panOffset: {
+            type: Object,
+            default: () => ({ x: 0, y: 0 })
         }
     },
     data: () => ({
@@ -104,6 +129,38 @@ export default {
         set groupCounter(value) {
             if (this.isCanvasManagerReady && this.$refs.canvasManager) {
                 this.$refs.canvasManager.setGroupCounter(value);
+            }
+        },
+
+        // New methods for enhanced features
+        updateView(zoomLevel, panOffset) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.updateView === 'function') {
+                this.$refs.canvasManager.updateView(zoomLevel, panOffset);
+            }
+        },
+
+        exportCanvas(format) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.exportCanvas === 'function') {
+                this.$refs.canvasManager.exportCanvas(format);
+            }
+        },
+
+        updateColors(strokeColor, fillColor, strokeWidth) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.updateColors === 'function') {
+                this.$refs.canvasManager.updateColors(strokeColor, fillColor, strokeWidth);
+            }
+        },
+
+        // Enhanced zoom methods
+        zoomIn() {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomIn === 'function') {
+                this.$refs.canvasManager.zoomIn();
+            }
+        },
+
+        zoomOut() {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomOut === 'function') {
+                this.$refs.canvasManager.zoomOut();
             }
         }
     }
