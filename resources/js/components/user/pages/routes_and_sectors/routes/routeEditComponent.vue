@@ -318,7 +318,7 @@
 
       get_article_global_data(id){
         axios
-        .get("/articles/get_editing_data/" + id)
+        .get("/article/get_editing_data/" + id)
         .then(response => {
           this.get_region_data(response.data.global_article);
         })

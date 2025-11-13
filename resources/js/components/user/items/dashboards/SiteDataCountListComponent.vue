@@ -629,7 +629,7 @@ export default {
     methods: {
         get_site_counts(){
             axios
-            .get('../api/site_data_counts')
+            .get('/siteData/site_data_counts')
             .then(response => {
                 this.counts = response.data
             })
@@ -641,7 +641,7 @@ export default {
         fix_article_bug(){
             if (window.confirm('This action will delete all conflicting items! Are you sure?')) {
                 axios
-                .get('../api/siteData/fix_article_bugs')
+                .get('/siteData/fix_article_bugs')
                 .then(response => {
                     // this.counts = response.data
                     this.get_site_counts()

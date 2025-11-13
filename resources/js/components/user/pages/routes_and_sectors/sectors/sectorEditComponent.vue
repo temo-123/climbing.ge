@@ -569,13 +569,13 @@
 
             get_region_data: function (category) {
                 axios
-                    .get("/article/get_category_articles/" + category)
-                    .then(response => {
-                        this.regions = response.data
-                    })
-                    .catch(error =>{
-                    })
-                    // .finally(() => this.oudoor_loading = false)
+                .get("/article/get_category_articles/" + category)
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(error =>{
+                })
+                // .finally(() => this.oudoor_loading = false)
             },
 
             get_editing_sector_data: function(){

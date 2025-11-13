@@ -31,6 +31,18 @@ class SectorLocalImagesController extends Controller
         return $sector_local_image->sectors;
     }
 
+    public function get_editing_locale_image($id)
+    {
+        $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
+        $sector_local_image_sectors = $sector_local_image->sectors;
+        
+        $data = [
+            'sector_local_image'=>$sector_local_image,
+            'sector_local_image_sectors'=>$sector_local_image_sectors,
+        ];
+        return $data;
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -217,7 +229,7 @@ class SectorLocalImagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_locale_image($id)
     {
         $deleting_sector_local_images = Sector_local_image::where("id", "=", $id)->first();
 

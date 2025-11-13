@@ -147,49 +147,8 @@ class OutdoorController extends Controller
     //     return $regions;
     // }
 
-    // public function locale_regions(Request $request)
-    // {
-    //     $data = [];
-    //     if($request -> lang == 'ka'){
-    //         $regions = Region::select('id', 'ka_name', 'ka_text')->get();
-
-    //         foreach ($regions as $region) {
-    //             array_push($data, ['id'=>$region->id,'name'=>$region->ka_name, 'text'=>$region->ka_text]);
-    //         }
-    //     }
-    //     else{
-    //         $regions = Region::select('id', 'us_name', 'us_text')->get();
-
-    //         foreach ($regions as $region) {
-    //             array_push($data, ['id'=>$region->id,'name'=>$region->us_name, 'text'=>$region->us_text]);
-    //         }
-    //     }
-
-    //     return $data;
-    // }
 
 
-    // public function locale_region(Request $request)
-    // {
-    //     $data = [];
-
-    //     if($request -> lang == 'ka'){
-    //         $regions = Region::select('id', 'ka_name', 'ka_text', 'map')->where('id',strip_tags($request->region_id))->get();
-
-    //         foreach ($regions as $region) {
-    //             array_push($data, ['id'=>$region->id,'name'=>$region->ka_name, 'text'=>$region->ka_text, "map"=>$region->map]);
-    //         }
-    //     }
-    //     else{
-    //         $regions = Region::select('id', 'us_name', 'us_text', 'map')->where('id',strip_tags($request->region_id))->get();
-
-    //         foreach ($regions as $region) {
-    //             array_push($data, ['id'=>$region->id,'name'=>$region->us_name, 'text'=>$region->us_text, "map"=>$region->map]);
-    //         }
-    //     }
-
-    //     return $data;
-    // }
 
     // public function get_filtred_outdoor_spots_for_admin(Request $request)
     // {
@@ -330,79 +289,4 @@ class OutdoorController extends Controller
         return $area_data;
     }
 
-    public function add_spot(Request $request)
-    {
-        $validate = $this->region_validate($request->data);
-
-        if ($validate != null) {
-            return response()->json([
-                'validation' => $validate
-            ], 422);
-        }
-        else{
-            $spot = new Region;
-
-            $spot['us_name'] = $request->data['us_name'];
-            // $spot['ru_name'] = $request->data['ru_name'];
-            $spot['ka_name'] = $request->data['ka_name'];
-
-            $spot['us_text'] = $request->data['us_text'];
-            // $spot['ru_text'] = $request->data['ru_text'];
-            $spot['ka_text'] = $request->data['ka_text'];
-
-            $spot['map'] = $request->data['map'];
-
-            $spot -> save();
-        }
-    }
-
-    public function get_editing_spot_data(Request $request)
-    {
-        return Region::where('id',strip_tags($request->id))->first();
-    }
-
-    public function edit_spot(Request $request)
-    {
-        $validate = $this->region_validate($request->data);
-
-
-        if ($validate != null) {
-            return response()->json([
-                'validation' => $validate
-            ], 422);
-        }
-        else{
-            $editing_region = Region::where('id',strip_tags($request->id))->first();
-
-            $editing_region['us_name'] = $request->data['us_name'];
-            // $editing_region['ru_name'] = $request->data['ru_name'];
-            $editing_region['ka_name'] = $request->data['ka_name'];
-
-            $editing_region['us_text'] = $request->data['us_text'];
-            // $editing_region['ru_text'] = $request->data['ru_text'];
-            $editing_region['ka_text'] = $request->data['ka_text'];
-
-            $editing_region['map'] = $request->data['map'];
-
-            $editing_region -> save();
-        }
-    }
-
-    public function del_spot(Request $request)
-    {
-        $region = Region::where('id',strip_tags($request->id))->first();
-        $region -> delete();
-    }
-
-    public function region_validate($data)
-    {
-        $validator = Validator::make($data, [
-            'us_name' => 'required',
-            // 'ru_name' => 'required',
-            'ka_name' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
 }

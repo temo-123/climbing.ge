@@ -7,7 +7,10 @@ export const navbar = {
             },
             {
                 title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews"
+                route: "/my_comments_and_reviews",
+                permissions: [
+                    ['show', 'my_comments'],
+                ]
             },
 
             {
@@ -18,15 +21,21 @@ export const navbar = {
                         name: "Guidbook task panel",
                         route: "/guide_task_panel",
                         permissions: [
-                            ['show', 'worker']
+                            ['add', 'guide_task'],
+                            ['edit', 'guide_task'],
+                            ['del', 'guide_task'],
+                            ['edit_status', 'guide_task'],
                         ]
                     },
 
                     {
-                        name: "Orders task panel",
+                        name: "Shop task panel",
                         route: "/shop_task_panel",
                         permissions: [
-                            ['show', 'worker']
+                            ['add', 'shop_task'],
+                            ['edit', 'shop_task'],
+                            ['del', 'shop_task'],
+                            ['edit_status', 'shop_task'],
                         ]
                     },
                 ],
@@ -44,21 +53,21 @@ export const navbar = {
                         name: "Favorite products",
                         route: "/favorite_products",
                         permissions: [
-                        //     ['show', 'worker']
+                            ['show', 'favorite_products']
                         ]
                     },
                     {
                         name: "Favorite outdoor area",
                         route: "/my_favorite_outdoor_area",
                         permissions: [
-                        //     ['show', 'worker']
+                            ['show', 'my_favorite_outdoor_area']
                         ]
                     },
                     {
                         name: "Interested events",
                         route: "/interested_events",
                         permissions: [
-                        //     ['show', 'worker']
+                            ['show', 'interested_events']
                         ]
                     },
                 ],
@@ -193,6 +202,7 @@ export const navbar = {
                             ['add', 'mount_route'],
                             ['edit', 'mount_route'],
                             ['del', 'mount_route'],
+
                             ['add', 'mount_massive'],
                             ['edit', 'mount_massive'],
                             ['del', 'mount_massive'],
@@ -282,7 +292,7 @@ export const navbar = {
                         name: "Guidbook dashboard",
                         route: "/guide_dashboard_page",
                         permissions: [
-                            ['show', 'dashboard']
+                            ['show', 'guide_dashboard']
                         ]
                     },
                 ]
@@ -299,17 +309,20 @@ export const navbar = {
                         name: "All products & categoryes",
                         route: "/products_and_categories",
                         permissions: [
-                            ['show_all', 'product'],
-                            // ['add', 'product'],
-                            // ['edit', 'product'],
-                            // ['del', 'product'],
-                            ['show_all', 'product_category'],
-                            // ['add', 'product_category'],
-                            // ['edit', 'product_category'],
-                            // ['del', 'product_category'],
+                            // ['show_all', 'product'],
+                            ['add', 'product'],
+                            ['edit', 'product'],
+                            ['del', 'product'],
+
+                            // ['show_all', 'product_category'],
+                            ['add', 'product_category'],
+                            ['edit', 'product_category'],
+                            ['del', 'product_category'],
+
                             ['add', 'product_option'],
                             ['edit', 'product_option'],
                             ['del', 'product_option'],
+
                             ['add', 'sale_code'],
                             ['edit', 'sale_code'],
                             ['del', 'sale_code']
@@ -335,8 +348,13 @@ export const navbar = {
                         name: "All tours",
                         route: "/all_tours_list",
                         permissions: [
-                            ['show_all', 'tour'],
-                            ['show_all', 'tour_category']
+                            ['add', 'tour'],
+                            ['edit', 'tour'],
+                            ['del', 'tour'],
+
+                            ['add', 'tour_category'],
+                            ['edit', 'tour_category'],
+                            ['del', 'tour_category'],
                         ]
                     },
                     {
@@ -352,7 +370,7 @@ export const navbar = {
                         permissions: [
                             ['add', 'services'],
                             ['edit', 'services'],
-                            ['del', 'services']
+                            ['del', 'services'],
                         ]
                     },
                     // {
@@ -368,7 +386,7 @@ export const navbar = {
                         name: "Shop dashboard",
                         route: "/shop_dashboard_page",
                         permissions: [
-                            ['show', 'dashboard']
+                            ['show', 'shop_dashboard'],
                         ]
                     },
                 ],
@@ -383,7 +401,7 @@ export const navbar = {
                         permissions: [
                             ['add', 'post'],
                             ['edit', 'post'],
-                            ['del', 'post']
+                            ['del', 'post'],
                         ]
                     },
                 ]
@@ -411,16 +429,21 @@ export const navbar = {
                         name: "About us",
                         route: "/site_info",
                         permissions: [
-                            ['edit', 'site_data']
+                            ['edit', 'site_data'],
+                            ['add', 'site_data'],
                         ]
                     },
                     {
                         name: "Head Sliders",
                         route: "/head_sliders_images",
                         permissions: [
-                            ['add', 'gallery'],
-                            ['edit', 'gallery'],
-                            ['del', 'gallery'],
+                            ['add', 'store_slides'],
+                            ['edit', 'store_slides'],
+                            ['del', 'store_slides'],
+
+                            ['add', 'guide_slides'],
+                            ['edit', 'guide_slides'],
+                            ['del', 'guide_slides'],
                         ]
                     },
                     {
@@ -428,6 +451,7 @@ export const navbar = {
                         route: "/site_folloers",
                         permissions: [
                             ['show', 'site_folloers'],
+                            ['add', 'site_folloers'],
                             ['del', 'site_folloers']
                         ]
                     },
@@ -445,6 +469,7 @@ export const navbar = {
                         route: "/users_list",
                         permissions: [
                             ['add', 'user'],
+                            ['edit', 'user'],
                             ['del', 'user'],
                             ['edit_permissions', 'user'],
                             ['create_ban', 'user'],
@@ -454,10 +479,7 @@ export const navbar = {
                         name: "Other commenters",
                         route: "/non_registered_commenter_list",
                         permissions: [
-                            ['add', 'user'],
-                            ['del', 'user'],
-                            ['edit_permissions', 'user'],
-                            ['create_ban', 'user'],
+                            ['del', 'non_registered_commenter'],
                         ]
                     },
                     {

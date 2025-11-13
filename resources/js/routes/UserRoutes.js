@@ -77,8 +77,8 @@ const router = new VueRouter({
         { path: '/article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent') },
         { path: '/article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent') },
    
-        { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
-        { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
+        { path: '/region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent') },
+        { path: '/region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent') },
 
         { path: '/ice_route/add', name: 'iceRouteAdd', component: load('ice/routes/add_route') },
         { path: '/ice_route/edit/:id', name: 'iceRouteEdit', component: load('ice/routes/edit_route') },

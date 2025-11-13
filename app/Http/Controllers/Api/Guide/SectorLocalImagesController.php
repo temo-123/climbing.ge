@@ -20,7 +20,7 @@ class SectorLocalImagesController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function get_all_sector_local_images()
     {
         return Sector_local_image::latest('id')->get();
     }
@@ -83,17 +83,17 @@ class SectorLocalImagesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
-        $sector_local_image_sectors = $sector_local_image->sectors;
+    // public function get_editing_locale_images($id)
+    // {
+    //     $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
+    //     $sector_local_image_sectors = $sector_local_image->sectors;
         
-        $data = [
-            'sector_local_image'=>$sector_local_image,
-            'sector_local_image_sectors'=>$sector_local_image_sectors,
-        ];
-        return $data;
-    }
+    //     $data = [
+    //         'sector_local_image'=>$sector_local_image,
+    //         'sector_local_image_sectors'=>$sector_local_image_sectors,
+    //     ];
+    //     return $data;
+    // }
 
     public function sector()
     {

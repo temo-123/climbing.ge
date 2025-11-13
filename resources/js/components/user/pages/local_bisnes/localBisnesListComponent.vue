@@ -140,7 +140,7 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.$emit('restart')
+                        this.get_local_bisnes_data()
                     })
                     .catch(error => console.log(error))
                 }

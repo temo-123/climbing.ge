@@ -53,106 +53,106 @@ class SiteDataController extends Controller
         return $site_data = Site::first();
     }
 
-    public function site_data_counts()
-    {
-        $counts = [];
+    // public function site_data_counts()
+    // {
+    //     $counts = [];
 
-        $counts['index_header_images'] = Header_image::count();
-        $counts['article_gallery_images'] = Article_image::count();
+    //     $counts['index_header_images'] = Header_image::count();
+    //     $counts['article_gallery_images'] = Article_image::count();
 
-        $counts['mount_masives'] = Mount::count();
-        $counts['mountaineering_route'] = Article::where("category", "=", 'mount_route')->count();
+    //     $counts['mount_masives'] = Mount::count();
+    //     $counts['mountaineering_route'] = Article::where("category", "=", 'mount_route')->count();
 
-        $counts['outdoor_climbing'] = Article::where("category", "=", 'outdoor')->count();
+    //     $counts['outdoor_climbing'] = Article::where("category", "=", 'outdoor')->count();
 
-        $counts['ice_climbing'] = Article::where("category", "=", 'ice')->count();
-        $counts['indoor_gyms'] = Article::where("category", "=", 'indoor')->count();
-        $counts['other_antyvity'] = Article::where("category", "=", 'other')->count();
-        $counts['news'] = Article::where("category", "=", 'news')->count();
-        $counts['techtip'] = Article::where("category", "=", 'techtip')->count();
+    //     $counts['ice_climbing'] = Article::where("category", "=", 'ice')->count();
+    //     $counts['indoor_gyms'] = Article::where("category", "=", 'indoor')->count();
+    //     $counts['other_antyvity'] = Article::where("category", "=", 'other')->count();
+    //     $counts['news'] = Article::where("category", "=", 'news')->count();
+    //     $counts['techtip'] = Article::where("category", "=", 'techtip')->count();
 
-        $counts['active_events_count'] = Event::where("category", "=", 'event')->count();
-        $counts['completed_events_count'] = Event::where("category", "=", 'event')->count();
-        $counts['active_comprtitions_count'] = Event::where("category", "=", "competition")->count();
-        $counts['completed_comprtitions_count'] = Event::where("category", "=", "competition")->count();
+    //     $counts['active_events_count'] = Event::where("category", "=", 'event')->count();
+    //     $counts['completed_events_count'] = Event::where("category", "=", 'event')->count();
+    //     $counts['active_comprtitions_count'] = Event::where("category", "=", "competition")->count();
+    //     $counts['completed_comprtitions_count'] = Event::where("category", "=", "competition")->count();
 
-        $counts['region'] = Region::count();
+    //     $counts['region'] = Region::count();
 
-        $counts['global_articles_count'] = Article::count();
-        $counts['ka_articles_count'] = Locale_article::where("locale", "=", 'ka')->count();
-        // $counts['ru_articles_count'] = Locale_article::where("locale", "=", 'ru')->count();
-        $counts['us_articles_count'] = Locale_article::where("locale", "=", 'us')->count();
+    //     $counts['global_articles_count'] = Article::count();
+    //     $counts['ka_articles_count'] = Locale_article::where("locale", "=", 'ka')->count();
+    //     // $counts['ru_articles_count'] = Locale_article::where("locale", "=", 'ru')->count();
+    //     $counts['us_articles_count'] = Locale_article::where("locale", "=", 'us')->count();
 
-        $counts['us_articles_errors_count'] = 1;
-        $counts['ka_articles_errors_count'] = 0;
-        // $counts['ru_articles_errors_count'] = 0;
+    //     $counts['us_articles_errors_count'] = 1;
+    //     $counts['ka_articles_errors_count'] = 0;
+    //     // $counts['ru_articles_errors_count'] = 0;
 
-        $counts['bouldering_routes_count'] = Route::where("category", "=", 'bouldering')->count();
-        $counts['sport_climbing_routes_count'] = Route::where("category", "=", 'sport')->count();
-        $counts['top_rope_routes_count'] = Route::where("category", "=", 'top')->count();
-        $counts['tred_routes_count'] = Route::where("category", "=", 'tred')->count();
-        $counts['aid_routes_count'] = Route::where("category", "=", 'aid')->count();
+    //     $counts['bouldering_routes_count'] = Route::where("category", "=", 'bouldering')->count();
+    //     $counts['sport_climbing_routes_count'] = Route::where("category", "=", 'sport')->count();
+    //     $counts['top_rope_routes_count'] = Route::where("category", "=", 'top')->count();
+    //     $counts['tred_routes_count'] = Route::where("category", "=", 'tred')->count();
+    //     $counts['aid_routes_count'] = Route::where("category", "=", 'aid')->count();
 
-        $counts['routes_count'] = Route::count();
-        $counts['sectors_count'] = Sector::count();
-        $counts['mtp_count'] = Mtp::count();
-        $counts['mtp_pitch_count'] = Mtp_pitch::count();
+    //     $counts['routes_count'] = Route::count();
+    //     $counts['sectors_count'] = Sector::count();
+    //     $counts['mtp_count'] = Mtp::count();
+    //     $counts['mtp_pitch_count'] = Mtp_pitch::count();
 
-        $counts['article_comment_complaint_count'] = Article_comment_complaint::count();
-        // $counts['mtp_pitch_count'] = Mtp_pitch::count();
+    //     $counts['article_comment_complaint_count'] = Article_comment_complaint::count();
+    //     // $counts['mtp_pitch_count'] = Mtp_pitch::count();
         
-        $counts['article_comments_count'] = Comment::count();
-        $counts['product_comments_count'] = Comment::count();
+    //     $counts['article_comments_count'] = Comment::count();
+    //     $counts['product_comments_count'] = Comment::count();
 
-        $counts['users'] = User::count();
-        $counts['following_users'] = Following_users::count();
+    //     $counts['users'] = User::count();
+    //     $counts['following_users'] = Following_users::count();
 
-        $counts['guid_follovers'] = Service_follower::where("service", "=", 'shop')->count();
-        $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
+    //     $counts['guid_follovers'] = Service_follower::where("service", "=", 'shop')->count();
+    //     $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
         
-        // $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
-        // $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
+    //     // $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
+    //     // $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
 
-        $counts['roles'] = Role::count();
-        $counts['permissions'] = Permission::count();
+    //     $counts['roles'] = Role::count();
+    //     $counts['permissions'] = Permission::count();
 
-        $counts['products'] = Product::count();
-        $counts['product_categories'] = Product_category::count();
+    //     $counts['products'] = Product::count();
+    //     $counts['product_categories'] = Product_category::count();
 
-        $conflict_us_articles = array();
-        $conflict_ka_articles = array();
-        // $conflict_ru_articles = array();
+    //     $conflict_us_articles = array();
+    //     $conflict_ka_articles = array();
+    //     // $conflict_ru_articles = array();
 
-        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_us;
+    //     foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
+    //         $active_global_article = $local_article->global_article_us;
 
-            if (!$active_global_article) {
-                array_push($conflict_us_articles, $active_global_article);
-            }
-        }
-        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ka;
+    //         if (!$active_global_article) {
+    //             array_push($conflict_us_articles, $active_global_article);
+    //         }
+    //     }
+    //     foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
+    //         $active_global_article = $local_article->global_article_ka;
 
-            if (!$active_global_article) {
-                array_push($conflict_ka_articles, $active_global_article);
-            }
-        }
-        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-        //     $active_global_article = $local_article->global_article_ru;
+    //         if (!$active_global_article) {
+    //             array_push($conflict_ka_articles, $active_global_article);
+    //         }
+    //     }
+    //     // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
+    //     //     $active_global_article = $local_article->global_article_ru;
 
-        //     if (!$active_global_article) {
-        //         array_push($conflict_ru_articles, $active_global_article);
-        //     }
-        // }
+    //     //     if (!$active_global_article) {
+    //     //         array_push($conflict_ru_articles, $active_global_article);
+    //     //     }
+    //     // }
 
-        $counts['us_article_errors'] = count($conflict_us_articles);
-        $counts['ka_article_errors'] = count($conflict_ka_articles);
-        // $counts['ru_article_errors'] = count($conflict_ru_articles);
+    //     $counts['us_article_errors'] = count($conflict_us_articles);
+    //     $counts['ka_article_errors'] = count($conflict_ka_articles);
+    //     // $counts['ru_article_errors'] = count($conflict_ru_articles);
         
-        // dd(count($post_data),$conflict_ru_articles->count(), $conflict_ru_articles->count(), $conflict_ru_articles->count());
+    //     // dd(count($post_data),$conflict_ru_articles->count(), $conflict_ru_articles->count(), $conflict_ru_articles->count());
         
-        return $counts;
-    }
+    //     return $counts;
+    // }
 
     // public function fix_article_bugs(Request $request)
     // {

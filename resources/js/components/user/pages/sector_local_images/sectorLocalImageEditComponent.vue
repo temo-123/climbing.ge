@@ -170,7 +170,7 @@
             get_editing_image(){
                 this.is_loading = true
                 axios
-                .get('/sector_local_images/'+this.$route.params.id)
+                .get('/sector_local_images/get_editing_locale_image/'+this.$route.params.id)
                 .then(response => {
                     this.data.title = response.data.sector_local_image.title
                     this.data.image = response.data.sector_local_image.image

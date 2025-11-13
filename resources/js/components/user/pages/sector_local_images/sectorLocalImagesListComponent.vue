@@ -56,7 +56,7 @@
         methods: {
             get_sectors(){
                 axios
-                .get("../api/sector_local_images/")
+                .get("/sector_local_images/get_all_sector_local_images/")
                 .then(response => {
                     this.data_for_tab = [];
 

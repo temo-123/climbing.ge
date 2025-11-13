@@ -7,7 +7,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     *   Product and product categories routes
     */
     Route::controller(ProductController::class)->prefix('product')->group( function() {
-        Route::apiResource('/', 'ProductController');
+        // Route::apiResource('/', 'ProductController');
         Route::get('/get_all_products', 'get_all_products');
         Route::get('/get_user_products', 'get_user_products');
         Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
@@ -17,8 +17,9 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
-    });
-    Route::controller(ProductController::class)->group( function() {
+    // });
+
+    // Route::controller(ProductController::class)->group( function() {
         // Route::apiResource('/product', 'ProductController');
         Route::get('/products/{lang}', 'get_local_products');
         Route::get('/donation_products/{lang}', 'get_donation_products');

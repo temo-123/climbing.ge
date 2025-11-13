@@ -191,7 +191,8 @@
             get_regions(){
                 axios
                 // .get('/outdoor/regions/'+localStorage.getItem('lang'))
-                .get("/outdoor/region/")
+                // .get("/outdoor/region/")
+                .get("/region/get_all_outdoor_regions/")
                 .then(response => {
                     this.regions = response.data
                 })

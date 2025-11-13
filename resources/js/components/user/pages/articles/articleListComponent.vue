@@ -98,14 +98,14 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("/outdoor/region/")
+                    .get("/region/get_all_outdoor_regions")
                     .then(response => {
                         this.data_for_tab.push({
                                                 'id': 2,
                                                 'table_name': 'Regions', 
                                                 'add_action': {
                                                     'action': 'route',
-                                                    'link': 'spot_category_add', 
+                                                    'link': 'region_add', 
                                                     'class': 'btn btn-primary'
                                                 },
                                                 'tab_data': {
@@ -120,7 +120,7 @@
                                                         'body': [
                                                             ['data', ['id']],
                                                             ['data', ['us_name']],
-                                                            ['action_router', 'spot_category_edit', 'btn btn-primary', 'Edit'],
+                                                            ['action_router', 'region_edit', 'btn btn-primary', 'Edit'],
                                                             ['action_fun_id', 'del_region', 'btn btn-danger', 'Del'],
                                                         ],
                                                         'perm': [
@@ -428,7 +428,7 @@
             del_article(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/article/del_article/'+id, {
+                    .post('/article/del_article/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -441,7 +441,7 @@
             del_region(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/outdoor/del_spot/'+id, {
+                    .post('/region/del_region/'+id, {
                         id: id,
                         _method: 'delete'
                     })

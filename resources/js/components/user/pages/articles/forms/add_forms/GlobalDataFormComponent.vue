@@ -177,7 +177,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("/outdoor/region/")
+                    .get("/region/get_all_outdoor_regions/")
                     .then(response => {
                         this.regions = response.data
                     })

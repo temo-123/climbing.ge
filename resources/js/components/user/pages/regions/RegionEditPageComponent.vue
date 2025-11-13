@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_spot_region()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="edit_spot_region()" >Save</button>
             </div>
         </div>
         <div class="row" v-if="errors.length != 0">
@@ -39,77 +39,67 @@
                         
                         <label for="3" >Georgian text</label>
                     </div>
-                    <div class="col" >
-                        <input type="radio" id="4" :value="4" v-model="tab_num">
-                        
-                        <label for="4" >Russion text</label>
-                    </div>
                 </div>
             </div>
-            <div class="col-md-12">
-                <div class="row width_100" v-show="tab_num == 1">
-                    <div class="jumbotron width_100">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h2 class="display-4"><span>Region global information</span></h2>
-                                <p class="lead">Region global information.</p>
-                            </div>
+            <div class="row" v-show="tab_num == 1">
+                <div class="jumbotron width_100">
+                    <div class="container">
+                        <h2 class="display-4"><span style="text-transform: capitalize">Region global information</span></h2>
+                        <p class="lead">Region global information.</p>
+                    </div>
+                </div>
+                <form >
+                    <div class="form-group clearfix row" >
+                        <label for="name" class='col-xs-2 control-label'> Map </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="data.map" name="map" class="form-control"> 
                         </div>
                     </div>
-                    <form >
-                        <div class="form-group clearfix row" >
-                            <label for="name" class='col-xs-2 control-label'> Map </label>
-                            <div class="col-xs-9">
-                                <input type="text" v-model="data.map" name="map" class="form-control"> 
-                            </div>
-                        </div>
-                    </form>
-
+                </form>
+            </div>
+            <div class="row" v-show="tab_num == 2">
+                <div class="jumbotron width_100">
+                    <div class="container">
+                        <h2 class="display-4"><span style="text-transform: capitalize">Region English information</span></h2>
+                        <p class="lead">Region English information.</p>
+                    </div>
                 </div>
-                <div class="row" v-show="tab_num == 2">
-                    <div class="jumbotron width_100">
-                        <div class="container">
-                            <h2 class="display-4"><span>Region English information</span></h2>
-                            <p class="lead">Region English information.</p>
+                <form >
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> English name </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
                         </div>
                     </div>
-                    <form >
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> English name </label>
-                            <div class="col-xs-10">
-                                <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
-                            </div>
-                        </div>
 
-                        <div class="form-group clearfix row">
-                            <label for="region" class='col-md-2 control-label '> English text </label>
-                            
-                            <ckeditor v-model="data.us_text" :config="us_text_editor_config"></ckeditor>
-                        </div>
-                    </form>
+                    <div class="form-group clearfix row">
+                        <label for="region" class='col-md-2 control-label '> English text </label>
+                        
+                        <ckeditor v-model="data.us_text" :config="us_text_editor_config"></ckeditor>
+                    </div>
+                </form>
+            </div>
+            <div class="row" v-show="tab_num == 3">
+                <div class="jumbotron width_100">
+                    <div class="container">
+                        <h2 class="display-4"><span style="text-transform: capitalize">Region Georgian information</span></h2>
+                        <p class="lead">Region Georgian information.</p>
+                    </div>
                 </div>
-                <div class="row" v-show="tab_num == 3">
-                    <div class="jumbotron width_100">
-                        <div class="container">
-                            <h2 class="display-4"><span>Region Georgian information</span></h2>
-                            <p class="lead">Region Georgian information.</p>
+                <form >
+                    <div class="form-group clearfix">
+                        <label for="name" class='col-xs-2 control-label'> Georgian name </label>
+                        <div class="col-xs-8">
+                            <input type="text" v-model="data.ka_name" name="ka_name" class="form-control"> 
                         </div>
                     </div>
-                    <form >
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Georgian name </label>
-                            <div class="col-xs-10">
-                                <input type="text" v-model="data.ka_name" name="ru_name" class="form-control"> 
-                            </div>
-                        </div>
 
-                        <div class="form-group clearfix row">
-                            <label for="region" class='col-md-2 control-label '> Georgian text </label>
-                            
-                            <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
-                        </div>
-                    </form>
-                </div>
+                    <div class="form-group clearfix row">
+                        <label for="region" class='col-md-2 control-label '> Georgian text </label>
+                        
+                        <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
+                    </div>
+                </form>
             </div>
         </div>
 
@@ -118,6 +108,7 @@
 
 <script>
     // import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
+
     // import { going } from '../../../../mixins/easy_navigation_mixin.js'
     export default {
         // mixins: [
@@ -135,18 +126,18 @@
             return {
                 data: {
                     us_name: '',
-                    ru_name: '',
+                    // ru_name: '',
                     ka_name: '',
 
                     us_text: '',
-                    ru_text: '',
+                    // ru_text: '',
                     ka_text: '',
 
                     map: '',
                 },
 
                 us_text_editor_config: this.$editor_config.get_big_editor_config(),
-                ru_text_editor_config: this.$editor_config.get_big_editor_config(),
+                // ru_text_editor_config: this.$editor_config.get_big_editor_config(),
                 ka_text_editor_config: this.$editor_config.get_big_editor_config(),
 
                 tab_num: 1,
@@ -158,7 +149,10 @@
             }
         },
         mounted() {
+            this.get_editing_region_data()
+        
             document.querySelector('body').style.marginLeft = '0';
+
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         beforeRouteLeave (to, from, next) {
@@ -174,16 +168,25 @@
             }
         },
         methods: {
-            global_blocks_action(event){
-                this.global_blocks = event
+            get_editing_region_data(){
+                axios
+                .get('/region/get_editing_region_data/'+this.$route.params.id, {
+                    _method: 'GET'
+                })
+                .then(response => {
+                    this.data = response.data
+                })
+                // .catch(err => {
+                //     alert("get_editing_region_data error => "+err)
+                // })
             },
 
-            add_spot_region() {
+            edit_spot_region() {
                 axios
-                .post('/outdoor/add_spot/', {        
+                .post('/region/edit_region/'+this.$route.params.id, {        
                     data: this.data,
 
-                    _method: 'post'
+                    _method: 'POST'
                 })
                 .then(response => {
                     this.go_back(true)
@@ -193,7 +196,7 @@
                         this.errors = err.response.data.validation
                     }
                     // else{
-                    //     alert("add_spot_region error => "+err)
+                    //     alert("edit_spot_region error => "+err)
                     // }
                 })
             },
