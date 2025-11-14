@@ -10,12 +10,12 @@
 
             <ul v-for="menu_item in menu_items" :key="menu_item.id" style="padding-left: 0px;">
 
-                <li v-if="menu_item.routes && haveMenuBlockPermission(menu_item)">
+                <li v-if="menu_item.routes && haveMenuBlockPermission(menu_item)" :class="{menu_item, active: isAnySubActive(menu_item.routes) }">
                   <a href="#" @click="show_item(menu_item.name)" class="dropdown-toggle" >{{menu_item.title}}</a>
                   <ul style="background-color: #04354b; display: none; transition: .4s;" :class="menu_item.name">
                     <span v-for="menu_but in menu_item.routes" :key="menu_but.id">
 
-                      <li v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)">
+                      <li v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)" :class="{ active: isActive(menu_but.route) }">
                         <router-link :to="{path: menu_but.route}">
                           {{menu_but.name}}
                         </router-link>
@@ -25,11 +25,11 @@
                   </ul>
                 </li>
 
-                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)">
+                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)" :class="{ active: isActive(menu_item.route) }">
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
 
-                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')">
+                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" :class="{ active: isActive(menu_item.route) }">
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
             </ul>
@@ -194,6 +194,12 @@
                 else{
                     this.menu = true
                 }
+            },
+            isActive(route) {
+                return this.$route.path === route;
+            },
+            isAnySubActive(routes) {
+                return routes.some(sub => this.isActive(sub.route));
             }
         }
     }
@@ -233,9 +239,6 @@
   /* border-top: 1px solid rgba(255,255,255,.1); */
   transition: .4s;
 }
-ul li:hover a{
-  padding-left: 50px;
-}
 .sidebar ul a i{
   margin-right: 16px;
 }
@@ -268,5 +271,28 @@ label #open_menu,label #close_menu{
   body{
     margin-left: 0;
   }
+}
+
+.active {
+  background-color: #063146 !important;
+  border-left: 4px solid #4CAF50;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li:hover {
+  background-color: #063146;
+  /* border-left: 4px solid #ffffff; */
+  transition: all 0.8s ease;
+  /* margin-left: 4px; */
+}
+.menu_item li:hover {
+  background-color: #04354b;
+  border-left: 4px solid #ffffff;
+  transition: all 0.6s ease;
+}
+
+.left_sidebar ul {
+  /* padding: 0; */
+  margin: 0;
 }
 </style>
