@@ -18,6 +18,8 @@ class AddValuesToSectorsTable extends Migration
 
             $table->text('ka_description')->nullable()->after('name');
             $table->text('us_description')->nullable()->after('name');
+
+            $table->dropColumn('text');
         });
     }
 
@@ -33,6 +35,8 @@ class AddValuesToSectorsTable extends Migration
 
             $table->dropColumn('ka_description');
             $table->dropColumn('us_description');
+
+            $table->text('text')->nullable()->after('name');
         });
     }
 }

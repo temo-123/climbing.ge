@@ -131,14 +131,14 @@
                         <label for="name" class='col-md-2 control-label'> English description </label>
 
                         <div class="col-md-10">
-                            <ckeditor v-model="data.us_description" :config="description_editor"></ckeditor>
+                            <ckeditor v-model="data.us_description" :config="us_description_editor"></ckeditor>
                         </div>
                     </div>
                     <div class="form-group clearfix row"  v-show="tab_num == 2">
                         <label for="name" class='col-md-2 control-label'> Georgian description </label>
 
                         <div class="col-md-10">
-                            <ckeditor v-model="data.ka_description" :config="description_editor"></ckeditor>
+                            <ckeditor v-model="data.ka_description" :config="ka_description_editor"></ckeditor>
                         </div>
                     </div>
                 </div>
@@ -430,22 +430,6 @@
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> KA Description </label>
-                <div class="col-md-10">
-                    <ckeditor v-model="data.ka_description" :config="description_editor"></ckeditor>
-                </div>
-            </div>
-
-            <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> US Description </label>
-                <div class="col-md-10">
-                    <ckeditor v-model="data.us_description" :config="description_editor"></ckeditor>
-                </div>
-            </div>
-
-            <hr />
-
-            <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Helmet required: </label>
                 <div class="col-md-10 row">
                     <div class="col-md-6">
@@ -532,7 +516,9 @@
         },
         data() {
             return {
-            description_editor: editor_config.get_small_editor_config(),
+                ka_description_editor: editor_config.get_small_editor_config(),
+                us_description_editor: editor_config.get_small_editor_config(),
+
                 fileList: [], //https://github.com/eJayYoung/vux-uploader-component
                 regions: "",
 
@@ -573,8 +559,8 @@
                     for_kids: null,
                     wolking_time: null,
                     helmet_required: null,
-                    ka_description: "",
-                    us_description: "",
+
+                    is_helmet: null,
                 },
 
                 is_back_action_query: true,
