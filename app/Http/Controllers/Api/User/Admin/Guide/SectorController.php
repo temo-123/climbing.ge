@@ -78,7 +78,9 @@ class SectorController extends Controller
             $new_sector['published'] = $data['published'];
             $new_sector['article_id'] = $data['article_id'];
             $new_sector['name'] = $data['name'];
-            $new_sector['text'] = $data['text'];
+            // $new_sector['text'] = $data['text'];
+            $new_sector['us_description'] = $data['us_description'];
+            $new_sector['ka_description'] = $data['ka_description'];
             $new_sector['all_day_in_shade'] = $data['all_day_in_shade'];
             $new_sector['all_day_in_sun'] = $data['all_day_in_sun'];
             $new_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
@@ -93,6 +95,7 @@ class SectorController extends Controller
             $new_sector['for_family'] = $data['for_family'];
             $new_sector['for_kids'] = $data['for_kids'];
             $new_sector['wolking_time'] = $data['wolking_time'];
+            $new_sector['is_helmet'] = $data['is_helmet'];
 
             $save_sector = $new_sector -> save();
 
@@ -311,7 +314,9 @@ class SectorController extends Controller
             $edit_sector['published'] = $data['published'];
             $edit_sector['article_id'] = $data['article_id'];
             $edit_sector['name'] = $data['name'];
-            $edit_sector['text'] = $data['text'];
+            // $edit_sector['text'] = $data['text'];
+            $edit_sector['us_description'] = $data['us_description'];
+            $edit_sector['ka_description'] = $data['ka_description'];
             $edit_sector['all_day_in_shade'] = $data['all_day_in_shade'];
             $edit_sector['all_day_in_sun'] = $data['all_day_in_sun'];
             $edit_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
@@ -326,12 +331,13 @@ class SectorController extends Controller
             $edit_sector['for_family'] = $data['for_family'];
             $edit_sector['for_kids'] = $data['for_kids'];
             $edit_sector['wolking_time'] = $data['wolking_time'];
+            $edit_sector['is_helmet'] = $data['is_helmet'];
 
             $save_sector = $edit_sector -> save();
             
             if($request->sector_new_images){
                 if(!$save_sector){
-                    App::abort(500, 'Saiving error');
+                    App::abort(500, 'Saving error');
                 }
                 else{
                     $this->add_sector_images($request->sector_new_images, $edit_sector->id);

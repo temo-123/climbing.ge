@@ -17,11 +17,12 @@ class DatabaseSeeder extends Seeder
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
 
-            LocaleSiteSeeder::class,
-            SiteTableSeeder::class,
+            // LocaleSiteSeeder::class,
+            // SiteTableSeeder::class,
 
-            UserTableSeeder::class,
-            User_notificationsTableSeeder::class,
+            // UserTableSeeder::class,
+            
+            // User_notificationsTableSeeder::class,
         ]);
     }
 }

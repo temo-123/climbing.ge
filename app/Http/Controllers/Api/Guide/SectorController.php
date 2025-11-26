@@ -66,50 +66,51 @@ class SectorController extends Controller
     //     }
     // }
 
-    // public function add_sector(Request $request)
-    // {
-    //     $data = json_decode($request->data, true );
-    //     $validate = $this->sector_validate($data);
+    public function add_sector(Request $request)
+    {
+        $data = json_decode($request->data, true );
+        $validate = $this->sector_validate($data);
 
-    //     if ($validate != null) {
-    //         return response()->json($validate, 422);
-    //     }
-    //     else{
-    //         $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
-    //         $new_sector = new Sector();
+        if ($validate != null) {
+            return response()->json($validate, 422);
+        }
+        else{
+            $spot_sector_count = Sector::where('article_id', '=', $data['article_id'])->count();
+            $new_sector = new Sector();
 
-    //         $new_sector['num'] = $spot_sector_count++;
-    //         $new_sector['published'] = $data['published'];
-    //         $new_sector['article_id'] = $data['article_id'];
-    //         $new_sector['name'] = $data['name'];
-    //         $new_sector['text'] = $data['text'];
-    //         $new_sector['all_day_in_shade'] = $data['all_day_in_shade'];
-    //         $new_sector['all_day_in_sun'] = $data['all_day_in_sun'];
-    //         $new_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
-    //         $new_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
-    //         $new_sector['in_shade_after_10'] = $data['in_shade_after_10'];
-    //         $new_sector['in_shade_after_15'] = $data['in_shade_after_15'];
-    //         $new_sector['slabby'] = $data['slabby'];
-    //         $new_sector['vertical'] = $data['vertical'];
-    //         $new_sector['overhang'] = $data['overhang'];
-    //         $new_sector['roof'] = $data['roof'];
+            $new_sector['num'] = $spot_sector_count++;
+            $new_sector['published'] = $data['published'];
+            $new_sector['article_id'] = $data['article_id'];
+            $new_sector['name'] = $data['name'];
+            $new_sector['text'] = $data['text'];
+            $new_sector['all_day_in_shade'] = $data['all_day_in_shade'];
+            $new_sector['all_day_in_sun'] = $data['all_day_in_sun'];
+            $new_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
+            $new_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
+            $new_sector['in_shade_after_10'] = $data['in_shade_after_10'];
+            $new_sector['in_shade_after_15'] = $data['in_shade_after_15'];
+            $new_sector['slabby'] = $data['slabby'];
+            $new_sector['vertical'] = $data['vertical'];
+            $new_sector['overhang'] = $data['overhang'];
+            $new_sector['roof'] = $data['roof'];
 
-    //         $new_sector['for_family'] = $data['for_family'];
-    //         $new_sector['for_kids'] = $data['for_kids'];
-    //         $new_sector['wolking_time'] = $data['wolking_time'];
+            $new_sector['for_family'] = $data['for_family'];
+            $new_sector['for_kids'] = $data['for_kids'];
+            $new_sector['wolking_time'] = $data['wolking_time'];
+            $new_sector['is_helmet'] = $data['is_helmet'];
 
-    //         $save_sector = $new_sector -> save();
+            $save_sector = $new_sector -> save();
 
-    //         if($request->sector_images){
-    //             if(!$save_sector){
-    //                 App::abort(500, 'Saiving error');
-    //             }
-    //             else{
-    //                 $this->add_sector_images($request->sector_images, $new_sector->id);
-    //             }
-    //         }
-    //     }
-    // }
+            if($request->sector_images){
+                if(!$save_sector){
+                    App::abort(500, 'Saving error');
+                }
+                else{
+                    $this->add_sector_images($request->sector_images, $new_sector->id);
+                }
+            }
+        }
+    }
 
     public function get_spot_rocks_images(Request $request)
     {
@@ -301,48 +302,49 @@ class SectorController extends Controller
     //     return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     // }
 
-    // public function edit_sector(Request $request, )
-    // {
-    //     $data = json_decode($request->data, true );
-    //     $validate = $this->sector_validate($data);
+    public function edit_sector(Request $request, )
+    {
+        $data = json_decode($request->data, true );
+        $validate = $this->sector_validate($data);
 
-    //     if ($validate != null) {
-    //         return response()->json($validate, 422);
-    //     }
-    //     else{
-    //         $edit_sector = Sector::where("id", "=", $request->sector_id)->first();
+        if ($validate != null) {
+            return response()->json($validate, 422);
+        }
+        else{
+            $edit_sector = Sector::where("id", "=", $request->sector_id)->first();
 
-    //         $edit_sector['published'] = $data['published'];
-    //         $edit_sector['article_id'] = $data['article_id'];
-    //         $edit_sector['name'] = $data['name'];
-    //         $edit_sector['text'] = $data['text'];
-    //         $edit_sector['all_day_in_shade'] = $data['all_day_in_shade'];
-    //         $edit_sector['all_day_in_sun'] = $data['all_day_in_sun'];
-    //         $edit_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
-    //         $edit_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
-    //         $edit_sector['in_shade_after_10'] = $data['in_shade_after_10'];
-    //         $edit_sector['in_shade_after_15'] = $data['in_shade_after_15'];
-    //         $edit_sector['slabby'] = $data['slabby'];
-    //         $edit_sector['vertical'] = $data['vertical'];
-    //         $edit_sector['overhang'] = $data['overhang'];
-    //         $edit_sector['roof'] = $data['roof'];
+            $edit_sector['published'] = $data['published'];
+            $edit_sector['article_id'] = $data['article_id'];
+            $edit_sector['name'] = $data['name'];
+            $edit_sector['text'] = $data['text'];
+            $edit_sector['all_day_in_shade'] = $data['all_day_in_shade'];
+            $edit_sector['all_day_in_sun'] = $data['all_day_in_sun'];
+            $edit_sector['in_the_shade_afternoon'] = $data['in_the_shade_afternoon'];
+            $edit_sector['in_the_shade_befornoon'] = $data['in_the_shade_befornoon'];
+            $edit_sector['in_shade_after_10'] = $data['in_shade_after_10'];
+            $edit_sector['in_shade_after_15'] = $data['in_shade_after_15'];
+            $edit_sector['slabby'] = $data['slabby'];
+            $edit_sector['vertical'] = $data['vertical'];
+            $edit_sector['overhang'] = $data['overhang'];
+            $edit_sector['roof'] = $data['roof'];
 
-    //         $edit_sector['for_family'] = $data['for_family'];
-    //         $edit_sector['for_kids'] = $data['for_kids'];
-    //         $edit_sector['wolking_time'] = $data['wolking_time'];
+            $edit_sector['for_family'] = $data['for_family'];
+            $edit_sector['for_kids'] = $data['for_kids'];
+            $edit_sector['wolking_time'] = $data['wolking_time'];
+            $edit_sector['is_helmet'] = $data['is_helmet'];
 
-    //         $save_sector = $edit_sector -> save();
+            $save_sector = $edit_sector -> save();
             
-    //         if($request->sector_new_images){
-    //             if(!$save_sector){
-    //                 App::abort(500, 'Saiving error');
-    //             }
-    //             else{
-    //                 $this->add_sector_images($request->sector_new_images, $edit_sector->id);
-    //             }
-    //         }
-    //     }
-    // }
+            if($request->sector_new_images){
+                if(!$save_sector){
+                    App::abort(500, 'Saving error');
+                }
+                else{
+                    $this->add_sector_images($request->sector_new_images, $edit_sector->id);
+                }
+            }
+        }
+    }
 
     /**
      * Remove the specified resource from storage.

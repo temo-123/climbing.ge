@@ -10,6 +10,8 @@ class Sector extends Model
     protected $fillable = [
         "name",
         "text",
+        "ka_description",
+        "us_description",
 
         'all_day_in_shade',
         'all_day_in_sun',
@@ -22,6 +24,7 @@ class Sector extends Model
         'vertical',
         'roof',
         'owerhang',
+        'is_helmet',
 
         "article_id",
     ];

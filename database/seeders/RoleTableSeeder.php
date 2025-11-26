@@ -19,21 +19,6 @@ class RoleTableSeeder extends Seeder
      */
     public function run()
     {
-    //     DB::table('roles')->insert([
-    //       [
-    //           'name' => 'User',
-    //           'slug' => 'users',
-    //           'description' => 'Users'
-    //       ],
-
-    //       [
-    //           'name' => 'Admin',
-    //           'slug' => 'Site Administrator',
-    //           'description' => 'Site Administrator',
-    //       ]
-    //   ]);
-
-
         $permissions = Permission::get();
 
         $admin = new Role();
@@ -48,8 +33,6 @@ class RoleTableSeeder extends Seeder
             }
         }
 
-        $visual_permissions = Permission:: where('subject', '=', 'gallery')->
-                                        get();
 
         $visual_menager = new Role();
         $visual_menager->name = 'Visual menager';
@@ -57,21 +40,15 @@ class RoleTableSeeder extends Seeder
         $visual_menager->description = 'Visual menager';
         $visual_menager->save();
 
-        foreach ($visual_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $visual_menager->permissions()->attach($permission);
-            }
-        }
-
-        $mount_permissions = Permission:: where('subject', '=', 'mount_route')->
-                                            orWhere('subject', '=', 'mount_massive')->
-                                            get();
-
         $mount_menager = new Role();
         $mount_menager->name = 'Mountain routes menager';
         $mount_menager->slug = 'mountain_routes_menager';
         $mount_menager->description = 'Mountain routes menager';
         $mount_menager->save();
+
+        $mount_permissions = Permission:: where('subject', '=', 'mount_route')->
+                                            orWhere('subject', '=', 'mount_massive')->
+                                            get();
 
         foreach ($mount_permissions as $permission) {
             if($permission['subject'] != 'ban'){
@@ -85,26 +62,26 @@ class RoleTableSeeder extends Seeder
                                         orWhere('subject', '=', 'product_category')->
                                         get();
 
-        $sale_menager = new Role();
-        $sale_menager->name = 'Private products menager';
-        $sale_menager->slug = 'private_products_menager';
-        $sale_menager->description = 'Sale menager';
-        $sale_menager->save();
+        $private_products_menager = new Role();
+        $private_products_menager->name = 'Private products menager';
+        $private_products_menager->slug = 'private_products_menager';
+        $private_products_menager->description = 'Private products menager';
+        $private_products_menager->save();
 
         foreach ($sale_permissions as $permission) {
             if(
                 $permission['subject'] != 'ban' && 
                 ($permission['subject'] != 'product' && $permission['action'] != 'show_all')
             ){
-                $sale_menager->permissions()->attach($permission);
+                $private_products_menager->permissions()->attach($permission);
             }
         }
 
-        $sale_menager = new Role();
-        $sale_menager->name = 'All products menager';
-        $sale_menager->slug = 'all_products_menager';
-        $sale_menager->description = 'Sale menager';
-        $sale_menager->save();
+        $product_menager = new Role();
+        $product_menager->name = 'All products menager';
+        $product_menager->slug = 'all_products_menager';
+        $product_menager->description = 'Product menager';
+        $product_menager->save();
 
         foreach ($sale_permissions as $permission) {
             if(
@@ -113,14 +90,21 @@ class RoleTableSeeder extends Seeder
                 ($permission['subject'] == 'sale_code')||
                 ($permission['subject'] == 'product_category')
             ){
-                $sale_menager->permissions()->attach($permission);
+                $product_menager->permissions()->attach($permission);
             }
         }
 
-        $film_permissions = Permission:: where('subject', '=', 'film')->
-                                        orWhere('subject', '=', 'film_categories')->
-                                        orWhere('subject', '=', 'film_teg')->
-                                        get();
+        $warehouse_menager = new Role();
+        $warehouse_menager->name = 'Warehouses menager';
+        $warehouse_menager->slug = 'warehouses_menager';
+        $warehouse_menager->description = 'Warehouses menager';
+        $warehouse_menager->save();
+
+        $this->loop_permissions($warehouse_menager, 
+                                        Permission::
+                                            where('subject', '=', 'warehouse')->
+                                            get()
+                                        );
 
         $film_menager = new Role();
         $film_menager->name = 'Films menager';
@@ -128,14 +112,13 @@ class RoleTableSeeder extends Seeder
         $film_menager->description = 'Films menager';
         $film_menager->save();
 
-        foreach ($film_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $film_menager->permissions()->attach($permission);
-            }
-        }
-
-        $locale_bisnes_permissions = Permission:: where('subject', '=', 'locale_bisnes')->
-                                        get();
+        $this->loop_permissions($film_menager, 
+                                        Permission::
+                                            where('subject', '=', 'film')->
+                                            orWhere('subject', '=', 'film_categories')->
+                                            orWhere('subject', '=', 'film_teg')->
+                                            get()
+                                        );
 
         $locale_bisnes_menager = new Role();
         $locale_bisnes_menager->name = 'Locale bisnes menager';
@@ -143,14 +126,11 @@ class RoleTableSeeder extends Seeder
         $locale_bisnes_menager->description = 'Locale bisnes menager';
         $locale_bisnes_menager->save();
 
-        foreach ($locale_bisnes_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $locale_bisnes_menager->permissions()->attach($permission);
-            }
-        }
-
-        $event_permissions = Permission:: where('subject', '=', 'event')->
-                                        get();
+        $this->loop_permissions($locale_bisnes_menager, 
+                                        Permission::
+                                            where('subject', '=', 'locale_bisnes')->
+                                            get()
+                                        );
 
         $event_menager = new Role();
         $event_menager->name = 'Event menager';
@@ -158,17 +138,12 @@ class RoleTableSeeder extends Seeder
         $event_menager->description = 'Event menager';
         $event_menager->save();
 
-        foreach ($event_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $event_menager->permissions()->attach($permission);
-            }
-        }
-
-        $sale_and_order_permissions = Permission::  where('subject', '=', 'product_options')->
-                                                    orWhere('subject', '=', 'sale_code')->
-                                                    orWhere('subject', '=', 'product')->
-                                                    orWhere('subject', '=', 'order')->
-                                                    get();
+        $this->loop_permissions($event_menager, 
+                                        Permission::
+                                            where('subject', '=', 'event')->
+                                            where('subject', '=', 'competition')->
+                                            get()
+                                        );
 
         $sale_and_order_menager = new Role();
         $sale_and_order_menager->name = 'Sale and order menager';
@@ -176,14 +151,15 @@ class RoleTableSeeder extends Seeder
         $sale_and_order_menager->description = 'Sale and order menager';
         $sale_and_order_menager->save();
 
-        foreach ($sale_and_order_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $sale_and_order_menager->permissions()->attach($permission);
-            }
-        }
+        $this->loop_permissions($sale_and_order_menager, 
+                                        Permission::
+                                            where('subject', '=', 'product_options')->
+                                                    orWhere('subject', '=', 'sale_code')->
+                                                    orWhere('subject', '=', 'product')->
+                                                    orWhere('subject', '=', 'order')->
+                                            get()
+                                        );
 
-        $order_permissions = Permission::   where('subject', '=', 'order')->
-                                            get();
 
         $order_menager = new Role();
         $order_menager->name = 'Order menager';
@@ -191,16 +167,12 @@ class RoleTableSeeder extends Seeder
         $order_menager->description = 'Order menager';
         $order_menager->save();
 
-        foreach ($order_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $order_menager->permissions()->attach($permission);
-            }
-        }
-
-        $content_permissions = Permission::
-                                            where('subject', '=', 'article')->
-                                            orWhere('subject', '=', 'site_data')->
-                                            get();
+        $this->loop_permissions($order_menager, 
+                                        Permission::
+                                            where('subject', '=', 'order')->
+                                            get()
+                                        );
+                                 get();
 
         $content_menager = new Role();
         $content_menager->name = 'Content menager';
@@ -208,23 +180,37 @@ class RoleTableSeeder extends Seeder
         $content_menager->description = 'Content menager';
         $content_menager->save();
 
-        foreach ($content_permissions as $permission) {
-            if($permission['subject'] != 'ban'){
-                $content_menager->permissions()->attach($permission);
-            }
-        }
+        $this->loop_permissions($content_menager, 
+                                        Permission::
+                                            where('subject', '=', 'article')->
+                                            orWhere('subject', '=', 'site_data')->
+                                            get()
+                                        );
 
-        $tour_permissions = Permission::
-                                            where('subject', '=', 'tour_reservation')->
-                                            orWhere('subject', '=', 'tour')->
-                                            orWhere('subject', '=', 'tour_category')->
-                                            get();
+
+        $blog_menager = new Role();
+        $blog_menager->name = 'Blog menager';
+        $blog_menager->slug = 'blog_menager';
+        $blog_menager->description = 'Blog menager';
+        $blog_menager->save();
+
+        $this->loop_permissions($blog_menager, 
+                                        Permission::
+                                            where('subject', '=', 'blog')->
+                                            get()
+                                        );
 
         $tour_menager = new Role();
         $tour_menager->name = 'Private tour menager';
         $tour_menager->slug = 'private_tour_menager';
         $tour_menager->description = 'tour menager';
         $tour_menager->save();
+
+        $tour_permissions = Permission::
+                                            where('subject', '=', 'tour_reservation')->
+                                            orWhere('subject', '=', 'tour')->
+                                            orWhere('subject', '=', 'tour_category')->
+                                            get();
 
         foreach ($tour_permissions as $permission) {
             if(
@@ -252,7 +238,6 @@ class RoleTableSeeder extends Seeder
                 $tour_menager->permissions()->attach($permission);
             }
         }
-
         
         $user = new Role();
         $user->name = 'User';
@@ -272,6 +257,14 @@ class RoleTableSeeder extends Seeder
                                             get();
         foreach ($ban_permissions as $permission) {
                 $locked_user->permissions()->attach($permission);
+        }
+    }
+
+    private function loop_permissions($role, $permissions){
+        foreach ($permissions as $permission) {
+            if($permission['subject'] != 'ban'){
+                $role->permissions()->attach($permission);
+            }
         }
     }
 }

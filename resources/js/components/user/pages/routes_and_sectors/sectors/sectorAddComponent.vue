@@ -103,10 +103,44 @@
                 </div>
             </div>
 
-            <div class="form-group clearfix row">
+            <!-- <div class="form-group clearfix row">
                 <label class="col-md-2 control-label"> Text </label>
                 <div class="col-md-10">
                     <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+                </div>
+            </div> -->
+
+            <div class="tabs row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col" >
+                            <input type="radio" id="1" :value="1" v-model="tab_num">
+                            
+                            <label for="1" >English text</label>
+                        </div>
+                        <div class="col" >
+                            <input type="radio" id="2" :value="2" v-model="tab_num">
+                            
+                            <label for="2" >Georgian text</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="form-group clearfix row"  v-show="tab_num == 1">
+                        <label for="name" class='col-md-2 control-label'> English description </label>
+
+                        <div class="col-md-10">
+                            <ckeditor v-model="data.us_description" :config="description_editor"></ckeditor>
+                        </div>
+                    </div>
+                    <div class="form-group clearfix row"  v-show="tab_num == 2">
+                        <label for="name" class='col-md-2 control-label'> Georgian description </label>
+
+                        <div class="col-md-10">
+                            <ckeditor v-model="data.ka_description" :config="description_editor"></ckeditor>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -323,10 +357,14 @@
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Kids: </label>
+                <label class="col-md-2 control-label"> Kids </label>
                 <div class="col-md-10 row">
                     <div class="col-md-6">
-                        <label for="vehicle1"> for_family</label><br />
+                        <label for="vehicle1">
+                            Femily
+                            <strong v-if="!data.for_family">is not friendly</strong>
+                            <strong v-else>friendly</strong>
+                        </label>
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/for family.svg'"
@@ -342,7 +380,12 @@
                         />
                     </div>
                     <div class="col-md-6">
-                        <label for="vehicle1"> for_kids</label><br />
+                        <label for="vehicle1">
+                            Kids climbing
+                            <strong v-if="!data.for_kids">is not friendly</strong>
+                            <strong v-else>friendly</strong>
+                        </label>
+                        <br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/for kids.svg'"
@@ -356,9 +399,71 @@
                             value="1"
                             class="largerCheckbox"
                         />
-                    </div>
-                    
-                    
+                    </div>                    
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix row">
+                <label class="col-md-2 control-label"> Helmet required: </label>
+                <div class="col-md-10 row">
+                    <div class="col-md-6">
+                        <label for="vehicle1"> Is helmet required</label><br />
+                        <img
+                            class="sun_svg"
+                            :src="'../../images/svg/climbing-helmet.jpg'"
+                            alt="Vertical"
+                            title="Vertical"
+                        />
+                        <input
+                            type="checkbox"
+                            v-model="data.is_helmet"
+                            name="helmet_required"
+                            value="1"
+                            class="largerCheckbox"
+                        />
+                    </div>                    
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix row">
+                <label class="col-md-2 control-label"> KA Description </label>
+                <div class="col-md-10">
+                    <ckeditor v-model="data.ka_description" :config="description_editor"></ckeditor>
+                </div>
+            </div>
+
+            <div class="form-group clearfix row">
+                <label class="col-md-2 control-label"> US Description </label>
+                <div class="col-md-10">
+                    <ckeditor v-model="data.us_description" :config="description_editor"></ckeditor>
+                </div>
+            </div>
+
+            <hr />
+
+            <div class="form-group clearfix row">
+                <label class="col-md-2 control-label"> Helmet required: </label>
+                <div class="col-md-10 row">
+                    <div class="col-md-6">
+                        <label for="vehicle1"> Is helmet required</label><br />
+                        <img
+                            class="sun_svg"
+                            :src="'../../images/svg/climbing-helmet.jpg'"
+                            alt="Vertical"
+                            title="Vertical"
+                        />
+                        <input
+                            type="checkbox"
+                            v-model="data.for_kids"
+                            name="afternoon"
+                            value="1"
+                            class="largerCheckbox"
+                        />
+                    </div>                    
                 </div>
             </div>
 
@@ -436,6 +541,7 @@
                 editorConfig: {},
 
                 errors: [],
+                tab_num: 1,
                 
                 is_loading: false,
 
@@ -447,7 +553,9 @@
 
                     article_id: "",
                     name: "",
-                    text: "",
+                    // text: "",
+                    ka_description: "",
+                    us_description: "",
 
                     all_day_in_shade: null,
                     all_day_in_sun: null,
@@ -464,6 +572,9 @@
                     for_family: null,
                     for_kids: null,
                     wolking_time: null,
+                    helmet_required: null,
+                    ka_description: "",
+                    us_description: "",
                 },
 
                 is_back_action_query: true,

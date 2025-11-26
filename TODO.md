@@ -1,6 +1,0 @@
-- [x] Add isActive method to check if current route matches a given route
-- [x] Add isAnySubActive method to check if any sub-route is active for dropdown parents
-- [x] Update template to bind active class to li elements for direct routes and dropdown parents
-- [x] Update template to bind active class to sub-li elements for sub-routes
-- [x] Add CSS styles for .active class to highlight active menu items
-- [x] Test the active states by navigating to different pages
