@@ -45,7 +45,7 @@
             get_news(){
                 this.article_loading = true
                 axios
-                .get('../api/article/news/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/news/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.news = response.data
                 })

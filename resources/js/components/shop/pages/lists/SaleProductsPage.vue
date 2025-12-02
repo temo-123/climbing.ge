@@ -96,7 +96,7 @@
         methods: {
             get_products(){
                 axios
-                .get('/sale_products/'+localStorage.getItem('lang'))
+                .get('/get_sale_products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data
 

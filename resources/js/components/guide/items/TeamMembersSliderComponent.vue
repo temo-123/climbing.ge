@@ -84,7 +84,7 @@
             
             get_team_members(){
                 axios
-                .get('/user/team/get_team_members')
+                .get('/get_user/team/get_team_members')
                 .then(response => {
                     this.team_members = response.data
                 })

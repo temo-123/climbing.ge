@@ -81,7 +81,7 @@
         methods: {
             get_techtips(){
                 axios
-                .get('../api/articles/tech_tip/'+localStorage.getItem('lang'))
+                .get('/get_article/get_locale_articles/tech_tip/'+localStorage.getItem('lang'))
                 .then(response => {
                     // this.techtips = response.data
                     this.techtips = response.data

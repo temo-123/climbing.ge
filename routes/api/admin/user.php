@@ -12,7 +12,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     //     Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     // });
 
-    // Route::controller(SocialLinkController::class)->prefix('site_social_links')->group( function() {
+    // Route::controller(SocialLinkController::class)->prefix('set_site_social_links')->group( function() {
     //     Route::get('/get_site_social_links', 'get_site_social_links');
     //     Route::post('/add_site_social_links', 'add_site_social_links');
     //     Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
@@ -24,7 +24,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     // Route::apiResource('/user_site', 'UserSiteController');
 
 
-    Route::prefix('task')->group( function() {
+    Route::prefix('set_task')->group( function() {
         Route::controller(TaskController::class)->group( function() {
             // Route::get('/get_all_tasks', 'get_all_tasks');
             // Route::get('/get_user_tasks', 'get_user_tasks');
@@ -37,7 +37,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
             Route::delete('/del_task/{task_id}', 'del_task');
         });
 
-        Route::controller(TaskCategoryController::class)->prefix('task_category')->group( function() {
+        Route::controller(TaskCategoryController::class)->prefix('set_task_category')->group( function() {
             // Route::get('/get_all_task_categories', 'get_all_task_categories');
             // Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
 
@@ -48,7 +48,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
         });
     });
 
-    Route::controller(UsersController::class)->prefix('user')->group( function() {
+    Route::controller(UsersController::class)->prefix('set_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');
         Route::get('/get_user_data/{user_id}', 'get_user_data');
@@ -58,12 +58,12 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
 
         Route::get('/post_user/{user_id}', 'get_post_user');
 
-        Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
+        Route::controller(UserNotificationsController::class)->prefix('set_notifications')->group( function() {
             Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
         });
 
 
-        // Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
+        // Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
         //     Route::get('/get_member_status/{id}', 'get_member_status');
         //     // Editing routes moved to adminAction.php
         //     Route::get('/get_team_members', 'get_team_members');
@@ -80,7 +80,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
 
 
 
-    Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
+    Route::controller(ServiceFollowing::class)->prefix('set_follow')->group( function() {
         // Route::post('/{service_id}', 'follow');
         Route::delete('/del_follower/{id}', 'del_follower');
         // Route::get('/following_users_list', 'get_following_users_list');
@@ -89,7 +89,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Blog posts routes
     */
-    // Route::controller(PostController::class)->prefix('post')->group( function() {
+    // Route::controller(PostController::class)->prefix('set_post')->group( function() {
     //     Route::get('/get_posts', 'get_posts');
     //     Route::get('/get_editing_post/{id}', 'get_editing_post');
     //     Route::get('/get_activ_post/{id}', 'get_activ_post');
@@ -102,7 +102,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Warehouse
     */
-    // Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+    // Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
     //     Route::get('/get_warehouses', 'get_warehouses');
     //     Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
     //     Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
@@ -136,7 +136,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     *   User roles and pormisions routes
     */
     // Route::apiResource('/role', 'RolesController');
-    Route::controller(RolesController::class)->prefix('role')->group( function() {
+    Route::controller(RolesController::class)->prefix('set_role')->group( function() {
         Route::apiResource('/', 'RolesController');
 
         Route::get('get_editing_role/{role_id}', 'get_editing_role');
@@ -155,7 +155,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Permissions
     */
-    Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
+    Route::controller(PermissionsController::class)->prefix('set_permission')->group(function() {
         Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
     });
 
@@ -163,14 +163,14 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
 
 
 
-    // Route::controller(NonRegisteredCommenterController::class)->prefix('non_registered_commenter')->group(function() {
+    // Route::controller(NonRegisteredCommenterController::class)->prefix('set_non_registered_commenter')->group(function() {
     //     Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
     //     Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
     // });
     /*
     *   Export routes
     */
-    Route::controller(ExportController::class)->prefix('export')->group(function() {
+    Route::controller(ExportController::class)->prefix('set_export')->group(function() {
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         Route::post('/articles_pdf', 'exportArticlesPdf');
@@ -180,7 +180,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     // /*
     // *   Warehouse
     // */
-    // Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+    // Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
     //     Route::get('/get_warehouses', 'get_warehouses');
     //     Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
     //     Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
@@ -195,7 +195,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     *   User roles and pormisions routes
     */
     // Route::apiResource('/role', 'RolesController');
-    Route::controller(RolesController::class)->prefix('role')->group( function() {
+    Route::controller(RolesController::class)->prefix('set_role')->group( function() {
         Route::apiResource('/', 'RolesController');
 
         Route::get('get_editing_role/{role_id}', 'get_editing_role');
@@ -208,7 +208,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Permissions
     */
-    Route::controller(PermissionsController::class)->prefix('permission')->group(function() {
+    Route::controller(PermissionsController::class)->prefix('set_permission')->group(function() {
         Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
     });
 
@@ -218,7 +218,7 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Export routes
     */
-    Route::controller(ExportController::class)->prefix('export')->group(function() {
+    Route::controller(ExportController::class)->prefix('set_export')->group(function() {
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         // Editing routes moved to adminAction.php

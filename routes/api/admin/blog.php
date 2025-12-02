@@ -19,7 +19,7 @@ Route::group(['namespace'=>'Api\User\Admin\Blog'], function() {
     //     Route::get('/get_activ_post/{id}', 'get_activ_post');
     // });
 
-    Route::controller(PostController::class)->prefix('post')->group( function() {
+    Route::controller(PostController::class)->prefix('set_post')->group( function() {
         // Route::get('/get_posts', 'get_posts');
         Route::get('/get_editing_post/{id}', 'get_editing_post');
         // Route::get('/get_activ_post/{id}', 'get_activ_post');

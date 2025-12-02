@@ -47,8 +47,8 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     });
 
     Route::controller(ProductBrandController::class)->prefix('brand')->group( function() {
-        Route::get('/get_all_brands', 'get_all_brands');
-        Route::get('/get_brand/{id}', 'get_brand');
+        // Route::get('/get_all_brands', 'get_all_brands');
+        // Route::get('/get_brand/{id}', 'get_brand');
         Route::post('/create_brand', 'create_brand');
         Route::post('/edit_brand/{id}', 'edit_brand');
         Route::delete('/del_brand/{id}', 'del_brand');
@@ -112,7 +112,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
     });
 
-    Route::controller(ServicesController::class)->prefix('service')->group( function() {
+    Route::controller(ServicesController::class)->prefix('set_service')->group( function() {
         // Route::apiResource('/', 'ServicesController');
         Route::get('/get_editing_service/{service_id}', 'get_editing_service');
         // Route::get('/get_service_images/{service_id}', 'get_service_images');
@@ -122,7 +122,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::delete('/del_service/{service_id}', 'del_service');
         Route::delete('/del_service_image/{image_id}', 'del_service_image');
 
-        Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
+        // Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
     });
     // Route::get('/services/{lang}', 'ServicesController@get_local_services');
 
@@ -161,7 +161,15 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
     });
-    Route::apiResource('/sale_code', 'SaleCodeController');
+
+    Route::controller(SaleCodeController::class)->prefix('sale_code')->group( function() {
+        // Route::get('/get_all_sale_code', 'get_all_sale_code');
+        Route::post('/add_sale_code', 'add_sale_code');
+        Route::post('/get_editing_sale_code/{sale_code_id}', 'get_editing_sale_code');
+        Route::post('/edit_sale_code/{sale_code_id}', 'edit_sale_code');
+        Route::delete('/del_sale_code/{sale_code_id}', 'del_sale_code');
+    });
+    // Route::apiResource('/sale_code', 'SaleCodeController');
 
     /*
     *   Cart and orders routes

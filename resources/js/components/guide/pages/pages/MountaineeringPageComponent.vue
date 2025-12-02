@@ -157,7 +157,7 @@
 
             get_mount_route(){
                 axios
-                .get('/article/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.mount_route = response.data
                     this.get_mount_masiv()
@@ -169,7 +169,7 @@
             },
             get_mount_masiv(){
                 axios 
-                .get('/mount/on_page/'+localStorage.getItem('lang')+'/'+this.mount_route.global_data.id)
+                .get('/get_mount/on_page/'+localStorage.getItem('lang')+'/'+this.mount_route.global_data.id)
                 .then(response => {
                     this.mounts_system = response.data
                 })

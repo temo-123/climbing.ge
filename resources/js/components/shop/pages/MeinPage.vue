@@ -114,7 +114,7 @@ export default {
     methods: {
         get_products(){
             axios
-            .get('/products/'+localStorage.getItem('lang'))
+            .get('/get_products/'+localStorage.getItem('lang'))
             .then(response => {
                 this.products = response.data.slice(0, 3);
                 
@@ -125,7 +125,7 @@ export default {
         },
         get_services(){
             axios
-            .get('/services/'+localStorage.getItem('lang'))
+            .get('/get_services/'+localStorage.getItem('lang'))
             .then(response => {
                 // this.services = response.data
                 this.services = response.data.slice(0, 4);
@@ -136,7 +136,7 @@ export default {
         },
         get_tours(){
             axios
-            .get('/tour/get_tours/'+localStorage.getItem('lang'))
+            .get('/get_tour/get_tours/'+localStorage.getItem('lang'))
             .then(response => {
                 // this.services = response.data
                 this.tours = response.data.slice(0, 3);

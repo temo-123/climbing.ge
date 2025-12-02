@@ -59,7 +59,7 @@
                 this.mtps = 0
 
                 axios
-                    .get('../api/sectors_and_routes_quantity')
+                    .get('/get_sector/sectors_and_routes_quantity')
                     .then(response => {
                         this.sectors = response.data.sectors
                         this.sport_routes = response.data.sport_routes

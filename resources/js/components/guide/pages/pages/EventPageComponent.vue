@@ -142,7 +142,7 @@
         methods: {
             get_event(){
                 axios
-                .get('../../api/event/get_event_on_site_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_event/get_event_on_site_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.event = response.data
 
@@ -167,7 +167,7 @@
 
             add_to_interestid_event(article_id){
                 axios
-                .post('../../api/event/add_to_interested_events/', {
+                .post('/get_event/add_to_interested_events/', {
                     event_id: article_id,
                 })
                 .then(response => {

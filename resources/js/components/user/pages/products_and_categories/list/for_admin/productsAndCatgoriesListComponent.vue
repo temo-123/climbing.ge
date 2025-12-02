@@ -232,7 +232,7 @@
             },
             get_sale_codes_data: function(){
                 axios
-                .get("/sale_code")
+                .get("/sale_code/get_all_sale_code")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 4,
@@ -285,7 +285,7 @@
             del_sale_code(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/sale_code/'+id, {
+                    .post('/sale_code/del_sale_code/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

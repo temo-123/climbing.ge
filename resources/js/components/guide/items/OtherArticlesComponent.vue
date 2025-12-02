@@ -46,7 +46,7 @@
         methods: {
             async get_other_articles(){
                 axios
-                .get('../api/articles/other/'+localStorage.getItem('lang'))
+                .get('/get_article/get_locale_articles/other/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.other_articles = response.data
                 })

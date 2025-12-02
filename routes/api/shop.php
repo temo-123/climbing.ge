@@ -6,7 +6,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     /*
     *   Product and product categories routes
     */
-    Route::controller(ProductController::class)->prefix('product')->group( function() {
+    Route::controller(ProductController::class)->prefix('get_product')->group( function() {
         // Route::apiResource('/', 'ProductController');
         Route::get('/get_all_products', 'get_all_products');
         Route::get('/get_user_products', 'get_user_products');
@@ -34,20 +34,20 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
     Route::apiResource('/product_category', 'ProductCategoryController');
 
-    Route::controller(ProductSubcategoryController::class)->prefix('subcategory')->group( function() {
+    Route::controller(ProductSubcategoryController::class)->prefix('get_subcategory')->group( function() {
         Route::get('/get_all_subcategories', 'get_all_subcategories');
         Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
         Route::get('/get_subcategory/{id}', 'get_subcategory');
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(ProductBrandController::class)->prefix('brand')->group( function() {
+    Route::controller(ProductBrandController::class)->prefix('get_brand')->group( function() {
         Route::get('/get_all_brands', 'get_all_brands');
         Route::get('/get_brand/{id}', 'get_brand');
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(ProductOptionController::class)->prefix('product_option')->group( function() {
+    Route::controller(ProductOptionController::class)->prefix('get_product_option')->group( function() {
         Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
         Route::get('/get_editing_option/{option_id}', 'get_editing_option');
     });
@@ -55,7 +55,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     /*
     *   Tours and tour categories routes
     */
-    Route::controller(TourController::class)->prefix('tour')->group( function() {
+    Route::controller(TourController::class)->prefix('get_tour')->group( function() {
         Route::get('/get_tours/{lang}', 'get_tours');
         Route::get('/get_all_tours', 'get_all_tours');
         Route::get('/get_user_tours', 'get_user_tours');
@@ -65,13 +65,13 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
         Route::get('/get_tour_images/{tour_id}', 'get_tour_images');
 
-        Route::controller(TourCategoryController::class)->prefix('category')->group( function() {
+        Route::controller(TourCategoryController::class)->prefix('get_category')->group( function() {
             Route::get('/get_all_categories', 'get_all_categories');
 
             Route::get('/get_editing_category/{category_id}', 'get_editing_category');
         });
 
-        Route::controller(TourReservationController::class)->prefix('reservation')->group( function() {
+        Route::controller(TourReservationController::class)->prefix('get_reservation')->group( function() {
             Route::get('/get_reservations', 'get_reservations');
             Route::get('/get_user_reservations', 'get_user_reservations');
 
@@ -82,9 +82,9 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     /*
     *   Services routes
     */
-    Route::controller(ServicesController::class)->prefix('service')->group( function() {
+    Route::controller(ServicesController::class)->prefix('get_service')->group( function() {
         // Route::apiResource('/', 'ServicesController');
-        // Route::get('/get_editing_service/{service_id}', 'get_editing_service');
+        Route::get('/get_all_services', 'get_all_services');
         Route::get('/get_service_images/{service_id}', 'get_service_images');
         Route::get('/get_service/{service_id}', 'get_service');
 
@@ -104,7 +104,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(OrderController::class)->prefix('order')->group( function() {
+    Route::controller(OrderController::class)->prefix('get_order')->group( function() {
         Route::get('/get_all_orders', 'get_all_orders');
         Route::get('/get_order_status/{order_id}', 'get_order_status');
         Route::get('/get_user_purchases', 'get_user_purchases');
@@ -117,12 +117,16 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
     });
-    Route::apiResource('/sale_code', 'SaleCodeController');
+
+    Route::controller(SaleCodeController::class)->prefix('get_sale_code')->group( function() {
+        Route::get('/get_all_sale_code', 'get_all_sale_code');
+    });
+    // Route::apiResource('/sale_code', 'SaleCodeController');
 
     /*
     *   Cart and orders routes
     */
-    Route::controller(ShipedRegionController::class)->prefix('shiped_region')->group( function() {
+    Route::controller(ShipedRegionController::class)->prefix('get_shiped_region')->group( function() {
         Route::get('/get_all_shiped_regions', 'get_all_shiped_regions');
         Route::get('/get_activ_region/{region_id}', 'get_activ_region');
         // Editing routes moved to adminAction.php
@@ -131,7 +135,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     /*
     *   Product Coments routes
     */
-    Route::controller(ProductFeedbackController::class)->prefix('product_feedback')->group( function() {
+    Route::controller(ProductFeedbackController::class)->prefix('get_product_feedback')->group( function() {
         // Route::apiResource('/feedback', 'feedbackController');
         Route::get('/get_all_feedbacks', 'get_all_feedbacks');
         Route::get('/get_user_feedbacks', 'get_user_feedbacks');

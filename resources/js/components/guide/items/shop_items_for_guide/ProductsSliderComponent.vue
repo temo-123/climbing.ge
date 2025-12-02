@@ -88,7 +88,7 @@
 
             get_products(){
                 return axios
-                .get('/donation_products/'+localStorage.getItem('lang'))
+                .get('/get_donation_products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data.slice(0, 12);
 

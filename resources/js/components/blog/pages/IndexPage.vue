@@ -155,7 +155,7 @@
         this.selectedPost = {}
       },
       viewFullPost(postId) {
-        this.$router.push(`/blog/post/${postId}`)
+        this.$router.push(`/get_blog/post/${postId}`)
       },
       handleViewFullPost(postId) {
         this.viewFullPost(postId)

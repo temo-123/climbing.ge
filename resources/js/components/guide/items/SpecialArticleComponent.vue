@@ -45,7 +45,7 @@
         methods: {
             get_special(){
                 axios
-                .get('/articles/special/'+localStorage.getItem('lang'))
+                .get('/get_article/get_locale_articles/special/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.speciales = response.data[0]
                 })

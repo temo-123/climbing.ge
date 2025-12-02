@@ -7,7 +7,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Article routes
     */
-    Route::controller(ArticleController::class)->prefix('article')->group( function() {
+    Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
         // Route::apiResource('/', 'ArticleController');
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
@@ -28,7 +28,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     });
 
 
-    // Route::controller(ArticleController::class)->prefix('article')->group( function() {
+    // Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
     //     // Route::apiResource('/', 'ArticleController');
     //     Route::get('/get_editing_data/{id}', 'get_editing_data');
         
@@ -59,7 +59,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Outdoor regions
     */
-    Route::controller(OutdoorController::class)->prefix('outdoor')->group( function() {
+    Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
         // Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
@@ -67,7 +67,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_spots_by_regions/{lang}', 'get_spots_by_regions');
     });
 
-    Route::controller(RegionController::class)->prefix('region')->group( function() {
+    Route::controller(RegionController::class)->prefix('get_region')->group( function() {
         // Route::get('/get_editing_region_data/{id}', 'get_editing_region_data');
         Route::get('/get_all_outdoor_regions', 'get_all_outdoor_regions');
         Route::get('/get_local_region/{lang}/{region_id}', 'locale_regget_local_regionion');
@@ -77,7 +77,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     // /*
     // *   Ice sectors
     // */
-    // Route::controller(IceSectorController::class)->prefix('ice_sectors')->group( function() {
+    // Route::controller(IceSectorController::class)->prefix('get_ice_sectors')->group( function() {
     //     Route::get('/get_all_sectors', 'get_all_sectors');
     //     Route::get('/get_sector_data_for_model/{sector_id}', 'get_sector_data_for_model');
     //     Route::get('/get_article_sectors/{article_id}', 'get_article_sectors');
@@ -91,7 +91,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     // /*
     // *   Ice sector images
     // */
-    // Route::controller(IceSectorImagesController::class)->prefix('ice_sector_images')->group( function() {
+    // Route::controller(IceSectorImagesController::class)->prefix('get_ice_sector_images')->group( function() {
     //     Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
     //     Route::post('add_sector_images', 'add_sector_images');
     //     Route::delete('del_sector_images/{image_id}', 'del_sector_images');
@@ -100,7 +100,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     // /*
     // *   Ice routes
     // */
-    // Route::controller(IceRouteController::class)->prefix('ice_routes')->group( function() {
+    // Route::controller(IceRouteController::class)->prefix('get_ice_routes')->group( function() {
     //     Route::get('/get_all_routes', 'get_all_routes');
     //     Route::get('/get_sector_routes/{sector_id}', 'get_sector_routes');
     //     Route::get('/get_route_data_for_modal/{route_id}', 'get_route_data_for_modal');
@@ -113,7 +113,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Events
     */
-    Route::controller(EventController::class)->prefix('event')->group( function() {
+    Route::controller(EventController::class)->prefix('get_event')->group( function() {
         Route::get('/get_event_on_index_page/{lang}', 'get_event_on_index_page');
 
         Route::get('/get_events_for_site', 'get_events_for_site');
@@ -134,7 +134,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Competitions
     */
-    Route::controller(CompetitionController::class)->prefix('competition')->group( function() {
+    Route::controller(CompetitionController::class)->prefix('get_competition')->group( function() {
         Route::get('/get_all_competitions', 'get_all_competitions');
         Route::get('/get_editing_competition/{competition_id}', 'get_editing_competition');
     });
@@ -142,7 +142,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Mount routes
     */
-    Route::controller(MountRouteController::class)->prefix('mount_route')->group( function() {
+    Route::controller(MountRouteController::class)->prefix('get_mount_route')->group( function() {
         Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
         // Route::get('/get_filtred_mount_route_for_user/{lang}/{filter_id}', 'get_filtred_mount_route_for_user');
         Route::get('/get_filtred_mount_routes/{lang}/{filter_id}/{published}', 'get_filtred_mount_routes');
@@ -155,7 +155,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Mount system
     */
-    Route::controller(MountController::class)->prefix('mount')->group( function() {
+    Route::controller(MountController::class)->prefix('get_mount')->group( function() {
         Route::apiResource('/mount', 'MountController');
         Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
@@ -169,7 +169,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Local bisnes routes
     */
-    Route::controller(LocalBisnesController::class)->prefix('bisnes')->group( function() {
+    Route::controller(LocalBisnesController::class)->prefix('get_bisnes')->group( function() {
         Route::get('/get_local_bisneses', 'get_local_bisneses');
         Route::get('/get_local_bisnes_for_article/{article_url_title}/{locale}', 'get_local_bisnes_for_article');
         Route::get('/get_local_bisnes_in_page/{url_title}/{locale}', 'get_local_bisnes_in_page');
@@ -185,13 +185,13 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Guid gallery images routes
     */
-    Route::controller(ArticleGalleryController::class)->prefix('gallery_image')->group( function() {
+    Route::controller(ArticleGalleryController::class)->prefix('get_gallery_image')->group( function() {
         Route::get('/get_index_gallery', 'get_index_gallery');
         // Route::get('/get_editing_images/{article_id}', 'get_editing_images');
 
         // Editing routes moved to adminAction.php
     });
-    Route::controller(HeadSliderController::class)->prefix('head_slider')->group( function() {
+    Route::controller(HeadSliderController::class)->prefix('get_head_slider')->group( function() {
         Route::get('/get_slides/{slide_category}', 'get_slides');
         Route::get('/get_all_slides', 'get_all_slides');
         Route::get('/get_actyve_slide/{slide_id}', 'get_actyve_slide');
@@ -202,8 +202,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Site data routes
     */
-    Route::controller(SiteDataController::class)->prefix('siteData')->group( function() {
-        Route::apiResource('/', 'SiteDataController');
+    Route::controller(SiteDataController::class)->prefix('get_site_data')->group( function() {
+        // Route::apiResource('/', 'SiteDataController');
 
         // Route::apiResource('/site_social_links', 'SocialLinkController');
 
@@ -223,7 +223,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Guid sport sectors routes
     */
-    Route::controller(SectorController::class)->prefix('sector')->group( function() {
+    Route::controller(SectorController::class)->prefix('get_sector')->group( function() {
         Route::apiResource('/', 'SectorController');
         Route::get('/get_sector_and_routes/{article_id}', 'get_sector_and_routes');
         Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
@@ -243,12 +243,12 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     // Route::get('/sectors_and_routes_quantity', 'SectorController@get_sectors_and_routes_quantity');
     // Route::get('/get_spot_rocks_images/{article_id}', 'SectorController@get_spot_rocks_images');
 
-    Route::controller(SpotRockController::class)->prefix('spot_rock_images')->group( function() {
+    Route::controller(SpotRockController::class)->prefix('get_spot_rock_images')->group( function() {
         Route::get('/get_spot_rock_images/{article_id}', 'get_spot_rock_images');
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(RouteController::class)->prefix('route')->group( function() {
+    Route::controller(RouteController::class)->prefix('get_route')->group( function() {
         // Route::apiResource('/', 'RouteController');
         Route::get('/get_all_routes', 'get_all_routes');
         // Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
@@ -268,20 +268,20 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     // Route::get('/get_routes_for_forum/{sector_id}', 'RouteController@get_routes_for_forum');
     // Route::get('/get_routes_quantity/{article_id}', 'RouteController@get_routes_quantity');
 
-    Route::controller(RouteJsonController::class)->prefix('route_json')->group( function() {
+    Route::controller(RouteJsonController::class)->prefix('get_route_json')->group( function() {
         Route::get('/get_editing_route_json/{route_id}', 'get_editing_route_json');
 
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(MTPController::class)->prefix('mtp')->group( function() {
+    Route::controller(MTPController::class)->prefix('get_mtp')->group( function() {
         Route::get('/', 'index');
         Route::get('/get_mtp_for_modal/{mtp_id}', 'get_mtp_for_modal');
         // Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
 
         // Editing routes moved to adminAction.php
 
-        Route::controller(MTPPitchController::class)->prefix('mtp_pitch')->group( function() {
+        Route::controller(MTPPitchController::class)->prefix('get_mtp_pitch')->group( function() {
             Route::get('/', 'index');
             Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
             // Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
@@ -293,7 +293,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
     // Route::apiResource('/sector_local_images', 'SectorLocalImagesController');
     // Route::get('/get_editing_sectors/{image_id}', 'SectorLocalImagesController@get_editing_sectors');
-    Route::controller(SectorLocalImagesController::class)->prefix('sector_local_images')->group( function() {
+    Route::controller(SectorLocalImagesController::class)->prefix('get_sector_local_images')->group( function() {
         Route::get('/get_all_sector_local_images', 'get_all_sector_local_images');
         Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
         // Editing routes moved to adminAction.php
@@ -305,7 +305,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     });
 
 
-    Route::controller(FaworitesController::class)->prefix('faworite')->group( function() {
+    Route::controller(FaworitesController::class)->prefix('get_faworite')->group( function() {
         Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
         Route::post('add_to_interested_events/', 'add_to_interested_events');
         Route::get('get_interested_events/', 'get_interested_events');
@@ -324,7 +324,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     /*
     *   Guid Coments routes get_article_comments
     */
-    Route::controller(CommentController::class)->prefix('guide_comment')->group( function() {
+    Route::controller(CommentController::class)->prefix('get_guide_comment')->group( function() {
         Route::get('/get_all_comments', 'get_all_comments');
         Route::get('/get_user_comments', 'get_user_comments');
         Route::get('/get_article_comments/{article_id}', 'get_article_comments');
@@ -339,7 +339,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Sport climbing routes reiting
     */
 
-    Route::controller(RoutesReitingController::class)->prefix('route_review')->group( function() {
+    Route::controller(RoutesReitingController::class)->prefix('get_route_review')->group( function() {
         Route::get('/get_user_review', 'get_user_review');
         Route::get('/get_all_review', 'get_all_review');
         Route::get('/get_actyve_review/{review_id}', 'get_actyve_review');

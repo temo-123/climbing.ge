@@ -64,7 +64,7 @@
             get_tours(){
                 this.tour_loading = true
                 axios
-                .get('/tour/get_tours/'+localStorage.getItem('lang'))
+                .get('/get_tour/get_tours/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.tours = response.data
                 })

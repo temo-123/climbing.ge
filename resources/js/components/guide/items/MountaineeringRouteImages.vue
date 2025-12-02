@@ -49,7 +49,7 @@
                 if(this.article_id != 0)
                 {
                     axios
-                    .get("/mount_route/get_mount_routes_images/"+this.article_id)
+                    .get("/get_mount_route/get_mount_routes_images/"+this.article_id)
                     .then(response => {
                         this.mount_route_images = response.data
                     })

@@ -47,7 +47,7 @@
             get_services_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/service/")
+                .get("/get_service/get_all_services/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,

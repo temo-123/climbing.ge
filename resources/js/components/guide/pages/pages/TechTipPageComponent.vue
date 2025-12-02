@@ -48,7 +48,7 @@
         methods: {
             get_tech_tips(){
                 axios
-                .get('../api/article/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.tech_tips = response.data
 

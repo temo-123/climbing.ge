@@ -335,7 +335,7 @@
                 this.data_for_tab = []
                 this.is_loading = true
                 axios
-                .get("/service/get_editing_service/"+this.$route.params.id)
+                .get("/set_service/get_editing_service/"+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
 
@@ -365,7 +365,7 @@
             get_service_images(){
                 this.data_for_tab = []
                 axios
-                .get("../../api/service/get_service_images/"+this.$route.params.id)
+                .get("/set_service/get_service_images/"+this.$route.params.id)
                 .then(response => {
                     this.service_old_images = response.data
                 })
@@ -376,7 +376,7 @@
             del_service_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("../../../api/service/del_service_image/"+image_id)
+                    .delete("/set_service/del_service_image/"+image_id)
                     .then(response => {
                         this.get_service_images()
                     })

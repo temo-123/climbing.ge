@@ -30,7 +30,7 @@
         methods: {
             get_bisnes(){
                 axios
-                .get('../../api/bisnes/get_local_bisnes_in_page/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+                .get('/get_bisnes/get_local_bisnes_in_page/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
                     this.bisnes = response.data
                 })

@@ -89,7 +89,7 @@ import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     methods: {
         get_event(){
             axios
-            .get('/event/get_event_on_site_list/'+localStorage.getItem('lang'))
+            .get('/get_event/get_event_on_site_list/'+localStorage.getItem('lang'))
             .then(response => {
                 this.events = response.data
 

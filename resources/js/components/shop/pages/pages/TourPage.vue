@@ -112,7 +112,7 @@
         methods: {
             get_tours(activ_tour_id){
                 axios
-                .get('/tour/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_tour_id)
+                .get('/get_tour/get_similar_tours/'+localStorage.getItem('lang')+'/'+activ_tour_id)
                 .then(response => {
                     this.tours = response.data
                 })
@@ -121,7 +121,7 @@
             },
             get_tour(){
                 axios
-                .get('/tour/get_tour/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_tour/get_tour/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.tour = response.data
                     this.get_tours(response.data.global_data.id)

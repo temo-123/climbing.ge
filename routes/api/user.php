@@ -12,12 +12,12 @@ Route::group(['namespace'=>'Api\User'], function() {
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     });
 
-    Route::controller(SocialLinkController::class)->prefix('site_social_links')->group( function() {
+    Route::controller(SocialLinkController::class)->prefix('get_site_social_links')->group( function() {
         Route::get('/get_site_social_links', 'get_site_social_links');
         // Editing routes moved to adminAction.php
     });
 
-    Route::prefix('task')->group( function() {
+    Route::prefix('get_task')->group( function() {
         Route::controller(TaskController::class)->group( function() {
             Route::get('/get_all_tasks', 'get_all_tasks');
             Route::get('/get_user_tasks', 'get_user_tasks');
@@ -30,7 +30,7 @@ Route::group(['namespace'=>'Api\User'], function() {
             // Route::delete('/del_task/{task_id}', 'del_task');
         });
 
-        Route::controller(TaskCategoryController::class)->prefix('task_category')->group( function() {
+        Route::controller(TaskCategoryController::class)->prefix('get_task_category')->group( function() {
             Route::get('/get_all_task_categories', 'get_all_task_categories');
             Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
 
@@ -46,7 +46,7 @@ Route::group(['namespace'=>'Api\User'], function() {
     */
     Route::apiResource('/user_site', 'UserSiteController');
 
-    Route::controller(UsersController::class)->prefix('user')->group( function() {
+    Route::controller(UsersController::class)->prefix('get_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');
         Route::get('/get_user_data/{user_id}', 'get_user_data');
@@ -56,12 +56,12 @@ Route::group(['namespace'=>'Api\User'], function() {
 
         Route::get('/post_user/{user_id}', 'get_post_user');
 
-        Route::controller(UserNotificationsController::class)->prefix('notifications')->group( function() {
+        Route::controller(UserNotificationsController::class)->prefix('get_notifications')->group( function() {
             // Editing routes moved to adminAction.php
         });
 
 
-        // Route::controller(TeamMemberController::class)->prefix('team')->group( function() {
+        // Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
         //     Route::get('/get_member_status/{id}', 'get_member_status');
         //     // Editing routes moved to adminAction.php
         //     Route::get('/get_team_members', 'get_team_members');
@@ -70,14 +70,14 @@ Route::group(['namespace'=>'Api\User'], function() {
     });
 
 
-    Route::controller(UserOptionController::class)->prefix('options')->group( function() {
+    Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
         // Route::get('/get_user_data', 'get_user_data');
         Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
         Route::get('/get_user_notification_data', 'get_user_notification_data');
         Route::post('/user_info_update/{user_id}', 'user_info_update');
         Route::post('/update_user_notification_data', 'update_user_notification_data');
     // });
-    // Route::controller(UserOptionController::class)->prefix('options')->group( function() {
+    // Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
         // Route::get('/get_user_data', 'get_user_data');
         Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
         Route::get('/get_user_notification_data', 'get_user_notification_data');
@@ -96,7 +96,7 @@ Route::group(['namespace'=>'Api\User'], function() {
     /*
     *   Blog posts routes
     */
-    // Route::controller(PostController::class)->prefix('post')->group( function() {
+    // Route::controller(PostController::class)->prefix('get_post')->group( function() {
     //     Route::get('/get_posts', 'get_posts');
     //     Route::get('/get_editing_post/{id}', 'get_editing_post');
     //     Route::get('/get_activ_post/{id}', 'get_activ_post');

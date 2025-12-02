@@ -18,7 +18,7 @@ use Validator;
 
 class ServicesController extends Controller
 {
-    public function index()
+    public function get_all_services()
     {
         return $global_services = Service::get();
     }

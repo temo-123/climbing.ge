@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 /*
 *   Login verify routes
 */
-Route::controller('Api\CKEditorController')->prefix('ckeditor')->group( function() {
+Route::controller('Api\CKEditorController')->prefix('get_ckeditor')->group( function() {
     // Route::get('', 'index');
     Route::post('/upload', 'upload');
 });
@@ -27,7 +27,7 @@ Route::get('/following_users_list', 'Api\ServiceFollowing@get_following_users_li
 // Canvas image save route
 Route::post('/save-canvas-image', 'Api\CanvasController@saveImage');
 
-// Route::controller(ServiceFollowing::class)->prefix('follow')->group( function() {
+// Route::controller(ServiceFollowing::class)->prefix('get_follow')->group( function() {
 //     // Editing routes moved to adminAction.php
 //     Route::get('/following_users_list', 'get_following_users_list');
 // });
