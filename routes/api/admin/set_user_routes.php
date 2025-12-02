@@ -61,14 +61,6 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
         Route::controller(UserNotificationsController::class)->prefix('set_notifications')->group( function() {
             Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
         });
-
-
-        // Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
-        //     Route::get('/get_member_status/{id}', 'get_member_status');
-        //     // Editing routes moved to adminAction.php
-        //     Route::get('/get_team_members', 'get_team_members');
-        //     Route::get('/get_team_members/{id}', 'get_team_members');
-        // });
     });
 
     /*

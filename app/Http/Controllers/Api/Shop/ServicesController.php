@@ -23,6 +23,11 @@ class ServicesController extends Controller
         return $global_services = Service::get();
     }
 
+    public function get_services_for_index()
+    {
+        return $global_services = Service::latest()->take(3)->get();
+    }
+
     public function get_local_services(Request $request)
     {
         $global_services = Service::where('published', '=', 1)->get();

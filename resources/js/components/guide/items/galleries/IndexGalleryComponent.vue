@@ -33,7 +33,7 @@
       methods: {
           get_index_gallery_image() {
               axios
-              .get('/gallery_image/get_index_gallery/', {
+              .get('/get_gallery_image/get_index_gallery/', {
               })
               .then(response => {
                   this.db_images = response.data

@@ -60,13 +60,12 @@ Route::group(['namespace'=>'Api\User'], function() {
             // Editing routes moved to adminAction.php
         });
 
-
-        // Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
-        //     Route::get('/get_member_status/{id}', 'get_member_status');
-        //     // Editing routes moved to adminAction.php
-        //     Route::get('/get_team_members', 'get_team_members');
-        //     Route::get('/get_team_members/{id}', 'get_team_members');
-        // });
+        Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
+            Route::get('/get_member_status/{id}', 'get_member_status');
+            
+            Route::get('/get_team_members', 'get_team_members');
+            // Route::get('/get_team_member/{id}', 'get_team_member');
+        });
     });
 
 

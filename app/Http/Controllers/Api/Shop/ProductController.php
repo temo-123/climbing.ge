@@ -36,6 +36,20 @@ class ProductController extends Controller
         return $returned_array;
     }
 
+    public function get_products_for_index()
+    {
+        $products = Product::latest()->take(3)->get();
+        $returned_array = [];
+        foreach($products as $product){
+            array_push($returned_array, [
+                'product' => $product,
+                'user' => $product->user->first(),
+                'options' => $product->product_options->count()
+            ]);
+        }
+        return $returned_array;
+    }
+
     public function get_user_products()
     {
         $products = Auth::user()->products;

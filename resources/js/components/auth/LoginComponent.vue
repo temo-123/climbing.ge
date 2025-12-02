@@ -9,7 +9,7 @@
               <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
           </div>
       </div>
-      <!-- <div class="row mt-2" v-show="!is_loading">
+      <div class="row mt-2" v-show="!is_loading">
           <div class="col-6 text-center">
             <button type="button" class="btn btn-danger" @click="social_login('google')">
               <i class="fa fa-google" aria-hidden="true"></i>
@@ -20,7 +20,7 @@
               <i class="fa fa-facebook" aria-hidden="true"></i>
             </button>
           </div>
-      </div> -->
+      </div>
       <div class="card-body" v-show="!is_loading">
         <form id="login_form" v-on:submit.prevent="login">
           <div class="form-group">

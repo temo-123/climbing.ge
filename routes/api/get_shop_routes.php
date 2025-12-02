@@ -8,10 +8,11 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     */
     Route::controller(ProductController::class)->prefix('get_product')->group( function() {
         // Route::apiResource('/', 'ProductController');
+        Route::get('/get_products_for_index/{leng}', 'get_products_for_index');
         Route::get('/get_all_products', 'get_all_products');
         Route::get('/get_user_products', 'get_user_products');
-        Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
-        Route::get('/add_product', 'add_product');
+        // Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
+        // Route::get('/add_product', 'add_product');
 
         // Editing routes moved to adminAction.php
 
@@ -22,7 +23,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     // Route::controller(ProductController::class)->group( function() {
         // Route::apiResource('/product', 'ProductController');
         Route::get('/products/{lang}', 'get_local_products');
-        Route::get('/donation_products/{lang}', 'get_donation_products');
+        Route::get('/get_donation_products/{lang}', 'get_donation_products');
         Route::get('/sale_products/{lang}', 'get_local_saled_products');
         Route::get('/page_product/{lang}/{url_title}', 'get_local_product_in_page');
         Route::get('similar_product/{lang}/{product_id}', 'get_similar_product');
@@ -56,7 +57,8 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     *   Tours and tour categories routes
     */
     Route::controller(TourController::class)->prefix('get_tour')->group( function() {
-        Route::get('/get_tours/{lang}', 'get_tours');
+        Route::get('/get_tours_for_index/{leng}', 'get_tours_for_index');
+        Route::get('/get_all_tours/{lang}', 'get_all_tours'); // get_tours
         Route::get('/get_all_tours', 'get_all_tours');
         Route::get('/get_user_tours', 'get_user_tours');
         Route::get('/get_similar_tours/{lang}/{tour_id}', 'get_similar_tours');
@@ -84,6 +86,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     */
     Route::controller(ServicesController::class)->prefix('get_service')->group( function() {
         // Route::apiResource('/', 'ServicesController');
+        Route::get('/get_services_for_index/{leng}', 'get_services_for_index');
         Route::get('/get_all_services', 'get_all_services');
         Route::get('/get_service_images/{service_id}', 'get_service_images');
         Route::get('/get_service/{service_id}', 'get_service');

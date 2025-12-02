@@ -62,12 +62,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
     });
 
-        Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
-            // Route::get('/get_member_status/{id}', 'get_member_status');
-            Route::post('/edit_member_status/{id}', 'edit_member_status');
-            // Route::get('/get_team_members', 'get_team_members');
-            // Route::get('/get_team_members/{id}', 'get_team_members');
-        });
+    Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
+        Route::post('/edit_member_status/{id}', 'edit_member_status');
+    });
+    
     Route::controller(NonRegisteredCommenterController::class)->prefix('set_non_registered_commenter')->group(function() {
         Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
         Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
