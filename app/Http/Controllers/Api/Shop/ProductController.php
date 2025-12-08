@@ -36,18 +36,23 @@ class ProductController extends Controller
         return $returned_array;
     }
 
-    public function get_products_for_index()
+    public function get_products_for_index(Request $request)
     {
-        $products = Product::latest()->take(3)->get();
-        $returned_array = [];
-        foreach($products as $product){
-            array_push($returned_array, [
-                'product' => $product,
-                'user' => $product->user->first(),
-                'options' => $product->product_options->count()
-            ]);
+        $global_products = Product::latest('id')->where('published', '=', 1)->get();
+        $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+
+        // Add quantity to product options
+        foreach ($products as $product) {
+            if (isset($product['product_option'])) {
+                foreach ($product['product_option'] as &$option) {
+                    if (isset($option['option'])) {
+                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
+                    }
+                }
+            }
         }
-        return $returned_array;
+
+        return $products;
     }
 
     public function get_user_products()

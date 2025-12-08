@@ -8,17 +8,17 @@
                 <div class="image-nav prev-image" v-if="image_num > 0">
                     <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
                 </div>
-                <router-link :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
+                <router-link v-if="product_data.global_product" :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
                     <div class="item-img">
-                        <shop-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
-                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product.title" />
+                        <shop-img v-if="product_data.product_images && product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product ? product_data.locale_product.title : ''" />
+                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product ? product_data.locale_product.title : ''" />
                     </div>
                 </router-link>
                 <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
                 <div class="badge discount-badge" v-if="hasDiscount">-{{ maxDiscount }}%</div>
-                <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
+                <div class="badge new-badge" v-if="product_data.global_product && product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
             <div class="image-dots" v-if="image_length > 1">
                 <button
@@ -31,15 +31,15 @@
                 ></button>
             </div>
             <div class="product-info">
-                <div class="product-title">
+                <div class="product-title" v-if="product_data.global_product">
                     <router-link :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
-                        <h2>{{ product_data.locale_product.title }}</h2>
+                        <h2>{{ product_data.locale_product ? product_data.locale_product.title : 'Product' }}</h2>
                     </router-link>
                 </div>
-                <div class="product-made-in-georgia" v-if="product_data.global_product.made_in_georgia">
+                <div class="product-made-in-georgia" v-if="product_data.global_product && product_data.global_product.made_in_georgia">
                     {{ $t('shop.product.made_in_georgia') }}
                 </div>
-                <div class="product-price" v-if="product_data.global_product.discount != null && product_data.global_product.discount > 0">
+                <div class="product-price" v-if="product_data.global_product && product_data.global_product.discount != null && product_data.global_product.discount > 0">
                     <span class="current-price">
                         <span v-if="product_data.new_min_price != product_data.new_max_price">{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
                         <span v-else>{{ product_data.new_max_price }} ₾</span>
@@ -55,7 +55,7 @@
                         <span v-else>{{ product_data.max_price }} ₾</span>
                     </span>
                 </div>
-                <div class="product-actions">
+                <div class="product-actions" v-if="product_data.global_product">
                     <button class="quick-view-btn" @click="product_quick_view(product_data.global_product.id)" aria-label="Quick view">
                         <i class="fa fa-eye"></i>
                     </button>

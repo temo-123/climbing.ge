@@ -135,14 +135,13 @@
 
                 complainter_email: '',
 
-                id: this.product_id_prop
+                id: this.product_id_prop,
             }
         },
         watch: {
-            product_id_prop: function(){
-                this.id = this.product_id_prop
-                this.get_feedbacks()
-            },
+            // product_id_prop: function(){
+            //     this.id = this.product_id_prop
+            // },
         },
         mounted() {
             this.get_feedbacks()
@@ -208,16 +207,19 @@
             },
 
             get_feedbacks: function(){
-                this.is_refresh = true
-                axios
-                .get('/product_feedback/get_product_feedbacks/' + this.id)
-                .then(response => {
-                    this.feedbacks = response.data
-                    this.is_refresh = false
-                    this.refresh_id++ 
-                })
-                .catch(
-                );
+                if(!this.id && this.id != 0 && this.id != null && this.id != undefined && this.id != 'undefined'){
+                    this.is_refresh = true
+
+                    axios
+                    .get('/get_product_feedback/get_product_feedbacks/' + this.id)
+                    .then(response => {
+                        this.feedbacks = response.data
+                        this.is_refresh = false
+                        this.refresh_id++ 
+                    })
+                    .catch(
+                    );
+                }
             },
         }
     }

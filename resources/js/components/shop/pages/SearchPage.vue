@@ -28,8 +28,6 @@
                                 v-for="product in products"
                                 :key='product.id'
                                 :product_data="product"
-
-                                @quick_view="quick_view_model"
                             />
                         </span>
                     </div>

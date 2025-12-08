@@ -158,7 +158,7 @@
             get_products(){
                 this.products_loading = true
                 axios
-                .get('/get_products/'+localStorage.getItem('lang'))
+                .get('/get_product/get_local_products/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.products = response.data
                     // this.sortByCategories()

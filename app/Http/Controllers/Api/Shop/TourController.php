@@ -38,17 +38,9 @@ class TourController extends Controller
         return $returned_array;
     }
 
-    public function get_tours_for_index()
-    {
-        $tours = Tour::latest()->take(3)->get();
-        $returned_array = [];
-        foreach($tours as $tour){
-            array_push($returned_array, [
-                'tour' => $tour,
-                'user' => $tour->user[0]
-            ]);
-        }
-        return $returned_array;
+    public function get_tours_for_index(Request $request){
+        $global_tours = Tour::where("published", "=", 1)->get();
+        return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
     }
 
     function get_user_tours(){

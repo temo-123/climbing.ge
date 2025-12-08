@@ -6,7 +6,7 @@
             :image_path_prop="'/images/head_slider_img/shop/'"
         />
 
-        <div class="row" v-if="products.length > 0">
+        <div class="row">
 
             <h2 class="index_h2">{{ $t('shop.title.products') }}</h2>
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
@@ -23,8 +23,6 @@
                                 v-for="product in products"
                                 :key='product.id'
                                 :product_data="product"
-
-                                @quick_view="quick_view_model"
                             />
                         </ul>
                     </div>
@@ -32,7 +30,7 @@
             </div>
         </div>
         
-        <div class="row" v-if="services.length > 0">
+        <div class="row" >
             <h2 class="index_h2">{{ $t('shop.title.services') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
@@ -49,7 +47,7 @@
             </div>
         </div>
 
-        <div class="row" v-if="tours.length > 0">
+        <div class="row" >
             <h2 class="index_h2">{{ $t('shop.title.tours') }}</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>

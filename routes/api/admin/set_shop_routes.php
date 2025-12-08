@@ -24,7 +24,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     // });
     // Route::controller(ProductController::class)->group( function() {
         // Route::apiResource('/product', 'ProductController');
-        Route::get('/{lang}', 'get_local_products');
+        Route::get('/get_local_products/{lang}', 'get_local_products');
         // Route::get('/donation_products/{lang}', 'get_donation_products');
         Route::get('/sale_products/{lang}', 'get_local_saled_products');
         Route::get('/page_product/{lang}/{url_title}', 'get_local_product_in_page');
