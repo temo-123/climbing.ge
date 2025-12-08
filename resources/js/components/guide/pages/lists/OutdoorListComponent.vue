@@ -216,7 +216,6 @@
             get_filtred_articles(id){
                 this.oudoor_loading = true
                 axios
-                // .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
                 .get("/get_outdoor/get_filtred_outdoor_spots/" + localStorage.getItem('lang') + '/' + id + '/1')
                 .then(response => {
                     this.regions_and_spots = []
@@ -270,7 +269,7 @@
 
             get_regions(){
                 axios
-                .get('/get_outdoor/regions/'+localStorage.getItem('lang'))
+                .get('/get_region/get_local_regions/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.regions = response.data
                 })
@@ -289,7 +288,7 @@
                 if (this.filter_spot != 'all' || this.filter_spot != 'All') {
                     this.selected_region_data = []
                     axios
-                    .get('/get_outdoor/region/'+localStorage.getItem('lang')+'/'+region_id)
+                    .get('/get_region/get_local_region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
                         this.selected_region_data = response.data[0]
 

@@ -122,7 +122,7 @@
 
             get_local_bisnes_for_article(){
                 axios
-                .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+                .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
                     this.local_businesses = response.data
                 })
@@ -133,7 +133,7 @@
             get_sectors_for_article(){
                 if (this.article_id) {
                     axios
-                    .get('/sector/get_sector_and_routes/' + this.article_id)
+                    .get('/get_sector/get_sector_and_routes/' + this.article_id)
                     .then(response => {
                         this.sectors = response.data
                     })

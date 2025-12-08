@@ -138,7 +138,7 @@
         methods: {
             get_local_bisnes_for_article(){
                 axios
-                .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+                .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
                 .then(response => {
                     this.local_businesses = response.data
                 })

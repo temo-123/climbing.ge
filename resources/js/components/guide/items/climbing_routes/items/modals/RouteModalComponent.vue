@@ -230,7 +230,7 @@ export default {
             this.is_loading = true
 
             axios
-            .get("../../api/route/get_route_for_modal/" + id)
+            .get("/get_route/get_route_for_modal/" + id)
             .then((response) => {
                 this.route = response.data;
 

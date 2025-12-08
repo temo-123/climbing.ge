@@ -126,7 +126,7 @@ export default {
             this.mtp_detals = [];
 
             axios
-                .get("../../api/mtp/get_mtp_for_modal/" + id)
+                .get("/get_mtp/get_mtp_for_modal/" + id)
                 .then((response) => {
                     this.mtp_detals = response.data;
                     // this.mtp_post_list = true;

@@ -53,7 +53,7 @@
         methods: {
             show_modal(){
                 axios
-                .get('/route/routes_authers/')
+                .get('/get_route/routes_authers/')
                 .then(response => {
                     this.authers = response.data
                     this.is_show_modal = true

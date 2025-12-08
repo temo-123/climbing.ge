@@ -24,7 +24,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Route::get('/get_editing_data/{id}', 'get_editing_data');
         // Moved to adminAction.php
         Route::get('/last_news/{lang}', 'get_last_news');
-        Route::post('/similar_article/{lang}', 'get_similar_locale_article');
+        Route::post('/get_similar_locale_article/{lang}', 'get_similar_locale_article');
     });
 
 
@@ -61,7 +61,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     */
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
-        // Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
 
         Route::get('/get_spots_by_regions/{lang}', 'get_spots_by_regions');
@@ -70,45 +69,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     Route::controller(RegionController::class)->prefix('get_region')->group( function() {
         // Route::get('/get_editing_region_data/{id}', 'get_editing_region_data');
         Route::get('/get_all_outdoor_regions', 'get_all_outdoor_regions');
-        Route::get('/get_local_region/{lang}/{region_id}', 'locale_regget_local_regionion');
+        Route::get('/get_local_region/{lang}/{region_id}', 'get_local_region');
         Route::get('/get_local_regions/{lang}', 'get_local_regions');
     });
-
-    // /*
-    // *   Ice sectors
-    // */
-    // Route::controller(IceSectorController::class)->prefix('get_ice_sectors')->group( function() {
-    //     Route::get('/get_all_sectors', 'get_all_sectors');
-    //     Route::get('/get_sector_data_for_model/{sector_id}', 'get_sector_data_for_model');
-    //     Route::get('/get_article_sectors/{article_id}', 'get_article_sectors');
-    //     Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
-    //     Route::post('add_sector/', 'add_sector');
-    //     Route::post('routes_sequence/', 'routes_sequence');
-    //     Route::post('edit_sector/{sector_id}', 'edit_sector');
-    //     Route::delete('del_sector/{sector_id}', 'del_sector');
-    // });
-
-    // /*
-    // *   Ice sector images
-    // */
-    // Route::controller(IceSectorImagesController::class)->prefix('get_ice_sector_images')->group( function() {
-    //     Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
-    //     Route::post('add_sector_images', 'add_sector_images');
-    //     Route::delete('del_sector_images/{image_id}', 'del_sector_images');
-    // });
-
-    // /*
-    // *   Ice routes
-    // */
-    // Route::controller(IceRouteController::class)->prefix('get_ice_routes')->group( function() {
-    //     Route::get('/get_all_routes', 'get_all_routes');
-    //     Route::get('/get_sector_routes/{sector_id}', 'get_sector_routes');
-    //     Route::get('/get_route_data_for_modal/{route_id}', 'get_route_data_for_modal');
-    //     Route::get('/get_route_editing_data/{sector_id}', 'get_route_editing_data');
-    //     Route::post('add_route/', 'add_route');
-    //     Route::post('edit_route/{route_id}', 'edit_route');
-    //     Route::delete('del_route/{route_id}', 'del_route');
-    // });
 
     /*
     *   Events

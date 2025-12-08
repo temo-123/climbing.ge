@@ -97,7 +97,7 @@ export default {
         get_spot_rocks_images() {
             this.spot_images = []
             axios
-                .get("/sector/get_spot_rocks_images/" + this.id)
+                .get("/get_sector/get_spot_rocks_images/" + this.id)
                 .then((response) => {
                     this.spot_images = response.data;
                 })
@@ -107,7 +107,7 @@ export default {
         get_outdoor_routes() {
             this.climbing_area = []
             axios
-                .get("../../api/sector/get_sector_and_routes/" + this.id)
+                .get("/get_sector/get_sector_and_routes/" + this.id)
                 .then((response) => {
                     this.climbing_area = response.data;
                 })

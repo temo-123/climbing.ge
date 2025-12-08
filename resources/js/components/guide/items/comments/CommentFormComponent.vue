@@ -387,7 +387,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('/guide_comment/add_comment_complaint/',{
+                .post('/set_guide_comment/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
                     email: this.complainter_email
@@ -405,7 +405,7 @@
                 this.comment_loader = true
                 this.data.is_verify_isset = this.is_verify_isset
                 axios
-                .post('/guide_comment/create_comment/' + this.id, {
+                .post('/set_guide_comment/create_comment/' + this.id, {
                     data: this.data,
                     answer_array: this.answer_array
                 })
@@ -431,7 +431,7 @@
 
             del_comment(id) {
                 axios
-                .delete('/guide_comment/del_comment/'+ id, {
+                .delete('/set_guide_comment/del_comment/'+ id, {
                     id: id,
                 })
                 .then(Response => {
@@ -443,7 +443,7 @@
             get_comments: function(){
                 this.is_refresh = true
                 axios
-                .get('/guide_comment/get_article_comments/' + this.id)
+                .get('/get_guide_comment/get_article_comments/' + this.id)
                 .then(response => {
                     this.comments = response.data
                 })
