@@ -175,7 +175,7 @@
 
             add_spot_region() {
                 axios
-                .post('/region/add_region/', {        
+                .post('/set_region/add_region/', {        
                     data: this.data,
 
                     _method: 'post'

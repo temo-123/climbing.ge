@@ -369,7 +369,7 @@
                 this.error = []
 
                 axios
-                .post('../api/event/add_event', 
+                .post('/set_event/add_event', 
                     formData
                 )
                 .then(response => {

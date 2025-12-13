@@ -82,7 +82,7 @@
         methods: {
             get_header_images(){
                 axios
-                .get("/head_slider/get_all_slides/")
+                .get("/get_head_slider/get_all_slides/")
                 .then(response => {
                     this.$refs.guide_slides.update_images(response.data.guide_slides)
                     this.$refs.shop_slides.update_images(response.data.shop_slides)

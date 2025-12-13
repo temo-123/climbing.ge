@@ -152,7 +152,7 @@
 
 
                 axios
-                .post('/head_slider/add_slide/', 
+                .post('/set_head_slider/add_slide/', 
                     formData,
                 )
                 .then(response => {

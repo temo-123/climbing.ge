@@ -154,7 +154,7 @@
                 formData.append('data', JSON.stringify(this.editing_data))
 
                 axios
-                .post('/head_slider/edit_slide/' + id, 
+                .post('/set_head_slider/edit_slide/' + id, 
                     formData,
                 )
                 .then(response => {

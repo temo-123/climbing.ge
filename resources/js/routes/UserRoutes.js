@@ -172,7 +172,7 @@ router.beforeEach((to, from, next)=>{
     const token = localStorage.getItem('x_xsrf_token')
     
     axios
-        .get('./api/auth_user')
+        .get('/auth_user')
         .then((response)=>{
             // if (token != null) {
             //     localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])

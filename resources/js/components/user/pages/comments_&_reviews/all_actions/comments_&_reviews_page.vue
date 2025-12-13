@@ -64,7 +64,7 @@ export default {
         get_all_guide_comments_data: function () {
             this.data_for_tab = [];
             axios
-                .get("/guide_comment/get_all_comments/")
+                .get("/get_guide_comment/get_all_comments/")
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 1,
@@ -140,7 +140,7 @@ export default {
         },
         get_all_climbing_routes_review_data: function () {
             axios
-                .get("/route_review/get_all_review/")
+                .get("/get_route_review/get_all_review/")
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 2,
@@ -184,7 +184,7 @@ export default {
         },
         get_all_shop_feedbacks_data: function () {
             axios
-                .get("/product_feedback/get_all_feedbacks/")
+                .get("/get_product_feedback/get_all_feedbacks/")
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 3,
@@ -250,7 +250,7 @@ export default {
         del_review(id){
             if(confirm('Are you sure, you want delite it?')){
                 axios
-                .post('/route_review/del_route_review/'+id, {
+                .post('/set_route_review/del_route_review/'+id, {
                     id: id,
                     _method: 'DELETE'
                 })
@@ -267,7 +267,7 @@ export default {
                 )
             ) {
                 axios
-                    .delete("/guide_comment/del_comment/" + id, {
+                    .delete("/set_guide_comment/del_comment/" + id, {
                         _method: "delete",
                     })
                     .then((Response) => {
@@ -280,7 +280,7 @@ export default {
         del_feedback(id){
             if(confirm('Are you sure, you want delite this comment from page content?')){
                 axios
-                .delete('/product_feedback/del_feedback/'+id, {
+                .delete('/set_product_feedback/del_feedback/'+id, {
                     _method: 'delete'
                 })
                 .then(Response => {
@@ -294,7 +294,7 @@ export default {
             this.quick_feedback = []
 
             axios
-            .get("/product_feedback/get_actyve_feedback/"+feedback_id)
+            .get("/get_product_feedback/get_actyve_feedback/"+feedback_id)
             .then(response => {
                 if(action == 'show'){
                     this.$refs.show_comment_modal.show_modal(response.data)
@@ -317,7 +317,7 @@ export default {
             this.quick_comment = [];
 
             axios
-                .get("/guide_comment/get_actyve_comment/" + comment_id)
+                .get("/get_guide_comment/get_actyve_comment/" + comment_id)
                 .then((response) => {
                     if (action == "show") {
                         this.$refs.show_comment_modal.show_modal(response.data);

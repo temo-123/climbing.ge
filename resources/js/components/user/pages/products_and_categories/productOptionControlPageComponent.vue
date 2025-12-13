@@ -349,7 +349,7 @@
                 this.is_loading_editing_modal = true
 
                 axios
-                .get("/product_option/get_editing_option/"+option_id)
+                .get("/set_product_option/get_editing_option/"+option_id)
                 .then(response => {
                     this.is_edit_option_modal = true
 
@@ -390,7 +390,7 @@
                 formData.append('data', JSON.stringify(this.editing_data))
                 
                 axios
-                .post("/product_option/edit_option/"+this.editing_option_id, 
+                .post("/set_product_option/edit_option/"+this.editing_option_id, 
                     formData
                 )
                 .then(response => {

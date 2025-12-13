@@ -98,7 +98,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("/region/get_all_outdoor_regions")
+                    .get("/get_region/get_all_outdoor_regions")
                     .then(response => {
                         this.data_for_tab.push({
                                                 'id': 2,
@@ -149,7 +149,7 @@
             get_ice_sectors(category){
                 if(category == 'ice'){
                     axios
-                    .get("/sector/get_sectors_by_article_category/ice/")
+                    .get("/get_sector/get_sectors_by_article_category/ice/")
                     .then(response => {
                         this.data_for_tab.push({
                                                 'id': 2,
@@ -199,7 +199,7 @@
             get_ice_routes(){
                 axios
                 .get(
-                    "/route/get_routes_by_category_array", { params: { categories: ['ice climbing', 'dry tooling'] } }
+                    "/get_route/get_routes_by_category_array", { params: { categories: ['ice climbing', 'dry tooling'] } }
                 )
                 .then(response => {
                     this.data_for_tab.push({
@@ -255,7 +255,7 @@
 
             get_filtred_articles(id){
                 axios
-                .get("/outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
+                .get("/get_outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
                     category: this.$route.params.article_category,
                 })
                 .then(response => {
@@ -311,7 +311,7 @@
 
             get_unfilted_articles(){
                 axios
-                .get("/article/get_category_articles/"+this.$route.params.article_category)
+                .get("/get_article/get_category_articles/"+this.$route.params.article_category)
                 .then(response => {
                     this.data_for_tab = []
                     this.data_for_tab.push
@@ -374,7 +374,7 @@
 
             get_mounts(){
                 axios
-                .get("/mount/mount")
+                .get("/get_mount/get_all_mount")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'table_name': 'Mount vasives', 
@@ -428,7 +428,7 @@
             del_article(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/article/del_article/'+id, {
+                    .post('/set_article/del_article/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -441,7 +441,7 @@
             del_region(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/region/del_region/'+id, {
+                    .post('/set_region/del_region/'+id, {
                         id: id,
                         _method: 'delete'
                     })
@@ -455,7 +455,7 @@
             del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/route/del_route/'+id, {
+                    .post('/set_route/del_route/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })
@@ -469,7 +469,7 @@
             del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/sector/del_sector/'+id, {
+                    .post('/set_sector/del_sector/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

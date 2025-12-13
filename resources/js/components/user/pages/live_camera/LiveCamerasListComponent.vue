@@ -81,7 +81,7 @@
                 this.article_loading = true;
 
                 axios
-                .get("/live_camera/get_live_cameras/")
+                .get("/get_live_camera/get_live_cameras/")
                 .then(response => {
                     this.data_for_tab = []
     

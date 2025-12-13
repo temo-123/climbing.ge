@@ -170,7 +170,7 @@
         methods: {
             get_editing_region_data(){
                 axios
-                .get('/region/get_editing_region_data/'+this.$route.params.id, {
+                .get('/set_region/get_editing_region_data/'+this.$route.params.id, {
                     _method: 'GET'
                 })
                 .then(response => {
@@ -183,7 +183,7 @@
 
             edit_spot_region() {
                 axios
-                .post('/region/edit_region/'+this.$route.params.id, {        
+                .post('/set_region/edit_region/'+this.$route.params.id, {        
                     data: this.data,
 
                     _method: 'POST'

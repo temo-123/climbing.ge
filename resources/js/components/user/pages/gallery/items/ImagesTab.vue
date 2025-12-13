@@ -95,7 +95,7 @@
             del_image(slide_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete('/head_slider/del_slide/'+slide_id)
+                    .delete('/get_head_slider/del_slide/'+slide_id)
                     .then(Response => {
                         this.update_data();
                     })

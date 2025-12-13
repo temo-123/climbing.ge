@@ -64,7 +64,7 @@
             get_posts(){
                 this.article_loading = true;
                 axios
-                .get("/post/get_posts/")
+                .get("/get_post/get_posts/")
                 .then(response => {
                     this.data_for_tab = []
     

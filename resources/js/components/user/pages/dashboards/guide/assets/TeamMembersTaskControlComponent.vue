@@ -111,7 +111,7 @@
 
             get_all_tasks(){
                 axios
-                .get("/task/get_all_tasks/")
+                .get("/get_task/get_all_tasks/")
                 .then(response => {
                     this.tasks = response.data
                 })
@@ -123,7 +123,7 @@
             del_task(task_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/task/del_task/'+task_id, {
+                    .post('/set_task/del_task/'+task_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -135,7 +135,7 @@
 
             get_all_tasks_category(){
                 axios
-                .get("/task/task_category/get_all_task_categories/")
+                .get("/get_task/task_category/get_all_task_categories/")
                 .then(response => {
                     this.task_categorys = response.data
                 })
@@ -147,7 +147,7 @@
             del_task_category(category_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/task/task_category/del_task_category/'+category_id, {
+                    .post('/set_task/task_category/del_task_category/'+category_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

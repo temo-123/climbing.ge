@@ -82,7 +82,7 @@
             get_orders(){
                 this.data_for_tab = []
                 axios
-                .get("/order/get_all_orders/")
+                .get("/get_order/get_all_orders/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -128,7 +128,7 @@
             },
             get_shipd_regions(){
                 axios
-                .get("/shiped_region/get_all_shiped_regions/")
+                .get("/get_shiped_region/get_all_shiped_regions/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
@@ -176,7 +176,7 @@
             del_region(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/shiped_region/del_region/'+id, {
+                    .post('/set_shiped_region/del_region/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })

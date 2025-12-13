@@ -72,7 +72,7 @@
             get_events(){
                 this.data_for_tab = []
                 axios
-                .get("/event/get_all_events/")
+                .get("/get_event/get_all_events/")
                 .then(response => {
                     response.data.forEach(event => {
                         event.completed = new Date(event.end_data) < new Date();
@@ -130,7 +130,7 @@
             },
             get_competitions(){
                 axios
-                .get("/competition/get_all_competitions/")
+                .get("/get_competition/get_all_competitions/")
                 .then(response => {
                     response.data.forEach(competition => {
                         competition.completed = new Date(competition.end_data) < new Date();
@@ -189,7 +189,7 @@
             del_event(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/event/del_event/'+id, {
+                    .post('/set_event/del_event/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

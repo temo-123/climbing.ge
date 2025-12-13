@@ -380,7 +380,7 @@
             get_editing_event() {
                 this.is_loading = true
                 axios
-                .get('../../api/event/get_editing_event/'+this.$route.params.id)
+                .get('/set_event/get_editing_event/'+this.$route.params.id)
                 .then(response => {
                     // this.data = response.data
                     this.data.global_data = response.data.global_data

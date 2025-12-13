@@ -294,7 +294,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('/bisnes/edit_local_bisnes/'+this.$route.params.id, 
+                .post('/set_bisnes/edit_local_bisnes/'+this.$route.params.id, 
                     formData
                 )
                 .then(response => {

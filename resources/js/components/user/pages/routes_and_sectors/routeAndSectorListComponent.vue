@@ -95,7 +95,7 @@
             },
             get_sectors(){
                 axios
-                .get("/sector/get_sectors_by_article_category/outdoor/")
+                .get("/get_sector/get_sectors_by_article_category/outdoor/")
                 .then(response => {
                     this.data_for_tab = [];
 
@@ -159,7 +159,7 @@
             },
             get_routes(){
                 axios
-                .get("route/get_routes_by_category_array/", { params: { categories: ['sport climbing', 'top rope', 'tred climbing', 'bouldering'] } })
+                .get("/get_route/get_routes_by_category_array/", { params: { categories: ['sport climbing', 'top rope', 'tred climbing', 'bouldering'] } })
                 .then(response => {
                     this.routes = response.data
 
@@ -224,7 +224,7 @@
             },
             get_mtp(){
                 axios
-                .get("/mtp/")
+                .get("/get_mtp/get_all_mtp/")
                 .then(response => {
                     this.mtp = response.data
 

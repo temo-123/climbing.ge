@@ -130,7 +130,7 @@
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
                 
                 axios
-                .post('/post/add_post/', 
+                .post('/set_post/add_post/', 
                     formData,
                 )
                 .then(response => {

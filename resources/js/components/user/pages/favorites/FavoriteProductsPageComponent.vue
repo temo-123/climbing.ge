@@ -94,7 +94,7 @@
         methods: {
             get_products(){
                 axios
-                .get('../api/get_user_favorite_products')
+                .get('/get_product/get_user_favorite_products')
                 .then(response => {
                     this.products = response.data
                 })
@@ -107,7 +107,7 @@
             del_from_faworites(product_id){
                 if(confirm('Are you sure, you want delite this product from your faworites list?')){
                     axios
-                    .post('../api/del_from_favorite/'+ product_id)
+                    .post('/set_product/del_from_favorite/'+ product_id)
                     .then(response => {
                         // alert("Product delited from your favorite list!");
                         this.get_products()

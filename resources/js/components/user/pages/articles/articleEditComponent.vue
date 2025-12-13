@@ -199,7 +199,7 @@
             get_editing_data() {
                 this.is_loading = true
                 axios
-                .get('/article/get_editing_data/'+this.$route.params.id)
+                .get('/set_article/get_editing_data/'+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
                     this.category = response.data.global_article.category

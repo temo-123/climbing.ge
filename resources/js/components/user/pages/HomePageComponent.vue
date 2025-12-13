@@ -66,7 +66,7 @@
         methods: {
             get_user_data(){
                 axios
-                .get('/api/auth_user')
+                .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data
                     this.get_user_queries(this.user.id)

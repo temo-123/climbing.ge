@@ -42,7 +42,7 @@
         methods: {
             get_films_data: function(){
                 axios
-                .get("../api/films/")
+                .get("/get_films/get_all_films")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
@@ -62,7 +62,7 @@
 
             get_categories_data: function(){
                 axios
-                .get("../api/film/get_films_categories/us/")
+                .get("/get_film/get_films_categories/us/")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
@@ -80,7 +80,7 @@
 
             get_films_tegs_data: function(){
                 axios
-                .get("../api/film_tags/")
+                .get("/get_film_tags/")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 

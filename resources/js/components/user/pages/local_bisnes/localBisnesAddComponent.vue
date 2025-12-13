@@ -269,7 +269,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('../api/bisnes/add_local_bisnes', 
+                .post('/set_bisnes/add_local_bisnes', 
                     formData
                 )
                 .then(response => {

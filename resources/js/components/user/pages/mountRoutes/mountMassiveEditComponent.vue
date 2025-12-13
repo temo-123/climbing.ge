@@ -275,7 +275,7 @@
         methods: {
             edit_mount: function () {
                 axios
-                .post('/mount/edit_mount_massive/' + this.$route.params.id, {
+                .post('/set_mount/edit_mount_massive/' + this.$route.params.id, {
                     data: this.data,
                 })
                 .then(Response => { 

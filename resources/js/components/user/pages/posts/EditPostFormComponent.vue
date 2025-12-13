@@ -108,7 +108,7 @@ export default {
         get_editing_data() {
             this.is_loading = true;
             axios
-            .get('/post/get_editing_post/' + this.post_id)
+            .get('/get_post/get_editing_post/' + this.post_id)
             .then(response => {
                 this.editing_data = response.data;
                 this.category = response.data.global_post.category;
@@ -134,7 +134,7 @@ export default {
             formData.append('global_blocks', JSON.stringify(this.global_blocks))
             
             axios
-            .post('/post/edit_post/' + this.post_id, 
+            .post('/set_post/edit_post/' + this.post_id, 
                 formData,
             )
             .then(response => {

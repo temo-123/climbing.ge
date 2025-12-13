@@ -9,7 +9,7 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" v-if="this.user != []">
             <div class="col-md-12">
                 <span v-if="!this.user['name'] || !this.user['surname'] || !this.user['country'] || !this.user['city'] || !this.user['email']">
                     <div class="alert alert-danger" role="alert">

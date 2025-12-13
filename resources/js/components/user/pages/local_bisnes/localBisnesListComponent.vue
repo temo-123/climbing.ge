@@ -45,7 +45,7 @@
             get_local_bisnes_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/bisnes/get_local_bisneses")
+                .get("/get_bisnes/get_local_bisneses")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'table_name': 'Local bisnes' ,
