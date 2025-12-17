@@ -214,6 +214,7 @@
                 }
             },
 
+
             handleRouteNavigation() {
                 // Get query parameters
                 const sectorId = this.$route.query.sector;
@@ -226,10 +227,46 @@
                     // Wait for the DOM to be fully rendered with multiple attempts
                     this.$nextTick(() => {
                         this.tryScrollToSector(sectorId, routeId, 0);
+                        // Also add a small delay to ensure all components are fully loaded
+                        setTimeout(() => {
+                            this.highlightActiveSectorAndRoute(sectorId, routeId);
+                        }, 1000);
                     });
                 } else {
                     console.log('No sector or route parameters found in URL');
                 }
+            },
+
+
+            highlightActiveSectorAndRoute(sectorId, routeId) {
+                // Highlight the active sector
+                if (sectorId) {
+                    const sectorElement = document.getElementById(`sector-${sectorId}`);
+                    if (sectorElement) {
+                        // Add a subtle highlight to the sector heading
+                        const sectorComponent = sectorElement.closest('[data-sector-id]');
+                        if (sectorComponent) {
+                            sectorComponent.classList.add('active-sector-highlight');
+                        }
+                        
+                        // Also add highlight to the sector heading itself
+                        sectorElement.classList.add('active-sector-highlight');
+                        
+                        // Remove highlight after 8 seconds
+                        setTimeout(() => {
+                            if (sectorComponent) {
+                                sectorComponent.classList.remove('active-sector-highlight');
+                            }
+                            sectorElement.classList.remove('active-sector-highlight');
+                        }, 8000);
+                    }
+                }
+                
+                // Force re-render of routes to apply active highlighting
+                this.$nextTick(() => {
+                    // This will trigger the isRouteActive method in SectorComponent
+                    this.$forceUpdate();
+                });
             },
 
             tryScrollToSector(sectorId, routeId, attempt) {
@@ -320,18 +357,19 @@
                 }, 2000);
             },
 
+
+
             highlightRoute(routeId) {
                 // Try to highlight specific route within sector
                 const routeElement = document.querySelector(`[data-route-id="${routeId}"]`);
                 if (routeElement) {
-                    // Add active state styling to the route
-                    routeElement.classList.add('active-route-highlight');
-                    this.highlightElement(routeElement);
+                    // Add the route-active class for highlighting
+                    routeElement.classList.add('route-active');
                     
-                    // Remove active class after 5 seconds
+                    // Remove the highlight after 8 seconds
                     setTimeout(() => {
-                        routeElement.classList.remove('active-route-highlight');
-                    }, 5000);
+                        routeElement.classList.remove('route-active');
+                    }, 8000);
                     
                     console.log('Highlighted route with ID:', routeId);
                 } else {
@@ -366,42 +404,23 @@
     transition: all 0.3s ease;
 }
 
-/* Active route highlighting styles */
+
+/* Active route highlighting - simple and stable */
 .active-route-highlight {
-    background-color: #fff3cd !important;
-    border: 2px solid #ffc107 !important;
-    border-radius: 4px !important;
-    transition: all 0.3s ease !important;
-    position: relative !important;
+    transition: background-color 0.2s ease !important;
 }
 
-.active-route-highlight td {
-    background-color: inherit !important;
-    color: #856404 !important;
-    font-weight: 600 !important;
-}
-
-.active-route-highlight::before {
-    content: "🎯" !important;
-    position: absolute !important;
-    left: -10px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-    font-size: 1.2em !important;
-    z-index: 10 !important;
-}
-
-/* Enhanced sector highlighting */
+/* Enhanced sector highlighting - friendly and subtle */
 .active-sector-highlight {
-    background-color: #d4edda !important;
-    border: 2px solid #28a745 !important;
-    border-radius: 8px !important;
-    padding: 15px !important;
-    margin: 10px 0 !important;
+    background-color: #f8f9fa !important;
+    border-left: 4px solid #6c757d !important;
+    padding: 10px 15px !important;
+    margin: 5px 0 !important;
     transition: all 0.3s ease !important;
 }
 
 .active-sector-highlight h2 {
-    color: #155724 !important;
+    color: #495057 !important;
+    margin-bottom: 0.5rem !important;
 }
 </style>

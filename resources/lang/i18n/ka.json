@@ -123,8 +123,6 @@
             "auther_routes_quantity": "მარშრუტების რაოდენობა",
             "routes_list_button": "პოპულარული მარშრუტების სია",
             "modal_title": "პოპულარული მარშრუტების სია",
-            "sport_climbing_routes_title": "პოპულარული სპორტული ცოცვის მარშრუტები",
-            "boulder_routes_title": "პოპულარული ბოლდერინგის მარშრუტები",
             "route_name": "მარშრუტის სახელი",
             "reviev_count": "შეფასებების რაოდენობა",
             "stars": "ვარსკვლავები",
@@ -138,7 +136,23 @@
             "no_popular_sport_routes": "პოპულარული სპორტული მარშრუტები არ მოიძებნა",
             "no_popular_boulder_routes": "პოპულარული ბოლდერინგის მარშრუტები არ მოიძებნა",
             "no_reviews_available_boulder": "ბოლდერინგის მარშრუტებისთვის შეფასებები ჯერ არ არის ხელმისაწვდომი",
-            "be_first_to_review_boulder": "შეხვიდით და იყავით პირველი რომ შეაფასებთ ბოლდერინგის მარშრუტს!"
+
+            "be_first_to_review_boulder": "შეხვიდით და იყავით პირველი რომ შეაფასებთ ბოლდერინგის მარშრუტს!",
+            
+            "no_popular_routes_any": "პოპულარული მარშრუტები არ მოიძებნა",
+            "be_first_to_review_any": "იყავით პირველი რომ შეაფასოთ ნებისმიერი მარშრუტი!",
+            "be_first_to_review_sport": "იყავით პირველი რომ შეაფასოთ სპორტული მარშრუტი!",
+            
+
+            "sport_climbing": "სპორტული ცოცვა",
+            "bouldering": "ბოლდერინგი",
+            "dry": "Dry Tooling",
+            "ice": "ყინულის ცოცვა",
+            
+            "sport_climbing_routes_title": "პოპულარული სპორტული ცოცვის მარშრუტები",
+            "boulder_routes_title": "პოპულარული ბოლდერინგის მარშრუტები",
+            "ice_climbing_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
+            "dry_tooling_routes_title": "პოპულარული Dry Tooling მარშრუტები"
         },
 
         "article": {

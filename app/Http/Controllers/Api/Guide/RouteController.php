@@ -239,7 +239,15 @@ class RouteController extends Controller
 
     public function get_most_popular_routes($route_type)
     {
-        $category = $route_type === 'boulder' ? 'bouldering' : 'sport climbing';
+        // Map frontend route types to database categories
+        $categoryMap = [
+            'sport' => 'sport climbing',
+            'boulder' => 'bouldering',
+            'ice' => 'ice climbing',
+            'dry' => 'dry tooling',
+        ];
+
+        $category = $categoryMap[$route_type] ?? 'sport climbing';
         $perPage = request('per_page', 10);
         $minReviews = request('min_reviews', 1);
         
@@ -368,4 +376,3 @@ class RouteController extends Controller
     //     }
     // }
 }
-

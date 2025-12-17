@@ -93,6 +93,7 @@
         },
 
 
+
         "sector": {
             "name": "Sector Name",
             "shade after 10.00 am": "Shaded after 10:00 AM",
@@ -114,15 +115,13 @@
             "auther_routes_quantity": "Number of Routes",
             "routes_list_button": "Popular Routes List",
             "modal_title": "Popular Routes List",
-            "sport_climbing_routes_title": "Popular Sport Climbing Routes",
-            "boulder_routes_title": "Popular Boulder Routes",
+
             "route_name": "Route Name",
             "reviev_count": "Review Count",
             "stars": "Stars",
             "region": "Region",
             "sector": "Sector",
             "spot_name": "Spot",
-
 
             "countinue": "Continue",
             "per_page": "Per page",
@@ -139,8 +138,19 @@
 
             "be_first_to_review_boulder": "Be the first to review a boulder route!",
             "no_popular_routes_any": "No popular routes found",
+
             "be_first_to_review_any": "Be the first to review any route!",
-            "be_first_to_review_sport": "Be the first to review a sport route!"
+            "be_first_to_review_sport": "Be the first to review a sport route!",
+            
+            "sport_climbing": "Sport Climbing",
+            "bouldering": "Bouldering",
+            "dry": "Dry Tooling",
+            "ice": "Ice Climbing",
+            
+            "sport_climbing_routes_title": "Popular Sport Climbing Routes",
+            "boulder_routes_title": "Popular Boulder Routes",
+            "ice_climbing_routes_title": "Popular Ice Climbing Routes",
+            "dry_tooling_routes_title": "Popular Dry Tooling Routes"
         },
 
         "article": {

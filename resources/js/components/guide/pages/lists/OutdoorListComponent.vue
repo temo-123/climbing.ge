@@ -16,8 +16,9 @@
                 <div class="col-md-6">
                     <routesAutersModal />
                 </div>
+
                 <div class="col-md-6">
-                    <mostPopularRoutesModal />
+                    <mostPopularRoutesModal :routeCategories="routeCategories" />
                 </div>
             </div>
 
@@ -171,6 +172,7 @@
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
 
     export default {
+
         data: function () {
             return {
                 filtred_spots: [],
@@ -185,6 +187,14 @@
                 oudoor_loading: true,
                 // sector_quantyt: true,
                 region_loading: true,
+
+
+                routeCategories: [
+                    { value: 'sport', label: 'guide.sector.sport_climbing' },
+                    { value: 'boulder', label: 'guide.sector.bouldering' },
+                    // { value: 'dry', label: 'guide.sector.dry' },
+                    // { value: 'ice', label: 'guide.sector.ice' }
+                ]
             };
         },
         components: {
