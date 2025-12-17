@@ -119,6 +119,7 @@
 
 
 
+
         props: {
             routeCategories: {
                 type: Array,
@@ -128,8 +129,13 @@
                     { value: 'dry', label: 'guide.sector.dry' },
                     { value: 'ice', label: 'guide.sector.ice' }
                 ]
+            },
+            defaultRouteType: {
+                type: String,
+                default: 'sport'
             }
         },
+
 
         data(){
             return{
@@ -140,7 +146,7 @@
                 // Controls
                 routesPerPage: 10,
                 minReviews: 1,
-                routeType: 'sport', // New property for the selected route type
+                routeType: this.defaultRouteType, // Use prop for initial route type
             }
         },
 

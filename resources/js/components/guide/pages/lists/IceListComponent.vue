@@ -10,6 +10,13 @@
                 {{this.$siteData.data.ice_description}}
             </h2>
 
+            <div class="row otdoor_buttoms">
+                <div class="col-md-12">
+
+                    <mostPopularRoutesModal :routeCategories="routeCategories" :defaultRouteType="'ice'" />
+                </div>
+            </div>
+
             <div v-if="indoor_article_loading">
                 <content-loader
                     viewBox="0 0"
@@ -50,6 +57,8 @@
 
     import axios_mixin from '../../../../mixins/axios_mixin'
 
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
+
     export default {
         mixins: [
             axios_mixin
@@ -57,14 +66,22 @@
         data: function () {
             return {
                 ices: [],
-                indoor_article_loading: true
+                indoor_article_loading: true,
+
+                routeCategories: [
+                    // { value: 'sport', label: 'guide.sector.sport_climbing' },
+                    // { value: 'boulder', label: 'guide.sector.bouldering' },
+                    { value: 'dry', label: 'guide.sector.dry' },
+                    { value: 'ice', label: 'guide.sector.ice' }
+                ]
             };
         },
         components: {
             articleComponent,
             emptyPageComponent,
             ContentLoader,
-            metaData
+            metaData,
+            mostPopularRoutesModal,
         },
         mounted() {
             this.get_ices()
@@ -94,5 +111,7 @@
 </script>
 
 <style>
-
+    .otdoor_buttoms{
+        margin: 1em 0;
+    }
 </style>
