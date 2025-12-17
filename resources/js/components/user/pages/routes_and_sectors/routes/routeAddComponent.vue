@@ -277,7 +277,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .get("/article/get_category_articles/" + this.$route.params.category)
+        .get("/get_article/get_category_articles/" + this.$route.params.category)
         .then(response => {
           this.regions = response.data
           this.get_sectors_data()
@@ -289,7 +289,7 @@
       
       get_sectors_data: function(){
         axios
-        .get("/sector/")
+        .get("/get_sector/get_all_sectors/")
         .then(response => {
           this.all_sectors = response.data
         })
@@ -300,7 +300,7 @@
 
       get_sector_images(id){
         axios
-        .get("/sector/get_sector_images/" + id)
+        .get("/get_sector/get_sector_images/" + id)
         .then(response => {
           this.sector_images = response.data
           if (this.sector_images.length > 0) {
@@ -343,7 +343,7 @@
           };
 
           axios
-          .post('/route/add_route/', {
+          .post('/set_route/add_route/', {
               data: routeData,
           })
           .then(response => {
@@ -407,7 +407,7 @@
 
       get_related_routes_jsons(sectorImageId) {
         axios
-        .get("/route/get_related_routes_jsons", {
+        .get("/get_route/get_related_routes_jsons", {
           params: { sector_image_id: sectorImageId }
         })
         .then(response => {

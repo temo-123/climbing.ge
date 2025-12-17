@@ -110,7 +110,7 @@
 
             add_role(){
                 axios
-                .post("../api/role/create_role/", {
+                .post("/set_role/create_role/", {
                     role_data: this.role_data,
                     new_permissions: this.permissions_array,
                 })
@@ -124,7 +124,7 @@
 
             get_permissions(){
                 axios
-                .get("../api/parmisions_list/")
+                .get("/get_permission/parmisions_list/")
                 .then(response => {
                     this.permissions = response.data
                 })

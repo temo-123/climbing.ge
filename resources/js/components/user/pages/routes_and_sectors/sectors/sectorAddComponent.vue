@@ -613,7 +613,7 @@
 
             get_region_data: function () {
                 axios
-                .get("/article/get_category_articles/" + this.$route.params.category)
+                .get("/get_article/get_category_articles/" + this.$route.params.category)
                 .then(response => {
                     this.regions = response.data
                 })
@@ -634,7 +634,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                    .post("/sector/add_sector/", formData)
+                    .post("/set_sector/add_sector/", formData)
                     .then(response => {
                         // if(confirm('Do you want send notification about editing sector?')){
                         //     this.sand_notification()

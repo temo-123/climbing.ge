@@ -183,7 +183,7 @@
             edit_permissions(){
                 this.is_loading = true
                 axios
-                .post("/role/edit_permissions_and_role/"+this.user_id, {
+                .post("/set_role/edit_permissions_and_role/"+this.user_id, {
                     new_permissions: this.permissions_array,
                     role: this.user_role,
                 })
@@ -201,7 +201,7 @@
             del_user_permission_from_db(id){
                 if(confirm('Are you sure you want to remove this permission from the user? This action cannot be undone.')){
                     axios
-                    .post('/role/del_user_permission/'+id+'/'+this.user_id, {
+                    .post('/get_role/del_user_permission/'+id+'/'+this.user_id, {
                         _method: 'DELETE'
                     })
                     .then(response => {
@@ -213,7 +213,7 @@
 
             get_user_permissions_and_roles(){
                 axios
-                .get("/role/get_user_permissions/"+this.user_id)
+                .get("/get_role/get_user_permissions/"+this.user_id)
                 .then(response => {
                     
                     if(response.data.role.length != 0){
@@ -233,7 +233,7 @@
                 this.role_loading = true
 
                 axios
-                .get("/role/")
+                .get("/get_role/get_all_role/")
                 .then(response => {
                     this.roles = response.data
                 })
@@ -247,7 +247,7 @@
                 this.perm_loading = true
 
                 axios
-                .get("/permissions_list/")
+                .get("/get_permissin/get_all_permissions/")
                 .then(response => {
                     this.permissions = response.data
                 })

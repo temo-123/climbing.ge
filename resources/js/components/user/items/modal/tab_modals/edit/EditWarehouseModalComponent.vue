@@ -60,7 +60,7 @@
         methods: {
             get_warehouse_data(){
                     axios
-                    .get('/warehouse/get_warehouse_data/' + this.warehouse_id)
+                    .get('/get_warehouse/get_warehouse_data/' + this.warehouse_id)
                     .then(response => {
 
                         this.is_warehouse_edit_model = true
@@ -70,7 +70,7 @@
             },
             edit_warehouse(){
                     axios
-                    .post('/warehouse/edit_warehouse/' + this.warehouse_id, {
+                    .post('/set_warehouse/edit_warehouse/' + this.warehouse_id, {
                         data: this.data,
 
                         _method: 'Post'

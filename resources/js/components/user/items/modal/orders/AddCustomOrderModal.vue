@@ -169,7 +169,7 @@ export default {
     },
     methods: {
         fetchProducts() {
-            axios.get('/product/get_current_products')
+            axios.get('/get_product/get_current_products')
                 .then(response => {
                     this.products = response.data;
                 })
@@ -199,7 +199,7 @@ export default {
         },
         onProductChange(productId, productIndex) {
             if (!productId) return;
-            axios.get(`/product/get_product_options/${productId}`)
+            axios.get(`/get_product/get_product_options/${productId}`)
             .then(response => {
                 this.actyve_product_options = response.data;
             })
@@ -233,7 +233,7 @@ export default {
         },
         submitOrder() {
             const payload = { ...this.form, create_production_task: this.create_production_task };
-            axios.post('/order/add_custom_order', payload)
+            axios.post('/set_order/add_custom_order', payload)
                 .then(response => {
                     alert('Custom order added successfully');
                     this.closeModal();

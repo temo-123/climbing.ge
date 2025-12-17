@@ -99,7 +99,7 @@ export default {
     methods: {
         update(){
             axios
-            .post('../../api/siteData/edit_site_data',{
+            .post('/set_site_data/edit_site_data',{
                 // site_us_info: this.site_us_info
                 site_global_info: this.site_global_info,
                 site_ka_info: this.site_ka_info,
@@ -122,7 +122,7 @@ export default {
        
         get_site_global_data: function(){
             axios
-            .get('siteData/get_site_global_data')
+            .get('/get_site_data/get_site_global_data')
             .then(response => {
                 this.site_global_info = response.data
             })
@@ -132,7 +132,7 @@ export default {
         },
         get_site_ka_data: function(){
             axios
-            .get('siteData/get_site_ka_data')
+            .get('/get_site_data/get_site_ka_data')
             .then(response => {
                 this.site_ka_info = response.data
             })
@@ -142,7 +142,7 @@ export default {
         },
         get_site_us_data: function(){
             axios
-            .get('siteData/get_site_us_data')
+            .get('/siteData/get_site_us_data')
             .then(response => {
                 this.site_us_info = response.data
             })

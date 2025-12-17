@@ -18,37 +18,37 @@ use App\Jobs\UserNotifications;
 
 class FaworitesController extends Controller
 {
-    public function add_to_interested_events(Request $request)
-    {
-        if (Auth::user()) {
-            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->event_id)->count() > 0){
-                return 'this event are in faworite';
-            }
-            else{
-                $faworit = new Interested_event;
+    // public function add_to_interested_events(Request $request)
+    // {
+    //     if (Auth::user()) {
+    //         if(Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->event_id)->count() > 0){
+    //             return 'this event are in faworite';
+    //         }
+    //         else{
+    //             $faworit = new Interested_event;
             
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['event_id'] = $request->event_id;
+    //             $faworit['user_id'] = Auth::user()->id;
+    //             $faworit['event_id'] = $request->event_id;
 
-                $faworit -> save();
+    //             $faworit -> save();
 
-                $global_event = Event::where('id', '=', $request->event_id)->first();
-                if($global_event){
-                    $locale_event = $global_event->us_event;
-                    $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-                    $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
-                    $subject = $locale_event->title;
-                }
+    //             $global_event = Event::where('id', '=', $request->event_id)->first();
+    //             if($global_event){
+    //                 $locale_event = $global_event->us_event;
+    //                 $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
+    //                 $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
+    //                 $subject = $locale_event->title;
+    //             }
 
-                UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
+    //             UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
 
-                return 'Event added in your favorite event list successfully';
-            }
-        }
-        else{
-            return 'Plees login';
-        }
-    }
+    //             return 'Event added in your favorite event list successfully';
+    //         }
+    //     }
+    //     else{
+    //         return 'Plees login';
+    //     }
+    // }
 
     public function get_interested_events(Request $request)
     {
@@ -70,41 +70,41 @@ class FaworitesController extends Controller
         }
     }
 
-    public function del_interested_event(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->article_id)->first();
-            $fav_area ->delete();
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
+    // public function del_interested_event(Request $request)
+    // {
+    //     if (Auth::user()) {
+    //         $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->article_id)->first();
+    //         $fav_area ->delete();
+    //     }
+    //     else{
+    //         return 'Plees login!';
+    //     }
+    // }
 
 
 
-    public function add_to_favorite_outdoor_area(Request $request)
-    {
-        if (Auth::user()) {
-            if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
-                return 'This area olredy are in faworite';
-            }
-            else{
-                $faworit = new Favorite_outdoor_area();
+    // public function add_to_favorite_outdoor_area(Request $request)
+    // {
+    //     if (Auth::user()) {
+    //         if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
+    //             return 'This area olredy are in faworite';
+    //         }
+    //         else{
+    //             $faworit = new Favorite_outdoor_area();
             
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['article_id'] = $request->article_id;
+    //             $faworit['user_id'] = Auth::user()->id;
+    //             $faworit['article_id'] = $request->article_id;
                 
-                $faworit -> save();
+    //             $faworit -> save();
 
-                return 'Area eded socsesful!';
-            }
-        }
-        else{
-            // return 'Ples login';
-            return response()->json('Plees login', 401);
-        }
-    }
+    //             return 'Area eded socsesful!';
+    //         }
+    //     }
+    //     else{
+    //         // return 'Ples login';
+    //         return response()->json('Plees login', 401);
+    //     }
+    // }
 
 
     public function get_faworite_outdoor_region(Request $request)
@@ -125,14 +125,14 @@ class FaworitesController extends Controller
         }
     }
 
-    public function del_faworite_outdoor_region(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
-            $fav_area ->delete();
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
+    // public function del_faworite_outdoor_region(Request $request)
+    // {
+    //     if (Auth::user()) {
+    //         $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
+    //         $fav_area ->delete();
+    //     }
+    //     else{
+    //         return 'Plees login!';
+    //     }
+    // }
 }

@@ -140,7 +140,7 @@
                 this.is_loading = true
 
                 axios
-                .get("/mtp/mtp_pitch/get_editin_pitch/" + id)
+                .get("/get_mtp/mtp_pitch/get_editin_pitch/" + id)
                 .then(response => {
                     this.data = response.data
                 })
@@ -152,7 +152,7 @@
             save: function () {
                 this.is_loading = true
                 axios
-                .post('/mtp/mtp_pitch/mtp_pitch_edit/' + this.editing_pitch_id, {
+                .post('/set_mtp/mtp_pitch/mtp_pitch_edit/' + this.editing_pitch_id, {
                     data: this.data,
                 })
                 .then(response => {

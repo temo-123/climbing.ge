@@ -106,7 +106,7 @@
 
                 if (this.is_show_ice_sector_modal==true) {
                     axios
-                    .get('/ice_sectors/get_sector_data_for_model/'+ sector_id)
+                    .get('/get_ice_sectors/get_sector_data_for_model/'+ sector_id)
                     .then(response => {
                         this.sector = response.data
                         
@@ -131,7 +131,7 @@
 
             save_routes_sequence(){
                 axios
-                .post('/ice_sectors/routes_sequence/', {
+                .post('/set_ice_sectors/routes_sequence/', {
                     routes_sequence: this.sector_routes,
                     mtp_sequence: this.sector_mtps,
                     sector_images_sequence: this.sector_images,

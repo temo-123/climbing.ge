@@ -57,7 +57,7 @@ export default {
         },
             get_order_status(){
                 axios
-                .get("/order/get_order_status/" + this.activ_order_id)
+                .get("/get_order/get_order_status/" + this.activ_order_id)
                 .then(response => {
                     this.order_status = response.data
 

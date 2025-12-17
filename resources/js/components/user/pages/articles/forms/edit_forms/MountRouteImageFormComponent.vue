@@ -112,7 +112,7 @@
         methods: {
             get_old_mount_routes_images(){
                 axios
-                .get("/mount_route/get_mount_routes_images/"+this.$route.params.id)
+                .get("/get_mount_route/get_mount_routes_images/"+this.$route.params.id)
                 .then(response => {
                     this.mount_route_old_images = response.data
                 })
@@ -123,7 +123,7 @@
             del_old_mount_routes_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("/mount_route/del_mount_route_image/"+image_id)
+                    .delete("/get_mount_route/del_mount_route_image/"+image_id)
                     .then(response => {
                         this.get_old_mount_routes_images()
                     })

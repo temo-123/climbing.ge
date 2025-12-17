@@ -279,7 +279,7 @@
                 }
                 
                 axios
-                .post('/article/edit_article/' + this.article_id, 
+                .post('/set_article/edit_article/' + this.article_id, 
                     formData,
                 )
                 .then(response => {

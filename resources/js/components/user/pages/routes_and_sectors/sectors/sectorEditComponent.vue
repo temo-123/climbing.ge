@@ -631,7 +631,7 @@
             del_sector_image_from_db(image_id) {
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("/sector/del_sector_image_from_db/"+image_id)
+                    .delete("/set_sector/del_sector_image_from_db/"+image_id)
                     .then(response => {
                         this.get_sector_images()
                     })
@@ -643,7 +643,7 @@
 
             get_region_data: function (category) {
                 axios
-                .get("/article/get_category_articles/" + category)
+                .get("/get_article/get_category_articles/" + category)
                 .then(response => {
                     this.regions = response.data
                 })
@@ -655,7 +655,7 @@
             get_editing_sector_data: function(){
                 this.is_loading = true
                 axios
-                .get("/sector/get_sector_editing_data/"+this.$route.params.id)
+                .get("/set_sector/get_sector_editing_data/"+this.$route.params.id)
                 .then(response => {
                     this.data = response.data.sector
                     // console.log(response.data.article.category);
@@ -671,7 +671,7 @@
 
             get_sector_images: function(){
                 axios
-                .get("/sector/get_sector_images/"+this.$route.params.id)
+                .get("/get_sector/get_sector_images/"+this.$route.params.id)
                 .then(response => {
                     this.sector_old_images = response.data
                 })
@@ -694,7 +694,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post("/sector/edit_sector/"+this.$route.params.id, formData)
+                .post("/set_sector/edit_sector/"+this.$route.params.id, formData)
                 .then(response => {
                     this.go_back(true)
                 })

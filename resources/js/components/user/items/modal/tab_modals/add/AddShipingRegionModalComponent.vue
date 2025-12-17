@@ -59,7 +59,7 @@
         methods: {
             add_region(){
                     axios
-                    .post('/shiped_region/add_region/', {
+                    .post('/set_shiped_region/add_region/', {
                         adding_data: this.adding_data
                     })
                     .then(Response => {

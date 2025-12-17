@@ -56,7 +56,7 @@
         methods: {
             get_sectors(){
                 axios
-                .get("/sector_local_images/get_all_sector_local_images/")
+                .get("/get_sector_local_images/get_all_sector_local_images/")
                 .then(response => {
                     this.data_for_tab = [];
 
@@ -103,7 +103,7 @@
             del_sector_local_images(id){
                 if(confirm('Are you sure, you want delite itt?')){
                     axios
-                    .post('../../api/sector_local_images/'+id, {
+                    .post('/set_sector_local_image/del_sector_local_images/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

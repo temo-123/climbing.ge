@@ -301,7 +301,7 @@
     methods: {
       get_region_data: function(active_article){
         axios
-        .get("/article/get_category_articles/" + active_article.category)
+        .get("/get_article/get_category_articles/" + active_article.category)
         .then(response => {
           this.regions = response.data
           
@@ -318,7 +318,7 @@
 
       get_article_global_data(id){
         axios
-        .get("/article/get_editing_data/" + id)
+        .get("/get_article/get_editing_data/" + id)
         .then(response => {
           this.get_region_data(response.data.global_article);
         })
@@ -329,7 +329,7 @@
       
       get_sectors_data: function(){
         axios
-        .get("/sector/")
+        .get("/get_sector/get_all_sectors/")
         .then(response => {
           this.all_sectors = response.data
 
@@ -346,7 +346,7 @@
         this.is_loading = true
 
         axios
-        .get("/route/get_route_editing_data/"+this.$route.params.id,)
+        .get("/set_route/get_route_editing_data/"+this.$route.params.id,)
         .then(response => {
           this.data = response.data
 
@@ -408,7 +408,7 @@
           };
 
           axios
-          .post('../../api/route/edit_route/' + this.$route.params.id, {
+          .post('/set_route/edit_route/' + this.$route.params.id, {
               data: routeData,
           })
           .then(response => {

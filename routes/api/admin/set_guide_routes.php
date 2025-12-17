@@ -81,7 +81,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::get('/get_comments_complaints', 'get_comments_complaints');
         Route::get('/get_actyve_comment/{comment_id}', 'get_actyve_comment');
 
-        Route::post('/create_comment/{article_id}', 'create_comment');
+        // Route::post('/create_comment/{article_id}', 'create_comment');
         Route::post('/confirm_email/{email}', 'confirm_email');
         Route::post('/add_comment_complaint', 'add_comment_complaint');
         Route::post('/make_decision', 'make_decision');
@@ -90,6 +90,17 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
 
         Route::delete('/del_comment/{comment_id}', 'del_comment');
     });
+
+
+
+    // Route::controller(CommentController::class)->prefix('set_guide_comment')->group( function() {
+    //     // Route::post('/create_comment/{article_id}', 'create_comment');
+    //     Route::post('/confirm_email/{email}', 'confirm_email');
+    //     Route::post('/add_comment_complaint', 'add_comment_complaint');
+    //     Route::post('/make_decision', 'make_decision');
+    //     Route::post('/hide_comment/{comment_id}', 'hide_comment');
+    //     Route::delete('/del_comment/{comment_id}', 'del_comment');
+    // });
 
     /*
     *   Sport climbing routes reiting
@@ -238,14 +249,6 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
     });
 
-    Route::controller(CommentController::class)->prefix('set_guide_comment')->group( function() {
-        Route::post('/create_comment/{article_id}', 'create_comment');
-        Route::post('/confirm_email/{email}', 'confirm_email');
-        Route::post('/add_comment_complaint', 'add_comment_complaint');
-        Route::post('/make_decision', 'make_decision');
-        Route::post('/hide_comment/{comment_id}', 'hide_comment');
-        Route::delete('/del_comment/{comment_id}', 'del_comment');
-    });
 
     Route::controller(RoutesReitingController::class)->prefix('set_route_review')->group( function() {
         Route::post('/create_route_review/{route_id}', 'create_route_review');

@@ -62,7 +62,7 @@ export default {
     methods: {
         update(){
             axios
-            .post('../../api/siteData/edit_site_us_data',{
+            .post('/set_site_data/edit_site_us_data',{
                 site_us_info: this.site_us_info
             })
             .then(response => {
@@ -76,7 +76,7 @@ export default {
 
         get_site_us_data: function(){
             axios
-            .get('../../api/siteData/get_site_us_data')
+            .get('/get_site_data/get_site_us_data')
             .then(response => {
                 this.site_us_info = response.data
             })

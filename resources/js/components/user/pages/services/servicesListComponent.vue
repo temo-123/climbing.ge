@@ -92,7 +92,7 @@
             del_service(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/service/del_service/'+id, {
+                    .post('/set_service/del_service/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

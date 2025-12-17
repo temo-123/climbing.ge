@@ -92,6 +92,7 @@
             "no_feedbacks": "No Feedbacks"
         },
 
+
         "sector": {
             "name": "Sector Name",
             "shade after 10.00 am": "Shaded after 10:00 AM",
@@ -110,7 +111,36 @@
             "authers_list": "You can also see sport climbing route authors and their contacts",
             "authers_list_button": "Check Route Authors",
             "auther_name": "Author Name",
-            "auther_routes_quantity": "Number of Routes"
+            "auther_routes_quantity": "Number of Routes",
+            "routes_list_button": "Popular Routes List",
+            "modal_title": "Popular Routes List",
+            "sport_climbing_routes_title": "Popular Sport Climbing Routes",
+            "boulder_routes_title": "Popular Boulder Routes",
+            "route_name": "Route Name",
+            "reviev_count": "Review Count",
+            "stars": "Stars",
+            "region": "Region",
+            "sector": "Sector",
+            "spot_name": "Spot",
+
+
+            "countinue": "Continue",
+            "per_page": "Per page",
+            "routes_per_page": "Routes to show",
+            "min_reviews": "Minimum reviews",
+            "all_reviews": "All reviews",
+            "routes": "routes",
+            "reviews": "reviews",
+            "loading_sport_routes": "Loading sport routes...",
+            "loading_boulder_routes": "Loading boulder routes...",
+            "no_popular_sport_routes": "No popular sport routes found",
+            "no_popular_boulder_routes": "No popular boulder routes found",
+            "no_reviews_available_boulder": "No reviews available for boulder routes yet",
+
+            "be_first_to_review_boulder": "Be the first to review a boulder route!",
+            "no_popular_routes_any": "No popular routes found",
+            "be_first_to_review_any": "Be the first to review any route!",
+            "be_first_to_review_sport": "Be the first to review a sport route!"
         },
 
         "article": {

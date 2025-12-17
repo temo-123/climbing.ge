@@ -38,13 +38,24 @@
         mounted() {
             this.get_outdoor()
         },
+
         watch: {
             '$route' (to, from) {
                 this.get_outdoor(),
                 window.scrollTo(0,0)
             }
         },
+        
+        updated() {
+            // Check for navigation parameters when component updates
+            this.$nextTick(() => {
+                if (this.$refs.article_page && (this.$route.query.sector || this.$route.query.route)) {
+                    this.$refs.article_page.handleRouteNavigation();
+                }
+            });
+        },
         methods: {
+
             get_outdoor(){
                 this.outdoor = []
                 axios
@@ -52,9 +63,15 @@
                 .then(response => {
                     this.outdoor = response.data
 
-                    this.$refs.article_page.update_similar_articles_component(this.outdoor.global_data.id)
+                    // Wait for the article page to be fully rendered before handling navigation
+                    this.$nextTick(() => {
+                        if (this.$refs.article_page) {
+                            this.$refs.article_page.update_similar_articles_component(this.outdoor.global_data.id)
+                        }
+                    })
                 })
                 .catch(error =>{
+                    console.error('Error loading outdoor article:', error);
                 })
                 .finally(() => this.article_loading = false);
             },

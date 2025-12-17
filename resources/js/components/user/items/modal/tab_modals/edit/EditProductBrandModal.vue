@@ -135,7 +135,7 @@
             // },
             get_editing_brand_data(id){
                 axios
-                .get('/brand/get_brand/' + id)
+                .get('/get_brand/get_brand/' + id)
                 .then(response => {                    
                     this.data = {
                         global_brand: {},
@@ -158,7 +158,7 @@
                 this.is_loading = true,
 
                 axios
-                .post("/brand/edit_brand/" + this.actyve_id, {
+                .post("/set_brand/edit_brand/" + this.actyve_id, {
                     data: this.data,
 
                     _method: 'Post'

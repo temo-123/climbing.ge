@@ -60,7 +60,7 @@
         methods: {
             add_warehouse(){
                     axios
-                    .post('/warehouse/add_warehouse/', {
+                    .post('/set_warehouse/add_warehouse/', {
                         data: this.data,
 
                         _method: 'Post'

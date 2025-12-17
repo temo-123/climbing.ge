@@ -85,7 +85,7 @@ export default {
         get_activ_order(action){
                 // alert(action)
                 axios
-                .get("/order/get_activ_order/"+this.activ_order_id)
+                .get("/get_order/get_activ_order/"+this.activ_order_id)
                 .then(response => {
                     this.activ_order_status = response.data
                     // this.selected_order_status = response.data.status
@@ -128,7 +128,7 @@ export default {
                     this.order_status_updating_loader = true
 
                     axios
-                    .post("/order/edit_order_status/"+this.activ_order_id,{
+                    .post("/set_order/edit_order_status/"+this.activ_order_id,{
                         status: this.selected_order_status
                     })
                     .then(response => {

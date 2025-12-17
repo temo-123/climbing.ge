@@ -47,7 +47,7 @@ export default {
     methods: {
         get_purchules(){
             axios
-            .get("/order/get_user_purchules/")
+            .get("/get_order/get_user_purchules/")
             .then(response => {
                 this.data_for_tab = [],
                 this.data_for_tab.push({

@@ -99,7 +99,7 @@
             },
             get_all_tasks_category(){
                 axios
-                .get("/task/task_category/get_all_task_categories/")
+                .get("/get_task/task_category/get_all_task_categories/")
                 .then(response => {
                     this.tasks_categories = response.data
                 })
@@ -109,7 +109,7 @@
             }, 
             get_users(){
                 axios
-                .get("/user/get_worker_users/")
+                .get("/get_user/get_worker_users/")
                 .then(response => {
                     this.users = response.data
                 })
@@ -119,7 +119,7 @@
             }, 
             show_task_detals(task_id){
                 axios
-                .get("/task/get_task_data/"+task_id)
+                .get("/get_task/get_task_data/"+task_id)
                 .then(response => {
                     this.data = response.data
                 })
@@ -130,7 +130,7 @@
             update_task(){
                 this.is_loading = true
                 axios
-                .post('/task/update_task/'+this.task_id, {
+                .post('/set_task/update_task/'+this.task_id, {
                     data: this.data,
 
                     _method: 'Post'

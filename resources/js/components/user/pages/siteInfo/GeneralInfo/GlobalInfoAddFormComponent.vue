@@ -87,7 +87,7 @@
             add_global_info() {
                 this.is_loading = true
                 axios
-                .post('../../api/general_info/', {
+                .post('/set_general_info/add_general_info/', {
                     data: this.data,
                     _method: 'POST'
                 })

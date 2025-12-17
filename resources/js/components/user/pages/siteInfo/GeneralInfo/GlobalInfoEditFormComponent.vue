@@ -87,7 +87,7 @@
             get_editing_general_info_data() {
                 this.is_loading = true
                 axios
-                .get('../../api/general_info/' + this.editing_general_info_id)
+                .get('/set_general_info/get_editing_general_info/' + this.editing_general_info_id)
                 .then(response => {
                     this.data.title = response.data['title']
                     this.data.us_text = response.data['text_us']
@@ -101,7 +101,7 @@
                 this.is_loading = true
 
                 axios
-                .post('../../api/general_info/' + this.editing_general_info_id, {        
+                .post('/set_general_info/edit_general_info/' + this.editing_general_info_id, {        
                     data: this.data,
                     _method: 'PATCH'
                 })

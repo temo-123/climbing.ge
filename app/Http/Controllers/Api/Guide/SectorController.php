@@ -148,9 +148,10 @@ class SectorController extends Controller
     //     }
     // }
 
-    public function get_sector_and_routes(Request $request)
+
+    public function get_sector_and_routes(Request $request, $article_id)
     {
-        $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->orderBy('num')->get();
+        $sectors = Sector::where('article_id','=', $article_id)->where('published', '=', 1)->orderBy('num')->get();
         $area_info = array();
 
         if(count($sectors)){

@@ -106,7 +106,7 @@
 
             edit_sale_code(sale_code_id){
                 axios
-                .post('/sale_code/' + sale_code_id, {        
+                .post('/set_sale_code/' + sale_code_id, {        
                     editing_data: this.form_data,
                     _method: 'PATCH'
                 })
@@ -121,7 +121,7 @@
 
             get_editing_sale_code_data(sale_code_id){
                 axios
-                .get("/sale_code/"+sale_code_id)
+                .get("/get_sale_code/"+sale_code_id)
                 .then(response => {
                     // this.quick_comment = response.data
                     this.form_data = {

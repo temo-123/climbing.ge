@@ -99,7 +99,7 @@
             },
             show_task_detals(task_id){
                 axios
-                .get("/task/get_task_data/"+task_id)
+                .get("/get_task/get_task_data/"+task_id)
                 .then(response => {
                     this.data.status = response.data.status
                     this.data.worker_comment = response.data.worker_comment
@@ -111,7 +111,7 @@
             edit_task_status(){
                 this.is_loading = true
                 axios
-                .post('/task/update_task_status/'+this.task_id, {
+                .post('/set_task/update_task_status/'+this.task_id, {
                     data: this.data,
 
                     _method: 'Post'

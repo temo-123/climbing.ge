@@ -20,10 +20,11 @@ class Sector extends Model
         'in_shade_after_10',
         'in_shade_after_15',
 
+
         'slabby',
         'vertical',
         'roof',
-        'owerhang',
+        'overhang',
         'is_helmet',
 
         "article_id",

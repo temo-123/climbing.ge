@@ -50,7 +50,7 @@
             del_xuser(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("non_registered_commenter/del_non_registered_commenter/"+id)
+                    .delete("/set_non_registered_commenter/del_non_registered_commenter/"+id)
                     .then(response => {;
                         this.get_users()
                     })
@@ -64,7 +64,7 @@
                 this.data_for_tab = [],
 
                 axios
-                .get("non_registered_commenter/get_non_registered_commenter/")
+                .get("/get_non_registered_commenter/get_non_registered_commenter/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,

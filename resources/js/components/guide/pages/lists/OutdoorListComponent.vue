@@ -12,10 +12,12 @@
 
             <sectorQuantyt />
 
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- <p>Alse you can see sport climbing routes authers and them conts.</p> -->
+            <div class="row otdoor_buttoms">
+                <div class="col-md-6">
                     <routesAutersModal />
+                </div>
+                <div class="col-md-6">
+                    <mostPopularRoutesModal />
                 </div>
             </div>
 
@@ -30,19 +32,16 @@
                 </content-loader>
             </div>
 
-            <div v-else>
-                <div class="row" v-if="this.regions.length > 0">
-                    <div class="container articles_filter_bar">
-                        <div class="col-md-6 col-sm-6">
-                            <!-- Select region and filtred spots by region -->
-                            {{ $t('guide.article.region_filtr') }}
-                        </div>
-                        <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
-                            <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
-                                <option value="All">{{ $t('all') }}</option>
-                                <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
-                            </select>
-                        </div>
+            <div class="row" v-else>
+                <div class="container articles_filter_bar" v-if="this.regions.length > 0">
+                    <div class="col-md-6 col-sm-6">
+                        {{ $t('guide.article.region_filtr') }}
+                    </div>
+                    <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
+                        <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
+                            <option value="All">{{ $t('all') }}</option>
+                            <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
+                        </select>
                     </div>
                 </div>
             </div>
@@ -168,7 +167,8 @@
     import metaData from '../../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
 
-    import RoutesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
 
     export default {
         data: function () {
@@ -194,7 +194,8 @@
             StackModal,
             metaData,
             ContentLoader,
-            RoutesAutersModal
+            routesAutersModal,
+            mostPopularRoutesModal
         },
         mounted() {
             this.get_outdoor_articles()
@@ -316,5 +317,8 @@
     }
     .modal .fade .modal-dialog {
         width: 100% !important;
+    }
+    .otdoor_buttoms{
+        margin: 1em 0;
     }
 </style>

@@ -338,7 +338,7 @@
         methods: {
             get_tour_category: function(){
                 axios
-                .get("/tour/category/get_all_categories/")
+                .get("/get_tour/category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })
@@ -381,7 +381,7 @@
                 this.data_for_tab = []
                 this.is_loading = true
                 axios
-                .get("tour/get_editing_tour/"+this.$route.params.id)
+                .get("/set_tour/get_editing_tour/"+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
 
@@ -407,7 +407,7 @@
             get_tour_images(){
                 this.data_for_tab = []
                 axios
-                .get("tour/get_tour_images/"+this.$route.params.id)
+                .get("/get_tour/get_tour_images/"+this.$route.params.id)
                 .then(response => {
                     this.tour_old_images = response.data
                 })
@@ -418,7 +418,7 @@
             del_tour_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("tour/del_tour_image/"+image_id)
+                    .delete("/set_tour/del_tour_image/"+image_id)
                     .then(response => {
                         this.get_tour_images()
                     })
@@ -477,7 +477,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('tour/edit_tour/'+this.$route.params.id, 
+                .post('/set_tour/edit_tour/'+this.$route.params.id, 
                     formData
                 )
                 .then(response => {

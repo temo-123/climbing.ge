@@ -320,7 +320,7 @@
 
             get_site_global_data(){
                 axios
-                .get('/siteData/get_site_global_data')
+                .get('/get_site_data/get_site_global_data')
                 .then(response => {
                     this.site_info = response.data
                 })
@@ -330,7 +330,7 @@
             },
             get_site_ka_data(){
                 axios
-                .get('/siteData/get_site_ka_data')
+                .get('/get_site_data/get_site_ka_data')
                 .then(response => {
                     this.site_ka_info = response.data
                 })
@@ -350,7 +350,7 @@
             // },
             get_site_us_data(){
                 axios
-                .get('/siteData/get_site_us_data')
+                .get('/get_site_data/get_site_us_data')
                 .then(response => {
                     this.site_us_info = response.data
                 })
@@ -362,7 +362,7 @@
 
             get_social_links(){
                 axios
-                .get('site_social_links/get_site_social_links')
+                .get('/get_site_social_links/get_site_social_links')
                 .then(response => {
                     this.site_social_links = response.data
                 })
@@ -372,7 +372,7 @@
             },
             add_social_link(){
                 axios
-                .post('site_social_links/add_site_social_links', {        
+                .post('/set_site_social_links/add_site_social_links', {        
                     data: this.form_data,
 
                     _method: 'post'
@@ -395,7 +395,7 @@
             del_social_link(link_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('site_social_links/del_site_social_links/'+link_id, {
+                    .post('/set_site_social_links/del_site_social_links/'+link_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -407,7 +407,7 @@
 
             get_general_info: function(){
                 axios
-                .get('/general_info')
+                .get('/get_general_info/get_all_general_info')
                 .then(response => {
                     this.general_infos = response.data
                     this.general_info_reset_id++
@@ -419,7 +419,7 @@
             del_general_info(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../api/general_info/'+id, {
+                    .post('/set_general_info/del_general_info/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

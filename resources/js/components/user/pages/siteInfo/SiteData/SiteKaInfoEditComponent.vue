@@ -63,7 +63,7 @@ export default {
     methods: {
         update(){
             axios
-            .post('../../api/siteData/edit_site_ka_data',{
+            .post('/set_site_data/edit_site_ka_data',{
                 site_ka_info: this.site_ka_info
             })
             .then(response => {
@@ -77,7 +77,7 @@ export default {
 
         get_site_ka_data: function(){
             axios
-            .get('../../api/siteData/get_site_ka_data')
+            .get('/get_site_data/get_site_ka_data')
             .then(response => {
                 this.site_ka_info = response.data
             })

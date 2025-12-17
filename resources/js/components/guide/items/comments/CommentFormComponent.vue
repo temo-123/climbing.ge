@@ -405,7 +405,7 @@
                 this.comment_loader = true
                 this.data.is_verify_isset = this.is_verify_isset
                 axios
-                .post('/set_guide_comment/create_comment/' + this.id, {
+                .post('/set_guide_comment_by_gest/create_comment/' + this.id, {
                     data: this.data,
                     answer_array: this.answer_array
                 })

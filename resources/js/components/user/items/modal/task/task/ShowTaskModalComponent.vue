@@ -74,7 +74,7 @@
             show_task_detals(task_id){
                 this.is_loading = true
                 axios
-                .get("/task/get_task_data/"+task_id)
+                .get("/get_task/get_task_data/"+task_id)
                 .then(response => {
                     this.task = response.data
                 })

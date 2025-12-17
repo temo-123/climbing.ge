@@ -12,17 +12,37 @@
                     </a>
                 </li>
 
+
                 <li v-if="this.$route.name == 'outdoor'">
                     <a @click.prevent="scrollToSection('routes')">
                         <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
-                    <ul v-if="sectors.length > 0" class="submenu">
-                        <li v-for="sector in sectors" :key="sector.sector.id">
-                            <a @click.prevent="scrollToSection('sector-' + sector.sector.id)">
-                                <span class="text-primary cursor_pointer">{{ sector.sector.name }}</span>
-                            </a>
-                        </li>
+
+
+
+                    <ul v-if="sectors && sectors.length > 0" class="submenu">
+                        <template v-for="sector in sectors">
+                            <!-- Handle direct sector objects (no local images) -->
+                            <li v-if="sector && sector.sector && sector.sector.id" :key="sector.sector.id">
+                                <a @click.prevent="scrollToSection('sector-' + sector.sector.id)">
+                                    <span class="text-primary cursor_pointer">{{ sector.sector.name || 'Unnamed Sector' }}</span>
+                                </a>
+                            </li>
+                            
+                            <!-- Handle sectors wrapped in local_images structure -->
+                            <li v-else-if="sector && sector.sectors && sector.sectors.length > 0" v-for="nestedSector in sector.sectors" :key="nestedSector.sector.id">
+                                <a v-if="nestedSector && nestedSector.sector && nestedSector.sector.id" @click.prevent="scrollToSection('sector-' + nestedSector.sector.id)">
+                                    <span class="text-primary cursor_pointer">{{ nestedSector.sector.name || 'Unnamed Sector' }}</span>
+                                </a>
+                            </li>
+                        </template>
                     </ul>
+                    <div v-else-if="sectors && sectors.length === 0" class="text-muted" style="padding-left: 20px;">
+                        <small>No sectors found</small>
+                    </div>
+                    <div v-else class="text-muted" style="padding-left: 20px;">
+                        <small>Loading sectors...</small>
+                    </div>
                 </li>
 
                 <li>
@@ -94,7 +114,10 @@
                 window_scrollY: window.scrollY,
             }
         },
+
         mounted() {
+            // console.log('RightMenuComponent mounted, article_id:', this.article_id);
+            // console.log('Route name:', this.$route.name);
             this.get_local_bisnes_for_article()
             this.get_sectors_for_article()
             this.handleScroll()
@@ -120,6 +143,7 @@
                 }
             },
 
+
             get_local_bisnes_for_article(){
                 axios
                 .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
@@ -132,13 +156,22 @@
 
             get_sectors_for_article(){
                 if (this.article_id) {
+                    const url = '/get_sector/get_sector_and_routes/' + this.article_id;
+                    
                     axios
-                    .get('/get_sector/get_sector_and_routes/' + this.article_id)
+                    .get(url)
                     .then(response => {
-                        this.sectors = response.data
+                        if (response.data && Array.isArray(response.data)) {
+                            this.sectors = response.data;
+                        } else {
+                            this.sectors = [];
+                        }
                     })
                     .catch(error =>{
+                        this.sectors = [];
                     })
+                } else {
+                    this.sectors = [];
                 }
             },
 

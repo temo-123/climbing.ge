@@ -159,14 +159,6 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     //     Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
     //     Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
     // });
-    /*
-    *   Export routes
-    */
-    Route::controller(ExportController::class)->prefix('set_export')->group(function() {
-        Route::get('/categories', 'getUniqueCategories');
-        Route::get('/articles/{category}', 'getArticlesByCategory');
-        Route::post('/articles_pdf', 'exportArticlesPdf');
-    });
 
 
     // /*
@@ -210,9 +202,17 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     /*
     *   Export routes
     */
+    // Route::controller(ExportController::class)->prefix('set_export')->group(function() {
+    //     Route::get('/categories', 'getUniqueCategories');
+    //     Route::get('/articles/{category}', 'getArticlesByCategory');
+    //     // Editing routes moved to adminAction.php
+    // });
+    /*
+    *   Export routes
+    */
     Route::controller(ExportController::class)->prefix('set_export')->group(function() {
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
-        // Editing routes moved to adminAction.php
+        Route::post('/articles_pdf', 'exportArticlesPdf');
     });
 });

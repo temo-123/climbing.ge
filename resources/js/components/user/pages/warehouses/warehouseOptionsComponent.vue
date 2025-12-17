@@ -171,7 +171,7 @@
 
             getWarehouseProductOptions() {
                 this.loading = true;
-                axios.get(`/warehouse/get_warehouse_product_options/${this.$route.params.id}`)
+                axios.get(`/get_warehouse/get_warehouse_product_options/${this.$route.params.id}`)
                 .then(response => {
                     this.product_options = response.data
                     
@@ -185,7 +185,7 @@
 
             getCurentWarehouse(){
                 axios
-                .get('/warehouse/get_warehouse_data/' + this.$route.params.id)
+                .get('/get_warehouse/get_warehouse_data/' + this.$route.params.id)
                 .then(response => {
                     this.warehouse = response.data
                 })
@@ -195,7 +195,7 @@
             getAvailableOptions() {
                 // alert(this.newOption.product_id)
                 if (this.newOption.product_id) {
-                    axios.get(`/product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                     })
@@ -231,7 +231,7 @@
 
             deleteOption(option) {
                 if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
-                    axios.delete(`/warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
+                    axios.delete(`/set_warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
                     .then(response => {
                         this.getWarehouseProductOptions();
                     })
@@ -264,7 +264,7 @@
                     this.deleteOption(option);
                 } else {
                     // Update the quantity
-                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                    axios.post(`/set_warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
                     .then(response => {
@@ -302,7 +302,7 @@
                     this.deleteOption(option);
                 } else {
                     // Update the quantity
-                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                    axios.post(`/set_warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
                     .then(response => {

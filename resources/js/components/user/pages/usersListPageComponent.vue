@@ -90,7 +90,7 @@
                 this.data_for_tab = [],
 
                 axios
-                .get("/user/get_all_users/")
+                .get("/get_user/get_all_users/")
                 .then(response => {
                     this.data_for_tab.push
                                         ({  
@@ -147,7 +147,7 @@
             },
             get_roles(){
                 axios
-                .get("/role/")
+                .get("/get_role/get_all_roles/")
                 .then(response => {
                     this.data_for_tab.push
                                         ({  
@@ -194,7 +194,7 @@
             },
             get_parmisions(){
                 axios
-                .get("/parmisions_list/")
+                .get("/get_permission/get_all_parmisions/")
                 .then(response => {
                     this.data_for_tab.push
                                         ({  
@@ -247,7 +247,7 @@
             del_user(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/user/del_user/'+id, {
+                    .post('/set_user/del_user/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -267,7 +267,7 @@
             del_user_pemisino_from_db(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/role/del_user_pemisino/'+id+'/'+this.action_user, {
+                    .post('/set_role/del_user_pemisino/'+id+'/'+this.action_user, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -281,7 +281,7 @@
             del_role(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/role/del_role/'+id, {
+                    .post('/set_role/del_role/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

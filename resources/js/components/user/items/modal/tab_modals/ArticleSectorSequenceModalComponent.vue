@@ -80,7 +80,7 @@
 
                 // if (this.is_show_sector_modal==true) {
                     axios
-                    .get('/sector/get_spot_sectors_data_for_model/'+ article_id)
+                    .get('/get_sector/get_spot_sectors_data_for_model/'+ article_id)
                     .then(response => {
                         this.sector_sequence = response.data
                         this.is_show_sector_modal=true
@@ -102,7 +102,7 @@
 
             save_sector_sequence(){
                 axios
-                .post('/sector/save_sector_sequence/', {
+                .post('/set_sector/save_sector_sequence/', {
                     new_sector_sequence: this.sector_sequence,
                 })
                 .then((response)=> { 

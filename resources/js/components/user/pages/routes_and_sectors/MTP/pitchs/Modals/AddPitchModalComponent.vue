@@ -135,7 +135,7 @@
             save: function () {
                 this.is_loading = true
                 axios
-                .post('/mtp/mtp_pitch/mtp_pitch_add/', {
+                .post('/set_mtp/mtp_pitch/mtp_pitch_add/', {
                     data: this.data,
                 })
                 .then(response => {

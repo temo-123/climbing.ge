@@ -87,21 +87,21 @@
         methods: {
             get_region_data: function () {
                 axios
-                .get("/article/get_category_articles/ice")
+                .get("/get_article/get_category_articles/ice")
                 .then(response => {
                     this.regions = response.data
                 })
             },
             get_editing_region_data: function () {
                 axios
-                .get("/live_camera/get_editing_live_camera/" + this.editing_camera_id)
+                .get("/get_live_camera/get_editing_live_camera/" + this.editing_camera_id)
                 .then(response => {
                     this.data = response.data
                 })
             },
             edit_live_camera(){
                     axios
-                    .post('/live_camera/edit_live_camera/' + this.editing_camera_id, {
+                    .post('/set_live_camera/edit_live_camera/' + this.editing_camera_id, {
                         data: this.data,
                         _method: 'post',
                     })

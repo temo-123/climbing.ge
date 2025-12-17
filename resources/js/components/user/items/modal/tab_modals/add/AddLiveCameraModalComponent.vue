@@ -85,14 +85,14 @@
         methods: {
             get_region_data: function () {
                 axios
-                .get("/article/get_category_articles/ice")
+                .get("/get_article/get_category_articles/ice")
                 .then(response => {
                     this.regions = response.data
                 })
             },
             add_live_camera(){
                     axios
-                    .post('/live_camera/add_live_camera/', {
+                    .post('/set_live_camera/add_live_camera/', {
                         data: this.data,
 
                         _method: 'Post'

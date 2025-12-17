@@ -45,14 +45,32 @@ class RouteController extends Controller
             ->get();
     }
 
+
     public function routes_authers() {
         $routes = Route::get('author');
 
         $routes_authors = [];
 
         foreach ($routes as $route) {
-            array_push($routes_authors, $route->author);
+            // Split author names by the specified symbols
+            $author = trim($route->author);
+            if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                
+                // Clean up each author name (trim spaces and handle capitalization)
+                foreach ($split_authors as $split_author) {
+                    $clean_author = trim($split_author);
+                    if (!empty($clean_author)) {
+                        // Capitalize first letter of each word for consistency
+                        $clean_author = ucwords(strtolower($clean_author));
+                        array_push($routes_authors, $clean_author);
+                    }
+                }
+            }
         }
+        
         $full_routes_authors = array_diff($routes_authors, [null, "", " "]);
 
         $authors = array_count_values($full_routes_authors);
@@ -198,6 +216,7 @@ class RouteController extends Controller
     //     return $route;
     // }
 
+
     public function get_related_routes_jsons(Request $request)
     {
         $sectorImageId = strip_tags($request->sector_image_id);
@@ -213,6 +232,110 @@ class RouteController extends Controller
 
         // Return only the JSON data
         return $relatedJsons->pluck('json');
+    }
+
+
+
+
+    public function get_most_popular_routes($route_type)
+    {
+        $category = $route_type === 'boulder' ? 'bouldering' : 'sport climbing';
+        $perPage = request('per_page', 10);
+        $minReviews = request('min_reviews', 1);
+        
+        // Validate per_page values
+        $validPerPage = [5, 10, 15, 25, 50];
+        if (!in_array($perPage, $validPerPage)) {
+            $perPage = 10;
+        }
+        
+        // Validate min_reviews
+        $minReviews = max(1, (int)$minReviews);
+        
+        $routes = Route::where('category', $category)
+            ->with(['review', 'sector', 'sector.article'])
+            ->get()
+            ->map(function ($route) {
+                $reviewCount = $route->review->count();
+                $averageStars = $reviewCount > 0 
+                    ? round($route->review->avg('stars'), 1) 
+                    : 0;
+                
+
+
+
+                // Get region and spot name through article relationship
+                $regionName = 'Unknown Region';
+                $spotName = 'Unknown Spot';
+                $articleUrlTitle = null;
+                if ($route->sector && $route->sector->article) {
+                    $article = $route->sector->article;
+                    
+                    // Get region
+                    $regions = $article->outdoor_region;
+                    if ($regions && $regions->count() > 0) {
+                        // Try us_name first, then ka_name
+                        $region = $regions->first();
+                        $regionName = $region->us_name ?: $region->ka_name ?: 'Unknown Region';
+                    }
+                    
+                    // Get spot name (article title)
+                    $localeArticle = $article->global_article_us ?: $article->global_article_ka;
+                    if ($localeArticle) {
+                        $spotName = $localeArticle->title ?: 'Unknown Spot';
+                    }
+                    
+                    // Get article URL title for navigation
+                    $articleUrlTitle = $article->url_title;
+                }
+                
+
+
+
+
+                return [
+                    'name' => $route->name ?? 'Unnamed Route',
+                    'review_count' => $reviewCount,
+                    'stars' => $averageStars,
+                    'region' => $regionName,
+                    'spot_name' => $spotName,
+                    'article_url_title' => $articleUrlTitle,
+
+                    'sector' => $route->sector->name ?? 'Unknown Sector',
+                    'route_id' => $route->id,
+                    'grade' => $route->grade,
+                    'or_grade' => $route->or_grade,
+                    'height' => $route->height,
+                    'sector_id' => $route->sector->id ?? null,
+                    'article_id' => $route->sector->article_id ?? null
+                ];
+            })
+            ->filter(function ($route) use ($minReviews) {
+                return $route['review_count'] >= $minReviews;
+            })
+            ->sortByDesc(function ($route) {
+                // Sort by stars first, then by review count
+                return [$route['stars'], $route['review_count']];
+            })
+            ->values();
+
+        // Convert to paginated collection
+        $currentPage = request('page', 1);
+        $total = $routes->count();
+        $start = ($currentPage - 1) * $perPage;
+        $paginatedRoutes = $routes->slice($start, $perPage)->values();
+        
+        return response()->json([
+            'data' => $paginatedRoutes,
+            'pagination' => [
+                'current_page' => (int)$currentPage,
+                'per_page' => (int)$perPage,
+                'total' => $total,
+                'last_page' => ceil($total / $perPage),
+                'from' => $total > 0 ? $start + 1 : 0,
+                'to' => min($start + $perPage, $total)
+            ]
+        ]);
     }
 
     public function get_route_jsons_for_sector_image(Request $request)

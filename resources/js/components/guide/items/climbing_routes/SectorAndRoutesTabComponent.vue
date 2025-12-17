@@ -1,20 +1,24 @@
 <template>
     <div class="container" id="sectors">
 
-        <div v-if="spot_images.length > 0">
+
+        <div v-if="spot_images && spot_images.length > 0">
             <div
                 :class="'sector_images sector_images_' + spot_images.length"
                 v-for="spot_image in spot_images"
-                :key="spot_image"
+                :key="spot_image && spot_image.id ? spot_image.id : 'spot-img-' + Math.random()"
             >
+
                 <openImg
+                    v-if="spot_image && spot_image.image"
                     :img="'/public/images/spot_rocks_img/' + spot_image.image"
-                    :img_alt="spot_image.title"
+                    :img_alt="spot_image.title || 'Spot Rock Image'"
                 />
             </div>
         </div>
 
-        <div v-for="area in climbing_area" :key="area">
+
+        <div v-for="area in climbing_area" :key="area && area.sector && area.sector.id ? area.sector.id : 'area-' + Math.random()">
             <!-- {{ area }} -->
             <span v-if="area['local_images']" >
                 <sector_and_local_area_images :sectors_and_images="area"/>

@@ -287,7 +287,7 @@
 
             get_general_info(){
                 axios
-                .get('/general_info/')
+                .get('/get_general_info/get_all_general_info/')
                 .then(response => {
                     this.general_infos = response.data          
                 })

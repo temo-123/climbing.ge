@@ -188,6 +188,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     */
     Route::controller(SectorController::class)->prefix('get_sector')->group( function() {
         Route::apiResource('/', 'SectorController');
+
         Route::get('/get_sector_and_routes/{article_id}', 'get_sector_and_routes');
         Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
 
@@ -224,6 +225,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_related_routes_jsons', 'get_related_routes_jsons');
         Route::get('/get_route_jsons_for_sector_image', 'get_route_jsons_for_sector_image');
         Route::get('/get_routes_quantity/{article_id}', 'get_routes_quantity');
+
+        Route::get('/get_most_popular_routes/{route_type}', 'get_most_popular_routes');
 
         // Editing routes moved to adminAction.php
     });
@@ -270,18 +273,14 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
     Route::controller(FaworitesController::class)->prefix('get_faworite')->group( function() {
         Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        Route::post('add_to_interested_events/', 'add_to_interested_events');
+        // Route::post('add_to_interested_events/', 'add_to_interested_events');
         Route::get('get_interested_events/', 'get_interested_events');
-        Route::delete('del_interested_event/{article_id}', 'del_interested_event');
+        // Route::delete('del_interested_event/{article_id}', 'del_interested_event');
         
-        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
+        // Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
         Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+        // Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
         
-        Route::post('event/add_to_interested_events/', 'add_to_interested_events');
-        Route::delete('event/del_interested_event/{article_id}', 'del_interested_event');
-        Route::post('/outdoor/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
     });
 
     /*
@@ -297,6 +296,11 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
         // Editing routes moved to adminAction.php
     });
+
+    Route::controller(CommentController::class)->prefix('set_guide_comment_by_gest')->group( function() {
+        Route::post('/create_comment/{article_id}', 'create_comment');
+    });
+
 
     /*
     *   Sport climbing routes reiting

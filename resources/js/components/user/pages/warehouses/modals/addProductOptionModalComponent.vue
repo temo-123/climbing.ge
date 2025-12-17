@@ -104,7 +104,7 @@
             },
 
             getAvailableProducts() {
-                axios.get(`/product/get_current_products/`)
+                axios.get(`/get_product/get_current_products/`)
                 .then(response => {
                     this.availableProducts = response.data;
                 })
@@ -117,7 +117,7 @@
                 if (this.newOption.product_id) {
                     this.loadingOptions = true;
                     this.availableOptions = [];
-                    axios.get(`/product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                         this.loadingOptions = false;
@@ -148,7 +148,7 @@
                 }
 
                 this.submitting = true;
-                axios.post('/warehouse/add_product_option_to_warehouse/' + this.$route.params.id, {
+                axios.post('/set_warehouse/add_product_option_to_warehouse/' + this.$route.params.id, {
                     product_option_id: this.newOption.product_option_id,
                     quantity: this.newOption.quantity || 0
                 })

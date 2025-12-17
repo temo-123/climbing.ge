@@ -430,7 +430,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('/service/edit_service/'+this.$route.params.id, 
+                .post('/set_service/edit_service/'+this.$route.params.id, 
                     formData
                 )
                 .then(response => {

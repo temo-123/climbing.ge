@@ -76,7 +76,7 @@ export default {
         get_all_outdoor_areas(){
             this.sectors_loading = true
             axios
-            .get("/article/get_category_articles/outdoor")
+            .get("/get_article/get_category_articles/outdoor")
             .then(response => {
                 this.outdoor_areas = response.data
             })

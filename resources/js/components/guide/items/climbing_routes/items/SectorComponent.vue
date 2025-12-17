@@ -164,7 +164,8 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr v-for="route in sector.sport_routes" :key="route.id">
+
+                <tr v-for="route in sector.sport_routes" :key="route.id" :data-route-id="route.id">
                     <td>{{ route.num }}</td>
                     <td @click="show_route_modal(route.id)">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
@@ -216,7 +217,8 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr v-for="route in sector.boulder_route" :key="route.id">
+
+                <tr v-for="route in sector.boulder_route" :key="route.id" :data-route-id="route.id">
                     <td>{{ route.num }}</td>
                     <td @click="show_route_modal(route.id)">
                         {{ route.name }}
@@ -287,9 +289,11 @@
                     </tr>
                 </tbody>
                 <tbody>
+
                     <tr
                         v-for="pitch in mtp.mtp_pitchs"
                         :key="pitch.pitch_id"
+                        :data-route-id="pitch.pitch_id"
                     >
                         <td>{{ pitch.num }}</td>
                         <td>{{ pitch.name }}</td>

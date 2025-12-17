@@ -334,7 +334,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('/tour/add_tour', 
+                .post('/set_tour/add_tour', 
                     formData
                 )
                 .then(response => {
@@ -352,7 +352,7 @@
 
             get_tour_category: function(){
                 axios
-                .get("/tour/category/get_all_categories/")
+                .get("/get_tour/category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })

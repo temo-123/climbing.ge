@@ -75,7 +75,7 @@
             },
             edit_region(){
                 axios
-                .post('/shiped_region/edit_region/'+this.editing_data.id, {
+                .post('/set_shiped_region/edit_region/'+this.editing_data.id, {
                     editing_data: this.editing_data,
                 })
                 .then(Response => {
