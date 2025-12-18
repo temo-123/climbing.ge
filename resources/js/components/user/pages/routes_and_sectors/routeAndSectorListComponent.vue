@@ -288,7 +288,7 @@
             del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/sector/del_sector/'+id, {
+                    .post('/set_sector/del_sector/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -303,7 +303,7 @@
             del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/route/del_route/'+id, {
+                    .post('/set_route/del_route/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })
@@ -318,7 +318,7 @@
             del_multi_pitch(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('mtp/del_mtp/'+id, {
+                    .post('/set_mtp/del_mtp/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

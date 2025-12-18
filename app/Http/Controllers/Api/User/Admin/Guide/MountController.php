@@ -28,6 +28,7 @@ class MountController extends Controller
     //     return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
     // }
 
+    
     // public function get_locale_mounts(Request $request)
     // {
     //     // $mounts_system = Mount::latest('id')->get();
@@ -70,7 +71,7 @@ class MountController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function create_mount_massive(Request $request)
+    public function add_mount_massive(Request $request)
     {
         $validation_issets = [];
 
@@ -180,7 +181,7 @@ class MountController extends Controller
     //     return $mounts_system;
     // }
 
-    public function get_editing_mount_data(Request $request)
+    public function get_editing_mount_massive_data(Request $request)
     {
         $mounts_system = Mount::where('id', '=', $request->mount_id)->first();
 
@@ -328,7 +329,7 @@ class MountController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_mount_massive($id)
     {
         $deleted_product_category = Mount::where("id", "=", $id)->first();
         $deleted_product_category -> delete();

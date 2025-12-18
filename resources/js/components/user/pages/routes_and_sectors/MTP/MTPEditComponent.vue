@@ -182,7 +182,7 @@
       get_mtp_editing_data: function(){
         this.is_loading = true
         axios
-        .get("/get_mtp/get_editing_mtp/"+this.$route.params.id)
+        .get("/set_mtp/get_editing_mtp/"+this.$route.params.id)
         .then(response => {
           this.data = response.data
           let sector = this.all_sectors.find(item => item.id === this.data.sector_id);

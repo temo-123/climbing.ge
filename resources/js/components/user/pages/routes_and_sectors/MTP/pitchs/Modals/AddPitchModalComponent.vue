@@ -7,7 +7,7 @@
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
         <pre class="language-vue">
-            <form id="mtp_edit_form" @submit.prevent="save()">
+            <form id="mtp_add_form" @submit.prevent="save()">
                 <select class="form-control"  v-model="data.category" required>
                     <option value="" disabled>Please select mtp type</option>
                     <option value="sport climbing">Sport climbing</option>
@@ -23,12 +23,15 @@
                     <option value="Project">Project</option>
                     <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
+
+                <input type="text" name="name" v-model="data.name" class="form-control" placeholder="name"> 
+                <input type="number" name="bolts" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
+                <input type="number" name="height" class="form-control" v-model="data.height" placeholder="Height"> 
+                <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter"> 
+                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
+                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+
                 <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
-                <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
-                <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
-                <input type="text" name="title" class="form-control" v-model="data.author" placeholder="Bolter"> 
-                <input type="date" name="title" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
-                <input type="text" name="title" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
             </form>
         </pre>
         <div slot="modal-footer">
@@ -135,7 +138,7 @@
             save: function () {
                 this.is_loading = true
                 axios
-                .post('/set_mtp/mtp_pitch/mtp_pitch_add/', {
+                .post('/set_mtp/set_mtp_pitch/mtp_pitch_add/', {
                     data: this.data,
                 })
                 .then(response => {

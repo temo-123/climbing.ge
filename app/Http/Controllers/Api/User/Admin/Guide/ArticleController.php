@@ -15,15 +15,18 @@ use App\Models\Guide\Article_image;
 
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
+
 use App\Models\Guide\Comment;
 
 use App\Models\Guide\Spot_rocks_image;
 use App\Models\Guide\Mount_route_image;
 
 use App\Models\Guide\Sector;
+
 use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
+use App\Models\Guide\Sector_local_image_sector;
 
 use App\Models\Guide\Mount;
 use App\Models\Guide\Locale_mount;
@@ -37,6 +40,10 @@ use App\Models\Guide\Article_mount;
 use App\Models\Guide\Article_region;
 
 use App\Models\Guide\Suport_local_bisnes;
+
+use App\Models\Guide\Comment_complaint;
+use App\Models\Guide\Live_camera;
+use App\Models\Guide\Spots_rocks_image;
 
 use Auth;
 use File;
@@ -504,12 +511,10 @@ class ArticleController extends Controller
             }
         }
 
-        if ($global_article->gallery_images->count() > 0) {
-            foreach ($global_article->gallery_images as $del_img) {
-                ImageControllService::image_delete('images/article_gallery_img/', $del_img, 'image');
-                $del_img -> delete();
-            }
-        }
+
+
+        // Note: Child record deletion is now handled in LocaleContentControllService::del_content()
+        // This prevents foreign key constraint violations by ensuring proper deletion order
 
         ArticlesService::del_content($global_id, Article::class, Locale_article::class, '_article', 'image', $image_path);
 

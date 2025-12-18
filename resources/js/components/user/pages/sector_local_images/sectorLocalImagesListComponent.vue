@@ -103,7 +103,7 @@
             del_sector_local_images(id){
                 if(confirm('Are you sure, you want delite itt?')){
                     axios
-                    .post('/set_sector_local_image/del_sector_local_images/'+id, {
+                    .post('/set_sector_local_images/del_locale_image/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

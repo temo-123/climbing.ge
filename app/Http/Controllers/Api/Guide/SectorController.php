@@ -26,7 +26,7 @@ class SectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function get_all_sectors()
     {
         return Sector::latest('id')->get();
     }

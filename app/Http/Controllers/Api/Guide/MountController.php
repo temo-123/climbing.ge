@@ -23,7 +23,7 @@ class MountController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function get_all_mount()
     {
         return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
     }

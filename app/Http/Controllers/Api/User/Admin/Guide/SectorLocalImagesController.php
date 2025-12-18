@@ -67,27 +67,27 @@ class SectorLocalImagesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    // public function store(Request $request)
-    // {
-    //     $new_sector_local_image = new Sector_local_image;
+    public function add_sector_local_image(Request $request)
+    {
+        $new_sector_local_image = new Sector_local_image;
 
-    //     $new_sector_local_image['title'] = $request['title'];
+        $new_sector_local_image['title'] = $request['title'];
 
-    //     if($request->hasFile('image')){
-    //         $file_new_name = ImageControllService::image_upload('images/sector_local_img/', $request, 'image');
-    //         $new_sector_local_image['image'] = $file_new_name;
-    //     }
+        if($request->hasFile('image')){
+            $file_new_name = ImageControllService::image_upload('images/sector_local_img/', $request, 'image');
+            $new_sector_local_image['image'] = $file_new_name;
+        }
 
-    //     $new_sector_local_image -> save();
+        $new_sector_local_image -> save();
 
-    //     $array = json_decode($request->image_sectors, true );
-    //     foreach ($array as $image_sector) {
-    //         $new_sector_local_image_sector = new Sector_local_image_sector;
-    //         $new_sector_local_image_sector['image_id'] = $new_sector_local_image['id'];
-    //         $new_sector_local_image_sector['sector_id'] = $image_sector['id'];
-    //         $new_sector_local_image_sector -> save();
-    //     }
-    // }
+        $array = json_decode($request->image_sectors, true );
+        foreach ($array as $image_sector) {
+            $new_sector_local_image_sector = new Sector_local_image_sector;
+            $new_sector_local_image_sector['image_id'] = $new_sector_local_image['id'];
+            $new_sector_local_image_sector['sector_id'] = $image_sector['id'];
+            $new_sector_local_image_sector -> save();
+        }
+    }
 
     /**
      * Display the specified resource.

@@ -428,30 +428,7 @@
             </div>
 
             <hr />
-
-            <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Helmet required: </label>
-                <div class="col-md-10 row">
-                    <div class="col-md-6">
-                        <label for="vehicle1"> Is helmet required</label><br />
-                        <img
-                            class="sun_svg"
-                            :src="'../../images/svg/climbing-helmet.jpg'"
-                            alt="Vertical"
-                            title="Vertical"
-                        />
-                        <input
-                            type="checkbox"
-                            v-model="data.for_kids"
-                            name="afternoon"
-                            value="1"
-                            class="largerCheckbox"
-                        />
-                    </div>                    
-                </div>
-            </div>
-
-            <hr />
+            
         </form>
         
         <div class="row">

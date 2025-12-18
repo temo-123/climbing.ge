@@ -164,7 +164,7 @@
             get_mount_massive_data: function(category){
                 if(category == 'mount_route'){
                     axios
-                    .get("/get_mount/mount/")
+                    .get("/get_mount/get_all_mount/")
                     .then(response => {
                         this.mount_masive = response.data
                     })

@@ -314,6 +314,7 @@ class LocaleContentControllService
     
     
     
+
     /*
     *
     * This function edit new locale and global dataase value
@@ -331,6 +332,61 @@ class LocaleContentControllService
     public static function del_content($global_id, $global_model, $local_model, $prefix, $image_prefix, $image_path = false)
     {
         $gloal_content = $global_model::where('id', '=', $global_id)->first();
+
+
+
+        // Handle Articles model specifically to prevent foreign key constraint violations
+        $isArticleModel = ($global_model === 'App\Models\Guide\Article') || 
+                          ($global_model === \App\Models\Guide\Article::class) ||
+                          (is_string($global_model) && str_contains($global_model, 'Article')) ||
+                          (is_object($global_model) && $global_model instanceof \App\Models\Guide\Article);
+        
+        if ($isArticleModel) {
+            // Delete child records first to prevent foreign key constraint violations
+            
+            // Delete spot_rocks_images
+            $spotRockImages = \App\Models\Guide\Spot_rocks_image::where('article_id', '=', $global_id)->get();
+            foreach ($spotRockImages as $spotImage) {
+                if ($spotImage->image && $image_path) {
+                    ImageControllService::image_delete('images/spot_rocks_img/', $spotImage, 'image');
+                }
+                $spotImage->delete();
+            }
+            
+            // Delete article_images (gallery images)
+            $articleImages = \App\Models\Guide\Article_image::where('article_id', '=', $global_id)->get();
+            foreach ($articleImages as $articleImage) {
+                if ($articleImage->image && $image_path) {
+                    ImageControllService::image_delete('images/article_gallery_img/', $articleImage, 'image');
+                }
+                $articleImage->delete();
+            }
+            
+
+            // For Articles, we need to handle the cascade properly
+            // Store locale IDs before deleting the global content
+            $us_content_id = $gloal_content['us'.$prefix.'_id'];
+            // $ru_content_id = $gloal_content['ru'.$prefix.'_id'];
+            $ka_content_id = $gloal_content['ka'.$prefix.'_id'];
+            
+            if($gloal_content->$image_prefix && $image_path){
+                ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
+            }
+
+            $gloal_content->delete();
+            
+            // Now delete the locale content manually since Article deletion won't cascade to locale_articles
+            // (locale_articles is not directly related to articles, it's referenced via foreign keys)
+            $us_content = $local_model::where('id', '=', $us_content_id)->first();
+            // $ru_content = $local_model::where('id', '=', $ru_content_id)->first();
+            $ka_content = $local_model::where('id', '=', $ka_content_id)->first();
+            
+            if($us_content) $us_content->delete();
+            // if($ru_content) $ru_content->delete();
+            if($ka_content) $ka_content->delete();
+            
+            return;
+        }
 
         $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$prefix.'_id']))->first();
         // $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();

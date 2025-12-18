@@ -138,7 +138,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
 
     Route::controller(MountController::class)->prefix('set_mount')->group( function() {
         Route::post('/edit_mount_massive/{mount_id}', 'edit_mount_massive');
-        Route::post('/create_mount_massive', 'create_mount_massive');
+        Route::post('/add_mount_massive', 'add_mount_massive');
+
+        Route::get('/get_editing_mount_massive_data/{mount_id}', 'get_editing_mount_massive_data');
+        Route::delete('/del_mount_massive/{mount_id}', 'del_mount_massive');
     });
 
     Route::controller(LocalBisnesController::class)->prefix('set_bisnes')->group( function() {
@@ -155,9 +158,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
     // });
 
     Route::controller(ArticleGalleryController::class)->prefix('set_gallery_image')->group( function() {
-        Route::get('/get_index_gallery', 'get_index_gallery');
+        // Route::get('/get_index_gallery', 'get_index_gallery');
         Route::get('/get_editing_images/{article_id}', 'get_editing_images');
 
+        Route::delete('/del_image/{image_id}', 'del_image');
         // Editing routes moved to adminAction.php
     });
 
@@ -242,11 +246,14 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
     });
 
     Route::controller(SectorLocalImagesController::class)->prefix('set_sector_local_images')->group( function() {
+        Route::post('/add_sector_local_image', 'add_sector_local_image');
         Route::post('/update_image/{image_id}', 'update_image');
         Route::get('/get_editing_locale_image/{image_id}', 'get_editing_locale_image');
         Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'del_image_sector_from_db');
         Route::delete('/del_locale_image/{sector_id}', 'del_locale_image');
         Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
+
+        Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
     });
 
 

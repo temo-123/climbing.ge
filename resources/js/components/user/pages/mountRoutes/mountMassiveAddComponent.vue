@@ -265,7 +265,7 @@
 
             add_mount_massive_region() {
                 axios
-                .post('/set_mount/create_mount_massive', {        
+                .post('/set_mount/add_mount_massive', {        
                     data: this.data,
 
                     _method: 'post'

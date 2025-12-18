@@ -93,7 +93,7 @@
         methods: {
             get_MTP_pitchs(){
                 axios
-                .get('/get_mtp/mtp_pitch/get_mtp_pitchs/' + this.mtp_id)
+                .get('/get_mtp/get_mtp_pitch/get_mtp_pitchs/' + this.mtp_id)
                 .then(response => {
                     this.pitchs = response.data
                 })
@@ -108,7 +108,7 @@
             del_pitch(pitch_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_mtp/mtp_pitch/del_pitch/'+pitch_id, {
+                    .post('/set_mtp/set_mtp_pitch/del_pitch/'+pitch_id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

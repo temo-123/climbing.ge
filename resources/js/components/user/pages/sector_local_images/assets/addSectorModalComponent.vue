@@ -87,7 +87,7 @@ export default {
         },
         get_all_sectors(){
             axios
-            .get("/sector/")
+            .get("/get_sector/get_all_sectors")
             .then(response => {
                 this.sectors = response.data
             })

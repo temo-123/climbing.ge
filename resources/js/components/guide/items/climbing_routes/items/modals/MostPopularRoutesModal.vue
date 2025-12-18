@@ -28,9 +28,6 @@
                     <option value="10">10+ {{ $t('guide.sector.reviews') }}</option>
                 </select>
 
-
-
-
                 <select class="form-control route_statistic_selection" v-model="routeType" @change="refreshData">
                     <option v-for="category in routeCategories" :key="category.value" :value="category.value">
                         {{ $t(category.label) }}

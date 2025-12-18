@@ -34,6 +34,7 @@
                         @del_region="del_region"
                         @del_route="del_route"
                         @del_sector="del_sector"
+                        @del_mount_massive="del_mount_massive"
 
                         @filtr_outdoors="filtr_outdoors"
                         @show_spot_sectors_modal="show_spot_sectors_modal"
@@ -429,6 +430,19 @@
                 if(confirm('Are you sure, you want delite it?')){
                     axios
                     .post('/set_article/del_article/'+id, {
+                        _method: 'DELETE'
+                    })
+                    .then(Response => {
+                        this.get_articles()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
+            del_mount_massive(id){
+                if(confirm('Are you sure, you want delite it?')){
+                    axios
+                    .post('/set_mount/del_mount_massive/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

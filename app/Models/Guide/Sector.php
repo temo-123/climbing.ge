@@ -1,8 +1,14 @@
 <?php
 
+
 namespace App\Models\Guide;
 
+
+
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Guide\Sector_local_image_sector;
+use App\Models\Guide\Sector_image;
+use App\Models\Guide\SectorLocalImagesJson;
 
 class Sector extends Model
 {
@@ -73,7 +79,7 @@ class Sector extends Model
 
 	public function sector_local_image_relation()
 	{
-        return $this->hasMany(sector_local_image_sector::class, 'sector_id', 'id');
+        return $this->hasMany(Sector_local_image_sector::class, 'sector_id', 'id');
 	}
 
     public function sector_local_images_jsons()

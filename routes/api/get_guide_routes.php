@@ -119,7 +119,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Mount system
     */
     Route::controller(MountController::class)->prefix('get_mount')->group( function() {
-        Route::apiResource('/mount', 'MountController');
+        Route::get('/get_all_mount', 'get_all_mount');
+
         Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
@@ -187,7 +188,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Guid sport sectors routes
     */
     Route::controller(SectorController::class)->prefix('get_sector')->group( function() {
-        Route::apiResource('/', 'SectorController');
+        // Route::apiResource('/', 'SectorController');
+
+        Route::get('/get_all_sectors', 'get_all_sectors');
 
         Route::get('/get_sector_and_routes/{article_id}', 'get_sector_and_routes');
         Route::get('/get_sector_images/{sector_id}', 'get_sector_images');
@@ -241,14 +244,14 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     });
 
     Route::controller(MTPController::class)->prefix('get_mtp')->group( function() {
-        Route::get('/', 'index');
+        Route::get('/get_all_mtp', 'index');
         Route::get('/get_mtp_for_modal/{mtp_id}', 'get_mtp_for_modal');
         // Route::get('/get_mtps_for_forum/{sector_id}', 'get_mtps_for_forum');
 
         // Editing routes moved to adminAction.php
 
         Route::controller(MTPPitchController::class)->prefix('get_mtp_pitch')->group( function() {
-            Route::get('/', 'index');
+            Route::get('/get_all_mtp_pitchs', 'index');
             Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
             // Route::get('/get_mtp_pitchs/{mtp_id}', 'get_mtp_pitchs');
 
@@ -267,7 +270,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
         Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
 
-        Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
+        // Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
     });
 
 
