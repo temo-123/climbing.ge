@@ -130,6 +130,15 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_locale_mounts/{lang}', 'get_locale_mounts');
     });
 
+    Route::controller(LiveCameraController::class)->prefix('get_live_camera')->group( function() {
+        Route::get('/get_live_cameras', 'get_live_cameras');
+        // Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
+        Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+        // Route::post('/add_live_camera', 'add_live_camera');
+        // Route::post('/edit_live_camera/{id}', 'edit_live_camera');
+        // Route::delete('/del_live_camera/{id}', 'del_live_camera');
+    });
+
     /*
     *   Local bisnes routes
     */

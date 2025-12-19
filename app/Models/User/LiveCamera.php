@@ -11,6 +11,6 @@ class LiveCamera extends Model
 
     protected $fillable = [
         // Add all column names from your live_cameras table, for example:
-        'name', 'url', 'published', 'article_id'
+        'name', 'link', 'published', 'article_id'
     ];
 }
