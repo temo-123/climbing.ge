@@ -191,7 +191,12 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Editing routes moved to adminAction.php
     });
 
-    Route::apiResource('/general_info', 'GeneralInfoController');
+
+    Route::controller(GeneralInfoController::class)->prefix('get_general_info')->group( function() {
+        Route::get('/get_all_general_infos', 'get_all_general_infos');
+        Route::get('/get_general_info/{id}', 'get_general_info');
+    });
+    // Route::apiResource('/general_info', 'GeneralInfoController');
 
     /*
     *   Guid sport sectors routes

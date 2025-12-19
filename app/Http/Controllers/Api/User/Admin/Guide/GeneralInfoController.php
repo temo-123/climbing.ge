@@ -16,20 +16,20 @@ class GeneralInfoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
-    {
-        return General_info::get();
-    }
+    // public function get_all_general_info()
+    // {
+    //     return General_info::get();
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -37,7 +37,7 @@ class GeneralInfoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function add_general_info(Request $request)
     {
         $validate = $this->validation($request);
 
@@ -63,7 +63,7 @@ class GeneralInfoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function get_editing_general_info($id)
     {
         return General_info::where("id", "=", $id)->first();
     }
@@ -74,10 +74,10 @@ class GeneralInfoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
-    {
-        //
-    }
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -86,7 +86,7 @@ class GeneralInfoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function edit_general_info(Request $request, $id)
     {
         $validate = $this->validation($request);
 
@@ -112,7 +112,7 @@ class GeneralInfoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_general_info($id)
     {
         $deleted_general_info = General_info::where("id", "=", $id)->first();
         $deleted_general_info -> delete();

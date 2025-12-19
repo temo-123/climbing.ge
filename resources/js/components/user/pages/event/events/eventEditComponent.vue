@@ -369,7 +369,7 @@
 
             get_general_info(){
                 axios
-                .get('/general_info/')
+                .get('/get_general_info/get_all_general_infos/')
                 .then(response => {
                     this.general_infos = response.data          
                 })
@@ -466,7 +466,7 @@
                 this.error = []
 
                 axios
-                .post('../../api/event/edit_event/'+this.$route.params.id, 
+                .post('/set_event/edit_event/'+this.$route.params.id, 
                     formData
                 )
                 .then(response => {

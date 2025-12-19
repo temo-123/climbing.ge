@@ -123,6 +123,13 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
     *   Editing routes
     */
 
+    Route::controller(GeneralInfoController::class)->prefix('set_general_info')->group( function() {
+        Route::post('/add_general_info', 'add_general_info');
+        Route::get('/get_editing_general_info/{id}', 'get_editing_general_info');
+        Route::post('/edit_general_info/{id}', 'edit_general_info');
+        Route::delete('/del_general_info/{id}', 'del_general_info');
+    });
+
     Route::controller(EventController::class)->prefix('set_event')->group( function() {
         Route::post('/add_event', 'add_event');
         Route::get('/get_editing_event/{event_id}', 'get_editing_event');

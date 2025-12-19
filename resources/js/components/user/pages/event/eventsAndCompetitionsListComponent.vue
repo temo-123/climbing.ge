@@ -81,8 +81,8 @@
                                             'id': 1,
                                             'table_name': 'Events',
                                             'add_action': {
-                                                'action': 'eventAdd',
-                                                'link': 'spot_category_add',
+                                                'action': 'route',
+                                                'link': 'eventAdd', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -139,8 +139,8 @@
                                             'id': 2,
                                             'table_name': 'Competitions',
                                             'add_action': {
-                                                'action': 'competitionAdd',
-                                                'link': 'spot_category_add',
+                                                'action': 'route',
+                                                'link': 'competitionAdd', 
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
