@@ -32,9 +32,6 @@
 
                                             <label :for="2">English data</label>
                                         </div>
-                                    <!-- </div> -->
-                                </div>
-                                <div class="row">
                                     <div class="col-md-12">
                                         <!-- <div class="col"> -->
                                             <input type="radio" :id="5" :value="5" v-model="action_tab" />
@@ -42,6 +39,7 @@
                                             <label :for="5">General info</label>
                                         <!-- </div> -->
                                     </div>
+                                    <!-- </div> -->
                                 </div>
                             </div>
                         </div>

@@ -179,6 +179,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
     Route::controller(HeadSliderController::class)->prefix('set_head_slider')->group( function() {
         Route::post('/add_slide', 'add_slide');
         Route::post('/edit_slide/{slide_id}', 'edit_slide');
+        Route::get('/get_editing_slide/{slide_id}', 'get_editing_slide');
         Route::delete('/del_slide/{slide_id}', 'del_slide');
     });
 

@@ -107,7 +107,7 @@
             get_actyve_image(id){
                 this.is_loading = true
                 axios
-                .get("/head_slider/get_actyve_slide/"+id)
+                .get("/set_head_slider/get_editing_slide/"+id)
                 .then(response => {
                     this.editing_data = response.data
                 })

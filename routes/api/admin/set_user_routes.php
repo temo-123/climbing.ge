@@ -12,11 +12,11 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
     //     Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     // });
 
-    // Route::controller(SocialLinkController::class)->prefix('set_site_social_links')->group( function() {
-    //     Route::get('/get_site_social_links', 'get_site_social_links');
-    //     Route::post('/add_site_social_links', 'add_site_social_links');
-    //     Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
-    // });
+Route::controller(\App\Http\Controllers\Api\User\SocialLinkController::class)->prefix('set_site_social_links')->group( function() {
+    Route::get('/get_site_social_links', 'get_site_social_links');
+    Route::post('/add_site_social_links', 'add_site_social_links');
+    Route::delete('/del_site_social_links/{link_id}', 'del_site_social_links');
+});
 
     /*
     *   Users routes
@@ -72,11 +72,11 @@ Route::group(['namespace'=>'Api\User\Admin\User'], function() {
 
 
 
-    Route::controller(ServiceFollowing::class)->prefix('set_follow')->group( function() {
+    // Route::controller(ServiceFollowing::class)->prefix('set_follow')->group( function() {
         // Route::post('/{service_id}', 'follow');
-        Route::delete('/del_follower/{id}', 'del_follower');
+        // Route::delete('/del_follower/{id}', 'del_follower');
         // Route::get('/following_users_list', 'get_following_users_list');
-    });
+    // });
 
     /*
     *   Blog posts routes

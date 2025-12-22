@@ -28,6 +28,11 @@ class HeadSliderController extends Controller
     //     return Header_image::where('id', '=', $request->slide_id)->first();
     // }
 
+    public function get_editing_slide(Request $request)
+    {
+        return Header_image::where('id', '=', $request->slide_id)->first();
+    }
+
     public function add_slide (Request $request) {
         $validation_issets;
 

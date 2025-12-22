@@ -18,13 +18,17 @@ class SocialLinkController extends Controller
     
     public function add_site_social_links(Request $request)
     {
-        $validate = $this->site_social_links_validate($request->data);
+        $data = $request->data;
+        if (is_string($data)) {
+            $data = json_decode($data, true);
+        }
+        $validate = $this->site_social_links_validate($data);
 
         if ($validate != null) {
             return($validate);
         }
         else{
-            return SiteDataService::addSocialLink($request->data);
+            return SiteDataService::addSocialLink($data);
         }
     }
 
