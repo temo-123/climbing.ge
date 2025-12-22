@@ -139,6 +139,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Route::delete('/del_live_camera/{id}', 'del_live_camera');
     });
 
+
     /*
     *   Local bisnes routes
     */
@@ -150,6 +151,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_bisnes_images/{bisnes_id}', 'get_bisnes_images');
         Route::get('/get_local_bisneses_images/{bisnes_id}', 'get_local_bisneses_images');
         Route::get('/get_bisnes_article_relation/{bisnes_id}', 'get_bisnes_article_relation');
+        Route::get('/get_article_categories', 'get_article_categories');
 
         // Editing routes moved to adminAction.php
 

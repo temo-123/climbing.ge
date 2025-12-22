@@ -48,9 +48,10 @@ class ArticleController extends Controller
         return Article::latest('id')->where('category', '=', $request->category)->get();
     }
 
+
     public function get_articles_for_bisnes_suport(Request $request)
     {
-        return Article::latest('id')->
+        return Article::select('id', 'category', 'url_title')->latest('id')->
                         where('category', '!=', 'news')->
                         where('category', '!=', 'partner')->
                         where('category', '!=', 'special_articles')->
@@ -209,7 +210,8 @@ class ArticleController extends Controller
     {
         $bisnes = Suport_local_bisnes::where('url_title', '=', $request->bisnes_url_title)->first();
 
-        $article = $bisnes->bisnes_article->first();
+
+        $article = $bisnes->articles->first();
 
         if($article->count() > 0){
             $global_articles = Article::where('id', '=', $article->id)->where('published', '=', 1)->get();

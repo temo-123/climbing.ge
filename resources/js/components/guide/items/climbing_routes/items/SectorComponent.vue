@@ -201,8 +201,8 @@
                     <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
                     <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 120%"
-                            ><i class="fa fa-info" aria-hidden="true"></i
+                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
+                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
                 </tr>
@@ -253,8 +253,8 @@
                     <td class="display-none-720px" v-else>{{ route.grade }}</td>
 
                     <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 120%"
-                            ><i class="fa fa-info" aria-hidden="true"></i
+                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
+                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
                 </tr>
@@ -280,6 +280,7 @@
                     @click="show_mtp_madel(mtp.mtp_id)"
                     data-toggle="modal"
                     data-target="#squarespaceModal_mtp_info_"
+                    style="margin-top: -5%; font-size: 150%; cursor: pointer;"
                 >
                     <h4><strong>More information</strong></h4>
                 </a>
@@ -465,6 +466,12 @@ export default {
 
 <style>
 @media (max-width: 767px) {
+    /* table {
+        display: block;
+        overflow-x: scroll;
+    } */
+}
+@media (max-width: 567px) {
     table {
         display: block;
         overflow-x: scroll;

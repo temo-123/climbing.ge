@@ -22,68 +22,61 @@ class LocalBisnesController extends Controller
 {
     public function get_local_bisnes_for_article(Request $request)
     {
-        $action_data = date("Y/m/d H:i:s");
         $data = [];
 
-        $article = Article::where('url_title', '=', $request->article_url_title)->first();
-        $article_bisnes_global_data = $article->businesses->where('published', '=', 1)->take(2);
-        
-        if($article_bisnes_global_data){
-            foreach($article_bisnes_global_data as $article_bisne_global_data){
-                $pulic_year = $article_bisne_global_data->published_data;
-                $public_month = $article_bisne_global_data->published_data;
-                $pulic_day = $article_bisne_global_data->published_data;
+        try {
+            // Get the article by URL title
+            $article = Article::where('url_title', '=', $request->article_url_title)->first();
+            
+            if (!$article) {
+                return $data; // Return empty array if article not found
+            }
 
-                if ($article_bisne_global_data->public_totaly) {
-                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
-
-                    $bisnes_images = [];
-
-                    if(isset($article_bisne_global_data->bisnes_images[0]) && 
-                        $article_bisne_global_data->bisnes_images[0] != '' &&
-                        $article_bisne_global_data->bisnes_images[0] != []
-                    ){
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0]->image;
+            // Get businesses associated with the article that are published
+            $article_bisnes_global_data = $article->businesses()->where('published', '=', 1)->take(2)->get();
+            
+            if ($article_bisnes_global_data && $article_bisnes_global_data->isNotEmpty()) {
+                $currentDate = now();
+                
+                foreach($article_bisnes_global_data as $article_bisne_global_data){
+                    $shouldShowBusiness = false;
+                    
+                    // Check if business should be shown based on publication settings
+                    if ($article_bisne_global_data->public_totaly) {
+                        // Business is published totally
+                        $shouldShowBusiness = true;
+                    } else if ($article_bisne_global_data->published_data) {
+                        // Check scheduled publication date
+                        $publishDate = \Carbon\Carbon::parse($article_bisne_global_data->published_data);
+                        $shouldShowBusiness = $publishDate->lte($currentDate);
                     }
+                    
+                    if ($shouldShowBusiness) {
+                        // Get local business data
+                        $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
+                        
+                        // Safely get business images
+                        $bisnes_images = '';
+                        if ($article_bisne_global_data->bisnes_images && $article_bisne_global_data->bisnes_images->isNotEmpty()) {
+                            $firstImage = $article_bisne_global_data->bisnes_images->first();
+                            $bisnes_images = $firstImage->image ?? '';
+                        }
 
-                    array_push($data,[
-                        'global_data' => $article_bisne_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ]);
-                }
-                else if(
-                    date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
-                    date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
-                ){
-
-                    $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
-
-                    if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
-
-                        array_push($data,[
+                        $data[] = [
                             'global_data' => $article_bisne_global_data,
                             'local_data' => $article_bisnes_local_data,
                             'image' => $bisnes_images
-                        ]);
-                    }
-                    elseif (
-                            date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
-                            date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
-                        ) {
-
-                        $bisnes_images = $article_bisne_global_data->bisnes_images[0];
-
-                        array_push($data,[
-                            'global_data' => $article_bisne_global_data,
-                            'local_data' => $article_bisnes_local_data,
-                            'image' => $bisnes_images
-                        ]);
+                        ];
                     }
                 }
             }
+            
             return $data;
+            
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error fetching local businesses for article: ' . $e->getMessage());
+            return $data; // Return empty array on error
         }
     }
 
@@ -133,7 +126,7 @@ class LocalBisnesController extends Controller
 
     public function get_local_bisneses(Request $request)
     {
-        return Suport_local_bisnes::get();
+        return Suport_local_bisnes::latest('id')->get();
     }
 
     // public function add_local_bisnes(Request $request)
@@ -245,11 +238,26 @@ class LocalBisnesController extends Controller
 
         return $bisnes->bisnes_images;
     }
+
     public function get_bisnes_article_relation(Request $request)
     {
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
-        return $bisnes->bisnes_article;
+
+        return $bisnes->articles;
+    }
+
+    public function get_article_categories(Request $request)
+    {
+        // Get unique categories from articles table
+        $categories = Article::whereNotNull('category')
+                           ->where('category', '!=', '')
+                           ->distinct()
+                           ->pluck('category')
+                           ->sort()
+                           ->values();
+        
+        return $categories;
     }
     // public function del_local_bisnes(Request $request)
     // {

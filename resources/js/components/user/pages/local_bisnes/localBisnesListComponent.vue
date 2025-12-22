@@ -136,7 +136,7 @@
             del_bisnes(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/bisnes/del_local_bisnes/'+id, {
+                    .post('/set_bisnes/del_local_bisnes/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

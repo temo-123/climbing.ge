@@ -75,6 +75,9 @@ class ArticleController extends Controller
 
         $article_adding = ArticlesService::add_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
         
+        if(1==2){
+            return $article_adding;
+        }
         if (!array_key_exists('validation', $article_adding->original)) {
             GalleryService::add_gallery_images(
                 $request->gallery_images, 
@@ -220,7 +223,8 @@ class ArticleController extends Controller
     // {
     //     $bisnes = Suport_local_bisnes::where('url_title', '=', $request->bisnes_url_title)->first();
 
-    //     $article = $bisnes->bisnes_article->first();
+
+    //     $article = $bisnes->articles->first();
 
     //     if($article->count() > 0){
     //         $global_articles = Article::where('id', '=', $article->id)->where('published', '=', 1)->get();

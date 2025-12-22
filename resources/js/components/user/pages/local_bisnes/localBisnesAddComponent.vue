@@ -1,5 +1,5 @@
 <template>
-    <div class="tabs"> 
+    <div class="tabs">
         <div class="row">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
@@ -70,15 +70,111 @@
                     </form>
 
                     <article_bisnes_add_relatione_tab
+                        ref="article_bisnes_add_relatione_tab"
                         @update_article_relations="update_article_relations"
-                    /> 
+                        @update_selected_category="update_selected_category"
+                        @validation-choice-made="handleValidationChoice"
+                    />
+                    
+                    <!-- Validation Conflicts Report -->
+                    <div v-if="showValidationConflicts" class="panel panel-warning" style="margin-top: 20px;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">
+                                <i class="fa fa-exclamation-triangle"></i>
+                                Article Relation Conflicts Found
+                            </h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="alert alert-warning">
+                                <strong>Warning:</strong> The following articles already have business relations. 
+                                Each article can only be related to one business.
+                            </div>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Article</th>
+                                            <th>Category</th>
+                                            <th>Currently Related To</th>
+                                            <th>Proposed For</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(conflict, index) in validationConflicts" :key="`conflict-${conflict.article_id}-${index}`">
+                                            <td>
+                                                <strong>{{ conflict.article_title }}</strong>
+                                                <br>
+                                                <small class="text-muted">ID: {{ conflict.article_id }}</small>
+                                            </td>
+                                            <td>
+                                                <span class="label label-info">{{ conflict.article_category || 'No Category' }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="label label-default">{{ conflict.current_business }}</span>
+                                            </td>
+                                            <td>
+                                                <span class="label label-warning">{{ conflict.proposed_business }}</span>
+                                            </td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-sm btn-danger"
+                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'skip'}"
+                                                        @click="setValidationChoice(conflict.article_id, 'skip')"
+                                                    >
+                                                        Skip Article
+                                                    </button>
+                                                    <button 
+                                                        type="button" 
+                                                        class="btn btn-sm btn-success"
+                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'add'}"
+                                                        @click="setValidationChoice(conflict.article_id, 'add')"
+                                                    >
+                                                        Add Anyway
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <div v-if="hasUndecidedValidationArticles" class="alert alert-info">
+                                <strong>Note:</strong> Please choose an action for all conflicting articles before proceeding.
+                            </div>
+                            
+                            <div class="text-center">
+                                <div class="btn-group">
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-primary btn-lg"
+                                        :disabled="hasUndecidedValidationArticles"
+                                        @click="proceedWithValidationSelections"
+                                    >
+                                        <i class="fa fa-check"></i> 
+                                        Continue with Selected Articles ({{ decidedValidationArticlesCount }} articles)
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        class="btn btn-default btn-lg"
+                                        @click="cancelValidation"
+                                    >
+                                        <i class="fa fa-times"></i> 
+                                        Cancel & Review
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <gallery_images_add
                         @update_gallery_images="update_gallery_images"
 
                         :image_path_prop="'images/local_bisnes_img/'"
                     />
-                   
                 </div>
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
@@ -129,7 +225,6 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_bisnes.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <ckeditor v-model="data.ka_bisnes.short_description" :config="editor_config.ka_short_description"></ckeditor>
                             </div>
                         </div>
@@ -144,7 +239,7 @@
                 </div>
             </div>
         </div>
-
+        
     </div>
 </template>
 
@@ -161,7 +256,7 @@
         components: {
             gallery_images_add,
             article_bisnes_add_relatione_tab,
-            validator_alerts_component,
+            validator_alerts_component
         },
         props: [
             // 'back_url',
@@ -170,10 +265,18 @@
             return {
                 tab_num: 1,
 
+                bisnes_new_article_relations: [],
                 bisnes_images: [],
-                regions: [],
+                // regions: [],
+                article_categories: [],
+                selected_category: null,
 
                 error: [],
+                
+                // Validation related properties
+                showValidationConflicts: false,
+                validationConflicts: [],
+                validationUserChoices: {},
 
                 editor_config: {
                     us_short_description: editor_config.get_small_editor_config(),
@@ -217,33 +320,50 @@
                 
             }
         },
+        computed: {
+            hasUndecidedValidationArticles() {
+                return this.validationConflicts.some(conflict => !this.validationUserChoices[conflict.article_id]);
+            },
+            decidedValidationArticlesCount() {
+                return Object.keys(this.validationUserChoices).filter(id => this.validationUserChoices[id] === 'add').length;
+            }
+        },
+
         mounted() {
             // this.get_bisnes_category_bisnes()
             this.get_region_bisnes()
+            this.get_article_categories()
             
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
+
         methods: {
             clear_published_time(){
                 this.data.global_bisnes.published_data = null
             },
-            get_region_bisnes: function () {
-                axios
-                    .get("../api/article/")
-                    .then((response) => {
-                        this.regions = response.data;
-                    })
-                    .catch((error) => console.log(error));
-            },
+            // get_region_bisnes: function () {
+            //     axios
+            //         .get("../api/article/")
+            //         .then((response) => {
+            //             this.regions = response.data;
+            //         })
+            //         .catch((error) => console.log(error));
+            // },
+
 
             update_article_relations(articles){
                 this.bisnes_new_article_relations = articles
             },
 
+            update_selected_category(category){
+                this.selected_category = category
+            },
+
             update_gallery_images(images){
                 this.bisnes_images = images
             },
+
             add_bisnes() {
                 this.data.global_bisnes.url_title = this.data.us_bisnes.title
                 let formData = new FormData();
@@ -257,6 +377,10 @@
                     loop_num = 0
                 }
 
+                if(this.selected_category){
+                    formData.append('selected_category', this.selected_category)
+                }
+
                 if(this.bisnes_new_article_relations){
                     var relation_loop_num = 0
                     this.bisnes_new_article_relations.forEach(relation => {
@@ -265,24 +389,15 @@
                     });
                     relation_loop_num = 0
                 }
-                
+
                 formData.append('data', JSON.stringify(this.data))
 
-                axios
-                .post('/set_bisnes/add_local_bisnes', 
-                    formData
-                )
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(error => {
-                    if (error.response.status == 422) {
-                        this.error = error.response.data.validation
-                    }
-                    else{
-                        alert(error)
-                    }
-                });
+                // First validate relations if any are selected
+                if (this.selected_category || (this.bisnes_new_article_relations && this.bisnes_new_article_relations.length > 0)) {
+                    this.validateRelationsBeforeSave(formData);
+                } else {
+                    this.proceedWithSave(formData);
+                }
             },
 
 
@@ -295,6 +410,147 @@
                 else{
                     this.$router.go(-1)
                 }
+            },
+
+            // Validation report handlers
+            closeValidationReport() {
+                this.showValidationConflicts = false;
+                this.validationConflicts = [];
+                this.validationUserChoices = {};
+            },
+
+            cancelValidation() {
+                this.closeValidationReport();
+            },
+
+            handleValidationProceed(filteredRelations) {
+                this.closeValidationReport();
+
+                // Prepare form data with filtered relations
+                let formData = new FormData();
+                formData.append('data', JSON.stringify(this.data));
+
+                // Add filtered individual relations
+                if (filteredRelations.add && filteredRelations.add.length > 0) {
+                    filteredRelations.add.forEach((id, index) => {
+                        formData.append('bisnes_new_article_relations[' + index + ']', id);
+                    });
+                }
+
+                // Add category if selected
+                if (this.selected_category) {
+                    formData.append('selected_category', this.selected_category);
+                }
+
+                // Add images
+                if (this.bisnes_images) {
+                    var image_loop_num = 0;
+                    this.bisnes_images.forEach(image => {
+                        formData.append('bisnes_images[' + image_loop_num + ']', image.image);
+                        image_loop_num++;
+                    });
+                }
+
+                // Proceed with save
+                this.proceedWithSave(formData);
+            },
+
+            // Set user choice for a specific conflict
+            setValidationChoice(articleId, choice) {
+                this.$set(this.validationUserChoices, articleId, choice);
+            },
+
+            // Proceed with user's validation selections
+            proceedWithValidationSelections() {
+                // Filter out articles that user chose to skip
+                const allowedArticleIds = [];
+                const allowedRelations = [];
+                
+                this.bisnes_new_article_relations.forEach(relation => {
+                    if (this.validationUserChoices[relation.article_id] === 'add') {
+                        allowedArticleIds.push(relation.article_id);
+                        allowedRelations.push(relation);
+                    }
+                });
+
+                // Prepare form data with filtered relations - same as in add_bisnes()
+                this.data.global_bisnes.url_title = this.data.us_bisnes.title;
+                let formData = new FormData();
+
+                // Add images
+                if (this.bisnes_images) {
+                    var loop_num = 0;
+                    this.bisnes_images.forEach(image => {
+                        formData.append('bisnes_images[' + loop_num + ']', image.image);
+                        loop_num++;
+                    });
+                    loop_num = 0;
+                }
+
+                // Add category if selected
+                if (this.selected_category) {
+                    formData.append('selected_category', this.selected_category);
+                }
+
+                // Add filtered individual relations
+                allowedArticleIds.forEach((id, index) => {
+                    formData.append('bisnes_new_article_relations[' + index + ']', id);
+                });
+
+                formData.append('data', JSON.stringify(this.data));
+
+                // Close validation report and proceed with save
+                this.closeValidationReport();
+                this.proceedWithSave(formData);
+            },
+
+            // Handle validation errors from child component
+            handleValidationError(error) {
+                if (error.response.status == 422) {
+                    this.error = error.response.data.validation;
+                } else {
+                    alert('Validation error: ' + error);
+                }
+            },
+
+            // Handle validation choice made in child component
+            handleValidationChoice(articleId, choice) {
+                this.$set(this.validationUserChoices, articleId, choice);
+            },
+
+            // Validate relations before save
+            validateRelationsBeforeSave(formData) {
+                axios
+                    .post('/set_bisnes/add_local_bisnes', formData)
+                    .then(response => {
+                        // Check if validation conflicts were returned
+                        if (response.data.validation_needed) {
+                            this.showValidationConflicts = true;
+                            this.validationConflicts = response.data.conflicting_articles;
+                        } else {
+                            // No conflicts, proceed with save
+                            this.proceedWithSave(formData);
+                        }
+                    })
+                    .catch(error => {
+                        this.handleValidationError(error);
+                    });
+            },
+
+            // Proceed with actual save
+            proceedWithSave(formData) {
+                axios
+                    .post('/set_bisnes/add_local_bisnes', formData)
+                    .then(response => {
+                        this.go_back(true);
+                    })
+                    .catch(error => {
+                        if (error.response.status == 422) {
+                            this.error = error.response.data.validation;
+                        } else {
+                            alert(error);
+                        }
+                    });
             },
         }
     }

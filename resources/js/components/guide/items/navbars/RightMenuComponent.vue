@@ -72,7 +72,7 @@
             </div>
         </div> -->
 
-        <h3 class="navbar_title display-biger-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+        <!-- <h3 class="navbar_title display-biger-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
 
         <div class="row local_bisnes display-biger-then-768px" v-if="local_businesses.length != 0">
             <div class="col-sm-10 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
@@ -93,7 +93,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -107,7 +107,7 @@
         data(){
             return{
                 right_navbar_class: '',
-                local_businesses: [],
+                // local_businesses: [],
                 sectors: [],
                 margin_bottom_position: 0,
                 document_body_offsetHeight: document.body.offsetHeight,
@@ -118,13 +118,13 @@
         mounted() {
             // console.log('RightMenuComponent mounted, article_id:', this.article_id);
             // console.log('Route name:', this.$route.name);
-            this.get_local_bisnes_for_article()
+            // this.get_local_bisnes_for_article()
             this.get_sectors_for_article()
             this.handleScroll()
         },
         watch: {
             '$route' (to, from) {
-                this.get_local_bisnes_for_article()
+                // this.get_local_bisnes_for_article()
                 this.get_sectors_for_article()
             },
             'article_id' (newVal, oldVal) {
@@ -144,15 +144,15 @@
             },
 
 
-            get_local_bisnes_for_article(){
-                axios
-                .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
-                .then(response => {
-                    this.local_businesses = response.data
-                })
-                .catch(error =>{
-                })
-            },
+            // get_local_bisnes_for_article(){
+            //     axios
+            //     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+            //     .then(response => {
+            //         this.local_businesses = response.data
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
 
             get_sectors_for_article(){
                 if (this.article_id) {

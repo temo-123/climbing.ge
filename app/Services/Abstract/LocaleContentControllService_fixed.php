@@ -7,11 +7,11 @@ use Validator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
-// use App\Services\ImageControllService;
+use App\Services\ImageControllService;
 use App\Services\URLTitleService;
 
 // abstract class LocaleContentControllService
-class LocaleContentControllService
+class LocaleContentControllService_fixed
 {
     
     /*
@@ -126,7 +126,20 @@ class LocaleContentControllService
 
     private static function addGlobalArticle($global_data, $us_data, $request, $ka_info_id, $us_info_id, $global_model, $prefix, $image_path)
     {
-        $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+        // Validate that required data exists before generating URL title
+        if (!isset($us_data["title"]) || empty($us_data["title"])) {
+            return "Title is required for URL generation";
+        }
+
+        try {
+            $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+        } catch (\Exception $e) {
+            Log::error('URL title generation failed', [
+                'title' => $us_data["title"],
+                'error' => $e->getMessage()
+            ]);
+            return "Failed to generate URL title from title";
+        }
 
         $url_title_valid = (new static)->adding_url_title_validate($global_data, $global_model);
         
@@ -135,10 +148,13 @@ class LocaleContentControllService
         }
 
         if($request->hasFile('image') && $image_path){
-            $global_data['image'] =  ImageControllService::image_upload($image_path, $request, 'image', 1);
+            $global_data['image'] =  ImageControllService::image_upload($image_path, $request->file('image'), 'image', 1);
         }
 
-        $global_data['published']=$global_data["published"];
+        // Ensure published field is properly set
+        if (!isset($global_data["published"])) {
+            $global_data["published"] = 0;
+        }
 
         $global_data['us'.$prefix.'_id']=$us_info_id;
         $global_data['ka'.$prefix.'_id']=$ka_info_id;
@@ -147,7 +163,9 @@ class LocaleContentControllService
         $saved = $global_model::insertGetId($global_data); 
 
         if(!$saved){
-            // App::abort(500, 'Error');
+            // Log the failed save attempt
+            Log::error('Failed to save global content', ['data' => $global_data]);
+            return 'Error saving to database';
         }
         else{
             return $saved;
@@ -268,7 +286,20 @@ class LocaleContentControllService
 
         if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title']){
             if($us_data['is_change_url_title']){
-                $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+                // Validate that title exists before generating URL title
+                if (!isset($us_data["title"]) || empty($us_data["title"])) {
+                    return "Title is required for URL generation";
+                }
+
+                try {
+                    $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+                } catch (\Exception $e) {
+                    Log::error('URL title generation failed in edit', [
+                        'title' => $us_data["title"],
+                        'error' => $e->getMessage()
+                    ]);
+                    return "Failed to generate URL title from title";
+                }
 
                 $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model);
                 
@@ -279,14 +310,23 @@ class LocaleContentControllService
         }
         
         if($request->hasFile('image') && $image_path){
-            $global_data['image'] =  ImageControllService::image_update($image_path, $editing_global_content, $request, 'image', 'image', 1);
+            $global_data['image'] =  ImageControllService::image_update($image_path, $editing_global_content, $request->file('image'), 'image', 'image', 1);
+        }
+
+        // Ensure published field is properly set
+        if (!isset($global_data["published"])) {
+            $global_data["published"] = 0;
         }
 
         $saved = $editing_global_content->update($global_data); 
 
         if(!$saved){
-            // App::abort(500, 'Error');
-            return 'Error';
+            // Log the failed save attempt
+            Log::error('Failed to update global content', [
+                'id' => $id,
+                'data' => $global_data
+            ]);
+            return 'Error updating database';
         }
         else{
             return $locale_tabs = [

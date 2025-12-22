@@ -151,13 +151,17 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::delete('/del_mount_massive/{mount_id}', 'del_mount_massive');
     });
 
+
     Route::controller(LocalBisnesController::class)->prefix('set_bisnes')->group( function() {
         Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');
+
         Route::get('/get_editing_local_bisnes_info/{bisnes_id}', 'get_editing_local_bisnes_info');
+        Route::get('/get_bisnes_article_relations/{bisnes_id}', 'get_bisnes_article_relations');
         Route::post('/add_local_bisnes', 'add_local_bisnes');
         Route::delete('/del_local_bisnes/{bisnes_id}', 'del_local_bisnes');
         Route::delete('/del_bisnes_article_relation/{article_id}/{bisnes_id}', 'del_bisnes_article_relation');
         Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
+        Route::get('/get_article_categories', 'get_article_categories');
     });
 
     // Route::controller(ArticleGalleryController::class)->group( function() {
