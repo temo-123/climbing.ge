@@ -303,7 +303,10 @@ export const navbar = {
                 routes: [
                     {
                         name: "My purchases",
-                        route: "/purchases"
+                        route: "/purchases",
+                        permissions: [
+                            
+                        ]
                     },
                     {
                         name: "All products & categoryes",
