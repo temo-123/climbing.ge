@@ -67,7 +67,7 @@ Route::group(['namespace'=>'Api\User'], function() {
             // Route::get('/get_team_member/{id}', 'get_team_member');
         });
     });
-
+    
 
     Route::controller(FaworitesController::class)->prefix('set_faworite')->group( function() {
         // Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');

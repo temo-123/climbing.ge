@@ -53,21 +53,21 @@ export const navbar = {
                         name: "Favorite products",
                         route: "/favorite_products",
                         permissions: [
-                            ['show', 'favorite_products']
+                        //     ['show', 'favorite_products']
                         ]
                     },
                     {
                         name: "Favorite outdoor area",
                         route: "/my_favorite_outdoor_area",
                         permissions: [
-                            ['show', 'my_favorite_outdoor_area']
+                        //     ['show', 'my_favorite_outdoor_area']
                         ]
                     },
                     {
                         name: "Interested events",
                         route: "/interested_events",
                         permissions: [
-                            ['show', 'interested_events']
+                        //     ['show', 'interested_events']
                         ]
                     },
                 ],
@@ -302,7 +302,7 @@ export const navbar = {
                 name: "shop",
                 routes: [
                     {
-                        title: "My purchases",
+                        name: "My purchases",
                         route: "/purchases"
                     },
                     {

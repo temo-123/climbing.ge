@@ -63,6 +63,16 @@ Route::controller(\App\Http\Controllers\Api\User\SocialLinkController::class)->p
         });
     });
 
+    Route::controller(MultimediaController::class)->prefix('set_multimedia')->group( function() {
+        Route::get('/get_images_folder_structure', 'getImagesFolderStructure');
+        Route::post('/upload_images', 'uploadImages');
+        Route::delete('/delete_items', 'deleteItems');
+        Route::post('/create_folder', 'createFolder');
+        Route::get('/get_file_metadata', 'getFileMetadata');
+        Route::get('/search', 'search');
+    });
+
+
     /*
     *   Users option routes
     */
