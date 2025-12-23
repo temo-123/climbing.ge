@@ -6,9 +6,9 @@
           <section class="hero">
             <div class="container">
               <div class="row">
-                <h1>About Us</h1>
-                <p>Welcome to our blog! We are passionate about sharing knowledge and stories.</p>
-                <p>Our mission is to provide valuable content on various topics.</p>
+                <h1>{{ $t('blog.about_us.title') }}</h1>
+                <p>{{ $t('blog.about_us.welcome') }}</p>
+                <p>{{ $t('blog.about_us.mission') }}</p>
               </div>
             </div>
           </section>

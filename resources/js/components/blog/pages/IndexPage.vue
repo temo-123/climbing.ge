@@ -2,30 +2,31 @@
     <main role="main" class="container">
         <div class="container">
 
-            <h1 class='index_h2'>{{ $t('guide.title.ice climbing')}}</h1>
+            <h1 class='index_h2'>{{ $t('blog.title.index_title')}}</h1>
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
-            <h2 class="article_list_short_description">
+            <!-- <h2 class="article_list_short_description">
                 {{this.$siteData.data.ice_description}}
-            </h2>
+            </h2> -->
 
             <bigPost :items="sortedItems" />
 
-            <!-- Infinite Scroll Trigger -->
+            <button v-if="hasMorePages" @click="loadNextPage" class="show-older-button" :disabled="loadingMore">
+                {{ $t('blog.pagination_button.show_older_articles') }}
+            </button>
             <div v-if="loadingMore" class="loading-more">
                 <div class="spinner-border text-primary" role="status">
                     <span class="sr-only">Loading...</span>
                 </div>
-                Loading more posts... ({{ countdown }}s)
+                Loading...
             </div>
-            <div ref="scrollTrigger" class="scroll-trigger" :class="{ 'hidden': !hasMorePages }"></div>
         </div>
 
         <PostModal :show="showModal" :post="selectedPost" @close="closeModal" @view-full-post="handleViewFullPost" />
 
         <metaData
-            :title = " $t('blog.meta.index') "
+            :title = " $t('blog.title.index_title') "
             :description = "this.$siteData.data.guid_short_description"
             :image = "'/public/images/meta_img/outdoor.jpg'"
         />
@@ -54,10 +55,7 @@
         totalPages: 1,
         perPage: 5,
         loadingMore: false,
-        hasMorePages: true,
-        observer: null,
-        countdown: 2,
-        countdownTimer: null
+        hasMorePages: true
       }
     },
     computed: {
@@ -84,7 +82,7 @@
           this.loadingMore = true
         }
         console.log(`Fetching page ${page}, append: ${append}`)
-        axios.get(`/post/get_all_posts_and_news_for_blog/${lang}`, {
+        axios.get(`/get_post/get_all_posts_and_news_for_blog/${lang}`, {
           params: {
             page: page,
             per_page: this.perPage
@@ -115,36 +113,8 @@
       loadNextPage() {
         if (this.hasMorePages && !this.loadingMore) {
           this.loadingMore = true
-          this.countdown = 2
-          console.log('Starting 2-second delay before loading next page...')
-
-          this.countdownTimer = setInterval(() => {
-            this.countdown--
-            if (this.countdown <= 0) {
-              clearInterval(this.countdownTimer)
-              this.get_all_posts_and_news_for_blog(this.currentPage + 1, true)
-            }
-          }, 1000)
+          this.get_all_posts_and_news_for_blog(this.currentPage + 1, true)
         }
-      },
-      setupInfiniteScroll() {
-        this.observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && this.hasMorePages && !this.loadingMore) {
-              console.log('Scroll trigger intersected, loading next page')
-              this.loadNextPage()
-            }
-          })
-        }, {
-          rootMargin: '200px'
-        })
-
-        this.$nextTick(() => {
-          if (this.$refs.scrollTrigger) {
-            console.log('Setting up observer for scroll trigger')
-            this.observer.observe(this.$refs.scrollTrigger)
-          }
-        })
       },
       openModal(post) {
         this.selectedPost = post
@@ -172,13 +142,21 @@
   color: #666;
 }
 
-.scroll-trigger {
-  height: 20px;
-  background-color: transparent;
+.show-older-button {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-.scroll-trigger.hidden {
-  display: none;
+.show-older-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 .spinner-border {

@@ -353,37 +353,64 @@
     },
 
     "blog": {
-        "name": "Climbing Blog",
-
+        "name": "Blog",
         "meta": {
-            "index": "Rock Climbing & Mountaineering Blog from Georgia",
-            "about us": "About Us",
-            "search": "Search Posts"
+            "blog": "Blog",
+            "posts": "Posts",
+            "categories": "Categories",
+            "tags": "Tags",
+            "search": "Blog Search"
         },
 
         "menu": {
-            "articles": "Articles",
-            "about us": "About Us",
-            "login": "Login",
-            "sitemap": "Sitemap"
+            "about us": "About Us"
         },
 
         "title": {
-            "about us": "About Us",
-            "partner": "Partners",
-            "message": "Send Message"
+            "index_title": "Climbing.ge Blog",
+            "blog": "Blog",
+            "posts": "Posts",
+            "categories": "Categories",
+            "tags": "Tags",
+            "search": "Blog Search",
+            "similar": {
+                "posts": "Similar Posts"
+            }
         },
 
-        "article_right_navbar": {
-            "menu_title": "Navigation Menu"
+        "loading": {
+            "more_posts": "Loading more posts... ({{ countdown }}s)",
+            "loading": "Loading...",
+            "news": "Loading news...",
+            "post": "Loading post...",
+            "news_not_found": "News not found.",
+            "post_not_found": "Post not found.",
+            "created": "Created • {{ date }}"
         },
 
-        "breadcrumb home": "Home",
+        "about_us": {
+            "title": "About Us",
+            "welcome": "Welcome to our blog! We are passionate about sharing knowledge and stories.",
+            "mission": "Our mission is to provide valuable content on various topics."
+        },
 
-        "news_flag": "News",
-        "blog_flag": "Blog",
+        "labels": {
+            "post": "Post",
+            "news": "News"
+        },
 
-        "serch": "Search"
+        "modal": {
+            "created": "Created:",
+            "view_full_post": "View Full Post"
+        },
+
+        "search": {
+            "placeholder": "Search product. (English words only!)"
+        },
+
+        "pagination_button": {
+            "show_older_articles": "Show Older Article"
+        }
     },
 
     "user": {

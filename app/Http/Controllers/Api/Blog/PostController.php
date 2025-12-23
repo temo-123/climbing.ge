@@ -133,4 +133,29 @@ class PostController extends Controller
             'category' => $news->category
         ]);
     }
+
+    public function get_all_posts(Request $request){
+        $lang = $request->get('locale', 'en');
+
+        $posts = Post::with(['us_post', 'ka_post'])->orderBy('created_at', 'desc')->get();
+        $resp = [];
+        foreach ($posts as $post) {
+            $user = User::where('id', $post->user_id)->first();
+            $locale_post = null;
+            if ($lang === 'en') {
+                $locale_post = $post->us_post;
+            } elseif ($lang === 'ka') {
+                $locale_post = $post->ka_post;
+            }
+            array_push($resp, [
+                "id" => $post->id,
+                "title" => $locale_post ? $locale_post->title : '',
+                "url_title" => $post->url_title,
+                "published" => $post->published,
+                "created_at" => $post->created_at,
+                "user" => $user
+            ]);
+        }
+        return $resp;
+    }
 }

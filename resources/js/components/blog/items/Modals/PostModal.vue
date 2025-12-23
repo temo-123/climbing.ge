@@ -9,9 +9,9 @@
         <img v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image">
         <p class="post-content">{{ post.content }}</p>
         <p class="post-description">{{ post.short_description }}</p>
-        <small class="post-date">Created: {{ new Date(post.created_at).toLocaleDateString() }}</small>
+        <small class="post-date">{{ $t('blog.modal.created') }} {{ new Date(post.created_at).toLocaleDateString() }}</small>
         <div class="modal-actions">
-          <button @click="viewFullPost" class="btn btn-primary">View Full Post</button>
+          <button @click="viewFullPost" class="btn btn-primary">{{ $t('blog.modal.view_full_post') }}</button>
         </div>
       </div>
     </div>

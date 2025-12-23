@@ -11,7 +11,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12" v-if="article_loading">
-                    <!-- <content-loader
+                    <content-loader
                         viewBox="0 0 500 150"
                         primaryColor="#f3f3f3"
                         secondaryColor="#7427bb75"
@@ -23,7 +23,7 @@
                         <rect x="0" y="75" rx="3" ry="3" width="100%" height="10" />
                         <rect x="0" y="90" rx="3" ry="3" width="100%" height="10" />
                         <rect x="0" y="105" rx="3" ry="3" width="100%" height="10" />
-                    </content-loader> -->
+                    </content-loader>
                 </div>
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
@@ -64,7 +64,7 @@
             get_posts(){
                 this.article_loading = true;
                 axios
-                .get("/get_post/get_posts/")
+                .get("/get_post/get_all_posts/")
                 .then(response => {
                     this.data_for_tab = []
     
@@ -112,7 +112,7 @@
             del_post(id){
                 if (confirm("Are you sure you want to delete this article?")) {
                     axios
-                    .delete("/post/del_post/" + id)
+                    .delete("/set_post/del_post/" + id)
                     .then(response => {
                         this.get_posts()
                     })

@@ -560,7 +560,7 @@
                         formData.append('files[]', file);
                     });
                     
-                    const response = await axios.post('/api/set_multimedia/upload_images', formData, {
+                    const response = await axios.post('/set_multimedia/upload_images', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
                         }

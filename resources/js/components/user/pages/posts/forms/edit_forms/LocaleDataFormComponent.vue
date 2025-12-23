@@ -17,7 +17,7 @@
                 <div class="form-group clearfix row" v-if="locale_prop == 'us'">
                     <label for="name" class='col-md-4 control-label'> Change URL title </label>
                     <div class="col-md-8">
-                        <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_post()">
+                        <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @change="change_url_title_in_post">
                     </div>
                 </div>
                 <div class="form-group clearfix row">
@@ -48,7 +48,18 @@
         ],
         watch: {
             category_prop(newVal) { this.category = newVal; },
-            locale_data_prop(newVal) { this.data = newVal; }
+            locale_data_prop: {
+                handler(newVal) {
+                    this.data = newVal;
+                    this.is_change_url_title = newVal.is_change_url_title || false;
+                }
+            },
+            data: {
+                handler(newVal) {
+                    this.$emit('update:locale_data_prop', newVal);
+                },
+                deep: true
+            }
         },
         data(){
             return {
@@ -66,17 +77,23 @@
             this.category = this.category_prop;
         },
         methods: {
+            
             change_url_title_in_post(){
-                if(!this.is_change_url_title){
-                    if(confirm('Are you sure, you want change URL title? It will be bad for SEO optimization')){
-                        this.is_change_url_title = true
-                    } else {
-                        this.is_change_url_title = false 
+                if(this.is_change_url_title){
+                    // User checked the checkbox - confirm the change
+                    if(confirm('Are you sure, you want change URL title? It while be bad for SEO optimization')){
+                        this.data.is_change_url_title = true;
                     }
-                } else {
-                    this.is_change_url_title = false 
+                    else{
+                        this.is_change_url_title = false;
+                        this.data.is_change_url_title = false;
+                    }
                 }
-                this.data.is_change_url_title = this.is_change_url_title
+                else{
+                    // User unchecked the checkbox
+                    this.is_change_url_title = false;
+                    this.data.is_change_url_title = false;
+                }
             },
             send_data(){
                 this.$emit('send_data', {

@@ -7,7 +7,7 @@ use Validator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
 
-// use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 use App\Services\URLTitleService;
 
 // abstract class LocaleContentControllService
@@ -266,15 +266,19 @@ class LocaleContentControllService
     {
         $editing_global_content = $global_model::where('id', '=', $id)->first();
 
-        if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title']){
-            if($us_data['is_change_url_title']){
-                $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+        // Check if URL title should be changed
+        if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title'] == true){
+            $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+            Log::info('URL Title being updated', [
+                'new_url' => $global_data['url_title'],
+                'old_url' => $editing_global_content->url_title,
+                'title_source' => $us_data["title"]
+            ]);
 
-                $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model);
-                
-                if ($url_title_valid != false) {
-                    return $url_title_valid;
-                }
+            // Validate the new URL title, excluding current record
+            $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model, $id);
+            if ($url_title_valid != false) {
+                return $url_title_valid;
             }
         }
         
@@ -434,13 +438,24 @@ class LocaleContentControllService
         }
     }
 
-    private static function editing_url_title_validate($data, $gloal_model)
+    private static function editing_url_title_validate($data, $gloal_model, $current_id = null)
     {
-        $databaseName = $gloal_model::first()->getTable();
+        // Get table name from model instance to avoid issues with empty tables
+        $modelInstance = new $gloal_model;
+        $databaseName = $modelInstance->getTable();
 
-        $validator = Validator::make($data, [
-            'url_title' => 'required | max:190 | unique:'.$databaseName.',url_title',
-        ]);
+        $rules = [
+            'url_title' => 'required | max:190',
+        ];
+
+        // Add unique rule with current ID exclusion
+        if ($current_id) {
+            $rules['url_title'] .= ' | unique:'.$databaseName.',url_title,'.$current_id;
+        } else {
+            $rules['url_title'] .= ' | unique:'.$databaseName.',url_title';
+        }
+
+        $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
             return $validator->messages();

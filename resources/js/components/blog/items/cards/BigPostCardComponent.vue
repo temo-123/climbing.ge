@@ -17,7 +17,7 @@
               <div class="m-image-hero--label mm-image-hero--no-background">
                 <div class="m-image-hero--metadata-label">
                   <div class="news_flag" v-if="item.type === 'news'">{{ $t('guide.news_flag') }}</div>
-                  <div class="post_flag" v-else>Post</div>
+                  <div class="post_flag" v-else>{{ $t('blog.labels.post') }}</div>
                 </div>
               </div>
               <div class="m-image-hero--text-panel">

@@ -49,8 +49,7 @@ class PostController extends Controller
     function edit_post(Request $request) {
         $auth = PermissionService::authorize('post', 'edit');
         // if ($auth) return $auth;
-        $data = json_decode($request->data, true );
-
+        
         $post_editing = PostService::edit_content(Post::class, Locale_post::class, '_post', $request, 'images/blog_img/');
 
         return $post_editing;
