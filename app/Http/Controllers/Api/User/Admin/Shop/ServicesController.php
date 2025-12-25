@@ -64,7 +64,6 @@ class ServicesController extends Controller
 
     public function get_editing_service(Request $request)
     {
-        dd('jjj');
         $service = Service::where('id', '=', $request->service_id)->first();
         
         $data = [

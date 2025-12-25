@@ -365,7 +365,7 @@
             get_service_images(){
                 this.data_for_tab = []
                 axios
-                .get("/set_service/get_service_images/"+this.$route.params.id)
+                .get("/get_service/get_service_images/"+this.$route.params.id)
                 .then(response => {
                     this.service_old_images = response.data
                 })
