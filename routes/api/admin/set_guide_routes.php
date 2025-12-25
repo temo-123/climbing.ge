@@ -183,17 +183,6 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::delete('/del_slide/{slide_id}', 'del_slide');
     });
 
-    Route::controller(SiteDataController::class)->prefix('set_siteData')->group( function() {
-        Route::post('/edit_site_data', 'edit_site_data');
-        Route::post('/edit_site_global_data', 'edit_site_global_data');
-        Route::post('/edit_site_ka_data', 'edit_site_ka_data');
-        Route::post('/edit_site_ru_data', 'edit_site_ru_data');
-        Route::post('/edit_site_us_data', 'edit_site_us_data');
-
-        Route::get('/fix_article_bugs', 'fix_article_bugs');
-        Route::get('/site_data_counts', 'site_data_counts');
-    });
-
     Route::controller(SectorController::class)->prefix('set_sector')->group( function() {
         Route::post('/add_sector', 'add_sector');
         Route::post('/edit_sector/{sector_id}', 'edit_sector');

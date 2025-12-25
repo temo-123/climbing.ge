@@ -12,10 +12,6 @@ Route::group(['namespace'=>'Api\User'], function() {
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
     });
 
-    Route::controller(SocialLinkController::class)->prefix('get_site_social_links')->group( function() {
-        Route::get('/get_site_social_links', 'get_site_social_links');
-        // Editing routes moved to adminAction.php
-    });
 
     Route::prefix('get_task')->group( function() {
         Route::controller(TaskController::class)->group( function() {

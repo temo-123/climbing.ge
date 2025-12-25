@@ -43,7 +43,7 @@ class SiteDataService extends LocaleSiteService
      * @param string $locale
      * @return bool
      */
-    public static function updateSiteData($data, $locale = 'us')
+    public static function updateSiteGlobalData($data, $locale = 'us')
     {
         $site = Site::first();
         if (!$site) {
@@ -53,6 +53,22 @@ class SiteDataService extends LocaleSiteService
         // Update global data if provided
         if (isset($data['global_data'])) {
             $site->update($data['global_data']);
+        }
+        
+        return true;
+    }
+    /**
+     * Update site data for a specific locale.
+     *
+     * @param array $data
+     * @param string $locale
+     * @return bool
+     */
+    public static function updateSiteLocaleData($data, $locale = 'us')
+    {
+        $site = Site::first();
+        if (!$site) {
+            return false;
         }
 
         // Update locale data

@@ -174,28 +174,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         // Editing routes moved to adminAction.php
     });
 
-    /*
-    *   Site data routes
-    */
-    Route::controller(SiteDataController::class)->prefix('get_site_data')->group( function() {
-        // Route::apiResource('/', 'SiteDataController');
-
-        // Route::apiResource('/site_social_links', 'SocialLinkController');
-
-        Route::get('/get_site_locale_data/{locale}', 'get_site_locale_data');
-        // Route::get('/get_locale_site_data/{locale}', 'get_locale_site_data');
-
-        Route::get('/get_site_global_data', 'get_site_global_data');
-        Route::get('/get_site_ka_data', 'get_site_ka_data');
-        Route::get('/get_site_ru_data', 'get_site_ru_data');
-        Route::get('/get_site_us_data', 'get_site_us_data');
-
-        // Editing routes moved to adminAction.php
-    });
-
 
     Route::controller(GeneralInfoController::class)->prefix('get_general_info')->group( function() {
-        Route::get('/get_all_general_infos', 'get_all_general_infos');
+        Route::get('/get_all_general_info', 'get_all_general_infos');
         Route::get('/get_general_info/{id}', 'get_general_info');
     });
     // Route::apiResource('/general_info', 'GeneralInfoController');

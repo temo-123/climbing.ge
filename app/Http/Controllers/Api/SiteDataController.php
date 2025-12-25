@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\User\Admin\Guide;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -40,6 +40,8 @@ use App\Models\Guide\Article_comment_complaint;
 use App\Models\Guide\Comment;
 
 use App\Models\Guide\Region;
+
+use Illuminate\Support\Facades\Validator;
 
 class SiteDataController extends Controller
 {
@@ -180,24 +182,48 @@ class SiteDataController extends Controller
         // }
     }
 
-    public function get_site_locale_data(Request $request, $locale)
-    {
-        return SiteDataService::getSiteData($locale ?? 'us');
-    }
 
 
 
-    // public function get_site_global_data(){
-    //     return SiteDataService::getSiteData()['global_data'] ?? null;
+
+
+
+
+
+
+
+
+    // public function get_site_locale_data(Request $request, $locale)
+    // {
+    //     // return SiteDataService::getSiteData($locale ?? 'us');
+
+    //     return Locale_site::where('lang', '=', $lang)->get();
     // }
+
+    public function get_site_global_data(){
+        return SiteDataService::getSiteData()['global_data'] ?? null;
+    }
     // public function get_site_ka_data(){
     //     return SiteDataService::getSiteData('ka')['locale_data'] ?? null;
     // }
-    // // public function get_site_ru_data(){
-    // //     return SiteDataService::getSiteData('ru')['locale_data'] ?? null;
-    // // }
+    // public function get_site_ru_data(){
+    //     return SiteDataService::getSiteData('ru')['locale_data'] ?? null;
+    // }
     // public function get_site_us_data(){
     //     return SiteDataService::getSiteData('us')['locale_data'] ?? null;
+    // }
+
+    // public function get_site_social_links(){
+    //     return SiteDataService::getSocialLinks();
+    // }
+
+    // public function add_site_social_links(Request $request){
+    //     $data = $request->data;
+    //     return SiteDataService::addSocialLink($data);
+    // }
+
+    // public function del_site_social_links($id){
+    //     return SiteDataService::deleteSocialLink($id) ? response()->json(['message' => 'Deleted']) : response()->json(['error' => 'Not found'], 404);
     // }
 
     public function edit_site_data(Request $request)
@@ -221,13 +247,14 @@ class SiteDataController extends Controller
 
     public function edit_site_global_data(Request $request){
         $data = ['global_data' => $request->site_global_info];
+        dd($data);
         SiteDataService::updateSiteData($data);
-        return response()->json(['message' => 'Global site data updated successfully']);
+        // return response()->json(['message' => 'Global site data updated successfully']);
     }
     public function edit_site_ka_data(Request $request){
         $data = ['locale_data' => $request->get('site_ka_info')];
         SiteDataService::updateSiteData($data, 'ka');
-        return response()->json(['message' => 'KA site data updated successfully']);
+        // return response()->json(['message' => 'KA site data updated successfully']);
     }
     // public function edit_site_ru_data(Request $request){
     //     $data = ['locale_data' => $request->get('site_ru_info')];
@@ -237,7 +264,14 @@ class SiteDataController extends Controller
     public function edit_site_us_data(Request $request){
         $data = ['locale_data' => $request->get('site_us_info')];
         SiteDataService::updateSiteData($data, 'us');
-        return response()->json(['message' => 'US site data updated successfully']);
+        // return response()->json(['message' => 'US site data updated successfully']);
+    }
+
+    public function get_site_locale_data(Request $request, $lang)
+    {
+        // return SiteDataService::getSiteData($lang ?? 'us');
+
+        return Locale_site::select('id', 'slug', $lang . '_data')->get();
     }
 
     private function edit_locale_data_by_locale($request, $locale)
@@ -312,6 +346,78 @@ class SiteDataController extends Controller
         ]);
         if ($validator->fails()) {
             return $validator->messages();
+        }
+    }
+
+    /**
+     * Add new site locale data
+     */
+    public function add_site_local_data(Request $request)
+    {
+        $data = $request->data;
+        
+        // Validate the data
+        $validator = Validator::make($data, [
+            'slug' => 'required|string|max:255',
+            'ka_data' => 'nullable|string',
+            'us_data' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['validation' => $validator->messages()], 422);
+        }
+
+        try {
+            // Create new locale site record
+            $localeSite = new Locale_site();
+            $localeSite->slug = $data['slug'];
+            $localeSite->ka_data = $data['ka_data'] ?? '';
+            $localeSite->us_data = $data['us_data'] ?? '';
+            $localeSite->save();
+
+            return response()->json(['message' => 'Site locale data added successfully'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to add site locale data'], 500);
+        }
+    }
+
+    /**
+     * Edit existing site locale data
+     */
+    public function edit_site_local_data(Request $request, $id, $language)
+    {
+        $data = $request->data;
+        
+        // Validate the data
+        $validator = Validator::make($data, [
+            'ka_data' => 'nullable|string',
+            'us_data' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['validation' => $validator->messages()], 422);
+        }
+
+        try {
+            // Find the locale site record
+            $localeSite = Locale_site::findOrFail($id);
+            
+            // Update the appropriate language data
+            if ($language === 'ka') {
+                $localeSite->ka_data = $data['ka_data'] ?? '';
+            } elseif ($language === 'us') {
+                $localeSite->us_data = $data['us_data'] ?? '';
+            } else {
+                return response()->json(['error' => 'Invalid language specified'], 400);
+            }
+            
+            $localeSite->save();
+
+            return response()->json(['message' => 'Site locale data updated successfully'], 200);
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            return response()->json(['error' => 'Locale site data not found'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Failed to update site locale data'], 500);
         }
     }
 }

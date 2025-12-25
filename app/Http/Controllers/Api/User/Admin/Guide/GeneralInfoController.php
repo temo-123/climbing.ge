@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Guide\General_info;
+use App\Services\GeneralInfoService;
+use Illuminate\Support\Facades\Log;
 
 class GeneralInfoController extends Controller
 {
@@ -114,8 +116,32 @@ class GeneralInfoController extends Controller
      */
     public function del_general_info($id)
     {
-        $deleted_general_info = General_info::where("id", "=", $id)->first();
-        $deleted_general_info -> delete();
+        try {
+            $success = GeneralInfoService::deleteGeneralInfo($id);
+            
+            if ($success) {
+                return response()->json([
+                    'message' => 'General info deleted successfully',
+                    'status' => 'success'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'General info not found',
+                    'status' => 'error'
+                ], 404);
+            }
+        } catch (\Exception $e) {
+            Log::error('Error deleting general info', [
+                'id' => $id,
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'message' => 'Failed to delete general info',
+                'error' => $e->getMessage(),
+                'status' => 'error'
+            ], 500);
+        }
     }
 
     public function validation($request)

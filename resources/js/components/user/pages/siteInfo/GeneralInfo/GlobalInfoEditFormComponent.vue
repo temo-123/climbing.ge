@@ -103,7 +103,7 @@
                 axios
                 .post('/set_general_info/edit_general_info/' + this.editing_general_info_id, {        
                     data: this.data,
-                    _method: 'PATCH'
+                    _method: 'post'
                 })
                 .then((response)=> { 
                     this.go_back()

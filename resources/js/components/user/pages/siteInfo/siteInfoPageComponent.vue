@@ -32,13 +32,13 @@
 
                                             <label :for="2">English data</label>
                                         </div>
-                                    <div class="col-md-12">
-                                        <!-- <div class="col"> -->
+                                        <div class="col-md-3">
+                                            <!-- <div class="col"> -->
                                             <input type="radio" :id="5" :value="5" v-model="action_tab" />
 
                                             <label :for="5">General info</label>
-                                        <!-- </div> -->
-                                    </div>
+                                            <!-- </div> -->
+                                        </div>
                                     <!-- </div> -->
                                 </div>
                             </div>
@@ -52,7 +52,7 @@
                                     <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
                                 </div>
                                 <div class="col-md-6">
-                                    <router-link class="btn btn-success float-right" :to="{ name: 'siteDataEdit' }">Edit all sites data</router-link>
+                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
                                 </div>
                             </div>
                             <table class="table table-hover" id="dev-table" >
@@ -67,27 +67,19 @@
                                     <tr>
                                         <td>Email</td>
                                         <td>|</td>
-                                        <td>{{site_info.email}}</td>
+                                        <td>{{site_info?.email || ''}}</td>
                                     </tr>
                                     <tr>
                                         <td>Phone</td>
                                         <td>|</td>
-                                        <td>{{site_info.number}}</td>
+                                        <td>{{site_info?.number || ''}}</td>
                                     </tr>
 
                                     <tr>
                                         <td>Map</td>
                                         <td>|</td>
                                         <td>
-                                            {{site_info.map}}
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>Map</td>
-                                        <td>|</td>
-                                        <td>
-                                            <span v-html="site_info.map"></span>
+                                            <span v-html="site_info?.map || ''"></span>
                                         </td>
                                     </tr>
 
@@ -95,15 +87,7 @@
                                         <td>AD block</td>
                                         <td>|</td>
                                         <td>
-                                            {{site_info.ad}}
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td>ad</td>
-                                        <td>|</td>
-                                        <td>
-                                            <span v-html="site_info.ad"></span>
+                                            <span v-html="site_info?.ad || ''"></span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -113,7 +97,7 @@
 
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <a class="btn btn-primary pull-left" @click="social_link_add_model()">Add Social link</a>
+                                    <a class="btn btn-primary pull-left" @click="open_add_link_modal()">Add Social link</a>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-groupe">
@@ -132,9 +116,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr v-for="link in site_social_links" :key="link.id">
-                                        <td v-if="link.title"><a :href="link.url" target="_blank">{{ link.title }}</a></td>
-                                        <td v-else><a :href="link.url" target="_blank">{{ from_user_site_url_get_domen(link.url) }}</a></td>
+                                    <tr v-for="link in site_social_links" :key="link.id || link.url">
+                                        <td v-if="link?.title"><a :href="link?.url" target="_blank">{{ link.title }}</a></td>
+                                        <td v-else><a :href="link?.url" target="_blank">{{ from_user_site_url_get_domen(link?.url) }}</a></td>
                                         <td>|</td>
                                         <td>
                                         <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
@@ -148,28 +132,59 @@
                         <span v-else-if="action_tab == 2">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <!-- <button class="btn btn-primary" >Edit English data</button> -->
-                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'siteUsDataEdit' }">Edit English data</router-link>
+                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">Add new slag item</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
                                 </div>
                             </div>
-                            <localeInfoForm :info = site_us_info />
+
+                            <table class="table table-hover" id="dev-table" >
+                                <thead>
+                                    <tr>
+                                        <th>Value name</th>
+                                        <th>Data</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="info in site_us_info" :key="info.id || info.slug">
+                                        <td>{{ info?.slug || '' }}</td>
+                                        <td v-html="info?.us_data || ''"></td>
+                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">Edit</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </span>
 
-                        <!-- <input type="radio" name="tabs" id="4">
-                        <label for="4">Georgian Data</label> -->
                         <span v-else-if="action_tab == 3">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <!-- <button class="btn btn-primary" >Georgian data</button> -->
-                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'siteKaDataEdit' }">Edit Georgian data</router-link>
+                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">Add new slag item</button>
+                                </div>
+                                <div class="col-md-6">
+                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
                                 </div>
                             </div>
-                            <localeInfoForm :info = site_ka_info />
+
+                            <table class="table table-hover" id="dev-table" >
+                                <thead>
+                                    <tr>
+                                        <th>Value name</th>
+                                        <th>Data</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="info in site_ka_info" :key="info.id || info.slug">
+                                        <td>{{ info?.slug || '' }}</td>
+                                        <td v-html="info?.ka_data || ''"></td>
+                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">Edit</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </span>
 
-
-                        <!-- <input type="radio" name="tabs" id="5">
-                        <label for="5">General info</label> -->
                         <span v-else-if="action_tab == 5">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
@@ -201,21 +216,21 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="general_info in general_infos" :key="general_info.id">
-                                                <th>{{general_info.id}}</th>
+                                                <th>{{general_info?.id || ''}}</th>
 
                                                 <th>|</th>
-                                                <td>{{general_info.title}}</td>
+                                                <td>{{general_info?.title || ''}}</td>
 
                                                 <th>|</th>
                                                 <td>
-                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info.id } }" >Edit</router-link>
+                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info?.id } }" >Edit</router-link>
                                                     <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
                                                     <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
                                                 </td>
                                                 
                                                 <td>|</td>
                                                 <td>
-                                                    <button type="submit" class="btn btn-danger" @click="del_social_link(general_info.id)">Delete</button>
+                                                    <button type="submit" class="btn btn-danger" @click="del_general_info(general_info?.id)">Delete</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -228,47 +243,53 @@
             </div>
         </div>
 
-        <stack-modal
-                :show="is_add_social_link_model"
-                title="Add site social link"
-                @close="close_social_link_add_model"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
-            >
-            <pre class="language-vue">
-                <form method="POST" id="add_social_link_form" v-on:submit.prevent="add_social_link">
-                    <input type="text" class="form-control" v-model="form_data.title" name="title" id="Title" placeholder="Title" title="Title">
-                    <input type="url" class="form-control" v-model="form_data.url" name="url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
-                </form>
-            </pre>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="add_social_link_form"
-                    >
-                    Save
-                    </button>
-                </div>
-            </div>
-        </stack-modal>
+        <add_site_local_data_modal
+            ref="add_site_local_data_modal"
+
+            @update="get_site_data"
+        />
+        <edit_site_local_data_modal
+            ref="edit_site_local_data_modal"
+
+            @update="get_site_data"
+        />
+
+        <add_link_modal
+            ref="add_link_modal"
+
+            @update="get_social_links"
+        />
+        
     </div>
 </template>
 
 <script>
-    import localeInfoForm from './SiteData/tabs/LocaleDataTabComponent.vue'
+    // import localeInfoForm from './SiteData/tabs/LocaleDataTabComponent.vue'
 
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+
+    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
+// import { info } from 'cli';
+
+    import add_link_modal from './SiteData/Modals/SiteSocialLinks/AddLinkModal.vue'
+    import add_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/AddSiteLocaleInfoComponent.vue'
+    import edit_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/EditSiteLocaleInfoComponent.vue'
+
     export default {
         components: {
-            localeInfoForm,
-            StackModal,
-            SlickItem,
-            SlickList,
-            breadcrumb
+            // localeInfoForm,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
+            breadcrumb,
+
+            // validator_alerts_component
+
+            add_link_modal,
+            add_site_local_data_modal,
+            edit_site_local_data_modal,
         },
         // inject:[siteData],
         props: [
@@ -286,15 +307,9 @@
                 general_info_reset_id: 0,
 
                 site_social_links: [],
-                is_general_info_refresh: false,
                 is_social_links_refresh: false,
 
-                is_add_social_link_model: false,
-
-                form_data: {
-                    title: '',
-                    url: ''
-                },
+                showAddLinkModal: false,
 
                 action_tab: 1
             }
@@ -328,7 +343,7 @@
             },
             get_site_ka_data(){
                 axios
-                .get('/get_site_data/get_site_ka_data')
+                .get('/get_site_data/get_site_locale_data/ka')
                 .then(response => {
                     this.site_ka_info = response.data
                 })
@@ -336,19 +351,9 @@
                     error => console.log(error)
                 );
             },
-            // get_site_ru_data(){
-            //     axios
-            //     .get('/siteData/get_site_ru_data')
-            //     .then(response => {
-            //         this.site_ru_info = response.data
-            //     })
-            //     .catch(
-            //         error => console.log(error)
-            //     );
-            // },
             get_site_us_data(){
                 axios
-                .get('/get_site_data/get_site_us_data')
+                .get('/get_site_data/get_site_locale_data/us')
                 .then(response => {
                     this.site_us_info = response.data
                 })
@@ -368,28 +373,32 @@
                     error => console.log(error)
                 );
             },
-            add_social_link(){
-                axios
-                .post('/set_site_social_links/add_site_social_links', {        
-                    data: this.form_data,
-
-                    _method: 'post'
-                })
-                .then(response => {
-                    this.get_social_links()
-                    this.close_social_link_add_model()
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            },
-            social_link_add_model(){
-                this.is_add_social_link_model = true
-            },
-            close_social_link_add_model(){
-                this.is_add_social_link_model = false
-                this.form_data = []
-            },
+            // add_social_link(){
+            //     axios
+            //     .post('/set_site_social_links/add_site_social_links', {        
+            //         data: this.form_data,
+            //         _method: 'post'
+            //     })
+            //     .then(response => {
+            //         // Success - refresh the list and close modal
+            //         this.get_social_links()
+            //         this.close_social_link_add_model()
+            //     })
+            //     .catch(err => {
+            //         if (err.response && err.response.status == 422) {
+            //             this.error = err.response.data.validation
+            //         } else {
+            //             console.log(err);
+            //         }
+            //     })
+            // },
+            // social_link_add_model(){
+            //     this.is_add_social_link_model = true
+            // },
+            // close_social_link_add_model(){
+            //     this.is_add_social_link_model = false
+            //     this.form_data = []
+            // },
             del_social_link(link_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -424,6 +433,25 @@
                         this.get_general_info()
                     })
                     .catch(error => console.log(error))
+                }
+            },
+
+            // Method to open edit modal with specific data
+            open_edit_modal(item, language){
+                this.$refs.edit_site_local_data_modal.show_modal_with_data(item, language)
+            },
+
+            // Method to open add link modal
+            open_add_link_modal(){
+                if (this.$refs.add_link_modal) {
+                    this.$refs.add_link_modal.show_modal()
+                }
+            },
+
+            // Method to open add site local data modal
+            open_add_site_local_data_modal(){
+                if (this.$refs.add_site_local_data_modal) {
+                    this.$refs.add_site_local_data_modal.show_modal()
                 }
             }
         }
