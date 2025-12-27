@@ -17,9 +17,7 @@ class Tour extends Model
         'url_title',
         'published',
         'min_price',
-        // 'category_id',
-        // 'published',
-        // 'published',
+        'category_id',
     ];
 
 	public function us_tour()

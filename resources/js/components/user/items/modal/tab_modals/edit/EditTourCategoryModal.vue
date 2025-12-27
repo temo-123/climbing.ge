@@ -85,7 +85,7 @@
             get_editing_data(){
                 this.is_loading = true,
                 axios
-                .get("/get_tour/category/get_editing_category/"+this.editing_category_id)
+                .get("/set_tour/set_category/get_editing_category/"+this.editing_category_id)
                 .then(response => {
                     this.form_data = response.data
                 })
@@ -118,7 +118,7 @@
                 this.is_loading = true,
 
                 axios
-                .post("/set_tour/category/edit_category/"+this.editing_category_id, {
+                .post("/set_tour/set_category/edit_category/"+this.editing_category_id, {
                     data: this.form_data,
 
                     _method: 'Post'

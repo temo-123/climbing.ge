@@ -176,6 +176,10 @@ class TourController extends Controller
     function get_tour_images(Request $request) {
         $tour = Tour::where('id', '=', $request->tour_id)->first();
         
+        if (!$tour) {
+            return abort(404);
+        }
+        
         if($tour->tour_images->count() > 0){
             return $tour->tour_images;
         }
@@ -194,7 +198,7 @@ class TourController extends Controller
         $tour_images_count = Tour_image::where('tour_id',strip_tags($global_id))->count();
         
         if ($tour_images_count > 0) {
-            $tour_images = Tour_image::ShipedCountryControllerShipedCountryController('tour_id',strip_tags($global_id))->get();
+            $tour_images = Tour_image::where('tour_id',strip_tags($global_id))->get();
             foreach ($tour_images as $tour_image) {
                 imageControllService::image_delete('images/tour_img/', $tour_image, 'image');
                 $tour_image ->delete();

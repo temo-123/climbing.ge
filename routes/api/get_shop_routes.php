@@ -65,18 +65,21 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_similar_tours/{lang}/{tour_id}', 'get_similar_tours');
         Route::get('/get_tour/{lang}/{url_title}', 'get_tour');
 
-        Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
+        // Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
         Route::get('/get_tour_images/{tour_id}', 'get_tour_images');
 
         Route::controller(TourCategoryController::class)->prefix('get_category')->group( function() {
             Route::get('/get_all_categories', 'get_all_categories');
+            Route::get('/get_category/{id}', 'get_category');
 
-            Route::get('/get_editing_category/{category_id}', 'get_editing_category');
+            // Route::get('/get_editing_category/{category_id}', 'get_editing_category');
         });
 
         Route::controller(TourReservationController::class)->prefix('get_reservation')->group( function() {
-            Route::get('/get_reservations', 'get_reservations');
             Route::get('/get_user_reservations', 'get_user_reservations');
+
+            Route::get('/get_all_reservations', 'get_all_reservations');
+            Route::get('/get_reservation/{id}', 'get_reservation');
 
             // Editing routes moved to adminAction.php
         });

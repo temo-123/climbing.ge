@@ -56,7 +56,7 @@
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
 
                         <published_item 
-                            :published_prop = data.published
+                            :published_prop = data.global_tour.published
                             @item_data="data.global_tour.published = $event" 
                         />
 
@@ -352,7 +352,7 @@
 
             get_tour_category: function(){
                 axios
-                .get("/get_tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })

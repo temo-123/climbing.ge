@@ -52,16 +52,4 @@ class TourService extends LocaleContentService
 
         return $locale_tour[0];
     }
-
-    public static function add_tour() {
-        
-    }
-
-    public static function edit_tour() {
-        
-    }
-
-    public static function del_tour() {
-        
-    }
 }

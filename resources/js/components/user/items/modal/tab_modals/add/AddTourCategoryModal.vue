@@ -101,7 +101,7 @@
                 this.is_loading = true,
 
                 axios
-                .post("/set_tour/category/add_category/", {
+                .post("/set_tour/set_category/add_category/", {
                     data: this.form_data,
 
                     _method: 'Post'

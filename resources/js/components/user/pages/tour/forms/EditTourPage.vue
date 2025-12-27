@@ -57,7 +57,7 @@
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         
                         <published_item 
-                            :published_prop = data.published
+                            :published_prop = data.global_tour.published
                             @item_data="data.global_tour.published = $event" 
                         />
 
@@ -219,6 +219,7 @@
                         </div>
                     </form>
                 </div>
+                
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
@@ -338,7 +339,7 @@
         methods: {
             get_tour_category: function(){
                 axios
-                .get("/get_tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })
@@ -477,7 +478,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('/set_tour/edit_tour/'+this.$route.params.id, 
+                .post('/set_tour/edit_tour/'+this.$route.params.tour_id, 
                     formData
                 )
                 .then(response => {

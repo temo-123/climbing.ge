@@ -127,7 +127,7 @@
 
             get_all_tours_categories: function(){
                 axios
-                .get("/get_tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
@@ -175,7 +175,7 @@
             del_category(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_tour/category/del_category/'+id, {
+                    .post('/set_tour/set_category/del_category/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

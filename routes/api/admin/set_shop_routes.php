@@ -6,7 +6,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Product and product categories routes
     */
-    Route::controller(ProductController::class)->prefix('product')->group( function() {
+    Route::controller(ProductController::class)->prefix('set_product')->group( function() {
         // Route::apiResource('/', 'ProductController');
         // Route::get('/get_all_products', 'get_all_products');
         Route::get('/get_user_products', 'get_user_products');
@@ -37,7 +37,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
 
     // Route::apiResource('/product_category', 'ProductCategoryController');
 
-    Route::controller(ProductSubcategoryController::class)->prefix('subcategory')->group( function() {
+    Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
         Route::get('/get_all_subcategories', 'get_all_subcategories');
         Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
         Route::get('/get_subcategory/{id}', 'get_subcategory');
@@ -46,7 +46,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::delete('/del_subcategory/{id}', 'del_subcategory');
     });
 
-    Route::controller(ProductBrandController::class)->prefix('brand')->group( function() {
+    Route::controller(ProductBrandController::class)->prefix('set_brand')->group( function() {
         // Route::get('/get_all_brands', 'get_all_brands');
         // Route::get('/get_brand/{id}', 'get_brand');
         Route::post('/create_brand', 'create_brand');
@@ -54,7 +54,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::delete('/del_brand/{id}', 'del_brand');
     });
 
-    Route::controller(ProductOptionController::class)->prefix('product_option')->group( function() {
+    Route::controller(ProductOptionController::class)->prefix('set_product_option')->group( function() {
         Route::get('/get_all_product_options', 'get_all_product_options');
         Route::get('/get_product_option/{id}', 'get_product_option');
         Route::post('/add_option', 'add_option');
@@ -66,7 +66,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Warehouse
     */
-    Route::controller(WarehouseController::class)->prefix('warehouse')->group( function() {
+    Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
         Route::get('/get_warehouses', 'get_warehouses');
         Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
         Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
@@ -84,32 +84,33 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
     });
     
-    Route::controller(TourController::class)->prefix('tour')->group( function() {
-        Route::get('/get_all_tours', 'get_all_tours');
-        Route::get('/get_tour/{id}', 'get_tour');
-        Route::get('/get_editing_tour/{id}', 'get_editing_tour');
-        Route::get('/get_tour_images/{id}', 'get_tour_images');
+    Route::controller(TourController::class)->prefix('set_tour')->group( function() {
+        // Route::get('/get_all_tours', 'get_all_tours');
+        // Route::get('/get_tour/{id}', 'get_tour');
+        // Route::get('/get_tour_images/{id}', 'get_tour_images');
+        Route::get('/get_editing_tour/{tour_id}', 'get_editing_tour');
         Route::post('/add_tour', 'add_tour');
         Route::post('/edit_tour/{tour_id}', 'edit_tour');
         Route::post('/change_user_relation', 'change_user_relation');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
         Route::delete('/del_tour/{tour_id}', 'del_tour');
-    });
 
-    Route::controller(TourCategoryController::class)->prefix('tour/category')->group( function() {
-        Route::get('/get_all_categories', 'get_all_categories');
-        Route::get('/get_category/{id}', 'get_category');
-        Route::post('/add_category', 'add_category');
-        Route::post('/edit_category/{category_id}', 'edit_category');
-        Route::delete('/del_category/{category_id}', 'del_category');
-    });
+        Route::controller(TourCategoryController::class)->prefix('set_category')->group( function() {
+            // Route::get('/get_all_categories', 'get_all_categories');
+            // Route::get('/get_category/{id}', 'get_category');
+            Route::post('/add_category', 'add_category');
+            Route::post('/edit_category/{category_id}', 'edit_category');
+            Route::delete('/del_category/{category_id}', 'del_category');
+            Route::get('/get_editing_category/{category_id}', 'get_editing_category');
+        });
 
-    Route::controller(TourReservationController::class)->prefix('tour/reservation')->group( function() {
-        Route::get('/get_all_reservations', 'get_all_reservations');
-        Route::get('/get_reservation/{id}', 'get_reservation');
-        Route::post('/create_reservation/{tour_id}', 'create_reservation');
-        Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
-        Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+        Route::controller(TourReservationController::class)->prefix('set_reservation')->group( function() {
+            // Route::get('/get_all_reservations', 'get_all_reservations');
+            // Route::get('/get_reservation/{id}', 'get_reservation');
+            Route::post('/create_reservation/{tour_id}', 'create_reservation');
+            Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
+            Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+        });
     });
 
     Route::controller(ServicesController::class)->prefix('set_service')->group( function() {
@@ -140,7 +141,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
     });
 
-    Route::controller(OrderController::class)->prefix('order')->group( function() {
+    Route::controller(OrderController::class)->prefix('set_order')->group( function() {
         Route::get('/get_all_orders', 'get_all_orders');
         Route::post('/create_order', 'create_order');
         Route::post('/add_custom_order', 'add_custom_order');
@@ -162,7 +163,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
     });
 
-    Route::controller(SaleCodeController::class)->prefix('sale_code')->group( function() {
+    Route::controller(SaleCodeController::class)->prefix('set_sale_code')->group( function() {
         // Route::get('/get_all_sale_code', 'get_all_sale_code');
         Route::post('/add_sale_code', 'add_sale_code');
         Route::post('/get_editing_sale_code/{sale_code_id}', 'get_editing_sale_code');
@@ -174,7 +175,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Cart and orders routes
     */
-    Route::controller(ShipedRegionController::class)->prefix('shiped_region')->group( function() {
+    Route::controller(ShipedRegionController::class)->prefix('set_shiped_region')->group( function() {
         Route::get('/get_all_shiped_regions', 'get_all_shiped_regions');
         Route::get('/get_activ_region/{region_id}', 'get_activ_region');
         Route::post('/add_region', 'add_region');
@@ -185,7 +186,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Product Coments routes
     */
-    Route::controller(ProductFeedbackController::class)->prefix('product_feedback')->group( function() {
+    Route::controller(ProductFeedbackController::class)->prefix('set_product_feedback')->group( function() {
         // Route::apiResource('/feedback', 'feedbackController');
         Route::get('/get_all_feedbacks', 'get_all_feedbacks');
         Route::get('/get_user_feedbacks', 'get_user_feedbacks');
