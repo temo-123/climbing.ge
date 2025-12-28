@@ -10,9 +10,9 @@ use App\Models\Shop\Product_option;
 
 class WarehouseController extends Controller
 {
-    // public function get_warehouses () {
-    //     return Warehouse::all();
-    // }
+    public function get_warehouses () {
+        return Warehouse::all();
+    }
 
     public function add_warehouse (Request $request) {
         $warehouse = Warehouse::create($request->all('data')['data']);
@@ -28,17 +28,17 @@ class WarehouseController extends Controller
         return response()->json($warehouse);
     }
 
-    // public function get_editing_warehouse (Request $request) {
-    //     return Warehouse::find($request->id);
-    // }
+    public function get_editing_warehouse (Request $request) {
+        return Warehouse::find($request->id);
+    }
 
-    // public function get_warehouse_data(Request $request) {
-    //     return Warehouse::find($request->id);
-    // }
+    public function get_warehouse_data(Request $request) {
+        return Warehouse::find($request->id);
+    }
 
-    // public function get_activ_warehouse (Request $request) {
-    //     return Warehouse::find($request->id);
-    // }
+    public function get_activ_warehouse (Request $request) {
+        return Warehouse::find($request->id);
+    }
 
     public function del_warehouse (Request $request) {
         $deleted = Warehouse::where('id', $request->id)->delete();
@@ -86,13 +86,13 @@ class WarehouseController extends Controller
         return response()->json(['success' => true]);
     }
 
-    // public function get_warehouse_product_options(Request $request) {
-    //     $warehouse = Warehouse::find($request->id);
-    //     if (!$warehouse) {
-    //         return response()->json(['error' => 'Warehouse not found'], 400);
-    //     }
-    //     return $warehouse->productOptions()->with(['images', 'product'])->get();
-    // }
+    public function get_warehouse_product_options(Request $request) {
+        $warehouse = Warehouse::find($request->id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 400);
+        }
+        return $warehouse->productOptions()->with(['images', 'product'])->get();
+    }
 
     public function edit_product_option_quantity(Request $request) {
         $warehouse = Warehouse::find($request->id);
@@ -136,24 +136,24 @@ class WarehouseController extends Controller
         return response()->json(['success' => true, 'message' => 'Product option removed from warehouse']);
     }
 
-    // public function get_product_option_details(Request $request) {
-    //     $warehouse = Warehouse::find($request->id);
-    //     if (!$warehouse) {
-    //         return response()->json(['error' => 'Warehouse not found'], 400);
-    //     }
+    public function get_product_option_details(Request $request) {
+        $warehouse = Warehouse::find($request->id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 400);
+        }
 
-    //     $productOption = Product_option::find($request->product_option_id);
-    //     if (!$productOption) {
-    //         return response()->json(['error' => 'Product option not found'], 400);
-    //     }
+        $productOption = Product_option::find($request->product_option_id);
+        if (!$productOption) {
+            return response()->json(['error' => 'Product option not found'], 400);
+        }
 
-    //     // Get the pivot data for this warehouse and product option
-    //     $pivotData = $warehouse->productOptions()->where('product_option_id', $request->product_option_id)->first();
-    //     return response()->json([
-    //         'product_option' => $productOption,
-    //         'warehouse_quantity' => $pivotData ? $pivotData->pivot->quantity : 0
-    //     ]);
-    // }
+        // Get the pivot data for this warehouse and product option
+        $pivotData = $warehouse->productOptions()->where('product_option_id', $request->product_option_id)->first();
+        return response()->json([
+            'product_option' => $productOption,
+            'warehouse_quantity' => $pivotData ? $pivotData->pivot->quantity : 0
+        ]);
+    }
 
     public function migrate_product_option(Request $request) {
         $fromWarehouse = Warehouse::find($request->id);

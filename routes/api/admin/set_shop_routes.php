@@ -66,15 +66,17 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
     /*
     *   Warehouse
     */
-    Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
+    Route::controller(WarehouseController::class)->prefix('get_warehouse')->group( function() {
         Route::get('/get_warehouses', 'get_warehouses');
         Route::get('/get_warehouse_data/{id}', 'get_warehouse_data');
         Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
         Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
-
-        // Product option management in warehouses
         Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
         Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+    });
+
+    Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
+        // Product option management in warehouses
         Route::post('/add_warehouse', 'add_warehouse');
         Route::post('/edit_warehouse/{id}', 'edit_warehouse');
         Route::delete('/del_warehouse/{id}', 'del_warehouse');
