@@ -106,9 +106,9 @@
 
             edit_sale_code(sale_code_id){
                 axios
-                .post('/set_sale_code/' + sale_code_id, {        
+                .post('/set_product/set_sale_code/edit_sale_code/' + sale_code_id, {        
                     editing_data: this.form_data,
-                    _method: 'PATCH'
+                    _method: 'POST'
                 })
                 .then(response => {
                     this.close_modal()
@@ -121,7 +121,7 @@
 
             get_editing_sale_code_data(sale_code_id){
                 axios
-                .get("/get_sale_code/"+sale_code_id)
+                .get("/set_product/set_sale_code/get_editing_sale_code/" + sale_code_id)
                 .then(response => {
                     // this.quick_comment = response.data
                     this.form_data = {

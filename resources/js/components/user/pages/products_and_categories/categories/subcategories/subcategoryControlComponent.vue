@@ -92,7 +92,7 @@
             },
             get_subcategories_for_category(){
                 axios
-                .get("/subcategory/get_subcategories_for_category/" + this.category_id)
+                .get("/set_product/set_product_category/set_subcategory/get_subcategories_for_category/" + this.category_id)
                 .then(response => {
                     this.subcategories = response.data
                 })
@@ -103,7 +103,7 @@
             delSubcategory(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("/subcategory/del_subcategory/" + id)
+                    .delete("/set_product/set_product_category/set_subcategory/del_subcategory/" + id)
                     .then(response => {
                         // this.subcategories = response.data
                         this.get_subcategories_for_category()

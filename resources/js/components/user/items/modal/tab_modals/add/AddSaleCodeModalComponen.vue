@@ -83,7 +83,7 @@
             },
             add_sale_code(){
                     axios
-                    .post('/set_sale_code/', {
+                    .post('/set_product/set_sale_code/add_sale_code/', {
                         data: this.data,
 
                         _method: 'Post'

@@ -6,31 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Shop\Product_category;
+use App\Models\Shop\Product_subcategory;
 use App\Models\Shop\product_options;
 
 use Validator;
 
 class ProductCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return $categories = Product_category::latest('id')->get();
-    // }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
 
     /**
      * Store a newly created resource in storage.
@@ -38,7 +20,7 @@ class ProductCategoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function add_product_category(Request $request)
     {
         $validate = $this->validation($request);
 
@@ -56,27 +38,11 @@ class ProductCategoryController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //     return Product_category::where("id", "=", $id)->first();
-    // }
+    public function get_editing_product_category(Request $request){
+        $editing_product_category = Product_category::where("id", "=", request()->id)->first();
 
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit($id)
-    // {
-    //     //
-    // }
+        return response()->json($editing_product_category);
+    }
 
     /**
      * Update the specified resource in storage.
@@ -85,7 +51,7 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function edit_product_category(Request $request, $id)
     {
         $validate = $this->validation($request);
 
@@ -110,10 +76,13 @@ class ProductCategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function del_product_category($id)
     {
+        // Delete all subcategories first to avoid foreign key constraint violation
+        Product_subcategory::where('category_id', $id)->delete();
+
         $deleted_product_category = Product_category::where("id", "=", $id)->first();
-        $deleted_product_category -> delete();
+        $deleted_product_category->delete();
     }
 
     public function validation($request)

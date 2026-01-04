@@ -92,7 +92,7 @@
         methods: {
             get_editing_category_data() {
                 axios
-                .get('../../../api/product_category/' + this.editing_category_id)
+                .get('/set_product/set_product_category/get_editing_product_category/' + this.editing_category_id)
                 .then(response => {
                     this.data = response.data
                 })
@@ -100,9 +100,9 @@
             },
             edit_category() {
                 axios
-                .post('../../../api/product_category/' + this.editing_category_id, {        
+                .post('/set_product/set_product_category/edit_product_category/' + this.editing_category_id, {        
                     data: this.data,
-                    _method: 'PATCH'
+                    _method: 'POST'
                 })
                 .then((response)=> { 
                     this.go_back(true)

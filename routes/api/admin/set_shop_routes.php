@@ -46,20 +46,25 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
             Route::delete('/del_option_image/{image_id}', 'del_option_image');
         });
 
-        // Route::apiResource('/product_category', 'ProductCategoryController');
+        Route::controller(ProductCategoryController::class)->prefix('set_product_category')->group( function() {
+            Route::get('/get_editing_product_category/{id}', 'get_editing_product_category');
+            Route::post('/add_product_category', 'add_product_category');
+            Route::post('/edit_product_category/{id}', 'edit_product_category');
+            Route::delete('/del_product_category/{id}', 'del_product_category');
 
-        Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
-            Route::get('/get_all_subcategories', 'get_all_subcategories');
-            Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
-            Route::get('/get_subcategory/{id}', 'get_subcategory');
-            Route::post('/create_subcategory/{category_id}', 'create_subcategory');
-            Route::post('/edit_subcategory/{id}', 'edit_subcategory');
-            Route::delete('/del_subcategory/{id}', 'del_subcategory');
+            Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
+                // Route::get('/get_all_subcategories', 'get_all_subcategories');
+                Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
+                Route::get('/get_editing_subcategory/{id}', 'get_editing_subcategory');
+                Route::post('/add_subcategory/{id}', 'add_subcategory');
+                Route::post('/edit_subcategory/{id}', 'edit_subcategory');
+                Route::delete('/del_subcategory/{id}', 'del_subcategory');
+            });
         });
 
         Route::controller(ProductBrandController::class)->prefix('set_brand')->group( function() {
             // Route::get('/get_all_brands', 'get_all_brands');
-            // Route::get('/get_brand/{id}', 'get_brand');
+            Route::get('/get_editing_brand/{id}', 'get_editing_brand');
             Route::post('/create_brand', 'create_brand');
             Route::post('/edit_brand/{id}', 'edit_brand');
             Route::delete('/del_brand/{id}', 'del_brand');
@@ -86,6 +91,14 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
             Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');
 
             Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
+        });
+
+        Route::controller(SaleCodeController::class)->prefix('set_sale_code')->group( function() {
+            // Route::get('/get_all_sale_code', 'get_all_sale_code');
+            Route::post('/add_sale_code', 'add_sale_code');
+            Route::get('/get_editing_sale_code/{sale_code_id}', 'get_editing_sale_code');
+            Route::post('/edit_sale_code/{sale_code_id}', 'edit_sale_code');
+            Route::delete('/del_sale_code/{sale_code_id}', 'del_sale_code');
         });
     });
     /*
@@ -207,14 +220,6 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::post('/castam_prodaction_message/{product_id}', 'castam_prodaction_message');
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
-    });
-
-    Route::controller(SaleCodeController::class)->prefix('set_sale_code')->group( function() {
-        // Route::get('/get_all_sale_code', 'get_all_sale_code');
-        Route::post('/add_sale_code', 'add_sale_code');
-        Route::post('/get_editing_sale_code/{sale_code_id}', 'get_editing_sale_code');
-        Route::post('/edit_sale_code/{sale_code_id}', 'edit_sale_code');
-        Route::delete('/del_sale_code/{sale_code_id}', 'del_sale_code');
     });
     // Route::apiResource('/sale_code', 'SaleCodeController');
 

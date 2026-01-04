@@ -406,6 +406,15 @@ class LocaleContentControllService
             // Delete product_options and their associated images
             $productOptions = \App\Models\Shop\Product_option::where('product_id', '=', $global_id)->get();
             foreach ($productOptions as $option) {
+                // Detach from warehouses to avoid foreign key constraint violation
+                $option->warehouse()->detach();
+                
+                // Delete related order_products records to avoid foreign key constraint violation
+                \App\Models\Shop\Order_products::where('product_option_id', '=', $option->id)->delete();
+                
+                // Delete related cart records to avoid foreign key constraint violation
+                \App\Models\Shop\Cart::where('option_id', '=', $option->id)->delete();
+                
                 // Delete associated option_images
                 $optionImages = \App\Models\Shop\Option_image::where('option_id', '=', $option->id)->get();
                 foreach ($optionImages as $optionImage) {

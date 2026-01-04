@@ -134,7 +134,7 @@
                 this.is_loading = true,
 
                 axios
-                .post("/set_brand/create_brand/", {
+                .post("/set_product/set_brand/create_brand/", {
                     data: this.data,
 
                     _method: 'Post'

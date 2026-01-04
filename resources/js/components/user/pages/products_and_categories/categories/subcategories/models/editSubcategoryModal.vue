@@ -87,7 +87,9 @@
             get_actyve_sucategory(id){
                 this.is_loading = true
                 axios
-                .get("/subcategory/get_subcategory/"+id)
+                // .get("/subcategory/get_subcategory/"+id)
+                .get('/set_product/set_product_category/set_subcategory/get_editing_subcategory/' + id)      
+
                 .then(response => {
                     this.data = response.data
                 })
@@ -104,7 +106,7 @@
                 this.is_loading = true
 
                 axios
-                .post('/subcategory/edit_subcategory/' + id, {
+                .post('/set_product/set_product_category/set_subcategory/edit_subcategory/' + id, {        
                     data: this.data,
                 })
                 .then(response => {

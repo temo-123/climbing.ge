@@ -258,7 +258,7 @@
                                                         ['data', ['id']],
                                                         ['data', ['code']],
                                                         ['data', ['discount']],
-                                                        ['data', ['one_time_code']],
+                                                        ['data', ['one_time_code'], 'bool'],
                                                         ['data', ['action_data']],
                                                         ['action_fun_id', 'show_sale_code_edit_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_sale_code', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
@@ -285,7 +285,7 @@
             del_sale_code(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_sale_code/del_sale_code/'+id, {
+                    .post('/set_product/set_sale_code/del_sale_code/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -304,7 +304,7 @@
             del_product_brand(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_brand/del_brand/'+id, {
+                    .post('/set_product/set_brand/del_brand/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -324,7 +324,7 @@
             del_product_category(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_product_category/'+id, {
+                    .post('/set_product/set_product_category/del_product_category/' + id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

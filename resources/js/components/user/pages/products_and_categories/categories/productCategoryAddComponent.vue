@@ -89,7 +89,7 @@
 
             add_category() {
                 axios
-                .post('/get_product_category/', {
+                .post('/set_product/set_product_category/add_product_category', {
                     data: this.data,
                     _method: 'POST'
                 })

@@ -14,30 +14,36 @@ class ProductSubcategoryController extends Controller
     //     return Product_subcategory::get();
     // }
 
-    // function get_subcategories_for_category(Request $request) {
-    //     return Product_subcategory::where("category_id", "=", $request->category_id,)->get();
-    // }
+    function get_subcategories_for_category(Request $request) {
+        return Product_subcategory::where("category_id", "=", $request->category_id,)->get();
+    }
 
-    // function get_subcategory(Request $request) {
-    //     return Product_subcategory::where("id", "=", $request->id,)->first();
-    // }
+    function get_editing_subcategory(Request $request) {
+        return Product_subcategory::where("id", "=", $request->id,)->first();
+    }
 
-    function create_subcategory(Request $request) {
+    function add_subcategory(Request $request) {
         $validate = $this->validation($request);
 
         if ($validate != null) {
             return($validate);
         }
-        else{
-            $new_product_subcategory = new Product_subcategory;
-
-            $new_product_subcategory['us_name'] = $request->data['us_name'];
-            $new_product_subcategory['ka_name'] = $request->data['ka_name'];
-
-            $new_product_subcategory['category_id'] = $request->category_id;
-
-            $new_product_subcategory -> save();
+        
+        // Validate that category_id is provided and not null
+        if (empty($request->id)) {
+            return response()->json([
+                'error' => 'Category ID is required',
+            ], 422);
         }
+
+        $new_product_subcategory = new Product_subcategory;
+
+        $new_product_subcategory['us_name'] = $request->data['us_name'];
+        $new_product_subcategory['ka_name'] = $request->data['ka_name'];
+
+        $new_product_subcategory['category_id'] = $request->id;
+
+        $new_product_subcategory -> save();
     }
 
     function edit_subcategory(Request $request) {

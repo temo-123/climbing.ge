@@ -98,13 +98,13 @@
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['tour', 'id']],
-                                                        ['data', ['tour', 'url_title']],
-                                                        ['data', ['tour', 'published'], 'bool'],
+                                                        ['data', ['global_data', 'id']],
+                                                        ['data', ['global_data', 'url_title']],
+                                                        ['data', ['global_data', 'published'], 'bool'],
                                                         ['data', [['user', 'name'], ['user', 'surname']]],
                                                         ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', [['user', 'id'], ['tour', 'id']]],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['tour', 'id']],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['tour', 'id']],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['global_data', 'id']],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['global_data', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],

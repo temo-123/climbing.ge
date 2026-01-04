@@ -17,6 +17,9 @@ use App\Services\GalleryService;
 use App\Models\Shop\Product;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Option_image;
+use App\Models\Shop\Order_products;
+use App\Models\Shop\Cart;
+use Illuminate\Support\Facades\DB;
 
 
 // use Storage;
@@ -146,18 +149,33 @@ class ProductOptionController extends Controller
 
     public function del_option(Request $request)
     {
-        $option = Product_option::where('id', '=', $request->option_id)->first();
-        $option_images_count = Option_image::where('option_id', '=', $option->id)->count();
-
-        if($option_images_count > 0){
-            $option_images = Option_image::where('option_id', '=', $option->id)->get();
-            // dd($option_images);
-            foreach ($option_images as $image) {
-                ImageControllService::image_delete('images/product_option_img/', $image, 'image');
-                $image ->delete();
+        return DB::transaction(function () use ($request) {
+            $option = Product_option::where('id', '=', $request->option_id)->first();
+            
+            if (!$option) {
+                return response()->json(['error' => 'Product option not found'], 404);
             }
-        }
-        $option ->delete();
+            
+            // Delete related order_products records to avoid foreign key constraint violation
+            Order_products::where('product_option_id', '=', $option->id)->delete();
+            
+            // Delete related cart records to avoid foreign key constraint violation
+            Cart::where('option_id', '=', $option->id)->delete();
+            
+            $option_images_count = Option_image::where('option_id', '=', $option->id)->count();
+
+            if($option_images_count > 0){
+                $option_images = Option_image::where('option_id', '=', $option->id)->get();
+                // dd($option_images);
+                foreach ($option_images as $image) {
+                    ImageControllService::image_delete('images/product_option_img/', $image, 'image');
+                    $image ->delete();
+                }
+            }
+            $option ->delete();
+            
+            return response()->json(['success' => true]);
+        });
     }
 
     public function del_option_image(Request $request)

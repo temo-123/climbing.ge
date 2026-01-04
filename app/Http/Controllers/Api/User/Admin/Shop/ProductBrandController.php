@@ -22,12 +22,12 @@ class ProductBrandController extends Controller
     //     }
     //     return $returned_brands;
     // }
-    // function get_brand(Request $request) {
-    //     $brand = Product_brand::where("id", "=", $request->id)->first();
-    //     $brand->us_brand;
-    //     $brand->ka_brand;
-    //     return $brand;
-    // }
+    function get_editing_brand(Request $request) {
+        $brand = Product_brand::where("id", "=", $request->id)->first();
+        $brand->us_brand;
+        $brand->ka_brand;
+        return $brand;
+    }
     function create_brand(Request $request) {
         $validation_issets = [];
 
