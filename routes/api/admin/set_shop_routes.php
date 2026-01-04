@@ -21,8 +21,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
 
         Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
-    // });
-    // Route::controller(ProductController::class)->group( function() {
+
+        // });
+        // Route::controller(ProductController::class)->group( function() {
+
         // Route::apiResource('/product', 'ProductController');
         Route::get('/get_local_products/{lang}', 'get_local_products');
         // Route::get('/donation_products/{lang}', 'get_donation_products');
@@ -33,36 +35,59 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::get('/get_user_favorite_products', 'get_user_favorite_products');
         Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
         // Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
+
+
+        Route::controller(ProductOptionController::class)->prefix('set_product_option')->group( function() {
+            Route::get('/get_all_product_options', 'get_all_product_options');
+            Route::get('/get_product_option/{id}', 'get_product_option');
+            Route::post('/add_option', 'add_option');
+            Route::post('/edit_option/{option_id}', 'edit_option');
+            Route::delete('/del_option/{option_id}', 'del_option');
+            Route::delete('/del_option_image/{image_id}', 'del_option_image');
+        });
+
+        // Route::apiResource('/product_category', 'ProductCategoryController');
+
+        Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
+            Route::get('/get_all_subcategories', 'get_all_subcategories');
+            Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
+            Route::get('/get_subcategory/{id}', 'get_subcategory');
+            Route::post('/create_subcategory/{category_id}', 'create_subcategory');
+            Route::post('/edit_subcategory/{id}', 'edit_subcategory');
+            Route::delete('/del_subcategory/{id}', 'del_subcategory');
+        });
+
+        Route::controller(ProductBrandController::class)->prefix('set_brand')->group( function() {
+            // Route::get('/get_all_brands', 'get_all_brands');
+            // Route::get('/get_brand/{id}', 'get_brand');
+            Route::post('/create_brand', 'create_brand');
+            Route::post('/edit_brand/{id}', 'edit_brand');
+            Route::delete('/del_brand/{id}', 'del_brand');
+        });
+
+        /*
+        *   Product Coments routes
+        */
+        Route::controller(ProductFeedbackController::class)->prefix('set_product_feedback')->group( function() {
+            // Route::apiResource('/feedback', 'feedbackController');
+            Route::get('/get_all_feedbacks', 'get_all_feedbacks');
+            Route::get('/get_user_feedbacks', 'get_user_feedbacks');
+            Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
+
+            Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
+            Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
+
+            Route::post('/create_feedback/{product_id}', 'create_feedback');
+            Route::post('/confirm_email/{email}', 'confirm_email');
+
+            Route::post('/add_feedback_complaint', 'add_feedback_complaint');
+            Route::post('/make_decision', 'make_decision');
+
+            Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');
+
+            Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
+        });
     });
-
-    // Route::apiResource('/product_category', 'ProductCategoryController');
-
-    Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
-        Route::get('/get_all_subcategories', 'get_all_subcategories');
-        Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
-        Route::get('/get_subcategory/{id}', 'get_subcategory');
-        Route::post('/create_subcategory/{category_id}', 'create_subcategory');
-        Route::post('/edit_subcategory/{id}', 'edit_subcategory');
-        Route::delete('/del_subcategory/{id}', 'del_subcategory');
-    });
-
-    Route::controller(ProductBrandController::class)->prefix('set_brand')->group( function() {
-        // Route::get('/get_all_brands', 'get_all_brands');
-        // Route::get('/get_brand/{id}', 'get_brand');
-        Route::post('/create_brand', 'create_brand');
-        Route::post('/edit_brand/{id}', 'edit_brand');
-        Route::delete('/del_brand/{id}', 'del_brand');
-    });
-
-    Route::controller(ProductOptionController::class)->prefix('set_product_option')->group( function() {
-        Route::get('/get_all_product_options', 'get_all_product_options');
-        Route::get('/get_product_option/{id}', 'get_product_option');
-        Route::post('/add_option', 'add_option');
-        Route::post('/edit_option/{option_id}', 'edit_option');
-        Route::delete('/del_option/{option_id}', 'del_option');
-        Route::delete('/del_option_image/{image_id}', 'del_option_image');
-    });
-
     /*
     *   Warehouse
     */
@@ -112,6 +137,25 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
             Route::post('/create_reservation/{tour_id}', 'create_reservation');
             Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
             Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+
+            // Google Calendar Sync Routes
+            Route::prefix('google-calendar')->group( function() {
+                Route::post('/init-auth', 'initGoogleAuth');
+                Route::post('/handle-callback', 'handleGoogleCallback');
+                Route::post('/disconnect', 'disconnectGoogleCalendar');
+                Route::post('/sync', 'syncToGoogleCalendar');
+                Route::get('/status', 'getGoogleCalendarStatus');
+            });
+        });
+
+
+        Route::controller(TourReservationController::class)->prefix('get_reservation')->group( function() {
+            Route::get('/get_user_reservations', 'get_user_reservations');
+
+            Route::get('/get_all_reservations', 'get_all_reservations');
+            Route::get('/get_reservation/{id}', 'get_reservation');
+
+            // Editing routes moved to adminAction.php
         });
     });
 
@@ -183,29 +227,6 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::post('/add_region', 'add_region');
         Route::post('/edit_region/{region_id}', 'edit_region');
         Route::delete('/del_region/{region_id}', 'del_region');
-    });
-
-    /*
-    *   Product Coments routes
-    */
-    Route::controller(ProductFeedbackController::class)->prefix('set_product_feedback')->group( function() {
-        // Route::apiResource('/feedback', 'feedbackController');
-        Route::get('/get_all_feedbacks', 'get_all_feedbacks');
-        Route::get('/get_user_feedbacks', 'get_user_feedbacks');
-        Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
-
-        Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
-        Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
-
-        Route::post('/create_feedback/{product_id}', 'create_feedback');
-        Route::post('/confirm_email/{email}', 'confirm_email');
-
-        Route::post('/add_feedback_complaint', 'add_feedback_complaint');
-        Route::post('/make_decision', 'make_decision');
-
-        Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');
-
-        Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
     });
 
 });

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Schema;
 
 class Locale_site extends Model
 {
@@ -30,7 +31,23 @@ class Locale_site extends Model
     {
         $record = self::where('slug', $slug)->first();
         if ($record) {
-            return $record->{$locale . '_data'};
+            // Map locale codes to database column names
+            $localeMap = [
+                'en' => 'us_data',
+                'ka' => 'ka_data',
+                'us' => 'us_data',
+            ];
+
+            // Get the actual column name, default to 'us_data' for unknown locales
+            $columnName = $localeMap[$locale] ?? ($locale . '_data');
+
+            // Check if the column exists to avoid errors
+            $schema = Schema::getColumnListing('locale_sites');
+            if (!in_array($columnName, $schema)) {
+                $columnName = 'us_data'; // Fallback to us_data
+            }
+
+            return $record->{$columnName};
         }
         return null;
     }
@@ -47,7 +64,23 @@ class Locale_site extends Model
     {
         $record = self::where('slug', $slug)->first();
         if ($record) {
-            $record->{$locale . '_data'} = $data;
+            // Map locale codes to database column names
+            $localeMap = [
+                'en' => 'us_data',
+                'ka' => 'ka_data',
+                'us' => 'us_data',
+            ];
+
+            // Get the actual column name, default to 'us_data' for unknown locales
+            $columnName = $localeMap[$locale] ?? ($locale . '_data');
+
+            // Check if the column exists to avoid errors
+            $schema = Schema::getColumnListing('locale_sites');
+            if (!in_array($columnName, $schema)) {
+                $columnName = 'us_data'; // Fallback to us_data
+            }
+
+            $record->{$columnName} = $data;
             $record->save();
             return true;
         }

@@ -267,11 +267,51 @@ class SiteDataController extends Controller
         // return response()->json(['message' => 'US site data updated successfully']);
     }
 
+    function get_site_locale_data_for_site(Request $request, $lang) {
+        // Map locale codes to locale keys
+        $localeMap = [
+            'en' => 'us',
+            'ka' => 'ka',
+            'us' => 'us',
+        ];
+
+        // Get the actual locale key, default to 'us' for unknown locales
+        $localeKey = $localeMap[$lang] ?? 'us';
+
+        // Get global data
+        $globalData = Site::first();
+
+        // Get all locale data grouped by locale using the service
+        $allLocaleData = \App\Services\Abstract\LocaleSiteService::getGroupedByLocale();
+        
+        // Get the locale data for the requested locale
+        $localeData = $allLocaleData[$localeKey] ?? ($allLocaleData['us'] ?? null);
+
+        return response()->json([
+            'locale_data' => $localeData,
+            'global_data' => $globalData
+        ]);
+    }
+
     public function get_site_locale_data(Request $request, $lang)
     {
-        // return SiteDataService::getSiteData($lang ?? 'us');
+        // Map locale codes to database column names
+        $localeMap = [
+            'en' => 'us_data',
+            'ka' => 'ka_data',
+            'us' => 'us_data',
+        ];
 
-        return Locale_site::select('id', 'slug', $lang . '_data')->get();
+        // Get the actual column name, default to 'us_data' for unknown locales
+        $columnName = $localeMap[$lang] ?? ($lang . '_data');
+
+        // Check if the column exists to avoid SQL errors
+        $schema = \Illuminate\Support\Facades\Schema::getColumnListing('locale_sites');
+        if (!in_array($columnName, $schema)) {
+            $columnName = 'us_data'; // Fallback to us_data
+        }
+
+        return Locale_site::select('id', 'slug', $columnName)->get();
     }
 
     private function edit_locale_data_by_locale($request, $locale)

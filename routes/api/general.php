@@ -77,6 +77,8 @@ Route::controller(Api\ServiceFollowing::class)->prefix('get_follow')->group( fun
         // Route::get('/get_site_us_data', 'get_site_us_data');
         Route::get('/get_site_locale_data/{lang}', 'get_site_locale_data');
 
+        Route::get('get_site_locale_data_for_site/{leng}', 'get_site_locale_data_for_site');
+
         // Editing routes moved to adminAction.php
     });
 

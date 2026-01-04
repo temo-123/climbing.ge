@@ -80,7 +80,7 @@
             get_products_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/product/get_all_products")
+                .get("/get_product/get_all_products")
                 // .get("/products/en/")
                 .then(response => {
                     this.data_for_tab.push({
@@ -146,7 +146,7 @@
             },
             get_categories_data: function(){
                 axios
-                .get("/product_category")
+                .get("/get_product/get_product_category/get_all_product_category/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
@@ -189,7 +189,7 @@
             },
             get_all_brands_data: function(){
                 axios
-                .get("/brand/get_all_brands")
+                .get("/get_product/get_brand/get_all_brands")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 3,
@@ -232,7 +232,7 @@
             },
             get_sale_codes_data: function(){
                 axios
-                .get("/sale_code/get_all_sale_code")
+                .get("/get_sale_code/get_all_sale_code")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 4,
@@ -285,7 +285,7 @@
             del_sale_code(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/sale_code/del_sale_code/'+id, {
+                    .post('/set_sale_code/del_sale_code/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -304,7 +304,7 @@
             del_product_brand(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/brand/del_brand/'+id, {
+                    .post('/set_brand/del_brand/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -324,7 +324,7 @@
             del_product_category(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/product_category/'+id, {
+                    .post('/set_product_category/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -338,7 +338,7 @@
             del_product(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/product/del_product/'+id, {
+                    .post('/set_product/del_product/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

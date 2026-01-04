@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <span v-if="data_prop">
         <span
             v-if="
                 typeof data_item_prop[1] == 'object' &&
@@ -8,8 +8,8 @@
             "
         >
             <!-- ['data', [['item', key], ['item_2', key]]] -->
-            {{data_prop[data_item_prop[1][0][0]][data_item_prop[1][0][1]]}}
-            {{data_prop[data_item_prop[1][1][0]][data_item_prop[1][1][1]]}}
+            {{data_prop[data_item_prop[1][0][0]] && data_prop[data_item_prop[1][0][0]][data_item_prop[1][0][1]]}}
+            {{data_prop[data_item_prop[1][1][0]] && data_prop[data_item_prop[1][1][0]][data_item_prop[1][1][1]]}}
         </span>
         <span
             v-else-if="
@@ -19,11 +19,11 @@
             "
         >
             <!-- ['data', ['item', key]] -->
-            <span v-if="typeof data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 'boolean' || data_item_prop[2] == 'bool'">
-                <span v-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]]  == false || data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 0">
+            <span v-if="typeof (data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]]) == 'boolean' || data_item_prop[2] == 'bool'">
+                <span v-if="(data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]]) == false || (data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]]) == 0">
                     <i class="fa fa-times fa_times_color" aria-hidden="true"></i>
                 </span>
-                <span v-else-if="data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == true || data_prop[data_item_prop[1][0]][data_item_prop[1][1]] == 1">
+                <span v-else-if="(data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]]) == true || (data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]]) == 1">
                     <i class="fa fa-check fa_check_color" aria-hidden="true"></i>
                 </span>
                 <span v-else>
@@ -31,7 +31,7 @@
                 </span>
             </span>
             <span v-else>
-                {{ data_prop[data_item_prop[1][0]][data_item_prop[1][1]] }}
+                {{ data_prop[data_item_prop[1][0]] && data_prop[data_item_prop[1][0]][data_item_prop[1][1]] }}
             </span>
         </span>
         <span

@@ -347,6 +347,12 @@ class LocaleContentControllService
                           (is_string($global_model) && str_contains($global_model, 'Article')) ||
                           (is_object($global_model) && $global_model instanceof \App\Models\Guide\Article);
         
+        // Handle Products model specifically to prevent foreign key constraint violations
+        $isProductModel = ($global_model === 'App\Models\Shop\Product') || 
+                          ($global_model === \App\Models\Shop\Product::class) ||
+                          (is_string($global_model) && str_contains($global_model, 'Product')) ||
+                          (is_object($global_model) && $global_model instanceof \App\Models\Shop\Product);
+        
         if ($isArticleModel) {
             // Delete child records first to prevent foreign key constraint violations
             
@@ -393,7 +399,49 @@ class LocaleContentControllService
             
             return;
         }
+        
+        if ($isProductModel) {
+            // Delete child records first to prevent foreign key constraint violations
+            
+            // Delete product_options and their associated images
+            $productOptions = \App\Models\Shop\Product_option::where('product_id', '=', $global_id)->get();
+            foreach ($productOptions as $option) {
+                // Delete associated option_images
+                $optionImages = \App\Models\Shop\Option_image::where('option_id', '=', $option->id)->get();
+                foreach ($optionImages as $optionImage) {
+                    if ($optionImage->image && $image_path) {
+                        ImageControllService::image_delete('images/product_option_img/', $optionImage, 'image');
+                    }
+                    $optionImage->delete();
+                }
+                
+                $option->delete();
+            }
+            
+            // Store locale IDs before deleting the global content
+            $us_content_id = $gloal_content['us'.$prefix.'_id'];
+            // $ru_content_id = $gloal_content['ru'.$prefix.'_id'];
+            $ka_content_id = $gloal_content['ka'.$prefix.'_id'];
+            
+            if($gloal_content->$image_prefix && $image_path){
+                ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
+            }
 
+            $gloal_content->delete();
+            
+            // Now delete the locale content manually since Product deletion won't cascade to locale_products
+            $us_content = $local_model::where('id', '=', $us_content_id)->first();
+            // $ru_content = $local_model::where('id', '=', $ru_content_id)->first();
+            $ka_content = $local_model::where('id', '=', $ka_content_id)->first();
+            
+            if($us_content) $us_content->delete();
+            // if($ru_content) $ru_content->delete();
+            if($ka_content) $ka_content->delete();
+            
+            return;
+        }
+        
+        // Regular handling for other models
         $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$prefix.'_id']))->first();
         // $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();
         $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$prefix.'_id']))->first();

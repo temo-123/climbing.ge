@@ -32,28 +32,58 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         // Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
 
         Route::get('/get_local_saled_products/{lang}', 'get_local_saled_products');
+
+    // Route::apiResource('/product_category', 'ProductCategoryController');
+
+
+        Route::controller(ProductBrandController::class)->prefix('get_brand')->group( function() {
+            Route::get('/get_all_brands', 'get_all_brands');
+            Route::get('/get_brand/{id}', 'get_brand');
+            // Editing routes moved to adminAction.php
+        });
+
+        Route::controller(ProductOptionController::class)->prefix('get_product_option')->group( function() {
+            Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
+            Route::get('/get_editing_option/{option_id}', 'get_editing_option');
+        });
+
+        Route::controller(ProductCategoryController::class)->prefix('get_product_category')->group( function() {
+            Route::get('/get_all_product_category', 'get_all_product_category');
+            // Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
+            // Route::get('/get_subcategory/{id}', 'get_subcategory');
+            // Editing routes moved to adminAction.php
+
+            Route::controller(ProductSubcategoryController::class)->prefix('get_subcategory')->group( function() {
+                Route::get('/get_all_subcategories', 'get_all_subcategories');
+                Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
+                Route::get('/get_subcategory/{id}', 'get_subcategory');
+                // Editing routes moved to adminAction.php
+            });
+        });
+        /*
+        *   Product Coments routes
+        */
+        Route::controller(ProductFeedbackController::class)->prefix('get_product_feedback')->group( function() {
+            // Route::apiResource('/feedback', 'feedbackController');
+            Route::get('/get_all_feedbacks', 'get_all_feedbacks');
+            Route::get('/get_user_feedbacks', 'get_user_feedbacks');
+            Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
+
+            Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
+            Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
+
+            // Editing routes moved to adminAction.php
+        });
     });
 
-    Route::apiResource('/product_category', 'ProductCategoryController');
 
-    Route::controller(ProductSubcategoryController::class)->prefix('get_subcategory')->group( function() {
-        Route::get('/get_all_subcategories', 'get_all_subcategories');
-        Route::get('/get_subcategories_for_category/{category_id}', 'get_subcategories_for_category');
-        Route::get('/get_subcategory/{id}', 'get_subcategory');
-        // Editing routes moved to adminAction.php
-    });
-
-    Route::controller(ProductBrandController::class)->prefix('get_brand')->group( function() {
-        Route::get('/get_all_brands', 'get_all_brands');
-        Route::get('/get_brand/{id}', 'get_brand');
-        // Editing routes moved to adminAction.php
-    });
-
-    Route::controller(ProductOptionController::class)->prefix('get_product_option')->group( function() {
-        Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
-        Route::get('/get_editing_option/{option_id}', 'get_editing_option');
-    });
-
+        Route::controller(UserTourReservationController::class)->prefix('set_user_reservation')->group( function() {
+            // Route::get('/get_all_reservations', 'get_all_reservations');
+            // Route::get('/get_reservation/{id}', 'get_reservation');
+            Route::post('/create_reservation/{tour_id}', 'create_reservation');
+            // Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
+            // Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+        });
     /*
     *   Tours and tour categories routes
     */
@@ -73,15 +103,6 @@ Route::group(['namespace'=>'Api\Shop'], function() {
             Route::get('/get_category/{id}', 'get_category');
 
             // Route::get('/get_editing_category/{category_id}', 'get_editing_category');
-        });
-
-        Route::controller(TourReservationController::class)->prefix('get_reservation')->group( function() {
-            Route::get('/get_user_reservations', 'get_user_reservations');
-
-            Route::get('/get_all_reservations', 'get_all_reservations');
-            Route::get('/get_reservation/{id}', 'get_reservation');
-
-            // Editing routes moved to adminAction.php
         });
     });
 
@@ -136,21 +157,6 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     Route::controller(ShipedRegionController::class)->prefix('get_shiped_region')->group( function() {
         Route::get('/get_all_shiped_regions', 'get_all_shiped_regions');
         Route::get('/get_activ_region/{region_id}', 'get_activ_region');
-        // Editing routes moved to adminAction.php
-    });
-
-    /*
-    *   Product Coments routes
-    */
-    Route::controller(ProductFeedbackController::class)->prefix('get_product_feedback')->group( function() {
-        // Route::apiResource('/feedback', 'feedbackController');
-        Route::get('/get_all_feedbacks', 'get_all_feedbacks');
-        Route::get('/get_user_feedbacks', 'get_user_feedbacks');
-        Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
-
-        Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
-        Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
-
         // Editing routes moved to adminAction.php
     });
 

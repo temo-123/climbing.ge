@@ -216,7 +216,8 @@ const app = new Vue({
     methods: {
         get_site_data() {
             axios
-            .get("/get_site_data/get_site_locale_data/" + localStorage.getItem('lang') || 'en')
+            // .get("/get_site_data/get_site_locale_data/" + localStorage.getItem('lang') || 'en')
+            .get("/get_site_data/get_site_locale_data_for_site/" + localStorage.getItem('lang') || 'en')
             .then((response) => (
                 this.$siteData.data = response.data.locale_data,
                 this.$globalSiteData.data = response.data.global_data

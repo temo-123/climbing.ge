@@ -319,7 +319,7 @@
         methods: {
             get_activ_product_options(){
                 axios
-                .get('/product_option/get_activ_product_options/'+this.$route.params.id)
+                .get('/get_product_option/get_activ_product_options/'+this.$route.params.id)
                 .then((response)=> { 
                     this.product_options = response.data.options
                     this.product = response.data.product
@@ -440,7 +440,7 @@
             del_option(category_id){
                 if(confirm('Are you sure, you want delite this option?')){
                     axios
-                    .delete("/product_option/del_option/"+category_id)
+                    .delete("/set_product_option/del_option/"+category_id)
                     .then(response => {
                         this.get_activ_product_options()
                     })
@@ -452,7 +452,7 @@
             del_option_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("/product_option/del_option_image/"+image_id)
+                    .delete("/set_product_option/del_option_image/"+image_id)
                     .then(response => {
                         this.get_editing_option(this.editing_option_id)
                     })
@@ -477,7 +477,7 @@
                 formData.append('product_id', this.$route.params.id)
                 
                 axios
-                .post("/product_option/add_option/", 
+                .post("/set_product_option/add_option/", 
                     formData
                 )
                 .then(response => {

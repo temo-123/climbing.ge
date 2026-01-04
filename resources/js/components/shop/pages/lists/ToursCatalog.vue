@@ -8,7 +8,7 @@
             <span v-html="this.$siteData.data.tour_description"></span>
         </h2>
 
-        <span v-if="tours.length">
+        <span v-if="tours != []">
             <div class="row" v-if="tour_loading">
                 <content-loader
                     viewBox="0 0"
