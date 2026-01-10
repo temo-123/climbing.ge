@@ -110,6 +110,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         Route::get('/get_editing_warehouse/{id}', 'get_editing_warehouse');
         Route::get('/get_activ_warehouse/{id}', 'get_activ_warehouse');
         Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
+        Route::get('/get_warehouse_product_options_grouped/{id}', 'get_warehouse_product_options_grouped_by_product');
         Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
     });
 

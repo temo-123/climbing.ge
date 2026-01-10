@@ -79,6 +79,152 @@ class RouteController extends Controller
         return $authors;
     }
 
+    public function routes_authers_by_categories(Request $request) {
+        // Map frontend category values to database categories
+        $categoryMap = [
+            'sport' => 'sport climbing',
+            'boulder' => 'bouldering',
+            'ice' => 'ice climbing',
+            'dry' => 'dry tooling',
+            'mtp' => 'mtp',
+        ];
+        
+        // Reverse map for database to frontend
+        $dbToFrontendMap = [
+            'sport climbing' => 'sport',
+            'bouldering' => 'boulder',
+            'ice climbing' => 'ice',
+            'dry tooling' => 'dry',
+            'mtp' => 'mtp',
+        ];
+        
+        // Get route_categories from request body (POST) or query parameters
+        $routeCategories = $request->input('route_categories');
+        
+        // If not in body, check query parameters
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('route_categories');
+        }
+        
+        // If still null, check for 'categories' parameter
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('categories');
+        }
+        
+        // If still null, return all authors (fallback to original method)
+        if ($routeCategories === null) {
+            return $this->routes_authers();
+        }
+        
+        // Ensure it's an array
+        if (!is_array($routeCategories)) {
+            $routeCategories = [$routeCategories];
+        }
+        
+        // Map frontend categories to database categories
+        $dbCategories = [];
+        $hasMtp = false;
+        foreach ($routeCategories as $category) {
+            if (isset($categoryMap[$category])) {
+                $dbCategory = $categoryMap[$category];
+                if ($dbCategory === 'mtp') {
+                    $hasMtp = true;
+                } else {
+                    $dbCategories[] = $dbCategory;
+                }
+            }
+        }
+        
+        // Build nested structure: { AuthorName: { category: count, ... } }
+        $authorsCategories = [];
+
+        // Query routes for non-mtp categories
+        if (!empty($dbCategories)) {
+            $routes = Route::whereIn('category', $dbCategories)->get(['author', 'category']);
+
+            foreach ($routes as $route) {
+                // Get the frontend category name
+                $frontendCategory = $dbToFrontendMap[$route->category] ?? $route->category;
+                
+                // Split author names by the specified symbols
+                $author = trim($route->author);
+                if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                    // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                    $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                    
+                    // Clean up each author name (trim spaces and handle capitalization)
+                    foreach ($split_authors as $split_author) {
+                        $clean_author = trim($split_author);
+                        if (!empty($clean_author)) {
+                            // Capitalize first letter of each word for consistency
+                            $clean_author = ucwords(strtolower($clean_author));
+                            
+                            // Initialize author if not exists
+                            if (!isset($authorsCategories[$clean_author])) {
+                                $authorsCategories[$clean_author] = [];
+                            }
+                            
+                            // Initialize category for this author if not exists
+                            if (!isset($authorsCategories[$clean_author][$frontendCategory])) {
+                                $authorsCategories[$clean_author][$frontendCategory] = 0;
+                            }
+                            
+                            // Increment count
+                            $authorsCategories[$clean_author][$frontendCategory]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Query MTPs if 'mtp' category is requested
+        if ($hasMtp) {
+            $mtps = Mtp::get(['author']);
+
+            foreach ($mtps as $mtp) {
+                // Split author names by the specified symbols
+                $author = trim($mtp->author);
+                if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                    // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                    $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                    
+                    // Clean up each author name (trim spaces and handle capitalization)
+                    foreach ($split_authors as $split_author) {
+                        $clean_author = trim($split_author);
+                        if (!empty($clean_author)) {
+                            // Capitalize first letter of each word for consistency
+                            $clean_author = ucwords(strtolower($clean_author));
+                            
+                            // Initialize author if not exists
+                            if (!isset($authorsCategories[$clean_author])) {
+                                $authorsCategories[$clean_author] = [];
+                            }
+                            
+                            // Initialize mtp category for this author if not exists
+                            if (!isset($authorsCategories[$clean_author]['mtp'])) {
+                                $authorsCategories[$clean_author]['mtp'] = 0;
+                            }
+                            
+                            // Increment count
+                            $authorsCategories[$clean_author]['mtp']++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Sort by total routes per author (descending)
+        uasort($authorsCategories, function($a, $b) {
+            $sumA = array_sum($a);
+            $sumB = array_sum($b);
+            return $sumB - $sumA;
+        });
+        
+        return $authorsCategories;
+    }
+
     public function show($id)
     {
         return route::where('id',strip_tags($id))->get();

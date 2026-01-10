@@ -8,6 +8,19 @@ use App\Models\User;
 
 class Product extends Model
 {
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            // Delete related favorite_products before deleting the product
+            \App\Models\Shop\Favorite_product::where('product_id', $product->id)->delete();
+        });
+    }
+
     public $table = 'products';
 
     protected $fillable = [

@@ -14,7 +14,7 @@ class AddValuesToSectorsTable extends Migration
     public function up()
     {
         Schema::table('sectors', function (Blueprint $table) {
-            $table->boolean('is_helmet')->default(false)->after('for_family');
+            $table->boolean('is_helmet')->nullable()->default(false)->after('for_family');
 
             $table->text('ka_description')->nullable()->after('name');
             $table->text('us_description')->nullable()->after('name');

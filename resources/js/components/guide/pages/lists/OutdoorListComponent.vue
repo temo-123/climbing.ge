@@ -10,15 +10,15 @@
                 {{this.$siteData.data.outdoor_description}}
             </h2>
 
-            <sectorQuantyt />
+            <sectorQuantyt :route_categories_prop="route_categories"/>
 
             <div class="row otdoor_buttoms">
                 <div class="col-md-6">
-                    <routesAutersModal />
+                    <routesAutersModal :route_categories_prop="route_categories"/>
                 </div>
 
                 <div class="col-md-6">
-                    <mostPopularRoutesModal :routeCategories="routeCategories" />
+                    <mostPopularRoutesModal :route_categories_prop="route_categories" />
                 </div>
             </div>
 
@@ -163,11 +163,11 @@
 <script>
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    import sectorQuantyt from '../../items/SectorsQuantytyComponent'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import metaData from '../../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
 
+    import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
     import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
 
@@ -188,22 +188,21 @@
                 // sector_quantyt: true,
                 region_loading: true,
 
-
-                routeCategories: [
+                route_categories: [
                     { value: 'sport', label: 'guide.sector.sport_climbing' },
                     { value: 'boulder', label: 'guide.sector.bouldering' },
-                    // { value: 'dry', label: 'guide.sector.dry' },
-                    // { value: 'ice', label: 'guide.sector.ice' }
+                    { value: 'mtp', label: 'guide.sector.mtp' },
                 ]
             };
         },
         components: {
             outdoorCard,
             emptyPageComponent,
-            sectorQuantyt,
             StackModal,
             metaData,
             ContentLoader,
+
+            sectorQuantyt,
             routesAutersModal,
             mostPopularRoutesModal
         },

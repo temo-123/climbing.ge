@@ -10,10 +10,15 @@
                 {{this.$siteData.data.ice_description}}
             </h2>
 
-            <div class="row otdoor_buttoms">
-                <div class="col-md-12">
+            <sectorQuantyt :route_categories_prop="route_categories"/>
 
-                    <mostPopularRoutesModal :routeCategories="routeCategories" :defaultRouteType="'ice'" />
+            <div class="row otdoor_buttoms">
+                <div class="col-md-6">
+                    <routesAutersModal :route_categories_prop="route_categories"/>
+                </div>
+
+                <div class="col-md-6">
+                    <mostPopularRoutesModal :route_categories_prop="route_categories" :default_route_type_prop="'ice'"/>
                 </div>
             </div>
 
@@ -57,6 +62,8 @@
 
     import axios_mixin from '../../../../mixins/axios_mixin'
 
+    import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
 
     export default {
@@ -68,9 +75,7 @@
                 ices: [],
                 indoor_article_loading: true,
 
-                routeCategories: [
-                    // { value: 'sport', label: 'guide.sector.sport_climbing' },
-                    // { value: 'boulder', label: 'guide.sector.bouldering' },
+                route_categories: [
                     { value: 'dry', label: 'guide.sector.dry' },
                     { value: 'ice', label: 'guide.sector.ice' }
                 ]
@@ -81,7 +86,10 @@
             emptyPageComponent,
             ContentLoader,
             metaData,
-            mostPopularRoutesModal,
+            
+            sectorQuantyt,
+            routesAutersModal,
+            mostPopularRoutesModal
         },
         mounted() {
             this.get_ices()

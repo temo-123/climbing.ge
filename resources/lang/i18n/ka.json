@@ -1,5 +1,6 @@
 {
     "all": "ყველა",
+    "and": "და",
 
     "guide": {
         "name": "ცოცვის გზამკვლევი",
@@ -95,12 +96,52 @@
             "show_feedbacks": "შეფასებები",
 
             "pleas_login": "გთხოვთ შეხვიდეთ სისტემაში შეფასების დასამატებლად!",
-            "no_feedbacks": "შეფასებები არ არის!"
+            "no_feedbacks": "შეფასებები არ არის!",
+
+            "create_feedback_title": "შეფასების დამატება",
+            "climbing_status": "ცოცვის სტატუსი",
+            "climb_details": "ცოცვის დეტალები",
+            "did_you_climb": "მოცოცეთ ეს მარშრუტი?",
+            "climb_date": "შეიყვანეთ ცოცვის თარიღი",
+            "ascent_style": "გავლის სტილი",
+            "select_ascent_style": "აირჩიეთ გავლის სტილი",
+            "onsite": "Onsite",
+            "flash": "Flash",
+            "second_go": "Second go",
+            "redpoint": "Redpoint",
+            "top_rope": "Top rope",
+            "rating_label": "როგორ მოგეწონათ ეს მარშრუტი?",
+            "feedback": "შეფასება",
+            "feedback_placeholder": "გაუზიარეთ თქვენი აზრი მარშრუტის შესახებ...",
+            "all_feedbacks_title": "მარშრუტის შეფასებები",
+
+            "mtp_title": "მულტიპიჩის დეტალები",
+            "pitches": "პიჩები",
+            "loading_mtp_details": "MTP დეტალების ჩატვირთვა...",
+            "loading_route_details": "მარშრუტის დეტალების ჩატვირთვა...",
+            "no_pitch_info": "პიჩის ინფორმაცია არ არის ხელმისაწვდომი",
+            "route_name_not_available": "მარშრუტის სახელი არ არის ხელმისაწვდომი",
+
+            "route_details_title": "მარშრუტის დეტალები",
+            "additional_info": "დამატებითი ინფორმაცია",
+            "technical_details": "ტექნიკური დეტალები",
+            "description": "აღწერა",
+            "glued_bolts": "მარშრუტს აქვს ჩამონტჟილი ანკერები",
+            "hangerr_bolts": "მარშრუტს აქვს hangerr ანკერები"
         },
 
 
         "sector": {
             "name": "საქტორის სახელი",
+            "routes_authers_list_title": "მარშრუტების ავტორების სია",
+            "no_authors_found": "ავტორები არ მოიძებნა",
+            "filter_by_author_name": "ფილტრი ავტორის სახელით",
+            "sort_by": "დალაგება",
+            "sort_by_total_routes": "დალაგება მარშრუტების რაოდენობით",
+            "sort_by_author_name": "დალაგება ავტორის სახელით",
+            "sort_descending": "კლებადი",
+            "sort_ascending": "მზარდი",
+            "total_routes_header": "სულ მარშრუტები",
             "shade after 10.00 am": "ჩრდილში 10.00 am შემდეგ",
             "shade after 15.00 pm": "ჩრდილში 15.00 pm შემდეგ",
             "shade befor noon": "ჩრდილში შუადღემდე",
@@ -126,13 +167,18 @@
             "route_name": "მარშრუტის სახელი",
             "reviev_count": "შეფასებების რაოდენობა",
             "stars": "ვარსკვლავები",
-            "region": "რეგიონი",
+"region": "რეგიონი",
             "sector": "სექტორი",
+            "sectors": "სექტორი",
             "spot_name": "ადგილი",
 
             "countinue": "გაგრძელება",
             "loading_boulder_routes": "ბოლდერინგის მარშრუტების ჩატვირთვა...",
             "loading_sport_routes": "სპორტული მარშრუტების ჩატვირთვა...",
+            "all_reviews": "ყველა შეფასება",
+            "reviews": "შეფასებები",
+            "route": "მარშრუტი",
+            "routes": "მარშრუტები",
             "no_popular_sport_routes": "პოპულარული სპორტული მარშრუტები არ მოიძებნა",
             "no_popular_boulder_routes": "პოპულარული ბოლდერინგის მარშრუტები არ მოიძებნა",
             "no_reviews_available_boulder": "ბოლდერინგის მარშრუტებისთვის შეფასებები ჯერ არ არის ხელმისაწვდომი",
@@ -148,11 +194,15 @@
             "bouldering": "ბოლდერინგი",
             "dry": "Dry Tooling",
             "ice": "ყინულის ცოცვა",
+            "mtp": "მულტიპიჩი",
             
-            "sport_climbing_routes_title": "პოპულარული სპორტული ცოცვის მარშრუტები",
+"sport_climbing_routes_title": "პოპულარული სპორტული ცოცვის მარშრუტები",
             "boulder_routes_title": "პოპულარული ბოლდერინგის მარშრუტები",
             "ice_climbing_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
-            "dry_tooling_routes_title": "პოპულარული Dry Tooling მარშრუტები"
+            "dry_tooling_routes_title": "პოპულარული Dry Tooling მარშრუტები",
+            
+            "ice_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
+            "dry_routes_title": "პოპულარული Dry Tooling მარშრუტები"
         },
 
         "article": {
@@ -178,7 +228,18 @@
                 "all articles": "ყველა სტატია"
             },
             "route_quantyty": "საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.",
-            "other_sites": "ასევე შეგიძლიათ იხილოთ საქართველოში ცოცვის სხვა ვებსაიტები და გვერდები",
+            "route_quantyty_sport": "საქართველოში არის {sectors} სპორტული ცოცვის სექტორი {sport_routes} მარშრუტით.",
+            "route_quantyty_boulder": "საქართველოში არის {sectors} ბოლდერინგის სექტორი {boulder_routes} მარშრუტით.",
+            "route_quantyty_ice": "საქართველოში არის {sectors} ყინულის ცოცვის სექტორი {ice_routes} მარშრუტით.",
+            "route_quantyty_dry": "საქართველოში არის {sectors} Dry Tooling სექტორი {dry_routes} მარშრუტით.",
+            "route_quantyty_mtp": "საქართველოში არის {sectors} სექტორი {mtps} მულტიპიჩით.",
+            
+            "routes_short_line_single": "საქართველო გელობს {sectors} {label} {sector_word} და {routes} {label} მარშრუტით!",
+            "routes_short_line_multiple": "საქართველო გელობს! იპოვით {totalSectors} {sector_word} {totalRoutes} მარშრუტით {categories}!",
+            
+            "routes_extended_intro": "ყველა საცოცი ადგილი მზადაა დაგიპატიჟოთ.",
+            "routes_extended_detail": "{routes} {label} {route_word} {sectors} {area_word}",
+            "routes_extended_outro": "თქვენი შემდეგი თავგადასავალი მზადაა. მოდით და აღმოაჩინეთ საქართველოს საოცარი საცოცი ადგილები!",
             "prices_from": "ფასი იწყება",
             "closed": "მალე დაიკეტება",
 
@@ -210,7 +271,10 @@
             "search": "პროდუქტის ძიება.",
             "tours": "ტურების სია",
             "mein page": "Climbing.ge-ს პროდუქტები, სერვისები და ტურები",
-            "climbing wall": "საცოცი კედლის პასის კოლკულატორი"
+            "climbing wall": "საცოცი კედლის პასის კოლკულატორი",
+
+            "climbing_wall_title": "კლდეკვრის კედლის ფასის კალკულატორი",
+            "climbing_wall_description": "გამოთვალეთ კლდეკვრის კედლის ფასი. მიიღეთ მყისიერი ფასწარმოდგენა თქვენი პროექტისთვის."
         },
 
         "menu": {
@@ -240,32 +304,56 @@
         },
 
         "wall": {
-            "title" : "საცოცი კედლის ფასის კოლკულატორი",
-            "wall_colculate_title" : "შეიყვანეთ კედლის ზომები",
-            "height": "კედლის სიმაღლე",
-            "width": "კედლის სიგანე",
-            "depth": "კედლის სიღრმე",
-
-            "mat_colculate_title" : "ლეიის ზომა ითვლება ავტომატურად.",
-            "mat_height": "ლეიბის სიმაღლე",
-            "mat_width": "ლეიბის სიგრძე",
-            "mat_depth": "ლეიბის სიგანე",
-
-            "wall_so_height": "კედელის სიმაღლე აღემატება 5 მეტრს! ამიტომაც ლეიბის ნაცვლად დაგჭირდებათ დაცვის სისტემა",
-            "inser_sizes": "შეიყვანეთ კედლის ზომები",
-            "holds": "გსურთ თუ არა საჭიდები?",
-            "holds_on_1m2": "საჭიდების რაოდენობა 1 კვადრატულ მეტრზე?",
-
-            "wall_holds_squareness": "კედლის ფართობი",
-            "wall_price": "კედლის ფასი",
-            "mat_price": "ლეიბის ფასი",
-            "holds_qouantyty": "საჭიდების რაოდენობა 1 კვადრატულ მეტრზე",
-            "total_holds": "სულ საჭიდები რაოდენობა",
-            "total_holds_price": "საჭიდეის ფასი",
-            "wall_square": "კედლის ფასი",
-            "total_price": "ჯამური ფასი",
-
-            "colculate_price": "დათვლა"
+            "title": "კლდეკვრის კედლის ფასის კალკულატორი",
+            "wall_type": "კედლის ტიპი",
+            "wall_type_help": "აირჩიეთ კედლის ტიპი რომლის მშენებლობაც გსურთ",
+            "wall_dimensions": "კედლის ზომები",
+            "height": "სიმაღლე (მ)",
+            "height_placeholder": "მაგ., 4",
+            "width": "სიგანე (მ)",
+            "width_placeholder": "მაგ., 5",
+            "depth": "სიღრმე (მ)",
+            "depth_placeholder": "მაგ., 3",
+            "mat_section_title": "დამცავი მატის ზომები",
+            "mat_height": "მატის სიმაღლე (მ)",
+            "mat_height_placeholder": "მაგ., 0.3",
+            "mat_width": "მატის სიგანე (მ)",
+            "mat_width_placeholder": "მაგ., 5",
+            "mat_depth": "მატის სიღრმე (მ)",
+            "mat_depth_placeholder": "მაგ., 2",
+            "no_mat_hint": "კედლის სიმაღლე 5მ-ზე მეტია - დამცავი მატი არ საჭიროება",
+            "add_options": "დამატებითი ოფციები",
+            "add_holds": "დაამატეთ კლდეკვრის სახლები",
+            "include_vat": "დაამატეთ დღგ (20%)",
+            "holds_per_sqm": "სახლები კვადრატულ მეტრზე",
+            "holds_per_unit": "სახლი/მ²",
+            "enter_dimensions_first": "ჯერ შეიყვანეთ კედლის ზომები",
+            "calculate_price": "გამოთვალეთ ფასი",
+            "price_summary": "ფასის შეჯამება",
+            "wall_area": "კედლის ფართობი",
+            "base_price": "ძირითადი კედლის ფასი",
+            "mat_area": "დამცავი მატის ფართობი",
+            "mat_price": "დამცავი მატი",
+            "total_holds": "სულ სახლები",
+            "holds_price": "სახლების ფასი",
+            "vat": "დღგ",
+            "total_price": "სულ ფასი",
+            "select_option": "აირჩიეთ ვარიანტი...",
+            "need_help": "დახმარება გჭირდებათ?",
+            "help_text": "რჩევები თქვენი გაანგარიშებისთვის:",
+            "help_dimensions": "შეიყვანეთ კედლის სიმაღლე, სიგანე და სიღრმე მეტრებში",
+            "help_mat": "დამცავი მატის ზომები ითვლება ავტომატურად 5მ-ზე დაბალი კედლებისთვის",
+            "help_holds": "დაამატეთ კლდეკვრის სახლები დამატებითი $10 ერთეულის ღირებულებით",
+            "image": {
+                "wall": "კლდეკვრის კედლის გამოსახულება",
+                "wall_height": "კლდეკვრის კედლის სიმაღლის ზომა",
+                "wall_width": "კლდეკვრის კედლის სიგანის ზომა",
+                "wall_depth": "კლდეკვრის კედლის სიღრმის ზომა",
+                "wall_no_mat": "კლდეკვრის კედელი მატის გარეშე (სიმაღლე 5მ-ზე მეტი)",
+                "mat_height": "დამცავი მატის სიმაღლის ზომა",
+                "mat_width": "დამცავი მატის სიგანის ზომა",
+                "mat_depth": "დამცავი მატის სიღრმის ზომა"
+            }
         },
 
         "product": {

@@ -188,17 +188,6 @@ class MTPPitchController extends Controller
     //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
     // }
 
-    // public function pitchs_sequence(Request $request)
-    // {
-    //     $pitch_num = 0;
-    //     foreach ($request->pitchs_sequence as $pitch) {
-    //         $pitch_id = $pitch['id'];
-    //         $pitch = Mtp_pitch::where('id',strip_tags($pitch_id))->first();
-    //         $pitch_num++;
-    //         $pitch['num'] = $pitch_num;
-    //         $pitch->update();
-    //     }
-    // }
     // public function pitch_validate($request)
     // {
     //     $validator = Validator::make($request, [

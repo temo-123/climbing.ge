@@ -29,7 +29,7 @@
                 </select>
 
                 <select class="form-control route_statistic_selection" v-model="routeType" @change="refreshData">
-                    <option v-for="category in routeCategories" :key="category.value" :value="category.value">
+                    <option v-for="category in route_categories_prop" :key="category.value" :value="category.value">
                         {{ $t(category.label) }}
                     </option>
                 </select>
@@ -114,11 +114,8 @@
             starsReiting,
         },
 
-
-
-
         props: {
-            routeCategories: {
+            route_categories_prop: {
                 type: Array,
                 default: () => [
                     { value: 'sport', label: 'guide.sector.sport_climbing' },
@@ -127,12 +124,11 @@
                     { value: 'ice', label: 'guide.sector.ice' }
                 ]
             },
-            defaultRouteType: {
+            default_route_type_prop: {
                 type: String,
                 default: 'sport'
             }
         },
-
 
         data(){
             return{
@@ -143,7 +139,7 @@
                 // Controls
                 routesPerPage: 10,
                 minReviews: 1,
-                routeType: this.defaultRouteType, // Use prop for initial route type
+                routeType: this.default_route_type_prop, // Use prop for initial route type
             }
         },
 
@@ -156,8 +152,8 @@
                 const titles = {
                     'sport': this.$t('guide.sector.sport_climbing_routes_title'),
                     'boulder': this.$t('guide.sector.boulder_routes_title'),
-                    'ice': this.$t('guide.sector.ice_climbing_routes_title') || 'Popular Ice Climbing Routes',
-                    'dry': this.$t('guide.sector.dry_tooling_routes_title') || 'Popular Dry Tooling Routes'
+                    'ice': this.$t('guide.sector.ice_routes_title'),
+                    'dry': this.$t('guide.sector.dry_routes_title')
                 };
                 return titles[this.routeType] || this.$t('guide.sector.sport_climbing_routes_title');
             }

@@ -1,17 +1,17 @@
 <template>
     <stack-modal
             :show="is_show_mtp_modal"
-            title="Multi Pitch Details"
+            :title="$t('guide.route.mtp_title')"
             @close="is_show_mtp_modal = false"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{
                 visible: true,
-                title: 'Save',
+                title: $t('global.form.save'),
                 btnClass: { 'btn btn-primary': true },
             }"
             :cancelButton="{
                 visible: false,
-                title: 'Close',
+                title: $t('guide.route.close_modal'),
                 btnClass: { 'btn btn-danger': true },
             }"
         >
@@ -21,9 +21,9 @@
                     <!-- Loading State -->
                     <div v-if="loading" class="text-center py-4">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading MTP details...</span>
+                            <span class="sr-only">{{ $t('guide.route.loading_mtp_details') }}</span>
                         </div>
-                        <p class="mt-2 text-muted">Loading route details...</p>
+                        <p class="mt-2 text-muted">{{ $t('guide.route.loading_route_details') }}</p>
                     </div>
 
                     <!-- Content State -->
@@ -32,18 +32,18 @@
                             <h2 class="section-title">{{ $t("guide.route.mtp detals") }}</h2>
 
                             <div class="overview-details">
-                                <p class="route-detail">{{ $t("guide.route.name") }} - {{ (mtp_detals && mtp_detals.mtp && mtp_detals.mtp.name) ? mtp_detals.mtp.name : 'Route Name Not Available' }}</p>
+                                <p class="route-detail">{{ $t("guide.route.name") }} - {{ (mtp_detals && mtp_detals.mtp && mtp_detals.mtp.name) ? mtp_detals.mtp.name : $t('guide.route.route_name_not_available') }}</p>
                                 <p class="route-detail" v-if="mtp_detals && mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("guide.route.height") }} - {{ mtp_detals.mtp.height }}</p>
                             </div>
                         </div>
 
                         <div class="modal-section pitches">
-                            <h3 class="section-title">Pitches</h3>
+                            <h3 class="section-title">{{ $t('guide.route.pitches') }}</h3>
                             
                             <!-- No pitches message -->
                             <div v-if="!mtp_detals || !mtp_detals.mtp_pitchs || mtp_detals.mtp_pitchs.length === 0" class="text-center py-3 text-muted">
                                 <i class="fas fa-info-circle fa-2x mb-2"></i>
-                                <p>No pitch information available</p>
+                                <p>{{ $t('guide.route.no_pitch_info') }}</p>
                             </div>
 
                             <div v-else class="table-responsive">

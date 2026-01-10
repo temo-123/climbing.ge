@@ -1,12 +1,12 @@
 <template>
     <stack-modal
             :show="is_show_route_modal"
-            title="Route Details"
+            :title="$t('guide.route.route_details_title')"
             @close="is_show_route_modal = false"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
-                title: 'Close',
+                title: $t('guide.route.close_modal'),
                 btnClass: { 'btn btn-primary': true },
             }"
         >
@@ -59,7 +59,7 @@
                         </div>
 
                         <div class="modal-section additional-info" v-if="route.author || route.creation_data || route.first_ascent">
-                            <h3 class="section-title">Additional Information</h3>
+                            <h3 class="section-title">{{ $t('guide.route.additional_info') }}</h3>
 
                             <p class="route-detail" v-if="route.author">
                                 <strong>{{ $t("guide.route.author") }}</strong> - {{ route.author }}
@@ -75,7 +75,7 @@
                         </div>
 
                         <div class="modal-section technical-details" v-if="route.anchor_type || route.bolts_type">
-                            <h3 class="section-title">Technical Details</h3>
+                            <h3 class="section-title">{{ $t('guide.route.technical_details') }}</h3>
 
                             <p class="route-detail" v-if="route.anchor_type">
                                 <strong>{{ $t("guide.route.anchor_type") }}</strong> - {{ route.anchor_type }}
@@ -84,23 +84,23 @@
                             <div class="row">
                                 <div class="col-md-6" v-if="route.bolts_type == 'glued'">
                                     <p class="route-detail">
-                                        <strong>Route have a glued-in bolts</strong>
+                                        <strong>{{ $t('guide.route.glued_bolts') }}</strong>
                                         <img
                                             class="climbing_bolt_image"
                                             :src="'../../../../images/svg/glued bolt.png'"
-                                            alt="Glued-in bolt"
-                                            title="Glued-in bolt"
+                                            :alt="$t('guide.route.glued_bolts')"
+                                            :title="$t('guide.route.glued_bolts')"
                                         />
                                     </p>
                                 </div>
                                 <div class="col-md-6" v-if="route.bolts_type == 'hangerr'">
                                     <p class="route-detail">
-                                    <strong>Route have a hangerr bolts</strong>
+                                        <strong>{{ $t('guide.route.hangerr_bolts') }}</strong>
                                         <img
                                             class="climbing_bolt_image"
                                             :src="'../../../../images/svg/hangerr bolt.svg'"
-                                            alt="Hangerr bolt"
-                                            title="Hangerr bolt"
+                                            :alt="$t('guide.route.hangerr_bolts')"
+                                            :title="$t('guide.route.hangerr_bolts')"
                                         />
                                     </p>
                                 </div>
@@ -108,7 +108,7 @@
                         </div>
 
                         <div class="modal-section description" v-if="route.text != null">
-                            <h3 class="section-title">Description</h3>
+                            <h3 class="section-title">{{ $t('guide.route.description') }}</h3>
                             <div class="description-content">
                                 <span v-html="route.text"></span>
                             </div>

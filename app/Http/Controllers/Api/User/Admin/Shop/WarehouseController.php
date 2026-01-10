@@ -94,6 +94,28 @@ class WarehouseController extends Controller
         return $warehouse->productOptions()->with(['images', 'product'])->get();
     }
 
+    public function get_warehouse_product_options_grouped_by_product(Request $request) {
+        $warehouse = Warehouse::find($request->id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 400);
+        }
+
+        $productOptions = $warehouse->productOptions()->with(['images', 'product'])->get();
+
+        // Group options by product
+        $groupedOptions = $productOptions->groupBy('product_id')->map(function ($options) {
+            $firstOption = $options->first();
+            return [
+                'product_id' => $firstOption->product_id,
+                'product_name' => $firstOption->product->url_title ?? 'Unknown Product',
+                'product' => $firstOption->product,
+                'options' => $options
+            ];
+        })->values();
+
+        return response()->json($groupedOptions);
+    }
+
     public function edit_product_option_quantity(Request $request) {
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {

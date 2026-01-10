@@ -451,6 +451,112 @@ class SectorController extends Controller
         return $data;
     }
 
+    public function sectors_and_routes_quantity_by_categories(Request $request)
+    {
+        // Map frontend category values to database categories
+        $categoryMap = [
+            'sport' => [
+                'db_category' => ['sport climbing', 'top'],
+                'label' => 'sport',
+                'route_label' => 'sport_routes'
+            ],
+            'boulder' => [
+                'db_category' => ['bouldering'],
+                'label' => 'boulder',
+                'route_label' => 'boulder_routes'
+            ],
+            'ice' => [
+                'db_category' => ['ice climbing'],
+                'label' => 'ice',
+                'route_label' => 'ice_routes'
+            ],
+            'dry' => [
+                'db_category' => ['dry tooling'],
+                'label' => 'dry',
+                'route_label' => 'dry_routes'
+            ],
+            'mtp' => [
+                'db_category' => null,
+                'label' => 'mtp',
+                'route_label' => 'mtps'
+            ],
+        ];
+        
+        // Get route_categories from request body (POST) or query parameters
+        $routeCategories = $request->input('route_categories');
+        
+        // If not in body, check query parameters
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('route_categories');
+        }
+        
+        // If still null, check for 'categories' parameter
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('categories');
+        }
+        
+        // If still null, return all data (fallback to original method)
+        if ($routeCategories === null) {
+            return $this->get_sectors_and_routes_quantity();
+        }
+        
+        // Ensure it's an array
+        if (!is_array($routeCategories)) {
+            $routeCategories = [$routeCategories];
+        }
+        
+        $categoryData = [];
+        
+        foreach ($routeCategories as $category) {
+            if (!isset($categoryMap[$category])) {
+                continue;
+            }
+            
+            $config = $categoryMap[$category];
+            
+            // Count routes for this category
+            $routeCount = 0;
+            if ($config['db_category'] !== null) {
+                $query = Route::query();
+                foreach ($config['db_category'] as $dbCat) {
+                    $query->orWhere("category", "=", $dbCat);
+                }
+                $routeCount = $query->count();
+            }
+            
+            // For mtp, count mtps
+            if ($config['label'] === 'mtp') {
+                $routeCount = MTP::count();
+            }
+            
+            // Count sectors that have routes of this category
+            $sectorCount = 0;
+            if ($config['db_category'] !== null) {
+                $sectorIds = Route::where(function($q) use ($config) {
+                    foreach ($config['db_category'] as $dbCat) {
+                        $q->orWhere("category", "=", $dbCat);
+                    }
+                })->distinct('sector_id')->pluck('sector_id');
+                $sectorCount = count($sectorIds);
+            }
+            
+            // For mtp, count sectors that have mtps
+            if ($config['label'] === 'mtp') {
+                $sectorIds = MTP::distinct('sector_id')->pluck('sector_id');
+                $sectorCount = count($sectorIds);
+            }
+            
+            $categoryData[$category] = [
+                'sectors' => $sectorCount,
+                $config['route_label'] => $routeCount
+            ];
+        }
+        
+        return [
+            'categories' => $categoryData
+        ];
+    }
+
     // public function del_sector_image_from_db(Request $request)
     // {
     //     $image = Sector_image::where('id', '=', $request->image_id)->first();

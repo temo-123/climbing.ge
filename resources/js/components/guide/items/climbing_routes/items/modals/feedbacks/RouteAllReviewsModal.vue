@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_modal"
-            title="Route Feedbacks"
+            :title="$t('guide.route.all_feedbacks_title')"
             @close="close_route_review_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"

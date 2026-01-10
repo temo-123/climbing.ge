@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar" :class="{ animate: animate_enabled }">
         <div class="mx-auto order-0 mobile_title">
             <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
         </div>
@@ -68,7 +68,7 @@
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <label for="check">
+                    <label for="check" @click="toggle_menu">
                         <span id="open_menu" class="menu_but">
                             <i class="fa fa-bars cursor_pointer" aria-hidden="true"></i>
                         </span>
@@ -136,6 +136,7 @@
         data(){
             return {
                 menu_items: navbar.admin_all_menu(),
+                animate_enabled: false,
                 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -149,6 +150,19 @@
         },
         mounted(){
             this.get_user()
+            // Listen for menu toggle events from LeftMenuComponent
+            this.$root.$on('menu-toggle', () => {
+                this.animate_enabled = true;
+                // Use requestAnimationFrame to ensure CSS transition is applied before position change
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.animate_enabled = false;
+                    }, 500);
+                });
+            });
+        },
+        beforeUnmount() {
+            this.$root.$off('menu-toggle');
         },
         components: {
             countryFlag,
@@ -225,6 +239,16 @@
                     return true
                 }
             },
+            
+            toggle_menu(){
+                this.animate_enabled = true;
+                // Use requestAnimationFrame to ensure CSS transition is applied before position change
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.animate_enabled = false;
+                    }, 500);
+                });
+            },
         },
     }
 </script>
@@ -233,9 +257,6 @@
     .admin_navbar{
         max-height: 380px;
         overflow-y: auto;
-    }
-    .admin_page_header_navbar{
-        transition: all .5s;
     }
     .menu_but{
         position: fixed;
@@ -268,6 +289,10 @@
         .mobile_title{
             display: none;
         }
+    }
+
+    .animate {
+        transition: all .5s ease;
     }
 </style>
     

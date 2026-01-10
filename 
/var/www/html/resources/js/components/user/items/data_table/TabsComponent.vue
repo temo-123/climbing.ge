@@ -195,8 +195,7 @@ export default {
             itemsPerPageOptions: [10, 20, 30, 50, 100, 'All'],
             selectedItems: [],
             stateRestored: false, // Flag to track if state has been restored
-            initialLoadComplete: false, // Track if we've completed at least one restore
-            routeKey: '' // Unique key for this route
+            initialLoadComplete: false // Track if we've completed at least one restore
         };
     },
     
@@ -208,9 +207,6 @@ export default {
     },
     
     mounted() {
-        // Generate a unique key for this route
-        this.routeKey = this.$route.name || this.$route.path || 'default';
-        
         // Restore the active tab and its saved page from localStorage
         // If table_data is not available yet, the watcher will handle it when it arrives
         if (this.table_data && this.table_data.length > 0) {
@@ -223,8 +219,8 @@ export default {
         table_data: {
             handler() {
                 // When table_data changes (e.g., after data fetch), restore tab state
-                // Check if we should try to restore using route-specific key
-                const savedTabStr = localStorage.getItem(this.getRouteStorageKey('activeTab'));
+                // Check if we should try to restore
+                const savedTabStr = localStorage.getItem('dataTableActiveTab');
                 const savedTab = savedTabStr ? parseInt(savedTabStr, 10) : null;
                 
                 // Only reset and retry restore if:
@@ -247,9 +243,9 @@ export default {
             immediate: true
         },
         tab_num(newTab, oldTab) {
-            // Save the active tab to localStorage using route-specific key
+            // Save the active tab to localStorage
             try {
-                localStorage.setItem(this.getRouteStorageKey('activeTab'), newTab.toString());
+                localStorage.setItem('dataTableActiveTab', newTab.toString());
             } catch (e) {
                 console.warn('localStorage not available:', e);
             }
@@ -304,19 +300,14 @@ export default {
     },
 
     methods: {
-        // Generate a unique key for localStorage based on route
-        getRouteStorageKey(key) {
-            return `dataTable_${this.routeKey}_${key}`;
-        },
-        
         // Save the current state (tab and page) to localStorage
         saveState() {
             try {
                 if (this.tab_num) {
-                    localStorage.setItem(this.getRouteStorageKey('activeTab'), this.tab_num.toString());
+                    localStorage.setItem('dataTableActiveTab', this.tab_num.toString());
                 }
                 if (this.tab_num) {
-                    localStorage.setItem(this.getRouteStorageKey(`page_${this.tab_num}`), this.currentPage.toString());
+                    localStorage.setItem(this.getStorageKey(this.tab_num), this.currentPage.toString());
                 }
             } catch (e) {
                 console.warn('localStorage not available:', e);
@@ -324,7 +315,7 @@ export default {
         },
         // Generate a unique key for localStorage based on tab ID
         getStorageKey(tabId) {
-            return this.getRouteStorageKey(`page_${tabId}`);
+            return `dataTableTabPage_${tabId}`;
         },
         // Save current page to localStorage
         savePage(tabId, page) {
@@ -348,11 +339,10 @@ export default {
         clearSavedState() {
             try {
                 // Clear active tab
-                localStorage.removeItem(this.getRouteStorageKey('activeTab'));
-                // Clear all tab pages for this route
-                const prefix = `dataTable_${this.routeKey}_page_`;
+                localStorage.removeItem('dataTableActiveTab');
+                // Clear all tab pages
                 Object.keys(localStorage).forEach(key => {
-                    if (key.startsWith(prefix)) {
+                    if (key.startsWith('dataTableTabPage_')) {
                         localStorage.removeItem(key);
                     }
                 });
@@ -371,8 +361,8 @@ export default {
             // Check if we have data to work with
             if (!this.table_data || this.table_data.length === 0) return;
             
-            // Get the saved tab from localStorage using route-specific key
-            const savedTabStr = localStorage.getItem(this.getRouteStorageKey('activeTab'));
+            // Get the saved tab from localStorage
+            const savedTabStr = localStorage.getItem('dataTableActiveTab');
             const savedTab = savedTabStr ? parseInt(savedTabStr, 10) : null;
             
             // If we have a saved tab and it exists in current data, use it

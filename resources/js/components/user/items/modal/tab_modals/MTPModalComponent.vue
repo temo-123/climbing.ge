@@ -78,7 +78,7 @@
 
                 if (this.is_show_mtp_modal==true) {
                     axios
-                    .get('/set_mtp/mtp_pitch/get_mtp_pitchs_for_model/'+ mtp_id)
+                    .get('/set_mtp/set_mtp_pitch/get_mtp_pitchs_for_model/'+ mtp_id)
                     .then(response => {
                         this.sector_mtp_pitchs_for_modal = response.data
                     })
@@ -92,7 +92,7 @@
             },
             save_pitchs_sequence(){
                 axios
-                .post('/set_mtp/mtp_pitch/pitchs_sequence/', {
+                .post('/set_mtp/set_mtp_pitch/pitchs_sequence/', {
                     pitchs_sequence: this.sector_mtp_pitchs_for_modal,
                 })
                 .then((response)=> { 

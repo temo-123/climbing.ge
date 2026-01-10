@@ -60,6 +60,10 @@ class MTPPitchController extends Controller
     //     //
     // }
 
+    public function get_mtp_pitchs_for_model(Request $request)
+    {
+        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+    }
 
     public function pitch_sequence(Request $request)
     {
