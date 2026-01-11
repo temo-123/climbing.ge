@@ -18,7 +18,7 @@ use App\Models\Guide\Mtp_pitch;
 
 use App\Services\SportClimbingRoutesService;
 
-use App\Http\Controllers\Api\Guide\RouteJsonController;
+use App\Http\Controllers\Api\User\Admin\Guide\RouteJsonController;
 
 class RouteController extends Controller
 {
@@ -132,45 +132,47 @@ class RouteController extends Controller
         }
     }
 
-    public function edit_route(Request $request)
+    public function edit_route(Request $request, $route_id)
     {
         $auth = PermissionService::authorize('route', 'edit');
         // if ($auth) return $auth;
-        // dd($request->data);
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) {
+        
+        // Check if data is received
+        if (!$request->has('data')) {
+            return response()->json(['error' => 'No data received', 'all' => $request->all()], 400);
+        }
+        
+        $route = Route::where('id', '=', $route_id)->first();
+
+        if (!$route) {
+            return response()->json(['error' => 'Route not found'], 404);
+        }
+
+        // Save route data (without JSON)
+        $routeData = $request->data;
+        unset($routeData['route_json']); // Remove JSON from route data
+        unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+        unset($routeData['id']); // Don't try to update id
+        
+        $saved = $route->update($routeData);
+
+        // Save JSON data separately if provided
+        if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+            $jsonData = [
+                'route_id' => $route_id,
+                'json' => $request->data['route_json'],
+                'sector_image_id' => $request->data['sector_image_id']
+            ];
+            RouteJsonController::edit_route_json($jsonData);
+        }
+        
+        if(!$saved){
             return response()->json([
-                $route_validate
-            ], 422);
+                'errors' => "Saving error",
+            ], 500);
         }
-        else{
-            $route = route::where('id', '=', $request->route_id)->first();
 
-            // Save route data (without JSON)
-            $routeData = $request->data;
-            unset($routeData['route_json']); // Remove JSON from route data
-            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
-
-            $saved = $route->update($routeData);
-
-            // Save JSON data separately if provided
-            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
-                $jsonData = [
-                    'route_id' => $request->route_id,
-                    'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
-                ];
-                RouteJsonController::edit_route_json($jsonData);
-            }
-            
-            if(!$saved){
-                return response()->json([
-                    'errors' => "Saving error",
-                ], 500);
-            }
-
-            return response()->json(['success' => true]);
-        }
+        return response()->json(['success' => true]);
     }
 
     public function del_route(Request $request)

@@ -138,6 +138,11 @@
                         :key="tab_data_id"
                         v-if="tab_num == tab_data.id"
                     >
+                        
+                        <div class="tab-item-count">
+                            Total: {{ getTabFilteredCount(tab_data) }} Inscription
+                        </div>
+
                         <table class="table table-hover" id="dev-table">
                             <TabHeaderComponent :head_data_prop="tab_data.tab_data" :selected-items="selectedItems" :total-items="tab_data.tab_data.data.length" @toggle-select-all="toggleSelectAll"/>
                             
@@ -461,6 +466,14 @@ export default {
             if(!tab || !tab.tab_data.filteredLength) return 1;
             if (this.itemsPerPage >= tab.tab_data.filteredLength) return 1;
             return Math.ceil(tab.tab_data.filteredLength / this.itemsPerPage);
+        },
+        getTabFilteredCount(tabData) {
+            // Find the corresponding tab in filteredTableData to get the filtered length
+            const filteredTab = this.filteredTableData.find(t => t.id === tabData.id);
+            if (filteredTab && filteredTab.tab_data.filteredLength !== undefined) {
+                return filteredTab.tab_data.filteredLength;
+            }
+            return tabData.tab_data.data.length;
         }
     },
 };
@@ -472,6 +485,15 @@ export default {
     padding: 10px 15px;
     height: auto;
     border-radius: 5px;
+}
+.tab-item-count {
+    margin: 0 0 15px 0;
+    padding: 8px 15px;
+    background-color: #d5d5d6;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #495057;
+    font-weight: 500;
 }
 </style>
 

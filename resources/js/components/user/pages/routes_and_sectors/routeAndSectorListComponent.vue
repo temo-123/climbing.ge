@@ -36,7 +36,7 @@
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import sectorModal from "../../items/modal/tab_modals/SectorModalComponent.vue";
-    import mtpModal from "../../items/modal/tab_modals/MTPModalComponent.vue";
+    import mtpModal from "../../items/modal/tab_modals/MTPPitchSequenceModalComponent.vue";
     export default {
         components: {
             tabsComponent,
@@ -303,7 +303,7 @@
             del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_sector/set_route/del_route/'+id, {
+                    .post('/set_route/del_route/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })
@@ -318,7 +318,7 @@
             del_multi_pitch(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/set_sector/set_mtp/del_mtp/'+id, {
+                    .post('/set_mtp/del_mtp/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -328,7 +328,7 @@
                 }
             },
             show_mtp_model(sector_id){
-                this.$refs.mtp_modal.show_mtp_modal(sector_id)
+                this.$refs.mtp_modal.show_modal(sector_id)
             },
         }
     }

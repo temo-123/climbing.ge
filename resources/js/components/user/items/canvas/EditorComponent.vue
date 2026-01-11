@@ -1102,6 +1102,17 @@ export default {
 
             // Keyboard shortcuts
             handleKeyDown(event) {
+                // Don't intercept keyboard events when typing in input fields
+                const isInputField = event.target.tagName === 'INPUT' || 
+                                    event.target.tagName === 'TEXTAREA' || 
+                                    event.target.tagName === 'SELECT' ||
+                                    event.target.isContentEditable ||
+                                    event.target.getAttribute('contenteditable') === 'true';
+                
+                if (isInputField) {
+                    return; // Allow normal input behavior
+                }
+                
                 if (event.ctrlKey || event.metaKey) {
                     switch (event.key) {
                         case 'z':

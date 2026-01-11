@@ -11,7 +11,8 @@
             <div class="col-md-12">
                 <div class="form-group">
                     <button class="btn btn-primary float-left" @click="add_pitch()">Add Pitch</button>
-                    <button class="btn btn-primary float-right" @click="get_MTP_pitchs()">Refresh</button>
+                    <button class="btn btn-warning float-left ml-2" @click="change_sequence()">Change Sequence</button>
+                    <button class="btn btn-success float-right" @click="get_MTP_pitchs()">Refresh</button>
                 </div>
             </div>
         </div>
@@ -58,6 +59,10 @@
             @update="get_MTP_pitchs"
             ref="edit_pitch_modal"
         />
+        <mtp_pitch_sequence_modal 
+            @update="get_MTP_pitchs"
+            ref="mtp_pitch_sequence_modal"
+        />
 
     </div>
 </template>
@@ -65,6 +70,7 @@
 <script>
     import add_pitch_modal from './Modals/AddPitchModalComponent.vue'
     import edit_pitch_modal from './Modals/EditPitchModalComponent.vue'
+    import mtp_pitch_sequence_modal from "../../../../items/modal/tab_modals/MTPPitchSequenceModalComponent.vue"
 
     export default {
         props: [
@@ -73,6 +79,7 @@
         components: {
             add_pitch_modal,
             edit_pitch_modal,
+            mtp_pitch_sequence_modal,
         },
         data(){
             return {
@@ -93,7 +100,7 @@
         methods: {
             get_MTP_pitchs(){
                 axios
-                .get('/get_mtp/get_mtp_pitch/get_mtp_pitchs/' + this.mtp_id)
+                .get('/set_mtp/set_mtp_pitch/get_mtp_pitchs_for_model/' + this.mtp_id)
                 .then(response => {
                     this.pitchs = response.data
                 })
@@ -101,6 +108,9 @@
             },
             add_pitch(){
                 this.$refs.add_pitch_modal.show_modal(this.mtp_id)
+            },
+            change_sequence(){
+                this.$refs.mtp_pitch_sequence_modal.show_modal(this.mtp_id)
             },
             edit_pitch(id){
                 this.$refs.edit_pitch_modal.show_modal(id)

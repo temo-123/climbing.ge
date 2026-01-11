@@ -109,12 +109,6 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
         Route::post('/save_sector_sequence', 'save_sector_sequence');
         Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
 
-        Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
-        Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
-        Route::get('/get_layout/{layout_id}', 'get_layout');
-        Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
-        Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
-
         Route::controller(SectorLocalImagesController::class)->prefix('set_sector_local_images')->group( function() {
             Route::post('/add_sector_local_image', 'add_sector_local_image');
             Route::post('/update_image/{image_id}', 'update_image');
@@ -124,6 +118,12 @@ Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
             Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
 
             Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
+
+            // Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
+            Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
+            // Route::get('/get_layout/{layout_id}', 'get_layout');
+            // Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
+            // Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
         });
 
         Route::controller(SpotRockController::class)->prefix('set_spot_rock_images')->group( function() {

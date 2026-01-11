@@ -56,7 +56,21 @@
 
         <div class="form-group clearfix row" v-if="data.sector_id != ''">
           <div class="col-md-12">
-            <div class="row" v-if="sector_images.length > 0">
+            <!-- Toggle Editor Button -->
+            <div class="row">
+                <div class="col-md-12">
+                    <button 
+                        type="button" 
+                        class="btn" 
+                        :class="show_editor ? 'btn-danger' : 'btn-primary'"
+                        @click="toggleEditor"
+                    >
+                        {{ show_editor ? 'Close Editor' : 'Open Editor' }}
+                    </button>
+                </div>
+            </div>
+            
+            <div class="row" v-if="show_editor && sector_images.length > 0">
                 <div class="tabs">
                     <input
                         v-for="(image, index) in sector_images"
@@ -85,6 +99,11 @@
                   @canvas_data="handleCanvasData"
                 />
             </div>
+            <div class="row" v-else-if="!show_editor">
+                <div class="col-md-12 text-center">
+                    <p>Click "Open Editor" to edit route drawing</p>
+                </div>
+            </div>
             <div class="row" v-else>
                 <div class="col-md-12 text-center">
                     <p>Loading sector image...</p>
@@ -102,7 +121,11 @@
         </div>
 
         <grades_form 
-            :category_prop="this.$route.params.category"
+            :key="'grades-form-' + data.category"
+            :category_type_prop="category_type"
+            :category_prop="data.category"
+            :grade_prop="data.grade"
+            :or_grade_prop="data.or_grade"
             @update:data="data = Object.assign({}, data, $event)"
         />
 
@@ -237,7 +260,7 @@
 
         article_id: "",
         images_tab_num: "",
-        related_jsons: [], // Add related routes JSONs
+        related_jsons: [], // Related routes JSONs (kept separate, not sent to server)
 
         data: {
           sector_id: "",
@@ -268,6 +291,22 @@
         is_back_action_query: false,
         show_no_json_alert: false,
         show_alert_modal: false,
+        show_editor: false, // Editor is closed by default
+      }
+    },
+    
+    computed: {
+      category_type() {
+        // Determine if category is outdoor or ice based on the category value
+        const outdoorCategories = ['sport climbing', 'bouldering', 'tred', 'top'];
+        const iceCategories = ['ice climbing', 'dry tooling', 'mix climbing'];
+        
+        if (outdoorCategories.includes(this.data.category)) {
+          return 'outdoor';
+        } else if (iceCategories.includes(this.data.category)) {
+          return 'ice';
+        }
+        return 'outdoor'; // Default to outdoor
       }
     },
 
@@ -283,6 +322,11 @@
         if (newVal && newVal !== oldVal) {
           this.get_sector_images(newVal);
         }
+      },
+      'data.category': function(newVal, oldVal) {
+        console.log('data.category changed from', oldVal, 'to', newVal);
+        // Force reactivity for category prop
+        this.$forceUpdate();
       }
     },
 
@@ -318,7 +362,7 @@
 
       get_article_global_data(id){
         axios
-        .get("/get_article/get_editing_data/" + id)
+        .get("/set_article/get_editing_data/" + id)
         .then(response => {
           this.get_region_data(response.data.global_article);
         })
@@ -348,7 +392,8 @@
         axios
         .get("/set_route/get_route_editing_data/"+this.$route.params.id,)
         .then(response => {
-          this.data = response.data
+          // Use Object.assign to merge response data while preserving reactivity
+          Object.assign(this.data, response.data);
 
           // Load route JSON data if available
           if (response.data.json) {
@@ -400,11 +445,11 @@
             console.log('Canvas data emission failed:', error);
           }
 
-          // Include canvas JSON data in the route data
+          // Include canvas JSON data in the route data (explicitly list fields to avoid including unrelated properties)
           const routeData = {
-              ...this.data,
-              route_json: this.data.route_json,
-              sector_image_id: this.data.sector_image_id
+            ...this.data,
+            route_json: this.data.route_json,
+            sector_image_id: this.data.sector_image_id
           };
 
           axios
@@ -414,7 +459,8 @@
           .then(response => {
             if(!this.is_back_action_query){
               alert('Saving completed')
-              this.clear_form()
+              // Refresh data instead of clearing
+              this.get_route_editing_data()
             }
             else{
               this.go_back(true)
@@ -422,7 +468,8 @@
           })
           .catch(error =>{
               this.status = "error"
-              console.log('Save route error:', error);
+              console.log('Save route error:', error.response ? error.response.data : error);
+              alert('Error saving route: ' + (error.response && error.response.data && error.response.data.error ? error.response.data.error : 'Unknown error'));
           })
           .finally(() => this.is_loading = false);
         });
@@ -460,7 +507,7 @@
 
       get_sector_images(sectorId) {
         axios
-        .get("/sector/get_sector_images/" + sectorId)
+        .get("/get_sector/get_sector_images/" + sectorId)
         .then(response => {
           this.sector_images = response.data
           if (this.sector_images.length > 0 && !this.data.sector_image_id) {
@@ -499,7 +546,7 @@
 
       get_related_routes_jsons(sectorImageId, excludeRouteId) {
         axios
-        .get("/route/get_related_routes_jsons", {
+        .get("/get_route/get_related_routes_jsons", {
           params: {
             sector_image_id: sectorImageId,
             exclude_route_id: excludeRouteId
@@ -517,6 +564,10 @@
       // closeAlertModal() {
       //   this.show_alert_modal = false;
       // },
+      
+      toggleEditor() {
+        this.show_editor = !this.show_editor;
+      },
     }
   }
 </script>

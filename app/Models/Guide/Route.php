@@ -10,11 +10,12 @@ class Route extends Model
 
     protected $fillable = [
         "sector_id",
+        "category",
 
         "grade",
         "or_grade",
 
-        "title",
+        "name",
         "text",
 
         "height",
