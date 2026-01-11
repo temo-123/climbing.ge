@@ -23,7 +23,7 @@ const router = new VueRouter({
         { path: '/guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent') },
         { path: '/guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent') },
 
-        { path: '/purchases', name: 'userPurchases', component: load('PurchasesPage') },
+        { path: '/purchases', name: 'userPurchases', component: load('orders/PurchasesPage') },
         { path: '/order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
 
@@ -147,7 +147,7 @@ const router = new VueRouter({
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
-        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('NonRegisteredCommenterListPage') },
+        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('comments_&_reviews/NonRegisteredCommenterListPage') },
 
         { path: '/services_list', name: 'servicesList', component: load('services/servicesListComponent'), },
         { path: '/service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), },

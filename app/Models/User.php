@@ -188,10 +188,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /*
     *   User product and orders
     */
-    public function purchases()
-    {
-        return $this->hasMany(Order::class, 'user_id');
-    }
+    // purchases relationship removed - user_id column was dropped from orders table
+    // public function purchases()
+    // {
+    //     return $this->hasMany(Order::class, 'user_id');
+    // }
     // public function orders()
     // {
     //     return $this->belongsToMany(Order::class, 'user_products', 'user_id', 'product_id');

@@ -23,9 +23,10 @@
 </template>
 
 <script>
-    import tabsComponent  from '../items/data_table/TabsComponent.vue'
+    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
 
-    import breadcrumb from '../items/BreadcrumbComponent.vue'
+    import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    
     export default {
         components: {
             tabsComponent ,

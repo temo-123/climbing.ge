@@ -189,8 +189,15 @@
             show_siped_region_add_modal(){
                 this.$refs.shipedRegionAddModal.show_modal()
             },
-            show_siped_region_edit_modal(actyve_info){
-                this.$refs.shipedRegionEditModal.open_editing_modal(actyve_info)
+            show_siped_region_edit_modal(region_id){
+                // Find the full row data for the region
+                const shipedRegionsTab = this.data_for_tab.find(tab => tab.id === 2);
+                if (shipedRegionsTab && shipedRegionsTab.tab_data && shipedRegionsTab.tab_data.data) {
+                    const regionData = shipedRegionsTab.tab_data.data.find(item => item.id === region_id);
+                    if (regionData) {
+                        this.$refs.shipedRegionEditModal.show_modal(regionData);
+                    }
+                }
             },
             
             show_order_detals_modal(){

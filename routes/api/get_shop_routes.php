@@ -127,19 +127,19 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         // Editing routes moved to adminAction.php
     });
 
-    Route::controller(OrderController::class)->prefix('get_order')->group( function() {
-        Route::get('/get_all_orders', 'get_all_orders');
-        Route::get('/get_order_status/{order_id}', 'get_order_status');
-        Route::get('/get_user_purchases', 'get_user_purchases');
-        Route::get('/get_user_orders', 'get_user_orders');
-        Route::get('/get_user_purchules', 'get_user_purchules');
-        Route::get('/get_activ_order/{order_id}', 'get_activ_order');
-        Route::get('/get_order_detals/{order_id}', 'get_order_detals');
-        Route::get('/get_order_products/{order_id}', 'get_order_products');
-        Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
+    // Route::controller(OrderController::class)->prefix('get_order')->group( function() {
+    //     Route::get('/get_all_orders', 'get_all_orders');
+    //     Route::get('/get_order_status/{order_id}', 'get_order_status');
+    //     Route::get('/get_user_purchases', 'get_user_purchases');
+    //     Route::get('/get_user_orders', 'get_user_orders');
+    //     Route::get('/get_user_purchules', 'get_user_purchules');
+    //     Route::get('/get_activ_order/{order_id}', 'get_activ_order');
+    //     Route::get('/get_order_detals/{order_id}', 'get_order_detals');
+    //     Route::get('/get_order_products/{order_id}', 'get_order_products');
+    //     Route::get('/is_order_confirm/{order_id}', 'is_order_confirm');
 
-        Route::get('/get_order_statistics/{period}', 'get_order_statistics');
-    });
+    //     Route::get('/get_order_statistics/{period}', 'get_order_statistics');
+    // });
 
     Route::controller(SaleCodeController::class)->prefix('get_sale_code')->group( function() {
         Route::get('/get_all_sale_code', 'get_all_sale_code');

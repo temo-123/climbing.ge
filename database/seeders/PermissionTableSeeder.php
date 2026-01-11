@@ -25,15 +25,15 @@ class PermissionTableSeeder extends Seeder
 
         $permissions = array(
             [
-                'subject' => 'shiping_regions',
+                'subject' => 'shiping_region',
                 'action' => 'add',
             ],
             [
-                'subject' => 'shiping_regions',
+                'subject' => 'shiping_region',
                 'action' => 'edit',
             ],
             [
-                'subject' => 'shiping_regions',
+                'subject' => 'shiping_region',
                 'action' => 'del',
             ],
 
