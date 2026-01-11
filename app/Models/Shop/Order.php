@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Shop\Product;
 
 class Order extends Model
 {
@@ -16,4 +17,9 @@ class Order extends Model
         'status',
         'status_updating_data',
 	];
+	
+	public function products()
+	{
+		return $this->belongsToMany(Product::class, 'order_products', 'order_id', 'product_id');
+	}
 }

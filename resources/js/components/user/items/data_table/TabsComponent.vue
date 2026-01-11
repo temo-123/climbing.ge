@@ -130,6 +130,17 @@
                         />
                     </div>
                 </div>
+                
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <div
+                            class="tab-item-count"
+                            v-if="tab_num !== null"
+                        >
+                            Total items: {{ getTabFilteredCount(filteredTableData.find(t => t.id === tab_num)) }}
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div
@@ -138,10 +149,6 @@
                         :key="tab_data_id"
                         v-if="tab_num == tab_data.id"
                     >
-                        
-                        <div class="tab-item-count">
-                            Total: {{ getTabFilteredCount(tab_data) }} Inscription
-                        </div>
 
                         <table class="table table-hover" id="dev-table">
                             <TabHeaderComponent :head_data_prop="tab_data.tab_data" :selected-items="selectedItems" :total-items="tab_data.tab_data.data.length" @toggle-select-all="toggleSelectAll"/>

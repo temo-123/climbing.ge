@@ -48,7 +48,22 @@ class OrderController extends Controller
     }
 
     public function get_user_purchules() {
-        return Auth::user()->purchases;
+        $user = Auth::user();
+        if (!$user) {
+            return [];
+        }
+        
+        // Get user's product IDs directly from the pivot table to avoid ambiguous column issue
+        $userProductIds = \DB::table('user_products')
+            ->where('user_id', $user->id)
+            ->pluck('product_id');
+        
+        // Get all orders through user's products using the order_products pivot table
+        $orders = Order::whereHas('products', function ($query) use ($userProductIds) {
+            $query->whereIn('product_id', $userProductIds);
+        })->get();
+        
+        return $orders;
     }
 
     public function get_order_status($order_id)
