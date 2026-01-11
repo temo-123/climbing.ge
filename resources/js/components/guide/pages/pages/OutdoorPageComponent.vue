@@ -59,7 +59,7 @@
             get_outdoor(){
                 this.outdoor = []
                 axios
-                .get('/get_article/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/get_locale_article_on_page/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.outdoor = response.data
 

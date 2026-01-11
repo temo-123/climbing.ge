@@ -45,11 +45,11 @@
                             <li v-for="feedback in this.feedbacks" :key="feedback.feedback.id" class="feedback-item">
                                 <div class="row">
                                     <span v-if="user.length != 0">
-                                        <span @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id" >
-                                            <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
-                                        </span>
+                                        <button @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id"  class="btn btn btn-warning pull-right">
+                                            <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                        </button>
                                         <button @click="del_feedback(feedback.feedback.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this feedback?')" class="btn btn-danger pull-right">
-                                            del
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </span>
 
@@ -197,7 +197,7 @@
 
             del_feedback(id) {
                 axios
-                .delete('/product_feedback/del_feedback/'+ id, {
+                .delete('/set_product/set_product_feedback/del_feedback/'+ id, {
                     id: id,
                 })
                 .then(Response => {
@@ -207,11 +207,11 @@
             },
 
             get_feedbacks: function(){
-                if(!this.id && this.id != 0 && this.id != null && this.id != undefined && this.id != 'undefined'){
+                // if(!this.id && this.id != 0 && this.id != null && this.id != undefined && this.id != 'undefined'){
                     this.is_refresh = true
 
                     axios
-                    .get('/get_product_feedback/get_product_feedbacks/' + this.id)
+                    .get('/get_product/get_product_feedback/get_product_feedbacks/' + this.id)
                     .then(response => {
                         this.feedbacks = response.data
                         this.is_refresh = false
@@ -219,7 +219,7 @@
                     })
                     .catch(
                     );
-                }
+                // }
             },
         }
     }
@@ -251,10 +251,10 @@
         height: 50px;
         object-fit: cover;
     }
-    .complaint_icon {
+    /* .complaint_icon {
         position: absolute;
         top: 10px;
         right: 10px;
         cursor: pointer;
-    }
+    } */
 </style>

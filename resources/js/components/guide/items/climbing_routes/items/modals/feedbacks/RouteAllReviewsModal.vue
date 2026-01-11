@@ -112,7 +112,7 @@ export default {
             this.is_loading = true
 
             axios
-            .get("/get_route_review/get_all_route_reviews/" + this.route_id)
+            .get("/get_route/get_route_review/get_all_route_reviews/" + this.route_id)
             .then((response) => {
                 this.reviews = response.data
                 this.is_show_modal = true;

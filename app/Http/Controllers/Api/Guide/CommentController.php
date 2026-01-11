@@ -101,6 +101,7 @@ class CommentController extends Controller
 
         return $comment_array;
     }
+    
 
     public function create_comment(Request $request)
     {
@@ -152,9 +153,9 @@ class CommentController extends Controller
     //     return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
     // }
 
-    public function get_actyve_comment(Request $request)
+    public function get_actyve_comment($comment_id)
     {
-        return Comment::where('id',strip_tags($request->comment_id))->first();
+        return Comment::where('id',strip_tags($comment_id))->first();
     }
 
     public function add_comment_complaint(Request $request)

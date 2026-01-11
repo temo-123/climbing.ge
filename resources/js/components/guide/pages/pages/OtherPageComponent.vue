@@ -48,7 +48,7 @@
         methods: {
             get_other(){
                 axios
-                .get('/get_article/other/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/get_locale_article_on_page/other/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.other = response.data
 

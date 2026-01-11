@@ -60,30 +60,25 @@ Route::group(['namespace'=>'Api\Shop'], function() {
                 // Editing routes moved to adminAction.php
             });
         });
-        /*
-        *   Product Coments routes
-        */
+
         Route::controller(ProductFeedbackController::class)->prefix('get_product_feedback')->group( function() {
-            // Route::apiResource('/feedback', 'feedbackController');
-            Route::get('/get_all_feedbacks', 'get_all_feedbacks');
-            Route::get('/get_user_feedbacks', 'get_user_feedbacks');
             Route::get('/get_product_feedbacks/{product_id}', 'get_product_feedbacks');
-
-            Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
-            Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
-
-            // Editing routes moved to adminAction.php
         });
     });
 
+    Route::controller(ProductFeedbackController::class)->prefix('set_product_feedback_by_gest')->group( function() {
+        Route::post('/create_feedback/{product_id}', 'create_feedback');
+        Route::post('/confirm_email/{email}', 'confirm_email');
+    });
 
-        Route::controller(UserTourReservationController::class)->prefix('set_user_reservation')->group( function() {
-            // Route::get('/get_all_reservations', 'get_all_reservations');
-            // Route::get('/get_reservation/{id}', 'get_reservation');
-            Route::post('/create_reservation/{tour_id}', 'create_reservation');
-            // Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
-            // Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
-        });
+
+    Route::controller(UserTourReservationController::class)->prefix('set_user_reservation')->group( function() {
+        // Route::get('/get_all_reservations', 'get_all_reservations');
+        // Route::get('/get_reservation/{id}', 'get_reservation');
+        Route::post('/create_reservation/{tour_id}', 'create_reservation');
+        // Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
+        // Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+    });
     /*
     *   Tours and tour categories routes
     */

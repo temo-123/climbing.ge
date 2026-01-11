@@ -178,7 +178,7 @@ export default {
         add_route_review() {
             this.is_loading = true
             axios
-                .post("/set_route_review/create_route_review/" + this.route_id, 
+                .post("/set_route/set_route_review/create_route_review/" + this.route_id, 
                     this.data
                 )
                 .then((response) => {

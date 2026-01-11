@@ -41,10 +41,6 @@ export const navbar = {
                 ],
             },
 
-            // {
-            //     title: "Cart",
-            //     route: "/cart"
-            // },
             {
                 title: "Favorites",
                 name: "favorites",
@@ -486,7 +482,7 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Article all images (beta)",
+                        name: "Article all images",
                         route: "/article_images",
                         permissions: [
                             ['add', 'gallery'],

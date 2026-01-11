@@ -120,8 +120,8 @@ class RoutesReitingController extends Controller
     //     }
     // }
 
-    public function get_actyve_review(Request $request){
-        return Sport_route_review::where('id',strip_tags($request->review_id))->first();
+    public function get_actyve_review($review_id){
+        return Sport_route_review::where('id',strip_tags($review_id))->first();
     }
 
     public function edit_route_review(Request $request) {

@@ -104,9 +104,9 @@ class ProductFeedbackController extends Controller
         return CommentService::add_complaint($request, Product_feedback_complaint::class, 'product', 'feedback');
     }
     
-    public function get_actyve_feedback(Request $request)
+    public function get_actyve_feedback($feedback_id)
     {
-        return Product_feedback::where('id',strip_tags($request->feedback_id))->first();
+        return Product_feedback::where('id',strip_tags($feedback_id))->first();
     }
 
     // public function get_feedbacks_complaints(Request $request)

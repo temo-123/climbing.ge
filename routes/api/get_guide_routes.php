@@ -8,13 +8,14 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Article routes
     */
     Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
+
         // Route::apiResource('/', 'ArticleController');
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');
         Route::get('/get_article_for_bisnes_page/{lang}/{bisnes_url_title}', 'get_article_for_bisnes_page');
         
         Route::get('/get_locale_articles/{category}/{lang}', 'get_locale_articles');
-        Route::get('/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
+        Route::get('/get_locale_article_on_page/{category}/{lang}/{url_title}', 'get_locale_article_on_page');
 
         Route::get('/last_news/{lang}', 'get_last_news');
         Route::post('/get_similar_locale_article/{lang}', 'get_similar_locale_article');
@@ -29,16 +30,16 @@ Route::group(['namespace'=>'Api\Guide'], function() {
             Route::get('/get_article_comments/{article_id}', 'get_article_comments');
 
             Route::get('/get_comments_complaints', 'get_comments_complaints');
-            Route::get('/get_actyve_comment/{comment_id}', 'get_actyve_comment');
+            // Route::get('/get_actyve_comment/{comment_id}', 'get_actyve_comment');
 
             // Editing routes moved to adminAction.php
         });
 
+    });
+
         Route::controller(CommentController::class)->prefix('set_guide_comment_by_gest')->group( function() {
             Route::post('/create_comment/{article_id}', 'create_comment');
         });
-    });
-
     /*
     *   Outdoor regions
     */

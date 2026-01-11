@@ -82,10 +82,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
             Route::get('/get_feedbacks_complaints', 'get_feedbacks_complaints');
             Route::get('/get_actyve_feedback/{feedback_id}', 'get_actyve_feedback');
 
-            Route::post('/create_feedback/{product_id}', 'create_feedback');
-            Route::post('/confirm_email/{email}', 'confirm_email');
+            // Route::post('/create_feedback/{product_id}', 'create_feedback');
+            // Route::post('/confirm_email/{email}', 'confirm_email');
 
-            Route::post('/add_feedback_complaint', 'add_feedback_complaint');
+            // Route::post('/add_feedback_complaint', 'add_feedback_complaint');
             Route::post('/make_decision', 'make_decision');
 
             Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');

@@ -65,43 +65,6 @@ class CommentController extends Controller
         }
     }
 
-    public static function get_article_comments(Request $request)
-    {
-        $comments_without_answers = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->where("published", '=', 1)->latest('id')->get();
-        $comments_with_answers = Comment::where("article_id", '=', $request->article_id)->where("deleted_reason", '=', null)->where("published", '=', 1)->latest('id')->get();
-
-        $comment_array = [];
-
-        foreach ($comments_with_answers as $comment) {
-            if($comment->answers->count() > 0){
-                foreach ($comment->answers as $ans) {
-                    $comments_without_answers = $comments_without_answers->filter(fn ($item) => $item->id !== $ans->id);
-                }
-            }
-        }
-
-        foreach ($comments_without_answers as $comment) {
-            $answers_array = [];
-
-            if($comment->answers->count() > 0){
-                foreach ($comment->answers as $ans) {
-                    array_push($answers_array, [
-                        'answer' => $ans,
-                        'user' => $ans->user ? $ans->user->first() : null,
-                    ]);
-                }
-            }
-
-            array_push($comment_array, [
-                'comment' => $comment,
-                'user' => $comment->user ? $comment->user->first() : null,
-                'answers' => $answers_array
-            ]);
-        }
-
-        return $comment_array;
-    }
-
     // public function create_comment(Request $request)
     // {
     //     $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
@@ -152,10 +115,10 @@ class CommentController extends Controller
         return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
     }
 
-    // public function get_actyve_comment(Request $request)
-    // {
-    //     return Comment::where('id',strip_tags($request->comment_id))->first();
-    // }
+    public function get_actyve_comment($comment_id)
+    {
+        return Comment::where('id',strip_tags($comment_id))->first();
+    }
 
     // public function add_comment_complaint(Request $request)
     // {

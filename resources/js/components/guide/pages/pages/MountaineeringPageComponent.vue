@@ -157,7 +157,7 @@
 
             get_mount_route(){
                 axios
-                .get('/get_article/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/get_locale_article_on_page/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.mount_route = response.data
                     this.get_mount_masiv()

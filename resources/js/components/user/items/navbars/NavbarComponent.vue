@@ -49,6 +49,10 @@
                             {{ $t('user.menu.options') }}
                         </router-link>
 
+                        <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
+                            {{ $t('user.menu.my comments') }}
+                        </router-link>
+
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
 
@@ -108,6 +112,10 @@
                         <!-- <a class="dropdown-item" href="#">Options</a> -->
                         <router-link :to="'/options'" class="dropdown-item">
                             {{ $t('user.menu.options') }}
+                        </router-link>
+
+                        <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
+                            {{ $t('user.menu.my comments') }}
                         </router-link>
 
                         <div class="dropdown-divider"></div>

@@ -85,10 +85,10 @@ class ProductFeedbackController extends Controller
     //     }
     // }
 
-    // public function del_feedback($id)
-    // {
-    //     return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
-    // }
+    public function del_feedback($id)
+    {
+        return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
+    }
 
     // public function hide_feedback(Request $request)
     // {

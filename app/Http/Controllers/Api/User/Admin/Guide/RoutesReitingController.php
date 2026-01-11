@@ -120,8 +120,8 @@ class RoutesReitingController extends Controller
     //     }
     // }
 
-    public function get_actyve_review(Request $request){
-        return Sport_route_review::where('id',strip_tags($request->review_id))->first();
+    public function get_actyve_review($review_id){
+        return Sport_route_review::where('id',strip_tags($review_id))->first();
     }
 
     public function edit_route_review(Request $request) {
@@ -134,10 +134,9 @@ class RoutesReitingController extends Controller
         $saved = $review->update($data); 
     }
 
-    public function del_route_review(Request $request) {
-        if ($request->isMethod('delete') && Auth::user()) {
-
-            $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
+    public function del_route_review($review_id) {
+        if (Auth::user()) {
+            $review = Sport_route_review::where('id',strip_tags($review_id))->first();
             // $user_review_relation = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->where('review_id', '=', $review->id)->first();
 
             // $user_review_relation -> delete();

@@ -48,7 +48,7 @@
         methods: {
             get_partner(){
                 axios
-                .get('/get_article/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/get_locale_article_on_page/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.partner = response.data
 
