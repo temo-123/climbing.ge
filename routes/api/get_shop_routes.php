@@ -44,7 +44,6 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         Route::controller(ProductOptionController::class)->prefix('get_product_option')->group( function() {
             Route::get('/get_activ_product_options/{product_id}', 'get_activ_product_options');
-            Route::get('/get_editing_option/{option_id}', 'get_editing_option');
         });
 
         Route::controller(ProductCategoryController::class)->prefix('get_product_category')->group( function() {

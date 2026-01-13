@@ -51,15 +51,6 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
-                            </div>
-                        </div> -->
 
                         <published_item 
                             :published_prop = data.global_product.published
@@ -80,7 +71,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Mead in Georgia </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" v-model="data.global_product.mead_in_georgia" >
+                                <input type="checkbox" id="scales" name="scales" v-model="data.global_product.made_in_georgia" >
                             </div>
                         </div>
 
@@ -105,7 +96,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="category_id" name="category_id"  @click="get_category_subcategories()"> 
+<select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
                                     <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
@@ -116,8 +107,8 @@
                             <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
                             <div class="col-xs-8" v-if="category_id != 0">
                                 <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
-                                    <option v-bind:value="''" disabled>Select category</option> 
-                                    <option v-for="subcat in category_subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
+                                    <option v-bind:value="0" disabled>Select subcategory</option> 
+                                    <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
                                 </select> 
                             </div>
                         </div>
@@ -247,10 +238,6 @@
                     us_text_editor_config: editor_config.get_big_editor_config(),
                     us_info_editor_config: editor_config.get_big_editor_config(),
 
-                    ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                    ru_text_editor_config: editor_config.get_big_editor_config(),
-                    ru_info_editor_config: editor_config.get_big_editor_config(),
-                    
                     ka_short_description_text_editor: editor_config.get_small_editor_config(),
                     ka_text_editor_config: editor_config.get_big_editor_config(),
                     ka_info_editor_config: editor_config.get_big_editor_config(),
@@ -264,11 +251,11 @@
                 data: {
                     global_product: {
                         published: 0,
-                        subcategory_id: '',
+                        subcategory_id: 0,
                         brand_id: '',
                         sale_type: "",
 
-                        mead_in_georgia: null,
+                        made_in_georgia: null,
                         // material: "",
                         is_donation_product: null,
                     },
@@ -281,6 +268,8 @@
             }
         },
         mounted() {
+            this.get_product_editing_data()
+
             this.get_product_categories()
 
             document.querySelector('body').style.marginLeft = '0';
@@ -308,15 +297,9 @@
 
             get_product_editing_data(){
                 axios
-                .get('/product/get_product_editing_data/'+this.$route.params.id)
+                .get('/set_product/get_product_editing_data/'+this.$route.params.id)
                 .then((response)=> { 
                     this.data = response.data
-
-                    let action_subcategory = this.all_subcategories.find(item => item.id === response.data.global_product.subcategory_id);
-                    let action_category = this.categories.find(item => item.id === action_subcategory.category_id);
-
-                    this.category_id = action_category.id;      
-                    this.get_category_subcategories()             
                 })
                 .catch(error =>{
                     // 
@@ -326,7 +309,7 @@
             edit_product() {
                 this.is_loading = true
                 axios
-                .post('/product/edit_product/'+this.$route.params.id, {
+                .post('/set_product/edit_product/'+this.$route.params.id, {
                     data: JSON.stringify(this.data),
                     change_url_title: this.change_url_title,
                 })
@@ -344,13 +327,12 @@
                 .finally(() => this.is_loading = false);
             },
 
-            get_product_categories: function(){
+             get_product_brabds(){
                 this.is_loading = true
                 axios
-                .get("/product_category/")
+                .get("/get_product/get_brand/get_all_brands")
                 .then(response => {
-                    this.categories = response.data
-                    this.get_product_brands()
+                    this.brands = response.data
                 })
                 .catch(
                     error => console.log(error)
@@ -358,12 +340,13 @@
                 .finally(() => this.is_loading = false);
             },
 
-            get_product_brands(){
+            get_product_categories: function(){
                 this.is_loading = true
                 axios
-                .get("/brand/get_all_brands")
+                .get("/get_product/get_product_category/get_all_product_category/")
                 .then(response => {
-                    this.brands = response.data
+                    this.categories = response.data
+                    this.get_product_brabds()
                     this.get_all_subcategories()
                 })
                 .catch(
@@ -374,29 +357,49 @@
 
             get_all_subcategories(){
                 axios
-                .get("/subcategory/get_all_subcategories/")
+                .get("/get_product/get_product_category/get_subcategory/get_all_subcategories")
                 .then(response => {
                     this.all_subcategories = response.data
-                    this.get_product_editing_data()
+                    // After loading all subcategories, try to find the category for current subcategory
+                    if (this.data.global_product.subcategory_id) {
+                        let action_subcategory = this.all_subcategories.find(item => item.id === this.data.global_product.subcategory_id);
+                        if (action_subcategory) {
+                            this.category_id = action_subcategory.category_id;
+                            this.subcategories = this.all_subcategories.filter(item => item.category_id === this.category_id);
+                            // Scroll to bottom to show subcategory dropdown
+                            this.$nextTick(() => {
+                                window.scrollTo({
+                                    top: document.body.scrollHeight,
+                                    behavior: 'smooth'
+                                })
+                            })
+                        }
+                    }
                 })
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.is_loading = false);
             },
 
             get_category_subcategories(){
+                this.data.global_product.subcategory_id = 0
                 axios
-                .get("/subcategory/get_subcategories_for_category/" + this.category_id)
+                .get("/get_product/get_product_category/get_subcategory/get_subcategories_for_category/" + this.category_id)
                 .then(response => {
-                    this.category_subcategories = response.data
+                    this.subcategories = response.data
+                    // Scroll to bottom of page to show subcategory dropdown
+                    this.$nextTick(() => {
+                        window.scrollTo({
+                            top: document.body.scrollHeight,
+                            behavior: 'smooth'
+                        })
+                    })
                 })
                 .catch(
                     error => console.log(error)
                 )
                 .finally(() => this.is_loading = false);
             },
-
 
             go_back: function(back_action = false) {
                 if(back_action == false){

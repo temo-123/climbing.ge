@@ -42,16 +42,16 @@
 </template>
 
 <script>
-    import tabsComponent  from '../../../../items/data_table/TabsComponent.vue'
-    import breadcrumb from '../../../../items/BreadcrumbComponent.vue'
+    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
+    import breadcrumb from '../../items/BreadcrumbComponent.vue'
 
-    import saleCodeEditModal from "../../../../items/modal/tab_modals/edit/EditSaleCodeModalComponen.vue";
-    import saleCodeAddModal from "../../../../items/modal/tab_modals/add/AddSaleCodeModalComponen.vue";
+    import saleCodeEditModal from "../../items/modal/tab_modals/edit/EditSaleCodeModalComponen.vue";
+    import saleCodeAddModal from "../../items/modal/tab_modals/add/AddSaleCodeModalComponen.vue";
     
-    import editProductBrandModal from "../../../../items/modal/tab_modals/edit/EditProductBrandModal.vue";
-    import addProductBrandModal from "../../../../items/modal/tab_modals/add/AddProductBrandModal.vue";
+    import editProductBrandModal from "../../items/modal/tab_modals/edit/EditProductBrandModal.vue";
+    import addProductBrandModal from "../../items/modal/tab_modals/add/AddProductBrandModal.vue";
 
-    import change_user_modal from '../../../../items/modal/tab_modals/ChangeUserModalComponent.vue'
+    import change_user_modal from '../../items/modal/tab_modals/ChangeUserModalComponent.vue'
     export default {
         components: {
             tabsComponent ,
@@ -116,7 +116,7 @@
                                                         ['data', ['product', 'is_donation_product'], 'bool'],
                                                         ['data', ['options']],
                                                         ['data', [['user', 'name'], ['user', 'surname']]],
-                                                        ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', [['user', 'id'], ['product', 'id']]],
+                                                        ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', ['product', 'id']],
                                                         ['action_router', 'productOptionsControl', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>', ['product', 'id']],
                                                         ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['product', 'id']],
                                                         ['action_fun_id', 'del_product', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>',['product', 'id']],
@@ -334,7 +334,6 @@
                 }
             },
 
-
             del_product(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
@@ -347,9 +346,8 @@
                     .catch(error => console.log(error))
                 }
             },
-            show_user_change_modal(event){
-                console.log("🚀 ~ show_user_change_modal ~ event:", event)
-                this.$refs.userRelationModal.show_modal(event)
+            show_user_change_modal(id){
+                this.$refs.userRelationModal.show_modal(id)
             },
         }
     }

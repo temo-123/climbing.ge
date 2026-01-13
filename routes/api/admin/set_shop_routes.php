@@ -11,15 +11,15 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
         // Route::get('/get_all_products', 'get_all_products');
         Route::get('/get_user_products', 'get_user_products');
         Route::get('/get_product_editing_data/{product_id}', 'get_product_editing_data');
-        Route::get('/add_product', 'add_product');
+        // Route::get('/add_product', 'add_product');
 
         Route::post('/edit_product/{product_id}', 'edit_product');
         Route::post('/add_product', 'add_product');
 
         Route::post('/change_user_relation', 'change_user_relation');
+        Route::get('/get_product_user_relation/{product_id}', 'get_product_user_relation');
+        Route::post('/fix_product_user_relation/{product_id}', 'fix_product_user_relation');
         Route::delete('/del_product/{product_id}', 'del_product');
-
-        Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
 
         // });
@@ -39,7 +39,11 @@ Route::group(['namespace'=>'Api\User\Admin\Shop'], function() {
 
         Route::controller(ProductOptionController::class)->prefix('set_product_option')->group( function() {
             Route::get('/get_all_product_options', 'get_all_product_options');
-            Route::get('/get_product_option/{id}', 'get_product_option');
+
+            Route::get('/get_product_options_for_editing/{product_id}', 'get_product_options');
+
+            Route::get('/get_editing_product_option/{option_id}', 'get_editing_product_option');
+            // Route::get('/get_editing_option/{option_id}', 'get_editing_option');
             Route::post('/add_option', 'add_option');
             Route::post('/edit_option/{option_id}', 'edit_option');
             Route::delete('/del_option/{option_id}', 'del_option');

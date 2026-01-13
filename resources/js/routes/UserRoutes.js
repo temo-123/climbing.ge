@@ -123,8 +123,8 @@ const router = new VueRouter({
         { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
         { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
-        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
-        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/list/for_admin/productsAndCatgoriesListComponent') },
+        // { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
+        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },

@@ -31,17 +31,17 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class ProductOptionController extends Controller
 {
-    // public function get_activ_product_options(Request $request)
-    // {
-    //     $product = Product::where('id', '=', $request->product_id)->first();
-    //     $data = [
-    //         'product' => $product,
-    //         'options' => $product->product_options,
-    //         'category' => $product->product_category,
-    //         'us_product' => $product->us_product,
-    //     ];
-    //     return $data;
-    // }
+    public function get_product_options($product_id)
+    {
+        $product = Product::where('id', '=', $product_id)->first();
+        $data = [
+            'product' => $product,
+            'options' => $product->product_options()->with('images')->get(),
+            'category' => $product->product_category,
+            'us_product' => $product->us_product,
+        ];
+        return $data;
+    }
 
     public function add_option(Request $request)
     {
@@ -59,7 +59,7 @@ class ProductOptionController extends Controller
             $add_option['name'] = $data['name'];
             $add_option['price'] = $data['price'];
             $add_option['currency'] = $data['currency'];
-            $add_option['discount'] = $data['discount'] ?? 0;
+            $add_option['discount'] = (int)($data['discount'] ?? 0);
             // $add_option['quantity'] = $data['quantity'];
             $add_option['product_id'] = $request['product_id'];
             $add_option->save();
@@ -79,35 +79,13 @@ class ProductOptionController extends Controller
         }
     }
 
-    // public function add_images($images, $option_id)
-    // {
-    //     foreach ($images as $image) {
-    //         $file_new_name = ImageControllService::upload_loop_image('images/product_option_img/', $image, 1);
-
-    //         if(file_exists(public_path('images/product_option_img/') . $file_new_name)){
-    //             $new_option_image = new Option_image;
-        
-    //             $new_option_image['image'] = $file_new_name;
-    //             $new_option_image['option_id'] = $option_id;
-        
-    //             $saiving = $new_option_image -> save();
-
-    //             if($saiving){
-    //                 echo 'Upload socsesful \n';
-    //             }
-    //         }
-    //         else{
-    //             echo 'Upload error \n';
-    //         }
-    //     }
-    // }
-
-    public function get_editing_option(Request $request)
+    public function get_editing_product_option(Request $request)
     {
         $option = Product_option::where('id', '=', $request->option_id)->first();
+        
         $data = [
             'option' => $option,
-            'option_images' => $option->images,
+            'option_images' => $option ? $option->images : null,
         ];
         // dd($data);
         return $data;
@@ -129,7 +107,7 @@ class ProductOptionController extends Controller
             $edit_option['name'] = $data['name'];
             $edit_option['price'] = $data['price'];
             $edit_option['currency'] = $data['currency'];
-            $edit_option['discount'] = $data['discount'] ?? 0;
+            $edit_option['discount'] = (int)($data['discount'] ?? 0);
             // $edit_option['quantity'] = $data['quantity'];
             $edit_option->save();
 

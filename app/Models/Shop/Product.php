@@ -31,7 +31,7 @@ class Product extends Model
       // 'discount',
       // 'material',
 
-      'mead_in_georgia',
+      'made_in_georgia',
       'is_donation_product',
 
       'sale_type',
