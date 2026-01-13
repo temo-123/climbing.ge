@@ -127,11 +127,12 @@ class FaworitesController extends Controller
     }
 
 
-    public function del_faworite_outdoor_region(Request $request)
+    public function del_favorite_outdoor_area(Request $request)
     {
         if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->first();
+            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->favorite_outdoor_id)->first();
             $fav_area ->delete();
+            return 'Outdoor area removed from favorites successfully';
         }
         else{
             return 'Plees login!';

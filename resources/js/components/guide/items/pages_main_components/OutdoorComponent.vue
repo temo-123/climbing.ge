@@ -160,7 +160,7 @@
 
             check_favorite_status(article_id){
                 axios
-                .get('/set_faworite/check_favorite_status/' + article_id)
+                .get('/get_faworite/check_favorite_status/' + article_id)
                 .then(response => {
                     this.is_favorite = response.data.is_favorite;
                 })
@@ -176,7 +176,7 @@
                     if(confirm('Are you sure you want to remove this area from your favorites?')){
                         // Remove from favorites
                         axios
-                        .delete('/set_faworite/del_faworite_outdoor_region/' + article_id)
+                        .delete('/set_faworite/del_favorite_outdoor_area/' + article_id)
                         .then(response => {
                             this.is_favorite = false;
                             // Show success message
@@ -196,7 +196,7 @@
                 } else {
                     // Add to favorites
                     axios
-                    .post('/set_faworite/add_to_favorite_outdoor_area/' + article_id)
+                    .post('/set_faworite_by_user/add_to_favorite_outdoor_area/' + article_id)
                     .then(response => {
                         this.is_favorite = true;
                         alert(response.data);

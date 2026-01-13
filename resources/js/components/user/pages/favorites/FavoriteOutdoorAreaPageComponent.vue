@@ -171,7 +171,7 @@
         methods: {
             get_faworite_outdoor_region(){
                 axios
-                .get('/get_outdoor/get_faworite_outdoor_region')
+                .get('/get_faworite/get_faworite_outdoor_region')
                 .then(response => {
                     this.spots = response.data
                     this.get_user_sport_routes_review()
@@ -181,7 +181,7 @@
             },
             get_user_sport_routes_review(){
                 axios
-                .get('/get_route_review/get_user_sport_routes_review')
+                .get('/get_route/get_route_review/get_user_review')
                 .then(response => {
                     this.reviews = response.data
                 })
@@ -196,7 +196,7 @@
             del_from_faworites(id){
                 if(confirm('Are you sure, you want delite this area from your faworites?')){
                     axios
-                    .post('/set_outdoor/del_faworite_outdoor_region/'+id, {
+                    .post('/set_faworite/del_favorite_outdoor_area/'+id, {
                         article_id: id,
                         _method: 'DELETE'
                     })
@@ -213,7 +213,7 @@
             del_route_review(id){
                 if(confirm('Are you sure, you want delite your reiting?')){
                     axios
-                    .post('/set_route_review/del_route_review/'+id, {
+                    .post('/set_route/set_route_review/del_route_review/'+id, {
                         review_id: id,
                         _method: 'DELETE'
                     })
