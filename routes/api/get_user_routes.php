@@ -63,25 +63,24 @@ Route::group(['namespace'=>'Api\User'], function() {
             // Route::get('/get_team_member/{id}', 'get_team_member');
         });
     });
-    
+
+    Route::controller(FaworitesController::class)->prefix('get_faworite')->group( function() {
+        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
+        Route::get('/get_interested_events', 'get_interested_events');
+        Route::get('/check_interested_status/{event_id}', 'check_interested_status');
+        Route::get('/check_favorite_status/{article_id}', 'check_favorite_status');
+    });
+
+    Route::controller(FaworitesController::class)->prefix('set_faworite_by_user')->group( function() {
+        Route::post('/add_to_interested_events', 'add_to_interested_events');
+        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
+    });
 
     Route::controller(FaworitesController::class)->prefix('set_faworite')->group( function() {
-        // Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        Route::post('add_to_interested_events/', 'add_to_interested_events');
-        // Route::get('get_interested_events/', 'get_interested_events');
-        Route::delete('del_interested_event/{article_id}', 'del_interested_event');
-        
-
-        Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        // Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
-        Route::get('/check_favorite_status/{article_id}', 'check_favorite_status');
-        
-        // Route::post('event/add_to_interested_events/', 'add_to_interested_events');
-        // Route::delete('event/del_interested_event/{article_id}', 'del_interested_event');
-        // Route::post('/outdoor/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        // Route::delete('/outdoor/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
+        Route::delete('/del_interested_event/{favoryte_ivent_if}', 'del_interested_event');
+        Route::delete('/del_favorite_outdoor_area/{favorite_outdoor_id}', 'del_favorite_outdoor_area');
     });
+
 
     Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
         // Route::get('/get_user_data', 'get_user_data');

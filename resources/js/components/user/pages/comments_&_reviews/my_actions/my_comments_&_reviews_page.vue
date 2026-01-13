@@ -133,119 +133,120 @@ export default {
                             },
                         },
                     });
-                    this.get_my_climbing_route_review_comments_data();
+                    // this.get_my_climbing_route_review_comments_data();
+                    // this.get_my_products_feedbacks_data();
                 })
                 .catch((error) => console.log(error));
         },
-        get_my_climbing_route_review_comments_data: function () {
-            axios
-                .get("/get_route/get_route_review/get_user_review")
-                .then((response) => {
-                    this.data_for_tab.push({
-                        id: 2,
-                        table_name: "Climbing routes review",
-                        tab_data: {
-                            data: response.data,
-                            tab: {
-                                head: [
-                                    "ID",
-                                    "Climbing route",
-                                    "Stars",
-                                    "Edit",
-                                    "Delite",
-                                ],
-                                body: [
-                                    ["data", ["review", "id"]],
-                                    ["data", ["route", "name"]],
-                                    ["stars", ["review", "stars"]],
-                                    [
-                                        "action_fun_id",
-                                        "edit_review_modal",
-                                        "btn btn-primary",
-                                        '<i class="fa fa-pencil" aria-hidden="true"></i>',
-                                        ["review", "id"],
-                                    ],
-                                    [
-                                        "action_fun_id",
-                                        "del_review",
-                                        "btn btn-danger",
-                                        '<i class="fa fa-trash" aria-hidden="true"></i>',
-                                        ["review", "id"],
-                                    ],
-                                ],
-                                perm: [["no"], ["no"], ["no"], ["no"], ["no"]],
-                            },
-                        },
-                    });
-                    this.get_my_products_feedbacks_data();
-                })
-                .catch((error) => console.log(error));
-        },
-        get_my_products_feedbacks_data: function () {
-            axios
-                .get("/get_product/get_product_feedback/get_user_feedbacks")
-                .then((response) => {
-                    this.data_for_tab.push({
-                        id: 3,
-                        table_name: "Product feedbacks",
-                        tab_data: {
-                            data: response.data,
-                            tab: {
-                                head: [
-                                    "ID",
-                                    "Published",
-                                    "Product",
-                                    "Stars",
-                                    "Comententor",
-                                    "Comententor Email",
-                                    "Delite",
-                                    "Hiden",
-                                ],
-                                body: [
-                                    ["data", ["feedback", "id"]],
-                                    ["data_action", ["feedback", "published"], 'bool'],
-                                    ["data", ["locale_product", "title"]],
-                                    ["stars", ["feedback", "stars"]],
-                                    [
-                                        "data",
-                                        [
-                                            ["feedback", "name"],
-                                            ["feedback", "surname"],
-                                        ],
-                                    ],
-                                    ["data", ["feedback", "email"]],
-                                    [
-                                        "action_fun_id",
-                                        "del_feedback",
-                                        "btn btn-danger",
-                                        '<i class="fa fa-trash" aria-hidden="true"></i>',
-                                        ["feedback", "id"],
-                                    ],
-                                    [
-                                        "action_fun_id",
-                                        "edit_review_modal",
-                                        "btn btn-warning",
-                                        '<i class="fa fa-eye-slash" aria-hidden="true"></i>',
-                                        ["feedback", "id"],
-                                    ],
-                                ],
-                                perm: [
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                    ["no"],
-                                ],
-                            },
-                        },
-                    });
-                    // this.get_all_products_review_data()
-                })
-                .catch((error) => console.log(error));
-        },
+        // get_my_climbing_route_review_comments_data: function () {
+        //     axios
+        //         .get("/get_route/get_route_review/get_user_review")
+        //         .then((response) => {
+        //             this.data_for_tab.push({
+        //                 id: 2,
+        //                 table_name: "Climbing routes review",
+        //                 tab_data: {
+        //                     data: response.data,
+        //                     tab: {
+        //                         head: [
+        //                             "ID",
+        //                             "Climbing route",
+        //                             "Stars",
+        //                             "Edit",
+        //                             "Delite",
+        //                         ],
+        //                         body: [
+        //                             ["data", ["review", "id"]],
+        //                             ["data", ["route", "name"]],
+        //                             ["stars", ["review", "stars"]],
+        //                             [
+        //                                 "action_fun_id",
+        //                                 "edit_review_modal",
+        //                                 "btn btn-primary",
+        //                                 '<i class="fa fa-pencil" aria-hidden="true"></i>',
+        //                                 ["review", "id"],
+        //                             ],
+        //                             [
+        //                                 "action_fun_id",
+        //                                 "del_review",
+        //                                 "btn btn-danger",
+        //                                 '<i class="fa fa-trash" aria-hidden="true"></i>',
+        //                                 ["review", "id"],
+        //                             ],
+        //                         ],
+        //                         perm: [["no"], ["no"], ["no"], ["no"], ["no"]],
+        //                     },
+        //                 },
+        //             });
+        //             this.get_my_products_feedbacks_data();
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
+        // get_my_products_feedbacks_data: function () {
+        //     axios
+        //         .get("/get_product/get_product_feedback/get_user_feedbacks")
+        //         .then((response) => {
+        //             this.data_for_tab.push({
+        //                 id: 3,
+        //                 table_name: "Product feedbacks",
+        //                 tab_data: {
+        //                     data: response.data,
+        //                     tab: {
+        //                         head: [
+        //                             "ID",
+        //                             "Published",
+        //                             "Product",
+        //                             "Stars",
+        //                             "Comententor",
+        //                             "Comententor Email",
+        //                             "Delite",
+        //                             "Hiden",
+        //                         ],
+        //                         body: [
+        //                             ["data", ["feedback", "id"]],
+        //                             ["data_action", ["feedback", "published"], 'bool'],
+        //                             ["data", ["locale_product", "title"]],
+        //                             ["stars", ["feedback", "stars"]],
+        //                             [
+        //                                 "data",
+        //                                 [
+        //                                     ["feedback", "name"],
+        //                                     ["feedback", "surname"],
+        //                                 ],
+        //                             ],
+        //                             ["data", ["feedback", "email"]],
+        //                             [
+        //                                 "action_fun_id",
+        //                                 "del_feedback",
+        //                                 "btn btn-danger",
+        //                                 '<i class="fa fa-trash" aria-hidden="true"></i>',
+        //                                 ["feedback", "id"],
+        //                             ],
+        //                             [
+        //                                 "action_fun_id",
+        //                                 "edit_review_modal",
+        //                                 "btn btn-warning",
+        //                                 '<i class="fa fa-eye-slash" aria-hidden="true"></i>',
+        //                                 ["feedback", "id"],
+        //                             ],
+        //                         ],
+        //                         perm: [
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                             ["no"],
+        //                         ],
+        //                     },
+        //                 },
+        //             });
+        //             // this.get_all_products_review_data()
+        //         })
+        //         .catch((error) => console.log(error));
+        // },
         del_review(id){
             if(confirm('Are you sure, you want delite it?')){
                 axios

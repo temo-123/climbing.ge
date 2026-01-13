@@ -11,6 +11,7 @@ use App\Models\Guide\Interested_event;
 use App\Models\Guide\Favorite_outdoor_area;
 use App\Models\Guide\Article;
 use App\Models\Guide\Event;
+use App\Jobs\UserNotifications;
 
 class FaworitesController extends Controller
 {
@@ -46,34 +47,38 @@ class FaworitesController extends Controller
         }
     }
 
-    // public function get_interested_events(Request $request)
-    // {
-    //     if (Auth::user()) {
-    //         $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
-    //         $articles = [];
-    //         foreach ($fav_area as $area) {
-    //             $global_events = Event::where('id', '=', $area->event_id)->get();
-    //             // $outdoors = ArticlesService::get_locale_article_use_locale($global_events, $request->lang);
-
-    //             // dd($global_events);
-    //             array_push($articles, $global_events[0]);
-    //         }
-            
-    //         return $articles;
-    //     }
-    //     else{
-    //         return 'Plees login!';
-    //     }
-    // }
-
-    public function del_interested_event(Request $request)
+    public function get_interested_events(Request $request)
     {
         if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->article_id)->first();
-            $fav_area ->delete();
+            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
+            $articles = [];
+            foreach ($fav_area as $area) {
+                $global_events = Event::where('id', '=', $area->event_id)->get();
+                // $outdoors = ArticlesService::get_locale_article_use_locale($global_events, $request->lang);
+
+                // dd($global_events);
+                array_push($articles, $global_events[0]);
+            }
+            
+            return $articles;
         }
         else{
             return 'Plees login!';
+        }
+    }
+
+    public function del_interested_event(Request $request, $favoryte_ivent_if)
+    {
+        if (Auth::user()) {
+            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $favoryte_ivent_if)->first();
+            if ($fav_area) {
+                $fav_area->delete();
+                return 'Event removed from favorites successfully';
+            }
+            return 'Event not found in favorites';
+        }
+        else{
+            return 'Please login';
         }
     }
 
@@ -103,23 +108,23 @@ class FaworitesController extends Controller
     }
 
 
-    // public function get_faworite_outdoor_region(Request $request)
-    // {
-    //     if (Auth::user()) {
-    //         $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->get();
-    //         $articles = [];
-    //         foreach ($fav_area as $area) {
-    //             $global_articles = Article::where('id', '=', $area->article_id)->get();
-    //             $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
-    //             array_push($articles, $outdoors[0]);
-    //         }
+    public function get_faworite_outdoor_region(Request $request)
+    {
+        if (Auth::user()) {
+            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->get();
+            $articles = [];
+            foreach ($fav_area as $area) {
+                $global_articles = Article::where('id', '=', $area->article_id)->get();
+                $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
+                array_push($articles, $outdoors[0]);
+            }
 
-    //         return $articles;
-    //     }
-    //     else{
-    //         return 'Plees login!';
-    //     }
-    // }
+            return $articles;
+        }
+        else{
+            return 'Plees login!';
+        }
+    }
 
 
     public function del_faworite_outdoor_region(Request $request)
@@ -141,6 +146,17 @@ class FaworitesController extends Controller
         }
         else{
             return response()->json(['is_favorite' => false], 401);
+        }
+    }
+
+    public function check_interested_status(Request $request, $event_id)
+    {
+        if (Auth::user()) {
+            $is_interested = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $event_id)->exists();
+            return response()->json(['is_interested' => $is_interested]);
+        }
+        else{
+            return response()->json(['is_interested' => false], 401);
         }
     }
 }

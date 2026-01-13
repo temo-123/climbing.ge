@@ -60,15 +60,24 @@
             <div class="row" v-else>
                 <h2>You dont have faworite products</h2>
             </div>
+
+                    <tabsComponent
+                        :table_data="this.data_for_tab"
+                        @update="get_my_guide_comments_data"
+
+                        @del_feedback="del_feedback"
+                    />
         </div>
     </div>
 </template>
 
 <script>
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+import tabsComponent from "../../items/data_table/TabsComponent.vue";
     export default {
         components: {
             breadcrumb,
+            tabsComponent,
         },
         // props:[
         //     'site_data',
@@ -86,6 +95,7 @@
                 // sortid_products: [],
                 // categories: [],
                 // products_loading: true
+            data_for_tab: [],
             };
         },
         mounted() {
@@ -94,13 +104,78 @@
         methods: {
             get_products(){
                 axios
-                .get('/get_product/get_user_favorite_products')
+                .get('/get_product/get_user_favorite_products/')
                 .then(response => {
                     this.products = response.data
                 })
                 .catch(error =>{
                 })
-            },
+            }, 
+            get_my_products_feedbacks_data: function () {
+            axios
+                .get("/get_product/get_product_feedback/get_user_feedbacks")
+                .then((response) => {
+                    this.data_for_tab.push({
+                        id: 3,
+                        table_name: "Product feedbacks",
+                        tab_data: {
+                            data: response.data,
+                            tab: {
+                                head: [
+                                    "ID",
+                                    "Published",
+                                    "Product",
+                                    "Stars",
+                                    "Comententor",
+                                    "Comententor Email",
+                                    "Delite",
+                                    "Hiden",
+                                ],
+                                body: [
+                                    ["data", ["feedback", "id"]],
+                                    ["data_action", ["feedback", "published"], 'bool'],
+                                    ["data", ["locale_product", "title"]],
+                                    ["stars", ["feedback", "stars"]],
+                                    [
+                                        "data",
+                                        [
+                                            ["feedback", "name"],
+                                            ["feedback", "surname"],
+                                        ],
+                                    ],
+                                    ["data", ["feedback", "email"]],
+                                    [
+                                        "action_fun_id",
+                                        "del_feedback",
+                                        "btn btn-danger",
+                                        '<i class="fa fa-trash" aria-hidden="true"></i>',
+                                        ["feedback", "id"],
+                                    ],
+                                    [
+                                        "action_fun_id",
+                                        "edit_review_modal",
+                                        "btn btn-warning",
+                                        '<i class="fa fa-eye-slash" aria-hidden="true"></i>',
+                                        ["feedback", "id"],
+                                    ],
+                                ],
+                                perm: [
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                    ["no"],
+                                ],
+                            },
+                        },
+                    });
+                    // this.get_all_products_review_data()
+                })
+                .catch((error) => console.log(error));
+        },
             go_to_product_page(page){
                 window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + page)
             },

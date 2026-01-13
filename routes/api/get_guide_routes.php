@@ -247,18 +247,4 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         });
     });
 
-
-    Route::controller(FaworitesController::class)->prefix('get_faworite')->group( function() {
-        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        // Route::post('add_to_interested_events/', 'add_to_interested_events');
-        Route::get('get_interested_events/', 'get_interested_events');
-        // Route::delete('del_interested_event/{article_id}', 'del_interested_event');
-        
-        // Route::post('/add_to_favorite_outdoor_area/{article_id}', 'add_to_favorite_outdoor_area');
-        Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
-        // Route::delete('/del_faworite_outdoor_region/{article_id}', 'del_faworite_outdoor_region');
-        
-    });
-
-
 });
