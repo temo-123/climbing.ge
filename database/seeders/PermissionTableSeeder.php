@@ -16,12 +16,10 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('permissions')->insert([
-        //     [
-        //         // 'name' => 'Del article',
-        //         // 'slug' => 'manage-users',
-        //     ],
-        // ]);
+        // Clear existing data
+        DB::table('role_permissions')->delete();
+        DB::table('user_permissions')->delete();
+        DB::table('permissions')->delete();
 
         $permissions = array(
             [
@@ -685,3 +683,4 @@ class PermissionTableSeeder extends Seeder
 
     }
 }
+
