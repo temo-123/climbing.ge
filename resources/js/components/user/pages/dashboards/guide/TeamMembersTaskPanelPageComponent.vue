@@ -61,7 +61,7 @@
         methods: {
             get_workers(){
                 axios
-                .get("/user/get_worker_users/")
+                .get("/get_user/get_worker_users/")
                 .then(response => {
                     this.workers = response.data
                 })

@@ -10,11 +10,12 @@ class Route extends Model
 
     protected $fillable = [
         "sector_id",
+        "category",
 
         "grade",
         "or_grade",
 
-        "title",
+        "name",
         "text",
 
         "height",
@@ -27,8 +28,14 @@ class Route extends Model
         "first_ascent",
     ];
 
+
     public function review()
     {
         return $this->hasMany(Sport_route_review::class);
+    }
+
+    public function sector()
+    {
+        return $this->belongsTo(Sector::class);
     }
 }

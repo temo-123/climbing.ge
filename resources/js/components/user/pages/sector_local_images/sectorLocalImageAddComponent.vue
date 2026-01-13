@@ -38,7 +38,7 @@
                 </div>
             </form>
 
-            <div class="form-group clearfix row" v-if="sector_id != ''">
+            <!-- <div class="form-group clearfix row" v-if="sector_id != ''">
                 <div class="col-md-12">
                     <div class="row">
                         <Editor 
@@ -47,7 +47,7 @@
                         />
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -174,7 +174,7 @@
                 formData.append('image_sectors', JSON.stringify(this.image_sectors))
                 formData.append('title', this.data.title)
    
-                axios.post('/sector_local_images/', 
+                axios.post('/set_sector/set_sector_local_images/add_sector_local_image/', 
                     formData,
                     config
                 )

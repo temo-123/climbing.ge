@@ -8,6 +8,19 @@ use App\Models\User;
 
 class Product extends Model
 {
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            // Delete related favorite_products before deleting the product
+            \App\Models\Shop\Favorite_product::where('product_id', $product->id)->delete();
+        });
+    }
+
     public $table = 'products';
 
     protected $fillable = [
@@ -18,7 +31,7 @@ class Product extends Model
       // 'discount',
       // 'material',
 
-      'mead_in_georgia',
+      'made_in_georgia',
       'is_donation_product',
 
       'sale_type',

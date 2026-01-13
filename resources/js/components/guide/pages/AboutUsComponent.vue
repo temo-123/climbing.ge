@@ -87,7 +87,7 @@
 
             get_social_links(){
                 axios
-                .get('/site_social_links/get_site_social_links')
+                .get('/get_site_social_links/get_site_social_links')
                 .then(response => {
                     this.site_social_links = response.data
                 })

@@ -75,7 +75,7 @@
             get_all_tours_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/tour/get_all_tours/")
+                .get("/get_tour/get_all_tours/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -98,13 +98,13 @@
                                                         'Delite',
                                                     ],
                                                     'body': [
-                                                        ['data', ['tour', 'id']],
-                                                        ['data', ['tour', 'url_title']],
-                                                        ['data', ['tour', 'published'], 'bool'],
+                                                        ['data', ['global_data', 'id']],
+                                                        ['data', ['global_data', 'url_title']],
+                                                        ['data', ['global_data', 'published'], 'bool'],
                                                         ['data', [['user', 'name'], ['user', 'surname']]],
                                                         ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', [['user', 'id'], ['tour', 'id']]],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['tour', 'id']],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['tour', 'id']],
+                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['global_data', 'id']],
+                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>', ['global_data', 'id']],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -127,7 +127,7 @@
 
             get_all_tours_categories: function(){
                 axios
-                .get("/tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
@@ -175,7 +175,7 @@
             del_category(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/tour/category/del_category/'+id, {
+                    .post('/set_tour/set_category/del_category/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -187,7 +187,7 @@
             del_tour(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/tour/del_tour/'+id, {
+                    .post('/set_tour/del_tour/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -217,7 +217,7 @@
                         }
                     }
                     axios
-                    .post('/tour/change_user_relation/',{
+                    .post('/set_tour/change_user_relation/',{
                         data: data
                     })
                     .then(Response => {

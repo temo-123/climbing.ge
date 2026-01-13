@@ -260,7 +260,7 @@ export default {
             this.is_loading = true
 
             axios
-            .post('/product_feedback/create_feedback/' + this.product_id, {
+            .post('/set_product_feedback_by_gest/create_feedback/' + this.product_id, {
                 data: this.data,
             })
             .then(response => {

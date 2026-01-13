@@ -9,7 +9,7 @@
         <pre class="language-vue">
             <form v-on:submit.prevent="edit_live_camera" id="edit_live_camera">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
-                <input type="url" class="form-control" v-model="data.url" name="url" placeholder="url" title="url" required>
+                <input type="link" class="form-control" v-model="data.link" name="link" placeholder="link" title="link" required>
 
                 <select class="form-control" v-model="data.published" name="published" required> 
                     <option :value="0">Not public</option> 
@@ -66,7 +66,7 @@
         ],
         mounted(){
             // console.log(this.table_info)
-            this.get_region_data()
+            // this.get_region_data()
         },
         data(){
             return{
@@ -78,7 +78,7 @@
                 regions: [],
                 data: {
                     name: '',
-                    url: '',
+                    link: '',
                     published: 0,
                     article_id: 0
                 }
@@ -87,21 +87,23 @@
         methods: {
             get_region_data: function () {
                 axios
-                .get("/article/get_category_articles/ice")
+                .get("/get_article/get_category_articles/ice")
                 .then(response => {
                     this.regions = response.data
                 })
             },
             get_editing_region_data: function () {
                 axios
-                .get("/live_camera/get_editing_live_camera/" + this.editing_camera_id)
+                .get("/set_live_camera/get_editing_live_camera/" + this.editing_camera_id)
                 .then(response => {
                     this.data = response.data
+
+                    this.is_live_camera_edit_model = true
                 })
             },
             edit_live_camera(){
                     axios
-                    .post('/live_camera/edit_live_camera/' + this.editing_camera_id, {
+                    .post('/set_live_camera/edit_live_camera/' + this.editing_camera_id, {
                         data: this.data,
                         _method: 'post',
                     })
@@ -117,16 +119,17 @@
             clear_form(){
                 this.data = {
                     name: '',
-                    url: '',
+                    link: '',
                     published: 0,
                     article_id: 0
                 }
             },
             show_modal(id){
-                this.is_live_camera_edit_model = true
+                // this.is_live_camera_edit_model = true
 
                 this.editing_camera_id = id
 
+                this.get_region_data()
                 this.get_editing_region_data()
             },
             close_modal(){

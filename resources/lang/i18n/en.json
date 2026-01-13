@@ -1,5 +1,6 @@
 {
     "all": "All",
+    "and": "and",
 
     "guide": {
         "name": "Climbing Guidebook",
@@ -89,11 +90,53 @@
             "route_rewiev": "Create Route Review",
             "show_feedbacks": "Show Feedbacks",
             "pleas_login": "Please log in to add route feedback!",
-            "no_feedbacks": "No Feedbacks"
+            "no_feedbacks": "No Feedbacks",
+
+            "create_feedback_title": "Create Route Feedback",
+            "climbing_status": "Climbing Status",
+            "climb_details": "Climb Details",
+            "did_you_climb": "Did you climb this route?",
+            "climb_date": "Insert climb date",
+            "ascent_style": "Route ascent style",
+            "select_ascent_style": "Select ascent style",
+            "onsite": "Onsite",
+            "flash": "Flash",
+            "second_go": "Second go",
+            "redpoint": "Redpoint",
+            "top_rope": "Top rope",
+            "rating_label": "How did you like this route?",
+            "feedback": "Feedback",
+            "feedback_placeholder": "Share your thoughts about the route...",
+            "all_feedbacks_title": "Route Feedbacks",
+
+            "mtp_title": "Multi Pitch Details",
+            "pitches": "Pitches",
+            "loading_mtp_details": "Loading MTP details...",
+            "loading_route_details": "Loading route details...",
+            "no_pitch_info": "No pitch information available",
+            "route_name_not_available": "Route Name Not Available",
+
+            "route_details_title": "Route Details",
+            "additional_info": "Additional Information",
+            "technical_details": "Technical Details",
+            "description": "Description",
+            "glued_bolts": "Route have a glued-in bolts",
+            "hangerr_bolts": "Route have a hangerr bolts"
         },
+
+
 
         "sector": {
             "name": "Sector Name",
+            "routes_authers_list_title": "Routes Authors List",
+            "no_authors_found": "No authors found",
+            "filter_by_author_name": "Filter by author name",
+            "sort_by": "Sort by",
+            "sort_by_total_routes": "Sort by Total Routes",
+            "sort_by_author_name": "Sort by Author Name",
+            "sort_descending": "Descending",
+            "sort_ascending": "Ascending",
+            "total_routes_header": "Total Routes",
             "shade after 10.00 am": "Shaded after 10:00 AM",
             "shade after 15.00 pm": "Shaded after 3:00 PM",
             "shade befor noon": "Shaded before noon",
@@ -110,7 +153,51 @@
             "authers_list": "You can also see sport climbing route authors and their contacts",
             "authers_list_button": "Check Route Authors",
             "auther_name": "Author Name",
-            "auther_routes_quantity": "Number of Routes"
+"auther_routes_quantity": "Number of Routes",
+            "routes_list_button": "Popular Routes List",
+            "modal_title": "Popular Routes List",
+
+            "route_name": "Route Name",
+            "reviev_count": "Review Count",
+            "stars": "Stars",
+            "region": "Region",
+            "sector": "Sector",
+            "sectors": "sectors",
+            "spot_name": "Spot",
+
+            "countinue": "Continue",
+            "per_page": "Per page",
+            "routes_per_page": "Routes to show",
+            "min_reviews": "Minimum reviews",
+            "all_reviews": "All reviews",
+            "routes": "routes",
+            "route": "route",
+            "reviews": "reviews",
+            "loading_sport_routes": "Loading sport routes...",
+            "loading_boulder_routes": "Loading boulder routes...",
+            "no_popular_sport_routes": "No popular sport routes found",
+            "no_popular_boulder_routes": "No popular boulder routes found",
+            "no_reviews_available_boulder": "No reviews available for boulder routes yet",
+
+            "be_first_to_review_boulder": "Be the first to review a boulder route!",
+            "no_popular_routes_any": "No popular routes found",
+
+            "be_first_to_review_any": "Be the first to review any route!",
+            "be_first_to_review_sport": "Be the first to review a sport route!",
+            
+            "sport_climbing": "Sport Climbing",
+            "bouldering": "Bouldering",
+            "dry": "Dry Tooling",
+            "ice": "Ice Climbing",
+            "mtp": "Multi-Pitch",
+            
+            "sport_climbing_routes_title": "Popular Sport Climbing Routes",
+            "boulder_routes_title": "Popular Boulder Routes",
+            "ice_climbing_routes_title": "Popular Ice Climbing Routes",
+            "dry_tooling_routes_title": "Popular Dry Tooling Routes",
+            
+            "ice_routes_title": "Popular Ice Climbing Routes",
+            "dry_routes_title": "Popular Dry Tooling Routes"
         },
 
         "article": {
@@ -135,7 +222,18 @@
             },
 
             "route_quantyty": "Georgia has {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, and {mtps} multi-pitch routes. Find all outdoor climbing area info on this page.",
-            "other_sites": "For more activities, visit our other themed websites",
+            "route_quantyty_sport": "Georgia has {sectors} sport climbing sectors with {sport_routes} sport climbing routes.",
+            "route_quantyty_boulder": "Georgia has {sectors} bouldering sectors with {boulder_routes} boulder routes.",
+            "route_quantyty_ice": "Georgia has {sectors} ice climbing sectors with {ice_routes} ice climbing routes.",
+            "route_quantyty_dry": "Georgia has {sectors} dry tooling sectors with {dry_routes} dry tooling routes.",
+            "route_quantyty_mtp": "Georgia has {sectors} sectors with {mtps} multi-pitch routes.",
+            
+            "routes_short_line_single": "Georgia is waiting for you with {sectors} {label} {sector_word} and {routes} {label} {route_word}!",
+            "routes_short_line_multiple": "Georgia is waiting for you! Find {totalSectors} {sector_word} with {totalRoutes} routes for {categories}!",
+            
+            "routes_extended_intro": "All climbing spots are ready to welcome you.",
+            "routes_extended_detail": "{routes} {label} {route_word} in {sectors} {area_word}",
+            "routes_extended_outro": "Your next adventure is waiting. Come and explore Georgia's amazing climbing areas today!",
             "prices_from": "Prices From",
             "closed": "Temporarily Closed",
             "working_time": "Working Hours",
@@ -163,7 +261,10 @@
             "search": "Search Products",
             "tours": "Tour List",
             "mein page": "Climbing.ge: Products, Services & Tours",
-            "climbing wall": "Climbing Wall Price Calculator"
+            "climbing wall": "Climbing Wall Price Calculator",
+
+            "climbing_wall_title": "Climbing Wall Price Calculator",
+            "climbing_wall_description": "Calculate climbing wall price. Get instant pricing for your climbing wall project."
         },
 
         "menu": {
@@ -194,27 +295,55 @@
 
         "wall": {
             "title": "Climbing Wall Price Calculator",
-            "wall_colculate_title": "Enter Climbing Wall Size",
-            "height": "Wall Height",
-            "width": "Wall Width",
-            "depth": "Wall Depth",
-            "mat_colculate_title": "Mat size is calculated automatically.",
-            "mat_height": "Mat Height",
-            "mat_width": "Mat Width",
-            "mat_depth": "Mat Depth",
-            "wall_so_height": "If the wall is more than 5 meters high, it's too high for the mat. After 5 meters, you need ropes and a belay system.",
-            "inser_sizes": "Please enter the wall size!",
-            "holds": "Do you want to include holds in the price?",
-            "holds_on_1m2": "How many holds per square meter on the wall?",
-            "wall_holds_squareness": "Wall Squareness",
-            "wall_price": "Wall Price",
-            "mat_price": "Mat Price",
-            "holds_qouantyty": "Holds Quantity per m²",
-            "total_holds": "Total Holds Quantity",
-            "total_holds_price": "Total Holds Price",
-            "wall_square": "Wall Area",
+            "wall_type": "Wall Type",
+            "wall_type_help": "Select the type of climbing wall you want to build",
+            "wall_dimensions": "Wall Dimensions",
+            "height": "Height (m)",
+            "height_placeholder": "e.g., 4",
+            "width": "Width (m)",
+            "width_placeholder": "e.g., 5",
+            "depth": "Depth (m)",
+            "depth_placeholder": "e.g., 3",
+            "mat_section_title": "Safety Mat Dimensions",
+            "mat_height": "Mat Height (m)",
+            "mat_height_placeholder": "e.g., 0.3",
+            "mat_width": "Mat Width (m)",
+            "mat_width_placeholder": "e.g., 5",
+            "mat_depth": "Mat Depth (m)",
+            "mat_depth_placeholder": "e.g., 2",
+            "no_mat_hint": "Wall height is over 5m - no safety mat required for this installation",
+            "add_options": "Additional Options",
+            "add_holds": "Add Climbing Holds",
+            "include_vat": "Include VAT (20%)",
+            "holds_per_sqm": "Holds per square meter",
+            "holds_per_unit": "holds/m²",
+            "enter_dimensions_first": "Please enter wall dimensions first",
+            "calculate_price": "Calculate Price",
+            "price_summary": "Price Summary",
+            "wall_area": "Wall Area",
+            "base_price": "Base Wall Price",
+            "mat_area": "Safety Mat Area",
+            "mat_price": "Safety Mat",
+            "total_holds": "Total Holds",
+            "holds_price": "Holds Price",
+            "vat": "VAT",
             "total_price": "Total Price",
-            "colculate_price": "Calculate Price"
+            "select_option": "Select option...",
+            "need_help": "Need Help?",
+            "help_text": "Here are some tips to help you with your calculation:",
+            "help_dimensions": "Enter the wall height, width, and depth in meters",
+            "help_mat": "Safety mat dimensions are calculated automatically for walls under 5m height",
+            "help_holds": "Add climbing holds for an additional cost of $10 each",
+            "image": {
+                "wall": "Climbing wall preview",
+                "wall_height": "Climbing wall height dimension",
+                "wall_width": "Climbing wall width dimension",
+                "wall_depth": "Climbing wall depth dimension",
+                "wall_no_mat": "Climbing wall without mat (height over 5m)",
+                "mat_height": "Safety mat height dimension",
+                "mat_width": "Safety mat width dimension",
+                "mat_depth": "Safety mat depth dimension"
+            }
         },
 
         "product": {
@@ -313,37 +442,64 @@
     },
 
     "blog": {
-        "name": "Climbing Blog",
-
+        "name": "Blog",
         "meta": {
-            "index": "Rock Climbing & Mountaineering Blog from Georgia",
-            "about us": "About Us",
-            "search": "Search Posts"
+            "blog": "Blog",
+            "posts": "Posts",
+            "categories": "Categories",
+            "tags": "Tags",
+            "search": "Blog Search"
         },
 
         "menu": {
-            "articles": "Articles",
-            "about us": "About Us",
-            "login": "Login",
-            "sitemap": "Sitemap"
+            "about us": "About Us"
         },
 
         "title": {
-            "about us": "About Us",
-            "partner": "Partners",
-            "message": "Send Message"
+            "index_title": "Climbing.ge Blog",
+            "blog": "Blog",
+            "posts": "Posts",
+            "categories": "Categories",
+            "tags": "Tags",
+            "search": "Blog Search",
+            "similar": {
+                "posts": "Similar Posts"
+            }
         },
 
-        "article_right_navbar": {
-            "menu_title": "Navigation Menu"
+        "loading": {
+            "more_posts": "Loading more posts... ({{ countdown }}s)",
+            "loading": "Loading...",
+            "news": "Loading news...",
+            "post": "Loading post...",
+            "news_not_found": "News not found.",
+            "post_not_found": "Post not found.",
+            "created": "Created • {{ date }}"
         },
 
-        "breadcrumb home": "Home",
+        "about_us": {
+            "title": "About Us",
+            "welcome": "Welcome to our blog! We are passionate about sharing knowledge and stories.",
+            "mission": "Our mission is to provide valuable content on various topics."
+        },
 
-        "news_flag": "News",
-        "blog_flag": "Blog",
+        "labels": {
+            "post": "Post",
+            "news": "News"
+        },
 
-        "serch": "Search"
+        "modal": {
+            "created": "Created:",
+            "view_full_post": "View Full Post"
+        },
+
+        "search": {
+            "placeholder": "Search product. (English words only!)"
+        },
+
+        "pagination_button": {
+            "show_older_articles": "Show Older Article"
+        }
     },
 
     "user": {

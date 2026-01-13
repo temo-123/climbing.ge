@@ -103,10 +103,44 @@
                     </div>
                 </div>
 
-                <div class="form-group clearfix row">
+                <!-- <div class="form-group clearfix row">
                     <label class="col-md-2 control-label"> Text </label>
                     <div class="col-md-10">
                         <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+                    </div>
+                </div> -->
+
+                <div class="tabs row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col" >
+                                <input type="radio" id="1" :value="1" v-model="tab_num">
+                                
+                                <label for="1" >English text</label>
+                            </div>
+                            <div class="col" >
+                                <input type="radio" id="2" :value="2" v-model="tab_num">
+                                
+                                <label for="2" >Georgian text</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="form-group clearfix row"  v-show="tab_num == 1">
+                            <label for="name" class='col-md-2 control-label'> English description </label>
+
+                            <div class="col-md-10">
+                                <ckeditor v-model="data.us_description" :config="us_description_editor"></ckeditor>
+                            </div>
+                        </div>
+                        <div class="form-group clearfix row"  v-show="tab_num == 2">
+                            <label for="name" class='col-md-2 control-label'> Georgian description </label>
+
+                            <div class="col-md-10">
+                                <ckeditor v-model="data.ka_description" :config="ka_description_editor"></ckeditor>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -326,7 +360,12 @@
                     <label class="col-md-2 control-label"> Kids: </label>
                     <div class="col-md-10 row">
                         <div class="col-md-6">
-                            <label for="vehicle1"> for_family</label><br />
+                            <label for="vehicle1">
+                                Femily
+                                <strong v-if="!data.for_family">is not friendly</strong>
+                                <strong v-else>friendly</strong>
+                            </label>
+                            <br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/for family.svg'"
@@ -342,7 +381,12 @@
                             />
                         </div>
                         <div class="col-md-6">
-                            <label for="vehicle1"> for_kids</label><br />
+                            <label for="vehicle1">
+                                Kids climbing
+                                <strong v-if="!data.for_kids">is not friendly</strong>
+                                <strong v-else>friendly</strong>
+                            </label>
+                            <br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/for kids.svg'"
@@ -357,8 +401,30 @@
                                 class="largerCheckbox"
                             />
                         </div>
-                        
-                        
+                    </div>
+                </div>
+
+                <hr />
+                
+                <div class="form-group clearfix row">
+                    <label class="col-md-2 control-label"> Helmet required: </label>
+                    <div class="col-md-10 row">
+                        <div class="col-md-6">
+                            <label for="vehicle1"> Is helmet required</label><br />
+                            <img
+                                class="sun_svg"
+                                :src="'../../images/svg/climbing-helmet.jpg'"
+                                alt="Vertical"
+                                title="Vertical"
+                            />
+                            <input
+                                type="checkbox"
+                                v-model="data.is_helmet"
+                                name="helmet_required"
+                                value="1"
+                                class="largerCheckbox"
+                            />
+                        </div>                    
                     </div>
                 </div>
 
@@ -460,7 +526,9 @@
         },
         data() {
             return {
-                description_editor: editor_config.get_small_editor_config(),
+                ka_description_editor: editor_config.get_small_editor_config(),
+                us_description_editor: editor_config.get_small_editor_config(),
+                
                 fileList: [], //https://github.com/eJayYoung/vux-uploader-component
                 regions: "",
 
@@ -479,7 +547,9 @@
 
                     article_id: "",
                     name: "",
-                    text: "",
+                    // text: "",
+                    ka_description: "",
+                    us_description: "",
 
                     all_day_in_shade: null,
                     all_day_in_sun: null,
@@ -496,7 +566,11 @@
                     for_family: null,
                     for_kids: null,
                     wolking_time: null,
+
+                    is_helmet: null,
                 },
+
+                tab_num: 1,
 
                 // temporary_sector_id: 0,
 
@@ -557,7 +631,7 @@
             del_sector_image_from_db(image_id) {
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("/sector/del_sector_image_from_db/"+image_id)
+                    .delete("/set_sector/del_sector_image_from_db/"+image_id)
                     .then(response => {
                         this.get_sector_images()
                     })
@@ -569,19 +643,19 @@
 
             get_region_data: function (category) {
                 axios
-                    .get("/article/get_category_articles/" + category)
-                    .then(response => {
-                        this.regions = response.data
-                    })
-                    .catch(error =>{
-                    })
-                    // .finally(() => this.oudoor_loading = false)
+                .get("/get_article/get_category_articles/" + category)
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(error =>{
+                })
+                // .finally(() => this.oudoor_loading = false)
             },
 
             get_editing_sector_data: function(){
                 this.is_loading = true
                 axios
-                .get("/sector/get_sector_editing_data/"+this.$route.params.id)
+                .get("/set_sector/get_sector_editing_data/"+this.$route.params.id)
                 .then(response => {
                     this.data = response.data.sector
                     // console.log(response.data.article.category);
@@ -597,7 +671,7 @@
 
             get_sector_images: function(){
                 axios
-                .get("/sector/get_sector_images/"+this.$route.params.id)
+                .get("/get_sector/get_sector_images/"+this.$route.params.id)
                 .then(response => {
                     this.sector_old_images = response.data
                 })
@@ -620,7 +694,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post("/sector/edit_sector/"+this.$route.params.id, formData)
+                .post("/set_sector/edit_sector/"+this.$route.params.id, formData)
                 .then(response => {
                     this.go_back(true)
                 })

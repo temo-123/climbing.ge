@@ -78,7 +78,7 @@
         methods: {
             get_services(activ_service_id){
                 axios
-                .get('../api/similar_services/'+localStorage.getItem('lang')+'/'+activ_service_id)
+                .get('/get_service/get_similar_services/'+localStorage.getItem('lang')+'/'+activ_service_id)
                 .then(response => {
                     this.services = response.data
                 })
@@ -87,7 +87,7 @@
             },
             get_service(){
                 axios
-                .get('../api/service/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_service/get_local_service_in_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.service = response.data
                     this.get_services(this.service.global_data.id)

@@ -40,6 +40,12 @@
         watch: {
             global_data_prop(newVal) { this.data = newVal; },
             category_prop(newVal) { this.category = newVal; },
+            data: {
+                handler(newVal) {
+                    this.$emit('update:global_data_prop', newVal);
+                },
+                deep: true
+            }
         },
     }
 </script>

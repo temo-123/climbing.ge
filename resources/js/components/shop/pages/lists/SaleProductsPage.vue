@@ -95,16 +95,16 @@
         },
         methods: {
             get_products(){
-                axios
-                .get('/sale_products/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.products = response.data
+                // axios
+                // .get('/get_product/get_local_saled_products/'+localStorage.getItem('lang'))
+                // .then(response => {
+                //     this.products = response.data
 
-                    this.filtred_products = this.products
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.products_loading = false);
+                //     this.filtred_products = this.products
+                // })
+                // .catch(error =>{
+                // })
+                // .finally(() => this.products_loading = false);
             },
 
             open_menu(){

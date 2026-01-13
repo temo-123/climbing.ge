@@ -178,7 +178,7 @@
             edit_role(){
                 this.is_loading = true
                 axios
-                .post("/role/edit_role/" + this.role_id, {
+                .post("/set_role/edit_role/" + this.role_id, {
                     new_permissions: this.permissions_array,
                     role: this.role_data,
                 })
@@ -193,7 +193,7 @@
 
             get_editing_role(role_id){
                 axios
-                .get("/role/get_editing_role/" + role_id)
+                .get("/get_role/get_editing_role/" + role_id)
                 .then(response => {
                     this.role_data = {
                         name: response.data.name,

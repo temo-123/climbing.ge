@@ -16,6 +16,7 @@ class Suport_local_bisnes extends Model
     protected $fillable = [
 		'id',
 		'url_title',
+		'for_article_category',
 
 		'published',
 		'published_data',
@@ -46,7 +47,8 @@ class Suport_local_bisnes extends Model
 		return $this->hasMany(Suport_local_bisnes_image::class, 'bisnes_id', 'id');
 	}
 
-	public function bisnes_article()
+
+	public function articles()
 	{
         return $this->belongsToMany(Article::class, 'suport_local_bisnes_articles', 'bisnes_id', 'article_id');
 	}

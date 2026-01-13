@@ -10,6 +10,18 @@
                 {{this.$siteData.data.ice_description}}
             </h2>
 
+            <sectorQuantyt :route_categories_prop="route_categories"/>
+
+            <div class="row otdoor_buttoms">
+                <div class="col-md-6">
+                    <routesAutersModal :route_categories_prop="route_categories"/>
+                </div>
+
+                <div class="col-md-6">
+                    <mostPopularRoutesModal :route_categories_prop="route_categories" :default_route_type_prop="'ice'"/>
+                </div>
+            </div>
+
             <div v-if="indoor_article_loading">
                 <content-loader
                     viewBox="0 0"
@@ -48,18 +60,36 @@
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
 
+    import axios_mixin from '../../../../mixins/axios_mixin'
+
+    import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
+
     export default {
+        mixins: [
+            axios_mixin
+        ],
         data: function () {
             return {
                 ices: [],
-                indoor_article_loading: true
+                indoor_article_loading: true,
+
+                route_categories: [
+                    { value: 'dry', label: 'guide.sector.dry' },
+                    { value: 'ice', label: 'guide.sector.ice' }
+                ]
             };
         },
         components: {
             articleComponent,
             emptyPageComponent,
             ContentLoader,
-            metaData
+            metaData,
+            
+            sectorQuantyt,
+            routesAutersModal,
+            mostPopularRoutesModal
         },
         mounted() {
             this.get_ices()
@@ -72,19 +102,24 @@
         },
         methods: {
             get_ices(){
-                axios
-                .get('../api/articles/ice/'+localStorage.getItem('lang'))
-                .then(response => {
-                    this.ices = response.data
-                })
-                .catch(error =>{
-                })
-                .finally(() => this.indoor_article_loading = false)
+                this.get_articles('ice', localStorage.getItem('lang'),
+                    (data) => {
+                        this.ices = data;
+                    },
+                    (error) => {
+                        console.error('Error fetching articles:', error);
+                    },
+                    () => {
+                        this.indoor_article_loading = false;
+                    }
+                );
             }
         }
     }
 </script>
 
 <style>
-
+    .otdoor_buttoms{
+        margin: 1em 0;
+    }
 </style>

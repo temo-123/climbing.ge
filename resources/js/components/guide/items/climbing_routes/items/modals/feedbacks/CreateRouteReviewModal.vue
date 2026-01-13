@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_modal"
-            title="Create route feedback"
+            :title="$t('guide.route.create_feedback_title')"
             @close="close_route_review_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
@@ -23,45 +23,45 @@
 
                         <form method="POST" id="route_review_form" v-on:submit.prevent="add_route_review" v-show="!is_loading">
                             <div class="modal-section climbing-status">
-                                <h3 class="section-title">Climbing Status</h3>
+                                <h3 class="section-title">{{ $t('guide.route.climbing_status') }}</h3>
                                 <div class="form-group">
-                                    <label class="form-label">Did you climb this route?</label>
+                                    <label class="form-label">{{ $t('guide.route.did_you_climb') }}</label>
                                     <input type="checkbox" v-model="data.climbed" name="scales" class="form-check-input">
                                 </div>
                             </div>
 
                             <div class="modal-section climb-details" v-if="data.climbed">
-                                <h3 class="section-title">Climb Details</h3>
+                                <h3 class="section-title">{{ $t('guide.route.climb_details') }}</h3>
                                 <div class="form-group">
-                                    <label class="form-label">Insert climb date</label>
+                                    <label class="form-label">{{ $t('guide.route.climb_date') }}</label>
                                     <input type="date" class="form-control friendly-input" v-model="data.climbed_data" name="climbed_data">
                                 </div>
                                 <div class="form-group">
-                                    <label class="form-label">Route ascent style</label>
+                                    <label class="form-label">{{ $t('guide.route.ascent_style') }}</label>
                                     <select class="form-control friendly-input" v-model="data.ascent_style" name="ascent_style" required>
-                                        <option value="" disabled>Select ascent style</option>
-                                        <option value="onsite">Onsite</option>
-                                        <option value="flash">Flash</option>
-                                        <option value="second_go">Second go</option>
-                                        <option value="redpoint">Redpoint</option>
-                                        <option value="top_rope">Top rope</option>
+                                        <option value="" disabled>{{ $t('guide.route.select_ascent_style') }}</option>
+                                        <option value="onsite">{{ $t('guide.route.onsite') }}</option>
+                                        <option value="flash">{{ $t('guide.route.flash') }}</option>
+                                        <option value="second_go">{{ $t('guide.route.second_go') }}</option>
+                                        <option value="redpoint">{{ $t('guide.route.redpoint') }}</option>
+                                        <option value="top_rope">{{ $t('guide.route.top_rope') }}</option>
                                     </select>
                                 </div>
                             </div>
 
                             <div class="modal-section rating">
-                                <h3 class="section-title">Rating</h3>
+                                <h3 class="section-title">{{ $t('guide.route.rating_label') }}</h3>
                                 <div class="form-group">
-                                    <label class="form-label">How did you like this route?</label>
+                                    <label class="form-label">{{ $t('guide.route.rating_label') }}</label>
                                     <starReitingInsert @get_stars="update_stars"/>
                                 </div>
                             </div>
 
                             <div class="modal-section feedback">
-                                <h3 class="section-title">Feedback</h3>
+                                <h3 class="section-title">{{ $t('guide.route.feedback') }}</h3>
                                 <div class="form-group">
-                                    <label class="form-label">What do you think about this route?</label>
-                                    <textarea id="feedback" name="feedback" class="form-control friendly-input" placeholder="Share your thoughts about the route..." v-model="data.text" rows="4"></textarea>
+                                    <label class="form-label">{{ $t('guide.route.feedback') }}</label>
+                                    <textarea id="feedback" name="feedback" class="form-control friendly-input" :placeholder="$t('guide.route.feedback_placeholder')" v-model="data.text" rows="4"></textarea>
                                 </div>
                             </div>
 
@@ -178,7 +178,7 @@ export default {
         add_route_review() {
             this.is_loading = true
             axios
-                .post("/route_review/create_route_review/" + this.route_id, 
+                .post("/set_route/set_route_review/create_route_review/" + this.route_id, 
                     this.data
                 )
                 .then((response) => {

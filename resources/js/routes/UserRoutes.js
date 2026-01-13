@@ -23,7 +23,7 @@ const router = new VueRouter({
         { path: '/guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent') },
         { path: '/guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent') },
 
-        { path: '/purchases', name: 'userPurchases', component: load('PurchasesPage') },
+        { path: '/purchases', name: 'userPurchases', component: load('orders/PurchasesPage') },
         { path: '/order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
 
@@ -77,8 +77,8 @@ const router = new VueRouter({
         { path: '/article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent') },
         { path: '/article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent') },
    
-        { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
-        { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
+        { path: '/region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent') },
+        { path: '/region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent') },
 
         { path: '/ice_route/add', name: 'iceRouteAdd', component: load('ice/routes/add_route') },
         { path: '/ice_route/edit/:id', name: 'iceRouteEdit', component: load('ice/routes/edit_route') },
@@ -123,8 +123,8 @@ const router = new VueRouter({
         { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
         { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
-        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
-        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/list/for_admin/productsAndCatgoriesListComponent') },
+        // { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
+        { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
         
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
@@ -147,7 +147,7 @@ const router = new VueRouter({
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
-        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('NonRegisteredCommenterListPage') },
+        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('comments_&_reviews/NonRegisteredCommenterListPage') },
 
         { path: '/services_list', name: 'servicesList', component: load('services/servicesListComponent'), },
         { path: '/service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), },
@@ -172,7 +172,7 @@ router.beforeEach((to, from, next)=>{
     const token = localStorage.getItem('x_xsrf_token')
     
     axios
-        .get('./api/auth_user')
+        .get('/auth_user')
         .then((response)=>{
             // if (token != null) {
             //     localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])

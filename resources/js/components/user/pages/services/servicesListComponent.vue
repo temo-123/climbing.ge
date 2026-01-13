@@ -47,7 +47,7 @@
             get_services_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/service/")
+                .get("/get_service/get_all_services/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -92,7 +92,7 @@
             del_service(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/service/del_service/'+id, {
+                    .post('/set_service/del_service/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

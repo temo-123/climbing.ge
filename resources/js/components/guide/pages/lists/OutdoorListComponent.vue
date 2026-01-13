@@ -10,12 +10,15 @@
                 {{this.$siteData.data.outdoor_description}}
             </h2>
 
-            <sectorQuantyt />
+            <sectorQuantyt :route_categories_prop="route_categories"/>
 
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- <p>Alse you can see sport climbing routes authers and them conts.</p> -->
-                    <routesAutersModal />
+            <div class="row otdoor_buttoms">
+                <div class="col-md-6">
+                    <routesAutersModal :route_categories_prop="route_categories"/>
+                </div>
+
+                <div class="col-md-6">
+                    <mostPopularRoutesModal :route_categories_prop="route_categories" />
                 </div>
             </div>
 
@@ -30,19 +33,16 @@
                 </content-loader>
             </div>
 
-            <div v-else>
-                <div class="row" v-if="this.regions.length > 0">
-                    <div class="container articles_filter_bar">
-                        <div class="col-md-6 col-sm-6">
-                            <!-- Select region and filtred spots by region -->
-                            {{ $t('guide.article.region_filtr') }}
-                        </div>
-                        <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
-                            <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
-                                <option value="All">{{ $t('all') }}</option>
-                                <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
-                            </select>
-                        </div>
+            <div class="row" v-else>
+                <div class="container articles_filter_bar" v-if="this.regions.length > 0">
+                    <div class="col-md-6 col-sm-6">
+                        {{ $t('guide.article.region_filtr') }}
+                    </div>
+                    <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
+                        <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
+                            <option value="All">{{ $t('all') }}</option>
+                            <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
+                        </select>
                     </div>
                 </div>
             </div>
@@ -163,14 +163,16 @@
 <script>
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    import sectorQuantyt from '../../items/SectorsQuantytyComponent'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import metaData from '../../items/MetaDataComponent'
     import { ContentLoader } from 'vue-content-loader'
 
-    import RoutesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
 
     export default {
+
         data: function () {
             return {
                 filtred_spots: [],
@@ -185,16 +187,24 @@
                 oudoor_loading: true,
                 // sector_quantyt: true,
                 region_loading: true,
+
+                route_categories: [
+                    { value: 'sport', label: 'guide.sector.sport_climbing' },
+                    { value: 'boulder', label: 'guide.sector.bouldering' },
+                    { value: 'mtp', label: 'guide.sector.mtp' },
+                ]
             };
         },
         components: {
             outdoorCard,
             emptyPageComponent,
-            sectorQuantyt,
             StackModal,
             metaData,
             ContentLoader,
-            RoutesAutersModal
+
+            sectorQuantyt,
+            routesAutersModal,
+            mostPopularRoutesModal
         },
         mounted() {
             this.get_outdoor_articles()
@@ -216,8 +226,7 @@
             get_filtred_articles(id){
                 this.oudoor_loading = true
                 axios
-                // .get("/outdoor/get_filtred_outdoor_spots_for_gest/" + localStorage.getItem('lang') + '/' + id)
-                .get("/outdoor/get_filtred_outdoor_spots/" + localStorage.getItem('lang') + '/' + id + '/1')
+                .get("/get_outdoor/get_filtred_outdoor_spots/" + localStorage.getItem('lang') + '/' + id + '/1')
                 .then(response => {
                     this.regions_and_spots = []
                     this.filtred_spots = response.data
@@ -231,7 +240,7 @@
             get_unfilted_articles(){
                 this.oudoor_loading = true
                 axios
-                .get('/outdoor/get_spots_by_regions/'+localStorage.getItem('lang'))
+                .get('/get_outdoor/get_spots_by_regions/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.filtred_spots = []
                     this.regions_and_spots = response.data
@@ -270,7 +279,7 @@
 
             get_regions(){
                 axios
-                .get('/outdoor/regions/'+localStorage.getItem('lang'))
+                .get('/get_region/get_local_regions/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.regions = response.data
                 })
@@ -289,7 +298,7 @@
                 if (this.filter_spot != 'all' || this.filter_spot != 'All') {
                     this.selected_region_data = []
                     axios
-                    .get('/outdoor/region/'+localStorage.getItem('lang')+'/'+region_id)
+                    .get('/get_region/get_local_region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
                         this.selected_region_data = response.data[0]
 
@@ -317,5 +326,8 @@
     }
     .modal .fade .modal-dialog {
         width: 100% !important;
+    }
+    .otdoor_buttoms{
+        margin: 1em 0;
     }
 </style>

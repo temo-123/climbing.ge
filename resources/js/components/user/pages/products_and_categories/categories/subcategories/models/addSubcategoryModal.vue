@@ -116,7 +116,7 @@
             add_image(){
                 this.is_loading = true
                 axios
-                .post('/subcategory/create_subcategory/' + this.category_id, {        
+                .post('/set_product/set_product_category/set_subcategory/add_subcategory/' + this.category_id, {        
                     data: this.data,
                 })
                 .then(response => {

@@ -70,7 +70,7 @@
             show_sector_local_image_modal(id){
                 if (!this.is_show_sector_local_image_modal) {
                     axios
-                    .get('/sector_local_img/get_sector_local_img_for_modal/'+ id)
+                    .get('/get_sector/get_sector_local_images/get_sector_local_img_for_modal/'+ id)
                     .then(response => {
                         this.sector_sector_local_image_pitchs_for_modal = response.data
 

@@ -199,7 +199,7 @@
             add_user() {
                 if(this.data.password == this.data.password_confirmation){
                     axios
-                    .post('../../api/user/create_user_by_admin',{
+                    .post('/get_user/create_user_by_admin',{
                         data: this.data,
                     })
                     .then(res=>{

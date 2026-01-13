@@ -8,7 +8,7 @@
             <span v-html="this.$siteData.data.tour_description"></span>
         </h2>
 
-        <span v-if="tours.length">
+        <span v-if="tours != []">
             <div class="row" v-if="tour_loading">
                 <content-loader
                     viewBox="0 0"
@@ -64,7 +64,7 @@
             get_tours(){
                 this.tour_loading = true
                 axios
-                .get('/tour/get_tours/'+localStorage.getItem('lang'))
+                .get('/get_tour/get_all_tours/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.tours = response.data
                 })

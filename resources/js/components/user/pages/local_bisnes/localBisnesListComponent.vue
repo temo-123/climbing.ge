@@ -45,7 +45,7 @@
             get_local_bisnes_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/bisnes/get_local_bisneses")
+                .get("/get_bisnes/get_local_bisneses")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'table_name': 'Local bisnes' ,
@@ -136,11 +136,11 @@
             del_bisnes(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/bisnes/del_local_bisnes/'+id, {
+                    .post('/set_bisnes/del_local_bisnes/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        this.$emit('restart')
+                        this.get_local_bisnes_data()
                     })
                     .catch(error => console.log(error))
                 }

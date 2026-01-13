@@ -26,7 +26,8 @@
                         </option>
                     </select>
                 </div>
-                <div v-if="selectedCategory === 'outdoor'" class="mb-3">
+
+                <div v-if="selectedCategory && (selectedCategory === 'outdoor' || selectedCategory === 'ice')" class="mb-3">
                     <div class="form-check">
                         <input
                             type="checkbox"
@@ -35,9 +36,17 @@
                             v-model="exportSectors"
                         />
                         <label class="form-check-label" for="exportSectors">
-                            Export Sectors
+                            Export Sectors and Routes (with images and MTPs)
                         </label>
+                        <small class="form-text text-muted">
+                            Includes sector information, routes table, and MTPs if available
+                        </small>
                     </div>
+                </div>
+                <div v-else-if="selectedCategory && selectedCategory !== 'outdoor' && selectedCategory !== 'ice'" class="mb-3">
+                    <small class="text-muted">
+                        Sectors export is only available for outdoor and ice categories
+                    </small>
                 </div>
                 <div class="mb-3">
                     <label for="localeSelect" class="form-label">Select Language</label>
@@ -168,7 +177,7 @@ export default {
         loadCategories() {
             this.loading = true
             axios
-            .get("/export/categories")
+            .get("/set_export/categories")
             .then(response => {
                 this.categories = response.data
                 this.loading = false
@@ -184,7 +193,7 @@ export default {
             }
             this.loading = true
             axios
-            .get(`/export/articles/${this.selectedCategory}`)
+            .get(`/set_export/articles/${this.selectedCategory}`)
             .then(response => {
                 this.articles = response.data
                 this.loading = false
@@ -221,7 +230,7 @@ export default {
             }
 
             axios
-                .post('/export/articles_pdf', payload, {
+                .post('/set_export/articles_pdf', payload, {
                     responseType: 'blob'
                 })
                 .then(response => {

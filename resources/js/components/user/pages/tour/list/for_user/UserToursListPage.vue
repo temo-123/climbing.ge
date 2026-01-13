@@ -45,7 +45,7 @@
             get_user_tours: function(){
                 this.data_for_tab = []
                 axios
-                .get("/tour/get_user_tours/")
+                .get("/get_tour/get_user_tours/")
                 .then(response => {
                     this.data_for_tab.push({
                         'id': 1,
@@ -90,7 +90,7 @@
             del_tour(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/tour/del_tour/'+id, {
+                    .post('/set_tour/del_tour/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

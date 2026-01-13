@@ -139,7 +139,16 @@
         },
         data () {
             return {
-                form_data: [],
+                form_data: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    city: '',
+                    check_in: '',
+                    persons: '',
+                    text: ''
+                },
                 user: [],
 
                 is_loading: false,
@@ -150,6 +159,9 @@
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
 
                 is_verify_isset: false,
+                
+                // Flag to prevent duplicate submissions
+                is_submitting: false,
             }
         },
         watch: {
@@ -168,22 +180,47 @@
                 window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
             },
             create_reservation(){
-                this.is_loading = true
+                // Prevent duplicate submissions
+                if (this.is_submitting) {
+                    return;
+                }
+                
+                this.is_submitting = true;
+                this.is_loading = true;
 
                 axios
-                .post('/tour/reservation/create_reservation/'+this.tour_id_prop, {
+                .post('/set_user_reservation/create_reservation/'+this.tour_id_prop, {
                     form_data: this.form_data
                 })
                 .then(response => {
-                    this.form_data = []
+                    // Reset form data
+                    this.form_data = {
+                        name: '',
+                        email: '',
+                        phone: '',
+                        country: '',
+                        city: '',
+                        check_in: '',
+                        persons: '',
+                        text: ''
+                    };
 
-                    this.onCaptchaExpired()
+                    this.onCaptchaExpired();
 
                     alert(response.data);
                 })
                 .catch(error =>{
+                    // Show error message
+                    if (error.response && error.response.data && error.response.data.message) {
+                        alert(error.response.data.message);
+                    } else {
+                        alert('An error occurred while creating the reservation.');
+                    }
                 })
-                .finally( () => this.is_loading = false)
+                .finally( () => {
+                    this.is_loading = false;
+                    this.is_submitting = false;
+                });
             },
 
             onCaptchaVerified() {

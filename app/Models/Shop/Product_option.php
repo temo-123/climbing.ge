@@ -4,6 +4,7 @@ namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 use App\Models\User\Warehouse;
 
@@ -15,6 +16,25 @@ class Product_option extends Model
 	    'published',
 	    'discount',
 	];
+
+    /**
+     * Boot the model.
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($option) {
+            // Detach from warehouses
+            $option->warehouse()->detach();
+
+            // Delete related order_products records
+            \App\Models\Shop\Order_products::where('product_option_id', $option->id)->delete();
+
+            // Delete related cart records
+            \App\Models\Shop\Cart::where('option_id', $option->id)->delete();
+        });
+    }
 
 
 	public function images()

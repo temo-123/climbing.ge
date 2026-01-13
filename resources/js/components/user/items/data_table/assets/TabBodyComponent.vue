@@ -1,8 +1,8 @@
 <template>
-    <tbody>
-        <tr :class="danger_color" v-for="(datas, datas_key) in tab_data.data" :key="datas_key">
+    <tbody v-if="tab_data && tab_data.data">
+        <tr :class="danger_color" v-for="(datas, datas_key) in tab_data.data" :key="datas_key" v-if="datas">
             <td style="text-align: center">
-                <input type="checkbox" :checked="selectedItems.includes(datas.id)" @change="toggleSelection(datas.id)" />
+                <input type="checkbox" :checked="selectedItems.includes(datas.id)" @change="toggleSelection(datas && datas.id)" />
             </td>
 
             <td
@@ -29,7 +29,7 @@
                 <!-- ['data_action_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <span
                     v-else-if="b[0] == 'data_action_id'"
-                    @click="send_action_to_tab_with_option(b[b.length-1], datas.id)"
+                    @click="send_action_to_tab_with_option(b[b.length-1], datas && datas.id)"
                     class="cursor_pointer"
                 >
                     <tabDataItem 
@@ -82,7 +82,7 @@
 
                 <!-- ['action_router', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <router-link
-                    v-else-if="b[0] == 'action_router' && typeof b[4] == 'object'"
+                    v-else-if="b[0] == 'action_router' && typeof b[4] == 'object' && datas && datas[b[4][0]]"
                     :class="b[2]"
                     :to="{
                         name: b[1],
@@ -94,7 +94,7 @@
 
                 <!-- ['action_router', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <router-link
-                    v-else-if="b[0] == 'action_router'"
+                    v-else-if="b[0] == 'action_router' && datas"
                     :class="b[2]"
                     :to="{
                         name: b[1],
@@ -131,7 +131,7 @@
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <button
-                    v-else-if="b[0] == 'action_fun_id' && typeof b[4] == 'object'"
+                    v-else-if="b[0] == 'action_fun_id' && typeof b[4] == 'object' && datas && datas[b[4][0]]"
                     type="button"
                     @click="send_action_to_tab_with_option(b[1], datas[b[4][0]][b[4][1]])"
                     :class="b[2]"
@@ -141,7 +141,7 @@
 
                 <!-- ['action_fun_id', 'fun_name', 'button class', 'title or html object', ['user', 'id']], -->
                 <button
-                    v-else-if="b[0] == 'action_fun_id'"
+                    v-else-if="b[0] == 'action_fun_id' && datas"
                     type="button"
                     @click="send_action_to_tab_with_option(b[1], datas.id)"
                     :class="b[2]"

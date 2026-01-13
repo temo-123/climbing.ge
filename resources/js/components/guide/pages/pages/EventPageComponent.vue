@@ -34,7 +34,7 @@
                 
                 <breadcrumb />
                 
-                <h1>{{ event.locale_event.title }} <span @click="add_to_interestid_event(event.global_event.id)"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span></h1>
+                <h1>{{ event.locale_event.title }} <span @click="toggle_interested_status(event.global_event.id)"> <i :class="is_interested ? 'fa fa-heart favorite_icon add_to_favorite active' : 'fa fa-heart-o favorite_icon add_to_favorite'"></i> </span></h1>
                                             
                 <span v-html="event.locale_event.text" v-if="this.event.locale_event.text != null"></span>
 
@@ -72,15 +72,6 @@
 
             </div>
         </div>
-        <!-- <div class="row" v-if="!article_loading">
-            <div class="col-md-12"> 
-                <div class="row">
-                    <div style="text-align: center; margin: 4% 30%;">
-                        <a @click="add_to_interestid_event(event.global_event.id)" type="button" class="btn btn-success" style="width: 100%;">{{ $t('interested event') }}</a>
-                    </div>
-                </div>
-            </div>
-        </div> -->
         
         <metaData 
             :title = "event.locale_event.title"
@@ -115,6 +106,7 @@
                 end_year: 0,
 
                 article_loading: false,
+                is_interested: false,
             };
         },
         components: {
@@ -132,6 +124,12 @@
             this.start_month = moment(this.event.global_event.start_data).format("MMM")
             this.end_month = moment(this.event.global_event.end_data).format("MMM")
 
+            // Check if event is in user's interested events
+            this.$nextTick(() => {
+                if (this.event.global_event && this.event.global_event.id) {
+                    this.check_interested_status(this.event.global_event.id);
+                }
+            });
         },
         watch: {
             '$route' (to, from) {
@@ -142,7 +140,7 @@
         methods: {
             get_event(){
                 axios
-                .get('../../api/event/get_event_on_site_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_event/get_event_on_site_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.event = response.data
 
@@ -159,22 +157,71 @@
                     this.end_time = moment(response.data.global_event.end_data).format("H:MM A")
 
                     this.start_time_h = moment(this.event.global_event.start_data).format("H")
+
+                    // Check if event is in user's interested events
+                    this.check_interested_status(this.event.global_event.id)
                 })
                 .catch(error =>{
                 })
                 .finally(() => this.article_loading = false);
             },
 
-            add_to_interestid_event(article_id){
+            check_interested_status(event_id){
                 axios
-                .post('../../api/event/add_to_interested_events/', {
-                    event_id: article_id,
-                })
+                .get('/get_faworite/check_interested_status/' + event_id)
                 .then(response => {
-                    alert(response.data)
+                    this.is_interested = response.data.is_interested;
                 })
-                .catch(error =>{
-                })
+                .catch(error => {
+                    console.log('Error checking interested status:', error);
+                    this.is_interested = false;
+                });
+            },
+
+            toggle_interested_status(event_id){
+                if(this.is_interested) {
+                    // Remove from interested events
+                    axios
+                    .delete('/set_faworite/del_interested_event/' + event_id)
+                    .then(response => {
+                        this.is_interested = false;
+                        alert(response.data);
+                    })
+                    .catch(error => {
+                        if(error.response && error.response.status === 401) {
+                            if(confirm('You are not logged in. Do you want to log in?')){
+                                window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL);
+                            }
+                        }
+                        else if (error.response && error.response.status === 404) {
+                            // Event was already removed, update UI
+                            this.is_interested = false;
+                        }
+                        else{
+                            console.log('Error removing from favorites:', error);
+                        }
+                    });
+                } else {
+                    // Add to interested events
+                    axios
+                    .post('/set_faworite_by_user/add_to_interested_events', {
+                        event_id: event_id,
+                    })
+                    .then(response => {
+                        this.is_interested = true;
+                        alert(response.data);
+                    })
+                    .catch(error => {
+                        if(error.response && error.response.status === 401) {
+                            if(confirm('You are not logged in. Do you want to log in?')){
+                                window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL);
+                            }
+                        }
+                        else{
+                            console.log('Error adding to favorites:', error);
+                        }
+                    });
+                }
             }
         }
     }
@@ -202,6 +249,12 @@
 
     .add_to_favorite:hover {
         color: #999;
+    }
+
+    /* Active favorite heart styling */
+    .add_to_favorite.active {
+        color: #e74c3c !important;
+        transition: color 0.3s ease;
     }
 
     .calendar {

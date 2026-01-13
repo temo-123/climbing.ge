@@ -81,7 +81,7 @@
                 this.article_loading = true;
 
                 axios
-                .get("/live_camera/get_live_cameras/")
+                .get("/get_live_camera/get_live_cameras/")
                 .then(response => {
                     this.data_for_tab = []
     
@@ -136,7 +136,7 @@
             del_live_camera(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/live_camera/del_live_camera/' + id, {
+                    .post('/set_live_camera/del_live_camera/' + id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

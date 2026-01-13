@@ -228,7 +228,7 @@
 
             get_product_brabds(){
                 axios
-                .get("/brand/get_all_brands")
+                .get("/get_brand/get_all_brands")
                 .then(response => {
                     this.brands = response.data
                 })

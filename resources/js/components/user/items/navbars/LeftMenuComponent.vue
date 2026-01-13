@@ -1,21 +1,21 @@
 <template>
     <span class="left_navbar">
-        <input type="checkbox" v-model="menu_position" @change="update_menu_position()" id="check">
+        <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check">
         <!-- <label for="check">
             <span id="open_menu"> -> </span>
             <span id="close_menu">{{ "<-" }}</span>
         </label> -->
-        <div class="sidebar left_sidebar">
+        <div class="sidebar left_sidebar" :class="{ animate: animate_enabled }">
             <header>Menu</header>
 
             <ul v-for="menu_item in menu_items" :key="menu_item.id" style="padding-left: 0px;">
 
-                <li v-if="menu_item.routes && haveMenuBlockPermission(menu_item)">
-                  <a href="#" @click="show_item(menu_item.name)" class="dropdown-toggle" >{{menu_item.title}}</a>
-                  <ul style="background-color: #04354b; display: none; transition: .4s;" :class="menu_item.name">
+                <li v-if="menu_item.routes && haveMenuBlockPermission(menu_item)" :class="{menu_item, active: isAnySubActive(menu_item.routes) }">
+                  <a href="#" @click="toggle_dropdown(menu_item.name)" class="dropdown-toggle" >{{menu_item.title}}</a>
+                  <ul style="background-color: #04354b;" v-show="is_dropdown_open(menu_item.name)" :class="menu_item.name">
                     <span v-for="menu_but in menu_item.routes" :key="menu_but.id">
 
-                      <li v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)">
+                      <li v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)" :class="{ active: isActive(menu_but.route) }">
                         <router-link :to="{path: menu_but.route}">
                           {{menu_but.name}}
                         </router-link>
@@ -25,11 +25,11 @@
                   </ul>
                 </li>
 
-                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)">
+                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)" :class="{ active: isActive(menu_item.route) }">
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
 
-                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')">
+                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" :class="{ active: isActive(menu_item.route) }">
                   <router-link :to="{path: menu_item.route}" >{{menu_item.title}}</router-link>
                 </li>
             </ul>
@@ -57,14 +57,30 @@
 
                 menu_array: {},
                 menu_position: false,
+                animate_enabled: false,
 
                 menu_items: navbar.admin_all_menu(),
 
                 item_1: false,
+                // Store open dropdowns state
+                open_dropdowns: JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}')
             }
         },
         mounted() {
             this.window_size()
+            // Load open dropdowns state from localStorage
+            this.open_dropdowns = JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}');
+            
+            // Listen for menu toggle events from NavbarComponent
+            this.$root.$on('menu-toggle', () => {
+                this.animate_enabled = true;
+                // Use requestAnimationFrame to ensure CSS transition is applied before position change
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.animate_enabled = false;
+                    }, 500);
+                });
+            });
 
             if (window.innerWidth > 993) {
               if(!localStorage.getItem('left_menu_position')){
@@ -93,6 +109,7 @@
         },
         unmounted() {
             this.window_size()
+            this.$root.$off('menu-toggle');
         },
         methods: {
             haveMenuButPermission(permissions){
@@ -174,18 +191,29 @@
             // },
 
             update_menu_position(){
-              if(!this.menu_position){
-                localStorage.setItem('left_menu_position', false)
-                this.menu_position = false
-                document.querySelector('body').style.marginLeft = '0';
-                document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-              }
-              else{
-                localStorage.setItem('left_menu_position', true)
-                this.menu_position = true
-                document.querySelector('body').style.marginLeft = '22em';
-                document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
-              }
+              // Enable animation before position change
+              this.animate_enabled = true;
+              
+              // Use requestAnimationFrame to ensure CSS transition is applied before next paint
+              requestAnimationFrame(() => {
+                if(!this.menu_position){
+                  localStorage.setItem('left_menu_position', false)
+                  this.menu_position = false
+                  document.querySelector('body').style.marginLeft = '0';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+                }
+                else{
+                  localStorage.setItem('left_menu_position', true)
+                  this.menu_position = true
+                  document.querySelector('body').style.marginLeft = '22em';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
+                }
+                
+                // Reset animation after transition completes
+                setTimeout(() => {
+                  this.animate_enabled = false;
+                }, 500);
+              });
             },
             open_menu: function(){
                 if (this.menu) {
@@ -194,6 +222,38 @@
                 else{
                     this.menu = true
                 }
+            },
+            isActive(route) {
+                return this.$route.path === route;
+            },
+            isAnySubActive(routes) {
+                return routes.some(sub => this.isActive(sub.route));
+            },
+            toggle_dropdown(menu_name) {
+                // If clicking on an already open dropdown, close it
+                if (this.open_dropdowns[menu_name] === true) {
+                    this.$set(this.open_dropdowns, menu_name, false);
+                } else {
+                    // Close all dropdowns first
+                    for (let key in this.open_dropdowns) {
+                        this.$set(this.open_dropdowns, key, false);
+                    }
+                    // Open only the clicked dropdown
+                    this.$set(this.open_dropdowns, menu_name, true);
+                }
+                // Persist to localStorage
+                localStorage.setItem('left_menu_open_dropdowns', JSON.stringify(this.open_dropdowns));
+            },
+            is_dropdown_open(menu_name) {
+                // Check if dropdown should be open
+                return this.open_dropdowns[menu_name] === true;
+            }
+        },
+        watch: {
+            // Watch for route changes to maintain dropdown state if needed
+            '$route.path'() {
+                // Optionally close dropdowns on navigation if desired
+                // this.close_all_dropdowns();
             }
         }
     }
@@ -207,6 +267,8 @@
   width: 22em;
   height: 100%;
   background: #042331;
+}
+.sidebar.animate {
   transition: all .5s ease;
 }
 .left_sidebar {
@@ -232,9 +294,6 @@
   border-bottom: 1px solid black;
   /* border-top: 1px solid rgba(255,255,255,.1); */
   transition: .4s;
-}
-ul li:hover a{
-  padding-left: 50px;
 }
 .sidebar ul a i{
   margin-right: 16px;
@@ -268,5 +327,28 @@ label #open_menu,label #close_menu{
   body{
     margin-left: 0;
   }
+}
+
+.active {
+  background-color: #063146 !important;
+  border-left: 4px solid #4CAF50;
+  transition: all 0.3s ease;
+}
+
+.sidebar ul li:hover {
+  background-color: #063146;
+  /* border-left: 4px solid #ffffff; */
+  transition: all 0.8s ease;
+  /* margin-left: 4px; */
+}
+.menu_item li:hover {
+  background-color: #04354b;
+  border-left: 4px solid #ffffff;
+  transition: all 0.6s ease;
+}
+
+.left_sidebar ul {
+  /* padding: 0; */
+  margin: 0;
 }
 </style>

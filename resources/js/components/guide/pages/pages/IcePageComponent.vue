@@ -50,7 +50,7 @@
         methods: {
             get_ice(){
                 axios
-                .get('/article/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_article/get_locale_article_on_page/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.ice = response.data
 

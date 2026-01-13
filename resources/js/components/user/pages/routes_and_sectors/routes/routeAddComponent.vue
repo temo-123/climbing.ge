@@ -52,22 +52,36 @@
         </div>
 
         <div class="tabs form-group clearfix">
-            <div class="row">
-              <div class="col" v-for="(image, index) in sector_images" :key="'col-' + image.id + '-' + index" >
-                  <input
-                      type="radio"
-                      :id="'input-' + image.id"
-                      :value="image.id"
-                      v-model="images_tab_num"
-                      @change="updateSectorImageId"
-                  />
-                  <label :for="'input-' + image.id">
-                      Image ID -> {{ image.id }}
-                  </label>
-              </div>
+            <!-- Toggle Editor Button -->
+            <div class="row" style="margin-bottom: 15px;">
+                <div class="col">
+                    <button 
+                        type="button" 
+                        class="btn" 
+                        :class="show_editor ? 'btn-danger' : 'btn-primary'"
+                        @click="toggleEditor"
+                    >
+                        {{ show_editor ? 'Close Editor' : 'Open Editor' }}
+                    </button>
+                </div>
             </div>
 
-            <div class="row">
+            <div class="row" v-if="show_editor">
+                <div class="col" v-for="(image, index) in sector_images" :key="'col-' + image.id + '-' + index" >
+                    <input
+                        type="radio"
+                        :id="'input-' + image.id"
+                        :value="image.id"
+                        v-model="images_tab_num"
+                        @change="updateSectorImageId"
+                    />
+                    <label :for="'input-' + image.id">
+                        Image ID -> {{ image.id }}
+                    </label>
+                </div>
+            </div>
+
+            <div class="row" v-if="show_editor">
                 <div class="col-md-12" v-for="image in sector_images" :key="image.id" 
                     v-if="images_tab_num == image.id" >
                 <Editor
@@ -76,6 +90,11 @@
                   :related_jsons="related_jsons"
                   @canvas_data="handleCanvasData"
                 />
+                </div>
+            </div>
+            <div class="row" v-else>
+                <div class="col-md-12 text-center">
+                    <p>Click "Open Editor" to draw route</p>
                 </div>
             </div>    
         </div>
@@ -89,7 +108,8 @@
         </div>
 
         <grades_form 
-            :category_prop="this.$route.params.category"
+            :category_type_prop="this.$route.params.category"
+            :category_prop="data.category"
             @update:data="data = Object.assign({}, data, $event)"
         />
 
@@ -246,12 +266,14 @@
 
           category: "",
           route_json: null, // Add canvas JSON data
-          related_jsons: [], // Add related routes JSONs
         },
+        
+        related_jsons: [], // Related routes JSONs (kept separate, not sent to server)
 
         is_loading: false,
 
         is_back_action_query: false,
+        show_editor: false, // Editor is closed by default
       }
     },
 
@@ -277,7 +299,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .get("/article/get_category_articles/" + this.$route.params.category)
+        .get("/get_article/get_category_articles/" + this.$route.params.category)
         .then(response => {
           this.regions = response.data
           this.get_sectors_data()
@@ -289,7 +311,7 @@
       
       get_sectors_data: function(){
         axios
-        .get("/sector/")
+        .get("/get_sector/get_all_sectors/")
         .then(response => {
           this.all_sectors = response.data
         })
@@ -300,7 +322,7 @@
 
       get_sector_images(id){
         axios
-        .get("/sector/get_sector_images/" + id)
+        .get("/get_sector/get_sector_images/" + id)
         .then(response => {
           this.sector_images = response.data
           if (this.sector_images.length > 0) {
@@ -335,15 +357,14 @@
             console.log('Canvas data emission failed:', error);
           }
 
-          // Include canvas JSON data in the route data
+          // Include canvas JSON data in the route data (explicitly list fields to avoid including unrelated properties)
           const routeData = {
-              ...this.data,
-              route_json: this.data.route_json,
-              sector_image_id: this.data.sector_image_id
+            ...this.data,
+            route_json: this.data.route_json,
           };
 
           axios
-          .post('/route/add_route/', {
+          .post('/set_route/add_route/', {
               data: routeData,
           })
           .then(response => {
@@ -407,7 +428,7 @@
 
       get_related_routes_jsons(sectorImageId) {
         axios
-        .get("/route/get_related_routes_jsons", {
+        .get("/get_route/get_related_routes_jsons", {
           params: { sector_image_id: sectorImageId }
         })
         .then(response => {
@@ -417,6 +438,10 @@
         .catch(
           error => console.log('Error fetching related routes JSONs:', error)
         );
+      },
+
+      toggleEditor() {
+        this.show_editor = !this.show_editor;
       },
     }
   }

@@ -11,12 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // Drop the foreign key from tasks table first
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeign(['category_id']);
-        });
-
-        // Then drop the task_categories table
+        // Drop the task_categories table
         Schema::dropIfExists('task_categories');
     }
 
@@ -34,8 +29,9 @@ return new class extends Migration
         });
 
         // Add back the foreign key to tasks table
-        Schema::table('tasks', function (Blueprint $table) {
-            $table->foreign('category_id')->references('id')->on('task_categories');
-        });
+        // Schema::table('tasks', function (Blueprint $table) {
+        //     $table->unsignedBigInteger('category_id');
+        //     $table->foreign('category_id')->references('id')->on('task_categories');
+        // });
     }
 };

@@ -236,7 +236,7 @@
                 }
 
                 axios
-                .post('/article/add_article/' + this.category, 
+                .post('/set_article/add_article/' + this.category, 
                     formData,
                 )
                 .then(response => {

@@ -46,7 +46,7 @@
 
                 if(this.activ_product_id_prop && this.activ_product_id_prop != null && this.activ_product_id_prop != 0){
                     axios
-                    .get('/similar_product/'+localStorage.getItem('lang')+'/'+this.activ_product_id_prop)
+                    .get('/get_product/get_similar_product/'+localStorage.getItem('lang')+'/'+this.activ_product_id_prop)
                     .then(response => {
                         this.samilar_products = response.data
                     })

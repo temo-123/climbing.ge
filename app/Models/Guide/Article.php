@@ -2,11 +2,22 @@
 
 namespace App\Models\Guide;
 
+
 use Illuminate\Database\Eloquent\Model;
 
 use Spatie\Searchable\Searchable;
 use Spatie\Searchable\SearchResult;
 use Illuminate\Notifications\Notifiable;
+
+// Import related models for relationships
+use App\Models\Guide\Comment;
+use App\Models\Guide\Sector;
+use App\Models\Guide\Spot_rocks_image;
+use App\Models\Guide\Suport_local_bisnes;
+use App\Models\Guide\General_info;
+use App\Models\Guide\Article_image;
+use App\Models\Guide\Mount;
+use App\Models\Guide\Region;
 
 // use App\Models\Guide\Article_image;
 // use App\Models\Guide\Suport_local_bisnes;
@@ -52,7 +63,7 @@ class Article extends Model
 
 	public function comments()
 	{
-		return $this->hasMany(Comments::class, 'article_id');
+		return $this->hasMany(Comment::class, 'article_id');
 	}
 
 	public function sectors()
@@ -62,7 +73,7 @@ class Article extends Model
 
 	public function spot_rock_images()
 	{
-		return $this->hasMany(Spots_rocks_image::class, 'article_id');
+		return $this->hasMany(Spot_rocks_image::class, 'article_id');
 	}
 
 

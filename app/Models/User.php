@@ -188,10 +188,11 @@ class User extends Authenticatable implements MustVerifyEmail
     /*
     *   User product and orders
     */
-    public function purchases()
-    {
-        return $this->hasMany(Order::class, 'user_id');
-    }
+    // Orders are accessed through products - see get_user_purchules() method in OrderController
+    // public function purchases()
+    // {
+    //     return $this->hasMany(Order::class, 'user_id');
+    // }
     // public function orders()
     // {
     //     return $this->belongsToMany(Order::class, 'user_products', 'user_id', 'product_id');

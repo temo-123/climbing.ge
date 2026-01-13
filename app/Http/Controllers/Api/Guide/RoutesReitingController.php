@@ -77,39 +77,39 @@ class RoutesReitingController extends Controller
         // }
     }
 
-    public function create_route_review(Request $request) {
-        if (Auth::user()) {
-            // $user_review_count = Sport_route_review::where('user_id', '=', Auth::user()->id)->where('route_id', '=', $request["route_id"])->count();
-            $user_review_count = Auth::user()->sport_route_reviews->where('route_id', '=', $request["route_id"])->count();
-            if($user_review_count == 0){
-                $review = new Sport_route_review;
+    // public function create_route_review(Request $request) {
+    //     if (Auth::user()) {
+    //         // $user_review_count = Sport_route_review::where('user_id', '=', Auth::user()->id)->where('route_id', '=', $request["route_id"])->count();
+    //         $user_review_count = Auth::user()->sport_route_reviews->where('route_id', '=', $request["route_id"])->count();
+    //         if($user_review_count == 0){
+    //             $review = new Sport_route_review;
                 
-                $review['route_id']=$request["route_id"];
-                $review['ascent_style']=$request["ascent_style"];
+    //             $review['route_id']=$request["route_id"];
+    //             $review['ascent_style']=$request["ascent_style"];
 
-                $review['text']=$request["text"];
-                $review['stars']=$request["stars"];
+    //             $review['text']=$request["text"];
+    //             $review['stars']=$request["stars"];
 
-                $review['user_id'] = Auth::user()->id;
+    //             $review['user_id'] = Auth::user()->id;
 
-                if (isset($request['climbed']) && $request['climbed']) {
-                    $review['climbed_data']=$request["climbed_data"];
-                }
+    //             if (isset($request['climbed']) && $request['climbed']) {
+    //                 $review['climbed_data']=$request["climbed_data"];
+    //             }
 
-                $review->save();
+    //             $review->save();
 
-                // $this->create_user_review_relatione($review->id);
+    //             // $this->create_user_review_relatione($review->id);
 
-                return 'Thank you for review!';
-            }
-            else{
-                return "You already have review for this route, you don't can add more review for this route!";
-            }
-        }
-        else{
-            return "Ples login!";
-        }
-    }
+    //             return 'Thank you for review!';
+    //         }
+    //         else{
+    //             return "You already have review for this route, you don't can add more review for this route!";
+    //         }
+    //     }
+    //     else{
+    //         return "Ples login!";
+    //     }
+    // }
 
     // private function create_user_review_relatione($review_id){
     //     if (Auth::user()) {
@@ -120,8 +120,8 @@ class RoutesReitingController extends Controller
     //     }
     // }
 
-    public function get_actyve_review(Request $request){
-        return Sport_route_review::where('id',strip_tags($request->review_id))->first();
+    public function get_actyve_review($review_id){
+        return Sport_route_review::where('id',strip_tags($review_id))->first();
     }
 
     public function edit_route_review(Request $request) {

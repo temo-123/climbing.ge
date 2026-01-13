@@ -133,12 +133,6 @@
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
                                         <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
-
-                                        <span v-if="user.length != 0">
-                                            <div @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id || comment.comment.email != user.email" >
-                                                <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
-                                            </div>
-                                        </span>
                                     </div>
                                     <div class="row">
                                         <p>{{comment.comment.text}}</p>
@@ -150,6 +144,12 @@
                                         <div class="col-xs-6 text-right" v-if="comment.user && comment.user.id == user.id">
                                             <button @click="del_comment(comment.comment.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
                                                 <i aria-hidden="true" class="fa fa-trash"></i>
+                                            </button>
+                                        </div>
+
+                                        <div class="col-xs-6 text-right" v-else-if="user.length != 0">
+                                            <button @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id || comment.comment.email != user.id"  class="btn btn-warning">
+                                                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                     </div>
@@ -173,9 +173,9 @@
                                                 <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
 
                                                 <span v-if="user.length != 0">
-                                                    <div @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id">
-                                                        <i class="fa fa-ellipsis-v complaint_icon" aria-hidden="true"></i>
-                                                    </div>
+                                                    <button @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id" class="btn btn-danger">
+                                                        <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                                                    </button>
                                                 </span>
                                             </div>
                                             <div class="row">
@@ -387,7 +387,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('/guide_comment/add_comment_complaint/',{
+                .post('/set_article/set_guide_comment/add_comment_complaint/',{
                     comment_id: this.complaint_comment_id,
                     comment_complaint: this.selected_comment_complaint,
                     email: this.complainter_email
@@ -405,7 +405,7 @@
                 this.comment_loader = true
                 this.data.is_verify_isset = this.is_verify_isset
                 axios
-                .post('/guide_comment/create_comment/' + this.id, {
+                .post('/set_guide_comment_by_gest/create_comment/' + this.id, {
                     data: this.data,
                     answer_array: this.answer_array
                 })
@@ -431,7 +431,7 @@
 
             del_comment(id) {
                 axios
-                .delete('/guide_comment/del_comment/'+ id, {
+                .delete('/set_article/set_guide_comment/del_comment/'+ id, {
                     id: id,
                 })
                 .then(Response => {
@@ -443,7 +443,7 @@
             get_comments: function(){
                 this.is_refresh = true
                 axios
-                .get('/guide_comment/get_article_comments/' + this.id)
+                .get('/get_article/get_guide_comment/get_article_comments/' + this.id)
                 .then(response => {
                     this.comments = response.data
                 })

@@ -63,7 +63,7 @@
 
             get_user(user_id){
                 axios
-                .get("/options/get_selected_user_data/" + user_id)
+                .get("/get_options/get_selected_user_data/" + user_id)
                 .then(response => {
                     this.user = response.data
                     this.user_modal = true

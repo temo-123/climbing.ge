@@ -47,6 +47,7 @@ return new class extends Migration
 
             // Add back the old columns
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
             $table->unsignedBigInteger('category_id');
             $table->foreign('category_id')->references('id')->on('task_categories');
         });

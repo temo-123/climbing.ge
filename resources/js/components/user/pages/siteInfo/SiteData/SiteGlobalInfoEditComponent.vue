@@ -74,7 +74,7 @@ export default {
         
         update(){
             axios
-            .post('../../api/siteData/edit_site_global_data',{
+            .post('/get_site_data/edit_site_global_data',{
                 site_global_info: this.site_global_info
             })
             .then(response => {
@@ -88,7 +88,7 @@ export default {
        
         get_site_global_data: function(){
             axios
-            .get('../../api/siteData/get_site_global_data')
+            .get('/get_site_data/get_site_global_data')
             .then(response => {
                 this.site_global_info = response.data
             })

@@ -4,8 +4,10 @@ namespace App\Services\Abstract;
 
 use Carbon\Carbon;
 use Validator;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
 
-// use App\Services\ImageControllService;
+use App\Services\Abstract\ImageControllService;
 use App\Services\URLTitleService;
 
 // abstract class LocaleContentControllService
@@ -264,15 +266,19 @@ class LocaleContentControllService
     {
         $editing_global_content = $global_model::where('id', '=', $id)->first();
 
-        if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title']){
-            if($us_data['is_change_url_title']){
-                $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+        // Check if URL title should be changed
+        if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title'] == true){
+            $global_data['url_title'] = URLTitleService::get_url_title($us_data["title"]); // make url_title from us_title value
+            Log::info('URL Title being updated', [
+                'new_url' => $global_data['url_title'],
+                'old_url' => $editing_global_content->url_title,
+                'title_source' => $us_data["title"]
+            ]);
 
-                $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model);
-                
-                if ($url_title_valid != false) {
-                    return $url_title_valid;
-                }
+            // Validate the new URL title, excluding current record
+            $url_title_valid = (new static)->editing_url_title_validate($global_data, $global_model, $id);
+            if ($url_title_valid != false) {
+                return $url_title_valid;
             }
         }
         
@@ -314,6 +320,7 @@ class LocaleContentControllService
     
     
     
+
     /*
     *
     * This function edit new locale and global dataase value
@@ -332,6 +339,118 @@ class LocaleContentControllService
     {
         $gloal_content = $global_model::where('id', '=', $global_id)->first();
 
+
+
+        // Handle Articles model specifically to prevent foreign key constraint violations
+        $isArticleModel = ($global_model === 'App\Models\Guide\Article') || 
+                          ($global_model === \App\Models\Guide\Article::class) ||
+                          (is_string($global_model) && str_contains($global_model, 'Article')) ||
+                          (is_object($global_model) && $global_model instanceof \App\Models\Guide\Article);
+        
+        // Handle Products model specifically to prevent foreign key constraint violations
+        $isProductModel = ($global_model === 'App\Models\Shop\Product') || 
+                          ($global_model === \App\Models\Shop\Product::class) ||
+                          (is_string($global_model) && str_contains($global_model, 'Product')) ||
+                          (is_object($global_model) && $global_model instanceof \App\Models\Shop\Product);
+        
+        if ($isArticleModel) {
+            // Delete child records first to prevent foreign key constraint violations
+            
+            // Delete spot_rocks_images
+            $spotRockImages = \App\Models\Guide\Spot_rocks_image::where('article_id', '=', $global_id)->get();
+            foreach ($spotRockImages as $spotImage) {
+                if ($spotImage->image && $image_path) {
+                    ImageControllService::image_delete('images/spot_rocks_img/', $spotImage, 'image');
+                }
+                $spotImage->delete();
+            }
+            
+            // Delete article_images (gallery images)
+            $articleImages = \App\Models\Guide\Article_image::where('article_id', '=', $global_id)->get();
+            foreach ($articleImages as $articleImage) {
+                if ($articleImage->image && $image_path) {
+                    ImageControllService::image_delete('images/article_gallery_img/', $articleImage, 'image');
+                }
+                $articleImage->delete();
+            }
+            
+
+            // For Articles, we need to handle the cascade properly
+            // Store locale IDs before deleting the global content
+            $us_content_id = $gloal_content['us'.$prefix.'_id'];
+            // $ru_content_id = $gloal_content['ru'.$prefix.'_id'];
+            $ka_content_id = $gloal_content['ka'.$prefix.'_id'];
+            
+            if($gloal_content->$image_prefix && $image_path){
+                ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
+            }
+
+            $gloal_content->delete();
+            
+            // Now delete the locale content manually since Article deletion won't cascade to locale_articles
+            // (locale_articles is not directly related to articles, it's referenced via foreign keys)
+            $us_content = $local_model::where('id', '=', $us_content_id)->first();
+            // $ru_content = $local_model::where('id', '=', $ru_content_id)->first();
+            $ka_content = $local_model::where('id', '=', $ka_content_id)->first();
+            
+            if($us_content) $us_content->delete();
+            // if($ru_content) $ru_content->delete();
+            if($ka_content) $ka_content->delete();
+            
+            return;
+        }
+        
+        if ($isProductModel) {
+            // Delete child records first to prevent foreign key constraint violations
+            
+            // Delete product_options and their associated images
+            $productOptions = \App\Models\Shop\Product_option::where('product_id', '=', $global_id)->get();
+            foreach ($productOptions as $option) {
+                // Detach from warehouses to avoid foreign key constraint violation
+                $option->warehouse()->detach();
+                
+                // Delete related order_products records to avoid foreign key constraint violation
+                \App\Models\Shop\Order_products::where('product_option_id', '=', $option->id)->delete();
+                
+                // Delete related cart records to avoid foreign key constraint violation
+                \App\Models\Shop\Cart::where('option_id', '=', $option->id)->delete();
+                
+                // Delete associated option_images
+                $optionImages = \App\Models\Shop\Option_image::where('option_id', '=', $option->id)->get();
+                foreach ($optionImages as $optionImage) {
+                    if ($optionImage->image && $image_path) {
+                        ImageControllService::image_delete('images/product_option_img/', $optionImage, 'image');
+                    }
+                    $optionImage->delete();
+                }
+                
+                $option->delete();
+            }
+            
+            // Store locale IDs before deleting the global content
+            $us_content_id = $gloal_content['us'.$prefix.'_id'];
+            // $ru_content_id = $gloal_content['ru'.$prefix.'_id'];
+            $ka_content_id = $gloal_content['ka'.$prefix.'_id'];
+            
+            if($gloal_content->$image_prefix && $image_path){
+                ImageControllService::image_delete($image_path, $gloal_content, $image_prefix);
+            }
+
+            $gloal_content->delete();
+            
+            // Now delete the locale content manually since Product deletion won't cascade to locale_products
+            $us_content = $local_model::where('id', '=', $us_content_id)->first();
+            // $ru_content = $local_model::where('id', '=', $ru_content_id)->first();
+            $ka_content = $local_model::where('id', '=', $ka_content_id)->first();
+            
+            if($us_content) $us_content->delete();
+            // if($ru_content) $ru_content->delete();
+            if($ka_content) $ka_content->delete();
+            
+            return;
+        }
+        
+        // Regular handling for other models
         $us_content = $local_model::where('id',strip_tags($gloal_content['us'.$prefix.'_id']))->first();
         // $ru_content = $local_model::where('id',strip_tags($gloal_content['ru'.$prefix.'_id']))->first();
         $ka_content = $local_model::where('id',strip_tags($gloal_content['ka'.$prefix.'_id']))->first();
@@ -363,7 +482,7 @@ class LocaleContentControllService
             return $validator->messages();
         }
     }
-    private static function local_content_validate($data)
+    private static function local_content_validate($data, $locale = null)
     {
         $validator = Validator::make($data, [
             'title' => 'required | max:190',
@@ -376,13 +495,24 @@ class LocaleContentControllService
         }
     }
 
-    private static function editing_url_title_validate($data, $gloal_model)
+    private static function editing_url_title_validate($data, $gloal_model, $current_id = null)
     {
-        $databaseName = $gloal_model::first()->getTable();
+        // Get table name from model instance to avoid issues with empty tables
+        $modelInstance = new $gloal_model;
+        $databaseName = $modelInstance->getTable();
 
-        $validator = Validator::make($data, [
-            'url_title' => 'required | max:190 | unique:'.$databaseName.',url_title',
-        ]);
+        $rules = [
+            'url_title' => 'required | max:190',
+        ];
+
+        // Add unique rule with current ID exclusion
+        if ($current_id) {
+            $rules['url_title'] .= ' | unique:'.$databaseName.',url_title,'.$current_id;
+        } else {
+            $rules['url_title'] .= ' | unique:'.$databaseName.',url_title';
+        }
+
+        $validator = Validator::make($data, $rules);
 
         if ($validator->fails()) {
             return $validator->messages();

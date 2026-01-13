@@ -8,4 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Site_social_link extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['title', 'url'];
 }

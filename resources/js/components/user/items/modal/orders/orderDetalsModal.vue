@@ -97,7 +97,7 @@ export default {
 
         get_order_detals(order_id){
                 axios
-                .get("/order/get_order_detals/"+order_id)
+                .get("/get_order/get_order_detals/"+order_id)
                 .then(response => {
                     this.activ_order_detals = response.data.order
                     // this.get_order_products(response.data.id)

@@ -108,7 +108,7 @@ export default {
         get_editing_data() {
             this.is_loading = true;
             axios
-            .get('/post/get_editing_post/' + this.post_id)
+            .get('/set_post/get_editing_post/' + this.post_id)
             .then(response => {
                 this.editing_data = response.data;
                 this.category = response.data.global_post.category;
@@ -131,10 +131,10 @@ export default {
             // formData.append('gallery_images', this.post_gallery_image);
             formData.append('image', this.post_image);
             formData.append('data', JSON.stringify(this.editing_data))
-            formData.append('global_blocks', JSON.stringify(this.global_blocks))
+            // formData.append('global_blocks', JSON.stringify(this.global_blocks))
             
             axios
-            .post('/post/edit_post/' + this.post_id, 
+            .post('/set_post/edit_post/' + this.post_id, 
                 formData,
             )
             .then(response => {
@@ -149,6 +149,12 @@ export default {
         },
         go_back(action = false) {
             this.is_back_action_query = this.$going.back(this, action);
+        },
+        update_global_post(data) {
+            this.editing_data.global_post = data;
+        },
+        update_locale_post(key, data) {
+            this.editing_data[key] = data;
         },
     }
 }

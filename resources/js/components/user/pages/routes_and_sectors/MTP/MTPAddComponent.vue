@@ -151,7 +151,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .get("/article/get_category_articles/outdoor")
+        .get("/get_article/get_category_articles/outdoor")
         .then(response => {
           this.regions = response.data
         })
@@ -162,7 +162,7 @@
 
       get_sectors_data: function(){
         axios
-        .get("../../api/sector/")
+        .get("/get_sector/get_all_sectors/")
         .then(response => {
           this.all_sectors = response.data
         })
@@ -181,7 +181,7 @@
       add_mtp: function () {
         this.is_loading = true
         axios
-        .post('../api/mtp/mtp_add', {
+        .post('/set_mtp/mtp_add', {
             data: this.data,
         })
         .then(response => {

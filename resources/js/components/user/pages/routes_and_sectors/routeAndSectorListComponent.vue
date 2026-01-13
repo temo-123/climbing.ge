@@ -36,7 +36,7 @@
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import sectorModal from "../../items/modal/tab_modals/SectorModalComponent.vue";
-    import mtpModal from "../../items/modal/tab_modals/MTPModalComponent.vue";
+    import mtpModal from "../../items/modal/tab_modals/MTPPitchSequenceModalComponent.vue";
     export default {
         components: {
             tabsComponent,
@@ -95,7 +95,7 @@
             },
             get_sectors(){
                 axios
-                .get("/sector/get_sectors_by_article_category/outdoor/")
+                .get("/get_sector/get_sectors_by_article_category/outdoor/")
                 .then(response => {
                     this.data_for_tab = [];
 
@@ -159,7 +159,7 @@
             },
             get_routes(){
                 axios
-                .get("route/get_routes_by_category_array/", { params: { categories: ['sport climbing', 'top rope', 'tred climbing', 'bouldering'] } })
+                .get("/get_route/get_routes_by_category_array/", { params: { categories: ['sport climbing', 'top rope', 'tred climbing', 'bouldering'] } })
                 .then(response => {
                     this.routes = response.data
 
@@ -224,7 +224,7 @@
             },
             get_mtp(){
                 axios
-                .get("/mtp/")
+                .get("/get_mtp/get_all_mtp/")
                 .then(response => {
                     this.mtp = response.data
 
@@ -288,7 +288,7 @@
             del_sector(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/sector/del_sector/'+id, {
+                    .post('/set_sector/del_sector/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -303,7 +303,7 @@
             del_route(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/route/del_route/'+id, {
+                    .post('/set_route/del_route/'+id, {
                         id: id,
                         _method: 'DELETE'
                     })
@@ -318,7 +318,7 @@
             del_multi_pitch(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('mtp/del_mtp/'+id, {
+                    .post('/set_mtp/del_mtp/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {
@@ -328,7 +328,7 @@
                 }
             },
             show_mtp_model(sector_id){
-                this.$refs.mtp_modal.show_mtp_modal(sector_id)
+                this.$refs.mtp_modal.show_modal(sector_id)
             },
         }
     }

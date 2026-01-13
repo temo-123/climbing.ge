@@ -127,7 +127,7 @@
                 this.q_product = {};
 
                 axios
-                .get('/get_quick_product/'+localStorage.getItem('lang')+'/'+product_id)
+                .get('/get_product/get_quick_product/'+localStorage.getItem('lang')+'/'+product_id)
                 .then(response => {
                     this.quick_product = response.data;
                     this.q_product = response.data[0] || {};

@@ -68,7 +68,7 @@
       },
       get_slider_images() {
         axios
-        .get('/head_slider/get_slides/'+this.category_prop+'/')
+        .get('/get_head_slider/get_slides/'+this.category_prop+'/')
         .then((response) => {
           this.slides = response.data;
           this.slide_count = this.slides.length;

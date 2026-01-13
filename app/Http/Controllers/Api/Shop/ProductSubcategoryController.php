@@ -22,56 +22,56 @@ class ProductSubcategoryController extends Controller
         return Product_subcategory::where("id", "=", $request->id,)->first();
     }
 
-    function create_subcategory(Request $request) {
-        $validate = $this->validation($request);
+    // function create_subcategory(Request $request) {
+    //     $validate = $this->validation($request);
 
-        if ($validate != null) {
-            return($validate);
-        }
-        else{
-            $new_product_subcategory = new Product_subcategory;
+    //     if ($validate != null) {
+    //         return($validate);
+    //     }
+    //     else{
+    //         $new_product_subcategory = new Product_subcategory;
 
-            $new_product_subcategory['us_name'] = $request->data['us_name'];
-            $new_product_subcategory['ka_name'] = $request->data['ka_name'];
+    //         $new_product_subcategory['us_name'] = $request->data['us_name'];
+    //         $new_product_subcategory['ka_name'] = $request->data['ka_name'];
 
-            $new_product_subcategory['category_id'] = $request->category_id;
+    //         $new_product_subcategory['category_id'] = $request->category_id;
 
-            $new_product_subcategory -> save();
-        }
-    }
+    //         $new_product_subcategory -> save();
+    //     }
+    // }
 
-    function edit_subcategory(Request $request) {
-        $validate = $this->validation($request);
+    // function edit_subcategory(Request $request) {
+    //     $validate = $this->validation($request);
 
-        if ($validate != null) {
-            return($validate);
-        }
-        else{
-            $editing_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
+    //     if ($validate != null) {
+    //         return($validate);
+    //     }
+    //     else{
+    //         $editing_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
 
-            $editing_product_subcategory['us_name'] = $request->data['us_name'];
-            $editing_product_subcategory['ka_name'] = $request->data['ka_name'];
+    //         $editing_product_subcategory['us_name'] = $request->data['us_name'];
+    //         $editing_product_subcategory['ka_name'] = $request->data['ka_name'];
 
-            $editing_product_subcategory -> save();
-        }
-    }
+    //         $editing_product_subcategory -> save();
+    //     }
+    // }
     
-    function del_subcategory(Request $request) {
-        $deleted_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
-        $deleted_product_subcategory -> delete();
-    }
+    // function del_subcategory(Request $request) {
+    //     $deleted_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
+    //     $deleted_product_subcategory -> delete();
+    // }
 
-    public function validation($request)
-    {
-        $validator = validator($data = $request->data, [
-            'us_name' => 'required',
-            'ka_name' => 'required',
-        ]);
+    // public function validation($request)
+    // {
+    //     $validator = validator($data = $request->data, [
+    //         'us_name' => 'required',
+    //         'ka_name' => 'required',
+    //     ]);
     
-        if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages(),
-            ], 422);
-        }
-    }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'errors' => $validator->messages(),
+    //         ], 422);
+    //     }
+    // }
 }

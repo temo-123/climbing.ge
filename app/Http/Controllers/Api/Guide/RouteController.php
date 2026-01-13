@@ -45,20 +45,184 @@ class RouteController extends Controller
             ->get();
     }
 
+
     public function routes_authers() {
         $routes = Route::get('author');
 
         $routes_authors = [];
 
         foreach ($routes as $route) {
-            array_push($routes_authors, $route->author);
+            // Split author names by the specified symbols
+            $author = trim($route->author);
+            if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                
+                // Clean up each author name (trim spaces and handle capitalization)
+                foreach ($split_authors as $split_author) {
+                    $clean_author = trim($split_author);
+                    if (!empty($clean_author)) {
+                        // Capitalize first letter of each word for consistency
+                        $clean_author = ucwords(strtolower($clean_author));
+                        array_push($routes_authors, $clean_author);
+                    }
+                }
+            }
         }
+        
         $full_routes_authors = array_diff($routes_authors, [null, "", " "]);
 
         $authors = array_count_values($full_routes_authors);
         arsort($authors);
         
         return $authors;
+    }
+
+    public function routes_authers_by_categories(Request $request) {
+        // Map frontend category values to database categories
+        $categoryMap = [
+            'sport' => 'sport climbing',
+            'boulder' => 'bouldering',
+            'ice' => 'ice climbing',
+            'dry' => 'dry tooling',
+            'mtp' => 'mtp',
+        ];
+        
+        // Reverse map for database to frontend
+        $dbToFrontendMap = [
+            'sport climbing' => 'sport',
+            'bouldering' => 'boulder',
+            'ice climbing' => 'ice',
+            'dry tooling' => 'dry',
+            'mtp' => 'mtp',
+        ];
+        
+        // Get route_categories from request body (POST) or query parameters
+        $routeCategories = $request->input('route_categories');
+        
+        // If not in body, check query parameters
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('route_categories');
+        }
+        
+        // If still null, check for 'categories' parameter
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('categories');
+        }
+        
+        // If still null, return all authors (fallback to original method)
+        if ($routeCategories === null) {
+            return $this->routes_authers();
+        }
+        
+        // Ensure it's an array
+        if (!is_array($routeCategories)) {
+            $routeCategories = [$routeCategories];
+        }
+        
+        // Map frontend categories to database categories
+        $dbCategories = [];
+        $hasMtp = false;
+        foreach ($routeCategories as $category) {
+            if (isset($categoryMap[$category])) {
+                $dbCategory = $categoryMap[$category];
+                if ($dbCategory === 'mtp') {
+                    $hasMtp = true;
+                } else {
+                    $dbCategories[] = $dbCategory;
+                }
+            }
+        }
+        
+        // Build nested structure: { AuthorName: { category: count, ... } }
+        $authorsCategories = [];
+
+        // Query routes for non-mtp categories
+        if (!empty($dbCategories)) {
+            $routes = Route::whereIn('category', $dbCategories)->get(['author', 'category']);
+
+            foreach ($routes as $route) {
+                // Get the frontend category name
+                $frontendCategory = $dbToFrontendMap[$route->category] ?? $route->category;
+                
+                // Split author names by the specified symbols
+                $author = trim($route->author);
+                if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                    // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                    $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                    
+                    // Clean up each author name (trim spaces and handle capitalization)
+                    foreach ($split_authors as $split_author) {
+                        $clean_author = trim($split_author);
+                        if (!empty($clean_author)) {
+                            // Capitalize first letter of each word for consistency
+                            $clean_author = ucwords(strtolower($clean_author));
+                            
+                            // Initialize author if not exists
+                            if (!isset($authorsCategories[$clean_author])) {
+                                $authorsCategories[$clean_author] = [];
+                            }
+                            
+                            // Initialize category for this author if not exists
+                            if (!isset($authorsCategories[$clean_author][$frontendCategory])) {
+                                $authorsCategories[$clean_author][$frontendCategory] = 0;
+                            }
+                            
+                            // Increment count
+                            $authorsCategories[$clean_author][$frontendCategory]++;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Query MTPs if 'mtp' category is requested
+        if ($hasMtp) {
+            $mtps = Mtp::get(['author']);
+
+            foreach ($mtps as $mtp) {
+                // Split author names by the specified symbols
+                $author = trim($mtp->author);
+                if (!empty($author) && $author !== ' ' && $author !== null) {
+
+                    // Split by the specified symbols: comma, hyphen, plus, ampersand, arrow
+                    $split_authors = preg_split('/,|\+|&|->|-/', $author);
+                    
+                    // Clean up each author name (trim spaces and handle capitalization)
+                    foreach ($split_authors as $split_author) {
+                        $clean_author = trim($split_author);
+                        if (!empty($clean_author)) {
+                            // Capitalize first letter of each word for consistency
+                            $clean_author = ucwords(strtolower($clean_author));
+                            
+                            // Initialize author if not exists
+                            if (!isset($authorsCategories[$clean_author])) {
+                                $authorsCategories[$clean_author] = [];
+                            }
+                            
+                            // Initialize mtp category for this author if not exists
+                            if (!isset($authorsCategories[$clean_author]['mtp'])) {
+                                $authorsCategories[$clean_author]['mtp'] = 0;
+                            }
+                            
+                            // Increment count
+                            $authorsCategories[$clean_author]['mtp']++;
+                        }
+                    }
+                }
+            }
+        }
+        
+        // Sort by total routes per author (descending)
+        uasort($authorsCategories, function($a, $b) {
+            $sumA = array_sum($a);
+            $sumB = array_sum($b);
+            return $sumB - $sumA;
+        });
+        
+        return $authorsCategories;
     }
 
     public function show($id)
@@ -85,98 +249,98 @@ class RouteController extends Controller
         return $route;
     }
 
-    public function add_route(Request $request)
-    {
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) {
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
+    // public function add_route(Request $request)
+    // {
+    //     $route_validate = $this->route_validate($request->data);
+    //     if ($route_validate != null) {
+    //         return response()->json([
+    //             $route_validate
+    //         ], 422);
+    //     }
+    //     else{
 
-            $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
-            if($sector_route_count == 0){
-                $new_route_num = 1;
-            }
-            else{
-                $new_route_num = $sector_route_count+1;
-            }
+    //         $sector_route_count = Route::where('sector_id',strip_tags($request->data['sector_id']))->count();
+    //         if($sector_route_count == 0){
+    //             $new_route_num = 1;
+    //         }
+    //         else{
+    //             $new_route_num = $sector_route_count+1;
+    //         }
 
-            // Save route data (without JSON)
-            $routeData = $request->data;
-            unset($routeData['route_json']); // Remove JSON from route data
-            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+    //         // Save route data (without JSON)
+    //         $routeData = $request->data;
+    //         unset($routeData['route_json']); // Remove JSON from route data
+    //         unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
-            $saved = Route::insertGetId($routeData);
+    //         $saved = Route::insertGetId($routeData);
 
-            // Save JSON data separately if provided
-            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
-                $jsonData = [
-                    'route_id' => $saved,
-                    'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
-                ];
-                RouteJsonController::add_route_json($jsonData);
-            }
+    //         // Save JSON data separately if provided
+    //         if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+    //             $jsonData = [
+    //                 'route_id' => $saved,
+    //                 'json' => $request->data['route_json'],
+    //                 'sector_image_id' => $request->data['sector_image_id']
+    //             ];
+    //             RouteJsonController::add_route_json($jsonData);
+    //         }
 
-            if(!$saved){
-                return response()->json(['error' => 'Error saving route'], 500);
-            }
-            else{
-                return response()->json(['success' => true, 'route_id' => $saved]);
-            }
-        }
-    }
+    //         if(!$saved){
+    //             return response()->json(['error' => 'Error saving route'], 500);
+    //         }
+    //         else{
+    //             return response()->json(['success' => true, 'route_id' => $saved]);
+    //         }
+    //     }
+    // }
 
-    public function edit_route(Request $request)
-    {
-        // dd($request->data);
-        $route_validate = $this->route_validate($request->data);
-        if ($route_validate != null) {
-            return response()->json([
-                $route_validate
-            ], 422);
-        }
-        else{
-            $route = route::where('id', '=', $request->route_id)->first();
+    // public function edit_route(Request $request)
+    // {
+    //     // dd($request->data);
+    //     $route_validate = $this->route_validate($request->data);
+    //     if ($route_validate != null) {
+    //         return response()->json([
+    //             $route_validate
+    //         ], 422);
+    //     }
+    //     else{
+    //         $route = route::where('id', '=', $request->route_id)->first();
 
-            // Save route data (without JSON)
-            $routeData = $request->data;
-            unset($routeData['route_json']); // Remove JSON from route data
-            unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+    //         // Save route data (without JSON)
+    //         $routeData = $request->data;
+    //         unset($routeData['route_json']); // Remove JSON from route data
+    //         unset($routeData['sector_image_id']); // Remove sector_image_id from route data
 
-            $saved = $route->update($routeData);
+    //         $saved = $route->update($routeData);
 
-            // Save JSON data separately if provided
-            if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
-                $jsonData = [
-                    'route_id' => $request->route_id,
-                    'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
-                ];
-                RouteJsonController::edit_route_json($jsonData);
-            }
+    //         // Save JSON data separately if provided
+    //         if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+    //             $jsonData = [
+    //                 'route_id' => $request->route_id,
+    //                 'json' => $request->data['route_json'],
+    //                 'sector_image_id' => $request->data['sector_image_id']
+    //             ];
+    //             RouteJsonController::edit_route_json($jsonData);
+    //         }
             
-            if(!$saved){
-                return response()->json([
-                    'errors' => "Saving error",
-                ], 500);
-            }
+    //         if(!$saved){
+    //             return response()->json([
+    //                 'errors' => "Saving error",
+    //             ], 500);
+    //         }
 
-            return response()->json(['success' => true]);
-        }
-    }
+    //         return response()->json(['success' => true]);
+    //     }
+    // }
 
-    public function del_route(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
+    // public function del_route(Request $request)
+    // {
+    //     $route = Route::where('id',strip_tags($request->route_id))->first();
 
-        // Delete related JSON data first to avoid foreign key constraint
-        ClimbingRoutesJson::where('route_id', $route->id)->delete();
+    //     // Delete related JSON data first to avoid foreign key constraint
+    //     ClimbingRoutesJson::where('route_id', $route->id)->delete();
 
-        $route->delete();
-    }
+    //     $route->delete();
+    // }
 
     public function get_routes_quantity(Request $request)
     {
@@ -184,19 +348,20 @@ class RouteController extends Controller
     }
 
 
-    public function get_route_editing_data(Request $request)
-    {
-        $route = Route::where('id',strip_tags($request->route_id))->first();
+    // public function get_route_editing_data(Request $request)
+    // {
+    //     $route = Route::where('id',strip_tags($request->route_id))->first();
 
-        // Fetch JSON data from the separate table
-        $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
-        if ($routeJson) {
-            $route->json = $routeJson->json;
-            $route->sector_image_id = $routeJson->sector_image_id;
-        }
+    //     // Fetch JSON data from the separate table
+    //     $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
+    //     if ($routeJson) {
+    //         $route->json = $routeJson->json;
+    //         $route->sector_image_id = $routeJson->sector_image_id;
+    //     }
 
-        return $route;
-    }
+    //     return $route;
+    // }
+
 
     public function get_related_routes_jsons(Request $request)
     {
@@ -213,6 +378,118 @@ class RouteController extends Controller
 
         // Return only the JSON data
         return $relatedJsons->pluck('json');
+    }
+
+
+
+
+    public function get_most_popular_routes($route_type)
+    {
+        // Map frontend route types to database categories
+        $categoryMap = [
+            'sport' => 'sport climbing',
+            'boulder' => 'bouldering',
+            'ice' => 'ice climbing',
+            'dry' => 'dry tooling',
+        ];
+
+        $category = $categoryMap[$route_type] ?? 'sport climbing';
+        $perPage = request('per_page', 10);
+        $minReviews = request('min_reviews', 1);
+        
+        // Validate per_page values
+        $validPerPage = [5, 10, 15, 25, 50];
+        if (!in_array($perPage, $validPerPage)) {
+            $perPage = 10;
+        }
+        
+        // Validate min_reviews
+        $minReviews = max(1, (int)$minReviews);
+        
+        $routes = Route::where('category', $category)
+            ->with(['review', 'sector', 'sector.article'])
+            ->get()
+            ->map(function ($route) {
+                $reviewCount = $route->review->count();
+                $averageStars = $reviewCount > 0 
+                    ? round($route->review->avg('stars'), 1) 
+                    : 0;
+                
+
+
+
+                // Get region and spot name through article relationship
+                $regionName = 'Unknown Region';
+                $spotName = 'Unknown Spot';
+                $articleUrlTitle = null;
+                if ($route->sector && $route->sector->article) {
+                    $article = $route->sector->article;
+                    
+                    // Get region
+                    $regions = $article->outdoor_region;
+                    if ($regions && $regions->count() > 0) {
+                        // Try us_name first, then ka_name
+                        $region = $regions->first();
+                        $regionName = $region->us_name ?: $region->ka_name ?: 'Unknown Region';
+                    }
+                    
+                    // Get spot name (article title)
+                    $localeArticle = $article->global_article_us ?: $article->global_article_ka;
+                    if ($localeArticle) {
+                        $spotName = $localeArticle->title ?: 'Unknown Spot';
+                    }
+                    
+                    // Get article URL title for navigation
+                    $articleUrlTitle = $article->url_title;
+                }
+                
+
+
+
+
+                return [
+                    'name' => $route->name ?? 'Unnamed Route',
+                    'review_count' => $reviewCount,
+                    'stars' => $averageStars,
+                    'region' => $regionName,
+                    'spot_name' => $spotName,
+                    'article_url_title' => $articleUrlTitle,
+
+                    'sector' => $route->sector->name ?? 'Unknown Sector',
+                    'route_id' => $route->id,
+                    'grade' => $route->grade,
+                    'or_grade' => $route->or_grade,
+                    'height' => $route->height,
+                    'sector_id' => $route->sector->id ?? null,
+                    'article_id' => $route->sector->article_id ?? null
+                ];
+            })
+            ->filter(function ($route) use ($minReviews) {
+                return $route['review_count'] >= $minReviews;
+            })
+            ->sortByDesc(function ($route) {
+                // Sort by stars first, then by review count
+                return [$route['stars'], $route['review_count']];
+            })
+            ->values();
+
+        // Convert to paginated collection
+        $currentPage = request('page', 1);
+        $total = $routes->count();
+        $start = ($currentPage - 1) * $perPage;
+        $paginatedRoutes = $routes->slice($start, $perPage)->values();
+        
+        return response()->json([
+            'data' => $paginatedRoutes,
+            'pagination' => [
+                'current_page' => (int)$currentPage,
+                'per_page' => (int)$perPage,
+                'total' => $total,
+                'last_page' => ceil($total / $perPage),
+                'from' => $total > 0 ? $start + 1 : 0,
+                'to' => min($start + $perPage, $total)
+            ]
+        ]);
     }
 
     public function get_route_jsons_for_sector_image(Request $request)
@@ -232,17 +509,16 @@ class RouteController extends Controller
         });
     }
 
-    private function route_validate($request)
-    {
-        $validator = Validator::make($request, [
-            'name' => 'required|max:190',
-            'grade' => 'required',
-            'sector_id' => 'required',
-        ]);
+    // private function route_validate($request)
+    // {
+    //     $validator = Validator::make($request, [
+    //         'name' => 'required|max:190',
+    //         'grade' => 'required',
+    //         'sector_id' => 'required',
+    //     ]);
         
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-    }
+    //     if ($validator->fails()) {
+    //         return response()->json($validator->errors(), 422);
+    //     }
+    // }
 }
-

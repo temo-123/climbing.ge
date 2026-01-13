@@ -40,41 +40,41 @@ class ProductOptionController extends Controller
         return $data;
     }
 
-    public function add_option(Request $request)
-    {
-        $data = json_decode($request->data, true);
+    // public function add_option(Request $request)
+    // {
+    //     $data = json_decode($request->data, true);
         
-        $data_validation = $this->option_validation($data);
+    //     $data_validation = $this->option_validation($data);
 
-        if($data_validation != null){ 
-            return response()->json([
-                $data_validation
-            ], 422);
-        }
-        else{
-            $add_option = new Product_option;
-            $add_option['name'] = $data['name'];
-            $add_option['price'] = $data['price'];
-            $add_option['currency'] = $data['currency'];
-            $add_option['discount'] = $data['discount'] ?? 0;
-            // $add_option['quantity'] = $data['quantity'];
-            $add_option['product_id'] = $request['product_id'];
-            $add_option->save();
+    //     if($data_validation != null){ 
+    //         return response()->json([
+    //             $data_validation
+    //         ], 422);
+    //     }
+    //     else{
+    //         $add_option = new Product_option;
+    //         $add_option['name'] = $data['name'];
+    //         $add_option['price'] = $data['price'];
+    //         $add_option['currency'] = $data['currency'];
+    //         $add_option['discount'] = $data['discount'] ?? 0;
+    //         // $add_option['quantity'] = $data['quantity'];
+    //         $add_option['product_id'] = $request['product_id'];
+    //         $add_option->save();
 
-            if($request->hasFile('images')){
-                // $this->add_images($request->images, $add_option->id);
-                    GalleryService::add_gallery_images(
-                        $request->images, 
-                        $add_option->id, 
-                        Option_image::class, 
-                        'image', 
-                        'option_id', 
-                        '/images/product_option_img/'
-                    );
+    //         if($request->hasFile('images')){
+    //             // $this->add_images($request->images, $add_option->id);
+    //                 GalleryService::add_gallery_images(
+    //                     $request->images, 
+    //                     $add_option->id, 
+    //                     Option_image::class, 
+    //                     'image', 
+    //                     'option_id', 
+    //                     '/images/product_option_img/'
+    //                 );
                 
-            }
-        }
-    }
+    //         }
+    //     }
+    // }
 
     // public function add_images($images, $option_id)
     // {
@@ -99,87 +99,87 @@ class ProductOptionController extends Controller
     //     }
     // }
 
-    public function get_editing_option(Request $request)
-    {
-        $option = Product_option::where('id', '=', $request->option_id)->first();
-        $data = [
-            'option' => $option,
-            'option_images' => $option->images,
-        ];
-        // dd($data);
-        return $data;
-    }
+    // public function get_editing_option(Request $request)
+    // {
+    //     $option = Product_option::where('id', '=', $request->option_id)->first();
+    //     $data = [
+    //         'option' => $option,
+    //         'option_images' => $option->images,
+    //     ];
+    //     // dd($data);
+    //     return $data;
+    // }
 
-    public function edit_option(Request $request)
-    {
-        $data = json_decode($request->data, true);
+    // public function edit_option(Request $request)
+    // {
+    //     $data = json_decode($request->data, true);
         
-        $data_validation = $this->option_validation($data);
+    //     $data_validation = $this->option_validation($data);
 
-        if($data_validation != null){   
-            return response()->json([
-                $data_validation
-            ], 422);
-        }
-        else{
-            $edit_option = Product_option::where('id', '=', $request->option_id)->first();
-            $edit_option['name'] = $data['name'];
-            $edit_option['price'] = $data['price'];
-            $edit_option['currency'] = $data['currency'];
-            $edit_option['discount'] = $data['discount'] ?? 0;
-            // $edit_option['quantity'] = $data['quantity'];
-            $edit_option->save();
+    //     if($data_validation != null){   
+    //         return response()->json([
+    //             $data_validation
+    //         ], 422);
+    //     }
+    //     else{
+    //         $edit_option = Product_option::where('id', '=', $request->option_id)->first();
+    //         $edit_option['name'] = $data['name'];
+    //         $edit_option['price'] = $data['price'];
+    //         $edit_option['currency'] = $data['currency'];
+    //         $edit_option['discount'] = $data['discount'] ?? 0;
+    //         // $edit_option['quantity'] = $data['quantity'];
+    //         $edit_option->save();
 
-            if($request->hasFile('images')){
-                // $this->add_images($request->images, $edit_option->id);
-                GalleryService::add_gallery_images(
-                    $request->images, 
-                    $edit_option->id, 
-                    Option_image::class, 
-                    'image', 
-                    'option_id', 
-                    '/images/product_option_img/'
-                );
-            }
-        }
-    }
+    //         if($request->hasFile('images')){
+    //             // $this->add_images($request->images, $edit_option->id);
+    //             GalleryService::add_gallery_images(
+    //                 $request->images, 
+    //                 $edit_option->id, 
+    //                 Option_image::class, 
+    //                 'image', 
+    //                 'option_id', 
+    //                 '/images/product_option_img/'
+    //             );
+    //         }
+    //     }
+    // }
 
-    public function del_option(Request $request)
-    {
-        $option = Product_option::where('id', '=', $request->option_id)->first();
-        $option_images_count = Option_image::where('option_id', '=', $option->id)->count();
+    // public function del_option(Request $request)
+    // {
+    //     $option = Product_option::where('id', '=', $request->option_id)->first();
+    //     $option_images_count = Option_image::where('option_id', '=', $option->id)->count();
 
-        if($option_images_count > 0){
-            $option_images = Option_image::where('option_id', '=', $option->id)->get();
-            // dd($option_images);
-            foreach ($option_images as $image) {
-                ImageControllService::image_delete('images/product_option_img/', $image, 'image');
-                $image ->delete();
-            }
-        }
-        $option ->delete();
-    }
+    //     if($option_images_count > 0){
+    //         $option_images = Option_image::where('option_id', '=', $option->id)->get();
+    //         // dd($option_images);
+    //         foreach ($option_images as $image) {
+    //             ImageControllService::image_delete('images/product_option_img/', $image, 'image');
+    //             $image ->delete();
+    //         }
+    //     }
+    //     $option ->delete();
+    // }
 
-    public function del_option_image(Request $request)
-    {
-        $option_image = Option_image::where('id', '=', $request->image_id)->first();
-        if($option_image){
-            ImageControllService::image_delete('images/product_option_img/', $option_image, 'image');
-            $option_image ->delete();
-        }
-    }
+    // public function del_option_image(Request $request)
+    // {
+    //     $option_image = Option_image::where('id', '=', $request->image_id)->first();
+    //     if($option_image){
+    //         ImageControllService::image_delete('images/product_option_img/', $option_image, 'image');
+    //         $option_image ->delete();
+    //     }
+    // }
 
-    public function option_validation($data)
-    {
-        $validator = Validator::make($data, [
-            'name' => 'required',
-            'price' => 'required | numeric',
-            'currency' => 'required',
-            'discount' => 'nullable | numeric | min:0 | max:100',
-            // 'quantity' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
+    // public function option_validation($data)
+    // {
+    //     $validator = Validator::make($data, [
+    //         'name' => 'required',
+    //         'price' => 'required | numeric',
+    //         'currency' => 'required',
+    //         'discount' => 'nullable | numeric | min:0 | max:100',
+    //         // 'quantity' => 'required',
+    //     ]);
+    //     if ($validator->fails()) {
+    //         return $validator->messages();
+    //     }
+    // }
 }

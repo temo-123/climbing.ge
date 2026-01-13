@@ -101,7 +101,7 @@
             show_sector_local_image_modal(){
                 if (!this.is_show_sector_local_image_modal) {
                     axios
-                    .get('/sector_local_img/get_sector_local_img_for_modal/' + this.$route.params.id)
+                    .get('/get_sector/get_sector_local_images/get_sector_local_img_for_modal/' + this.$route.params.id)
                     .then(response => {
                         this.sector_sector_local_image_pitchs_for_modal = response.data
                         this.availableSectors = response.data.sectors
@@ -120,7 +120,7 @@
                 }
             },
             loadLayouts() {
-                axios.get('/sector_local_img/get_layouts/' + this.$route.params.id)
+                axios.get('/get_sector/get_sector_local_images/get_layouts/' + this.$route.params.id)
                     .then(response => {
                         this.layouts = response.data.layouts
                         // Update layout names based on their sectors
@@ -149,7 +149,7 @@
                 return `Layout ${layout.id}`;
             },
             selectLayout(layoutId) {
-                axios.get('/sector_local_img/get_layout/' + layoutId)
+                axios.get('/get_sector/get_sector_local_images/get_layout/' + layoutId)
                     .then(response => {
                         const layout = response.data.layout;
                         this.canvasData = layout.json;
@@ -159,7 +159,7 @@
             },
             createLayout() {
                 if (this.selectedSectors.length > 0) {
-                    axios.post('/sector_local_img/create_layout/' + this.$route.params.id, {
+                    axios.post('/set_sector/set_sector_local_img/create_layout/' + this.$route.params.id, {
                         selectedSectors: this.selectedSectors
                     })
                         .then(response => {
@@ -185,7 +185,7 @@
             },
             saveChanges() {
                 if (this.canvasData && this.selectedSectors.length > 0) {
-                    axios.post('/sector_local_img/save_canvas_data/' + this.$route.params.id, {
+                    axios.post('/set_sector/set_sector_local_img/save_canvas_data/' + this.$route.params.id, {
                         canvasData: this.canvasData,
                         selectedSectors: this.selectedSectors
                     })

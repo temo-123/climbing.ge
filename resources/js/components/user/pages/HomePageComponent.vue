@@ -14,6 +14,8 @@
                 </div>
             </div>
 
+            <!-- <servicesListComponent /> -->
+
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -43,9 +45,13 @@
 
 <script>
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
+
+    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
+
     export default {
         components: {
             user_notifications_list,
+            servicesListComponent
         },
         data(){
             return{
@@ -60,7 +66,7 @@
         methods: {
             get_user_data(){
                 axios
-                .get('/api/auth_user')
+                .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data
                     this.get_user_queries(this.user.id)

@@ -1,24 +1,28 @@
 <template>
     <span>
-        <div class="row" v-if="sectors_and_images.local_images.length > 0">
+
+        <div class="row" v-if="sectors_and_images.local_images && sectors_and_images.local_images.length > 0">
             <div
                 v-for="spot_image in sectors_and_images.local_images"
-                :key="spot_image"
+                :key="spot_image && spot_image.id ? spot_image.id : 'img-' + Math.random()"
 
                 :class="'sector_images sector_images_' + sectors_and_images.local_images.length"
+
             >
-                <h3>{{spot_image.title}}</h3>
+                <h3>{{spot_image && spot_image.title ? spot_image.title : 'Untitled Image'}}</h3>
                 
                 <openImg
+                    v-if="spot_image && spot_image.image"
                     :img="'/public/images/sector_local_img/' + spot_image.image"
-                    :img_alt="spot_image.title"
+                    :img_alt="spot_image.title || 'Local Area Image'"
                     :img_class="'sector_local_images'"
                 />
             </div>
         </div>
         
-        <div class="row" v-if="sectors_and_images.sectors.length > 0">
-            <div v-for="sector in sectors_and_images.sectors" :key="sector" >
+
+        <div class="row" v-if="sectors_and_images.sectors && sectors_and_images.sectors.length > 0">
+            <div v-for="sector in sectors_and_images.sectors" :key="sector && sector.sector && sector.sector.id ? sector.sector.id : 'sector-' + Math.random()" >
                 <sector :sector="sector"/>
             </div>
         </div>

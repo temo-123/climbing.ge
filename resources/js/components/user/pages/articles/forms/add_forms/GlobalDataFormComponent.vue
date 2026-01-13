@@ -164,7 +164,7 @@
             get_mount_massive_data: function(category){
                 if(category == 'mount_route'){
                     axios
-                    .get("/mount/mount/")
+                    .get("/get_mount/get_all_mount/")
                     .then(response => {
                         this.mount_masive = response.data
                     })
@@ -177,7 +177,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("/outdoor/region/")
+                    .get("/get_region/get_all_outdoor_regions/")
                     .then(response => {
                         this.regions = response.data
                     })

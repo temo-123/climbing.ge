@@ -1,82 +1,104 @@
 <template>
     <stack-modal
             :show="is_show_mtp_modal"
-            title="Multi Pitch Details"
+            :title="$t('guide.route.mtp_title')"
             @close="is_show_mtp_modal = false"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{
                 visible: true,
-                title: 'Save',
+                title: $t('global.form.save'),
                 btnClass: { 'btn btn-primary': true },
             }"
             :cancelButton="{
                 visible: false,
-                title: 'Close',
+                title: $t('guide.route.close_modal'),
                 btnClass: { 'btn btn-danger': true },
             }"
         >
+
             <div class="model-body">
                 <div class="container">
-                    <div class="modal-section overview">
-                        <h2 class="section-title">{{ $t("guide.route.mtp detals") }}</h2>
-                        <div class="overview-details">
-                            <p class="route-detail">{{ $t("guide.route.name") }} - {{ mtp_detals.mtp.name }}</p>
-                            <p class="route-detail" v-if="mtp_detals.mtp.height">{{ $t("guide.route.height") }} - {{ mtp_detals.mtp.height }}</p>
+                    <!-- Loading State -->
+                    <div v-if="loading" class="text-center py-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">{{ $t('guide.route.loading_mtp_details') }}</span>
                         </div>
+                        <p class="mt-2 text-muted">{{ $t('guide.route.loading_route_details') }}</p>
                     </div>
 
-                    <div class="modal-section pitches">
-                        <h3 class="section-title">Pitches</h3>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>N</th>
-                                        <th>{{ $t("guide.route.name") }}</th>
-                                        <th>{{ $t("guide.route.height") }}</th>
-                                        <th>{{ $t("guide.route.bolts") }}</th>
-                                        <th>{{ $t("guide.route.grade fr") }}</th>
-                                        <th class="display-none-720px">
-                                            {{ $t("guide.route.grade yds") }}
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr
-                                        v-for="pitch in mtp_detals.mtp_pitchs"
-                                        :key="pitch.pitch_id"
-                                    >
-                                        <td>{{ pitch.num }}</td>
-                                        <td>{{ pitch.name }}</td>
-                                        <td>{{ pitch.height }}</td>
+                    <!-- Content State -->
+                    <div v-else>
+                        <div class="modal-section overview">
+                            <h2 class="section-title">{{ $t("guide.route.mtp detals") }}</h2>
 
-                                        <td v-if="pitch.category == 'tred'">Tred climbing</td>
-                                        <td v-else-if="pitch.category == 'sport climbing'">
-                                            <span v-if="pitch.bolts">
-                                                {{ pitch.bolts }}
-                                            </span>
-                                            <span v-else>
-                                                ?
-                                            </span>
-                                        </td>
-                                        <td v-else>?</td>
+                            <div class="overview-details">
+                                <p class="route-detail">{{ $t("guide.route.name") }} - {{ (mtp_detals && mtp_detals.mtp && mtp_detals.mtp.name) ? mtp_detals.mtp.name : $t('guide.route.route_name_not_available') }}</p>
+                                <p class="route-detail" v-if="mtp_detals && mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("guide.route.height") }} - {{ mtp_detals.mtp.height }}</p>
+                            </div>
+                        </div>
 
-                                        <td v-if="pitch.or_grade != null">
-                                            {{ pitch.grade }} /
-                                            {{ pitch.or_grade }}
-                                        </td>
-                                        <td v-else>{{ pitch.grade }}</td>
+                        <div class="modal-section pitches">
+                            <h3 class="section-title">{{ $t('guide.route.pitches') }}</h3>
+                            
+                            <!-- No pitches message -->
+                            <div v-if="!mtp_detals || !mtp_detals.mtp_pitchs || mtp_detals.mtp_pitchs.length === 0" class="text-center py-3 text-muted">
+                                <i class="fas fa-info-circle fa-2x mb-2"></i>
+                                <p>{{ $t('guide.route.no_pitch_info') }}</p>
+                            </div>
 
-                                        <td v-if="pitch.or_grade != null">
-                                            {{ lead_grade_chart(pitch.grade) }} /
-                                            {{ lead_grade_chart(pitch.or_grade) }}
-                                        </td>
-                                        <td v-else>
-                                            {{ lead_grade_chart(pitch.grade) }}
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div v-else class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>N</th>
+                                            <th>{{ $t("guide.route.name") }}</th>
+                                            <th>{{ $t("guide.route.height") }}</th>
+                                            <th>{{ $t("guide.route.bolts") }}</th>
+                                            <th>{{ $t("guide.route.grade fr") }}</th>
+                                            <th class="display-none-720px">
+                                                {{ $t("guide.route.grade yds") }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <tr
+                                            v-for="pitch in (mtp_detals && mtp_detals.mtp_pitchs ? mtp_detals.mtp_pitchs : [])"
+                                            :key="pitch && pitch.pitch_id ? pitch.pitch_id : 'pitch-' + Math.random()"
+                                        >
+
+                                            <td>{{ pitch && pitch.num !== undefined ? pitch.num : '-' }}</td>
+                                            <td>{{ pitch && pitch.name ? pitch.name : 'Loading...' }}</td>
+                                            <td>{{ pitch && pitch.height ? pitch.height : '-' }}</td>
+
+                                            <td v-if="pitch && pitch.category == 'tred'">Tred climbing</td>
+                                            <td v-else-if="pitch && pitch.category == 'sport climbing'">
+                                                <span v-if="pitch && pitch.bolts">
+                                                    {{ pitch.bolts }}
+                                                </span>
+                                                <span v-else>
+                                                    ?
+                                                </span>
+                                            </td>
+                                            <td v-else>?</td>
+
+                                            <td v-if="pitch && pitch.or_grade != null">
+                                                {{ pitch.grade || '-' }} /
+                                                {{ pitch.or_grade }}
+                                            </td>
+                                            <td v-else>{{ pitch && pitch.grade ? pitch.grade : '-' }}</td>
+
+                                            <td v-if="pitch && pitch.or_grade != null">
+                                                {{ lead_grade_chart(pitch.grade || '') }} /
+                                                {{ lead_grade_chart(pitch.or_grade) }}
+                                            </td>
+                                            <td v-else>
+                                                {{ lead_grade_chart(pitch && pitch.grade ? pitch.grade : '') }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -103,11 +125,14 @@ export default {
     props: [
         // "sector",
     ],
+
+
     data: function () {
         return {
             is_show_mtp_modal: false,
-            mtp_detals: [],
-            ModalClass: '',
+            mtp_detals: {},
+            modalClass: '',
+            loading: false,
         };
     },
     mounted() {
@@ -121,20 +146,26 @@ export default {
         boulder_grade_chart(grade_fr) {
             return this.boulder(grade_fr)
         },
+
         show_mtp_modal(id) {
             this.is_show_mtp_modal = true;
-            this.mtp_detals = [];
+            this.mtp_detals = {};
+            this.loading = true;
 
             axios
-                .get("../../api/mtp/get_mtp_for_modal/" + id)
+                .get("/get_mtp/get_mtp_for_modal/" + id)
                 .then((response) => {
                     this.mtp_detals = response.data;
-                    // this.mtp_post_list = true;
+                    this.loading = false;
                 })
-                .catch((error) => {});
+                .catch((error) => {
+                    // console.error('Error loading MTP details:', error);
+                    this.mtp_detals = {};
+                    this.loading = false;
+                });
         },
-    }
-}
+    },
+};
 </script>
 
 <style>

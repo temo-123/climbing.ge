@@ -68,7 +68,7 @@
                 this.bolderChartData = []
                 this.sportChartData = []
                 axios
-                .get("../../api/get_routes_quantity/"+this.id)
+                .get("/get_route/get_routes_quantity/"+this.id)
                 .then(response => {
                     this.bolderChartData = response.data.bouldering
                     this.sportChartData = response.data.sport_routes

@@ -12,17 +12,37 @@
                     </a>
                 </li>
 
+
                 <li v-if="this.$route.name == 'outdoor'">
                     <a @click.prevent="scrollToSection('routes')">
                         <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
-                    <ul v-if="sectors.length > 0" class="submenu">
-                        <li v-for="sector in sectors" :key="sector.sector.id">
-                            <a @click.prevent="scrollToSection('sector-' + sector.sector.id)">
-                                <span class="text-primary cursor_pointer">{{ sector.sector.name }}</span>
-                            </a>
-                        </li>
+
+
+
+                    <ul v-if="sectors && sectors.length > 0" class="submenu">
+                        <template v-for="sector in sectors">
+                            <!-- Handle direct sector objects (no local images) -->
+                            <li v-if="sector && sector.sector && sector.sector.id" :key="sector.sector.id">
+                                <a @click.prevent="scrollToSection('sector-' + sector.sector.id)">
+                                    <span class="text-primary cursor_pointer">{{ sector.sector.name || 'Unnamed Sector' }}</span>
+                                </a>
+                            </li>
+                            
+                            <!-- Handle sectors wrapped in local_images structure -->
+                            <li v-else-if="sector && sector.sectors && sector.sectors.length > 0" v-for="nestedSector in sector.sectors" :key="nestedSector.sector.id">
+                                <a v-if="nestedSector && nestedSector.sector && nestedSector.sector.id" @click.prevent="scrollToSection('sector-' + nestedSector.sector.id)">
+                                    <span class="text-primary cursor_pointer">{{ nestedSector.sector.name || 'Unnamed Sector' }}</span>
+                                </a>
+                            </li>
+                        </template>
                     </ul>
+                    <div v-else-if="sectors && sectors.length === 0" class="text-muted" style="padding-left: 20px;">
+                        <small>No sectors found</small>
+                    </div>
+                    <div v-else class="text-muted" style="padding-left: 20px;">
+                        <small>Loading sectors...</small>
+                    </div>
                 </li>
 
                 <li>
@@ -52,7 +72,7 @@
             </div>
         </div> -->
 
-        <h3 class="navbar_title display-biger-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
+        <!-- <h3 class="navbar_title display-biger-then-768px" v-if="local_businesses.length != 0">{{ $t('guide.article_right_nabar.recomended_services') }}</h3>
 
         <div class="row local_bisnes display-biger-then-768px" v-if="local_businesses.length != 0">
             <div class="col-sm-10 col-md-10" v-for="bisnes in local_businesses" :kay="bisnes.global_data.id">
@@ -73,7 +93,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
     </div>
 </template>
@@ -87,21 +107,24 @@
         data(){
             return{
                 right_navbar_class: '',
-                local_businesses: [],
+                // local_businesses: [],
                 sectors: [],
                 margin_bottom_position: 0,
                 document_body_offsetHeight: document.body.offsetHeight,
                 window_scrollY: window.scrollY,
             }
         },
+
         mounted() {
-            this.get_local_bisnes_for_article()
+            // console.log('RightMenuComponent mounted, article_id:', this.article_id);
+            // console.log('Route name:', this.$route.name);
+            // this.get_local_bisnes_for_article()
             this.get_sectors_for_article()
             this.handleScroll()
         },
         watch: {
             '$route' (to, from) {
-                this.get_local_bisnes_for_article()
+                // this.get_local_bisnes_for_article()
                 this.get_sectors_for_article()
             },
             'article_id' (newVal, oldVal) {
@@ -120,25 +143,35 @@
                 }
             },
 
-            get_local_bisnes_for_article(){
-                axios
-                .get('/bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
-                .then(response => {
-                    this.local_businesses = response.data
-                })
-                .catch(error =>{
-                })
-            },
+
+            // get_local_bisnes_for_article(){
+            //     axios
+            //     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
+            //     .then(response => {
+            //         this.local_businesses = response.data
+            //     })
+            //     .catch(error =>{
+            //     })
+            // },
 
             get_sectors_for_article(){
                 if (this.article_id) {
+                    const url = '/get_sector/get_sector_and_routes/' + this.article_id;
+                    
                     axios
-                    .get('/sector/get_sector_and_routes/' + this.article_id)
+                    .get(url)
                     .then(response => {
-                        this.sectors = response.data
+                        if (response.data && Array.isArray(response.data)) {
+                            this.sectors = response.data;
+                        } else {
+                            this.sectors = [];
+                        }
                     })
                     .catch(error =>{
+                        this.sectors = [];
                     })
+                } else {
+                    this.sectors = [];
                 }
             },
 

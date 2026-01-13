@@ -179,7 +179,7 @@
         methods: {
             get_mount_massive_data(){
                 axios
-                .get("/mount/mount/")
+                .get("/get_mount/get_all_mount/")
                 .then(response => {
                     this.mount_masive = response.data
                 })
@@ -191,7 +191,8 @@
             get_regions(){
                 axios
                 // .get('/outdoor/regions/'+localStorage.getItem('lang'))
-                .get("/outdoor/region/")
+                // .get("/outdoor/region/")
+                .get("/get_region/get_all_outdoor_regions/")
                 .then(response => {
                     this.regions = response.data
                 })

@@ -2,7 +2,7 @@
     <stack-modal
                 :show="is_order_region_edit_model"
                 title="Edit order region"
-                @close="close_editing_modal"
+                @close="close_modal"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
@@ -55,33 +55,31 @@
             }
         },
         methods: {
-            open_editing_modal(editing_info){
-                this.editing_data.region = editing_info.region
-                this.editing_data.shiping_price = editing_info.shiping_price
-                this.editing_data.free_shiping_price_after = editing_info.free_shiping_price_after
-                this.editing_data.id = editing_info.id
-
+            show_modal(editing_info = null){
+                if (editing_info) {
+                    this.editing_data.id = editing_info.id || ''
+                    this.editing_data.region = editing_info.region || ''
+                    this.editing_data.shiping_price = editing_info.shiping_price || ''
+                    this.editing_data.free_shiping_price_after = editing_info.free_shiping_price_after || ''
+                }
                 this.is_order_region_edit_model = true
             },
-            close_editing_modal(){
-                if(confirm('Are you sure, you want close form? All data whil deleted!')){
-                    this.editing_data.region = ''
-                    this.editing_data.shiping_price = ''
-                    this.editing_data.free_shiping_price_after = ''
-                    this.editing_data.id = 0
-
-                    this.is_order_region_edit_model = false
-                }
+            close_modal(){
+                this.editing_data.id = ''
+                this.editing_data.region = ''
+                this.editing_data.shiping_price = ''
+                this.editing_data.free_shiping_price_after = ''
+                this.is_order_region_edit_model = false
             },
             edit_region(){
                 axios
-                .post('/shiped_region/edit_region/'+this.editing_data.id, {
+                .post('/set_shiped_region/edit_region/'+this.editing_data.id, {
                     editing_data: this.editing_data,
                 })
                 .then(Response => {
-                    this.is_order_region_edit_model = false
-                    alert('Editing socsesful')
-                    this.$emit('restart')
+                    this.close_modal()
+
+                    this.$emit('update')
                 })
                 .catch(error => console.log(error))
             },

@@ -1,7 +1,7 @@
 <template>
     <stack-modal
             :show="is_show_modal"
-            title="Route Feedbacks"
+            :title="$t('guide.route.all_feedbacks_title')"
             @close="close_route_review_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
@@ -112,7 +112,7 @@ export default {
             this.is_loading = true
 
             axios
-            .get("/route_review/get_all_route_reviews/" + this.route_id)
+            .get("/get_route/get_route_review/get_all_route_reviews/" + this.route_id)
             .then((response) => {
                 this.reviews = response.data
                 this.is_show_modal = true;

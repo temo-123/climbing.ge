@@ -18,6 +18,7 @@ use LanguageDetection\Language;
 
 class AppServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application services.
      *

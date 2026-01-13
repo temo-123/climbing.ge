@@ -63,7 +63,7 @@
             get_warehouses_data: function(){
                 this.data_for_tab = []
                 axios
-                .get("/warehouse/get_warehouses")
+                .get("/get_warehouse/get_warehouses")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -120,7 +120,7 @@
             del_warehouse(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/warehouse/del_warehouse/'+id, {
+                    .post('/set_warehouse/del_warehouse/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

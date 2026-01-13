@@ -81,28 +81,28 @@ class FilmsController extends Controller
         }
     }
 
-    public function add_to_faworite(Request $request)
-    {
-        // dd(Auth::user());
-        if (Auth::user()) {
-            if(Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->count() > 0){
-                return 'this film are in faworite';
-            }
-            else{
-                $faworit = new Favorite_film();
+    // public function add_to_faworite(Request $request)
+    // {
+    //     // dd(Auth::user());
+    //     if (Auth::user()) {
+    //         if(Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->count() > 0){
+    //             return 'this film are in faworite';
+    //         }
+    //         else{
+    //             $faworit = new Favorite_film();
             
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['film_id'] = $request->film_id;
+    //             $faworit['user_id'] = Auth::user()->id;
+    //             $faworit['film_id'] = $request->film_id;
                 
-                $faworit -> save();
+    //             $faworit -> save();
 
-                return 'film eded socsesful';
-            }
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
+    //             return 'film eded socsesful';
+    //         }
+    //     }
+    //     else{
+    //         return 'Plees login!';
+    //     }
+    // }
 
     public function get_faworite_film_list(Request $request)
     {
@@ -121,16 +121,16 @@ class FilmsController extends Controller
         }
     }
 
-    public function del_from_faworite(Request $request)
-    {
-        if (Auth::user()) {
-            $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->first();
-            $fav_film ->delete();
-        }
-        else{
-            return 'Plees login!';
-        }
-    }
+    // public function del_from_faworite(Request $request)
+    // {
+    //     if (Auth::user()) {
+    //         $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->where('film_id', '=', $request->film_id)->first();
+    //         $fav_film ->delete();
+    //     }
+    //     else{
+    //         return 'Plees login!';
+    //     }
+    // }
 
     public function films_search(Request $request)
     {
@@ -164,10 +164,10 @@ class FilmsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     //
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -175,53 +175,53 @@ class FilmsController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        //
-    }
+    // public function store(Request $request)
+    // {
+    //     //
+    // }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function show($id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    // /**
+    //  * Show the form for editing the specified resource.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function edit($id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+    // /**
+    //  * Update the specified resource in storage.
+    //  *
+    //  * @param  \Illuminate\Http\Request  $request
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function update(Request $request, $id)
+    // {
+    //     //
+    // }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy($id)
+    // {
+    //     //
+    // }
 }

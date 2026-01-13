@@ -94,7 +94,7 @@
             },
             get_all_tasks_category(){
                 axios
-                .get("/task/task_category/get_all_task_categories/")
+                .get("/get_task/task_category/get_all_task_categories/")
                 .then(response => {
                     this.tasks_categories = response.data
                 })
@@ -104,7 +104,7 @@
             }, 
             get_users(){
                 axios
-                .get("/user/get_worker_users/")
+                .get("/get_user/get_worker_users/")
                 .then(response => {
                     this.users = response.data
                 })
@@ -115,7 +115,7 @@
             create_task(){
                 this.is_loading = true
                 axios
-                .post('/task/create_task/', {
+                .post('/set_task/create_task/', {
                     data: this.data,
 
                     _method: 'Post'

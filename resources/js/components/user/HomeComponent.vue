@@ -43,7 +43,7 @@ export default {
     methods: {
         get_user_data: function(){
         axios
-            .get("/user/get_auth_user_permissions/")
+            .get("/get_user/get_auth_user_permissions/")
             .then(response => {
                 this.$ability.update(
                     response.data
@@ -58,7 +58,7 @@ export default {
     watch: {
         $route(to, from) {
             window.scrollTo(0, 0);
-            this.get_user_data()
+            // this.get_user_data()
         },
     },
 };

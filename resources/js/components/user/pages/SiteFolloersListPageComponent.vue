@@ -61,7 +61,7 @@
             get_site_followers(){
                 this.data_for_tab = []
                 axios
-                .get("/follow/following_users_list/")
+                .get("/get_follow/following_users_list/")
                 .then(response => {
                     this.users = response.data
                     this.data_for_tab.push
@@ -110,7 +110,7 @@
             del_site_followers(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('/follow/del_follower/'+id, {
+                    .post('/set_follow/del_follower/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

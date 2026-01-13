@@ -36,7 +36,7 @@
                         <ul class="dropdown-menu shadows search_window" role="menu">
                             <li>
                                 <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="Search product. (English words only!)" autocomplete="off" autofocus="autofocus" type="text" lang="en">
+                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" :placeholder="$t('blog.search.placeholder')" autocomplete="off" autofocus="autofocus" type="text" lang="en">
                                 </form>
                                 <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
                                     <span class="glyphicon glyphicon-search"></span>

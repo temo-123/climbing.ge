@@ -56,14 +56,11 @@
                         <thead>
                             <tr>
                                 <th>Option id</th>
-                                <th>|</th>
-
+                                <th>image</th>
                                 <th>Option name</th>
-                                <th>|</th>
-
+                                <th>Price</th>
+                                <th>Discount</th>
                                 <th>Edit</th>
-                                <th>|</th>
-
                                 <th>Delite</th>
                             </tr>
                         </thead>
@@ -72,15 +69,21 @@
                             <tr v-for="option in product_options" :key="option.id">
 
                                 <td>{{ option.id }}</td>
-                                <td>|</td>
-
+                                <td>
+                                    <img v-if="option.images && option.images.length > 0" 
+                                         :src="'../../../../images/product_option_img/' + option.images[0].image" 
+                                         :alt="option.name"
+                                         style="height: 8em; object-fit: cover;">
+                                    <span v-else>No image</span>
+                                </td>
                                 <td>{{ option.name }} </td>
-                                <td>|</td>
+                                <td>{{ option.price }} </td>
+                                <td>{{ option.discount }} </td>
+
                                 <td>
                                     <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="edit_option_modal(option.id)">Edit</button>
                                     <img v-if="is_loading_editing_modal" :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                                 </td>
-                                <td>|</td>
                                 <td>
                                     <button type="submit" class="btn btn-danger" @click="del_option(option.id)">Delete</button>
                                 </td>
@@ -319,7 +322,7 @@
         methods: {
             get_activ_product_options(){
                 axios
-                .get('/product_option/get_activ_product_options/'+this.$route.params.id)
+                .get('/set_product/set_product_option/get_product_options_for_editing/'+this.$route.params.id)
                 .then((response)=> { 
                     this.product_options = response.data.options
                     this.product = response.data.product
@@ -349,7 +352,7 @@
                 this.is_loading_editing_modal = true
 
                 axios
-                .get("/product_option/get_editing_option/"+option_id)
+                .get("/set_product/set_product_option/get_editing_product_option/"+option_id)
                 .then(response => {
                     this.is_edit_option_modal = true
 
@@ -390,7 +393,7 @@
                 formData.append('data', JSON.stringify(this.editing_data))
                 
                 axios
-                .post("/product_option/edit_option/"+this.editing_option_id, 
+                .post("/set_product/set_product_option/edit_option/"+this.editing_option_id, 
                     formData
                 )
                 .then(response => {
@@ -440,7 +443,7 @@
             del_option(category_id){
                 if(confirm('Are you sure, you want delite this option?')){
                     axios
-                    .delete("/product_option/del_option/"+category_id)
+                    .delete("/set_product/set_product_option/del_option/"+category_id)
                     .then(response => {
                         this.get_activ_product_options()
                     })
@@ -452,7 +455,7 @@
             del_option_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("/product_option/del_option_image/"+image_id)
+                    .delete("/set_product/set_product_option/del_option_image/"+image_id)
                     .then(response => {
                         this.get_editing_option(this.editing_option_id)
                     })
@@ -477,7 +480,7 @@
                 formData.append('product_id', this.$route.params.id)
                 
                 axios
-                .post("/product_option/add_option/", 
+                .post("/set_product/set_product_option/add_option/", 
                     formData
                 )
                 .then(response => {

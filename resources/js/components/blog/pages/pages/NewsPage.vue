@@ -20,7 +20,7 @@
                 </article>
               </div>
               <div v-else>
-                <p>News not found.</p>
+                <p>{{ $t('blog.loading.news_not_found') }}</p>
               </div>
             </div>
           </div>
@@ -58,7 +58,7 @@
     methods: {
       fetchnews() {
         // const newsId = this.$route.params.id
-        axios.get(`/post/get_news/${this.$route.params.url_title}`)
+        axios.get(`/get_post/get_news/${this.$route.params.url_title}`)
           .then(response => {
             this.news = response.data
           })

@@ -164,7 +164,15 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr v-for="route in sector.sport_routes" :key="route.id">
+
+
+
+                <tr 
+                    v-for="route in sector.sport_routes" 
+                    :key="route.id" 
+                    :data-route-id="route.id"
+                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                >
                     <td>{{ route.num }}</td>
                     <td @click="show_route_modal(route.id)">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
@@ -193,8 +201,8 @@
                     <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
                     <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 120%"
-                            ><i class="fa fa-info" aria-hidden="true"></i
+                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
+                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
                 </tr>
@@ -216,7 +224,15 @@
                 </tr>
             </tbody>
             <tbody>
-                <tr v-for="route in sector.boulder_route" :key="route.id">
+
+
+
+                <tr 
+                    v-for="route in sector.boulder_route" 
+                    :key="route.id" 
+                    :data-route-id="route.id"
+                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                >
                     <td>{{ route.num }}</td>
                     <td @click="show_route_modal(route.id)">
                         {{ route.name }}
@@ -237,8 +253,8 @@
                     <td class="display-none-720px" v-else>{{ route.grade }}</td>
 
                     <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 120%"
-                            ><i class="fa fa-info" aria-hidden="true"></i
+                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
+                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
                 </tr>
@@ -264,6 +280,7 @@
                     @click="show_mtp_madel(mtp.mtp_id)"
                     data-toggle="modal"
                     data-target="#squarespaceModal_mtp_info_"
+                    style="margin-top: -5%; font-size: 150%; cursor: pointer;"
                 >
                     <h4><strong>More information</strong></h4>
                 </a>
@@ -287,9 +304,12 @@
                     </tr>
                 </tbody>
                 <tbody>
+
                     <tr
                         v-for="pitch in mtp.mtp_pitchs"
                         :key="pitch.pitch_id"
+                        :data-route-id="pitch.pitch_id"
+                        :class="isRouteActive(pitch.pitch_id) ? 'route-active' : ''"
                     >
                         <td>{{ pitch.num }}</td>
                         <td>{{ pitch.name }}</td>
@@ -383,6 +403,7 @@ export default {
     props: [
         "sector",
     ],
+
     data: function () {
         return {
             // climbing_sector: [],
@@ -398,6 +419,7 @@ export default {
     mounted() {
         // this.get_spot_rocks_images();
     },
+
     methods: {
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
@@ -405,6 +427,22 @@ export default {
 
         boulder_grade_chart(grade_fr) {
             return this.boulder(grade_fr)
+        },
+
+
+
+        isRouteActive(routeId) {
+            // Check if the current route ID matches the route parameter from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const routeParam = urlParams.get('route');
+            const sectorParam = urlParams.get('sector');
+            
+            // Only highlight if both sector and route match
+            const currentSectorId = this.sector.sector.id.toString();
+            
+            return routeParam && sectorParam && 
+                   routeParam === routeId.toString() && 
+                   sectorParam === currentSectorId;
         },
 
         show_route_all_review_modal(route_id){
@@ -428,6 +466,12 @@ export default {
 
 <style>
 @media (max-width: 767px) {
+    /* table {
+        display: block;
+        overflow-x: scroll;
+    } */
+}
+@media (max-width: 567px) {
     table {
         display: block;
         overflow-x: scroll;
@@ -527,7 +571,35 @@ h2 {
     cursor: pointer;
 }
 
+
 .show_sector_canvas_modal_link {
     float: right;
+}
+
+
+
+
+
+
+
+/* Active route highlighting - no layout shift */
+.route-active {
+    background-color: #f0f8ff !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.route-active td {
+    background-color: inherit !important;
+    color: #495057 !important;
+}
+
+.route-active:hover {
+    background-color: #e6f3ff !important;
+}
+
+/* Table hover effects */
+.table-hover tbody tr:hover {
+    background-color: rgba(23, 162, 184, 0.05) !important;
+    transition: background-color 0.2s ease !important;
 }
 </style>

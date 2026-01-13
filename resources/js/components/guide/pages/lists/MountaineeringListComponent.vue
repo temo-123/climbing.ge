@@ -127,7 +127,7 @@
                 this.mount_routes_by_masiv = []
                 axios
                 // .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
-                .get("/mount_route/get_filtred_mount_routes/" + localStorage.getItem('lang') + '/' + id + '/' + 1)
+                .get("/get_mount_route/get_filtred_mount_routes/" + localStorage.getItem('lang') + '/' + id + '/' + 1)
                 .then(response => {
                     this.mount_routes = response.data
                 })
@@ -141,7 +141,7 @@
                 this.mount_route_loading = true
                 this.mount_routes = []
                 axios
-                .get('/mount_route/get_mount_routes_by_maunt/'+localStorage.getItem('lang'))
+                .get('/get_mount_route/get_mount_routes_by_maunt/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mount_routes_by_masiv = response.data
                     // this.filter_mount_routes()
@@ -163,7 +163,7 @@
 
             get_mounts(){
                 axios
-                .get('/mounts/'+localStorage.getItem('lang'))
+                .get('/get_mount/get_locale_mounts/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mounts = response.data
                 })
@@ -175,7 +175,7 @@
                 if (this.filter_mount != 'all' || this.filter_mount != 'All') {
                     this.selected_mount_data = []
                     axios 
-                    .get('/mount/'+localStorage.getItem('lang')+'/'+mount_masiv_id)
+                    .get('/get_mount/'+localStorage.getItem('lang')+'/'+mount_masiv_id)
                     .then(response => {
                         this.selected_mount_data = response.data[0]
                     })

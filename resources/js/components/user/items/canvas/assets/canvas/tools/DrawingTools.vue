@@ -163,6 +163,137 @@ export default {
             }
 
             return rect;
+        },
+
+        // New drawing tools
+        add_circle(event) {
+            this.layerCounters.circle = (this.layerCounters.circle || 0) + 1;
+            const circle = new paper.Path.Circle({
+                center: event.point,
+                radius: 1,
+                strokeColor: '#ff0000',
+                strokeWidth: 3,
+                fillColor: null,
+                name: `circle ${this.layerCounters.circle}`
+            });
+
+            circle.data = { isCircle: true, center: event.point };
+            this.path = circle;
+
+            if (this.group) {
+                this.group.addChild(circle);
+            }
+
+            return circle;
+        },
+
+        add_circle_at_point(center, radius) {
+            this.layerCounters.circle = (this.layerCounters.circle || 0) + 1;
+            const circle = new paper.Path.Circle({
+                center: center,
+                radius: radius,
+                strokeColor: '#ff0000',
+                strokeWidth: 3,
+                fillColor: null,
+                name: `circle ${this.layerCounters.circle}`
+            });
+
+            return circle;
+        },
+
+        add_ellipse(event) {
+            this.layerCounters.ellipse = (this.layerCounters.ellipse || 0) + 1;
+            const ellipse = new paper.Path.Ellipse({
+                point: event.point,
+                size: [1, 1],
+                strokeColor: '#ff0000',
+                strokeWidth: 3,
+                fillColor: null,
+                name: `ellipse ${this.layerCounters.ellipse}`
+            });
+
+            ellipse.data = { isEllipse: true, startPoint: event.point };
+            this.path = ellipse;
+
+            if (this.group) {
+                this.group.addChild(ellipse);
+            }
+
+            return ellipse;
+        },
+
+        add_ellipse_at_point(startPoint, width, height) {
+            this.layerCounters.ellipse = (this.layerCounters.ellipse || 0) + 1;
+            const ellipse = new paper.Path.Ellipse({
+                point: startPoint,
+                size: [width, height],
+                strokeColor: '#ff0000',
+                strokeWidth: 3,
+                fillColor: null,
+                name: `ellipse ${this.layerCounters.ellipse}`
+            });
+
+            return ellipse;
+        },
+
+        add_polygon(event) {
+            this.layerCounters.polygon = (this.layerCounters.polygon || 0) + 1;
+            // Start with a triangle as default
+            const sides = 3;
+            const radius = 30;
+            const points = [];
+
+            for (let i = 0; i < sides; i++) {
+                const angle = (i / sides) * Math.PI * 2;
+                const x = event.point.x + Math.cos(angle) * radius;
+                const y = event.point.y + Math.sin(angle) * radius;
+                points.push(new paper.Point(x, y));
+            }
+
+            const polygon = new paper.Path({
+                segments: points,
+                closed: true,
+                strokeColor: '#ff0000',
+                strokeWidth: 3,
+                fillColor: null,
+                name: `polygon ${this.layerCounters.polygon}`
+            });
+
+            polygon.data = { isPolygon: true };
+            this.path = polygon;
+
+            if (this.group) {
+                this.group.addChild(polygon);
+            }
+
+            return polygon;
+        },
+
+        update_polygon_preview(mousePoint) {
+            // This would be complex to implement fully, for now just keep the initial polygon
+        },
+
+        finish_polygon(event) {
+            // Polygon is already created in add_polygon
+        },
+
+        add_text(event) {
+            this.layerCounters.text = (this.layerCounters.text || 0) + 1;
+            const text = new paper.PointText({
+                point: event.point,
+                content: 'Text',
+                fillColor: '#ff0000',
+                fontFamily: 'Arial',
+                fontSize: 16,
+                justification: 'center',
+                name: `text ${this.layerCounters.text}`
+            });
+
+            if (this.group) {
+                this.group.addChild(text);
+            }
+
+            return text;
         }
     }
 }

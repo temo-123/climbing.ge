@@ -109,10 +109,10 @@ class MountRouteController extends Controller
         return Mount_route_image::where('article_id', '=', $request->article_id)->get();
     }
 
-    public function del_mount_route_image(Request $request)
-    {   
-        $image = Mount_route_image::where('id', '=', $request->image_id)->first();
-        ImageControllService::image_delete('images/mount_route_description_img/', $image, 'image');
-        $image ->delete();
-    }
+    // public function del_mount_route_image(Request $request)
+    // {   
+    //     $image = Mount_route_image::where('id', '=', $request->image_id)->first();
+    //     ImageControllService::image_delete('images/mount_route_description_img/', $image, 'image');
+    //     $image ->delete();
+    // }
 }

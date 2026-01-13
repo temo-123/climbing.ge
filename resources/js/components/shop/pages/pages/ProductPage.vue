@@ -410,7 +410,7 @@
                 this.clear_product_data()
                 this.is_loading = true
                 axios
-                .get('/page_product/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('/get_product/get_local_product_in_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.product = response.data
 

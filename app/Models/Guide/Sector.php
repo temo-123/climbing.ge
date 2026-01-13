@@ -1,8 +1,14 @@
 <?php
 
+
 namespace App\Models\Guide;
 
+
+
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Guide\Sector_local_image_sector;
+use App\Models\Guide\Sector_image;
+use App\Models\Guide\SectorLocalImagesJson;
 
 class Sector extends Model
 {
@@ -10,6 +16,8 @@ class Sector extends Model
     protected $fillable = [
         "name",
         "text",
+        "ka_description",
+        "us_description",
 
         'all_day_in_shade',
         'all_day_in_sun',
@@ -18,10 +26,12 @@ class Sector extends Model
         'in_shade_after_10',
         'in_shade_after_15',
 
+
         'slabby',
         'vertical',
         'roof',
-        'owerhang',
+        'overhang',
+        'is_helmet',
 
         "article_id",
     ];
@@ -69,7 +79,7 @@ class Sector extends Model
 
 	public function sector_local_image_relation()
 	{
-        return $this->hasMany(sector_local_image_sector::class, 'sector_id', 'id');
+        return $this->hasMany(Sector_local_image_sector::class, 'sector_id', 'id');
 	}
 
     public function sector_local_images_jsons()

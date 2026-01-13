@@ -15,18 +15,23 @@ use App\Services\MountSystemService;
 
 class ArticlesService extends LocaleContentService
 {
+
     public static function get_locale_article_use_locale($global_article, $locale='en'){
         $localed_articles = (new static)->get_locale_content_use_locale($global_article, Locale_article::class, '_article_id', $locale);
 
-        return $articles = (new static)->get_article_additional_content($localed_articles, $locale);
-        // return $articles;
+        $articles = (new static)->get_article_additional_content($localed_articles, $locale);
+        
+        return $articles;
     }
+
+
 
     private static function get_article_additional_content($localed_articles, $locale = 'en') {
         $new_arr = [];
         $looped = 0;
+        
         foreach ($localed_articles as $article) {
-            if($article['global_data']['category'] == "mount_route"){
+            if(isset($article['global_data']) && $article['global_data']['category'] == "mount_route"){
                 $looped++;
                 $act_article = Article::where('id', '=', $article['global_data']['id'])->first();
 
@@ -50,6 +55,12 @@ class ArticlesService extends LocaleContentService
                         // 'mount_masive'=>$local_mount[0]['locale_data']['title']
                     ]);
                 }
+            } else {
+                // For non-mount_route articles, ensure they have the proper structure
+                array_push($new_arr, [
+                    "locale_data"=>$article['locale_data'] ?? null, 
+                    "global_data"=>$article['global_data'] ?? $article
+                ]);
             }
         }
 

@@ -92,7 +92,7 @@ export default {
         get_team_member_status(){
             this.is_loading = true
             axios
-            .get("/user/team/get_member_status/" + this.user_id)
+            .get("/get_user/team/get_member_status/" + this.user_id)
             .then(response => {
                 this.is_member_editing_modal = true
 
@@ -104,7 +104,7 @@ export default {
         edit_team_member(is_back = false){
             this.is_loading = true
             axios
-                .post("/user/team/edit_member_status/" + this.user_id, {
+                .post("/set_user/team/edit_member_status/" + this.user_id, {
                     is_team_member: this.data.is_team_member,
                     member_status: this.data.member_status,
                 })

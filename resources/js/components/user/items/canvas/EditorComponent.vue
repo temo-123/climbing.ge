@@ -1,7 +1,24 @@
 <template>
     <div>
-        <div class="row">
-            <div class="col-md-2">
+        <!-- Toolbar and Color Controls at the top -->
+        <div class="row mb-3">
+            <div class="col-12">
+                <!-- Color and Stroke Controls -->
+                <div class="d-flex align-items-center mb-2" style="gap: 15px;">
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Stroke Color:</label>
+                        <input type="color" :value="currentStrokeColor" @input="handleColorChange('stroke', $event.target.value)" class="form-control form-control-sm" style="width: 50px; height: 30px; padding: 0; border: 1px solid #ced4da;">
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Fill Color:</label>
+                        <input type="color" :value="currentFillColor || '#ffffff'" @input="handleColorChange('fill', $event.target.value)" class="form-control form-control-sm" style="width: 50px; height: 30px; padding: 0; border: 1px solid #ced4da;">
+                    </div>
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Stroke Width: {{ strokeWidth }}</label>
+                        <input type="range" min="1" max="20" :value="strokeWidth" @input="handleStrokeWidthChange(parseInt($event.target.value))" class="form-control form-control-sm" style="width: 100px;">
+                    </div>
+                </div>
+
                 <ToolbarComponent
                     :action="action"
                     :history-length="history.length"
@@ -17,10 +34,24 @@
                     @eraser="handleEraser"
                     @erase_segment="handleEraseSegment"
                     @move="handleMove"
+                    @zoom-in="handleZoomIn"
+                    @zoom-out="handleZoomOut"
+                    @pan="handlePan"
+                    @circle="handleCircle"
+                    @ellipse="handleEllipse"
+                    @polygon="handlePolygon"
+                    @text="handleText"
+                    @selection="handleSelection"
+                    @export-png="handleExportPNG"
+                    @export-svg="handleExportSVG"
+                    @save-image="handleSaveImage"
                 />
             </div>
+        </div>
 
-            <div class="col-md-10">
+        <!-- Main content area -->
+        <div class="row">
+            <div class="col-12">
                 <CanvasContainerComponent
                     :action="action"
                     :json_prop="json_prop"
@@ -56,6 +87,10 @@
                     @cancel-editing-layer-name="cancelEditingLayerName"
                     @finish-editing-child-name="finishEditingChildName"
                     @cancel-editing-child-name="cancelEditingChildName"
+                    @finish-editing-text="finishEditingText"
+                    @cancel-editing-text="cancelEditingText"
+                    @finish-editing-child-text="finishEditingChildText"
+                    @cancel-editing-child-text="cancelEditingChildText"
                 />
             </div>
         </div>
@@ -103,7 +138,16 @@ export default {
                 show: false,
                 layer: null,
                 targetGroup: null
-            }
+            },
+            // New properties for enhanced features
+            currentStrokeColor: '#ff0000',
+            currentFillColor: null,
+            strokeWidth: 3,
+            zoomLevel: 1,
+            panOffset: { x: 0, y: 0 },
+            selectedItems: [], // For multi-selection
+            isPanning: false,
+            panStartPoint: null
         }),
         mounted() {
             if (this.image_prop) {
@@ -116,6 +160,14 @@ export default {
                     this.updateLayersList();
                 }, 100);
             });
+
+            // Add keyboard event listeners
+            window.addEventListener('keydown', this.handleKeyDown);
+        },
+
+        beforeDestroy() {
+            // Remove keyboard event listeners
+            window.removeEventListener('keydown', this.handleKeyDown);
         },
         updated() {
             // Also update layers when component updates
@@ -210,6 +262,41 @@ export default {
                 this.action = 8;
             },
 
+            // New toolbar event handlers
+            handleZoomIn() {
+                this.$refs.canvasContainer.zoomIn();
+            },
+
+            handleZoomOut() {
+                this.$refs.canvasContainer.zoomOut();
+            },
+
+            handlePan() {
+                this.action = 9;
+            },
+
+            handleCircle() {
+                this.action = 10;
+            },
+
+            handleEllipse() {
+                this.action = 11;
+            },
+
+            handlePolygon() {
+                this.action = 12;
+            },
+
+            handleText() {
+                this.action = 13;
+            },
+
+            handleSelection() {
+                this.action = 14;
+            },
+
+            // Export methods are now handled directly in the new methods below
+
             handleUndo() {
                 this.$refs.canvasContainer.undoLastAction();
             },
@@ -256,36 +343,40 @@ export default {
                     });
                     this.layers = [];
                     scope.project.layers.forEach(layer => {
-                        layer.children.forEach(item => {
-                            if (item.name && item.name.startsWith('group ')) {
-                                // Handle groups: add the group itself and its children
-                                this.layers.push({
-                                    name: item.name || 'unnamed',
-                                    displayName: item.name ? item.name.replace('group ', '') : 'unnamed',
-                                    visible: item.visible !== false,
-                                    locked: item.locked || false,
-                                    layerName: layer.name,
-                                    isGroup: true,
-                                    expanded: expandedStates[item.name] || false,
-                                    children: item.children.map(child => ({
-                                        name: child.name || 'unnamed',
-                                        displayName: child.name || 'unnamed',
-                                        visible: child.visible !== false,
-                                        locked: child.locked || false,
-                                        parentGroup: item.name
-                                    }))
-                                });
-                            } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
-                                // Only add non-group items or items not already included in groups
-                                this.layers.push({
-                                    name: item.name || 'unnamed',
-                                    displayName: item.name || 'unnamed',
-                                    visible: item.visible !== false,
-                                    locked: item.locked || false,
-                                    layerName: layer.name
-                                });
-                            }
-                        });
+                                    layer.children.forEach(item => {
+                                        if (item.name && item.name.startsWith('group ')) {
+                                            // Handle groups: add the group itself and its children
+                                            this.layers.push({
+                                                name: item.name || 'unnamed',
+                                                displayName: item.name ? item.name.replace('group ', '') : 'unnamed',
+                                                visible: item.visible !== false,
+                                                locked: item.locked || false,
+                                                layerName: layer.name,
+                                                isGroup: true,
+                                                expanded: expandedStates[item.name] || false,
+                                                children: item.children.map(child => ({
+                                                    name: child.name || 'unnamed',
+                                                    displayName: child.name || 'unnamed',
+                                                    visible: child.visible !== false,
+                                                    locked: child.locked || false,
+                                                    parentGroup: item.name,
+                                                    isText: child instanceof paper.PointText || (child.name && child.name.startsWith('text ')),
+                                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null)
+                                                }))
+                                            });
+                                        } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
+                                            // Only add non-group items or items not already included in groups
+                                            this.layers.push({
+                                                name: item.name || 'unnamed',
+                                                displayName: item.name || 'unnamed',
+                                                visible: item.visible !== false,
+                                                locked: item.locked || false,
+                                                layerName: layer.name,
+                                                isText: item instanceof paper.PointText || (item.name && item.name.startsWith('text ')),
+                                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null)
+                                            });
+                                        }
+                                    });
                     });
                 } else {
                     this.layers = [];
@@ -890,8 +981,177 @@ export default {
                 this.updateLayersList(); // Refresh to reset the display
             },
 
+            // Text editing methods
+            finishEditingText(layer, newText) {
+                if (newText !== layer.originalText) {
+                    // Update the text content in Paper.js
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        let foundItem = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name) {
+                                    foundItem = item;
+                                }
+                            });
+                        });
+
+                        if (foundItem && foundItem instanceof paper.PointText) {
+                            foundItem.content = newText;
+                            layer.textContent = newText;
+                            this.saveCanvasData();
+                            // Update layers list to reflect the change
+                            this.updateLayersList();
+                        }
+                    }
+                }
+                this.$set(layer, 'isEditing', false);
+                delete layer.originalText;
+            },
+
+            cancelEditingText(layer) {
+                this.$set(layer, 'isEditing', false);
+                delete layer.originalText;
+                this.updateLayersList(); // Refresh to reset the display
+            },
+
+            finishEditingChildText(layer, child, newText) {
+                if (newText !== child.originalText) {
+                    // Update the text content in Paper.js
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope && scope.project) {
+                        let foundGroup = null;
+                        scope.project.layers.forEach(paperLayer => {
+                            paperLayer.children.forEach(item => {
+                                if (item.name === layer.name && item instanceof paper.Group) {
+                                    foundGroup = item;
+                                }
+                            });
+                        });
+
+                        if (foundGroup) {
+                            foundGroup.children.forEach(item => {
+                                if (item.name === child.name && item instanceof paper.PointText) {
+                                    item.content = newText;
+                                    child.textContent = newText;
+                                    this.saveCanvasData();
+                                    // Update layers list to reflect the change
+                                    this.updateLayersList();
+                                }
+                            });
+                        }
+                    }
+                }
+                this.$set(child, 'isEditing', false);
+                delete child.originalText;
+            },
+
+            cancelEditingChildText(child) {
+                this.$set(child, 'isEditing', false);
+                delete child.originalText;
+                this.updateLayersList(); // Refresh to reset the display
+            },
+
             saveCanvasData() {
                 this.$refs.canvasContainer.saveCanvasData();
+            },
+
+            // New methods for enhanced features
+            updateCanvasView() {
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateView) {
+                    this.$refs.canvasContainer.updateView(this.zoomLevel, this.panOffset);
+                }
+            },
+
+            handleExportPNG() {
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.exportCanvas) {
+                    this.$refs.canvasContainer.exportCanvas('png');
+                }
+            },
+
+            handleExportSVG() {
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.exportCanvas) {
+                    this.$refs.canvasContainer.exportCanvas('svg');
+                }
+            },
+
+            handleSaveImage() {
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.saveImageToServer) {
+                    this.$refs.canvasContainer.saveImageToServer();
+                }
+            },
+
+            handleColorChange(type, color) {
+                if (type === 'stroke') {
+                    this.currentStrokeColor = color;
+                } else if (type === 'fill') {
+                    this.currentFillColor = color;
+                }
+                // Update canvas with new colors if needed
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                }
+            },
+
+            handleStrokeWidthChange(width) {
+                this.strokeWidth = width;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                }
+            },
+
+            // Keyboard shortcuts
+            handleKeyDown(event) {
+                // Don't intercept keyboard events when typing in input fields
+                const isInputField = event.target.tagName === 'INPUT' || 
+                                    event.target.tagName === 'TEXTAREA' || 
+                                    event.target.tagName === 'SELECT' ||
+                                    event.target.isContentEditable ||
+                                    event.target.getAttribute('contenteditable') === 'true';
+                
+                if (isInputField) {
+                    return; // Allow normal input behavior
+                }
+                
+                if (event.ctrlKey || event.metaKey) {
+                    switch (event.key) {
+                        case 'z':
+                            event.preventDefault();
+                            if (event.shiftKey) {
+                                this.handleRedo();
+                            } else {
+                                this.handleUndo();
+                            }
+                            break;
+                        case 'y':
+                            event.preventDefault();
+                            this.handleRedo();
+                            break;
+                    }
+                } else {
+                    switch (event.key) {
+                        case 'z':
+                        case 'Z':
+                            event.preventDefault();
+                            this.handleZoomIn();
+                            break;
+                        case 'x':
+                        case 'X':
+                            event.preventDefault();
+                            this.handleZoomOut();
+                            break;
+                        case 'p':
+                        case 'P':
+                            event.preventDefault();
+                            this.handlePan();
+                            break;
+                        case 's':
+                        case 'S':
+                            event.preventDefault();
+                            this.handleSelection();
+                            break;
+                    }
+                }
             }
         }
     }

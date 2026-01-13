@@ -6,14 +6,14 @@
           <div class="container">
             <div class="row">
               <div v-if="loading" class="text-center">
-                <p>Loading post...</p>
+                <p>{{ $t('blog.loading.post') }}</p>
               </div>
               <div v-else-if="post">
                 <article class="blog-post">
                   <header class="mb-4">
                     <h1 class="display-4">{{ post.title }}</h1>
                     <div class="d-flex align-items-center text-muted">
-                      <small>Created • {{ formatDate(post.created_at) }}</small>
+                      <small>{{ $t('blog.loading.created', { date: formatDate(post.created_at) }) }}</small>
                     </div>
                   </header>
                   <div class="content" v-html="post.content"></div>
@@ -58,7 +58,7 @@
     methods: {
       fetchPost() {
         // const postId = this.$route.params.id
-        axios.get(`/post/get_post/${this.$route.params.url_title}`)
+        axios.get(`/get_post/get_post/${this.$route.params.url_title}`)
           .then(response => {
             this.post = response.data
           })

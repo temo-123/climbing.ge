@@ -44,7 +44,7 @@
             get_reservations: function(){
                 this.data_for_tab = []
                 axios
-                .get("/tour/reservation/get_user_reservations/")
+                .get("/get_tour/reservation/get_user_reservations/")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,

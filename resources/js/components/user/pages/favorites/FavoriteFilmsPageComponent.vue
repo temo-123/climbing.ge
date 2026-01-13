@@ -81,7 +81,7 @@
         methods: {
             get_faworite_films(){
                 axios
-                .get('../api/film/get_faworite_film_list')
+                .get('/get_film/get_faworite_film_list')
                 .then(response => {
                     this.films = response.data
                 })
@@ -96,7 +96,7 @@
             del_from_faworites(id){
                 if(confirm('Are you sure, you want delite this film from your faworites?')){
                     axios
-                    .post('../../api/film/del_from_faworite/'+id, {
+                    .post('/get_film/del_from_faworite/'+id, {
                         film_id: id,
                         _method: 'DELETE'
                     })

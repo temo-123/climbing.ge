@@ -19,9 +19,27 @@
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Warehouse Product Options</h3>
-                <button class="btn btn-primary" @click="showAddOptionModal()">
-                    Add Product Option
-                </button>
+                <div class="d-flex align-items-center">
+                    <div class="btn-group mr-3">
+                        <button 
+                            class="btn" 
+                            :class="viewMode === 'flat' ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="viewMode = 'flat'"
+                        >
+                            Flat View
+                        </button>
+                        <button 
+                            class="btn" 
+                            :class="viewMode === 'grouped' ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="viewMode = 'grouped'"
+                        >
+                            Grouped by Product
+                        </button>
+                    </div>
+                    <button class="btn btn-primary" @click="showAddOptionModal()">
+                        Add Product Option
+                    </button>
+                </div>
             </div>
 
             <!-- Loading state -->
@@ -31,8 +49,95 @@
                 </div>
             </div>
 
-            <!-- Product Options Table -->
-            <div v-else-if="product_options.length > 0" class="table-responsive">
+            <!-- Grouped View -->
+            <div v-else-if="viewMode === 'grouped' && grouped_options.length > 0">
+                <div v-for="productGroup in grouped_options" :key="productGroup.product_id" class="card mb-3">
+                    <div class="card-header bg-light">
+                        <h5 class="mb-0">
+                            <span class="badge badge-info mr-2">Product</span>
+                            {{ productGroup.product_name }}
+                            <span class="badge badge-secondary ml-2">{{ productGroup.options.length }} options</span>
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-striped mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>ID</th>
+                                        <th>Option Name</th>
+                                        <th>Price</th>
+                                        <th>Quantity</th>
+                                        <th v-if="warehouse.general">Task</th>
+                                        <th>Migration</th>
+                                        <th>Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="option in productGroup.options" :key="option.id">
+                                        <td>
+                                            <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
+                                        </td>
+                                        <td>{{ option.id }}</td>
+                                        <td>{{ option.name }}</td>
+                                        <td>{{ option.price }} {{ option.currency }}</td>
+                                        <td>
+                                            <div class="quantity-controls d-flex align-items-center">
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-sm btn-danger"
+                                                    @click="decrementQuantity(option)"
+                                                    :disabled="option.pivot.quantity <= 0"
+                                                    title="Decrease quantity"
+                                                >
+                                                    -
+                                                </button>
+                                                
+                                                <input
+                                                    type="number"
+                                                    v-model="option.pivot.quantity"
+                                                    @change="updateQuantityQuick(option)"
+                                                    class="form-control form-control-sm quantity-input mx-2"
+                                                    min="0"
+                                                    style="width: 100px; text-align: center; height: 36px;"
+                                                />
+                                                
+                                                <button 
+                                                    type="button" 
+                                                    class="btn btn-sm btn-info"
+                                                    @click="incrementQuantity(option)"
+                                                    title="Increase quantity"
+                                                >
+                                                    +
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td v-if="warehouse.general">
+                                            <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
+                                                Make task
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
+                                                Migrate
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Flat View -->
+            <div v-else-if="viewMode === 'flat' && product_options.length > 0" class="table-responsive">
                 <table class="table table-striped" style="overflow-x: hidden;">
                     <thead>
                         <tr>
@@ -137,8 +242,10 @@
         data(){
             return {
                 product_options: [],
+                grouped_options: [],
                 loading: false,
-                warehouse: []
+                warehouse: [],
+                viewMode: 'grouped' // 'flat' or 'grouped'
             }
         },
 
@@ -161,6 +268,7 @@
             },
 
             get_data(){
+                this.getWarehouseProductOptionsGrouped();
                 this.getWarehouseProductOptions();
                 this.getCurentWarehouse();
             },
@@ -169,12 +277,24 @@
                 this.$refs.addOptionModalRef.show_modal();
             },
 
+            getWarehouseProductOptionsGrouped() {
+                this.loading = true;
+                axios.get(`/get_warehouse/get_warehouse_product_options_grouped/${this.$route.params.id}`)
+                .then(response => {
+                    this.grouped_options = response.data
+                    this.loading = false;
+                })
+                .catch(error => {
+                    alert(error);
+                    this.loading = false;
+                });
+            },
+
             getWarehouseProductOptions() {
                 this.loading = true;
-                axios.get(`/warehouse/get_warehouse_product_options/${this.$route.params.id}`)
+                axios.get(`/get_warehouse/get_warehouse_product_options/${this.$route.params.id}`)
                 .then(response => {
                     this.product_options = response.data
-                    
                     this.loading = false;
                 })
                 .catch(error => {
@@ -185,7 +305,7 @@
 
             getCurentWarehouse(){
                 axios
-                .get('/warehouse/get_warehouse_data/' + this.$route.params.id)
+                .get('/get_warehouse/get_warehouse_data/' + this.$route.params.id)
                 .then(response => {
                     this.warehouse = response.data
                 })
@@ -195,7 +315,7 @@
             getAvailableOptions() {
                 // alert(this.newOption.product_id)
                 if (this.newOption.product_id) {
-                    axios.get(`/product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                     })
@@ -231,9 +351,10 @@
 
             deleteOption(option) {
                 if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
-                    axios.delete(`/warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
+                    axios.delete(`/set_warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
                     .then(response => {
                         this.getWarehouseProductOptions();
+                        this.getWarehouseProductOptionsGrouped();
                     })
                     .catch(error => {
                         alert(error);
@@ -264,19 +385,19 @@
                     this.deleteOption(option);
                 } else {
                     // Update the quantity
-                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                    axios.post(`/set_warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
                     .then(response => {
                         // Update successful
                         console.log('Quantity updated successfully');
                         // Refresh the list to get updated data
+                        this.getWarehouseProductOptions();
+                        this.getWarehouseProductOptionsGrouped();
                     })
                     .catch(error => {
                         alert(error);
                     });
-                        
-                    this.getWarehouseProductOptions();
                 }
             },
 
@@ -302,7 +423,7 @@
                     this.deleteOption(option);
                 } else {
                     // Update the quantity
-                    axios.post(`/warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
+                    axios.post(`/set_warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
                     .then(response => {
@@ -313,6 +434,7 @@
                     });
 
                     this.getWarehouseProductOptions();
+                    this.getWarehouseProductOptionsGrouped();
                 }
             },
         }
