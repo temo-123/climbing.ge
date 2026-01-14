@@ -5,13 +5,13 @@ export const navbar = {
                 title: "Home",
                 route: "/",
             },
-            {
-                title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews",
-                permissions: [
-                    ['show', 'my_comments'],
-                ]
-            },
+            // {
+            //     title: "My Comments & Reviews",
+            //     route: "/my_comments_and_reviews",
+            //     permissions: [
+            //         ['show', 'my_comments'],
+            //     ]
+            // },
 
             {
                 title: "Tasks",

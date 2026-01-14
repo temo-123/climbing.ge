@@ -21,10 +21,16 @@ class RoutesReitingController extends Controller
 
             $reviews = [];
             foreach ($all_reviews as $review) {
+                $user = $review->user;
                 
                 array_push($reviews, [
                     'review' => $review, 
                     'route' => $review->route,
+                    'user' => [
+                        'name' => $user ? $user->name : '',
+                        'surname' => $user ? $user->surname : '',
+                        'email' => $user ? $user->email : '',
+                    ],
                 ]);
             }
             

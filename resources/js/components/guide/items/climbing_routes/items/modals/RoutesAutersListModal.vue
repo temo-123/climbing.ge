@@ -1,7 +1,9 @@
 <template>
     <span>
         <!-- {{ $t('guide.sector.authers_list') }} <a @click="show_modal"> {{ $t('guide.sector.authers_list_button') }}</a> -->
-        <button type="bottom" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
+        <div>
+            <button type="bottom" class="btn btn-default btn-send main-btn" @click="show_modal">{{ $t('guide.sector.authers_list_button') }}</button>
+        </div>
 
         <stack-modal
             :show="is_show_modal"
@@ -28,6 +30,7 @@
                         <option value="asc">{{ $t('guide.sector.sort_ascending') }}</option>
                     </select>
 
+                    <div class="table-responsive">
                     <table class="table table-hover" id="dev-table">
                         <thead>
                             <tr>
@@ -45,6 +48,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
             </pre>
         </stack-modal>
@@ -181,12 +185,31 @@
     top: 0;
     bottom: 0;
     overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 .modal-body{
     height: 600px;
 }
 th:nth-child(2n+1) {
   background: #d7b396;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.table-responsive table {
+    min-width: 800px;
+}
+
+/* Mobile button centering */
+@media (max-width: 767px) {
+    div > .main-btn {
+        display: block;
+        margin: 1em auto;
+        float: none !important;
+        width: fit-content;
+    }
 }
 </style>

@@ -1,17 +1,17 @@
 <template>
     <span>
-        <button type="bottom" class="btn btn-default btn-send main-btn pull-right" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
+        <div>
+            <button type="bottom" class="btn btn-default btn-send main-btn pull-right" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
+        </div>
 
         <stack-modal
             :show="is_show_modal"
-            :title="$t('guide.sector.modal_title')"
+            :title="routeTypeTitle"
             @close="is_show_modal=false"
             :saveButton="{ visible: false, title: 'Save', btnClass: { 'btn btn-primary': false } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-
             <pre class="language-vue">
-
                 <select class="form-control route_statistic_selection" v-model="routesPerPage" @change="refreshData">
                     <option value="5">5 {{ $t('guide.sector.routes') }}</option>
                     <option value="10">10 {{ $t('guide.sector.routes') }}</option>
@@ -34,19 +34,10 @@
                     </option>
                 </select>
 
-
-                <!-- Sport Routes Table - Only show if there are routes or if currently loading -->
                 <div v-if="hasRoutes || loading">
-
-                    <h1 style="margin: -80px 0;">
-                        {{ routeTypeTitle }}
-                        <!-- <small class="badge badge-primary ml-2" v-if="routes.data.length > 0">
-                            {{ routes.data.length }} {{ $t('guide.sector.routes') }}
-                        </small> -->
-                    </h1>
+                    <div class="table-responsive">
                     <table class="table table-hover" id="dev-table">
                         <thead>
-
                             <tr>
                                 <th>#</th>
                                 <th>{{ $t('guide.sector.route_name') }}</th>
@@ -88,6 +79,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    </div>
                 </div>
                 
                 <!-- No data message when there are no routes for the selected type -->
@@ -257,7 +249,7 @@
     top: 0;
     bottom: 0;
     overflow-y: scroll;
-    overflow-x: hidden;
+    overflow-x: auto;
 }
 .modal-body{
     height: 600px;
@@ -266,8 +258,27 @@ th:nth-child(2n+1) {
   background: #d7b396;
 }
 
+.table-responsive {
+    overflow-x: auto;
+    width: 100%;
+}
+
+.table-responsive table {
+    min-width: 800px;
+}
+
 .route_statistic_selection{
     margin: -10px 0;
     float: left;
+}
+
+/* Mobile button centering */
+@media (max-width: 767px) {
+    div > .main-btn {
+        display: block;
+        margin: 1em auto;
+        float: none !important;
+        width: fit-content;
+    }
 }
 </style>

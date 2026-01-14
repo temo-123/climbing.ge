@@ -150,15 +150,19 @@ export default {
                             tab: {
                                 head: [
                                     "ID",
-                                    "Climbing route",
+                                    "Name",
+                                    "Email",
                                     "Stars",
+                                    "Climbing route",
                                     "Edit",
                                     "Delite",
                                 ],
                                 body: [
                                     ["data", ["review", "id"]],
-                                    ["data", ["route", "name"]],
+                                    ["data", [["user", "name"], ["user", "surname"]]],
+                                    ["data", ["user", "email"]],
                                     ["stars", ["review", "stars"]],
+                                    ["data", ["route", "name"]],
                                     [
                                         "action_fun_id",
                                         "edit_review_modal",
@@ -174,7 +178,7 @@ export default {
                                         ["review", "id"],
                                     ],
                                 ],
-                                perm: [["no"], ["no"], ["no"], ["no"], ["no"]],
+                                perm: [["no"], ["no"], ["no"], ["no"], ["no"], ["no"], ["no"], ["no"]],
                             },
                         },
                     });
