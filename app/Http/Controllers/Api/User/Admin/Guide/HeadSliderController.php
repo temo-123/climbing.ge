@@ -121,7 +121,6 @@ class HeadSliderController extends Controller
         $validator = Validator::make($data, [
             'published' => 'required',
             'title' => 'required|max:35',
-            'text' => 'required|max:225',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

@@ -14,13 +14,18 @@
                 <form ref="slider_image_add_form" id="slider_image_add_form" v-on:submit.prevent="add_image">
                     <div class="container">
 
+                        <validator_alerts_component
+                            :errors_prop="error"
+                        />
+
                         <div class="form-group clearfix row">
                             <input type="file" name="image" id="image" value="image" v-on:change="onAddImageChange" required>
                         </div>
+
                         <div class="row">
-                            <div class="col-md-12" v-if="errors.length != 0">
-                                <div class="alert alert-danger" role="alert" v-if="errors.image">
-                                    {{ errors.image[0] }}
+                            <div class="col-md-12" v-if="error.length != 0">
+                                <div class="alert alert-danger" role="alert" v-if="error.image">
+                                    {{ error.image[0] }}
                                 </div>
                             </div>
                         </div>
@@ -73,8 +78,10 @@
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
+    import validator_alerts_component from '../../../../items/validator_alerts_component.vue'
     export default {
         components: {
+            validator_alerts_component,
             StackModal,
         },
         props: [
@@ -87,7 +94,7 @@
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
                 is_add_image_modal: false,
-                errors: [],
+                error: [],
                 is_loading: false,
 
                 form_data: {
@@ -126,7 +133,7 @@
             },
 
             clear_input_data(){
-                this.errors = []
+                this.error = []
 
                 this.form_data = {
                     published: 0,
@@ -161,7 +168,7 @@
                 })
                 .catch(error => {
                     if (error.response.status == 422) {
-                        this.errors = error.response.data
+                        this.error = error.response.data
                     }
                 })
                 .finally(() =>

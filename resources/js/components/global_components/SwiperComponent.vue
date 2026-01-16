@@ -128,7 +128,7 @@
     flex-direction: row;
     margin-left: 0%;
     width: 100%;
-    height: 500px;
+    /* height: 500px; */
   }
   .slide_title {
       color: #f2f2f2;

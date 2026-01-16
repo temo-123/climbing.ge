@@ -15,6 +15,10 @@
                 <form ref="editingForm" id="slider_iamge_edit_form" v-on:submit.prevent="edit_image(editing_data.id)">
                     <div class="container">
                         
+                        <validator_alerts_component
+                            :errors_prop="error"
+                        />
+
                         <div class="row">
                             <img :src="image_path_prop + editing_data.image" :alt="editing_data.title">
                         </div>
@@ -24,9 +28,9 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-12" v-if="errors.length != 0">
-                                <div class="alert alert-danger" role="alert" v-if="errors.image">
-                                    {{ errors.image[0] }}
+                            <div class="col-md-12" v-if="error.length != 0">
+                                <div class="alert alert-danger" role="alert" v-if="error.image">
+                                    {{ error.image[0] }}
                                 </div>
                             </div>
                         </div>
@@ -49,7 +53,7 @@
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12">
-                                <textarea type="text" v-model="editing_data.text" name="text" rows="15" class="form-cotrol md-textarea form-control" required></textarea>
+                                <textarea type="text" v-model="editing_data.text" name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea>
                             </div>
                         </div>
 
@@ -79,8 +83,10 @@
 <script>
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
+    import validator_alerts_component from '../../../../items/validator_alerts_component.vue'
     export default {
         components: {
+            validator_alerts_component,
             StackModal,
         },
         props: [
@@ -89,7 +95,7 @@
         data(){
             return{
                 editing_data: [],
-                errors: [],
+                error: [],
                 is_edit_image_modal: false,
                 editing_image: [],
                 is_loading: false
@@ -141,8 +147,21 @@
                 }
             },
 
+            clear_input_data(){
+                this.error = []
+
+                this.form_data = {
+                    published: 0,
+                    category:  this.category_prop,
+
+                    title: '',
+                    text: '',
+                    link: '',
+                }
+            },
+
             edit_image(id){
-                this.errors = []
+                this.error = []
                 this.is_loading = true
 
                 this.category_id = ''
@@ -164,7 +183,7 @@
                 })
                 .catch(error => {
                     if (error.response.status == 422) {
-                        this.errors = error.response.data
+                        this.error = error.response.data
                     }
                 })
                 .finally(() => this.is_loading = false);
