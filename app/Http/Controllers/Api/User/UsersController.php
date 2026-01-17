@@ -28,7 +28,7 @@ class UsersController extends Controller
     }
 
     public function get_auth_user_data() {
-        return auth()->user()->first();
+        return auth()->user();
     }
 
     public function get_user_data(Request $request) {

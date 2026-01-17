@@ -3,14 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace'=>'Api\User'], function() {
-    /*
-    *   Login verify routes
-    */
-    Route::group(['middleware'=>'auth:sanctum'], function() {
-        // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
-        Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
-        Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
-    });
+
 
 
     Route::prefix('get_task')->group( function() {
@@ -26,15 +19,15 @@ Route::group(['namespace'=>'Api\User'], function() {
             // Route::delete('/del_task/{task_id}', 'del_task');
         });
 
-        Route::controller(TaskCategoryController::class)->prefix('get_task_category')->group( function() {
-            Route::get('/get_all_task_categories', 'get_all_task_categories');
-            Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
+        // Route::controller(TaskCategoryController::class)->prefix('get_task_category')->group( function() {
+        //     Route::get('/get_all_task_categories', 'get_all_task_categories');
+        //     Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
 
             // Route::post('/create_task_category', 'create_task_category');
             // Route::post('/update_task_category/{task_category_id}', 'update_task_category');
 
             // Route::delete('/del_task_category/{task_category_id}', 'del_task_category');
-        });
+        // });
     });
 
     /*
