@@ -67,19 +67,19 @@
                                     <tr>
                                         <td>Email</td>
                                         <td>|</td>
-                                        <td>{{site_info?.email || ''}}</td>
+                                        <td>{{ site_info && site_info.email ? site_info.email : '' }}</td>
                                     </tr>
                                     <tr>
                                         <td>Phone</td>
                                         <td>|</td>
-                                        <td>{{site_info?.number || ''}}</td>
+                                        <td>{{ site_info && site_info.number ? site_info.number : '' }}</td>
                                     </tr>
 
                                     <tr>
                                         <td>Map</td>
                                         <td>|</td>
                                         <td>
-                                            <span v-html="site_info?.map || ''"></span>
+                                            <span v-html="site_info && site_info.map ? site_info.map : ''"></span>
                                         </td>
                                     </tr>
 
@@ -87,7 +87,7 @@
                                         <td>AD block</td>
                                         <td>|</td>
                                         <td>
-                                            <span v-html="site_info?.ad || ''"></span>
+                                            <span v-html="site_info && site_info.ad ? site_info.ad : ''"></span>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -117,8 +117,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="link in site_social_links" :key="link.id || link.url">
-                                        <td v-if="link?.title"><a :href="link?.url" target="_blank">{{ link.title }}</a></td>
-                                        <td v-else><a :href="link?.url" target="_blank">{{ from_user_site_url_get_domen(link?.url) }}</a></td>
+                                        <td v-if="link && link.title"><a :href="link && link.url ? link.url : '#'" target="_blank">{{ link.title }}</a></td>
+                                        <td v-else><a :href="link && link.url ? link.url : '#'" target="_blank">{{ from_user_site_url_get_domen(link && link.url ? link.url : '') }}</a></td>
                                         <td>|</td>
                                         <td>
                                         <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
@@ -149,8 +149,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="info in site_us_info" :key="info.id || info.slug">
-                                        <td>{{ info?.slug || '' }}</td>
-                                        <td v-html="info?.us_data || ''"></td>
+                                        <td>{{ info && info.slug ? info.slug : '' }}</td>
+                                        <td v-html="info && info.us_data ? info.us_data : ''"></td>
                                         <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">Edit</button></td>
                                     </tr>
                                 </tbody>
@@ -177,8 +177,8 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="info in site_ka_info" :key="info.id || info.slug">
-                                        <td>{{ info?.slug || '' }}</td>
-                                        <td v-html="info?.ka_data || ''"></td>
+                                        <td>{{ info && info.slug ? info.slug : '' }}</td>
+                                        <td v-html="info && info.ka_data ? info.ka_data : ''"></td>
                                         <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">Edit</button></td>
                                     </tr>
                                 </tbody>
@@ -216,21 +216,18 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for="general_info in general_infos" :key="general_info.id">
-                                                <th>{{general_info?.id || ''}}</th>
+                                                <th>{{general_info && general_info.id ? general_info.id : ''}}</th>
 
                                                 <th>|</th>
-                                                <td>{{general_info?.title || ''}}</td>
+                                                <td>{{general_info && general_info.title ? general_info.title : ''}}</td>
 
                                                 <th>|</th>
                                                 <td>
-                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info?.id } }" >Edit</router-link>
-                                                    <!-- <a  class="btn btn-primary" type="submit">Edit</a> -->
-                                                    <!-- <a :href="table_1_edit_url+table_info.id" class="btn btn-primary" type="submit">Edit</a> -->
-                                                </td>
+                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >Edit</router-link></td>
                                                 
                                                 <td>|</td>
                                                 <td>
-                                                    <button type="submit" class="btn btn-danger" @click="del_general_info(general_info?.id)">Delete</button>
+                                                    <button type="submit" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">Delete</button>
                                                 </td>
                                             </tr>
                                         </tbody>

@@ -1,4 +1,4 @@
-<template>
+t<template>
     <div class="dashboard-container">
         <div class="welcome-section">
             <h1>📊 Welcome to Your Orders Dashboard!</h1>
@@ -21,7 +21,7 @@
         </div>
 
         <div class="charts-section">
-            <h3>Period: {{ periods.find(p => p.value === selectedPeriod)?.label }}</h3>
+            <h3>Period: {{ selectedPeriodLabel }}</h3>
             <h3>Total Orders: {{ week_orders_data.reduce((sum, row) => sum + (typeof row[1] === 'number' ? row[1] : 0), 0) }}</h3>
 
             <div class="chart-card">
@@ -56,6 +56,12 @@
     export default {
         components: {
             GChart,
+        },
+        computed: {
+            selectedPeriodLabel() {
+                const period = this.periods.find(p => p.value === this.selectedPeriod)
+                return period ? period.label : ''
+            }
         },
         data(){
             return{

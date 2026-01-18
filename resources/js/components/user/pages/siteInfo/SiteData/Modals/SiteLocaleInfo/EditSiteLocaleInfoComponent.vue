@@ -11,7 +11,7 @@
         />
 
         <form method="POST" id="edit_site_locale_data_form" v-on:submit.prevent="edit_site_local_data">
-            <p><strong>Slug:</strong> {{ current_item?.slug || '' }}</p>
+            <p><strong>Slug:</strong> {{ current_item && current_item.slug ? current_item.slug : '' }}</p>
             <div v-if="current_language === 'ka'">
                 <label>Georgian Data:</label>
                 <ckeditor v-model="data.ka_data" :config="editor_config.ka_data"></ckeditor>
