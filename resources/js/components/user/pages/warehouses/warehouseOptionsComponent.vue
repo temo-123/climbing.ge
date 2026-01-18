@@ -4,44 +4,43 @@
             <h1>Warehouse: {{ warehouse.name || 'Loading...' }}</h1>
             <h2 v-if="warehouse.general">This warehouse is general!</h2>
         </div>
-        <div class="col-md-12">
-            <div class="form-group">
-                <button class="btn btn-success float-right" @click="go_back()">Go back</button>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="form-group">
-                <button class="btn btn-success float-right" @click="get_data()">Refresh</button>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h3>Warehouse Product Options</h3>
-                <div class="d-flex align-items-center">
-                    <div class="btn-group mr-3">
-                        <button 
-                            class="btn" 
-                            :class="viewMode === 'flat' ? 'btn-primary' : 'btn-outline-primary'"
-                            @click="viewMode = 'flat'"
-                        >
-                            Flat View
-                        </button>
-                        <button 
-                            class="btn" 
-                            :class="viewMode === 'grouped' ? 'btn-primary' : 'btn-outline-primary'"
-                            @click="viewMode = 'grouped'"
-                        >
-                            Grouped by Product
-                        </button>
-                    </div>
+        <div class="col-md-12 mb-3">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-2">
+                <div class="d-flex align-items-center mb-2 mb-md-0">
+                    <button class="btn btn-success mr-2" @click="go_back()">Go back</button>
+                </div>
+                <div class="d-flex align-items-center flex-column flex-md-row">
+                    <button class="btn btn-success mb-2 mb-md-0 mr-md-3" @click="get_data()">Refresh</button>
                     <button class="btn btn-primary" @click="showAddOptionModal()">
                         Add Product Option
                     </button>
                 </div>
             </div>
+            <div class="d-flex align-items-center">
+                <div class="btn-group">
+                    <button 
+                        class="btn" 
+                        :class="viewMode === 'flat' ? 'btn-primary' : 'btn-secondary'"
+                        @click="viewMode = 'flat'"
+                    >
+                        Flat View
+                    </button>
+                    <button 
+                        class="btn" 
+                        :class="viewMode === 'grouped' ? 'btn-primary' : 'btn-secondary'"
+                        @click="viewMode = 'grouped'"
+                    >
+                        Grouped by Product
+                    </button>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-12">
+            <h3>Warehouse Product Options</h3>
+        </div>
+
+        <div class="col-md-12">
             <!-- Loading state -->
             <div v-if="loading" class="text-center">
                 <div class="spinner-border" role="status">
@@ -79,11 +78,11 @@
                                         <td>
                                             <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                                         </td>
-                                        <td>{{ option.id }}</td>
+                                        <td class="d-none d-md-table-cell">{{ option.id }}</td>
                                         <td>{{ option.name }}</td>
-                                        <td>{{ option.price }} {{ option.currency }}</td>
+                                        <td class="d-none d-md-table-cell">{{ option.price }} {{ option.currency }}</td>
                                         <td>
-                                            <div class="quantity-controls d-flex align-items-center">
+                                            <div class="quantity-controls d-flex align-items-center justify-content-center">
                                                 <button 
                                                     type="button" 
                                                     class="btn btn-sm btn-danger"
@@ -98,9 +97,9 @@
                                                     type="number"
                                                     v-model="option.pivot.quantity"
                                                     @change="updateQuantityQuick(option)"
-                                                    class="form-control form-control-sm quantity-input mx-2"
+                                                    class="form-control form-control-sm quantity-input mx-1 mx-md-2"
                                                     min="0"
-                                                    style="width: 100px; text-align: center; height: 36px;"
+                                                    style="width: 70px; text-align: center; height: 36px;"
                                                 />
                                                 
                                                 <button 
@@ -113,7 +112,7 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td v-if="warehouse.general">
+                                        <td v-if="warehouse.general" class="d-none d-md-table-cell">
                                             <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
                                                 Make task
                                             </button>
@@ -142,12 +141,12 @@
                     <thead>
                         <tr>
                             <th>Image</th>
-                            <th>ID</th>
+                            <th class="d-none d-md-table-cell">ID</th>
                             <th>Product Name</th>
-                            <th>Option Name</th>
-                            <th>Price</th>
+                            <th class="d-none d-md-table-cell">Option Name</th>
+                            <th class="d-none d-md-table-cell">Price</th>
                             <th>Quantity</th>
-                            <th v-if="warehouse.general">Task</th>
+                            <th v-if="warehouse.general" class="d-none d-md-table-cell">Task</th>
                             <th>Migration</th>
                             <th>Delete</th>
                         </tr>
@@ -157,12 +156,12 @@
                             <td>
                                 <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                             </td>
-                            <td>{{ option.id }}</td>
+                            <td class="d-none d-md-table-cell">{{ option.id }}</td>
                             <td>{{ option.product.url_title }}</td>
-                            <td>{{ option.name }}</td>
-                            <td>{{ option.price }} {{ option.currency }}</td>
+                            <td class="d-none d-md-table-cell">{{ option.name }}</td>
+                            <td class="d-none d-md-table-cell">{{ option.price }} {{ option.currency }}</td>
                             <td>
-                                <div class="quantity-controls d-flex align-items-center">
+                                <div class="quantity-controls d-flex align-items-center justify-content-center">
                                     <button 
                                         type="button" 
                                         class="btn btn-sm btn-danger"
@@ -177,9 +176,9 @@
                                         type="number"
                                         v-model="option.pivot.quantity"
                                         @change="updateQuantityQuick(option)"
-                                        class="form-control form-control-sm quantity-input mx-2"
+                                        class="form-control form-control-sm quantity-input mx-1 mx-md-2"
                                         min="0"
-                                        style="width: 100px; text-align: center; height: 36px;"
+                                        style="width: 70px; text-align: center; height: 36px;"
                                     />
                                     
                                     <button 
@@ -192,7 +191,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td  v-if="warehouse.general">
+                            <td v-if="warehouse.general" class="d-none d-md-table-cell">
                                 <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
                                     Make task
                                 </button>
@@ -315,7 +314,7 @@
             getAvailableOptions() {
                 // alert(this.newOption.product_id)
                 if (this.newOption.product_id) {
-                    axios.get(`/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/get_product/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                     })

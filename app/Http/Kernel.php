@@ -72,5 +72,8 @@ class Kernel extends HttpKernel
 
         // localization middleware
         "setLocale" => \App\Http\Middleware\setLocale::class,
+
+        // banned user middleware
+        'banned' => \App\Http\Middleware\CheckBannedUser::class,
     ];
 }

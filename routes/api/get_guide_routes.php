@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Guide'], function() {
+Route::group(['namespace'=>'Api\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
     /*
     *   Article routes

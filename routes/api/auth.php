@@ -4,8 +4,25 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\AuthenticationController;
 
+// Debug endpoint to check login flow
+Route::get('/debug/login', function () {
+    return response()->json([
+        'message' => 'Login endpoint is accessible',
+        'method' => request()->method(),
+        'headers' => request()->headers->all(),
+        'accept_header' => request()->header('Accept'),
+    ]);
+});
 
-Route::middleware('auth:sanctum')->get('token', function () {
+// Debug endpoint to test authentication
+Route::get('/debug/test', function () {
+    return response()->json([
+        'authenticated' => auth()->check(),
+        'user' => auth()->user() ? auth()->user()->only('id', 'email', 'name') : null,
+    ]);
+});
+
+Route::middleware(['auth:sanctum', 'banned'])->get('token', function () {
     return auth()->user()->createToken('authToken')->plainTextToken;
 });
 
@@ -19,7 +36,7 @@ Route::group(['namespace'=>'Auth', 'middleware'=>'auth:sanctum'], function() {
     // Route::get('email/verify/{hash}', 'VerificationController@verify')->name('verification.verify');
     Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
     Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
-});
+})->middleware('banned');
 
 Route::group(['namespace'=>'Auth'], function() {
     Route::controller(VerificationController::class)->prefix('email')->group( function() {

@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\User\Admin\Guide'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
     Route::controller(ArticleController::class)->prefix('set_article')->group( function() {
         Route::post('/add_article/{category}', 'add_article');

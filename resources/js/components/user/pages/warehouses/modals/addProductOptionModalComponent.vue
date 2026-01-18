@@ -117,7 +117,7 @@
                 if (this.newOption.product_id) {
                     this.loadingOptions = true;
                     this.availableOptions = [];
-                    axios.get(`/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
+                    axios.get(`/get_product/get_product_option/get_activ_product_options/${this.newOption.product_id}`)
                     .then(response => {
                         this.availableOptions = response.data.options || [];
                         this.loadingOptions = false;

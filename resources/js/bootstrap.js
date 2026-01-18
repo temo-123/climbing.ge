@@ -48,6 +48,28 @@ window.axios.interceptors.response.use({}, err => {
         else if(err.response.status === 422){
             return Promise.reject(err)
         }
+        else if(err.response.status === 403){
+            // Check if user is banned
+            if (err.response.data && err.response.data.is_banned === true) {
+                // Show ban alert
+                if (err.response.data.alert) {
+                    alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
+                } else {
+                    alert('Your account has been banned.');
+                }
+                
+                // Clear local storage and close page
+                localStorage.removeItem('x_xsrf_token');
+                localStorage.removeItem('user');
+                window.close();
+                return Promise.reject(err);
+            }
+            else{
+                alert("You don't have permission to perform this action.")
+                return Promise.reject(err)
+            }
+            // return Promise.reject(err)
+        }
         // else if(err.response.status === 404){
             // window.location.href = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + "/404";
         // }
@@ -63,3 +85,4 @@ window.axios.interceptors.response.use({}, err => {
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
+

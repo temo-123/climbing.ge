@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Blog'], function() {
+Route::group(['namespace'=>'Api\Blog', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
     Route::controller(PostController::class)->prefix('get_post')->group( function() {
         Route::get('/get_all_posts_and_news_for_blog/{locale}', 'get_all_posts_and_news_for_blog');

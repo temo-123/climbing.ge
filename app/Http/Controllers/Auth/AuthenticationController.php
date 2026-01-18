@@ -25,6 +25,21 @@ class AuthenticationController extends Controller
             ], 401);
         }
 
+        // Check if user is banned
+        if ($user->isBanned()) {
+            return response()->json([
+                'alert' => [
+                    'type' => 'error',
+                    'title' => 'Account Banned',
+                    'message' => 'Your account has been banned.',
+                    'icon' => 'ban'
+                ],
+                'user' => null,
+                'is_banned' => true,
+                'message' => 'Your account has been banned.',
+            ], 403);
+        }
+
         return response()->json($user);
     }
 }

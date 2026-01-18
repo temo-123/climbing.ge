@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Shop'], function() {
+Route::group(['namespace'=>'Api\Shop', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
     *   Product and product categories routes
     */

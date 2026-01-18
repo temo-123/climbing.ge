@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\User\Admin\Films'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Films', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
     *   Films routes
     */

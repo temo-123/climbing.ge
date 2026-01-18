@@ -22,15 +22,15 @@ use App\Services\PermissionService;
 class TourReservationController extends Controller
 {
     function get_all_reservations(){
-        $auth = PermissionService::authorize('tour_reservation', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('tour_reservation', 'view');
+        // if ($auth) return $auth;
         
         return Tour_reservation::latest('id')->get();
     }
 
     function get_user_reservations(){
-        $auth = PermissionService::authorize('tour_reservation', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('tour_reservation', 'view');
+        // if ($auth) return $auth;
         
         $user_tours = Auth::user()->tours;
 
@@ -319,8 +319,8 @@ class TourReservationController extends Controller
     }
 
     function get_my_tours(){
-        $auth = PermissionService::authorize('tour', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('tour', 'view');
+        // if ($auth) return $auth;
         
         // Get tours created by the currently authenticated user
         $user = Auth::user();

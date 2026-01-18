@@ -134,14 +134,18 @@ jfcB6GWPL237h6UE9vcCGfIdHOk9l3nErU5N9s8Q1taebwsMDgLe2FrOtM+FmkfH
       login(){
         this.is_loading = true
         axios
-          .get('../../sanctum/csrf-cookie')
+          .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/sanctum/csrf-cookie', {
+            headers: {
+              'Accept': 'application/json'
+            }
+          })
           .then(response => {
             this.login_action()
           }).catch(error => {
-            alert(error)
-            window.location.reload()
-          })
-          .finally(() => this.is_loading = false);
+            console.error('CSRF cookie error:', error);
+            this.auth_error = 'Failed to initialize login. Please try again.'
+            this.is_loading = false
+          });
       },
 
       login_action(){
@@ -165,13 +169,42 @@ jfcB6GWPL237h6UE9vcCGfIdHOk9l3nErU5N9s8Q1taebwsMDgLe2FrOtM+FmkfH
               email: this.email, 
               password: encryptedPassword, // Send encrypted password
               remember: this.remember
+            }, {
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
             })
             .then((response) => {
               localStorage.setItem('auth_token', response.data.token)
               localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
-              this.$router.push({ name: "home" });
+              
+              // Fetch permissions immediately after successful login
+              return axios
+                .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/get_user/get_auth_user_permissions/', {
+                  headers: {
+                    'Accept': 'application/json',
+                    'Authorization': 'Bearer ' + response.data.token
+                  }
+                })
+                .then((permResponse) => {
+                  // Store permissions in localStorage for persistence
+                  localStorage.setItem('user_permissions', JSON.stringify(permResponse.data))
+                  
+                  // Update CASL ability if it's available globally
+                  if (this.$ability) {
+                    this.$ability.update(permResponse.data)
+                  }
+                  
+                  // Emit global event so all components can update
+                  this.$root.$emit('permissions-loaded', permResponse.data)
+                  
+                  // Navigate to home
+                  this.$router.push({ name: "home" });
+                })
             })
             .catch((error) => {
+              console.log('Login error:', error.response || error);
               if(error.response && error.response.status === 422) {
                 if(error.response.data.message == 'auth.failed'){
                   this.auth_error = 'Email or password is not corect'
@@ -181,6 +214,9 @@ jfcB6GWPL237h6UE9vcCGfIdHOk9l3nErU5N9s8Q1taebwsMDgLe2FrOtM+FmkfH
                 }
               } else if (error.response && error.response.data && error.response.data.message) {
                 this.auth_error = error.response.data.message
+              } else if (error.response && error.response.status === 302) {
+                // Handle redirect - try direct API call
+                this.auth_error = 'Redirect detected - please check credentials'
               }
             })
             .finally(() => this.is_loading = false);

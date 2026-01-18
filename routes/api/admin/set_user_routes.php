@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\User\Admin\User'], function() {
+Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
     *   Login verify routes
     */

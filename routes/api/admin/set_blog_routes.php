@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\User\Admin\Blog'], function() {
+Route::group(['namespace'=>'Api\User\Admin\Blog', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
     Route::controller(PostController::class)->prefix('set_post')->group( function() {
         Route::get('/get_editing_post/{id}', 'get_editing_post');

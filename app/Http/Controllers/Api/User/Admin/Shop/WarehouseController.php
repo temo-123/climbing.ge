@@ -13,8 +13,8 @@ use App\Services\PermissionService;
 class WarehouseController extends Controller
 {
     public function get_warehouses () {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         return Warehouse::all();
     }
 
@@ -37,20 +37,20 @@ class WarehouseController extends Controller
     }
 
     public function get_editing_warehouse (Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
     public function get_warehouse_data(Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
     public function get_activ_warehouse (Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
@@ -107,8 +107,8 @@ class WarehouseController extends Controller
     }
 
     public function get_warehouse_product_options(Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -117,8 +117,8 @@ class WarehouseController extends Controller
     }
 
     public function get_warehouse_product_options_grouped_by_product(Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -187,8 +187,8 @@ class WarehouseController extends Controller
     }
 
     public function get_product_option_details(Request $request) {
-        $auth = PermissionService::authorize('warehouse', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('warehouse', 'view');
+        // if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);

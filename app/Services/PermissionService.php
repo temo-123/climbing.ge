@@ -19,7 +19,7 @@ class PermissionService
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        // return auth()->user()->hasPermissionFor($subject, $action);
+        return auth()->user()->hasPermissionFor($subject, $action);
     }
 
     /**

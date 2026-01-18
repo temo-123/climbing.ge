@@ -35,19 +35,55 @@ export default {
     },
 
     mounted() {
+        // Try to load permissions from localStorage first (set during login)
+        const storedPermissions = localStorage.getItem('user_permissions')
+        if (storedPermissions) {
+            try {
+                const permissions = JSON.parse(storedPermissions)
+                if (permissions && permissions.length > 0 && this.$ability) {
+                    this.$ability.update(permissions)
+                    // Fetch fresh permissions in background
+                    this.get_user_data()
+                    return
+                }
+            } catch (e) {
+                console.error('Error parsing stored permissions:', e)
+            }
+        }
+        
+        // Fallback: fetch permissions from server
         this.get_user_data()
 
         document.querySelector('body').style.marginLeft = '0';
+        
+        // Listen for permissions-loaded event from login (fixes issue where functions don't show after login without refresh)
+        this.$root.$on('permissions-loaded', this.onPermissionsLoaded)
+    },
+    
+    beforeUnmount() {
+        // Clean up event listener to prevent memory leaks
+        this.$root.$off('permissions-loaded', this.onPermissionsLoaded)
     },
 
     methods: {
+        onPermissionsLoaded(permissions) {
+            // Called when permissions are loaded after login
+            // Refresh user data to update UI components that depend on permissions
+            this.get_user_data()
+            // Force re-render to update any permission-dependent components
+            this.$forceUpdate()
+        },
+        
         get_user_data: function(){
         axios
-            .get("/get_user/get_auth_user_permissions/")
+            .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
             .then(response => {
+                // Update ability with fresh permissions
                 this.$ability.update(
                     response.data
                 )
+                // Store in localStorage for future use
+                localStorage.setItem('user_permissions', JSON.stringify(response.data))
             })
             .catch(
                 // error => console.log(error)

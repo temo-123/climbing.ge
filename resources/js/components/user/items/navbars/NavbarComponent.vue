@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar" :class="{ animate: animate_enabled }">
+    <nav :key="menuKey" class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar" :class="{ animate: animate_enabled }">
         <div class="mx-auto order-0 mobile_title">
             <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
         </div>
@@ -145,6 +145,7 @@
             return {
                 menu_items: navbar.admin_all_menu(),
                 animate_enabled: false,
+                menuKey: 0, // Used to force re-render when permissions change
                 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -158,6 +159,17 @@
         },
         mounted(){
             this.get_user()
+            // Load permissions immediately from localStorage or fetch from server
+            this.loadPermissions()
+            // Listen for permissions-loaded event from login
+            this.$root.$on('permissions-loaded', (permissions) => {
+                if (this.$ability) {
+                    this.$ability.update(permissions)
+                }
+                // Force re-render by incrementing menuKey
+                this.menuKey++
+                this.$forceUpdate()
+            })
             // Listen for menu toggle events from LeftMenuComponent
             this.$root.$on('menu-toggle', () => {
                 this.animate_enabled = true;
@@ -171,6 +183,7 @@
         },
         beforeUnmount() {
             this.$root.$off('menu-toggle');
+            this.$root.$off('permissions-loaded');
         },
         components: {
             countryFlag,
@@ -181,11 +194,44 @@
                 this.get_user(),
                 window.scrollTo(0,0)
 
+                this.loadPermissions()
+
                 let navbar = document.getElementById("navbarNav")
                 navbar.classList.remove("show")
             }
         },
         methods: {
+            loadPermissions() {
+                // Try to load permissions from localStorage first (set during login)
+                const storedPermissions = localStorage.getItem('user_permissions')
+                if (storedPermissions) {
+                    try {
+                        const permissions = JSON.parse(storedPermissions)
+                        if (permissions && permissions.length > 0 && this.$ability) {
+                            this.$ability.update(permissions)
+                            return
+                        }
+                    } catch (e) {
+                        console.error('Error parsing stored permissions:', e)
+                    }
+                }
+                
+                // Fallback: fetch permissions from server
+                this.fetchPermissions()
+            },
+            
+            fetchPermissions() {
+                axios
+                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
+                    .then(response => {
+                        if (this.$ability) {
+                            this.$ability.update(response.data)
+                        }
+                        localStorage.setItem('user_permissions', JSON.stringify(response.data))
+                    })
+                    .catch(error => console.log('Error fetching permissions:', error))
+            },
+            
             get_user(){
                 axios
                 .get('/auth_user')
@@ -202,6 +248,7 @@
                 .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
                 .then(()=>{
                     localStorage.removeItem('x_xsrf_token');
+                    localStorage.removeItem('user_permissions');
                     this.$router.push({ name: "login" });
                 })
                 
@@ -303,4 +350,4 @@
         transition: all .5s ease;
     }
 </style>
-    
+

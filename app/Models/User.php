@@ -104,6 +104,38 @@ class User extends Authenticatable implements MustVerifyEmail
         return null !== $this->roles()->where('name', $role)->first();
     }
 
+    /**
+    * Check if user has ban role
+    * @return bool
+    */
+    public function isBanned()
+    {
+        return null !== $this->role()->where('slug', 'ban')->first();
+    }
+
+    /**
+     * Check if user has permission for a specific subject and action
+     * @param string $subject
+     * @param string $action
+     * @return bool
+     */
+    public function hasPermissionFor($subject, $action)
+    {
+        // Check direct permissions
+        if ($this->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
+            return true;
+        }
+
+        // Check through roles
+        foreach ($this->role as $role) {
+            if ($role->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
     public function role()

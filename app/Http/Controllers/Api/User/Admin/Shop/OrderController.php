@@ -35,8 +35,8 @@ class OrderController extends Controller
 {
     public function get_all_orders()
     {
-        $auth = PermissionService::authorize('order', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('order', 'view');
+        // if ($auth) return $auth;
         return Order::get();
     }
 

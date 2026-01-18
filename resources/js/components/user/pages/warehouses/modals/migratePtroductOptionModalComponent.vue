@@ -69,7 +69,8 @@
 
         methods: {
             getWarehouses() {
-                axios.get('/warehouse/get_warehouses')
+                axios
+                .get("/get_warehouse/get_warehouses")
                 .then(response => {
                     this.warehouses = response.data.filter(w => w.id != this.$route.params.id);
                 })
