@@ -24,7 +24,8 @@ Route::post('/filmSearch/{query_request}', 'Api\SearchController@filmSearch');
 // Canvas image save route
 Route::post('/save-canvas-image', 'Api\CanvasController@saveImage');
 
-Route::group(['namespace'=>'Api', 'middleware'=>['auth:sanctum', 'banned']], function() {
+// Public routes - no authentication required for viewing content
+Route::group(['namespace'=>'Api'], function() {
 
     Route::controller(ServiceFollowing::class)->prefix('get_follow')->group( function() {
         // Editing routes moved to adminAction.php

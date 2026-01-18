@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
+// Public routes - no authentication required for viewing content
+Route::group(['namespace'=>'Api\Guide'], function() {
 
     /*
     *   Article routes

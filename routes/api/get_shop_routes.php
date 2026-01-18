@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['namespace'=>'Api\Shop', 'middleware'=>['auth:sanctum', 'banned']], function() {
+// Public routes - no authentication required for viewing content
+Route::group(['namespace'=>'Api\Shop'], function() {
     /*
     *   Product and product categories routes
     */

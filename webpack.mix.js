@@ -27,4 +27,6 @@ mix.webpackConfig({
 
 if (mix.inProduction()) {
     mix.version();
+} else {
+    mix.sourceMaps();
 }
