@@ -42,8 +42,10 @@ class AppServiceProvider extends ServiceProvider
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         
         ResetPassword::createUrlUsing(function ($user, string $token) {
-            // return 'https://user.climbing.loc/reset-password?token='.$token;
-            return 'https://user.climbing.loc/reset-password/' . $token . '/' . $user->id;
+            // Use APP_SSH environment variable for flexibility
+            $appSsh = env('APP_SSH', 'https://');
+            $userPageUrl = env('USER_PAGE_URL', 'user.climbing.ge');
+            return $appSsh . $userPageUrl . '/reset-password/' . $token . '/' . $user->id;
         });
     }
 }

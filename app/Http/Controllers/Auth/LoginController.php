@@ -48,6 +48,21 @@ class LoginController extends Controller
         // Force JSON response for API requests
         $request->headers->set('Accept', 'application/json');
 
+        // Ensure proper HTTPS handling - detect if request is from HTTPS
+        $isHttps = $request->getScheme() === 'https' || 
+                   $request->header('X-Forwarded-Proto') === 'https' ||
+                   $request->header('X-Forwarded-Ssl') === 'on';
+
+        // Log for debugging mixed content issues
+        \Log::info('API Login request', [
+            'ip' => $request->getClientIp(),
+            'scheme' => $request->getScheme(),
+            'x-forwarded-proto' => $request->header('X-Forwarded-Proto'),
+            'is_https' => $isHttps,
+            'user_agent' => $request->userAgent(),
+            'referer' => $request->header('Referer'),
+        ]);
+
         $validator = \Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
