@@ -6,10 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User\Non_registered_commenter;
+use App\Services\PermissionService;
 
 class NonRegisteredCommenterController extends Controller
 {
     public function get_non_registered_commenter() {
+        $auth = PermissionService::authorize('commenter', 'view');
+        if ($auth) return $auth;
+        
         $comenters = Non_registered_commenter::count();
 
         if($comenters != null){
@@ -28,6 +32,9 @@ class NonRegisteredCommenterController extends Controller
     }
 
     public function del_non_registered_commenter($id) {
+        $auth = PermissionService::authorize('commenter', 'del');
+        if ($auth) return $auth;
+        
         $del_non_registered_commenter = Non_registered_commenter::where("id", "=", $id)->first();
         $del_non_registered_commenter -> delete();
     }

@@ -221,6 +221,9 @@ class OutdoorController extends Controller
 
     public function get_filtred_outdoor_spots(Request $request)
     {
+        $auth = PermissionService::authorize('outdoor', 'view');
+        if ($auth) return $auth;
+        
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;

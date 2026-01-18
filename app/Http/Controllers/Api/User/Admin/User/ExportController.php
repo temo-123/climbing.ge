@@ -10,6 +10,7 @@ use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Locale_article;
 use App\Services\ArticlesService;
+use App\Services\PermissionService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
@@ -30,6 +31,9 @@ class ExportController extends Controller
 
     public function exportArticlesPdf(Request $request)
     {
+        $auth = PermissionService::authorize('export', 'add');
+        if ($auth) return $auth;
+        
         $articleIds = $request->input('article_ids');
         $exportSectors = $request->input('export_sectors', false);
         $locale = $request->input('locale', 'ka');

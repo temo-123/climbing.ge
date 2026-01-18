@@ -11,6 +11,7 @@ use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
 
 use Validator;
+use App\Services\PermissionService;
 
 class MTPController extends Controller
 {
@@ -87,6 +88,9 @@ class MTPController extends Controller
      */
     public function mtp_add(Request $request)
     {
+        $auth = PermissionService::authorize('mtp', 'add');
+        if ($auth) return $auth;
+        
         // dd($request->data);
         $mtp_validate = $this->mtp_validate($request->data);
         if ($mtp_validate != null) { 
@@ -123,6 +127,9 @@ class MTPController extends Controller
      */
     public function mtp_edit(Request $request, $id)
     {
+        $auth = PermissionService::authorize('mtp', 'edit');
+        if ($auth) return $auth;
+        
         $mtp_validate = $this->mtp_validate($request->data);
         if ($mtp_validate != null) { 
             return response()->json([
@@ -147,6 +154,9 @@ class MTPController extends Controller
 
     public function get_editing_mtp(Request $request, $id)
     {
+        $auth = PermissionService::authorize('mtp', 'view');
+        if ($auth) return $auth;
+        
         return Mtp::where('id',strip_tags($request->mtp_id))->first();
     }
     
@@ -159,6 +169,9 @@ class MTPController extends Controller
      */
     public function del_mtp(Request $request)
     {
+        $auth = PermissionService::authorize('mtp', 'del');
+        if ($auth) return $auth;
+        
         $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
         $mtp_pitchs_count = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->count();
         if ($mtp_pitchs_count > 0) {
@@ -172,6 +185,9 @@ class MTPController extends Controller
 
     public function get_mtp_editing_data(Request $request)
     {
+        $auth = PermissionService::authorize('mtp', 'view');
+        if ($auth) return $auth;
+        
         $mtp = Mtp::where('id',strip_tags($request->id))->first();
         return(
             $data = [

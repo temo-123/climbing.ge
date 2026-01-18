@@ -9,6 +9,7 @@ use Validator;
 
 use App\Models\Guide\General_info;
 use App\Services\GeneralInfoService;
+use App\Services\PermissionService;
 use Illuminate\Support\Facades\Log;
 
 class GeneralInfoController extends Controller
@@ -41,6 +42,9 @@ class GeneralInfoController extends Controller
      */
     public function add_general_info(Request $request)
     {
+        $auth = PermissionService::authorize('general_info', 'add');
+        if ($auth) return $auth;
+        
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -67,6 +71,8 @@ class GeneralInfoController extends Controller
      */
     public function get_editing_general_info($id)
     {
+        $auth = PermissionService::authorize('general_info', 'view');
+        if ($auth) return $auth;
         return General_info::where("id", "=", $id)->first();
     }
 
@@ -90,6 +96,9 @@ class GeneralInfoController extends Controller
      */
     public function edit_general_info(Request $request, $id)
     {
+        $auth = PermissionService::authorize('general_info', 'edit');
+        if ($auth) return $auth;
+        
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -116,6 +125,9 @@ class GeneralInfoController extends Controller
      */
     public function del_general_info($id)
     {
+        $auth = PermissionService::authorize('general_info', 'del');
+        if ($auth) return $auth;
+        
         try {
             $success = GeneralInfoService::deleteGeneralInfo($id);
             

@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+use App\Services\PermissionService;
+
 class MultimediaController extends Controller
 {
     protected $basePath;
@@ -43,6 +45,9 @@ class MultimediaController extends Controller
      */
     public function uploadImages(Request $request): JsonResponse
     {
+        $auth = PermissionService::authorize('multimedia', 'add');
+        if ($auth) return $auth;
+        
         $validator = Validator::make($request->all(), [
             'files.*' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp,svg|max:10240', // 10MB max
             'folder' => 'nullable|string|max:255'
@@ -105,6 +110,9 @@ class MultimediaController extends Controller
      */
     public function deleteItems(Request $request): JsonResponse
     {
+        $auth = PermissionService::authorize('multimedia', 'del');
+        if ($auth) return $auth;
+        
         $validator = Validator::make($request->all(), [
             'paths' => 'required|array',
             'paths.*' => 'required|string'
@@ -159,6 +167,9 @@ class MultimediaController extends Controller
      */
     public function createFolder(Request $request): JsonResponse
     {
+        $auth = PermissionService::authorize('multimedia', 'add');
+        if ($auth) return $auth;
+        
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|regex:/^[a-zA-Z0-9\-_\s]+$/',
             'parent' => 'nullable|string'

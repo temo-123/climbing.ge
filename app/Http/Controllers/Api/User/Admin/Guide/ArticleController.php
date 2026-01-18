@@ -443,6 +443,9 @@ class ArticleController extends Controller
 
     public function get_editing_data(Request $request)
     {
+
+        $auth = PermissionService::authorize('article', 'edit');
+        
         $global_article = Article::where('id',strip_tags($request->id))->first();
         $us_article = Locale_article::where('id',strip_tags($global_article->us_article_id))->first();
         $ka_article = Locale_article::where('id',strip_tags($global_article->ka_article_id))->first();

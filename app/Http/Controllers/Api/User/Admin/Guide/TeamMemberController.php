@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Services\PermissionService;
 
 class TeamMemberController extends Controller
 {
@@ -23,6 +24,9 @@ class TeamMemberController extends Controller
 
     public function edit_member_status(Request $request, $id)
     {
+        $auth = PermissionService::authorize('team_member', 'edit');
+        if ($auth) return $auth;
+        
         $user = User::find($id);
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\PermissionService;
 
 use App\Models\Guide\Article_image;
 use App\Models\Guide\Article;
@@ -44,11 +45,15 @@ class ArticleGalleryController extends Controller
 
     public function get_editing_images(Request $request)
     {
+        $auth = PermissionService::authorize('article_gallery', 'view_editing');
+        if ($auth) return $auth;
         return Article_image::where('article_id', '=', $request->article_id)->get();
     }
 
     public function del_image($id)
     {
+        $auth = PermissionService::authorize('article_gallery', 'del');
+        if ($auth) return $auth;
         $gallery = Article_image::where('id',strip_tags($id))->first();
 
         // delete article file

@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\PermissionService;
 
 use App\Models\Guide\Header_image;
 
@@ -30,10 +31,15 @@ class HeadSliderController extends Controller
 
     public function get_editing_slide(Request $request)
     {
+        $auth = PermissionService::authorize('head_slider', 'view');
+        if ($auth) return $auth;
         return Header_image::where('id', '=', $request->slide_id)->first();
     }
 
     public function add_slide (Request $request) {
+        $auth = PermissionService::authorize('head_slider', 'add');
+        if ($auth) return $auth;
+        
         $validation_issets;
 
         $data = json_decode($request->data, true );
@@ -69,6 +75,9 @@ class HeadSliderController extends Controller
     }
 
     public function edit_slide (Request $request) {
+        $auth = PermissionService::authorize('head_slider', 'edit');
+        if ($auth) return $auth;
+        
         if ($request->isMethod('post')) {
             $validation_issets;
 
@@ -105,7 +114,10 @@ class HeadSliderController extends Controller
     }
 
     public function del_slide (Request $request) 
-    {   
+    {
+        $auth = PermissionService::authorize('head_slider', 'del');
+        if ($auth) return $auth;
+        
         $gallery = Header_image::where('id',strip_tags($request->slide_id))->first();
 
         // delete article file

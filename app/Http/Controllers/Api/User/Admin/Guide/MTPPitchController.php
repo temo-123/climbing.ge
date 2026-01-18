@@ -12,6 +12,8 @@ use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
 
+use App\Services\PermissionService;
+
 class MTPPitchController extends Controller
 {
     /**
@@ -62,11 +64,17 @@ class MTPPitchController extends Controller
 
     public function get_mtp_pitchs_for_model(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'view');
+        if ($auth) return $auth;
+        
         return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
     }
 
     public function pitch_sequence(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
+        if ($auth) return $auth;
+        
         if($request->pitch_sequence){
             $pitch_num = 0;
             foreach ($request->pitch_sequence as $pitch) {
@@ -93,6 +101,9 @@ class MTPPitchController extends Controller
      */
     public function mtp_pitch_edit(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
+        if ($auth) return $auth;
+        
         $pitch_validate = $this->pitch_validate($request->data);
         if ($pitch_validate != null) { 
             return response()->json([
@@ -130,6 +141,9 @@ class MTPPitchController extends Controller
      */
     public function mtp_pitch_add(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'add');
+        if ($auth) return $auth;
+        
         $pitch_validate = $this->pitch_validate($request->data);
         if ($pitch_validate != null) { 
             return response()->json([
@@ -175,6 +189,9 @@ class MTPPitchController extends Controller
      */
     public function del_pitch(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'del');
+        if ($auth) return $auth;
+        
         $sector = Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
         $sector ->delete();
     }
@@ -183,6 +200,9 @@ class MTPPitchController extends Controller
 
     public function get_editin_pitch(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'view');
+        if ($auth) return $auth;
+        
         return Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
     }
 

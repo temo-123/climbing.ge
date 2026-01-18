@@ -9,6 +9,8 @@ use App\Models\User;
 use App\Models\Guide\Sport_route_review;
 // use App\Models\Guide\Sport_route_review_user;
 
+use App\Services\PermissionService;
+
 use Auth;
 
 class RoutesReitingController extends Controller
@@ -135,6 +137,9 @@ class RoutesReitingController extends Controller
     }
 
     public function del_route_review($review_id) {
+        $auth = PermissionService::authorize('route_rating', 'del');
+        if ($auth) return $auth;
+        
         if (Auth::user()) {
             $review = Sport_route_review::where('id',strip_tags($review_id))->first();
             // $user_review_relation = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->where('review_id', '=', $review->id)->first();

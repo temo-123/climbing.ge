@@ -17,14 +17,21 @@ use App\Models\Shop\Tour_reservations_user;
 use App\Notifications\tour\ReservationCreatingGuideNotification;
 use App\Notifications\tour\ReservationSacsesfulNotification;
 use App\Notifications\tour\ReservationVerifyEmail;
+use App\Services\PermissionService;
 
 class TourReservationController extends Controller
 {
     function get_all_reservations(){
+        $auth = PermissionService::authorize('tour_reservation', 'view');
+        if ($auth) return $auth;
+        
         return Tour_reservation::latest('id')->get();
     }
 
     function get_user_reservations(){
+        $auth = PermissionService::authorize('tour_reservation', 'view');
+        if ($auth) return $auth;
+        
         $user_tours = Auth::user()->tours;
 
         $reservatione =[];
@@ -41,6 +48,9 @@ class TourReservationController extends Controller
     }
 
     function create_reservation(TourReservationRequest $request){
+        $auth = PermissionService::authorize('tour_reservation', 'add');
+        if ($auth) return $auth;
+        
         // Validation is automatically handled by TourReservationRequest
         $validated = $request->validated();
         
@@ -102,6 +112,9 @@ class TourReservationController extends Controller
     }
 
     function verifiation_reservation(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        
         $valid_item = Tour_reservation::where('id', '=', $request->reservation_id)->first();
         $valid_item['verificate'] = 1;
         $valid_item -> save();
@@ -119,12 +132,18 @@ class TourReservationController extends Controller
     }
 
     function del_reservation(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'del');
+        if ($auth) return $auth;
+        
         $del_item = Tour_reservation::where('id', '=', $request->reservation_id)->first();
         $del_item -> delete();
     }
 
     // Google Calendar Integration Methods
     function initGoogleAuth(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        
         // In production, use Google OAuth2 Client Library
         // For demo, return mock auth URL
 
@@ -156,6 +175,9 @@ class TourReservationController extends Controller
     }
 
     function handleGoogleCallback(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        
         $code = $request->code;
 
         if (!$code) {
@@ -203,6 +225,9 @@ class TourReservationController extends Controller
     }
 
     function disconnectGoogleCalendar(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        
         // Clear the Google Calendar connection
         session()->forget([
             'google_calendar_token',
@@ -219,6 +244,9 @@ class TourReservationController extends Controller
     }
 
     function syncToGoogleCalendar(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'edit');
+        if ($auth) return $auth;
+        
         $email = $request->email;
         $calendarId = $request->calendar_id ?? 'primary';
         $syncType = $request->sync_type ?? 'all';
@@ -291,6 +319,9 @@ class TourReservationController extends Controller
     }
 
     function get_my_tours(){
+        $auth = PermissionService::authorize('tour', 'view');
+        if ($auth) return $auth;
+        
         // Get tours created by the currently authenticated user
         $user = Auth::user();
         
@@ -326,3 +357,4 @@ class TourReservationController extends Controller
         return response()->json($tours);
     }
 }
+

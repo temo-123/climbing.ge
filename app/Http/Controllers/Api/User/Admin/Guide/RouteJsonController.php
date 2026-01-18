@@ -7,18 +7,24 @@ use Illuminate\Http\Request;
 
 use App\Models\Guide\Route;
 use App\Models\Guide\ClimbingRoutesJson;
-use App;
+use App\Services\PermissionService;
 
 use Validator;
 
 class RouteJsonController extends Controller
 {
     public function get_editing_route_json(Request $request) {
+        $auth = PermissionService::authorize('route_json', 'view');
+        if ($auth) return $auth;
+        
         $act_route = Route::where('id', '=', $request->route_id)->first();
         return $act_route->json;
     }
 
     public static function add_route_json($data) {
+        $auth = PermissionService::authorize('route_json', 'add');
+        if ($auth) return $auth;
+        
         $route_validate = (new static)->add_route_json_validate($data);
         if ($route_validate != null) {
             return response()->json([
@@ -38,6 +44,9 @@ class RouteJsonController extends Controller
     }
 
     public static function edit_route_json($data) {
+        $auth = PermissionService::authorize('route_json', 'edit');
+        if ($auth) return $auth;
+        
         $existing_json = ClimbingRoutesJson::where('route_id', '=', $data['route_id'])->first();
 
         if(!$existing_json){

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Guide\Sector_image;
+use App\Services\PermissionService;
 
 class SectorImagesController extends Controller
 {
@@ -130,6 +131,9 @@ class SectorImagesController extends Controller
 
     public function save_sector_images_sequence(Request $request)
     {
+        $auth = PermissionService::authorize('sector_image', 'edit');
+        if ($auth) return $auth;
+        
         $image_num = 0;
         $images_sequence = $request->sector_images_sequence;
         foreach ($images_sequence as $image_sequence) {
@@ -147,6 +151,9 @@ class SectorImagesController extends Controller
 
     public function get_sector_editing_data(Request $request)
     {
+        $auth = PermissionService::authorize('sector_image', 'view');
+        if ($auth) return $auth;
+        
         $sector = Sector::where('id',strip_tags($request->id))->first();
         return(
             $data = [
@@ -157,6 +164,9 @@ class SectorImagesController extends Controller
 
     public function sector_image_upload(Request $request)
     {
+        $auth = PermissionService::authorize('sector_image', 'add');
+        if ($auth) return $auth;
+        
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         $this->sector_image_validate($request);
@@ -172,6 +182,9 @@ class SectorImagesController extends Controller
 
     public function sector_image_delete(Request $request)
     {
+        $auth = PermissionService::authorize('sector_image', 'del');
+        if ($auth) return $auth;
+        
         $request->user()->authorizeRoles(['manager', 'admin']);
 
         if ($request->isMethod('post')) {

@@ -16,6 +16,7 @@ use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\PermissionService;
 
 use Validator;
 
@@ -52,6 +53,8 @@ class SectorController extends Controller
 
     public function save_sector_sequence(Request $request)
     {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
         $sectors_num=0;
         foreach ($request->new_sector_sequence as $sector) {
             $sector_id = $sector['id'];
@@ -64,6 +67,8 @@ class SectorController extends Controller
 
     public function add_sector(Request $request)
     {
+        $auth = PermissionService::authorize('sector', 'add');
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
         $validate = $this->sector_validate($data);
 
@@ -302,6 +307,8 @@ class SectorController extends Controller
 
     public function edit_sector(Request $request, )
     {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
         $validate = $this->sector_validate($data);
 
@@ -354,6 +361,8 @@ class SectorController extends Controller
      */
     public function del_sector(Request $request)
     {
+        $auth = PermissionService::authorize('sector', 'del');
+        if ($auth) return $auth;
         $sector_id=$request->sector_id;
 
         $sector = Sector::where('id',strip_tags($sector_id))->first();
@@ -402,6 +411,8 @@ class SectorController extends Controller
 
     public function routes_sequence(Request $request)
     {
+        $auth = PermissionService::authorize('route', 'edit');
+        if ($auth) return $auth;
         // dd($request);
         if($request->routes_sequence){
             $route_num = 0;
@@ -452,6 +463,8 @@ class SectorController extends Controller
 
     public function del_sector_image_from_db(Request $request)
     {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
         $image = Sector_image::where('id', '=', $request->image_id)->first();
         ImageControllService::image_delete('images/sector_img/', $image, 'image');
         $image ->delete();
@@ -511,6 +524,8 @@ class SectorController extends Controller
 
     public function get_sector_editing_data(Request $request)
     {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
         $sector = Sector::where('id',strip_tags($request->sector_id))->first();
         $data = [
             'sector' => $sector,

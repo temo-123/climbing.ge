@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 
 use App\Models\User\Task_category;
 
+use App\Services\PermissionService;
+
 class TaskCategoryController extends Controller
 {
     function get_all_task_categories(){
@@ -18,6 +20,9 @@ class TaskCategoryController extends Controller
     }
 
     function create_task_category(Request $request){
+        $auth = PermissionService::authorize('task_category', 'add');
+        if ($auth) return $auth;
+        
         $new_Task_category = new Task_category;
 
         $new_Task_category['title'] = $request->data['title'];
@@ -27,14 +32,20 @@ class TaskCategoryController extends Controller
     }
 
     function update_task_category(Request $request){
+        $auth = PermissionService::authorize('task_category', 'edit');
+        if ($auth) return $auth;
+        
         $editing_task_category = Task_category::where("id", "=", $request->task_category_id)->first();
 
         $editing_task_category['title'] = $request->data['title'];
         $editing_task_category['short_description'] = $request->data['short_description'];
         $editing_task_category -> save();
     }
-
+    
     function del_task_category(Request $request){
+        $auth = PermissionService::authorize('task_category', 'del');
+        if ($auth) return $auth;
+        
         $deleted_user_site = Task_category::where("id", "=", $request->task_category_id)->first();
         $deleted_user_site -> delete();
     }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Validator;
 
 use App\Models\Shop\Product_subcategory;
+use App\Services\PermissionService;
 
 class ProductSubcategoryController extends Controller
 {
@@ -15,14 +16,23 @@ class ProductSubcategoryController extends Controller
     // }
 
     function get_subcategories_for_category(Request $request) {
+        $auth = PermissionService::authorize('product_subcategory', 'view');
+        if ($auth) return $auth;
+        
         return Product_subcategory::where("category_id", "=", $request->category_id,)->get();
     }
 
     function get_editing_subcategory(Request $request) {
+        $auth = PermissionService::authorize('product_subcategory', 'view');
+        if ($auth) return $auth;
+        
         return Product_subcategory::where("id", "=", $request->id,)->first();
     }
 
     function add_subcategory(Request $request) {
+        $auth = PermissionService::authorize('product_subcategory', 'add');
+        if ($auth) return $auth;
+        
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -47,6 +57,9 @@ class ProductSubcategoryController extends Controller
     }
 
     function edit_subcategory(Request $request) {
+        $auth = PermissionService::authorize('product_subcategory', 'edit');
+        if ($auth) return $auth;
+        
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -63,6 +76,9 @@ class ProductSubcategoryController extends Controller
     }
     
     function del_subcategory(Request $request) {
+        $auth = PermissionService::authorize('product_subcategory', 'del');
+        if ($auth) return $auth;
+        
         $deleted_product_subcategory = Product_subcategory::where("id", "=", $request->id)->first();
         $deleted_product_subcategory -> delete();
     }

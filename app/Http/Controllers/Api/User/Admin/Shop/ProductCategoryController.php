@@ -9,6 +9,8 @@ use App\Models\Shop\Product_category;
 use App\Models\Shop\Product_subcategory;
 use App\Models\Shop\product_options;
 
+use App\Services\PermissionService;
+
 use Validator;
 
 class ProductCategoryController extends Controller
@@ -22,6 +24,8 @@ class ProductCategoryController extends Controller
      */
     public function add_product_category(Request $request)
     {
+        $auth = PermissionService::authorize('product_category', 'add');
+        if ($auth) return $auth;
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -39,6 +43,8 @@ class ProductCategoryController extends Controller
     }
 
     public function get_editing_product_category(Request $request){
+        $auth = PermissionService::authorize('product_category', 'edit');
+        if ($auth) return $auth;
         $editing_product_category = Product_category::where("id", "=", request()->id)->first();
 
         return response()->json($editing_product_category);
@@ -53,6 +59,8 @@ class ProductCategoryController extends Controller
      */
     public function edit_product_category(Request $request, $id)
     {
+        $auth = PermissionService::authorize('product_category', 'edit');
+        if ($auth) return $auth;
         $validate = $this->validation($request);
 
         if ($validate != null) {
@@ -78,6 +86,8 @@ class ProductCategoryController extends Controller
      */
     public function del_product_category($id)
     {
+        $auth = PermissionService::authorize('product_category', 'del');
+        if ($auth) return $auth;
         // Delete all subcategories first to avoid foreign key constraint violation
         Product_subcategory::where('category_id', $id)->delete();
 

@@ -20,12 +20,17 @@ use App\Models\User\Service_follower;
 use App\Models\User\user_notification;
 use App\Models\User;
 
+use App\Services\PermissionService;
+
 use App\Jobs\UserNotifications;
 
 class UserNotificationsController extends Controller
 {
     public function send_user_favorites_notification(Request $request)
     {
+        $auth = PermissionService::authorize('user_notification', 'add');
+        if ($auth) return $auth;
+        
         if($request->action != 'special_articles'){
             $user_notifictions = user_notification::where($request->action, '=', 1)->get();
             if($user_notifictions){

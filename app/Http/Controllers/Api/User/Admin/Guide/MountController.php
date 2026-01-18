@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Services\MountSystemService;
+use App\Services\PermissionService;
 
 use App\Models\Guide\Mount;
 use App\Models\Guide\Locale_mount;
@@ -73,6 +74,8 @@ class MountController extends Controller
      */
     public function add_mount_massive(Request $request)
     {
+        $auth = PermissionService::authorize('mount', 'add');
+        // if ($auth) return $auth;
         $validation_issets = [];
 
         $ka_validate = $this->local_mount_validate($request['data']['ka_data']);
@@ -183,6 +186,8 @@ class MountController extends Controller
 
     public function get_editing_mount_massive_data(Request $request)
     {
+        $auth = PermissionService::authorize('mount', 'view_editing');
+        // if ($auth) return $auth;
         $mounts_system = Mount::where('id', '=', $request->mount_id)->first();
 
         $data = [
@@ -203,6 +208,8 @@ class MountController extends Controller
      */
     public function edit_mount_massive(Request $request)
     {
+        $auth = PermissionService::authorize('mount', 'edit');
+        // if ($auth) return $auth;
         $validation_issets = [];
 
         $ka_validate = $this->local_mount_validate($request['data']['ka_data']);
@@ -316,6 +323,8 @@ class MountController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $auth = PermissionService::authorize('mount', 'edit');
+        // if ($auth) return $auth;
         $editing_product_category = Mount::where("id", "=", $id)->first();
 
         $editing_product_category['map'] = $request->editing_data['map'];
@@ -331,6 +340,8 @@ class MountController extends Controller
      */
     public function del_mount_massive($id)
     {
+        $auth = PermissionService::authorize('mount', 'del');
+        // if ($auth) return $auth;
         $deleted_product_category = Mount::where("id", "=", $id)->first();
         $deleted_product_category -> delete();
     }

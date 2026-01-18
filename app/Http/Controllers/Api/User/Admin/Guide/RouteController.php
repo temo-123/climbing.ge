@@ -89,7 +89,7 @@ class RouteController extends Controller
     public function add_route(Request $request)
     {
         $auth = PermissionService::authorize('route', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $route_validate = $this->route_validate($request->data);
         if ($route_validate != null) {
             return response()->json([
@@ -135,7 +135,7 @@ class RouteController extends Controller
     public function edit_route(Request $request, $route_id)
     {
         $auth = PermissionService::authorize('route', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         // Check if data is received
         if (!$request->has('data')) {
@@ -178,7 +178,7 @@ class RouteController extends Controller
     public function del_route(Request $request)
     {
         $auth = PermissionService::authorize('route', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $route = Route::where('id',strip_tags($request->route_id))->first();
 
         // Delete related JSON data first to avoid foreign key constraint
@@ -195,6 +195,8 @@ class RouteController extends Controller
 
     public function get_route_editing_data(Request $request)
     {
+        $auth = PermissionService::authorize('route', 'edit');
+        if ($auth) return $auth;
         $route = Route::where('id',strip_tags($request->route_id))->first();
 
         // Fetch JSON data from the separate table

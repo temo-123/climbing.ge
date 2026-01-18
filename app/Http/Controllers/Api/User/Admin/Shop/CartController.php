@@ -11,6 +11,8 @@ use App\Models\Shop\Option_image;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Favorite_product;
 use App\Models\User\User_adreses;
+use App\Services\PermissionService;
+
 use auth;
 
 class CartController extends Controller
@@ -26,6 +28,9 @@ class CartController extends Controller
      */
     public function index()
     {
+        $auth = PermissionService::authorize('cart', 'view');
+        if ($auth) return $auth;
+        
         if (Auth::user()) {
             $user = Auth::user();
             $cart_items = Cart::where('user_id', '=', $user->id)->get();
@@ -74,6 +79,9 @@ class CartController extends Controller
 
     public function update_quantity(Request $request)
     {
+        $auth = PermissionService::authorize('cart', 'edit');
+        if ($auth) return $auth;
+        
         $cart_item = Cart::where('id', '=', $request->item_id)->first();
         
         $cart_item['quantity'] = $request->quantity;
@@ -83,6 +91,9 @@ class CartController extends Controller
 
     public function add_to_favorite(Request $request)
     {
+        $auth = PermissionService::authorize('cart', 'add');
+        if ($auth) return $auth;
+        
         if (Auth::user()) {
             
             if(Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->count() > 0){
@@ -109,6 +120,9 @@ class CartController extends Controller
 
     public function del_from_favorite(Request $request)
     {
+        $auth = PermissionService::authorize('cart', 'del');
+        if ($auth) return $auth;
+        
         if (Auth::user()) {
             $product = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
 
@@ -127,6 +141,9 @@ class CartController extends Controller
      */
     public function create()
     {
+        $auth = PermissionService::authorize('cart', 'add');
+        if ($auth) return $auth;
+        
         $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','us_manager','seller']);
 
         if (Auth::user()) {
@@ -211,6 +228,9 @@ class CartController extends Controller
      */
     public function edit($id)
     {
+        $auth = PermissionService::authorize('cart', 'edit');
+        if ($auth) return $auth;
+        
         $cart_item = Cart::find($request->id);
         $cart_item->quantity = $request->quantity;
         $cart_item->update();
@@ -225,6 +245,9 @@ class CartController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $auth = PermissionService::authorize('cart', 'edit');
+        if ($auth) return $auth;
+        
         $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
         if($cart_item){
             $item_quantity = $cart_item->quantity;
@@ -263,6 +286,9 @@ class CartController extends Controller
      */
     public function destroy($id, Request $request)
     {
+        $auth = PermissionService::authorize('cart', 'del');
+        if ($auth) return $auth;
+        
         if ($request->isMethod('delete')) {
             $item = cart::where('id', '=', $id)->first();
             $item -> delete();

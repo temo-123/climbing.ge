@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Shop\Sale_code;
+use App\Services\PermissionService;
 
 class SaleCodeController extends Controller
 {
@@ -17,6 +18,9 @@ class SaleCodeController extends Controller
      */
     public function add_sale_code(Request $request)
     {
+        $auth = PermissionService::authorize('sale_code', 'add');
+        if ($auth) return $auth;
+        
         $new_sale_adres = new Sale_code;
 
         $new_sale_adres['discount'] = $request->data['discount'];
@@ -36,6 +40,9 @@ class SaleCodeController extends Controller
      */
     public function edit_sale_code(Request $request, $id)
     {
+        $auth = PermissionService::authorize('sale_code', 'edit');
+        if ($auth) return $auth;
+        
         // dd($request->editing_data['discount']);
         $editing_product_category = Sale_code::where("id", "=", $id)->first();
 
@@ -55,6 +62,9 @@ class SaleCodeController extends Controller
      */
     public function get_editing_sale_code($id)
     {
+        $auth = PermissionService::authorize('sale_code', 'view');
+        if ($auth) return $auth;
+        
         return Sale_code::where("id", "=", $id)->first();
     }
 
@@ -66,7 +76,11 @@ class SaleCodeController extends Controller
      */
     public function del_sale_code($id)
     {
+        $auth = PermissionService::authorize('sale_code', 'del');
+        if ($auth) return $auth;
+        
         $deleted_product_category = Sale_code::where("id", "=", $id)->first();
         $deleted_product_category -> delete();
     }
 }
+

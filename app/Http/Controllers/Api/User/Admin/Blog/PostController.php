@@ -57,6 +57,7 @@ class PostController extends Controller
 
     function get_editing_post(Request $request) {
         $auth = PermissionService::authorize('post', 'edit');
+        // if ($auth) return $auth;
         $post = Post::where('id', strip_tags($request->id))->first();
         $us_post = Locale_post::where('id', $post->us_post_id ?? null)->first();
         $ka_post = Locale_post::where('id', $post->ka_post_id ?? null)->first();
@@ -69,7 +70,9 @@ class PostController extends Controller
         return $data;
     }
 
-    function get_activ_post(Request $request) {
+    function get_activ_post(Request $request) {        
+        $auth = PermissionService::authorize('post', 'edit');
+
         $post = Post::with(['us_post', 'ka_post'])->find($request->id);
         if (!$post) {
             return null;

@@ -8,11 +8,15 @@ use Illuminate\Http\Request;
 use App\Models\Guide\Region;
 use App\Models\Guide\Article_region;
 use Validator;
+use App\Services\PermissionService;
 
 class RegionController extends Controller
 {
     public function add_region(Request $request)
     {
+        $auth = PermissionService::authorize('region', 'add');
+        if ($auth) return $auth;
+        
         $validate = $this->region_validate($request->data);
 
         if ($validate != null) {
@@ -39,11 +43,17 @@ class RegionController extends Controller
 
     public function get_editing_region_data(Request $request)
     {
+        $auth = PermissionService::authorize('region', 'view');
+        if ($auth) return $auth;
+        
         return Region::where('id',strip_tags($request->id))->first();
     }
 
     public function edit_region(Request $request)
     {
+        $auth = PermissionService::authorize('region', 'edit');
+        if ($auth) return $auth;
+        
         $validate = $this->region_validate($request->data);
 
 
@@ -71,6 +81,9 @@ class RegionController extends Controller
 
     public function del_region(Request $request)
     {
+        $auth = PermissionService::authorize('region', 'del');
+        if ($auth) return $auth;
+        
         $region = Region::where('id',strip_tags($request->id))->first();
         $region -> delete();
     }

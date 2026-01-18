@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\PermissionService;
 
 use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
@@ -27,12 +28,18 @@ class SectorLocalImagesController extends Controller
 
     public function get_editing_sectors(Request $request)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'view');
+        if ($auth) return $auth;
+        
         $sector_local_image = Sector_local_image::where("id", "=", $request->image_id)->first();
         return $sector_local_image->sectors;
     }
 
     public function get_editing_locale_image($id)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'view');
+        if ($auth) return $auth;
+        
         $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
         $sector_local_image_sectors = $sector_local_image->sectors;
         
@@ -69,6 +76,9 @@ class SectorLocalImagesController extends Controller
      */
     public function add_sector_local_image(Request $request)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'add');
+        if ($auth) return $auth;
+        
         $new_sector_local_image = new Sector_local_image;
 
         $new_sector_local_image['title'] = $request['title'];
@@ -114,6 +124,9 @@ class SectorLocalImagesController extends Controller
     
     public function save_canvas_data(Request $request, $sector_id)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
+        if ($auth) return $auth;
+        
         $json = json_encode($request->canvasData);
 
         // Find the sector_local_image
@@ -191,6 +204,9 @@ class SectorLocalImagesController extends Controller
     
     public function update_image(Request $request, $id)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
+        if ($auth) return $auth;
+        
         $editing_sector_local_image = Sector_local_image::where("id", "=", $id)->first();
 
         $editing_sector_local_image['title'] = $request['title'];
@@ -231,6 +247,9 @@ class SectorLocalImagesController extends Controller
      */
     public function del_locale_image($id)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'del');
+        if ($auth) return $auth;
+        
         $deleting_sector_local_images = Sector_local_image::where("id", "=", $id)->first();
 
         $image_sector_relations = Sector_local_image_sector::where("image_id", "=", $deleting_sector_local_images->id)->get();

@@ -14,6 +14,7 @@ use App\Services\TourService;
 use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
+use App\Services\PermissionService;
 
 use Validator;
 use Auth;
@@ -39,6 +40,8 @@ class TourController extends Controller
     // }
 
     function get_user_tours(){
+        $auth = PermissionService::authorize('tour', 'view');
+        if ($auth) return $auth;
         return Auth::user()->tours;
     }
 
@@ -64,6 +67,8 @@ class TourController extends Controller
     // }
 
     function add_tour(Request $request){
+        $auth = PermissionService::authorize('tour', 'add');
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
 
         $validator = Validator::make($data, [
@@ -101,6 +106,8 @@ class TourController extends Controller
 
     public function edit_tour(Request $request)
     {
+        $auth = PermissionService::authorize('tour', 'edit');
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
 
         $validator = Validator::make($data, [
@@ -159,6 +166,8 @@ class TourController extends Controller
 
     public function get_editing_tour(Request $request)
     {
+        $auth = PermissionService::authorize('tour', 'view_editing');
+        if ($auth) return $auth;
         $tour = Tour::where('id', '=', $request->tour_id)->first();
         
         $data = [
@@ -187,6 +196,8 @@ class TourController extends Controller
     }
 
     function del_tour(Request $request){
+        $auth = PermissionService::authorize('tour', 'del');
+        if ($auth) return $auth;
         $global_id = $request->tour_id;
 
         $global_tour = Tour::where('id',strip_tags($global_id))->first();
@@ -213,6 +224,8 @@ class TourController extends Controller
     }
 
     function del_tour_image(Request $request) {
+        $auth = PermissionService::authorize('tour', 'edit');
+        if ($auth) return $auth;
         $image = Tour_image::where('id', '=', $request->image_id)->first();
         if($image){
             ImageControllService::image_delete('images/tour_img/', $image, 'image');

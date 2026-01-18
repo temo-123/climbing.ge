@@ -13,6 +13,7 @@ use App\Services\ServicesService;
 use App\Services\URLTitleService;
 use App\Services\GalleryService;
 use App\Services\Abstract\ImageControllService;
+use App\Services\PermissionService;
 
 use Validator;
 
@@ -41,6 +42,9 @@ class ServicesController extends Controller
 
     public function add_service(Request $request)
     {
+        $auth = PermissionService::authorize('service', 'add');
+        if ($auth) return $auth;
+        
         $data = json_decode($request->data, true );
 
         $service_adding = ServicesService::add_content($data, Service::class, Locale_service::class, '_service', $request);
@@ -64,6 +68,9 @@ class ServicesController extends Controller
 
     public function get_editing_service(Request $request)
     {
+        $auth = PermissionService::authorize('service', 'view');
+        if ($auth) return $auth;
+        
         $service = Service::where('id', '=', $request->service_id)->first();
         
         $data = [
@@ -90,6 +97,9 @@ class ServicesController extends Controller
 
     public function edit_service(Request $request)
     {
+        $auth = PermissionService::authorize('service', 'edit');
+        if ($auth) return $auth;
+        
         // $data = json_decode($request->data, true );
         // dd($data['global_service']['id']);
 
@@ -137,6 +147,9 @@ class ServicesController extends Controller
 
     public function del_service(Request $request)
     {
+        $auth = PermissionService::authorize('service', 'del');
+        if ($auth) return $auth;
+        
         $service = Service::where('id', '=', $request->service_id)->first();
         $service_images_count = Service_image::where('service_id', '=', $service->id)->count();
 
@@ -153,6 +166,9 @@ class ServicesController extends Controller
 
     public function del_service_image(Request $request)
     {
+        $auth = PermissionService::authorize('service', 'edit');
+        if ($auth) return $auth;
+        
         $image = Service_image::where('id', '=', $request->image_id)->first();
         if($image){
             ImageControllService::image_delete('images/service_img/', $image, 'image');

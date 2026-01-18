@@ -15,6 +15,7 @@ use App\Models\Guide\Suport_local_bisnes_article;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
 use App\Services\Abstract\LocaleContentControllService_fixed as LocaleContentControllService;
+use App\Services\PermissionService;
 
 use Validator;
 
@@ -140,6 +141,9 @@ class LocalBisnesController extends Controller
 
     public function add_local_bisnes(Request $request)
     {
+        $auth = PermissionService::authorize('local_bisnes', 'add');
+        if ($auth) return $auth;
+        
         try {
             \Log::info('Starting add_local_bisnes request', [
                 'has_data' => $request->has('data'),
@@ -268,6 +272,9 @@ class LocalBisnesController extends Controller
 
     public function edit_local_bisnes(Request $request)
     {
+        $auth = PermissionService::authorize('local_bisnes', 'edit');
+        if ($auth) return $auth;
+        
         try {
             \Log::info('Starting edit_local_bisnes request', [
                 'has_data' => $request->has('data'),
@@ -513,6 +520,9 @@ class LocalBisnesController extends Controller
 
     public function del_local_bisnes(Request $request)
     {
+        $auth = PermissionService::authorize('local_bisnes', 'del');
+        if ($auth) return $auth;
+        
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
         $bisnes_images_count = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->count();
 
