@@ -31,7 +31,7 @@ class ExportController extends Controller
 
     public function exportArticlesPdf(Request $request)
     {
-        $auth = PermissionService::authorize('export', 'add');
+        $auth = PermissionService::authorize('export', 'show');
         if ($auth) return $auth;
         
         $articleIds = $request->input('article_ids');

@@ -128,31 +128,6 @@ class CommentController extends Controller
         return $return['message'];
     }
 
-    // public function del_comment($id)
-    // {
-    //     $comment = Comment::where("id", '=', $id)->first();
-    //     $answers = $comment->answers;
-
-    //     $comment_deliting = CommentService::del_comment($id, Comment::class, Article_comment_user::class, 'comment');
-
-    //     if($answers->count() > 0){
-    //         foreach ($answers as $answer) {
-    //             $answer_deliting = CommentService::del_comment($answer->id, Comment::class, Article_comment_user::class, 'comment');
-    //         }
-    //     }
-
-    //     // return $comment_deliting;
-    // }
-
-    // public function hide_comment(Request $request)
-    // {
-    //     $data = $request['data'];
-
-    //     $actyve_comment = Comment::where("id", '=', $data['comment_id'])->first();
-        
-    //     return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
-    // }
-
     public function get_actyve_comment($comment_id)
     {
         return Comment::where('id',strip_tags($comment_id))->first();
@@ -163,15 +138,6 @@ class CommentController extends Controller
         return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
     }
 
-    // public function get_comments_complaints(Request $request)
-    // {
-    //     return Article_comment_complaint::get();
-    // }
-
-    // public function make_decision(Request $request)
-    // {
-    //     return CommentService::make_decision($request, Comment::class, Article_comment_complaint::class, Article::class, 'article', 'comment');
-    // }
 
     public function confirm_email(Request $request) 
     {        

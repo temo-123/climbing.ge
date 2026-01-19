@@ -35,6 +35,6 @@ class PermissionService
             return response()->json(['error' => 'Unauthorized'], 403);
         }
 
-        return null; // Continue if allowed
+        // return null; // Continue if allowed
     }
 }

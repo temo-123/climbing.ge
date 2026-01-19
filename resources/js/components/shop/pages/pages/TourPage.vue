@@ -63,12 +63,6 @@
             :description="tour.locale_data.short_description"
             :image="'/images/tour_img/'+tour.tour_images[0].image"
         />
-        <metaData
-            v-else
-            :title="tour.locale_data.title"
-            :description="tour.locale_data.short_description"
-            :image="'/'"
-        />
 
     </div>
 </template>

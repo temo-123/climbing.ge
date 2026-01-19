@@ -33,7 +33,7 @@ class ProductController extends Controller
 
     public function add_product(Request $request)
     {
-        $auth = PermissionService::authorize('product', 'add');
+        $auth = PermissionService::authorize('product_category', 'add');
         // if ($auth) return $auth;
         $data = json_decode($request->data, true );
         
@@ -179,7 +179,7 @@ class ProductController extends Controller
 
     public function edit_product(Request $request)
     {
-        $auth = PermissionService::authorize('product', 'edit');
+        $auth = PermissionService::authorize('product_category', 'edit');
         // if ($auth) return $auth;
         // $data = $request->data;
         $data = json_decode($request->data, true );
@@ -224,7 +224,7 @@ class ProductController extends Controller
 
     public function del_product(Request $request)
     {
-        $auth = PermissionService::authorize('product', 'del');
+        $auth = PermissionService::authorize('product_category', 'del');
 
         ProductService::del_content($request->product_id, Product::class, Locale_product::class, '_product', 'image', 'images/product_option_img/');
     }

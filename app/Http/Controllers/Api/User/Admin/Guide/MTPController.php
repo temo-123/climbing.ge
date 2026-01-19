@@ -15,81 +15,10 @@ use App\Services\PermissionService;
 
 class MTPController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return MTP::latest('id')->get();
-    // }
-
-    // public function get_mtps_for_forum($sector_id)
-    // {
-    //     return MTP::where('sector_id','=', $sector_id)->get();
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //     return Mtp::where('id',strip_tags($id))->get();
-    // }
-
-    // public function get_mtp_for_modal(Request $request)
-    // {
-    //     $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
-    //     $mtp_pitchs = $mtp->pitchs;
-    //     // dd($mtp_pitchs);
-
-    //     $mtp_model_info = [];
-
-    //     array_push($mtp_model_info, 
-    //         array(
-    //             'mtp' => $mtp,
-    //             'mtp_pitchs' => $mtp_pitchs,
-    //         )
-    //     );
-
-    //     return $mtp_model_info[0];
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function mtp_add(Request $request)
     {
         $auth = PermissionService::authorize('mtp', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         // dd($request->data);
         $mtp_validate = $this->mtp_validate($request->data);
@@ -128,7 +57,7 @@ class MTPController extends Controller
     public function mtp_edit(Request $request, $id)
     {
         $auth = PermissionService::authorize('mtp', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $mtp_validate = $this->mtp_validate($request->data);
         if ($mtp_validate != null) { 
@@ -154,8 +83,8 @@ class MTPController extends Controller
 
     public function get_editing_mtp(Request $request, $id)
     {
-        $auth = PermissionService::authorize('mtp', 'view');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('mtp', 'edit');
+        // if ($auth) return $auth;
         
         return Mtp::where('id',strip_tags($request->mtp_id))->first();
     }
@@ -185,8 +114,8 @@ class MTPController extends Controller
 
     public function get_mtp_editing_data(Request $request)
     {
-        $auth = PermissionService::authorize('mtp', 'view');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('mtp', 'edit');
+        // if ($auth) return $auth;
         
         $mtp = Mtp::where('id',strip_tags($request->id))->first();
         return(

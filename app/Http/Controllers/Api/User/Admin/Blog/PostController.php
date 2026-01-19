@@ -14,25 +14,6 @@ use App\Services\PermissionService;
 
 class PostController extends Controller
 {
-    // function get_posts(Request $request) {
-    //     $posts = Post::with(['us_post', 'ka_post'])->orderBy('created_at', 'desc')->get();
-    //     $resp = [];
-    //     foreach ($posts as $post) {
-    //         $user = User::where('id', $post->user_id)->first();
-    //         array_push($resp, [
-    //             "id" => $post->id,
-    //             "title" => $post->us_post->title ?? $post->ka_post->title ?? '',
-    //             "content" => $post->us_post->text ?? $post->ka_post->text ?? '',
-    //             "short_description" => $post->us_post->short_description ?? $post->ka_post->short_description ?? '',
-    //             "image" => $post->image,
-    //             "published" => $post->published,
-    //             "created_at" => $post->created_at,
-    //             "user" => $user
-    //         ]);
-    //     }
-    //     return $resp;
-    // }
-
     function add_post(Request $request) {
         $auth = PermissionService::authorize('post', 'add');
         // if ($auth) return $auth;

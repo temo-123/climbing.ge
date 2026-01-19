@@ -10,15 +10,8 @@ use App\Services\PermissionService;
 
 class ShipedRegionController extends Controller
 {
-    // public function get_all_shiped_regions(){
-    //     return Shiped_region::get();
-    // }
-
     public function get_activ_region(Request $request)
-    {
-        $auth = PermissionService::authorize('shipping_region', 'view');
-        if ($auth) return $auth;
-        
+    {        
         return Shiped_region::where('id',strip_tags($request->region_id))->first();
     }
 

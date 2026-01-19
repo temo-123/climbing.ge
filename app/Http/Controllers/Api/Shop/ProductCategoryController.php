@@ -12,22 +12,11 @@ use Validator;
 
 class ProductCategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function get_all_product_category()
     {
         return $categories = Product_category::latest('id')->get();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function get_category($id)
     {
         return Product_category::where("id", "=", $id)->first();

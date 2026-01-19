@@ -23,28 +23,10 @@ use App\Notifications\comments\CommentAnswerNotification;
 
 class CommentController extends Controller
 {
-    // public function get_all_comments()
-    // {
-    //     if(Comment::count() > 0){
-    //         $all_comments = Comment::latest()->get();
-
-    //         $comments = [];
-    //         foreach ($all_comments as $comment) {
-                
-    //             array_push($comments, [
-    //                 'comment' => $comment, 
-    //                 'global_article' => $comment->article,
-    //             ]);
-    //         }
-            
-    //         return $comments;
-    //     }
-    // }
-
     public function get_user_comments()
     {
         $auth = PermissionService::authorize('comment', 'view');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $user_id = auth()->user()->id;
 
         if(user::where("id", "=", $user_id)->count() > 0){
@@ -68,35 +50,10 @@ class CommentController extends Controller
         }
     }
 
-    // public function create_comment(Request $request)
-    // {
-    //     $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
-
-    //     if($request->answer_array['answer']){
-    //         $new_answer = new Article_comment_answer;
-    //         $new_answer['answer_id'] = $return['new_comment_id'];
-    //         $new_answer['comment_id'] = $request->answer_array['comment_id'];
-    //         $new_answer->save();
-
-    //         $comment = Comment::where("id", '=', $new_answer['comment_id'])->first();
-    //         $article = Article::where("id", '=', $comment['article_id'])->first();
-    //         $us_article = $article->global_article_us;
-            
-    //         $info = [
-    //             'us_article_title' => $us_article['title'],
-    //             'url_title' => $article->url_title,
-    //             'category' => $article->category
-    //         ];
-    //         Notification::route('mail', $comment->email)->notify(new CommentAnswerNotification($info));
-    //     }
-
-    //     return $return['message'];
-    // }
-
     public function del_comment($id)
     {
         $auth = PermissionService::authorize('comment', 'del');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $comment = Comment::where("id", '=', $id)->first();
         $answers = $comment->answers;
 
@@ -114,7 +71,7 @@ class CommentController extends Controller
     public function hide_comment(Request $request)
     {
         $auth = PermissionService::authorize('comment', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $data = $request['data'];
 
         $actyve_comment = Comment::where("id", '=', $data['comment_id'])->first();
@@ -125,7 +82,7 @@ class CommentController extends Controller
     public function get_actyve_comment($comment_id)
     {
         $auth = PermissionService::authorize('comment', 'view');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         return Comment::where('id',strip_tags($comment_id))->first();
     }
 
@@ -137,14 +94,14 @@ class CommentController extends Controller
     public function get_comments_complaints(Request $request)
     {
         $auth = PermissionService::authorize('comment', 'view');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         return Article_comment_complaint::get();
     }
 
     public function make_decision(Request $request)
     {
         $auth = PermissionService::authorize('comment', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         return CommentService::make_decision($request, Comment::class, Article_comment_complaint::class, Article::class, 'article', 'comment');
     }
 

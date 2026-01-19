@@ -21,15 +21,9 @@ class CartController extends Controller
     {
         $this->middleware('auth');
     }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
-        $auth = PermissionService::authorize('cart', 'view');
-        if ($auth) return $auth;
         
         if (Auth::user()) {
             $user = Auth::user();
@@ -79,9 +73,6 @@ class CartController extends Controller
 
     public function update_quantity(Request $request)
     {
-        $auth = PermissionService::authorize('cart', 'edit');
-        if ($auth) return $auth;
-        
         $cart_item = Cart::where('id', '=', $request->item_id)->first();
         
         $cart_item['quantity'] = $request->quantity;
@@ -91,9 +82,6 @@ class CartController extends Controller
 
     public function add_to_favorite(Request $request)
     {
-        $auth = PermissionService::authorize('cart', 'add');
-        if ($auth) return $auth;
-        
         if (Auth::user()) {
             
             if(Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->count() > 0){
@@ -120,9 +108,6 @@ class CartController extends Controller
 
     public function del_from_favorite(Request $request)
     {
-        $auth = PermissionService::authorize('cart', 'del');
-        if ($auth) return $auth;
-        
         if (Auth::user()) {
             $product = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
 
@@ -134,16 +119,9 @@ class CartController extends Controller
             }
         }
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
-        $auth = PermissionService::authorize('cart', 'add');
-        if ($auth) return $auth;
-        
         $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','us_manager','seller']);
 
         if (Auth::user()) {
@@ -198,56 +176,15 @@ class CartController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
-    {
-        $auth = PermissionService::authorize('cart', 'edit');
-        if ($auth) return $auth;
-        
+    {        
         $cart_item = Cart::find($request->id);
         $cart_item->quantity = $request->quantity;
         $cart_item->update();
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        $auth = PermissionService::authorize('cart', 'edit');
-        if ($auth) return $auth;
-        
         $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
         if($cart_item){
             $item_quantity = $cart_item->quantity;
@@ -278,17 +215,8 @@ class CartController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id, Request $request)
     {
-        $auth = PermissionService::authorize('cart', 'del');
-        if ($auth) return $auth;
-        
         if ($request->isMethod('delete')) {
             $item = cart::where('id', '=', $id)->first();
             $item -> delete();

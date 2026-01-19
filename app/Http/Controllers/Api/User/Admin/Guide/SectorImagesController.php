@@ -10,128 +10,9 @@ use App\Services\PermissionService;
 
 class SectorImagesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return Sector_image::latest('id')->get();
-    // }
-
-    // /**
-    //  * Show the form for creating a new resource.
-    //  *
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Store a newly created resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function store(Request $request)
-    // {
-    //     $new_sale_adres = new Sector_image;
-
-    //     $new_sale_adres['discount'] = $request->data['discount'];
-    //     $new_sale_adres['code'] = $request->data['sale_code'];
-    //     $new_sale_adres['action_data'] = $request->data['validity_date'];
-    //     $new_sale_adres['one_time_code'] = $request->data['one_time_code'];
-
-    //     $new_sale_adres -> save();
-    // }
-
-    // /**
-    //  * Display the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function show($id)
-    // {
-    //     return Sector_image::where("id", "=", $id)->first();
-    // }
-
-    // /**
-    //  * Show the form for editing the specified resource.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function edit($id)
-    // {
-    //     //
-    // }
-
-    // /**
-    //  * Update the specified resource in storage.
-    //  *
-    //  * @param  \Illuminate\Http\Request  $request
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function update(Request $request, $id)
-    // {
-    //     // dd($request->editing_data['discount']);
-    //     $editing_product_category = Sector_image::where("id", "=", $id)->first();
-
-    //     $editing_product_category['discount'] = $request->editing_data['discount'];
-    //     $editing_product_category['code'] = $request->editing_data['sale_code'];
-    //     $editing_product_category['action_data'] = $request->editing_data['validity_date'];
-    //     $editing_product_category['one_time_code'] = $request->editing_data['one_time_code'];
-
-    //     $editing_product_category -> save();
-    // }
-
-    // /**
-    //  * Remove the specified resource from storage.
-    //  *
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy($id)
-    // {
-    //     $deleted_product_category = Sector_image::where("id", "=", $id)->first();
-    //     $deleted_product_category -> delete();
-    // }
-
-
-
-
-
-
-    
-
-
-    // public function get_sector_image(Request $request)
-    // {
-    //     $sector_images = Sector_image::where('sector_id',"=", $request->sector_id)->orderBy('num')->get();
-    //     $sector_images_count = Sector_image::where('sector_id',"=", $request->sector_id)->orderBy('num')->count();
-
-    //     $sector_images_size = 100;
-    //     if($sector_images_count > 1){
-    //         $sector_images_size = 100 / $sector_images_count;
-    //         $sector_images_size = $sector_images_size - 1;
-    //     }
-
-    //     return(
-    //         $data = [
-    //             "sector_images" => $sector_images,
-    //             "sector_images_size" => $sector_images_size,
-    //         ]
-    //     );
-    // }
-
     public function save_sector_images_sequence(Request $request)
     {
-        $auth = PermissionService::authorize('sector_image', 'edit');
+        $auth = PermissionService::authorize('sector', 'edit');
         if ($auth) return $auth;
         
         $image_num = 0;
@@ -151,7 +32,7 @@ class SectorImagesController extends Controller
 
     public function get_sector_editing_data(Request $request)
     {
-        $auth = PermissionService::authorize('sector_image', 'view');
+        $auth = PermissionService::authorize('sector', 'edit');
         if ($auth) return $auth;
         
         $sector = Sector::where('id',strip_tags($request->id))->first();
@@ -164,7 +45,7 @@ class SectorImagesController extends Controller
 
     public function sector_image_upload(Request $request)
     {
-        $auth = PermissionService::authorize('sector_image', 'add');
+        $auth = PermissionService::authorize('sector', 'add');
         if ($auth) return $auth;
         
         $request->user()->authorizeRoles(['manager', 'admin']);
@@ -182,7 +63,7 @@ class SectorImagesController extends Controller
 
     public function sector_image_delete(Request $request)
     {
-        $auth = PermissionService::authorize('sector_image', 'del');
+        $auth = PermissionService::authorize('sector', 'del');
         if ($auth) return $auth;
         
         $request->user()->authorizeRoles(['manager', 'admin']);
@@ -195,10 +76,4 @@ class SectorImagesController extends Controller
             $sector_image -> delete();
         }
     }
-
-
-    // public static function get_region_image(Request $request){
-    //     $region_image = Article::where('id',strip_tags($request->region_id))->get('climbing_area_image');
-    //     return $region_image;
-    // }
 }

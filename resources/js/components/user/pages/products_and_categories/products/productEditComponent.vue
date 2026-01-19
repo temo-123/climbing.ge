@@ -96,7 +96,7 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-<select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
+                                <select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
                                     <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
@@ -243,8 +243,9 @@
                     ka_info_editor_config: editor_config.get_big_editor_config(),
                 },
 
+                // all_subcategories: [],
                 all_subcategories: [],
-                category_subcategories: [],
+                subcategories: [],
                 brands: [],
 
                 // data: [],
@@ -268,9 +269,7 @@
             }
         },
         mounted() {
-            this.get_product_editing_data()
-
-            this.get_product_categories()
+            this.loadAllData()
 
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
@@ -279,6 +278,49 @@
             showModal(){
                 this.myModal = !this.myModal
             },
+
+            loadAllData() {
+                this.is_loading = true;
+                
+                // Load categories first
+                axios
+                .get("/get_product/get_product_category/get_all_product_category/")
+                .then(categoryResponse => {
+                    this.categories = categoryResponse.data;
+                    
+                    // Load brands in parallel with all subcategories
+                    return Promise.all([
+                        axios.get("/get_product/get_product_category/get_subcategory/get_all_subcategories"),
+                        axios.get("/get_product/get_brand/get_all_brands")
+                    ]);
+                })
+                .then(([subcategoryResponse, brandResponse]) => {
+                    this.all_subcategories = subcategoryResponse.data;
+                    this.brands = brandResponse.data;
+                    
+                    // Then load product editing data
+                    return axios.get('/set_product/get_product_editing_data/'+this.$route.params.id);
+                })
+                .then(productResponse => {
+                    this.data = productResponse.data;
+                    
+                    // Now set up category/subcategory relationship since all data is loaded
+                    if (this.data.global_product.subcategory_id) {
+                        let action_subcategory = this.all_subcategories.find(item => item.id === this.data.global_product.subcategory_id);
+                        if (action_subcategory) {
+                            this.category_id = action_subcategory.category_id;
+                            this.subcategories = this.all_subcategories.filter(item => item.category_id === this.category_id);
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.log(error);
+                })
+                .finally(() => {
+                    this.is_loading = false;
+                });
+            },
+
             change_url_title_in_global_product(){
                 if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
@@ -293,17 +335,6 @@
                 }
 
                 this.data.us_product.is_change_url_title = this.is_change_url_title
-            },
-
-            get_product_editing_data(){
-                axios
-                .get('/set_product/get_product_editing_data/'+this.$route.params.id)
-                .then((response)=> { 
-                    this.data = response.data
-                })
-                .catch(error =>{
-                    // 
-                })
             },
 
             edit_product() {
@@ -325,60 +356,6 @@
                     }
                 })
                 .finally(() => this.is_loading = false);
-            },
-
-             get_product_brabds(){
-                this.is_loading = true
-                axios
-                .get("/get_product/get_brand/get_all_brands")
-                .then(response => {
-                    this.brands = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_loading = false);
-            },
-
-            get_product_categories: function(){
-                this.is_loading = true
-                axios
-                .get("/get_product/get_product_category/get_all_product_category/")
-                .then(response => {
-                    this.categories = response.data
-                    this.get_product_brabds()
-                    this.get_all_subcategories()
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_loading = false);
-            },
-
-            get_all_subcategories(){
-                axios
-                .get("/get_product/get_product_category/get_subcategory/get_all_subcategories")
-                .then(response => {
-                    this.all_subcategories = response.data
-                    // After loading all subcategories, try to find the category for current subcategory
-                    if (this.data.global_product.subcategory_id) {
-                        let action_subcategory = this.all_subcategories.find(item => item.id === this.data.global_product.subcategory_id);
-                        if (action_subcategory) {
-                            this.category_id = action_subcategory.category_id;
-                            this.subcategories = this.all_subcategories.filter(item => item.category_id === this.category_id);
-                            // Scroll to bottom to show subcategory dropdown
-                            this.$nextTick(() => {
-                                window.scrollTo({
-                                    top: document.body.scrollHeight,
-                                    behavior: 'smooth'
-                                })
-                            })
-                        }
-                    }
-                })
-                .catch(
-                    error => console.log(error)
-                )
             },
 
             get_category_subcategories(){

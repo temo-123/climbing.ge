@@ -19,62 +19,9 @@ use Validator;
 
 class MountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
-    // }
-
-    
-    // public function get_locale_mounts(Request $request)
-    // {
-    //     // $mounts_system = Mount::latest('id')->get();
-    //     return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
-    // }
-
-    // public function get_locale_mount(Request $request)
-    // {
-    //     return MountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
-    // }
-
-    // public function get_locale_mount_on_route_page(Request $request)
-    // {
-    //     $m_system = Article::where('id', '=', $request->mount_route_id)->first();
-        
-    //     $mount_sys = $m_system->mount_masiv;
-
-    //     if(count($mount_sys) > 0){
-    //         $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->first();
-
-    //         $system = MountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
-
-    //         return $system[0];
-    //     }
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_mount_massive(Request $request)
     {
-        $auth = PermissionService::authorize('mount', 'add');
+        $auth = PermissionService::authorize('mount_massive', 'add');
         // if ($auth) return $auth;
         $validation_issets = [];
 
@@ -186,7 +133,7 @@ class MountController extends Controller
 
     public function get_editing_mount_massive_data(Request $request)
     {
-        $auth = PermissionService::authorize('mount', 'view_editing');
+        $auth = PermissionService::authorize('mount_massive', 'edit');
         // if ($auth) return $auth;
         $mounts_system = Mount::where('id', '=', $request->mount_id)->first();
 
@@ -208,7 +155,7 @@ class MountController extends Controller
      */
     public function edit_mount_massive(Request $request)
     {
-        $auth = PermissionService::authorize('mount', 'edit');
+        $auth = PermissionService::authorize('mount_massive', 'edit');
         // if ($auth) return $auth;
         $validation_issets = [];
 
@@ -323,7 +270,7 @@ class MountController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $auth = PermissionService::authorize('mount', 'edit');
+        $auth = PermissionService::authorize('mount_massive', 'edit');
         // if ($auth) return $auth;
         $editing_product_category = Mount::where("id", "=", $id)->first();
 
@@ -340,7 +287,7 @@ class MountController extends Controller
      */
     public function del_mount_massive($id)
     {
-        $auth = PermissionService::authorize('mount', 'del');
+        $auth = PermissionService::authorize('mount_massive', 'del');
         // if ($auth) return $auth;
         $deleted_product_category = Mount::where("id", "=", $id)->first();
         $deleted_product_category -> delete();

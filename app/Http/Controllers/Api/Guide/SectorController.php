@@ -54,18 +54,6 @@ class SectorController extends Controller
         return Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
     }
 
-    // public function save_sector_sequence(Request $request)
-    // {
-    //     $sectors_num=0;
-    //     foreach ($request->new_sector_sequence as $sector) {
-    //         $sector_id = $sector['id'];
-    //         $sector = Sector::where('id',strip_tags($sector_id))->first();
-    //         $sectors_num++;
-    //         $sector['num'] = $sectors_num;
-    //         $sector->update();
-    //     }
-    // }
-
     public function add_sector(Request $request)
     {
         $data = json_decode($request->data, true );
@@ -116,38 +104,6 @@ class SectorController extends Controller
     {
         return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     }
-
-    // public function add_sector_images($images, $sector_id)
-    // {
-    //     foreach ($images as $image) {
-    //         $file_new_name;
-    //         $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
-    //         if(file_exists(public_path('images/sector_img/') . $file_new_name)){
-    //             $new_option_image = new Sector_image;
-
-    //             $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-    //             if($sector_images_count == 0){
-    //                 $new_route_num = 1;
-    //             }
-    //             else{
-    //                 $new_option_image['num'] = $sector_images_count+1;
-    //             }
-
-    //             $new_option_image['image'] = $file_new_name;
-    //             $new_option_image['sector_id'] = $sector_id;
-        
-    //             $saiving = $new_option_image -> save();
-
-    //             if($saiving){
-    //                 echo 'Upload socsesful \n';
-    //             }
-    //         }
-    //         else{
-    //             echo 'Upload error \n';
-    //         }
-    //     }
-    // }
-
 
     public function get_sector_and_routes(Request $request, $article_id)
     {
@@ -298,11 +254,6 @@ class SectorController extends Controller
         return $area_info[0];
     }
 
-    // public function get_Spot_rocks_images(Request $request)
-    // {
-    //     return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
-    // }
-
     public function edit_sector(Request $request, )
     {
         $data = json_decode($request->data, true );
@@ -347,59 +298,10 @@ class SectorController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function del_sector(Request $request)
-    // {
-    //     $sector_id=$request->sector_id;
-
-    //     $sector = Sector::where('id',strip_tags($sector_id))->first();
-
-    //     // delete product file
-    //     $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-        
-    //     if ($sector_images_count > 0) {
-    //         $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
-    //         foreach ($sector_images as $sector_image) {
-    //             imageControllService::image_delete('images/sector_img/', $sector_image, $request);
-    //             $sector_image ->delete();
-    //         }
-    //     }
-
-    //     // delete product from db
-    //     $sector ->delete();
-    // }
-
-
     public function get_region_sectors(Request $request)
     {
         return Sector::where('article_id', '=', $request->region_id)->get();
     }
-
-
-
-    // public function sector_image_validate($request)
-    // {
-    //     $request->validate([
-    //         // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-    //     ]);
-    // }
-
-    // private function sector_validate($sector_data)
-    // {
-    //     $validator = Validator::make($sector_data, [
-    //         'name' => 'required|max:190',
-    //         'article_id' => 'required',
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return $validator->messages();
-    //     }
-    // }
 
     public function routes_sequence(Request $request)
     {
@@ -557,13 +459,6 @@ class SectorController extends Controller
         ];
     }
 
-    // public function del_sector_image_from_db(Request $request)
-    // {
-    //     $image = Sector_image::where('id', '=', $request->image_id)->first();
-    //     ImageControllService::image_delete('images/sector_img/', $image, 'image');
-    //     $image ->delete();
-    // }
-
     public function get_routes_for_model(Request $request)
     {
         $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
@@ -603,10 +498,6 @@ class SectorController extends Controller
             $mtps = $mtps;
         }
 
-        // $mtps = [];
-        // $mtps = Mtp::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        // $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        // $images = Sector_image::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
         $data = [
             'images' => $images,
             'routes' => $routes,
@@ -615,17 +506,6 @@ class SectorController extends Controller
         
         return( $data );
     }
-
-    // public function get_sector_editing_data(Request $request)
-    // {
-    //     $sector = Sector::where('id',strip_tags($request->sector_id))->first();
-    //     $data = [
-    //         'sector' => $sector,
-    //         'article' => $sector->article,
-    //         'images' => $sector->images,
-    //     ];
-    //     return $data;
-    // }
 
     public function get_sector_images(Request $request)
     {

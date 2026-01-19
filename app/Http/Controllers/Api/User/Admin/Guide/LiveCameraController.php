@@ -35,7 +35,7 @@ class LiveCameraController extends Controller
     }
 
     function get_editing_live_camera(Request $request) {
-        $auth = PermissionService::authorize('live_camera', 'view');
+        $auth = PermissionService::authorize('live_camera', 'edit');
         if ($auth) return $auth;
         
         return LiveCamera::where('id', '=', $request->id)->first();

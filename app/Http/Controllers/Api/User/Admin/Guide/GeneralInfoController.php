@@ -14,32 +14,6 @@ use Illuminate\Support\Facades\Log;
 
 class GeneralInfoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function get_all_general_info()
-    // {
-    //     return General_info::get();
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_general_info(Request $request)
     {
         $auth = PermissionService::authorize('general_info', 'add');
@@ -63,12 +37,6 @@ class GeneralInfoController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function get_editing_general_info($id)
     {
         $auth = PermissionService::authorize('general_info', 'view');
@@ -76,24 +44,6 @@ class GeneralInfoController extends Controller
         return General_info::where("id", "=", $id)->first();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function edit($id)
-    // {
-    //     //
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit_general_info(Request $request, $id)
     {
         $auth = PermissionService::authorize('general_info', 'edit');
@@ -117,12 +67,6 @@ class GeneralInfoController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function del_general_info($id)
     {
         $auth = PermissionService::authorize('general_info', 'del');

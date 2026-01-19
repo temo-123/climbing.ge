@@ -12,14 +12,9 @@ use App\Services\PermissionService;
 
 class SpotRockController extends Controller
 {
-    // public function get_spot_rock_images(Request $request)
-    // {
-    //     return Spot_rocks_image::where('article_id', '=', $request->article_id)->get();
-    // }
-
     public function del_spot_rock_image(Request $request)
     {
-        $auth = PermissionService::authorize('spot_rock', 'del');
+        $auth = PermissionService::authorize('sector', 'del');
         if ($auth) return $auth;
         
         $image = Spot_rocks_image::where('id', '=', $request->image_id)->first();

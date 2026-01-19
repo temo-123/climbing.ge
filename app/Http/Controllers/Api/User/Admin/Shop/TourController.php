@@ -21,54 +21,15 @@ use Auth;
 
 class TourController extends Controller
 {
-    // function get_tours(Request $request){
-    //     $global_tours = Tour::where("published", "=", 1)->get();
-    //     return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
-    // }
-
-    // public function get_all_tours()
-    // {
-    //     $tours = Tour::get();
-    //     $returned_array = [];
-    //     foreach($tours as $tour){
-    //         array_push($returned_array, [
-    //             'tour' => $tour,
-    //             'user' => $tour->user[0]
-    //         ]);
-    //     }
-    //     return $returned_array;
-    // }
-
     function get_user_tours(){
-        $auth = PermissionService::authorize('tour', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('tour', 'view');
+        // if ($auth) return $auth;
         return Auth::user()->tours;
     }
 
-    // function get_similar_tours(Request $request) {
-    //     $tour = Tour::where('id','=', $request->tour_id)->where("published", "=", 1)->first();
-
-    //     $global_tours_count = Tour::where('category_id',strip_tags($tour->category_id))->count();
-
-    //     if($global_tours_count > 0){
-    //         $global_tours = Tour::where('id','!=', $request->tour_id)->where('category_id',strip_tags($tour->category_id))->where("published", "=", 1)->limit(3)->get();
-    //         return $tour = TourService::get_tours_use_locale($global_tours, $request->lang);    
-    //     }
-    // }
-
-    // function get_tour(Request $request){
-    //     $global_tour_count = Tour::where('url_title',strip_tags($request->url_title))->count();
-
-    //     if($global_tour_count > 0){
-    //         $global_tour = Tour::where('url_title',strip_tags($request->url_title))->first();
-    //         return $tour = TourService::get_locale_tour_in_page($global_tour, $request->lang);    
-    //     }
-    //     return abort(404);
-    // }
-
     function add_tour(Request $request){
         $auth = PermissionService::authorize('tour', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $data = json_decode($request->data, true );
 
         $validator = Validator::make($data, [
@@ -107,7 +68,7 @@ class TourController extends Controller
     public function edit_tour(Request $request)
     {
         $auth = PermissionService::authorize('tour', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $data = json_decode($request->data, true );
 
         $validator = Validator::make($data, [
@@ -166,8 +127,8 @@ class TourController extends Controller
 
     public function get_editing_tour(Request $request)
     {
-        $auth = PermissionService::authorize('tour', 'view_editing');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('tour', 'edit');
+        // if ($auth) return $auth;
         $tour = Tour::where('id', '=', $request->tour_id)->first();
         
         $data = [
@@ -197,7 +158,7 @@ class TourController extends Controller
 
     function del_tour(Request $request){
         $auth = PermissionService::authorize('tour', 'del');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $global_id = $request->tour_id;
 
         $global_tour = Tour::where('id',strip_tags($global_id))->first();
@@ -225,7 +186,7 @@ class TourController extends Controller
 
     function del_tour_image(Request $request) {
         $auth = PermissionService::authorize('tour', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         $image = Tour_image::where('id', '=', $request->image_id)->first();
         if($image){
             ImageControllService::image_delete('images/tour_img/', $image, 'image');

@@ -4,35 +4,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']], function() {
 
-
-
     Route::prefix('get_task')->group( function() {
         Route::controller(TaskController::class)->group( function() {
             Route::get('/get_all_tasks', 'get_all_tasks');
             Route::get('/get_user_tasks', 'get_user_tasks');
             Route::get('/get_task_data/{task_id}', 'get_task_data');
-
-            // Route::post('/create_task', 'create_task');
-            // Route::post('/update_task/{task_id}', 'update_task');
-            // Route::post('/update_task_status/{task_id}', 'update_task_status');
-
-            // Route::delete('/del_task/{task_id}', 'del_task');
         });
-
-        // Route::controller(TaskCategoryController::class)->prefix('get_task_category')->group( function() {
-        //     Route::get('/get_all_task_categories', 'get_all_task_categories');
-        //     Route::get('/get_task_category_data/{task_category_id}', 'get_task_category_data');
-
-            // Route::post('/create_task_category', 'create_task_category');
-            // Route::post('/update_task_category/{task_category_id}', 'update_task_category');
-
-            // Route::delete('/del_task_category/{task_category_id}', 'del_task_category');
-        // });
     });
 
-    /*
-    *   Users routes
-    */
     Route::apiResource('/user_site', 'UserSiteController');
 
     Route::controller(UsersController::class)->prefix('get_user')->group( function() {
@@ -76,45 +55,14 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
 
 
     Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
-        // Route::get('/get_user_data', 'get_user_data');
         Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
         Route::get('/get_user_notification_data', 'get_user_notification_data');
         Route::post('/user_info_update/{user_id}', 'user_info_update');
         Route::post('/update_user_notification_data', 'update_user_notification_data');
-    // });
-    // Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
-        // Route::get('/get_user_data', 'get_user_data');
-        Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
+        
         Route::get('/get_user_notification_data', 'get_user_notification_data');
     });
 
-    /*
-    *   Users option routes
-    */
-    // Route::apiResource('/users', 'UsersController');
-    // Route::get('/post_user/{user_id}', 'UsersController@get_post_user');
-    // Route::post('user_image_update/{user_id}', 'UsersController@user_image_update');
-
-
-
-
-    /*
-    *   Blog posts routes
-    */
-    // Route::controller(PostController::class)->prefix('get_post')->group( function() {
-    //     Route::get('/get_posts', 'get_posts');
-    //     Route::get('/get_editing_post/{id}', 'get_editing_post');
-    //     Route::get('/get_activ_post/{id}', 'get_activ_post');
-    // });
-
-    /*
-    *   User adresses
-    */
-    // Route::controller(UserAdresesController::class)->group( function() {
-    //     Route::get('/get_user_adreses', 'get_user_adreses');
-    //     Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');
-    //     Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
-    // });
     Route::controller(UserAdresesController::class)->group( function() {
         Route::get('/get_user_adreses', 'get_user_adreses');
         Route::post('/get_editing_adres/{adres_id}', 'get_editing_adres');

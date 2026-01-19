@@ -12,19 +12,8 @@ use App\Services\PermissionService;
 
 class ProductBrandController extends Controller
 {
-    // function get_all_brands(Request $request) {
-    //     $brands = Product_brand::get();
-    //     $returned_brands = [];
-    //     foreach ($brands as $brand) {
-    //         array_push($returned_brands, [
-    //             'global_brand' => $brand,
-    //             'us_brand' => $brand->us_brand
-    //         ]);
-    //     }
-    //     return $returned_brands;
-    // }
     function get_editing_brand(Request $request) {
-        $auth = PermissionService::authorize('product_brand', 'view');
+        $auth = PermissionService::authorize('product_brand', 'edit');
         if ($auth) return $auth;
         
         $brand = Product_brand::where("id", "=", $request->id)->first();

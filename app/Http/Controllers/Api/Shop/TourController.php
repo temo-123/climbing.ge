@@ -20,9 +20,45 @@ use Auth;
 
 class TourController extends Controller
 {
+    function get_guide($user_id){
+        $user_tour = User_tour::where('user_id', '=', $user_id)->first();
+        if($user_tour){
+            return $user_tour->user;
+        }
+        return abort(404);
+    }
+    
     function get_tours(Request $request){
-        $global_tours = Tour::where("published", "=", 1)->get();
-        return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
+        // $global_tours = Tour::where("published", "=", 1)->get();
+        // return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
+
+        // Map locale codes
+        $locale = $request->lang ?? 'us';
+        
+        $tours = Tour::latest('id')->where("published", "=", 1)->get();
+        $returned_array = [];
+        
+        foreach($tours as $tour){
+            // Get locale data for the tour
+            $localeData = null;
+            if ($locale === 'ka' && $tour->ka_tour) {
+                $localeData = $tour->ka_tour;
+            } elseif (($locale === 'us' || $locale === 'en') && $tour->us_tour) {
+                $localeData = $tour->us_tour;
+            }
+            
+            // Get first tour image
+            $tour_images = Tour_image::where('tour_id', '=', $tour->id)->first();
+            $image = $tour_images ? $tour_images->image : '';
+            
+            array_push($returned_array, [
+                'global_data' => $tour,
+                'locale_data' => $localeData,
+                'image' => $image,
+                'user' => $tour->user[0] ?? null
+            ]);
+        }
+        return $returned_array;
     }
 
     public function get_all_tours($lang = null)
@@ -86,100 +122,6 @@ class TourController extends Controller
         return abort(404);
     }
 
-    // function add_tour(Request $request){
-    //     $data = json_decode($request->data, true );
-
-    //     $validator = Validator::make($data, [
-    //         'global_tour.category_id' => 'required',
-    //     ]);
-        
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'validation' => $validator->messages()
-    //         ], 422);
-    //     }
-        
-    //     // $image_path = 'images/tour_img/';
-
-    //     $tour_adding = TourService::add_content($data, Tour::class, Locale_tour::class, '_tour', $request);
-        
-    //     if (!array_key_exists('validation', $tour_adding->original)) {
-    //         if($request->hasFile('tour_images')){
-    //             GalleryService::add_gallery_images(
-    //                 $request->tour_images, 
-    //                 $tour_adding->original['global_tour_id'], 
-    //                 tour_image::class, 
-    //                 'image', 
-    //                 'tour_id', 
-    //                 '/images/tour_img/'
-    //             );
-    //         }
-
-    //         $this->create_tour_user_relations($tour_adding->original['global_tour_id']);
-    //     }
-    //     else {
-    //         return $tour_adding;
-    //     }
-    // }
-
-    // public function edit_tour(Request $request)
-    // {
-    //     $data = json_decode($request->data, true );
-
-    //     $validator = Validator::make($data, [
-    //         'global_tour.category_id' => 'required',
-    //     ]);
-        
-    //     if ($validator->fails()) {
-    //         return response()->json([
-    //             'validation' => $validator->messages()
-    //         ], 422);
-    //     }
-
-    //     $tour_editing = TourService::edit_content(Tour::class, Locale_tour::class, '_tour', $request, 'images/tour_img/');
-
-    //     if(!array_key_exists('validation', $tour_editing->original)){
-    //         if($request->hasFile('tour_new_images')){
-    //             GalleryService::add_gallery_images(
-    //                 $request->tour_new_images, 
-    //                 $tour_editing->original['global_tour_id'], 
-    //                 tour_image::class, 
-    //                 'image', 
-    //                 'tour_id', 
-    //                 '/images/tour_img/'
-    //             );
-    //         }
-    //     }
-    //     else{
-    //         return $article_editing;
-    //     }   
-    // }
-
-    // public function create_tour_user_relations($tour_id, $user_id = null) {
-    //     $new_user_relatione = new User_tour;
-    //     $new_user_relatione['tour_id'] = $tour_id;
-    //     if($user_id == null){
-    //         $new_user_relatione['user_id'] = Auth::user()->id;
-    //     }
-    //     else{
-    //         $new_user_relatione['user_id'] = $user_id;
-    //     }
-    //     $new_user_relatione -> save();
-    // }
-
-    // public function change_user_relation(Request $request) {
-    //     if($request['data']['old_user_id'] != []){
-    //         $user_relatione = User_tour::where('tour_id', '=', $request['data']['tour_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();
-    //         if($user_relatione != []){
-    //             $user_relatione['user_id'] = $request['data']['new_user_id'];
-    //             $user_relatione -> save();
-    //         }
-    //     }
-    //     else{
-    //         $this->create_tour_user_relations($request['data']['tour_id'], $request['data']['new_user_id']);
-    //     }
-    // }
-
     public function get_editing_tour(Request $request)
     {
         $tour = Tour::where('id', '=', $request->tour_id)->first();
@@ -212,38 +154,4 @@ class TourController extends Controller
         }
         return [];
     }
-
-    // function del_tour(Request $request){
-    //     $global_id = $request->tour_id;
-
-    //     $global_tour = Tour::where('id',strip_tags($global_id))->first();
-    //     $us_tour = Locale_tour::where('id',strip_tags($global_tour->us_tour_id))->first();
-    //     // $ru_tour = Locale_tour::where('id',strip_tags($global_tour->ru_tour_id))->first();
-    //     $ka_tour = Locale_tour::where('id',strip_tags($global_tour->ka_tour_id))->first();
-        
-    //     // delete tour file
-    //     $tour_images_count = Tour_image::where('tour_id',strip_tags($global_id))->count();
-        
-    //     if ($tour_images_count > 0) {
-    //         $tour_images = Tour_image::where('tour_id',strip_tags($global_id))->get();
-    //         foreach ($tour_images as $tour_image) {
-    //             imageControllService::image_delete('images/tour_img/', $tour_image, 'image');
-    //             $tour_image ->delete();
-    //         }
-    //     }
-
-    //     // delete tour from db
-    //     $global_tour ->delete();
-    //     $us_tour ->delete();
-    //     // $ru_tour ->delete();
-    //     $ka_tour ->delete();
-    // }
-
-    // function del_tour_image(Request $request) {
-    //     $image = Tour_image::where('id', '=', $request->image_id)->first();
-    //     if($image){
-    //         ImageControllService::image_delete('images/tour_img/', $image, 'image');
-    //         $image->delete();
-    //     }
-    // }
 }

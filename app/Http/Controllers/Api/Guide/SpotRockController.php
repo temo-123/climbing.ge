@@ -15,11 +15,4 @@ class SpotRockController extends Controller
     {
         return Spot_rocks_image::where('article_id', '=', $request->article_id)->get();
     }
-
-    // public function del_spot_rock_image(Request $request)
-    // {   
-    //     $image = Spot_rocks_image::where('id', '=', $request->image_id)->first();
-    //     ImageControllService::image_delete('images/spot_rocks_img/', $image, 'image');
-    //     $image ->delete();
-    // }
 }

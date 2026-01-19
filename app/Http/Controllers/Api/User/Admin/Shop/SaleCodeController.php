@@ -62,7 +62,7 @@ class SaleCodeController extends Controller
      */
     public function get_editing_sale_code($id)
     {
-        $auth = PermissionService::authorize('sale_code', 'view');
+        $auth = PermissionService::authorize('sale_code', 'edit');
         if ($auth) return $auth;
         
         return Sale_code::where("id", "=", $id)->first();

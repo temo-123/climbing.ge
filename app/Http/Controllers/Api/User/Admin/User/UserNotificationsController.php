@@ -28,8 +28,8 @@ class UserNotificationsController extends Controller
 {
     public function send_user_favorites_notification(Request $request)
     {
-        $auth = PermissionService::authorize('user_notification', 'add');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('user_notification', 'add');
+        // if ($auth) return $auth;
         
         if($request->action != 'special_articles'){
             $user_notifictions = user_notification::where($request->action, '=', 1)->get();

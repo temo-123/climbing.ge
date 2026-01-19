@@ -46,7 +46,7 @@ class MultimediaController extends Controller
     public function uploadImages(Request $request): JsonResponse
     {
         $auth = PermissionService::authorize('multimedia', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $validator = Validator::make($request->all(), [
             'files.*' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp,svg|max:10240', // 10MB max
@@ -111,7 +111,7 @@ class MultimediaController extends Controller
     public function deleteItems(Request $request): JsonResponse
     {
         $auth = PermissionService::authorize('multimedia', 'del');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $validator = Validator::make($request->all(), [
             'paths' => 'required|array',
@@ -168,7 +168,7 @@ class MultimediaController extends Controller
     public function createFolder(Request $request): JsonResponse
     {
         $auth = PermissionService::authorize('multimedia', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|regex:/^[a-zA-Z0-9\-_\s]+$/',

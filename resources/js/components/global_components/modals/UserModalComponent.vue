@@ -78,7 +78,7 @@ export default {
         },
         get_user_data(id) {
             axios
-                .get("/options/get_selected_user_data/" + id)
+                .get("/get_tour/get_guide/" + id)
                 .then((response) => {
                     this.user = response.data;
                     this.loading = false;

@@ -19,27 +19,7 @@ use App\Notifications\tour\ReservationSacsesfulNotification;
 use App\Notifications\tour\ReservationVerifyEmail;
 
 class UserTourReservationController extends Controller
-{
-    // function get_reservations(){
-    //     return Tour_reservation::latest('id')->get();
-    // }
-
-    // function get_user_reservations(){
-    //     $user_tours = Auth::user()->tours;
-
-    //     $reservatione =[];
-
-    //     if($user_tours->count() > 0){
-    //         foreach ($user_tours as $tour) {
-    //             foreach ($tour->resrtvation as $reserv) {
-    //                 array_push($reservatione, $reserv);
-    //             }
-    //         }
-    //         return $reservatione;
-    //     }
-    //     return [];
-    // }
-    
+{    
     function create_reservation(TourReservationRequest $request){
         // Validation is automatically handled by TourReservationRequest
         $validated = $request->validated();
@@ -94,13 +74,6 @@ class UserTourReservationController extends Controller
         }
     }
 
-    // function create_reservatione_user_relatione($reservatione_id, $user_id) {
-    //     $new_user_relatione = new Tour_reservations_user;
-    //     $new_user_relatione['reservation_id'] = $reservatione_id;
-    //     $new_user_relatione['user_id'] = $user_id;
-    //     $new_user_relatione -> save();
-    // }
-
     function create_reservatione_user_relatione($reservatione_id, $user_id) {
         Tour_reservations_user::create([
             'reservation_id' => $reservatione_id,
@@ -124,9 +97,5 @@ class UserTourReservationController extends Controller
         Notification::route('mail', $guide_email)->notify(new ReservationCreatingGuideNotification());
         Notification::route('mail', $client_email)->notify(new ReservationSacsesfulNotification());
     }
-                
-    // function del_reservation(Request $request){
-    //     $del_item = Tour_reservation::where('id', '=', $request->reservation_id)->first();
-    //     $del_item -> delete();
-    // }
+    
 }

@@ -16,56 +16,10 @@ use App\Services\PermissionService;
 
 class MTPPitchController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return Mtp_pitch::latest('id')->get();
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function get_pitchs(Request $request)
-    // {
-
-    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-    //     // $mtp = Mtp_pitch::where('id', $request->mtp_id)->first();
-    //     // dd($mtp);
-    //     // return $mtp->pitchs;
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    // public function store(Request $request)
-    // {
-    //     //
-    // }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //     //
-    // }
-
     public function get_mtp_pitchs_for_model(Request $request)
     {
-        $auth = PermissionService::authorize('mtp_pitch', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('mtp_pitch', 'view');
+        // if ($auth) return $auth;
         
         return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
     }
@@ -87,18 +41,6 @@ class MTPPitchController extends Controller
         }
     }
 
-    // public function get_mtp_pitchs(Request $request)
-    // {
-    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-    //     // return( $mtp_pitchs );
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function mtp_pitch_edit(Request $request)
     {
         $auth = PermissionService::authorize('mtp_pitch', 'edit');
@@ -132,13 +74,6 @@ class MTPPitchController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function mtp_pitch_add(Request $request)
     {
         $auth = PermissionService::authorize('mtp_pitch', 'add');
@@ -181,12 +116,6 @@ class MTPPitchController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function del_pitch(Request $request)
     {
         $auth = PermissionService::authorize('mtp_pitch', 'del');
@@ -196,21 +125,13 @@ class MTPPitchController extends Controller
         $sector ->delete();
     }
 
-
-
     public function get_editin_pitch(Request $request)
     {
-        $auth = PermissionService::authorize('mtp_pitch', 'view');
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
         if ($auth) return $auth;
         
         return Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
     }
-
-
-    // public function get_mtp_pitch_for_modal(Request $request)
-    // {
-    //     return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
-    // }
 
     public function pitchs_sequence(Request $request)
     {

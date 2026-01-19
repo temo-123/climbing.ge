@@ -15,11 +15,6 @@ use Auth;
 
 class FilmsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         return Film::get();
@@ -158,81 +153,5 @@ class FilmsController extends Controller
         else {
             return 'No Details found. Try to search again !';
         }
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        $auth = PermissionService::authorize('film', 'add');
-        // if ($auth) return $auth;
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $auth = PermissionService::authorize('film', 'add');
-        // if ($auth) return $auth;
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $auth = PermissionService::authorize('film', 'edit');
-        // if ($auth) return $auth;
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $auth = PermissionService::authorize('film', 'edit');
-        // if ($auth) return $auth;
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $auth = PermissionService::authorize('film', 'del');
-        // if ($auth) return $auth;
-        //
     }
 }

@@ -16,19 +16,9 @@ use App\Models\Guide\Sector;
 
 class SectorLocalImagesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return Sector_local_image::latest('id')->get();
-    // }
-
     public function get_editing_sectors(Request $request)
     {
-        $auth = PermissionService::authorize('sector_local_image', 'view');
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
         if ($auth) return $auth;
         
         $sector_local_image = Sector_local_image::where("id", "=", $request->image_id)->first();
@@ -37,7 +27,7 @@ class SectorLocalImagesController extends Controller
 
     public function get_editing_locale_image($id)
     {
-        $auth = PermissionService::authorize('sector_local_image', 'view');
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
         if ($auth) return $auth;
         
         $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
@@ -50,30 +40,6 @@ class SectorLocalImagesController extends Controller
         return $data;
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function get_sector_local_img_for_modal($id)
-    // {
-    //     $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
-
-    //     $data = [
-    //         "image" => $sector_local_image,
-    //         "sectors" => $sector_local_image->sectors,
-    //         "related_jsons" => $sector_local_image->jsons
-    //     ];
-
-    //     return $data;
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_sector_local_image(Request $request)
     {
         $auth = PermissionService::authorize('sector_local_image', 'add');
@@ -99,29 +65,6 @@ class SectorLocalImagesController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    // public function show($id)
-    // {
-    //     $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
-    //     $sector_local_image_sectors = $sector_local_image->sectors;
-        
-    //     $data = [
-    //         'sector_local_image'=>$sector_local_image,
-    //         'sector_local_image_sectors'=>$sector_local_image_sectors,
-    //     ];
-    //     return $data;
-    // }
-
-    // public function sector()
-    // {
-    //     return $this->belongsTo(Sector::class, 'sector_id');
-    // }
-    
     public function save_canvas_data(Request $request, $sector_id)
     {
         $auth = PermissionService::authorize('sector_local_image', 'edit');
@@ -180,28 +123,6 @@ class SectorLocalImagesController extends Controller
         return response()->json(['message' => 'Canvas data saved successfully']);
     }
 
-    // public function get_layout($layout_id)
-    // {
-    //     $layout = SectorLocalImagesJson::with('sectors')->find($layout_id);
-
-    //     return response()->json(['layout' => $layout]);
-    // }
-
-    // public function get_layouts($sector_local_image_id)
-    // {
-    //     $layouts = SectorLocalImagesJson::where('sector_local_image_id', $sector_local_image_id)->with('sectors')->get();
-
-    //     return response()->json(['layouts' => $layouts]);
-    // }
-
-    // public function get_layout_old($sector_id)
-    // {
-    //     $sector = Sector::find($sector_id);
-    //     $jsons = $sector->sector_local_images_jsons;
-
-    //     return response()->json(['jsons' => $jsons]);
-    // }
-    
     public function update_image(Request $request, $id)
     {
         $auth = PermissionService::authorize('sector_local_image', 'edit');
@@ -236,15 +157,8 @@ class SectorLocalImagesController extends Controller
             }
         }
 
-        // dd('This method have sector deliting action problem');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function del_locale_image($id)
     {
         $auth = PermissionService::authorize('sector_local_image', 'del');

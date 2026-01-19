@@ -9,11 +9,6 @@ use App\Models\Shop\Sale_code;
 
 class SaleCodeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function get_all_sale_code()
     {
         return Sale_code::latest('id')->get();

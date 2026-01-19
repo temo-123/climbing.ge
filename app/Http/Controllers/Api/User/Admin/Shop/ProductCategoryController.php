@@ -16,12 +16,6 @@ use Validator;
 class ProductCategoryController extends Controller
 {
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function add_product_category(Request $request)
     {
         $auth = PermissionService::authorize('product_category', 'add');
@@ -50,13 +44,6 @@ class ProductCategoryController extends Controller
         return response()->json($editing_product_category);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit_product_category(Request $request, $id)
     {
         $auth = PermissionService::authorize('product_category', 'edit');
@@ -78,12 +65,6 @@ class ProductCategoryController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function del_product_category($id)
     {
         $auth = PermissionService::authorize('product_category', 'del');
@@ -99,7 +80,6 @@ class ProductCategoryController extends Controller
     {
         $validator = validator($data = $request->data, [
             'us_name' => 'required',
-            // 'ru_name' => 'required',
             'ka_name' => 'required',
         ]);
     

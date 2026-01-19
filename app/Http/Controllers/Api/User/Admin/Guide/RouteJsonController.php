@@ -14,7 +14,7 @@ use Validator;
 class RouteJsonController extends Controller
 {
     public function get_editing_route_json(Request $request) {
-        $auth = PermissionService::authorize('route_json', 'view');
+        $auth = PermissionService::authorize('route', 'view');
         if ($auth) return $auth;
         
         $act_route = Route::where('id', '=', $request->route_id)->first();
@@ -22,7 +22,7 @@ class RouteJsonController extends Controller
     }
 
     public static function add_route_json($data) {
-        $auth = PermissionService::authorize('route_json', 'add');
+        $auth = PermissionService::authorize('route', 'add');
         if ($auth) return $auth;
         
         $route_validate = (new static)->add_route_json_validate($data);
@@ -44,7 +44,7 @@ class RouteJsonController extends Controller
     }
 
     public static function edit_route_json($data) {
-        $auth = PermissionService::authorize('route_json', 'edit');
+        $auth = PermissionService::authorize('route', 'edit');
         if ($auth) return $auth;
         
         $existing_json = ClimbingRoutesJson::where('route_id', '=', $data['route_id'])->first();

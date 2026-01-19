@@ -35,7 +35,7 @@ class OrderController extends Controller
 {
     public function get_all_orders()
     {
-        // $auth = PermissionService::authorize('order', 'view');
+        $auth = PermissionService::authorize('order', 'edit_order_status');
         // if ($auth) return $auth;
         return Order::get();
     }
@@ -334,8 +334,9 @@ class OrderController extends Controller
 
     public function order_is_confirm(Request $request)
     {
-        $auth = PermissionService::authorize('order', 'edit');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('order', 'edit_order_status');
+        // if ($auth) return $auth;
+
         $order = Order::where("id", "=", $request->order_id)->first();
         $order['confirm'] = 1;
         $order['status'] = 'treatment';
@@ -362,8 +363,9 @@ class OrderController extends Controller
 
     public function edit_order_status(Request $request)
     {
-        $auth = PermissionService::authorize('order', 'edit');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('order', 'edit_order_status');
+        // if ($auth) return $auth;
+
         $editing_order_status = Order::where("id", "=", $request->order_id)->first();
         $editing_order_status['status'] = $request->status;
         $editing_order_status['status_updating_data'] = date("Y-m-d H:I:s");

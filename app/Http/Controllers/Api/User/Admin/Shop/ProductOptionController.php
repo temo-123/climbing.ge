@@ -34,8 +34,8 @@ class ProductOptionController extends Controller
 {
     public function get_product_options($product_id)
     {
-        $auth = PermissionService::authorize('product_option', 'view');
-        if ($auth) return $auth;
+        // $auth = PermissionService::authorize('product_option', 'view');
+        // if ($auth) return $auth;
         
         $product = Product::where('id', '=', $product_id)->first();
         $data = [
@@ -50,7 +50,7 @@ class ProductOptionController extends Controller
     public function add_option(Request $request)
     {
         $auth = PermissionService::authorize('product_option', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $data = json_decode($request->data, true);
         
@@ -88,8 +88,8 @@ class ProductOptionController extends Controller
 
     public function get_editing_product_option(Request $request)
     {
-        $auth = PermissionService::authorize('product_option', 'view');
-        if ($auth) return $auth;
+        $auth = PermissionService::authorize('product_option', 'edit');
+        // if ($auth) return $auth;
         
         $option = Product_option::where('id', '=', $request->option_id)->first();
         
@@ -104,7 +104,7 @@ class ProductOptionController extends Controller
     public function edit_option(Request $request)
     {
         $auth = PermissionService::authorize('product_option', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $data = json_decode($request->data, true);
         
@@ -141,7 +141,7 @@ class ProductOptionController extends Controller
     public function del_option(Request $request)
     {
         $auth = PermissionService::authorize('product_option', 'del');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         return DB::transaction(function () use ($request) {
             $option = Product_option::where('id', '=', $request->option_id)->first();
@@ -175,7 +175,7 @@ class ProductOptionController extends Controller
     public function del_option_image(Request $request)
     {
         $auth = PermissionService::authorize('product_option', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $option_image = Option_image::where('id', '=', $request->image_id)->first();
         if($option_image){

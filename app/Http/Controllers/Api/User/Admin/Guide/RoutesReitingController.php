@@ -137,7 +137,7 @@ class RoutesReitingController extends Controller
     }
 
     public function del_route_review($review_id) {
-        $auth = PermissionService::authorize('route_rating', 'del');
+        $auth = PermissionService::authorize('routes_rewiew', 'del');
         if ($auth) return $auth;
         
         if (Auth::user()) {

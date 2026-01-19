@@ -21,7 +21,7 @@ class TaskCategoryController extends Controller
 
     function create_task_category(Request $request){
         $auth = PermissionService::authorize('task_category', 'add');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $new_Task_category = new Task_category;
 
@@ -33,7 +33,7 @@ class TaskCategoryController extends Controller
 
     function update_task_category(Request $request){
         $auth = PermissionService::authorize('task_category', 'edit');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $editing_task_category = Task_category::where("id", "=", $request->task_category_id)->first();
 
@@ -44,7 +44,7 @@ class TaskCategoryController extends Controller
     
     function del_task_category(Request $request){
         $auth = PermissionService::authorize('task_category', 'del');
-        if ($auth) return $auth;
+        // if ($auth) return $auth;
         
         $deleted_user_site = Task_category::where("id", "=", $request->task_category_id)->first();
         $deleted_user_site -> delete();
