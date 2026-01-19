@@ -38,12 +38,18 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
     });
 
-        Route::controller(CommentController::class)->prefix('set_guide_comment_by_gest')->group( function() {
-            Route::post('/create_comment/{article_id}', 'create_comment');
-        });
+    Route::controller(CommentController::class)->prefix('set_guide_comment_by_gest')->group( function() {
+        Route::post('/create_comment/{article_id}', 'create_comment');
+    });
     /*
     *   Outdoor regions
     */
+
+    Route::controller(TeamMemberController::class)->prefix('get_user/get_team')->group( function() {
+        Route::get('/get_member_status/{id}', 'get_member_status');
+        Route::get('/get_team_members', 'get_team_members');
+    });
+
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
