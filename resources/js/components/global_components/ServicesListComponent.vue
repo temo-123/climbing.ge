@@ -9,7 +9,7 @@
             </div>
         </div>
         <div class="col-md-12">
-            <div class="col-md-4 col-xs-4 text-center service-item" @click="go_to_service('guid')">
+            <div class="col-md-4 col-xs-12 text-center service-item" @click="go_to_service('guid')">
                 <div class="row service_icon">
                     <i class="fa fa fa-map" aria-hidden="true"></i>
                 </div>
@@ -18,7 +18,7 @@
                     <span v-html="this.$siteData.data.guid_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-4 text-center service-item" @click="go_to_service('shop')">
+            <div class="col-md-4 col-xs-12 text-center service-item" @click="go_to_service('shop')">
                 <div class="row service_icon">
                     <i class="fa fa-shopping-bag" aria-hidden="true"></i>
                 </div>
@@ -27,12 +27,12 @@
                     <span v-html="this.$siteData.data.shop_short_description"></span>
                 </div>
             </div>
-            <div class="col-md-4 col-xs-4 text-center service-item" @click="go_to_service('blog')">
+            <div class="col-md-4 col-xs-12 text-center service-item" @click="go_to_service('blog')">
                 <div class="row service_icon" >
                     <i class="fa fa-handshake-o" aria-hidden="true"></i>
                 </div>
                 <div class="row">
-                    <h2>{{ $t('shop.blog') }}</h2>
+                    <h2>{{ $t('blog.name') }}</h2>
                     <span v-html="this.$siteData.data.blog_short_description"></span>
                 </div>
             </div>
