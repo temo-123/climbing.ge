@@ -132,7 +132,7 @@ import moment from "moment"; // https://www.npmjs.com/package/vue-moment
 }
 </script>
 
-<style lang="scss">
+<style>
 
 header h1{
   text-align: center;
@@ -297,7 +297,7 @@ header h1{
   margin: 4px 0 0 0;
   z-index: 14;
   line-height: 1em;
-//   vertical-align: middle;
+/* //   vertical-align: middle; */
   color: #fff;
 }
 
@@ -319,11 +319,11 @@ header h1{
   position: relative;
   margin: 1em 0 0 0;
   padding: 1em;
-  // background: rgb(254,254,254);
+  /* // background: rgb(254,254,254); */
   background: rgb(247 252 254);
   -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.20);
   -moz-box-shadow: 0 0 1px rgba(0,0,0,0.20);
-  // box-shadow: 0 0 1px rgba(0,0,0,0.20);
+  /* // box-shadow: 0 0 1px rgba(0,0,0,0.20); */
   box-shadow: 0 0 1px rgb(0 0 0 / 76%);
   z-index: 15;
 }

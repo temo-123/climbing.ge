@@ -45,7 +45,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Outdoor regions
     */
 
-    Route::controller(TeamMemberController::class)->prefix('get_user/get_team')->group( function() {
+    Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
         Route::get('/get_member_status/{id}', 'get_member_status');
         Route::get('/get_team_members', 'get_team_members');
     });

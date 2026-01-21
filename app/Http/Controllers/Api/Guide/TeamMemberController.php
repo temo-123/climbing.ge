@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\Guide;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use App\Models\User;
+
 class TeamMemberController extends Controller
 {
     public function get_member_status(Request $request, $id)

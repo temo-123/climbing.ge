@@ -67,15 +67,15 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style>
 a {
     color: #363636;
     text-decoration: none;
 }
 
 .btn {
-    // background-color: #787878de;
-    // background-color: #8b8b8bc2;
+    /* // background-color: #787878de; */
+    /* // background-color: #8b8b8bc2; */
     background-color : rgb(160 158 158 / 87%) !important;
     background: transparent;
     margin: 5px;
@@ -109,7 +109,7 @@ a {
   background: #fff;
   box-shadow: 0 2px 8px rgba(0,0,0,.1);
   flex: 0 1 100%;
-  // margin: 20px;
+  /* // margin: 20px; */
   padding: 0;
   border-radius: 8px;
   overflow: hidden;
@@ -183,7 +183,7 @@ a {
 }
 
 .tours > .tourcard figure .tourpic .tourday.hot {
-  // background: linear-gradient(90deg, red, orange);
+  /* // background: linear-gradient(90deg, red, orange); */
   background: linear-gradient(90deg, #09bb80, #09bb808c);
   background-size: 200% 200%;
   animation: hot 10s ease infinite;
