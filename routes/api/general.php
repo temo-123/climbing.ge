@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Route;
 /*
 *   Login verify routes
 */
-Route::controller('Api\CKEditorController')->prefix('get_ckeditor')->group( function() {
+Route::controller('Api\CKEditorController')->prefix('ckeditor')->group( function() {
     // Route::get('', 'index');
     Route::post('/upload', 'upload');
 });
