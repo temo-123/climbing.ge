@@ -51,9 +51,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     });
 
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
-        Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
-
+        Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
         Route::get('/get_spots_by_regions/{lang}', 'get_spots_by_regions');
     });
 
@@ -95,7 +94,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     *   Mount routes
     */
     Route::controller(MountRouteController::class)->prefix('get_mount_route')->group( function() {
-        Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
         Route::get('/get_filtred_mount_routes/{lang}/{filter_id}/{published}', 'get_filtred_mount_routes');
 
         Route::get('/get_mount_routes_by_maunt/{lang}', 'get_mount_routes_by_maunt');

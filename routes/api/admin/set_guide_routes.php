@@ -38,7 +38,6 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
 
     Route::controller(OutdoorController::class)->prefix('set_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots_for_admin/{filter_id}', 'get_filtred_outdoor_spots_for_admin');
-        Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
 
     });
@@ -75,6 +74,8 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
     Route::controller(MountController::class)->prefix('set_mount')->group( function() {
         Route::post('/edit_mount_massive/{mount_id}', 'edit_mount_massive');
         Route::post('/add_mount_massive', 'add_mount_massive');
+
+        Route::get('/get_filtred_mount_route_for_admin/{filter_id}', 'get_filtred_mount_route_for_admin');
 
         Route::get('/get_editing_mount_massive_data/{mount_id}', 'get_editing_mount_massive_data');
         Route::delete('/del_mount_massive/{mount_id}', 'del_mount_massive');

@@ -75,13 +75,16 @@
                 data_for_tab: [],
                 articles: [],
                 article_loading: true,
+                current_article_category: 'mount_route',
             }
         },
         mounted() {
+            this.current_article_category = this.$route.params.article_category || 'mount_route'
             this.get_articles()
         },
         watch: {
             '$route' (to, from) {
+                this.current_article_category = this.$route.params.article_category || 'mount_route'
                 this.data_for_tab = [],
                 this.get_articles()
                 window.scrollTo(0,0)
@@ -378,14 +381,14 @@
                 .get("/get_mount/get_all_mount")
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
-                                            'table_name': 'Mount vasives', 
+                                            'table_name': 'Mount Masives',
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'mount_massive_add', 
+                                                'link': 'mount_massive_add',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
                                                         'ID',
@@ -413,7 +416,7 @@
                                                 'title': 'Filter by Mount Masive',
                                                 'data': response.data,
                                                 'action_fun_id': 'filtr_outdoors',
-                                                'array_key': 'name'
+                                                'array_key': 'locale_data.title'
                                             }
 
                 })
@@ -495,11 +498,27 @@
 
             filtr_outdoors(event){
                 if(event != 0){
-                    this.get_filtred_articles(event)
+                    // Check if we're on mount_route category - use different API endpoint
+                    if(this.current_article_category === 'mount_route'){
+                        this.get_filtred_mount_routes(event)
+                    } else {
+                        this.get_filtred_articles(event)
+                    }
                 }
                 else if(event == 0){
                     this.get_unfilted_articles(event)
                 }
+            },
+
+            get_filtred_mount_routes(mount_id){
+                axios
+                .get("/set_mount/get_filtred_mount_route_for_admin/" + mount_id)
+                .then(response => {
+                    this.data_for_tab[0]['tab_data']['data'] = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
             },
 
             show_spot_sectors_modal(article_id){
