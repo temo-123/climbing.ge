@@ -207,6 +207,31 @@ class ArticleController extends Controller
     }
 
 
+    public function add_mount_route_images($images, $article_id)
+    {
+        foreach ($images as $image) {
+            $file_new_name = ImageControllService::upload_loop_image('images/mount_route_img/', $image);
+
+            if(file_exists(public_path('images/mount_route_img/') . '/' . $file_new_name)){
+                $add_mount_route_image = new Mount_route_image;
+        
+                $add_mount_route_image['image'] = $file_new_name;
+                $add_mount_route_image['article_id'] = $article_id;
+        
+                $saiving = $add_mount_route_image -> save();
+
+                if($saiving){
+                    echo 'Mount route image Upload successful';
+                }
+            }
+            else{
+                // return 'Upload error';
+                echo 'Mount route image Upload error';
+            }
+        }
+    }
+
+
     public function add_regioin_articles($region_id, $article_id){
         $article = new Article_region;
         

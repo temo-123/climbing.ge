@@ -29,7 +29,7 @@
                             <tbody>
                                 <tr v-for="image in mount_route_old_images" :key="image.id">
                                     <td>
-                                        <img class="img-responsive" :src="'../../../../images/mount_route_description_img/'+image.image" :alt="image.image">
+                                        <img class="img-responsive" :src="'../../../../public/images/mount_route_img/'+image.image" :alt="image.image">
                                     </td>
                                     <td>|</td>
                                     <td>

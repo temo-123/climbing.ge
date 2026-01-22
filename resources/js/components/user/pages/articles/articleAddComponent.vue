@@ -57,8 +57,7 @@
 
                     @upload_img="upload_area_images"
                 />
-                
-                <!-- <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/> -->
+
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
 
