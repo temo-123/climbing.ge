@@ -18,11 +18,6 @@ use Validator;
 
 class MountController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function get_all_mount()
     {
         return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
@@ -30,7 +25,6 @@ class MountController extends Controller
 
     public function get_locale_mounts(Request $request)
     {
-        // $mounts_system = Mount::latest('id')->get();
         return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
     }
 

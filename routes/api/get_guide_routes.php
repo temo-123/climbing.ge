@@ -108,6 +108,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     */
     Route::controller(MountController::class)->prefix('get_mount')->group( function() {
         Route::get('/get_all_mount', 'get_all_mount');
+        Route::get('/get_locale_mounts/{lang}', 'get_locale_mounts');
 
         Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
@@ -115,7 +116,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
 
         // Editing routes moved to adminAction.php
-        Route::get('/get_locale_mounts/{lang}', 'get_locale_mounts');
     });
 
     Route::controller(LiveCameraController::class)->prefix('get_live_camera')->group( function() {
