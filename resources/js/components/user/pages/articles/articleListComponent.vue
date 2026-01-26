@@ -44,28 +44,30 @@
                     />
                 </div>
             </div>
-         </div>
+</div>
         <spot_sectors_modal
             ref="show_spot_sectors_modal"
         />
         <sectorModal ref="sector_modal" />
+        <ArticleQuickViewModal ref="quick_view_modal" />
     </div>
 </template>
 
 <script>
-    import tabsComponent  from '../../items/data_table/TabsComponent.vue'
+import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import { ContentLoader } from 'vue-content-loader'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import spot_sectors_modal from "../../items/modal/tab_modals/ArticleSectorSequenceModalComponent.vue";
     import sectorModal from "../../items/modal/tab_modals/SectorModalComponent.vue";
+    import ArticleQuickViewModal from "../../items/modal/ArticleQuickViewModal.vue";
     export default {
-        components: {
+components: {
             breadcrumb,
             tabsComponent,
             ContentLoader,
             sectorModal,
-
-            spot_sectors_modal
+            spot_sectors_modal,
+            ArticleQuickViewModal,
         },
         // props: [
         //     'status',
@@ -483,8 +485,18 @@
             show_spot_sectors_modal(article_id){
                 this.$refs.show_spot_sectors_modal.show_spot_sectors_modal(article_id)
             },
-            quick_wiev_action(article_id){
-                alert('it`s article quick view window ( article ID - '+article_id+')')
+quick_wiev_action(article_id){
+                // Find the article data from current tab
+                let article = null
+                this.data_for_tab.forEach(tab => {
+                    if (tab.tab_data && tab.tab_data.data) {
+                        const found = tab.tab_data.data.find(item => item.id === article_id)
+                        if (found) article = found
+                    }
+                })
+                if (article) {
+                    this.$refs.quick_view_modal.show_quick_view_modal(article, this.current_article_category)
+                }
             }
         }
     }
