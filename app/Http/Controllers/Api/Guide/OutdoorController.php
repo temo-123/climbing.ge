@@ -179,14 +179,14 @@ class OutdoorController extends Controller
         return $data;
     }
 
-    public function get_filtred_outdoor_spots_for_admin(Request $request)
-    {
-        $region_article_count = Region::where('id', '=', $request->filter_id)->count();
-        if($region_article_count > 0){
-            $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
-            return $filtred_articles_by_region;
-        }
-    }
+    // public function get_filtred_outdoor_spots_for_admin(Request $request)
+    // {
+    //     $region_article_count = Region::where('id', '=', $request->filter_id)->count();
+    //     if($region_article_count > 0){
+    //         $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
+    //         return $filtred_articles_by_region;
+    //     }
+    // }
 
     public function get_filtred_outdoor_spots_for_gest(Request $request)
     {

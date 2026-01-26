@@ -303,6 +303,23 @@ class MountController extends Controller
         }
     }
 
+    public function get_filtred_mount_route_for_admin(Request $request)
+    {
+        $auth = PermissionService::authorize('mount_route', 'edit');
+        // if ($auth) return $auth;
+        
+        $mount_id = $request->filter_id;
+        
+        // Get articles through the article_mount pivot table
+        $filtred_articles_by_mount = \App\Models\Guide\Article::whereHas('mount_masiv', function ($query) use ($mount_id) {
+                $query->where('mounts.id', '=', $mount_id);
+            })
+            ->where('category', '=', 'mount_route')
+            ->get();
+        
+        return $filtred_articles_by_mount;
+    }
+
     public function local_mount_validate($data)
     {
         $validator = Validator::make($data, [

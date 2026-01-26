@@ -107,12 +107,31 @@
                             class="row"
                             v-if="
                                 action_data.filter_data &&
-                                action_data.filter_data.data
+                                action_data.filter_data.data &&
+                                !Array.isArray(action_data.filter_data)
                             "
                         >
                             <FilterComponent 
                                 :filtr_data_prop="action_data"
 
+                                @send_filter_to_tab_with_id="filter_data_with_id"
+                                @send_filter_to_tab="filter_data"
+                            />
+                        </div>
+
+                        <!-- Multiple filters -->
+                        <div
+                            class="multi-filter-wrapper"
+                            style="width: 100%;"
+                            v-if="
+                                action_data.filter_data &&
+                                Array.isArray(action_data.filter_data)
+                            "
+                        >
+                            <FilterComponent 
+                                :filtr_data_prop="action_data"
+
+                                @send_filter_to_tab_with_multi_id="filter_data_with_multi_id"
                                 @send_filter_to_tab_with_id="filter_data_with_id"
                                 @send_filter_to_tab="filter_data"
                             />
@@ -410,6 +429,11 @@ export default {
         update() {
             this.$emit("update");
         },
+        // Handle multiple filter IDs from multi-filter component
+        filter_data_with_multi_id(emit_fun) {
+            // emit_fun = [event_name, filter_value, filter_index]
+            this.$emit(emit_fun[0], emit_fun[1], emit_fun[2]);
+        },
         filter_data(emit_fun) {
             this.$emit(emit_fun[0]);
         },
@@ -501,6 +525,10 @@ export default {
     font-size: 14px;
     color: #495057;
     font-weight: 500;
+}
+.multi-filter-wrapper {
+    display: block;
+    margin-bottom: 15px;
 }
 </style>
 

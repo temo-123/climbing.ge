@@ -23,6 +23,6 @@ class Region extends Model
 
 	public function articles()
 	{
-		return $this->belongsToMany(Article::class,);
+		return $this->belongsToMany(Article::class, 'article_region', 'region_id', 'article_id');
 	}
 }

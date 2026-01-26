@@ -257,55 +257,24 @@
                 this.get_articles(event)
             },
 
+            get_filtred_mount_routes(mount_id){
+                axios
+                .get("/set_mount/get_filtred_mount_route_for_admin/" + mount_id)
+                .then(response => {
+                    this.data_for_tab[0]['tab_data']['data'] = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+
             get_filtred_articles(id){
                 axios
-                .get("/get_outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
+                .get("/set_outdoor/get_filtred_outdoor_spots_for_admin/"+id, {
                     category: this.$route.params.article_category,
                 })
                 .then(response => {
-                    this.data_for_tab = []
-    
-                    this.data_for_tab.push({
-                                            'id': 1,
-                                            'table_name': this.$route.params.article_category, 
-                                            'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
-                                            'add_action': {
-                                                'action': 'route',
-                                                'link': 'articleAdd', 
-                                                'class': 'btn btn-primary'
-                                            },
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Public',
-                                                        'Edit',
-                                                        'Delite',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data_action_id', ['url_title'], 'quick_wiev_action'],
-                                                        ['data', ['published'], 'bool'],
-                                                        ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_article', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['article', 'edit'],
-                                                        ['article', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        });
-
-
-                    if(this.$route.params.article_category){
-                        this.get_regions(this.$route.params.article_category)
-                    }
+                    this.data_for_tab[0]['tab_data']['data'] = response.data
                 })
                 .catch(
                     error => console.log(error)
@@ -416,7 +385,8 @@
                                                 'title': 'Filter by Mount Masive',
                                                 'data': response.data,
                                                 'action_fun_id': 'filtr_outdoors',
-                                                'array_key': 'locale_data.title'
+                                                'array_key': 'locale_data.title',
+                                                'id_key': 'global_data.id'
                                             }
 
                 })
@@ -508,17 +478,6 @@
                 else if(event == 0){
                     this.get_unfilted_articles(event)
                 }
-            },
-
-            get_filtred_mount_routes(mount_id){
-                axios
-                .get("/set_mount/get_filtred_mount_route_for_admin/" + mount_id)
-                .then(response => {
-                    this.data_for_tab[0]['tab_data']['data'] = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
             },
 
             show_spot_sectors_modal(article_id){
