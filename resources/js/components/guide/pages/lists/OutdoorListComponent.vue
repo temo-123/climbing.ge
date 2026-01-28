@@ -17,6 +17,8 @@
                     <routesAutersModal :route_categories_prop="route_categories"/>
                 </div>
 
+                
+
                 <div class="col-md-6">
                     <mostPopularRoutesModal :route_categories_prop="route_categories" />
                 </div>
@@ -59,6 +61,77 @@
                 </div>
             </div>
 
+            <!-- View Controls -->
+            <div class="row view_controls_bar" v-if="filter_spot === 'All'">
+                <!-- Left: View Mode Toggle -->
+                <div class="col-md-6 text-left">
+                    <div class="btn-group pull-left" role="group" aria-label="View Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
+                            @click="viewMode = 'grid'"
+                        >
+                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
+                            @click="viewMode = 'list'"
+                        >
+                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right: Grouping Toggle -->
+                <div class="col-md-6 text-right pull-right">
+                    <div class="btn-group" role="group" aria-label="Group Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': groupMode === 'grouped', 'btn-default': groupMode !== 'grouped'}"
+                            @click="groupMode = 'grouped'"
+                        >
+                            <i class="fa fa-folder"></i> {{ $t('guide.group.by_region') || 'By Region' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': groupMode === 'flat', 'btn-default': groupMode !== 'flat'}"
+                            @click="groupMode = 'flat'"
+                        >
+                            <i class="fa fa-list"></i> {{ $t('guide.group.flat') || 'Flat List' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Controls (Only View Mode when filtered) -->
+            <div class="row view_controls_bar" v-else>
+                <div class="col-md-12 text-left pull-left">
+                    <div class="btn-group" role="group" aria-label="View Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
+                            @click="viewMode = 'grid'"
+                        >
+                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
+                            @click="viewMode = 'list'"
+                        >
+                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <section class="portfolio" id="portfolio">
                 <div class="container-fluid">
                     <div class="row">
@@ -75,50 +148,115 @@
                             </div>
 
                             <div v-else>
-                                <div v-if="this.regions_and_spots.length > 0" class="article_card_container">
-                                    <div class="row width_100" v-for="region in regions_and_spots">
-                                        <div class="col-md-12">
-                                            <div class="row" v-if="region.region['name'] != 'other'">
-                                                <h2 class="article_list_short_description">{{region.region.name}}</h2>
-
-                                                <!-- <div class="col-md-12" style="text-align: right;">
-                                                    <button class="btn btn-default btn-send main-btn" >Rade More</button>
-                                                </div> -->
-
-                                                <!-- <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
-                                                    <div class="col-md-12" style="text-align: center;">
-                                                        <h2>{{selected_region_data.name}}</h2>
-                                                        <span v-html="selected_region_data.text"></span>
-                                                    </div>
-
-                                                    <div class="col-md-12" style="text-align: center;" v-if="selected_region_data.map != null">
-                                                        <button class="btn btn-default btn-send main-btn" @click="map_modal()">Show map</button>
-                                                    </div>
-                                                </div> -->
+                                <!-- Grouped View with regions_and_spots -->
+                                <div v-if="groupMode === 'grouped'">
+                                    <div v-if="this.regions_and_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                        <!-- Grid View by Region -->
+                                        <div class="row width_100" v-if="viewMode === 'grid'" v-for="region in regions_and_spots">
+                                            <div class="col-md-12">
+                                                <div class="row" v-if="region.region['name'] != 'other'">
+                                                    <h2 class="article_list_short_description">{{region.region.name}}</h2>
+                                                </div>
+                                                <div v-else>
+                                                    <h2 class="article_list_short_description">Other</h2>
+                                                </div>
                                             </div>
-                                            <div v-else>
-                                                <h2 class="article_list_short_description">Other</h2>
+                                            <div class="col-md-12 cards_block">
+                                                <outdoorCard  
+                                                    v-for="outdoor in region.spots"
+                                                    :key='outdoor.area.global_data.id'
+                                                    :image_dir="'images/outdoor_img/'"
+                                                    :article="outdoor"
+                                                />
                                             </div>
                                         </div>
-                                        <div class="col-md-12 cards_block">
+                                        
+                                        <!-- List View by Region -->
+                                        <div v-if="viewMode === 'list'" v-for="region in regions_and_spots">
+                                            <div v-if="region.region['name'] != 'other'" class="region-list-header">
+                                                <h2 class="article_list_short_description">{{region.region.name}}</h2>
+                                            </div>
+                                            <div v-else class="region-list-header">
+                                                <h2 class="article_list_short_description">Other</h2>
+                                            </div>
+                                            <div class="list-view-container">
+                                                <outdoorHorizontalCard
+                                                    v-for="outdoor in region.spots"
+                                                    :key="outdoor.area.global_data.id"
+                                                    :image_dir="'images/outdoor_img/'"
+                                                    :article="outdoor"
+                                                />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Filtered Grouped View -->
+                                    <div v-else-if="this.filtred_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                        <div v-if="viewMode === 'grid'">
                                             <outdoorCard  
-                                                v-for="outdoor in region.spots"
-                                                :key='outdoor.area.global_data.id'
+                                                v-for="outdoor in filtred_spots"
+                                                :key='outdoor.id'
+                                                :image_dir="'images/outdoor_img/'"
+                                                :article="outdoor"
+                                            />
+                                        </div>
+                                        <div v-if="viewMode === 'list'" class="list-view-container">
+                                            <outdoorHorizontalCard
+                                                v-for="outdoor in filtred_spots"
+                                                :key="outdoor.id"
                                                 :image_dir="'images/outdoor_img/'"
                                                 :article="outdoor"
                                             />
                                         </div>
                                     </div>
                                 </div>
-                                <div v-else-if="this.filtred_spots.length > 0" class="article_card_container">
-                                    <outdoorCard  
-                                        v-for="outdoor in filtred_spots"
-                                        :key='outdoor.id'
-                                        :image_dir="'images/outdoor_img/'"
-                                        :article="outdoor"
-                                    />
+
+                                <!-- Flat View (no grouping) -->
+                                <div v-else>
+                                    <div v-if="this.regions_and_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                        <!-- Flat Grid View -->
+                                        <div v-if="viewMode === 'grid'">
+                                            <outdoorCard  
+                                                v-for="outdoor in getAllSpots(regions_and_spots)"
+                                                :key='outdoor.area.global_data.id'
+                                                :image_dir="'images/outdoor_img/'"
+                                                :article="outdoor"
+                                            />
+                                        </div>
+                                        
+                                        <!-- Flat List View -->
+                                        <div v-if="viewMode === 'list'" class="list-view-container">
+                                            <outdoorHorizontalCard
+                                                v-for="outdoor in getAllSpots(regions_and_spots)"
+                                                :key="outdoor.area.global_data.id"
+                                                :image_dir="'images/outdoor_img/'"
+                                                :article="outdoor"
+                                            />
+                                        </div>
+                                    </div>
+
+                                    <!-- Filtered Flat View -->
+                                    <div v-else-if="this.filtred_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                        <div v-if="viewMode === 'grid'">
+                                            <outdoorCard  
+                                                v-for="outdoor in filtred_spots"
+                                                :key='outdoor.id'
+                                                :image_dir="'images/outdoor_img/'"
+                                                :article="outdoor"
+                                            />
+                                        </div>
+                                        <div v-if="viewMode === 'list'" class="list-view-container">
+                                            <outdoorHorizontalCard
+                                                v-for="outdoor in filtred_spots"
+                                                :key="outdoor.id"
+                                                :image_dir="'images/outdoor_img/'"
+                                                :article="outdoor"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div v-else-if="this.regions_and_spots.length == 0 && this.filtred_spots.length == 0">
+
+                                <div v-if="this.regions_and_spots.length == 0 && this.filtred_spots.length == 0">
                                     <emptyPageComponent />
                                 </div>
                             </div>
@@ -162,6 +300,7 @@
 
 <script>
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
+    import outdoorHorizontalCard from '../../items/cards/OutdoorHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     import metaData from '../../items/MetaDataComponent'
@@ -188,6 +327,9 @@
                 // sector_quantyt: true,
                 region_loading: true,
 
+                viewMode: 'grid', // 'grid' or 'list'
+                groupMode: 'grouped', // 'grouped' or 'flat'
+
                 route_categories: [
                     { value: 'sport', label: 'guide.sector.sport_climbing' },
                     { value: 'boulder', label: 'guide.sector.bouldering' },
@@ -197,6 +339,7 @@
         },
         components: {
             outdoorCard,
+            outdoorHorizontalCard,
             emptyPageComponent,
             StackModal,
             metaData,
@@ -310,6 +453,19 @@
                 else{
                     this.selected_region_data = []
                 }
+            },
+
+            // Helper method to get all spots from regions_and_spots for list view
+            getAllSpots(regionsAndSpots) {
+                let allSpots = []
+                if (regionsAndSpots && Array.isArray(regionsAndSpots)) {
+                    regionsAndSpots.forEach(region => {
+                        if (region.spots && Array.isArray(region.spots)) {
+                            allSpots = allSpots.concat(region.spots)
+                        }
+                    })
+                }
+                return allSpots
             }
         }
     }
@@ -330,4 +486,5 @@
     .otdoor_buttoms{
         margin: 1em 0;
     }
+
 </style>

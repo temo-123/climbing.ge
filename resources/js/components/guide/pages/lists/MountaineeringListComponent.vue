@@ -32,6 +32,77 @@
                 </div>
             </div>
             
+            <!-- View Controls -->
+            <div class="row view_controls_bar" v-if="filter_mount === 'All'">
+                <!-- Left: View Mode Toggle -->
+                <div class="col-md-6 text-left">
+                    <div class="btn-group pull-left" role="group" aria-label="View Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
+                            @click="viewMode = 'grid'"
+                        >
+                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
+                            @click="viewMode = 'list'"
+                        >
+                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Right: Grouping Toggle -->
+                <div class="col-md-6 text-right pull-right">
+                    <div class="btn-group" role="group" aria-label="Group Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': groupMode === 'grouped', 'btn-default': groupMode !== 'grouped'}"
+                            @click="groupMode = 'grouped'"
+                        >
+                            <i class="fa fa-folder"></i> {{ $t('guide.group.by_mountain') || 'By Mountain' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': groupMode === 'flat', 'btn-default': groupMode !== 'flat'}"
+                            @click="groupMode = 'flat'"
+                        >
+                            <i class="fa fa-list"></i> {{ $t('guide.group.flat') || 'Flat List' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- View Controls (Only View Mode when filtered) -->
+            <div class="row view_controls_bar" v-else>
+                <div class="col-md-12 text-left pull-left">
+                    <div class="btn-group" role="group" aria-label="View Mode">
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
+                            @click="viewMode = 'grid'"
+                        >
+                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
+                        </button>
+                        <button 
+                            type="button" 
+                            class="btn" 
+                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
+                            @click="viewMode = 'list'"
+                        >
+                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <div class="row">
                 <div v-if="mount_route_loading">
                     <content-loader
@@ -43,31 +114,111 @@
                     </content-loader>
                 </div>
                 <div v-else>
-                    <div v-if="this.mount_routes_by_masiv.length > 0" class="article_card_container">
-                        <div class="row width_100" v-for="masiv in mount_routes_by_masiv">
-                            <div class="col-md-12">
-                                <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
-                                <h2 v-else class="article_list_short_description">Other</h2>
+                    <!-- Grouped View -->
+                    <div v-if="groupMode === 'grouped'">
+                        <div v-if="this.mount_routes_by_masiv.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                            <!-- Grid View by Mountain -->
+                            <div class="row width_100" v-if="viewMode === 'grid'" v-for="masiv in mount_routes_by_masiv">
+                                <div class="col-md-12">
+                                    <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
+                                    <h2 v-else class="article_list_short_description">Other</h2>
+                                </div>
+                                <div class="col-md-12 cards_block">
+                                    <mountCard 
+                                        v-for="mount_route in masiv.mount_route"
+                                        :key='mount_route.global_data.id'
+                                        :mount="mount_route"
+                                        :route="'mountaineering/'+mount_route.global_data.url_title"
+                                    />
+                                </div>
                             </div>
-                            <div class="col-md-12 cards_block">
+
+                            <!-- List View by Mountain -->
+                            <div v-if="viewMode === 'list'" v-for="masiv in mount_routes_by_masiv">
+                                <div v-if="masiv.mount" class="mountain-list-header">
+                                    <h2 class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
+                                </div>
+                                <div v-else class="mountain-list-header">
+                                    <h2 class="article_list_short_description">Other</h2>
+                                </div>
+                                <div class="list-view-container">
+                                    <mountHorithontalCard
+                                        v-for="mount_route in masiv.mount_route"
+                                        :key="mount_route.global_data.id"
+                                        :mount="mount_route"
+                                        :route="'mountaineering/'+mount_route.global_data.url_title"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filtered Grouped View -->
+                        <div v-else-if="this.mount_routes.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                            <div v-if="viewMode === 'grid'">
                                 <mountCard 
-                                    v-for="mount_route in masiv.mount_route"
-                                    :key='mount_route.global_data.id'
+                                    v-for="mount_route in mount_routes"
+                                    :key='mount_route.id'
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
+                                />
+                            </div>
+                            <div v-if="viewMode === 'list'" class="list-view-container">
+                                <mountHorithontalCard
+                                    v-for="mount_route in mount_routes"
+                                    :key="mount_route.id"
                                     :mount="mount_route"
                                     :route="'mountaineering/'+mount_route.global_data.url_title"
                                 />
                             </div>
                         </div>
                     </div>
-                    <div v-else-if="this.mount_routes.length > 0" class="article_card_container">
-                        <mountCard 
-                            v-for="mount_route in mount_routes"
-                            :key='mount_route.id'
-                            :mount="mount_route"
-                            :route="'mountaineering/'+mount_route.global_data.url_title"
-                        />
-                    </div>
+
+                    <!-- Flat View (no grouping) -->
                     <div v-else>
+                        <div v-if="this.mount_routes_by_masiv.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                            <!-- Flat Grid View -->
+                            <div v-if="viewMode === 'grid'">
+                                <mountCard 
+                                    v-for="mount_route in getAllMountRoutes(mount_routes_by_masiv)"
+                                    :key='mount_route.global_data.id'
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
+                                />
+                            </div>
+
+                            <!-- Flat List View -->
+                            <div v-if="viewMode === 'list'" class="list-view-container">
+                                <mountHorithontalCard
+                                    v-for="mount_route in getAllMountRoutes(mount_routes_by_masiv)"
+                                    :key="mount_route.global_data.id"
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
+                                />
+                            </div>
+                        </div>
+
+                        <!-- Filtered Flat View -->
+                        <div v-else-if="this.mount_routes.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                            <div v-if="viewMode === 'grid'">
+                                <mountCard 
+                                    v-for="mount_route in mount_routes"
+                                    :key='mount_route.id'
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
+                                />
+                            </div>
+                            <div v-if="viewMode === 'list'" class="list-view-container">
+                                <mountHorithontalCard
+                                    v-for="mount_route in mount_routes"
+                                    :key="mount_route.id"
+                                    :mount="mount_route"
+                                    :route="'mountaineering/'+mount_route.global_data.url_title"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="this.mount_routes_by_masiv.length == 0 && this.mount_routes.length == 0">
                         <emptyPageComponent />
                     </div>
                 </div>
@@ -85,8 +236,9 @@
 
 <script>
     import mountCard from '../../items/cards/MountCardComponent'
+    import mountHorithontalCard from '../../items/cards/MountHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-
+    
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
     export default {
@@ -99,11 +251,15 @@
                 filter_mount: 'All',
 
                 selected_mount_data: [],
-                mount_route_loading: false
+                mount_route_loading: false,
+
+                viewMode: 'grid', // 'grid' or 'list'
+                groupMode: 'grouped' // 'grouped' or 'flat'
             };
         },
         components: {
             mountCard,
+            mountHorithontalCard,
             emptyPageComponent,
             ContentLoader,
             metaData
@@ -186,6 +342,23 @@
                     this.selected_mount_data = []
                 }
             },
+
+            // Helper method to get all mount routes from mount_routes_by_masiv for list view
+            getAllMountRoutes(mountRoutesByMasiv) {
+                let allRoutes = []
+                if (mountRoutesByMasiv && Array.isArray(mountRoutesByMasiv)) {
+                    mountRoutesByMasiv.forEach(masiv => {
+                        if (masiv.mount_route && Array.isArray(masiv.mount_route)) {
+                            allRoutes = allRoutes.concat(masiv.mount_route)
+                        }
+                    })
+                }
+                return allRoutes
+            }
         }
     }
 </script>
+
+<style scoped>
+   
+</style>

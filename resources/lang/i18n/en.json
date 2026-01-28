@@ -4,6 +4,24 @@
 
     "guide": {
         "name": "Climbing Guidebook",
+        
+        "view": {
+            "grid": "Grid",
+            "list": "List",
+            "cube": "Cube"
+        },
+        
+        "group": {
+            "by_region": "By Region",
+            "by_mountain": "By Mountain",
+            "flat": "Flat List"
+        },
+
+        "stats": {
+            "sectors": "Sectors",
+            "routes": "Routes",
+            "multipitch": "Multi-pitch"
+        },
 
         "meta": {
             "index": "Rock Climbing & Mountaineering in Georgia",

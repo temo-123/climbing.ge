@@ -7,15 +7,6 @@
         <h2 class="article_list_short_description">
             <span v-html="this.$siteData.data.shop_short_description"></span>
         </h2>
-        <!-- <p>{{ $n(10000, 'currency') }}</p>
-        <p>{{ $n(10000, 'currency', 'en-US') }}</p>
-        <p>{{ $n(10000, 'currency', 'en-US', { useGrouping: false }) }}</p>
-        <p>{{ $n(987654321, 'currency', { notation: 'compact' }) }}</p>
-        <p>{{ $n(0.99123, 'percent') }}</p>
-        <p>{{ $n(0.99123, 'percent', { minimumFractionDigits: 2 }) }}</p>
-        <p>{{ $n(12.11612345, 'decimal') }}</p>
-        <p>{{ $n(12145281111, 'decimal', 'en-US') }}</p> -->
-
 
         <div class="col-md-12" v-if="products_loading">
             <div class="col-md-12">
@@ -29,58 +20,89 @@
 
         <div class="col-md-12"  v-else>
             <div class="col-sm-12 ">
-                <!-- <section class="inner"> -->
-                    <section class="portfolio inner" id="portfolio">
-                            <div class="filters-bar">
-                                <button type="button" class="btn btn-primary filter-btn" @click="open_menu()">
-                                    <i class="fa fa-filter"></i> Filter products
-                                    <span v-if="activeFilterCount > 0" class="filter-count">({{ activeFilterCount }})</span>
+                <section class="portfolio inner" id="portfolio">
+                    <div class="filters-bar">
+                        <div class="filters-left">
+                            <button type="button" class="btn btn-primary filter-btn" @click="open_menu()">
+                                <i class="fa fa-filter"></i> Filter products
+                                <span v-if="activeFilterCount > 0" class="filter-count">({{ activeFilterCount }})</span>
+                            </button>
+                            <div v-if="hasActiveFilters" class="filter-summary">
+                                <span>Filtered by:</span>
+                                <span v-if="currentFilters.brand_id" class="filter-tag">
+                                    Brand: {{ currentFilters.brand_id }}
+                                    <button @click="removeFilter('brand_id')" class="remove-btn">×</button>
+                                </span>
+                                <span v-if="currentFilters.sale_type" class="filter-tag">
+                                    Sale Type: {{ currentFilters.sale_type }}
+                                    <button @click="removeFilter('sale_type')" class="remove-btn">×</button>
+                                </span>
+                                <span v-if="currentFilters.subcategory_id" class="filter-tag">
+                                    Subcategory: {{ currentFilters.subcategory_id }}
+                                    <button @click="removeFilter('subcategory_id')" class="remove-btn">×</button>
+                                </span>
+                                <span v-if="currentFilters.price_min || currentFilters.price_max" class="filter-tag">
+                                    Price: {{ currentFilters.price_min ? '$' + currentFilters.price_min : 'Min' }} - {{ currentFilters.price_max ? '$' + currentFilters.price_max : 'Max' }}
+                                    <button @click="removePriceFilter()" class="remove-btn">×</button>
+                                </span>
+                                <button @click="clear_filtrs()" class="clear-all-btn">Clear All</button>
+                            </div>
+                        </div>
+                        
+                        <!-- View Mode Toggle -->
+                        <div class="filters-right">
+                            <div class="btn-group" role="group" aria-label="View Mode">
+                                <button 
+                                    type="button" 
+                                    class="btn" 
+                                    :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
+                                    @click="viewMode = 'grid'"
+                                >
+                                    <i class="fa fa-th-large"></i>
                                 </button>
-                                <div v-if="hasActiveFilters" class="filter-summary">
-                                    <span>Filtered by:</span>
-                                    <span v-if="currentFilters.brand_id" class="filter-tag">
-                                        Brand: {{ currentFilters.brand_id }}
-                                        <button @click="removeFilter('brand_id')" class="remove-btn">×</button>
-                                    </span>
-                                    <span v-if="currentFilters.sale_type" class="filter-tag">
-                                        Sale Type: {{ currentFilters.sale_type }}
-                                        <button @click="removeFilter('sale_type')" class="remove-btn">×</button>
-                                    </span>
-                    <span v-if="currentFilters.subcategory_id" class="filter-tag">
-                        Subcategory: {{ currentFilters.subcategory_id }}
-                        <button @click="removeFilter('subcategory_id')" class="remove-btn">×</button>
-                    </span>
-                    <span v-if="currentFilters.price_min || currentFilters.price_max" class="filter-tag">
-                        Price: {{ currentFilters.price_min ? '$' + currentFilters.price_min : 'Min' }} - {{ currentFilters.price_max ? '$' + currentFilters.price_max : 'Max' }}
-                        <button @click="removePriceFilter()" class="remove-btn">×</button>
-                    </span>
-                                    <button @click="clear_filtrs()" class="clear-all-btn">Clear All</button>
-                                </div>
+                                <button 
+                                    type="button" 
+                                    class="btn" 
+                                    :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
+                                    @click="viewMode = 'list'"
+                                >
+                                    <i class="fa fa-list-ul"></i>
+                                </button>
                             </div>
-                            <div class="layout" v-if="filtred_products.length > 0">
-                                <!-- <section class="inner"> -->
-                                    <div class="grid">
-
-                                        <catalogItem
-                                            v-for="product in filtred_products"
-                                            :key='product.id'
-                                            :product_data="product"
-                                        />
-
-                                    </div>
-                                <!-- </section> -->
-                            </div>
-                    </section>
-
-                    <div v-if="filtred_products.length == 0">
-                        <emptyPageComponent />
+                        </div>
                     </div>
-                <!-- </section> -->
+                    
+                    <div class="layout" v-if="filtred_products.length > 0">
+                        <!-- Grid View -->
+                        <template v-if="viewMode === 'grid'">
+                            <div class="grid">
+                                <catalogItem
+                                    v-for="product in filtred_products"
+                                    :key='product.id'
+                                    :product_data="product"
+                                />
+                            </div>
+                        </template>
+                        <!-- List View -->
+                        <template v-else>
+                            <div class="list-view-container">
+                                <catalogHorizontalItem
+                                    v-for="product in filtred_products"
+                                    :key="product.id"
+                                    :product_data="product"
+                                />
+                            </div>
+                        </template>
+                    </div>
+                </section>
+
+                <div v-if="filtred_products.length == 0">
+                    <emptyPageComponent />
+                </div>
             </div>
 
             <productLeftMenu
                 ref="left_menu"
-
                 @apply_filters="applyFilters"
             />
         </div>
@@ -95,6 +117,7 @@
 
 <script>
     import catalogItem from '../../items/cards/CatalogItemComponent'
+    import catalogHorizontalItem from '../../items/cards/CatalogHorizontalItemComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import { ContentLoader } from 'vue-content-loader'
     import metaData from '../../items/MetaDataComponent'
@@ -105,6 +128,7 @@
         components: {
             metaData,
             catalogItem,
+            catalogHorizontalItem,
             emptyPageComponent,
             ContentLoader,
             productLeftMenu
@@ -119,7 +143,8 @@
                     subcategory_id: null,
                     price_min: null,
                     price_max: null
-                }
+                },
+                viewMode: 'grid' // 'grid' or 'list'
             };
         },
         mounted() {
