@@ -17,8 +17,6 @@
                     <routesAutersModal :route_categories_prop="route_categories"/>
                 </div>
 
-                
-
                 <div class="col-md-6">
                     <mostPopularRoutesModal :route_categories_prop="route_categories" />
                 </div>
@@ -61,76 +59,12 @@
                 </div>
             </div>
 
-            <!-- View Controls -->
-            <div class="row view_controls_bar" v-if="filter_spot === 'All'">
-                <!-- Left: View Mode Toggle -->
-                <div class="col-md-6 text-left">
-                    <div class="btn-group pull-left" role="group" aria-label="View Mode">
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
-                            @click="viewMode = 'grid'"
-                        >
-                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
-                        </button>
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
-                            @click="viewMode = 'list'"
-                        >
-                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
-                        </button>
-                    </div>
-                </div>
-                
-                <!-- Right: Grouping Toggle -->
-                <div class="col-md-6 text-right pull-right">
-                    <div class="btn-group" role="group" aria-label="Group Mode">
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': groupMode === 'grouped', 'btn-default': groupMode !== 'grouped'}"
-                            @click="groupMode = 'grouped'"
-                        >
-                            <i class="fa fa-folder"></i> {{ $t('guide.group.by_region') || 'By Region' }}
-                        </button>
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': groupMode === 'flat', 'btn-default': groupMode !== 'flat'}"
-                            @click="groupMode = 'flat'"
-                        >
-                            <i class="fa fa-list"></i> {{ $t('guide.group.flat') || 'Flat List' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- View Controls (Only View Mode when filtered) -->
-            <div class="row view_controls_bar" v-else>
-                <div class="col-md-12 text-left pull-left">
-                    <div class="btn-group" role="group" aria-label="View Mode">
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': viewMode === 'grid', 'btn-default': viewMode !== 'grid'}"
-                            @click="viewMode = 'grid'"
-                        >
-                            <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
-                        </button>
-                        <button 
-                            type="button" 
-                            class="btn" 
-                            :class="{'btn-primary active': viewMode === 'list', 'btn-default': viewMode !== 'list'}"
-                            @click="viewMode = 'list'"
-                        >
-                            <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
-                        </button>
-                    </div>
-                </div>
-            </div>
+            <!-- View Controls Component -->
+            <view-controls-component
+                :view-mode.sync="viewMode"
+                :group-mode.sync="groupMode"
+                :filter-spot="filter_spot"
+            />
 
             <section class="portfolio" id="portfolio">
                 <div class="container-fluid">
@@ -309,6 +243,7 @@
     import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
     import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
+    import ViewControlsComponent from '../../items/ViewControlsComponent.vue'
 
     export default {
 
@@ -347,7 +282,8 @@
 
             sectorQuantyt,
             routesAutersModal,
-            mostPopularRoutesModal
+            mostPopularRoutesModal,
+            ViewControlsComponent
         },
         mounted() {
             this.get_outdoor_articles()

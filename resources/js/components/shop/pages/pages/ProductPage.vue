@@ -47,9 +47,12 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="product-header">
+                                <div class="product-header">
                                 <div class="product-title-section">
                                     <h1 class="product-title">{{ product.locale_product.title }}</h1>
+                                    <div class="discount-badge-large" v-if="product.has_discount">
+                                        -{{ product.max_discount }}%
+                                    </div>
                                     <breadcrumb />
                                 </div>
                                 <div class="action-icons">
@@ -66,7 +69,7 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="price-shipping" v-if="product_modification_for_cart == 'All'">
-                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null && product.global_product.discount > 0">
+                                        <div class="price" id="price-preview" v-if="product.has_discount">
                                             <div class="price_pege">
                                                 <p title="price" v-if="product.new_min_price != product.new_max_price">
                                                     ₾ {{ product.new_min_price }} - {{ product.new_max_price }}
@@ -97,7 +100,7 @@
                                         </div>
                                     </div>
                                     <div class="price-shipping" v-else>
-                                        <div class="price" id="price-preview" v-if="product.global_product.discount != null && product.global_product.discount > 0">
+                                        <div class="price" id="price-preview" v-if="selectedOptionHasDiscount">
                                             <div class="price_pege">
                                                 <p title="price">
                                                     ₾ {{ actyve_price.new_price }} 
@@ -362,10 +365,44 @@
         },
         computed: {
             isOutOfStock() {
-                return this.product.product_option.every(option => option.option.quantity <= 0);
+                // If product data is not loaded yet, return false
+                if (!this.product || !this.product.global_product) {
+                    return false;
+                }
+                
+                // Use out_of_stock from backend for global product status
+                // This is true only when ALL options are out of stock
+                if (this.product.out_of_stock === true) {
+                    return true;
+                }
+                
+                // If a specific option is selected, check if that option is out of stock
+                if (this.product_modification_for_cart != 'All' && this.product.product_option) {
+                    const selectedOption = this.product.product_option.find(
+                        option => option.option && option.option.id == this.product_modification_for_cart
+                    );
+                    if (selectedOption && selectedOption.is_out_of_stock === true) {
+                        return true;
+                    }
+                }
+                
+                return false;
             },
             isOutOfStockGlobal() {
-                return this.product.product_option.every(option => option.option.quantity <= 0);
+                // Use out_of_stock from backend for global product status
+                if (!this.product || !this.product.global_product) {
+                    return false;
+                }
+                return this.product.out_of_stock === true;
+            },
+            selectedOptionHasDiscount() {
+                if (this.product_modification_for_cart == 'All') {
+                    return this.product.has_discount;
+                }
+                const selectedOption = this.product.product_option.find(
+                    option => option.option.id == this.product_modification_for_cart
+                );
+                return selectedOption && selectedOption.option.discount > 0;
             },
             currentImage() {
                 return this.items[this.currentImageIndex] || {};
@@ -449,10 +486,11 @@
                 if (this.product_modification_for_cart == "All") {
                     this.get_product_options_images()
                 }
-                else{
+                else if (this.product && this.product.product_option) {
                     this.product.product_option.forEach(option => {
-                        if (this.product_modification_for_cart == option.option.id) {
-                            this.select_product_max_quantyty = this.product.global_product.quantity
+                        if (option.option && this.product_modification_for_cart == option.option.id) {
+                            // Use stock_quantity from backend instead of global_product.quantity
+                            this.select_product_max_quantyty = option.stock_quantity || 0
 
                             this.actyve_price.price = option.option.price
                             if(option.option.discount > 0){
@@ -700,6 +738,17 @@
         font-weight: bold;
         margin-bottom: 10px;
         line-height: 1.2;
+    }
+
+    .discount-badge-large {
+        display: inline-block;
+        background: #f54d5c;
+        color: #fff;
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 1.2em;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
 
     .action-icons {

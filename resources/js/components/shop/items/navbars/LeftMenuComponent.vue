@@ -9,20 +9,23 @@
 
             <ul  style="padding-left: 0px;">
                 <li>
-                    <a href="#" @click="show_item('category')" class="dropdown-toggle" >
+                    <a href="#" @click.prevent="toggleMenu('category')" class="dropdown-toggle" >
                         <i class="fa fa-list"></i> Categories <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
-                    <ul :class="'category'" style="background-color: #04354b; display: none; transition: .4s;">
+                    <ul :class="'category'" :style="menus.category ? '' : 'display: none;'" style="background-color: #04354b; transition: .4s;">
                         <span >
-                            <li class="menu_item" style="height: 104px; padding-top: 35px;">
+                            <li class="menu_item" style="height: 104px; padding-top: 35px;" @click.stop>
                                 <select class="form-control" v-model="filter_category" @change="get_category_subcategories()" name="sort_by_categories" >
                                     <option :value="0">All</option>
                                     <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option>
                                 </select>
                             </li>
 
-                            <li v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id" class="menu_small_item" @click="sort_by_subcategories(subcat.id)">
-                                {{ subcat.us_name }}
+                            <li class="menu_item" style="height: 60px; padding-top: 15px;" @click.stop>
+                                <select class="form-control" v-model="selected_subcategory" name="sort_by_subcategory" @change="updateSubcategory()">
+                                    <option :value="0">All Subcategories</option>
+                                    <option v-for="subcat in subcategories" :key="subcat.id" :value="subcat.id">{{ subcat.us_name }}</option>
+                                </select>
                             </li>
 
                         </span>
@@ -30,11 +33,11 @@
                 </li>
 
                 <li >
-                    <a href="#" @click="show_item('brand')" class="dropdown-toggle" >
+                    <a href="#" @click.prevent="toggleMenu('brand')" class="dropdown-toggle" >
                         <i class="fa fa-tag"></i> Filter by brand <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
-                    <ul :class="'brand menu_opening_height_list'" style="display: none;">
-                        <li class="menu_item">
+                    <ul :class="'brand menu_opening_height_list'" :style="menus.brand ? '' : 'display: none;'">
+                        <li class="menu_item" @click.stop>
                             <select class="form-control" v-model="filter_brand" name="sort_by_brand" @change="updateBrand()">
                                 <option :value="0">All</option>
                                 <option v-for="brand in brands" :key="brand.id" v-bind:value="brand.id"> {{ brand.us_brand.title }}</option>
@@ -44,11 +47,11 @@
                 </li>
 
                 <li >
-                    <a href="#" @click="show_item('sale_type')" class="dropdown-toggle" >
+                    <a href="#" @click.prevent="toggleMenu('sale_type')" class="dropdown-toggle" >
                         <i class="fa fa-shopping-cart"></i> Filter by sale type <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
-                    <ul :class="'sale_type menu_opening_height_list'" style="display: none;">
-                        <li class="menu_item">
+                    <ul :class="'sale_type menu_opening_height_list'" :style="menus.sale_type ? '' : 'display: none;'">
+                        <li class="menu_item" @click.stop>
                             <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @change="updateSaleType()">
                                 <option :value="0">All</option>
                                 <option :value="'custom_production'">Custom production</option>
@@ -58,61 +61,36 @@
                     </ul>
                 </li>
 
-                <!-- <li >
-                    <a href="#" @click="show_item('min_price')" class="dropdown-toggle" >Filtr by minimal price</a>
-                    <ul :class="'min_price menu_opening_height_list'" style="display: none;">
-                        <li class="menu_item">
-                            <input class='min_price_range price_range width_100' type="range" min="0" max="999" v-model="min_price" step="10">
-
-                            <div class="row">
-                                <div class="col-sm-10">Min price - </div>
-                                <div class="col-sm-2">
-                                    <input
-                                        type="text"
-                                        v-model="min_price"
-                                        maxlength ="6"
-                                        :style="'border: 0;'"
-                                    /> 
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
                 <li >
-                    <a href="#" @click="show_item('max_price')" class="dropdown-toggle" >Filtr by maximal price</a>
-                    <ul :class="'max_price menu_opening_height_list'" style="display: none;">
-                        <li class="menu_item">
-                            <input class="max_price_range price_range width_100" type="range" min="0" max="999" v-model='max_price' value="1000" step="10">
-
-                            <div class="row ">
-                                <div class="col-sm-10">Max price - </div>
-                                <div class="col-sm-2">
-                                    <input
-                                        type="text"
-                                        v-model="max_price"
-                                        maxlength ="6"
-                                        :style="'border: 0;'"
-                                    /> 
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-
-                <li>
-                    <a @click="show_item('price')" class="toggle-btn">
+                    <a href="#" @click.prevent="toggleMenu('price')" class="dropdown-toggle" >
                         <i class="fa fa-dollar"></i> Filter by price <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
-                    <ul class="price" style="display: none;">
-                        <li class="menu_item">
-                            <input type="number" v-model="min_price" placeholder="Min price" class="form-control">
-                        </li>
-                        <li class="menu_item">
-                            <input type="number" v-model="max_price" placeholder="Max price" class="form-control">
+                    <ul :class="'price menu_opening_height_list'" :style="menus.price ? '' : 'display: none;'">
+                        <li class="menu_item price-filter-item" @click.stop>
+                            <div class="price-filter-container">
+                                <div class="price-inputs-inline">
+                                    <div class="price-input-group">
+                                        <label>Min</label>
+                                        <input type="number" v-model.number="min_price" min="0" class="form-control price-input">
+                                    </div>
+                                    <span class="price-separator">-</span>
+                                    <div class="price-input-group">
+                                        <label>Max</label>
+                                        <input type="number" v-model.number="max_price" min="0" class="form-control price-input">
+                                    </div>
+                                </div>
+                                <div class="price-slider-container">
+                                    <input type="range" class="price-range-slider" min="0" :max="maxPriceLimit" v-model.number="min_price" step="10">
+                                    <input type="range" class="price-range-slider" min="0" :max="maxPriceLimit" v-model.number="max_price" step="10">
+                                </div>
+                                <div class="price-values">
+                                    <span>{{ min_price }}</span>
+                                    <span>{{ max_price }}</span>
+                                </div>
+                            </div>
                         </li>
                     </ul>
-                </li> -->
+                </li>
 
             </ul>
 
@@ -131,20 +109,25 @@
         mixins: [
         //   navbar
         ],
-	    name: 'leftMenu',
+    name: 'leftMenu',
         data(){
             return {
                 menu: false,
                 
                 min_price: 0,
-                max_price: 999,
+                max_price: 1000,
+                maxPriceLimit: 5000,
+                menus: {
+                    category: false,
+                    brand: false,
+                    sale_type: false,
+                    price: false
+                },
 
                 filter_category: 0,
                 filter_brand: 0,
                 sale_type: 0,
                 selected_subcategory: 0,
-                min_price: '',
-                max_price: '',
 
                 categories: [],
                 brands: [],
@@ -179,12 +162,20 @@
               }
             },
 
+            toggleMenu(menuName){
+                this.menus[menuName] = !this.menus[menuName];
+            },
+
             updateBrand(){
                 // just update the model
             },
 
             sort_by_subcategories(subcat_id){
                 this.selected_subcategory = subcat_id == 0 ? 0 : subcat_id;
+            },
+
+            updateSubcategory(){
+                // Subcategory updated via v-model, no additional action needed
             },
 
             updateSaleType(){
@@ -196,8 +187,8 @@
                 this.sale_type = 0
                 this.filter_category = 0
                 this.selected_subcategory = 0
-                this.min_price = ''
-                this.max_price = ''
+                this.min_price = 0
+                this.max_price = 1000
             },
 
             applyFilters(){
@@ -205,17 +196,21 @@
                     brand_id: this.filter_brand == 0 ? null : this.filter_brand,
                     sale_type: this.sale_type == 0 ? null : this.sale_type,
                     subcategory_id: this.selected_subcategory == 0 ? null : this.selected_subcategory,
-                    price_min: this.min_price ? parseFloat(this.min_price) : null,
-                    price_max: this.max_price ? parseFloat(this.max_price) : null
+                    price_min: this.min_price,
+                    price_max: this.max_price
                 };
-                this.$emit('apply_filters', filters);
+                this.$emit('apply-filters', filters);
+                // Close all menus
+                Object.keys(this.menus).forEach(key => {
+                    this.menus[key] = false;
+                });
                 this.open_menu();
             },
 
             get_product_categories: function(){
                 // this.is_loading = true
                 axios
-                .get("/product_category/")
+                .get("/get_product/get_product_category/get_all_product_category")
                 .then(response => {
                     this.categories = response.data
                     this.get_product_brabds()
@@ -228,7 +223,7 @@
 
             get_product_brabds(){
                 axios
-                .get("/get_brand/get_all_brands")
+                .get("/get_product/get_brand/get_all_brands")
                 .then(response => {
                     this.brands = response.data
                 })
@@ -240,7 +235,7 @@
             get_category_subcategories(){
                 if(this.filter_category != 0){
                     axios
-                    .get("/subcategory/get_subcategories_for_category/" + this.filter_category)
+                    .get("/get_product/get_product_category/get_subcategory/get_subcategories_for_category/" + this.filter_category)
                     .then(response => {
                         this.subcategories = response.data
                     })
@@ -276,8 +271,9 @@
  .menu_opening_height_list{
     background-color: rgb(4, 53, 75);
     transition: 0.4s;
-    height: 104px;
-    padding-top: 35px;
+    height: auto !important;
+    min-height: 150px;
+    padding: 10px 15px;
  }
 .navbar_ampty_space{
     position: fixed;
@@ -364,9 +360,7 @@
 }
 .menu_item{
   display: block;
-  height: 100%;
   width: 100%;
-  line-height: 65px;
   font-size: 20px;
   color: white;
   padding-right: 20px;
@@ -375,6 +369,12 @@
   border-bottom: 1px solid black;
   transition: .4s;
   
+}
+.menu_item.price-filter-item {
+    height: auto !important;
+    min-height: 130px;
+    padding: 15px 20px;
+    line-height: normal !important;
 }
 .menu_small_item{
   display: block;
@@ -410,5 +410,122 @@ ul li:hover a{
 }
 .sidebar ul a i{
   margin-right: 16px;
+}
+
+/* Price Filter Styles */
+.price-filter-container {
+    width: 100%;
+    padding: 10px;
+}
+
+.price-inputs-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    gap: 10px;
+}
+
+.price-input-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.price-input-group label {
+    font-size: 12px;
+    color: #aaa;
+    margin-bottom: 3px;
+}
+
+.price-input {
+    width: 100%;
+    padding: 5px 8px;
+    border: 1px solid #444;
+    border-radius: 4px;
+    background: #1a3a4a;
+    color: white;
+    font-size: 14px;
+}
+
+.price-separator {
+    color: white;
+    font-weight: bold;
+    padding: 0 5px;
+}
+
+.price-slider-container {
+    position: relative;
+    height: 40px;
+    margin-bottom: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+.price-range-slider {
+    position: absolute;
+    width: calc(100% - 20px);
+    left: 10px;
+    height: 8px;
+    background: transparent;
+    border-radius: 4px;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.price-range-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    background: #555;
+    border-radius: 4px;
+}
+
+.price-range-slider::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    background: #555;
+    border-radius: 4px;
+}
+
+.price-range-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 3px solid #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    margin-top: -6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    position: relative;
+    z-index: 10;
+}
+
+.price-range-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: #fff;
+    border: 3px solid #007bff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    position: relative;
+    z-index: 10;
+}
+
+.price-values {
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
 }
 </style>

@@ -39,7 +39,7 @@
                 <div class="product-made-in-georgia" v-if="product_data.global_product && product_data.global_product.made_in_georgia">
                     {{ $t('shop.product.made_in_georgia') }}
                 </div>
-                <div class="product-price" v-if="product_data.global_product && product_data.global_product.discount != null && product_data.global_product.discount > 0">
+                <div class="product-price" v-if="product_data.has_discount">
                     <span class="current-price">
                         <span v-if="product_data.new_min_price != product_data.new_max_price">{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
                         <span v-else>{{ product_data.new_max_price }} ₾</span>
@@ -91,19 +91,14 @@
         },
         computed: {
             isOutOfStock() {
-                if (!this.product_data.product_option || this.product_data.product_option.length === 0) {
-                    return false;
-                }
-                return this.product_data.product_option.every(option => option.option.quantity <= 0);
-
-                // return true // test asset
+                // Use out_of_stock from backend (calculated when ALL options are out of stock)
+                return this.product_data.out_of_stock === true;
             },
             hasDiscount() {
-                return this.product_data.product_option && this.product_data.product_option.some(option => option.option.discount > 0);
+                return this.product_data.has_discount;
             },
             maxDiscount() {
-                if (!this.hasDiscount) return 0;
-                return Math.max(...this.product_data.product_option.map(option => option.option.discount));
+                return this.product_data.max_discount || 0;
             }
         },
         mounted() {

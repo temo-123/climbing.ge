@@ -5436,30 +5436,35 @@ ul.portfolioFilter a.current {
     gap: 10px;
 }
 
+.btn-secondary-custom {
+    background-color: #b5b5b5;
+    color: #333;
+}
+
 /* View mode toggle buttons */
-.view_controls_bar .btn-group .btn,
-.filters-bar .btn-group .btn {
-    padding: 10px 18px;
-    font-size: 14px;
-    border-radius: 8px;
-    transition: all 0.25s ease;
-    border: 2px solid transparent;
-    background: #f8f9fa;
-    color: #6c757d;
-}
+// .view_controls_bar .btn-group .btn,
+// .filters-bar .btn-group .btn {
+//     padding: 10px 18px;
+//     font-size: 14px;
+//     border-radius: 8px;
+//     transition: all 0.25s ease;
+//     border: 2px solid transparent;
+//     background: #f8f9fa;
+//     color: #6c757d;
+// }
 
-.view_controls_bar .btn-group .btn.active,
-.filters-bar .btn-group .btn.active {
-    background: linear-gradient(135deg, #279fbb 0%, #1e8da8 100%);
-    color: #fff;
-    box-shadow: 0 4px 15px rgba(39, 159, 187, 0.3);
-}
+// .view_controls_bar .btn-group .btn.active,
+// .filters-bar .btn-group .btn.active {
+//     background: linear-gradient(135deg, #279fbb 0%, #1e8da8 100%);
+//     color: #fff;
+//     box-shadow: 0 4px 15px rgba(39, 159, 187, 0.3);
+// }
 
-.view_controls_bar .btn-group .btn:hover:not(.active),
-.filters-bar .btn-group .btn:hover:not(.active) {
-    background: #e9ecef;
-    transform: translateY(-1px);
-}
+// .view_controls_bar .btn-group .btn:hover:not(.active),
+// .filters-bar .btn-group .btn:hover:not(.active) {
+//     background: #e9ecef;
+//     transform: translateY(-1px);
+// }
 
 @media (max-width: 768px) {
     .filters-bar {

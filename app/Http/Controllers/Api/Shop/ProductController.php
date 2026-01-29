@@ -41,17 +41,6 @@ class ProductController extends Controller
         $global_products = Product::latest('id')->where('published', '=', 1)->get();
         $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
 
-        // Add quantity to product options
-        foreach ($products as $product) {
-            if (isset($product['product_option'])) {
-                foreach ($product['product_option'] as &$option) {
-                    if (isset($option['option'])) {
-                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
-                    }
-                }
-            }
-        }
-
         return $products;
     }
 
@@ -93,17 +82,6 @@ class ProductController extends Controller
         $global_products = Product::latest('id')->where('published', '=', 1)->get();
         $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
 
-        // Add quantity to product options
-        foreach ($products as $product) {
-            if (isset($product['product_option'])) {
-                foreach ($product['product_option'] as &$option) {
-                    if (isset($option['option'])) {
-                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
-                    }
-                }
-            }
-        }
-
         return $products;
     }
 
@@ -111,17 +89,6 @@ class ProductController extends Controller
     {
         $global_products = Product::latest('id')->where('published', '=', 1)->where('is_donation_product', '=', 1)->get();
         $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
-
-        // Add quantity to product options
-        foreach ($products as $product) {
-            if (isset($product['product_option'])) {
-                foreach ($product['product_option'] as &$option) {
-                    if (isset($option['option'])) {
-                        $option['option']['quantity'] = $option['option']->quantity ?? 0;
-                    }
-                }
-            }
-        }
 
         return $products;
     }
@@ -155,8 +122,15 @@ class ProductController extends Controller
     }
     public function get_local_saled_products(Request $request)
     {
-        $global_products = product::latest('id')->where('discount', '!=', null)->where('published', '=', 1)->get();
-        return $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+        // Get products that have at least one option with a discount, and are published
+        $global_products = Product::where('published', '=', 1)
+            ->whereHas('product_options', function($query) {
+                $query->where('discount', '!=', null);
+            })
+            ->latest('id')
+            ->get();
+        
+        return ProductService::get_locale_product_use_locale($global_products, $request->lang);
     }
 
     public function get_local_product_in_page(Request $request)
@@ -178,6 +152,7 @@ class ProductController extends Controller
                                                                             ->where('published', '=', 2)
                                                                             ->orWhere('published', '=', 1);
                                                                     })
+                                                                ->with(['product_options.warehouse'])
                                                                 ->first();
             return $product = ProductService::get_locale_product_in_page_use_locale($global_product, $request->lang);
         }

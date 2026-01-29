@@ -1,5 +1,7 @@
 /node_modules
 
+/site_data_temperary_input_sql_variables.sql
+
 /public/assets/css/app.css
 /public/assets/js
 
