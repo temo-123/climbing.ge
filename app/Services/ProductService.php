@@ -102,6 +102,11 @@ class ProductService extends LocaleContentService
             }
         }
 
+        // Sort: in-stock products first, out-of-stock products last
+        $reponce = collect($reponce)->sortBy(function($product) {
+            return $product['out_of_stock'] ? 1 : 0;
+        })->values()->all();
+
         return $reponce;
     }
 
