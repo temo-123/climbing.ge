@@ -7,7 +7,7 @@
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">Back</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading">
@@ -25,18 +25,19 @@
                 <div class="row">
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
-                        
                         <label for="1" >Global info</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
-                        
                         <label for="2" >English text</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
-                        
                         <label for="3" >Georgian text</label>
+                    </div>
+                    <div class="col" >
+                        <input type="radio" id="4" :value="4" v-model="tab_num">
+                        <label for="4" >Product Options</label>
                     </div>
                 </div>
             </div>
@@ -82,7 +83,6 @@
                             </div>
                         </div>
     
-    
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Brand </label>
                             <div class="col-xs-8">
@@ -103,9 +103,9 @@
                             </div>
                         </div>
 
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
-                            <div class="col-xs-8" v-if="category_id != 0">
+                        <div class="form-group clearfix" v-if="category_id != 0">
+                            <label for="name" class='col-xs-2 control-label'> Subcategory </label>
+                            <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
                                     <option v-bind:value="0" disabled>Select subcategory</option> 
                                     <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
@@ -113,7 +113,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
 
                 <div class="row" v-show="tab_num == 2">
@@ -180,7 +179,6 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_product.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <ckeditor v-model="data.ka_product.short_description" :config="editorConfig.ka_short_description_text_editor"></ckeditor>
                             </div>
                         </div>
@@ -200,9 +198,22 @@
                         </div>
                     </form>
                 </div>
+                
+                <!-- Tab 4: Product Options -->
+                <div class="row" v-show="tab_num == 4">
+                    <div class="width_100 jumbotron jumbotron-fluid">
+                        <div class="container">
+                            <h2 class="display-4">Product Options</h2>
+                            <p class="lead">Manage product variants (sizes, colors, etc.) and their prices.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-12">
+                        <product-options-component></product-options-component>
+                    </div>
+                </div>
             </div>
         </div>
-
     </div>
 </template>
 
@@ -210,10 +221,13 @@
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+    import productOptionsComponent from '../product_options/items/ProductOptionsComponent.vue'
+    
     export default {
         components: {
             validator_alerts_component,
-            published_item
+            published_item,
+            productOptionsComponent,
         },
         mixins: [
             editor_config
@@ -224,6 +238,7 @@
         data(){
             return {
                 tab_num: 1,
+                product_id: null,
 
                 categories: [],
                 is_change_url_title: false,
@@ -243,24 +258,19 @@
                     ka_info_editor_config: editor_config.get_big_editor_config(),
                 },
 
-                // all_subcategories: [],
                 all_subcategories: [],
                 subcategories: [],
                 brands: [],
 
-                // data: [],
                 data: {
                     global_product: {
                         published: 0,
                         subcategory_id: 0,
                         brand_id: '',
                         sale_type: "",
-
                         made_in_georgia: null,
-                        // material: "",
                         is_donation_product: null,
                     },
-
                     us_product: [],
                     ka_product: []
                 },
@@ -270,7 +280,6 @@
         },
         mounted() {
             this.loadAllData()
-
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
@@ -281,14 +290,12 @@
 
             loadAllData() {
                 this.is_loading = true;
+                this.product_id = this.$route.params.id;
                 
-                // Load categories first
                 axios
                 .get("/get_product/get_product_category/get_all_product_category/")
                 .then(categoryResponse => {
                     this.categories = categoryResponse.data;
-                    
-                    // Load brands in parallel with all subcategories
                     return Promise.all([
                         axios.get("/get_product/get_product_category/get_subcategory/get_all_subcategories"),
                         axios.get("/get_product/get_brand/get_all_brands")
@@ -297,14 +304,10 @@
                 .then(([subcategoryResponse, brandResponse]) => {
                     this.all_subcategories = subcategoryResponse.data;
                     this.brands = brandResponse.data;
-                    
-                    // Then load product editing data
                     return axios.get('/set_product/get_product_editing_data/'+this.$route.params.id);
                 })
                 .then(productResponse => {
                     this.data = productResponse.data;
-                    
-                    // Now set up category/subcategory relationship since all data is loaded
                     if (this.data.global_product.subcategory_id) {
                         let action_subcategory = this.all_subcategories.find(item => item.id === this.data.global_product.subcategory_id);
                         if (action_subcategory) {
@@ -323,7 +326,7 @@
 
             change_url_title_in_global_product(){
                 if(!this.is_change_url_title){
-                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                    if(confirm('Are you sure, you want change URL title? It will be bad for SEO optimization')){
                         this.is_change_url_title = true
                     }
                     else{
@@ -333,7 +336,6 @@
                 else{
                     this.is_change_url_title = false 
                 }
-
                 this.data.us_product.is_change_url_title = this.is_change_url_title
             },
 
@@ -364,7 +366,6 @@
                 .get("/get_product/get_product_category/get_subcategory/get_subcategories_for_category/" + this.category_id)
                 .then(response => {
                     this.subcategories = response.data
-                    // Scroll to bottom of page to show subcategory dropdown
                     this.$nextTick(() => {
                         window.scrollTo({
                             top: document.body.scrollHeight,
@@ -372,9 +373,7 @@
                         })
                     })
                 })
-                .catch(
-                    error => console.log(error)
-                )
+                .catch(error => console.log(error))
                 .finally(() => this.is_loading = false);
             },
 
