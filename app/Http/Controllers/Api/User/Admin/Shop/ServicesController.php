@@ -21,7 +21,7 @@ class ServicesController extends Controller
 {
     public function add_service(Request $request)
     {
-        $auth = PermissionService::authorize('service', 'add');
+        $auth = PermissionService::authorize('services', 'add');
         if ($auth) return $auth;
         
         $data = json_decode($request->data, true );
@@ -47,7 +47,7 @@ class ServicesController extends Controller
 
     public function get_editing_service(Request $request)
     {
-        $auth = PermissionService::authorize('service', 'edit');
+        $auth = PermissionService::authorize('services', 'edit');
         if ($auth) return $auth;
         
         $service = Service::where('id', '=', $request->service_id)->first();
@@ -66,7 +66,7 @@ class ServicesController extends Controller
 
     public function edit_service(Request $request)
     {
-        $auth = PermissionService::authorize('service', 'edit');
+        $auth = PermissionService::authorize('services', 'edit');
         if ($auth) return $auth;
         
         // $data = json_decode($request->data, true );
@@ -110,7 +110,7 @@ class ServicesController extends Controller
 
     public function del_service(Request $request)
     {
-        $auth = PermissionService::authorize('service', 'del');
+        $auth = PermissionService::authorize('services', 'del');
         if ($auth) return $auth;
         
         $service = Service::where('id', '=', $request->service_id)->first();
@@ -129,7 +129,7 @@ class ServicesController extends Controller
 
     public function del_service_image(Request $request)
     {
-        $auth = PermissionService::authorize('service', 'edit');
+        $auth = PermissionService::authorize('services', 'edit');
         if ($auth) return $auth;
         
         $image = Service_image::where('id', '=', $request->image_id)->first();
