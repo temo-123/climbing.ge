@@ -1,9 +1,17 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\Guide\Donations\DonationPaymentController;
 
 // Public routes - no authentication required for viewing content
 Route::group(['namespace'=>'Api\Guide'], function() {
+
+    /*
+    *   Donation routes
+    */
+    Route::controller(DonationPaymentController::class)->prefix('set_donation')->group( function() {
+        Route::post('/process', 'processDonation');
+    });
 
     /*
     *   Article routes

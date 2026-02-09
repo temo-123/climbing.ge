@@ -16,7 +16,10 @@
                             <p v-if="this.$globalSiteData.data.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.data.number }}</p>
 
                             <hr>
-                            
+
+                            <h2>{{ $t('guide.donation.support_title') }}</h2>
+                            <Donation position="left"/>
+
                             <h2>{{ $t('guide.article.other_sites') }}</h2>
                             <span v-for="link in site_social_links" :key="link.id">
                                 <p v-if="link.title">
@@ -62,6 +65,7 @@
     
     import serviceSliderComponent from '../items/shop_items_for_guide/ServiceSliderComponent'
     import partnersComponent from '../items/PartnersComponent.vue'
+    import Donation from '../items/DonationComponent.vue';
 
     export default {
         components: {
@@ -70,7 +74,8 @@
             servicesListComponent,
             RoutesAutersModal,
             serviceSliderComponent,
-            partnersComponent
+            partnersComponent,
+            Donation
         },
         data() {
             return {

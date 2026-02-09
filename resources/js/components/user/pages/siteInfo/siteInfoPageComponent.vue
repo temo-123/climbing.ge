@@ -203,29 +203,23 @@
                                         <thead>
                                             <tr>
                                                 <th>Id</th>
-
-                                                <th>|</th>
                                                 <th>Demo title</th>
-
-                                                <th>|</th>
-                                                <th>edit</th>
-
-                                                <th>|</th>
-                                                <th>del</th>
+                                                <th>Is Show</th>
+                                                <th>Edit</th>
+                                                <th>Del</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for="general_info in general_infos" :key="general_info.id">
                                                 <th>{{general_info && general_info.id ? general_info.id : ''}}</th>
-
-                                                <th>|</th>
                                                 <td>{{general_info && general_info.title ? general_info.title : ''}}</td>
-
-                                                <th>|</th>
-                                                <td>
-                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >Edit</router-link></td>
                                                 
-                                                <td>|</td>
+                                                <td>{{general_info && general_info.is_show ? 'Yes' : 'No'}}</td>
+
+                                                <td>
+                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >Edit</router-link>
+                                                </td>
+                                                
                                                 <td>
                                                     <button type="submit" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">Delete</button>
                                                 </td>

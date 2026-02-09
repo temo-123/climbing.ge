@@ -23,6 +23,22 @@
             "multipitch": "Multi-pitch"
         },
 
+        "donation": {
+            "support": "Support",
+            "support_title": "Support Our Work",
+            "hint": "Your support helps us create quality content",
+            "description": "Your donation helps us continue creating quality content. Choose an amount to donate:",
+            "custom_amount_label": "Or enter custom amount:",
+            "selected": "Selected:",
+            "donate_button": "Donate",
+            "processing": "Processing...",
+            "success": "Thank you for your donation!",
+            "error": "An error occurred. Please try again.",
+            "invalid_amount": "Please select or enter a valid donation amount",
+            "gel": "GEL"
+        },
+        "close": "Close",
+
         "meta": {
             "index": "Rock Climbing & Mountaineering in Georgia",
             "indoor climbing": "Indoor Climbing",
@@ -171,7 +187,7 @@
             "authers_list": "You can also see sport climbing route authors and their contacts",
             "authers_list_button": "Check Route Authors",
             "auther_name": "Author Name",
-"auther_routes_quantity": "Number of Routes",
+            "auther_routes_quantity": "Number of Routes",
             "routes_list_button": "Popular Routes List",
             "modal_title": "Popular Routes List",
 

@@ -94,9 +94,8 @@
                 <div class="col-md-4">
                     <div class="row f-links container">
                         <div class="flick">
-                            <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
-
-                            <!-- <share /> -->
+                            <h4 class="footer_title">{{ $t('guide.donation.support_title') }}</h4>
+                            <Donation />
                         </div>
                     </div>
                     <div class="row f-links container">
@@ -120,6 +119,7 @@
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import share from "../../global_components/ShareComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
+    import Donation from "../items/DonationComponent.vue";
 
     const { QRCanvas } = require("qrcanvas-vue"); //  https://gera2ld.github.io/qrcanvas-vue/v2/#padding
 
@@ -142,6 +142,7 @@
             share,
             footerText,
             QRCanvas,
+            Donation
         },
 
         watch: {
