@@ -45,16 +45,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SiteDataController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    // public function index()
-    // {
-    //     return $site_data = Site::first();
-    // }
-
     public function site_data_counts()
     {
         $counts = [];
@@ -173,58 +163,11 @@ class SiteDataController extends Controller
                 $local_article -> delete();
             }
         }
-        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-        //     $active_global_article = $local_article->global_article_ru;
-
-        //     if (!$active_global_article) {
-        //         $local_article -> delete();
-        //     }
-        // }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-    // public function get_site_locale_data(Request $request, $locale)
-    // {
-    //     // return SiteDataService::getSiteData($locale ?? 'us');
-
-    //     return Locale_site::where('lang', '=', $lang)->get();
-    // }
 
     public function get_site_global_data(){
         return SiteDataService::getSiteData()['global_data'] ?? null;
     }
-    // public function get_site_ka_data(){
-    //     return SiteDataService::getSiteData('ka')['locale_data'] ?? null;
-    // }
-    // public function get_site_ru_data(){
-    //     return SiteDataService::getSiteData('ru')['locale_data'] ?? null;
-    // }
-    // public function get_site_us_data(){
-    //     return SiteDataService::getSiteData('us')['locale_data'] ?? null;
-    // }
-
-    // public function get_site_social_links(){
-    //     return SiteDataService::getSocialLinks();
-    // }
-
-    // public function add_site_social_links(Request $request){
-    //     $data = $request->data;
-    //     return SiteDataService::addSocialLink($data);
-    // }
-
-    // public function del_site_social_links($id){
-    //     return SiteDataService::deleteSocialLink($id) ? response()->json(['message' => 'Deleted']) : response()->json(['error' => 'Not found'], 404);
-    // }
 
     public function edit_site_data(Request $request)
     {

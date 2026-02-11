@@ -39,7 +39,7 @@ class GeneralInfoController extends Controller
 
     public function get_editing_general_info($id)
     {
-        $auth = PermissionService::authorize('general_info', 'view');
+        $auth = PermissionService::authorize('general_info', 'edit');
         if ($auth) return $auth;
         return General_info::where("id", "=", $id)->first();
     }

@@ -364,32 +364,6 @@
                     error => console.log(error)
                 );
             },
-            // add_social_link(){
-            //     axios
-            //     .post('/set_site_social_links/add_site_social_links', {        
-            //         data: this.form_data,
-            //         _method: 'post'
-            //     })
-            //     .then(response => {
-            //         // Success - refresh the list and close modal
-            //         this.get_social_links()
-            //         this.close_social_link_add_model()
-            //     })
-            //     .catch(err => {
-            //         if (err.response && err.response.status == 422) {
-            //             this.error = err.response.data.validation
-            //         } else {
-            //             console.log(err);
-            //         }
-            //     })
-            // },
-            // social_link_add_model(){
-            //     this.is_add_social_link_model = true
-            // },
-            // close_social_link_add_model(){
-            //     this.is_add_social_link_model = false
-            //     this.form_data = []
-            // },
             del_social_link(link_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios

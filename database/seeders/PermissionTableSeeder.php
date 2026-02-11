@@ -182,19 +182,6 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'services',
                 'action' => 'del',
             ],
-
-            [
-                'subject' => 'services',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'services',
-                'action' => 'edit',
-            ],
-            [
-                'subject' => 'services',
-                'action' => 'del',
-            ],
             
             [
                 'subject' => 'sector_local_images',
@@ -668,6 +655,19 @@ class PermissionTableSeeder extends Seeder
             ],
             [
                 'subject' => 'task_category',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'general_info',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'general_info',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'general_info',
                 'action' => 'del',
             ],
         );
