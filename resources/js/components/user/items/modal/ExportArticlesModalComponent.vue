@@ -229,6 +229,8 @@ export default {
                 locale: this.selectedLocale
             }
 
+            this.loading = true
+
             axios
                 .post('/set_export/articles_pdf', payload, {
                     responseType: 'blob'
@@ -248,6 +250,9 @@ export default {
                 .catch(error => {
                     console.log(error)
                     alert('An error occurred while exporting the articles.')
+                })
+                .finally(() => {
+                    this.loading = false
                 })
         },
     }
