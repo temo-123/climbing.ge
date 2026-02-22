@@ -19,13 +19,13 @@
                     <p class="blog-post-meta"> {{ partner.global_data.created_at  }}</p>
 
                     <h2>{{ $t('guide.donation.support_title') }}</h2>
-
-                    <Donation position="left"/>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
+                    <Donation position="left"/>
+
                     <articleTextBlocks :article_prop="partner"/>
 
                     <h2>{{ $t('guide.donation.support_title') }}</h2>

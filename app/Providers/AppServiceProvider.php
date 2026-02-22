@@ -10,6 +10,7 @@ use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
 use LanguageDetection\Language;
+use Flitt\Configuration;
 
 // use View;
 // use URL;
@@ -47,5 +48,9 @@ class AppServiceProvider extends ServiceProvider
             $userPageUrl = env('USER_PAGE_URL', 'user.climbing.ge');
             return $appSsh . $userPageUrl . '/reset-password/' . $token . '/' . $user->id;
         });
+
+        Configuration::setMerchantId(config('flitt.merchant_id'));
+        Configuration::setSecretKey(config('flitt.secret_key'));
+        Configuration::setApiVersion(config('flitt.api_version'));
     }
 }

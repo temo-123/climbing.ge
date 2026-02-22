@@ -1,5 +1,11 @@
 <template>
     <div :class="['donation-section', 'my-4', 'donation-' + position]">
+
+        <!-- <h4 class="modal-title">
+            <i class="fa fa-heart text-danger mr-2"></i>
+            {{ $t('guide.donation.support_title') }}
+        </h4> -->
+
         <button 
             @click="showDonationModal"
             class="btn btn-success donation-float-btn"
@@ -8,26 +14,27 @@
             <i class="fa fa-heart mr-2"></i>
             {{ $t('guide.donation.support') }}
         </button>
-        <p class="donation-hint mt-2">
+
+        <!-- <p class="donation-hint mt-2">
             <small>{{ $t('guide.donation.hint') }}</small>
-        </p>
-        <div v-if="is_donation_modal_open" class="donation-modal-overlay">
-            <donationModal 
-                :show="is_donation_modal_open"
-                @close="closeDonationModal"
+        </p> -->
+
+        <!-- <div class="donation-modal-overlay"> -->
+            <donationWarningModal 
+                ref="donation_warning_modal"
             />
-        </div>
+        <!-- </div> -->
     </div>
 </template>
 
 <script>
-    import donationModal from './modals/DonationModalComponent.vue'
+    import donationWarningModal from './modals/Donation/DonationWarningModalComponent.vue'
 
     export default {
         name: 'DonationComponent',
         
         components: {
-            donationModal
+            donationWarningModal
         },
         
         props: {
@@ -42,18 +49,18 @@
         
         data: function () {
             return {
-                is_donation_modal_open: false
+                // ..
             }
         },
         
         methods: {
             showDonationModal() {
-                this.is_donation_modal_open = true;
+                this.$refs.donation_warning_modal.show();
             },
             
-            closeDonationModal() {
-                this.is_donation_modal_open = false;
-            },
+            // closeDonationModal() {
+            //     this.is_donation_modal_open = false;
+            // },
         }
     }
 </script>
@@ -98,14 +105,14 @@
     font-size: 12px;
 }
 
-.donation-modal-overlay {
-    position: fixed;
+/* .donation-modal-overlay { */
+    /* position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999;
-}
+    z-index: 9999; */
+/* } */
 
 @media (max-width: 768px) {
     .donation-float-btn {

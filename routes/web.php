@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 
     // Route::get('/redirect', 'Auth\SocialAuthFacebookController@redirectFacebook');
     // Route::get('/callback', 'Auth\SocialAuthFacebookController@facebookCallback');
-    // dd(config('app.url'));
+
     Route::domain(config('app.url'))->group(function () {
         Route::group(['namespace'=>'Site'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('index');
@@ -31,18 +31,11 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
-    // Route::domain('films.' . config('app.url'))->group(function () {
-    //     Route::group(['namespace'=>'Films'], function() {
-    //         Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('films_index');
-    //     });
-    // });
-
     Route::domain('user.' . config('app.url'))->group(function () {
         Route::group(['namespace'=>'User'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('user_index');
         });
     });
-
 // });
 
 Auth::routes(['verify' => true]);

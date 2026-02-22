@@ -35,7 +35,22 @@
             "success": "Thank you for your donation!",
             "error": "An error occurred. Please try again.",
             "invalid_amount": "Please select or enter a valid donation amount",
-            "gel": "GEL"
+            "gel": "GEL",
+            "redirecting": "Redirecting to payment...",
+            "donator_info": "Donator Information",
+            "select_amount": "Select Donation Amount",
+            "name": "Name",
+            "name_placeholder": "Enter your name",
+            "surname": "Surname",
+            "surname_placeholder": "Enter your surname",
+            "email": "Email",
+            "email_placeholder": "Enter your email",
+            "phone": "Phone Number",
+            "phone_placeholder": "Enter your phone number",
+            "country": "Country",
+            "country_placeholder": "Enter your country",
+            "age": "Age",
+            "age_placeholder": "Enter your age"
         },
         "close": "Close",
 
