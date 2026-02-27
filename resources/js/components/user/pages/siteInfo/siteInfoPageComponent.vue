@@ -199,7 +199,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <table  class="table table-hover" id="dev-table" >
+<table class="table table-hover" id="dev-table" >
                                         <thead>
                                             <tr>
                                                 <th>Id</th>
@@ -213,15 +213,18 @@
                                             <tr v-for="general_info in general_infos" :key="general_info.id">
                                                 <th>{{general_info && general_info.id ? general_info.id : ''}}</th>
                                                 <td>{{general_info && general_info.title ? general_info.title : ''}}</td>
-                                                
-                                                <td>{{general_info && general_info.is_show ? 'Yes' : 'No'}}</td>
+
+<td>
+                                                    <button v-if="general_info && general_info.is_show" type="button" class="btn btn-danger" @click="open_statistic_modal(general_info.id)">Statistic</button>
+                                                    <span v-else>No</span>
+                                                </td>
 
                                                 <td>
                                                     <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >Edit</router-link>
                                                 </td>
                                                 
                                                 <td>
-                                                    <button type="submit" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">Delete</button>
+                                                    <button type="buttom" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">Delete</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -245,10 +248,16 @@
             @update="get_site_data"
         />
 
-        <add_link_modal
+<add_link_modal
             ref="add_link_modal"
 
             @update="get_social_links"
+        />
+
+        <statistic_modal
+            ref="statistic_modal"
+
+            @update="get_general_info"
         />
         
     </div>
@@ -264,12 +273,13 @@
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
 // import { info } from 'cli';
 
-    import add_link_modal from './SiteData/Modals/SiteSocialLinks/AddLinkModal.vue'
+import add_link_modal from './SiteData/Modals/SiteSocialLinks/AddLinkModal.vue'
     import add_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/AddSiteLocaleInfoComponent.vue'
     import edit_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/EditSiteLocaleInfoComponent.vue'
+    import statistic_modal from './GeneralInfo/modals/StatisticModalComponent.vue'
 
     export default {
-        components: {
+components: {
             // localeInfoForm,
             // StackModal,
             // SlickItem,
@@ -281,6 +291,7 @@
             add_link_modal,
             add_site_local_data_modal,
             edit_site_local_data_modal,
+            statistic_modal,
         },
         // inject:[siteData],
         props: [
@@ -413,10 +424,17 @@
                 }
             },
 
-            // Method to open add site local data modal
+// Method to open add site local data modal
             open_add_site_local_data_modal(){
                 if (this.$refs.add_site_local_data_modal) {
                     this.$refs.add_site_local_data_modal.show_modal()
+                }
+            },
+
+            // Method to open statistic modal
+            open_statistic_modal(id){
+                if (this.$refs.statistic_modal) {
+                    this.$refs.statistic_modal.show_modal(id)
                 }
             }
         }
