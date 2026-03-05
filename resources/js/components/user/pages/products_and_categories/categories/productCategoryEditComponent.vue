@@ -41,6 +41,7 @@
                             </div>
                         </form>
         
+                        <subcategoryControl :category_id_prop="data.id"/>
                     </div>
                 </div>
             </div>
@@ -49,14 +50,21 @@
 </template>
 
 <script>
+    import subcategoryControl from './subcategories/subcategoryControlComponent.vue'
+
     export default {
+        components: {
+            subcategoryControl,
+        },
         data(){
             return {
                 data: {
                     us_name: '',
-                    ru_name: '',
+                    // ru_name: '',
                     ka_name: '',
                 },
+
+                is_back_action_query: true,
 
                 errors: [],
 
@@ -69,25 +77,35 @@
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
+        beforeRouteLeave (to, from, next) {
+            if(this.is_back_action_query == true){
+                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                    this.is_back_action_query = false;
+                    next()
+                } else {
+                    next(false)
+                }
+            }else {
+                next()
+            }
+        },
         methods: {
             get_editing_category_data() {
                 axios
-                .get('../../../api/product_category/' + this.editing_category_id)
+                .get('/set_product/set_product_category/get_editing_product_category/' + this.editing_category_id)
                 .then(response => {
-                    this.data.us_name = response.data['us_name'],
-                    this.data.ru_name = response.data['ru_name'],
-                    this.data.ka_name = response.data['ka_name']
+                    this.data = response.data
                 })
                 .catch(error => console.log(error))
             },
             edit_category() {
                 axios
-                .post('../../../api/product_category/' + this.editing_category_id, {        
+                .post('/set_product/set_product_category/edit_product_category/' + this.editing_category_id, {        
                     data: this.data,
-                    _method: 'PATCH'
+                    _method: 'POST'
                 })
                 .then((response)=> { 
-                    this.go_back()
+                    this.go_back(true)
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
@@ -96,9 +114,9 @@
                 })
             },
 
-            go_back() {
-                this.$router.go(-1)
-            }
+            go_back: function(action = false) {
+                this.is_back_action_query = this.$going.back(this, action)
+            },
         }
     }
 </script>

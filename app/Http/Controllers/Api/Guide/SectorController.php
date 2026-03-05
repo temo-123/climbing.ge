@@ -26,31 +26,32 @@ class SectorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function get_all_sectors()
     {
         return Sector::latest('id')->get();
     }
 
-    public function get_sectors_for_forum($article_id)
+    public function get_sectors_by_article_category(Request $request)
     {
-        return Sector::where('article_id','=', $article_id)->latest('id')->get();
+        $categoryed_articles = Article::where('category', '=', $request->article_category)->get();
+        
+        $sectors = [];
+        foreach ($categoryed_articles as $categoryed_article) {
+            foreach ($categoryed_article->sectors as $sector) {
+                array_push($sectors, $sector);
+            }
+        }
+
+        usort($sectors, function($a, $b) {
+            return $b->id <=> $a->id;
+        });
+
+        return $sectors;
     }
 
     public function get_spot_sectors_data_for_model(Request $request)
     {
         return Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
-    }
-
-    public function save_sector_sequence(Request $request)
-    {
-        $sectors_num=0;
-        foreach ($request->new_sector_sequence as $sector) {
-            $sector_id = $sector['id'];
-            $sector = Sector::where('id',strip_tags($sector_id))->first();
-            $sectors_num++;
-            $sector['num'] = $sectors_num;
-            $sector->update();
-        }
     }
 
     public function add_sector(Request $request)
@@ -84,12 +85,13 @@ class SectorController extends Controller
             $new_sector['for_family'] = $data['for_family'];
             $new_sector['for_kids'] = $data['for_kids'];
             $new_sector['wolking_time'] = $data['wolking_time'];
+            $new_sector['is_helmet'] = $data['is_helmet'];
 
             $save_sector = $new_sector -> save();
 
             if($request->sector_images){
                 if(!$save_sector){
-                    App::abort(500, 'Saiving error');
+                    App::abort(500, 'Saving error');
                 }
                 else{
                     $this->add_sector_images($request->sector_images, $new_sector->id);
@@ -103,40 +105,9 @@ class SectorController extends Controller
         return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
     }
 
-    public function add_sector_images($images, $sector_id)
+    public function get_sector_and_routes(Request $request, $article_id)
     {
-        foreach ($images as $image) {
-            $file_new_name;
-            $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
-            if(file_exists(public_path('images/sector_img/') . $file_new_name)){
-                $new_option_image = new Sector_image;
-
-                $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-                if($sector_images_count == 0){
-                    $new_route_num = 1;
-                }
-                else{
-                    $new_option_image['num'] = $sector_images_count+1;
-                }
-
-                $new_option_image['image'] = $file_new_name;
-                $new_option_image['sector_id'] = $sector_id;
-        
-                $saiving = $new_option_image -> save();
-
-                if($saiving){
-                    echo 'Upload socsesful \n';
-                }
-            }
-            else{
-                echo 'Upload error \n';
-            }
-        }
-    }
-
-    public function get_sector_and_routes(Request $request)
-    {
-        $sectors = Sector::where('article_id','=', $request->article_id)->where('published', '=', 1)->orderBy('num')->get();
+        $sectors = Sector::where('article_id','=', $article_id)->where('published', '=', 1)->orderBy('num')->get();
         $area_info = array();
 
         if(count($sectors)){
@@ -283,11 +254,6 @@ class SectorController extends Controller
         return $area_info[0];
     }
 
-    // public function get_Spot_rocks_images(Request $request)
-    // {
-    //     return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
-    // }
-
     public function edit_sector(Request $request, )
     {
         $data = json_decode($request->data, true );
@@ -317,12 +283,13 @@ class SectorController extends Controller
             $edit_sector['for_family'] = $data['for_family'];
             $edit_sector['for_kids'] = $data['for_kids'];
             $edit_sector['wolking_time'] = $data['wolking_time'];
+            $edit_sector['is_helmet'] = $data['is_helmet'];
 
             $save_sector = $edit_sector -> save();
             
             if($request->sector_new_images){
                 if(!$save_sector){
-                    App::abort(500, 'Saiving error');
+                    App::abort(500, 'Saving error');
                 }
                 else{
                     $this->add_sector_images($request->sector_new_images, $edit_sector->id);
@@ -331,58 +298,9 @@ class SectorController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function del_sector_sector(Request $request)
-    {
-        $sector_id=$request->sector_id;
-
-        $sector = Sector::where('id',strip_tags($sector_id))->first();
-
-        // delete product file
-        $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-        
-        if ($sector_images_count > 0) {
-            $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
-            foreach ($sector_images as $sector_image) {
-                imageControllService::image_delete('images/sector_img/', $sector_image, $request);
-                $sector_image ->delete();
-            }
-        }
-
-        // delete product from db
-        $sector ->delete();
-    }
-
-
     public function get_region_sectors(Request $request)
     {
         return Sector::where('article_id', '=', $request->region_id)->get();
-    }
-
-
-
-    public function sector_image_validate($request)
-    {
-        $request->validate([
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-    }
-
-    private function sector_validate($sector_data)
-    {
-        $validator = Validator::make($sector_data, [
-            'name' => 'required|max:190',
-            'article_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
     }
 
     public function routes_sequence(Request $request)
@@ -435,11 +353,110 @@ class SectorController extends Controller
         return $data;
     }
 
-    public function del_sector_image_from_db(Request $request)
+    public function sectors_and_routes_quantity_by_categories(Request $request)
     {
-        $image = Sector_image::where('id', '=', $request->image_id)->first();
-        ImageControllService::image_delete('images/sector_img/', $image, 'image');
-        $image ->delete();
+        // Map frontend category values to database categories
+        $categoryMap = [
+            'sport' => [
+                'db_category' => ['sport climbing', 'top'],
+                'label' => 'sport',
+                'route_label' => 'sport_routes'
+            ],
+            'boulder' => [
+                'db_category' => ['bouldering'],
+                'label' => 'boulder',
+                'route_label' => 'boulder_routes'
+            ],
+            'ice' => [
+                'db_category' => ['ice climbing'],
+                'label' => 'ice',
+                'route_label' => 'ice_routes'
+            ],
+            'dry' => [
+                'db_category' => ['dry tooling'],
+                'label' => 'dry',
+                'route_label' => 'dry_routes'
+            ],
+            'mtp' => [
+                'db_category' => null,
+                'label' => 'mtp',
+                'route_label' => 'mtps'
+            ],
+        ];
+        
+        // Get route_categories from request body (POST) or query parameters
+        $routeCategories = $request->input('route_categories');
+        
+        // If not in body, check query parameters
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('route_categories');
+        }
+        
+        // If still null, check for 'categories' parameter
+        if ($routeCategories === null) {
+            $routeCategories = $request->query('categories');
+        }
+        
+        // If still null, return all data (fallback to original method)
+        if ($routeCategories === null) {
+            return $this->get_sectors_and_routes_quantity();
+        }
+        
+        // Ensure it's an array
+        if (!is_array($routeCategories)) {
+            $routeCategories = [$routeCategories];
+        }
+        
+        $categoryData = [];
+        
+        foreach ($routeCategories as $category) {
+            if (!isset($categoryMap[$category])) {
+                continue;
+            }
+            
+            $config = $categoryMap[$category];
+            
+            // Count routes for this category
+            $routeCount = 0;
+            if ($config['db_category'] !== null) {
+                $query = Route::query();
+                foreach ($config['db_category'] as $dbCat) {
+                    $query->orWhere("category", "=", $dbCat);
+                }
+                $routeCount = $query->count();
+            }
+            
+            // For mtp, count mtps
+            if ($config['label'] === 'mtp') {
+                $routeCount = MTP::count();
+            }
+            
+            // Count sectors that have routes of this category
+            $sectorCount = 0;
+            if ($config['db_category'] !== null) {
+                $sectorIds = Route::where(function($q) use ($config) {
+                    foreach ($config['db_category'] as $dbCat) {
+                        $q->orWhere("category", "=", $dbCat);
+                    }
+                })->distinct('sector_id')->pluck('sector_id');
+                $sectorCount = count($sectorIds);
+            }
+            
+            // For mtp, count sectors that have mtps
+            if ($config['label'] === 'mtp') {
+                $sectorIds = MTP::distinct('sector_id')->pluck('sector_id');
+                $sectorCount = count($sectorIds);
+            }
+            
+            $categoryData[$category] = [
+                'sectors' => $sectorCount,
+                $config['route_label'] => $routeCount
+            ];
+        }
+        
+        return [
+            'categories' => $categoryData
+        ];
     }
 
     public function get_routes_for_model(Request $request)
@@ -481,10 +498,6 @@ class SectorController extends Controller
             $mtps = $mtps;
         }
 
-        // $mtps = [];
-        // $mtps = Mtp::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        // $routes = Route::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
-        // $images = Sector_image::where('sector_id',strip_tags($request->sector_id))->orderBy('num')->get();
         $data = [
             'images' => $images,
             'routes' => $routes,
@@ -492,16 +505,6 @@ class SectorController extends Controller
         ];
         
         return( $data );
-    }
-
-    public function get_sector_editing_data(Request $request)
-    {
-        $sector = Sector::where('id',strip_tags($request->sector_id))->first();
-        $data = [
-            'sector' => $sector,
-            'images' => $sector->images,
-        ];
-        return $data;
     }
 
     public function get_sector_images(Request $request)

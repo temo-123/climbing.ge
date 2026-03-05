@@ -1,5 +1,69 @@
+# GitHub Language Statistics Configuration
+# This file controls how GitHub interprets and counts your repository languages
+
+# Line ending normalization
 * text=auto
+*.blade.php text
+*.css text
+*.html text
+*.js text
+*.json text
+*.md text
+*.php text
+*.scss text
+*.vue text
+*.yaml text
+*.yml text
+
+# Binary files (not counted as any language)
+*.ico binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+*.gif binary
+*.svg binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+
+# Vendored files (excluded from language statistics)
+# CSS Frameworks and Libraries
 *.css linguist-vendored
-*.scss linguist-vendored
+*.scss linguist-vendored=false
+
+# JavaScript Libraries and Frameworks
 *.js linguist-vendored
+vue.config.js linguist-vendored=false
+webpack.mix.js linguist-vendored=false
+
+# Documentation (excluded from language statistics)
+*.md linguist-documentation=true
+docs/** linguist-documentation=true
+
+# Tests and Mocks (excluded from language statistics)
+tests/** linguist-generated
+tests/**/*.php linguist-generated=false
+
+# Configuration files (excluded from language statistics)
+config/*.php linguist-generated=false
+config/*.json linguist-generated=false
+
+# Migration files (excluded from language statistics)
+database/migrations/* linguist-generated=true
+
+# Seeders and Factories (excluded from language statistics)
+database/seeders/* linguist-generated=true
+database/factories/* linguist-generated=true
+
+# Exported files from GitHub language stats
 CHANGELOG.md export-ignore
+README.md export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+
+# Lock files (minimal impact on language stats)
+composer.lock linguist-generated=true
+package-lock.json linguist-generated=true
+yarn.lock linguist-generated=true

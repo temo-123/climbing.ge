@@ -25,9 +25,15 @@
                                 <label for="name" class='col-xs-2 control-label'> Title </label>
                                 <div class="col-xs-10">
                                     <input type="text" v-model="data.title" name="us_name" class="form-control" required> 
-                                    <!-- <div class="alert alert-danger" role="alert" v-if="errors.us_name">
-                                        {{ errors.us_name[0] }}
-                                    </div> -->
+                                    <div class="alert alert-danger" role="alert" v-if="errors.us_name">
+                                        {{ errors.title[0] }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group clearfix">
+                                <label for="name" class='col-xs-2 control-label'> Is it shaw action </label>
+                                <div class="col-xs-10">
+                                    <input type="checkbox" v-model="data.is_show" name="is_show" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
@@ -66,6 +72,7 @@
             return {
                 data: {
                     title: '',
+                    is_show: false,
 
                     us_text: '',
                     ru_text: '',
@@ -87,7 +94,7 @@
             add_global_info() {
                 this.is_loading = true
                 axios
-                .post('../../api/general_info/', {
+                .post('/set_general_info/add_general_info/', {
                     data: this.data,
                     _method: 'POST'
                 })

@@ -74,8 +74,8 @@
                     @update_gallery_images="update_gallery_images"
 
                     :image_path_prop="'images/article_gallery_img/'"
-                    :image_del_route_prop="'gallery_image/del_image/'"
-                    :get_images_route_prop="'gallery_image/get_editing_images/'"
+                    :image_del_route_prop="'set_article/set_gallery_image/del_image/'"
+                    :get_images_route_prop="'set_article/set_gallery_image/get_editing_images/'"
                 />
                
             </div>
@@ -199,7 +199,7 @@
             get_editing_data() {
                 this.is_loading = true
                 axios
-                .get('/articles/get_editing_data/'+this.$route.params.id)
+                .get('/set_article/get_editing_data/'+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
                     this.category = response.data.global_article.category
@@ -279,7 +279,7 @@
                 }
                 
                 axios
-                .post('/article/edit_article/' + this.article_id, 
+                .post('/set_article/edit_article/' + this.article_id, 
                     formData,
                 )
                 .then(response => {

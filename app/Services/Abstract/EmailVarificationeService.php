@@ -3,6 +3,7 @@
 namespace App\Services\Abstract;
 
 use Illuminate\Http\Request;
+use Notification;
 
 use App\Notifications\comments\CommentEmailVarificationNotification;
 

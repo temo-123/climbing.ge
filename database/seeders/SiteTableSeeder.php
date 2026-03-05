@@ -17,8 +17,8 @@ class SiteTableSeeder extends Seeder
     public function run()
     {
         DB::table('sites')->insert([
-            'us_info_id' => 1,
-            'ka_info_id' => 2,
+            // 'us_info_id' => 1,
+            // 'ka_info_id' => 2,
             // 'ru_info_id' => 3,
 
             'email' => 'info@'.env('BASE_URL'),

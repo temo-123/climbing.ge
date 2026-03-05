@@ -1,5 +1,5 @@
 <template>
-    <div class="tabs"> 
+    <div class="tabs">
         <div class="row">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
@@ -10,45 +10,10 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >Save update</button>
             </div>
         </div>
-        <div class="row" v-if="validation_errors.length != 0">
-            <div class="col-md-12">
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.global_info_validation.published">
-                    Published - {{ validation_errors.global_info_validation.published[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="error.global_info_validation.url_title">
-                    Url title - {{ error.global_info_validation.url_title[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.title">
-                    English title - {{ validation_errors.us_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.short_description">
-                    English description - {{ validation_errors.us_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.us_info_validation.text">
-                    English text - {{ validation_errors.us_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.title">
-                    Georgian title - {{ validation_errors.ka_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.short_description">
-                    Georgian description - {{ validation_errors.ka_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ka_info_validation.text">
-                    Georgian text - {{ validation_errors.ka_info_validation.text[0] }}
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.title">
-                    Russion title - {{ validation_errors.ru_info_validation.title[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.short_description">
-                    Russion description - {{ validation_errors.ru_info_validation.short_description[0] }}
-                </div>
-                <div class="alert alert-danger" role="alert" v-if="validation_errors.ru_info_validation.text">
-                    Russion text - {{ validation_errors.ru_info_validation.text[0] }}
-                </div>
-            </div>
+        <div class="row" v-show="validation_errors.length != 0">
+            <validator_alerts_component
+                :errors_prop="validation_errors"
+            />
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -93,7 +58,7 @@
                         <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
                             <label for="name" class='col-xs-2 control-label'> Published befor (After this data it`s whil by not public`) </label>
                             <div class="col-xs-8">
-                                <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_bisnes" >
+                                <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_data" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
@@ -104,9 +69,13 @@
                         </div>
                     </form>
 
-                    <article_bisnes_edit_relatione_tab 
+                    <article_bisnes_edit_relatione_tab
+                        ref="article_bisnes_edit_relatione_tab"
                         @update_article_relations="update_article_relations"
+                        @update_selected_category="update_selected_category"
 
+                        :bisnes_id_prop="business_id"
+                        :initial_selected_category_prop="data.global_bisnes.for_article_category"
                         :article_del_route_prop="'bisnes/del_bisnes_article_relation/'"
                         :get_articles_route_prop="'bisnes/get_bisnes_article_relation/'"
                     />
@@ -114,10 +83,9 @@
                         @update_gallery_images="update_gallery_images"
 
                         :image_path_prop="'images/suport_local_bisnes_img/'"
-                        :image_del_route_prop="'bisnes/del_local_bisnes_image/'"
-                        :get_images_route_prop="'bisnes/get_bisnes_images/'"
+                        :image_del_route_prop="'set_bisnes/del_local_bisnes_image/'"
+                        :get_images_route_prop="'get_bisnes/get_bisnes_images/'"
                     />
-
                 </div>
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
@@ -175,7 +143,6 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <!-- <textarea type="text"  name="short_description"  v-model="data.ka_bisnes.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <ckeditor v-model="data.ka_bisnes.short_description" :config="editor_config.ka_short_description"></ckeditor>
                             </div>
                         </div>
@@ -190,29 +157,37 @@
                 </div>
             </div>
         </div>
-
+        
     </div>
 </template>
 
 <script>
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
-    import article_bisnes_edit_relatione_tab from './items/articleBisnesEditRelationeTabComponent.vue.vue'
+
+    import article_bisnes_edit_relatione_tab from './items/articleBisnesEditRelationeTabComponent.vue'
+    import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config,
         ],
         components: {
             gallery_images_edit,
-            article_bisnes_edit_relatione_tab
+            article_bisnes_edit_relatione_tab,
+            validator_alerts_component
         },
+
         props: [
             // 'back_url',
         ],
+
+
         data(){
             return {
                 tab_num: 1,
 
+                business_id: null,
+                selected_category: null,
                 bisnes_new_images: [],
                 // bisnes_old_images: [],
                 regions: [],
@@ -226,8 +201,8 @@
                     us_short_description: editor_config.get_small_editor_config(),
                     us_text: editor_config.get_big_editor_config(),
                     // us_info: editor_config.get_big_editor_config(),
-                    ru_short_description: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
+                    // ru_short_description: editor_config.get_small_editor_config(),
+                    // ru_text: editor_config.get_big_editor_config(),
                     // ru_info: editor_config.get_big_editor_config(),
                     ka_short_description: editor_config.get_small_editor_config(),
                     ka_text: editor_config.get_big_editor_config(),
@@ -237,10 +212,12 @@
                 editorConfig: {},
 
                 data: {
-                    global_bisnes: {},
+                    global_bisnes: {
+                        published_data: null,
+                    },
                     us_bisnes: {},
                     ka_bisnes: {},
-                    ru_bisnes: {}
+                    // ru_bisnes: {}
                 },
 
                 change_url_title: false
@@ -256,8 +233,10 @@
         methods: {
             get_editing_bisnes(){
                 this.data_for_tab = []
+                this.business_id = this.$route.params.id;
+                
                 axios
-                .get("/bisnes/get_editing_local_bisnes_info/"+this.$route.params.id)
+                .get("/set_bisnes/get_editing_local_bisnes_info/"+this.$route.params.id)
                 .then(response => {
                     this.editing_bisnes = response.data
 
@@ -265,8 +244,13 @@
                         global_bisnes: response.data.global_bisnes,
 
                         us_bisnes: response.data.us_bisnes,
-                        ru_bisnes: response.data.ru_bisnes,
+                        // // ru_bisnes: response.data.ru_bisnes,
                         ka_bisnes: response.data.ka_bisnes,
+                    }
+
+                    // Load for_article_category for edit component
+                    if (response.data.for_article_category) {
+                        this.selected_category = response.data.for_article_category;
                     }
                 })
                 .catch(
@@ -285,8 +269,13 @@
                 }
             },
 
+
             update_article_relations(articles){
                 this.bisnes_new_article_relations = articles
+            },
+
+            update_selected_category(category){
+                this.selected_category = category;
             },
 
             update_gallery_images(images){
@@ -302,39 +291,46 @@
                     this.data.global_bisnes.change_url_title = false
                 }
 
+                // Always create FormData first
                 let formData = new FormData();
 
-                var image_loop_num = 0
-                this.bisnes_new_images.forEach(image => {
-                    formData.append('bisnes_new_images['+image_loop_num+']', image.image)
-                    image_loop_num++
-                });
-                image_loop_num = 0
+                if(this.bisnes_new_images != []){
+                    var image_loop_num = 0
+                    this.bisnes_new_images.forEach(image => {
+                        formData.append('bisnes_new_images['+image_loop_num+']', image.image)
+                        image_loop_num++
+                    });
+                    image_loop_num = 0
+                }
 
-                var relation_loop_num = 0
-                this.bisnes_new_article_relations.forEach(relation => {
-                    formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
-                    relation_loop_num++
-                });
-                relation_loop_num = 0
+                if(this.bisnes_new_article_relations != []){
+                    var relation_loop_num = 0
+                    this.bisnes_new_article_relations.forEach(relation => {
+                        formData.append('bisnes_new_article_relations['+relation_loop_num+']', relation.article_id)
+                        relation_loop_num++
+                    });
+                    relation_loop_num = 0
+                }
+
+                // Handle category-based relations
+                if(this.selected_category){
+                    formData.append('selected_category', this.selected_category);
+                }
 
                 formData.append('data', JSON.stringify(this.data))
 
-                axios
-                .post('/bisnes/edit_local_bisnes/'+this.$route.params.id, 
-                    formData
-                )
-                .then(response => {
-                    this.go_back(true)
-                })
-                .catch(error => {
-                    if (error.response.status == 422) {
-                        this.validation_errors = error.response.data.validation
+                // Always validate relations if any are selected
+                if (this.selected_category || (this.bisnes_new_article_relations && this.bisnes_new_article_relations.length > 0)) {
+                    if (this.$refs.article_bisnes_edit_relatione_tab) {
+                        this.$refs.article_bisnes_edit_relatione_tab.validateRelationsBeforeSave(formData, this);
+                    } else {
+                        console.error('Reference to article_bisnes_edit_relatione_tab is not available');
+                        this.proceedWithSave(formData);
                     }
-                    else{
-                        alert(error)
-                    }
-                });
+                } else {
+                    // No relations to validate, proceed directly with save
+                    this.proceedWithSave(formData);
+                }
             },
 
             go_back: function(back_action = false) {
@@ -346,6 +342,57 @@
                 else{
                     this.$router.go(-1)
                 }
+            },
+
+            // Handle validation errors from child component
+            handleValidationError(error) {
+                if (error.response.status == 422) {
+                    this.validation_errors = error.response.data.validation;
+                } else {
+                    alert('Validation error: ' + error);
+                }
+            },
+
+            // Proceed with actual save
+            proceedWithSave(formData) {
+                console.log('=== PROCEEDING WITH SAVE ===');
+                console.log('Business ID:', this.business_id);
+                console.log('FormData contents:');
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, ':', value);
+                }
+
+                axios
+                    .post('/set_bisnes/edit_local_bisnes/' + this.business_id, formData)
+                    .then(response => {
+                        console.log('=== SAVE SUCCESS ===');
+                        console.log('Response:', response);
+                        console.log('Response data:', response.data);
+                        
+                        if (response.data.success) {
+                            console.log('Save was successful, redirecting...');
+                            this.go_back(true);
+                        } else {
+                            console.log('Save response indicates failure:', response.data);
+                            alert('Save completed but with issues: ' + JSON.stringify(response.data));
+                        }
+                    })
+                    .catch(error => {
+                        console.log('=== SAVE ERROR ===');
+                        console.log('Error:', error);
+                        console.log('Error response:', error.response);
+                        
+                        if (error.response) {
+                            console.log('Error response data:', error.response.data);
+                            if (error.response.status == 422) {
+                                this.validation_errors = error.response.data.validation;
+                            } else {
+                                alert('Save error: ' + JSON.stringify(error.response.data));
+                            }
+                        } else {
+                            alert('Network error: ' + error.message);
+                        }
+                    });
             },
         }
     }

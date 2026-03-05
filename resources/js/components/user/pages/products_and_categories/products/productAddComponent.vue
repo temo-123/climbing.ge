@@ -51,18 +51,11 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
-                                <!-- <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
-                                    {{ global_article_error.published[0] }}
-                                </div> -->
-                            </div>
-                        </div>
+                        
+                        <published_item 
+                            :published_prop = data.global_product.published
+                            @item_data="data.global_product.published = $event" 
+                        />
 
                         <div class="form-group clearfix">
                             <label for="sale_type" class='col-xs-2 control-label'> Sale type </label>
@@ -78,24 +71,44 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Mead in Georgia </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" v-model="data.global_product.mead_in_georgia" >
+                                <input type="checkbox" id="scales" name="scales" v-model="data.global_product.made_in_georgia" >
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Is donation product </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox" id="is_donation_product" name="is_donation_product" v-model="data.global_product.is_donation_product" >
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> discount (%) </label>
+                            <label for="name" class='col-xs-2 control-label'> Brand </label>
                             <div class="col-xs-8">
-                                <input type="number" max="100" min="1" v-model="data.global_product.discount" name="discount" class="form-control"> 
+                                <select class="form-control" v-model="data.global_product.brand_id" name="brand_id"> 
+                                    <option v-bind:value="''" disabled>Select brand</option> 
+                                    <option v-for="brand in brands" :key="brand.global_brand.id" v-bind:value="brand.global_brand.id"> {{ brand.us_brand.title }}</option>
+                                </select> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Category </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.category_id" name="category_id" > 
-                                    <option v-bind:value="''" disabled>Select category</option> 
+                                <select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
+                                    <option v-bind:value="0" disabled>Select category</option> 
                                     <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
                                 </select> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
+                            <div class="col-xs-8" v-if="category_id != 0">
+                                <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
+                                    <option v-bind:value="0" disabled>Select subcategory</option> 
+                                    <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
+                                </select>
                             </div>
                         </div>
                     </form>
@@ -186,9 +199,11 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
     export default {
         components: {
-            validator_alerts_component
+            validator_alerts_component,
+            published_item
         },
         mixins: [
             editor_config
@@ -207,10 +222,6 @@
                     us_text_editor_config: editor_config.get_big_editor_config(),
                     us_info_editor_config: editor_config.get_big_editor_config(),
 
-                    ru_short_description_text_editor: editor_config.get_small_editor_config(),
-                    ru_text_editor_config: editor_config.get_big_editor_config(),
-                    ru_info_editor_config: editor_config.get_big_editor_config(),
-
                     ka_short_description_text_editor: editor_config.get_small_editor_config(),
                     ka_text_editor_config: editor_config.get_big_editor_config(),
                     ka_info_editor_config: editor_config.get_big_editor_config(),
@@ -218,16 +229,20 @@
 
                 errors: [],
 
-                data: [],
-                
+                category_id: 0,
+
+                subcategories: [],
+                brands: [],
+
                 data: {
                     global_product: {
                         published: 0,
-                        category_id: "",
+                        subcategory_id: 0,
+                        brand_id: '',
                         sale_type: "",
 
-                        mead_in_georgia: null,
-                        discount: 0,
+                        made_in_georgia: null,
+                        is_donation_product: null,
                     },
 
                     us_product: {
@@ -244,12 +259,12 @@
                         material: "",
                     },
 
-                    ru_product: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                        material: "",
-                    }
+                    // ru_product: {
+                    //     title: "",
+                    //     short_description: "",
+                    //     text: "",
+                    //     material: "",
+                    // }
                 },
 
                 is_loading: false,
@@ -258,7 +273,7 @@
             }
         },
         mounted() {
-            this.get_product_category_product()
+            this.get_product_categories()
         
             document.querySelector('body').style.marginLeft = '0';
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
@@ -272,7 +287,7 @@
                 // this.data.global_product.us_title_for_url_title = this.data.us_product.title
 
                 axios
-                .post('/product/add_product/', {        
+                .post('/set_product/add_product/', {        
                     data: JSON.stringify(this.data),
                 })
                 .then((response)=> { 
@@ -306,19 +321,52 @@
             //     .finally(() => this.is_loading = false);
             // },
 
-            get_product_category_product: function(){
+            get_product_brabds(){
                 this.is_loading = true
                 axios
-                .get("/product_category/")
+                .get("/get_product/get_brand/get_all_brands")
                 .then(response => {
-                    this.categories = response.data
+                    this.brands = response.data
                 })
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.is_loading = false);;
+                .finally(() => this.is_loading = false);
             },
 
+            get_product_categories: function(){
+                this.is_loading = true
+                axios
+                .get("/get_product/get_product_category/get_all_product_category/")
+                .then(response => {
+                    this.categories = response.data
+                    this.get_product_brabds()
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
+
+            get_category_subcategories(){
+                this.data.global_product.subcategory_id = 0
+                axios
+                .get("/get_product/get_product_category/get_subcategory/get_subcategories_for_category/" + this.category_id)
+                .then(response => {
+                    this.subcategories = response.data
+                    // Scroll to bottom of page to show subcategory dropdown
+                    this.$nextTick(() => {
+                        window.scrollTo({
+                            top: document.body.scrollHeight,
+                            behavior: 'smooth'
+                        })
+                    })
+                })
+                .catch(
+                    error => console.log(error)
+                )
+                .finally(() => this.is_loading = false);
+            },
 
             go_back: function(back_action = false) {
                 if(back_action == false){

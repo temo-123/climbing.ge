@@ -340,7 +340,7 @@
                 this.error = []
 
                 axios
-                .post('../api/event/add_event', 
+                .post('/set_event/add_event', 
                     formData
                 )
                 .then(response => {
@@ -364,7 +364,7 @@
 
             get_general_info(){
                 axios
-                .get('/general_info/')
+                .get('/get_general_info/get_all_general_infos/')
                 .then(response => {
                     this.general_infos = response.data          
                 })

@@ -53,7 +53,7 @@
             get_actyve_image(id){
                 this.is_loading = true
                 axios
-                .get("/head_slider/get_actyve_slide/"+id)
+                .get("/get_head_slider/get_actyve_slide/"+id)
                 .then(response => {
                     this.modal_image = response.data
                 })

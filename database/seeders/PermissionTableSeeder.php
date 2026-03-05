@@ -16,29 +16,32 @@ class PermissionTableSeeder extends Seeder
      */
     public function run()
     {
-        // DB::table('permissions')->insert([
-        //     [
-        //         // 'name' => 'Del article',
-        //         // 'slug' => 'manage-users',
-        //     ],
-        // ]);
+        // Clear existing data
+        DB::table('role_permissions')->delete();
+        DB::table('user_permissions')->delete();
+        DB::table('permissions')->delete();
 
         $permissions = array(
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_region',
                 'action' => 'add',
             ],
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_region',
                 'action' => 'edit',
             ],
             [
-                'subject' => 'shiping_country',
+                'subject' => 'shiping_region',
                 'action' => 'del',
             ],
 
             [
-                'subject' => 'dashboard',
+                'subject' => 'guide_dashboard',
+                'action' => 'show',
+            ],
+
+            [
+                'subject' => 'shop_dashboard',
                 'action' => 'show',
             ],
             
@@ -54,6 +57,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'article',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'article',
+                'action' => 'show',
+            ],
 
             [
                 'subject' => 'product',
@@ -93,6 +100,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'event',
                 'action' => 'del',
             ],
+            [
+                'subject' => 'export',
+                'action' => 'show',
+            ],
             
             [
                 'subject' => 'sector',
@@ -108,6 +119,11 @@ class PermissionTableSeeder extends Seeder
             ],
 
             [
+                'subject' => 'my_comments',
+                'action' => 'show',
+            ],
+
+            [
                 'subject' => 'route',
                 'action' => 'add',
             ],
@@ -119,6 +135,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'route',
                 'action' => 'del',
             ],
+            // [
+            //     'subject' => 'route',
+            //     'action' => 'show',
+            // ],
 
             [
                 'subject' => 'mtp',
@@ -132,6 +152,10 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'mtp',
                 'action' => 'del',
             ],
+            // [
+            //     'subject' => 'mtp',
+            //     'action' => 'show',
+            // ],
 
             [
                 'subject' => 'mtp_pitch',
@@ -143,19 +167,6 @@ class PermissionTableSeeder extends Seeder
             ],
             [
                 'subject' => 'mtp_pitch',
-                'action' => 'del',
-            ],
-
-            [
-                'subject' => 'services',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'services',
-                'action' => 'edit',
-            ],
-            [
-                'subject' => 'services',
                 'action' => 'del',
             ],
 
@@ -230,8 +241,18 @@ class PermissionTableSeeder extends Seeder
             ],
 
             [
+                'subject' => 'site_data',
+                'action' => 'add',
+            ],
+
+            [
                 'subject' => 'order',
                 'action' => 'edit_order_status',
+            ],
+
+            [
+                'subject' => 'del',
+                'action' => 'non_registered_commenter',
             ],
 
             [
@@ -246,6 +267,10 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'user',
                 'action' => 'add',
+            ],
+            [
+                'subject' => 'user',
+                'action' => 'edit',
             ],
             [
                 'subject' => 'user',
@@ -378,6 +403,19 @@ class PermissionTableSeeder extends Seeder
             ],
 
             [
+                'subject' => 'guide_slides',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'guide_slides',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'guide_slides',
+                'action' => 'edit',
+            ],
+
+            [
                 'subject' => 'ice_route',
                 'action' => 'add',
             ],
@@ -392,6 +430,10 @@ class PermissionTableSeeder extends Seeder
             [
                 'subject' => 'site_folloers',
                 'action' => 'show',
+            ],
+            [
+                'subject' => 'site_folloers',
+                'action' => 'add',
             ],
             [
                 'subject' => 'site_folloers',
@@ -409,26 +451,56 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'worker',
                 'action' => 'show',
             ],
+
             [
-                'subject' => 'task',
+                'subject' => 'favorite_products',
                 'action' => 'show',
             ],
+
             [
-                'subject' => 'task',
+                'subject' => 'my_favorite_outdoor_area',
+                'action' => 'show',
+            ],
+
+            [
+                'subject' => 'interested_events',
+                'action' => 'show',
+            ],
+
+            [
+                'subject' => 'guide_task',
                 'action' => 'add',
             ],
             [
-                'subject' => 'task',
+                'subject' => 'guide_task',
                 'action' => 'edit',
             ],
             [
-                'subject' => 'task',
+                'subject' => 'guide_task',
                 'action' => 'del',
             ],
             [
-                'subject' => 'task',
+                'subject' => 'guide_task',
                 'action' => 'edit_status',
             ],
+
+            [
+                'subject' => 'shop_task',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'shop_task',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'shop_task',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'shop_task',
+                'action' => 'edit_status',
+            ],
+
             [
                 'subject' => 'ban',
                 'action' => 'block',
@@ -470,48 +542,133 @@ class PermissionTableSeeder extends Seeder
                 'subject' => 'tour_reservation',
                 'action' => 'show_all',
             ],
-            [
-                'subject' => 'tour',
-                'action' => 'show_all',
-            ],
-            [
-                'subject' => 'tour',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'tour',
-                'action' => 'del',
-            ],
-            [
-                'subject' => 'tour',
-                'action' => 'edit',
-            ],
-
-            [
-                'subject' => 'tour_category',
-                'action' => 'show_all',
-            ],
-            [
-                'subject' => 'tour_category',
-                'action' => 'add',
-            ],
-            [
-                'subject' => 'tour_category',
-                'action' => 'del',
-            ],
-            [
-                'subject' => 'tour_category',
-                'action' => 'edit',
-            ],
-
-
             // [
-            //     'subject' => 'product_category',
+            //     'subject' => 'tour',
             //     'action' => 'show_all',
             // ],
             [
-                'subject' => 'product',
-                'action' => 'show_all',
+                'subject' => 'tour',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'tour',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'tour',
+                'action' => 'edit',
+            ],
+
+            // [
+            //     'subject' => 'tour_category',
+            //     'action' => 'show_all',
+            // ],
+            [
+                'subject' => 'tour_category',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'tour_category',
+                'action' => 'del',
+            ],
+            [
+                'subject' => 'tour_category',
+                'action' => 'edit',
+            ],
+            // [
+            //     'subject' => 'product',
+            //     'action' => 'show_all',
+            // ],
+
+            [
+                'subject' => 'product_brand',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'product_brand',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'product_brand',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'warehouse',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'warehouse',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'warehouse',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'live_camera',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'live_camera',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'live_camera',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'post',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'post',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'post',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'team',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'team',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'team',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'task_category',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'task_category',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'task_category',
+                'action' => 'del',
+            ],
+
+            [
+                'subject' => 'general_info',
+                'action' => 'add',
+            ],
+            [
+                'subject' => 'general_info',
+                'action' => 'edit',
+            ],
+            [
+                'subject' => 'general_info',
+                'action' => 'del',
             ],
         );
 
@@ -526,3 +683,4 @@ class PermissionTableSeeder extends Seeder
 
     }
 }
+

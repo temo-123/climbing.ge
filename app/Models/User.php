@@ -14,7 +14,8 @@ use App\Models\User\Role;
 use App\Models\User\Permission;
 use App\Models\User\User_adreses;
 use App\Models\User\user_notification;
-use App\Models\User\Social_account;
+// use App\Models\User\Social_account;
+use App\Models\User\User_site;
 
 use App\Models\Guide\Comment;
 use App\Models\Guide\Sport_route_review;
@@ -103,6 +104,38 @@ class User extends Authenticatable implements MustVerifyEmail
         return null !== $this->roles()->where('name', $role)->first();
     }
 
+    /**
+    * Check if user has ban role
+    * @return bool
+    */
+    public function isBanned()
+    {
+        return null !== $this->role()->where('slug', 'ban')->first();
+    }
+
+    /**
+     * Check if user has permission for a specific subject and action
+     * @param string $subject
+     * @param string $action
+     * @return bool
+     */
+    public function hasPermissionFor($subject, $action)
+    {
+        // Check direct permissions
+        if ($this->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
+            return true;
+        }
+
+        // Check through roles
+        foreach ($this->role as $role) {
+            if ($role->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 
 
     public function role()
@@ -122,14 +155,18 @@ class User extends Authenticatable implements MustVerifyEmail
     {
 		  return $this->hasMany(User_adreses::class, 'user_id');
     }
+    public function sites()
+    {
+		  return $this->hasMany(User_site::class, 'user_id');
+    }
     public function notification_list()
     {
 		  return $this->hasOne(user_notification::class, 'user_id');
     }
-    public function social_acount()
-    {
-        return $this->hasOne(Social_account::class, 'user_id');
-    }
+    // public function social_acount()
+    // {
+    //     return $this->hasOne(Social_account::class, 'user_id');
+    // }
 
 
     /*
@@ -139,13 +176,23 @@ class User extends Authenticatable implements MustVerifyEmail
     {
       return $this->belongsToMany(Comment::class, 'article_comment_user', 'user_id', 'comment_id');
     }
+	// public function sport_route_reviews()
+	// {
+	// 	return $this->belongsToMany(Sport_route_review::class, 'sport_route_review_user', 'user_id', 'review_id');
+	// }
+	// public function product_feedbacks()
+	// {
+    //     return $this->belongsToMany(Product_feedback::class, 'product_feedback_user', 'user_id', 'feedback_id');
+	// }
 	public function sport_route_reviews()
 	{
-		return $this->belongsToMany(Sport_route_review::class, 'sport_route_review_user', 'user_id', 'review_id');
+		return $this->hasMany(Sport_route_review::class, 'user_id');
 	}
 	public function product_feedbacks()
 	{
-        return $this->belongsToMany(Product_feedback::class, 'product_feedback_user', 'user_id', 'feedback_id');
+        // return $this->hasMany(Product_feedback::class, 'user_id');
+        return $this->belongsToMany(Product_feedback::class, 'user_product_feedbacks', 'user_id', 'feedback_id');
+
 	}
 
 
@@ -173,17 +220,18 @@ class User extends Authenticatable implements MustVerifyEmail
     /*
     *   User product and orders
     */
-    public function purchases()
-    {
-        return $this->hasMany(Order::class, 'user_id', 'product_id');
-    }
-    public function orders()
-    {
-        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
-    }
+    // Orders are accessed through products - see get_user_purchules() method in OrderController
+    // public function purchases()
+    // {
+    //     return $this->hasMany(Order::class, 'user_id');
+    // }
+    // public function orders()
+    // {
+    //     return $this->belongsToMany(Order::class, 'user_products', 'user_id', 'product_id');
+    // }
     public function products()
     {
-        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id');
+        return $this->belongsToMany(Product::class, 'user_products', 'user_id', 'product_id')->latest('id');
     }
 
 
@@ -196,6 +244,6 @@ class User extends Authenticatable implements MustVerifyEmail
     }
     public function reservation()
     {
-        return $this->belongsToMany(Tour_reservation::class, 'tour_reservation_users', 'user_id', 'reservation_id');
+        return $this->belongsToMany(Tour_reservation::class, 'tour_reservation_users', 'user_id', 'reservation_id')->latest('id');
     }
 }

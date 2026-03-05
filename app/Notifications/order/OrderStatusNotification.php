@@ -51,7 +51,7 @@ class OrderStatusNotification extends Notification
                     'data_time'=>$this->data_time,
                     'order_id'=>$this->order_id,
 
-                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/my_orders',
+                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/userOrders',
                 ]
             )
             ->subject('Order status updating');

@@ -60,16 +60,44 @@ Vue.mixin(going);
 /*
  *   My components
  */
+<<<<<<< HEAD
 import goTo from "./components/global_components/GoToComponrnt.vue";
 Vue.component("goTo", goTo);
+=======
+
+import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
+import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
+import store from "./store";
+import guide_img from "./components/guide/items/ImageComponent.vue";
+import shop_img from "./components/shop/items/ImageComponent.vue";
+// import blog_img from "./components/blog/items/ImageComponent.vue";
+
+Vue.component("site-img", guide_img);
+Vue.component("shop-img", shop_img);
+// Vue.component("blog-img", blog_img);
+Vue.component("left-menu", leftmenu);
+Vue.component("goToAdminPage", goToAdminPage);
+>>>>>>> master
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
-import Index from "./components/site/IndexComponent.vue";
+import Index from "./components/guide/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
+<<<<<<< HEAD
+=======
+import Films from "./components/films/StudiaComponent.vue";
+import Blog from "./components/blog/BlogMainComponent.vue";
+import Error from "./components/errors/global_errors/error.vue";
+>>>>>>> master
 
 import shop_routes from "./routes/ShopRoutes";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
+<<<<<<< HEAD
+=======
+import films_routes from "./routes/FilmsRoutes";
+import blog_routes from "./routes/BlogRoutes";
+import error_routes from "./routes/ErrorRoutes";
+>>>>>>> master
 
 Vue.component(
     "main-wrapper-component",
@@ -77,12 +105,23 @@ Vue.component(
 );
 Vue.component(
     "index-component",
-    require("./components/site/IndexComponent.vue").default
+    require("./components/guide/IndexComponent.vue").default
 );
 Vue.component(
     "home-component",
     require("./components/user/HomeComponent.vue").default
 );
+<<<<<<< HEAD
+=======
+Vue.component(
+    "studia-component",
+    require("./components/films/StudiaComponent.vue").default
+);
+Vue.component(
+    "blog-component",
+    require("./components/blog/BlogMainComponent.vue").default
+);
+>>>>>>> master
 
 var serviceRoutes = [];
 var homeComponent = [];
@@ -91,32 +130,77 @@ var analytic_id = "";
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes;
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + '/api'
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let siteUrl = (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = siteUrl ? baseUrl + '/' + siteUrl + '/api' : baseUrl + '/api';
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes;
-    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/api'
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let shopUrl = (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = shopUrl ? baseUrl + '/' + shopUrl + '/api' : baseUrl + '/api';
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_SHOP_ANALITICS_ID },
+    });
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
+<<<<<<< HEAD
     analytic_id = process.env.MIX_USER_ANALITICS_ID;
     axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
 }
 else {
+=======
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_USER_ANALITICS_ID },
+    });
+} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
+    homeComponent = Films;
+    serviceRoutes = films_routes;
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let filmsUrl = (process.env.MIX_FILMS_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = filmsUrl ? baseUrl + '/' + filmsUrl + '/api' : baseUrl + '/api';
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_FILMS_ANALITICS_ID },
+    });
+} else if (window.location.hostname == process.env.MIX_BLOG_URL) {
+    homeComponent = Blog;
+    serviceRoutes = blog_routes;
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let blogUrl = (process.env.MIX_BLOG_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = blogUrl ? baseUrl + '/' + blogUrl + '/api' : baseUrl + '/api';
+
+    Vue.use(VueGtag, {
+        config: { id: process.env.MIX_blog_ANALITICS_ID },
+    });
+} else {
+>>>>>>> master
     homeComponent = Error;
     serviceRoutes = error_routes;
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+    // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+
+    Vue.use(VueGtag, {
+        config: { id: analytic_id },
+    });
 }
 
-Vue.use(VueGtag, {
-    config: { id: analytic_id },
-});
+// Vue.use(VueGtag, {
+//     config: { id: analytic_id },
+// });
 
 Vue.config.productionTip = false;
-Vue.prototype.$siteData = [];
-Vue.prototype.$globalSiteData = [];
+Vue.prototype.$siteData = Vue.observable({ data: [] });
+Vue.prototype.$globalSiteData = Vue.observable({ data: [] });
 
 Vue.prototype.$going = going
 Vue.prototype.$editor_config = editor_config
@@ -127,11 +211,11 @@ if(
     window.location.hostname == 'shop.climbing.ge' ||
     window.location.hostname == 'user.climbing.ge' ||
     window.location.hostname == 'films.climbing.ge' ||
-    window.location.hostname == 'forum.climbing.ge'
+    window.location.hostname == 'blog.climbing.ge'
 ){
-    Vue.config.devtools = false
-    Vue.config.debug = false
-    Vue.config.select = false
+    Vue.config.devtools = true
+    Vue.config.debug = true
+    Vue.config.select = true
 }
 else{
     Vue.config.devtools = true
@@ -157,10 +241,11 @@ const app = new Vue({
     methods: {
         get_site_data() {
             axios
-            .get("/siteData/get_site_locale_data/"+localStorage.getItem('lang'))
+            // .get("/get_site_data/get_site_locale_data/" + localStorage.getItem('lang') || 'en')
+            .get("/get_site_data/get_site_locale_data_for_site/" + localStorage.getItem('lang') || 'en')
             .then((response) => (
-                Vue.prototype.$siteData = response.data.locale_data,
-                Vue.prototype.$globalSiteData = response.data.global_data
+                this.$siteData.data = response.data.locale_data,
+                this.$globalSiteData.data = response.data.global_data
             ));
         },
     },

@@ -8,6 +8,19 @@ use App\Models\User;
 
 class Product extends Model
 {
+    /**
+     * Boot the model.
+     */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($product) {
+            // Delete related favorite_products before deleting the product
+            \App\Models\Shop\Favorite_product::where('product_id', $product->id)->delete();
+        });
+    }
+
     public $table = 'products';
 
     protected $fillable = [
@@ -15,15 +28,17 @@ class Product extends Model
 	    'published',
       'url_title',
 
-      'discount',
+      // 'discount',
       // 'material',
-    
-      'mead_in_georgia',
+
+      'made_in_georgia',
+      'is_donation_product',
 
       'sale_type',
 
-      'category_id',
-      
+      'subcategory_id',
+      'brand_id',
+
       'us_product_id',
       'ka_product_id'
       // 'ru_product_id'
@@ -44,9 +59,9 @@ class Product extends Model
 	// 	return $this->hasOne(Locale_product::class, 'id', 'ru_product_id');
 	// }
 
-  public function product_category()
+  public function product_subcategory()
   {
-    return $this->hasOne(Product_category::class, 'id', 'category_id');
+    return $this->hasOne(Product_subcategory::class, 'id', 'subcategory_id');
   }
 
   public function product_options()

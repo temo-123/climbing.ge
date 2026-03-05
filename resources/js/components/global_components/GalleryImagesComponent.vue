@@ -4,7 +4,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-3 gallery_images" v-for="image in db_images" :key="image.id" @click="open_image(image)">
-                    <site-img :src="path + image.image" :alt="image.title" :img_class="'gallery_img'"/>
+                    <site-img v-if="image.title != null" :src="path + image.image" :alt="image.title" :img_class="'gallery_img'"/>
+                    <site-img v-else :src="path + image.image" :alt="'climbing.ge gallery image'" :img_class="'gallery_img'"/>
                 </div>
             </div>
         </div>
@@ -14,7 +15,16 @@
                 <span @click="close_image()">X</span>
             </div>
 
-            <img :src="path + active_img.image" :alt="active_img.image" :img_class="'gallery_big_img'" 
+            <img  v-if="active_img.title != null"
+                  :src="path + active_img.image" 
+                  :alt="active_img.title"  
+                  :img_class="'gallery_big_img'" 
+                  style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
+
+            <img  v-else
+                  :src="path + active_img.image" 
+                  :alt="'climbing.ge gallery image'"  
+                  :img_class="'gallery_big_img'" 
                   style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
 
             <div class="image_moving">

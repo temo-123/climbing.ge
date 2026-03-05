@@ -289,7 +289,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('../api/service/add_service', 
+                .post('/set_service/add_service', 
                     formData
                 )
                 .then(response => {

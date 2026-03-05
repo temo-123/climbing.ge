@@ -13,7 +13,7 @@ class General_info_event extends Model
 
     protected $fillable = [
         'info_id',
-        'article_id',
+        'event_id',
         'block',
         'block_action',
 	];

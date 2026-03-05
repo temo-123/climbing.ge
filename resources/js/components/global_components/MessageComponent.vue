@@ -2,7 +2,7 @@
     <div class="container">
         <h2 class="block_title">{{ $t('global.message.title') }}</h2>
         <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-        <h3> <span v-html="this.$siteData.message"></span> </h3>
+        <h3> <span v-html="this.$siteData.data.message"></span> </h3>
         
         <div class="alert alert-danger" role="alert" v-if="fatal_error">
             <h2 class="text-center">Fatal error! Please contact support!</h2>
@@ -171,7 +171,7 @@
                 this.fatal_error = false
 
                 axios
-                .post('../api/message', {
+                .post('/message', {
                     name: this.name,
                     surname: this.surname,
                     email: this.email,

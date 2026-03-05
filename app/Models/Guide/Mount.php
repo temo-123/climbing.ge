@@ -32,10 +32,8 @@ class Mount extends Model
 	// 	return $this->hasOne(Locale_mount::class, 'id', 'ru_mount_id');
 	// }
 
-
 	public function articles()
 	{
-		// return $this->belongsToMany(Article::class,);
-        return $this->belongsToMany(Article::class, 'article_mount', 'mount_id', 'article_id')->where('published', '=', 1);
+        return $this->belongsToMany(Article::class, 'article_mount', 'mount_id', 'article_id');
 	}
 }

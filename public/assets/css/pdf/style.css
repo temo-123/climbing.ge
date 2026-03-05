@@ -1,0 +1,247 @@
+
+        @page {
+            margin: 0.5cm;
+        }
+        body {
+            font-family: 'DejaVu Sans', Arial, sans-serif;
+            margin: 0;
+            line-height: 1.6;
+            font-size: 11px;
+        }
+        .article {
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            /* page-break-inside: avoid; */
+        }
+        .article:last-child {
+            border-bottom: none;
+        }
+        .article-title {
+            margin-bottom: 6px;
+        }
+        .article-title h1 {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            margin: 0;
+            padding: 4px 0;
+        }
+        .article-content {
+            text-align: justify;
+            margin: 6px 0;
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: #484848;
+        }
+        h2 {
+            font-size: 13px;
+            margin: 8px 0 4px;
+            color: #484848;
+        }
+        h3 {
+            font-size: 12px;
+            margin: 6px 0 3px;
+            color: #555;
+        }
+        h4 {
+            font-size: 11px;
+            margin: 5px 0 2px;
+            color: #666;
+        }
+        h5 {
+            font-size: 10px;
+            margin: 4px 0 2px;
+            color: #666;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 6px 0;
+            font-size: 10px;
+            page-break-inside: avoid;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 4px 6px;
+            text-align: left;
+        }
+        th {
+            background-color: #e9ecef;
+            font-weight: bold;
+        }
+        .sector-section {
+            margin: 12px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            background-color: #fafafa;
+            page-break-inside: avoid;
+        }
+        .sector-info {
+            margin-bottom: 6px;
+        }
+        .sector-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            background-color: #e8e8e8;
+            padding: 8px 16px;
+            border-radius: 4px;
+            display: inline-block;
+            border: 2px solid #bbb;
+            box-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 100;
+        }
+        .sector-signs {
+            margin: 8px 0;
+            position: relative;
+            z-index: 50;
+        }
+        .sector-images-row {
+            margin-top: 10px;
+            clear: both;
+            position: relative;
+            z-index: 10;
+        }
+        .route-table, .mtp-table {
+            margin-top: 8px;
+        }
+        /* Article images */
+        .article-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0;
+        }
+        .article-images img {
+            max-width: 300px;
+            max-height: 200px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .article-main-image {
+            margin: 6px 0;
+        }
+        .article-main-image img {
+            max-width: 400px;
+            max-height: 300px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        /* Sector images - proportional based on count */
+        .sector-images {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin: 6px 0;
+        }
+        .sector-images img {
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        /* Proportional sizing for sector images */
+        .sector-images.sector_images_1 img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+        .sector-images.sector_images_2 img {
+            max-width: 48%;
+            max-height: 250px;
+        }
+        .sector-images.sector_images_3 img {
+            max-width: 32%;
+            max-height: 200px;
+        }
+        .sector-images.sector_images_4 img {
+            max-width: 23%;
+            max-height: 180px;
+        }
+        .sector-images.sector_images_5 img {
+            max-width: 18%;
+            max-height: 160px;
+        }
+        .sector-images.sector_images_6 img,
+        .sector-images.sector_images_7 img,
+        .sector-images.sector_images_8 img,
+        .sector-images.sector_images_9 img,
+        .sector-images.sector_images_10 img {
+            max-width: 15%;
+            max-height: 150px;
+        }
+        /* Small images for sector options */
+        .sector-images img.option-image-small {
+            max-width: 80px;
+            max-height: 60px;
+        }
+        
+        /* Characteristic icons - styled like article page */
+        .char-icons {
+            display: inline-flex;
+            gap: 2px;
+            margin: 2px 0;
+            vertical-align: middle;
+        }
+        .char-icon {
+            height: 32px;
+            width: auto;
+        }
+        .char-icon-label {
+            font-size: 9px;
+            color: #444;
+            text-align: center;
+            margin-top: 2px;
+            font-weight: normal;
+        }
+        .char-row {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0 10px 0 0;
+            flex-wrap: nowrap;
+        }
+        .char-container {
+            display: inline-block;
+            text-align: center;
+            padding: 4px 6px;
+            background: #f5f5f5;
+            border-radius: 4px;
+        }
+        .char-section {
+            display: inline-flex;
+            flex-wrap: nowrap;
+            gap: 8px;
+            margin: 6px 0;
+            align-items: flex-start;
+            position: relative;
+            z-index: 10;
+        }
+        ul {
+            margin: 4px 0;
+            padding-left: 15px;
+        }
+        li {
+            margin: 2px 0;
+        }
+        .mtp-item {
+            margin: 6px 0;
+            padding: 6px;
+            border: 1px solid #eee;
+            background-color: #f9f9f9;
+        }
+        p {
+            margin: 4px 0;
+        }
+        strong {
+            font-weight: bold;
+        }
+        .article-meta {
+            font-size: 9px;
+            color: #666;
+            margin: 4px 0;
+        }

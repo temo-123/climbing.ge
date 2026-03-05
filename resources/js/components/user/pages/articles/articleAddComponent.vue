@@ -57,8 +57,7 @@
 
                     @upload_img="upload_area_images"
                 />
-                
-                <!-- <MountRouteImagesForm   v-if="this.category == 'mount_route'"   :category="this.category" @upload_img="upload_mount_route_images"/> -->
+
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
 
@@ -106,7 +105,7 @@
     import MountRouteImagesForm from './forms/add_forms/MountRouteImageFormComponent.vue'
 
     // import gallery_images_add from './items/galleryImageAddComponent.vue'
-    import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
+    import gallery_images_add from '../../items/gallery/galleryImageAddComponent.vue'
 
     import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
@@ -138,7 +137,7 @@
                     global_article: [],
                     us_article: [],
                     ka_article: [],
-                    ru_article: [],
+                    // ru_article: [],
                 },
                 article_image: '',
 
@@ -236,7 +235,7 @@
                 }
 
                 axios
-                .post('/article/add_article/' + this.category, 
+                .post('/set_article/add_article/' + this.category, 
                     formData,
                 )
                 .then(response => {

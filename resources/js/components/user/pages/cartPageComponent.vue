@@ -125,7 +125,7 @@
 
             get_products_cart: function() {
                 axios
-                .get("/cart/")
+                .get("/get_cart/get_user_cart/")
                 .then(response => {
                     this.cart_items = response.data
                     this.user_id = response.data[0]['user_id']
@@ -157,7 +157,7 @@
             update_quantity(item_id, quantity){
                 this.is_quantity_updating = true
                 axios
-                .post("/cart/update_quantity/" + item_id, {
+                .post("/set_cart/update_quantity/" + item_id, {
                     quantity: quantity,
                 })
                 .then(response => {
@@ -171,7 +171,7 @@
             del_from_cart(item_id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .delete("/cart/" + item_id)
+                    .delete("/set_cart/del_from_cart/" + item_id)
                     .then(response => {
                         this.get_products_cart()
                     })

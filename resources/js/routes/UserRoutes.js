@@ -17,15 +17,13 @@ function load(component) {
 const router = new VueRouter({
     routes: [
         { path: '/', name: 'home', component: load('HomePageComponent') },
-        { path: '/admin_page', name: 'adminPage', component: load('AdminPageComponent'), 
-        meta: {
-            can: 'show dashboard',
-            fail: '/'
-        }},
 
-        { path: '/task_panel', name: 'taskPanel', component: load('WorkerTaskPanelPageComponent') },
+        { path: '/shop_task_panel', name: 'shopTaskPanel', component: load('dashboards/shop/ShopTaskPanelComponent') },
+        { path: '/shop_dashboard_page', name: 'shopDashboardPage', component: load('dashboards/shop/ShopDashboardPageComponent') },
+        { path: '/guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent') },
+        { path: '/guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent') },
 
-        { path: '/purchases', name: 'userPurchases', component: load('PurchasesPage') },
+        { path: '/purchases', name: 'userPurchases', component: load('orders/PurchasesPage') },
         { path: '/order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent') },
         { path: '/order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent') },
 
@@ -35,8 +33,9 @@ const router = new VueRouter({
         
         { path: '/order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent') },
 
-        { path: '/my_posts', name: 'myPosts', component: load('posts/MyPostsPageCompoents') },
-        { path: '/all_posts', name: 'allPosts', component: load('posts/AllPostsPageComponent') },
+        { path: '/posts', name: 'posts', component: load('posts/PostsListComponent') },
+        { path: '/post/add', name: 'add_post', component: load('posts/AddPostFormComponent') },
+        { path: '/post/edit/:id', name: 'edit_post', component: load('posts/EditPostFormComponent') },
 
         { path: '/cart', name: 'cart', component: load('cartPageComponent') },
         { path: '/head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage') },
@@ -70,7 +69,7 @@ const router = new VueRouter({
         { path: '/films/add', name: 'filmsAdd', component: load('films/filmsAddComponent') },
         { path: '/films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent') },
 
-        { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('mountRoutes/mountListComponent') },
+        // { path: '/mount_routes/mount_routes_list', name: 'mountlist', component: load('mountRoutes/mountListComponent') },
         { path: '/mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent') },
         { path: '/mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent') },
 
@@ -78,8 +77,8 @@ const router = new VueRouter({
         { path: '/article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent') },
         { path: '/article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent') },
    
-        { path: '/spot_category/edit/:id', name: 'spot_category_edit', component: load('spots_categories/SpotsCategoriesEditPageComponent') },
-        { path: '/spot_category/add/', name: 'spot_category_add', component: load('spots_categories/SpotsCategoriesAddPageComponent') },
+        { path: '/region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent') },
+        { path: '/region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent') },
 
         { path: '/ice_route/add', name: 'iceRouteAdd', component: load('ice/routes/add_route') },
         { path: '/ice_route/edit/:id', name: 'iceRouteEdit', component: load('ice/routes/edit_route') },
@@ -89,25 +88,33 @@ const router = new VueRouter({
 
         { path: '/routes_and_sectors', name: 'routeAndSectorList', component: load('routes_and_sectors/routeAndSectorListComponent') },
 
-        { path: '/route/add', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },
+        { path: '/route/add/:category', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent') },
         { path: '/route/edit/:id', name: 'routeEdit', component: load('routes_and_sectors/routes/routeEditComponent') },
 
-        { path: '/sector/add', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent') },
+        { path: '/sector/add/:category', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent') },
         { path: '/sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent') },
 
         { path: '/MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent') },
         { path: '/MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent') },
 
-        { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: load('routes_and_sectors/MTPPitch/MTPPitchAddComponent') },
-        { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: load('routes_and_sectors/MTPPitch/MTPPitchEditComponent') },
+        // { path: '/MTPPitch/add', name: 'MTPPitchAdd', component: load('routes_and_sectors/MTPPitch/MTPPitchAddComponent') },
+        // { path: '/MTPPitch/edit/:id', name: 'MTPPitchEdit', component: load('routes_and_sectors/MTPPitch/MTPPitchEditComponent') },
 
         { path: '/sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent') },
         { path: '/sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent') },
         { path: '/sector_local_images/edit/:id', name: 'sectorLocalImagesListEdit', component: load('sector_local_images/sectorLocalImageEditComponent') },
+        { path: '/sector_local_images/options/:id', name: 'sectorLocalImagesOptions', component: load('sector_local_images/sectorLocaleImageEditorComponent') },
 
         { path: '/local_bisnes', name: 'localBisnesList', component: load('local_bisnes/localBisnesListComponent') },
         { path: '/local_bisnes/add', name: 'localBisnesAdd', component: load('local_bisnes/localBisnesAddComponent') },
         { path: '/local_bisnes/edit/:id', name: 'localBisnesEdit', component: load('local_bisnes/localBisnesEditComponent') },
+        
+        { path: '/warehouses', name: 'warehousesList', component: load('warehouses/WarehousesListComponent') },
+        { path: '/warehouse/options/:id', name: 'warehouseOptions', component: load('warehouses/warehouseOptionsComponent') },
+
+        { path: '/live_cameras', name: 'liveCamerasList', component: load('live_camera/LiveCamerasListComponent') },
+
+        { path: '/export_tips', name: 'exportTips', component: load('expoet/exportComponent') },
 
         { path: '/event', name: 'eventList', component: load('event/eventsAndCompetitionsListComponent') },
         { path: '/event/add', name: 'eventAdd', component: load('event/events/eventAddComponent') },
@@ -116,27 +123,31 @@ const router = new VueRouter({
         { path: '/competition/add', name: 'competitionAdd', component: load('event/competitions/competitionAddComponent') },
         { path: '/competition/edit/:id', name: 'competitionEdit', component: load('event/competitions/competitionEditComponent') },
         
-        { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/userProductsListComponent') },
+        // { path: '/user_product_list', name: 'userProductsList', component: load('products_and_categories/list/for_user/userProductsListComponent') },
         { path: '/products_and_categories', name: 'productsList', component: load('products_and_categories/productsAndCatgoriesListComponent') },
+        
         { path: '/product/edit/:id', name: 'productEdit', component: load('products_and_categories/products/productEditComponent') },
         { path: '/product/add', name: 'productAdd', component: load('products_and_categories/products/productAddComponent') },
 
-        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/UserToursReservationsPage') },
-        { path: '/user_tours_list', name: 'userToursList', component: load('tour/UserToursListPage') },
+        { path: '/product_brands', name: 'product_brands', component: load('products_and_categories/brands/product_brands') },
+        { path: '/product_option_control/:id', name: 'productOptionsControl', component: load('products_and_categories/product_options/productOptionControlPageComponent') }, // :id => :product_id
 
-        { path: '/all_tours_list', name: 'allToursList', component: load('tour/AllToursListPage') },
-        { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/AllToursReservationsPage') },
+        { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
+        { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },
+
+
+        { path: '/user_tours_reservations_list', name: 'userToursReservations', component: load('tour/list/for_user/UserToursReservationsPage') },
+        { path: '/user_tours_list', name: 'userToursList', component: load('tour/list/for_user/UserToursListPage') },
+
+        { path: '/all_tours_list', name: 'allToursList', component: load('tour/list/for_admin/AllToursListPage') },
+        { path: '/all_tours_reservations_list', name: 'allToursReservations', component: load('tour/list/for_admin/AllToursReservationsPage') },
+
         { path: '/tour/edit/:id', name: 'tourEdit', component: load('tour/forms/EditTourPage') },
         { path: '/tour/add', name: 'tourAdd', component: load('tour/forms/AddTourPage') },
 
         { path: '/stor_slides_list', name: 'storSlidesList', component: load('gallery/StoreSlidesPage') },
 
-        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('NonRegisteredCommenterListPage') },
-
-        { path: '/product_option_control/product_id/:product_id', name: 'productOptionsControl', component: load('products_and_categories/productOptionControlPageComponent') },
-
-        { path: '/productCategory/edit/:id', name: 'productCategoryEdit', component: load('products_and_categories/categories/productCategoryEditComponent'), },
-        { path: '/productCategory/add/', name: 'productCategoryAdd', component: load('products_and_categories/categories/productCategoryAddComponent') },
+        { path: '/non_registered_commenter_list', name: 'nonRegisteredCommenterList', component: load('comments_&_reviews/NonRegisteredCommenterListPage') },
 
         { path: '/services_list', name: 'servicesList', component: load('services/servicesListComponent'), },
         { path: '/service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), },
@@ -161,7 +172,7 @@ router.beforeEach((to, from, next)=>{
     const token = localStorage.getItem('x_xsrf_token')
     
     axios
-        .get('./api/auth_user')
+        .get('/auth_user')
         .then((response)=>{
             // if (token != null) {
             //     localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])

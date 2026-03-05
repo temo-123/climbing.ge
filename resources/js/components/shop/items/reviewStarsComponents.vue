@@ -38,10 +38,6 @@ export default {
 
 
 <style>
-.height-100{
-    height:100vh;
-}
-
 .card{
     width:380px;
     border:none;

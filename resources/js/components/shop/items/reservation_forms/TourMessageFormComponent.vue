@@ -6,6 +6,7 @@
                     <h2>{{ $t('shop.tour.message.title') }}</h2>
                 </div>
             </div>
+            <!-- {{ new Date().toISOString().split('T')[0] }} -->
             <div class="row">
 
                 <div class="col-xl-12 col-lg-12 col-md-12 mb30">
@@ -33,7 +34,7 @@
                                     <div class="form-group">
                                         <label class="control-label" for="check_in">{{ $t('shop.tour.message.check_in') }}</label>
                                         <div class="select">
-                                            <input v-model="form_data.check_in" id="check_in" name="check_in" type="date" placeholder="Check in" class="form-control" required>
+                                            <input v-model="form_data.check_in" id="check_in" name="check_in" type="datetime-local" :min="new Date().toISOString().split('T')[0] + 'T00:00'" placeholder="Check in" class="form-control" required>
                                         </div>
                                     </div>
                                 </div>
@@ -138,7 +139,16 @@
         },
         data () {
             return {
-                form_data: {},
+                form_data: {
+                    name: '',
+                    email: '',
+                    phone: '',
+                    country: '',
+                    city: '',
+                    check_in: '',
+                    persons: '',
+                    text: ''
+                },
                 user: [],
 
                 is_loading: false,
@@ -149,6 +159,9 @@
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
 
                 is_verify_isset: false,
+                
+                // Flag to prevent duplicate submissions
+                is_submitting: false,
             }
         },
         watch: {
@@ -167,23 +180,47 @@
                 window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
             },
             create_reservation(){
-                this.is_loading = true
+                // Prevent duplicate submissions
+                if (this.is_submitting) {
+                    return;
+                }
+                
+                this.is_submitting = true;
+                this.is_loading = true;
 
                 axios
-                .post('/tour/reservation/create_reservation/'+this.tour_id_prop, {
+                .post('/set_user_reservation/create_reservation/'+this.tour_id_prop, {
                     form_data: this.form_data
                 })
                 .then(response => {
-                    this.form_data = []
+                    // Reset form data
+                    this.form_data = {
+                        name: '',
+                        email: '',
+                        phone: '',
+                        country: '',
+                        city: '',
+                        check_in: '',
+                        persons: '',
+                        text: ''
+                    };
+
+                    this.onCaptchaExpired();
 
                     alert(response.data);
                 })
                 .catch(error =>{
+                    // Show error message
+                    if (error.response && error.response.data && error.response.data.message) {
+                        alert(error.response.data.message);
+                    } else {
+                        alert('An error occurred while creating the reservation.');
+                    }
                 })
-                .finally( () => this.is_loading = false)
-            },
-            go_to_option_page(){
-                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + '/options') ;
+                .finally( () => {
+                    this.is_loading = false;
+                    this.is_submitting = false;
+                });
             },
 
             onCaptchaVerified() {

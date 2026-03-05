@@ -1,11 +1,11 @@
 <template>
     <div class="col-md-12">
-        <h1 class="page_title">{{ $t('shop.title.services') }}</h1>
+        <h1 class="index_h2">{{ $t('shop.title.services') }}</h1>
 
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.services_description"></span>
+            <span v-html="this.$siteData.data.services_description"></span>
         </h2>
 
         <span v-if="services.length">
@@ -63,7 +63,7 @@
         methods: {
             get_services(){
                 axios
-                .get('../api/services/'+localStorage.getItem('lang'))
+                .get('/get_service/get_local_services/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.services = response.data
                 })

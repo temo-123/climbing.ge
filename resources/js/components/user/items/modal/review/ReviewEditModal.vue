@@ -79,6 +79,8 @@ export default {
                 climbed_data: '',
             },
 
+            ModalClass: [],
+
             is_loading: false,
 
             MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
@@ -116,7 +118,7 @@ export default {
         get_editing_review(){
             this.is_loading = true
             axios
-                .get("/route_review/get_actyve_review/" + this.route_id)
+                .get("/get_route_review/get_actyve_review/" + this.route_id)
                 .then((response) => {
                     this.data = {
                         stars: response.data.stars,
@@ -133,7 +135,7 @@ export default {
         edit_route_review() {
             this.is_loading = true
             axios
-                .post("/route_review/edit_route_review/" + this.route_id, this.data)
+                .post("/set_route_review/edit_route_review/" + this.route_id, this.data)
                 .then((response) => {
                     this.close_route_review_modal(this.route_id)
                 })

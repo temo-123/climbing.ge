@@ -6,14 +6,14 @@
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="aboutus">
 
-                            <h1 v-html="this.$siteData.shop_short_description"></h1>
-                            <span v-html="this.$siteData.shop_description"></span>
+                            <h1 v-html="this.$siteData.data.shop_short_description"></h1>
+                            <span v-html="this.$siteData.data.shop_description"></span>
 
                             <hr>
 
                             <h3>{{ $t('shop.seller.seller contact') }}</h3>
-                            <p v-if="this.$globalSiteData.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.email }}</p>
-                            <p v-if="this.$globalSiteData.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.number }}</p>
+                            <p v-if="this.$globalSiteData.data.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.data.email }}</p>
+                            <p v-if="this.$globalSiteData.data.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.data.number }}</p>
                             
                         </div>
                     </div>

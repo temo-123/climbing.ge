@@ -55,15 +55,11 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_tour.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
-                            </div>
-                        </div>
+                        
+                        <published_item 
+                            :published_prop = data.global_tour.published
+                            @item_data="data.global_tour.published = $event" 
+                        />
 
                         <div class="form-group clearfix">
                             <label for="category" class='col-xs-2 control-label '> Category </label>
@@ -72,18 +68,6 @@
                                     <option :value="''" disabled>Select category</option> 
                                     <option  v-for="category in categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
                                 </select> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.location"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.duration"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
@@ -203,7 +187,20 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Change URL title </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_tour()">
+                                <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_tour()">
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control"> 
                             </div>
                         </div>
     
@@ -222,6 +219,7 @@
                         </div>
                     </form>
                 </div>
+                
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
@@ -235,6 +233,19 @@
                             <label for="name" class='col-xs-2 control-label'> Title </label>
                             <div class="col-xs-8">
                                 <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control"> 
                             </div>
                         </div>
     
@@ -263,9 +274,12 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+
     export default {
         components: {
-            validator_alerts_component
+            validator_alerts_component,
+            published_item
         },
         mixins: [
             editor_config
@@ -281,6 +295,8 @@
                 tour_old_images: [],
                 // regions: [],
 
+                is_change_url_title: false,
+
                 error: [],
 
                 is_loading: false,
@@ -290,8 +306,8 @@
                     us_text: editor_config.get_big_editor_config(),
                     // us_info: editor_config.get_big_editor_config(),
 
-                    ru_short_description_text: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
+                    // ru_short_description_text: editor_config.get_small_editor_config(),
+                    // ru_text: editor_config.get_big_editor_config(),
                     // ru_info: editor_config.get_big_editor_config(),
 
                     ka_short_description_text: editor_config.get_small_editor_config(),
@@ -303,8 +319,10 @@
                     global_tour: {},
                     us_tour: {},
                     ka_tour: {},
-                    ru_tour: {}
+                    // ru_tour: {}
                 },
+
+                categories: [],
 
                 // the_date: moment().format('YYYY-MM-DD'),
 
@@ -321,7 +339,7 @@
         methods: {
             get_tour_category: function(){
                 axios
-                .get("/tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })
@@ -364,7 +382,7 @@
                 this.data_for_tab = []
                 this.is_loading = true
                 axios
-                .get("tour/get_editing_tour/"+this.$route.params.id)
+                .get("/set_tour/get_editing_tour/"+this.$route.params.id)
                 .then(response => {
                     this.editing_data = response.data
 
@@ -390,7 +408,7 @@
             get_tour_images(){
                 this.data_for_tab = []
                 axios
-                .get("tour/get_tour_images/"+this.$route.params.id)
+                .get("/get_tour/get_tour_images/"+this.$route.params.id)
                 .then(response => {
                     this.tour_old_images = response.data
                 })
@@ -401,7 +419,7 @@
             del_tour_image_from_db(image_id){
                 if(confirm('Are you sure, you want delite this image?')){
                     axios
-                    .delete("tour/del_tour_image/"+image_id)
+                    .delete("/set_tour/del_tour_image/"+image_id)
                     .then(response => {
                         this.get_tour_images()
                     })
@@ -421,14 +439,19 @@
             },
 
             change_url_title_in_global_tour(){
-                if(!this.change_url_title){
+                if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
-                        this.change_url_title = true
+                        this.is_change_url_title = true
+                    }
+                    else{
+                        this.is_change_url_title = false 
                     }
                 }
                 else{
-                    this.change_url_title = false 
+                    this.is_change_url_title = false 
                 }
+
+                this.data.us_tour.is_change_url_title = this.is_change_url_title
             },
 
             edit_tour() {
@@ -455,7 +478,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('tour/edit_tour/'+this.$route.params.id, 
+                .post('/set_tour/edit_tour/'+this.$route.params.tour_id, 
                     formData
                 )
                 .then(response => {

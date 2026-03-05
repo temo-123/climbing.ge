@@ -1,7 +1,10 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar">
+    <nav :key="menuKey" class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar" :class="{ animate: animate_enabled }">
+        <div class="mx-auto order-0 mobile_title">
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
+        </div>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" v-if="user.length != 0">
             <i class="fa fa-bars " aria-hidden="true"></i>
         </button>
         
@@ -23,18 +26,53 @@
                 <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" class="nav-item">
                     <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
                 </li>
-                
+
                 <li class="nav-item">
-                    <a class="nav-link">{{ $t('user.menu.logout') }}</a>
+                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
+                        <span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </span>
+                    </router-link>
                 </li>
+
+                <li class="nav-item dropdown">
+                    <!-- <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>
+                            <i class="fa fa-user-circle"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <!-- <a class="dropdown-item" href="#">Options</a> -->
+
+                        <router-link :to="'/options'" class="dropdown-item">
+                            {{ $t('user.menu.options') }}
+                        </router-link>
+
+                        <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
+                            {{ $t('user.menu.my comments') }}
+                        </router-link>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
+
+                        <!-- <ul style="padding-left: 0px;" @click="logout()">
+                            <li><a>{{ $t('user.menu.logout') }}</a></li>
+                        </ul> -->
+                    </div>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <a class="nav-link" @click="logout()">{{ $t('user.menu.logout') }}</a>
+                </li> -->
             
             </ul>
         </div>
             
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <label for="check">
+                    <label for="check" @click="toggle_menu">
                         <span id="open_menu" class="menu_but">
                             <i class="fa fa-bars cursor_pointer" aria-hidden="true"></i>
                         </span>
@@ -42,21 +80,53 @@
                 </li>
             </ul>
         </div>
-        <div class="mx-auto order-0">
-            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Hi</router-link>
+
+        <div class="mx-auto order-0 desktop_title">
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
         </div>
+
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
-            <!-- <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
+            <ul class="navbar-nav ml-auto">
+                <!-- <li class="nav-item">
                     <router-link :to="{name: 'myComentsList'}" class="nav-link" exact>{{ $t('user.menu.my comments') }}</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link :to="{name: 'myOrders'}" class="nav-link" exact>{{ $t('user.menu.my orders') }}</router-link>
+                </li> -->
+
+                <li>
+                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
+                        <span>
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        </span>
+                    </router-link>
                 </li>
-                <li class="nav-item">
-                    <router-link :to="{name: 'cart'}" class="nav-link" exact>{{ $t('user.menu.cart') }}</router-link>
+
+                <li class="nav-item dropdown" v-if="user.length != 0">
+                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span>
+                            <i class="fa fa-user-circle"></i>
+                        </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                        <!-- <a class="dropdown-item" href="#">Options</a> -->
+                        <router-link :to="'/options'" class="dropdown-item">
+                            {{ $t('user.menu.options') }}
+                        </router-link>
+
+                        <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
+                            {{ $t('user.menu.my comments') }}
+                        </router-link>
+
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
+
+                        <!-- <ul style="padding-left: 0px;" @click="logout()">
+                            <li><a>{{ $t('user.menu.logout') }}</a></li>
+                        </ul> -->
+                    </div>
                 </li>
-            </ul> -->
+            </ul>
         </div>
     </nav>
 </template>
@@ -74,6 +144,8 @@
         data(){
             return {
                 menu_items: navbar.admin_all_menu(),
+                animate_enabled: false,
+                menuKey: 0, // Used to force re-render when permissions change
                 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -82,11 +154,36 @@
                     localStorage.setItem('lang', value);
                 },
                 
-                user: '',
+                user: [],
             };
         },
         mounted(){
             this.get_user()
+            // Load permissions immediately from localStorage or fetch from server
+            this.loadPermissions()
+            // Listen for permissions-loaded event from login
+            this.$root.$on('permissions-loaded', (permissions) => {
+                if (this.$ability) {
+                    this.$ability.update(permissions)
+                }
+                // Force re-render by incrementing menuKey
+                this.menuKey++
+                this.$forceUpdate()
+            })
+            // Listen for menu toggle events from LeftMenuComponent
+            this.$root.$on('menu-toggle', () => {
+                this.animate_enabled = true;
+                // Use requestAnimationFrame to ensure CSS transition is applied before position change
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.animate_enabled = false;
+                    }, 500);
+                });
+            });
+        },
+        beforeUnmount() {
+            this.$root.$off('menu-toggle');
+            this.$root.$off('permissions-loaded');
         },
         components: {
             countryFlag,
@@ -97,20 +194,64 @@
                 this.get_user(),
                 window.scrollTo(0,0)
 
+                this.loadPermissions()
+
                 let navbar = document.getElementById("navbarNav")
                 navbar.classList.remove("show")
             }
         },
         methods: {
+            loadPermissions() {
+                // Try to load permissions from localStorage first (set during login)
+                const storedPermissions = localStorage.getItem('user_permissions')
+                if (storedPermissions) {
+                    try {
+                        const permissions = JSON.parse(storedPermissions)
+                        if (permissions && permissions.length > 0 && this.$ability) {
+                            this.$ability.update(permissions)
+                            return
+                        }
+                    } catch (e) {
+                        console.error('Error parsing stored permissions:', e)
+                    }
+                }
+                
+                // Fallback: fetch permissions from server
+                this.fetchPermissions()
+            },
+            
+            fetchPermissions() {
+                axios
+                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
+                    .then(response => {
+                        if (this.$ability) {
+                            this.$ability.update(response.data)
+                        }
+                        localStorage.setItem('user_permissions', JSON.stringify(response.data))
+                    })
+                    .catch(error => console.log('Error fetching permissions:', error))
+            },
+            
             get_user(){
                 axios
-                .get('/api/auth_user')
+                .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data['name']
                 })
                 .catch(
                     // this.user = 'Boss'
                 );
+            },
+
+            logout(){
+                axios
+                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
+                .then(()=>{
+                    localStorage.removeItem('x_xsrf_token');
+                    localStorage.removeItem('user_permissions');
+                    this.$router.push({ name: "login" });
+                })
+                
             },
         
             haveMenuBlockPermission(menu_section){
@@ -153,6 +294,16 @@
                     return true
                 }
             },
+            
+            toggle_menu(){
+                this.animate_enabled = true;
+                // Use requestAnimationFrame to ensure CSS transition is applied before position change
+                requestAnimationFrame(() => {
+                    setTimeout(() => {
+                        this.animate_enabled = false;
+                    }, 500);
+                });
+            },
         },
     }
 </script>
@@ -162,17 +313,14 @@
         max-height: 380px;
         overflow-y: auto;
     }
-    .admin_page_header_navbar{
-        transition: all .5s;
-    }
     .menu_but{
         position: fixed;
         font-size: 200%;
         top: 0;
     }
-    .bg-perple {
+    /* .bg-perple {
         background-color: #7427bb !important;
-    }
+    } */
     /*@media (max-width: 993px) {
         .dropdown-menu .dropdown-item{
             color: #2b2a2a !important;
@@ -183,5 +331,23 @@
             display: none !important;
         }
     }
+
+    @media (max-width: 990px) {
+        .navbar-nav {
+            margin: 7.5px 0;
+        }
+        .desktop_title{
+            display: none;
+        }
+    }
+    @media (min-width: 990px) {
+        .mobile_title{
+            display: none;
+        }
+    }
+
+    .animate {
+        transition: all .5s ease;
+    }
 </style>
-    
+

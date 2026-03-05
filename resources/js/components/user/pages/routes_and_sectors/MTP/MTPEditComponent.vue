@@ -83,6 +83,8 @@
         </div>
 
       </form>
+
+      <pitch_list :mtp_id_prop="data.id" />
     </div>
 
     <div class="row justify-content-center" v-if="is_loading">
@@ -95,11 +97,15 @@
 
 <script>
   import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+  import pitch_list from './pitchs/PitchListComponent'
 
   export default {
     mixins: [
-        editor_config
+        editor_config,
     ],
+    components: {
+      pitch_list
+    },
     data() {
       return {
         description_editor: editor_config.get_small_editor_config(),
@@ -149,7 +155,7 @@
     methods: {
       get_region_data: function(){
         axios
-        .get("/article/get_category_articles/outdoor")
+        .get("/get_article/get_category_articles/outdoor")
         .then(response => {
           this.regions = response.data
           this.get_sectors_data()
@@ -162,7 +168,7 @@
 
       get_sectors_data: function(){
         axios
-        .get("../../api/sector/")
+        .get("/get_sector/get_all_sectors/")
         .then(response => {
           this.all_sectors = response.data
           this.get_mtp_editing_data()
@@ -176,7 +182,7 @@
       get_mtp_editing_data: function(){
         this.is_loading = true
         axios
-        .get("../../api/mtp/get_editing_mtp/"+this.$route.params.id)
+        .get("/set_mtp/get_editing_mtp/"+this.$route.params.id)
         .then(response => {
           this.data = response.data
           let sector = this.all_sectors.find(item => item.id === this.data.sector_id);
@@ -200,7 +206,7 @@
 
       edit_mtp: function () {
         axios
-        .post('../../api/mtp/mtp_edit/'+this.$route.params.id, {
+        .post('/set_mtp/mtp_edit/'+this.$route.params.id, {
             data: this.data,
         })
         .then(response => {

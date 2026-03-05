@@ -38,6 +38,16 @@
                 </div>
             </form>
 
+            <!-- <div class="form-group clearfix row" v-if="sector_id != ''">
+                <div class="col-md-12">
+                    <div class="row">
+                        <Editor 
+                            ref="canvasEditor"
+                            @canvas_data="update_canvas_data"
+                        />
+                    </div>
+                </div>
+            </div> -->
 
             <div class="row">
                 <div class="col-md-12">
@@ -100,7 +110,7 @@
 </template>
 
 <script>
-    import addSectorModal from './addSectorModalComponent.vue'
+    import addSectorModal from './assets/addSectorModalComponent.vue'
 
     export default {
         components: {
@@ -164,7 +174,7 @@
                 formData.append('image_sectors', JSON.stringify(this.image_sectors))
                 formData.append('title', this.data.title)
    
-                axios.post('/sector_local_images/', 
+                axios.post('/set_sector/set_sector_local_images/add_sector_local_image/', 
                     formData,
                     config
                 )

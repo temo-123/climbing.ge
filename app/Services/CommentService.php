@@ -44,8 +44,10 @@ class CommentService extends EmailVarificationeService
         if($is_verify_isset && !$validate){
             $data = $request->data;
 
-            if (Auth::user()) {
-                if(Auth::user()->role[0]['slug'] == 'ban'){
+            $auth = Auth::user();
+
+            if ($auth) {
+                if($auth->role[0]['slug'] == 'ban'){
                     return 'Your profile has been blocked. You cannot add a comment.';
                 }
             }
@@ -60,17 +62,17 @@ class CommentService extends EmailVarificationeService
 
             $data[$prefix.'_id'] = $request[$prefix.'_id'];
 
-            if (Auth::user()) {
+            if ($auth) {
                 $data['published'] = 1;
             }
             
             $activ_id = $comment_model::insertGetId($data);
 
-            if (Auth::user()) {
+            if ($auth) {
                 // if user registred & authed created relation
                 $comment_article = new $comment_user_relation_modal;
                 $comment_article[$relatione_prefix.'_id'] = $activ_id;
-                $comment_article['user_id'] = Auth::user()->id;
+                $comment_article['user_id'] = $auth->id;
                 $comment_article->save();
 
                 return ([
@@ -78,7 +80,7 @@ class CommentService extends EmailVarificationeService
                     "new_comment_id" => $activ_id
                 ]);
             }
-            else if (!Auth::user()) {
+            else if (!$auth) {
                 $user_count = User::where('email', '=', $data['email'])->count();
 
                 if($user_count != 0){
@@ -101,6 +103,7 @@ class CommentService extends EmailVarificationeService
                     ]);
                 }
                 else{
+                    // dd('ffff');
                     // if user not registred & not authed created non_registered_commenters item
                     // return (new static)->created_non_registered_commenter_relation($data['email'], $activ_id, $comment_model);
                     return ([
@@ -312,21 +315,26 @@ class CommentService extends EmailVarificationeService
     private static function created_non_registered_commenter_relation($email, $id, $comment_model){
         $non_registered_commenter_count = Non_registered_commenter::where('email', '=', $email)->count();
         $non_registered_commenter = Non_registered_commenter::where('email', '=', $email)->first();
-
+        
         if($non_registered_commenter_count == 0){
             $non_registered_commenter = new Non_registered_commenter;
             $non_registered_commenter['email'] = $email;
             $non_registered_commenter->save();
-
-            return (new static)->varificate_email($email, $id);
         }
-        else if ($non_registered_commenter->confirmed == 1) {
+        else{
             $comm = $comment_model::where('id', '=', $id)->first();
-            $comm['published'] = 1;
-            $comm -> save();
 
-            return ("Tenk you for comment");
+            if ($non_registered_commenter->confirmed == 1) {
+                $comm['published'] = 1;
+            }
+            else{
+                $comm['published'] = 0;
+            }
+
+            $comm -> save();
         }
+        
+        return (new static)->varificate_email($email, $id);
         
     }
 

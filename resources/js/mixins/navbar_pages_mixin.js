@@ -5,32 +5,42 @@ export const navbar = {
                 title: "Home",
                 route: "/",
             },
+            // {
+            //     title: "My Comments & Reviews",
+            //     route: "/my_comments_and_reviews",
+            //     permissions: [
+            //         ['show', 'my_comments'],
+            //     ]
+            // },
+
             {
-                title: "Dashboard",
-                route: "/admin_page",
-                permissions: [
-                    ['show', 'dashboard']
-                ]
+                title: "Tasks",
+                name: "tasks",
+                routes: [
+                    {
+                        name: "Guidbook task panel",
+                        route: "/guide_task_panel",
+                        permissions: [
+                            ['add', 'guide_task'],
+                            ['edit', 'guide_task'],
+                            ['del', 'guide_task'],
+                            ['edit_status', 'guide_task'],
+                        ]
+                    },
+
+                    {
+                        name: "Shop task panel",
+                        route: "/shop_task_panel",
+                        permissions: [
+                            ['add', 'shop_task'],
+                            ['edit', 'shop_task'],
+                            ['del', 'shop_task'],
+                            ['edit_status', 'shop_task'],
+                        ]
+                    },
+                ],
             },
-            {
-                title: "Task panel",
-                route: "/task_panel",
-                permissions: [
-                    ['show', 'worker']
-                ]
-            },
-            {
-                title: "My Comments & Reviews",
-                route: "/my_comments_and_reviews"
-            },
-            {
-                title: "Cart",
-                route: "/cart"
-            },
-            {
-                title: "My purchases",
-                route: "/purchases"
-            },
+
             {
                 title: "Favorites",
                 name: "favorites",
@@ -39,74 +49,74 @@ export const navbar = {
                         name: "Favorite products",
                         route: "/favorite_products",
                         permissions: [
-                        //     ['show', 'worker']
+                        //     ['show', 'favorite_products']
                         ]
                     },
                     {
                         name: "Favorite outdoor area",
                         route: "/my_favorite_outdoor_area",
                         permissions: [
-                        //     ['show', 'worker']
+                        //     ['show', 'my_favorite_outdoor_area']
                         ]
                     },
                     {
                         name: "Interested events",
                         route: "/interested_events",
                         permissions: [
-                        //     ['show', 'worker']
+                        //     ['show', 'interested_events']
                         ]
                     },
                 ],
             },
-            {
-                title: "My products",
-                name: "my_products",
-                routes: [
-                    {
-                        name: "My products",
-                        route: "/user_product_list",
-                        permissions: [
-                            ['add', 'product'],
-                            ['edit', 'product'],
-                            ['del', 'product'],
-                        ]
-                    },
-                    {
-                        name: "My Orders",
-                        route: "/order/user_orders",
-                        permissions: [
-                            ['edit_order_status', 'order'],
-                        ]
+            // {
+            //     title: "My products",
+            //     name: "my_products",
+            //     routes: [
+            //         {
+            //             name: "My products",
+            //             route: "/user_product_list",
+            //             permissions: [
+            //                 ['add', 'product'],
+            //                 ['edit', 'product'],
+            //                 ['del', 'product'],
+            //             ]
+            //         },
+            //         {
+            //             name: "My Orders",
+            //             route: "/order/user_orders",
+            //             permissions: [
+            //                 ['edit_order_status', 'order'],
+            //             ]
                         
-                    },
-                ],
-            },
-            {
-                title: "My tours",
-                name: "my_tours",
-                routes: [
-                    {
-                        name: "My tours",
-                        route: "/user_tours_list",
-                        permissions: [
-                            ['add', 'tour'],
-                            ['edit', 'tour'],
-                            ['del', 'tour'],
-                            ['add', 'tour_category'],
-                            ['edit', 'tour_category'],
-                            ['del', 'tour_category']
-                        ]
-                    },
-                    {
-                        name: "My tour reservations",
-                        route: "/user_tours_reservations_list",
-                        permissions: [
-                            ['show', 'tour_reservation'],
-                            ['del', 'tour_reservation'],
-                        ]
-                    }
-                ],
-            },
+            //         },
+            //     ],
+            // },
+            // {
+            //     title: "My tours",
+            //     name: "my_tours",
+            //     routes: [
+            //         {
+            //             name: "My tours",
+            //             route: "/user_tours_list",
+            //             permissions: [
+            //                 ['add', 'tour'],
+            //                 ['edit', 'tour'],
+            //                 ['del', 'tour'],
+            //                 ['add', 'tour_category'],
+            //                 ['edit', 'tour_category'],
+            //                 ['del', 'tour_category']
+            //             ]
+            //         },
+            //         {
+            //             name: "My tour reservations",
+            //             route: "/user_tours_reservations_list",
+            //             permissions: [
+            //                 ['show', 'tour_reservation'],
+            //                 ['del', 'tour_reservation'],
+            //             ]
+            //         }
+            //     ],
+            // },
             {
                 title: "Guide",
                 name: "guide",
@@ -151,15 +161,6 @@ export const navbar = {
                         ]
                     },
                     {
-                        name: "Sectors local images",
-                        route: "/sector_local_images",
-                        permissions: [
-                            ['add', 'sector_local_images'],
-                            ['edit', 'sector_local_ima`ges'],
-                            ['del', 'sector_local_images'],
-                        ]
-                    },
-                    {
                         name: "Ice & Mix",
                         route: "/article/ice",
                         permissions: [
@@ -173,6 +174,15 @@ export const navbar = {
                         ]
                     },
                     {
+                        name: "Sectors local images",
+                        route: "/sector_local_images",
+                        permissions: [
+                            ['add', 'sector_local_images'],
+                            ['edit', 'sector_local_ima`ges'],
+                            ['del', 'sector_local_images'],
+                        ]
+                    },
+                    {
                         name: "Spot projects",
                         route: "/article/spot_projects",
                         permissions: [
@@ -183,11 +193,12 @@ export const navbar = {
                     },
                     {
                         name: "Mountaineering",
-                        route: "/mount_routes/mount_routes_list",
+                        route: "/article/mount_route",
                         permissions: [
                             ['add', 'mount_route'],
                             ['edit', 'mount_route'],
                             ['del', 'mount_route'],
+
                             ['add', 'mount_massive'],
                             ['edit', 'mount_massive'],
                             ['del', 'mount_massive'],
@@ -238,6 +249,48 @@ export const navbar = {
                             ['del', 'article'],
                         ]
                     },
+                    {
+                        name: "Live cameras",
+                        route: "/live_cameras",
+                        permissions: [
+                            ['add', 'live_camera'],
+                            ['edit', 'live_camera'],
+                            ['del', 'live_camera'],
+                        ]
+                    },
+                    {
+                        name: "Events & Competitions",
+                        route: "/event",
+                        permissions: [
+                            ['add', 'event'],
+                            ['edit', 'event'],
+                            ['del', 'event'],
+                        ]
+                    },
+                    {
+                        name: "Local bisnes",
+                        route: "/local_bisnes",
+                        permissions: [
+                            ['add', 'local_bisnes'],
+                            ['edit', 'local_bisnes'],
+                            ['del', 'local_bisnes'],
+                        ]
+                    },
+                    
+                    {
+                        name: "Export tips",
+                        route: "/export_tips",
+                        permissions: [
+                            ['show', 'export']
+                        ]
+                    },
+                    {
+                        name: "Guidbook dashboard",
+                        route: "/guide_dashboard_page",
+                        permissions: [
+                            ['show', 'guide_dashboard']
+                        ]
+                    },
                 ]
             },
             {
@@ -245,23 +298,42 @@ export const navbar = {
                 name: "shop",
                 routes: [
                     {
+                        name: "My purchases",
+                        route: "/purchases",
+                        permissions: [
+                            
+                        ]
+                    },
+                    {
                         name: "All products & categoryes",
                         route: "/products_and_categories",
                         permissions: [
-                            ['show_all', 'product'],
-                            // ['add', 'product'],
-                            // ['edit', 'product'],
-                            // ['del', 'product'],
-                            ['show_all', 'product_category'],
-                            // ['add', 'product_category'],
-                            // ['edit', 'product_category'],
-                            // ['del', 'product_category'],
+                            // ['show_all', 'product'],
+                            ['add', 'product'],
+                            ['edit', 'product'],
+                            ['del', 'product'],
+
+                            // ['show_all', 'product_category'],
+                            ['add', 'product_category'],
+                            ['edit', 'product_category'],
+                            ['del', 'product_category'],
+
                             ['add', 'product_option'],
                             ['edit', 'product_option'],
                             ['del', 'product_option'],
+
                             ['add', 'sale_code'],
                             ['edit', 'sale_code'],
                             ['del', 'sale_code']
+                        ]
+                    },
+                    {
+                        name: "Warehouses",
+                        route: "/warehouses",
+                        permissions: [
+                            ['add', 'warehouse'],
+                            ['edit', 'warehouse'],
+                            ['del', 'warehouse']
                         ]
                     },
                     {
@@ -275,8 +347,13 @@ export const navbar = {
                         name: "All tours",
                         route: "/all_tours_list",
                         permissions: [
-                            ['show_all', 'tour'],
-                            ['show_all', 'tour_category']
+                            ['add', 'tour'],
+                            ['edit', 'tour'],
+                            ['del', 'tour'],
+
+                            ['add', 'tour_category'],
+                            ['edit', 'tour_category'],
+                            ['del', 'tour_category'],
                         ]
                     },
                     {
@@ -292,83 +369,57 @@ export const navbar = {
                         permissions: [
                             ['add', 'services'],
                             ['edit', 'services'],
-                            ['del', 'services']
+                            ['del', 'services'],
                         ]
                     },
+                    // {
+                    //     name: "Stor slider",
+                    //     route: "/stor_slides_list",
+                    //     permissions: [
+                    //         ['add', 'store_slides'],
+                    //         ['edit', 'store_slides'],
+                    //         ['del', 'store_slides']
+                    //     ]
+                    // },
                     {
-                        name: "Stor slider",
-                        route: "/stor_slides_list",
+                        name: "Shop dashboard",
+                        route: "/shop_dashboard_page",
                         permissions: [
-                            ['add', 'store_slides'],
-                            ['edit', 'store_slides'],
-                            ['del', 'store_slides']
+                            ['show', 'shop_dashboard'],
                         ]
                     },
                 ],
             },
             {
-                title: "Films",
-                route: "/films",
-                permissions: [
-                    ['add', 'film'],
-                    ['edit', 'film'],
-                    ['del', 'film'],
-                    ['add', 'film_teg'],
-                    ['edit', 'film_teg'],
-                    ['del', 'film_teg'],
-                    ['add', 'film_category'],
-                    ['edit', 'film_category'],
-                    ['del', 'film_category'],
-                ]
-            },
-            {
-                title: "Local bisnes",
-                route: "/local_bisnes",
-                permissions: [
-                    ['add', 'local_bisnes'],
-                    ['edit', 'local_bisnes'],
-                    ['del', 'local_bisnes'],
+                title: "Blog",
+                name: "blog",
+                routes: [
+                    {
+                        name: "Posts",
+                        route: "/posts",
+                        permissions: [
+                            ['add', 'post'],
+                            ['edit', 'post'],
+                            ['del', 'post'],
+                        ]
+                    },
                 ]
             },
             // {
-            //     title: "Site Global Data",
-            //     name: "global_data",
-            //     routes: [
-            //         {
-            //             name: "About us",
-            //             route: "/site_info",
-            //             permissions: [
-            //                 ['edit', 'site_data']
-            //             ]
-            //         },
-            //         {
-            //             name: "Site followers",
-            //             route: "/site_folloers",
-            //             permissions: [
-            //                 ['show', 'site_folloers'],
-            //                 ['del', 'site_folloers']
-            //             ]
-            //         },
-            //         {
-            //             name: "Head Sliders",
-            //             route: "/head_sliders_images",
-            //             permissions: [
-            //                 ['add', 'gallery'],
-            //                 ['edit', 'gallery'],
-            //                 ['del', 'gallery'],
-            //             ]
-            //         },
-            //     ],
+            //     title: "Films",
+            //     route: "/films",
+            //     permissions: [
+            //         ['add', 'film'],
+            //         ['edit', 'film'],
+            //         ['del', 'film'],
+            //         ['add', 'film_teg'],
+            //         ['edit', 'film_teg'],
+            //         ['del', 'film_teg'],
+            //         ['add', 'film_category'],
+            //         ['edit', 'film_category'],
+            //         ['del', 'film_category'],
+            //     ]
             // },
-            {
-                title: "Events & Competitions",
-                route: "/event",
-                permissions: [
-                    ['add', 'event'],
-                    ['edit', 'event'],
-                    ['del', 'event'],
-                ]
-            },
             {
                 title: "Site options",
                 name: "site_options",
@@ -377,16 +428,21 @@ export const navbar = {
                         name: "About us",
                         route: "/site_info",
                         permissions: [
-                            ['edit', 'site_data']
+                            ['edit', 'site_data'],
+                            ['add', 'site_data'],
                         ]
                     },
                     {
                         name: "Head Sliders",
                         route: "/head_sliders_images",
                         permissions: [
-                            ['add', 'gallery'],
-                            ['edit', 'gallery'],
-                            ['del', 'gallery'],
+                            ['add', 'store_slides'],
+                            ['edit', 'store_slides'],
+                            ['del', 'store_slides'],
+
+                            ['add', 'guide_slides'],
+                            ['edit', 'guide_slides'],
+                            ['del', 'guide_slides'],
                         ]
                     },
                     {
@@ -394,6 +450,7 @@ export const navbar = {
                         route: "/site_folloers",
                         permissions: [
                             ['show', 'site_folloers'],
+                            ['add', 'site_folloers'],
                             ['del', 'site_folloers']
                         ]
                     },
@@ -411,6 +468,7 @@ export const navbar = {
                         route: "/users_list",
                         permissions: [
                             ['add', 'user'],
+                            ['edit', 'user'],
                             ['del', 'user'],
                             ['edit_permissions', 'user'],
                             ['create_ban', 'user'],
@@ -420,14 +478,11 @@ export const navbar = {
                         name: "Other commenters",
                         route: "/non_registered_commenter_list",
                         permissions: [
-                            ['add', 'user'],
-                            ['del', 'user'],
-                            ['edit_permissions', 'user'],
-                            ['create_ban', 'user'],
+                            ['del', 'non_registered_commenter'],
                         ]
                     },
                     {
-                        name: "Article all images (beta)",
+                        name: "Article all images",
                         route: "/article_images",
                         permissions: [
                             ['add', 'gallery'],
@@ -445,15 +500,10 @@ export const navbar = {
                     },
                 ],
             },
-            {
-                title: "Options",
-                route: "/options",
-                permissions: [
-                    ['add', 'local_bisnes'],
-                    ['edit', 'local_bisnes'],
-                    ['del', 'local_bisnes'],
-                ]
-            },
+            // {
+            //     title: "Options",
+            //     route: "/options"
+            // },
         ]
     },
 }

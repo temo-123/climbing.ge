@@ -10,6 +10,7 @@ use App\Models\Shop\Product_option;
 use App\Services\Abstract\LocaleContentService;
 
 use Carbon\Carbon;
+use App\Models\User\Warehouse;
 
 class ProductService extends LocaleContentService
 {
@@ -22,10 +23,50 @@ class ProductService extends LocaleContentService
         foreach ($products as $product) {
             if($product['global_data']->product_options->count() > 0){
 
-                $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
-                $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
+                // Eager load warehouse relationship for options to get stock quantities
+                $product['global_data']->load(['product_options.warehouse']);
 
-                if($product['global_data']->discount != null || $product['global_data']->discount > 0){
+                $options = $product['global_data']->product_options;
+
+                $discounted_prices = [];
+                $original_prices = [];
+
+                foreach ($options as $option) {
+                    $price = $option->price;
+                    $original_prices[] = $price;
+                    if ($option->discount > 0) {
+                        $discounted_price = $price - ($price * $option->discount / 100);
+                        $discounted_prices[] = $discounted_price;
+                    } else {
+                        $discounted_prices[] = $price;
+                    }
+                }
+
+                $old_min_price = min($original_prices);
+                $old_max_price = max($original_prices);
+                $new_min_price = min($discounted_prices);
+                $new_max_price = max($discounted_prices);
+
+                $has_discount = $options->contains('discount', '>', 0);
+                $max_discount = $has_discount ? $options->max('discount') : 0;
+                
+                // Build product options array
+                $product_options = [];
+                foreach($options as $option){
+                    $product_image = [];
+                    $product_images = Option_image::where('option_id', '=', $option->id)->get();
+                    array_push($product_options, [
+                        'option' => $option,
+                        'images' => $product_images,
+                        'stock_quantity' => self::get_option_stock_quantity($option),
+                        'is_out_of_stock' => self::get_option_stock_quantity($option) <= 0
+                    ]);
+                }
+
+                // Calculate if ALL options are out of stock
+                $out_of_stock = self::is_all_options_out_of_stock($product['global_data']);
+
+                if($has_discount){
                     array_push($reponce, [
                         "global_product"=>$product['global_data'],
                         "locale_product"=>$product['locale_data'],
@@ -35,10 +76,14 @@ class ProductService extends LocaleContentService
 
                         "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
 
-                        "new_max_price"=>(new static)->colculate_product_discount($old_max_price, $product['global_data']->discount),
-                        "new_min_price"=>(new static)->colculate_product_discount($old_min_price, $product['global_data']->discount),
+                        "new_max_price"=>$new_max_price,
+                        "new_min_price"=>$new_min_price,
 
                         "product_images"=>(new static)->get_product_images($product['global_data']),
+                        "has_discount" => $has_discount,
+                        "max_discount" => $max_discount,
+                        "product_option" => $product_options,
+                        "out_of_stock" => $out_of_stock,
                     ]);
                 }
                 else{
@@ -49,11 +94,19 @@ class ProductService extends LocaleContentService
                         "max_price"=>(new static)->get_product_price($product['global_data'], 'max'),
                         "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
                         "product_images"=>(new static)->get_product_images($product['global_data']),
+                        "has_discount" => $has_discount,
+                        "product_option" => $product_options,
+                        "out_of_stock" => $out_of_stock,
                     ]);
                 }
             }
         }
-        
+
+        // Sort: in-stock products first, out-of-stock products last
+        $reponce = collect($reponce)->sortBy(function($product) {
+            return $product['out_of_stock'] ? 1 : 0;
+        })->values()->all();
+
         return $reponce;
     }
 
@@ -64,21 +117,47 @@ class ProductService extends LocaleContentService
 
         $product = (new static)->get_locale_content_in_page($product, Locale_product::class, '_product_id', $locale);
 
-        $options = product_option::where('product_id', '=', $product['global_data']->id)->get();
-        
+        $options = product_option::where('product_id', '=', $product['global_data']->id)->with('warehouse')->get();
+
         foreach($options as $option){
             $product_image = [];
             $product_images = Option_image::where('option_id', '=', $option->id)->get();
-            array_push($product_option, [ 
-                'option' => $option, 
-                'images' => $product_images
+            array_push($product_option, [
+                'option' => $option,
+                'images' => $product_images,
+                'stock_quantity' => self::get_option_stock_quantity($option),
+                'is_out_of_stock' => self::get_option_stock_quantity($option) <= 0
             ]);
         }
 
-        $old_min_price = (new static)->get_product_price($product['global_data'], 'min');
-        $old_max_price = (new static)->get_product_price($product['global_data'], 'max');
-        
-        if($product['global_data']->discount != null || $product['global_data']->discount > 0){
+        $options = $product['global_data']->product_options;
+
+        // Calculate if ALL options are out of stock
+        $out_of_stock = self::is_all_options_out_of_stock($product['global_data']);
+
+        $discounted_prices = [];
+        $original_prices = [];
+
+        foreach ($options as $option) {
+            $price = $option->price;
+            $original_prices[] = $price;
+            if ($option->discount > 0) {
+                $discounted_price = $price - ($price * $option->discount / 100);
+                $discounted_prices[] = $discounted_price;
+            } else {
+                $discounted_prices[] = $price;
+            }
+        }
+
+        $old_min_price = min($original_prices);
+        $old_max_price = max($original_prices);
+        $new_min_price = min($discounted_prices);
+        $new_max_price = max($discounted_prices);
+
+        $has_discount = $options->contains('discount', '>', 0);
+        $max_discount = $has_discount ? $options->max('discount') : 0;
+
+        if($has_discount){
             array_push($product_data, [
                 "global_product"=>$product['global_data'],
                 "locale_product"=>$product['locale_data'],
@@ -87,10 +166,13 @@ class ProductService extends LocaleContentService
 
                 "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
 
-                "new_max_price"=>(new static)->colculate_product_discount($old_max_price, $product['global_data']->discount),
-                "new_min_price"=>(new static)->colculate_product_discount($old_min_price, $product['global_data']->discount),
+                "new_max_price"=>$new_max_price,
+                "new_min_price"=>$new_min_price,
 
                 'product_option' => $product_option,
+                'has_discount' => $has_discount,
+                'max_discount' => $max_discount,
+                'out_of_stock' => $out_of_stock,
             ]);
         }
         else{
@@ -101,8 +183,10 @@ class ProductService extends LocaleContentService
                 "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
 
                 "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
-                
+
                 'product_option' => $product_option,
+                'has_discount' => $has_discount,
+                'out_of_stock' => $out_of_stock,
             ]);
         }
 
@@ -193,5 +277,58 @@ class ProductService extends LocaleContentService
         }
 
         return $product_options;
+    }
+
+    /**
+     * Get stock quantity for a product option from the general warehouse
+     *
+     * @param Product_option $option
+     * @return int
+     */
+    public static function get_option_stock_quantity($option)
+    {
+        if (!$option) {
+            return 0;
+        }
+
+        // Try to get from warehouse pivot table (general warehouse)
+        $generalWarehouse = $option->warehouse->where('general', '=', 1)->first();
+        if ($generalWarehouse && isset($generalWarehouse->pivot->quantity)) {
+            return (int) $generalWarehouse->pivot->quantity;
+        }
+
+        // Fallback: check if option has direct quantity field
+        if (isset($option->quantity)) {
+            return (int) $option->quantity;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Check if ALL options for a product are out of stock
+     *
+     * @param Product $product
+     * @return bool
+     */
+    public static function is_all_options_out_of_stock($product)
+    {
+        $options = $product->product_options;
+
+        if ($options->count() === 0) {
+            // No options means product is not out of stock
+            return false;
+        }
+
+        foreach ($options as $option) {
+            $quantity = self::get_option_stock_quantity($option);
+            if ($quantity > 0) {
+                // Found at least one option with stock, product is in stock
+                return false;
+            }
+        }
+
+        // All options have 0 or less quantity
+        return true;
     }
 }

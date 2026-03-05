@@ -33,6 +33,7 @@
                         <vue-recaptcha 
                             :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                             :loadRecaptchaScript="true"
+                            :recaptchaHost="recaptchaHost"
                             ref="recaptcha"
                             type="invisible"
                             @verify="onCaptchaVerified"
@@ -67,13 +68,16 @@
 
 </template>
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+
     export default {
         components: {
             StackModal,
-            SlickItem,
-            SlickList,
+            // SlickItem,
+            // SlickList,
+            VueRecaptcha,
         },
         props: [
             "product_id",
@@ -166,7 +170,7 @@
             make_complaint(){
                 this.complaint_loader = true
                 axios
-                .post('/product_feedback/add_feedback_complaint/',{
+                .post('/set_product_feedback_by_gest/add_feedback_complaint/',{
                     feedback_id: this.complaint_feedback_id,
                     feedback_complaint: this.selected_feedback_complaint,
                     email: this.complainter_email,

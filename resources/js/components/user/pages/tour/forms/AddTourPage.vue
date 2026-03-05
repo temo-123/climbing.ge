@@ -54,15 +54,11 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_tour.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
-                            </div>
-                        </div>
+
+                        <published_item 
+                            :published_prop = data.global_tour.published
+                            @item_data="data.global_tour.published = $event" 
+                        />
 
                         <div class="form-group clearfix">
                             <label for="category" class='col-xs-2 control-label '> Category </label>
@@ -71,18 +67,6 @@
                                     <option :value="''" disabled>Select category</option> 
                                     <option  v-for="category in categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
                                 </select> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.location"  class="form-control"> 
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
-                            <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.duration"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
@@ -146,6 +130,18 @@
                                 <input type="text" name="name" v-model="data.us_tour.title"  class="form-control"> 
                             </div>
                         </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control"> 
+                            </div>
+                        </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
@@ -177,6 +173,18 @@
                                 <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
                             </div>
                         </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control"> 
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <div class="col-xs-8">
+                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control"> 
+                            </div>
+                        </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
@@ -203,9 +211,12 @@
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+
     export default {
         components: {
-            validator_alerts_component
+            validator_alerts_component,
+            published_item
         },
         mixins: [
             editor_config
@@ -232,36 +243,42 @@
                     ka_text: editor_config.get_big_editor_config(),
                 },
 
+                // data: {
+                //     global_tour: {
+                //         // us_title_for_url_title: '',
+
+                //         category_id: '',
+
+                //         // location: '',
+                //         // duration: '',
+                //         min_price: '',
+
+                //         published: 0,
+                //     },
+
+                //     us_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ka_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     },
+
+                //     ru_tour: {
+                //         title: "",
+                //         short_description: "",
+                //         text: "",
+                //     }
+                // },
+
                 data: {
-                    global_tour: {
-                        // us_title_for_url_title: '',
-
-                        category_id: '',
-
-                        location: '',
-                        duration: '',
-                        min_price: '',
-
-                        published: 0,
-                    },
-
-                    us_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ka_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    },
-
-                    ru_tour: {
-                        title: "",
-                        short_description: "",
-                        text: "",
-                    }
+                    global_tour: {},
+                    us_tour: {},
+                    ka_tour: {},
                 },
                 categories: [],
 
@@ -317,7 +334,7 @@
                 formData.append('data', JSON.stringify(this.data))
 
                 axios
-                .post('/tour/add_tour', 
+                .post('/set_tour/add_tour', 
                     formData
                 )
                 .then(response => {
@@ -335,7 +352,7 @@
 
             get_tour_category: function(){
                 axios
-                .get("/tour/category/get_all_categories/")
+                .get("/get_tour/get_category/get_all_categories/")
                 .then(response => {
                     this.categories = response.data
                 })

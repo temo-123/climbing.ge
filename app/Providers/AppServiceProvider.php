@@ -9,6 +9,9 @@ use Illuminate\Auth\Notifications\ResetPassword;
 use App\Models\Sanctum\PersonalAccessToken;
 use Laravel\Sanctum\Sanctum;
 
+use LanguageDetection\Language;
+use Flitt\Configuration;
+
 // use View;
 // use URL;
 // use App\User;
@@ -16,6 +19,7 @@ use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
+
     /**
      * Register any application services.
      *
@@ -23,7 +27,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->singleton(\LanguageDetection\Language::class, function ($app) {
+            return new \LanguageDetection\Language(['en', 'ka']);
+        });
     }
 
     /**
@@ -37,8 +43,14 @@ class AppServiceProvider extends ServiceProvider
         Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
         
         ResetPassword::createUrlUsing(function ($user, string $token) {
-            // return 'https://user.climbing.loc/reset-password?token='.$token;
-            return 'https://user.climbing.loc/reset-password/' . $token . '/' . $user->id;
+            // Use APP_SSH environment variable for flexibility
+            $appSsh = env('APP_SSH', 'https://');
+            $userPageUrl = env('USER_PAGE_URL', 'user.climbing.ge');
+            return $appSsh . $userPageUrl . '/reset-password/' . $token . '/' . $user->id;
         });
+
+        Configuration::setMerchantId(config('flitt.merchant_id'));
+        Configuration::setSecretKey(config('flitt.secret_key'));
+        Configuration::setApiVersion(config('flitt.api_version'));
     }
 }

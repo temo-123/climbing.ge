@@ -16,21 +16,27 @@ class User_notificationsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('user_notifications')->insert([
-            'favorite_outdoor' => 1,
-            'favorite_product' => 1,
-            'favorite_film' => 1,
-            'interested_event' => 1,
-            'news' => 1,
-            'add_new_sector' => 1,
-            'add_new_outdoor_spot' => 1,
-            'add_new_ice_spot' => 1,
-            'add_new_techtip' => 1,
-            'add_new_gym' => 1,
-            'add_new_product' => 1,
-            'add_new_service' => 1,
-            
-            'user_id' => 1,
-        ]);
+        $notificationTypes = [
+            'favorite_outdoor',
+            'favorite_product',
+            'favorite_film',
+            'interested_event',
+            'news',
+            'add_new_sector',
+            'add_new_outdoor_spot',
+            'add_new_ice_spot',
+            'add_new_techtip',
+            'add_new_gym',
+            'add_new_product',
+            'add_new_service',
+        ];
+
+        // Insert a row for each notification type for user_id 1
+        foreach ($notificationTypes as $typeId => $typeName) {
+            DB::table('user_notifications')->insert([
+                'notification_type' => $typeId,
+                'user_id' => 1,
+            ]);
+        }
     }
 }

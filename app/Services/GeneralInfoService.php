@@ -10,6 +10,8 @@ use App\Models\Guide\General_info_event;
 use App\Models\Guide\Event;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class GeneralInfoService
 {
@@ -118,10 +120,14 @@ class GeneralInfoService
         }
     }
 
-    public static function getGeneralInfoForArticle($global_info) {
+    public static function getGeneralInfoForArticle($global_info, $locale) {
         $general_info = [];
 
         $info_article_relatione = General_info_article::where('article_id', '=', $global_info->id)->get();
+
+        if ($locale == "us" || $locale == 'en') {
+            $locale = "us";
+        }
 
         // dd($info_article_relatione);
         foreach($info_article_relatione as $info){
@@ -130,31 +136,93 @@ class GeneralInfoService
             if($info->block == 'info_block'){
                 $general_info['info_block'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "id" => $info->info_id,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
+                    "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
             }
             if($info->block == 'what_need_info'){
                 $general_info['what_need_info'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "id" => $info->info_id,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
+                    "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
             }
             if($info->block == 'best_time'){
                 $general_info['best_time'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "id" => $info->info_id,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
+                    "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
             }
             if($info->block == 'routes_info'){
                 $general_info['routes_info'] = [
                     "block_action" => $info->block_action,
-                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_us')->text_us
+                    "id" => $info->info_id,
+                    "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
+                    "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
             }
         }
 
-        // dd($general_info);
+        // dd(General_info::where('id', '=', $info->info_id)->first('text_'.$locale));
 
         return $general_info;
+    }
+
+    /**
+     * Delete a general info record and its related records
+     * Handles foreign key constraint violations by cascading deletion
+     * 
+     * @param int $id The ID of the general info to delete
+     * @return bool Success status
+     * @throws \Exception If deletion fails
+     */
+    public static function deleteGeneralInfo($id)
+    {
+        try {
+            DB::beginTransaction();
+            
+            // Find the general info record
+            $generalInfo = General_info::find($id);
+            
+            if (!$generalInfo) {
+                DB::rollBack();
+                Log::warning("General info record not found for deletion", ['id' => $id]);
+                return false;
+            }
+
+            // Delete related records from general_info_article table
+            $deletedArticleRelations = General_info_article::where('info_id', $id)->delete();
+            Log::info("Deleted {$deletedArticleRelations} article relations for general info", ['general_info_id' => $id]);
+
+            // Delete related records from general_info_event table
+            $deletedEventRelations = General_info_event::where('info_id', $id)->delete();
+            Log::info("Deleted {$deletedEventRelations} event relations for general info", ['general_info_id' => $id]);
+
+            // Finally delete the general info record
+            $deleted = $generalInfo->delete();
+            
+            if ($deleted) {
+                DB::commit();
+                Log::info("Successfully deleted general info and related records", ['id' => $id]);
+                return true;
+            } else {
+                DB::rollBack();
+                Log::error("Failed to delete general info record", ['id' => $id]);
+                return false;
+            }
+            
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Error deleting general info", [
+                'id' => $id,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            throw $e;
+        }
     }
 }

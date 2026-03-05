@@ -22,8 +22,6 @@ export const editor_config = {
             // colorButton: 'CF5D4E,454545,FFF,DDD,CCEAEE,66AB16',
             // toolbar: []
         }
-
-        
     },
 
     get_small_editor_config(){

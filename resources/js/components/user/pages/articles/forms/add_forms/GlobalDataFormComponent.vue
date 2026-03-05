@@ -9,24 +9,26 @@
                     </div>
                 </div>
                 <form method="POST" @submit.prevent="add_article">
-                    <div class="form-group clearfix row">
+                    <!-- <div class="form-group clearfix row">
                         <label for="published" class='col-md-2 control-label '> Publish </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.published" name="published" > 
                                 <option value="0">Not public</option> 
                                 <option value="1">Public</option> 
                             </select> 
-                            <div class="alert alert-danger" role="alert" v-if="error.published">
-                                {{ error.published[0] }}
-                            </div>
                         </div>
-                    </div>
+                    </div> -->
+                    
+                    <published_item 
+                        :published_prop = data.published
+                        @item_data="data.published = $event" 
+                    />
 
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="region" class='col-md-2 control-label '> Regions </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="region_id" name="region" > 
-                                <option :value="'select_region'" disabled>Select region</option> 
+                                <option :value="0" disabled>Select region</option> 
                                 <option :value="null" style="color:red">Whithout Region</option> 
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
                             </select> 
@@ -37,7 +39,7 @@
                         <label for="name" class='col-md-2 control-label'> Mountain </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="mount_id" name="mount_id"> 
-                                <option :value="'select_mount'" disabled>Select mount</option> 
+                                <option :value="0" disabled>Select mount</option> 
                                 <option :value="null" style="color:red">Whithout Mount</option> 
                                 <option v-for="mount in mount_masive" :key="mount.id" :value="mount.global_data.id">{{mount.global_data.name}}</option> 
                             </select> 
@@ -97,14 +99,17 @@
     </div>
 </template>
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import { SlickList, SlickItem } from 'vue-slicksort';
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
+    import published_item from '../../../../items/form/parts/PublishedValueComponent.vue'
     export default {
         components: {
-            StackModal,
-            SlickItem,
-            SlickList,
+            // StackModal,
+            // SlickItem,
+            // SlickList,
+
+            published_item
         },
         props: [
             // 'back_url',
@@ -140,12 +145,9 @@
                     // google_link: "",
                     // inst_link: "",
                     // web_link: "",
-
-                    // region_id: "select_region",
-                    // mount_id: "select_mount",
                 },
-                region_id: "select_region",
-                mount_id: "select_mount",
+                    region_id: 0,
+                    mount_id: 0,
             }
         },
         mounted() {
@@ -162,7 +164,7 @@
             get_mount_massive_data: function(category){
                 if(category == 'mount_route'){
                     axios
-                    .get("/mount/mount/")
+                    .get("/get_mount/get_all_mount/")
                     .then(response => {
                         this.mount_masive = response.data
                     })
@@ -175,7 +177,7 @@
             get_regions(category){
                 if(category == 'outdoor'){
                     axios
-                    .get("/outdoor/region/")
+                    .get("/get_region/get_all_outdoor_regions/")
                     .then(response => {
                         this.regions = response.data
                     })

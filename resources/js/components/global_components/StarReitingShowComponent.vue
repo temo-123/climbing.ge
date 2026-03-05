@@ -1,5 +1,5 @@
 <template>
-   <div class="row" v-if="reviews_count_prop > 0">
+   <div class="row stars_block" v-if="reviews_count_prop > 0">
         <div class="col-md-12">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="ratings">                                        
@@ -123,5 +123,8 @@ export default {
     font-weight:300;
     font-size:18px;
     margin-bottom:2px;
+}
+.stars_block{
+    min-width: 195px;
 }
 </style>

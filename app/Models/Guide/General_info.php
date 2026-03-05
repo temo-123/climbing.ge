@@ -12,12 +12,10 @@ class General_info extends Model
     public $table = "general_infos";
 
     protected $fillable = [
-        'title_us',
-		'title_ka',
-		// 'title_ru',
-		// 'text_ru',
+        'title',
 		'text_ka',
 		'text_us',
+		'is_show',
 	];
 
 

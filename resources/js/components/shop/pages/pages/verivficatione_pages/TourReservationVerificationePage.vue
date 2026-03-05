@@ -73,7 +73,7 @@
             confirm_email(){
                 this.is_loading = true
                 axios
-                .post('/tour/reservation/verifiation_reservation/'+this.$route.params.reservation_id)
+                .post('/set_tour/reservation/verifiation_reservation/'+this.$route.params.reservation_id)
                 .then(response => {
                     alert('Your reservation is confirmed! This page will be closed!')
                     window.close();

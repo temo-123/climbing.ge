@@ -4,6 +4,9 @@ import NotFound from '../components/errors/404Component.vue'
 
 import i18n from "../services/localization/i18n";
 
+import UnfollowComponent from "../components/global_components/varification_pages/UnfollowPage.vue";
+import CommentEmailVerificationePage from "../components/global_components/varification_pages/CommentEmailVerificationePage.vue";
+
 function load(component) {
     return () => import(`../components/shop/pages/${component}.vue`)
 }
@@ -65,9 +68,9 @@ const router = new VueRouter({
                 { path: 'about_us', name: 'about_store', component: load('AboutUs'),},
                 { path: 'search_products', name: 'search_products', component: load('SearchPage'),},
 
-                { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: load("pages/verivficatione_pages/CommentEmailVerificationePage"),},
-                { path: "confirm_reservation/:reservation_id/:email", name: "confirm_reservation", component: load("pages/verivficatione_pages/TourReservationVerificationePage"),},
-                
+                { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent,},
+                { path: "/confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage,},
+
                 { path: '*', name: 'NotFound', component: NotFound }
             ]
         }

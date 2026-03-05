@@ -22,58 +22,61 @@ class LocalBisnesController extends Controller
 {
     public function get_local_bisnes_for_article(Request $request)
     {
-        $action_data = date("Y/m/d H:i:s");
+        $data = [];
 
-        $article = Article::where('url_title', '=', $request->article_url_title)->first();
-        $article_bisnes_global_data = $article->bisnes->where('published', '=', 1)->first();
-        
-        if($article_bisnes_global_data){
-
-            $pulic_year = $article_bisnes_global_data->published_data;
-            $public_month = $article_bisnes_global_data->published_data;
-            $pulic_day = $article_bisnes_global_data->published_data;
-
-            if ($article_bisnes_global_data->public_totaly) {
-                $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisnes_global_data);
-                $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
-
-                $data = [
-                    'global_data' => $article_bisnes_global_data,
-                    'local_data' => $article_bisnes_local_data,
-                    'image' => $bisnes_images
-                ];
+        try {
+            // Get the article by URL title
+            $article = Article::where('url_title', '=', $request->article_url_title)->first();
+            
+            if (!$article) {
+                return $data; // Return empty array if article not found
             }
-            else if(
-                date('m', strtotime($public_month)) >= date('m', strtotime($action_data)) &&
-                date('Y', strtotime($pulic_year)) == date('Y', strtotime($action_data))
-            ){
 
-                $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisnes_global_data);
+            // Get businesses associated with the article that are published
+            $article_bisnes_global_data = $article->businesses()->where('published', '=', 1)->take(2)->get();
+            
+            if ($article_bisnes_global_data && $article_bisnes_global_data->isNotEmpty()) {
+                $currentDate = now();
+                
+                foreach($article_bisnes_global_data as $article_bisne_global_data){
+                    $shouldShowBusiness = false;
+                    
+                    // Check if business should be shown based on publication settings
+                    if ($article_bisne_global_data->public_totaly) {
+                        // Business is published totally
+                        $shouldShowBusiness = true;
+                    } else if ($article_bisne_global_data->published_data) {
+                        // Check scheduled publication date
+                        $publishDate = \Carbon\Carbon::parse($article_bisne_global_data->published_data);
+                        $shouldShowBusiness = $publishDate->lte($currentDate);
+                    }
+                    
+                    if ($shouldShowBusiness) {
+                        // Get local business data
+                        $article_bisnes_local_data = $this->get_article_bisnes_local_data($request->locale == 'ka', $article_bisne_global_data);
+                        
+                        // Safely get business images
+                        $bisnes_images = '';
+                        if ($article_bisne_global_data->bisnes_images && $article_bisne_global_data->bisnes_images->isNotEmpty()) {
+                            $firstImage = $article_bisne_global_data->bisnes_images->first();
+                            $bisnes_images = $firstImage->image ?? '';
+                        }
 
-                if(date('d', strtotime($pulic_day)) > date('d', strtotime($action_data))){
-                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
-
-                    $data = [
-                        'global_data' => $article_bisnes_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ];
-                }
-                elseif (
-                        date('m', strtotime($pulic_day)) > date('m', strtotime($action_data)) &&
-                        date('Y', strtotime($pulic_day)) == date('Y', strtotime($action_data))
-                    ) {
-
-                    $bisnes_images = $article_bisnes_global_data->bisnes_images[0];
-
-                    $data = [
-                        'global_data' => $article_bisnes_global_data,
-                        'local_data' => $article_bisnes_local_data,
-                        'image' => $bisnes_images
-                    ];
+                        $data[] = [
+                            'global_data' => $article_bisne_global_data,
+                            'local_data' => $article_bisnes_local_data,
+                            'image' => $bisnes_images
+                        ];
+                    }
                 }
             }
-                return $data;
+            
+            return $data;
+            
+        } catch (\Exception $e) {
+            // Log the error for debugging
+            \Log::error('Error fetching local businesses for article: ' . $e->getMessage());
+            return $data; // Return empty array on error
         }
     }
 
@@ -123,185 +126,35 @@ class LocalBisnesController extends Controller
 
     public function get_local_bisneses(Request $request)
     {
-        return Suport_local_bisnes::get();
+        return Suport_local_bisnes::latest('id')->get();
     }
 
-    public function add_local_bisnes(Request $request)
-    {
-        $data = json_decode($request->data, true );
-        $image_path = 'images/local_bisnes_img/';
-        
-        $article_adding = LocaleContentControllService::add_content($data, Suport_local_bisnes::class, Locale_bisnes::class, '_bisnes', $request, $image_path);
-
-        if (!array_key_exists('validation', $article_adding->original)) {
-            // GalleryService::add_gallery_images(
-            //     $request->gallery_images, 
-            //     $article_adding->original['global_bisnes_id'], 
-            //     Article_image::class, 
-            //     'image', 
-            //     'article_id', 
-            //     '/images/local_bisnes_img/'
-            // );
-
-            if($request->hasFile('bisnes_images')){
-                $this->add_bisnes_images($request['bisnes_images'], $article_adding->original['global_bisnes_id']);
-            }
-
-            if($request->bisnes_new_article_relations){
-                $this->add_bisnes_relation($request['bisnes_new_article_relations'], $article_adding->original['global_bisnes_id']);
-            }
-        }
-        else {
-            return $article_adding;
-        }
-    }
-
-    public function edit_local_bisnes(Request $request)
-    {
-        // $data = json_decode($request->data, true );
-
-        $image_path = 'images/local_bisnes_img/';
-
-        $article_editing = LocaleContentControllService::edit_content(Suport_local_bisnes::class, Locale_bisnes::class, '_bisnes', $request, $image_path);
-
-        if(!array_key_exists('validation', $article_editing->original)){
-            // GalleryService::add_gallery_images(
-            //     $request->gallery_images, 
-            //     $article_editing->original['global_bisnes_id'], 
-            //     Article_image::class, 
-            //     'image', 
-            //     'article_id', 
-            //     '/images/local_bisnes_img/'
-            // );
-
-            if($request->hasFile('bisnes_new_images')){
-                $this->add_bisnes_images($request['bisnes_new_images'], $article_editing->original['global_bisnes_id']);
-            }
-            
-            if($request->bisnes_new_article_relations){
-                $this->add_bisnes_relation($request['bisnes_new_article_relations'], $article_editing->original['global_bisnes_id']);
-            }
-        }
-        else{
-            return $article_editing;
-        }
-    }
-
-    public function add_bisnes_images($images, $bisnes_id)
-    {
-        foreach ($images as $image) {
-            // if($file_new_name = ImageControllService::upload_loop_image('images/suport_local_bisnes_img/', $image, 1)){
-                $file_new_name;
-                $file_new_name = ImageControllService::upload_loop_image('images/suport_local_bisnes_img/', $image, 1);
-                if(file_exists(public_path('images/suport_local_bisnes_img/') . $file_new_name)){
-                    $new_option_image = new Suport_local_bisnes_image;
-            
-                    $new_option_image['image'] = $file_new_name;
-                    $new_option_image['bisnes_id'] = $bisnes_id;
-            
-                    $saiving = $new_option_image -> save();
-
-                    if($saiving){
-                        echo 'Upload socsesful \n';
-                    }
-                }
-                else{
-                    echo 'Upload error \n';
-                }
-            // }
-        }
-    }
-
-    public function add_bisnes_relation($relations, $bisnes_id){
-        foreach ($relations as $relation) {
-            if($relation != null || $relation != ''){
-                $relatione = new Suport_local_bisnes_article;
-                
-                $relatione['article_id'] = $relation;
-                $relatione['bisnes_id'] = $bisnes_id;
-        
-                $saiving = $relatione -> save();
-            }
-        }
-    }
-    
-    public function get_editing_local_bisnes_info(Request $request)
-    {
-        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
-
-        $data = [
-            'global_bisnes' => $bisnes,
-            'us_bisnes' => $bisnes->us_bisnes,
-            'ka_bisnes' => $bisnes->ka_bisnes,
-            // 'ru_bisnes' => $bisnes->ru_bisnes,
-
-            // 'bisnes_images' => $bisnes->bisnes_images,
-        ];
-
-        return $data;
-    }
     public function get_bisnes_images(Request $request)
     {
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
         return $bisnes->bisnes_images;
     }
+
     public function get_bisnes_article_relation(Request $request)
     {
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
-        return $bisnes->bisnes_article;
+
+        return $bisnes->articles;
     }
-    public function del_local_bisnes(Request $request)
+
+    public function get_article_categories(Request $request)
     {
-        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
-        $bisnes_images_count = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->count();
-
-        if($bisnes_images_count > 0){
-            $bisnes_images = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->get();
-            // dd($bisnes_images);
-            foreach ($bisnes_images as $image) {
-                ImageControllService::image_delete('images/suport_local_bisnes_img/', $image, 'image');
-                $image ->delete();
-            }
-        }
-        $bisnes ->delete();
+        // Get unique categories from articles table
+        $categories = Article::whereNotNull('category')
+                           ->where('category', '!=', '')
+                           ->distinct()
+                           ->pluck('category')
+                           ->sort()
+                           ->values();
+        
+        return $categories;
     }
-
-    public function del_local_bisnes_image(Request $request)
-    {
-        $image = Suport_local_bisnes_image::where('id', '=', $request->image_id)->first();
-        // if($image){
-            ImageControllService::image_delete('images/suport_local_bisnes_img/', $image, 'image');
-            $image ->delete();
-        // }
-    }
-
-    public function del_bisnes_article_relation(Request $request) {
-        $relation_value = Suport_local_bisnes_article::where('article_id', '=', $request->article_id)->where('bisnes_id', '=', $request->bisnes_id)->first();
-        $relation_value -> delete();
-    }
-
-    public function adding_global_bisnes_validate($global_data)
-    {
-        $validator = Validator::make($global_data, [
-            'us_title_for_url_title' => 'required|unique:suport_local_bisneses,url_title',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    public function local_bisnes_validate($data)
-    {
-        // dd($data);
-        $validator = Validator::make($data, [
-            'title' => 'required',
-            'short_description' => 'required',
-            'text' => 'required',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
+    
 }

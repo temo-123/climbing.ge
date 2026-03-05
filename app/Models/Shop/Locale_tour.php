@@ -16,5 +16,7 @@ class Locale_tour extends Model
         'title',
         'short_description',
         'text',
+        'location',
+        'duration',
     ];
 }

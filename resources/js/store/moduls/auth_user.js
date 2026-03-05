@@ -8,7 +8,7 @@ export default new Vuex.Store({
   actions: {
     async authing_user(ctx){
       axios
-      .get('./api/auth_user')
+      .get('/auth_user')
       .then((response)=>{ 
           const action_user = response.data
           ctx.commit('update_user_data', action_user)

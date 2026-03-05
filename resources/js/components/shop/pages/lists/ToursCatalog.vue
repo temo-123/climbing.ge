@@ -1,14 +1,14 @@
 <template>
     <div class="col-md-12">
-        <h1 class="page_title">{{ $t('shop.title.tours') }}</h1>
+        <h1 class="index_h2">{{ $t('shop.title.tours') }}</h1>
 
         <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
 
         <h2 class="article_list_short_description">
-            <span v-html="this.$siteData.tour_description"></span>
+            <span v-html="this.$siteData.data.tour_description"></span>
         </h2>
 
-        <span v-if="tours.length">
+        <span v-if="tours != []">
             <div class="row" v-if="tour_loading">
                 <content-loader
                     viewBox="0 0"
@@ -54,7 +54,7 @@
             return {
                 tours: [],
                 site_data: [],
-                loader: true,
+                tour_loading: false,
             };
         },
         mounted() {
@@ -62,14 +62,15 @@
         },
         methods: {
             get_tours(){
+                this.tour_loading = true
                 axios
-                .get('/tour/get_tours/'+localStorage.getItem('lang'))
+                .get('/get_tour/get_tours/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.tours = response.data
                 })
                 .catch(error =>{
                 })
-                .finally(() => this.loader = false);
+                .finally(() => this.tour_loading = false);
             },
         }
     }

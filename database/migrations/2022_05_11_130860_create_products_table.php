@@ -24,7 +24,7 @@ return new class extends Migration
             
             // $table->string('material')->nullable();
             
-            $table->integer('mead_in_georgia')->nullable();
+            $table->integer('made_in_georgia')->nullable();
             $table->string('sale_type')->nullable();
 
             $table->unsignedBigInteger('category_id');

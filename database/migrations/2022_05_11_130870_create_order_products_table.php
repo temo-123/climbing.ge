@@ -16,11 +16,12 @@ class CreateOrderProductsTable extends Migration
         Schema::create('order_products', function (Blueprint $table) {
             $table->bigIncrements('id');
 
-            $table->integer('quantity')->nullable();
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
 
             $table->foreignId('product_id')->constrained();
-            $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('product_option_id')->constrained();
+
+            $table->integer('quantity')->nullable();
 
             $table->timestamps();
         });

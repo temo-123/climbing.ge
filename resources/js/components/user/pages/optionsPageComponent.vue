@@ -18,12 +18,12 @@
                                 <div class="col">
                                     <input type="radio" :id="1" :value="1" v-model="tab_num">
                                     
-                                    <label :for="1" >My privat info</label>
+                                    <label :for="1" >My Private Info</label>
                                 </div>
                                 <div class="col">
                                     <input type="radio" :id="2" :value="2" v-model="tab_num">
                                     
-                                    <label :for="2" >My adreses</label>
+                                    <label :for="2" >My Addresses</label>
                                 </div>
                                 <div class="col">
                                     <input type="radio" :id="3" :value="3" v-model="tab_num">

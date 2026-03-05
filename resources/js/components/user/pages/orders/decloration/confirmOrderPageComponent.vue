@@ -12,7 +12,7 @@
         </div>
 
         <div class="confirm_page_back_button">
-            <router-link :to="{name: 'myOrders'}" exact> 
+            <router-link :to="{name: 'userOrders'}" exact> 
                 <button class="btn btn-primary " >My orders</button>
             </router-link>
         </div>
@@ -48,7 +48,7 @@
         methods: {
             get_auth_user_data() {
                 axios
-                .get('../../../../api/auth_user')
+                .get('/auth_user')
                 .then(response => { this.user = response.data })
             },
         },

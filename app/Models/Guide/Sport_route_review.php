@@ -5,6 +5,8 @@ namespace App\Models\Guide;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\User;
+
 class Sport_route_review extends Model
 {
     use HasFactory;
@@ -24,6 +26,6 @@ class Sport_route_review extends Model
 
 	public function user()
 	{
-		return $this->belongsToMany(User::class, 'sport_route_review_user', 'review_id', 'user_id');
+		return $this->hasOne(User::class, 'id', 'user_id');
 	}
 }

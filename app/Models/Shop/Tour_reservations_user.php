@@ -9,6 +9,9 @@ class Tour_reservations_user extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['reservation_id', 'user_id'];
+    protected $table = 'tour_reservations_users';
+
     // function user() {
     //   return $this->belongsToMany(Tour_reservation::class, 'Tour_reservation_users', 'comment_id', 'answer_id');
     // }

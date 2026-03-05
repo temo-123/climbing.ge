@@ -1,73 +1,80 @@
 <template>
-    <li class="grid-tile">
-        <div class="item">
-            <div class="product_image">
-                <div class="previes_image" v-if="image_num > 0">
-                    <a @click="previes_product_image()"><</a>
+    <div class="grid-tile">
+        <article class="product-card" :class="{ 'out-of-stock': isOutOfStock }" role="article">
+            <div class="product-image-container">
+                <div v-if="isOutOfStock" class="out-of-stock-shadow">
+                    <span>{{ $t('shop.product.out_of_stock') }}</span>
                 </div>
-                <router-link :to="'product/'+product_data.global_product.url_title">
+                <div class="image-nav prev-image" v-if="image_num > 0">
+                    <button @click="previes_product_image()" aria-label="Previous image" class="nav-btn"><</button>
+                </div>
+                <router-link v-if="product_data.global_product" :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
                     <div class="item-img">
-                        <shop-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
-                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product.title" />
+                        <shop-img v-if="product_data.product_images && product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product ? product_data.locale_product.title : ''" />
+                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product ? product_data.locale_product.title : ''" />
                     </div>
                 </router-link>
-                <div class="next_image" v-if="image_num < (this.image_length - 1)">
-                    <a @click="next_product_image()">></a>
+                <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
+                    <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
-                <div class="product_quick_view" @click="product_quick_view(product_data.global_product.id)"> {{ $t('shop.product.quick_view') }}</div>
+                <div class="badge discount-badge" v-if="hasDiscount">-{{ maxDiscount }}%</div>
+                <div class="badge new-badge" v-if="product_data.global_product && product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
-            <div class="item-pnl product-image">
-                <div class="new_product_pin discount-badge-fourty" v-if="product_data.global_product.discount">-{{ product_data.global_product.discount }}%</div>
-                <div class="discount-percent-badge discount-badge-fourty" v-if="product_data.global_product.new_flag">NEW</div>
-                <div class="pnl-wrapper">
-                    <div class="pnl-description">
-
-                        <router-link :to="'product/'+product_data.global_product.url_title">
-                            <span class="pnl-label">
-                                <h2>{{ product_data.locale_product.title }}</h2>
-                            </span>
-                        </router-link>
-
-                        <div class="price" v-if="product_data.global_product.discount != null || product_data.global_product.discount > 0">
-                            <span class="pnl-price price">
-                                <span class="pnl-price price" v-if="product_data.new_min_price != product_data.new_max_price" >{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
-                                <span class="pnl-price price" v-else-if="product_data.new_min_price == product_data.new_max_price">{{ product_data.new_max_price }} ₾</span>
-                            </span>
-                            <span class="pnl-price old_price">
-                                <span class="pnl-price old_price" v-if="product_data.min_price != product_data.max_price" >{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
-                                <span class="pnl-price old_price" v-else-if="product_data.min_price == product_data.max_price">{{ product_data.max_price }} ₾</span>
-                            </span>
-                        </div>
-                        <div class="price" v-else>
-                            <span class="pnl-price price">
-                                <span class="pnl-price price" v-if="product_data.min_price != product_data.max_price" >{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
-                                <span class="pnl-price price" v-else-if="product_data.min_price == product_data.max_price">{{ product_data.max_price }} ₾</span>
-                            </span>
-                        </div>
-                    </div>
-
-                    <div class="pnl-favorites">
-                        <i class="fa fa-heart-o favorite_icon" @click="favorite_product(product_data.global_product.id)" ></i>
-                    </div>
-
-                    <!-- <div class="pnl-favorites">
-                        <i class="fa fa-cart-plus favorite_icon" @click="add_to_cart(product_data.global_product.id)"></i>
-                    </div> -->
+            <div class="image-dots" v-if="image_length > 1">
+                <button
+                    v-for="(image, index) in product_data.product_images"
+                    :key="index"
+                    :class="{ active: index === image_num }"
+                    @click="goToImage(index)"
+                    class="dot"
+                    :aria-label="'Go to image ' + (index + 1)"
+                ></button>
+            </div>
+            <div class="product-info">
+                <div class="product-title" v-if="product_data.global_product">
+                    <router-link :to="'product/'+product_data.global_product.url_title" aria-label="View product details">
+                        <h2>{{ product_data.locale_product ? product_data.locale_product.title : 'Product' }}</h2>
+                    </router-link>
+                </div>
+                <div class="product-made-in-georgia" v-if="product_data.global_product && product_data.global_product.made_in_georgia">
+                    {{ $t('shop.product.made_in_georgia') }}
+                </div>
+                <div class="product-price" v-if="product_data.has_discount">
+                    <span class="current-price">
+                        <span v-if="product_data.new_min_price != product_data.new_max_price">{{ product_data.new_min_price }} ₾ - {{ product_data.new_max_price }} ₾</span>
+                        <span v-else>{{ product_data.new_max_price }} ₾</span>
+                    </span>
+                    <span class="old-price">
+                        <span v-if="product_data.min_price != product_data.max_price">{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
+                        <span v-else>{{ product_data.max_price }} ₾</span>
+                    </span>
+                </div>
+                <div class="product-price" v-else>
+                    <span class="current-price">
+                        <span v-if="product_data.min_price != product_data.max_price">{{ product_data.min_price }} ₾ - {{ product_data.max_price }} ₾</span>
+                        <span v-else>{{ product_data.max_price }} ₾</span>
+                    </span>
+                </div>
+                <div class="product-actions" v-if="product_data.global_product">
+                    <button class="quick-view-btn" @click="product_quick_view(product_data.global_product.id)" aria-label="Quick view">
+                        <i class="fa fa-eye"></i>
+                    </button>
+                    <button class="favorite-btn" @click="favorite_product(product_data.global_product.id)" aria-label="Add to favorites">
+                        <i class="fa fa-heart-o"></i>
+                    </button>
                 </div>
             </div>
-            <productQuickViewModal 
-                ref="quick_view_modal"
-            />
-        </div>
-
-
-    </li>
+        </article>
+        <productQuickViewModal
+            ref="quick_view_modal"
+        />
+    </div>
 </template>
 
 <script>
-    // import lingallery from 'lingallery'; // https://github.com/ChristophAnastasiades/Lingallery
 
-    import productQuickViewModal from '../modals/ProductQuickViewModal'
+
+    import productQuickViewModal from '../../../global_components/modals/ProductQuickViewModal'
 
     export default {
         components: {
@@ -82,6 +89,18 @@
                 image_length: 0,
             };
         },
+        computed: {
+            isOutOfStock() {
+                // Use out_of_stock from backend (calculated when ALL options are out of stock)
+                return this.product_data.out_of_stock === true;
+            },
+            hasDiscount() {
+                return this.product_data.has_discount;
+            },
+            maxDiscount() {
+                return this.product_data.max_discount || 0;
+            }
+        },
         mounted() {
             //
         },
@@ -92,7 +111,7 @@
 
             favorite_product(product_id){
                 axios
-                .post('../api/add_to_favorite/'+ product_id)
+                .post('/add_to_favorite/'+ product_id)
                 .then(response => {
                     alert("Product addid in your favorite list!");
                 })
@@ -126,81 +145,256 @@
                 return(active_image);
             },
 
+            goToImage(index){
+                this.image_num = index;
+            },
+
         }
     }
 </script>
 
 <style scoped>
-    /* .cart_icon{
-        font-size: 140%;
-        float: left;
-        margin-right: 2%;
-    } */
-
-    .product_quick_view{
-        text-align: center;
-        /* margin-top: -10%; */
-        background-color: #1d080830;
-        /* display: none; */
-        position: relative;
+    .product-made-in-georgia {
+        color: #a65e5e;
+        font-size: 0.9em;
+        font-weight: bold;
+        margin: 5px 0;
     }
 
-    .product_quick_view:hover {
-        background-color: #97b67030;
-    }
-    .favorite_icon{
-        font-size: 150%;
-        float: left;
-        margin-right: 2%;
-    }
-    .previes_image{
+    .out-of-stock-shadow {
         position: absolute;
-        font-size: 250%;
-        margin-top: 25%;
-        float: left;
-        text-shadow: #abababb5 1px 1px 0;
-        /* display: none; */
-    }
-    .next_image{
-        position: absolute;
-        font-size: 250%;
-        float: right;
-        left: 92%;
-        bottom: 55%;
-        text-shadow: #abababb5 1px 1px 0;
-        /* display: none; */
-    }
-
-    .lingalleryContainer[data-v-40681078] .lingallery figure {
-        height: 100% !important;
-    }
-
-
-    .new_product_pin {
-        background: #f54d5c !important;
-    }
-    .new_product_pin {
-        z-index: 1;
-        transform: rotate(-30deg);
-        box-shadow: 0px 0px 8px 0px #c30000 inset;
-        font-size: 70%;
-        display: block;
-        line-height: 1.2;
-        color: #f5f5f5;
-        width: 45px;
-        height: 45px;
-        border-radius: 50%;
-        font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-        display: flex;
-        -moz-justify-content: center;
-        -ms-justify-content: center;
-        justify-content: center;
-        -moz-align-items: center;
-        -ms-align-items: center;
-        align-items: center;
-        position: absolute;
-        left: 4px;
         top: 0;
-        margin: 5px 5px 0 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(to bottom, rgb(0 0 0 / 80%) 0%, #00000073 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 15;
+    }
+
+    .out-of-stock-shadow span {
+        color: #f0f0f0;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+
+    .product-card {
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        overflow: hidden;
+        transition: all 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+    .product-card:hover {
+        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        transform: translateY(-5px);
+    }
+
+    .product-image-container {
+        position: relative;
+        aspect-ratio: 16 / 9;
+        overflow: hidden;
+    }
+
+    .item-img {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .item-img shop-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .image-nav {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5;
+    }
+
+    .prev-image {
+        left: 10px;
+    }
+
+    .next-image {
+        right: 10px;
+    }
+
+    .nav-btn {
+        background: rgba(0,0,0,0.5);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .nav-btn:hover {
+        background: rgba(0,0,0,0.8);
+    }
+
+    .image-dots {
+        display: flex;
+        justify-content: center;
+        padding: 10px 0;
+        background: #fff;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: none;
+        background: #ddd;
+        margin: 0 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+    }
+
+    .dot.active {
+        background: #007bff;
+    }
+
+    .dot:hover {
+        background: #0056b3;
+    }
+
+    .badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #f54d5c;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    .new-badge {
+        left: auto;
+        right: 10px;
+    }
+
+    .product-info {
+        padding: 15px;
+    }
+
+    .product-title h2 {
+        font-size: 1.4em;
+        margin: 0 0 10px 0;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .product-title a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .product-title a:hover {
+        color: #007bff;
+    }
+
+    .product-price {
+        margin-bottom: 10px;
+    }
+
+    .current-price {
+        font-size: 1.1em;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .old-price {
+        font-size: 0.9em;
+        color: #999;
+        text-decoration: line-through;
+        margin-left: 10px;
+    }
+
+    .product-actions {
+        text-align: right;
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    .quick-view-btn {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .quick-view-btn:hover {
+        color: #007bff;
+    }
+
+    .favorite-btn {
+        background: none;
+        border: none;
+        font-size: 1.5em;
+        color: #ccc;
+        cursor: pointer;
+        transition: color 0.3s ease;
+    }
+
+    .favorite-btn:hover {
+        color: #f54d5c;
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        .product-card {
+            margin-bottom: 15px;
+        }
+
+        .product-info {
+            padding: 10px;
+        }
+
+        .product-title h2 {
+            font-size: 1em;
+        }
+
+        .current-price {
+            font-size: 1em;
+        }
+
+        .old-price {
+            font-size: 0.8em;
+        }
+
+        .favorite-btn {
+            font-size: 1.2em;
+        }
+
+        .nav-btn {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+
+        .badge {
+            font-size: 10px;
+            padding: 3px 6px;
+        }
     }
 </style>

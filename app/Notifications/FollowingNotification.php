@@ -54,9 +54,9 @@ class FollowingNotification extends Mailable
         else if ($site_id == 'shop') {
             return 'shop.climbing.ge';
         } 
-        else if ($site_id == 'cinema') {
-            return 'films.climbing.ge';
-        }
+        // else if ($site_id == 'cinema') {
+        //     return 'films.climbing.ge';
+        // }
         
     }
 }
