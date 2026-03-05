@@ -136,6 +136,7 @@ class GeneralInfoService
             if($info->block == 'info_block'){
                 $general_info['info_block'] = [
                     "block_action" => $info->block_action,
+                    "id" => $info->info_id,
                     "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
                     "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
@@ -143,6 +144,7 @@ class GeneralInfoService
             if($info->block == 'what_need_info'){
                 $general_info['what_need_info'] = [
                     "block_action" => $info->block_action,
+                    "id" => $info->info_id,
                     "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
                     "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
@@ -150,6 +152,7 @@ class GeneralInfoService
             if($info->block == 'best_time'){
                 $general_info['best_time'] = [
                     "block_action" => $info->block_action,
+                    "id" => $info->info_id,
                     "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
                     "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];
@@ -157,6 +160,7 @@ class GeneralInfoService
             if($info->block == 'routes_info'){
                 $general_info['routes_info'] = [
                     "block_action" => $info->block_action,
+                    "id" => $info->info_id,
                     "text"=>General_info::where('id', '=', $info->info_id)->first('text_'.$locale)['text_'.$locale],
                     "is_show"=>General_info::where('id', '=', $info->info_id)->first('is_show')['is_show']
                 ];

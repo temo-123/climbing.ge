@@ -79,6 +79,26 @@
         methods: {
             show_more_data(){
                 this.is_show_more_data = !this.is_show_more_data
+
+                // Track the action if showing more content
+                if (this.is_show_more_data && this.global_info_prop.id) {
+                    this.trackAction(this.global_info_prop.id, 'show_more_click')
+                }
+            },
+
+            async trackAction(blockId, actionType) {
+                try {
+                    const response = await axios.post('/api/admin/set_general_info/track_action', {
+                        block_id: blockId,
+                        action_type: actionType
+                    })
+
+                    if (response.data.status === 'success') {
+                        console.log('Action tracked successfully')
+                    }
+                } catch (error) {
+                    console.error('Failed to track action:', error)
+                }
             }
         }
     }

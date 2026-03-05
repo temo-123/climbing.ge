@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="h-recent-work" v-if="lastNews != [] && lastNews">
+        <div class="h-recent-work" v-if="lastNews != [] && lastNews.length != 0">
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.news') }}</h2>
                 <div class="bar"><i class="fa fa-newspaper-o"></i></div>
@@ -106,10 +106,10 @@
             return {
                 newses: [],
                 lastNews: [],
-                products: [],
+                // products: [],
 
-                team_members: [],
-                partners: [],
+                // team_members: [],
+                // partners: [],
             };
         },
         components: {
@@ -128,24 +128,21 @@
             // instaPost,
         },
         mounted() {
-            this.get_data()
+            this.get_news()
         },
         watch: {
             '$route' (to, from) {
-                this.get_data()
+                this.get_news()
 
                 window.scrollTo(0,0)
             }
         },
         methods: {
-            get_data(){
-                this.get_news()
-            },
-
             get_news(){
-                this.get_articles('ice', localStorage.getItem('lang'),
+                this.get_articles('news', localStorage.getItem('lang'),
                     (data) => {
-                        this.ices = data;
+                        this.newses = data.slice(1, 7);
+                        this.lastNews = data[0];
                     },
                     (error) => {
                         console.error('Error fetching articles:', error);

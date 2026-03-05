@@ -48,6 +48,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/edit_region/{id}', 'edit_region');
         Route::delete('/del_region/{id}', 'del_region');
     });
+
     Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
         Route::post('/edit_member_status/{id}', 'edit_member_status');
     });
@@ -62,6 +63,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_editing_general_info/{id}', 'get_editing_general_info');
         Route::post('/edit_general_info/{id}', 'edit_general_info');
         Route::delete('/del_general_info/{id}', 'del_general_info');
+        
+        // Action tracking routes
+        Route::post('/track_action', 'track_action');
+        Route::get('/get_action_stats', 'get_action_stats');
     });
 
     Route::controller(EventController::class)->prefix('set_event')->group( function() {

@@ -10,10 +10,85 @@ use Validator;
 use App\Models\Guide\General_info;
 use App\Services\GeneralInfoService;
 use App\Services\PermissionService;
+use App\Services\ActionTrackingService;
 use Illuminate\Support\Facades\Log;
 
 class GeneralInfoController extends Controller
 {
+    /**
+     * Track action for a block (show more click)
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function track_action(Request $request)
+    {
+        $validator = validator($request->all(), [
+            'block_id' => 'required|integer',
+            'action_type' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+            ], 422);
+        }
+
+        $blockId = $request->block_id;
+        $actionType = $request->action_type ?: 'show_more_click';
+
+        $success = ActionTrackingService::saveAction($blockId, $actionType);
+
+        if ($success) {
+            return response()->json([
+                'message' => 'Action tracked successfully',
+                'status' => 'success'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Failed to track action',
+            'status' => 'error'
+        ], 500);
+    }
+
+    /**
+     * Get action statistics for a block
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function get_action_stats(Request $request)
+    {
+        $validator = validator($request->all(), [
+            'block_id' => 'required|integer',
+            'start_date' => 'nullable|date',
+            'end_date' => 'nullable|date',
+            'action_type' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->messages(),
+            ], 422);
+        }
+
+        $blockId = $request->block_id;
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+        $actionType = $request->action_type ?: 'show_more_click';
+
+        if ($startDate && $endDate) {
+            $counts = ActionTrackingService::getActionCountsByDateRange($startDate, $endDate, $blockId, $actionType);
+        } else {
+            $counts = ActionTrackingService::getActionCount($blockId, null, $actionType);
+        }
+
+        return response()->json([
+            'data' => $counts,
+            'status' => 'success'
+        ], 200);
+    }
     public function add_general_info(Request $request)
     {
         $auth = PermissionService::authorize('general_info', 'add');
