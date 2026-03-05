@@ -159,11 +159,11 @@ MIX_VUE_APP_I18N_SUPORTED_LOCALE="${VUE_APP_I18N_SUPORTED_LOCALE}"
 #
 #
 
-MIX_CLIMBING_GUIDBOOK_ANALITICS_ID="G-B7KZEJ6CLW"
-MIX_SHOP_ANALITICS_ID="G-6D3TLP4Z36"
-MIX_FILMS_ANALITICS_ID="G-1BRWRTLD87"
-MIX_USER_ANALITICS_ID="G-TDWCRT2C8S"
-MIX_FORUM_ANALITICS_ID=""
+MIX_CLIMBING_GUIDBOOK_ANALITICS_ID="..."
+MIX_SHOP_ANALITICS_ID="..."
+MIX_FILMS_ANALITICS_ID="..."
+MIX_USER_ANALITICS_ID="..."
+MIX_FORUM_ANALITICS_ID="..."
 
 
 
@@ -193,7 +193,7 @@ FACEBOOK_URL=http://user.climbing.loc/login/facebook/callback
 
 # -> http://console.cloud.google.com/apis/dashboard?hl=ru&project=climbing-loc-374622
 
-GOOGLE_CLIENT_ID=1060302637690-v6ld46eefl4dkognavtr5bvpfc24dnpp.apps.googleusercontent.com
+GOOGLE_CLIENT_ID= ...
 GOOGLE_CLIENT_SECRET= ...
 GOOGLE_URL=http://user.climbing.loc/login/google/callback
 
