@@ -13,12 +13,7 @@
         "doctrine/dbal": "^3.0",
         "flittpayments/php-sdk": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",
-<<<<<<< HEAD
-        "inertiajs/inertia-laravel": "^1.0",
-        "intervention/image": "^2.7",
-=======
         "intervention/image": "^3.11",
->>>>>>> master
         "laravel/framework": "^11.0",
         "laravel/horizon": "^5.9",
         "laravel/sanctum": "^4.0",

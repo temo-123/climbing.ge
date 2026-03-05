@@ -4,22 +4,20 @@
         <navbar />
         <div class="container top_menu_margin h-recent-work">
             <router-view />
-            <go_to_top />
         </div>
 
         <div
             class="footer__graphic"
-            :style="'background-image: url(' + publicPath + '/public/images/svg/mountains.svg)'"
+            :style="'background-image: url(../images/svg/mountains.svg)'"
         ></div>
         <footter />
         <loginModal />
-        <go_to_top />
     </div>
 </template>
 
 <script>
 import navbar from "./items/navbars/NavbarComponent.vue";
-import footter from "./items/FooterComponent.vue";
+import footter from "./items/FooterComponent";
 import loginModal from "../global_components/LoginModalComponent.vue";
 import Preloader from "../global_components/PreloaderComponent.vue";
 import go_to_top from "../global_components/GoOnTopComponent.vue";
@@ -27,7 +25,7 @@ import go_to_top from "../global_components/GoOnTopComponent.vue";
 export default {
     data: function () {
         return {
-            publicPath: window.location.protocol + '//' + window.location.hostname
+            // cart_products: [],
         };
     },
     components: {
@@ -38,44 +36,43 @@ export default {
         go_to_top
     },
     mounted() {
-
+        //
     },
-    methods: {
-        
-    },
+    methods: {},
 };
 </script>
 
 <style scoped>
     .top_menu {
-        background-color: #27bb7d !important;
+        background-color: #777777 !important;
     }
 
     .preloader_background {
-        background: radial-gradient(circle, #27bb7d 0% 0%, #1d8a5d 100%) !important;
+        background: radial-gradient(circle, #777777 0% 0%, #595959 100%) !important;
     }
 
     .loader {
-        border-top-color: #27bb7d;
+        border-top-color: #777777;
     }
 
     .navbar {
-        background-color: #09bb80 !important;
+        background-color: #777777 !important;
         border-color: #6a8991;
     }
 
     .navbar-inverse .navbar-nav>.open>a{
-        background-color: #0e9f6f !important;
+        background-color: #777777 !important;
     }
 
     .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #0c8a60 !important;
+        background-color: #777777 !important;
     }
 
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #23788c;
+    .navbar-inverse .navbar-collapse{
+        border-color: #838383 !important;
     }
-    
 
+    .navbar-collapse {
+        max-height: none !important;
+    }
 </style>
-

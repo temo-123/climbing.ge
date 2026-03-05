@@ -1,6 +1,7 @@
 import Vue from "vue";
 
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+// Simple resolve helper to replace laravel-vite-plugin/inertia-helpers
+const resolvePageComponent = (name, pages) => pages[name] || pages[`${name}.vue`] || pages[`${name}.js`]
 // import './bootstrap.js';
 // import '../sass/app.scss';
 
@@ -60,10 +61,8 @@ Vue.mixin(going);
 /*
  *   My components
  */
-<<<<<<< HEAD
-import goTo from "./components/global_components/GoToComponrnt.vue";
-Vue.component("goTo", goTo);
-=======
+// import goTo from "./components/global_components/GoToComponrnt.vue";
+// Vue.component("goTo", goTo);
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
@@ -77,27 +76,23 @@ Vue.component("shop-img", shop_img);
 // Vue.component("blog-img", blog_img);
 Vue.component("left-menu", leftmenu);
 Vue.component("goToAdminPage", goToAdminPage);
->>>>>>> master
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/guide/IndexComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
-<<<<<<< HEAD
-=======
+
 import Films from "./components/films/StudiaComponent.vue";
 import Blog from "./components/blog/BlogMainComponent.vue";
 import Error from "./components/errors/global_errors/error.vue";
->>>>>>> master
 
 import shop_routes from "./routes/ShopRoutes";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
-<<<<<<< HEAD
-=======
+
 import films_routes from "./routes/FilmsRoutes";
 import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
->>>>>>> master
+
 
 Vue.component(
     "main-wrapper-component",
@@ -111,8 +106,6 @@ Vue.component(
     "home-component",
     require("./components/user/HomeComponent.vue").default
 );
-<<<<<<< HEAD
-=======
 Vue.component(
     "studia-component",
     require("./components/films/StudiaComponent.vue").default
@@ -121,7 +114,6 @@ Vue.component(
     "blog-component",
     require("./components/blog/BlogMainComponent.vue").default
 );
->>>>>>> master
 
 var serviceRoutes = [];
 var homeComponent = [];
@@ -150,12 +142,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes;
-<<<<<<< HEAD
-    analytic_id = process.env.MIX_USER_ANALITICS_ID;
-    axios.defaults.baseURL = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api'
-}
-else {
-=======
+
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
@@ -184,7 +171,6 @@ else {
         config: { id: process.env.MIX_blog_ANALITICS_ID },
     });
 } else {
->>>>>>> master
     homeComponent = Error;
     serviceRoutes = error_routes;
     // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;

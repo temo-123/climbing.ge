@@ -14,13 +14,7 @@
     </div>
 
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script> <!-- conflict to site menu -->
-<<<<<<< HEAD
-    <script src="{{ asset('assets/main_js/my_scripts.js') }}" type="text/javascript" ></script>
-    {{-- <script src="{{ mix('assets/js/app.js') }}"></script> --}}
-    @vite('resources/js/app.js')
-=======
-    <!-- <script src="{{ asset('assets/main_js/my_scripts.js') }}" type="text/javascript" ></script> -->
+    
     <script src="{{ mix('assets/js/app.js') }}"></script>
->>>>>>> master
 </body>
 </html>
