@@ -1,0 +1,58 @@
+{
+  "home": "Home",
+  "about": "About",
+  "login": "Login",
+  "register": "Register",
+  "logout": "Logout",
+  "dashboard": "Dashboard",
+  "climbing": "Climbing",
+  "indoor": "Indoor",
+  "outdoor": "Outdoor",
+  "ice": "Ice Climbing",
+  "mountaineering": "Mountaineering",
+  "events": "Events",
+  "news": "News",
+  "contact": "Contact",
+  "privacy": "Privacy Policy",
+  "terms": "Terms of Service",
+  "search": "Search",
+  
+  "welcome_to_climbing": "Welcome to Climbing.ge",
+  "hero_description": "Discover the best climbing routes, events, and outdoor adventures in Georgia.",
+  "start_climbing": "Start Climbing",
+  "learn_more": "Learn More",
+  
+  "explore_climbing": "Explore Climbing",
+  "indoor_description": "Indoor climbing walls and gyms",
+  "outdoor_description": "Natural rock climbing spots",
+  "ice_description": "Ice climbing and dry tooling",
+  "mountaineering_description": "Mountain expeditions and alpinism",
+  "view_more": "View More",
+  
+  "latest_news": "Latest News",
+  "no_news": "No news available",
+  
+  "footer_description": "Your complete guide to climbing in Georgia",
+  "quick_links": "Quick Links",
+  "follow_us": "Follow Us",
+  "all_rights_reserved": "All rights reserved.",
+  
+  "email": "Email",
+  "password": "Password",
+  "confirm_password": "Confirm Password",
+  "name": "Name",
+  "remember_me": "Remember me",
+  "forgot_password": "Forgot your password?",
+  "agree_terms": "I agree to the",
+  "terms_conditions": "Terms and Conditions",
+  "already_have_account": "Already have an account?",
+  "dont_have_account": "Don't have an account?",
+  
+  "go_home": "Go Home",
+  "try_again": "Try Again",
+  
+  "loading": "Loading...",
+  "error": "Error",
+  "success": "Success"
+}
+

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkclimbing_loc=self.webpackChunkclimbing_loc||[]).push([[8589],{48589:(l,n,e)=>{e.r(n),e.d(n,{default:()=>u});const u=(0,e(51900).Z)({},undefined,undefined,!1,null,null,null).exports}}]);

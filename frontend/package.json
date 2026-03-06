@@ -1,0 +1,52 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "nuxt build",
+        "dev": "nuxt dev",
+        "generate": "nuxt generate",
+        "preview": "nuxt preview",
+        "postinstall": "nuxt prepare",
+        "serve": "nuxt preview"
+    },
+    "devDependencies": {
+        "@nuxt/devtools": "^1.0.0",
+        "@pinia/nuxt": "^0.5.1",
+        "@vueuse/core": "^10.7.0",
+        "@vueuse/nuxt": "^10.7.0",
+        "autoprefixer": "^10.4.16",
+        "axios": "^1.6.2",
+        "nuxt": "^3.10.0",
+        "sass": "^1.69.5",
+        "typescript": "^5.3.3",
+        "vite": "^5.0.10",
+        "vue": "^3.4.0",
+        "vue-router": "^4.2.5"
+    },
+    "dependencies": {
+        "@casl/ability": "^6.7.1",
+        "@casl/vue": "^2.2.2",
+        "@ckeditor/ckeditor5-build-classic": "^40.1.0",
+        "@ckeditor/ckeditor5-vue": "^5.1.0",
+        "@fortawesome/fontawesome-svg-core": "^6.5.1",
+        "@popperjs/core": "^2.11.8",
+        "@vueuse/core": "^10.7.0",
+        "bootstrap": "^5.3.2",
+        "pinia": "^2.1.7",
+        "vue": "^3.4.0",
+        "vue-i18n": "^9.8.0",
+        "vue-loader": "^17.4.2",
+        "vue-meta": "^2.4.0",
+        "vue-router": "^4.2.5"
+    },
+    "name": "climbing.loc",
+    "description": "Climbing.ge - Vue 3 with Nuxt 3 SSR",
+    "version": "4.0.0",
+    "engines": {
+        "node": ">=18.0.0"
+    },
+    "overrides": {
+        "vue": "^3.4.0"
+    }
+}
+
