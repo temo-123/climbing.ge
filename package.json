@@ -33,7 +33,6 @@
         "webpack": "^5.64.1"
     },
     "dependencies": {
-        "-": "^0.0.1",
         "@braid/vue-formulate": "^2.5.2",
         "@casl/ability": "^5.4.4",
         "@casl/vue": "^1.2.3",
@@ -114,3 +113,4 @@
     "author": "",
     "license": "ISC"
 }
+
