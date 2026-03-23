@@ -8,6 +8,8 @@ const routes = [
     { path: '/', name: 'host_error', component: load('host_error_component') },
 ];
 
+
+
 const router = createRouter({
     routes,
     history: createWebHistory(),

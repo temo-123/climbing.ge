@@ -109,38 +109,48 @@ export default {
         this.get_services()
         this.get_tours()
     },
+        watch: {
+            '$route' (to, from) {
+                this.get_products()
+                this.get_services()
+                this.get_tours()
+
+                window.scrollTo(0,0)
+            }
+        },
     methods: {
         get_products(){
             axios
-            .get('/get_product/get_products_for_index/'+localStorage.getItem('lang'))
+            .get('/get_product/get_products_for_index/' + (localStorage.getItem('lang') || 'en'))
             .then(response => {
                 this.products = response.data.slice(0, 3);
-                
             })
-            .catch(error =>{
+            .catch(error => {
+                
             })
             // .finally(() => this.products_loading = false);
         },
         get_services(){
             axios
-            .get('/get_service/get_services_for_index/'+localStorage.getItem('lang'))
+            .get('/get_service/get_services_for_index/' + (localStorage.getItem('lang') || 'en'))
             .then(response => {
                 // this.services = response.data
                 this.services = response.data.slice(0, 4);
             })
-            .catch(error =>{
+            .catch(error => {
+                
             })
             // .finally(() => this.services_loading = false);
         },
         get_tours(){
             axios
-            .get('/get_tour/get_tours_for_index/'+localStorage.getItem('lang'))
+            .get('/get_tour/get_tours_for_index/' + (localStorage.getItem('lang') || 'en'))
             .then(response => {
                 // this.services = response.data
                 this.tours = response.data.slice(0, 3);
             })
-            .catch(error =>{
-            })
+            .catch(error => {
+                          })
             // .finally(() => this.services_loading = false);
         },
     }

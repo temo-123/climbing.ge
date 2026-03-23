@@ -133,12 +133,14 @@ app.component("goToAdminPage", goToAdminPage);
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/guide/IndexComponent.vue";
+import Summit from "./components/summit/SummitMainComponent.vue";
 import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
 import Blog from "./components/blog/BlogMainComponent.vue";
 import Error from "./components/errors/global_errors/error.vue";
 
 import shop_routes from "./routes/ShopRoutes";
+import summit_routes from "./routes/SummitRouter";
 import site_routes from "./routes/SiteRoutes";
 import user_routes from "./routes/UserRoutes";
 import films_routes from "./routes/FilmsRoutes";
@@ -146,6 +148,7 @@ import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
 
 app.component("main-wrapper-component", MainWrapper);
+app.component("main-wrapper-component", Summit);
 app.component("index-component", Index);
 app.component("studia-component", Films);
 app.component("blog-component", Blog);
@@ -166,6 +169,12 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let shopUrl = (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = shopUrl ? baseUrl + '/' + shopUrl + '/api' : baseUrl + '/api';
+} else if (window.location.hostname == process.env.MIX_SUMMIT_PAGE_URL) {
+    homeComponent = Summit;
+    serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let userUrl = (process.env.MIX_SUMMIT_PAGE_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
@@ -271,16 +280,22 @@ const router = createRouter({
     }
 });
 
-// Router navigation guard
+// Router navigation guard - locale prefix handling for original routes structure
+import { getCurrentLocale } from './services/routerUtils.js';
+
 router.beforeEach((to, from, next) => {
     window.scrollTo(0, 0);
 
-    const supported_locales = (process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE || 'en|ka').split("|");
-    const firstSegment = to.path.split('/')[1] || '';
-    let locale = localStorage.getItem('lang') || 'en';
+    let locale = localStorage.getItem('lang') || 'us';
 
-    if (supported_locales.includes(firstSegment)) {
-        locale = firstSegment;
+    // If URL has /ka prefix
+    if (to.path.startsWith('/ka')) {
+        locale = 'ka';
+    } else if (to.path === '/') {
+        // Root - use stored or default
+    } else {
+        // No ka prefix, default us
+        locale = 'us';
     }
 
     localStorage.setItem('lang', locale);
@@ -288,7 +303,12 @@ router.beforeEach((to, from, next) => {
     if (i18n.locale !== locale) {
         i18n.locale = locale;
     }
-    
+
+    // Force /ka prefix if locale = 'ka'
+    if (locale === 'ka' && !to.path.startsWith('/ka') && to.path !== '/') {
+        return next('/ka' + to.path);
+    }
+
     next();
 });
 

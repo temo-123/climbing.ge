@@ -4,7 +4,6 @@
 
             <!-- BRAND -->
             <div class="navbar-header">
-                <!-- <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#alignment-example" aria-expanded="false" @click="open_navbar()"> -->
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" aria-expanded="false" @click="open_navbar()">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -13,19 +12,18 @@
                 </button>
 
                 <span>
-<router-link style="font-size: 1.5em;" :to="'/'" class="site_title" exact>{{ $t('blog.name') }}</router-link>
+                    <a style="font-size: 1.5em;" href="/" class="site_title">{{ $t('summit.name') || 'Summit Climbing' }}</a>
                 </span>
-                <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
             </div>
 
             <!-- COLLAPSIBLE NAVBAR --> 
-            <!-- <div class="collapse navbar-collapse" id="alignment-example"> -->
             <div :class='[navbar_class]' id="alignment-example">
 
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-<router-link :to="`/about_us`" exact> <span> {{ $t('blog.menu.about us') }} </span> </router-link>
+                    <li><a href="/about_us"> {{ $t('summit.menu.about') || 'About' }} </a></li>
+                    <li><a href="/summits/list"> {{ $t('summit.menu.list') || 'Summit List' }} </a></li>
 
                     <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
@@ -45,7 +43,7 @@
                         </ul>
                     </li>
 
-                    <localeSwitcher />
+                    <locale-switcher />
 
                     <li>
                         <a @click="go_to_service('guid')" class="cursor_pointer"> 
@@ -63,7 +61,7 @@
                         </a>
                     </li>
 
-                    <goToAdminPage :go_to_page="'/'" />
+                    <go-to-admin-page :go_to_page="'/'" />
                 </ul>
 
             </div>
@@ -73,7 +71,6 @@
 </template>
 
 <script>
-    // import search from './SearchComponent'
     import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
 
@@ -111,26 +108,14 @@
         },
         methods: {
             search(){
-                this.$router.push({name: 'search_products', query: { 'query': this.search_query} });
+                window.location.href = '/search?q=' + encodeURIComponent(this.search_query);
                 this.search_query = ''
             },
 
-            // localization(leng){
-            //     window.location.href = leng;
-            // },
-
             isLetter(e) {
-                let char = String.fromCharCode(e.keyCode); // Get the character
-                if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
-                else e.preventDefault(); // If not match, don't add to input text
-            },
-
-            // goTo(page = ''){
-            //     window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page) ;
-            // },
-
-            currency(){
-
+                let char = String.fromCharCode(e.keyCode); 
+                if(/^[A-Za-z]+$/.test(char)) return true; 
+                else e.preventDefault(); 
             },
 
             open_navbar(){
@@ -152,6 +137,11 @@
 <style>
 .navbar span{
     color: #fff;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
 }
 
 .search_window{

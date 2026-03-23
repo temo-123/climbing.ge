@@ -2,9 +2,8 @@ import { createI18n } from 'vue-i18n';
 
 import en from "../../../lang/i18n/en.json";
 import ka from "../../../lang/i18n/ka.json";
-// import ru from "../../../lang/i18n/ru.json";
 
-const locale = localStorage.getItem('lang') || 'en'
+const locale = (localStorage.getItem('lang') === 'us' ? 'en' : localStorage.getItem('lang')) || 'en'
 const currency = localStorage.getItem("currency") || "USD";
 
 const numberFormats = {
@@ -12,7 +11,7 @@ const numberFormats = {
         currency: {
             style: "currency",
             currency: currency,
-            // currency: 'USD'
+            currency: 'USD'
         },
         decimal: {
             style: "decimal",
@@ -28,7 +27,7 @@ const numberFormats = {
         currency: {
             style: "currency",
             currency: currency,
-            // currency: 'GEL',
+            currency: 'GEL',
         },
         decimal: {
             style: "decimal",
@@ -40,22 +39,6 @@ const numberFormats = {
             useGrouping: false,
         },
     },
-    // ru: {
-    //     currency: {
-    //         style: "currency",
-    //         currency: currency,
-    //         // currency: 'EUR'
-    //     },
-    //     decimal: {
-    //         style: "decimal",
-    //         minimumSignificantDigits: 3,
-    //         maximumSignificantDigits: 5,
-    //     },
-    //     percent: {
-    //         style: "percent",
-    //         useGrouping: false,
-    //     },
-    // },
 };
 
 const i18n = createI18n({
@@ -67,7 +50,6 @@ const i18n = createI18n({
     messages: {
         en,
         ka,
-        // ru,
     },
 });
 

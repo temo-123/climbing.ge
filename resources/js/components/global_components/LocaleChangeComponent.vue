@@ -7,9 +7,8 @@
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
-            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')">EN</a></li>
-            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')">KA</a></li>
-            <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlagWrapper country='rus' size='big'/></a></li> -->
+            <li v-if="activ_lang == 'ka' || activ_lang != 'en'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')">EN</a></li>
+            <li v-if="activ_lang == 'en' || activ_lang != 'ka'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')">KA</a></li>
         </ul>
     </li>
 </template>
@@ -27,38 +26,33 @@
             };
         },
         components: {
-            // countryFlagWrapper,
+            // 
         },
         mounted() {
-            // console.log(this.$route.params.locale || 'en');
-            // if(!localStorage.getItem('lang')){
-            //     this.grade_charts("en")
-            // }
+            // 
         },
         watch: {
             '$route' (to, from) {
-                // this.localization(locale)
+                // 
             }
         },
         methods: {
             localization(locale){
                 if(this.$i18n.locale !== locale){
                     this.$i18n.locale = locale;
-                    localStorage.setItem('lang', locale)
-                    this.$route.params.locale = locale
+                    localStorage.setItem('lang', locale);
 
-                    if(locale == 'en'){
-                        let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
-                        this.$router.push( '/' + activ_path_without_locale )
+                    const currentPath = this.$route.path;
+                    const pathParts = currentPath.split('/').filter(Boolean);
+                    if (pathParts[0] === 'ka') {
+                        pathParts.shift();
                     }
-                    else{
-                        const to = this.$router.resolve({params: {locale}})
-                        this.$router.push(to.location)
-                    }
-
-                    location.reload();
+                    const cleanPath = pathParts.length ? '/' + pathParts.join('/') : '/';
+                    const newPath = locale === 'en' ? cleanPath : '/ka' + cleanPath;
+                    this.$router.push(newPath).then(() => window.location.reload());
                 }
             },
+
         }
     }
 </script>

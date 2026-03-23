@@ -21,50 +21,51 @@ function getLocaleRegex() {
 
 const routes = [
     {
-        path: `/`,
+        // path: `/:locale(en|)?`,
+        path: `/:locale${getLocaleRegex()}?`,
         component: {
             render() {
                 return h(RouterView);
             }
         },
         children: [
-{ path: "", name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
-{ path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
+            { path: "", name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
+            { path: "/about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
 
-{ path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
-{ path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },
-{ path: "local_bisnes/:url_title", name: "local_bisnes", component: load("pages/LocalBisnesPageComponent"), meta: { title: 'Local Business' } },
-            
-{ path: "news/:url_title", name: "news", component: load("pages/NewsPageComponent"), meta: { title: 'News' } },
-{ path: "special_article/:url_title", name: "special_article", component: load("pages/SpecialAericlePage"), meta: { title: 'Special Article' } },
+            { path: "/tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
+            { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },
+            { path: "local_bisnes/:url_title", name: "local_bisnes", component: load("pages/LocalBisnesPageComponent"), meta: { title: 'Local Business' } },
+                        
+            { path: "news/:url_title", name: "news", component: load("pages/NewsPageComponent"), meta: { title: 'News' } },
+            { path: "special_article/:url_title", name: "special_article", component: load("pages/SpecialAericlePage"), meta: { title: 'Special Article' } },
 
-{ path: "events", name: "events", component: load("lists/EventsListPageComponent"), meta: { title: 'Events' } },
-{ path: "event/:url_title", name: "event", component: load("pages/EventPageComponent"), meta: { title: 'Event' } },
+            { path: "/events", name: "events", component: load("lists/EventsListPageComponent"), meta: { title: 'Events' } },
+            { path: "event/:url_title", name: "event", component: load("pages/EventPageComponent"), meta: { title: 'Event' } },
 
-{ path: "ice", name: "ices", component: load("lists/IceListComponent"), meta: { title: 'Ice' } },
-{ path: "ice/:url_title", name: "ice", component: load("pages/IcePageComponent"), meta: { title: 'Ice' } },
+            { path: "ice", name: "ices", component: load("lists/IceListComponent"), meta: { title: 'Ice' } },
+            { path: "ice/:url_title", name: "ice", component: load("pages/IcePageComponent"), meta: { title: 'Ice' } },
 
-{ path: "spot_projects", name: "spot_projects", component: load("lists/ProjectsList"), meta: { title: 'Spot Projects' } },
-{ path: "spot_project/:url_title", name: "project", component: load("pages/ProjectPage"), meta: { title: 'Project' } },
+            { path: "spot_projects", name: "spot_projects", component: load("lists/ProjectsList"), meta: { title: 'Spot Projects' } },
+            { path: "spot_project/:url_title", name: "project", component: load("pages/ProjectPage"), meta: { title: 'Project' } },
 
-{ path: "other", name: "others", component: load("lists/OtherListComponent"), meta: { title: 'Others' } },
-{ path: "other/:url_title", name: "other", component: load("pages/OtherPageComponent"), meta: { title: 'Other' } },
+            { path: "other", name: "others", component: load("lists/OtherListComponent"), meta: { title: 'Others' } },
+            { path: "other/:url_title", name: "other", component: load("pages/OtherPageComponent"), meta: { title: 'Other' } },
 
-{ path: "mountaineering", name: "mountaineerings", component: load("lists/MountaineeringListComponent"), meta: { title: 'Mountaineering' } },
-{ path: "mountaineering/:url_title", name: "mountaineering", component: load("pages/MountaineeringPageComponent"), meta: { title: 'Mountaineering' } },
+            { path: "mountaineering", name: "mountaineerings", component: load("lists/MountaineeringListComponent"), meta: { title: 'Mountaineering' } },
+            { path: "mountaineering/:url_title", name: "mountaineering", component: load("pages/MountaineeringPageComponent"), meta: { title: 'Mountaineering' } },
 
-{ path: "indoor", name: "indoors", component: load("lists/IndoorListComponent"), meta: { title: 'Indoor' } },
-{ path: "indoor/:url_title", name: "indoor", component: load("pages/IndoorPageComponent"), meta: { title: 'Indoor' } },
+            { path: "indoor", name: "indoors", component: load("lists/IndoorListComponent"), meta: { title: 'Indoor' } },
+            { path: "indoor/:url_title", name: "indoor", component: load("pages/IndoorPageComponent"), meta: { title: 'Indoor' } },
 
-{ path: "outdoor", name: "outdoors", component: load("lists/OutdoorListComponent"), meta: { title: 'Outdoor' } },
-{ path: "outdoor/:url_title", name: "outdoor", component: load("pages/OutdoorPageComponent"), meta: { title: 'Outdoor' } },
+            { path: "outdoor", name: "outdoors", component: load("lists/OutdoorListComponent"), meta: { title: 'Outdoor' } },
+            { path: "outdoor/:url_title", name: "outdoor", component: load("pages/OutdoorPageComponent"), meta: { title: 'Outdoor' } },
 
-{ path: "search_articles", name: "search_articles", component: load("SerchPageComponent"), meta: { title: 'Search Articles' } },
+            { path: "search_articles", name: "search_articles", component: load("SerchPageComponent"), meta: { title: 'Search Articles' } },
 
-{ path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
-{ path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
+            { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
+            { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
-{ path: ":pathMatch(.*)*", name: "NotFound", component: NotFound, meta: { title: 'Not Found' } },
+            { path: "*", name: "NotFound", component: NotFound, meta: { title: 'Not Found' } },
         ],
     },
 ];

@@ -32,7 +32,7 @@ use Illuminate\Support\Facades\Route;
     });
 
     Route::domain('summit.' . config('app.url'))->group(function () {
-        Route::group(['namespace'=>'summit'], function() {
+        Route::group(['namespace'=>'Summit'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('summit_index');
         });
     });

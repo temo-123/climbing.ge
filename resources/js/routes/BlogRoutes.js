@@ -1,5 +1,6 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
 import { h } from "vue";
+import { RouterView } from "vue-router";
 
 import NotFound from "../components/errors/404Component.vue";
 
@@ -16,23 +17,34 @@ function getLocaleRegex() {
 }
 
 const routes = [
-    {
-        path: '/',
+{
+        path: `/:locale${getLocaleRegex()}?`,
         component: {
             render() {
-                return h("router-view");
+                // return h("router-view");
+                return h(RouterView);
             }
         },
         children: [
-            { path: "", name: "index", component: load("IndexPage"),},
-            { path: "about_us", name: "about_us", component: load("AboutUsPage"),},
+            { path: "", name: "index", component: load("IndexPage"), meta: { title: 'climbing.ge blog' }},
+            { path: "/about_us", name: "about_us", component: load("AboutUsPage"), meta: { title: 'About This Blog' } },
 
-            { path: "post/:url_title", name: "post", component: load("pages/PostPage"),},
-            { path: "news/:url_title", name: "news", component: load("pages/NewsPage"),},
+            { path: "post/:url_title", name: "post", component: load("pages/PostPage"), meta: { title: 'Post' }},
+            { path: "news/:url_title", name: "news", component: load("pages/NewsPage"), meta: { title: 'News' }},
 
-            { path: ":pathMatch(.*)*", name: "NotFound", component: NotFound },
+            { path: "*", name: "NotFound", component: NotFound,  meta: { title: 'Not Found' }},
         ],
     },
 ];
 
-export default routes;
+
+
+const router = createRouter({
+    routes,
+    history: createWebHistory(),
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    }
+});
+
+export default router;

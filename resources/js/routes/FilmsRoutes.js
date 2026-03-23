@@ -7,7 +7,7 @@ function load(component) {
 import NotFound from '../components/errors/404Component.vue'
 
 const routes = [
-    { path: '/', name: 'studia', component: load('PortalPageComponent') },
+{ path: `/:locale${getLocaleRegex()}?`, name: 'studia', component: load('PortalPageComponent') },
     
     { path: '/film/:url_title', name: 'film', component: load('FilmPageComponent') },
 
@@ -17,6 +17,13 @@ const routes = [
 
     { path: "/:pathMatch(.*)*", name: 'NotFound', component: NotFound }
 ];
+
+
+function getLocaleRegex() {
+    let reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE
+    
+    return `(${reg})`;
+}
 
 const router = createRouter({
     routes,
