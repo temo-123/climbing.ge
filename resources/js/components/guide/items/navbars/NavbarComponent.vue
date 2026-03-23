@@ -113,7 +113,6 @@
 </template>
 
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
     import go_to_service_mixin from '../../../../mixins/go_to_service_mixin.js'
 
@@ -149,7 +148,6 @@
         },
         components: {
             localeSwitcher,
-            countryFlag,
         },
         mounted() {
             this.navbar_class = this.navbar_general_class

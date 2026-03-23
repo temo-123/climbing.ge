@@ -1,8 +1,8 @@
 <template>
-    <stack-modal
-            :show="is_show_mtp_modal"
-            :title="user.name + ' ' + user.surname"
-            @close="is_show_mtp_modal = false"
+    <StackModal
+            v-model="is_show_mtp_modal"
+            :title="modalTitle"
+            size="xxl"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{
                 visible: false,
@@ -12,6 +12,8 @@
                 title: 'Close',
                 btnClass: { 'btn btn-danger float-right': true },
             }"
+            @close="is_show_mtp_modal = false"
+
         >
             <div class="p-6">
                 <div v-if="loading" class="flex justify-center items-center py-10">
@@ -19,58 +21,55 @@
                 </div>
                 <div v-else class="max-w-2xl mx-auto">
                     <div class="flex flex-col items-center mb-6">
-                        <img v-if='user.image' :src="'/public/images/user_profil_img/' + user.image" class="modal_profil_image" :alt="'Profile image of ' + user.name + ' ' + user.surname" />
-                        <!-- <div v-else class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-gray-200 flex items-center justify-center mb-4">
-                            <span class="text-gray-500 text-4xl">👤</span>
-                        </div> -->
-                        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800">{{ user.name }} {{ user.surname }}</h1>
-                        <p class="text-lg text-gray-600 text-center">{{ user.city }}, {{ user.country }}</p>
+                        <img v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="'Profile image of ' + localUser.name + ' ' + localUser.surname" />
+                        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800">{{ localUser.name }} {{ localUser.surname }}</h1>
+                        <p class="text-lg text-gray-600 text-center">{{ localUser.city }}, {{ localUser.country }}</p>
                     </div>
                     <div class="row">
-                        <p><strong>{{ user.email }}</strong></p>
+                        <p><strong>{{ localUser.email }}</strong></p>
 
-                        <span v-for="site in user.sites" :key="site.id">
+                        <span v-for="site in localUser.sites" :key="site.id">
                             <p @click="go_to_user_site(site.url)" class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p>
                         </span>
                     </div>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
 export default {
+    emits: ['show_modal'],
     mixins: [
         // grade_chart,
     ],
     components: {
-        StackModal,
+        // No local import needed - global
     },
     props: {
         modalClass: {
             type: String,
             default: '',
-        },
-        user: {
-            type: Object,
-            default: () => ({}),
-        },
-        // "sector",
+        }
+    },
+    computed: {
+        modalTitle() {
+            return this.localUser.name + ' ' + this.localUser.surname || 'Loading...';
+        }
     },
     data: function () {
         return {
             is_show_mtp_modal: false,
-            loading: false
+            loading: false,
+            localUser: {}
         };
     },
     mounted() {
-        // this.get_spot_rocks_images();
     },
     methods: {
         show_modal(user_id){
             this.loading = true;
+            this.localUser = {};
             this.get_user_data(user_id)
         },
         from_user_site_url_get_domen(url){
@@ -80,7 +79,7 @@ export default {
             axios
                 .get("/get_tour/get_guide/" + id)
                 .then((response) => {
-                    this.user = response.data;
+                    this.localUser = response.data;
                     this.loading = false;
                     this.is_show_mtp_modal = true
                 })
@@ -88,7 +87,6 @@ export default {
                     this.loading = false;
                 });
         },
-
         go_to_user_site(url){
             window.open(url, '_blank');
         }
@@ -101,7 +99,6 @@ export default {
     border: 4px solid #edf2f7;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     margin-bottom: 1rem;
-
     max-width: 70%;
     margin-left: 15%;
 }

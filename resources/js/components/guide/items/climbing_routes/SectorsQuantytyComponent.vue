@@ -1,14 +1,14 @@
 <template>
     <div class="row">
         <div  v-if="sector_quantyt_loader">
-            <content-loader
+            <skeleton-loader
                 :width="100"
                 :height="7"
                 primaryColor="#f3f3f3"
                 secondaryColor="#279fbbb0"
             >
                 <rect x="0" y="0" rx="2" ry="2" width="100%" height="6" />
-            </content-loader>
+            </skeleton-loader>
         </div>
         <div v-else>
             <h3 class="article_list_short_description" v-if="shortText">
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-    import { ContentLoader } from 'vue-content-loader'
+
     export default {
         data: function () {
             return {
@@ -33,9 +33,8 @@
         mounted() {
             this.get_routes_and_sectors_quntyty()
         },
-        components: {
-            ContentLoader
-        },
+        components: {},
+
 
         props: {
             route_categories_prop: {

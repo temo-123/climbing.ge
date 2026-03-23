@@ -1,4 +1,5 @@
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
+import { h } from "vue";
 
 import NotFound from '../components/errors/404Component.vue'
 
@@ -17,72 +18,47 @@ function getLocaleRegex() {
     return `(${reg})`;
 }
 
-const router = new VueRouter({
-    routes: [
-        {
-            path: `/:locale${getLocaleRegex()}?`,
-            component: {
-                render: (h) => h("router-view"),
-            },
-            beforeEnter: (to, from, next) => {
-                let storage_locale = localStorage.getItem("lang")
+const routes = [
+    {
+        path: `/`,
+        component: {
+            render() {
+                return h("router-view");
+            }
+        },
+        children: [
+{ path: '', name: 'index', component: load('MeinPage'), meta: { title: 'Shop Index' } },
 
-                if(storage_locale){
-                    to.params.locale = storage_locale;
-                }
-                else{
-                    to.params.locale = 'en';
-                }
+{ path: 'climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage'), meta: { title: 'Wall Price Calculator' } },
 
-                const locale = to.params.locale;
+{ path: 'products', name: 'catalog', component: load('lists/ProductsCatalog'), meta: { title: 'Products Catalog' } },
+{ path: 'sale_products', name: 'sale_products', component: load('lists/SaleProductsPage'), meta: { title: 'Sale Products' } },
+{ path: 'product/:url_title', name: 'product', component: load('pages/ProductPage'), meta: { title: 'Product' },},
+            
+{ path: 'services', name: 'services', component: load('lists/ServicesCatalog'), meta: { title: 'Services' },},
+{ path: 'service/:url_title', name: 'service', component: load('pages/ServicePage'), meta: { title: 'Service' },},
+            
+{ path: 'tours', name: 'tours', component: load('lists/ToursCatalog'), meta: { title: 'Tours' },},
+{ path: 'tour/:url_title', name: 'tour', component: load('pages/TourPage'), meta: { title: 'Tour' },},
 
-                localStorage.setItem("lang", locale);
+{ path: 'about_us', name: 'about_store', component: load('AboutUs'), meta: { title: 'About Store' },},
+{ path: 'search_products', name: 'search_products', component: load('SearchPage'), meta: { title: 'Search Products' },},
 
-                const supported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|");
+{ path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
+{ path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
-                if (!supported_locales.includes(locale)) {
-                    return next("/");
-                }
+{ path: ":pathMatch(.*)*", name: 'NotFound', component: NotFound, meta: { title: 'Not Found' } }
+        ]
+    }
+];
 
-                if (i18n.locale !== locale) {
-                    i18n.locale = locale;
-                }
-
-                return next();
-            },
-            children: [
-                { path: '', name: 'index', component: load('MeinPage') },
-
-                { path: 'climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage') },
-
-                { path: 'products', name: 'catalog', component: load('lists/ProductsCatalog') },
-                { path: 'sale_products', name: 'sale_products', component: load('lists/SaleProductsPage') },
-                { path: 'product/:url_title', name: 'product', component: load('pages/ProductPage'),},
-                
-                { path: 'services', name: 'services', component: load('lists/ServicesCatalog'),},
-                { path: 'service/:url_title', name: 'service', component: load('pages/ServicePage'),},
-                
-                { path: 'tours', name: 'tours', component: load('lists/ToursCatalog'),},
-                { path: 'tour/:url_title', name: 'tour', component: load('pages/TourPage'),},
-
-                { path: 'about_us', name: 'about_store', component: load('AboutUs'),},
-                { path: 'search_products', name: 'search_products', component: load('SearchPage'),},
-
-                { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent,},
-                { path: "/confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage,},
-
-                { path: '*', name: 'NotFound', component: NotFound }
-            ]
-        }
-    ],
-    mode: 'history',
+const router = createRouter({
+    routes,
+    history: createWebHistory(),
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    }
 });
 
-router.beforeEach((to, from, next) => {
-    to.params.locale = localStorage.getItem("lang");
+export default router;
 
-    next();
-});
-
-
-export default router

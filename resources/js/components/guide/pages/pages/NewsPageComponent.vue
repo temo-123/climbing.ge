@@ -5,13 +5,13 @@
         </span>
         <span v-else-if="!article_loading">
             <articlPage :article_prop="news" />
-        </span>
 
-        <metaData 
-            :title = "news.locale_data.title"
-            :description = "news.locale_data.description"
-            :image = "'/public/images/news_img/'+news.image"
-        />
+            <metaData 
+                :title = "news.locale_data.title"
+                :description = "news.locale_data.description"
+                :image = "'/public/images/news_img/'+news.image"
+            />
+        </span>
     </div>
 </template>
 
@@ -24,7 +24,7 @@
         data: function () {
             return {
                 news: [],
-                article_loading: false
+                article_loading: true
             }
         },
         components: {

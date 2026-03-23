@@ -1,14 +1,14 @@
 <template>
-    <stack-modal
-            :show="is_show_modal"
-            :title="$t('guide.route.create_feedback_title')"
-            @close="close_route_review_modal(route_id)"
-            :modal-class="{ [ModalClass]: true }"
-            :saveButton="{ visible: true }"
-            :cancelButton="{
-                title: 'Close',
-                btnClass: { 'btn btn-primary': true },
-            }"
+    <StackModal 
+        v-model:show="is_show_modal"
+        :title="$t('guide.route.create_feedback_title')"
+        @close="close_route_review_modal(route_id)"
+        :modal-class="{ [ModalClass]: true }"
+        :saveButton="{ visible: true }"
+        :cancelButton="{
+            title: $t('guide.route.back_to_modal'),
+            btnClass: { 'btn btn-warning': true },
+        }"
         >
             <div class="model-body">
                 <div class="container">
@@ -65,7 +65,7 @@
                                 </div>
                             </div>
 
-                            <vue-recaptcha
+                            <!-- <vue-recaptcha
                                 :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
                                 :loadRecaptchaScript="true"
                                 ref="recaptcha"
@@ -73,42 +73,26 @@
                                 @verify="onCaptchaVerified"
                                 @expired="onCaptchaExpired"
                             >
-                            </vue-recaptcha>
+                            </vue-recaptcha> -->
                         </form>
 
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer d-flex justify-content-between">
-                    <button
-                        class="btn btn-warning float-left"
-                        @click="close_route_review_modal(route_id)"
-                    >
-                        {{ $t('guide.route.back_to_modal') }}
-                    </button>
-
-                    <!-- <div class="form-group"  v-if="is_verify_isset == false"> -->
-                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success float-right" disabled>{{ $t("global.form.save") }}</button>
-                    <!-- </div>
-                    <div class="form-group"  v-else> -->
-                        <button v-else type="submit" form="route_review_form" class="btn btn-success float-right">{{ $t("global.form.save") }}</button>
-                    <!-- </div> -->
-                </div>
-            </div>
-        </stack-modal>
+    </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now (but using local StackModal.vue)
+// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; 
 
 import starReitingInsert from '../../../../../../global_components/StarReitingInsertComponent.vue'
 
+// import StackModal from '../../../../../global_components/modals/StackModal.vue' // Path wrong - use global registration instead
+
 export default {
     components: { 
-        VueRecaptcha,
-        StackModal,
+        // 'vue-recaptcha': VueRecaptchaV2,
         starReitingInsert,
     },
     props: [

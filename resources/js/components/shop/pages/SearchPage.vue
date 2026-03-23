@@ -9,7 +9,7 @@
                     <h2 class="text-center"> The your search query is:"<b> {{ this.$route.query.query }} </b>". Please use only english text for your query!!!</h2>
                     
                     <div v-if="is_loading">
-                        <content-loader
+    <skeleton-loader
                             viewBox="0 0"
                             primaryColor="#f3f3f3"
                             secondaryColor="#27bb7d8c"
@@ -46,14 +46,14 @@
 </template>
 
 <script>
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../items/MetaDataComponent'
     import catalogItem from '../items/cards/CatalogItemComponent'
     export default {
         components: {
             metaData,
             catalogItem,
-            ContentLoader,
+
         },
         data: function () {
             return {

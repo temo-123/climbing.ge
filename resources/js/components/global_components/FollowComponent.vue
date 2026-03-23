@@ -14,7 +14,7 @@
                     <input type="text" v-model="email" name="email" class="form-control footer_input"> 
 
                     <div class="footer_re_capcha">
-                        <vue-recaptcha 
+                        <!-- <vue-recaptcha 
                             :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                             :loadRecaptchaScript="true"
                             ref="recaptcha"
@@ -22,7 +22,7 @@
                             @verify="onCaptchaVerified"
                             @expired="onCaptchaExpired"
                         >
-                        </vue-recaptcha>
+                        </vue-recaptcha> -->
                     </div>
 
                     <div v-if="loading == false">
@@ -44,7 +44,7 @@
 </template>
 
 <script>
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import { RecaptchaV2 as VueRecaptchaV2 } from 'vue3-recaptcha-v2';
     export default {
         props:[
             // 'service',
@@ -59,8 +59,13 @@
                 loading: false,
             };
         },
-        components: {
-            VueRecaptcha
+    // components: {
+    //         'vue-recaptcha': VueRecaptchaV2
+    //     },
+        provide() {
+            return {
+                // 'vue3-recaptcha-v2:options': {}
+            }
         },
         mounted() {
             

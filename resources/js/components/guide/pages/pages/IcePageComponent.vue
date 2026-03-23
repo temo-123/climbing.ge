@@ -4,7 +4,7 @@
             <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
-            <outdoor 
+            <articlPage 
                 :article_prop="ice" 
                 ref="article_page"
             />
@@ -20,8 +20,7 @@
 
 <script>
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
-    // import icePage from '../../items/pages_main_components/IceComponent'
-    import outdoor from '../../items/pages_main_components/OutdoorComponent'
+    import articlPage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
 
     export default {
@@ -33,8 +32,7 @@
         },
         components: {
             articlePreloader,
-            // icePage,
-            outdoor,
+            articlPage,
             metaData,
         },
         mounted() {

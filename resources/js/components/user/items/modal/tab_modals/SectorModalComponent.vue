@@ -83,7 +83,7 @@
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
      
     // import { ContainerMixin, ElementMixin } from 'vue-slicksort'; //
     export default {

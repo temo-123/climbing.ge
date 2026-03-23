@@ -89,7 +89,7 @@
 
 <script>
     //http://www.blog.tonyswierz.com/javascript/add-and-use-google-recaptcha-in-a-vuejs-laravel-project/
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
 
     import feedbackComplaintModal from './modals/feedbacks/FeedbackComplaintModal';
     import feadbackModal from './modals/feedbacks/FeedbackModal';
@@ -99,7 +99,7 @@
     export default {
         components: {
             feedbackComplaintModal,
-            VueRecaptcha,
+            // 'vue-recaptcha': VueRecaptchaV2,
             feadbackModal,
             starsReiting,
             UserModalComponent

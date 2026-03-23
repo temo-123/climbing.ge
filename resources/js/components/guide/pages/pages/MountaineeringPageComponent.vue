@@ -1,19 +1,23 @@
 <template>
-    <div>
-        <div class="row">
-            <div class="col-sm-8 blog-header">
-                <h1 class="blog-title">
-                    {{ this.mount_route.locale_data.title  }}
-                </h1>
+    <div class="container">
+        <span v-if="article_loading">
+            <articlePreloader />
+        </span>
+        <span v-else-if="!article_loading">
+            <div class="row">
+                <div class="col-sm-8 blog-header">
+                    <h1 class="blog-title">
+                        {{ this.mount_route.locale_data.title  }}
+                    </h1>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-8 blog-header">
-                <breadcrumb />
+            <div class="row">
+                <div class="col-sm-8 blog-header">
+                    <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.mount_route.global_data.created_at  }}</p>
+                    <p class="blog-post-meta"> {{ this.mount_route.global_data.created_at  }}</p>
+                </div>
             </div>
-        </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
@@ -79,29 +83,30 @@
 
                 </div>
 
-            <articleRightMenu />
+                <articleRightMenu />
             
-        </div>
+            </div>
 
-        <commentForm 
-            :article_id="this.mount_route.global_data.id" 
-            ref="comments"
-        />
+            <commentForm 
+                :article_id="this.mount_route.global_data.id" 
+                ref="comments"
+            />
 
-        <SimilarArticles 
-            :article_id="this.mount_route.global_data.id" 
-            :article_category="this.mount_route.global_data.category" 
-            :route="'mountaineering/'"
-            :img_dir="'mount_route_description_img'"
+            <SimilarArticles 
+                :article_id="this.mount_route.global_data.id" 
+                :article_category="this.mount_route.global_data.category" 
+                :route="'mountaineering/'"
+                :img_dir="'mount_route_description_img'"
 
-            ref="similar_articles"
-        />
-        
-        <metaData 
-            :title = "mount_route.locale_data.title"
-            :description = "mount_route.locale_data.description"
-            :image = "'/public/images/mount_route_img/'+mount_route.image"
-        />
+                ref="similar_articles"
+            />
+            
+            <metaData 
+                :title = "mount_route.locale_data.title"
+                :description = "mount_route.locale_data.description"
+                :image = "'/public/images/mount_route_img/'+mount_route.image"
+            />
+        </span>
     </div> 
 </template>
 
@@ -124,6 +129,7 @@
                 mount_route: [],
                 mounts_system: [],
                 masiv_desc: true,
+                article_loading: true
             };
         },
         components: {
@@ -156,6 +162,7 @@
             },
 
             get_mount_route(){
+                this.article_loading = true
                 axios
                 .get('/get_article/get_locale_article_on_page/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
@@ -175,6 +182,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.article_loading = false);
             },
         }
     }

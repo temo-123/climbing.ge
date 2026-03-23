@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
@@ -11,7 +12,6 @@
 </head>
 <body>
     <div id="app">
-        {{-- @include('shop.components.navbar') --}}
         @yield('content')
     </div>
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>

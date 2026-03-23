@@ -1,24 +1,22 @@
-import Vue from "vue";
-import Vuex from "vuex";
 import axios from "axios"
 
-Vue.use(Vuex);
-
-export default new Vuex.Store({
+export default {
+  namespaced: true,
   actions: {
     async authing_user(ctx){
-      axios
-      .get('/auth_user')
-      .then((response)=>{ 
-          const action_user = response.data
-          ctx.commit('update_user_data', action_user)
-      })
+      try {
+        const response = await axios.get('/auth_user');
+        ctx.commit('update_user_data', response.data);
+      } catch (error) {
+        ctx.commit('update_user_data', null);
+      }
     }
   },
 
   mutations: {
     update_user_data(state, auth_user){
       state.auth_user = auth_user
+      state.is_user_login = !!auth_user
     }
   },
 
@@ -32,4 +30,5 @@ export default new Vuex.Store({
        return state.auth_user
     }
   },
-});
+};
+

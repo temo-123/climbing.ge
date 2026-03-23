@@ -10,22 +10,23 @@
         
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 mobali_menu" id="navbarNav">
             <ul  class="navbar-nav admin_navbar">
-                <li v-for="menu_item in menu_items" :key="menu_item.id" v-if="menu_item.routes && haveMenuBlockPermission(menu_item)" class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menu_item.title}}</a>
+                <li v-for="(menuItem, index) in menu_items" :key="menuItem.id || index" v-if="menuItem && menuItem.routes && haveMenuBlockPermission(menuItem)" class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menuItem.title}}</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown" >
-                        <router-link :to="{path: menu_but.route}" lass="nav-link" class="dropdown-item" v-for="menu_but in menu_item.routes" :key="menu_but.id" v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)">
+                        <router-link :to="{path: menu_but.route}" lass="nav-link" class="dropdown-item" v-for="menu_but in menuItem.routes" :key="menu_but.id" v-if="menu_but.hasOwnProperty('permissions') && haveMenuButPermission(menu_but.permissions)">
                             {{menu_but.name}}
                         </router-link>
                     </div>
                 </li>
                 
-                <li v-else-if="menu_item.route && menu_item.hasOwnProperty('permissions') && haveMenuButPermission(menu_item.permissions)" class="nav-item">
-                    <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
+                <li v-else-if="menuItem && menuItem.route && menuItem.hasOwnProperty('permissions') && haveMenuButPermission(menuItem.permissions)" class="nav-item">
+                    <router-link :to="{path: menuItem.route}" lass="nav-link" class="nav-link">{{menuItem.title}}</router-link>
                 </li>
                 
-                <li v-else-if="menu_item.route && !menu_item.hasOwnProperty('permissions')" class="nav-item">
-                    <router-link :to="{path: menu_item.route}" lass="nav-link" class="nav-link">{{menu_item.title}}</router-link>
+                <li v-else-if="menuItem && menuItem.route && !menuItem.hasOwnProperty('permissions')" class="nav-item">
+                    <router-link :to="{path: menuItem.route}" lass="nav-link" class="nav-link">{{menuItem.title}}</router-link>
                 </li>
+
 
                 <li class="nav-item">
                     <router-link :to="{name: 'cart'}" class="nav-link" exact>
@@ -132,18 +133,19 @@
 </template>
     
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
-    
-    import { navbar } from '../../../../mixins/navbar_pages_mixin.js'
+    import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
     
     export default {
-        mixins: [
-            navbar
-        ],
+        mixins: [navbar_pages_mixin],
+        computed: {
+            menu_items() {
+                return this.admin_all_menu() || [];
+            }
+        },
         name: 'leftMenu',
         data(){
             return {
-                menu_items: navbar.admin_all_menu(),
+                // menu_items now computed
                 animate_enabled: false,
                 menuKey: 0, // Used to force re-render when permissions change
                 
@@ -162,7 +164,7 @@
             // Load permissions immediately from localStorage or fetch from server
             this.loadPermissions()
             // Listen for permissions-loaded event from login
-            this.$root.$on('permissions-loaded', (permissions) => {
+this.$bus.$on('permissions-loaded', (permissions) => {
                 if (this.$ability) {
                     this.$ability.update(permissions)
                 }
@@ -171,7 +173,7 @@
                 this.$forceUpdate()
             })
             // Listen for menu toggle events from LeftMenuComponent
-            this.$root.$on('menu-toggle', () => {
+this.$bus.$on('menu-toggle', () => {
                 this.animate_enabled = true;
                 // Use requestAnimationFrame to ensure CSS transition is applied before position change
                 requestAnimationFrame(() => {
@@ -182,13 +184,12 @@
             });
         },
         beforeUnmount() {
-            this.$root.$off('menu-toggle');
-            this.$root.$off('permissions-loaded');
+this.$bus.$off('menu-toggle');
+this.$bus.$off('permissions-loaded');
         },
         components: {
-            countryFlag,
         },
-        watch: {
+            watch: {
             '$route' (to, from) {
                 this.user = '',
                 this.get_user(),
@@ -197,9 +198,10 @@
                 this.loadPermissions()
 
                 let navbar = document.getElementById("navbarNav")
-                navbar.classList.remove("show")
+                if (navbar) navbar.classList.remove("show")
             }
         },
+
         methods: {
             loadPermissions() {
                 // Try to load permissions from localStorage first (set during login)
@@ -209,6 +211,7 @@
                         const permissions = JSON.parse(storedPermissions)
                         if (permissions && permissions.length > 0 && this.$ability) {
                             this.$ability.update(permissions)
+                            this.$bus.$emit('permissions-loaded', permissions)
                             return
                         }
                     } catch (e) {
@@ -225,7 +228,8 @@
                     .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
                     .then(response => {
                         if (this.$ability) {
-                            this.$ability.update(response.data)
+this.$ability.update(response.data)
+                        this.$bus.$emit('permissions-loaded', response.data)
                         }
                         localStorage.setItem('user_permissions', JSON.stringify(response.data))
                     })
@@ -255,28 +259,30 @@
             },
         
             haveMenuBlockPermission(menu_section){
+                if (!menu_section.routes || !Array.isArray(menu_section.routes)) return false;
+                if (!this.$ability) return true;
+                
                 let perm_num = 0;
                 
                 for (let j = 0; j < menu_section.routes.length; j++) {
-                    if (menu_section.routes[j].hasOwnProperty('permissions') && menu_section.routes[j].permissions.length) {
-                        for (let i = 0; i < menu_section.routes[j].permissions.length; i++) {
-                            if(this.$can(menu_section.routes[j].permissions[i][0], menu_section.routes[j].permissions[i][1])){
+                    const routeItem = menu_section.routes[j];
+                    if (!routeItem) continue;
+                    
+                    if (routeItem.hasOwnProperty('permissions') && routeItem.permissions && routeItem.permissions.length) {
+                        for (let i = 0; i < routeItem.permissions.length; i++) {
+                            if(this.$can(routeItem.permissions[i][0], routeItem.permissions[i][1])){
                                 perm_num++
+                                break;
                             }
                         }
-                    }
-                    else if(!menu_section.routes[j].hasOwnProperty('permissions') || !menu_section.routes[j].permissions.length){
-                        perm_num++
+                    } else {
+                        perm_num++;
                     }
                 }
                 
-                if(perm_num > 0){
-                    return true
-                }
-                else{
-                    return false
-                }
+                return perm_num > 0;
             },
+
         
             haveMenuButPermission(permissions){
                 if(permissions.length){

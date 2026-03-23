@@ -35,13 +35,7 @@
             </div>
 
             <div v-if="other_article_loading">
-                <content-loader
-                    viewBox="0 0"
-                    primaryColor="#f3f3f3"
-                    secondaryColor="#279fbbb0"
-                >
-
-                </content-loader>
+                
             </div>
             <div v-else>
                 <div v-if="this.other_articles.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
@@ -86,7 +80,7 @@
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     import metaData from '../../items/MetaDataComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
 
     import axios_mixin from '../../../../mixins/axios_mixin'
 
@@ -106,7 +100,7 @@
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,
-            ContentLoader,
+
             metaData
         },
         mounted() {

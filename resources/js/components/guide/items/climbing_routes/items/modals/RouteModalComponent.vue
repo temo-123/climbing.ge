@@ -1,14 +1,14 @@
 <template>
-    <stack-modal
-            :show="is_show_route_modal"
-            :title="$t('guide.route.route_details_title')"
-            @close="is_show_route_modal = false"
+<StackModal
+            v-model="is_show_route_modal"
+            title="$t('guide.route.route_details_title')"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
                 title: $t('guide.route.close_modal'),
-                btnClass: { 'btn btn-primary': true },
+                btnClass: { 'btn btn-secondary': true },
             }"
+            @close="close_route_modal"
         >
             <div class="model-body">
                 <div class="row justify-content-center" v-show="is_loading">
@@ -124,8 +124,7 @@
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
                     <button
                         class="btn btn-success mb-2 mb-md-0"
                         @click="create_route_review_modal(route.id)"
@@ -148,12 +147,11 @@
                         {{ $t('guide.route.show_feedbacks') }}
                     </button>
                 </div>
-            </div>
-        </stack-modal>
+        </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 import grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
 import starsReiting  from '../../../../../global_components/StarReitingShowComponent.vue'
 
@@ -162,7 +160,7 @@ export default {
         grade_chart,
     ],
     components: {
-        StackModal,
+        // StackModal,
         starsReiting,
     },
     props: [
@@ -212,12 +210,16 @@ export default {
         },
 
         show_route_modal(id) {
-            this.is_show_route_modal = true;
-
             this.clear_data()
-
             this.auth_user()
+            this.is_loading = true
+            this.is_show_route_modal = false
             this.get_route_data(id)
+        },
+        close_route_modal() {
+            this.is_show_route_modal = false;
+            this.is_loading = false;
+            this.clear_data()
         },
 
         clear_data(){

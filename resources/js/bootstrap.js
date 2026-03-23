@@ -1,24 +1,5 @@
-// const { default: router } = require('./routes/UserRoutes');
-
-if (window.location.hostname == process.env.MIX_SITE_URL) {
-    const { default: router } = require('./routes/SiteRoutes');
-} else if (window.location.hostname == process.env.MIX_SHOP_URL) {
-    const { default: router } = require('./routes/ShopRoutes');
-} else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-    const { default: router } = require('./routes/UserRoutes');
-} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
-    // const { default: router } = require('./routes/UserRoutes');
-} else if (window.location.hostname == process.env.MIX_FORUM_URL) {
-    // const { default: router } = require('./routes/UserRoutes');    
-} else {
-    // homeComponent = Error;
-}
-
-window._ = require('lodash');
-
-try {
-    require('bootstrap');
-} catch (e) {}
+import _ from 'lodash';
+window._ = _;
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -26,63 +7,64 @@ try {
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+import axios from 'axios';
+window.axios = axios;
 
-window.axios = require('axios');
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
-window.axios.defaults.whithCredentials = true;
+axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+axios.defaults.withCredentials = true;
 
-window.axios.interceptors.response.use({}, err => {
-    if(err && err.response){
-        if(err.response.status === 401 || err.response.status === 419){
-            const token = localStorage.getItem('x_xsrf_token')
-            if(token){
-                localStorage.removeItem('x_xsrf_token')
-            }
+/**
+ * Next we will register the CSRF Token as a common header with Axios so that
+ * all outgoing HTTP requests automatically have it attached. This is just
+ * a simple convenience so we don't have to attach on every request manually.
+ */
 
-            if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-                router.push({name: "login"})
-            }
+var token = document.head.querySelector('meta[name="csrf-token"]');
 
-            return Promise.reject(err)
-        }
-        else if(err.response.status === 422){
-            return Promise.reject(err)
-        }
-        else if(err.response.status === 403){
-            // Check if user is banned
-            if (err.response.data && err.response.data.is_banned === true) {
-                // Show ban alert
-                if (err.response.data.alert) {
-                    alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
-                } else {
-                    alert('Your account has been banned.');
-                }
-                
-                // Clear local storage and close page
-                localStorage.removeItem('x_xsrf_token');
-                localStorage.removeItem('user');
-                window.close();
-                return Promise.reject(err);
-            }
-            else{
-                alert("You don't have permission to perform this action.")
-                return Promise.reject(err)
-            }
-            // return Promise.reject(err)
-        }
-        // else if(err.response.status === 404){
-            // window.location.href = process.env.MIX_APP_SSH + process.env.MIX_SITE_URL + "/404";
-        // }
-        else{
-            alert("Error -> {" + err + "}")
-            return Promise.reject(err)
-        }
-    }
-})
+if (token) {
+  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
+} else {
+  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
+}
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
  * allows your team to easily build robust real-time web applications.
  */
+
+import Echo from 'laravel-echo';
+
+window.Pusher = require('pusher-js');
+
+// Only initialize Echo if Pusher key and cluster are properly configured
+const pusherKey = process.env.MIX_PUSHER_APP_KEY;
+const pusherCluster = process.env.MIX_PUSHER_APP_CLUSTER;
+
+// Check if Pusher is properly configured (not placeholder values)
+const isPusherConfigured = pusherKey && pusherKey.length > 0 && 
+                            pusherCluster && 
+                            pusherCluster !== 'your_pusher_cluster' &&
+                            !pusherCluster.includes('your_');
+
+if (isPusherConfigured) {
+    window.Echo = new Echo({
+        broadcaster: 'pusher',
+        key: pusherKey,
+        cluster: pusherCluster,
+        forceTLS: true
+    });
+} else {
+    if (pusherKey && !pusherCluster || pusherCluster === 'your_pusher_cluster') {
+        console.warn('Pusher cluster not properly configured. Real-time features will be disabled.');
+    } else if (!pusherKey) {
+        console.warn('Pusher app key not configured. Real-time features will be disabled.');
+    }
+    // Initialize Echo with a mock to prevent errors
+    window.Echo = {
+        channel: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
+        private: () => ({ listen: () => {}, notification: () => {}, subscribe: () => ({}) }),
+        disconnect: () => {}
+    };
+}
 

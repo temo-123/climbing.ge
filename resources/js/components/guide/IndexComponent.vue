@@ -19,7 +19,7 @@
 <script>
 import navbar from "./items/navbars/NavbarComponent";
 import footter from "./items/FooterComponent";
-import loginModal from "../global_components/LoginModalComponent.vue";
+import loginModal from "../global_components/modals/LoginModalComponent.vue";
 import go_to_top from "../global_components/GoOnTopComponent.vue";
 import Preloader from "../global_components/PreloaderComponent.vue";
 

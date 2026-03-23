@@ -1,12 +1,12 @@
 <template>
-    <stack-modal
-        :show="showModal"
-        title="Article Quick View"
-        @close="closeModal"
+    <StackModal
+        v-model="is_show_modal"
+        :title="modalTitle"
         :modal-class="{ [modalClass]: true }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
         :saveButton="{ visible: true, title: 'Go to Article', btnClass: { 'btn btn-primary': true } }"
         @save="goToArticle"
+        @close="close_modal"
     >
         <div class="container">
             <div class="clearfix row" v-if="article">
@@ -28,11 +28,11 @@
                 <p>No article data available</p>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
-    import StackModal from '@innologica/vue-stackable-modal'
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
             StackModal,
@@ -45,9 +45,14 @@
         },
         data(){
             return {
-                showModal: false,
+                is_show_modal: false,
                 article: null,
                 category: null
+            }
+        },
+        computed: {
+            modalTitle() {
+                return this.article ? (this.article.locale_data?.title || 'Article Quick View') : 'Article Quick View';
             }
         },
 
@@ -56,13 +61,13 @@
         },
 
         methods: {
-            show_quick_view_modal(article, category){
+            show_modal(article, category){
                 this.article = article
                 this.category = category
-                this.showModal = true
+                this.is_show_modal = true
             },
-            closeModal(){
-                this.showModal = false
+            close_modal(){
+                this.is_show_modal = false
             },
             goToArticle(){
                 if(this.article && this.category && this.article.url_title){

@@ -1,14 +1,14 @@
 <template>
-    <stack-modal
-            :show="is_show_modal"
-            :title="$t('guide.route.all_feedbacks_title')"
-            @close="close_route_review_modal(route_id)"
-            :modal-class="{ [ModalClass]: true }"
-            :saveButton="{ visible: true }"
-            :cancelButton="{
-                title: 'Close',
-                btnClass: { 'btn btn-primary': true },
-            }"
+    <StackModal 
+        v-model:show="is_show_modal"
+        :title="$t('guide.route.all_feedbacks_title')"
+        @close="close_route_review_modal(route_id)"
+        :modal-class="{ [ModalClass]: true }"
+        :saveButton="{ visible: false }"
+        :cancelButton="{
+            title: $t('guide.route.close_modal'),
+            btnClass: { 'btn btn-danger': true },
+        }"
         >
             <div class="model-body">
                 <div class="container">
@@ -43,28 +43,11 @@
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer d-flex justify-content-between">
-                    <button
-                        class="btn btn-danger float-left"
-                        @click="close_route_review_modal()"
-                    >
-                        {{ $t('guide.route.close_modal') }}
-                    </button>
-
-                    <button
-                        class="btn btn-warning float-right"
-                        @click="back_to_route_madal()"
-                    >
-                        {{ $t('guide.route.back_to_modal') }}
-                    </button>
-                </div>
-            </div>
-        </stack-modal>
+    </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
 // import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
 
 import starsReiting  from '../../../../../../global_components/StarReitingShowComponent.vue'
@@ -72,7 +55,6 @@ import starsReiting  from '../../../../../../global_components/StarReitingShowCo
 export default {
     components: { 
         // VueRecaptcha,
-        StackModal,
         starsReiting,
     },
     props: [

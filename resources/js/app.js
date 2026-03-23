@@ -1,58 +1,121 @@
-import Vue from "vue";
-require("./bootstrap");
+import { createApp } from "vue";
+import "./bootstrap";
 
 /*
  *   Using pakets
  */
-import CKEditor from "ckeditor4-vue";
-import Router from "vue-router";
-import VueMeta from "vue-meta";
-import Vuex from "vuex";
+import CKEditor from "@ckeditor/ckeditor5-vue";
+import { createPinia } from "pinia";
 import axios from "axios";
 import i18n from "./services/localization/i18n";
-import VueSocialSharing from "vue-social-sharing";
+// Vue 3 compatible Social Sharing wrapper
+// import VueSocialSharing from "vue-social-sharing"; // removed - using custom shim
+
+// Vue 3 compatibility fix for vue-social-sharing
+// const VueSocialSharingPlugin = {
+//     install(app) {
+//         // For Vue 3, we need to create a simple global component instead of using the old plugin pattern
+//         app.config.globalProperties.$SocialSharing = {
+//             network(name, url, text) {
+//                 const shareUrls = {
+//                     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+//                     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
+//                     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
+//                     whatsapp: `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
+//                     telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
+//                     pinterest: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(text)}`,
+//                 };
+//                 
+//                 if (shareUrls[name]) {
+//                     window.open(shareUrls[name], '_blank', 'width=600,height=400');
+//                 }
+//             }
+//         };
+//         
+//         // Also register the components if needed
+//         app.component('share-network', {
+//             props: ['network', 'url', 'title'],
+//             template: '<button @click="share"><slot></slot></button>',
+//             methods: {
+//                 share() {
+//                     this.$SocialSharing.network(this.network, this.url, this.title);
+//                 }
+//             }
+//         });
+//     }
+// };
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
-import VueGtag from "vue-gtag";
-import { abilitiesPlugin } from "@casl/vue";
-import ability from "./services/ability/ability";
-import { ContentLoader } from 'vue-content-loader'
-
-import { createHead } from '@unhead/vue' // https://unhead.unjs.io/setup/vue/installation
-import { UnheadPlugin } from '@unhead/vue/vue2'
+import { createGtag } from "vue-gtag";
+import { createHead } from '@unhead/vue'
 
 const head = createHead()
-Vue.use(UnheadPlugin)
 
-Vue.use(ContentLoader);
-Vue.use(abilitiesPlugin, ability());
-Vue.use(VueGlide);
-Vue.use(VueSocialSharing);
-Vue.use(i18n);
-Vue.use(Vuex);
-Vue.use(axios);
-Vue.use(VueMeta);
-Vue.use(CKEditor);
-Vue.use(Router);
+const app = createApp({
+    setup() {
+        // Vue 3 setup function
+    }
+});
+
+import { abilityDefaults } from "./services/ability/ability.js"
+
+// CASL Ability setup for Vue3 - use pre-created defaults
+app.config.globalProperties.$ability = abilityDefaults
+app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(action, subject)
 
 
-Vue.use(VueMeta, {
-    // optional pluginOptions
-    refreshOnceOnNavigation: true
-})
+app.use(VueGlide);
+// app.use(VueSocialSharingPlugin);
+
+// vue3-recaptcha-v2 component only - no plugin install
+app.use(i18n);
+app.use(createPinia());
+app.use(head);
+
+  // Global event bus for Vue2 $root.$emit compatibility
+  app.config.globalProperties.$bus = {
+    callbacks: {},
+    $emit(event, payload) {
+      (this.callbacks[event] || []).forEach(callback => callback(payload));
+    },
+    $on(event, callback) {
+      (this.callbacks[event] = this.callbacks[event] || []).push(callback);
+      // Return unsubscribe
+      return () => this.$off(event, callback);
+    },
+    $off(event, callback) {
+      const callbacks = this.callbacks[event];
+      if (callbacks) {
+        const index = callbacks.indexOf(callback);
+        if (index > -1) callbacks.splice(index, 1);
+      }
+    }
+  };
+
+// Global vue-recaptcha (for components)
+import { RecaptchaV2 } from 'vue3-recaptcha-v2';
+app.component('vue-recaptcha', RecaptchaV2);
+
+// vue-recaptcha global component (duplicate import fixed)
+import StackModal from "./components/global_components/modals/StackModal.vue"
+app.component('StackModal', StackModal)
+// import CustomModal from './components/global_components/CustomModal.vue';
+// app.component('CustomModal', CustomModal);
+
+// import SkeletonLoader from './components/global_components/SkeletonLoader.vue';
+// app.component('skeleton-loader', SkeletonLoader);
+
+// Removed Vue 2 vue-recaptcha plugin - using Vue3 version globally
+// CKEditor is used as a component, not a plugin - don't use app.use(CKEditor)
+// The component is used like: <ckeditor :editor="editor" ...></ckeditor>
 
 /*
- *  Mixins
+ *  Mixins - Now using global properties instead
  */
 
-import { editor_config } from './mixins/editor/editor_config_mixin.js'
-import { going } from './mixins/easy_navigation_mixin.js'
-import  site_data  from './mixins/site_data_mixin.js'
-
-Vue.mixin(site_data); 
-Vue.mixin(editor_config); 
-Vue.mixin(going); 
-
+// import { editor_config } from './mixins/editor/editor_config_mixin.js'
+// import { going } from './mixins/easy_navigation_mixin.js'
+// import  site_data  from './mixins/site_data_mixin.js'
 
 /*
  *   My components
@@ -60,16 +123,13 @@ Vue.mixin(going);
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
-import store from "./store";
 import guide_img from "./components/guide/items/ImageComponent.vue";
 import shop_img from "./components/shop/items/ImageComponent.vue";
-// import blog_img from "./components/blog/items/ImageComponent.vue";
 
-Vue.component("site-img", guide_img);
-Vue.component("shop-img", shop_img);
-// Vue.component("blog-img", blog_img);
-Vue.component("left-menu", leftmenu);
-Vue.component("goToAdminPage", goToAdminPage);
+app.component("site-img", guide_img);
+app.component("shop-img", shop_img);
+app.component("left-menu", leftmenu);
+app.component("goToAdminPage", goToAdminPage);
 
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/guide/IndexComponent.vue";
@@ -85,102 +145,103 @@ import films_routes from "./routes/FilmsRoutes";
 import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
 
-Vue.component(
-    "main-wrapper-component",
-    require("./components/shop/MainWrapper.vue").default
-);
-Vue.component(
-    "index-component",
-    require("./components/guide/IndexComponent.vue").default
-);
-Vue.component(
-    "home-component",
-    require("./components/user/HomeComponent.vue").default
-);
-Vue.component(
-    "studia-component",
-    require("./components/films/StudiaComponent.vue").default
-);
-Vue.component(
-    "blog-component",
-    require("./components/blog/BlogMainComponent.vue").default
-);
+app.component("main-wrapper-component", MainWrapper);
+app.component("index-component", Index);
+app.component("studia-component", Films);
+app.component("blog-component", Blog);
 
 var serviceRoutes = [];
 var homeComponent = [];
-var analytic_id = "";
+let analytic_id = "";
 
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
-    serviceRoutes = site_routes;
+    serviceRoutes = site_routes.options ? site_routes.options.routes : site_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let siteUrl = (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = siteUrl ? baseUrl + '/' + siteUrl + '/api' : baseUrl + '/api';
-
-    Vue.use(VueGtag, {
-        config: { id: process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID },
-    });
 } else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
-    serviceRoutes = shop_routes;
+    serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let shopUrl = (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = shopUrl ? baseUrl + '/' + shopUrl + '/api' : baseUrl + '/api';
-
-    Vue.use(VueGtag, {
-        config: { id: process.env.MIX_SHOP_ANALITICS_ID },
-    });
 } else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
-    serviceRoutes = user_routes;
+    serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
-
-    Vue.use(VueGtag, {
-        config: { id: process.env.MIX_USER_ANALITICS_ID },
-    });
 } else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
-    serviceRoutes = films_routes;
+    serviceRoutes = films_routes.options ? films_routes.options.routes : films_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let filmsUrl = (process.env.MIX_FILMS_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = filmsUrl ? baseUrl + '/' + filmsUrl + '/api' : baseUrl + '/api';
-
-    Vue.use(VueGtag, {
-        config: { id: process.env.MIX_FILMS_ANALITICS_ID },
-    });
 } else if (window.location.hostname == process.env.MIX_BLOG_URL) {
     homeComponent = Blog;
-    serviceRoutes = blog_routes;
+    serviceRoutes = blog_routes.options ? blog_routes.options.routes : blog_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let blogUrl = (process.env.MIX_BLOG_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = blogUrl ? baseUrl + '/' + blogUrl + '/api' : baseUrl + '/api';
-
-    Vue.use(VueGtag, {
-        config: { id: process.env.MIX_blog_ANALITICS_ID },
-    });
 } else {
     homeComponent = Error;
-    serviceRoutes = error_routes;
+    serviceRoutes = error_routes.options ? error_routes.options.routes : error_routes;
     // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-
-    Vue.use(VueGtag, {
-        config: { id: analytic_id },
-    });
 }
 
-// Vue.use(VueGtag, {
-//     config: { id: analytic_id },
-// });
+// Configure analytics based on hostname
+if (window.location.hostname == process.env.MIX_SITE_URL) {
+    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+} else if (window.location.hostname == process.env.MIX_SHOP_URL) {
+    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
+} else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+    analytic_id = process.env.MIX_USER_ANALITICS_ID;
+} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
+    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
+} else if (window.location.hostname == process.env.MIX_BLOG_URL) {
+    analytic_id = process.env.MIX_blog_ANALITICS_ID;
+}
 
-Vue.config.productionTip = false;
-Vue.prototype.$siteData = Vue.observable({ data: [] });
-Vue.prototype.$globalSiteData = Vue.observable({ data: [] });
+createGtag({
+    gtag: {
+        id: analytic_id
+    }
+});
 
-Vue.prototype.$going = going
-Vue.prototype.$editor_config = editor_config
-Vue.prototype.$get_site_data = site_data
+app.config.productionTip = false;
+app.config.globalProperties.$siteData = { data: [] };
+app.config.globalProperties.$globalSiteData = { data: [] };
+
+// Define global mixin properties
+app.mixin({
+    methods: {
+        // Global methods that were mixins
+        $going() {
+            return this.going;
+        },
+        $editor_config() {
+            return this.editor_config;
+        },
+        $get_site_data() {
+            return this.get_site_data;
+        },
+        get_site_data() {
+            axios
+                .get("/get_site_data/get_site_locale_data_for_site/" + localStorage.getItem('lang') || 'en')
+                .then((response) => (
+                    this.$siteData.data = response.data.locale_data,
+                    this.$globalSiteData.data = response.data.global_data
+                ));
+        }
+    },
+    data() {
+        return {
+            $siteData: app.config.globalProperties.$siteData,
+            $globalSiteData: app.config.globalProperties.$globalSiteData
+        }
+    }
+});
 
 if(
     window.location.hostname == 'climbing.ge' ||
@@ -189,70 +250,103 @@ if(
     window.location.hostname == 'films.climbing.ge' ||
     window.location.hostname == 'blog.climbing.ge'
 ){
-    Vue.config.devtools = true
-    Vue.config.debug = true
-    Vue.config.select = true
+    app.config.devtools = true
+    app.config.debug = true
 }
 else{
-    Vue.config.devtools = true
+    app.config.devtools = true
 }
 
-const app = new Vue({
-    el: "#app",
-    unhead: head,
-    i18n,
-    store,
-    // ability,
+// Dynamic component loading based on route
+app.component('home-component', homeComponent);
 
-    // option,
-    components: {
-        homeComponent,
-    },
-    router: serviceRoutes,
+// Create router instance
+import { createRouter, createWebHistory } from 'vue-router';
 
-    mounted() {
-        this.get_site_data();
-    },
-    methods: {
-        get_site_data() {
-            axios
-            // .get("/get_site_data/get_site_locale_data/" + localStorage.getItem('lang') || 'en')
-            .get("/get_site_data/get_site_locale_data_for_site/" + localStorage.getItem('lang') || 'en')
-            .then((response) => (
-                this.$siteData.data = response.data.locale_data,
-                this.$globalSiteData.data = response.data.global_data
-            ));
-        },
-    },
-    watch: {
-        $route(to, from) {
-            window.scrollTo(0, 0);
+const router = createRouter({
+    history: createWebHistory(),
+    routes: serviceRoutes,
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    }
+});
 
-            if (window.location.hostname == process.env.MIX_SITE_URL || window.location.hostname == process.env.MIX_SHOP_URL) {
+// Router navigation guard
+router.beforeEach((to, from, next) => {
+    window.scrollTo(0, 0);
 
-                const firstSegment = location.pathname.split('/')[1];
+    const supported_locales = (process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE || 'en|ka').split("|");
+    const firstSegment = to.path.split('/')[1] || '';
+    let locale = localStorage.getItem('lang') || 'en';
 
-                let suported_locales = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE.split("|")
-                suported_locales.forEach(s_locale => {
-                    if(s_locale == firstSegment && s_locale != this.$route.params.locale){
-                        localStorage.setItem('lang', s_locale)
-                    }
-                });
+    if (supported_locales.includes(firstSegment)) {
+        locale = firstSegment;
+    }
 
-                let locale = localStorage.getItem("lang")
-                localStorage.setItem('lang', locale)
-                this.$i18n.locale = locale;
+    localStorage.setItem('lang', locale);
+    
+    if (i18n.locale !== locale) {
+        i18n.locale = locale;
+    }
+    
+    next();
+});
 
-                if(locale == 'en'){
-                    // let activ_path_without_locale = this.$router.history.pending.path.split("/").splice(2).join("/")
-                    // this.$router.push({ path: '/' + activ_path_without_locale })
-                }
-                else{
-                    const to = this.$router.resolve({params: {locale}})
-                    this.$router.push(to.location)
+// Setup axios interceptor BEFORE mounting app
+window.axios.interceptors.response.use({}, err => {
+    if(err && err.response){
+        if(err.response.status === 401 || err.response.status === 419){
+            const token = localStorage.getItem('x_xsrf_token')
+            if(token){
+                localStorage.removeItem('x_xsrf_token')
+            }
+
+            if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+                router.push({name: "login"})
+            }
+
+            return Promise.reject(err)
+        }
+        else if(err.response.status === 422){
+            return Promise.reject(err)
+        }
+        else if(err.response.status === 403){
+            // Check if user is banned
+            if (err.response.data && err.response.data.is_banned === true) {
+                // Show ban alert
+                if (err.response.data.alert) {
+                    alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
+                } else {
+                    alert('Your account has been banned.');
                 }
                 
+                // Clear local storage and close page
+                localStorage.removeItem('x_xsrf_token');
+                localStorage.removeItem('user');
+                window.close();
+                return Promise.reject(err);
             }
-        },
-    },
-});
+            else{
+                alert("You don't have permission to perform this action.")
+                return Promise.reject(err)
+            }
+        }
+        else{
+            alert("Error -> {" + err + "}")
+            return Promise.reject(err)
+        }
+    }
+})
+
+// Use router
+app.use(router);
+
+// Mount the app
+app.mount("#app");
+
+// Global lodash
+window._ = require('lodash');
+
+try {
+    require('bootstrap');
+} catch (e) {}

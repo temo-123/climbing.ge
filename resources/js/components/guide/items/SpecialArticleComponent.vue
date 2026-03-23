@@ -6,7 +6,7 @@
                 <div class="bar"><i class="fa fa-exclamation" aria-hidden="true"></i></div>
                 <!-- <h3 class="article_list_short_description"> Warning </h3> -->
 
-                <span v-if="speciales != []">
+                <span v-if="speciales && speciales.length > 0">
                     <specialArticleCard 
                         :speciales_prop="speciales"
                     />

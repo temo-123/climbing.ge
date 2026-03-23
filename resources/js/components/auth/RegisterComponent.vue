@@ -117,7 +117,7 @@
           <div class="row">
               <div class="col-md-12">
                   <div class="form-group form_left">
-                      <vue-recaptcha 
+                      <!-- <vue-recaptcha 
                           :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                           :loadRecaptchaScript="true"
                           ref="recaptcha"
@@ -125,7 +125,7 @@
                           @verify="onCaptchaVerified"
                           @expired="onCaptchaExpired"
                       >
-                      </vue-recaptcha>
+                      </vue-recaptcha> -->
                   </div>
               </div>
           </div>
@@ -195,12 +195,12 @@
 </template>
 
 <script>
-import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
-import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
+// import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 export default {
     components: { 
-        VueRecaptcha,
-        StackModal,
+        // 'vue-recaptcha': VueRecaptchaV2,
+        // StackModal,
     },
   name: "Register page",
   data: function() {

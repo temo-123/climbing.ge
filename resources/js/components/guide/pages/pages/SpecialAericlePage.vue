@@ -30,7 +30,7 @@
 
                     <h2>{{ $t('guide.donation.support_title') }}</h2>
 
-                    <Donation position="left"/>
+                    <!-- <Donation position="left"/> -->
 
                     <galleryComponent 
                         :images_prop="partner.gallery_images" 
@@ -68,7 +68,7 @@
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
     // import articlPage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
-    import Donation from '../../items/DonationComponent.vue'
+    // import Donation from '../../items/DonationComponent.vue'
 
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
@@ -87,7 +87,7 @@
 
             articlePreloader,
             metaData,
-            Donation
+            // Donation
         },
         data: function () {
             return {

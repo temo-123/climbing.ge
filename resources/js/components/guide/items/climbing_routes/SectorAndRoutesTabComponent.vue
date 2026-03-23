@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 
 import sector from "./items/SectorComponent.vue"
 import sector_and_local_area_images from "./items/SectorsAndAreaLocalImageComponrnt.vue"
@@ -47,8 +47,6 @@ export default {
         grade_chart,
     ],
     components: {
-        StackModal,
-
         sector,
         sector_and_local_area_images,
 

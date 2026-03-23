@@ -2506,57 +2506,57 @@ select:focus {
 *   Site modal styles
 *
 */
-.language-vue {
-    margin: 10px 0 0 0;
-    width: 95%;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    left: 2.5%;
-    overflow-y: scroll;
-    overflow-x: hidden;
-}
+// .language-vue {
+//     margin: 10px 0 0 0;
+//     width: 95%;
+//     position: absolute;
+//     top: 0;
+//     bottom: 0;
+//     right: 0;
+//     left: 2.5%;
+//     overflow-y: scroll;
+//     overflow-x: hidden;
+// }
 
-.modal-dialog {
-    width: 60% !important;
-    max-width: 100% !important;
-    // margin-top: 5% !important;
-}
+// .modal-dialog {
+//     width: 60% !important;
+//     max-width: 100% !important;
+//     // margin-top: 5% !important;
+// }
 
 // .modal-content {
 //     margin-top: 25% !important;
 // }
 
-@media screen and (max-width: 704px) {
-    .modal-content {
-        margin-top: 75% !important;
-    }
+// @media screen and (max-width: 704px) {
+//     .modal-content {
+//         margin-top: 75% !important;
+//     }
 
-    .modal-dialog {
-        width: 90% !important;
-        max-width: 100% !important;
-        // margin-top: 10% !important;
-    }
-}
-.fade {
-    opacity: 1;
-    background: #000000a3 !important;
-}
-body.modal-open {
-    margin-right: 0;
-}
-.modal-dialog {
-    margin-top: 15em;
-}
-@media screen and (min-width: 768px) {
-    .modal-dialog {
-        width: 75% !important;
-    }
-}
-.modal-footer {
-    text-align: left;
-}
+//     .modal-dialog {
+//         width: 90% !important;
+//         max-width: 100% !important;
+//         // margin-top: 10% !important;
+//     }
+// }
+// .fade {
+//     opacity: 1;
+//     background: #000000a3 !important;
+// }
+// body.modal-open {
+//     margin-right: 0;
+// }
+// .modal-dialog {
+//     margin-top: 15em;
+// }
+// @media screen and (min-width: 768px) {
+//     .modal-dialog {
+//         width: 75% !important;
+//     }
+// }
+// .modal-footer {
+//     text-align: left;
+// }
 
 .route_detal {
     margin: 0 0 0px !important;
@@ -2565,9 +2565,9 @@ body.modal-open {
     margin: 0 0 0px !important;
     text-align: left !important;
 }
-.modal-body {
-    min-height: 500px;
-}
+// .modal-body {
+//     min-height: 500px;
+// }
 /*
 *
 * ===========================================================
@@ -4733,21 +4733,21 @@ ul.portfolioFilter a.current {
     overflow-x: hidden;
 }
 
-.modal-footer {
-    padding: 1rem;
-}
+// .modal-footer {
+//     padding: 1rem;
+// }
 
 .friendly-loading img {
     max-width: 100%;
 }
 
-.modal-section {
-    margin-bottom: 1.5rem;
-    padding: 1rem;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-}
+// .modal-section {
+//     margin-bottom: 1.5rem;
+//     padding: 1rem;
+//     background-color: #f8f9fa;
+//     border-radius: 8px;
+//     border: 1px solid #e9ecef;
+// }
 
 /*
 *

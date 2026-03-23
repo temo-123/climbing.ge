@@ -1,10 +1,10 @@
 <template>
-    <stack-modal
-            :show="is_coment_model"
+    <StackModal
+            v-model="is_coment_model"
             title="Show comment"
             @close="close_model()"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
         >
         <pre class="language-vue">
             <div class="container" v-show="is_loading">
@@ -64,13 +64,13 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
             StackModal,

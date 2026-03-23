@@ -59,7 +59,7 @@
             <h2 class="text-center">you might also like</h2>
 
             <div v-if="films_loader">
-                <content-loader
+                <skeleton-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
                     secondaryColor="#279fbbb0"
@@ -83,14 +83,14 @@
 </template>
 
 <script>
-    import { ContentLoader } from "vue-content-loader";
+
     import  filmCard  from "../items/cards/filmsListCardComponent.vue";
     import metaData from '../items/MetaDataComponent'
     import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
         components: {
             metaData,
-            ContentLoader,
+
             filmCard,
             breadcrumb
         },

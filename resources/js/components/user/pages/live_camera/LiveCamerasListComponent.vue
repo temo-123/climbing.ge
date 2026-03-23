@@ -11,7 +11,7 @@
             </div>
             <div class="row">
                 <div class="col-md-12" v-if="article_loading">
-                    <content-loader
+                    <skeleton-loader
                         viewBox="0 0 500 150"
                         primaryColor="#f3f3f3"
                         secondaryColor="#7427bb75"
@@ -23,7 +23,7 @@
                         <rect x="0" y="75" rx="3" ry="3" width="100%" height="10" />
                         <rect x="0" y="90" rx="3" ry="3" width="100%" height="10" />
                         <rect x="0" y="105" rx="3" ry="3" width="100%" height="10" />
-                    </content-loader>
+                    </skeleton-loader>
                 </div>
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
@@ -52,7 +52,7 @@
 <script>
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
-    import { ContentLoader } from 'vue-content-loader'
+
 
     import live_camera_add_medal from '../../items/modal/tab_modals/add/AddLiveCameraModalComponent.vue'
     import live_camera_edit_medal from '../../items/modal/tab_modals/edit/EditLiveCameraModalComponent.vue'
@@ -60,7 +60,7 @@
         components: {
             tabsComponent,
             breadcrumb,
-            ContentLoader,
+
             live_camera_add_medal,
             live_camera_edit_medal,
         },

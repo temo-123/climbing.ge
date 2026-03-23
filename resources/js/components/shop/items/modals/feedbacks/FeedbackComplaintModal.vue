@@ -1,10 +1,10 @@
 <template>
-    <stack-modal
-                :show="is_user_feedback_complaint_model"
+    <StackModal
+                v-model="is_user_feedback_complaint_model"
                 title="Please select a reason for deleting the feedback"
-                @close="is_user_feedback_complaint_model=false"
+                @close="close_modal"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
             >
             <pre class="language-vue">
                 <div class="row justify-content-center" v-if="complaint_loader">
@@ -30,7 +30,7 @@
                             <option value="The language of the feedbacks does not match the requirements of the site">The language of the feedbacks does not match the requirements of the site</option>
                         </select>
 
-                        <vue-recaptcha 
+                        <!-- <vue-recaptcha 
                             :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                             :loadRecaptchaScript="true"
                             :recaptchaHost="recaptchaHost"
@@ -39,45 +39,24 @@
                             @verify="onCaptchaVerified"
                             @expired="onCaptchaExpired"
                         >
-                        </vue-recaptcha>
+                        </vue-recaptcha> -->
                     </form>
                 </span>
             </pre>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="make_complaint"
-                        v-if="is_verify_isset == false"
-                        disabled
-                    >
-                    Submit
-                    </button> 
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="make_complaint"
-                        v-else
-                    >
-                    Submit
-                    </button> 
-                </div>
-            </div>
-        </stack-modal>
+        </StackModal>
 
 </template>
 <script>
     // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
             // SlickItem,
             // SlickList,
-            VueRecaptcha,
+            // 'vue-recaptcha': VueRecaptchaV2,
         },
         props: [
             "product_id",
@@ -162,9 +141,11 @@
             },
 
             show_modal(feedback_id){
-                // alert('test')
                 this.complaint_feedback_id = feedback_id
                 this.is_user_feedback_complaint_model = true
+            },
+            close_modal(){
+                this.is_user_feedback_complaint_model = false
             },
 
             make_complaint(){

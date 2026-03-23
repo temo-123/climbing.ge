@@ -1,14 +1,15 @@
 <template>
-    <stack-modal
-            :show="is_show_modal"
+<StackModal
+            v-model="is_show_modal"
             title="Product Feedback"
-            @close="close_model()"
+            size="lg"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
                 title: 'Close',
                 btnClass: { 'btn btn-primary': true },
             }"
+            @close="close_modal()"
         >
             <div class="model-body">
                 <div class="container">
@@ -114,7 +115,7 @@
                                     </div>
                                 </div>
 
-                                <vue-recaptcha 
+                                <!-- <vue-recaptcha 
                                     :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                                     :loadRecaptchaScript="true"
                                     ref="recaptcha"
@@ -122,40 +123,36 @@
                                     @verify="onCaptchaVerified"
                                     @expired="onCaptchaExpired"
                                 >
-                                </vue-recaptcha>
+                                </vue-recaptcha> -->
                             </form>
                         </div>
                     </div>
 
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <span v-show="!is_loading">
-                        <div class="col-xs-6 col-md-6" v-if="is_verify_isset == false">
-                            <button class="btn btn-primary" disabled>Add feedback</button>
-                        </div>
-                        <div class="col-xs-6 col-md-6" v-else>
-                            <button type="sumit" form="feedback_form" class="btn btn-primary" >Add feedback</button>
-                        </div>
-                    </span>
-                </div>
+            <!-- Custom footer moved to content area - StackModal handles buttons -->
+            <div v-show="!is_loading" class="text-center pt-4 mt-4 border-t border-gray-200">
+                <span v-if="is_verify_isset == false">
+                    <button class="btn btn-primary" disabled>Add feedback</button>
+                </span>
+                <span v-else>
+                    <button type="submit" form="feedback_form" class="btn btn-primary">Add feedback</button>
+                </span>
             </div>
-        </stack-modal>
+        </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
 
 import starReitingInsert from '../../../../global_components/StarReitingInsertComponent.vue'
 
 export default {
     components: { 
-        VueRecaptcha,
-        StackModal,
-        starReitingInsert,
+        starReitingInsert, // StackModal global
     },
+    emits: ['restart'],
     props: [
         // "sector",
     ],
@@ -201,7 +198,7 @@ export default {
             
             this.get_user_info()
         },
-        close_model(){
+        close_modal(){
             this.is_show_modal = false;
             
             this.is_loading = false
@@ -264,7 +261,7 @@ export default {
                 data: this.data,
             })
             .then(response => {
-                this.close_model()
+        this.close_modal()
 
                 this.$emit('restart')
 

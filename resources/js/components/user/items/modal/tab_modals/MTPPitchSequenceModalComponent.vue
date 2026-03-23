@@ -52,7 +52,7 @@
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort';
-    import StackModal from '@innologica/vue-stackable-modal';
+    // import StackModal from '@innologica/vue-stackable-modal';  // Global now
      
     export default {
         props: [

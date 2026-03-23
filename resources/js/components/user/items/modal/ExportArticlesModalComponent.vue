@@ -1,11 +1,11 @@
 <template>
-    <stack-modal
-        :show="showModal"
+    <StackModal
+        v-model="is_show_modal"
         title="Export Articles to PDF"
-        @close="closeModal"
         :modal-class="{ 'export-modal': true }"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
+        @close="close_modal"
     >
         <div class="container">
             <div v-if="loading" class="text-center">
@@ -104,12 +104,11 @@
                 </div>
             </div>
         </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
+            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-t">
                 <button
                     type="button"
                     class="btn btn-secondary"
-                    @click="closeModal"
+                    @click="close_modal"
                 >
                     Cancel
                 </button>
@@ -122,26 +121,20 @@
                     Export Selected Articles ({{ selectedArticles.length }})
                 </button>
             </div>
-        </div>
-    </stack-modal>
+        </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
 export default {
     name: 'ExportArticlesModal',
     components: {
         StackModal,
     },
-    props: {
-        showModal: {
-            type: Boolean,
-            default: false
-        }
-    },
     data() {
         return {
+            is_show_modal: false,
             categories: [],
             articles: [],
             selectedArticles: [],
@@ -160,7 +153,7 @@ export default {
         }
     },
     methods: {
-        closeModal() {
+        close_modal() {
             this.$emit('close')
             this.resetModal()
         },

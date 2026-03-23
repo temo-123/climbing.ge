@@ -40,7 +40,7 @@
 
 <script>
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
-    import { ContentLoader } from 'vue-content-loader'
+
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     export default {
         components: {

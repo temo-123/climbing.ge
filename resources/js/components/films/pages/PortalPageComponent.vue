@@ -102,7 +102,7 @@
             <!-- {{ most_liked_film }} -->
             <div class="container">
                 <div class="row" v-if="most_liked_film_loader">
-                    <content-loader
+                    <skeleton-loader
                         viewBox="0 0"
                         primaryColor="#f3f3f3"
                         secondaryColor="#777777"
@@ -174,7 +174,7 @@
         <!-- Content Row-->
         <div class="row gx-4 gx-lg-5">
             <div v-if="films_loader">
-                <content-loader
+                <skeleton-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
                     secondaryColor="#777777"
@@ -196,14 +196,14 @@
 </template>
 
 <script>
-import { ContentLoader } from "vue-content-loader";
+
 import  filmCard  from "../items/cards/filmsListCardComponent.vue";
 
 import metaData from '../items/MetaDataComponent'
     export default {
         components: {
             metaData,
-            ContentLoader,
+
             filmCard
         },
         data: function () {

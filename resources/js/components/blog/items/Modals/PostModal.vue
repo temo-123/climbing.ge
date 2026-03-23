@@ -1,43 +1,70 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="closeModal">
-    <div class="modal-content" @click.stop>
-      <div class="modal-header">
-        <h3>{{ post.title }}</h3>
-        <button @click="closeModal" class="close-btn">&times;</button>
-      </div>
-      <div class="modal-body">
-        <img v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image">
-        <p class="post-content">{{ post.content }}</p>
-        <p class="post-description">{{ post.short_description }}</p>
-        <small class="post-date">{{ $t('blog.modal.created') }} {{ new Date(post.created_at).toLocaleDateString() }}</small>
-        <div class="modal-actions">
-          <button @click="viewFullPost" class="btn btn-primary">{{ $t('blog.modal.view_full_post') }}</button>
-        </div>
+  <StackModal
+    v-model="is_show_modal"
+    :title="modalTitle"
+    size="lg"
+    :saveButton="{ visible: false }"
+    :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
+    @close="close_modal"
+  >
+    <div v-if="loading" class="text-center py-8">
+      <div class="spinner mx-auto mb-4"></div>
+      <p>{{ $t('common.loading') }}</p>
+    </div>
+    <div v-else class="modal-body">
+      <img v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image w-full h-64 object-cover rounded-lg mb-4">
+      <h3 class="text-2xl font-bold mb-4">{{ post.title }}</h3>
+      <p class="post-content mb-4">{{ post.content }}</p>
+      <p class="post-description italic mb-4">{{ post.short_description }}</p>
+      <small class="post-date block text-gray-500 mb-6">{{ $t('blog.modal.created') }} {{ new Date(post.created_at).toLocaleDateString() }}</small>
+      <div class="text-center">
+        <button @click="viewFullPost" class="btn btn-primary px-6 py-3 rounded-lg">{{ $t('blog.modal.view_full_post') }}</button>
       </div>
     </div>
-  </div>
+  </StackModal>
 </template>
 
 <script>
 export default {
   name: 'PostModal',
-  props: {
-    show: {
-      type: Boolean,
-      default: false
-    },
-    post: {
-      type: Object,
-      default: () => ({})
+  data() {
+    return {
+      is_show_modal: false,
+      post: {},
+      loading: false
+    }
+  },
+  computed: {
+    modalTitle() {
+      return this.post.title || this.$t('blog.modal.loading_post');
     }
   },
   methods: {
-    closeModal() {
-      this.$emit('close')
+    show_modal(post_id) {
+      this.loading = true;
+      this.post = {};
+      this.is_show_modal = false;
+
+      // Fetch post data - adjust endpoint as needed
+      axios.get(`/api/blog/posts/${post_id}`)
+        .then(response => {
+          this.post = response.data;
+          this.is_show_modal = true;
+          this.loading = false;
+        })
+        .catch(error => {
+          console.error('Error loading post:', error);
+          this.loading = false;
+        });
+    },
+    close_modal() {
+      this.is_show_modal = false;
+      this.post = {};
+      this.loading = false;
     },
     viewFullPost() {
       this.$emit('view-full-post', this.post.id)
-      this.closeModal()
+      this.close_modal()
     }
   }
 }

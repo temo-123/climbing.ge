@@ -182,7 +182,9 @@
                 const footer = document.querySelector('.footer');
                 const footer__graphic = document.querySelector('.footer__graphic');
 
+                if (!menu) return;
                 const menuBottom = menu.getBoundingClientRect().bottom;
+                if (!footer) return;
                 const footerTop = footer.getBoundingClientRect().top;
                 const footer__graphic_top = footer__graphic.offsetHeight;
 

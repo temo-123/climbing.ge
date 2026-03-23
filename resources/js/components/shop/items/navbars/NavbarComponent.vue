@@ -13,7 +13,7 @@
                 </button>
 
                 <span>
-                    <router-link style="font-size: 1.5em;" :to="{name: 'index',  params: {lang: this.$i18n.locale}}" exact class="site_title">{{ $t('shop.name') }}</router-link>
+                    <router-link style="font-size: 1.5em;" :to="{name: 'index'}" exact class="site_title">{{ $t('shop.name') }}</router-link>
                 </span>
                 <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
             </div>
@@ -80,7 +80,6 @@
 </template>
 
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
     // import search from './SearchComponent'
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
     import go_to_service_mixin from '../../../../mixins/go_to_service_mixin.js'
@@ -109,7 +108,6 @@
         },
         components: {
             localeSwitcher,
-            countryFlag,
         },
         mounted() {
         },

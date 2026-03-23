@@ -483,25 +483,22 @@
                                 <td>Delete</td>
                             </tr>
                         </thead>
-                        <tbody
-                            v-for="(image, index) in sector_new_images"
-                            :index="index"
-                            :key="index"
-                            tag="tr"
-                        >
-                            <td>
-                                <form ref="myForm">
-                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, image.id)">
-                                </form> 
-                            </td>
-                            <td>
-                                <button
-                                    class="btn btn-danger"
-                                    @click="del_sector_image(image.id)"
-                                >
-                                    Del
-                                </button>
-                            </td>
+                        <tbody>
+                            <tr v-for="(image, index) in sector_new_images" :key="index">
+                                <td>
+                                    <form ref="myForm">
+                                        <input type="file" name="image" id="image" v-on:change="onFileChange($event, image.id)">
+                                    </form> 
+                                </td>
+                                <td>
+                                    <button
+                                        class="btn btn-danger"
+                                        @click="del_sector_image(image.id)"
+                                    >
+                                        Del
+                                    </button>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

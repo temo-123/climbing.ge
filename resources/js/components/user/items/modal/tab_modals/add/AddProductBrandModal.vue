@@ -66,7 +66,7 @@
 </template>
 
 <script>
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
     import validator_alerts_component from '../../../validator_alerts_component.vue'
     export default {

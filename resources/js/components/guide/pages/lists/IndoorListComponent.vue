@@ -12,11 +12,7 @@
 
             <div class="row" v-if="this.indoors.length > 0">
                 <div v-if="indoor_article_loading">
-                    <content-loader
-                        viewBox="0 0"
-                        primaryColor="#f3f3f3"
-                        secondaryColor="#279fbbb0"
-                    />
+                <!--  -->
                 </div>
                 <div v-else>
                     <!-- <div> -->
@@ -46,7 +42,7 @@
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../../items/MetaDataComponent'
 
     import axios_mixin from '../../../../mixins/axios_mixin'
@@ -64,7 +60,7 @@
         components: {
             indoorCard,
             emptyPageComponent,
-            ContentLoader,
+
             metaData
         },
         watch: {

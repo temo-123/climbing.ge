@@ -41,13 +41,7 @@
 
             <div class="row">
                 <div v-if="mount_route_loading">
-                    <content-loader
-                        viewBox="0 0"
-                        primaryColor="#f3f3f3"
-                        secondaryColor="#279fbbb0"
-                    >
-
-                    </content-loader>
+                    <!--  -->
                 </div>
                 <div v-else>
                     <!-- Grouped View -->
@@ -175,7 +169,7 @@
     import mountHorithontalCard from '../../items/cards/MountHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
     
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../../items/MetaDataComponent'
     import viewControlsComponent from '../../items/ViewControlsComponent.vue'
     export default {
@@ -198,7 +192,7 @@
             mountCard,
             mountHorithontalCard,
             emptyPageComponent,
-            ContentLoader,
+
             metaData,
             viewControlsComponent,
         },

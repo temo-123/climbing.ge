@@ -10,7 +10,7 @@
 
         <div class="col-md-12" v-if="products_loading">
             <div class="col-md-12">
-                <content-loader
+                <skeleton-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
                     secondaryColor="#27bb7d8c"
@@ -72,7 +72,7 @@
     import catalogItem from '../../items/cards/CatalogItemComponent'
     import catalogHorizontalItem from '../../items/cards/CatalogHorizontalItemComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../../items/MetaDataComponent'
     import filtrViewControlsComponent from '../../items/FiltrViewControlsComponent'
 
@@ -82,7 +82,7 @@
             catalogItem,
             catalogHorizontalItem,
             emptyPageComponent,
-            ContentLoader,
+
             filtrViewControlsComponent,
         },
         data: function () {

@@ -9,7 +9,7 @@
                     <h2 class="text-center"> The your search query is:"<b> {{ this.$route.query.query }} </b>". Please use only english text for your query!!!</h2>
                     
                     <div v-if="article_search_loading">
-                        <content-loader
+                        <skeleton-loader
                             viewBox="0 0"
                             primaryColor="#f3f3f3"
                             secondaryColor="#279fbbb0"
@@ -55,12 +55,12 @@
 
 <script>
     import articleSerchingCard from '../items/cards/ArticleSerchingCardComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../items/MetaDataComponent'
     export default {
         components: {
             articleSerchingCard,
-            ContentLoader,
+
             metaData
         },
         data: function () {

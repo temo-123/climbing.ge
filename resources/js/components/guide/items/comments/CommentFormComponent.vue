@@ -81,7 +81,7 @@
                             <div class="form-group">
                                 <div class="form-group form_left">
 
-                                    <vue-recaptcha
+                                    <!-- <vue-recaptcha
                                         :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
                                         :loadRecaptchaScript="true"
                                         ref="recaptcha"
@@ -89,7 +89,7 @@
                                         @verify="onCaptchaVerified"
                                         @expired="onCaptchaExpired"
                                     >
-                                    </vue-recaptcha>
+                                    </vue-recaptcha> -->
                                 </div>
                             </div>
                         </div>
@@ -200,12 +200,13 @@
             </div>
         </div>
 
-        <stack-modal
-                :show="is_user_comment_complaint_model"
+<StackModal
+                v-if="is_user_comment_complaint_model"
+                v-model:show="is_user_comment_complaint_model"
                 title="Please select a reason for deleting the comment"
                 @close="is_user_comment_complaint_model=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: false }"
             >
             <div class="model-body">
                 <div class="row justify-content-center" v-if="complaint_loader">
@@ -244,35 +245,23 @@
                     </form>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="make_complaint"
-                    >
-                    Submit
-                    </button> 
-                </div>
-            </div>
-        </stack-modal>
+            </StackModal>
 
         <user-modal ref="userModal" :modalClass="'user-modal'"></user-modal>
     </div>
 </template>
 
 <script>
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
     //http://www.blog.tonyswierz.com/javascript/add-and-use-google-recaptcha-in-a-vuejs-laravel-project/
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     import UserModal from '../../../global_components/modals/UserModalComponent.vue'
     export default {
         components: {
-            StackModal,
             SlickItem,
             SlickList,
-            VueRecaptcha,
+            // 'vue-recaptcha': VueRecaptchaV2,
             UserModal
         },
         props: [
@@ -331,8 +320,10 @@
             this.get_user_info()
         },
         methods: {
-            update(id){
-                this.id = id
+            update(id) {
+                if (id) {
+                    this.id = id;
+                }
                 this.get_comments();
             },
 

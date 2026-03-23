@@ -289,7 +289,6 @@
 </template>
 
 <script>
-    import VueMeta from 'vue-meta'
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import similarProduct from '../../items/SimilarProductComponent.vue'
@@ -298,7 +297,6 @@
     export default {
         components: {
             metaData,
-            VueMeta,
             breadcrumb,
             similarProduct,
             feedbackForm,

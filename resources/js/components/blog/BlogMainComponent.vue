@@ -15,7 +15,7 @@
 <script>
   import navbar from './items/NavbarComponent'
   import footter from './items/FooterComponent'
-  // import loginModal from "../global_components/LoginModalComponent.vue";
+  import loginModal from "../global_components/modals/LoginModalComponent.vue";
   import Preloader from "../global_components/PreloaderComponent.vue";
 
   export default {
@@ -27,7 +27,7 @@
       components: {
           navbar,
           footter,
-          // loginModal,
+          loginModal,
           Preloader
       },
       mounted(){

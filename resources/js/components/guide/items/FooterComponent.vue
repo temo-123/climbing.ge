@@ -95,14 +95,14 @@
                     <div class="row f-links container">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t('guide.donation.support_title') }}</h4>
-                            <Donation />
+                            <!-- <Donation /> -->
                         </div>
                     </div>
                     <div class="row f-links container">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
                             <div class="row">
-                                <QRCanvas :options="options" class="foo_qr"></QRCanvas>
+                                <qrcode-vue :value="qrValue" :options="options" class="foo_qr"></qrcode-vue>
                             </div>
                         </div>
                     </div>
@@ -119,20 +119,17 @@
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import share from "../../global_components/ShareComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
-    import Donation from "../items/DonationComponent.vue";
-
-    const { QRCanvas } = require("qrcanvas-vue"); //  https://gera2ld.github.io/qrcanvas-vue/v2/#padding
+    // import Donation from "../items/DonationComponent.vue";
+    import QrcodeVue from 'qrcode.vue'
 
     export default {
         data: function () {
             return {
                 num: 0,
+                qrValue: window.location.href,
                 options: {
-                    cellSize: 8,
-                    // data: window.location.href,
-                    data: "",
-                    padding: 8,
-                    correctLevel: 'H',
+                    size: 100,
+                    level: 'H',
                 },
             };
         },
@@ -141,8 +138,8 @@
             footerLogo,
             share,
             footerText,
-            QRCanvas,
-            Donation
+            QrcodeVue,
+            // Donation
         },
 
         watch: {
@@ -155,17 +152,7 @@
         },
         methods: {
             generato_qr_data(){
-                this.options.data = window.location.href
-                const image = new Image();
-                image.src = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/public/images/site_img/x.png";
-                image.onload = () => {
-                    this.options = {
-                        ...this.options,
-                        logo: {
-                            image,
-                        },
-                    };
-                };
+                this.qrValue = window.location.href
             },
         }
     };

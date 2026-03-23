@@ -81,7 +81,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group form_left">
-                        <vue-recaptcha 
+                        <!-- <vue-recaptcha 
                             :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                             :loadRecaptchaScript="true"
                             ref="recaptcha"
@@ -89,7 +89,7 @@
                             @verify="onCaptchaVerified"
                             @expired="onCaptchaExpired"
                         >
-                        </vue-recaptcha>
+                        </vue-recaptcha> -->
                     </div>
                 </div>
             </div>
@@ -116,10 +116,10 @@
 
 <script>
     // import VueLoadingButton from 'vue-loading-button'
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
     export default {
         components: { 
-            VueRecaptcha,
+            // 'vue-recaptcha': VueRecaptchaV2,
             // VueLoadingButton,
 
         },

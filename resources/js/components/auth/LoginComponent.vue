@@ -258,7 +258,7 @@ export default {
                       }
                       
                       // Emit global event so all components can update
-                      this.$root.$emit('permissions-loaded', permResponse.data)
+                      this.$bus.$emit('permissions-loaded', permResponse.data)
                       
                       // Navigate to home
                       this.$router.push({ name: "home" });

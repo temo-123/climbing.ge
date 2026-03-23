@@ -12,7 +12,7 @@
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
-                <div class="team-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
+<div ref="teamSliderWrapper" class="team-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
                     <div class="team-slider" :style="{ display: 'flex', gap: '2%', width: (team_members.length * 32) + '%', transform: 'translateX(' + (-slider_index * 32) + '%)', transition: 'transform 0.5s ease' }">
                         <div class="team-item" v-for="user in team_members" :key="user.id" @click="show_user_modal(user.id)">
                             <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='user_img' v-if='user.image == null'> </div>
@@ -62,15 +62,17 @@
             this.get_team_members()
             this.$nextTick(() => {
                 this.startAutoSlide()
-                const wrapper = this.$el.querySelector('.team-slider-wrapper');
-                wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-                wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-                wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                const wrapper = this.$refs.teamSliderWrapper;
+                if (wrapper) {
+                    wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+                    wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+                    wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                }
             })
         },
-        beforeDestroy() {
+        beforeUnmount() {
             this.stopAutoSlide()
-            const wrapper = this.$el.querySelector('.team-slider-wrapper');
+            const wrapper = this.$refs.teamSliderWrapper;
             if (wrapper) {
                 wrapper.removeEventListener('touchstart', this.handleTouchStart);
                 wrapper.removeEventListener('touchmove', this.handleTouchMove);

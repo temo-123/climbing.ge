@@ -7,16 +7,14 @@
         </a>
 
         <ul class="dropdown-menu shadows" role="menu">
-            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
-            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
-            <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li> -->
+            <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="localizatione_flag" @click="activ_lang = 'en', localization('en')">EN</a></li>
+            <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="localizatione_flag"  @click="activ_lang = 'ka', localization('ka')">KA</a></li>
+            <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="localizatione_flag"  @click="activ_lang = 'ru', localization('ru')"><countryFlagWrapper country='rus' size='big'/></a></li> -->
         </ul>
     </li>
 </template>
 
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
-    import Vue from "vue";
     export default {
         data: function () {
             return {
@@ -29,7 +27,7 @@
             };
         },
         components: {
-            countryFlag,
+            // countryFlagWrapper,
         },
         mounted() {
             // console.log(this.$route.params.locale || 'en');

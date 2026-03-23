@@ -35,12 +35,19 @@ export default {
     },
 
     mounted() {
+        // Defensive: Ensure ability exists before using
+        if (!this.$ability) {
+            console.warn('Ability plugin not ready, retrying...');
+            this.$nextTick(() => this.get_user_data());
+            return;
+        }
+
         // Try to load permissions from localStorage first (set during login)
         const storedPermissions = localStorage.getItem('user_permissions')
         if (storedPermissions) {
             try {
                 const permissions = JSON.parse(storedPermissions)
-                if (permissions && permissions.length > 0 && this.$ability) {
+                if (permissions && permissions.length > 0) {
                     this.$ability.update(permissions)
                     // Fetch fresh permissions in background
                     this.get_user_data()
@@ -54,7 +61,8 @@ export default {
         // Fallback: fetch permissions from server
         this.get_user_data()
 
-        document.querySelector('body').style.marginLeft = '0';
+        const body = document.querySelector('body');
+        if (body) body.style.marginLeft = '0';
         
         // Listen for permissions-loaded event from login (fixes issue where functions don't show after login without refresh)
         this.$root.$on('permissions-loaded', this.onPermissionsLoaded)

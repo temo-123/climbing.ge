@@ -1,14 +1,20 @@
-import VueRouter from 'vue-router'
+import { createRouter, createWebHistory } from "vue-router";
 
 function load(component) {
     return () => import(`../components/errors/global_errors/pages/${component}.vue`)
 }
 
-const router = new VueRouter({
-    routes: [
-        { path: '/', name: 'host_error', component: load('host_error_component') },
-    ],
-    mode: 'history',
+const routes = [
+    { path: '/', name: 'host_error', component: load('host_error_component') },
+];
+
+const router = createRouter({
+    routes,
+    history: createWebHistory(),
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    }
 });
 
-export default router
+export default router;
+

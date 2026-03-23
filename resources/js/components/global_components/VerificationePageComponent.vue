@@ -10,7 +10,7 @@
         <div class="row" v-else>
             <p>Your email - {{$route.params.email}}</p>
 
-            <vue-recaptcha 
+            <!-- <vue-recaptcha 
                 :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                 :loadRecaptchaScript="true"
                 ref="recaptcha"
@@ -18,7 +18,7 @@
                 @verify="onCaptchaVerified"
                 @expired="onCaptchaExpired"
             >
-            </vue-recaptcha>
+            </vue-recaptcha> -->
             <button v-if="is_verify_isset == false" class="btn btn-primary btn-lg" disabled>Confirm</button>
             <button v-else  @click="confirm_email()" class="btn btn-primary btn-lg">Confirm</button>
         </div>
@@ -30,10 +30,10 @@
 </template>
 
 <script>
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
     export default {
         components: { 
-            VueRecaptcha,
+            // 'vue-recaptcha': VueRecaptchaV2,
         },
         props: [
             // 'article',

@@ -10,7 +10,7 @@
 
         <span v-if="services.length">
             <div class="row" v-if="services_loading">
-                <content-loader
+                <skeleton-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
                     secondaryColor="#27bb7d8c"
@@ -39,7 +39,7 @@
 
 <script>
     import ServiceItem from '../../items/cards/ServiceItemComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
 
     import metaData from '../../items/MetaDataComponent'
@@ -47,7 +47,7 @@
         components: {
             metaData,
             ServiceItem,
-            ContentLoader,
+
             emptyPageComponent,
         },
         data: function () {

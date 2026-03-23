@@ -10,14 +10,9 @@
 
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.data.guid_short_description"></span>
-                            <router-link
-                                :to="{
-                                    name: 'about_us',
-                                    params: { lang: this.$i18n.locale },
-                                }"
-                            >
+                            <!-- <router-link :to="{ name: 'about_us' }">
                             {{ $t("global.footer.more") }}
-                            </router-link>
+                            </router-link> -->
                         </div>
                     </div>
                     <followComponent />
@@ -27,65 +22,40 @@
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
+                            <!-- Guide links not applicable for blog
+                                <li>
+                                    <router-link
+                                        :to="{ name: 'indoors', params: { lang: this.$i18n.locale } }"
+                                    >
+                                        {{ $t("guide.menu.indoor climbing") }}
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="{ name: 'outdoors', params: { lang: this.$i18n.locale } }">
+                                        {{ $t("guide.menu.outdoor climbing") }}
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="{ name: 'mountaineerings', params: { lang: this.$i18n.locale } }">
+                                        {{ $t("guide.menu.mountaineering") }}
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="{ name: 'ices', params: { lang: this.$i18n.locale } }">
+                                        {{ $t("guide.menu.ice climbing") }}
+                                    </router-link>
+                                </li>
+                                <li>
+                                    <router-link :to="{ name: 'others', params: { lang: this.$i18n.locale } }">
+                                        {{ $t("guide.menu.other") }}
+                                    </router-link>
+                                </li> -->
                             <li>
-                                <router-link
-                                    :to="{
-                                        name: 'indoors',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
-                                >
-                                    {{ $t("guide.menu.indoor climbing") }}
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link
-                                    :to="{
-                                        name: 'outdoors',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
-                                >
-                                    {{ $t("guide.menu.outdoor climbing") }}
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link
-                                    :to="{
-                                        name: 'mountaineerings',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
-                                >
-                                    {{ $t("guide.menu.mountaineering") }}
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link
-                                    :to="{
-                                        name: 'ices',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
-                                >
-                                    {{ $t("guide.menu.ice climbing") }}
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link
-                                    :to="{
-                                        name: 'others',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
-                                >
-                                    {{ $t("guide.menu.other") }}
-                                </router-link>
-                            </li>
-                            <li>
-                                <router-link
-                                    :to="{
-                                        name: 'about_us',
-                                        params: { lang: this.$i18n.locale },
-                                    }"
+                                <!-- <router-link
+:to="{ path: '/about_us' }"
                                 >
                                     {{ $t("guide.menu.about us") }}
-                                </router-link>
+                                </router-link> -->
                             </li>
                         </ul>
                     </div>
@@ -103,7 +73,7 @@
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
                             <div class="row">
-                                <QRCanvas :options="options" class="foo_qr"></QRCanvas>
+                                <qrcode-vue :value="qrValue" :options="options" class="foo_qr"></qrcode-vue>
                             </div>
                         </div>
                     </div>
@@ -120,19 +90,16 @@
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import share from "../../global_components/ShareComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
-
-    const { QRCanvas } = require("qrcanvas-vue"); //  https://gera2ld.github.io/qrcanvas-vue/v2/#padding
+    import QrcodeVue from 'qrcode.vue'
 
     export default {
         data: function () {
             return {
                 num: 0,
+                qrValue: window.location.href,
                 options: {
-                    cellSize: 8,
-                    // data: window.location.href,
-                    data: "",
-                    padding: 8,
-                    correctLevel: 'H',
+                    size: 100,
+                    level: 'H',
                 },
             };
         },
@@ -141,7 +108,7 @@
             footerLogo,
             share,
             footerText,
-            QRCanvas,
+            QrcodeVue,
         },
 
         watch: {
@@ -154,17 +121,7 @@
         },
         methods: {
             generato_qr_data(){
-                this.options.data = window.location.href
-                const image = new Image();
-                image.src = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/public/images/site_img/x.png";
-                image.onload = () => {
-                    this.options = {
-                        ...this.options,
-                        logo: {
-                            image,
-                        },
-                    };
-                };
+                this.qrValue = window.location.href
             },
         }
     };

@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
 import starReitingInsert from '../../../../global_components/StarReitingInsertComponent.vue'
 

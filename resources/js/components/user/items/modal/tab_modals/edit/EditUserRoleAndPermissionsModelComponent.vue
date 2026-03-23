@@ -116,7 +116,7 @@
     // import MemberStatusModal from './EditUserMemberStatusModalComponent.vue'
 
     // import breadcrumb from '../items/BreadcrumbComponent.vue'
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
             StackModal,

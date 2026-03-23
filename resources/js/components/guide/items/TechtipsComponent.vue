@@ -63,15 +63,17 @@
             this.get_techtips()
             this.startAutoSlide()
             this.$nextTick(() => {
-                const wrapper = this.$el.querySelector('.tips-slider-wrapper');
-                wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-                wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-                wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                const wrapper = this.$el?.querySelector('.tips-slider-wrapper');
+                if (wrapper) {
+                    wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+                    wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+                    wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                }
             })
         },
-        beforeDestroy() {
+        beforeUnmount() {
             this.stopAutoSlide()
-            const wrapper = this.$el.querySelector('.tips-slider-wrapper');
+            const wrapper = this.$el?.querySelector('.tips-slider-wrapper');
             if (wrapper) {
                 wrapper.removeEventListener('touchstart', this.handleTouchStart);
                 wrapper.removeEventListener('touchmove', this.handleTouchMove);

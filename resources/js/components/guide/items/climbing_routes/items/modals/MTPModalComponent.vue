@@ -1,8 +1,7 @@
 <template>
-    <stack-modal
-            :show="is_show_mtp_modal"
-            :title="$t('guide.route.mtp_title')"
-            @close="is_show_mtp_modal = false"
+<StackModal
+            v-model="is_show_mtp_modal"
+            title="$t('guide.route.mtp_title')"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{
                 visible: true,
@@ -10,10 +9,11 @@
                 btnClass: { 'btn btn-primary': true },
             }"
             :cancelButton="{
-                visible: false,
+                visible: true,
                 title: $t('guide.route.close_modal'),
-                btnClass: { 'btn btn-danger': true },
+                btnClass: { 'btn btn-secondary': true },
             }"
+            @close="close_mtp_modal"
         >
 
             <div class="model-body">
@@ -102,17 +102,12 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <!-- footer -->
-                </div>
-            </div>
-        </stack-modal>
+        </div>
+    </StackModal>
 </template>
 
 <script>
-import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
 import  grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
 
 export default {
@@ -120,7 +115,6 @@ export default {
         grade_chart,
     ],
     components: {
-        StackModal,
     },
     props: [
         // "sector",
@@ -148,21 +142,25 @@ export default {
         },
 
         show_mtp_modal(id) {
-            this.is_show_mtp_modal = true;
-            this.mtp_detals = {};
             this.loading = true;
-
+            this.mtp_detals = {};
+            this.is_show_mtp_modal = false;
             axios
                 .get("/get_mtp/get_mtp_for_modal/" + id)
                 .then((response) => {
                     this.mtp_detals = response.data;
                     this.loading = false;
+                    this.is_show_mtp_modal = true;
                 })
                 .catch((error) => {
-                    // console.error('Error loading MTP details:', error);
                     this.mtp_detals = {};
                     this.loading = false;
                 });
+        },
+        close_mtp_modal() {
+            this.is_show_mtp_modal = false;
+            this.loading = false;
+            this.mtp_detals = {};
         },
     },
 };

@@ -5,9 +5,7 @@
                 <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
             <router-link :to="'indoor/'+indoor.global_data.url_title">
-                <!-- <img :src="'images/indoor_img/'+indoor.image" alt="$indoor.locale_data -> title}}"> -->
-
-                <site-img v-if="indoor.global_data.image != NULL" :src="'/images/indoor_img/'+indoor.global_data.image" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
+                <site-img v-if="indoor.global_data.image" :src="'/public/images/indoor_img/'+indoor.global_data.image" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
             </router-link>
         </div>

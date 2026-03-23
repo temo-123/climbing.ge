@@ -23,25 +23,18 @@
             </div>
 
             <div v-if="region_loading">
-                <content-loader
-                    :width="100"
-                    :height="5"
-                    primaryColor="#f3f3f3"
-                    secondaryColor="#279fbbb0"
-                >
-                    <rect x="0" y="0" rx="2" ry="2" width="100%" height="3" />
-                </content-loader>
+                <!--  -->
             </div>
 
             <div class="row" v-else>
-                <div class="container articles_filter_bar" v-if="this.regions.length > 0">
+                <div class="container articles_filter_bar" v-if="(regions || [])?.length > 0">
                     <div class="col-md-6 col-sm-6">
                         {{ $t('guide.article.region_filtr') }}
                     </div>
-                    <div class="col-md-6 col-sm-6" v-if="this.regions.length > 0">
+                    <div class="col-md-6 col-sm-6" v-if="(regions || [])?.length > 0">
                         <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
                             <option value="All">{{ $t('all') }}</option>
-                            <option v-for="region in regions" :key='region.id' :value="region.id">{{ region.name }}</option> 
+                            <option v-for="region in (regions || [])" :key='region.id' :value="region.id">{{ region.name }}</option> 
                         </select>
                     </div>
                 </div>
@@ -49,12 +42,12 @@
 
             <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
                 <div class="col-md-12" style="text-align: center;">
-                    <h2>{{selected_region_data.name}}</h2>
+                    <h2>{{ selected_region_data?.name || '' }}</h2>
                     <!-- <p>{{selected_region_data.text}}</p> -->
-                    <span v-html="selected_region_data.text"></span>
+                    <span v-html="selected_region_data?.text || ''"></span>
                 </div>
 
-                <div class="col-md-12" style="text-align: center;" v-if="selected_region_data.map != null">
+                <div class="col-md-12" style="text-align: center;" v-if="selected_region_data?.map">
                     <button class="btn btn-default btn-send main-btn" @click="map_modal()">Show map</button>
                 </div>
             </div>
@@ -72,24 +65,18 @@
                         <div class="gallery_product filter ">
 
                             <div v-if="oudoor_loading">
-                                <content-loader
-                                    viewBox="0 0"
-                                    primaryColor="#f3f3f3"
-                                    secondaryColor="#279fbbb0"
-                                >
-
-                                </content-loader>
+                                <!--  -->
                             </div>
 
                             <div v-else>
                                 <!-- Grouped View with regions_and_spots -->
                                 <div v-if="groupMode === 'grouped'">
-                                    <div v-if="this.regions_and_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                    <div v-if="(regions_and_spots || [])?.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
                                         <!-- Grid View by Region -->
-                                        <div class="row width_100" v-if="viewMode === 'grid'" v-for="region in regions_and_spots">
+                                        <div class="row width_100" v-if="viewMode === 'grid'" v-for="region in (regions_and_spots || [])">
                                             <div class="col-md-12">
-                                                <div class="row" v-if="region.region['name'] != 'other'">
-                                                    <h2 class="article_list_short_description">{{region.region.name}}</h2>
+                                                <div class="row" v-if="region.region?.['name'] != 'other'">
+                                                    <h2 class="article_list_short_description">{{region.region?.name}}</h2>
                                                 </div>
                                                 <div v-else>
                                                     <h2 class="article_list_short_description">Other</h2>
@@ -97,8 +84,8 @@
                                             </div>
                                             <div class="col-md-12 cards_block">
                                                 <outdoorCard  
-                                                    v-for="outdoor in region.spots"
-                                                    :key='outdoor.area.global_data.id'
+                                                    v-for="outdoor in (region.spots || [])"
+                                                    :key='outdoor?.area?.global_data?.id'
                                                     :image_dir="'images/outdoor_img/'"
                                                     :article="outdoor"
                                                 />
@@ -106,17 +93,17 @@
                                         </div>
                                         
                                         <!-- List View by Region -->
-                                        <div v-if="viewMode === 'list'" v-for="region in regions_and_spots">
-                                            <div v-if="region.region['name'] != 'other'" class="region-list-header">
-                                                <h2 class="article_list_short_description">{{region.region.name}}</h2>
+                                        <div v-if="viewMode === 'list'" v-for="region in (regions_and_spots || [])">
+                                            <div v-if="region.region?.['name'] != 'other'" class="region-list-header">
+                                                <h2 class="article_list_short_description">{{region.region?.name}}</h2>
                                             </div>
                                             <div v-else class="region-list-header">
                                                 <h2 class="article_list_short_description">Other</h2>
                                             </div>
                                             <div class="list-view-container">
                                                 <outdoorHorizontalCard
-                                                    v-for="outdoor in region.spots"
-                                                    :key="outdoor.area.global_data.id"
+                                                    v-for="outdoor in (region.spots || [])"
+                                                    :key="outdoor?.area?.global_data?.id"
                                                     :image_dir="'images/outdoor_img/'"
                                                     :article="outdoor"
                                                 />
@@ -125,19 +112,19 @@
                                     </div>
 
                                     <!-- Filtered Grouped View -->
-                                    <div v-else-if="this.filtred_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                    <div v-else-if="(filtred_spots || [])?.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
                                         <div v-if="viewMode === 'grid'">
                                             <outdoorCard  
-                                                v-for="outdoor in filtred_spots"
-                                                :key='outdoor.id'
+                                                v-for="outdoor in (filtred_spots || [])"
+                                                :key='outdoor?.id'
                                                 :image_dir="'images/outdoor_img/'"
                                                 :article="outdoor"
                                             />
                                         </div>
                                         <div v-if="viewMode === 'list'" class="list-view-container">
                                             <outdoorHorizontalCard
-                                                v-for="outdoor in filtred_spots"
-                                                :key="outdoor.id"
+                                                v-for="outdoor in (filtred_spots || [])"
+                                                :key="outdoor?.id"
                                                 :image_dir="'images/outdoor_img/'"
                                                 :article="outdoor"
                                             />
@@ -147,12 +134,12 @@
 
                                 <!-- Flat View (no grouping) -->
                                 <div v-else>
-                                    <div v-if="this.regions_and_spots.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
+                                    <div v-if="(regions_and_spots || [])?.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
                                         <!-- Flat Grid View -->
                                         <div v-if="viewMode === 'grid'">
                                             <outdoorCard  
-                                                v-for="outdoor in getAllSpots(regions_and_spots)"
-                                                :key='outdoor.area.global_data.id'
+                                                v-for="outdoor in getAllSpots(regions_and_spots || [])"
+                                                :key='outdoor?.area?.global_data?.id'
                                                 :image_dir="'images/outdoor_img/'"
                                                 :article="outdoor"
                                             />
@@ -190,7 +177,7 @@
                                     </div>
                                 </div>
 
-                                <div v-if="this.regions_and_spots.length == 0 && this.filtred_spots.length == 0">
+                                <div v-if="!(regions_and_spots || [])?.length && !(filtred_spots || [])?.length">
                                     <emptyPageComponent />
                                 </div>
                             </div>
@@ -200,28 +187,15 @@
                 </div>
             </section>
 
-            <stack-modal
-                    :show="show_map_modal"
-                    :title="selected_region_data.name + 'map'"
-                    @close="show_map_modal=false"
-                    :modal-class="''"
-                    :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                    :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
-                >
+            <StackModal v-model:show="show_map_modal" :title="(selected_region_data?.name || '') + ' map'">
                 <div class="model-body">
                     <div class="container">
                         <div class="row">
-                            <!-- <h2>{{ selected_region_data.map }}</h2> -->
-                            <span v-html="selected_region_data.map"></span>
+                            <span v-html="selected_region_data?.map || ''"></span>
                         </div>
                     </div>
                 </div>
-                <div slot="modal-footer">
-                    <div class="modal-footer">
-                        <!-- footer -->
-                    </div>
-                </div>
-            </stack-modal>
+            </StackModal> 
         </div>
 
         <metaData 
@@ -236,9 +210,9 @@
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
     import outdoorHorizontalCard from '../../items/cards/OutdoorHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-    import metaData from '../../items/MetaDataComponent'
-    import { ContentLoader } from 'vue-content-loader'
+    // import CustomStackModal from '../../../global_components/CustomStackModal.vue'
+    import metaData from '../../items/MetaDataComponent' 
+
 
     import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
     import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
@@ -256,7 +230,8 @@
                 filter_spot: 'All',
 
                 show_map_modal: false,
-                selected_region_data: [],
+                selected_region_data: {},
+                error: null,
 
                 oudoor_loading: true,
                 // sector_quantyt: true,
@@ -276,9 +251,9 @@
             outdoorCard,
             outdoorHorizontalCard,
             emptyPageComponent,
-            StackModal,
-            metaData,
-            ContentLoader,
+            // CustomStackModal,
+            metaData, 
+
 
             sectorQuantyt,
             routesAutersModal,
@@ -310,9 +285,9 @@
                     this.regions_and_spots = []
                     this.filtred_spots = response.data
                 })
-                .catch(
-                    // error => console.log(error)
-                )
+                .catch(error => {
+                    this.error = error.message;
+                })
                 .finally(() => this.oudoor_loading = false);
             },
 
@@ -323,10 +298,9 @@
                 .then(response => {
                     this.filtred_spots = []
                     this.regions_and_spots = response.data
-                    console.log(this.regions_and_spots);
-                    
                 })
-                .catch(error =>{
+                .catch(error => {
+                    this.error = error.message;
                 })
                 .finally(() => this.oudoor_loading = false)
             },
@@ -362,7 +336,8 @@
                 .then(response => {
                     this.regions = response.data
                 })
-                .catch(error =>{
+                .catch(error => {
+                    this.error = error.message;
                 })
                 .finally(() => this.region_loading = false)
             },
@@ -375,19 +350,20 @@
 
             get_region_selected_data(region_id){
                 if (this.filter_spot != 'all' || this.filter_spot != 'All') {
-                    this.selected_region_data = []
+                    this.selected_region_data = {}
                     axios
                     .get('/get_region/get_local_region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
-                        this.selected_region_data = response.data[0]
+                    this.selected_region_data = response.data[0] || {}
 
                         this.create_url_hash(this.selected_region_data.name)
                     })
-                    .catch(error =>{
+                    .catch(error => {
+                        this.error = error.message;
                     })
                 }
                 else{
-                    this.selected_region_data = []
+                    this.selected_region_data = {}
                 }
             },
 
@@ -418,6 +394,9 @@
     }
     .modal .fade .modal-dialog {
         width: 100% !important;
+    }
+    .stack-modal {
+        max-width: 90vw !important;
     }
     .otdoor_buttoms{
         margin: 1em 0;

@@ -10,7 +10,7 @@
 
         <span v-if="tours != []">
             <div class="row" v-if="tour_loading">
-                <content-loader
+                <skeleton-loader
                     viewBox="0 0"
                     primaryColor="#f3f3f3"
                     secondaryColor="#27bb7d8c"
@@ -39,14 +39,14 @@
 
 <script>
     import TourItem from '../../items/cards/TourCardComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
 
     import metaData from '../../items/MetaDataComponent'
     export default {
         components: {
             metaData,
-            ContentLoader,
+
             emptyPageComponent,
             TourItem
         },

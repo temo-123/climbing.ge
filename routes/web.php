@@ -31,6 +31,12 @@ use Illuminate\Support\Facades\Route;
         });
     });
 
+    Route::domain('summit.' . config('app.url'))->group(function () {
+        Route::group(['namespace'=>'summit'], function() {
+            Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('summit_index');
+        });
+    });
+
     Route::domain('user.' . config('app.url'))->group(function () {
         Route::group(['namespace'=>'User'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('user_index');

@@ -13,7 +13,7 @@
                 </button>
 
                 <span>
-                    <router-link style="font-size: 1.5em;" :to="{name: 'index',  params: {lang: this.$i18n.locale}}" exact class="site_title">{{ $t('blog.name') }}</router-link>
+                    <router-link style="font-size: 1.5em;" :to="{path: '/'}" class="site_title" exact>{{ $t('blog.name') }}</router-link>
                 </span>
                 <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
             </div>
@@ -25,7 +25,7 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li><router-link :to="{name: 'about_us',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('blog.menu.about us') }} </span> </router-link></li>
+<!-- <li><router-link :to="'/about_us'" exact> <span> {{ $t('blog.menu.about us') }} </span> </router-link></li> -->
 
                     <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
@@ -73,7 +73,6 @@
 </template>
 
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
     // import search from './SearchComponent'
     import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
@@ -102,7 +101,6 @@
         },
         components: {
             localeSwitcher,
-            countryFlag,
         },
         mounted() {
         },

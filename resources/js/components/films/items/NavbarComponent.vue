@@ -37,9 +37,9 @@
                             </button>
 
                             <ul class="dropdown-menu shadows mobail_dropdown" aria-labelledby="dropdown">
-                                <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'en', localization('en')"><countryFlag country='usa' size='big'/></a></li>
-                                <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'ka', localization('ka')"><countryFlag country='geo' size='big'/></a></li>
-                                <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="mobail_flag" @click="activ_lang = 'ru', localization('ru')"><countryFlag country='rus' size='big'/></a></li>
+                                <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'en', localization('en')"><countryFlagWrapper country='usa' size='big'/></a></li>
+                                <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'ka', localization('ka')"><countryFlagWrapper country='geo' size='big'/></a></li>
+                                <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="mobail_flag" @click="activ_lang = 'ru', localization('ru')"><countryFlagWrapper country='rus' size='big'/></a></li> -->
                             </ul>
                         </div>
                         
@@ -76,7 +76,7 @@
 </template>
 
 <script>
-    import countryFlag from 'vue-country-flag' // https://www.npmjs.com/package/vue-country-flag
+    // import countryFlagWrapper from '../../global_components/CountryFlagWrapper.vue'
     // import search from './SearchComponent'
     import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
 
@@ -101,7 +101,7 @@
         },
         components: {
             localeSwitcher,
-            countryFlag,
+            // countryFlagWrapper,
         },
         mounted() {
         },

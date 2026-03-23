@@ -47,11 +47,7 @@
             </div>
 
             <div v-if="indoor_article_loading">
-                <content-loader
-                    viewBox="0 0"
-                    primaryColor="#f3f3f3"
-                    secondaryColor="#279fbbb0"
-                />
+                <!--  -->
             </div>
             <div v-else>
                 <div v-if="this.ices.length > 0" class="article_card_container" :class="{'list-view': viewMode === 'list'}">
@@ -95,7 +91,7 @@
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     import metaData from '../../items/MetaDataComponent'
 
     import axios_mixin from '../../../../mixins/axios_mixin'
@@ -125,7 +121,7 @@
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,
-            ContentLoader,
+
             metaData,
             
             sectorQuantyt,

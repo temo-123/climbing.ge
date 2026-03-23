@@ -8,7 +8,7 @@
                 <div class="col-md-12">
                     <h2 class="text-center"> The your search query is:"<b> {{ this.$route.query.query }} </b>". Please use only english text for your query!!!</h2>
                     <div v-if="film_search_loading">
-                        <content-loader
+                        <skeleton-loader
                             viewBox="0 0"
                             primaryColor="#f3f3f3"
                             secondaryColor="#777777"
@@ -55,12 +55,12 @@
 <script>
     import filmSerchingCard from '../items/cards/FilmSerchingCardComponent'
     import metaData from '../items/MetaDataComponent'
-    import { ContentLoader } from 'vue-content-loader'
+
     export default {
         components: {
             filmSerchingCard,
             metaData,
-            ContentLoader,
+
         },
         data: function () {
             return {

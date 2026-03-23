@@ -1,7 +1,7 @@
 <template>
     <span>
         <div class="footer_re_capcha">
-            <vue-recaptcha 
+            <!-- <vue-recaptcha 
                 :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
                 :loadRecaptchaScript="true"
                 ref="recaptcha"
@@ -9,7 +9,7 @@
                 @verify="onCaptchaVerified"
                 @expired="onCaptchaExpired"
             >
-            </vue-recaptcha>
+            </vue-recaptcha> -->
         </div>
 
         <div v-if="loading == false">
@@ -28,7 +28,7 @@
 </template>
 
 <script>
-    import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
+    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
     export default {
         props:[
             // 'service',
@@ -41,7 +41,7 @@
             };
         },
         components: {
-            VueRecaptcha
+            // 'vue-recaptcha': VueRecaptchaV2
         },
         mounted() {
             

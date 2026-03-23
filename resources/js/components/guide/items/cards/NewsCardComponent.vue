@@ -1,13 +1,13 @@
 <template>
 
-    <div class="col-md-2 small_news">
+    <div class="col-md-2 small_news" v-if="news && news.global_data && news.locale_data">
         <router-link :to="'news/'+news.global_data.url_title">
             <article class="m-card mm-card--landscape-image mm-card--type-standard mm-card--density-strip" role="article">
                 <div class="m-card--media">
                    <router-link :to="'news/'+news.global_data.url_title" class="m-card--image-link" >
                         <div>
                             <picture class="is-loaded">
-                                <site-img v-if="news.global_data.image != NULL" :src="'/public/images/news_img/'+news.global_data.image" :img_class="'m-image-hero--image'" :alt='news.locale_data.title'/>
+<site-img v-if="news.global_data.image != null" :src="'/public/images/news_img/'+news.global_data.image" :img_class="'m-image-hero--image'" :alt='news.locale_data.title'/>
                                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='news.locale_data.title'/>
 
                             </picture>

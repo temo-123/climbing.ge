@@ -4,13 +4,8 @@
             <button type="bottom" class="btn btn-default btn-send main-btn pull-right" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
         </div>
 
-        <stack-modal
-            :show="is_show_modal"
-            :title="routeTypeTitle"
-            @close="is_show_modal=false"
-            :saveButton="{ visible: false, title: 'Save', btnClass: { 'btn btn-primary': false } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
-        >
+<StackModal v-model="is_show_modal" :title="routeTypeTitle" :size="'xl'" @close="is_show_modal = false">
+          <template #default>
             <pre class="language-vue">
                 <select class="form-control route_statistic_selection" v-model="routesPerPage" @change="refreshData">
                     <option value="5">5 {{ $t('guide.sector.routes') }}</option>
@@ -91,19 +86,23 @@
 
 
             </pre>
-        </stack-modal>
+          </template>
+        </StackModal>
     </span>
 </template>
 
 <script>
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-    import starsReiting  from '../../../../../global_components/StarReitingShowComponent.vue'
+// import StackModal from '@innologica/vue-stackable-modal'  // Global now
+    import StarReitingShowComponent from '../../../../../global_components/StarReitingShowComponent.vue'
 
     export default {
-        components: {
-            StackModal,
-
-            starsReiting,
+    components: {
+            StarReitingShowComponent,
+            // StackModal,
+        },
+        mounted() {
+            // Force Vue to recognize global StackModal
+            this.$options.components.StackModal = this.$root.$options.components.StackModal || resolveComponent('StackModal');
         },
 
         props: {
@@ -252,7 +251,8 @@
     overflow-x: auto;
 }
 .modal-body{
-    height: 600px;
+    height: auto;
+    min-height: 600px;
 }
 th:nth-child(2n+1) {
   background: #d7b396;
