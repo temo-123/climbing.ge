@@ -11,8 +11,8 @@
                     <span class="icon-bar"></span>
                 </button>
 
-                <span>
-                    <a style="font-size: 1.5em;" href="/" class="site_title">{{ $t('summit.name') || 'Summit Climbing' }}</a>
+<span>
+                    <router-link style="font-size: 1.5em;" :to="'/'" class="site_title">{{ $t('summit.name') || 'Summit Climbing' }}</router-link>
                 </span>
             </div>
 
@@ -22,8 +22,8 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li><a href="/about_us"> {{ $t('summit.menu.about') || 'About' }} </a></li>
-                    <li><a href="/summits/list"> {{ $t('summit.menu.list') || 'Summit List' }} </a></li>
+<li><router-link :to="'/about_us'"> {{ $t('summit.menu.about') || 'About' }} </router-link></li>
+<li><router-link :to="'/summits/list'"> {{ $t('summit.menu.list') || 'Summit List' }} </router-link></li>
 
                     <!-- <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
@@ -71,10 +71,15 @@
 </template>
 
 <script>
+import { RouterLink } from 'vue-router'
     import localeSwitcher from '../../global_components/LocaleChangeComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
 
     export default {
+        components: {
+            'router-link': RouterLink,
+            localeSwitcher,
+        },
         mixins: [
             go_to_service_mixin
         ],
@@ -96,9 +101,7 @@
                 },
             };
         },
-        components: {
-            localeSwitcher,
-        },
+        // Duplicate components removed
         mounted() {
         },
         watch: {

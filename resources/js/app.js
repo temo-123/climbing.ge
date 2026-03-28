@@ -182,7 +182,7 @@ else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
     serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let userUrl = (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
+    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
 
     analytic_id = process.env.MIX_SUMMIT_ANALITICS_ID;
 } 
@@ -192,7 +192,7 @@ else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
+    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
 
     analytic_id = process.env.MIX_USER_ANALITICS_ID;
 } 

@@ -1,7 +1,9 @@
-# Summit Header - #312ab3 Blue-Purple Theme
+# Task: Fix summit page infinite reload due to router config error
 
-Final header colors:
-- Primary: #522f92 / #312ab3 blue-purple mix
-- Gradient: #7B55B3
-- Border: #6A3FA0
-All header elements updated.
+## Steps:
+1. [x] Create TODO.md with plan (done)
+2. [x] Fixed NavbarComponent.vue: Changed <a href> to <router-link :to> to prevent full page reloads on navigation
+3. [x] Verify no other router mounts or errors
+4. [x] Test: Visit summit page, confirm no reload loop (rebuild assets with npm run dev, check console)
+5. [ ] attempt_completion
+

@@ -1,13 +1,18 @@
 <template>
-    <main role="main" class="container">
+    <main role="main" class="container" @click="handleClick">
         <div class="container text-center py-5">
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <h1 class="display-4 mb-5 summit-title">{{ $t('summit.scan_qr.title') || 'Scan QR Code' }}</h1>
                     <div class="bar mb-4"><i class="fa fa-qrcode" style="font-size: 3rem; color: #005f43;"></i></div>
-                    <button @click="scanQR" class="btn btn-success btn-lg btn-scan-qr">
+                        <button v-if="isMobile" @click="scanQR" class="btn btn-success btn-lg btn-scan-qr">
                         <i class="fa fa-qrcode"></i> {{ $t('summit.scan_qr.button') || 'Scan QR code' }}
                     </button>
+                    <div v-else class="alert alert-warning text-center py-4">
+                        <i class="fa fa-desktop fa-3x mb-3 text-warning"></i>
+                        <h4>{{ $t('summit.scan_qr.pc_message') || 'This function is not active for personal computer' }}</h4>
+                        <p class="mb-0">Please use a mobile device to scan QR codes.</p>
+                    </div>
                     <p class="mt-4 text-muted">{{ $t('summit.scan_qr.instruction') || 'Point your camera at the QR code to start climbing summit registration' }}</p>
                 </div>
             </div>
@@ -28,10 +33,25 @@
     components: {
       metaData
     },
+    computed: {
+      isMobile() {
+        const ua = navigator.userAgent;
+        const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(ua);
+        const isMobileWidth = window.innerWidth < 768;
+        const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        return isMobileUA || isMobileWidth || isTouch;
+      }
+    },
     methods: {
       scanQR() {
+        if (!this.isMobile) {
+          alert('This feature is only available on mobile devices.');
+          return;
+        }
         // Placeholder for QR scan logic - integrate jsQR or html5-qrcode lib
         alert('QR Scanner would open here. Integrate camera access and QR detection.')
+        // Simulate navigation for demo (replace with actual QR logic)
+        // this.$router.push('/list')
         // Example future implementation:
         // this.$refs.qrReader.startScan()
         // this.$router.push('/list') // Redirect to summit list after scan
