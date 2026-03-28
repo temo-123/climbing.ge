@@ -44,6 +44,7 @@
         "@unhead/vue": "^1.11.20",
         "@vueuse/core": "^10.11.1",
         "axios": "^1.6.0",
+        "html5-qrcode": "^2.3.8",
         "jquery": "^4.0.0",
         "jsencrypt": "^3.5.4",
         "lang.js": "^1.1.14",
