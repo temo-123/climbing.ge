@@ -1,10 +1,10 @@
 <template>
-    <stack-modal
-            :show="is_show_modal"
+    <StackModal
+            v-model="is_show_modal"
             title="Edit review"
             @close="close_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
-            :saveButton="{ visible: true }"
+            :saveButton="{ visible: true, onClick: edit_route_review }"
             :cancelButton="{
                 title: 'Close',
                 btnClass: { 'btn btn-primary': true },
@@ -44,28 +44,17 @@
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <div class="form-group">
-                        <button type="submit" form="route_review_form" class="btn btn-success float-right">Save</button>
-                    </div>
-                </div>
-            </div>
-        </stack-modal>
+        </StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
 import starReitingInsert from '../../../../global_components/StarReitingInsertComponent.vue'
 
 export default {
     components: { 
-        StackModal,
         starReitingInsert,
     },
     props: [
-        // "sector",
     ],
     data: function () {
         return {
@@ -87,7 +76,6 @@ export default {
         };
     },
     mounted() {
-        //
     },
     methods: {
         show_modal(route_id){
@@ -127,7 +115,6 @@ export default {
                     }
                 })
                 .catch((error) => {
-                    // 
                 })
                 .finally(() => this.is_loading = false);
         },
@@ -140,7 +127,6 @@ export default {
                     this.close_route_review_modal(this.route_id)
                 })
                 .catch((error) => {
-                    // 
                 })
                 .finally(() => this.is_loading = false);
         },

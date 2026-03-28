@@ -269,10 +269,9 @@
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
+
     export default {
         components: {
-            StackModal,
             SlickItem,
             SlickList,
         },

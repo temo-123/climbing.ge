@@ -61,7 +61,7 @@
 import { get } from 'jquery'
 export default {
     components: {
-        StackModal,
+        // StackModal,
     },
     data(){
         return {

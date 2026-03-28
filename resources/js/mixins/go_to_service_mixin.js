@@ -17,6 +17,14 @@ export default {
                     window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
                 }
             }
+            else if(service == "summit"){
+                if(window.location.href == this.MIX_APP_SSH + 'summit.' + this.MIX_SITE_URL + '/about_us'){
+                    this.$router.push({name: 'studia'});
+                }
+                else{
+                    window.open(this.MIX_APP_SSH  + 'summit.' + this.MIX_SITE_URL + '/')
+                }
+            }
             else if(service == "blog"){
                 if(window.location.href == this.MIX_APP_SSH + 'blog.' + this.MIX_SITE_URL + '/about_us'){
                     this.$router.push({name: 'studia'});
@@ -36,3 +44,4 @@ export default {
         },
     }
 };
+

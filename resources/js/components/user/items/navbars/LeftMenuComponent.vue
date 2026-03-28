@@ -8,11 +8,13 @@
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
                   <a href="#" @click="toggle_dropdown(item.title)" class="dropdown-toggle">{{item.title}}</a>
                   <ul style="background-color: #04354b;" v-show="is_dropdown_open(item.title)" :class="item.title">
-                    <li v-for="menu_but in item.routes" :key="menu_but.name + (item.id || index)" v-if="menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true" :class="{ active: isActive(menu_but.route) }">
+                    <template v-for="(menu_but, menuButIndex) in item.routes || []" :key="menu_but?.name + (item.id || index)">
+                      <li v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :class="{ active: isActive(menu_but.route) }">
                         <router-link :to="{path: menu_but.route}">
                           {{menu_but.name}}
                         </router-link>
-                    </li>
+                      </li>
+                    </template>
                   </ul>
                 </li>
 
@@ -34,6 +36,9 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
 	    name: 'leftMenu',
         data(){
             return {
+                menuItem: null,
+                item: null,
+                menu_but: null,
                 width: 0,
                 menu: true,
                 menu_but: true,

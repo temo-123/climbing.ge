@@ -148,7 +148,7 @@ import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
 
 app.component("main-wrapper-component", MainWrapper);
-app.component("main-wrapper-component", Summit);
+app.component("summit-component", Summit);
 app.component("index-component", Index);
 app.component("studia-component", Films);
 app.component("blog-component", Blog);
@@ -163,53 +163,64 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let siteUrl = (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = siteUrl ? baseUrl + '/' + siteUrl + '/api' : baseUrl + '/api';
-} else if (window.location.hostname == process.env.MIX_SHOP_URL) {
+
+    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+} 
+
+else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let shopUrl = (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = shopUrl ? baseUrl + '/' + shopUrl + '/api' : baseUrl + '/api';
-} else if (window.location.hostname == process.env.MIX_SUMMIT_PAGE_URL) {
+
+    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
+} 
+
+else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
     homeComponent = Summit;
     serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let userUrl = (process.env.MIX_SUMMIT_PAGE_URL || '').replace(/^\/|\/$/g, '');
+    let userUrl = (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
-} else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+
+    analytic_id = process.env.MIX_SUMMIT_ANALITICS_ID;
+} 
+
+else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/public/api' : baseUrl + '/public/api';
-} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
+
+    analytic_id = process.env.MIX_USER_ANALITICS_ID;
+} 
+
+else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     homeComponent = Films;
     serviceRoutes = films_routes.options ? films_routes.options.routes : films_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let filmsUrl = (process.env.MIX_FILMS_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = filmsUrl ? baseUrl + '/' + filmsUrl + '/api' : baseUrl + '/api';
-} else if (window.location.hostname == process.env.MIX_BLOG_URL) {
+
+    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
+} 
+
+else if (window.location.hostname == process.env.MIX_BLOG_URL) {
     homeComponent = Blog;
     serviceRoutes = blog_routes.options ? blog_routes.options.routes : blog_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let blogUrl = (process.env.MIX_BLOG_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = blogUrl ? baseUrl + '/' + blogUrl + '/api' : baseUrl + '/api';
-} else {
+
+    analytic_id = process.env.MIX_blog_ANALITICS_ID;
+} 
+
+else {
     homeComponent = Error;
     serviceRoutes = error_routes.options ? error_routes.options.routes : error_routes;
     // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-}
-
-// Configure analytics based on hostname
-if (window.location.hostname == process.env.MIX_SITE_URL) {
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-} else if (window.location.hostname == process.env.MIX_SHOP_URL) {
-    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
-} else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-    analytic_id = process.env.MIX_USER_ANALITICS_ID;
-} else if (window.location.hostname == process.env.MIX_FILMS_URL) {
-    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
-} else if (window.location.hostname == process.env.MIX_BLOG_URL) {
-    analytic_id = process.env.MIX_blog_ANALITICS_ID;
 }
 
 createGtag({
@@ -259,11 +270,12 @@ if(
     window.location.hostname == 'films.climbing.ge' ||
     window.location.hostname == 'blog.climbing.ge'
 ){
-    app.config.devtools = true
-    app.config.debug = true
+    app.config.devtools = false
+    app.config.debug = false
 }
 else{
     app.config.devtools = true
+    app.config.debug = true
 }
 
 // Dynamic component loading based on route

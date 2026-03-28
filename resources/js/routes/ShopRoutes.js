@@ -31,20 +31,20 @@ const routes = [
         children: [
             { path: '', name: 'index', component: load('MeinPage'), meta: { title: 'Shop Index' } },
 
-            { path: '/climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage'), meta: { title: 'Wall Price Calculator' } },
+            { path: 'climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage'), meta: { title: 'Wall Price Calculator' } },
 
-            { path: '/products', name: 'catalog', component: load('lists/ProductsCatalog'), meta: { title: 'Products Catalog' } },
-            { path: '/sale_products', name: 'sale_products', component: load('lists/SaleProductsPage'), meta: { title: 'Sale Products' } },
+            { path: 'products', name: 'catalog', component: load('lists/ProductsCatalog'), meta: { title: 'Products Catalog' } },
+            { path: 'sale_products', name: 'sale_products', component: load('lists/SaleProductsPage'), meta: { title: 'Sale Products' } },
             { path: 'product/:url_title', name: 'product', component: load('pages/ProductPage'), meta: { title: 'Product' },},
                         
-            { path: '/services', name: 'services', component: load('lists/ServicesCatalog'), meta: { title: 'Services' }, },
+            { path: 'services', name: 'services', component: load('lists/ServicesCatalog'), meta: { title: 'Services' }, },
             { path: 'service/:url_title', name: 'service', component: load('pages/ServicePage'), meta: { title: 'Service' },},
                         
-            { path: '/tours', name: 'tours', component: load('lists/ToursCatalog'), meta: { title: 'Tours' }, },
+            { path: 'tours', name: 'tours', component: load('lists/ToursCatalog'), meta: { title: 'Tours' }, },
             { path: 'tour/:url_title', name: 'tour', component: load('pages/TourPage'), meta: { title: 'Tour' },},
 
-            { path: '/about_us', name: 'about_store', component: load('AboutUs'), meta: { title: 'About Store' }, },
-            { path: '/search_products', name: 'search_products', component: load('SearchPage'), meta: { title: 'Search Products' }, },
+            { path: 'about_us', name: 'about_store', component: load('AboutUs'), meta: { title: 'About Store' }, },
+            { path: 'search_products', name: 'search_products', component: load('SearchPage'), meta: { title: 'Search Products' }, },
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
             { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },

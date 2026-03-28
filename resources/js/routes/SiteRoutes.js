@@ -30,16 +30,16 @@ const routes = [
         },
         children: [
             { path: "", name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
-            { path: "/about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
+            { path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
 
-            { path: "/tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
+            { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
             { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },
             { path: "local_bisnes/:url_title", name: "local_bisnes", component: load("pages/LocalBisnesPageComponent"), meta: { title: 'Local Business' } },
                         
             { path: "news/:url_title", name: "news", component: load("pages/NewsPageComponent"), meta: { title: 'News' } },
             { path: "special_article/:url_title", name: "special_article", component: load("pages/SpecialAericlePage"), meta: { title: 'Special Article' } },
 
-            { path: "/events", name: "events", component: load("lists/EventsListPageComponent"), meta: { title: 'Events' } },
+            { path: "events", name: "events", component: load("lists/EventsListPageComponent"), meta: { title: 'Events' } },
             { path: "event/:url_title", name: "event", component: load("pages/EventPageComponent"), meta: { title: 'Event' } },
 
             { path: "ice", name: "ices", component: load("lists/IceListComponent"), meta: { title: 'Ice' } },

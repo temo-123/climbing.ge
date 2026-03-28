@@ -13,8 +13,6 @@
 </template>
 
 <script>
-//   import { createApp } from 'vue'
-//   import router from '../../routes/SummitRouter.js'
     import navbar from './items/NavbarComponent.vue'
     import footter from './items/FooterComponent.vue'
     import loginModal from "../global_components/modals/LoginModalComponent.vue";
@@ -35,27 +33,27 @@
 
 <style scoped>
     .top_menu {
-        background-color: #005f43 !important;
+        background-color: #522f92 !important;
     }
 
     .preloader_background {
-        background: radial-gradient(circle, #005f43 0% 0%, #018b62 100%) !important;
+        background: radial-gradient(circle, #522f92 0% 0%, #7B55B3 100%) !important;
     }
 
     .loader {
-        border-top-color: #005f43 !important;
+        border-top-color: #522f92 !important;
     }
 
     .navbar {
-        background-color: #005f43 !important;
-        border-color: #6a8991;
+        background-color: #522f92 !important;
+        border-color: #6A3FA0;
     }
 
     .navbar-inverse .navbar-nav>.open>a{
-        background-color: #005f43 !important;
+        background-color: #522f92 !important;
     }
 
     .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #005f43 !important;
+        background-color: #522f92 !important;
     }
 </style>

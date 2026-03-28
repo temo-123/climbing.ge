@@ -59,7 +59,7 @@
             'mtp_id_prop'
         ],
         components: {
-            StackModal,
+            // StackModal,
             SlickItem,
             SlickList,
         },

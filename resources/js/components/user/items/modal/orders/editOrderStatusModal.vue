@@ -1,9 +1,9 @@
 <template>
-    <stack-modal
-        :show="is_order_status_edit_model"
+    <StackModal
+        v-model="is_order_status_edit_model"
         title="Edit order status"
         @close="is_order_status_edit_model=false"
-        :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+        :saveButton="{ visible: true, title: 'Edit status', btnClass: { 'btn btn-primary': true }, onClick: edit_order_status }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
         <pre class="language-vue">
@@ -48,27 +48,12 @@
                 </div>
             </span>
         </pre>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    :class="{'btn btn-primary': true}"
-                    @click="edit_order_status()"
-                >
-                Edit status
-                </button>
-            </div>
-        </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
 export default {
-    components: {
-        StackModal,
-    },
+    components: {},
     data(){
         return {
             is_order_status_edit_model: false

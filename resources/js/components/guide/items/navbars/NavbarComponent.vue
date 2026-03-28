@@ -87,6 +87,8 @@
 
                     <localeSwitcher />
 
+                    <li class="navbar_menu_divider"></li>
+
                     <li>
                         <a @click="go_to_service('blog')" class="cursor_pointer"> 
                             <span>
@@ -103,6 +105,14 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a @click="go_to_service('summit')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-street-view" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+                    
                     <goToAdminPage :go_to_page="'/'" />
 
                 </ul>
@@ -201,15 +211,25 @@
 </script>
 
 <style>
+.navbar_menu_divider{
+    width: 1.5px;
+    height: 50px;
+    background-color: #c8c8c8;
+    display: inline-block;
+}
 .grade_chart{
     width: 50%; 
     margin-left: 25%;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 757px) {
     .grade_chart{
         width: 50%; 
         margin-left: 0%;
+    }
+
+    .navbar_menu_divider{
+        display: none !important;  
     }
 }
 

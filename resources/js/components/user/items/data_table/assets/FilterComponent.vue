@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <!-- Single filter (backward compatibility) -->
         <div 
-            v-if="!Array.isArray(action_data.filter_data)" 
+            v-if="action_data?.filter_data && !Array.isArray(action_data.filter_data)" 
             class="cms_filters"
         >
             <div class="col-md-3">
@@ -43,7 +43,7 @@
         </div>
         
         <!-- Multiple filters (new feature) - Responsive grid layout -->
-        <template v-else>
+        <template v-else-if="action_data?.filter_data">
             <div 
                 class="multi-filter-container"
             >
@@ -95,7 +95,12 @@
 
 <script>
 export default {
-    props: ["filtr_data_prop"],
+    props: {
+        filtr_data_prop: {
+            type: Object,
+            default: () => ({ filter_data: null })
+        }
+    },
     data(){
         return{
             action_data: this.filtr_data_prop,
@@ -106,9 +111,9 @@ export default {
     },
     watch: {
         filtr_data_prop: function(){
-            this.action_data = this.filtr_data_prop;
+            this.action_data = this.filtr_data_prop || { filter_data: null };
             // Initialize filter_ids array based on filter_data length
-            if (Array.isArray(this.action_data.filter_data)) {
+            if (this.action_data?.filter_data && Array.isArray(this.action_data.filter_data)) {
                 this.filter_ids = this.action_data.filter_data.map(() => 0);
             }
             this.filter_id = this.current_filter_id;

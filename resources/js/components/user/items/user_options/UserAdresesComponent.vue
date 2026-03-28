@@ -6,12 +6,6 @@
             </div>
         </div>
 
-        <!-- <div class="row edit_buttom">
-            <div class="col-md-12">
-                <button class="btn btn-primary" @click="open_add_modal()">Add new adres</button>
-            </div>
-        </div> -->
-
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
@@ -37,16 +31,12 @@
                         <th>ID</th>
                         <th>|</th>
                         <th>Address Name</th>
-
                         <th></th>
                         <th>Edit</th>
-
                         <th></th>
                         <th>Delete</th>
-                        
                     </tr>
                 </thead>
-                
                 <tbody >
                     <tr v-for="adres in adreses" :key="adres.id">
                         <td class='align-center'>
@@ -54,15 +44,12 @@
                         </td>
                         <td></td>
                         <td>{{ adres.id }}</td>
-
                         <td></td>
                         <td @click="quick_viwe_adres(adres.id)" :style="'cursor: zoom-in'" title="Click to view details">{{ adres.name }}</td>
-
                         <td></td>
                         <td>
                             <a :href="'#'" class="btn btn-primary" type="submit" @click="open_edit_modal(adres.id)">Edit</a>
                         </td>
-
                         <td></td>
                         <td>
                             <button type="submit" class="btn btn-danger" @click="del_adres(adres.id)">Delete</button>
@@ -72,15 +59,14 @@
             </table>
         </div>
 
-        <stack-modal
-                :show="is_add_adres"
+        <StackModal
+                v-model="is_add_adres"
                 title="Add New Address"
                 @close="is_add_adres=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
-                <form class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
+            <form class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
                     <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
 
@@ -105,45 +91,17 @@
                     <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
                     <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
                     <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code">
-                    
-                    <!-- <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter your name" title="Enter your name">
+            </form>
+            </StackModal>
 
-                    <select class="form-control" v-model="edit_data.country_id" name="Currency"> 
-                        <option :value="0" disabled>Country</option>
-                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
-                    </select> 
-
-                    <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" placeholder="Enter your strit" title="Enter your strit">
-                    <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" placeholder="Enter your number" title="Enter your number">
-                    <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" placeholder="Enter your floor" title="Enter your floor">
-                    <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
-                    <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
-                    <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code"> -->
-                </form>
-            </pre>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="sumbit"
-                        :class="{'btn btn-primary': true}"
-                        form="add_user_adres_form"
-                    >
-                    Save
-                    </button>
-                </div>
-            </div>
-        </stack-modal>
-
-        <stack-modal
-                :show="is_edit_adres"
+        <StackModal
+                v-model="is_edit_adres"
                 title="Edit Address"
                 @close="is_edit_adres=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
-                <form class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres" >
+            <form class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres" >
 
                     <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
@@ -169,44 +127,16 @@
                     <input type="text" class="form-control" v-model="edit_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
                     <input type="text" class="form-control" v-model="edit_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
                     <input type="text" class="form-control" v-model="edit_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code">
-                    
-                    <!-- <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter your name" title="Enter your name">
-                    <input type="text" class="form-control" v-model="edit_data.country" name="surname" id="surname" placeholder="Enter your last name" title="Enter your last name">
+            </form>
+            </StackModal>
 
-                    <select class="form-control" v-model="edit_data.country_id" name="Currency"> 
-                        <option :value="0" disabled>Country</option>
-                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
-                    </select> 
-
-                    <input type="text" class="form-control" v-model="edit_data.strit" name="strit" id="strit" placeholder="Enter your strit" title="Enter your strit">
-                    <input type="text" class="form-control" v-model="edit_data.number" name="number" id="number" placeholder="Enter your number" title="Enter your number">
-                    <input type="text" class="form-control" v-model="edit_data.floor" name="floor" id="floor" placeholder="Enter your floor" title="Enter your floor">
-                    <input type="text" class="form-control" v-model="edit_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
-                    <input type="text" class="form-control" v-model="edit_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
-                    <input type="text" class="form-control" v-model="edit_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code"> -->
-                </form>
-            </pre>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="edit_user_adres_form"
-                    >
-                    Save
-                    </button>
-                </div>
-            </div>
-        </stack-modal>
-
-        <stack-modal
-                :show="is_quick_viwe_adres_model"
+        <StackModal
+                v-model="is_quick_viwe_adres_model"
                 :title="'Address Details: ' + quick_adres.name"
                 @close="is_quick_viwe_adres_model=false"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+                :saveButton="{ visible: false }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
                 Country: {{ quick_adres.country }}
                 City: {{ quick_adres.city }}
                 Street: {{ quick_adres.strit }}
@@ -215,30 +145,20 @@
                 Flat: {{ quick_adres.flat }}
                 Entrance: {{ quick_adres.entrance }}
                 Zip Code: {{ quick_adres.zip_code }}
-            </pre>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <!--  -->
-                </div>
-            </div>
-        </stack-modal>
+            </StackModal>
 
     </div>
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
+    import { SlickList, SlickItem } from 'vue-slicksort';
 
     export default {
         components: {
-            StackModal,
             SlickItem,
             SlickList,
         },
-        props: [
-            // 'status',
-        ],
+        props: [],
         data(){
             return {
                 is_add_adres: false,
@@ -315,19 +235,6 @@
                 .catch(error => console.log(error))
             },
 
-            // add_new_adres() {
-            //     axios
-            //     .post('/add_user_adreses/',{
-            //         adding_data: this.adding_data,
-
-            //         _method: 'POST'
-            //     })
-            //     .then(Response => {
-            //         this.get_adres()
-            //         this.is_add_adres = false
-            //     })
-            //     .catch(error => console.log(error))
-            // },
             add_new_adres() {
                 this.errors = {
                     demo_name: false,
@@ -409,12 +316,9 @@
                     axios
                     .post('/edit_adres/'+this.editing_adres_id,{
                         data: this.edit_data,
-                        // editing_adres_id: this.editing_adres_id,
-
                         _method: 'POST'
                     })
                     .then(Response => {
-                        // this.adreses = Response.data
                         this.get_adres()
                         this.is_edit_adres = false
                     })
@@ -512,7 +416,6 @@
                     floor: false,
                 }
                 this.get_editing_adres(adres_id)
-                // this.is_edit_adres = true
             },
 
             open_add_modal() {

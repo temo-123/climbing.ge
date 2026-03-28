@@ -1,6 +1,6 @@
 <template>
-    <stack-modal
-        :show="showModal"
+    <StackModal
+        v-model="showModal"
         title="Add Custom Order"
         @close="closeModal"
     >
@@ -116,25 +116,20 @@
                 </button>
             </div>
         </form>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success btn-sm" @click="addProductAndMakeDeliveryTask">
-                   Submit & make delivery task
-                </button>
-                
-                <button type="button" class="btn btn-primary" @click="submitOrder">Submit</button>
-            </div>
+        <div class="flex gap-3 justify-end mt-4 p-4">
+            <button type="button" class="btn btn-success btn-sm" @click="addProductAndMakeDeliveryTask">
+               Submit & make delivery task
+            </button>
+            <button type="button" class="btn btn-primary" @click="submitOrder">Submit</button>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
+
 
 export default {
-    components: {
-        StackModal,
-    },
+    components: {},
         data() {
             return {
                 showModal: false,

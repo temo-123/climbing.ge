@@ -6,11 +6,9 @@
             </th>
 
             <th
-                v-for="(h, h_key) in tab_data .tab.head" :key="h_key"
-                    v-if="  tab_data.tab.perm[h_key][0] == 'no' ||
-                            $can(tab_data.tab.perm[h_key][1],
-                                tab_data.tab.perm[h_key][0]
-                            )
+                v-for="(h, h_key) in (tab_data?.tab?.head || [])" :key="h_key"
+                    v-if="  (tab_data?.tab?.perm?.[h_key]?.[0] == 'no' || true) ||
+                            $can(tab_data?.tab?.perm?.[h_key]?.[1] || '', tab_data?.tab?.perm?.[h_key]?.[0] || '')
                     "
                 >
                 {{ h }}
@@ -21,11 +19,20 @@
 
 <script>
 export default {
-    props: [
-        "head_data_prop",
-        "selectedItems",
-        "totalItems"
-    ],
+    props: {
+        head_data_prop: {
+            type: Object,
+            default: () => ({ tab: { head: [] } })
+        },
+        selectedItems: {
+            type: Array,
+            default: () => []
+        },
+        totalItems: {
+            type: Number,
+            default: 0
+        }
+    },
     data(){
         return{
             tab_data: this.head_data_prop

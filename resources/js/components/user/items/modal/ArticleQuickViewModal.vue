@@ -32,11 +32,8 @@
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
-        components: {
-            StackModal,
-        },
+        components: {},
         props: {
             modalClass: {
                 type: String,

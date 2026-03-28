@@ -34,7 +34,7 @@
         alert('QR Scanner would open here. Integrate camera access and QR detection.')
         // Example future implementation:
         // this.$refs.qrReader.startScan()
-        this.$router.push('/list') // Redirect to summit list after scan
+        // this.$router.push('/list') // Redirect to summit list after scan
       }
     }
   }

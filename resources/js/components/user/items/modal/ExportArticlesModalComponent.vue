@@ -130,7 +130,7 @@
 export default {
     name: 'ExportArticlesModal',
     components: {
-        StackModal,
+        // StackModal,
     },
     data() {
         return {

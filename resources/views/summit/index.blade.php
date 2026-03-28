@@ -2,6 +2,6 @@
 
 @section('content')
 
-    <index-component />
+    <summit-component />
 
 @endsection

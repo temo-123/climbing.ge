@@ -43,7 +43,7 @@
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
-            StackModal,
+            // StackModal,
             SlickItem,
             SlickList,
         },

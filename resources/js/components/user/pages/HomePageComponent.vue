@@ -1,7 +1,7 @@
 <template>
     <div class="row">
         <!-- <div class="col-sm-3"> -->
-            <left-menu />
+            <!-- Removed mismatched shop LeftMenu component -->
         <!-- </div> -->
 
         <div class="col-sm-12">

@@ -94,7 +94,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['close', 'update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'close', 'save'])
 
 const modalRef = ref(null)
 

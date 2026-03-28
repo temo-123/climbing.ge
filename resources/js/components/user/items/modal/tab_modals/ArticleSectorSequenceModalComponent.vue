@@ -1,49 +1,36 @@
 <template>
-    <stack-modal
-        :show="is_show_sector_modal"
+    <StackModal
+        v-model="is_show_sector_modal"
         title="Spot Sectors"
         @close="close_sector_model()"
         :modal-class="{ [SectorModalClass]: true }"
-        :saveButton="{ visible: true }"
+        :saveButton="{ visible: true, title: 'Save sequence', onClick: save_sector_sequence }"
         :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
-        <pre class="language-vue">
-            <div class="root">
-                <div class="col-md-12">
-                    <div class="row">
-                        <h2 v-if="sector_sequence.length > 0">Spot sectors</h2>
-                        <SlickList lockAxis="y" v-model="sector_sequence" v-if="sector_sequence.length > 0" tag="table" style="width: 100%">
-                            <tr>
-                                <td>ID</td>
-                                <td>Num</td>
-                                <td>Name</td>
-                            </tr>
-                            <SlickItem v-for="(sector, index) in sector_sequence" :index='index' :key="index" tag="tr">
-                                <td>{{ sector.id }}</td>
-                                <td>{{ sector.num }}</td>
-                                <td>{{ sector.name }}</td>
-                            </SlickItem>
-                        </SlickList>
-                    </div>
+        <div class="root">
+            <div class="col-md-12">
+                <div class="row">
+                    <h2 v-if="sector_sequence.length > 0">Spot sectors</h2>
+                    <SlickList lockAxis="y" v-model="sector_sequence" v-if="sector_sequence.length > 0" tag="table" style="width: 100%">
+                        <tr>
+                            <td>ID</td>
+                            <td>Num</td>
+                            <td>Name</td>
+                        </tr>
+                        <SlickItem v-for="(sector, index) in sector_sequence" :index='index' :key="index" tag="tr">
+                            <td>{{ sector.id }}</td>
+                            <td>{{ sector.num }}</td>
+                            <td>{{ sector.name }}</td>
+                        </SlickItem>
+                    </SlickList>
                 </div>
             </div>
-        </pre>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                        type="button"
-                        :class="{'btn btn-primary': true}"
-                        @click="save_sector_sequence()"
-                    >
-                Save sequence
-                </button>
-            </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort     https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2?activeTab=versions
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
+
      
     // import { ContainerMixin, ElementMixin } from 'vue-slicksort'; //
     export default {
@@ -51,7 +38,6 @@
             // 'show_sector_modal',
         ],
         components: {
-            StackModal,
             SlickItem,
             SlickList,
         },

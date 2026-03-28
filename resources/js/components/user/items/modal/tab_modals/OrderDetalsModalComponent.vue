@@ -60,10 +60,10 @@
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
+    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
     export default {
         components: {
-            StackModal,
+            // StackModal,
             SlickItem,
             SlickList,
         },

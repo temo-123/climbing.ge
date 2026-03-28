@@ -8,18 +8,7 @@
     @close="close_modal"
   >
     <div v-if="loading" class="text-center py-8">
-      <div class="spinner mx-auto mb-4"></div>
-      <p>{{ $t('common.loading') }}</p>
-    </div>
-    <div v-else class="modal-body">
-      <img v-if="post.image" :src="`/images/blog_img/${post.image}`" alt="Post image" class="post-image w-full h-64 object-cover rounded-lg mb-4">
-      <h3 class="text-2xl font-bold mb-4">{{ post.title }}</h3>
-      <p class="post-content mb-4">{{ post.content }}</p>
-      <p class="post-description italic mb-4">{{ post.short_description }}</p>
-      <small class="post-date block text-gray-500 mb-6">{{ $t('blog.modal.created') }} {{ new Date(post.created_at).toLocaleDateString() }}</small>
-      <div class="text-center">
-        <button @click="viewFullPost" class="btn btn-primary px-6 py-3 rounded-lg">{{ $t('blog.modal.view_full_post') }}</button>
-      </div>
+      
     </div>
   </StackModal>
 </template>

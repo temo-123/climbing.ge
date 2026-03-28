@@ -2,10 +2,38 @@
     <StackModal
             v-model="is_coment_model"
             title="Show comment"
-            @close="close_model()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
-        >
+            @close="close_model()">
+        <div v-show="is_loading" class="text-center">
+            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+        </div>
+
+        <div v-show="!is_loading">
+            <h1>Show Comment</h1>
+            Comentator - {{ quick_comment.name }} {{ quick_comment.suenmae }}
+            Email - {{ quick_comment.email }}
+            {{ quick_comment.text }}
+            <span v-if="quick_comment.deleted_reason != null">
+                {{ quick_comment.deleted_reason }}
+            </span>
+            <span v-if="quick_comment.deleted_reason == null">
+                <h1>You can file a complaint for this comment</h1>
+                <p>Please select a reason for deleting the comment!!!</p>
+                
+                <form v-on:submit.prevent="hide_comment" id="comment_hide_form" class="form">
+                    <select class="form-control" v-model="selected_comment_complaint" name="comment delete cause" > 
+                        <option value="Hostile remarks">Hostile remarks</option>
+                        <option value="Does not match the theme of the site">Does not match the theme of the site</option>
+                        <option value="Spam">Spam</option>
+                        <option value="Sexual content">Sexual content</option>
+                        <option value="Expression of anger">Expression of anger</option>
+                        <option value="Conflict with other members of the site">Conflict with other members of the site</option>
+                        <option value="The language of the comments does not match the requirements of the site">The language of the comments does not match the requirements of the site</option>
+                    </select>
+                    <button type="submit" form="comment_hide_form" class="btn btn-primary mt-3">Hide</button>
+                </form>
+            </span>
+        </div>
+        
         <pre class="language-vue">
             <div class="container" v-show="is_loading">
                 <div class="row justify-content-center">
@@ -70,13 +98,8 @@
 
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
-        components: {
-            StackModal,
-            SlickItem,
-            SlickList,
-        },
+        components: {},
         props: [
             // 
         ],

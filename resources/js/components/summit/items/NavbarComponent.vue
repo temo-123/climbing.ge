@@ -25,7 +25,7 @@
                     <li><a href="/about_us"> {{ $t('summit.menu.about') || 'About' }} </a></li>
                     <li><a href="/summits/list"> {{ $t('summit.menu.list') || 'Summit List' }} </a></li>
 
-                    <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
                             <span>
                                 <i class="fa fa-search"  aria-hidden="true"></i>
@@ -61,7 +61,7 @@
                         </a>
                     </li>
 
-                    <go-to-admin-page :go_to_page="'/'" />
+                    <go-to-admin-page :go_to_page="'/'" /> -->
                 </ul>
 
             </div>
