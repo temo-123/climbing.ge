@@ -79,13 +79,6 @@
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
-                <!-- <li class="nav-item">
-                    <router-link :to="{name: 'myComentsList'}" class="nav-link" exact>{{ $t('user.menu.my comments') }}</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link :to="{name: 'myOrders'}" class="nav-link" exact>{{ $t('user.menu.my orders') }}</router-link>
-                </li> -->
-
                 <li>
                     <router-link :to="{name: 'cart'}" class="nav-link" exact>
                         <span>
@@ -101,7 +94,6 @@
                         </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <!-- <a class="dropdown-item" href="#">Options</a> -->
                         <router-link :to="'/options'" class="dropdown-item">
                             {{ $t('user.menu.options') }}
                         </router-link>
@@ -112,17 +104,13 @@
 
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
-
-                        <!-- <ul style="padding-left: 0px;" @click="logout()">
-                            <li><a>{{ $t('user.menu.logout') }}</a></li>
-                        </ul> -->
                     </div>
                 </li>
             </ul>
         </div>
     </nav>
 </template>
-    
+
 <script>
     import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
     
@@ -136,32 +124,21 @@
                 return this.menuLoading ? [] : (this.menu_items || []);
             }
         },
-        name: 'leftMenu',
-data(){
+        name: 'NavbarComponent',
+        data() {
             return {
                 menuLoading: true,
                 menuItem: null,
                 menu_but: null,
-                // menu_items now computed
                 animate_enabled: false,
-                menuKey: 0, // Used to force re-render when permissions change
-                
-                get activ_lang() {
-                    return localStorage.getItem('lang') || 'en';
-                },
-                set activ_lang(value) {
-                    localStorage.setItem('lang', value);
-                },
-                
+                menuKey: 0,
                 user: [],
             };
         },
         mounted(){
             this.get_user()
-            // Load permissions immediately from localStorage or fetch from server
             this.loadPermissions()
-            // Listen for permissions-loaded event from login
-this.$bus.$on('permissions-loaded', (permissions) => {
+            this.$bus.$on('permissions-loaded', (permissions) => {
                 if (this.$ability) {
                     this.$ability.update(permissions)
                 }
@@ -170,10 +147,8 @@ this.$bus.$on('permissions-loaded', (permissions) => {
                     this.menuKey++;
                 })
             })
-            // Listen for menu toggle events from LeftMenuComponent
-this.$bus.$on('menu-toggle', () => {
+            this.$bus.$on('menu-toggle', () => {
                 this.animate_enabled = true;
-                // Use requestAnimationFrame to ensure CSS transition is applied before position change
                 requestAnimationFrame(() => {
                     setTimeout(() => {
                         this.animate_enabled = false;
@@ -182,27 +157,18 @@ this.$bus.$on('menu-toggle', () => {
             });
         },
         beforeUnmount() {
-this.$bus.$off('menu-toggle');
-this.$bus.$off('permissions-loaded');
+            this.$bus.$off('menu-toggle');
+            this.$bus.$off('permissions-loaded');
         },
-        components: {
-        },
-            watch: {
+        watch: {
             '$route' (to, from) {
-                this.user = '',
-                this.get_user(),
                 window.scrollTo(0,0)
-
-                this.loadPermissions()
-
                 let navbar = document.getElementById("navbarNav")
                 if (navbar) navbar.classList.remove("show")
             }
         },
-
         methods: {
             loadPermissions() {
-                // Try to load permissions from localStorage first (set during login)
                 const storedPermissions = localStorage.getItem('user_permissions')
                 if (storedPermissions) {
                     try {
@@ -219,11 +185,8 @@ this.$bus.$off('permissions-loaded');
                         console.error('Error parsing stored permissions:', e)
                     }
                 }
-                
-                // Fallback: fetch permissions from server
                 this.fetchPermissions()
             },
-            
             fetchPermissions() {
                 axios
                     .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
@@ -242,18 +205,14 @@ this.$bus.$off('permissions-loaded');
                         this.menuLoading = false
                     })
             },
-            
             get_user(){
                 axios
                 .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data['name']
                 })
-                .catch(
-                    // this.user = 'Boss'
-                );
+                .catch()
             },
-
             logout(){
                 axios
                 .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
@@ -262,16 +221,13 @@ this.$bus.$off('permissions-loaded');
                     localStorage.removeItem('user_permissions');
                     this.$router.push({ name: "login" });
                 })
-                
             },
-        
             haveMenuBlockPermission(menu_section){
                 if (!menu_section) return false;
                 if (!menu_section.routes || !Array.isArray(menu_section.routes)) return false;
                 if (!this.$ability) return true;
                 
                 let perm_num = 0;
-                
                 for (let j = 0; j < menu_section.routes.length; j++) {
                     const routeItem = menu_section.routes[j];
                     if (!routeItem) continue;
@@ -287,11 +243,8 @@ this.$bus.$off('permissions-loaded');
                         perm_num++;
                     }
                 }
-                
                 return perm_num > 0;
             },
-
-        
             haveMenuButPermission(permissions){
                 if (!permissions || !Array.isArray(permissions) || permissions.length === 0) {
                     return true;
@@ -305,7 +258,6 @@ this.$bus.$off('permissions-loaded');
                 }
                 return false;
             },
-            
             toggle_menu(){
                 if (this.menuLoading) return;
                 this.animate_enabled = true;
@@ -320,7 +272,7 @@ this.$bus.$off('permissions-loaded');
         },
     }
 </script>
-    
+
 <style>
     .admin_navbar{
         max-height: 380px;
@@ -330,21 +282,22 @@ this.$bus.$off('permissions-loaded');
         position: fixed;
         font-size: 200%;
         top: 0;
+
+        padding-right: .5rem;
+        padding-left: .5rem;
+        margin-top: .7rem
     }
-    /* .bg-perple {
-        background-color: #7427bb !important;
-    } */
-    /*@media (max-width: 993px) {
-        .dropdown-menu .dropdown-item{
-            color: #2b2a2a !important;
+    @media (max-width: 1230px) {
+        .navbar-collapse {
+            border-top: none;
+            box-shadow: none;
         }
-    }*/
+    }
     @media (min-width: 993px) {
         #navbarNav{
             display: none !important;
         }
     }
-
     @media (max-width: 990px) {
         .navbar-nav {
             margin: 7.5px 0;
@@ -358,9 +311,7 @@ this.$bus.$off('permissions-loaded');
             display: none;
         }
     }
-
     .animate {
         transition: all .5s ease;
     }
 </style>
-

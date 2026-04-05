@@ -8,7 +8,7 @@
 
             <ul v-for="(item, index) in menu_items" :key="item?.id || item?.title || index" style="padding-left: 0px;" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
-                  <a href="#" @click="toggle_dropdown(item.title)" class="dropdown-toggle">
+                  <a href="javascript:void(0)" @click.prevent="toggle_dropdown(item.title)" class="dropdown-toggle">
                     <i class="fas fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>
                     {{item.title}}
                   </a>
@@ -38,7 +38,7 @@
 import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
     export default {
         mixins: [navbar_pages_mixin],
-	    name: 'leftMenu',
+        name: 'leftMenu',
         data(){
             return {
                 width: 0,
@@ -67,20 +67,50 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                     }, 500);
                 });
             });
-            window.addEventListener('resize', this.handleResize);
-            this.initMenuPosition();
 
-            // Initial position handled by initMenuPosition()
-            this.window_size();
+            if (window.innerWidth > 993) {
+              if(!localStorage.getItem('left_menu_position')){
+                localStorage.setItem('left_menu_position', true);
+                this.menu_position = true
+
+                document.querySelector('body').style.marginLeft = '22em';
+                document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
+              }
+              else{
+                this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
+                if(this.menu_position){
+                  document.querySelector('body').style.marginLeft = '22em';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
+                }
+                else{
+                  document.querySelector('body').style.marginLeft = '0';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+                }
+              }
+            } else {
+              document.querySelector('body').style.marginLeft = '0';
+              document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+            }
         },
-        beforeUnmount() {
-            this.$bus.$off('menu-toggle');
-            window.removeEventListener('resize', this.handleResize);
-        },
+
         methods: {
             haveMenuButPermission(permissions) {
-              return true;
+              if(permissions.length){
+                let perms = permissions
+                for (let i = 0; i < perms.length; i++) {
+                  if(this.$can(perms[i][0], perms[i][1])){
+                    return true
+                  }
+                  else{
+                    return false
+                  }
+                }
+              }
+              else{
+                return true
+              }
             },
+            
             haveMenuBlockPermission(menu_section){
               if (!menu_section.routes || !Array.isArray(menu_section.routes)) return false;
               if (!this.$ability) return true;
@@ -106,12 +136,19 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
 
             window_size() {
                 this.width = innerWidth;
+                if (this.width > 575) {
+                    this.menu = true
+                    this.menu_but = true
+                }
+                else{
+                    this.menu = false
+                    this.menu_but = false
+                }
             },
+
             update_menu_position() {
-              // Enable animation before position change
               this.animate_enabled = true;
               
-              // Use requestAnimationFrame to ensure CSS transition is applied before next paint
               requestAnimationFrame(() => {
                 if(!this.menu_position){
                   localStorage.setItem('left_menu_position', false)
@@ -126,25 +163,20 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                   document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
                 }
                 
-                // Reset animation after transition completes
                 setTimeout(() => {
                   this.animate_enabled = false;
                 }, 500);
               });
             },
-            updateBodyMargin() {
-                const body = document.querySelector('body');
-                const navbar = document.querySelector('.admin_page_header_navbar');
-                const margin = this.menu_position ? '22em' : '0';
-                if (body) body.style.marginLeft = margin;
-                if (navbar) navbar.style.marginLeft = margin;
-            },
+            
             isActive(route) {
                 return this.$route.path === route;
             },
+
             isAnySubActive(routes) {
                 return routes.some(sub => this.isActive(sub.route));
             },
+
             toggle_dropdown(menu_name) {
                 if (this.open_dropdowns[menu_name] === true) {
                     this.open_dropdowns[menu_name] = false;
@@ -156,52 +188,12 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                 }
                 localStorage.setItem('left_menu_open_dropdowns', JSON.stringify(this.open_dropdowns));
             },
+
             is_dropdown_open(menu_name) {
                 return this.open_dropdowns[menu_name] === true;
             },
-            closeMenu() {
-                this.menu_position = false;
-                this.update_menu_position();
-            },
-            refreshMenu() {
-                Object.keys(this.open_dropdowns).forEach(key => {
-                    this.open_dropdowns[key] = false;
-                });
-                localStorage.setItem('left_menu_open_dropdowns', JSON.stringify(this.open_dropdowns));
-            },
-            isListPage(path) {
-                return path.match(/\/(list|admin|dashboard)/i) !== null;
-            },
-            checkAndCloseMenu(path) {
-                if (!this.isListPage(path) && this.menu_position) {
-                    this.closeMenu();
-                }
-            },
-            initMenuPosition() {
-                if (window.innerWidth > 993) {
-                    const savedPosition = localStorage.getItem('left_menu_position');
-                    this.menu_position = savedPosition === 'true';
-                    this.updateBodyMargin();
-                }
-            },
-            // handleResize() {
-            //     if (window.innerWidth <= 993 && this.menu_position) {
-            //         this.closeMenu();
-            //     }
-            // }
+            
         },
-        // watch: {
-        //     '$route.path'(newPath) {
-        //         this.checkAndCloseMenu(newPath);
-        //     },
-        //     isAuthenticated(newVal) {
-        //         if (newVal) {
-        //             this.$nextTick(() => {
-        //                 this.refreshMenu();
-        //             });
-        //         }
-        //     }
-        // }
     }
 </script>
 
