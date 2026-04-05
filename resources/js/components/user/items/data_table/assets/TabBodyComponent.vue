@@ -33,14 +33,14 @@
                     <DataComponent :data_item_prop="[cellConfig[0], cellConfig[1]]" :data_prop="row" />
                 </span>
                 <!-- Router link cell -->
-                <a 
+                <router-link 
                     v-else-if="cellConfig[0] === 'action_router'" 
-                    :href="`/${cellConfig[1]}/${row.id}`" 
+                    :to="{ name: cellConfig[1], params: { id: row.id } }"
                     :class="cellConfig[2] || 'btn btn-primary'"
                     class="no-vue-link"
                 >
                     <span v-html="cellConfig[3]"></span>
-                </a>
+                </router-link>
                 <!-- Default text -->
                 <span v-else>
                     {{ row[cellConfig[1]] || '' }}

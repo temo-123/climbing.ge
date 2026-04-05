@@ -705,8 +705,7 @@
             },
 
             go_back(back_action = false) {
-                this.is_back_action_query = this.$going.back(this, back_action)
-                // this.$going.back(this, back_action)
+                this.is_back_action_query = going.back(this, back_action)
             },
         },
     }
