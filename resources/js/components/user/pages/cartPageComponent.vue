@@ -1,9 +1,8 @@
 <template>
-    <!-- <div class="container"> -->
         <div class="row">
-            <!-- <div class="col-sm-3"> -->
-                <left-menu />
-            <!-- </div> -->
+
+            <left-menu />
+
             <div class="col-sm-12">
                 <div class="row">
                     <div class="col-md-12">
