@@ -5,14 +5,9 @@
                 <input type="checkbox" class="all" ref="selectAllCheckbox" :checked="isAllSelected" :indeterminate.prop="isIndeterminate" @change="toggleSelectAll" />
             </th>
 
-            <th
-                v-for="(h, h_key) in (tab_data?.tab?.head || [])" :key="h_key"
-                    v-if="  (tab_data?.tab?.perm?.[h_key]?.[0] == 'no' || true) ||
-                            $can(tab_data?.tab?.perm?.[h_key]?.[1] || '', tab_data?.tab?.perm?.[h_key]?.[0] || '')
-                    "
-                >
-                {{ h }}
-            </th>
+            <th v-for="(h, h_key) in (tab_data?.tab?.head || [])" :key="h_key">
+                    {{ h }}
+                </th>
         </tr>
     </thead>
 </template>

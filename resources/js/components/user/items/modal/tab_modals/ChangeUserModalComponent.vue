@@ -81,6 +81,7 @@
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
+        emits: ['update'],
         components: {
             // StackModal,
         },

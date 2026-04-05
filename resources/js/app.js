@@ -92,9 +92,22 @@ app.use(head);
     }
   };
 
-// Global vue-recaptcha (for components)
+// Global vue-recaptcha v2 (existing)
 import { RecaptchaV2 } from 'vue3-recaptcha-v2';
 app.component('vue-recaptcha', RecaptchaV2);
+
+// vue-recaptcha-v3 plugin install
+import ReCaptcha from 'vue-recaptcha-v3';
+app.use(ReCaptcha, {
+  siteKey: process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY || '6LeKTagsAAAAAHNH9SdA5qeH1xqBpr8cvky_JR8X',
+  loaderOptions: {
+    autoHideBadge: false,
+    useRecaptchaNet: false
+  }
+});
+
+// Global v3 component
+app.component('v3-recaptcha', ReCaptcha.V3ReCaptcha);
 
 // vue-recaptcha global component (duplicate import fixed)
 import StackModal from "./components/global_components/modals/StackModal.vue"

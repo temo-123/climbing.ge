@@ -23,11 +23,11 @@ const routes = [
         }
     },
     children: [
-        { path: '', name: 'studia', component: load('PortalPageComponent') },
+{ path: '', name: 'studia', component: load('PortalPageComponent') },
         { path: 'film/:url_title', name: 'film', component: load('FilmPageComponent') },
         { path: 'about_us', name: 'about_films', component: load('AboutUsComponent') },
         { path: 'search_films', name: 'search_films', component: load('SerchPageComponent') },
-        { path: '', name: 'NotFound', component: NotFound }
+{ path: '', name: 'NotFound', component: NotFound }
     ]
 }];
 

@@ -26,7 +26,7 @@ const routes = [
             }
         },
         children: [
-            { path: "", name: "index", component: load("IndexPage"), meta: { title: 'climbing.ge blog' }},
+{ path: '', name: "index", component: load("IndexPage"), meta: { title: 'climbing.ge blog' }},
 { path: "about_us", name: "about_us", component: load("AboutUsPage"), meta: { title: 'About This Blog' } },
 
             { path: "post/:url_title", name: "post", component: load("pages/PostPage"), meta: { title: 'Post' }},

@@ -1,9 +1,10 @@
 <template>
     <div>
         <preloader />
+        <!-- <left-menu /> -->
         <navbar />
 
-        <div class="container top_menu_margin">
+        <div class="container top_menu_margin ">
             <div class="bootstrap snippet mt-5">
                 <router-view />
             </div>
@@ -23,10 +24,18 @@ export default {
         arrayIndex: state => state.arrayIndex
     }),
 
-    data: function () {
+data: function () {
         return {
+            menuOpen: localStorage.getItem('left_menu_position') === 'true',
             // search_query: '',
         };
+    },
+    methods: {
+        toggleMenu() {
+            this.menuOpen = !this.menuOpen;
+            localStorage.setItem('left_menu_position', this.menuOpen);
+            this.$bus.$emit('menu-toggle');
+        }
     },
     components: {
         navbar,

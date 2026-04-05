@@ -1,12 +1,17 @@
 <template>
     <span class="left_navbar">
-        <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check">
-        <div class="sidebar left_sidebar" :class="{ animate: animate_enabled }">
+
+        <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check" class="menu-checkbox">
+        
+        <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }">
             <header>Menu</header>
 
             <ul v-for="(item, index) in menu_items" :key="item?.id || item?.title || index" style="padding-left: 0px;" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
-                  <a href="#" @click="toggle_dropdown(item.title)" class="dropdown-toggle">{{item.title}}</a>
+                  <a href="#" @click="toggle_dropdown(item.title)" class="dropdown-toggle">
+                    <i class="fas fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>
+                    {{item.title}}
+                  </a>
                   <ul style="background-color: #04354b;" v-show="is_dropdown_open(item.title)" :class="item.title">
                     <template v-for="(menu_but, menuButIndex) in item.routes || []" :key="menu_but?.name + (item.id || index)">
                       <li v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :class="{ active: isActive(menu_but.route) }">
@@ -36,22 +41,18 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
 	    name: 'leftMenu',
         data(){
             return {
-                menuItem: null,
-                item: null,
-                menu_but: null,
                 width: 0,
-                menu: true,
-                menu_but: true,
-                menu_array: {},
                 menu_position: false,
                 animate_enabled: false,
-                item_1: false,
                 open_dropdowns: JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}')
             }
         },
         computed: {
             menu_items() {
                 return this.admin_all_menu() || [];
+            },
+            isAuthenticated() {
+                return !!localStorage.getItem('user_permissions');
             }
         },
         mounted() {
@@ -66,52 +67,18 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                     }, 500);
                 });
             });
+            window.addEventListener('resize', this.handleResize);
+            this.initMenuPosition();
 
-            if (window.innerWidth > 993) {
-              if(!localStorage.getItem('left_menu_position')){
-                localStorage.setItem('left_menu_position', true);
-                this.menu_position = true
-                const body = document.querySelector('body');
-                const navbar = document.querySelector('.admin_page_header_navbar');
-                if (body) body.style.marginLeft = '22em';
-                if (navbar) navbar.style.marginLeft = '22em';
-              }
-              else{
-                this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
-                const body = document.querySelector('body');
-                const navbar = document.querySelector('.admin_page_header_navbar');
-                if(this.menu_position){
-                  if (body) body.style.marginLeft = '22em';
-                  if (navbar) navbar.style.marginLeft = '22em';
-                }
-                else{
-                  if (body) body.style.marginLeft = '0';
-                  if (navbar) navbar.style.marginLeft = '0';
-                }
-              }
-            } else {
-              const body = document.querySelector('body');
-              const navbar = document.querySelector('.admin_page_header_navbar');
-              if (body) body.style.marginLeft = '0';
-              if (navbar) navbar.style.marginLeft = '0';
-            }
-
+            // Initial position handled by initMenuPosition()
+            this.window_size();
         },
-        unmounted() {
+        beforeUnmount() {
             this.$bus.$off('menu-toggle');
+            window.removeEventListener('resize', this.handleResize);
         },
         methods: {
-            haveMenuButPermission(permissions){
-              if (!this.$ability) return true; // Safe fallback
-              if(permissions && permissions.length){
-                let perms = permissions
-                for (let i = 0; i < perms.length; i++) {
-                  if(this.$can(perms[i][0], perms[i][1])){
-                    return true
-                  }
-                }
-                return false;
-              }
+            haveMenuButPermission(permissions) {
               return true;
             },
             haveMenuBlockPermission(menu_section){
@@ -137,38 +104,40 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
               return perm_num > 0;
             },
 
-            window_size: function(){
+            window_size() {
                 this.width = innerWidth;
-                if (this.width > 575) {
-                    this.menu = true
-                    this.menu_but = true
-                }
-                else{
-                    this.menu = false
-                    this.menu_but = false
-                }
             },
-            update_menu_position(){
+            update_menu_position() {
+              // Enable animation before position change
               this.animate_enabled = true;
+              
+              // Use requestAnimationFrame to ensure CSS transition is applied before next paint
               requestAnimationFrame(() => {
-                const body = document.querySelector('body');
-                const navbar = document.querySelector('.admin_page_header_navbar');
                 if(!this.menu_position){
                   localStorage.setItem('left_menu_position', false)
                   this.menu_position = false
-                  if (body) body.style.marginLeft = '0';
-                  if (navbar) navbar.style.marginLeft = '0';
+                  document.querySelector('body').style.marginLeft = '0';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
                 }
                 else{
                   localStorage.setItem('left_menu_position', true)
                   this.menu_position = true
-                  if (body) body.style.marginLeft = '22em';
-                  if (navbar) navbar.style.marginLeft = '22em';
+                  document.querySelector('body').style.marginLeft = '22em';
+                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
                 }
+                
+                // Reset animation after transition completes
                 setTimeout(() => {
                   this.animate_enabled = false;
                 }, 500);
               });
+            },
+            updateBodyMargin() {
+                const body = document.querySelector('body');
+                const navbar = document.querySelector('.admin_page_header_navbar');
+                const margin = this.menu_position ? '22em' : '0';
+                if (body) body.style.marginLeft = margin;
+                if (navbar) navbar.style.marginLeft = margin;
             },
             isActive(route) {
                 return this.$route.path === route;
@@ -189,12 +158,50 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
             },
             is_dropdown_open(menu_name) {
                 return this.open_dropdowns[menu_name] === true;
-            }
+            },
+            closeMenu() {
+                this.menu_position = false;
+                this.update_menu_position();
+            },
+            refreshMenu() {
+                Object.keys(this.open_dropdowns).forEach(key => {
+                    this.open_dropdowns[key] = false;
+                });
+                localStorage.setItem('left_menu_open_dropdowns', JSON.stringify(this.open_dropdowns));
+            },
+            isListPage(path) {
+                return path.match(/\/(list|admin|dashboard)/i) !== null;
+            },
+            checkAndCloseMenu(path) {
+                if (!this.isListPage(path) && this.menu_position) {
+                    this.closeMenu();
+                }
+            },
+            initMenuPosition() {
+                if (window.innerWidth > 993) {
+                    const savedPosition = localStorage.getItem('left_menu_position');
+                    this.menu_position = savedPosition === 'true';
+                    this.updateBodyMargin();
+                }
+            },
+            // handleResize() {
+            //     if (window.innerWidth <= 993 && this.menu_position) {
+            //         this.closeMenu();
+            //     }
+            // }
         },
-        watch: {
-            '$route.path'() {
-            }
-        }
+        // watch: {
+        //     '$route.path'(newPath) {
+        //         this.checkAndCloseMenu(newPath);
+        //     },
+        //     isAuthenticated(newVal) {
+        //         if (newVal) {
+        //             this.$nextTick(() => {
+        //                 this.refreshMenu();
+        //             });
+        //         }
+        //     }
+        // }
     }
 </script>
 
@@ -236,12 +243,29 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
 .sidebar ul a i{
   margin-right: 16px;
 }
-#check{
-  display: none;
+/* Hide original checkbox styling since we use custom label */
+.menu-checkbox {
+  position: fixed;
+  opacity: 0;
+  z-index: -1;
 }
 label #open_menu,label #close_menu{
   position: absolute;
   cursor: pointer;
+}
+
+/* Dropdown icon rotation */
+.dropdown-icon {
+  transition: transform 0.3s ease;
+  margin-right: 10px;
+}
+.dropdown-icon.rotated {
+  transform: rotate(90deg);
+}
+
+/* Smooth transitions */
+.sidebar {
+  transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 #check:checked ~ .sidebar{
   left: 0;

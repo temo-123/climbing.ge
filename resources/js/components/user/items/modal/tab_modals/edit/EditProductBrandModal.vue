@@ -70,7 +70,8 @@
 
     import validator_alerts_component from '../../../validator_alerts_component.vue'
     export default {
-        components: {
+        emits: ['update'],
+    components: {
             // StackModal,
             validator_alerts_component
         },

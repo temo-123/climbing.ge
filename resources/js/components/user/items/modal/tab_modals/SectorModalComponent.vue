@@ -9,7 +9,7 @@
         <div class="root">
             <div class="col-md-12">
                 <div class="row">
-                    <router-link class="btn btn-primary" :to="{ name: 'sectorEdit', params: { id: activ_sector_id } }" v-if="$can('edit', 'sector')" >Edit This Sector</router-link>
+:to="{ name: 'sectorEdit', params: { id: activ_sector_id }, query: { locale: $i18n ? $i18n.locale : 'en' } }"
                 </div>
                 <div class="row">
                     <SlickList lockAxis="y" v-model="sector_images" v-if="sector_images.length > 0" tag="table" style="width: 100%">

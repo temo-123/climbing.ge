@@ -61,20 +61,17 @@ export default {
         }
     },
     computed: {
-        safeTableData() {
+        table_data() {
             return (this.data_for_tab || []).filter(tab => {
                 if (!tab || typeof tab !== 'object' || tab.id === undefined) return false;
                 if (!tab.tab_data || !Array.isArray(tab.tab_data.data)) return false;
                 return tab.tab_data.data.every(item => item && item.id !== undefined);
             });
-        },
-        table_data() {
-            return this.safeTableData();
         }
     },
     watch: {
         table_data(newVal, oldVal) {
-            const safeData = this.safeTableData();
+                    const safeData = this.table_data;
             if (safeData.length > 0 && this.$refs.tabsComponent && !this.$refs.tabsComponent.tab_num) {
                 this.$refs.tabsComponent.tab_num = safeData[0].id;
             }
@@ -134,7 +131,7 @@ export default {
                                 ['data_action_id', ['name'], 'sector_modal'],
                                 ['data', ['published'], 'bool'],
                                 ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
-                                ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                 ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [

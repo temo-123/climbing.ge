@@ -29,7 +29,7 @@ const routes = [
             }
         },
         children: [
-            { path: '', name: 'index', component: load('MeinPage'), meta: { title: 'Shop Index' } },
+{ path: '', name: 'index', component: load('MeinPage'), meta: { title: 'Shop Index' } },
 
             { path: 'climbing_wall_colculator', name: 'wall_price_colculator', component: load('pages/wall_colculator/ClimbingWallPriceColculatePage'), meta: { title: 'Wall Price Calculator' } },
 

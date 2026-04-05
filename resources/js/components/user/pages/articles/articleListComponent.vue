@@ -78,7 +78,7 @@ export default {
     },
     watch: {
         table_data(newVal, oldVal) {
-            const safeData = this.safeTableData();
+            const safeData = this.safeTableData;
             if (safeData.length > 0 && !this.tab_num) {
                 this.tab_num = safeData[0].id;
                 this.currentPage = 1;
@@ -190,7 +190,7 @@ export default {
                                     ['data', ['name']],
                                     ['data', ['published'], 'bool'],
                                     ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
-                                    ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                     ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                 ],
                                 perm: [

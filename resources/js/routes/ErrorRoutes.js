@@ -1,12 +1,12 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router"; import { h } from "vue"; import { RouterView } from "vue-router";
 
-function load(component) {
+function getLocaleRegex() { let reg = process.env.MIX_VUE_APP_I18N_SUPORTED_LOCALE; return `(${reg})`; } function load(component) {
     return () => import(`../components/errors/global_errors/pages/${component}.vue`)
 }
 
-const routes = [
-    { path: '/', name: 'host_error', component: load('host_error_component') },
-];
+const routes = [{ path: `/:locale${getLocaleRegex()}?`, component: { render() { return h(RouterView); } }, children: [
+{ path: '', name: 'host_error', component: load('host_error_component') },
+] } ];
 
 
 

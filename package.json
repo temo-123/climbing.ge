@@ -68,6 +68,7 @@
         "vue-loading-overlay": "^6.0.6",
         "vue-meta": "^3.0.0-alpha.2",
         "vue-multiselect": "^3.5.0",
+        "vue-recaptcha-v3": "^2.0.1",
         "vue-router": "^4.6.4",
         "vue-search-select": "^2.9.5",
         "vue-simple-search-dropdown": "^1.0.1",

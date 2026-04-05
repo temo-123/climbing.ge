@@ -226,7 +226,7 @@ export default {
     
     watch: {
         table_data(newVal) {
-            const safeData = this.safeTableData();
+            const safeData = this.safeTableData;
             if (safeData.length > 0 && !this.tab_num) {
                 this.tab_num = safeData[0].id;
                 this.currentPage = 1;
@@ -246,7 +246,7 @@ export default {
             });
         },
         filteredTableData() {
-            const safeData = this.safeTableData();
+            const safeData = this.safeTableData;
             if (!safeData.length) return [];
             return safeData.map(tab => {
                 if (!tab || !tab.tab_data || !Array.isArray(tab.tab_data.data)) {
