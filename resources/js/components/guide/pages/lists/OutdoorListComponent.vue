@@ -32,7 +32,7 @@
                         {{ $t('guide.article.region_filtr') }}
                     </div>
                     <div class="col-md-6 col-sm-6" v-if="(regions || [])?.length > 0">
-                        <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
+                        <select class="form-control" v-model="filter_spot">
                             <option value="All">{{ $t('all') }}</option>
                             <option v-for="region in (regions || [])" :key='region.id' :value="region.id">{{ region.name }}</option> 
                         </select>
@@ -43,7 +43,6 @@
             <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
                 <div class="col-md-12" style="text-align: center;">
                     <h2>{{ selected_region_data?.name || '' }}</h2>
-                    <!-- <p>{{selected_region_data.text}}</p> -->
                     <span v-html="selected_region_data?.text || ''"></span>
                 </div>
 
@@ -54,8 +53,10 @@
 
             <!-- View Controls Component -->
             <view-controls-component
-                :view-mode.sync="viewMode"
-                :group-mode.sync="groupMode"
+                :view-mode="viewMode"
+                @update:viewMode="viewMode = $event"
+                :group-mode="groupMode"
+                @update:groupMode="groupMode = $event"
                 :filter-spot="filter_spot"
             />
 
@@ -210,7 +211,6 @@
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
     import outdoorHorizontalCard from '../../items/cards/OutdoorHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
-    // import CustomStackModal from '../../../global_components/CustomStackModal.vue'
     import metaData from '../../items/MetaDataComponent' 
 
 
@@ -226,7 +226,6 @@
                 filtred_spots: [],
                 regions_and_spots: [],
                 regions: [],
-                // filtred_spots: [],
                 filter_spot: 'All',
 
                 show_map_modal: false,
@@ -234,7 +233,6 @@
                 error: null,
 
                 oudoor_loading: true,
-                // sector_quantyt: true,
                 region_loading: true,
 
                 viewMode: 'grid', // 'grid' or 'list'
@@ -251,7 +249,6 @@
             outdoorCard,
             outdoorHorizontalCard,
             emptyPageComponent,
-            // CustomStackModal,
             metaData, 
 
 
@@ -259,6 +256,11 @@
             routesAutersModal,
             mostPopularRoutesModal,
             ViewControlsComponent
+        },
+        watch: {
+            filter_spot(newVal) {
+                this.get_outdoor_articles();
+            }
         },
         mounted() {
             this.get_outdoor_articles()
@@ -277,7 +279,8 @@
             }
         },
         methods: {
-            get_filtred_articles(id){
+
+            get_filtered_articles(id){
                 this.oudoor_loading = true
                 axios
                 .get("/get_outdoor/get_filtred_outdoor_spots/" + localStorage.getItem('lang') + '/' + id + '/1')
@@ -291,7 +294,7 @@
                 .finally(() => this.oudoor_loading = false);
             },
 
-            get_unfilted_articles(){
+            get_unfiltered_articles(){
                 this.oudoor_loading = true
                 axios
                 .get('/get_outdoor/get_spots_by_regions/'+localStorage.getItem('lang'))
@@ -306,27 +309,25 @@
             },
 
             get_outdoor_articles(){
-                if (this.filter_spot === 'all' || this.filter_spot === 'All') {
-                    this.get_unfilted_articles()
+                if (this.filter_spot === 'All') {
+                    this.get_unfiltered_articles()
 
                     this.delete_url_hash()
                 }
                 else{
-                    this.get_filtred_articles(this.filter_spot) 
+                    this.get_filtered_articles(this.filter_spot) 
                     this.get_region_selected_data(this.filter_spot)
                 }
             },
 
             delete_url_hash(){
                 // https://gist.github.com/azu/36ba5a80feb857c77a3a
-
                 // var noHashURL = location.href.replace(/#.*$/, '');
                 // history.replaceState('', document.title, noHashURL) 
             },
 
             create_url_hash (category) {	
                 // https://www.tutorialsplane.com/vue-js-set-hash-url/	
-
                 // location.hash = "#" + category;
             },
 
@@ -343,19 +344,16 @@
             },
 
             map_modal(){
-                // this.selected_region_data = []
                 this.show_map_modal = true
-                // this.get_region_selected_data(region)
             },
 
             get_region_selected_data(region_id){
-                if (this.filter_spot != 'all' || this.filter_spot != 'All') {
+                if (this.filter_spot !== 'All') {
                     this.selected_region_data = {}
                     axios
                     .get('/get_region/get_local_region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
                     this.selected_region_data = response.data[0] || {}
-
                         this.create_url_hash(this.selected_region_data.name)
                     })
                     .catch(error => {
@@ -384,22 +382,27 @@
 </script>
 
 <style scoped>
-    .modal-dialog {
-        width: 100% !important;
-    }
-    @media screen and (min-width: 768px){
-        .modal-dialog {
-            width: 100% !important;
-        }
-    }
-    .modal .fade .modal-dialog {
-        width: 100% !important;
-    }
-    .stack-modal {
-        max-width: 90vw !important;
-    }
-    .otdoor_buttoms{
-        margin: 1em 0;
-    }
+.list-view .cards_block {
+  display: block !important;
+}
 
+.list-view .cards_block > * {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+.region-list-header {
+  background: #f8f9fa;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #007bff;
+}
+
+.list-view-container {
+  display: block;
+}
+
+.otdoor_buttoms {
+  margin: 1em 0;
+}
 </style>

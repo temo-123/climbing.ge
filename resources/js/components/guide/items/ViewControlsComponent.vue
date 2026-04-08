@@ -67,7 +67,7 @@
         },
         computed: {
             showGroupMode() {
-                return this.filterSpot === 'All' || this.filterSpot === 'all';
+                return String(this.filterSpot) === 'All';
             }
         }
     }

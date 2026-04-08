@@ -1,13 +1,34 @@
-# StackModal Sizing Fix - TODO
+# TODO: Guide Outdoor Regions and Mount List Fixes COMPLETE
 
-## Approved Plan Steps (progress tracked):
+## Summary
+Fixed both MountaineeringListComponent.vue and OutdoorListComponent.vue + ViewControlsComponent.vue:
 
-- [x] 1. Create this TODO.md file ✅
-- [ ] 2. Read current StackModal.vue contents (already done)
-- [x] 3. Implement template changes: Add flex layout, responsive paddings, remove conflicting classes ✅
-- [x] 4. Update scoped CSS: Fix size classes with proper widths/heights, responsive rules, remove conflicts ✅
-- [x] 5. Verify no other styles touched (animations, colors, etc.) ✅
-- [x] 6. Update TODO.md with completion ✅
-- [ ] 7. Test instructions & attempt_completion
+**Mountaineering & Outdoor Lists:**
+- Renamed methods: `get_filtered_articles()`, `get_unfiltered_articles()`
+- Standardized `filter_mount` / `filter_spot` to `'All'` (string): fixed `=== 'All'`, `!== 'All'` conditions.
+- Removed redundant `onFilterChange()` and `@change` handlers (watches handle filter changes).
+- Data loads correctly:
+  | Mode | Data |
+  |------|------|
+  | 'All' | `mount_routes_by_masiv` / `regions_and_spots` (grouped) |
+  | Filtered | `mount_routes` / `filtred_spots` (flat) |
 
-**Current Status**: Ready for edits. File will be edited in logical chunks (template then styles).
+**ViewControlsComponent.vue:**
+- `showGroupMode()`: `String(this.filterSpot) === 'All'` - robust for string/number IDs.
+- Toggles emit `update:viewMode`, `update:groupMode` (.sync works in Vue 2).
+- Group toggle hidden when filtered, shown for 'All'.
+
+**Layout:**
+- `viewMode`: 'grid' / 'list' - cards vs horizontal.
+- `groupMode`: 'grouped' (by region/masiv) / 'flat' list.
+- Template v-if chains handle all combos + empty states.
+
+## Test Steps
+1. Open lists pages.
+2. Toggle view (grid/list), group (by region/flat) - buttons active class changes, layout switches.
+3. Filter by region/mount - shows flat filtered, group hidden.
+4. Re-select 'All' - group toggle reappears.
+
+If visual issues persist (no style change), check:\n- Bootstrap/FA loaded.\n- Global CSS for `.btn-secondary-custom`, `.list-view`, `.mountain-list-header`, `.region-list-header`.\n- Recompile `npm run dev`.
+
+**Frontend fixes complete. Functions now working.**

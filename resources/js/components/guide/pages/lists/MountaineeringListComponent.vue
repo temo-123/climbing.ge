@@ -17,7 +17,7 @@
                         {{ $t('guide.article.mount_route_filtr') }}
                     </div>
                     <div class="col-md-6" v-if="this.mounts.length > 0">
-                        <select class="form-control" v-model="filter_mount" @click="get_mountain_route_articles()">
+                        <select class="form-control" v-model="filter_mount">
                             <option value="All">{{ $t('all') }}</option>
                             <option v-for="mount in mounts" :key='mount.global_data.id' :value="mount.global_data.id">{{ mount.locale_data.title }}</option> 
                         </select>
@@ -34,9 +34,11 @@
             
             <!-- View Controls Component -->
             <view-controls-component
-                :view-mode.sync="viewMode"
-                :group-mode.sync="groupMode"
-                :filter-spot="filter_spot"
+                :view-mode="viewMode"
+                @update:viewMode="viewMode = $event"
+                :group-mode="groupMode"
+                @update:groupMode="groupMode = $event"
+                :filter-spot="filter_mount"
             />
 
             <div class="row">
@@ -178,7 +180,6 @@
                 mounts: [],
                 mount_routes: [],
                 mount_routes_by_masiv: [],
-                // filtred_mount_routes: [],
                 filter_mount: 'All',
 
                 selected_mount_data: [],
@@ -196,6 +197,11 @@
             metaData,
             viewControlsComponent,
         },
+        watch: {
+            filter_mount(newVal) {
+                this.get_mountain_route_articles();
+            }
+        },
         mounted() {
             this.get_mounts(),
             this.get_mountain_route_articles()
@@ -210,29 +216,27 @@
         },
         
         methods: {
-            get_filtred_articles(id){
+
+            get_filtered_articles(id){
                 this.mount_route_loading = true
                 this.mount_routes_by_masiv = []
                 axios
-                // .get("/mount_route/get_filtred_mount_route_for_user/" + localStorage.getItem('lang') + '/' + id)
                 .get("/get_mount_route/get_filtred_mount_routes/" + localStorage.getItem('lang') + '/' + id + '/' + 1)
                 .then(response => {
                     this.mount_routes = response.data
                 })
                 .catch(
-                    // error => console.log(error)
                 )
                 .finally(() => this.mount_route_loading = false)
             },
 
-            get_unfilted_articles(){
+            get_unfiltered_articles(){
                 this.mount_route_loading = true
                 this.mount_routes = []
                 axios
                 .get('/get_mount_route/get_mount_routes_by_maunt/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.mount_routes_by_masiv = response.data
-                    // this.filter_mount_routes()
                 })
                 .catch(error =>{
                 })
@@ -240,11 +244,11 @@
             },
 
             get_mountain_route_articles(){
-                if (this.filter_mount === 'all' || this.filter_mount === 'All') {
-                    this.get_unfilted_articles()
+                if (this.filter_mount === 'All') {
+                    this.get_unfiltered_articles()
                 }
                 else{
-                    this.get_filtred_articles(this.filter_mount) 
+                    this.get_filtered_articles(this.filter_mount) 
                     this.get_selected_mount_data(this.filter_mount)
                 }
             },
@@ -260,7 +264,7 @@
             },
 
             get_selected_mount_data(mount_masiv_id){
-                if (this.filter_mount != 'all' || this.filter_mount != 'All') {
+                if (this.filter_mount !== 'All') {
                     this.selected_mount_data = []
                     axios 
                     .get('/get_mount/'+localStorage.getItem('lang')+'/'+mount_masiv_id)
@@ -292,5 +296,23 @@
 </script>
 
 <style scoped>
-   
+.list-view .cards_block {
+  display: block !important;
+}
+
+.list-view .cards_block > * {
+  width: 100% !important;
+  margin-bottom: 1rem;
+}
+
+.mountain-list-header {
+  background: #f8f9fa;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-left: 4px solid #007bff;
+}
+
+.list-view-container {
+  display: block;
+}
 </style>
