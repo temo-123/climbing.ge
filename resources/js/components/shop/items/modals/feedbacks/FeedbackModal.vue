@@ -143,8 +143,8 @@
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
+
+
 
 import starReitingInsert from '../../../../global_components/StarReitingInsertComponent.vue'
 

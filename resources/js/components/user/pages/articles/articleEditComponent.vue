@@ -121,8 +121,8 @@
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
-
     import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    // import { going } from '../.p./../../../mixins/easy_navigation_mixin.js'
     export default {
         props: [
             // 'back_url',
@@ -301,9 +301,10 @@
                 this.editing_data[locale+'_article'] = data
             },
 
-            go_back: function(action = false) {
+            go_back(action = false) {
                 this.is_back_action_query = this.$going.back(this, action)
             },
+
         },
     }
 </script>

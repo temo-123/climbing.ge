@@ -54,7 +54,6 @@
     import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
     
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
-    import { editor_config } from '../../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
@@ -62,13 +61,15 @@
             Editor,
             validator_alerts_component
         },
-        mixins: [
-            editor_config
-        ],
-        data() {
-            return {
-                description_editor: editor_config.get_small_editor_config(),
-                errors: [],
+            computed: {
+                description_editor () {
+                    return this.$editor_config.get_small_editor_config();
+                }
+            },
+            data() {
+                return {
+                    description_editor: this.description_editor,
+                    errors: [],
                 status: "",
                 problem_status: "",
 

@@ -1,6 +1,6 @@
 <template>
     <!-- <div> -->
-    <stack-modal
+<StackModal
             :show="add_sector_modal"
             :title="'Add sector'" 
             @close="close_add_sector_modal"
@@ -29,19 +29,16 @@
                 <button type="submit" form="add_new_sector" class="btn btn-primary">Add new sector</button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
     <!-- </div> -->
 </template>
 
 <script>
-import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
+// import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort - removed as not used
 
 export default {
     components: {
-        StackModal,
-        SlickItem,
-        SlickList,
+        // StackModal registered globally in app.js
     },
     props: [
         // 'add_sector_modal_prop',

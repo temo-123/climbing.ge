@@ -16,7 +16,7 @@
                 </div>
                 <div class="col-sm-12" v-else-if="data_for_tab.length">
                     <tabsComponent 
-:table_data="safeDataForTab"
+                        :table_data="safeDataForTab"
                         @update="get_articles"
                         @del_article="del_article"
                         @del_region="del_region"
@@ -56,7 +56,7 @@ export default {
         ArticleQuickViewModal,
     },
     computed: {
-        safeTableData() {
+        safeDataForTab() {
             return (this.data_for_tab || []).filter(tab => {
                 if (!tab || typeof tab !== 'object' || tab.id === undefined) return false;
                 if (!tab.tab_data || !Array.isArray(tab.tab_data.data)) return false;
@@ -78,7 +78,7 @@ export default {
     },
     watch: {
         table_data(newVal, oldVal) {
-            const safeData = this.safeTableData;
+            const safeData = this.safeDataForTab;
             if (safeData.length > 0 && !this.tab_num) {
                 this.tab_num = safeData[0].id;
                 this.currentPage = 1;
@@ -320,7 +320,7 @@ export default {
                             }
                         }
                     }]
-    if(this.$route.params.article_category == 'outdoor'){
+                    if(this.$route.params.article_category == 'outdoor'){
                         this.get_regions(this.$route.params.article_category)
                         if (this.data_for_tab[0] && this.data_for_tab[0].tab_data?.data?.length > 0) {
                             this.data_for_tab[0].tab_data.tab.head.splice(3, 0, 'Sectors')
@@ -446,4 +446,3 @@ export default {
 
 <style>
 </style>
-

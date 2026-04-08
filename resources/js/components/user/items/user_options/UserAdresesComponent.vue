@@ -151,7 +151,7 @@
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
+
 
     export default {
         components: {

@@ -108,6 +108,7 @@
     import gallery_images_add from '../../items/gallery/galleryImageAddComponent.vue'
 
     import validator_alerts_component from '../../items/validator_alerts_component.vue'
+
     export default {
         components: {
             validator_alerts_component,
@@ -278,7 +279,7 @@
             //     .finally(() => this.is_loading = false);
             // },
             
-            go_back: function(action = false) {
+            go_back(action = false) {
                 this.is_back_action_query = this.$going.back(this, action)
             },
         }

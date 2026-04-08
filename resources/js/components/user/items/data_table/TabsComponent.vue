@@ -211,7 +211,7 @@ export default {
 
     data() {
         return {
-            tab_num: null,
+            tab_num: 1,
             currentPage: 1,
             searchQuery: '',
             itemsPerPage: 10,
@@ -221,7 +221,7 @@ export default {
     },
     
     mounted() {
-        console.log('TabsComponent mounted, table_data:', this.table_data);
+        // console.log('TabsComponent mounted, table_data:', this.table_data);
     },
     
     watch: {

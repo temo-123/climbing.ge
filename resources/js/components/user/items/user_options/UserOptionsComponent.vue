@@ -110,8 +110,8 @@
             </div>
         </div>
 
-        <stack-modal
-                :show="is_add_user_site"
+        <StackModal
+                v-model="is_add_user_site"
                 title="Add your site"
                 @close="is_add_user_site=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
@@ -135,15 +135,16 @@
                     </button>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 
-        <stack-modal
-                :show="is_edit_user_site"
+        <StackModal
+                v-model="is_edit_user_site"
                 title="Edit your site"
                 @close="close_edit_modal()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
+
             <pre class="language-vue">
                 <form class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
                     <label for="url">Enter an https:// URL:</label>
@@ -162,15 +163,17 @@
                     </button>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 
-        <stack-modal
-                :show="is_edit_data"
+        <StackModal
+                v-model="is_edit_data"
                 title="Edit user data"
                 @close="is_edit_data=false"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
+
+
             <pre class="language-vue">
                 <form class="form" method="POST" id="registrationForm">
 
@@ -179,7 +182,7 @@
                     <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="Enter your phone number" title="Enter your phone number">
                     <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="Enter your email" title="Enter your email">
                     <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="Enter your country" title="Enter your country">
+                    country" title="Enter your country">
 
                 </form>
             </pre>
@@ -194,9 +197,9 @@
                     </button>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 
-        <stack-modal
+        <StackModal
                 :show="is_change_image"
                 title="Edit image"
                 @close="is_change_image=false"
@@ -227,9 +230,9 @@
                     </button>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 
-        <stack-modal
+        <StackModal
                 :show="is_change_password"
                 title="Edit password"
                 @close="close_edit_password_model()"
@@ -262,13 +265,13 @@
                     </button>
                 </div>
             </div>
-        </stack-modal>
+        </StackModal>
 
     </div>
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+
 
     export default {
         components: {

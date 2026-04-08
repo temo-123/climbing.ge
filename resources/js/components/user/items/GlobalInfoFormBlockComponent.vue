@@ -31,8 +31,9 @@
                     </select> 
                 </div>
             
-                <div class="col-md-12" v-if="global_blocks.block_action == 'befor' || global_blocks.block_action == 'after' || global_blocks.block_action == 'new_info'">
-                    <ckeditor v-model="form_data" :config="text_editor_config" @input="input_event"></ckeditor>
+<div class="col-md-12" v-if="global_blocks.block_action == 'befor' || global_blocks.block_action == 'after' || global_blocks.block_action == 'new_info'">
+                <ckeditor v-model="form_data" :config="text_editor_config" @input="input_event" />
+
                 </div>
 
                 <div class="col-md-12" v-if="global_blocks.block_action == 'after' || global_blocks.block_action == 'instead'">
@@ -47,11 +48,9 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../mixins/editor/editor_config_mixin.js'
     export default {
-        mixins: [
-            editor_config
-        ],
+
+
         props: {
             title_prop: {
                 type: String,
@@ -94,11 +93,13 @@
                 default: []
             },
         },
-        data(){
-            return {
-                text_editor_config: editor_config.get_big_editor_config(),
+            computed: {
+            },
+            data(){
+                return {
+                    text_editor_config: this.$editor_config.get_big_editor_config(),
 
-                general_infos: [],
+                    general_infos: [],
 
                 form_data: this.form_data_prop,
                 locale: this.locale_prop,

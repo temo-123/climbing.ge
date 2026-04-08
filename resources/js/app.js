@@ -1,49 +1,12 @@
 import { createApp } from "vue";
 import "./bootstrap";
 
-/*
- *   Using pakets
- */
-import CKEditor from "@ckeditor/ckeditor5-vue";
+import { Ckeditor } from '@ckeditor/ckeditor5-vue';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { createPinia } from "pinia";
 import axios from "axios";
 import i18n from "./services/localization/i18n";
-// Vue 3 compatible Social Sharing wrapper
-// import VueSocialSharing from "vue-social-sharing"; // removed - using custom shim
 
-// Vue 3 compatibility fix for vue-social-sharing
-// const VueSocialSharingPlugin = {
-//     install(app) {
-//         // For Vue 3, we need to create a simple global component instead of using the old plugin pattern
-//         app.config.globalProperties.$SocialSharing = {
-//             network(name, url, text) {
-//                 const shareUrls = {
-//                     facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
-//                     twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`,
-//                     linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`,
-//                     whatsapp: `https://wa.me/?text=${encodeURIComponent(text + ' ' + url)}`,
-//                     telegram: `https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(text)}`,
-//                     pinterest: `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(url)}&description=${encodeURIComponent(text)}`,
-//                 };
-//                 
-//                 if (shareUrls[name]) {
-//                     window.open(shareUrls[name], '_blank', 'width=600,height=400');
-//                 }
-//             }
-//         };
-//         
-//         // Also register the components if needed
-//         app.component('share-network', {
-//             props: ['network', 'url', 'title'],
-//             template: '<button @click="share"><slot></slot></button>',
-//             methods: {
-//                 share() {
-//                     this.$SocialSharing.network(this.network, this.url, this.title);
-//                 }
-//             }
-//         });
-//     }
-// };
 import VueGlide from "vue-glide-js";
 import "vue-glide-js/dist/vue-glide.css";
 import { createGtag } from "vue-gtag";
@@ -59,73 +22,45 @@ const app = createApp({
 
 import { abilityDefaults } from "./services/ability/ability.js"
 
-// CASL Ability setup for Vue3 - use pre-created defaults
 app.config.globalProperties.$ability = abilityDefaults
 app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(action, subject)
 
-
 app.use(VueGlide);
-// app.use(VueSocialSharingPlugin);
+app.component('Ckeditor', Ckeditor.component);
 
-// vue3-recaptcha-v2 component only - no plugin install
+app.config.globalProperties.$ClassicEditor = ClassicEditor;
+
 app.use(i18n);
 app.use(createPinia());
 app.use(head);
 
-  // Global event bus for Vue2 $root.$emit compatibility
-  app.config.globalProperties.$bus = {
+import { going } from './mixins/easy_navigation_mixin.js';
+app.config.globalProperties.$going = going;
+
+import { editor_config } from './mixins/editor/editor_config_mixin.js';
+app.config.globalProperties.$editor_config = editor_config;
+
+app.config.globalProperties.$bus = {
     callbacks: {},
     $emit(event, payload) {
-      (this.callbacks[event] || []).forEach(callback => callback(payload));
+        (this.callbacks[event] || []).forEach(callback => callback(payload));
     },
     $on(event, callback) {
-      (this.callbacks[event] = this.callbacks[event] || []).push(callback);
-      // Return unsubscribe
-      return () => this.$off(event, callback);
+        (this.callbacks[event] = this.callbacks[event] || []).push(callback);
+        // Return unsubscribe
+        return () => this.$off(event, callback);
     },
     $off(event, callback) {
-      const callbacks = this.callbacks[event];
-      if (callbacks) {
+        const callbacks = this.callbacks[event];
+        if (callbacks) {
         const index = callbacks.indexOf(callback);
         if (index > -1) callbacks.splice(index, 1);
-      }
+        }
     }
-  };
+};
 
-// Global vue-recaptcha v2 (existing)
-import { RecaptchaV2 } from 'vue3-recaptcha-v2';
-app.component('vue-recaptcha', RecaptchaV2);
-
-// vue-recaptcha-v3 plugin install (disabled to fix V3ReCaptcha undefined error)
-
-
-// Global v3 component (disabled)
-
-
-// vue-recaptcha global component (duplicate import fixed)
 import StackModal from "./components/global_components/modals/StackModal.vue"
 app.component('StackModal', StackModal)
-// import CustomModal from './components/global_components/CustomModal.vue';
-// app.component('CustomModal', CustomModal);
-
-// import SkeletonLoader from './components/global_components/SkeletonLoader.vue';
-// app.component('skeleton-loader', SkeletonLoader);
-
-// Removed Vue 2 vue-recaptcha plugin - using Vue3 version globally
-// CKEditor is used as a component, not a plugin - don't use app.use(CKEditor)
-// The component is used like: <ckeditor :editor="editor" ...></ckeditor>
-
-/*
- *  Mixins - Now using global properties instead
- */
-
-// import { editor_config } from './mixins/editor/editor_config_mixin.js'
-// import { going } from './mixins/easy_navigation_mixin.js'
-// import  site_data  from './mixins/site_data_mixin.js'
-
-/*
- *   My components
- */
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
@@ -239,16 +174,10 @@ app.config.productionTip = false;
 app.config.globalProperties.$siteData = { data: [] };
 app.config.globalProperties.$globalSiteData = { data: [] };
 
-// Define global mixin properties
 app.mixin({
     methods: {
-        // Global methods that were mixins
-        $going() {
-            return this.going;
-        },
-        $editor_config() {
-            return this.editor_config;
-        },
+
+
         $get_site_data() {
             return this.get_site_data;
         },
@@ -284,10 +213,8 @@ else{
     app.config.debug = true
 }
 
-// Dynamic component loading based on route
 app.component('home-component', homeComponent);
 
-// Create router instance
 import { createRouter, createWebHistory } from 'vue-router';
 
 const router = createRouter({
@@ -298,7 +225,6 @@ const router = createRouter({
     }
 });
 
-// Router navigation guard - locale prefix handling for original routes structure
 import { getCurrentLocale } from './services/routerUtils.js';
 
 router.beforeEach((to, from, next) => {
@@ -330,7 +256,6 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
-// Setup axios interceptor BEFORE mounting app
 window.axios.interceptors.response.use({}, err => {
     if(err && err.response){
         if(err.response.status === 401 || err.response.status === 419){

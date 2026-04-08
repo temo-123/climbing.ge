@@ -1,6 +1,6 @@
 <template>
-    <stack-modal
-        :show="is_modal"
+    <StackModal
+        v-model="is_modal"
         title="Task status"
         @close="close_modal()"
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
@@ -45,7 +45,7 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>

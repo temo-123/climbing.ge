@@ -6,33 +6,7 @@ export default {
                     id: 1,
                     title: "Home",
                     route: "/",
-                },
-                {
-                    title: "Tasks",
-                    name: "tasks",
-                    routes: [
-                        {
-                            name: "Guidbook task panel",
-                            route: "/guide_task_panel",
-                            permissions: [
-                                ['add', 'guide_task'],
-                                ['edit', 'guide_task'],
-                                ['del', 'guide_task'],
-                                ['edit_status', 'guide_task'],
-                            ]
-                        },
-                        {
-                            name: "Shop task panel",
-                            route: "/shop_task_panel",
-                            permissions: [
-                                ['add', 'shop_task'],
-                                ['edit', 'shop_task'],
-                                ['del', 'shop_task'],
-                                ['edit_status', 'shop_task'],
-                            ]
-                        },
-                    ],
-                },
+                }, 
                 {
                     title: "Favorites",
                     name: "favorites",
@@ -219,6 +193,36 @@ export default {
                     ]
                 },
                 {
+                    title: "Guide Dashboard",
+                    name: "guide_tasks",
+                    routes: [
+                        {
+                            name: "Guidbook Dashboard",
+                            route: "/guide_task_panel",
+                            permissions: [
+                                
+                            ]
+                        },
+                        {
+                            name: "Guidbook task panel",
+                            route: "/guide_task_panel",
+                            permissions: [
+                                ['add', 'guide_task'],
+                                ['edit', 'guide_task'],
+                                ['del', 'guide_task'],
+                                ['edit_status', 'guide_task'],
+                            ]
+                        },
+                        {
+                            name: "My Tasks For guidbook",
+                            route: "/guide_task_panel",
+                            permissions: [
+                                
+                            ]
+                        },
+                    ]
+                },
+                {
                     title: "Shop",
                     name: "shop",
                     routes: [
@@ -293,6 +297,36 @@ export default {
                             route: "/shop_dashboard_page",
                             permissions: [
                                 ['show', 'shop_dashboard'],
+                            ]
+                        },
+                    ],
+                },
+                {
+                    title: "Shop Dashboard",
+                    name: "shop_tasks",
+                    routes: [
+                        {
+                            name: "Shop Dashboard",
+                            route: "/guide_task_panel",
+                            permissions: [
+                                ['add', 'guide_task'],
+                            ]
+                        },
+                        {
+                            name: "Shop task panel",
+                            route: "/shop_task_panel",
+                            permissions: [
+                                ['add', 'shop_task'],
+                                ['edit', 'shop_task'],
+                                ['del', 'shop_task'],
+                                ['edit_status', 'shop_task'],
+                            ]
+                        },
+                        {
+                            name: "My Task Fot Shop",
+                            route: "/guide_task_panel",
+                            permissions: [
+                                ['add', 'guide_task'],
                             ]
                         },
                     ],

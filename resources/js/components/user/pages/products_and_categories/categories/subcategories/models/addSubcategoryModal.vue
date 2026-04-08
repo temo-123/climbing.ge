@@ -49,7 +49,7 @@
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
         },
         props: [
             'category_id_prop'

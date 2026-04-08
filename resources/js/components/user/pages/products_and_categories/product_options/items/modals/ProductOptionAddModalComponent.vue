@@ -71,7 +71,7 @@
 
 export default {
     components: {
-        StackModal
+        // StackModal
     },
     props: {
         is_add_option_modal: {

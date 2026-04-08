@@ -94,7 +94,7 @@
 
 export default {
     components: {
-        StackModal
+        // StackModal
     },
     props: {
         is_edit_option_modal: {

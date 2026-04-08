@@ -47,7 +47,7 @@
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
         },
         props: [
             'image_path_prop',

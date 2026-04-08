@@ -1,8 +1,4 @@
 <template>
-    <!-- <div class="col-md-12" > -->
-        <!-- <h2 @click="test()">test</h2> -->
-        <!-- {{ category }} -->
-        <!-- <div class="row"> -->
         <div class="col-md-12">
             <div class="jumbotron width_100">
                 <div class="container">
@@ -30,25 +26,14 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
-                            <!-- <div class="alert alert-danger" role="alert" v-if="errors.short_description">
-                                {{ errors.short_description[0] }}
-                            </div> -->
+                        <ckeditor v-model="data.short_description" :config="editor_config.short_description_text" />
                         </div>
                     </div>
 
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> text </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.text"></ckeditor>
-                            <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                {{ errors.text[0] }}
-                            </div> -->
-
-                            <ckeditor
-                                v-model="data.text"
-                                :config="editor_config.text"
-                            />
+                            <ckeditor v-model="data.text" :config="editor_config.text" />
                         </div>
                     </div>
 
@@ -57,8 +42,7 @@
                     <div class="form-group clearfix row" v-if="category != 'mount_route' && category != 'partners' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.editor_config.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="editor_config.how_get"></ckeditor>
+                            <ckeditor v-model="data.how_get" :config="editor_config.how_get" />
                         </div>
                     </div>
 
@@ -147,7 +131,8 @@
                             <label for="name" class='col-md-2 control-label'> Info / contact </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
-                                    <ckeditor v-model="data.info" :config="this.$editorConfig"></ckeditor>
+                                    <ckeditor v-model="data.info" :config="this.$editor_config.get_big_editor_config()" />
+
                                 </div>
                             </div>
                         </div>
@@ -158,7 +143,8 @@
                     <div class="form-group clearfix row" v-if="category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text" :config="editor_config.price_text"></ckeditor>
+                            <ckeditor v-model="data.price_text" :config="editor_config.price_text" />
+
                         </div>
                     </div>
 
@@ -177,6 +163,7 @@
     import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
 
     export default {
+
         components: {
             // StackModal,
             GlobalInfoFormBlock,
@@ -213,6 +200,16 @@
                 this.data = this.locale_data_prop
             }
         },
+        computed: {
+            editor_config () {
+                return {
+                    short_description_text: this.$editor_config.get_small_editor_config(),
+                    text: this.$editor_config.get_big_editor_config(),
+                    how_get: this.$editor_config.get_big_editor_config(),
+                    price_text: this.$editor_config.get_big_editor_config(),
+                }
+            }
+        },
         data(){
             return {
                 // category: 'this.$route.params.article_category',
@@ -223,12 +220,7 @@
                 is_change_url_title: false,
                 // error: [],
 
-                editor_config: {
-                    short_description_text: this.$editor_config.get_small_editor_config(),
-                    text: this.$editor_config.get_big_editor_config(),
-                    how_get: this.$editor_config.get_big_editor_config(),
-                    price_text: this.$editor_config.get_big_editor_config(),
-                },
+
                 token: '',
 
                 data: [],

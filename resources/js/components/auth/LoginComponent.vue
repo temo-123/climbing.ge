@@ -46,15 +46,25 @@
                   Return password
                 </router-link>
               )
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              v-model="password"
-              placeholder="Password"
-              autocomplete="on"
-              required
-            />
+            <div class="position-relative">
+              <input
+                :type="showPassword ? 'text' : 'password'"
+                class="form-control pe-5"
+                id="password"
+                v-model="password"
+                placeholder="Password"
+                autocomplete="on"
+                required
+              />
+              <span 
+                class="position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer pull-right" 
+                style="z-index: 10;"
+                @click="togglePassword()"
+                title="Toggle password visibility"
+              >
+                <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+              </span>
+            </div>
             <div class="alert alert-danger" role="alert" v-if="error.password">
               Plees insert password (password required)
             </div>
@@ -124,6 +134,7 @@ export default {
       return {
         email: null,
         password: null,
+        showPassword: false,
         remember: false,
 
         is_loading: false,
@@ -286,7 +297,11 @@ export default {
               this.auth_error = 'Encryption error. Please refresh and try again.';
               this.is_loading = false;
           }
+        },
+        togglePassword() {
+          this.showPassword = !this.showPassword;
+        }
       }
-    }
+    
   };
 </script>

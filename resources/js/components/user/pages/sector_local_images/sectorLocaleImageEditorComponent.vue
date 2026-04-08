@@ -45,8 +45,9 @@
                     <div class="row">
                         <div class="col-md-12"  >
         <Editor
+          v-if="imageUrl"
           ref="editorComponent"
-          :image_prop="'/public/images/sector_local_img/' + sector_sector_local_image_pitchs_for_modal.image.image"
+          :image_prop="imageUrl"
           :json_prop="canvasData"
           :related_jsons="related_jsons"
           @canvas_data="handleCanvasData"
@@ -67,20 +68,19 @@
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
   import Editor from '../../items/canvas/EditorComponent.vue'
     export default {
         components: {
           Editor,
-            StackModal,
+            // StackModal, // relies on global registration in app.js
             // SlickItem,
             // SlickList,
         },
         data(){
             return {
                 is_show_sector_local_image_modal: false,
-                sector_sector_local_image_pitchs_for_modal:[],
+                sector_sector_local_image_pitchs_for_modal:{},
+                imageUrl: '',
                 MTPModalClass: '',
                 canvasData: null,
                 layouts: [],
@@ -103,9 +103,10 @@
                     axios
                     .get('/get_sector/get_sector_local_images/get_sector_local_img_for_modal/' + this.$route.params.id)
                     .then(response => {
-                        this.sector_sector_local_image_pitchs_for_modal = response.data
-                        this.availableSectors = response.data.sectors
-                        this.related_jsons = response.data.related_jsons
+                        this.sector_sector_local_image_pitchs_for_modal = response.data || {}
+                        this.imageUrl = (response.data && response.data.image && response.data.image.image) ? '/public/images/sector_local_img/' + response.data.image.image : ''
+                        this.availableSectors = response.data ? (response.data.sectors || []) : []
+                        this.related_jsons = response.data ? response.data.related_jsons : null
                         this.loadLayouts()
                         this.loadCanvasData()
 
@@ -116,13 +117,13 @@
                     );
                 }
                 else{
-                    this.sector_sector_local_image_pitchs_for_modal = ""
+                    this.sector_sector_local_image_pitchs_for_modal = {}
                 }
             },
             loadLayouts() {
                 axios.get('/get_sector/get_sector_local_images/get_layouts/' + this.$route.params.id)
                     .then(response => {
-                        this.layouts = response.data.layouts
+                        this.layouts = response.data.layouts || []
                         // Update layout names based on their sectors
                         this.layouts.forEach(layout => {
                             layout.name = this.getLayoutName(layout);

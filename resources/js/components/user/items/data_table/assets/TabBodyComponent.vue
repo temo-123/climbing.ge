@@ -9,7 +9,7 @@
                     v-model="localSelectedItems" 
                 />
             </td>
-            <td v-for="(cellConfig, colIndex) in tab_data.tab.body" :key="colIndex">
+                <td v-for="(cellConfig, colIndex) in (tab_data.head || tab_data.tab?.body || [])" :key="colIndex">
                 <!-- Data cell -->
                 <DataComponent 
                     v-if="cellConfig[0] === 'data'" 
