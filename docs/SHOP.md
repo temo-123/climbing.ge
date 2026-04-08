@@ -1,43 +1,40 @@
-<h1 align="center">Product store (shop.climbing.ge)</h1>
+<h1 align="center">Product Store (shop.climbing.ge)</h1>
 
-<h1>Prodct</h1>
+<h1>Product</h1>
 
-<p>Down you can see the basic structure of product.</p>
+<p>Below you can see the basic structure of a product.</p>
 
-![Product table diograms](/docs/Demo_images/Shop/Product_table_diograms.drawio.png)
+<img src="docs/DEMO_IMAGES/Shop/Product_table_diograms.drawio.png" alt="Product tables diagram">
 
+<h1>Order structure</h1>
 
-<h1>Order structur</h1>
+<p>Below you can see the basic structure of orders. Database table structure for easier use.</p>
 
-<p>Down you can see the basic structure of order. It`s a show databases tab structure for more comfortable to using.</p>
-
-![Product order structur diagram](/docs/Demo_images/Shop/Product_order_structur.drawio.png)
+<img src="docs/DEMO_IMAGES/Shop/Product_order_structur.drawio.png" alt="Product order structure">
 
 <h2>Shipped countries</h2>
 
-<p>For select siped countries need create value in tab "siped_countries" and insert shipping price</p>
+<p>For shipped countries, create value in <code>siped_countries</code> table and insert shipping price.</p>
 
+<h1>User delivery address</h1>
 
-<h1>User delivery adres</h1>
+<p>User creates address for order delivery in order page (quick) or user options page.</p>
 
-<p>User need create adres for delivering order. Adres creation possible in order declaration page (for quick creation) or user options page</p>
-
-<p>In tab "user_adreses" user need write address information</p>
-
+<p>In <code>user_adreses</code> table, user writes address info.</p>
 
 <h1>Sale codes</h1>
 
-<p>Possible to create sale code. You can generate this code or write some word.</p>
+<p>Create sale code (generate or custom word).</p>
 
-<p>Also in tab "sale_codes" you can vrite discount of this code. Poseble ceate one time code (write "true" or "1" in "one_time_code" value).</p>
+<p>In <code>sale_codes</code>, write discount. Make one-time (<code>one_time_code</code> = "true" or 1).</p>
 
-<p>User need write this code in order declaration tab</p>
-
+<p>User enters code in order form.</p>
 
 <h1>Services</h1>
 
-![Services diogram](/docs/Demo_images/Shop/Sevices.drawio.png)
+<img src="docs/DEMO_IMAGES/Shop/Sevices.drawio.png" alt="Services diagram">
 
 <hr>
 
-[Go back](../README.md) - to README.md
+[Go back](../README.md)
+

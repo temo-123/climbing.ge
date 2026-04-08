@@ -1,50 +1,46 @@
-<p align="center"><img src="/public/images/site_img/site_logo/climibng,ge(becground).jpg" width="400"></p>
-<h1 align="center">Welcome to climbing.ge opensource project</h1>
+<p align="center"><img src="public/images/site_img/site_logo/climbing.ge(background).jpg" alt="climbing.ge logo" width="400"></p>
+<h1 align="center">Welcome to climbing.ge open source project</h1>
 
 <h2>Laravel 9 (PHP 8.1)</h2>
 
-<p>Sercice climbing.ge is georgian rock climbing and mountaineering areas description and social netvork for your climbing ascent sheering. Alse ouer product onlain shop. in services we have 5 subdomain: climibng.ge, forum.climbing.ge, shop.climbing,ge, films.climbing.ge, user.climbing.ge. (All descriptions see down)</p>
+<p>Service climbing.ge is a Georgian rock climbing and mountaineering areas description platform and social network for sharing your climbing ascents. Also our online shop. In services we have 5 subdomains: climbing.ge, forum.climbing.ge, shop.climbing.ge, films.climbing.ge, user.climbing.ge. (All descriptions see below)</p>
 
-<p>Service is opensorse and you can see them structure down</p>
+<h2>General sites are:</h2>
 
-<h2>General sites is:</h2>
+- **[climbing.ge](docs/GUIDBOOK.md)** - Georgian rock climbing guidebook
+- **[shop.climbing.ge](docs/SHOP.md)** - Our products store
+- **[blog.climbing.ge](docs/BLOG.md)** - Climbing blog
+- **[summit.climbing.ge](docs/SUMMIT.md)** - Summit ascent validation
+- **[films.climbing.ge](docs/FILMS.md)** - Climbing films portal (Coming soon)
 
-[climibng.ge](/docs/GUIDBOOK.md) - Is a Georgian rock climibng guidbook
+<h2>Admin &amp; user dashboard, also CMS system: user.climbing.ge</h2>
 
-[shop.climbing,ge](/docs/SHOP.md) - Ouer products store
-
-[forum.climbing.ge](/docs/FORUM.md) - This is a climbing forum for Georgian climbers (Coming soon)
-
-[films.climbing.ge](/docs/FILMS.md) - This is a climbing films portal (Coming soon)
-
-<h2>Admin & user dashboard, also CMS system: user.climbing.ge</h2>
-
-[user.climbing.ge](/docs/USER_PAGE.md) - Your privat room
+- **[user.climbing.ge](docs/USER_PAGE.md)** - Your private room
 
 <h2>API</h2>
 
-<!-- [user.climbing.ge](/docs/USER_PAGE.md) - API -->
+<!-- API docs: docs/BACKEND/examples/API.md -->
 
-<p>This project is free and opensorse. Objective of the project is popularization climbing in Georgia.</p>
+<p>This project is free and open source. Objective of the project is popularization of climbing in Georgia.</p>
 
-<h1>Configuration & config examples</h1>
+<h1>Configuration &amp; config examples</h1>
 
-<p>In folder ./examples/ you can find: Databace example, configuration for apatch and .env file example</p>
+<p>In folder <code>docs/BACKEND/examples/</code> you can find database example, Apache configuration, and .env file example.</p>
 
-<p>You can find db tables in /docs/examples/db_examples.sql file. Off course you can use laravel migrations for migrate database tabs, bus exemple is easiest for use and check some bag (errors) in migration.</p>
-
-<p>For migration and seed us command. It created all tabs and insert defolt data</p>
+<p>For migration and seed use command (creates all tables and inserts default data):</p>
 
 ```bash
-php artisan migrate --seed 
+php artisan migrate --seed
 ```
-<h2>Worning</h2>
-<p>If server annd all component install socsesful but returning ERROR 500, check storage folder permission.</p>
 
-[climibng.ge](/docs/PLAGINS.md) - In this file you can see some plafins witch we use in this project
+<h2>Warning</h2>
+
+<p>If server and all components installed successfully but returning ERROR 500, check storage folder permissions.</p>
 
 <!-- Ctrl+Shift+V - for demo test -->
 
-<h5>Progect version 3.5.3 (Disain version, API version, Relise version)</h5>
+<h5>Project version 11.5.3.3 (Design version, API version, Release version)</h5>
+
 <h2 align="center">Best wishes from climbing.ge</h2>
-<p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" width="400"></p>
+
+<p align="center"><img src="public/images/site_img/site_logo/header_logo(background).png" alt="header logo" width="400"></p>

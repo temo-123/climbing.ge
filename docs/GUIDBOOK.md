@@ -1,120 +1,105 @@
-<h1 align="center">Sport climbing spor structur</h1>
+<h1 align="center">Sport Climbing Spot Structure</h1>
 
-<p>climbing.ge - is a georgian climbing guidbook.</p>
+<p><strong>climbing.ge</strong> is a Georgian climbing guidebook.</p>
 
-<p>Down you can see the basic structure of outdoor sport climbing area. It`s a show databases tab structure for more comfortable to using.</p>
-
+<p>Below you can see the basic structure of an outdoor sport climbing area. It shows the database table structure for easier use.</p>
 
 <h1>Articles</h1>
 
-<p>Article have global tab and locale tab. In globale tab (article), seved article global information published or not, article image and other data. in local article tab (locale_article), you fined only article locale version, locales is English, Georgian and russion</p>
+<p>Articles have a global table and locale tables. In the global table (<code>articles</code>), global article information is saved: published status, article image, and other data. In the locale table (<code>locale_articles</code>), you find only the article's locale version (English, Georgian, Russian).</p>
 
-![Article structur diogram](/docs/Demo_images/Guidbook/Article_structur_diogram.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Article_structur_diogram.drawio.png" alt="Article structure diagram">
 
 <h2>General info in article</h2>
 
-<p>Some time you need add same information for many article (contact information or other). For this you can create general value in "general_infos" tab and insert this in blocks of your article</p>
+<p>Sometimes you need to add the same information to many articles (contact information or other). For this, create general values in the <code>general_infos</code> table and insert them into your article blocks.</p>
 
-![Article structur diogram](/docs/Demo_images/Guidbook/General_info_structur_diogram.drawio.png)
-
+<img src="docs/DEMO_IMAGES/Guidbook/General_info_structur_diogram.drawio.png" alt="General info structure">
 
 <h1>Outdoor climbing region description, structure</h1>
 
 <h2>Outdoor spot</h2>
 
-<p>Outdoor climbing region it also article with category "outdoor"</p> <p>For description sectors rocks you need all or many sector image for easier finding it. this image added in "sector_images" tab.</p>
+<p>An outdoor climbing region is also an article with category "outdoor". For describing sectors/rocks, add all or many sector images for easier finding. These images are added in the <code>spot_rocks_images</code> table.</p>
 
-![Climbing spot diogram](/docs/Demo_images/Guidbook/Spot_rocks_images.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Climbing_spot_diogram.drawio.png" alt="Climbing spot diagram">
 
 <h2>Sector local images (spot local images)</h2>
 
-<p>Some times you need small part of this area rocks. It possible to adding in "sector_local_images" tab</p>
+<p>Sometimes you need a small part of the area rocks. Add them in the <code>sector_local_images</code> table. In the image add form, you can insert multiple sectors.</p>
 
-<p>In image add form you can insert sectors, how much you won't.</p>
-
-![Sector local images diogram](/docs/Demo_images/Guidbook/Sector_local_images_(area_local_images).drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Sector_local_images_(area_local_images).drawio.png" alt="Sector local images">
 
 <h2>Sector</h2>
 
-<p>In sector you need sector images. Images added in individual table "sector_images"</p>
+<p>In sector, add sector images in the individual table <code>sector_images</code>.</p>
 
-![Sector images diogram](/docs/Demo_images/Guidbook/Sector_images_diogram.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Sector_images_diogram.drawio.png" alt="Sector images">
 
-<h2>Sector and routes </h2>
+<h2>Sector and routes</h2>
 
-<p>The sector can includs many of tipe of climbing routes. Sport climbing routes, top rope routes, tred climbing routes, bouldering routes and pulti-pitchs routes</p>
+<p>The sector can include many types of climbing routes: sport climbing routes, top rope routes, trad climbing routes, bouldering routes, and multi-pitch routes.</p>
 
-<p>For sport climbing routes it`s only 1 tab in database and it have diferent caregory (sport route or bouldering), but for multi pitch is 2 tab: general multi-pitcs tag (mtps) and multi-pitchs pitcs (mtp_pitchs). multi pitchs includ pitch</p>
+<p>For sport climbing routes, it's one table with different categories (sport route or bouldering). For multi-pitch, there are 2 tables: general multi-pitch table (<code>mtps</code>) and multi-pitch pitches (<code>mtp_pitchs</code>).</p>
 
-<p>down you can see routes structur diograms</p>
+<img src="docs/DEMO_IMAGES/Guidbook/Multy-pitch_structur_diogram.drawio.png" alt="Multi-pitch structure">
+<img src="docs/DEMO_IMAGES/Guidbook/Route_diogram.drawio.png" alt="Route diagram">
 
-![Multy-pitch structur diogram](/docs/Demo_images/Guidbook/Multy-pitch_structur_diogram.drawio.png)    ![Route diogram](/docs/Demo_images/Guidbook/Route_diogram.drawio.png)
+<h1>Mountain climbing spot structure</h1>
 
+<p>Below you can see the basic structure of mountaineering climbing area.</p>
 
-<h2>Outdoor climbing area big diogram</h2>
-
-![Climbing spot total diogram](/docs/Demo_images/Guidbook/Climbing_spot_diogram.drawio.png)
-
-
-<h1>Mountain climbing spor structur</h1>
-
-<p>Down you can see the basic structur of mountaineering climbing area.</p>
-
-![Mount route diogram](/docs/Demo_images/Guidbook/Mount_route_diogram.drawio.png)
-
+<img src="docs/DEMO_IMAGES/Guidbook/Mount_route_diogram.drawio.png" alt="Mount route diagram">
 
 <h1>Gallery</h1>
 
-<p>Column "image_type" in "galleries" table have 3 values. ("header_image", "index_gallery_image", "article_image"). Depending on the category, the image is displayed in a specific block.</p>
+<p>Column <code>image_type</code> in <code>galleries</code> table has 3 values (<code>"header_image"</code>, <code>"index_gallery_image"</code>, <code>"article_image"</code>). Depending on the category, the image is displayed in a specific block.</p>
 
-<p>If category is "article_image" you need add dependence in "gallery_image_article" tab</p>
+<p>If category is <code>"article_image"</code>, add dependence in <code>gallery_image_article</code> table.</p>
 
-![Guidbook gallery structure diogram](/docs/Demo_images/Guidbook/Guidbook_gallery_structure.drawio.png)
-
+<img src="docs/DEMO_IMAGES/Guidbook/Guidbook_gallery_structure.drawio.png" alt="Guidebook gallery structure">
 
 <h1>Comments</h1>
 
-<p>Site gest or auth user can add article comment. If the site visit gest, necessary add privot information (name, surname and email). If user is registrated and authed privat information insert automaticly.</p>
+<p>Site guest or auth user can add article comments. If guest, private info (name, surname, email) is required. For registered/auth users, it's automatic.</p>
 
-<p>All visitors can show commentator name on all comments</p>
+<p>All visitors can see commentator name on comments.</p>
 
-![Guidbook comments diogram](/docs/Demo_images/Guidbook/Guidbook_comments.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Guidbook_comments.drawio.png" alt="Guidebook comments">
 
 <h2>Finding comment user</h2>
 
-<p>If user is registrated but not logined, servise will require privat information. After create comment by user, service compare this comment mail and user meil (user meil are unicul) and create recuest for registrated user if it found.. </p>
+<p>If user is registered but not logged in, service requires private info. After creating comment, service compares email with user email (unique) and creates request. User gets notification in dashboard to confirm (<code>"Is it your comment?"</code>). If yes, comment added; if no, request deleted.</p>
 
-<p>User with take notification in dashboard and answer on question ("is it your comment?"). If answer is "yes" this comment added on this user, if "not" request will be deleted.</p>
-
-![Is it your comment](/docs/Demo_images/Guidbook/Is_it_your_comment.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Is_it_your_comment.drawio.png" alt="Is it your comment">
 
 <h2>Comment violation</h2>
 
-<p>If user find some violation in comment, possible to create complaint. Admin check this complaint and make decision. Also user take email notification about decision.</p>
+<p>If user finds violation in comment, create complaint. Admin checks and decides. User gets email notification.</p>
 
-![Comment complaints](/docs/Demo_images/Guidbook/Comment_complaints.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Comment_complaints.drawio.png" alt="Comment complaints">
 
+<h1>Local business</h1>
 
-<h1>Local bisnes</h1>
+<p>Also local business (guesthouse, tour company, shop) in climbing area. Structure same as article but with <code>article_id</code> and <code>published_date</code>. Select article to show on page, limit by last published date.</p>
 
-<p>We have alse local bisnes. This is some interesting bisnes (gesthous, tour company or shop) in climbing area. Structur of bisnes is same of article but it hawe "article_id" and "published_data" tub. Need select article for show them on article page and last published data for limited showing bisnes. For localization global bisnes tab ('suport_local_bisneses') and local bisnes tab ('locale_bisneses') </p>
+<p>For localization: global (<code>suport_local_bisneses</code>) and locale (<code>locale_bisneses</code>) tables.</p>
 
-![Locale bisnes structur diogram](/docs/Demo_images/Guidbook/Locale_bisnes_structur.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Locale_bisnes_structur_diogram.drawio.png" alt="Local business structure">
 
-<p>Alse bisnes have gallery (tab -> 'suport_local_bisnes_images'). Row have "image" and "bisnes_id" values.</p>
-
+<p>Business also has gallery (<code>suport_local_bisnes_images</code>): <code>image</code> and <code>bisnes_id</code>.</p>
 
 <h1>Events</h1>
 
-<p>We have alse event articles. Structur of event is similar of article. Global event tab ('events') and local event tab ('locale_events') </p>
+<p>Event articles structure similar to articles: global (<code>events</code>) and locale (<code>locale_events</code>) tables.</p>
 
+<h1>Favorite outdoor articles and interested events</h1>
 
-<h1>Favorite outdoor article and interested events</h1>
+<p>Add priority for most interesting events/outdoor areas using <code>favorite_outdoor_areas</code> and <code>interested_events</code> tables.</p>
 
-<p>You can add priotity for most interestid events and outdoor areas. For this service us "favorite_outdoor_areas" tab, for favorite outdoor area and "	interested_events" tab for priority ivents</p>
-
-![Favorite outdoor area and interesting event](/docs/Demo_images/Guidbook/Favorite_outdoor_area_and_interesting_event.drawio.png)
+<img src="docs/DEMO_IMAGES/Guidbook/Favorite_outdoor_area_and_interesting_event.drawio.png" alt="Favorites diagram">
 
 <hr>
 
-[Go back](../README.md) - to README.md
+[Go back](../README.md)
+

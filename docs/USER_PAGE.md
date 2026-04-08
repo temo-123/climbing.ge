@@ -1,121 +1,97 @@
-<h1 align="center">Climbing.ge user panel (user.climbing.ge)</h1>
+<h1 align="center">Climbing.ge User Panel (user.climbing.ge)</h1>
 
-<h1>Registration and login</h1> 
+<h1>Registration and login</h1>
 
-<p>For register need insert your information in registration page. After registration API send confirming message.</p>
+<p>To register, fill the registration form. API sends confirmation email.</p>
 
-<p>After confirming API create user_role and user_notificaions tabs in DB. All notifications defolt is activw. Beore thet us service (without role) is inpaseble.</p>
+<p>After confirmation, API creates <code>user_role</code> and <code>user_notifications</code> records. All notifications default active. Before that, user service (without role) is impossible.</p>
 
-<p>If you dont take message you can send new.</p>
+<p>If no email received, resend.</p>
 
 <h2>Password reset</h2>
 
-<p>For reset password ckick button "Return password" on login page. After insert your mail. Service check if user of this mail is isset it send mail on this mail</p>
+<p>Click "Forgot password" on login. Enter email. If user exists, email sent.</p>
 
-<p>After user need click to message and insetr new password</p>
+<p>Click link and set new password.</p>
 
 <h1>Social login</h1>
 
-<p>Poseble login with google and facebook</p>
+<p>Login with Google or Facebook. Config in .env.example.</p>
 
-<p>Configuration for social login can find in .env file (check .env example file)</p>
+<h2>Logout</h2>
 
-<h2>Go out</h2>
+<p>If server returns 419/401 on one request, user dumped to login (session/cookie cleared).</p>
 
-<p>If server return only 1 request with 419 or 401 error, user dumpd in login page and mist sesion and cucie</p>
+<h1>Permissions &amp; Roles</h1>
 
-<h1>Permissions & Roles</h1> 
+<p>Uses standard Laravel permissions.</p>
 
-<p>This project use standard laravel permissions structure.</p>
+<p>Roles/permissions in DB tables.</p>
 
-<p>Roles and permissions are inserted in DB tabs</p>
+<img src="docs/DEMO_IMAGES/User_and_admin/Laravel_role_permission.png" alt="Laravel roles/permissions">
 
-![Laravel role and permission](/docs/Demo_images/User_and_admin/Laravel_role_permission.png)
+<p>More: [laravel.com](https://laravel.com/)</p>
 
-<p>Visit laravel official site for more information</p>
+<h2>Roles on frontend</h2>
 
-[laravel.com](https://laravel.com/)
+<p>Uses Vue plugin "casl-vue". See official docs.</p>
 
-<h2>Roles on front</h2>
-
-<p>For permissions in front-end use VUE plugin -> "casl-vue".</p>
-
-<p>More information about this plugin show in official documentation.</p> 
-
-[casl-vue oficial site](https://casl.js.org/v5/en/package/casl-vue)
+[casl-vue](https://casl.js.org/v5/en/package/casl-vue)
 
 <h1>User and services followers notification</h1>
 
 <h2>Queues</h2>
 
-English documentatione [here](https://laravel.com/docs/10.x/queues#main-content) 
-Russion documentatione [here](https://laravel.su/docs/8.x/queues#job-events)
+<p>English docs: [Laravel Queues](https://laravel.com/docs/10.x/queues#main-content)</p>
+<p>Russian docs: [Laravel Queues RU](https://laravel.su/docs/8.x/queues#job-events)</p>
 
-<p>For sending lot of messages project us "Laravel Queues". It make notification quenes in DB and confirm it on event data. This is done so that you do not wait until all messages are sent, they will be sent in the background!</p> 
+<p>Uses Laravel Queues for bulk emails (background).</p>
 
-<p>In DB use tab "jobs".</p> 
+<p>Uses <code>jobs</code> table.</p>
 
-<p>Config in .env => "QUEUE_CONNECTION=jobs".</p> 
+<p>Config .env: <code>QUEUE_CONNECTION=database</code>.</p>
 
-<p>
-For run email queue use (whith prefix onQueue('emails')) command ->
+<p>Run email queue (prefix onQueue('emails')):</p>
 
 ```bash
 php artisan queue:work --queue=emails
-``` 
-</p>
+```
 
-<p>
-Runing command ->
+<p>Running commands:</p>
 
 ```bash
-php artisan queue:work
-``` 
-- run for all time watch, 
+php artisan queue:work  # watch forever
+php artisan queue:work --timeout=60  # every 60s
+```
+
+<h2>Laravel Task Scheduling</h2>
+
+<p>English: [Scheduling](https://laravel.com/docs/10.x/scheduling#main-content)</p>
+<p>Russian: [Scheduling RU](https://laravel.su/docs/8.x/scheduling#running-the-scheduler-locally)</p>
+
+<p>Automatic event notifications. See <code>app/Console/Kernel.php</code> schedule(). Creates queues in <code>app/Jobs/UserNotifications.php</code>.</p>
+
+<p>Set timezone in <code>config/app.php</code> (<code>'Asia/Tbilisi'</code> for Georgia).</p>
+
+<p>Test command:</p>
 
 ```bash
-php artisan queue:work –timeout=60
-``` 
-- run all 60 secund, 
-</p>
+php artisan send_event_notification:users
+```
 
-<h2>Laravel Advanced - Task Scheduling</h2>
-
-English documentatione [here](https://laravel.com/docs/10.x/scheduling#main-content) 
-Russion documentatione [here](https://laravel.su/docs/8.x/scheduling#running-the-scheduler-locally)
-
-<p>For send event notificatione automatcly project use "Laravel Advanced". It keeps track of the send time and execute it at the given time.</p> 
-
-<p>You can fined all this objects in "app/Console/Kernel.php", in function "schedule". After function in "app/Console/Comands/UserAutoNotificatione" create queues (file -> app/Jobs/EventAutoNotificatione.php) </p>
-
-<p>For corect working necessary inser corect timexone in "config/app.php" and check parameter "timezone". (For Georgia "'Asia/Tbilisi'")</p>
-
-<p>
-For run sending from comand line -> 
-
-```bash
-send_event_notificatione:users
-``` 
-</p>
-
-<p>
-For check all taks run command in consol ->
+<p>List tasks:</p>
 
 ```bash
 php artisan schedule:list
-``` 
-</p>
+```
 
-<p>
-Run command for watch tasks->
+<p>Run scheduler watch:</p>
 
 ```bash
 php artisan schedule:work
-``` 
-</p>
-
-<!-- CSRF Token Mismatch On Axios error fixing - https://stackoverflow.com/questions/74340913/csrf-token-mismatch-on-axios-post-requests-in-laravel -->
+```
 
 <hr>
 
-[Go back](../README.md) - to README.md
+[Go back](../README.md)
+

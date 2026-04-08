@@ -1,5 +1,20 @@
-<h1 align="center">Climbing forum</h1>
+<h1 align="center">Climbing Blog</h1>
 
-<h2 align="center">Coming soon</h2>
+<p>The blog section allows users to publish climbing-related articles, trip reports, gear reviews, and news.</p>
 
-[Go back](../README.md) - to README.md
+<p>Features:</p>
+
+<ul>
+<li>Multi-language support (EN, KA)</li>
+<li>Comments and discussions</li>
+<li>Categories and tags</li>
+<li>Image galleries</li>
+<li>Share and follow</li>
+</ul>
+
+<p>Under development - more features coming soon.</p>
+
+<hr>
+
+[Go back](../README.md)
+

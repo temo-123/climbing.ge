@@ -1,11 +1,12 @@
-<h1 align="center">Climbing films</h1>
+<h1 align="center">Climbing Films</h1>
 
-<h2 align="center">Coming soon</h2>
+<p>films.climbing.ge - climbing films portal. Uses torrent tracker for sharing films. Works on all OS (Linux, Mac, Windows).</p>
 
-<!-- <p>films.climbing.ge - is a climbing films portal. We use torrent treker for share films. you can use it in all operation system (Linus, Mac, Windows)</p>
+<p>Use [uTorrent](https://www.utorrent.com/) to download torrent files.</p>
 
-<p>You need use <a href="https://www.utorrent.com/">utorrent.com</a> for download torent download files</p>
+<p>Site provides torrent file only (lightweight 50-250KB). Add to uTorrent desktop app to start download.</p>
 
-<p>In site you only download torrent file, it very light 50-250KB, after you add it in utorrent desctop program and start download</p> -->
+<hr>
 
-[Go back](../README.md) - to README.md
+[Go back](../README.md)
+
