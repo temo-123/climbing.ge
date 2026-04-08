@@ -1,8 +1,7 @@
 <template>
 <StackModal
     v-model="is_show_modal"
-    :title="$t('guide.article.title.sector name') + ' - ' + (sector ? sector.sector.name : '')"
-    size="xxl"
+    :title="$t('guide.article.title.sector name') + ' - ' + (sectorData ? sectorData.sector.name : '')" size="full"
     :saveButton="{ visible: false }"
     :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
     @close="close_modal"
@@ -10,9 +9,9 @@
     <div class="row">
       <div class="col-md-6">
         <route_json
-          v-if="sector && sector.sector_imgs.length > 0"
-          :sector_image_id="sector.sector_imgs[0].id"
-          :image_src="'/public/images/sector_img/' + sector.sector_imgs[0].image"
+          v-if="sectorData && sectorData.sector_imgs && sectorData.sector_imgs.length > 0"
+          :sector_image_id="sectorData.sector_imgs[0].id"
+          :image_src="'/public/images/sector_img/' + sectorData.sector_imgs[0].image"
         />
       </div>
       <div class="col-md-6">
@@ -32,9 +31,9 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="route in (sector ? sector.sport_routes : [])" :key="route.id">
+              <tr v-for="(route, index) in (sectorData ? sectorData.sport_routes : [])" :key="route.id || index">
                 <td>{{ route.num }}</td>
-                <td @click="show_route_modal(route.id)">{{ route.name }}</td>
+                <td @click="show_route_modal(route.id)" style="cursor: pointer;">{{ route.name }}</td>
                 <td>{{ route.height }}</td>
                 <td v-if="route.category == 'tred'">Tred</td>
                 <td v-else-if="route.category == 'top'">Top Rope</td>
@@ -47,26 +46,36 @@
                 <td v-else>{{ route.grade }}</td>
                 <td v-if="route.or_grade != null" class="d-none d-md-table-cell">{{ lead_grade_chart(route.grade) }} / {{ lead_grade_chart(route.or_grade) }}</td>
                 <td v-else class="d-none d-md-table-cell">{{ lead_grade_chart(route.grade) }}</td>
-                <td @click="show_route_modal(route.id)">
-                  <i class="fa fa-info" style="font-size: 120%; cursor: pointer;"></i>
+                <td @click="show_route_modal(route.id)" style="cursor: pointer;">
+                  <i class="fa fa-info" style="font-size: 120%;"></i>
                 </td>
               </tr>
-              <!-- Boulder routes and MTPs similar structure preserved but condensed for brevity -->
-              <!-- Full implementation includes boulder and MTP tables as original -->
-              <tr v-for="route in (sector ? sector.boulder_route : [])" :key="'b-' + route.id">
+              <tr v-for="(route, index) in (sectorData ? sectorData.boulder_route : [])" :key="'b-' + (route.id || index)">
                 <td>{{ route.num }}</td>
-                <td @click="show_route_modal(route.id)">{{ route.name }}</td>
+                <td @click="show_route_modal(route.id)" style="cursor: pointer;">{{ route.name }}</td>
                 <td>{{ route.height }}</td>
                 <td></td>
                 <td v-if="route.or_grade != null">{{ boulder_grade_chart(route.grade) }} / {{ boulder_grade_chart(route.or_grade) }}</td>
                 <td v-else>{{ boulder_grade_chart(route.grade) }}</td>
                 <td v-if="route.or_grade != null" class="d-none d-md-table-cell">{{ route.grade }} / {{ route.or_grade }}</td>
                 <td v-else class="d-none d-md-table-cell">{{ route.grade }}</td>
-                <td @click="show_route_modal(route.id)">
-                  <i class="fa fa-info" style="font-size: 120%; cursor: pointer;"></i>
+                <td @click="show_route_modal(route.id)" style="cursor: pointer;">
+                  <i class="fa fa-info" style="font-size: 120%;"></i>
                 </td>
               </tr>
-              <!-- MTP pitches table similar -->
+              <!-- Add MTP if available -->
+              <tr v-for="(mtp, index) in (sectorData ? sectorData.mtps : [])" :key="'m-' + (mtp.id || index)" v-if="sectorData && sectorData.mtps">
+                <td>{{ mtp.num || index + 1 }}</td>
+                <td @click="show_mtp_modal(mtp.id)" style="cursor: pointer;">{{ mtp.name }}</td>
+                <td>{{ mtp.height }}</td>
+                <td v-if="mtp.category == 'sport climbing'">{{ mtp.bolts }}</td>
+                <td v-else>Tred</td>
+                <td>{{ mtp.grade }}</td>
+                <td class="d-none d-md-table-cell">{{ lead_grade_chart(mtp.grade) }}</td>
+                <td @click="show_mtp_modal(mtp.id)" style="cursor: pointer;">
+                  <i class="fa fa-info" style="font-size: 120%;"></i>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -91,7 +100,8 @@ export default {
     ],
     data() {
         return {
-            showModal: false,
+            is_show_modal: false,
+            sectorData: null,
         };
     },
     computed: {
@@ -103,20 +113,24 @@ export default {
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
         },
-
         boulder_grade_chart(grade_fr) {
             return this.boulder(grade_fr)
         },
-
-        show_modal(sector) {
-            this.sector = sector;
-            this.showModal = true;
+        show_sector_modal(sector) {
+            this.sectorData = sector;
+            this.is_show_modal = true;
         },
-        closeModal() {
-            this.showModal = false;
+        close_modal() {
+            this.is_show_modal = false;
+            this.sectorData = null;
         },
         show_route_modal(route_id) {
             this.$emit('show_route_modal', route_id);
+            this.close_modal();
+        },
+        show_mtp_modal(mtp_id) {
+            this.$emit('show_mtp_modal', mtp_id);
+            this.close_modal();
         }
     }
 }
@@ -126,56 +140,13 @@ export default {
 .sector-canvas-modal .modal-backdrop {
     background-color: rgba(0, 0, 0, 0.5);
 }
-
-/* .transparent-modal {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-.modal-body .row {
-    align-items: flex-start;
-}
-
 .routes-list {
     max-height: 70vh;
     overflow-y: auto;
-    border-radius: 8px;
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 1rem;
 }
-
-.table {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-radius: 8px;
-}
-
-.table th, .table td {
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 0.75rem;
-    font-size: 0.9rem;
-}
-
 .table-hover tbody tr:hover {
     background-color: rgba(0, 123, 255, 0.1);
-    transition: background-color 0.3s ease;
 }
-
-.table th {
-    background-color: rgba(0, 123, 255, 0.1);
-    font-weight: bold;
-}
-
-.modal-header {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-}
-
-.modal-footer {
-    background-color: rgba(255, 255, 255, 0.9);
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
-} */
 @media screen and (min-width: 768px) {
     .modal-xxl {
         width: 100% !important;

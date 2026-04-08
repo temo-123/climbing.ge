@@ -17,7 +17,7 @@
                         {{ $t('guide.article.mount_route_filtr') }}
                     </div>
                     <div class="col-md-6" v-if="this.mounts.length > 0">
-                        <select class="form-control" v-model="filter_mount">
+                        <select class="form-control" v-model="filter_mount" @click="get_mountain_route_articles()">
                             <option value="All">{{ $t('all') }}</option>
                             <option v-for="mount in mounts" :key='mount.global_data.id' :value="mount.global_data.id">{{ mount.locale_data.title }}</option> 
                         </select>
@@ -27,8 +27,8 @@
 
             <div class="row articles_filter_bar" v-if="filter_mount != 'All'">
                 <div class="col-md-12" style="text-align: center;">
-                    <h4>{{selected_mount_data.locale_data.title}}</h4>
-                    <span v-html="selected_mount_data.locale_data.text"></span>
+                    <h4>{{selected_mount_data?.locale_data?.title}}</h4>
+                    <span v-html="selected_mount_data?.locale_data?.text || ''"></span>
                 </div>
             </div>
             
@@ -248,8 +248,8 @@
                     this.get_unfiltered_articles()
                 }
                 else{
-                    this.get_filtered_articles(this.filter_mount) 
-                    this.get_selected_mount_data(this.filter_mount)
+                    this.get_filtered_articles(Number(this.filter_mount)) 
+                    this.get_selected_mount_data(Number(this.filter_mount))
                 }
             },
 

@@ -106,7 +106,7 @@
         },
         methods: {
             product_quick_view(product_id){
-                this.$refs.quick_view_modal.quick_view_modal(product_id)
+                this.$refs.quick_view_modal.show_modal(product_id)
             },
 
             favorite_product(product_id){

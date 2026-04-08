@@ -1,186 +1,145 @@
 <template>
-    <StackModal 
-        v-model:show="is_show_modal"
-        :title="$t('guide.route.create_feedback_title')"
-        @close="close_route_review_modal(route_id)"
-        :modal-class="{ [ModalClass]: true }"
-        :saveButton="{ visible: true }"
-        :cancelButton="{
-            title: $t('guide.route.back_to_modal'),
-            btnClass: { 'btn btn-warning': true },
-        }"
-        >
-            <div class="model-body">
-                <div class="container">
-                    <div class="row">
-                        <!-- <h2 class="main-title">{{ $t("guide.route.route_rewiev") }}</h2> -->
-
-                        <div class="row justify-content-center" v-show="is_loading">
-                            <div class="col-md-4 friendly-loading">
-                                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                            </div>
+<StackModal 
+    v-model="is_show_modal"
+    :title="$t('guide.route.create_feedback_title')"
+    @close="close_route_review_modal"
+    :modal-class="{ [modalClass]: true }"
+    :saveButton="{ visible: true }"
+    :cancelButton="{
+        title: $t('guide.route.back_to_modal'),
+        btnClass: { 'btn btn-warning': true },
+    }"
+>
+    <div class="model-body">
+        <div class="container">
+            <div class="row">
+                <div class="row justify-content-center" v-show="is_loading">
+                    <div class="col-md-4 friendly-loading">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
-
-                        <form method="POST" id="route_review_form" v-on:submit.prevent="add_route_review" v-show="!is_loading">
-                            <div class="modal-section climbing-status">
-                                <h3 class="section-title">{{ $t('guide.route.climbing_status') }}</h3>
-                                <div class="form-group">
-                                    <label class="form-label">{{ $t('guide.route.did_you_climb') }}</label>
-                                    <input type="checkbox" v-model="data.climbed" name="scales" class="form-check-input">
-                                </div>
-                            </div>
-
-                            <div class="modal-section climb-details" v-if="data.climbed">
-                                <h3 class="section-title">{{ $t('guide.route.climb_details') }}</h3>
-                                <div class="form-group">
-                                    <label class="form-label">{{ $t('guide.route.climb_date') }}</label>
-                                    <input type="date" class="form-control friendly-input" v-model="data.climbed_data" name="climbed_data">
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">{{ $t('guide.route.ascent_style') }}</label>
-                                    <select class="form-control friendly-input" v-model="data.ascent_style" name="ascent_style" required>
-                                        <option value="" disabled>{{ $t('guide.route.select_ascent_style') }}</option>
-                                        <option value="onsite">{{ $t('guide.route.onsite') }}</option>
-                                        <option value="flash">{{ $t('guide.route.flash') }}</option>
-                                        <option value="second_go">{{ $t('guide.route.second_go') }}</option>
-                                        <option value="redpoint">{{ $t('guide.route.redpoint') }}</option>
-                                        <option value="top_rope">{{ $t('guide.route.top_rope') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="modal-section rating">
-                                <h3 class="section-title">{{ $t('guide.route.rating_label') }}</h3>
-                                <div class="form-group">
-                                    <label class="form-label">{{ $t('guide.route.rating_label') }}</label>
-                                    <starReitingInsert @get_stars="update_stars"/>
-                                </div>
-                            </div>
-
-                            <div class="modal-section feedback">
-                                <h3 class="section-title">{{ $t('guide.route.feedback') }}</h3>
-                                <div class="form-group">
-                                    <label class="form-label">{{ $t('guide.route.feedback') }}</label>
-                                    <textarea id="feedback" name="feedback" class="form-control friendly-input" :placeholder="$t('guide.route.feedback_placeholder')" v-model="data.text" rows="4"></textarea>
-                                </div>
-                            </div>
-
-                            <!-- <vue-recaptcha
-                                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
-                                :loadRecaptchaScript="true"
-                                ref="recaptcha"
-                                type="invisible"
-                                @verify="onCaptchaVerified"
-                                @expired="onCaptchaExpired"
-                            >
-                            </vue-recaptcha> -->
-                        </form>
-
+                        <p class="mt-2 text-muted">{{ $t('global.loading') }}</p>
                     </div>
                 </div>
+
+                <form method="POST" id="route_review_form" v-on:submit.prevent="add_route_review" v-show="!is_loading">
+                    <div class="modal-section climbing-status">
+                        <h3 class="section-title">{{ $t('guide.route.climbing_status') }}</h3>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('guide.route.did_you_climb') }}</label>
+                            <input type="checkbox" v-model="data.climbed" class="form-check-input">
+                        </div>
+                    </div>
+
+                    <div class="modal-section climb-details" v-if="data.climbed">
+                        <h3 class="section-title">{{ $t('guide.route.climb_details') }}</h3>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('guide.route.climb_date') }}</label>
+                            <input type="date" class="form-control friendly-input" v-model="data.climbed_data" name="climbed_data">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('guide.route.ascent_style') }}</label>
+                            <select class="form-control friendly-input" v-model="data.ascent_style" name="ascent_style" required>
+                                <option value="" disabled>{{ $t('guide.route.select_ascent_style') }}</option>
+                                <option value="onsite">{{ $t('guide.route.onsite') }}</option>
+                                <option value="flash">{{ $t('guide.route.flash') }}</option>
+                                <option value="second_go">{{ $t('guide.route.second_go') }}</option>
+                                <option value="redpoint">{{ $t('guide.route.redpoint') }}</option>
+                                <option value="top_rope">{{ $t('guide.route.top_rope') }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="modal-section rating">
+                        <h3 class="section-title">{{ $t('guide.route.rating_label') }}</h3>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('guide.route.rating_label') }}</label>
+                            <starReitingInsert @get_stars="update_stars" />
+                        </div>
+                    </div>
+
+                    <div class="modal-section feedback">
+                        <h3 class="section-title">{{ $t('guide.route.feedback') }}</h3>
+                        <div class="form-group">
+                            <label class="form-label">{{ $t('guide.route.feedback') }}</label>
+                            <textarea id="feedback" name="feedback" class="form-control friendly-input" :placeholder="$t('guide.route.feedback_placeholder')" v-model="data.text" rows="4"></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
-    </StackModal>
+        </div>
+    </div>
+</StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now (but using local StackModal.vue)
-// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; 
-
 import starReitingInsert from '../../../../../../global_components/StarReitingInsertComponent.vue'
-
-// import StackModal from '../../../../../global_components/modals/StackModal.vue' // Path wrong - use global registration instead
 
 export default {
     components: { 
-        // 'vue-recaptcha': VueRecaptchaV2,
         starReitingInsert,
     },
-    props: [
-        // "sector",
-    ],
-    data: function () {
+    props: [],
+    data() {
         return {
             is_show_modal: false,
-
             route_id: 0,
-
             data: {
                 stars: 0,
                 text: '',
+                climbed: false,
                 climbed_data: '',
                 ascent_style: ''
             },
-            ModalClass: '',
-
+            modalClass: '',
             is_loading: false,
-
-            is_verify_isset: false,
-            is_mail_sending: false,
-
-            MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
         };
     },
-    mounted() {
-        //
-    },
     methods: {
-        show_route_review_modal(route_id){
+        show_route_review_modal(route_id) {
+            this.route_id = route_id;
+            this.clear_data();
             this.is_show_modal = true;
-            this.route_id = route_id
         },
-        close_route_review_modal(route_id){
+        close_route_review_modal() {
             this.is_show_modal = false;
-            this.back_to_route_madal(route_id)
-            this.clear_data()
+            this.$emit('back_route_modal', this.route_id);
         },
 
-        back_to_route_madal(route_id){
-            this.$emit('back_route_modal', route_id)
-        },
-
-        clear_data(){
+        clear_data() {
             this.data = {
                 stars: 0,
                 text: '',
+                climbed: false,
                 climbed_data: '',
-            },
-            
-            this.is_verify_isset = false
+                ascent_style: ''
+            };
         },
 
-        update_stars(stars){
-            this.data.stars = stars
-        },
-
-        onCaptchaVerified() {
-            this.is_verify_isset = true
-        },
-        onCaptchaExpired(){
-            this.is_verify_isset = false
+        update_stars(stars) {
+            this.data.stars = stars;
         },
 
         add_route_review() {
-            this.is_loading = true
-            axios
-                .post("/set_route/set_route_review/create_route_review/" + this.route_id, 
-                    this.data
-                )
+            this.is_loading = true;
+            axios.post("/set_route/set_route_review/create_route_review/" + this.route_id, this.data)
                 .then((response) => {
-                    alert(response.data)
-                    this.close_route_review_modal(this.route_id)
+                    alert(response.data.message || 'Success');
+                    this.close_route_review_modal();
                 })
                 .catch((error) => {
-                    // 
+                    console.error('Review submit error:', error);
+                    alert(error.response?.data?.message || 'Error submitting review');
                 })
-                .finally(() => this.is_loading = false);
+                .finally(() => {
+                    this.is_loading = false;
+                });
         },
     }
 }
 </script>
 
-<style>
-/* Friendly modal styles */
-
+<style scoped>
 .main-title {
     font-weight: 600;
     font-size: 1.8rem;
@@ -213,6 +172,20 @@ export default {
     border: 1px solid #ced4da;
 }
 
+.modal-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
 
+.form-group {
+    margin-bottom: 1rem;
+}
 
+.form-check-input {
+    margin-right: 0.5rem;
+}
 </style>
+

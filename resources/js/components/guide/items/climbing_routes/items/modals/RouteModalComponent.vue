@@ -2,7 +2,7 @@
 <StackModal
             v-model="is_show_route_modal"
             title="$t('guide.route.route_details_title')"
-            :modal-class="{ [ModalClass]: true }"
+            :modal-class="{ [modalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
                 title: $t('guide.route.close_modal'),
@@ -13,41 +13,38 @@
             <div class="model-body">
                 <div class="row justify-content-center" v-show="is_loading">
                     <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                        <img :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 
                 <div class="container" v-show="!is_loading">
                     <div class="row">
                         <div class="modal-section basic-info">
-                            <h2 class="section-title">{{ $t("guide.route.route detals") }}</h2>
+                            <h2 class="section-title">{{ $t("guide.route.route_details") }}</h2>
 
-                            <p class="route-detail"><strong>{{ $t("guide.route.name") }}</strong> - {{ route.name }}</p>
+                            <p class="route-detail"><strong>{{ $t("guide.route.name") }}</strong> - {{ route.name || 'N/A' }}</p>
 
                             <p class="route-detail" v-if="route.height">
                                 <strong>{{ $t("guide.route.height") }}</strong> - {{ route.height }}
                             </p>
 
-                            <p v-if="route.category == 'tred'"><strong>{{ $t("guide.route.bolts") }}</strong> - Tred climbing</p>
-                            <p v-else-if="route.category == 'top'"><strong>{{ $t("guide.route.bolts") }}</strong> - Top rope</p>
-                            <p v-else-if="route.category == 'boulder'"></p>
-                            <p v-else-if="route.category == 'sport climbing'"><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p>
-                            <!-- <p v-else><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p> -->
+                            <p v-if="route.category"><strong>{{ $t("guide.route.category") }}</strong> - {{ getCategoryText(route.category) }}</p>
 
-                            <p class="route-detail"><strong>{{ $t("guide.route.grade fr") }}</strong> -
+                            <p class="route-detail" v-if="route.bolts"><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p>
+
+                            <p class="route-detail"><strong>{{ $t("guide.route.grade_fr") }}</strong> -
                                 <span v-if="route.or_grade != null">
                                     {{ route.grade }} / {{ route.or_grade }}
                                 </span>
                                 <span v-else>
-                                    {{ route.grade }}
+                                    {{ route.grade || 'N/A' }}
                                 </span>
                             </p>
 
                             <p class="route-detail">
-                                <span v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'"><strong>{{ $t("guide.route.grade uiaa") }}</strong></span>
-                                <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'"><strong>{{ $t("guide.route.grade yds") }}</strong></span>
+                                <span v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'"><strong>{{ $t("guide.route.grade_uiaa") }}</strong></span>
+                                <span v-if="activ_grade == 'YDS' || activ_grade == 'yds'"><strong>{{ $t("guide.route.grade_yds") }}</strong></span>
                                     -
-
                                 <span v-if="route.or_grade != null">
                                     {{ lead_grade_chart(route.grade) }} /
                                     {{ lead_grade_chart(route.or_grade) }}
@@ -87,7 +84,7 @@
                                         <strong>{{ $t('guide.route.glued_bolts') }}</strong>
                                         <img
                                             class="climbing_bolt_image"
-                                            :src="'../../../../images/svg/glued bolt.png'"
+                                            :src="'/images/svg/glued bolt.png'"
                                             :alt="$t('guide.route.glued_bolts')"
                                             :title="$t('guide.route.glued_bolts')"
                                         />
@@ -98,7 +95,7 @@
                                         <strong>{{ $t('guide.route.hangerr_bolts') }}</strong>
                                         <img
                                             class="climbing_bolt_image"
-                                            :src="'../../../../images/svg/hangerr bolt.svg'"
+                                            :src="'/images/svg/hangerr bolt.svg'"
                                             :alt="$t('guide.route.hangerr_bolts')"
                                             :title="$t('guide.route.hangerr_bolts')"
                                         />
@@ -107,167 +104,167 @@
                             </div>
                         </div>
 
-                        <div class="modal-section description" v-if="route.text != null">
+                        <div class="modal-section description" v-if="route.text">
                             <h3 class="section-title">{{ $t('guide.route.description') }}</h3>
                             <div class="description-content">
                                 <span v-html="route.text"></span>
                             </div>
                         </div>
 
-                        <div class="modal-section rating" v-if="route.reviews_count > 0">
+                        <div class="modal-section rating" v-if="route.reviews_count && route.reviews_count > 0">
                             <starsReiting
-                                :reviews_count_prop = route.reviews_count
-                                :reviews_stars_prop = route.reviews_stars
+                                :reviews_count_prop="route.reviews_count"
+                                :reviews_stars_prop="route.reviews_stars"
                             />
                         </div>
-
                     </div>
                 </div>
             </div>
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                    <button
-                        class="btn btn-success mb-2 mb-md-0"
-                        @click="create_route_review_modal(route.id)"
-                        v-if="user.length != 0"
-                    >
-                        {{ $t('guide.route.make_review') }}
-                    </button>
-                    
-                    <div v-else class="alert alert-info cursor_pointer mb-2 mb-md-0 p-2" role="alert" @click="goTo('/login')" style="border-radius: 5px;">
-                        <div class="col-md-12">
-                            <p class="mb-0">{{ $t('guide.route.pleas_login') }}</p>
-                        </div>
+                <button
+                    class="btn btn-success mb-2 mb-md-0"
+                    @click="create_route_review_modal(route.id)"
+                    v-if="user && user.length > 0"
+                >
+                    {{ $t('guide.route.make_review') }}
+                </button>
+                
+                <div v-else class="alert alert-info cursor_pointer mb-2 mb-md-0 p-2" role="alert" @click="goTo('/login')" style="border-radius: 5px; cursor: pointer;">
+                    <div class="col-md-12">
+                        <p class="mb-0">{{ $t('guide.route.please_login') }}</p>
                     </div>
-
-                    <button
-                        class="btn btn-primary pool-right"
-                        @click="show_route_all_review_modal(route.id)"
-                        v-if="route.reviews_count > 0"
-                    >
-                        {{ $t('guide.route.show_feedbacks') }}
-                    </button>
                 </div>
+
+                <button
+                    class="btn btn-primary pull-right"
+                    @click="show_route_all_review_modal(route.id)"
+                    v-if="route.reviews_count && route.reviews_count > 0"
+                >
+                    {{ $t('guide.route.show_feedbacks') }}
+                </button>
+            </div>
         </StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-import grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
-import starsReiting  from '../../../../../global_components/StarReitingShowComponent.vue'
+import grade_chart from '../../../../../../mixins/grade_chart_mixin.js'
+import starsReiting from '../../../../../global_components/StarReitingShowComponent.vue'
 
 export default {
     mixins: [
         grade_chart,
     ],
     components: {
-        // StackModal,
         starsReiting,
     },
-    props: [
-        // "sector",
-    ],
-    data: function () {
+    props: [],
+    data() {
         return {
             is_show_route_modal: false,
-
             is_loading: false,
-
-            route: [],
+            route: {},
             user: [],
-            ModalClass: '',
+            modalClass: '',
 
-            get activ_grade() {
-                return localStorage.getItem('grade') || 'yds';
-            },
-            set activ_grade(value) {
-                localStorage.setItem('grade', value);
+            activ_grade: {
+                get() {
+                    return localStorage.getItem('grade') || 'yds';
+                },
+                set(value) {
+                    localStorage.setItem('grade', value);
+                }
             },
         };
     },
-    mounted() {
-        // this.get_spot_rocks_images();
-    },
     methods: {
-        goTo(page = '/'){
-            this.is_show_route_modal = false
-            window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page);
+        goTo(page = '/') {
+            this.is_show_route_modal = false;
+            window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page, '_blank');
+        },
+
+        getCategoryText(category) {
+            const categories = {
+                'tred': this.$t('guide.route.tred'),
+                'top': this.$t('guide.route.top_rope'),
+                'boulder': this.$t('guide.route.boulder'),
+                'sport climbing': this.$t('guide.route.sport_climbing')
+            };
+            return categories[category] || category;
         },
 
         lead_grade_chart(grade_fr) {
-            return this.lead(grade_fr)
+            return this.lead(grade_fr) || '';
         },
 
-        create_route_review_modal(route_id){
-            this.is_show_route_modal = false;    
-
-            this.$emit('show_route_review_modal', route_id)
+        create_route_review_modal(route_id) {
+            this.is_show_route_modal = false;
+            this.$emit('show_route_review_modal', route_id);
         },
 
-        show_route_all_review_modal(route_id){
-            this.is_show_route_modal = false;    
-
-            this.$emit('show_route_all_review_modal', route_id)
+        show_route_all_review_modal(route_id) {
+            this.is_show_route_modal = false;
+            this.$emit('show_route_all_review_modal', route_id);
         },
 
         show_route_modal(id) {
-            this.clear_data()
-            this.auth_user()
-            this.is_loading = true
-            this.is_show_route_modal = false
-            this.get_route_data(id)
+            this.clear_data();
+            this.auth_user();
+            this.is_loading = true;
+            this.is_show_route_modal = false;
+            this.get_route_data(id);
         },
+
         close_route_modal() {
             this.is_show_route_modal = false;
             this.is_loading = false;
-            this.clear_data()
+            this.clear_data();
         },
 
-        clear_data(){
-            this.route = []
-            this.user = []
+        clear_data() {
+            this.route = {};
+            this.user = [];
         },
 
-        get_route_data(id){
-            this.route = [];
-            this.is_loading = true
+        get_route_data(id) {
+            this.route = {};
+            this.is_loading = true;
 
-            axios
-            .get("/get_route/get_route_for_modal/" + id)
-            .then((response) => {
-                this.route = response.data;
-
-                if(this.route.reviews_count > 0){
-                    // this.$refs.stars_reiting_modal.colculate_stars(this.route.reviews_stars, this.route.reviews_count)
-                }
-            })
-            .catch((error) => {
-                //
-            })
-            .finally(() => {
-                this.is_loading = false
-            });
+            axios.get("/get_route/get_route_for_modal/" + id)
+                .then((response) => {
+                    this.route = response.data || {};
+                })
+                .catch((error) => {
+                    console.error('Error loading route data:', error);
+                    this.route = {};
+                })
+                .finally(() => {
+                    this.is_loading = false;
+                    this.is_show_route_modal = true; // Show modal after load
+                });
         },
 
-        auth_user(){
-            axios
-            .get('/auth_user/')
-            .then(response => {
-                this.user = response.data
-            })
-            .catch()
+        auth_user() {
+            axios.get('/auth_user/')
+                .then(response => {
+                    this.user = response.data || [];
+                })
+                .catch(error => {
+                    console.error('Error loading user data:', error);
+                    this.user = [];
+                });
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
 .card{
     width:380px;
     border:none;
     height:280px;
 }
 
-.climbing_bolt_image{
+.climbing_bolt_image {
     height: 50px;
 }
 
@@ -277,7 +274,13 @@ export default {
     }
 }
 
-/* Friendly modal styles */
+.modal-section {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
 
 .section-title {
     font-weight: 600;
@@ -305,7 +308,6 @@ export default {
     text-align: center;
 }
 
-/* Improve button styles */
 .btn {
     border-radius: 5px;
     font-weight: 500;
@@ -319,5 +321,13 @@ export default {
 .btn-primary {
     background-color: #007bff;
     border-color: #007bff;
+}
+
+.cursor_pointer {
+    cursor: pointer;
+}
+
+.pool-right {
+    margin-left: auto;
 }
 </style>

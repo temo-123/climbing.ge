@@ -29,7 +29,7 @@
                     <!-- Content State -->
                     <div v-else>
                         <div class="modal-section overview">
-                            <h2 class="section-title">{{ $t("guide.route.mtp detals") }}</h2>
+"guide.route.mtp_details"
 
                             <div class="overview-details">
                                 <p class="route-detail">{{ $t("guide.route.name") }} - {{ (mtp_detals && mtp_detals.mtp && mtp_detals.mtp.name) ? mtp_detals.mtp.name : $t('guide.route.route_name_not_available') }}</p>
@@ -64,7 +64,7 @@
                                     <tbody>
                                         <tr
                                             v-for="pitch in (mtp_detals && mtp_detals.mtp_pitchs ? mtp_detals.mtp_pitchs : [])"
-                                            :key="pitch && pitch.pitch_id ? pitch.pitch_id : 'pitch-' + Math.random()"
+:key="pitch.pitch_id || pitch.num || pitch.name || index"
                                         >
 
                                             <td>{{ pitch && pitch.num !== undefined ? pitch.num : '-' }}</td>

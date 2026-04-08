@@ -61,7 +61,7 @@
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent'
     import metaData from '../items/MetaDataComponent'
-    import RoutesAutersModal from '../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
+    import RoutesAutersModal from '../items/climbing_routes/items/modals/statistic_modals/RoutesAutersListModal.vue'
     
     import serviceSliderComponent from '../items/shop_items_for_guide/ServiceSliderComponent'
     import partnersComponent from '../items/PartnersComponent.vue'

@@ -370,6 +370,8 @@
             ref="sector_canvas_modal"
             :sector="sector"
             @show_route_modal="show_route_modal"
+            @show_mtp_modal="show_mtp_madel"
+            size="xl"
         />
 
     </div>
@@ -458,7 +460,7 @@ export default {
             this.$refs.open_mtp_modal.show_mtp_modal(mtp_id)
         },
         show_sector_canvas_modal() {
-            this.$refs.sector_canvas_modal.show_modal(this.sector)
+            this.$refs.sector_canvas_modal.show_sector_modal(this.sector)
         },
     }
 }

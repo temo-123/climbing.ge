@@ -1,129 +1,107 @@
 <template>
-    <StackModal 
-        v-model:show="is_show_modal"
-        :title="$t('guide.route.all_feedbacks_title')"
-        @close="close_route_review_modal(route_id)"
-        :modal-class="{ [ModalClass]: true }"
-        :saveButton="{ visible: false }"
-        :cancelButton="{
-            title: $t('guide.route.close_modal'),
-            btnClass: { 'btn btn-danger': true },
-        }"
-        >
-            <div class="model-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="row justify-content-center" v-show="is_loading">
-                            <div class="col-md-4 friendly-loading">
-                                <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                            </div>
+<StackModal 
+    v-model="is_show_modal"
+    :title="$t('guide.route.all_feedbacks_title')"
+    @close="close_route_review_modal"
+    :modal-class="{ [modalClass]: true }"
+    :saveButton="{ visible: false }"
+    :cancelButton="{
+        title: $t('guide.route.close_modal'),
+        btnClass: { 'btn btn-secondary': true },
+    }"
+>
+    <div class="model-body">
+        <div class="container">
+            <div class="row">
+                <div class="row justify-content-center" v-show="is_loading">
+                    <div class="col-md-4">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
+                        <p class="mt-2 text-muted">{{ $t('global.loading') }}</p>
+                    </div>
+                </div>
 
-                        <div v-show="!is_loading">
-                            <div v-if="reviews.length === 0" class="no-reviews">
-                                <h2 class="no-reviews-title">{{ $t('guide.route.no_feedbacks') }}</h2>
+                <div v-show="!is_loading">
+                    <div v-if="safeReviews.length === 0" class="no-reviews">
+                        <h2 class="no-reviews-title">{{ $t('guide.route.no_feedbacks') }}</h2>
+                        <p class="text-muted">{{ $t('guide.route.no_feedbacks_message') }}</p>
+                    </div>
+                    <div v-else class="reviews-list">
+                        <div v-for="(review, index) in safeReviews" :key="review.id || index" class="review-item">
+                            <div class="review-header">
+                                <h3 class="reviewer-name">{{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}</h3>
+                                <starsReiting
+                                    :reviews_count_prop="1"
+                                    :reviews_stars_prop="review.stars"
+                                    :rewiew_count_text_prop="false"
+                                />
                             </div>
-                            <div v-else class="reviews-list">
-                                <div v-for="review in reviews" :key="review.id" v-if="review.user != null" class="review-item">
-                                    <div class="review-header">
-                                        <h3 class="reviewer-name">{{review.user.name}} {{review.user.surname}}</h3>
-                                        <starsReiting
-                                            :reviews_count_prop = 1
-                                            :reviews_stars_prop = review.stars
-                                            :rewiew_count_text_prop = false
-                                        />
-                                    </div>
-                                    <div class="review-details">
-                                        <p v-if="review.ascent_style != null" class="ascent-style">{{review.ascent_style}}</p>
-                                        <p v-if="review.text != null" class="review-text">{{review.text}}</p>
-                                    </div>
-                                </div>
+                            <div class="review-details">
+                                <p v-if="review.ascent_style" class="ascent-style">{{ review.ascent_style }}</p>
+                                <p v-if="review.text" class="review-text">{{ review.text }}</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    </StackModal>
+        </div>
+    </div>
+</StackModal>
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
-// import VueRecaptcha from 'vue-recaptcha'; //https://www.npmjs.com/package/vue-recaptcha
-
-import starsReiting  from '../../../../../../global_components/StarReitingShowComponent.vue'
+import starsReiting from '../../../../../../global_components/StarReitingShowComponent.vue'
 
 export default {
     components: { 
-        // VueRecaptcha,
         starsReiting,
     },
-    props: [
-        // "sector",
-    ],
-    data: function () {
+    props: [],
+    data() {
         return {
             is_show_modal: false,
-
             route_id: 0,
-
             reviews: [],
-            ModalClass: '',
-
+            modalClass: '',
             is_loading: false,
         };
     },
-    mounted() {
-        //
+    computed: {
+        safeReviews() {
+            return this.reviews.filter(review => review && review.user);
+        }
     },
     methods: {
-        show_route_all_review_modal(route_id){
-            // this.is_show_modal = true;
-            this.route_id = route_id
-            this.get_all_route_reviews()
+        show_route_all_review_modal(route_id) {
+            this.route_id = route_id;
+            this.is_loading = true;
+            this.get_all_route_reviews();
         },
-        close_route_review_modal(){
+        close_route_review_modal() {
             this.is_show_modal = false;
-        },
-
-        back_to_route_madal(){
-            this.close_route_review_modal()
-            this.$emit('back_route_modal', this.route_id)
+            this.$emit('back_route_modal', this.route_id);
         },
 
         get_all_route_reviews() {
-            this.is_loading = true
-
-            axios
-            .get("/get_route/get_route_review/get_all_route_reviews/" + this.route_id)
-            .then((response) => {
-                this.reviews = response.data
-                this.is_show_modal = true;
-            })
-            .catch((error) => {
-                // 
-            })
-            .finally(() => this.is_loading = false);
-        },
+            axios.get("/get_route/get_route_review/get_all_route_reviews/" + this.route_id)
+                .then((response) => {
+                    this.reviews = response.data || [];
+                    this.is_show_modal = true;
+                })
+                .catch((error) => {
+                    console.error('Error loading reviews:', error);
+                    this.reviews = [];
+                })
+                .finally(() => {
+                    this.is_loading = false;
+                });
+        }
     }
 }
 </script>
 
-<style>
-.comentator_name{
-    margin: 0px;
-    /* margin-left: 18%; */
-    float: left;
-    color: #000;
-}
-.comment_board{
-    border: solid;
-    border: 0, 1, 0;
-    border-width: 2px 0 0 2px;
-    border-radius: 3px 0 0 5px;
-
-    margin-bottom: 22px;
-}
-
+<style scoped>
 .reviews-list {
     padding: 1rem 0;
 }
@@ -141,6 +119,7 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .reviewer-name {
@@ -160,6 +139,7 @@ export default {
 .ascent-style {
     font-weight: 500;
     color: #007bff;
+    font-style: italic;
 }
 
 .review-text {
@@ -169,13 +149,11 @@ export default {
 .no-reviews {
     text-align: center;
     padding: 2rem;
+    color: #6c757d;
 }
 
 .no-reviews-title {
     font-size: 1.5rem;
-    color: #6c757d;
+    margin-bottom: 0.5rem;
 }
-
-
-
 </style>

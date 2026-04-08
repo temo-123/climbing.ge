@@ -97,8 +97,8 @@
     import axios_mixin from '../../../../mixins/axios_mixin'
 
     import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
-    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
-    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/statistic_modals/RoutesAutersListModal.vue'
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/statistic_modals/MostPopularRoutesModal.vue'
 
     export default {
         mixins: [

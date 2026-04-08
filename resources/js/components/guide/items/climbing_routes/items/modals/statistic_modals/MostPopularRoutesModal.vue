@@ -4,7 +4,7 @@
             <button type="bottom" class="btn btn-default btn-send main-btn pull-right" @click="show_modal">{{ $t('guide.sector.routes_list_button') }}</button>
         </div>
 
-<StackModal v-model="is_show_modal" :title="routeTypeTitle" :size="'xl'" @close="is_show_modal = false">
+        <StackModal v-model="is_show_modal" :title="routeTypeTitle" :size="'xl'" @close="is_show_modal = false">
           <!-- <template #default> -->
             <pre class="language-vue">
                 <select class="form-control route_statistic_selection" v-model="routesPerPage" @change="refreshData">
@@ -93,7 +93,7 @@
 
 <script>
 // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-    import StarReitingShowComponent from '../../../../../global_components/StarReitingShowComponent.vue'
+    import StarReitingShowComponent from '../../../../../../global_components/StarReitingShowComponent.vue'
 
     export default {
     components: {

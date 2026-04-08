@@ -6,7 +6,7 @@
                 <button 
                     type="button" 
                     class="btn btn-sm"
-                    :class="{'btn-success': viewMode === 'grid', 'btn-secondary-custom': viewMode !== 'grid'}"
+                    :class="{'btn-success': viewMode === 'grid', 'btn-secondary': viewMode !== 'grid'}"
                     @click="$emit('update:viewMode', 'grid')"
                 >
                     <i class="fa fa-th-large"></i> {{ $t('guide.view.grid') || 'Grid' }}
@@ -14,7 +14,7 @@
                 <button 
                     type="button" 
                     class="btn btn-sm"
-                    :class="{'btn-success': viewMode === 'list', 'btn-secondary-custom': viewMode !== 'list'}"
+                    :class="{'btn-success': viewMode === 'list', 'btn-secondary': viewMode !== 'list'}"
                     @click="$emit('update:viewMode', 'list')"
                 >
                     <i class="fa fa-list-ul"></i> {{ $t('guide.view.list') || 'List' }}
@@ -28,7 +28,7 @@
                 <button 
                     type="button" 
                     class="btn btn-sm"
-                    :class="{'btn-success': groupMode === 'grouped', 'btn-secondary-custom': groupMode !== 'grouped'}"
+                    :class="{'btn-success': groupMode === 'grouped', 'btn-secondary': groupMode !== 'grouped'}"
                     @click="$emit('update:groupMode', 'grouped')"
                 >
                     <i class="fa fa-folder"></i> {{ $t('guide.group.by_region') || 'By Region' }}
@@ -36,7 +36,7 @@
                 <button 
                     type="button" 
                     class="btn btn-sm"
-                    :class="{'btn-success': groupMode === 'flat', 'btn-secondary-custom': groupMode !== 'flat'}"
+                    :class="{'btn-success': groupMode === 'flat', 'btn-secondary': groupMode !== 'flat'}"
                     @click="$emit('update:groupMode', 'flat')"
                 >
                     <i class="fa fa-list"></i> {{ $t('guide.group.flat') || 'Flat List' }}
@@ -72,4 +72,51 @@
         }
     }
 </script>
+
+<style scoped>
+.btn-group .btn {
+  border-radius: 0;
+  border: 1px solid #dee2e6;
+}
+
+.btn-group .btn:not(:first-child) {
+  border-left: none;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+  color: white;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+  border-color: #545b62;
+}
+
+.pull-left {
+  float: left !important;
+}
+
+.pull-right {
+  float: right !important;
+}
+
+.view_controls_bar {
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .pull-left, .pull-right {
+    float: none !important;
+    text-align: center;
+  }
+}
+</style>
 

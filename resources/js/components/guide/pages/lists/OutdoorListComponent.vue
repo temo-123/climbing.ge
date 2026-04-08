@@ -32,7 +32,7 @@
                         {{ $t('guide.article.region_filtr') }}
                     </div>
                     <div class="col-md-6 col-sm-6" v-if="(regions || [])?.length > 0">
-                        <select class="form-control" v-model="filter_spot">
+                        <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
                             <option value="All">{{ $t('all') }}</option>
                             <option v-for="region in (regions || [])" :key='region.id' :value="region.id">{{ region.name }}</option> 
                         </select>
@@ -188,15 +188,12 @@
                 </div>
             </section>
 
-            <StackModal v-model:show="show_map_modal" :title="(selected_region_data?.name || '') + ' map'">
-                <div class="model-body">
-                    <div class="container">
-                        <div class="row">
-                            <span v-html="selected_region_data?.map || ''"></span>
-                        </div>
-                    </div>
-                </div>
+            <StackModal v-model="show_map_modal" :title="(selected_region_data?.name || '') + ' map'" :size="'xxxl'" @close="show_map_modal = false">
+                <pre class="language-vue">
+                    <span v-html="selected_region_data?.map || ''"></span>
+                </pre>
             </StackModal> 
+
         </div>
 
         <metaData 
@@ -215,8 +212,8 @@
 
 
     import sectorQuantyt from '../../items/climbing_routes/SectorsQuantytyComponent'
-    import routesAutersModal from '../../items/climbing_routes/items/modals/RoutesAutersListModal.vue'
-    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/MostPopularRoutesModal.vue'
+    import routesAutersModal from '../../items/climbing_routes/items/modals/statistic_modals/RoutesAutersListModal.vue'
+    import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/statistic_modals/MostPopularRoutesModal.vue'
     import ViewControlsComponent from '../../items/ViewControlsComponent.vue'
 
     export default {
@@ -257,11 +254,6 @@
             mostPopularRoutesModal,
             ViewControlsComponent
         },
-        watch: {
-            filter_spot(newVal) {
-                this.get_outdoor_articles();
-            }
-        },
         mounted() {
             this.get_outdoor_articles()
             this.get_regions()
@@ -276,6 +268,9 @@
                 this.get_outdoor_articles()
                 this.get_regions()
                 window.scrollTo(0,0)
+            },
+            filter_spot(newVal) {
+                this.get_outdoor_articles();
             }
         },
         methods: {
@@ -315,10 +310,11 @@
                     this.delete_url_hash()
                 }
                 else{
-                    this.get_filtered_articles(this.filter_spot) 
-                    this.get_region_selected_data(this.filter_spot)
+                    this.get_filtered_articles(Number(this.filter_spot)) 
+                    this.get_region_selected_data(Number(this.filter_spot))
                 }
             },
+
 
             delete_url_hash(){
                 // https://gist.github.com/azu/36ba5a80feb857c77a3a
