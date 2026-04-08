@@ -5,7 +5,7 @@
         </div>
 
 <StackModal v-model="is_show_modal" :title="routeTypeTitle" :size="'xl'" @close="is_show_modal = false">
-          <template #default>
+          <!-- <template #default> -->
             <pre class="language-vue">
                 <select class="form-control route_statistic_selection" v-model="routesPerPage" @change="refreshData">
                     <option value="5">5 {{ $t('guide.sector.routes') }}</option>
@@ -86,7 +86,7 @@
 
 
             </pre>
-          </template>
+          <!-- </template> -->
         </StackModal>
     </span>
 </template>
@@ -240,17 +240,7 @@
 </script>
 
 <style>
-.language-vue{
-    margin: 10px 0 0 0;
-    width: 95%;
-
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    overflow-y: scroll;
-    overflow-x: auto;
-}
-.modal-body{
+/* .modal-body{
     height: auto;
     min-height: 600px;
 }
@@ -272,7 +262,6 @@ th:nth-child(2n+1) {
     float: left;
 }
 
-/* Mobile button centering */
 @media (max-width: 767px) {
     div > .main-btn {
         display: block;
@@ -280,5 +269,5 @@ th:nth-child(2n+1) {
         float: none !important;
         width: fit-content;
     }
-}
+} */
 </style>

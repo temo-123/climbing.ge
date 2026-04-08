@@ -2,62 +2,60 @@
   <Teleport to="body">
     <div 
       v-if="modelValue" 
-      class="stack-modal-overlay fixed inset-0 z-[99999] flex items-center justify-center p-4 bg-black/85 backdrop-blur-md"
+      class="stack-modal-overlay fixed inset-0 z-[99999] flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md"
       @click.self="$emit('close')"
       :class="overlayClass"
     >
       <Transition name="modal">
-        <div 
+<div 
           ref="modalRef"
-          class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 max-w-2xl w-full max-h-[95vh] overflow-hidden border border-gray-200/50"
-          :class="modalClasses"
+          class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 flex flex-col mx-auto w-full max-w-6xl max-h-[95vh] overflow-hidden border border-gray-200/50"
+          :class="[modalClasses, 'max-h-[95vh]']"
           :style="{ zIndex: computedZIndex }"
           role="dialog"
           aria-modal="true"
           tabindex="-1"
         >
           <!-- Header -->
-          <div class="sticky top-0 z-20 flex items-center justify-between p-8 pb-6 bg-white border-b border-gray-200/50 rounded-2xl rounded-b-none shadow-sm">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">{{ title }}</h2>
+          <div class="sticky top-0 z-20 flex-shrink-0 relative p-4 md:p-6 lg:p-8 pb-3 md:pb-4 lg:pb-6 bg-white border-b border-gray-200/50 rounded-2xl rounded-b-none shadow-sm">
             <button 
               @click="$emit('close')"
-              class="text-gray-500 hover:text-gray-700 hover:bg-gray-200 transition-all p-2 -m-2 rounded-xl shadow-sm hover:shadow-md hover:scale-105 active:scale-95"
+              class="close absolute" 
               type="button"
-              aria-label="Close modal"
+              aria-label="Close"
+              style="font-size: 3.75rem; opacity: 0.5; line-height: 2; margin-right: 15px;"
             >
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-              </svg>
+              <span aria-hidden="true">&times;</span>
             </button>
+
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight pr-20"
+              style="margin-left: 1cap;">{{ title }}</h2>
           </div>
 
           <!-- Content Slot -->
-          <div class="p-8 max-h-[70vh] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-white hover:scrollbar-thumb-gray-400">
+          <div class="flex-1 w-full max-w-full overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-white hover:scrollbar-thumb-gray-400 p-4 md:p-6 lg:p-8 modal-scrol">
             <slot></slot>
           </div>
 
           <!-- Footer -->
-          <div v-if="hasButtons" class="sticky bottom-0 z-20 flex flex-wrap items-center justify-end gap-4 p-8 pt-6 bg-white border-t border-gray-200/50 rounded-2xl rounded-t-none shadow-sm">
-            <button
-              v-if="cancelButton?.visible"
-              @click="$emit('close')"
-              :class="[
-                'px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-150 focus:outline-none focus:ring-4 focus:ring-indigo-500/20 shadow-sm hover:shadow-md active:scale-95 border border-gray-200 hover:border-gray-300',
-                cancelButton.btnClass || ''
-              ].join(' ')"
-            >
-              {{ cancelButton.title || 'Cancel' }}
-            </button>
-            <button
-              v-if="saveButton?.visible"
-              type="button"
-              :class="[
-                'px-6 py-3 text-sm font-semibold rounded-xl transition-all duration-150 focus:outline-none focus:ring-4 focus:ring-indigo-500/30 shadow-lg hover:shadow-xl active:scale-[0.97]',
-                'bg-gradient-to-r from-indigo-600 to-purple-600 text-white hover:from-indigo-700 hover:to-purple-700 border border-transparent hover:border-indigo-500/50'
-              ].join(' ')"
-            >
-              {{ saveButton.title || 'Save' }}
-            </button>
+          <div v-if="hasButtons" class="sticky bottom-0 z-20 flex-shrink-0 p-4 md:p-6 lg:p-8 pt-3 md:pt-4 lg:pt-6 bg-white border-t border-gray-200/50 rounded-2xl rounded-t-none shadow-sm">
+            <div class="modal-footer">
+              <button
+                v-if="cancelButton?.visible"
+                type="button" 
+                class="btn btn-danger pull-left"
+                @click="$emit('close')"
+              >
+                {{ cancelButton.title || 'Cancel' }}
+              </button>
+              <button
+                v-if="saveButton?.visible"
+                type="button" 
+                class="btn btn-primary pull-right"
+              >
+                {{ saveButton.title || 'Save' }}
+              </button>
+            </div>
           </div>
         </div>
       </Transition>
@@ -66,191 +64,217 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch } from 'vue'
+  import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch } from 'vue'
 
-const props = defineProps({
-  modelValue: Boolean,
-  title: {
-    type: String,
-    default: ''
-  },
-  size: {
-    type: String,
-    default: 'lg',
-    validator: (value) => ['sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'full', '90per', 'fullscreen'].includes(value)
-  },
-  borderless: {
-    type: Boolean,
-    default: false
-  },
-  modalClass: [String, Object],
-  saveButton: {
-    type: Object,
-    default: () => ({ visible: true, title: 'Save' })
-  },
-  cancelButton: {
-    type: Object,
-    default: () => ({ visible: true, title: 'Cancel' })
-  }
-})
+  const props = defineProps({
+    modelValue: Boolean,
+    title: {
+      type: String,
+      default: ''
+    },
+    size: {
+      type: String,
+      default: 'lg',
+      validator: (value) => ['sm', 'md', 'lg', 'xl', 'xxl', 'xxxl', 'full', '90per', 'fullscreen'].includes(value)
+    },
+    borderless: {
+      type: Boolean,
+      default: false
+    },
+    modalClass: [String, Object],
+    saveButton: {
+      type: Object,
+      default: () => ({ visible: true, title: 'Save' })
+    },
+    cancelButton: {
+      type: Object,
+      default: () => ({ visible: true, title: 'Cancel' })
+    }
+  })
 
-const emit = defineEmits(['update:modelValue', 'close', 'save'])
+  const emit = defineEmits(['update:modelValue', 'close', 'save'])
 
-const modalRef = ref(null)
+  const modalRef = ref(null)
 
-const modalStack = reactive(new Set())
-let zIndexCounter = 9999
+  const modalStack = reactive(new Set())
+  let zIndexCounter = 9999
 
-const computedZIndex = computed(() => {
-  if (props.modelValue && !modalStack.has(props)) {
-    modalStack.add(props)
-  } else if (!props.modelValue && modalStack.has(props)) {
+  const computedZIndex = computed(() => {
+    if (props.modelValue && !modalStack.has(props)) {
+      modalStack.add(props)
+    } else if (!props.modelValue && modalStack.has(props)) {
+      modalStack.delete(props)
+    }
+    return zIndexCounter + modalStack.size * 10
+  })
+
+  const modalClasses = computed(() => {
+    const sizeClass = props.size !== 'md' ? `modal-${props.size}` : 'modal-md'
+    return {
+      [`${sizeClass}`]: true,
+      'modal-border-0': props.borderless,
+      ...props.modalClass
+    }
+  })
+
+  const stackPosition = computed(() => modalStack.size - 1 || 0)
+
+  const overlayClass = computed(() => ({
+    'bg-black/85 backdrop-blur-md': true,
+    [`modal-stack${stackPosition.value}`]: true
+  }))
+
+  const hasButtons = computed(() => props.saveButton?.visible || props.cancelButton?.visible)
+
+  onMounted(async () => {
+    if (props.modelValue) {
+      document.body.classList.add('stack-modal-open')
+      document.body.style.overflow = 'hidden';
+
+      await nextTick()
+      modalRef.value?.focus()
+    }
+  })
+
+  onUnmounted(() => {
     modalStack.delete(props)
-  }
-  return zIndexCounter + modalStack.size * 10
-})
-
-const modalClasses = computed(() => {
-  const sizeClass = props.size !== 'md' ? `modal-${props.size}` : 'modal-md'
-  return {
-    [`${sizeClass}`]: true,
-    'modal-border-0': props.borderless,
-    ...props.modalClass
-  }
-})
-
-const stackPosition = computed(() => modalStack.size - 1 || 0)
-
-const overlayClass = computed(() => ({
-  'bg-black/85 backdrop-blur-md': true,
-  [`modal-stack${stackPosition.value}`]: true
-}))
-
-const hasButtons = computed(() => props.saveButton?.visible || props.cancelButton?.visible)
-
-onMounted(async () => {
-  if (props.modelValue) {
-    document.body.classList.add('stack-modal-open')
-    await nextTick()
-    modalRef.value?.focus()
-  }
-})
-
-onUnmounted(() => {
-  modalStack.delete(props)
-  document.body.classList.remove('stack-modal-open')
-})
-
-watch(() => props.modelValue, (val) => {
-  if (val) {
-    document.body.classList.add('stack-modal-open')
-  } else {
     document.body.classList.remove('stack-modal-open')
-    emit('close')
-  }
-})
+    // document.body.style.overflow = 'auto';
 
-defineExpose({
-  focus: () => modalRef.value?.focus()
-})
+  })
+
+  watch(() => props.modelValue, (val) => {
+    if (val) {
+      document.body.classList.add('stack-modal-open')
+      // document.body.style.overflow = 'hidden';
+    } else {
+      document.body.classList.remove('stack-modal-open')
+      // document.body.style.overflow = 'auto';
+      emit('close')
+    }
+  })
+
+  defineExpose({
+    focus: () => modalRef.value?.focus()
+  })
 </script>
 
-<style scoped>
-.modal-enter-active, .modal-leave-active {
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
+<style>
 
-.modal-enter-from, .modal-leave-to {
-  opacity: 0;
-  transform: translateY(-20px) scale(0.95);
-}
+  .modal-enter-active, .modal-leave-active {
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-.stack-modal {
-  animation: modal-pop 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-@keyframes modal-pop {
-  0% {
+  .modal-enter-from, .modal-leave-to {
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+
+  /* .stack-modal {
+    animation: modal-pop 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   }
-}
-.modal-pop {
-  animation-duration: 0.2s;
-}
 
-.stack-modal-overlay {
-  position: fixed !important;
-  inset: 0px !important;
-  z-index: 99999 !important;
-  /* display: flex !important; */
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  padding: 1rem !important;
-  box-sizing: border-box !important;
+  @keyframes modal-pop {
+    0% {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+  .modal-pop {
+    animation-duration: 0.2s;
+  } */
 
-  background-color: #000000d9;
-}
+  .stack-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+    padding: 1.5rem 0 0 0;
+    box-sizing: border-box;
+    background-color: #000000d9;
+  }
 
-.stack-modal {
-  /* position: relative !important;
-  margin: 0 auto !important; */
-  max-width: 90vw !important;
-  max-height: 95vh !important;
-  width: auto !important;
-  min-width: 320px !important;
+  .stack-modal {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    height: min(95vh, auto);
+    min-height: 200px;
+    width: clamp(320px, 90vw, 1400px);
+    max-width: var(--modal-max-width, 720px);
+    margin: 0 auto;
+    background-color: #f4f4f4;
+    box-sizing: border-box;
+    /* overflow: hidden; */
 
-  background-color: #f4f4f4;
-  padding: 20px;
-}
+    /* height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory; */
+  }
+  .modal-scrol{
+    height: calc(100vh - 200px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+    scrollbar-color: #9ca3af transparent;
+  }
+  .modal-scrol::-webkit-scrollbar {
+    width: 6px;
+  }
+  .modal-scrol::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .modal-scrol::-webkit-scrollbar-thumb {
+    background-color: #9ca3af;
+    border-radius: 3px;
+  }
+  .modal-scrol::-webkit-scrollbar-thumb:hover {
+    background-color: #6b7280;
+  }
 
-body.stack-modal-open {
-  overflow: hidden !important;
-}
+  body.stack-modal-open {
+    overflow: hidden !important;
+  }
 
-body.stack-modal-open ::-webkit-scrollbar {
-  display: none !important;
-}
+  body.stack-modal-open ::-webkit-scrollbar {
+    display: none !important;
+    overflow: hidden !important;
+  }
 
-.modal-sm { max-width: 400px; }
-.modal-md { max-width: 600px; }
-.modal-lg { max-width: 800px; }
-.modal-xl { max-width: 900px; }
-.modal-xxl { max-width: 1040px; }
-.modal-xxxl { max-width: 1180px; }
-.modal-full {
-  max-width: 100vw !important;
-  width: 100vw !important;
-  height: 100vh !important;
-  max-height: none !important;
-  border-radius: 0 !important;
-}
-.modal-full .p-8 { padding: 0 !important; }
-.modal-90per { max-width: 90%; }
-.modal-fullscreen {
-  max-width: 100% !important;
-  width: 100% !important;
-  height: 100% !important;
-}
-.modal-fullscreen .p-8 { padding: 0 !important; }
+  .stack-modal-open{
+        overflow: hidden !important;
+  }
 
-@media (min-width: 768px) {
-  .modal-sm { max-width: 400px; }
-  .modal-md { max-width: 600px; }
-  .modal-lg { max-width: 800px; }
-  .modal-xl { max-width: 900px; }
-  .modal-xxl { max-width: 1040px; }
-  .modal-xxxl { max-width: 1180px; }
-  .modal-90per { max-width: 90%; }
-}
+  .modal-sm { --modal-max-width: 420px; width: 90% !important; max-width: 420px !important; }
+  .modal-md { --modal-max-width: 560px; width: 90% !important; max-width: 560px !important; }
+  .modal-lg { --modal-max-width: 720px; width: 90% !important; max-width: 720px !important; }
+  .modal-xl { --modal-max-width: 900px; width: 90% !important; max-width: 900px !important; }
+  .modal-xxl { --modal-max-width: 1100px; width: 90% !important; max-width: 1100px !important; }
+  .modal-xxxl { --modal-max-width: 1300px; width: 90% !important; max-width: 1300px !important; }
+  .modal-90per { width: 90vw; max-width: 90vw; }
+  .modal-full, .modal-fullscreen {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-height: none !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+  }
+  .modal-full .p-4, .modal-fullscreen .p-4,
+  .modal-full .md\\:p-6, .modal-fullscreen .md\\:p-6,
+  .modal-full .lg\\:p-8, .modal-fullscreen .lg\\:p-8 { padding: 0 !important; }
 
-/* .modal-stack1 .stack-modal { transform: scale(1) translate(0, 0) !important; }
-.modal-stack2 .stack-modal { transform: scale(0.95) translate(8px, 8px) !important; }
-.modal-stack3 .stack-modal { transform: scale(0.92) translate(16px, 16px) !important; } */
+  @media (max-width: 640px) {
+    .stack-modal { width: 100vw !important; border-radius: 0 0 1rem 1rem !important; }
+  }
+  @media (min-width: 768px) {
+    .stack-modal { width: min(90vw, var(--modal-max-width, 720px)); }
+    .modal-90per { width: 90vw; }
+  }
 </style>
