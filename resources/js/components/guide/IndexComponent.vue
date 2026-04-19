@@ -1,6 +1,7 @@
 <template>
     <div>
         <preloader />
+        <routeloader v-if="isRouteLoading"/>
         <navbar @grade="grade_action"/>
         <div class="container top_menu_margin h-recent-work">
             <router-view />
@@ -13,43 +14,50 @@
         ></div>
         <footter />
         <loginModal />
+        <go_to_top />
     </div>
 </template>
 
 <script>
-import navbar from "./items/navbars/NavbarComponent";
-import footter from "./items/FooterComponent";
-import loginModal from "../global_components/modals/LoginModalComponent.vue";
-import go_to_top from "../global_components/GoOnTopComponent.vue";
-import Preloader from "../global_components/PreloaderComponent.vue";
+    import navbar from "./items/navbars/NavbarComponent";
+    import footter from "./items/FooterComponent";
+    import loginModal from "../global_components/modals/LoginModalComponent.vue";
+    import go_to_top from "../global_components/GoOnTopComponent.vue";
 
-// import { mapState } from 'vuex'
-export default {
-    // computed: mapState({
-    //     arrayIndex: state => state.arrayIndex
-    // }),
-    data: function () {
-        return {
-            publicPath: window.location.protocol + '//' + window.location.hostname
-        };
-    },
-    components: {
-        navbar,
-        footter,
-        loginModal,
-        go_to_top,
-        Preloader
-    },
-    mounted() {
-        
-    },
+    import preloader from "../global_components/loaders/PreloaderComponent.vue";
+    import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
 
-    methods: {
-        grade_action(event){
-            this.$emit('grade', event)
-        }
-    },
-};
+    import { isRouteLoading } from '../../store/routeLoader'
+    export default {
+        data: function () {
+            return {
+                publicPath: window.location.protocol + '//' + window.location.hostname
+            };
+        },
+        computed: {
+            isRouteLoading() {
+                return isRouteLoading.value
+            }
+        },
+        components: {
+            navbar,
+            footter,
+            loginModal,
+            preloader,
+            go_to_top,
+            routeloader
+        },
+        mounted() {
+            
+        },
+
+        methods: {
+            grade_action(event){
+                this.$emit('grade', event)
+            }
+        },
+    };
+
 </script>
 
 <style>         

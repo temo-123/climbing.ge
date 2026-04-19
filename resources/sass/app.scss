@@ -1,8 +1,7 @@
+@use "variables" as *;
+
 // Fonts
 @import url("https://fonts.googleapis.com/css?family=Nunito");
-
-// Variables
-@import "variables";
 
 /*
 *
@@ -754,9 +753,6 @@ time > .month {
 */
 .event-list {
     list-style: none;
-    // font-family: 'Lato', sans-serif;
-    // margin: 0px;
-    // padding: 0px;
 }
 .event-list > li {
     background-color: rgb(255, 255, 255);
@@ -1203,45 +1199,6 @@ tr td:last-child {
     text-align: center;
 }
 
-/*
-*
-*   Preloader style
-*
-*/
-
-// .preloader {
-//     position: fixed;
-//     left: 0;
-//     top: 0;
-//     width: 100%;
-//     height: 100%;
-//     background: #279fbb;
-//     z-index: 1035;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     transition: 1s all;
-//     opacity: 1;
-//     --duration: 1s;
-//     transition: var(--duration);
-// }
-// .loader {
-//     width: 75px;
-//     height: 75px;
-//     border: 5px solid #11768e;
-//     border-radius: 50%;
-//     border-top-color: blue;
-//     position: absolute;
-//     animation: 1s spin infinite linear;
-// }
-@keyframes spin {
-    from {
-        transform: translate(-50%, -50%) rotate(0deg);
-    }
-    to {
-        transform: translate(-50%, -50%) rotate(360deg);
-    }
-}
 
 /*
 *
@@ -1601,11 +1558,6 @@ a.socialIcon:hover,
     color: #696969;
 }
 .old_price_page {
-    // font-size: 50%;
-    // margin-top: -25%;
-    // margin-bottom: -15%;
-    // color: #696969;
-
     font-size: 75%;
     color: #696969;
 }
@@ -1635,16 +1587,10 @@ a.socialIcon:hover,
         text-align: center;
     }
     .old_price_page p {
-        // margin-top: 12%;
         text-decoration: line-through;
         color: #696969;
     }
     .old_price_page {
-        // font-size: 50%;
-        // margin-top: -25%;
-        // margin-bottom: -15%;
-        // color: #696969;
-
         font-size: 75%;
         color: #696969;
     }
@@ -1654,7 +1600,6 @@ a.socialIcon:hover,
         color: #696969;
     }
     .price_page {
-        // font-size: 50%;
         font-size: 20em;
         margin-top: -25%;
         margin-bottom: -15%;
@@ -1972,15 +1917,6 @@ button.btn:hover,
 *
 */
 
-// .fade{
-// background: rgb(0 0 0 / 62%) !important;
-// }
-
-// .cms_filters {
-//     background-color: #c1c1c1;
-//     margin: 2%;
-// }
-
 .gallery {
     float: left;
     background-size: cover;
@@ -2071,10 +2007,6 @@ optgroup,
 strong {
     font-weight: 700;
 }
-
-// dfn {
-//     font-style: italic;
-// }
 
 pre,
 textarea {
@@ -2500,64 +2432,6 @@ select:focus {
 }
 
 
-
-/*
-*
-*   Site modal styles
-*
-*/
-// .language-vue {
-//     margin: 10px 0 0 0;
-//     width: 95%;
-//     position: absolute;
-//     top: 0;
-//     bottom: 0;
-//     right: 0;
-//     left: 2.5%;
-//     overflow-y: scroll;
-//     overflow-x: hidden;
-// }
-
-// .modal-dialog {
-//     width: 60% !important;
-//     max-width: 100% !important;
-//     // margin-top: 5% !important;
-// }
-
-// .modal-content {
-//     margin-top: 25% !important;
-// }
-
-// @media screen and (max-width: 704px) {
-//     .modal-content {
-//         margin-top: 75% !important;
-//     }
-
-//     .modal-dialog {
-//         width: 90% !important;
-//         max-width: 100% !important;
-//         // margin-top: 10% !important;
-//     }
-// }
-// .fade {
-//     opacity: 1;
-//     background: #000000a3 !important;
-// }
-// body.modal-open {
-//     margin-right: 0;
-// }
-// .modal-dialog {
-//     margin-top: 15em;
-// }
-// @media screen and (min-width: 768px) {
-//     .modal-dialog {
-//         width: 75% !important;
-//     }
-// }
-// .modal-footer {
-//     text-align: left;
-// }
-
 .route_detal {
     margin: 0 0 0px !important;
 }
@@ -2565,16 +2439,7 @@ select:focus {
     margin: 0 0 0px !important;
     text-align: left !important;
 }
-// .modal-body {
-//     min-height: 500px;
-// }
-/*
-*
-* ===========================================================
-*     HERO SECTION  https://bootsnipp.com/snippets/VgkqV
-* ===========================================================
-*
-*/
+
 .hero {
     padding: 6.25rem 0px !important;
     margin: 0px !important;
@@ -2860,10 +2725,6 @@ select:focus {
     .isotope-item-dtls h3 {
         font-size: 25px;
     }
-
-    // .isotope-item-dtls p {
-    //     font-size: 18px;
-    // }
 }
 
 /*
@@ -3788,16 +3649,8 @@ select:focus {
 .services {
     width: 100%;
     height: auto;
-    /*margin-top: 50px;*/
     margin-bottom: 100px;
-    /*margin-top: 7%;*/
 }
-
-// .services h1 {
-//     font-size: 64px;
-//     /*color: #333;*/
-//     text-align: center;
-// }
 
 .bar {
     border-bottom: 1px solid #d8d8d8;
@@ -4042,11 +3895,10 @@ a:active {
 }
 
 .size {
-    white-space: nowrap; /* Отменяем перенос текста */
-    overflow: hidden; /* Обрезаем содержимое */
-    padding: 5px; /* Поля */
-    text-overflow: ellipsis; /* Многоточие */
-    /*http://htmlbook.ru/blog/obrezaem-dlinnuyu-stro*/
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 5px;
+    text-overflow: ellipsis;
 }
 .news_size {
     height: 60px;
@@ -4733,21 +4585,9 @@ ul.portfolioFilter a.current {
     overflow-x: hidden;
 }
 
-// .modal-footer {
-//     padding: 1rem;
-// }
-
 .friendly-loading img {
     max-width: 100%;
 }
-
-// .modal-section {
-//     margin-bottom: 1.5rem;
-//     padding: 1rem;
-//     background-color: #f8f9fa;
-//     border-radius: 8px;
-//     border: 1px solid #e9ecef;
-// }
 
 /*
 *
@@ -4953,7 +4793,6 @@ ul.portfolioFilter a.current {
     line-height: 1.5;
     margin-bottom: 10px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
@@ -5350,7 +5189,6 @@ ul.portfolioFilter a.current {
     line-height: 1.6;
     margin-bottom: 20px;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
     flex-grow: 1;
@@ -5440,31 +5278,6 @@ ul.portfolioFilter a.current {
     background-color: #b5b5b5;
     color: #333;
 }
-
-/* View mode toggle buttons */
-// .view_controls_bar .btn-group .btn,
-// .filters-bar .btn-group .btn {
-//     padding: 10px 18px;
-//     font-size: 14px;
-//     border-radius: 8px;
-//     transition: all 0.25s ease;
-//     border: 2px solid transparent;
-//     background: #f8f9fa;
-//     color: #6c757d;
-// }
-
-// .view_controls_bar .btn-group .btn.active,
-// .filters-bar .btn-group .btn.active {
-//     background: linear-gradient(135deg, #279fbb 0%, #1e8da8 100%);
-//     color: #fff;
-//     box-shadow: 0 4px 15px rgba(39, 159, 187, 0.3);
-// }
-
-// .view_controls_bar .btn-group .btn:hover:not(.active),
-// .filters-bar .btn-group .btn:hover:not(.active) {
-//     background: #e9ecef;
-//     transform: translateY(-1px);
-// }
 
 @media (max-width: 768px) {
     .filters-bar {

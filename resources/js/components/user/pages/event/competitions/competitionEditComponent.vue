@@ -242,10 +242,10 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-    import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
+    // import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
 
-    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config
@@ -256,7 +256,7 @@
         components: {
             GlobalInfoFormBlock,
             moment,
-            validator_alerts_component
+            // validator_alerts_component
         },
         data(){
             return {

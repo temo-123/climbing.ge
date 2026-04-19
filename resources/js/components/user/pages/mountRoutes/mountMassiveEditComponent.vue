@@ -181,7 +181,7 @@
 
 <script>
     import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
-    import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config,
@@ -190,7 +190,7 @@
             //
         ],
         components: {
-            validator_alerts_component
+            // validator_alerts_component
         },
         data(){
             return {

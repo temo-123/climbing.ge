@@ -1,6 +1,6 @@
 
 <template>
-    <stack-modal
+    <StackModal
             :show="is_edit_image_modal"
             title="Edit image"
             @close="close_edit_image_modal()"
@@ -77,17 +77,17 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
-    import validator_alerts_component from '../../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../../items/validator_alerts_component.vue'
     export default {
         components: {
-            validator_alerts_component,
-            StackModal,
+            // validator_alerts_component,
+            // StackModal,
         },
         props: [
             'image_path_prop',

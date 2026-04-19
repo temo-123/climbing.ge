@@ -68,12 +68,12 @@
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
-    import validator_alerts_component from '../../../validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../validator_alerts_component.vue'
     export default {
         emits: ['update'],
         components: {
             // StackModal,
-            validator_alerts_component
+            // validator_alerts_component
         },
     
         data() {

@@ -1,5 +1,5 @@
 <template>
-    <stack-modal
+    <StackModal
             :show="is_show_edit_modal"
             :title="'Edit Pitch'"
             @close="close_modal()"
@@ -45,21 +45,21 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
-    import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
     
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
             Editor,
-            validator_alerts_component
+            // validator_alerts_component
         },
             computed: {
                 description_editor () {

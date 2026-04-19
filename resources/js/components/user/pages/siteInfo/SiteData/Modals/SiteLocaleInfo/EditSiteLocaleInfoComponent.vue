@@ -1,5 +1,5 @@
 <template>
-    <stack-modal
+    <StackModal
             :show="is_show_modal"
             title="Edit locale data"
             @close="close_model"
@@ -32,19 +32,19 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
-    import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
 
     export default {
         components: {
-            validator_alerts_component,
-            StackModal,
+            // validator_alerts_component,
+            // StackModal,
         },
 
         props: [

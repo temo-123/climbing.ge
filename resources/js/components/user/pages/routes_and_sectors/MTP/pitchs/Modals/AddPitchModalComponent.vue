@@ -1,5 +1,5 @@
 <template>
-    <stack-modal
+    <StackModal
             :show="is_show_add_modal"
             :title="'Add Pitch'"
             @close="close_modal()"
@@ -45,22 +45,22 @@
                 </button>
             </div>
         </div>
-    </stack-modal>
+    </StackModal>
 </template>
 
 <script>
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
 
-    import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
     
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
     import { editor_config } from '../../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
-            StackModal,
+            // StackModal,
             Editor,
-            validator_alerts_component
+            // validator_alerts_component
         },
         mixins: [
             editor_config

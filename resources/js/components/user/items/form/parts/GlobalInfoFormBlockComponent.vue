@@ -31,8 +31,15 @@
                     </select> 
                 </div>
             
-<div class="col-md-12" v-if="global_blocks.block_action == 'befor' || global_blocks.block_action == 'after' || global_blocks.block_action == 'new_info'">
-                <ckeditor v-model="form_data" :config="text_editor_config" @input="input_event" />
+                <div class="col-md-12" v-if="global_blocks.block_action == 'befor' || global_blocks.block_action == 'after' || global_blocks.block_action == 'new_info'">
+                    <!-- <ckeditor v-model="form_data" :config="text_editor_config" @input="input_event" /> -->
+
+                    <!-- <QuillEditor
+                        v-model:content="form_data"
+                        contentType="html"
+                        theme="snow"
+                        toolbar="full"
+                    /> -->
 
                 </div>
 

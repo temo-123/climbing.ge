@@ -1,32 +1,38 @@
-// const { vue } = require('laravel-mix');
 const mix = require('laravel-mix');
 const webpack = require('webpack');
-require('laravel-vue-lang/mix');
-
-require('dotenv').config({path:'.env'}); // laravel-mix for using .env varibles in VUE Components
+require('dotenv').config({path:'.env'}); 
 
 mix.js('resources/js/app.js', 'public/assets/js').vue({ 
   version: 3,
   options: {
     compilerOptions: {
-      isCustomElement: (tag) => ['ckeditor', 'Ckeditor'].includes(tag)
+    //   isCustomElement: (tag) => ['ckeditor', 'Ckeditor'].includes(tag)
     }
   }
 });
-mix.sass('resources/sass/app.scss', 'public/assets/css', []);
 
-mix.lang();
+mix.sass('resources/sass/app.scss', 'public/assets/css', {
+  sassOptions: {
+    api: 'modern'
+  }
+});
+
+mix.override((webpackConfig) => {
+    webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => !(plugin instanceof webpack.ProgressPlugin));
+});
 
 mix.webpackConfig({
     resolve: {
-        extensions: ['.*', '.wasm', '.mjs', '.js', '.jsx', '.json', '.vue'], // Fixed leading .* if needed, but already correct
+        extensions: ['.*', '.wasm', '.mjs', '.js', '.jsx', '.json', '.vue'], 
     },
     resolveLoader: {
         alias: {
             'vue-loader': 'vue-loader/dist/index.js'
         }
     },
-    devtool: false,
+
+    devtool: 'eval-source-map',
+    stats: 'verbose',
 
     plugins: [
         new webpack.DefinePlugin({
@@ -34,14 +40,10 @@ mix.webpackConfig({
         }),
     ],
 });
-// mix.webpackConfig({
-//     stats: {
-//     children: true
-//     }
-// });
 
 if (mix.inProduction()) {
     mix.version();
 } else {
     mix.sourceMaps();
 }
+

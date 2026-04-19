@@ -215,7 +215,7 @@
 <script>
   import Editor from '../../../items/canvas/EditorComponent.vue'
   import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-  import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+  // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
 
   export default {
@@ -224,7 +224,7 @@
       ],
       components: {
           Editor,
-          validator_alerts_component,
+          // validator_alerts_component,
           grades_form
       },
     data() {

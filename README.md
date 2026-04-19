@@ -39,7 +39,7 @@ php artisan migrate --seed
 
 <!-- Ctrl+Shift+V - for demo test -->
 
-<h5>Project version 11.5.3.3 (Design version, API version, Release version)</h5>
+<h5>Project version 12.0.0 (Design version, API version, Release version)</h5>
 
 <h2 align="center">Best wishes from climbing.ge</h2>
 

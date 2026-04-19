@@ -41,11 +41,11 @@
 </template>
 
 <script>
-    import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
+    // import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
 
     export default {
         components: {
-            GlobalInfoFormBlock,
+            // GlobalInfoFormBlock,
         },
         mixins: [
             // editor_config

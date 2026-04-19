@@ -2,13 +2,32 @@ export const editor_config = {
     //Editor configuration description -> https://ckeditor.com/latest/samples/toolbarconfigurator/#basic
 
     get_big_editor_config(){
+        const token = document.head.querySelector('meta[name="csrf-token"]').content;
         return {
+            height: 400,
+            toolbar: [
+                'heading', '|',
+                'bold', 'italic', 'link', 'bulletedList', 'numberedList', '|',
+                'outdent', 'indent', '|',
+                'imageUpload', 'blockQuote', 'insertTable', 'mediaEmbed', '|',
+                'undo', 'redo'
+            ],
+            simpleUpload: {
+                url: '/api/ckeditor/upload/',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            },
             // https://www.tutsmake.com/laravel-8-ckeditor-image-upload-tutorial-example/
-            filebrowserUploadUrl: "/api/ckeditor/upload/" + "?_token=" + document.head.querySelector('meta[name="csrf-token"]').content,
-            filebrowserUploadMethod: 'form',
+            simpleUpload: {
+                url: '/api/ckeditor/upload/',
+                headers: {
+                    'X-CSRF-TOKEN': document.head.querySelector('meta[name="csrf-token"]').content
+                }
+            },
 
             // https://ckeditor.com/docs/ckeditor4/latest/examples/mediaembed.html
-            extraPlugins: 'embed,autoembed',
+// Removed incompatible CK4 extraPlugins: embed,autoembed - use CK5 mediaEmbed
             
             // contentsCss: [
             //     'http://cdn.ckeditor.com/4.20.2/full-all/contents.css',
@@ -25,7 +44,20 @@ export const editor_config = {
     },
 
     get_small_editor_config(){
+        const token = document.head.querySelector('meta[name="csrf-token"]').content;
         return {
+            height: 200,
+            toolbar: [
+                'bold', 'italic', 'link', '|',
+                'bulletedList', 'numberedList', '|',
+                'undo', 'redo'
+            ],
+            simpleUpload: {
+                url: '/api/ckeditor/upload/',
+                headers: {
+                    'X-CSRF-TOKEN': token
+                }
+            },
             removeButtons: 'Link,Unlink,Anchor,Image,Table,Underline,Strike,Subscript,Superscript,RemoveFormat,NumberedList,BulletedList,Outdent,Indent,Blockquote,Scayt,HorizontalRule,SpecialChar,Styles,Format,Font,FontSize',
             // colorButton_colors: 'CF5D4E,454545,FFF,DDD,CCEAEE,66AB16'
         }

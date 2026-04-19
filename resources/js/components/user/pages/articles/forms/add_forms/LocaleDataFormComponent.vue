@@ -164,13 +164,13 @@
     // import { SlickList, SlickItem } from 'vue-slicksort';
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
-    import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
+    // import GlobalInfoFormBlock from '../../../../items/GlobalInfoFormBlockComponent.vue'
     // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
             // StackModal,
-            GlobalInfoFormBlock,
+            // GlobalInfoFormBlock,
             // SlickItem,
             // SlickList,
         },

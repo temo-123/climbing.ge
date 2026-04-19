@@ -71,10 +71,10 @@
     import LocaleDataForm from './forms/add_forms/LocaleDataFormComponent.vue'
     import PostImage from './forms/add_forms/PostImageFormComponent.vue'
 
-    import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         components: {
-            validator_alerts_component,
+            // validator_alerts_component,
 
             GlobalDataForm,
             LocaleDataForm,

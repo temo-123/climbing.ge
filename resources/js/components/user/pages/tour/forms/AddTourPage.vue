@@ -210,12 +210,12 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
 
     export default {
         components: {
-            validator_alerts_component,
+            // validator_alerts_component,
             published_item
         },
         mixins: [

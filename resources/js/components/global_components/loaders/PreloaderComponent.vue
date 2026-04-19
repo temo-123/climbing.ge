@@ -58,6 +58,7 @@ export default {
      position: absolute;
      top: 50%;
      left: 50%;
+     transform: translate(-50%, -50%);
  }
 
  .loader {
@@ -100,6 +101,11 @@ export default {
  @keyframes blink {
      0%, 50% { opacity: 0; }
      51%, 100% { opacity: 1; }
+ }
+
+ @keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
  }
 
  .fade-enter-active, .fade-leave-active {

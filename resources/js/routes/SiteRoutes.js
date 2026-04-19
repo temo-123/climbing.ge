@@ -9,6 +9,8 @@ import i18n from "../services/localization/i18n";
 import UnfollowComponent from "../components/global_components/varification_pages/UnfollowPage.vue";
 import CommentEmailVerificationePage from "../components/global_components/varification_pages/CommentEmailVerificationePage.vue";
 
+import { isRouteLoading } from '../store/routeLoader'
+
 function load(component) {
     return () => import(`../components/guide/pages/${component}.vue`);
 }
@@ -21,7 +23,6 @@ function getLocaleRegex() {
 
 const routes = [
     {
-        // path: `/:locale(en|)?`,
         path: `/:locale${getLocaleRegex()}?`,
         component: {
             render() {
@@ -29,7 +30,7 @@ const routes = [
             }
         },
         children: [
-{ path: '', name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
+            { path: '', name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
             { path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
 
             { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },

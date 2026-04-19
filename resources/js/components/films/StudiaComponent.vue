@@ -1,6 +1,7 @@
 <template>
     <div>
         <preloader />
+        <routeloader />
         <navbar />
         <div class="container top_menu_margin h-recent-work">
             <router-view />
@@ -12,34 +13,38 @@
         ></div>
         <footter />
         <loginModal />
+        <go_to_top />
     </div>
 </template>
 
 <script>
-import navbar from "./items/NavbarComponent";
-import footter from "./items/FooterComponent";
-import loginModal from "../global_components/modals/LoginModalComponent.vue";
-import Preloader from "../global_components/PreloaderComponent.vue";
-import go_to_top from "../global_components/GoOnTopComponent.vue";
+    import navbar from "./items/NavbarComponent";
+    import footter from "./items/FooterComponent";
+    import loginModal from "../global_components/modals/LoginModalComponent.vue";
+    import go_to_top from "../global_components/GoOnTopComponent.vue";
 
-export default {
-    data: function () {
-        return {
-            // cart_products: [],
-        };
-    },
-    components: {
-        navbar,
-        footter,
-        loginModal,
-        Preloader,
-        go_to_top
-    },
-    mounted() {
-        //
-    },
-    methods: {},
-};
+    import preloader from "../global_components/loaders/PreloaderComponent.vue";
+    import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
+
+    export default {
+        data: function () {
+            return {
+                // cart_products: [],
+            };
+        },
+        components: {
+            navbar,
+            footter,
+            loginModal,
+            preloader,
+            go_to_top,
+            routeloader
+        },
+        mounted() {
+            //
+        },
+        methods: {},
+    };
 </script>
 
 <style scoped>

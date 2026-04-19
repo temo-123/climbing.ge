@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app()->getLocale() }}">
 <head>
+        
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
 

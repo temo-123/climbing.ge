@@ -248,7 +248,7 @@
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
     import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
 
-    import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config,
@@ -256,7 +256,7 @@
         components: {
             gallery_images_add,
             article_bisnes_add_relatione_tab,
-            validator_alerts_component
+            // validator_alerts_component
         },
         props: [
             // 'back_url',

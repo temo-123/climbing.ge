@@ -1,6 +1,7 @@
 <template>
   <div>
       <preloader />
+      <routeloader />
       <navbar />
       <div class="container top_menu_margin h-recent-work">
           <router-view /> 
@@ -9,6 +10,7 @@
       <div class="footer__graphic" :style="'background-image: url(../images/svg/mountains.svg)'"></div>
       <footter />
       <loginModal />
+      <go_to_top />
   </div>
 </template>
 
@@ -16,7 +18,10 @@
   import navbar from './items/NavbarComponent'
   import footter from './items/FooterComponent'
   import loginModal from "../global_components/modals/LoginModalComponent.vue";
-  import Preloader from "../global_components/PreloaderComponent.vue";
+    import go_to_top from "../global_components/GoOnTopComponent.vue";
+  
+  import preloader from "../global_components/loaders/PreloaderComponent.vue";
+  import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
 
   export default {
       data: function () {
@@ -28,7 +33,9 @@
           navbar,
           footter,
           loginModal,
-          Preloader
+          preloader,
+            go_to_top,
+            routeloader
       },
       mounted(){
         //

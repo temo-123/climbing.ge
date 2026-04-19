@@ -239,8 +239,8 @@
 
 <script>
     import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-    import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
-    import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    // import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
+    // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             editor_config
@@ -249,8 +249,8 @@
             // 'back_url',
         ],
         components: {
-            GlobalInfoFormBlock,
-            validator_alerts_component
+            // GlobalInfoFormBlock,
+            // validator_alerts_component
         },
         data(){
             return {

@@ -121,7 +121,7 @@
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
-    import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     // import { going } from '../.p./../../../mixins/easy_navigation_mixin.js'
     export default {
         props: [
@@ -137,7 +137,7 @@
             MountRouteImagesForm,
 
             gallery_images_edit,
-            validator_alerts_component
+            // validator_alerts_component
         },
         data(){
             return {

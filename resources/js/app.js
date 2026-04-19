@@ -1,45 +1,30 @@
 import { createApp } from "vue";
 import "./bootstrap";
 
-import { Ckeditor } from '@ckeditor/ckeditor5-vue';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { createPinia } from "pinia";
-import axios from "axios";
-import i18n from "./services/localization/i18n";
-
-import VueGlide from "vue-glide-js";
-import "vue-glide-js/dist/vue-glide.css";
-import { createGtag } from "vue-gtag";
-import { createHead } from '@unhead/vue'
-
-const head = createHead()
-
 const app = createApp({
     setup() {
         // Vue 3 setup function
     }
 });
 
-import { abilityDefaults } from "./services/ability/ability.js"
+import axios from "axios";
+app.use(axios);
 
+import { createPinia } from "pinia";
+app.use(createPinia());
+
+import i18n from "./services/localization/i18n";
+app.use(i18n);
+
+import { abilityDefaults } from "./services/ability/ability.js"
 app.config.globalProperties.$ability = abilityDefaults
 app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(action, subject)
-
-app.use(VueGlide);
-app.component('Ckeditor', Ckeditor.component);
-
-app.config.globalProperties.$ClassicEditor = ClassicEditor;
-
-app.use(i18n);
-app.use(createPinia());
-app.use(head);
 
 import { going } from './mixins/easy_navigation_mixin.js';
 app.config.globalProperties.$going = going;
 
 import { editor_config } from './mixins/editor/editor_config_mixin.js';
 app.config.globalProperties.$editor_config = editor_config;
-
 app.config.globalProperties.$bus = {
     callbacks: {},
     $emit(event, payload) {
@@ -62,22 +47,21 @@ app.config.globalProperties.$bus = {
 import StackModal from "./components/global_components/modals/StackModal.vue"
 app.component('StackModal', StackModal)
 
-import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
-import guide_img from "./components/guide/items/ImageComponent.vue";
-import shop_img from "./components/shop/items/ImageComponent.vue";
-
-app.component("site-img", guide_img);
-app.component("shop-img", shop_img);
-app.component("left-menu", leftmenu);
 app.component("goToAdminPage", goToAdminPage);
 
+import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
+import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
+import GlobalInfoFormBlock from "./components/user/items/form/parts/GlobalInfoFormBlockComponent.vue";
+
+import guide_img from "./components/guide/items/ImageComponent.vue";
+import shop_img from "./components/shop/items/ImageComponent.vue";
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/guide/IndexComponent.vue";
 import Summit from "./components/summit/SummitMainComponent.vue";
-import Home from "./components/user/HomeComponent.vue";
 import Films from "./components/films/StudiaComponent.vue";
 import Blog from "./components/blog/BlogMainComponent.vue";
+import Home from "./components/user/HomeComponent.vue";
 import Error from "./components/errors/global_errors/error.vue";
 
 import shop_routes from "./routes/ShopRoutes";
@@ -88,17 +72,14 @@ import films_routes from "./routes/FilmsRoutes";
 import blog_routes from "./routes/BlogRoutes";
 import error_routes from "./routes/ErrorRoutes";
 
-app.component("main-wrapper-component", MainWrapper);
-app.component("summit-component", Summit);
-app.component("index-component", Index);
-app.component("studia-component", Films);
-app.component("blog-component", Blog);
-
 var serviceRoutes = [];
 var homeComponent = [];
 let analytic_id = "";
 
 if (window.location.hostname == process.env.MIX_SITE_URL) {
+    app.component("index-component", Index);
+    app.component("site-img", guide_img);
+
     homeComponent = Index;
     serviceRoutes = site_routes.options ? site_routes.options.routes : site_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
@@ -107,8 +88,10 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 
     analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
 } 
-
 else if (window.location.hostname == process.env.MIX_SHOP_URL) {
+    app.component("main-wrapper-component", MainWrapper);
+    app.component("shop-img", shop_img);
+
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
@@ -117,8 +100,9 @@ else if (window.location.hostname == process.env.MIX_SHOP_URL) {
 
     analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
 } 
-
 else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
+    app.component("summit-component", Summit);
+
     homeComponent = Summit;
     serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
@@ -127,18 +111,9 @@ else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
 
     analytic_id = process.env.MIX_SUMMIT_ANALITICS_ID;
 } 
-
-else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-    homeComponent = Home;
-    serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
-
-    analytic_id = process.env.MIX_USER_ANALITICS_ID;
-} 
-
 else if (window.location.hostname == process.env.MIX_FILMS_URL) {
+    app.component("studia-component", Films);
+
     homeComponent = Films;
     serviceRoutes = films_routes.options ? films_routes.options.routes : films_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
@@ -147,23 +122,40 @@ else if (window.location.hostname == process.env.MIX_FILMS_URL) {
 
     analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
 } 
-
 else if (window.location.hostname == process.env.MIX_BLOG_URL) {
+    app.component("blog-component", Blog);
+
     homeComponent = Blog;
     serviceRoutes = blog_routes.options ? blog_routes.options.routes : blog_routes;
     let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
     let blogUrl = (process.env.MIX_BLOG_URL || '').replace(/^\/|\/$/g, '');
     axios.defaults.baseURL = blogUrl ? baseUrl + '/' + blogUrl + '/api' : baseUrl + '/api';
 
-    analytic_id = process.env.MIX_blog_ANALITICS_ID;
+    analytic_id = process.env.MIX_BLOG_ANALITICS_ID;
 } 
+else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 
+    app.component("left-menu", leftmenu);
+    app.component("validator_alerts_component", validator_alerts_component);
+    app.component("GlobalInfoFormBlock", GlobalInfoFormBlock);
+
+    app.component('home-component', Home);
+
+    homeComponent = Home;
+    serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
+    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
+    let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
+    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
+
+    analytic_id = process.env.MIX_USER_ANALITICS_ID;
+} 
 else {
     homeComponent = Error;
     serviceRoutes = error_routes.options ? error_routes.options.routes : error_routes;
-    // analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
+    analytic_id = process.env.MIX_ERROR_PAGE_ANALITICS_ID;
 }
 
+import { createGtag } from "vue-gtag";
 createGtag({
     gtag: {
         id: analytic_id
@@ -176,8 +168,6 @@ app.config.globalProperties.$globalSiteData = { data: [] };
 
 app.mixin({
     methods: {
-
-
         $get_site_data() {
             return this.get_site_data;
         },
@@ -203,6 +193,7 @@ if(
     window.location.hostname == 'shop.climbing.ge' ||
     window.location.hostname == 'user.climbing.ge' ||
     window.location.hostname == 'films.climbing.ge' ||
+    window.location.hostname == 'summit.climbing.ge' ||
     window.location.hostname == 'blog.climbing.ge'
 ){
     app.config.devtools = false
@@ -213,9 +204,8 @@ else{
     app.config.debug = true
 }
 
-app.component('home-component', homeComponent);
-
 import { createRouter, createWebHistory } from 'vue-router';
+import { isRouteLoading } from './store/routeLoader.js';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -228,17 +218,15 @@ const router = createRouter({
 import { getCurrentLocale } from './services/routerUtils.js';
 
 router.beforeEach((to, from, next) => {
+    isRouteLoading.value = true;
     window.scrollTo(0, 0);
 
     let locale = localStorage.getItem('lang') || 'us';
 
-    // If URL has /ka prefix
     if (to.path.startsWith('/ka')) {
         locale = 'ka';
     } else if (to.path === '/') {
-        // Root - use stored or default
     } else {
-        // No ka prefix, default us
         locale = 'us';
     }
 
@@ -248,12 +236,17 @@ router.beforeEach((to, from, next) => {
         i18n.locale = locale;
     }
 
-    // Force /ka prefix if locale = 'ka'
     if (locale === 'ka' && !to.path.startsWith('/ka') && to.path !== '/') {
         return next('/ka' + to.path);
     }
 
     next();
+});
+
+router.afterEach(() => {
+    setTimeout(() => {
+        isRouteLoading.value = false;
+    }, 300);
 });
 
 window.axios.interceptors.response.use({}, err => {
@@ -274,16 +267,13 @@ window.axios.interceptors.response.use({}, err => {
             return Promise.reject(err)
         }
         else if(err.response.status === 403){
-            // Check if user is banned
             if (err.response.data && err.response.data.is_banned === true) {
-                // Show ban alert
                 if (err.response.data.alert) {
                     alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
                 } else {
                     alert('Your account has been banned.');
                 }
                 
-                // Clear local storage and close page
                 localStorage.removeItem('x_xsrf_token');
                 localStorage.removeItem('user');
                 window.close();
@@ -301,13 +291,10 @@ window.axios.interceptors.response.use({}, err => {
     }
 })
 
-// Use router
 app.use(router);
 
-// Mount the app
 app.mount("#app");
 
-// Global lodash
 window._ = require('lodash');
 
 try {
