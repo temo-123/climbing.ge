@@ -1,5 +1,5 @@
 <template>
-    <div class="container top_menu_margin">
+    <div class="container">
         <div class="aboutus-section">
             <div class="container">
                 <div class="row">

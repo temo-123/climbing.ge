@@ -6,9 +6,12 @@
 
             <div class="bar"><i class="fa fa-book"></i></div>
 
-            <h3 class="article_list_short_description">
-                {{ this.$siteData.data.what_we_do_description }}
+            <h3 class="article_list_short_description" v-if="!isLoading">
+                {{ siteData.data.what_we_do_description || 'Explore climbing in Georgia - outdoor, indoor, ice & mountaineering adventures' }}
             </h3>
+            <div v-else class="text-center py-3">
+                <i class="fa fa-spinner fa-spin"></i>
+            </div>
                 
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
@@ -20,8 +23,8 @@
                                 <strong>{{ $t('guide.title.outdoor climbing')}}</strong>
                             </h4>
 
-                            <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.data.outdoor_description"></span>
+                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
+                                <span v-html="siteData.data.outdoor_description || ''"></span>
                             </div>
                         </li>
                         
@@ -34,8 +37,8 @@
                                 <strong>{{ $t('guide.title.indoor climbing')}}</strong>
                             </h4>
 
-                            <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.data.indoor_description"></span>
+                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
+                                <span v-html="siteData.data.indoor_description || ''"></span>
                             </div>
                         </li>
                     </ul>
@@ -49,8 +52,8 @@
                                 <strong>{{ $t('guide.title.ice climbing')}}</strong>
                             </h4>
 
-                            <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.data.ice_description"></span>
+                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
+                                <span v-html="siteData.data.ice_description || ''"></span>
                             </div>
                         </li>
 
@@ -63,8 +66,8 @@
                                 <strong>{{ $t('guide.title.mountaineering')}}</strong>
                             </h4>
 
-                            <div class="content-text what_we_do_text_description">
-                                <span v-html="this.$siteData.data.mount_description"></span>
+                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
+                                <span v-html="siteData.data.mount_description || ''"></span>
                             </div>
                         </li>
                     </ul>
@@ -76,8 +79,32 @@
 
 <script>
 export default {
-
-}
+    data() {
+            return {
+                siteData: { data: {}, loaded: false },
+                globalSiteData: { data: {}, loaded: false },
+                isLoading: true
+            }
+        },
+        mounted() {
+            this.loadSiteData();
+        },
+        methods: {
+            loadSiteData() {
+                this.isLoading = true;
+                const lang = localStorage.getItem('lang') || 'us';
+                axios.get("/get_site_data/get_site_locale_data_for_site/" + lang).then((response) => {
+                    this.siteData.data = response.data.locale_data || {};
+                    this.siteData.loaded = true;
+                    this.globalSiteData.data = response.data.global_data || {};
+                    this.globalSiteData.loaded = true;
+                    this.isLoading = false;
+                }).catch((error) => {
+                    this.isLoading = false;
+                });
+            }
+        }
+    }
 </script>
 
 <style>

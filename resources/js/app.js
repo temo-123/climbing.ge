@@ -163,21 +163,32 @@ createGtag({
 });
 
 app.config.productionTip = false;
-app.config.globalProperties.$siteData = { data: [] };
-app.config.globalProperties.$globalSiteData = { data: [] };
+app.config.globalProperties.$siteData = { data: [], loaded: false };
+app.config.globalProperties.$globalSiteData = { data: [], loaded: false };
 
 app.mixin({
     methods: {
         $get_site_data() {
             return this.get_site_data;
         },
-        get_site_data() {
+        get_site_data(force = false) {
+            if (!force && this.$siteData.loaded && this.$globalSiteData.loaded) {
+                console.log('Site data already loaded, skipping fetch.');
+                return;
+            }
+            
+            const lang = localStorage.getItem('lang') || 'us';
             axios
-                .get("/get_site_data/get_site_locale_data_for_site/" + localStorage.getItem('lang') || 'en')
-                .then((response) => (
-                    this.$siteData.data = response.data.locale_data,
-                    this.$globalSiteData.data = response.data.global_data
-                ));
+                .get("/get_site_data/get_site_locale_data_for_site/" + lang)
+                .then((response) => {
+                    this.$siteData.data = response.data.locale_data;
+                    this.$siteData.loaded = true;
+                    this.$globalSiteData.data = response.data.global_data;
+                    this.$globalSiteData.loaded = true;
+                })
+                .catch((error) => {
+                    console.error('Failed to load site data:', error);
+                });
         }
     },
     data() {
@@ -294,6 +305,24 @@ window.axios.interceptors.response.use({}, err => {
 app.use(router);
 
 app.mount("#app");
+
+// Auto load site data after app mount - direct global call to avoid multiple
+setTimeout(() => {
+    const lang = localStorage.getItem('lang') || 'us';
+    if (!app.config.globalProperties.$siteData.loaded) {
+        axios
+            .get("/get_site_data/get_site_locale_data_for_site/" + lang)
+            .then((response) => {
+                app.config.globalProperties.$siteData.data = response.data.locale_data;
+                app.config.globalProperties.$siteData.loaded = true;
+                app.config.globalProperties.$globalSiteData.data = response.data.global_data;
+                app.config.globalProperties.$globalSiteData.loaded = true;
+            })
+            .catch((error) => {
+                console.error('Failed to load site data:', error);
+            });
+    }
+}, 500);
 
 window._ = require('lodash');
 
