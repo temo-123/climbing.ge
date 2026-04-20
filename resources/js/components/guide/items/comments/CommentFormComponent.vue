@@ -79,28 +79,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <div class="form-group form_left">
-
-                                    <!-- <vue-recaptcha
-                                        :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
-                                        :loadRecaptchaScript="true"
-                                        ref="recaptcha"
-                                        type="invisible"
-                                        @verify="onCaptchaVerified"
-                                        @expired="onCaptchaExpired"
-                                    >
-                                    </vue-recaptcha> -->
-                                </div>
+                                <FormCapchaComponent 
+                                    :buttonTextProp="'Add comment'"
+                                    @recaptcha-verified="add_comment"
+                                    @expired="onCaptchaExpired"
+                                />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="row" v-if="!comment_loader">
-                                <div class="col-xs-6 col-md-6" v-if="is_verify_isset == false">
-                                    <button type="submit" class="btn btn-primary" disabled>Add comment</button>
-                                </div>
-                                <div class="col-xs-6 col-md-6" v-else>
-                                    <button type="submit" class="btn btn-primary" >Add comment</button>
-                                </div>
                                 <div class="col-xs-6 col-md-6">
                                     <button type="button" @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
                                     <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
@@ -254,15 +241,17 @@
 <script>
     // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
     //http://www.blog.tonyswierz.com/javascript/add-and-use-google-recaptcha-in-a-vuejs-laravel-project/
-    import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
+import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort'
 // import StackModal from '@innologica/vue-stackable-modal'  // Global now
     import UserModal from '../../../global_components/modals/UserModalComponent.vue'
+    import FormCapchaComponent from '../../../global_components/FormCapchaComponent.vue'
     export default {
         components: {
             SlickItem,
             SlickList,
             // 'vue-recaptcha': VueRecaptchaV2,
-            UserModal
+            UserModal,
+            FormCapchaComponent
         },
         props: [
             "article_id",
@@ -274,10 +263,9 @@
                     surname: "",
                     email: "",
                     text: "",
-                    is_verify_isset: false,
                 },
 
-                is_verify_isset: false,
+                recaptcha_token: null,
                 // is_complaint_verify_isset: false,
 
                 comments: [],
@@ -327,12 +315,7 @@
                 this.get_comments();
             },
 
-            onCaptchaVerified() {
-                this.is_verify_isset = true
-            },
-            onCaptchaExpired(){
-                this.is_verify_isset = false
-            },
+
 
             crete_comment_answer(id){
                 this.answer_array = {
@@ -392,13 +375,14 @@
                 .finally(() => this.complaint_loader = false);
             },
 
-            add_comment() {
+            add_comment(token) {
+                this.recaptcha_token = token
                 this.comment_loader = true
-                this.data.is_verify_isset = this.is_verify_isset
                 axios
                 .post('/set_guide_comment_by_gest/create_comment/' + this.id, {
                     data: this.data,
-                    answer_array: this.answer_array
+                    answer_array: this.answer_array,
+                    recaptcha_token: this.recaptcha_token
                 })
                 .then(response => {
                     this.get_comments()

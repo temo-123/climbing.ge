@@ -110,6 +110,7 @@
             "about us": "About Us",
             "partner": "Partners",
             "message": "Send Message",
+            "search": "Search Climbing Spots",
 
             "donation_products": "Donation Products"
         },
@@ -296,7 +297,7 @@
         "news_flag": "News",
         "atention_flag": "Attention",
 
-        "serch": "Search"
+        "search_no_result_faild": "Nothing found! Try again! :)"
     },
 
     "shop": {
@@ -491,7 +492,7 @@
     },
 
     "blog": {
-        "name": "Blog",
+        "name": "Climbing Blog",
         "meta": {
             "blog": "Blog",
             "posts": "Posts",
@@ -501,7 +502,7 @@
         },
 
         "menu": {
-            "about us": "About Us"
+            "about_us": "About Us"
         },
 
         "title": {
@@ -548,6 +549,36 @@
 
         "pagination_button": {
             "show_older_articles": "Show Older Article"
+        }
+    },
+
+    "summit": {
+        "name": "Summit Ascents",
+
+        "meta": {
+            "summit": "Summit Ascents",
+            "summits": "Summits",
+            "regions": "Regions",
+            "search": "Search Summits"
+        },
+
+        "menu": {
+            "summits": "Summits",
+            "regions": "Regions",
+            "search": "Search Summits",
+            "about_us": "About Us",
+            "list": "Summit List",
+            "map": "Summit Map"
+        },
+
+        "title": {
+            "index_title": "Summit Ascents",
+            "summits": "Summits",
+            "regions": "Regions",
+            "search": "Search Summits",
+            "summit_detail": "Summit Detail",
+            "summit_list": "Summit List",
+            "summit_map": "Summit Map"
         }
     },
 

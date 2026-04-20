@@ -39,7 +39,7 @@ class CommentService extends EmailVarificationeService
 
         $validate = (new static)->comment_validate($request);
         
-        $is_verify_isset = $request->data['is_verify_isset'];
+        $is_verify_isset = isset($request->recaptcha_token);
         
         if($is_verify_isset && !$validate){
             $data = $request->data;

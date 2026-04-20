@@ -4,7 +4,7 @@
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.special_article')}}</h2>
                 <div class="bar"><i class="fa fa-exclamation" aria-hidden="true"></i></div>
-                <!-- <h3 class="article_list_short_description"> Warning </h3> -->
+                <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.special_article_description"></span> </h3>
 
                 <span v-if="speciales && speciales.length > 0">
                     <specialArticleCard 

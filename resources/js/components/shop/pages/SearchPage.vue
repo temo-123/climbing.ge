@@ -3,6 +3,8 @@
         <div class="container">
 
             <h1  class='serch_title'>{{ $t('shop.title.search') }}</h1>
+            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.guide_search_description"></span> </h3>
 
             <div class="row">
                 <div class="col-md-12">

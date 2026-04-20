@@ -1,6 +1,6 @@
 <template>
     <div>
-        <CustomModal 
+        <StockModal 
             v-model="is_show_warning_donation_modal" 
             title="Support Title"
             :cancelButton="{
@@ -32,7 +32,7 @@
                     {{ $t('guide.continue_donation') }}
                 </button>
             </template>
-        </CustomModal>
+        </StockModal>
 
         <DonationModalComponent 
             ref="donation_modal"

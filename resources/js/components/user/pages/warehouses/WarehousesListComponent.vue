@@ -68,6 +68,8 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Warehouses', 
+                                            'list_page': process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/products',
+                                            'list_page_title': 'Products List',
                                             'add_action': {
                                                 'action': 'function',
                                                 'link': 'show_warehouse_add_medal', 

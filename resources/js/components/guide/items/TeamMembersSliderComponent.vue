@@ -5,14 +5,14 @@
             <h2 class='index_h2'>Team Members</h2>
 
             <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-            <h3 class='article_list_short_description'> Climbing.ge team members </h3>
+            <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.team_member_description"></span> </h3>
 
             <div class="team-members-slider-container">
                 <div class="previes_team_bottom" v-if="team_members.length > visibleCount && slider_index > 0" @click="previous">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
-<div ref="teamSliderWrapper" class="team-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
+                <div ref="teamSliderWrapper" class="team-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
                     <div class="team-slider" :style="{ display: 'flex', gap: '2%', width: (team_members.length * 32) + '%', transform: 'translateX(' + (-slider_index * 32) + '%)', transition: 'transform 0.5s ease' }">
                         <div class="team-item" v-for="user in team_members" :key="user.id" @click="show_user_modal(user.id)">
                             <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='user_img' v-if='user.image == null'> </div>

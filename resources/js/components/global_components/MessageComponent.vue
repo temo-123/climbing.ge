@@ -80,27 +80,11 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group form_left">
-                        <!-- <vue-recaptcha 
-                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                            :loadRecaptchaScript="true"
-                            ref="recaptcha"
-                            type="invisible"
-                            @verify="onCaptchaVerified"
-                            @expired="onCaptchaExpired"
-                        >
-                        </vue-recaptcha> -->
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group"  v-if="is_verify_isset == false">
-                        <button type="submit" class="btn btn-default btn-send main-btn" disabled>{{ $t("global.message.send") }}</button>
-                    </div>
-                    <div class="form-group"  v-else>
-                        <button type="submit" class="btn btn-default btn-send main-btn">{{ $t("global.message.send") }}</button>
-                    </div>
+                    <FormCapchaComponent 
+                        :buttonTextProp="'Send message'"
+                        @recaptcha-verified="send_message"
+                        @expired="onCaptchaExpired" 
+                    />
                 </div>
             </div>
         </form>
@@ -115,13 +99,11 @@
 </template>
 
 <script>
-    // import VueLoadingButton from 'vue-loading-button'
-    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
+    import FormCapchaComponent from './FormCapchaComponent.vue'
+    
     export default {
         components: { 
-            // 'vue-recaptcha': VueRecaptchaV2,
-            // VueLoadingButton,
-
+            FormCapchaComponent
         },
         props: [
             // 'form_title'
@@ -135,25 +117,15 @@
                 country: "",
                 msg: "",
 
-                data: {
-                    name: "",
-                    surname: "",
-                    email: "",
-                    num: "",
-                    country: "",
-                    msg: "",
-                },
 
+
+                recaptcha_token: null,
                 is_verify_isset: false,
 
                 is_mail_sending: false,
 
                 error: [],
                 fatal_error: false,
-
-                // MIX_APP_NAME: process.env.MIX_APP_NAME,
-                MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-                // MIX_GOOGLE_CAPTCHA_SECRET_KEY: process.env.MIX_GOOGLE_CAPTCHA_SECRET_KEY,
 
                 isLoading: false,
                 isSuccess: false,
@@ -178,6 +150,7 @@
                     msg: this.msg,
                     num: this.num,
                     country: this.country,
+                    recaptcha_token: this.recaptcha_token,
                 })
                 .then(Response => {
                     alert("Tenk you for your message " + this.name + ".")
@@ -208,11 +181,8 @@
                 this.country = ''
             },
 
-            onCaptchaVerified() {
-                this.is_verify_isset = true
-            },
-            onCaptchaExpired(){
-                this.is_verify_isset = false
+            onCaptchaExpired() {
+                this.recaptcha_token = null;
             },
         }
     }

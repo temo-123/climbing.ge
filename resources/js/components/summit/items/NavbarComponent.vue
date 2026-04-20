@@ -11,7 +11,7 @@
                     <span class="icon-bar"></span>
                 </button>
 
-<span>
+                <span>
                     <router-link style="font-size: 1.5em;" :to="'/'" class="site_title">{{ $t('summit.name') || 'Summit Climbing' }}</router-link>
                 </span>
             </div>
@@ -22,10 +22,11 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-<li><router-link :to="'/about_us'"> {{ $t('summit.menu.about') || 'About' }} </router-link></li>
-<li><router-link :to="'/summits/list'"> {{ $t('summit.menu.list') || 'Summit List' }} </router-link></li>
+                    <li><router-link :to="'/about_us'"> <span> {{ $t('summit.menu.about') }} </span></router-link></li>
+                    <li><router-link :to="'/summits/list'"> <span> {{ $t('summit.menu.list') }} </span></router-link></li>
+                    <li><router-link :to="'/summits/map'"> <span> {{ $t('summit.menu.map') }} </span></router-link></li>
 
-                    <!-- <li class="dropdown">
+                    <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
                             <span>
                                 <i class="fa fa-search"  aria-hidden="true"></i>
@@ -61,7 +62,7 @@
                         </a>
                     </li>
 
-                    <go-to-admin-page :go_to_page="'/'" /> -->
+                    <go-to-admin-page :go_to_page="'/'" />
                 </ul>
 
             </div>

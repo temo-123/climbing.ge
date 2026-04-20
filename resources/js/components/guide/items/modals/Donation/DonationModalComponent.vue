@@ -1,5 +1,5 @@
 <template>
-  <CustomModal
+  <StockModal
     v-model="is_show_donation_modal"
     :title="$t('guide.donation.support_title')"
     :cancelButton="{
@@ -211,7 +211,7 @@
         {{ errorMessage }}
       </div>
     </div>
-  </CustomModal>
+  </StockModal>
 </template>
 
 <script>

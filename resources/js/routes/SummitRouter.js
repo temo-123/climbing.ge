@@ -21,13 +21,15 @@ const routes = [
             }
         },
         children: [
-{ path: '', name: 'index', component: load('IndexPage'), meta: { title: 'Site Index' } },
+            { path: '', name: 'index', component: load('IndexPage'), meta: { title: 'Site Index' } },
           { path: 'about_us', name: 'about_us', component: load('AboutUsPage'), meta: { title: 'About Us' } },
           { path: 'make_ascent/:id', name: 'make_ascent', component: load('MakeSummitAscentPage'), meta: { title: 'Add Summit' } },
 
           { path: 'summit/:url_title', name: 'summit', component: load('pages/SummitPage'), meta: { title: 'Summit Detail' } },
 
           { path: 'summits/list', name: 'summit_list', component: load('lists/SummitListPage'), meta: { title: 'Summit List' } },
+
+          { path: 'summits/map', name: 'summit_map', component: load('maps/SummitMapPage'), meta: { title: 'Summit Map' } },
         ]
       }
 ];

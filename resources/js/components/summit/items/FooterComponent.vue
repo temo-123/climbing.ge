@@ -10,9 +10,9 @@
 
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.data.guid_short_description"></span>
-                            <!-- <router-link :to="{ name: 'about_us' }">
+                            <router-link :to="{ name: 'about_us' }">
                             {{ $t("global.footer.more") }}
-                            </router-link> -->
+                            </router-link>
                         </div>
                     </div>
                     <followComponent />
@@ -22,40 +22,15 @@
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
-                            <!-- Guide links not applicable for blog
-                                <li>
-                                    <router-link
-                                        :to="{ name: 'indoors', params: { lang: this.$i18n.locale } }"
-                                    >
-                                        {{ $t("guide.menu.indoor climbing") }}
-                                    </router-link>
-                                </li>
-                                <li>
-                                    <router-link :to="{ name: 'outdoors', params: { lang: this.$i18n.locale } }">
-                                        {{ $t("guide.menu.outdoor climbing") }}
-                                    </router-link>
-                                </li>
-                                <li>
-                                    <router-link :to="{ name: 'mountaineerings', params: { lang: this.$i18n.locale } }">
-                                        {{ $t("guide.menu.mountaineering") }}
-                                    </router-link>
-                                </li>
-                                <li>
-                                    <router-link :to="{ name: 'ices', params: { lang: this.$i18n.locale } }">
-                                        {{ $t("guide.menu.ice climbing") }}
-                                    </router-link>
-                                </li>
-                                <li>
-                                    <router-link :to="{ name: 'others', params: { lang: this.$i18n.locale } }">
-                                        {{ $t("guide.menu.other") }}
-                                    </router-link>
-                                </li> -->
                             <li>
-                                <!-- <router-link
-:to="{ path: '/about_us' }"
-                                >
-                                    {{ $t("guide.menu.about us") }}
-                                </router-link> -->
+                                <router-link :to="{ name: 'summit_list', params: { lang: this.$i18n.locale } }">
+                                    {{ $t("summit.menu.summit") }}
+                                </router-link>
+                            </li>
+                            <li>
+                                <router-link :to="{ name: 'about_us', params: { lang: this.$i18n.locale } }">
+                                    {{ $t("global.menu.about us") }}
+                                </router-link>
                             </li>
                         </ul>
                     </div>
@@ -64,16 +39,9 @@
                 <div class="col-md-4">
                     <div class="row f-links container">
                         <div class="flick">
-                            <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
-
-                            <!-- <share /> -->
-                        </div>
-                    </div>
-                    <div class="row f-links container">
-                        <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
-                            <div class="row">
-                                <!-- <qrcode-vue :value="qrValue" :options="options" class="foo_qr"></qrcode-vue> -->
+                            <div class="footer_qr_code_block">
+                                <qrcode-vue :value="qrValue" :options="options"></qrcode-vue>
                             </div>
                         </div>
                     </div>
@@ -127,13 +95,4 @@
     };
 </script>
 
-<style scoped>
-/* .footer_qr{
-    width: 80%;
-    margin-left: 10%;
-} */
-.foo_qr{
-    width: 50%;
-    margin-left: 25%;
-}
-</style>
+

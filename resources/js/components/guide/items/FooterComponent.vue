@@ -95,20 +95,21 @@
                     <div class="row f-links container">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t('guide.donation.support_title') }}</h4>
-                            <!-- <Donation /> -->
+                            <Donation />
                         </div>
                     </div>
                     <div class="row f-links container">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.qr") }}</h4>
-                            <div class="row">
-                                <qrcode-vue :value="qrValue" :options="options" class="foo_qr"></qrcode-vue>
+                            <div class="footer_qr_code_block">
+                                <qrcode-vue :value="qrValue" :options="options"></qrcode-vue>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
             <footerText />
         </div>
     </div>
@@ -119,13 +120,12 @@
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import share from "../../global_components/ShareComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
-    // import Donation from "../items/DonationComponent.vue";
+    import Donation from "../items/DonationComponent.vue";
     import QrcodeVue from 'qrcode.vue'
 
     export default {
         data: function () {
             return {
-                num: 0,
                 qrValue: window.location.href,
                 options: {
                     size: 100,
@@ -139,9 +139,8 @@
             share,
             footerText,
             QrcodeVue,
-            // Donation
+            Donation
         },
-
         watch: {
             '$route' (to, from) {
                 this.generato_qr_data()
@@ -157,14 +156,3 @@
         }
     };
 </script>
-
-<style scoped>
-/* .footer_qr{
-    width: 80%;
-    margin-left: 10%;
-} */
-.foo_qr{
-    width: 50%;
-    margin-left: 25%;
-}
-</style>

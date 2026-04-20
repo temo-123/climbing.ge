@@ -1,25 +1,11 @@
 <template>
     <span>
         <div class="footer_re_capcha">
-            <!-- <vue-recaptcha 
-                :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                :loadRecaptchaScript="true"
-                ref="recaptcha"
-                type="invisible"
-                @verify="onCaptchaVerified"
-                @expired="onCaptchaExpired"
-            >
-            </vue-recaptcha> -->
+            <!-- reCAPTCHA v3 native integration -->
         </div>
 
-        <div v-if="loading == false">
-            <div class="form-group"  v-if="is_verify_isset == false">
-                <button class="btn btn-success" disabled>Follow</button>
-            </div>
-            <div class="form-group"  v-else>
-                <button class="btn btn-success" v-if="this.email != ''">Follow</button>
-                <button class="btn btn-success" disabled v-else>Follow</button>
-            </div>
+        <div v-if="loading == false" class="form-group">
+            <button class="btn btn-default btn-send main-btn" @click="handleSubmit">{{ buttonTextProp }}</button>
         </div>
         <div v-if="loading == true">
             <h4  class="footer_title">Loading</h4>
@@ -28,37 +14,59 @@
 </template>
 
 <script>
-    // import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
-    export default {
-        props:[
-            // 'service',
-        ],
-        data: function () {
-            return {
-                MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-                is_verify_isset: false,
-                loading: false,
-            };
+export default {
+    props: {
+        buttonTextProp: {
+            type: String,
+            default: 'Verify'
+        }
+    },
+    data() {
+        return {
+            MIX_GOOGLE_CAPTCHA_V3_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY,
+            is_verify_isset: false,
+            loading: false,
+        };
+    },
+    mounted() {
+        // Load reCAPTCHA v3 script
+        if (!window.grecaptcha) {
+            const script = document.createElement('script');
+            script.src = `https://www.google.com/recaptcha/api.js?render=${this.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY}`;
+            document.head.appendChild(script);
+        }
+    },
+    methods: {
+        async executeRecaptcha(action = 'follow') {
+            try {
+                const token = await window.grecaptcha.execute(this.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY, {action});
+                return token;
+            } catch (error) {
+                console.error('reCAPTCHA error:', error);
+                return null;
+            }
         },
-        components: {
-            // 'vue-recaptcha': VueRecaptchaV2
+        async handleSubmit() {
+            this.loading = true;
+            const token = await this.executeRecaptcha('message');
+            if (token) {
+                this.$emit('recaptcha-verified', token);
+            }
+            this.loading = false;
         },
-        mounted() {
-            
-        },
-        methods: {
-            onCaptchaVerified() {
-                this.is_verify_isset = true
-            },
-            onCaptchaExpired(){
-                this.is_verify_isset = false
-            },
+        onCaptchaExpired() {
+            this.is_verify_isset = false;
         }
     }
+}
 </script>
 
 <style>
-.footer_input, .footer_re_capcha{
+.footer_input, .footer_re_capcha {
     margin-bottom: 1.5%;
+}
+/* Hide reCAPTCHA badge */
+.grecaptcha-badge {
+    visibility: hidden !important;
 }
 </style>

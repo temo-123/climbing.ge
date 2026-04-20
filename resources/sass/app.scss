@@ -1183,7 +1183,6 @@ tr td:last-child {
     padding: 40px 0px;
     display: inline-block;
 }
-
 .footer_title {
     color: rgb(186, 186, 186);
     text-align: center;
@@ -1193,10 +1192,14 @@ tr td:last-child {
     text-align: center;
     padding: 0;
 }
-
 .footer_description_block {
     color: #a7a7a7;
     text-align: center;
+}
+.footer_qr_code_block{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 

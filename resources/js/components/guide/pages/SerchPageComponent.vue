@@ -2,7 +2,9 @@
     <div>
         <div class="container">
 
-            <h1  class='serch_title'>Search climbing spot</h1>
+            <h1  class='serch_title'>{{ $t('guide.title.search') }}</h1>
+            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.guide_search_description"></span> </h3>
 
             <div class="row">
                 <div class="col-md-12">
@@ -19,7 +21,7 @@
                         <hr>
                         <span v-if="articles.length == 0">
                             <div class="alert alert-danger" role="alert">
-                                Nothing found! Try again! :)
+                                {{ $t('guide.search_no_result_faild') }}
                             </div>
                         </span>
 

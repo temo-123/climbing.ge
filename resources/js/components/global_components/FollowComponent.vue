@@ -14,25 +14,11 @@
                     <input type="text" v-model="email" name="email" class="form-control footer_input"> 
 
                     <div class="footer_re_capcha">
-                        <!-- <vue-recaptcha 
-                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                            :loadRecaptchaScript="true"
-                            ref="recaptcha"
-                            type="invisible"
-                            @verify="onCaptchaVerified"
-                            @expired="onCaptchaExpired"
-                        >
-                        </vue-recaptcha> -->
-                    </div>
-
-                    <div v-if="loading == false">
-                        <div class="form-group"  v-if="is_verify_isset == false">
-                            <button class="btn btn-success" disabled>Follow</button>
-                        </div>
-                        <div class="form-group"  v-else>
-                            <button class="btn btn-success" v-if="this.email != ''">Follow</button>
-                            <button class="btn btn-success" disabled v-else>Follow</button>
-                        </div>
+                        <FormCapchaComponent 
+                            :buttonTextProp="'Follow'"
+                            @recaptcha-verified="follow"
+                            @expired="onCaptchaExpired" 
+                        />
                     </div>
                     <div v-if="loading == true">
                         <h4  class="footer_title">Loading</h4>
@@ -44,7 +30,8 @@
 </template>
 
 <script>
-    // import { RecaptchaV2 as VueRecaptchaV2 } from 'vue3-recaptcha-v2';
+    import FormCapchaComponent from './FormCapchaComponent.vue';
+
     export default {
         props:[
             // 'service',
@@ -55,23 +42,24 @@
                 email: '',
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-                is_verify_isset: false,
+                recaptcha_token: null,
                 loading: false,
             };
         },
-    // components: {
-    //         'vue-recaptcha': VueRecaptchaV2
-    //     },
+    components: {
+            FormCapchaComponent
+        },
         provide() {
             return {
-                // 'vue3-recaptcha-v2:options': {}
+                //
             }
         },
         mounted() {
             
         },
         methods: {
-            follow(){
+            follow(token){
+                this.recaptcha_token = token
                 if(window.location.hostname == process.env.MIX_SITE_URL){
                     this.service = 'guid'
                 }
@@ -84,9 +72,9 @@
 
                 this.loading = true
                 axios
-                .post('../../../../api/follow/' + this.service, {
+                .post('/set_follow/' + this.service, {
                     email: this.email,
-
+                    recaptcha_token: this.recaptcha_token,
                     _method: 'post'
                 })
                 .then(Response => {
@@ -105,11 +93,8 @@
                 .finally(() => (this.loading = false));
 
             },
-            onCaptchaVerified() {
-                this.is_verify_isset = true
-            },
             onCaptchaExpired(){
-                this.is_verify_isset = false
+                this.recaptcha_token = null
             },
         }
     }
