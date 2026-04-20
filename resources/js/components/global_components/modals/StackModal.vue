@@ -7,7 +7,7 @@
       :class="overlayClass"
     >
       <Transition name="modal">
-<div 
+        <div
           ref="modalRef"
           class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 flex flex-col mx-auto w-full max-w-6xl max-h-[95vh] overflow-hidden border border-gray-200/50"
           :class="[modalClasses, 'max-h-[95vh]']"
