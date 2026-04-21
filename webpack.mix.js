@@ -6,7 +6,7 @@ mix.js('resources/js/app.js', 'public/assets/js').vue({
   version: 3,
   options: {
     compilerOptions: {
-    //   isCustomElement: (tag) => ['ckeditor', 'Ckeditor'].includes(tag)
+      //
     }
   }
 });
@@ -23,7 +23,8 @@ mix.override((webpackConfig) => {
 
 mix.webpackConfig({
     resolve: {
-        extensions: ['.*', '.wasm', '.mjs', '.js', '.jsx', '.json', '.vue'], 
+        extensions: ['.*', '.wasm', '.mjs', '.js', '.jsx', '.json', '.vue'],
+        alias: {}
     },
     resolveLoader: {
         alias: {

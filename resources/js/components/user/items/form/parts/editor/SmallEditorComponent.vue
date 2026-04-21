@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button 
+    <button
       type="button" 
       @click="showSource = !showSource" 
       class="btn btn-outline-secondary mb-2"
@@ -12,7 +12,7 @@
     <div v-if="showSource" class="source-container mb-3">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="mb-0">HTML Source Code</h6>
-        <button 
+        <button
           type="button" 
           @click="copySource" 
           class="btn btn-sm btn-secondary"
@@ -20,11 +20,11 @@
           Copy to Clipboard
         </button>
       </div>
-      <div style="max-height: 400px; overflow-y: auto;">
+      <div style="max-height: 300px; overflow-y: auto;">
         <textarea 
           v-model="content" 
           class="form-control source-textarea"
-          style="height: 400px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4;"
+          style="height: 150px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4;"
           placeholder="Edit raw HTML source here..."
         ></textarea>
       </div>
@@ -36,7 +36,7 @@
       contentType="html"
       :options="editorOptions"
       @update:content="handleUpdate"
-      style="height: 400px"
+      style="height: 150px"
     />
   </div>
 </template>
@@ -58,21 +58,11 @@ const showSource = ref(false)
 const editorOptions = {
   modules: {
     toolbar: [
-      [{ header: 1 }, { header: 2 }, { font: [] }],
-      [{ size: ['small', false, 'large', 'huge'] }],
-      [{ color: [] }, { background: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }, { 'direction': 'rtl' ? 'ltr' : false }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image', 'video'],
+      [{ header: [1, 2, false] }],
+      ['bold', 'italic'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
       ['clean']
-    ],
-    history: {
-      delay: 1000,
-      maxStack: 100,
-      userOnly: true
-    }
+    ]
   }
 }
 

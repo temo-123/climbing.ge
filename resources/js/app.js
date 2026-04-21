@@ -1,11 +1,7 @@
 import { createApp } from "vue";
 import "./bootstrap";
 
-const app = createApp({
-    setup() {
-        // Vue 3 setup function
-    }
-});
+const app = createApp({});
 
 import axios from "axios";
 app.use(axios);
@@ -15,6 +11,15 @@ app.use(createPinia());
 
 import i18n from "./services/localization/i18n";
 app.use(i18n);
+
+import big_editor from './components/user/items/form/parts/editor/BigEditorComponent.vue'
+app.component("big_editor", big_editor);
+
+import small_editor from './components/user/items/form/parts/editor/SmallEditorComponent.vue'
+app.component("small_editor", small_editor);
+
+import mini_editor from './components/user/items/form/parts/editor/MiniEditorComponent.vue'
+app.component("mini_editor", mini_editor);
 
 import { abilityDefaults } from "./services/ability/ability.js"
 app.config.globalProperties.$ability = abilityDefaults

@@ -26,28 +26,14 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <!-- <div ref="editorContainer" class="editor-container" style="height: 200px; border: 1px solid #ccc;"></div> -->
-                            <!-- <QuillEditor
-                                v-model:content="content"
-                                contentType="html"
-                                theme="snow"
-                                toolbar="essential"
-                            /> -->
-
-                            <big_editor />
+                            <small_editor v-model="data.short_description" />
                         </div>
                     </div>
 
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> text </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.text" :config="editor_config.text" /> -->
-                             <!-- <QuillEditor
-                                v-model:content="data.text"
-                                contentType="html"
-                                theme="snow"
-                                toolbar="full"
-                            /> -->
+                            <big_editor v-model="data.text" />
                         </div>
                     </div>
 
@@ -56,13 +42,7 @@
                     <div class="form-group clearfix row" v-if="category != 'mount_route' && category != 'partners' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.how_get" :config="editor_config.how_get" /> -->
-                             <!-- <QuillEditor
-                                v-model:content="data.how_get"
-                                contentType="html"
-                                theme="snow"
-                                toolbar="full"
-                            /> -->
+                            <big_editor v-model="data.how_get" />
                         </div>
                     </div>
 
@@ -151,14 +131,7 @@
                             <label for="name" class='col-md-2 control-label'> Info / contact </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
-                                    <!-- <ckeditor v-model="data.info" :config="this.$editor_config.get_big_editor_config()" /> -->
-
-                                    <!-- <QuillEditor
-                                        v-model:content="data.info"
-                                        contentType="html"
-                                        theme="snow"
-                                        toolbar="full"
-                                    /> -->
+                                    <big_editor v-model="data.text" />
                                 </div>
                             </div>
                         </div>
@@ -169,14 +142,7 @@
                     <div class="form-group clearfix row" v-if="category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.price_text" :config="editor_config.price_text" /> -->
-
-                            <!-- <QuillEditor
-                                v-model:content="data.price_text"
-                                contentType="html"
-                                theme="snow"
-                                toolbar="full"
-                            /> -->
+                            <big_editor v-model="data.price_text" />
                         </div>
                     </div>
 
@@ -187,27 +153,10 @@
 </template>
 
 <script>
-    // import { SlickList, SlickItem } from 'vue-slicksort';
-    // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
-
-    // import { editor_config } from '../../../../../../mixins/editor/editor_config_mixin.js'
-
-    // import GlobalInfoFormBlock from '../../../../items/form/parts/GlobalInfoFormBlockComponent.vue'
-
-    import big_editor from '../../../../items/form/parts/editor/BigEditorComponent.vue'
-
     export default {
-
         components: {
-            // StackModal,
-            // GlobalInfoFormBlock,
-            // SlickItem,
-            // SlickList,
-            big_editor
+
         },
-        mixins: [
-            // editor_config
-        ],
         props: [
             'global_blocks_prop',
             'locale_data_prop',
@@ -217,11 +166,6 @@
             'title_prop',
             'description_prop'
         ],
-        // async created(){
-        //     const res = await this.callApi('get','app/get_categories')
-        //     this.token = window.Laravel.csrfToken
-        //     this.categories = res.data
-        // },
         watch: {
             global_blocks_prop: function(){
                 this.global_blocks = this.global_blocks_prop
@@ -233,16 +177,6 @@
             locale_data_prop: function(newVal, oldVal) { 
                 // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
                 this.data = this.locale_data_prop
-            }
-        },
-        computed: {
-            editor_config () {
-                return {
-                    short_description_text: this.$editor_config.get_small_editor_config(),
-                    text: this.$editor_config.get_big_editor_config(),
-                    how_get: this.$editor_config.get_big_editor_config(),
-                    price_text: this.$editor_config.get_big_editor_config(),
-                }
             }
         },
         data(){
@@ -279,45 +213,6 @@
 
             this.get_general_info()
 
-            // Load ClassicEditor from CDN only once
-            if (!window.ClassicEditor) {
-              const script = document.createElement('script');
-              script.src = 'https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js';
-              script.onload = () => {
-                window.initLocaleEditor = () => this.initEditor();
-                window.initLocaleEditor();
-              };
-              document.head.appendChild(script);
-            } else {
-              this.initEditor();
-            }
-        },
-
-        beforeUnmount() {
-            if (this.editor) {
-                this.editor.destroy();
-            }
-            delete window.initLocaleEditor;
-        },
-
-        methods: {
-            async initEditor() {
-                const config = {
-                    height: 200,
-                    toolbar: [ 'bold', 'italic', 'link', '|', 'bulletedList', 'numberedList', '|', 'undo', 'redo' ]
-                };
-                try {
-                    this.editor = await ClassicEditor.create( this.$refs.editorContainer, config );
-                    this.editor.model.document.on( 'change:data', () => {
-                        this.data.short_description = this.editor.getData();
-                    } );
-                    if (this.data.short_description) {
-                        this.editor.setData( this.data.short_description );
-                    }
-                } catch ( error ) {
-                    console.error( error );
-                }
-            }
         },
 
         methods: {

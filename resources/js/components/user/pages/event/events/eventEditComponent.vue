@@ -161,14 +161,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.short_description" :config="editor_config.us_short_description"></ckeditor>
+                                <big_editor v-model="data.us_data.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_data.text" :config="editor_config.us_text"></ckeditor>
+                                <big_editor v-model="data.us_data.text" />
                             </div>
                         </div>
 
@@ -211,14 +211,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_data.short_description" :config="editor_config.ka_short_description"></ckeditor>
+                                <big_editor v-model="data.ka_data.short_description" />
                             </div>
                         </div>
     
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_data.text" :config="editor_config.ka_text"></ckeditor>
+                                <big_editor v-model="data.ka_data.text" />
                             </div>
                         </div>
 
@@ -247,16 +247,16 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-    import { general_info } from '../../../../../mixins/general_info_mixin.js'
+    // import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
+    // import { general_info } from '../../../../../mixins/general_info_mixin.js'
     // import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
 
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
         mixins: [
-            general_info,
-            editor_config,
+            // general_info,
+            // editor_config,
         ],
         props: [
             // 'back_url',
@@ -273,14 +273,14 @@
                 images: [],
                 editorConfig: '',
 
-                editor_config: {
-                    us_short_description: editor_config.get_small_editor_config(),
-                    us_text: editor_config.get_big_editor_config(),
-                    ru_short_description: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
-                    ka_short_description: editor_config.get_small_editor_config(),
-                    ka_text: editor_config.get_big_editor_config(),
-                },
+                // editor_config: {
+                //     us_short_description: editor_config.get_small_editor_config(),
+                //     us_text: editor_config.get_big_editor_config(),
+                //     ru_short_description: editor_config.get_small_editor_config(),
+                //     ru_text: editor_config.get_big_editor_config(),
+                //     ka_short_description: editor_config.get_small_editor_config(),
+                //     ka_text: editor_config.get_big_editor_config(),
+                // },
 
                 error: [],
 
