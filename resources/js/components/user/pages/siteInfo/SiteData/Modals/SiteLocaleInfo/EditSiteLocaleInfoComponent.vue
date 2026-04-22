@@ -63,8 +63,8 @@
                 error: [],
 
                 editor_config: {
-                    ka_data: this.$editor_config.get_big_editor_config(),
-                    us_data: this.$editor_config.get_big_editor_config(),
+                    ka_data: {},
+                    us_data: {},
                 },
 
                 is_show_modal: false,

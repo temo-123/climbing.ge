@@ -7,7 +7,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form v-on:submit.prevent="add_sector_from_modal" id="add_new_sector" class="form">
                 <!-- <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" v-on:input="get_region_sectors()">  -->
                 <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" @click="get_region_sectors()"> 
@@ -23,7 +23,7 @@
 
                 <img :src="'../../../public/images/site_img/loading.gif'" alt="loading" v-if="sectors_loading">
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button type="submit" form="add_new_sector" class="btn btn-primary">Add new sector</button>

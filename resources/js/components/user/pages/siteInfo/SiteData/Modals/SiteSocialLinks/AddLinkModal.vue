@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <validator_alerts_component
                 :errors_prop="error"
             />
@@ -15,7 +15,7 @@
                 <input type="text" class="form-control" v-model="data.title" name="title" id="Title" placeholder="Title" title="Title">
                 <input type="url" class="form-control" v-model="data.url" name="url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

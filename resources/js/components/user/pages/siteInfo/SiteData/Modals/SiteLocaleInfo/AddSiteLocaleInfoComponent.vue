@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <validator_alerts_component
                 :errors_prop="error"
             />
@@ -17,7 +17,7 @@
                 <ckeditor v-model="data.ka_data" :config="editor_config.ka_data"></ckeditor>
                 <ckeditor v-model="data.us_data" :config="editor_config.us_data"></ckeditor>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
@@ -59,8 +59,8 @@
                 error: [],
 
                 editor_config: {
-                    us_data: this.$editor_config.get_big_editor_config(),
-                    ka_data: this.$editor_config.get_big_editor_config(),
+                    us_data: {},
+                    ka_data: {},
                 },
 
                 is_show_modal: false,

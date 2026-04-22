@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form v-on:submit.prevent="add_role" id="add_role_form">
                 <input
                     type="text"
@@ -55,7 +55,7 @@
                     </tr>
                 </tbody>
             </table>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

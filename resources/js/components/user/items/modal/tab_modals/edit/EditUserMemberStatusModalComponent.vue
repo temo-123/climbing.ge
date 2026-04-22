@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <span v-show="is_loading">
                 <div class="col-md-4">
                     <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
@@ -25,7 +25,7 @@
                     <small class="form-text text-muted">Provide a brief description of the member's status or role within the team.</small>
                 </div>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

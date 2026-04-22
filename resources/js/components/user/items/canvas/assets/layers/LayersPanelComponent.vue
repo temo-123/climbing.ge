@@ -282,8 +282,8 @@ export default {
                     this.cancelEditingLayerName(l);
                 }
             });
-            this.$set(layer, 'isEditing', true);
-            this.$set(layer, 'originalName', layer.name);
+            layer.isEditing = true;
+            layer.originalName = layer.name;
             this.$nextTick(() => {
                 if (event && event.target) {
                     event.target.focus();
@@ -305,12 +305,12 @@ export default {
                 // Revert to original name if no change or empty
                 layer.name = layer.originalName;
             }
-            this.$set(layer, 'isEditing', false);
+            layer.isEditing = false;
             delete layer.originalName;
         },
 
         cancelEditingLayerName(layer) {
-            this.$set(layer, 'isEditing', false);
+            layer.isEditing = false;
             delete layer.originalName;
             this.$emit('cancel-editing-layer-name');
         },
@@ -326,8 +326,8 @@ export default {
                     });
                 }
             });
-            this.$set(child, 'isEditing', true);
-            this.$set(child, 'originalName', child.name);
+            child.isEditing = true;
+            child.originalName = child.name;
             this.$nextTick(() => {
                 if (event && event.target) {
                     event.target.focus();
@@ -349,12 +349,12 @@ export default {
                 // Revert to original name if no change or empty
                 child.name = child.originalName;
             }
-            this.$set(child, 'isEditing', false);
+            child.isEditing = false;
             delete child.originalName;
         },
 
         cancelEditingChildName(child) {
-            this.$set(child, 'isEditing', false);
+            child.isEditing = false;
             delete child.originalName;
             this.$emit('cancel-editing-child-name');
         },
@@ -367,9 +367,9 @@ export default {
                     this.cancelEditingText(l);
                 }
             });
-            this.$set(layer, 'isEditing', true);
-            this.$set(layer, 'originalText', layer.textContent);
-            this.$set(layer, 'editText', layer.textContent || '');
+            layer.isEditing = true;
+            layer.originalText = layer.textContent;
+            layer.editText = layer.textContent || '';
             this.$nextTick(() => {
                 const inputRef = this.$refs['textInput-' + layer.name];
                 if (inputRef && inputRef.length > 0) {
@@ -394,13 +394,13 @@ export default {
                 // Revert to original text if no change
                 layer.textContent = layer.originalText;
             }
-            this.$set(layer, 'isEditing', false);
+            layer.isEditing = false;
             delete layer.originalText;
             delete layer.editText;
         },
 
         cancelEditingText(layer) {
-            this.$set(layer, 'isEditing', false);
+            layer.isEditing = false;
             delete layer.originalText;
             delete layer.editText;
             this.$emit('cancel-editing-text');
@@ -417,9 +417,9 @@ export default {
                     });
                 }
             });
-            this.$set(child, 'isEditing', true);
-            this.$set(child, 'originalText', child.textContent);
-            this.$set(child, 'editText', child.textContent || '');
+            child.isEditing = true;
+            child.originalText = child.textContent;
+            child.editText = child.textContent || '';
             this.$nextTick(() => {
                 const inputRef = this.$refs['childTextInput-' + child.name];
                 if (inputRef && inputRef.length > 0) {
@@ -444,13 +444,13 @@ export default {
                 // Revert to original text if no change
                 child.textContent = child.originalText;
             }
-            this.$set(child, 'isEditing', false);
+            child.isEditing = false;
             delete child.originalText;
             delete child.editText;
         },
 
         cancelEditingChildText(child) {
-            this.$set(child, 'isEditing', false);
+            child.isEditing = false;
             delete child.originalText;
             delete child.editText;
             this.$emit('cancel-editing-child-text');

@@ -61,8 +61,8 @@
                 errors: [],
                 
                 editor_config: {
-                    short_description_text: this.$editor_config.get_small_editor_config(),
-                    text: this.$editor_config.get_big_editor_config(),
+                    short_description_text: {},
+                    text: {},
                 },
 
                 data: {

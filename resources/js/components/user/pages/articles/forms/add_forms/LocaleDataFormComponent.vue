@@ -198,10 +198,10 @@
                 error: [],
                 
                 editor_config: {
-                    short_description_text: this.$editor_config.get_small_editor_config(),
-                    text: this.$editor_config.get_big_editor_config(),
-                    how_get: this.$editor_config.get_big_editor_config(),
-                    price_text: this.$editor_config.get_big_editor_config(),
+                    short_description_text: {},
+                    text: {},
+                    how_get: {},
+                    price_text: {},
                 },
 
                 data: {

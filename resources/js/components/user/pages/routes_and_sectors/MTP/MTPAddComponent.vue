@@ -95,15 +95,12 @@
 </template>
 
 <script>
-  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
 
   export default {
-    mixins: [
-        editor_config
-    ],
+    mixins: [],
     data() {
       return {
-        description_editor: editor_config.get_small_editor_config(),
+        description_editor: {},
 
         regions: [],
         sectors: [],

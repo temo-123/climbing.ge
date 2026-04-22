@@ -244,15 +244,13 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
     import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
 
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
-            editor_config,
-        ],
+            ],
         components: {
             gallery_images_add,
             article_bisnes_add_relatione_tab,
@@ -277,14 +275,13 @@
                 showValidationConflicts: false,
                 validationConflicts: [],
                 validationUserChoices: {},
-
                 editor_config: {
-                    us_short_description: editor_config.get_small_editor_config(),
-                    us_text: editor_config.get_big_editor_config(),
-                    ru_short_description: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
-                    ka_short_description: editor_config.get_small_editor_config(),
-                    ka_text: editor_config.get_big_editor_config(),
+                    us_short_description: {},
+                    us_text: {},
+                    ru_short_description: {},
+                    ru_text: {},
+                    ka_short_description: {},
+                    ka_text: {},
                 },
 
                 data: {
@@ -457,7 +454,7 @@
 
             // Set user choice for a specific conflict
             setValidationChoice(articleId, choice) {
-                this.$set(this.validationUserChoices, articleId, choice);
+                this.validationUserChoices[articleId] = choice;
             },
 
             // Proceed with user's validation selections
@@ -515,7 +512,7 @@
 
             // Handle validation choice made in child component
             handleValidationChoice(articleId, choice) {
-                this.$set(this.validationUserChoices, articleId, choice);
+                this.validationUserChoices[articleId] = choice;
             },
 
             // Validate relations before save

@@ -12,8 +12,8 @@ use App\Models\Shop\Product_option;
 use App\Models\Shop\Favorite_product;
 use App\Models\User\User_adreses;
 use App\Services\PermissionService;
-
-use auth;
+use App\Services\ProductService;
+use Auth;
 
 class CartController extends Controller
 {
@@ -24,51 +24,32 @@ class CartController extends Controller
     
     public function index()
     {
-        
-        if (Auth::user()) {
-            $user = Auth::user();
-            $cart_items = Cart::where('user_id', '=', $user->id)->get();
-            $products = array();
-            $product_image = '';
-            foreach ($cart_items as $cart_item) {
+        if (!Auth::user()) return [];
 
-                $option = Product_option::where('id', strip_tags($cart_item->option_id))->get();
+        $user = Auth::user();
+        $cart_items = Cart::where('user_id', $user->id)->get();
+        $products = [];
 
-                foreach ($option as $opt) {
-                    $product = Product::where('id', strip_tags($opt->product_id))->get();
-                    // dd($product);
-                
-                    $images = Option_image::where('option_id', strip_tags($opt->id))->get();
-                    $image_count = Option_image::where('option_id', strip_tags($opt->id))->count();
-    
-                    foreach($images as $image){
-                        if ($image_count == 1) {
-                            $product_image = $image->image;
-                        }
-                        if ($image_count == 1 && $image->general_image == NULL) {
-                            # code...
-                        } 
-                        else {
-                            # code...
-                        }
-                    }
+        foreach ($cart_items as $cart_item) {
+            $option = Product_option::with('warehouse')->find($cart_item->option_id);
+            if (!$option) continue;
 
-                    array_push($products, [
-                        "id"=>$cart_item->id,
-                        "user_id"=>$cart_item->user_id,
-                        "product"=>$product[0],
-                        "option"=>$option[0],
-                        "quantity"=>$cart_item->quantity,
-                        "product_image" => $product_image,
-                    ]);
-                
-                    // dd($products);
-                    // echo $product_image;
-                }
-            }
-            
-            return $products;
+            $product = Product::find($option->product_id);
+
+            $product_image = Option_image::where('option_id', $option->id)->value('image') ?? '';
+
+            $products[] = [
+                "id"            => $cart_item->id,
+                "user_id"       => $cart_item->user_id,
+                "product"       => $product,
+                "option"        => $option,
+                "stock_quantity"=> ProductService::get_option_stock_quantity($option),
+                "quantity"      => $cart_item->quantity,
+                "product_image" => $product_image,
+            ];
         }
+
+        return $products;
     }
 
     public function update_quantity(Request $request)
@@ -185,41 +166,45 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
-        if($cart_item){
-            $item_quantity = $cart_item->quantity;
-            $requested_quantity = $request->quantity;
-
-            $option_item = Product_option::where('id', '=', $cart_item->option_id)->first();
-            if ($item_quantity + $requested_quantity > $option_item->quantity) {
-                return response()->json(['error' => 'Not enough stock available'], 400);
-            }
-
-            $cart_item['quantity'] = $item_quantity + $requested_quantity;
-            $cart_item -> save();
+        $option_item = Product_option::with('warehouse')->where('id', '=', $request->modification_id)->first();
+        if (!$option_item) {
+            return response()->json(['error' => 'Product option not found'], 404);
         }
-        else{
-            // Check stock before adding new cart item
-            $option_item = Product_option::where('id', '=', $request->modification_id)->first();
-            if (!$option_item || $request->quantity > $option_item->quantity) {
-                return response()->json(['error' => 'Not enough stock available'], 400);
+
+        $stock = ProductService::get_option_stock_quantity($option_item);
+        $requested_quantity = (int) $request->quantity;
+
+        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
+        if ($cart_item) {
+            $new_total = $cart_item->quantity + $requested_quantity;
+            if ($new_total > $stock) {
+                return response()->json([
+                    'error' => 'Not enough stock available',
+                    'available' => $stock,
+                ], 400);
             }
-
+            $cart_item->quantity = $new_total;
+            $cart_item->save();
+        } else {
+            if ($requested_quantity > $stock) {
+                return response()->json([
+                    'error' => 'Not enough stock available',
+                    'available' => $stock,
+                ], 400);
+            }
             $cart = new Cart;
-
             $cart['option_id'] = $request->modification_id;
-            $cart['quantity'] = $request->quantity;
+            $cart['quantity'] = $requested_quantity;
             $cart['user_id'] = Auth::user()->id;
-
-            $cart -> save();
+            $cart->save();
         }
     }
 
     public function destroy($id, Request $request)
     {
-        if ($request->isMethod('delete')) {
-            $item = cart::where('id', '=', $id)->first();
-            $item -> delete();
+        $item = Cart::where('id', '=', $id)->where('user_id', '=', Auth::user()->id)->first();
+        if ($item) {
+            $item->delete();
         }
     }
 }

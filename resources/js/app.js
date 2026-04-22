@@ -3,9 +3,6 @@ import "./bootstrap";
 
 const app = createApp({});
 
-import axios from "axios";
-app.use(axios);
-
 import { createPinia } from "pinia";
 app.use(createPinia());
 
@@ -27,9 +24,6 @@ app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(acti
 
 import { going } from './mixins/easy_navigation_mixin.js';
 app.config.globalProperties.$going = going;
-
-import { editor_config } from './mixins/editor/editor_config_mixin.js';
-app.config.globalProperties.$editor_config = editor_config;
 app.config.globalProperties.$bus = {
     callbacks: {},
     $emit(event, payload) {
@@ -54,6 +48,9 @@ app.component('StackModal', StackModal)
 
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 app.component("goToAdminPage", goToAdminPage);
+
+import NavBadges from "./components/global_components/NavBadgesComponent.vue";
+app.component("nav-badges", NavBadges);
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
@@ -143,6 +140,7 @@ else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     app.component("left-menu", leftmenu);
     app.component("validator_alerts_component", validator_alerts_component);
     app.component("GlobalInfoFormBlock", GlobalInfoFormBlock);
+    app.component("site-img", guide_img);
 
     app.component('home-component', Home);
 
@@ -265,13 +263,20 @@ router.afterEach(() => {
     }, 300);
 });
 
-window.axios.interceptors.response.use({}, err => {
+window.axios.interceptors.request.use(config => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+    }
+    return config;
+});
+
+window.axios.interceptors.response.use(response => response, err => {
     if(err && err.response){
         if(err.response.status === 401 || err.response.status === 419){
-            const token = localStorage.getItem('x_xsrf_token')
-            if(token){
-                localStorage.removeItem('x_xsrf_token')
-            }
+            localStorage.removeItem('x_xsrf_token')
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('user_permissions')
 
             if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
                 router.push({name: "login"})
@@ -289,7 +294,7 @@ window.axios.interceptors.response.use({}, err => {
                 } else {
                     alert('Your account has been banned.');
                 }
-                
+
                 localStorage.removeItem('x_xsrf_token');
                 localStorage.removeItem('user');
                 window.close();
@@ -301,10 +306,11 @@ window.axios.interceptors.response.use({}, err => {
             }
         }
         else{
-            alert("Error -> {" + err + "}")
+            alert("Error: " + (err.response.status + ' ' + err.response.statusText).trim())
             return Promise.reject(err)
         }
     }
+    return Promise.reject(err)
 })
 
 app.use(router);

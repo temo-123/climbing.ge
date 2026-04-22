@@ -6,7 +6,7 @@
             :modal-class="{ [MTPModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
-            <pre class="language-vue">
+            <div>
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <router-link :to="{name: 'sectorLocalImagesListEdit', params: { id: sector_sector_local_image_pitchs_for_modal.image.id } }" v-if="$can('edit', 'sector_local_images')"> 

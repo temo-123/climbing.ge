@@ -96,8 +96,6 @@
             },
             data(){
                 return {
-                    text_editor_config: this.$editor_config.get_big_editor_config(),
-
                     general_infos: [],
 
                 form_data: this.form_data_prop,
@@ -121,9 +119,9 @@
             this.general_infos = this.global_data_array_prop
         },
         watch: {
-            // form_data_prop: function(){
-            //     this.form_data = this.form_data_prop
-            // },
+            form_data: function() {
+                this.input_event()
+            },
             block_action_prop: function(){
                 this.global_blocks.block_action = this.block_action_prop
             },

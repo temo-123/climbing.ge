@@ -35,7 +35,7 @@
               required
             />
             <div class="alert alert-danger" role="alert" v-if="error.email">
-              Plees insert Email (Email required)
+              Email is required
             </div>
           </div>
 
@@ -66,7 +66,7 @@
               </span>
             </div>
             <div class="alert alert-danger" role="alert" v-if="error.password">
-              Plees insert password (password required)
+              Password is required
             </div>
           </div>
           <div class="form-group">
@@ -182,15 +182,16 @@ export default {
       
       social_login(service){
         this.is_loading = true
-        
-        axios.get('/login/' + service)
+
+        axios.get('login/' + service)
         .then(response => {
-          console.log(response.data)
           if(response.data.url){
             window.location.href = response.data.url
+          } else {
+            this.auth_error = 'Could not initiate social login. Please try again.'
           }
-        }).catch(err => {
-          console.log(err.data)
+        }).catch(() => {
+          this.auth_error = 'Social login failed. Please try again.'
         })
         .finally(() => this.is_loading = false);
       },
@@ -253,7 +254,7 @@ export default {
                   
                   // Fetch permissions immediately after successful login
                   return axios
-                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/get_user/get_auth_user_permissions/', {
+                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api/get_user/get_auth_user_permissions/', {
                       headers: {
                         'Accept': 'application/json',
                         'Authorization': 'Bearer ' + response.data.token
@@ -271,15 +272,15 @@ export default {
                       // Emit global event so all components can update
                       this.$bus.$emit('permissions-loaded', permResponse.data)
                       
-                      // Navigate to home
-                      this.$router.push({ name: "home" });
+                      const redirect = this.$route.query.redirect;
+                      this.$router.push(redirect || { name: 'home' });
                     })
                 })
                 .catch((error) => {
                   console.log('Login error:', error.response || error);
                   if(error.response && error.response.status === 422) {
                     if(error.response.data.message == 'auth.failed'){
-                      this.auth_error = 'Email or password is not corect'
+                      this.auth_error = 'Email or password is incorrect'
                     }
                     else{
                       this.error = error.response.data.errors

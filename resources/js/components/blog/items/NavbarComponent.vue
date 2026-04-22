@@ -63,7 +63,7 @@
                         </a>
                     </li>
 
-                    <goToAdminPage :go_to_page="'/'" />
+                    <nav-badges />
                 </ul>
 
             </div>

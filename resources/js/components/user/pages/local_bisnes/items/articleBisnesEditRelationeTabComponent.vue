@@ -451,7 +451,7 @@
 
             // Set user choice for a specific conflict
             setValidationChoice(articleId, choice) {
-                this.$set(this.validationUserChoices, articleId, choice);
+                this.validationUserChoices[articleId] = choice;
             },
 
             // Proceed with user's validation selections

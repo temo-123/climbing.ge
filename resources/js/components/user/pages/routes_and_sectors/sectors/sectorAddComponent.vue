@@ -477,12 +477,8 @@
     import Uploader from "vux-uploader-component";
     import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
 
-    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
-
     export default {
-        mixins: [
-            editor_config
-        ],
+        mixins: [],
         components: {
             Uploader,
             SlickItem,
@@ -490,8 +486,8 @@
         },
         data() {
             return {
-                ka_description_editor: editor_config.get_small_editor_config(),
-                us_description_editor: editor_config.get_small_editor_config(),
+                ka_description_editor: {},
+                us_description_editor: {},
 
                 fileList: [], //https://github.com/eJayYoung/vux-uploader-component
                 regions: "",

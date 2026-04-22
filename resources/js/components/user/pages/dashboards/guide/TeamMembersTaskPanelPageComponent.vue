@@ -29,8 +29,8 @@
                     <td>{{worker.id}}</td>
                     <td>|</td>
 
-                    <td @click="check_user_task_list(worker.id)" title="Click for quick wiev" style="cursor: zoom-in;">
-                        {{worker.name}} {{worker.surmane}}
+                    <td @click="check_user_task_list(worker.id)" title="Click to view task list" style="cursor: zoom-in;">
+                        {{worker.name}} {{worker.surname}}
                     </td>
 
                     <td>|</td>
@@ -69,8 +69,8 @@
                     error => console.log(error)
                 );
             }, 
-            check_user_task_list(){
-                alert('Worker task list show function comming soon')
+            check_user_task_list(worker_id){
+                this.$emit('show_worker_tasks', worker_id)
             }
         }
     }

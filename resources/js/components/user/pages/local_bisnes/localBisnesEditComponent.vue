@@ -162,15 +162,13 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
 
     import article_bisnes_edit_relatione_tab from './items/articleBisnesEditRelationeTabComponent.vue'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
-            editor_config,
-        ],
+            ],
         components: {
             gallery_images_edit,
             article_bisnes_edit_relatione_tab,
@@ -198,15 +196,15 @@
                 validation_errors: [],
 
                 editor_config: {
-                    us_short_description: editor_config.get_small_editor_config(),
-                    us_text: editor_config.get_big_editor_config(),
-                    // us_info: editor_config.get_big_editor_config(),
-                    // ru_short_description: editor_config.get_small_editor_config(),
-                    // ru_text: editor_config.get_big_editor_config(),
-                    // ru_info: editor_config.get_big_editor_config(),
-                    ka_short_description: editor_config.get_small_editor_config(),
-                    ka_text: editor_config.get_big_editor_config(),
-                    // ka_info: editor_config.get_big_editor_config()
+                    us_short_description: {},
+                    us_text: {},
+                    // us_info: {},
+                    // ru_short_description: {},
+                    // ru_text: {},
+                    // ru_info: {},
+                    ka_short_description: {},
+                    ka_text: {},
+                    // ka_info: {}
                 },
 
                 editorConfig: {},

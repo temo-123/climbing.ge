@@ -28,11 +28,9 @@
         },
         mounted() {
             if (this.$route.params.order_decloration) {
-                // this.user_mail = this.$route.params.user_mail
                 this.get_auth_user_data()
-            } 
-            else {
-                this.$router.push({name: "myOrders"})
+            } else {
+                this.$router.push({name: "userPurchases"})
             }
             
             document.querySelector('body').style.marginLeft = '0';
@@ -48,7 +46,7 @@
         methods: {
             get_auth_user_data() {
                 axios
-                .get('/auth_user')
+                .get('auth_user')
                 .then(response => { this.user = response.data })
             },
         },

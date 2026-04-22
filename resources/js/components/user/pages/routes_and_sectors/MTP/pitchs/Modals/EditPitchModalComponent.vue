@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form id="mtp_edit_form" @submit.prevent="save()">
                 <select class="form-control"  v-model="data.category" required>
                     <option value="" disabled>Please select mtp type</option>
@@ -33,7 +33,7 @@
 
                 <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
@@ -63,7 +63,7 @@
         },
             computed: {
                 description_editor () {
-                    return this.$editor_config.get_small_editor_config();
+                    return {};
                 }
             },
             data() {

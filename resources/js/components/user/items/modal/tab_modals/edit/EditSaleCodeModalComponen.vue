@@ -7,7 +7,7 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <p>Discount</p>
                 <input type="number" class="form-control" v-model="form_data.discount" name="Discount" id="Discount" placeholder="Enter Discount" title="Enter Discount" min="1" max="50">
                 <p>Sale code</p>
@@ -28,7 +28,7 @@
                     One time code
                     <input type="checkbox" v-model="form_data.one_time_code" name="One time code" value="One time code">
                 </p>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button

@@ -60,7 +60,7 @@
                 wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
             })
         },
-        beforeDestroy() {
+        beforeUnmount() {
             this.stopAutoSlide()
             const wrapper = this.$el.querySelector('.services-slider-wrapper');
             if (wrapper) {

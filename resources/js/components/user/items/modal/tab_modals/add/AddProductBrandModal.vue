@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <h1>Add product brand'</h1>
 
             <div class="row justify-content-center" v-show="is_loading">
@@ -50,7 +50,7 @@
                     :errors_prop="error"
                 />
             </div>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

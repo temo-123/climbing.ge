@@ -35,9 +35,7 @@ class OrderController extends Controller
 {
     public function get_all_orders()
     {
-        $auth = PermissionService::authorize('order', 'edit_order_status');
-        // if ($auth) return $auth;
-        return Order::get();
+        return Order::latest()->get();
     }
 
     public function get_user_orders()
@@ -52,21 +50,8 @@ class OrderController extends Controller
 
     public function get_user_purchules() {
         $user = Auth::user();
-        if (!$user) {
-            return [];
-        }
-        
-        // Get user's product IDs directly from the pivot table to avoid ambiguous column issue
-        $userProductIds = \DB::table('user_products')
-            ->where('user_id', $user->id)
-            ->pluck('product_id');
-        
-        // Get all orders through user's products using the order_products pivot table
-        $orders = Order::whereHas('products', function ($query) use ($userProductIds) {
-            $query->whereIn('product_id', $userProductIds);
-        })->get();
-        
-        return $orders;
+        if (!$user) return [];
+        return Order::where('user_id', $user->id)->latest()->get();
     }
 
     public function get_order_status($order_id)
@@ -100,53 +85,48 @@ class OrderController extends Controller
 
     public function create_order(Request $request)
     {
-        if (Auth::user()) {
-            // Validate stock before creating order
-            foreach ($request->order_product_list as $product) {
-                $option = Product_option::find($product['option']['id']);
-                if (!$option || $option->quantity < $product['quantity']) {
-                    return response()->json(['error' => 'Not enough stock for ' . $product['option']['name']], 400);
-                }
+        if (!Auth::user()) {
+            return response()->json(['error' => 'Please login'], 401);
+        }
+
+        foreach ($request->order_product_list as $product) {
+            $option = Product_option::with('warehouse')->find($product['option']['id']);
+            $stock = ProductService::get_option_stock_quantity($option);
+            if (!$option || $stock < $product['quantity']) {
+                return response()->json(['error' => 'Not enough stock for: ' . ($product['option']['name'] ?? $product['option']['id'])], 400);
             }
+        }
 
-            $new_order = new Order;
+        $new_order = new Order;
+        $new_order['user_id'] = Auth::user()->id;
+        $new_order['adres_id'] = $request->adres;
+        $new_order['shiping'] = $request->shiping;
+        $new_order['payment'] = $request->payment_tupe;
+        $new_order['status'] = 'pending';
+        $new_order['status_updating_data'] = now();
 
-            $new_order['user_id'] = Auth::user()->id;
-            // $new_order['adres_id'] = $request->adres;
-            $new_order['shiping'] = $request->shiping;
+        if (!$new_order->save()) {
+            return response()->json(['error' => 'Failed to create order'], 500);
+        }
 
-            $new_order['payment'] = $request->payment_tupe;
+        foreach ($request->order_product_list as $product) {
+            $item = new Order_products;
+            $item['order_id'] = $new_order->id;
+            $item['product_id'] = $product['product']['id'];
+            $item['product_option_id'] = $product['option']['id'];
+            $item['quantity'] = $product['quantity'];
+            $item->save();
 
-            $data['confirm'] = null;
-            $data['status'] = null;
-            $data['status_updating_data'] = null;
+            (new static)->subtraction_products_from_warehouse($product['option']['id'], $product['quantity']);
+        }
 
-            $saved = $new_order -> save();
+        (new static)->del_cart_items(Auth::user()->id);
 
-            if(!$saved){
-                App::abort(500, 'Error');
-            }
-            else{
-                foreach ($request->order_product_list as $product) {
-                    $new_order_product_item = new Order_products;
-                    $new_order_product_item['order_id'] = $new_order->id;
-                    $new_order_product_item['product_id'] = $product['product']['id'];
-                    $new_order_product_item['product_option_id'] = $product['option']['id'];
-                    $new_order_product_item['quantity'] = $product['quantity'];
-
-                    $new_order_product_item -> save();
-
-                    //subtraction number of products
-                    (new static)->subtraction_products($product['option']['id'], $product['quantity']);
-                }
-            }
-            (new static)->del_cart_items(Auth::user()->id);
-
+        try {
             (new static)->send_order_confirm_mail_to_user($new_order->id);
-        }
-        else{
-            return 'Plees login';
-        }
+        } catch (\Exception $e) {}
+
+        return response()->json(['message' => 'Order created successfully', 'order_id' => $new_order->id]);
     }
 
     public function add_custom_order(Request $request)

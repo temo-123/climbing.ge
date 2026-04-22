@@ -34,7 +34,7 @@
             </span>
         </div>
         
-        <pre class="language-vue">
+        <div>
             <div class="container" v-show="is_loading">
                 <div class="row justify-content-center">
                     <div class="col-md-4">
@@ -80,7 +80,7 @@
                     </form>
                 </span>
             </span>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer"  v-if="quick_comment.deleted_reason == null">
                 <button

@@ -7,7 +7,7 @@
         :saveButton="{ visible: false, title: 'Save', btnClass: { 'btn btn-primary': false } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
-        <pre class="language-vue">
+        <div>
             <div class="container">
                 <span v-show="is_loading">
                     <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
@@ -16,7 +16,7 @@
                     <img :src="image_path_prop + modal_image.image" :alt="modal_image.title">
                 </div>
             </div>
-        </pre>
+        </div>
     </stack-modal>
 </template>
 
@@ -25,7 +25,6 @@
 
     export default {
         components: {
-            StackModal,
         },
         data(){
             return{

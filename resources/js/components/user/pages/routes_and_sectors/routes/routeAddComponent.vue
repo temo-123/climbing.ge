@@ -214,14 +214,12 @@
 
 <script>
   import Editor from '../../../items/canvas/EditorComponent.vue'
-  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
   // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
 
   export default {
       mixins: [
-          editor_config,
-      ],
+          ],
       components: {
           Editor,
           // validator_alerts_component,
@@ -229,7 +227,7 @@
       },
     data() {
       return {
-        description_editor: editor_config.get_small_editor_config(),
+        description_editor: {},
 
         images_tab_num: 0,
         errors: [],

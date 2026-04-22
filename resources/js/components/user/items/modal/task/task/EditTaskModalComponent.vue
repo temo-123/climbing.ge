@@ -1,49 +1,60 @@
 <template>
     <stack-modal
         :show="is_modal"
-        title="Edit task for worker"
+        title="Edit task"
         @close="close_modal()"
-        :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :saveButton="{ visible: false }"
+        :cancelButton="{ visible: false }"
     >
-        <pre class="language-vue">
-            <div class="container">
-                <div class="row justify-content-center" v-show="is_loading">
-                    <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
+        <div class="container">
+            <div class="row justify-content-center" v-show="is_loading">
+                <div class="col-md-4 text-center py-4">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p class="mt-2">Please wait...</p>
                 </div>
             </div>
+
             <form id="update_task" v-on:submit.prevent="update_task" v-show="!is_loading">
-                
-                <input type="text" v-model="data.title" name="title" class="form-control" required> 
-            
-                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Task" class="form-control textarea"></textarea>
-            
-                <input type="date" v-model="data.deadline" name="deadline" class="form-control" required> 
-            
-                <select class="form-control" name="filter" v-model="data.category_id" required>
-                    <option value="0" disabled>Select category</option> 
+                <div class="form-group mt-2">
+                    <label>Task title *</label>
+                    <input type="text" v-model="data.title" class="form-control" placeholder="Task title" required>
+                </div>
 
-                    <option v-for="tasks_category in tasks_categories" :kay="tasks_category.id" :value="tasks_category.id">{{ tasks_category.title }}</option>
-                </select> 
-            
-                <select class="form-control" name="filter" v-model="data.user_id" required>
-                    <option value="0" disabled>Select user</option> 
+                <div class="form-group mt-2">
+                    <label>Description</label>
+                    <textarea rows="4" v-model="data.text" maxlength="500" placeholder="Task description" class="form-control"></textarea>
+                </div>
 
-                    <option v-for="user in users" :kay="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
-                </select> 
-                        
+                <div class="form-group mt-2">
+                    <label>Deadline *</label>
+                    <input type="date" v-model="data.deadline" class="form-control" required>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Category *</label>
+                    <select class="form-control" v-model="data.category_id" required>
+                        <option :value="0" disabled>Select category</option>
+                        <option v-for="cat in tasks_categories" :key="cat.id" :value="cat.id">{{ cat.title }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Assign to *</label>
+                    <select class="form-control" v-model="data.user_id" required>
+                        <option :value="0" disabled>Select user</option>
+                        <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
+                    </select>
+                </div>
             </form>
-        </pre>
+        </div>
+
         <div slot="modal-footer">
             <div class="modal-footer">
-                <button
-                    type="submit"
-                    form="update_task"
-                    :class="{'btn btn-primary': true}"
-                >
-                Send
+                <button type="submit" form="update_task" class="btn btn-primary" :disabled="is_loading">
+                    Save
+                </button>
+                <button type="button" class="btn btn-secondary" @click="close_modal()">
+                    Cancel
                 </button>
             </div>
         </div>
@@ -51,103 +62,68 @@
 </template>
 
 <script>
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
     export default {
-        components: {
-            // StackModal,
-        },
-        data(){
-            return{
+        data() {
+            return {
                 is_modal: false,
                 is_loading: false,
-
+                task_id: 0,
                 data: {
                     title: '',
                     text: '',
                     deadline: '',
-                    worker_id: 0
+                    category_id: 0,
+                    user_id: 0,
                 },
-
-                tsk_id: 0,
                 tasks_categories: [],
                 users: [],
             }
         },
-        mounted(){
-            //
-        },
         methods: {
-            show_modal(task_id){
+            show_modal(task_id) {
                 this.is_modal = true
                 this.task_id = task_id
-
                 this.data = {
                     title: '',
                     text: '',
                     deadline: '',
-                    worker_id: 0
-                },
-
+                    category_id: 0,
+                    user_id: 0,
+                }
                 this.get_all_tasks_category()
                 this.get_users()
-
-                this.show_task_detals(task_id)
+                this.load_task(task_id)
             },
-            close_modal(){
+            close_modal() {
                 this.is_modal = false
             },
-            get_all_tasks_category(){
-                axios
-                .get("/get_task/task_category/get_all_task_categories/")
-                .then(response => {
-                    this.tasks_categories = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            }, 
-            get_users(){
-                axios
-                .get("/get_user/get_worker_users/")
-                .then(response => {
-                    this.users = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            }, 
-            show_task_detals(task_id){
-                axios
-                .get("/get_task/get_task_data/"+task_id)
-                .then(response => {
-                    this.data = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
+            get_all_tasks_category() {
+                axios.get('get_task/task_category/get_all_task_categories/')
+                    .then(response => { this.tasks_categories = response.data })
+                    .catch(() => {});
             },
-            update_task(){
+            get_users() {
+                axios.get('get_user/get_worker_users/')
+                    .then(response => { this.users = response.data })
+                    .catch(() => {});
+            },
+            load_task(task_id) {
                 this.is_loading = true
-                axios
-                .post('/set_task/update_task/'+this.task_id, {
-                    data: this.data,
-
-                    _method: 'Post'
-                })
-                .then(Response => {
-                    this.$emit('restart')
-                    this.close_modal()
-                })
-                .catch(error => console.log(error))
-                .finally(() => this.is_loading = false);
+                axios.get('get_task/get_task_data/' + task_id)
+                    .then(response => { this.data = response.data })
+                    .catch(() => {})
+                    .finally(() => this.is_loading = false)
+            },
+            update_task() {
+                this.is_loading = true
+                axios.post('set_task/update_task/' + this.task_id, { data: this.data })
+                    .then(() => {
+                        this.$emit('restart')
+                        this.close_modal()
+                    })
+                    .catch(() => {})
+                    .finally(() => this.is_loading = false)
             }
         }
     }
 </script>
-
-<style scoped>
-.control-label{
-    float: left;
-}
-</style>

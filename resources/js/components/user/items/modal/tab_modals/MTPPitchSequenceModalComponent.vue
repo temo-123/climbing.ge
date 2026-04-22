@@ -7,7 +7,7 @@
         :saveButton="{ visible: true }"
         :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
         <template #default>
-            <pre class="language-vue">
+            <div>
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
@@ -37,7 +37,7 @@
                         </div>
                     </div>
                 </div>
-            </pre>
+            </div>
         </template>
         <template #modal-footer>
             <div class="modal-footer">

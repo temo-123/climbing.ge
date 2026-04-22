@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <span v-show="is_loading">
                 <div class="col-md-4">
                     <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
@@ -90,7 +90,7 @@
                     </tbody>
                 </table>
             </span>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

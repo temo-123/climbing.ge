@@ -117,13 +117,13 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <form class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
                     <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
@@ -145,13 +145,13 @@
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
 
-            <pre class="language-vue">
+            <div>
                 <form class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
                     <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
@@ -174,7 +174,7 @@
             >
 
 
-            <pre class="language-vue">
+            <div>
                 <form class="form" method="POST" id="registrationForm">
 
                     <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="Enter your name" title="Enter your name">
@@ -185,7 +185,7 @@
                     country" title="Enter your country">
 
                 </form>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
@@ -206,7 +206,7 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
 
                 <img v-if="user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
                 <img v-if="user.image"  :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
@@ -218,7 +218,7 @@
                         </div>
                     </div>
                 </form>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button
@@ -239,7 +239,7 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <form class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
                     <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
                         Your password is incorrect!
@@ -253,7 +253,7 @@
                     </div>
                     <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat your new password" v-model="password_edit_data.confirm_new_pass" title="Repeat your new password" required>
                 </form>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button

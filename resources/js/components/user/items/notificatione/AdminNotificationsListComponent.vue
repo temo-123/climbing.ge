@@ -41,14 +41,14 @@
                 </span>
                 
                 <span v-if="$can('edit', 'site_data')">
-                    <div class="alert alert-danger" role="alert" v-if="
-                            !this.$siteData.data.data['text'] ||
-                            !this.$siteData.data.data['text_ru'] ||
-                            !this.$siteData.data.data['text_ka'] ||
-                            !this.$siteData.data.data['short_description_ru'] ||
-                            !this.$siteData.data.data['short_description_ka'] ||
-                            !this.$siteData.data.data['short_description']
-                        ">
+                    <div class="alert alert-danger" role="alert" v-if="$siteData && $siteData.data && $siteData.data.data && (
+                            !$siteData.data.data['text'] ||
+                            !$siteData.data.data['text_ru'] ||
+                            !$siteData.data.data['text_ka'] ||
+                            !$siteData.data.data['short_description_ru'] ||
+                            !$siteData.data.data['short_description_ka'] ||
+                            !$siteData.data.data['short_description']
+                        )">
                         <strong>Danger!</strong> 
                         Web-site information is not fool. check page "
                         <router-link :to="{name: 'siteInfo'}" exact> 
@@ -68,7 +68,7 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <div class="row justify-content-center" v-if="decision_loader">
                     <div class="col-md-4">
                         <img :src="'../public/images/site_img/loading.gif'" alt="loading">
@@ -99,7 +99,7 @@
                         <div class="alert alert-danger" role="alert" v-if="is_comment_decision_selected">Please select decision!!!</div>
                     </form>
                 </span>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer" >
                     <button

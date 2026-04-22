@@ -11,8 +11,8 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <tabsComponent 
-                            :table_data="this.data_for_tab"
+                        <tabsComponent
+                            :table_data="data_for_tab"
                             @update="get_orders"
 
                             @del_region="del_region"
@@ -28,9 +28,9 @@
                     </div>
                 </div>
             </div>
-            <orderDetalsModal ef='orderDetalsModal' @update="get_orders"/>
-            <orderStatusModal ef='orderStatusModal' @update="get_orders"/>
-            <editOrderStatusModal ef='editOrderStatusModal' @update="get_orders"/>
+            <orderDetalsModal ref='orderDetalsModal' @update="get_orders"/>
+            <orderStatusModal ref='orderStatusModal' @update="get_orders"/>
+            <editOrderStatusModal ref='editOrderStatusModal' @update="get_orders"/>
 
             <addCustomOrderModal ref="addCustomOrderModal" @orderAdded="get_orders" />
 
@@ -82,7 +82,7 @@
             get_orders(){
                 this.data_for_tab = []
                 axios
-                .get("/get_order/get_all_orders/")
+                .get("get_order/get_all_orders")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
@@ -98,24 +98,30 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
-                                                        'Order Status',
-                                                        'Edit status',
+                                                        'Status',
                                                         'Payment',
-                                                        'Show detals',
+                                                        'Shipping',
+                                                        'Date',
+                                                        'Edit status',
+                                                        'Show details',
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data', ['status']],
                                                         ['data', ['payment']],
-                                                        ['action_fun_id', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_article', 'btn btn-primary', '<i class="fa fa-truck" aria-hidden="true"></i>'],
+                                                        ['data', ['shiping']],
+                                                        ['data', ['created_at']],
+                                                        ['action_fun_id', 'show_order_tracking_odal', 'btn btn-primary btn-sm', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                                        ['action_fun_id', 'show_order_detals_modal', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
+                                                        ['no'],
                                                         ['edit_order_status', 'edit'],
+                                                        ['no'],
                                                     ]
                                                 }
                                             },
@@ -128,7 +134,7 @@
             },
             get_shipd_regions(){
                 axios
-                .get("/get_shiped_region/get_all_shiped_regions/")
+                .get("get_shiped_region/get_all_shiped_regions")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
@@ -200,16 +206,16 @@
                 }
             },
             
-            show_order_detals_modal(){
-                this.$refs.orderDetalsModal.show_modal()
+            show_order_detals_modal(order_id){
+                this.$refs.orderDetalsModal.show_modal(order_id)
             },
 
-            show_order_status_modal(){
-                this.$refs.orderStatusModal.show_modal()
+            show_order_status_modal(order_id){
+                this.$refs.orderStatusModal.show_modal(order_id)
             },
 
-            show_order_tracking_odal(){
-                this.$refs.editOrderStatusModal.show_modal()
+            show_order_tracking_odal(order_id){
+                this.$refs.editOrderStatusModal.show_modal(order_id)
             },
 
             add_costom_order(){

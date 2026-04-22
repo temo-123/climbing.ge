@@ -58,7 +58,7 @@
                 }, 5000);
             });
         },
-        beforeDestroy() {
+        beforeUnmount() {
             if (this.autoScrollInterval) {
                 clearInterval(this.autoScrollInterval);
             }

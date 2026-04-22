@@ -25,16 +25,9 @@
         data: function () {
             return {
                 menuOpen: localStorage.getItem('left_menu_position') === 'true',
-                // search_query: '',
             };
         },
-        methods: {
-            toggleMenu() {
-                this.menuOpen = !this.menuOpen;
-                localStorage.setItem('left_menu_position', this.menuOpen);
-                this.$bus.$emit('menu-toggle');
-            }
-        },
+
         components: {
             navbar,
             preloader,
@@ -43,74 +36,67 @@
         },
 
         mounted() {
-            // Defensive: Ensure ability exists before using
             if (!this.$ability) {
-                console.warn('Ability plugin not ready, retrying...');
                 this.$nextTick(() => this.get_user_data());
                 return;
             }
 
-            // Try to load permissions from localStorage first (set during login)
             const storedPermissions = localStorage.getItem('user_permissions')
             if (storedPermissions) {
                 try {
                     const permissions = JSON.parse(storedPermissions)
                     if (permissions && permissions.length > 0) {
                         this.$ability.update(permissions)
-                        // Fetch fresh permissions in background
                         this.get_user_data()
                         return
                     }
                 } catch (e) {
-                    console.error('Error parsing stored permissions:', e)
+                    // fall through to fresh fetch
                 }
             }
-            
-            // Fallback: fetch permissions from server
+
             this.get_user_data()
 
             const body = document.querySelector('body');
             if (body) body.style.marginLeft = '0';
-            
-            // Listen for permissions-loaded event from login (fixes issue where functions don't show after login without refresh)
-            this.$root.$on('permissions-loaded', this.onPermissionsLoaded)
+
+            // Listen for permissions loaded after login so left menu updates without page refresh
+            this.$bus.$on('permissions-loaded', this.on_permissions_loaded)
         },
-        
+
         beforeUnmount() {
-            // Clean up event listener to prevent memory leaks
-            this.$root.$off('permissions-loaded', this.onPermissionsLoaded)
+            this.$bus.$off('permissions-loaded', this.on_permissions_loaded)
         },
 
         methods: {
-            onPermissionsLoaded(permissions) {
-                // Called when permissions are loaded after login
-                // Refresh user data to update UI components that depend on permissions
-                this.get_user_data()
-                // Force re-render to update any permission-dependent components
-                this.$forceUpdate()
+            toggleMenu() {
+                this.menuOpen = !this.menuOpen;
+                localStorage.setItem('left_menu_position', this.menuOpen);
+                this.$bus.$emit('menu-toggle');
             },
-            
-            get_user_data: function(){
-            axios
-                .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
-                .then(response => {
-                    // Update ability with fresh permissions
-                    this.$ability.update(
-                        response.data
-                    )
-                    // Store in localStorage for future use
-                    localStorage.setItem('user_permissions', JSON.stringify(response.data))
-                })
-                .catch(
-                    // error => console.log(error)
-                ); 
+
+            on_permissions_loaded(permissions) {
+                if (this.$ability) {
+                    this.$ability.update(permissions)
+                }
+                localStorage.setItem('user_permissions', JSON.stringify(permissions))
+            },
+
+            get_user_data() {
+                axios
+                    .get('get_user/get_auth_user_permissions/')
+                    .then(response => {
+                        this.$ability.update(response.data)
+                        localStorage.setItem('user_permissions', JSON.stringify(response.data))
+                        this.$bus.$emit('permissions-loaded', response.data)
+                    })
+                    .catch(() => {});
             },
         },
 
         watch: {
-            $route(to, from) {
+            $route() {
                 window.scrollTo(0, 0);
-                // this.get_user_data()
             },
         },
     };

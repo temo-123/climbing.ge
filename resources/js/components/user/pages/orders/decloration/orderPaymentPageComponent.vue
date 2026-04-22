@@ -282,7 +282,7 @@ export default {
             }
             else{
                 axios
-                .post("/order/check_sale_code/", {
+                .post("set_order/check_sale_code", {
                     serching_code: this.enterd_sale_code
                 })
                 .then(response => {
@@ -298,7 +298,7 @@ export default {
         },
         get_shipd_countries(){
             axios
-            .get("/shiped_region/get_all_shiped_regions/")
+            .get("get_shiped_region/get_all_shiped_regions")
             .then(response => {
                 this.regions = response.data
             })
@@ -309,7 +309,7 @@ export default {
         get_activ_adres(adres_id){
             if(adres_id != '' && adres_id != 'new adres' && adres_id != 'your adres'){
                 axios
-                .get('/get_activ_adres/'+adres_id)
+                .get('get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.quick_adres = Response.data
                 })
@@ -322,7 +322,7 @@ export default {
 
         get_adres(last_adres = false) {
             axios
-            .get('/get_user_adreses/')
+            .get('get_user_adreses')
             .then(Response => {
                 this.adreses = Response.data
 
@@ -377,7 +377,7 @@ export default {
                 this.adding_data.floor
             ){
                 axios
-                .post('/add_user_adreses/',{
+                .post('add_user_adreses', {
                     adding_data: this.adding_data,
 
                     _method: 'POST'

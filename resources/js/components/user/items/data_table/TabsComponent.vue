@@ -1,5 +1,10 @@
 <template>
     <div class="tabs">
+        <div v-if="loading" class="tabs-loading">
+            <div class="tabs-loading-spinner"></div>
+            <span>Loading...</span>
+        </div>
+        <div v-else>
         <div class="row">
             <div class="col-md-12">
                 <div class="row" v-if="safeTableData.length > 0">
@@ -159,7 +164,7 @@
                     <TabHeaderComponent :head_data_prop="currentTabData.tab_data" :selected-items="selectedItems" :total-items="currentTabData.tab_data?.data?.length || 0" @toggle-select-all="toggleSelectAll"/>
                     <TabBodyComponent
                         :body_data_prop="currentTabData.tab_data"
-                        :selected-items.sync="selectedItems"
+                        v-model:selected-items="selectedItems"
                         @action_for_perent_component_with_option="action_for_perent_component_with_option"
                         @action_for_perent_component="action_for_perent_component"
                     />
@@ -184,6 +189,7 @@
             @nomber_page_pagination = "nomber_page_pagination"
             @update:itemsPerPage="updateItemsPerPage"
         />
+        </div><!-- end v-else -->
     </div>
 </template>
 
@@ -206,6 +212,10 @@ export default {
         table_data: {
             type: Array,
             default: () => []
+        },
+        loading: {
+            type: Boolean,
+            default: false
         }
     },
 
@@ -317,7 +327,7 @@ export default {
             this.$emit(event[0], event[1])
         },
         action_for_perent_component(event){
-            this.$emit(event[0])
+            this.$emit(event[0], event[1])
         },
         toggleSelectAll() {
             const tabData = this.currentTabData;
@@ -329,7 +339,9 @@ export default {
             }
         },
         deleteSelected() {
-            alert('Delete selected: ' + this.selectedItems.join(', ') + '. Demo only.');
+            if (this.selectedItems.length === 0) return;
+            this.$emit('delete_selected', this.selectedItems);
+            this.selectedItems = [];
         },
         privies_page_pagination(){
             if(this.currentPage > 1){
@@ -371,6 +383,26 @@ export default {
 </script>
 
 <style>
+.tabs-loading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 30px 15px;
+    color: #6c757d;
+    font-size: 15px;
+}
+.tabs-loading-spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #dee2e6;
+    border-top-color: #7427bb;
+    border-radius: 50%;
+    animation: tabs-spin 0.8s linear infinite;
+    flex-shrink: 0;
+}
+@keyframes tabs-spin {
+    to { transform: rotate(360deg); }
+}
 .search-container .form-control {
     font-size: 16px;
     padding: 10px 15px;

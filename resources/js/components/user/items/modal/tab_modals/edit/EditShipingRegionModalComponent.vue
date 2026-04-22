@@ -6,12 +6,12 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <h1>Edit shiped region</h1>
                 <input type="text" class="form-control" v-model="editing_data.region" name="region name" placeholder="region" title="region">
                 <input type="number" class="form-control" v-model="editing_data.shiping_price" name="shiping price" placeholder="Shiping price" title="Shiping price">
                 <input type="number" class="form-control" v-model="editing_data.free_shiping_price_after" name="free shiping price after" placeholder="Free shiping price after" title="Free shiping price after">
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button

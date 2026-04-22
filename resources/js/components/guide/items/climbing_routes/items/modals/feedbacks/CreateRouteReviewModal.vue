@@ -97,9 +97,19 @@ export default {
     },
     methods: {
         show_route_review_modal(route_id) {
-            this.route_id = route_id;
-            this.clear_data();
-            this.is_show_modal = true;
+            axios.get('/auth_user/')
+                .then(response => {
+                    if (response.data && response.data.id) {
+                        this.route_id = route_id;
+                        this.clear_data();
+                        this.is_show_modal = true;
+                    } else {
+                        this.$bus.$emit('open-login-modal', () => this.show_route_review_modal(route_id))
+                    }
+                })
+                .catch(() => {
+                    this.$bus.$emit('open-login-modal', () => this.show_route_review_modal(route_id))
+                })
         },
         close_route_review_modal() {
             this.is_show_modal = false;

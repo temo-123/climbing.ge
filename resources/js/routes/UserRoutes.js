@@ -39,12 +39,12 @@ const routes = [
             { path: 'guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent'), meta: {title: 'user page'}},
 
             { path: 'purchases', name: 'userPurchases', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
-            { path: 'order/user_orders', name: 'userOrders', component: load('orders/userOrderComponent'), meta: {title: 'user page'}},
+            { path: 'order/user_orders', name: 'userOrders', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
             { path: 'order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent'), meta: {title: 'user page'}},
 
-            { path: 'order/decloration/order_decloration/', name: 'orderDecloration', component: load('orders/decloration/orderDeclorationPageComponent'), meta: {title: 'user page'}},
-            { path: 'order/decloration/order_payment/', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), meta: {title: 'user page'}},
-            { path: 'order/decloration/confirm_order/', name: 'confirmOrder', component: load('orders/decloration/confirmOrderPageComponent'), meta: {title: 'user page'}},
+            { path: 'order/decloration/order_decloration/:payment/:adres/:discount?', name: 'orderDecloration', component: load('orders/decloration/orderDeclorationPageComponent'), meta: {title: 'user page'}},
+            { path: 'order/decloration/order_payment', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), meta: {title: 'user page'}},
+            { path: 'order/decloration/confirm_order/:order_decloration?', name: 'confirmOrder', component: load('orders/decloration/confirmOrderPageComponent'), meta: {title: 'user page'}},
                         
             { path: 'order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent'), meta: {title: 'user page'}},
 
@@ -183,51 +183,22 @@ const router = createRouter({
     }
 });
 
-router.beforeEach(async (to, from, next) => {
-    const token = localStorage.getItem('x_xsrf_token');
-    
-    let isAuth = false;
-    try {
-      await axios.get('/auth_user');
-      isAuth = true;
-    } catch (error) {
-      if (token) {
-        localStorage.removeItem('x_xsrf_token');
-      }
-      isAuth = false;
-    }
-    
-    const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify'];
-    const privateRedirects = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify'];
-    
-    if (!token || !isAuth) {
-      if (publicRoutes.includes(to.name)) {
-        return next();
-      }
-      return next({ name: 'login' });
-    } 
-    
-    if (privateRedirects.includes(to.name)) {
-      return next({ name: 'home' });
-    }
-    
-    next();
-  })
+const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify'];
 
-function check(to, from, next, token) {
+router.beforeEach((to, from, next) => {
+    const token = localStorage.getItem('x_xsrf_token');
+
     if (!token) {
-        if (to.name == 'login' || to.name == 'register' || to.name == 'forget_pass' || to.name == 'reset_pass' || to.name == 'callback') {
-            return next()
-        }
-        else{
-            return next ({name: 'login'})
-        }
+        if (publicRoutes.includes(to.name)) return next();
+        return next({ name: 'login', query: { redirect: to.fullPath } });
     }
-    else if (token){
-        if(to.name === 'login' || to.name === 'register' || to.name === 'forget_pass' || to.name === 'reset_pass' || to.name == 'callback' && token) {
-            return next ({name: 'home'})
-        }
+
+    // Logged in — redirect away from auth pages
+    if (publicRoutes.includes(to.name)) {
+        return next({ name: 'home' });
     }
-}
+
+    next();
+});
 
 export default router;

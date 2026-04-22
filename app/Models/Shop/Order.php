@@ -9,14 +9,15 @@ class Order extends Model
 {
     protected $fillable = [
         'user_id',
-        'confirm',
         'adres_id',
-        // 'order_status',
-        'order_payment',
-
+        'confirm',
+        'payment',
+        'discount',
+        'shiping',
+        'is_custom',
         'status',
         'status_updating_data',
-	];
+    ];
 	
 	public function products()
 	{

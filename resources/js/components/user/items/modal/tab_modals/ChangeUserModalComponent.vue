@@ -7,7 +7,7 @@
             :saveButton="{ visible: relation_status === 'single_relation', title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <!-- Single user relation - Show active user info -->
             <div v-if='relation_status === "single_relation" && actyve_user && Object.keys(actyve_user).length > 0'>
                 <div class="alert alert-warning" role="alert">
@@ -44,7 +44,7 @@
                     <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
                 </select>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <!-- Fix button for multiple relations -->

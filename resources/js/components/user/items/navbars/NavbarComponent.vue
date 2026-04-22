@@ -30,18 +30,12 @@
                 </template>
 
 
-                <li class="nav-item">
-                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
-                        <span>
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        </span>
-                    </router-link>
-                </li>
+                <nav-badges />
 
                 <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>
-                            <i class="fa fa-user-circle"></i>
+                            <i class="fa fa-bars"></i>
                         </span>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -136,8 +130,7 @@
             };
         },
         mounted(){
-            this.get_user()
-            this.loadPermissions()
+            // Register BEFORE loadPermissions so we don't miss the synchronous emit
             this.$bus.$on('permissions-loaded', (permissions) => {
                 if (this.$ability) {
                     this.$ability.update(permissions)
@@ -147,6 +140,11 @@
                     this.menuKey++;
                 })
             })
+            this.$bus.$on('logged-in', () => {
+                this.fetchPermissions()
+            })
+            this.get_user()
+            this.loadPermissions()
             this.$bus.$on('menu-toggle', () => {
                 this.animate_enabled = true;
                 requestAnimationFrame(() => {
@@ -159,6 +157,7 @@
         beforeUnmount() {
             this.$bus.$off('menu-toggle');
             this.$bus.$off('permissions-loaded');
+            this.$bus.$off('logged-in');
         },
         watch: {
             '$route' (to, from) {
@@ -189,7 +188,7 @@
             },
             fetchPermissions() {
                 axios
-                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + "/api/get_user/get_auth_user_permissions/")
+                    .get('get_user/get_auth_user_permissions')
                     .then(response => {
                         if (this.$ability) {
                             this.$ability.update(response.data)
@@ -207,20 +206,22 @@
             },
             get_user(){
                 axios
-                .get('/auth_user')
+                .get('auth_user')
                 .then((response)=>{
                     this.user = response.data['name']
                 })
                 .catch()
             },
             logout(){
-                axios
-                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/logout')
-                .then(()=>{
-                    localStorage.removeItem('x_xsrf_token');
-                    localStorage.removeItem('user_permissions');
-                    this.$router.push({ name: "login" });
-                })
+                axios.post('logout')
+                    .finally(() => {
+                        localStorage.removeItem('x_xsrf_token');
+                        localStorage.removeItem('user_permissions');
+                        localStorage.removeItem('auth_token');
+                        if (this.$ability) this.$ability.update([]);
+                        this.$bus.$emit('logged-out');
+                        this.$router.push({ name: 'login' });
+                    });
             },
             haveMenuBlockPermission(menu_section){
                 if (!menu_section) return false;

@@ -1,92 +1,124 @@
 <template>
-        <div class="row">
+    <div class="row">
 
-            <left-menu />
+        <left-menu />
 
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <breadcrumb />
-                    </div>
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <breadcrumb />
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card shopping-cart">
-                            <div class="card-header bg-dark text-light">
-                                <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                                Shipping cart
-                                <button class="btn btn-primary float-right" @click="goToShop()">Go to product page</button>
-                                <!-- <button type="button" @click="cont_shopping()" class="btn btn-success pull-right">Continiu shopping</button>
-                                <div class="clearfix"></div> -->
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card shopping-cart">
+                        <div class="card-header bg-dark text-light">
+                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                            Shopping Cart
+                            <button class="btn btn-primary float-right" @click="goToShop()">Go to shop</button>
+                        </div>
+                        <div class="card-body">
+                            <div v-if="!cart_items.length" class="text-center text-muted py-4">
+                                <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
+                                <p class="mt-2">Your cart is empty.</p>
+                                <button class="btn btn-primary" @click="goToShop()">Browse products</button>
                             </div>
-                            <div class="card-body">
-                                    <!-- PRODUCT -->
-                                    <div v-for="product in cart_items" :key="product.id">
-                                        <div class="row">
-                                            <div class="col-sm-12 col-md-3 text-center">
-                                                <img v-if="product.product_image" class="img-responsive" :src="'../images/product_option_img/'+product.product_image" :alt="product.product.url_title">
-                                                <img v-else class="img-responsive" :src="'../../../public/images/site_img/shop_demo.jpg'" :alt="product.product.url_title">
+
+                            <div v-for="product in cart_items" :key="product.id" class="cart-item">
+                                <div class="row align-items-center">
+                                    <div class="col-sm-12 col-md-2 text-center">
+                                        <img
+                                            v-if="product.product_image"
+                                            class="img-responsive cart-thumb"
+                                            :src="'/public/images/product_option_img/'+product.product_image"
+                                            :alt="product.product && product.product.url_title || ''"
+                                        >
+                                        <img
+                                            v-else
+                                            class="img-responsive cart-thumb"
+                                            :src="'/public/images/site_img/shop_demo.jpg'"
+                                            :alt="product.product && product.product.url_title || ''"
+                                        >
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-4 text-md-left">
+                                        <a
+                                            v-if="product.product && product.product.url_title"
+                                            @click.prevent="openProduct(product.product.url_title)"
+                                            href="#"
+                                            class="cart-product-name"
+                                        >
+                                            {{ product.product.url_title }}
+                                        </a>
+                                        <span v-else class="cart-product-name text-muted">Unknown product</span>
+
+                                        <div class="cart-option-name text-muted" v-if="product.option && product.option.name">
+                                            <small><i class="fa fa-tag" aria-hidden="true"></i> {{ product.option.name }}</small>
+                                        </div>
+
+                                        <div v-if="product.stock_quantity > 0 && product.stock_quantity <= 5" class="text-warning mt-1">
+                                            <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Only {{ product.stock_quantity }} left in stock</small>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 col-md-4">
+                                        <div class="d-flex align-items-center justify-content-md-end">
+                                            <div class="cart-price mr-3">
+                                                <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ each</small></div>
+                                                <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
                                             </div>
-                                            <div class="text-sm-center col-sm-12 text-md-left col-md-4">
-                                                <h4 class="product-name"><strong>{{product.product.url_title}}</strong></h4>
-                                            </div>
-                                            <div class="text-sm-center col-md-5 text-md-right row">
-                                                <div class="row">
-                                                    <div class="col-6 col-sm-6 col-md-6 text-md-right" style="padding-top: 5px">
-                                                        <h6><strong>Total price {{ colculat_items_price(product.option.price, product.quantity) }} ₾ (Single product price{{ product.option.price }} ₾)</strong></h6>
-                                                    </div>
-                                                    <div class="col-6 col-sm-6 col-md-6">
-                                                        <div class="row">
-                                                            <div class="quantity text-right">
-                                                                <!-- Quantity -->
-                                                                <input type="number" v-if="!is_quantity_updating" @click="update_quantity(product.id, product.quantity)" v-model="product.quantity" step="1" :max="product.option.quantity" min="1" title="Quantity" class="Quantity" size="4">
-                                                                <span class="" v-else-if="is_quantity_updating">Updating...</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="quantity-wrap">
+                                                <span v-if="is_quantity_updating" class="text-muted">Updating...</span>
+                                                <div v-else class="d-flex align-items-center">
+                                                    <button class="qty-btn" @click="changeQty(product, -1)" :disabled="product.quantity <= 1">−</button>
+                                                    <input
+                                                        type="number"
+                                                        class="qty-input"
+                                                        v-model.number="product.quantity"
+                                                        min="1"
+                                                        :max="product.stock_quantity || 999"
+                                                        @change="onQtyChange(product)"
+                                                    >
+                                                    <button class="qty-btn" @click="changeQty(product, 1)" :disabled="product.quantity >= (product.stock_quantity || 999)">+</button>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <button @click="del_from_cart(product.id)" class="btn btn-danger">X</button>
-                                            </div>
-                                        </div>
-                                        <hr>
                                     </div>
-                                    <!-- END PRODUCT -->
-                                <div class="pull-right">
-                                    <button type="button" @click="get_products_cart" class="btn btn-secondary" v-if="!is_products_refresh">Update cart ({{products_reset_id}})</button>
-                                    <span class="badge badge-primare mb-1 pull-right" v-if="is_products_refresh">Updating...</span>
-                                </div>
-                            </div>
-                            <div class="card-footer">
-                                <!-- <div class="coupon col-md-5 col-sm-5 no-padding-left pull-left">
-                                    <div class="row">
-                                        <div class="col-6">
-                                            <input type="text" class="form-control" placeholder="cupone code">
-                                        </div>
-                                        <div class="col-6">
-                                            <button type="button" class="btn btn-primary">Primary</button>
-                                        </div>'/order/order_decloration/'
-                                    </div>
-                                </div> -->
-                                <div class="pull-right" style="margin: 10px" v-if="cart_items.length">
-                                    <router-link :to="{name: 'orderPayment', params: {user_id: user_id}}">
-                                        <button type="button" class="btn btn-success pull-right">Continue shopping</button>
-                                    </router-link>
-                                    <div class="pull-right" style="margin: 5px">
-                                        Total price: <b>{{ total_price }} ₾</b>
-                                    </div>
-                                </div>
 
+                                    <div class="col-sm-12 col-md-2 text-right">
+                                        <button @click="del_from_cart(product.id)" class="btn btn-outline-danger btn-sm">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+
+                            <div class="text-right mt-2" v-if="cart_items.length">
+                                <button type="button" @click="get_products_cart" class="btn btn-outline-secondary btn-sm" v-if="!is_products_refresh">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> Refresh ({{ products_reset_id }})
+                                </button>
+                                <span class="badge badge-secondary" v-if="is_products_refresh">Updating...</span>
+                            </div>
+                        </div>
+
+                        <div class="card-footer" v-if="cart_items.length">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="total-price">
+                                    Total: <strong>{{ total_price }} ₾</strong>
+                                </div>
+                                <router-link :to="{name: 'orderPayment'}">
+                                    <button type="button" class="btn btn-success">
+                                        <i class="fa fa-credit-card" aria-hidden="true"></i> Checkout
+                                    </button>
+                                </router-link>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <!-- </div> -->
+    </div>
 </template>
 
 <script>
@@ -95,20 +127,13 @@
         components: {
             breadcrumb,
         },
-        props: [
-        ],
         data(){
             return {
                 cart_items: [],
                 is_products_refresh: false,
                 products_reset_id: 0,
-
-                quantity: '',
-
                 total_price: 0,
-                price: 0,
                 user_id: 0,
-
                 MIX_SHOP_URL: process.env.MIX_SHOP_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
                 is_quantity_updating: false,
@@ -121,68 +146,77 @@
             goToShop(){
                 window.open(this.MIX_APP_SSH + this.MIX_SHOP_URL)
             },
-
-            get_products_cart: function() {
-                axios
-                .get("/get_cart/get_user_cart/")
-                .then(response => {
-                    this.cart_items = response.data
-                    this.user_id = response.data[0]['user_id']
-                    // this.is_products_refresh = false
+            openProduct(url_title){
+                window.open(this.MIX_APP_SSH + this.MIX_SHOP_URL + '/product/' + url_title)
+            },
+            get_products_cart() {
+                axios.get("cart").then(response => {
+                    this.cart_items = Array.isArray(response.data) ? response.data : []
+                    if (this.cart_items.length > 0) {
+                        this.user_id = this.cart_items[0]['user_id']
+                    }
                     this.products_reset_id++
                     this.colculat_total_price()
-                })
-                .catch(
-                    error => console.log(error)
-                );
+                }).catch(error => console.log(error))
             },
             colculat_total_price() {
-                this.total_price = 0
-                this.price = 0
-                this.cart_items.forEach(product => {
-                    if (product.quantity > 1) {
-                        this.price = product.quantity * product.option.price
-                    }
-                    else{
-                        this.price = parseInt(product.option.price)
-                    }
-                    this.total_price = this.total_price + this.price
-                });
+                if (!Array.isArray(this.cart_items)) return
+                this.total_price = this.cart_items.reduce((sum, p) => {
+                    const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
+                    return sum + price * (p.quantity || 1)
+                }, 0)
             },
-            colculat_items_price(price, quantyty) {
-                var colculated_price = price * quantyty
-                return colculated_price
+            colculat_items_price(price, quantity) {
+                return price ? (parseFloat(price) * quantity).toFixed(2) : 0
             },
-            update_quantity(item_id, quantity){
+            changeQty(product, delta) {
+                const max = product.stock_quantity || 999
+                const newQty = product.quantity + delta
+                if (newQty < 1 || newQty > max) return
+                product.quantity = newQty
+                this.update_quantity(product.id, product.quantity)
+            },
+            onQtyChange(product) {
+                const max = product.stock_quantity || 999
+                if (product.quantity < 1) product.quantity = 1
+                if (product.quantity > max) product.quantity = max
+                this.update_quantity(product.id, product.quantity)
+                this.colculat_total_price()
+            },
+            update_quantity(item_id, quantity) {
                 this.is_quantity_updating = true
-                axios
-                .post("/set_cart/update_quantity/" + item_id, {
-                    quantity: quantity,
-                })
-                .then(response => {
-                    this.get_products_cart()
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_quantity_updating = false);
+                axios.post("cart/update_quantity/" + item_id, { quantity })
+                    .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
+                    .catch(error => console.log(error))
+                    .finally(() => this.is_quantity_updating = false)
             },
-            del_from_cart(item_id){
-                if(confirm('Are you sure, you want delite it?')){
-                    axios
-                    .delete("/set_cart/del_from_cart/" + item_id)
-                    .then(response => {
-                        this.get_products_cart()
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
+            del_from_cart(item_id) {
+                if (confirm('Remove this item from cart?')) {
+                    axios.delete("cart/" + item_id)
+                        .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
+                        .catch(error => console.log(error))
                 }
             },
-
-            // cont_shopping(){
-            //     window.location.href = "../order/cont_shopping/";
-            // }
         }
     }
 </script>
+
+<style scoped>
+.cart-item { padding: 12px 0; }
+.cart-thumb { max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 4px; }
+.cart-product-name { font-size: 0.95rem; font-weight: 600; color: #333; text-decoration: none; }
+.cart-product-name:hover { color: #007bff; text-decoration: underline; cursor: pointer; }
+.cart-option-name { font-size: 0.82rem; color: #777; margin-top: 2px; }
+.cart-price { text-align: right; min-width: 80px; }
+.quantity-wrap { display: flex; align-items: center; }
+.qty-btn {
+    width: 28px; height: 28px; border: 1px solid #ccc; background: #f8f9fa;
+    border-radius: 4px; cursor: pointer; font-size: 1rem; line-height: 1;
+}
+.qty-btn:disabled { opacity: 0.4; cursor: default; }
+.qty-input {
+    width: 48px; text-align: center; border: 1px solid #ccc;
+    border-radius: 4px; margin: 0 4px; height: 28px; padding: 0 4px;
+}
+.total-price { font-size: 1.1rem; }
+</style>

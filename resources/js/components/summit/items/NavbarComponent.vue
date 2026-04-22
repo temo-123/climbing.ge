@@ -62,7 +62,7 @@
                         </a>
                     </li>
 
-                    <go-to-admin-page :go_to_page="'/'" />
+                    <nav-badges />
                 </ul>
 
             </div>

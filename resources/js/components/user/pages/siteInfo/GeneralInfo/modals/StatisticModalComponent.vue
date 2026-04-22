@@ -47,7 +47,6 @@
      
     export default {
         components: {
-            StackModal,
         },
         data(){
             return {

@@ -67,7 +67,7 @@
 
                             <localeSwitcher />
                             
-                            <goTo :go_to_page="'/'" />
+                            <nav-badges />
                         </ul>
                     </div>
                 </nav>

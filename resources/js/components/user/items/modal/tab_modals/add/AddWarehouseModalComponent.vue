@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form v-on:submit.prevent="add_warehouse" id="add_warehouse">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
 
@@ -15,7 +15,7 @@
                     <label for="general">Is this warehouse is general?</label>
                 </div>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

@@ -59,7 +59,7 @@
             this.get_partners()
             this.startAutoSlide();
         },
-        beforeDestroy() {
+        beforeUnmount() {
             if (this.autoSlide) {
                 clearInterval(this.autoSlide);
             }

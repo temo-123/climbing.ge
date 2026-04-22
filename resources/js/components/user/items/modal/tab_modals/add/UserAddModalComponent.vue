@@ -7,7 +7,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form v-on:submit.prevent="add_user" id="add_user_form">
                 <!-- <div class="form-group"> -->
                     <!-- <label for="email">Name</label> -->
@@ -128,7 +128,7 @@
                     />
                 <!-- </div> -->
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

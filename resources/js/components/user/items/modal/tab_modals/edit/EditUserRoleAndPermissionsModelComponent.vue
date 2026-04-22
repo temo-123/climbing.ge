@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <span v-show="is_loading">
                 <div class="col-md-4">
                     <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
             </span>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
@@ -119,7 +119,6 @@
 // import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
-            StackModal,
             // MemberStatusModal,
             // breadcrumb,
         },

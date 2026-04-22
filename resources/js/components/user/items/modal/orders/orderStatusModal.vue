@@ -30,14 +30,17 @@ export default {
     components: {},
     data(){
         return {
-            is_order_status_model: false
+            is_order_status_model: false,
+            activ_order_id: null,
+            order_status: {},
         }
     },
     mounted() {
     },
     methods: {
-        show_modal(){
-            this.is_order_status_model = true
+        show_modal(order_id){
+            this.activ_order_id = order_id
+            this.get_order_status()
         },
         get_order_status(){
             axios

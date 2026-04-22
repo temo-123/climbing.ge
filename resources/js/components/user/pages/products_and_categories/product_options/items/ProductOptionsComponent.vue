@@ -93,7 +93,6 @@
     
     export default {
         components: {
-            StackModal,
             productOptionsTableComponent,
             productOptionAddModalComponent,
             productOptionEditModalComponent

@@ -322,7 +322,7 @@
                 }
             }
         },
-        beforeDestroy() {
+        beforeUnmount() {
             if (this.request) {
                 this.request.cancel();
             }

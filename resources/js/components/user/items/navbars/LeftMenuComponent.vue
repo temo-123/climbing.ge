@@ -6,7 +6,7 @@
         <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }">
             <header>Menu</header>
 
-            <ul v-for="(item, index) in menu_items" :key="item?.id || item?.title || index" style="padding-left: 0px;" v-if="menu_items && menu_items.length">
+            <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px;" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
                   <a href="javascript:void(0)" @click.prevent="toggle_dropdown(item.title)" class="dropdown-toggle">
                     <i class="fas fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>
@@ -44,12 +44,14 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                 width: 0,
                 menu_position: false,
                 animate_enabled: false,
-                open_dropdowns: JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}')
+                open_dropdowns: JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}'),
+                permissionsKey: 0,
             }
         },
         computed: {
             menu_items() {
-                return this.admin_all_menu() || [];
+                // permissionsKey dependency makes this recompute when permissions change
+                return this.permissionsKey >= 0 ? (this.admin_all_menu() || []) : [];
             },
             isAuthenticated() {
                 return !!localStorage.getItem('user_permissions');
@@ -58,7 +60,21 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
         mounted() {
             this.window_size()
             this.open_dropdowns = JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}');
-            
+
+            this.$bus.$on('permissions-loaded', (permissions) => {
+                if (this.$ability) this.$ability.update(permissions)
+                this.permissionsKey++;
+            })
+            this.$bus.$on('logged-in', () => {
+                axios.get('get_user/get_auth_user_permissions')
+                    .then(response => {
+                        if (this.$ability) this.$ability.update(response.data)
+                        localStorage.setItem('user_permissions', JSON.stringify(response.data))
+                        this.permissionsKey++;
+                    })
+                    .catch(() => {})
+            });
+
             this.$bus.$on('menu-toggle', () => {
                 this.animate_enabled = true;
                 requestAnimationFrame(() => {
@@ -93,22 +109,21 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
             }
         },
 
+        beforeUnmount() {
+            this.$bus.$off('permissions-loaded');
+            this.$bus.$off('logged-in');
+            this.$bus.$off('menu-toggle');
+        },
+
         methods: {
             haveMenuButPermission(permissions) {
-              if(permissions.length){
-                let perms = permissions
-                for (let i = 0; i < perms.length; i++) {
-                  if(this.$can(perms[i][0], perms[i][1])){
-                    return true
-                  }
-                  else{
-                    return false
-                  }
+              if (!permissions || !permissions.length) return true;
+              for (let i = 0; i < permissions.length; i++) {
+                if (this.$can(permissions[i][0], permissions[i][1])) {
+                  return true;
                 }
               }
-              else{
-                return true
-              }
+              return false;
             },
             
             haveMenuBlockPermission(menu_section){

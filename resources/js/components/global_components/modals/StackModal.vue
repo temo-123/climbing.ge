@@ -1,7 +1,7 @@
 <template>
   <Teleport to="body">
-    <div 
-      v-if="modelValue" 
+    <div
+      v-if="modelValue || show"
       class="stack-modal-overlay fixed inset-0 z-[99999] flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md"
       @click.self="$emit('close')"
       :class="overlayClass"
@@ -66,8 +66,11 @@
 <script setup>
   import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch } from 'vue'
 
+  defineOptions({ inheritAttrs: false })
+
   const props = defineProps({
     modelValue: Boolean,
+    show: Boolean,
     title: {
       type: String,
       default: ''
@@ -96,13 +99,15 @@
 
   const modalRef = ref(null)
 
+  const isVisible = computed(() => props.modelValue || props.show)
+
   const modalStack = reactive(new Set())
   let zIndexCounter = 9999
 
   const computedZIndex = computed(() => {
-    if (props.modelValue && !modalStack.has(props)) {
+    if (isVisible.value && !modalStack.has(props)) {
       modalStack.add(props)
-    } else if (!props.modelValue && modalStack.has(props)) {
+    } else if (!isVisible.value && modalStack.has(props)) {
       modalStack.delete(props)
     }
     return zIndexCounter + modalStack.size * 10
@@ -127,7 +132,7 @@
   const hasButtons = computed(() => props.saveButton?.visible || props.cancelButton?.visible)
 
   onMounted(async () => {
-    if (props.modelValue) {
+    if (isVisible.value) {
       document.body.classList.add('stack-modal-open')
       document.body.style.overflow = 'hidden';
 
@@ -143,13 +148,11 @@
 
   })
 
-  watch(() => props.modelValue, (val) => {
+  watch(isVisible, (val) => {
     if (val) {
       document.body.classList.add('stack-modal-open')
-      // document.body.style.overflow = 'hidden';
     } else {
       document.body.classList.remove('stack-modal-open')
-      // document.body.style.overflow = 'auto';
       emit('close')
     }
   })

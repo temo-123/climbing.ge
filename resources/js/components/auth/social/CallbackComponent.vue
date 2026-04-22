@@ -3,68 +3,77 @@
       <div class="card">
 
         <div class="card-header" v-if="!error">
-          <h1>Pless wait!</h1>
+          <h1>Please wait...</h1>
         </div>
 
         <div class="card-body" v-if="!error">
-            <p>you will be logged whith your {{ this.$route.params.provaider }}</p>
+            <p>Signing you in with {{ $route.params.provaider }}...</p>
         </div>
 
-
         <div class="card-header" v-if="error">
-          <h1>Error</h1>
+          <h1>Login Failed</h1>
         </div>
 
         <div class="card-body" v-if="error">
             <div class="alert alert-danger" role="alert">
-                Somesing happened please go to login page and try again. (<span class="cursor_pointer" @click="go_to_login_page()">Click for go to login page</span>)
+                Something went wrong. Redirecting to login in {{ countdown }}s...
+                (<span class="cursor_pointer" @click="go_to_login_page()">Go now</span>)
             </div>
         </div>
 
       </div>
     </div>
   </template>
-  
+
   <script>
     export default {
       data: function() {
         return {
-            error: false
+            error: false,
+            countdown: 5,
         };
       },
       mounted() {
         this.social_login_callback()
       },
-      beforeRouteLeave (to, from, next) {
-        //
+      beforeUnmount() {
+        if (this._countdownTimer) clearInterval(this._countdownTimer)
       },
       methods: {
         social_login_callback(){
             this.error = false
-            axios.get('../../../api/login/' + this.$route.params.provaider + '/callback',{
+            axios.get('login/' + this.$route.params.provaider + '/callback', {
                 params: {code: this.$route.query.code}
             })
             .then(response => {
+                const cookieMatch = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
+                const token = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null
+                if (token) {
+                    localStorage.setItem('x_xsrf_token', token)
+                }
 
-                localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
-
-                const token = localStorage.getItem('x_xsrf_token')
-                console.log("🚀 ~ file: CallbackComponent.vue:55 ~ social_login_callback ~ token:", token)
-
-                if (token) {  
-                    if(response.data.status == 'login'){
-                        window.location.href = '/'
-                    }
-                    else if(response.data.status == 'registratione'){
-                        window.location.href = '/create_password/' + response.data.new_user_email
-                    }
+                if(response.data.status == 'login'){
+                    window.location.href = '/'
+                }
+                else if(response.data.status == 'registratione'){
+                    window.location.href = '/create_password/' + response.data.new_user_email
                 }
                 else{
-                    alert("Token error!")
+                    this.show_error()
                 }
-            }).catch(err => {
-                this.error = true
+            }).catch(() => {
+                this.show_error()
             })
+        },
+        show_error(){
+            this.error = true
+            this._countdownTimer = setInterval(() => {
+                this.countdown--
+                if (this.countdown <= 0) {
+                    clearInterval(this._countdownTimer)
+                    this.go_to_login_page()
+                }
+            }, 1000)
         },
         go_to_login_page(){
             this.$router.push({ name: "login" });

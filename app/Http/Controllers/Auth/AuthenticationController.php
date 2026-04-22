@@ -14,6 +14,18 @@ class AuthenticationController extends Controller
      * @param Request $request
      * @return JsonResponse
      */
+    public function logout(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        if ($user) {
+            $user->tokens()->delete();
+        }
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return response()->json(['message' => 'Logged out']);
+    }
+
     public function user(Request $request): JsonResponse
     {
         $user = $request->user();

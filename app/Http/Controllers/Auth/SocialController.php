@@ -137,11 +137,12 @@ class SocialController extends Controller
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
-        if (!$validator) {
-            return $validator->messages();
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
         }
-        else{
-            User::where('email', '=', $request->email)->update(['password'=> Hash::make($request->data['password'])]);
-        }
+
+        User::where('email', '=', $request->email)->update(['password' => Hash::make($request->data['password'])]);
+
+        return response()->json(['message' => 'Password created successfully']);
     }
 }

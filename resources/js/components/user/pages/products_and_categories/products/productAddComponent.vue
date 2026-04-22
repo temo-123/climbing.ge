@@ -197,7 +197,6 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
     export default {
@@ -205,9 +204,7 @@
             // validator_alerts_component,
             published_item
         },
-        mixins: [
-            editor_config
-        ],
+        mixins: [],
         props: [
             'back_url',
         ],
@@ -218,13 +215,13 @@
                 categories: [],
 
                 editorConfig: {
-                    us_short_description_text_editor: editor_config.get_small_editor_config(),
-                    us_text_editor_config: editor_config.get_big_editor_config(),
-                    us_info_editor_config: editor_config.get_big_editor_config(),
+                    us_short_description_text_editor: {},
+                    us_text_editor_config: {},
+                    us_info_editor_config: {},
 
-                    ka_short_description_text_editor: editor_config.get_small_editor_config(),
-                    ka_text_editor_config: editor_config.get_big_editor_config(),
-                    ka_info_editor_config: editor_config.get_big_editor_config(),
+                    ka_short_description_text_editor: {},
+                    ka_text_editor_config: {},
+                    ka_info_editor_config: {},
                 },
 
                 errors: [],

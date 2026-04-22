@@ -60,14 +60,18 @@ export default {
     components: {},
     data(){
         return {
-            is_order_detals_model: false
+            is_order_detals_model: false,
+            order_product_items: [],
+            order_status: {},
+            total_price: 0,
+            price: 0,
         }
     },
     mounted() {
     },
     methods: {
-        show_modal(){
-            this.is_order_status_model = true
+        show_modal(order_id){
+            this.get_order_detals(order_id)
         },
 
         get_order_detals(order_id){

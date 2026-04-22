@@ -3,95 +3,66 @@
         :show="is_modal"
         title="Task details"
         @close="close_modal()"
-        :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :saveButton="{ visible: false }"
+        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
     >
-        <pre class="language-vue">
+        <div class="container">
+            <div class="text-center py-4" v-if="is_loading">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading...</p>
+            </div>
 
-            <div class="container" v-show="is_loading">
-                <div class="row justify-content-center">
-                    <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
-                </div>
+            <div v-else>
+                <h5 class="mb-1">{{ task.title }}</h5>
+                <p class="text-muted mb-2">
+                    <strong>Status:</strong>
+                    <span :class="'badge ' + status_badge(task.status)">{{ task.status }}</span>
+                </p>
+                <p class="mb-2"><strong>Deadline:</strong> {{ task.deadline }}</p>
+                <p class="mb-3" v-if="task.text">{{ task.text }}</p>
+                <hr>
+                <p class="mb-1 text-muted"><small>Category ID: {{ task.category_id }} &nbsp;|&nbsp; Assigned user ID: {{ task.user_id }}</small></p>
+                <p class="mb-0 text-muted" v-if="task.worker_comment"><small><strong>Comment:</strong> {{ task.worker_comment }}</small></p>
             </div>
-            <div class="container" v-show="!is_loading">
-                <!-- <div class="row">
-                    <div class="col-xs-12 modal_text"> -->
-                        <h1>{{ task.title }}</h1>
-                        <h3>{{ task.deadline }}</h3>
-                        <h3>{{ task.text }}</h3>
-                        <h3>{{ task.status }}</h3>
-                        <hr>
-                        <p>category - {{ task.category_id }}</p>
-                        <p>user - {{ task.user_id }}</p>
-                    <!-- </div>
-                </div> -->
-            </div>
-        </pre>
-        <div slot="modal-footer">
-            <!-- <div class="modal-footer">
-                <button
-                    type="submit"
-                    form="edit_task_status"
-                    :class="{'btn btn-primary': true}"
-                >
-                Update
-                </button>
-            </div> -->
         </div>
     </stack-modal>
 </template>
 
 <script>
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
     export default {
-        components: {
-            // StackModal,
-        },
-        data(){
-            return{
+        data() {
+            return {
                 is_modal: false,
                 is_loading: false,
-
-                task: []
+                task: {}
             }
         },
-        mounted(){
-            // 
-        },
         methods: {
-            show_modal(task_id){
+            show_modal(task_id) {
                 this.is_modal = true
-
-                this.show_task_detals(task_id)
+                this.task = {}
+                this.load_task(task_id)
             },
-            close_modal(){
+            close_modal() {
                 this.is_modal = false
-                this.task = []
+                this.task = {}
             },
-            show_task_detals(task_id){
+            load_task(task_id) {
                 this.is_loading = true
-                axios
-                .get("/get_task/get_task_data/"+task_id)
-                .then(response => {
-                    this.task = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_loading = false);
+                axios.get('get_task/get_task_data/' + task_id)
+                    .then(response => { this.task = response.data })
+                    .catch(() => {})
+                    .finally(() => this.is_loading = false)
+            },
+            status_badge(status) {
+                const map = {
+                    in_process: 'badge-warning',
+                    finished: 'badge-success',
+                    confirmation_completion: 'badge-info',
+                    problem: 'badge-danger',
+                }
+                return map[status] || 'badge-secondary'
             }
         }
     }
 </script>
-
-<style scoped>
-.control-label, .modal_text{
-    float: left;
-}
-.modal_form{
-    width: 100%;
-}
-</style>

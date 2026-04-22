@@ -197,27 +197,20 @@ export default {
                     name: "guide_tasks",
                     routes: [
                         {
-                            name: "Guidbook Dashboard",
-                            route: "/guide_task_panel",
+                            name: "Guide Dashboard",
+                            route: "/guide_dashboard_page",
                             permissions: [
-                                
+                                ['show', 'guide_dashboard']
                             ]
                         },
                         {
-                            name: "Guidbook task panel",
+                            name: "Guide task panel",
                             route: "/guide_task_panel",
                             permissions: [
                                 ['add', 'guide_task'],
                                 ['edit', 'guide_task'],
                                 ['del', 'guide_task'],
                                 ['edit_status', 'guide_task'],
-                            ]
-                        },
-                        {
-                            name: "My Tasks For guidbook",
-                            route: "/guide_task_panel",
-                            permissions: [
-                                
                             ]
                         },
                     ]

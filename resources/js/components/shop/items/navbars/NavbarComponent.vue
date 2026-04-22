@@ -68,9 +68,7 @@
                         </a>
                     </li>
 
-                    <goToAdminPage :go_to_page="'/cart'" icon='<i class="fa fa-shopping-cart" aria-hidden="true"></i>'/>
-
-                    <goToAdminPage :go_to_page="'/'" />
+                    <nav-badges />
                 </ul>
 
             </div>

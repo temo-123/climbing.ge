@@ -110,13 +110,16 @@ export default {
         }
     },
     watch: {
-        filtr_data_prop: function(){
-            this.action_data = this.filtr_data_prop || { filter_data: null };
-            // Initialize filter_ids array based on filter_data length
-            if (this.action_data?.filter_data && Array.isArray(this.action_data.filter_data)) {
-                this.filter_ids = this.action_data.filter_data.map(() => 0);
+        filtr_data_prop: {
+            deep: true,
+            handler(newVal) {
+                this.action_data = newVal || { filter_data: null };
+                if (this.action_data?.filter_data && Array.isArray(this.action_data.filter_data)) {
+                    this.filter_ids = this.action_data.filter_data.map(() => 0);
+                }
+                this.filter_id = 0;
+                this.current_filter_id = 0;
             }
-            this.filter_id = this.current_filter_id;
         },
     },
     methods: {

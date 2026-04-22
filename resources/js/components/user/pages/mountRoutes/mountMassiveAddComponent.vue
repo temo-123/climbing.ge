@@ -180,12 +180,9 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
-        mixins: [
-            // editor_config,
-        ],
+        mixins: [],
         components: {
             // validator_alerts_component
         },
@@ -218,19 +215,18 @@
                         weather: "",
                     },
                 },
-
                 editor_config: {
-                    us_short_description_text_editor: this.$editor_config.get_small_editor_config(),
-                    us_text_editor_config: this.$editor_config.get_big_editor_config(),
-                    us_info_editor_config: this.$editor_config.get_big_editor_config(),
-                    us_how_get_editor_config: this.$editor_config.get_big_editor_config(),
-                    us_best_time_editor_config: this.$editor_config.get_big_editor_config(),
+                    us_short_description_text_editor: {},
+                    us_text_editor_config: {},
+                    us_info_editor_config: {},
+                    us_how_get_editor_config: {},
+                    us_best_time_editor_config: {},
 
-                    ka_short_description_text_editor: this.$editor_config.get_small_editor_config(),
-                    ka_text_editor_config: this.$editor_config.get_big_editor_config(),
-                    ka_info_editor_config: this.$editor_config.get_big_editor_config(),
-                    ka_how_get_editor_config: this.$editor_config.get_big_editor_config(),
-                    ka_best_time_editor_config: this.$editor_config.get_big_editor_config(),
+                    ka_short_description_text_editor: {},
+                    ka_text_editor_config: {},
+                    ka_info_editor_config: {},
+                    ka_how_get_editor_config: {},
+                    ka_best_time_editor_config: {},
                 },
 
                 is_loading: false,

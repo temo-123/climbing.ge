@@ -7,7 +7,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <h1>{{ user.name }} {{ user.surname }}</h1>
 
             <h4>{{ user.country }}, {{ user.city }}</h4>
@@ -18,7 +18,7 @@
             <h4 v-if="user.email_verified_at == null" style="color:red;">Verification feild</h4>
 
             <img v-if="user.image != null" :src="'/public/images/user_profil_img/' + user.image" class="rounded mx-auto d-block"/>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <!-- <button

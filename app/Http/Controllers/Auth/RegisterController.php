@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
 // use App\Notifications\WelcomeEmailNotification;
 
 use App\Models\Role;
+use App\Models\User_role;
+use App\Models\user_notification;
 
 class RegisterController extends Controller
 {
@@ -77,30 +79,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // $token = $data['g-recaptcha-response'];
-        // dd('dd');
-        $capcha = true;
+        $user = User::create([
+            'name'         => $data['name'],
+            'surname'      => $data['surname'],
+            'country'      => $data['country'],
+            'city'         => $data['city'],
+            'phone_number' => $data['phone_number'],
+            'email'        => $data['email'],
+            'password'     => bcrypt($data['password']),
+        ]);
 
-        if($capcha){
-            $user = User::create([
-                'name'     => $data['name'],
-                'surname'    => $data['surname'],
-
-                'country'    => $data['country'],
-                'city'    => $data['city'],
-
-                'phone_number'    => $data['phone_number'],
-                'email'    => $data['email'],
-
-                'password' => bcrypt($data['password']),
+        if (user_notification::where('user_id', $user->id)->count() === 0) {
+            user_notification::create([
+                'user_id'              => $user->id,
+                'add_new_gym'          => 1,
+                'news'                 => 1,
+                'add_new_ice_spot'     => 1,
+                'add_new_outdoor_spot' => 1,
+                'add_new_product'      => 1,
+                'add_new_sector'       => 1,
+                'add_new_service'      => 1,
+                'add_new_techtip'      => 1,
+                'favorite_film'        => 1,
+                'favorite_outdoor'     => 1,
+                'favorite_product'     => 1,
+                'interested_event'     => 1,
             ]);
-
-            // $user->roles()->attach(Role::where('name', 'user')->first());
-
-            return $user;
         }
-        else{
-            return ('Captcha is feild');
+
+        if (User_role::where('user_id', $user->id)->count() === 0) {
+            User_role::create([
+                'user_id' => $user->id,
+                'role_id' => Role::where('slug', 'user')->first()->id,
+            ]);
         }
+
+        return $user;
     }
 }

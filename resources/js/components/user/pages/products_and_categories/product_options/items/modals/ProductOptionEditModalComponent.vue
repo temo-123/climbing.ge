@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-            <pre class="language-vue">
+            <div>
                 <div class="row justify-content-center" v-show="is_loading">
                     <div class="col-md-4">
                         <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
@@ -80,7 +80,7 @@
                         <p class="text-muted mt-2">No images available</p>
                     </div>
                 </div>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button type="submit" form="edit_new_option" class="btn btn-primary">Update option</button>

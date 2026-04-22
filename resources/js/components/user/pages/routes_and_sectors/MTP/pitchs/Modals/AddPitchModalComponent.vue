@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form id="mtp_add_form" @submit.prevent="save()">
                 <select class="form-control"  v-model="data.category" required>
                     <option value="" disabled>Please select mtp type</option>
@@ -33,7 +33,7 @@
 
                 <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
@@ -54,7 +54,6 @@
     // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
     
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
-    import { editor_config } from '../../../../../../../mixins/editor/editor_config_mixin.js'
 
     export default {
         components: {
@@ -62,12 +61,10 @@
             Editor,
             // validator_alerts_component
         },
-        mixins: [
-            editor_config
-        ],
+        mixins: [],
         data() {
             return {
-                description_editor: editor_config.get_small_editor_config(),
+                description_editor: {},
                 errors: [],
                 status: "",
                 problem_status: "",

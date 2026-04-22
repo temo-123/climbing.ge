@@ -155,7 +155,11 @@
             },
 
             show_feedback_modal(){
-                this.$refs.feadback_modal.show_modal(this.id)
+                if (this.user && this.user.id) {
+                    this.$refs.feadback_modal.show_modal(this.id)
+                } else {
+                    this.$bus.$emit('open-login-modal', () => this.$refs.feadback_modal.show_modal(this.id))
+                }
             },
 
             show_complaint_modal(feedback_id){

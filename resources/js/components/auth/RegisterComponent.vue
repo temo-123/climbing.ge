@@ -216,7 +216,7 @@ export default {
 
       is_loading: false,
 
-      is_verify_isset: false,
+      is_verify_isset: true,
       terms_of_use: false,
 
       error: [],

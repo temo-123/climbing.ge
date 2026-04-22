@@ -111,12 +111,16 @@
 
             favorite_product(product_id){
                 axios
-                .post('/add_to_favorite/'+ product_id)
-                .then(response => {
-                    alert("Product addid in your favorite list!");
+                .post('add_to_favorite/'+ product_id)
+                .then(() => {
+                    alert("Product added to your favorite list!");
                 })
-                .catch(error =>{
-                    alert("Error");
+                .catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id))
+                    } else {
+                        alert("Error adding to favorites");
+                    }
                 })
             },
 

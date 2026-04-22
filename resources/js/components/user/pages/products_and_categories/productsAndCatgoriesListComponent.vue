@@ -11,8 +11,8 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
-                        :table_data="this.data_for_tab"
+                    <tabsComponent
+                        :table_data="data_for_tab"
                         @update="get_products_data"
 
                         @show_sale_code_add_modal="show_sale_code_add_modal"
@@ -154,7 +154,7 @@
                     },
                     'filter_data': filter_data,
                     'tab_data': {
-                        'data': this.apply_filters(this.original_products_data), 
+                        'data': this.apply_filters(this.original_products_data).map(item => ({ ...item, id: item.product?.id })),
                         'tab': {
                             'head': [
                                 'ID',
@@ -247,7 +247,7 @@
                         'class': 'btn btn-primary'
                     },
                     'tab_data': {
-                        'data': this.brands_data, 
+                        'data': this.brands_data.map(item => ({ ...item, id: item.global_brand?.id })),
                         'tab': {
                             'head': [
                                 'ID',
@@ -336,10 +336,10 @@
             
             // Update products table with current filters
             update_products_table() {
-                // Find products tab and update its data
                 const productsTab = this.data_for_tab.find(tab => tab.id === 1);
                 if (productsTab) {
-                    productsTab.tab_data.data = this.apply_filters(this.original_products_data);
+                    productsTab.tab_data.data = this.apply_filters(this.original_products_data)
+                        .map(item => ({ ...item, id: item.product?.id }));
                 }
             },
             
@@ -481,15 +481,20 @@
                 this.$refs.userRelationModal.show_modal(id)
             },
             
-            // Legacy method - kept for backward compatibility
-            get_products_data: function(){
-                // New approach uses Promise.all in mounted()
-            },
-            get_categories_data: function(){
-                // New approach uses Promise.all in mounted()
-            },
-            get_all_brands_data: function(){
-                // New approach uses Promise.all in mounted()
+            get_products_data() {
+                this.data_for_tab = [];
+                Promise.all([
+                    this.loadProducts(),
+                    this.loadCategories(),
+                    this.loadBrands()
+                ]).then(() => {
+                    this.buildProductsTab();
+                    this.buildCategoriesTab();
+                    this.buildBrandsTab();
+                    this.get_sale_codes_data();
+                }).catch(error => {
+                    console.log('Error reloading data:', error);
+                });
             },
         }
     }

@@ -6,14 +6,14 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <select class="form-control" name="comment delete cause" > 
                 <option value="Ban time" disabled>Ban time</option>
                 <option value="0.5 year">0.5 year</option>
                 <option value="1 year">1 year</option>
                 <option value="2 year">2 year</option>
             </select> 
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

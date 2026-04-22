@@ -11,13 +11,14 @@ use App\Models\Shop\Option_image;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Favorite_product;
 use App\Models\User\User_adreses;
-use auth;
+use App\Services\ProductService;
+use Auth;
 
 class CartController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth:sanctum');
     }
     /**
      * Display a listing of the resource.
@@ -190,33 +191,37 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
-        if($cart_item){
-            $item_quantity = $cart_item->quantity;
-            $requested_quantity = $request->quantity;
-
-            $option_item = Product_option::where('id', '=', $cart_item->option_id)->first();
-            if ($item_quantity + $requested_quantity > $option_item->quantity) {
-                return response()->json(['error' => 'Not enough stock available'], 400);
-            }
-
-            $cart_item['quantity'] = $item_quantity + $requested_quantity;
-            $cart_item -> save();
+        $option_item = Product_option::with('warehouse')->where('id', '=', $request->modification_id)->first();
+        if (!$option_item) {
+            return response()->json(['error' => 'Product option not found'], 404);
         }
-        else{
-            // Check stock before adding new cart item
-            $option_item = Product_option::where('id', '=', $request->modification_id)->first();
-            if (!$option_item || $request->quantity > $option_item->quantity) {
-                return response()->json(['error' => 'Not enough stock available'], 400);
+
+        $stock = ProductService::get_option_stock_quantity($option_item);
+        $requested_quantity = (int) $request->quantity;
+
+        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
+        if ($cart_item) {
+            $new_total = $cart_item->quantity + $requested_quantity;
+            if ($new_total > $stock) {
+                return response()->json([
+                    'error' => 'Not enough stock available',
+                    'available' => $stock,
+                ], 400);
             }
-
+            $cart_item->quantity = $new_total;
+            $cart_item->save();
+        } else {
+            if ($requested_quantity > $stock) {
+                return response()->json([
+                    'error' => 'Not enough stock available',
+                    'available' => $stock,
+                ], 400);
+            }
             $cart = new Cart;
-
             $cart['option_id'] = $request->modification_id;
-            $cart['quantity'] = $request->quantity;
+            $cart['quantity'] = $requested_quantity;
             $cart['user_id'] = Auth::user()->id;
-
-            $cart -> save();
+            $cart->save();
         }
     }
 

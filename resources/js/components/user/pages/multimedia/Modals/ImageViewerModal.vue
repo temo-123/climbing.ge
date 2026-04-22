@@ -103,9 +103,7 @@
 export default {
     name: 'ImageViewerModal',
 
-    components: {
-        StackModal
-    },
+    components: {},
     
     props: {
         showModal: {

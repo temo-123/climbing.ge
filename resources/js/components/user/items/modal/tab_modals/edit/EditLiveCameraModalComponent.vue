@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <form v-on:submit.prevent="edit_live_camera" id="edit_live_camera">
                 <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
                 <input type="link" class="form-control" v-model="data.link" name="link" placeholder="link" title="link" required>
@@ -37,7 +37,7 @@
                     </option>
                 </select>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

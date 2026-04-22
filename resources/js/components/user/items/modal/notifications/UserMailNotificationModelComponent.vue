@@ -6,7 +6,7 @@
         :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
-        <pre class="language-vue">
+        <div>
             <form id="sund_user_notification" v-on:submit.prevent="send_mail" >
                 <div class="container">
 
@@ -97,7 +97,7 @@
 
                 </div>
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button
@@ -117,7 +117,6 @@
 
     export default {
         components: {
-            StackModal,
         },
         data(){
             return{

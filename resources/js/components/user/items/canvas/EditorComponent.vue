@@ -165,7 +165,7 @@ export default {
             window.addEventListener('keydown', this.handleKeyDown);
         },
 
-        beforeDestroy() {
+        beforeUnmount() {
             // Remove keyboard event listeners
             window.removeEventListener('keydown', this.handleKeyDown);
         },
@@ -327,7 +327,7 @@ export default {
             },
 
             import_json_in_editor(event) {
-                console.log("🚀 ~ import_json_in_editor ~ event:", event);
+                console.log('import_json_in_editor ~ event:', event);
                 // this.$refs.canvasContainer.import_json(json)
             },
 
@@ -517,7 +517,7 @@ export default {
             },
 
             toggleGroupExpansion(layer) {
-                this.$set(layer, 'expanded', !layer.expanded);
+                layer.expanded = !layer.expanded;
             },
 
             toggleChildVisibility(layer, child) {
@@ -863,8 +863,8 @@ export default {
                         this.cancelEditingLayerName(l);
                     }
                 });
-                this.$set(layer, 'isEditing', true);
-                this.$set(layer, 'originalName', layer.name);
+                layer.isEditing = true;
+                layer.originalName = layer.name;
                 this.$nextTick(() => {
                     if (event && event.target) {
                         event.target.focus();
@@ -907,12 +907,12 @@ export default {
                         }
                     }
                 }
-                this.$set(layer, 'isEditing', false);
+                layer.isEditing = false;
                 delete layer.originalName;
             },
 
             cancelEditingLayerName(layer) {
-                this.$set(layer, 'isEditing', false);
+                layer.isEditing = false;
                 delete layer.originalName;
                 this.updateLayersList(); // Refresh to reset the display
             },
@@ -928,8 +928,8 @@ export default {
                         });
                     }
                 });
-                this.$set(child, 'isEditing', true);
-                this.$set(child, 'originalName', child.name);
+                child.isEditing = true;
+                child.originalName = child.name;
                 this.$nextTick(() => {
                     if (event && event.target) {
                         event.target.focus();
@@ -971,12 +971,12 @@ export default {
                         }
                     }
                 }
-                this.$set(child, 'isEditing', false);
+                child.isEditing = false;
                 delete child.originalName;
             },
 
             cancelEditingChildName(child) {
-                this.$set(child, 'isEditing', false);
+                child.isEditing = false;
                 delete child.originalName;
                 this.updateLayersList(); // Refresh to reset the display
             },
@@ -1005,12 +1005,12 @@ export default {
                         }
                     }
                 }
-                this.$set(layer, 'isEditing', false);
+                layer.isEditing = false;
                 delete layer.originalText;
             },
 
             cancelEditingText(layer) {
-                this.$set(layer, 'isEditing', false);
+                layer.isEditing = false;
                 delete layer.originalText;
                 this.updateLayersList(); // Refresh to reset the display
             },
@@ -1042,12 +1042,12 @@ export default {
                         }
                     }
                 }
-                this.$set(child, 'isEditing', false);
+                child.isEditing = false;
                 delete child.originalText;
             },
 
             cancelEditingChildText(child) {
-                this.$set(child, 'isEditing', false);
+                child.isEditing = false;
                 delete child.originalText;
                 this.updateLayersList(); // Refresh to reset the display
             },

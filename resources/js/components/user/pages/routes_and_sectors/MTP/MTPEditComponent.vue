@@ -96,19 +96,17 @@
 </template>
 
 <script>
-  import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
   import pitch_list from './pitchs/PitchListComponent'
 
   export default {
     mixins: [
-        editor_config,
-    ],
+        ],
     components: {
       pitch_list
     },
     data() {
       return {
-        description_editor: editor_config.get_small_editor_config(),
+        description_editor: {},
 
         regions: [],
         sectors: [],

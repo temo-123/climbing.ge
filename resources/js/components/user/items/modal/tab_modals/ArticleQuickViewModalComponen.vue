@@ -7,7 +7,7 @@
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <pre class="language-vue">
+            <div>
                 <div class="container">
                     <div class="clearfix row">
                         <p v-if="modal_order.length > 0">
@@ -80,7 +80,7 @@
                         </button>
                     </form>
                 </div>
-            </pre>
+            </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
                     <button

@@ -134,12 +134,16 @@
                                         <i class="fa fa-times-circle" aria-hidden="true"></i>
                                         {{ $t('shop.product.out_of_stock') }}
                                     </div>
-                                    <div v-if="products_quantity == select_product_max_quantyty && showMaxProductsAlert" class="alert alert-danger alert-dismissible alert-with-icon" role="alert">
+                                    <div v-if="products_quantity >= select_product_max_quantyty && select_product_max_quantyty > 0 && showMaxProductsAlert" class="alert alert-danger alert-dismissible alert-with-icon" role="alert">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         {{ $t('shop.max products') }}
                                         <button type="button" class="close" @click="hideAlert('maxProducts')" aria-label="Close alert">
                                             <span>&times;</span>
                                         </button>
+                                    </div>
+                                    <div v-if="select_product_max_quantyty > 0 && select_product_max_quantyty <= 5 && product_modification_for_cart != 'All'" class="alert alert-warning alert-with-icon" role="alert">
+                                        <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
+                                        Only {{ select_product_max_quantyty }} exist
                                     </div>
                                     <div v-if="is_adding_in_cart_socsesful && showAddSuccessAlert" class="alert alert-success alert-dismissible alert-with-icon" role="alert">
                                         <i class="fa fa-check-circle" aria-hidden="true"></i>
@@ -217,7 +221,7 @@
                             </div>
                             
                             <div class="row" v-if="user.length == 0">
-                                <div v-if="user.length == 0" class="alert alert-danger alert-with-icon cursor-pointer" role="alert" @click="goTo('/login')">
+                                <div class="alert alert-danger alert-with-icon cursor-pointer" role="alert" @click="open_login_modal">
                                     <i class="fa fa-sign-in" aria-hidden="true"></i>
                                     <div class="col-md-12" v-if="product.global_product.sale_type == 'custom_production'">
                                         <p>{{ $t('shop.product.ples_castom_login') }}</p>
@@ -284,7 +288,6 @@
             :image = "'/public/images/meta_img/shop.jpg'"
         />
 
-
     </div>
 </template>
 
@@ -342,24 +345,29 @@
         watch: {
             '$route' (to, from) {
                 this.clear_product_data()
-
                 this.get_product()
                 this.get_user_info()
-
                 window.scrollTo(0,0)
-            }
-        },
-        mounted() {
-            this.get_product()
-            this.get_user_info()
-        },
-        watch: {
+            },
             items: {
                 handler() {
                     this.currentImageIndex = 0;
                 },
                 deep: true
+            },
+            products_quantity(val) {
+                if (this.select_product_max_quantyty > 0 && val > this.select_product_max_quantyty) {
+                    this.products_quantity = this.select_product_max_quantyty;
+                }
+                if (val < 1) {
+                    this.products_quantity = 1;
+                }
             }
+        },
+        mounted() {
+            this.get_product()
+            this.get_user_info()
+            this.$bus.$on('logged-in', () => this.get_user_info())
         },
         computed: {
             isOutOfStock() {
@@ -409,12 +417,12 @@
         methods: {
             get_user_info() {
                 axios
-                .get('/auth_user/')
+                .get('auth_user')
                 .then(response => {
-                    this.user = [],
+                    this.user = []
                     this.user = response.data
                 })
-                .catch()
+                .catch(() => {})
             },
             goTo(page = '/'){
                 window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
@@ -521,22 +529,33 @@
                     alert('Please select option!')
                 }
                 else{
+                    const qty = Math.min(this.products_quantity, this.select_product_max_quantyty)
+                    if (qty < 1) return
+                    this.products_quantity = qty
                     this.is_adding_in_cart_socsesful = false
                     this.addingToCart = true
+                    this.showAddSuccessAlert = true
+                    this.showMaxProductsAlert = true
                     axios
                     .put('/cart/'+this.product_modification_for_cart, {
                         modification_id: this.product_modification_for_cart,
-                        quantity: this.products_quantity
+                        quantity: qty
                     })
                     .then(response => {
                         this.add_to_cart_message = response
                         this.is_adding_in_cart_socsesful = true
+                        this.$bus.$emit('cart-updated')
                     })
                     .catch(error =>{
-                        if (error.response && error.response.data && error.response.data.error) {
-                            this.add_to_cart_message = error.response.data.error;
+                        if (error.response && error.response.data) {
+                            const available = error.response.data.available
+                            if (available !== undefined) {
+                                this.select_product_max_quantyty = available
+                                this.products_quantity = Math.min(this.products_quantity, available)
+                            }
+                            this.add_to_cart_message = error.response.data.error || 'Something went wrong.'
                         } else {
-                            this.add_to_cart_message = 'Something went wrong. Try login.';
+                            this.add_to_cart_message = 'Something went wrong. Try login.'
                         }
                     })
                     .finally(() => {
@@ -548,12 +567,16 @@
             add_to_faworite(product_id){
                 this.addingToFavorite = true
                 axios
-                .post('/add_to_favorite/'+ product_id)
-                .then(response => {
+                .post('add_to_favorite/'+ product_id)
+                .then(() => {
                     alert("Product added to your favorite list!");
                 })
-                .catch(error =>{
-                    alert(error);
+                .catch(error => {
+                    if (error.response && error.response.status === 401) {
+                        this.$bus.$emit('open-login-modal', () => this.add_to_faworite(product_id))
+                    } else {
+                        alert("Error adding to favorites");
+                    }
                 })
                 .finally(() => {
                     this.addingToFavorite = false
@@ -610,7 +633,13 @@
             },
             toggleZoom() {
                 this.isZoomed = !this.isZoomed;
-            }
+            },
+            open_login_modal() {
+                const callback = this.product.global_product.sale_type === 'online_order' && this.product_modification_for_cart !== 'All'
+                    ? () => this.add_to_cart()
+                    : null
+                this.$bus.$emit('open-login-modal', callback)
+            },
         }
     }
 </script>

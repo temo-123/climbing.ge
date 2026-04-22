@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <h1>Edit tour category</h1>
 
             <div class="row justify-content-center" v-show="is_loading">
@@ -38,7 +38,7 @@
                 <!-- <p>Russian name</p>
                 <input type="text" class="form-control" v-model="form_data.ru_name" name="English name" id="English name" placeholder="Enter English name" title="Enter English name"> -->
             </div>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <h1>Add shiped region</h1>
             <form id="add_region" v-on:submit.prevent="add_region" >
                 <input type="text" class="form-control" v-model="adding_data.region" name="region name" placeholder="region" title="region" required>
@@ -14,7 +14,7 @@
 
                 <input type="number" class="form-control" v-model="adding_data.free_shiping_price_after" name="free shiping price after" placeholder="Free shiping price after" title="Free shiping price after">
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

@@ -6,6 +6,13 @@
                 <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
                     <div v-if="user.length == 0">
+                        <div class="row mb-2">
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-outline-primary btn-block login-comment-btn" @click="$bus.$emit('open-login-modal', get_user_info)">
+                                    <i class="fa fa-sign-in"></i> Login for easy comments — name &amp; email fill automatically
+                                </button>
+                            </div>
+                        </div>
                         <div class="row" >
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -24,7 +31,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -306,6 +313,7 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
         mounted() {
             this.get_comments()
             this.get_user_info()
+            this.$bus.$on('logged-in', this.get_user_info)
         },
         methods: {
             update(id) {
@@ -477,5 +485,13 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
         background-color: #d3d3d3;
         padding: 1rem;
         border-radius: 8px;
+    }
+    .login-comment-btn {
+        width: 100%;
+        padding: 10px;
+        font-size: 0.95rem;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background 0.2s;
     }
 </style>

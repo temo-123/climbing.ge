@@ -6,7 +6,7 @@
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
-        <pre class="language-vue">
+        <div>
             <h1>Add shiped sale_code</h1>
             <form v-on:submit.prevent="add_sale_code" id="add_sale_code">
                 <input type="text" class="form-control" v-model="data.code" name="sale code" placeholder="Code" title="Code" required>
@@ -23,7 +23,7 @@
                 <input type="checkbox" id="scales" v-model="data.one_time_code" name="scales" placeholder="One time code" title="One time code"> One time cde
                 <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" placeholder="Action_data" title="Action_data" v-if="!data.one_time_code">
             </form>
-        </pre>
+        </div>
         <div slot="modal-footer">
             <div class="modal-footer">
                 <button

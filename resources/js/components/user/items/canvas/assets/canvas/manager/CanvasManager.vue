@@ -117,7 +117,7 @@ export default {
             this.$emit('layers_ready');
         },
 
-        beforeDestroy() {
+        beforeUnmount() {
             // Remove mouse wheel listener
             if (this.scope && this.scope.view && this.scope.view.element) {
                 this.scope.view.element.removeEventListener('wheel', this.handleMouseWheel);

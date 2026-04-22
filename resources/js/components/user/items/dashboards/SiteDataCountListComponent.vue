@@ -213,7 +213,7 @@
                 <div class="row">
                 
                     <div class="col-md-6">
-                        <router-link :to="{ name: 'mountlist' }">
+                        <router-link :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }">
                             <div class="card-counter primary">
                                 <i class="fa fa-area-chart" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['mountaineering_route']}}</span>
@@ -223,7 +223,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <router-link :to="{ name: 'mountlist' }">
+                        <router-link :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }">
                             <div class="card-counter primary">
                                 <i class="fa fa-area-chart" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['mount_masives']}}</span>
@@ -414,7 +414,7 @@
                 <div class="row">
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'gallery'}">
+                        <router-link :to="{name: 'article_images'}">
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['gallery_images']}}</span>
@@ -424,7 +424,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'gallery'}">
+                        <router-link :to="{name: 'article_images'}">
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['index_header_images']}}</span>
@@ -446,7 +446,7 @@
                 <div class="row">
                 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'comentsList'}">
+                        <router-link :to="{name: 'commentsAndReviewsList'}">
                             <div class="card-counter danger">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
                                 <span class="count-numbers">{{ this.counts['article_comment_complaint_count'] }}</span>
@@ -456,7 +456,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'comentsList'}">
+                        <router-link :to="{name: 'commentsAndReviewsList'}">
                             <div class="card-counter danger">
                                 <i class="fa fa-gavel" aria-hidden="true"></i>
                                 <span class="count-numbers">XXX</span>
@@ -478,7 +478,7 @@
                 <div class="row">
                 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'comentsList'}">
+                        <router-link :to="{name: 'commentsAndReviewsList'}">
                             <div class="card-counter dark">
                                 <i class="fa fa-comment-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{ this.counts['article_comments_count'] }}</span>
@@ -488,7 +488,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'comentsList'}">
+                        <router-link :to="{name: 'commentsAndReviewsList'}">
                             <div class="card-counter dark">
                                 <i class="fa fa-comment-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{ this.counts['product_comments_count'] }}</span>

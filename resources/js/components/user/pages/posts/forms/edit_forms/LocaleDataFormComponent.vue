@@ -66,8 +66,8 @@
                 category: this.category_prop,
                 is_change_url_title: false,
                 editor_config: {
-                    short_description_text: this.$editor_config.get_small_editor_config(),
-                    text: this.$editor_config.get_big_editor_config(),
+                    short_description_text: {},
+                    text: {},
                 },
                 token: '',
                 data: this.locale_data_prop,

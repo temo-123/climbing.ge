@@ -176,15 +176,12 @@
 </template>
 
 <script>
-    import { editor_config } from '../../../../mixins/editor/editor_config_mixin.js'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         components: {
             // validator_alerts_component,
         },
-        mixins: [
-            editor_config
-        ],
+        mixins: [],
         props: [
             'back_url',
         ],
@@ -195,19 +192,18 @@
                 service_images: [],
                 editorConfig: '',
                 is_loading: false,
-
                 editor_config: {
-                    us_short_description_text: editor_config.get_small_editor_config(),
-                    us_text: editor_config.get_big_editor_config(),
-                    // us_info: editor_config.get_big_editor_config(),
+                    us_short_description_text: {},
+                    us_text: {},
+                    // us_info: {},
 
-                    ru_short_description_text: editor_config.get_small_editor_config(),
-                    ru_text: editor_config.get_big_editor_config(),
-                    // ru_info: editor_config.get_big_editor_config(),
+                    ru_short_description_text: {},
+                    ru_text: {},
+                    // ru_info: {},
 
-                    ka_short_description_text: editor_config.get_small_editor_config(),
-                    ka_text: editor_config.get_big_editor_config(),
-                    // ka_info: editor_config.get_big_editor_config(),
+                    ka_short_description_text: {},
+                    ka_text: {},
+                    // ka_info: {},
                 },
 
                 data: {

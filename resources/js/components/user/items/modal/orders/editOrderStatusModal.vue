@@ -6,10 +6,10 @@
         :saveButton="{ visible: true, title: 'Edit status', btnClass: { 'btn btn-primary': true }, onClick: edit_order_status }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
-        <pre class="language-vue">
-            <h1>Active order status</h1>
+        <div>
+            <h4>Active order status</h4>
 
-            <span v-if="!order_status_updating_loader">
+            <div v-if="!order_status_updating_loader">
                 <div class="p-4">
                     <table class="table table-bordered track_tbl">
                         <thead>
@@ -29,25 +29,23 @@
                     </table>
                 </div>
 
-                <h1>Edit order status</h1>
-                
-                <select class="form-control" v-model="selected_order_status" name="comment delete cause" > 
+                <h4>Edit order status</h4>
+
+                <select class="form-control" v-model="selected_order_status">
                     <option value="Treatment" disabled>Treatment</option>
                     <option value="Preparation for shipment">Preparation for shipment</option>
                     <option value="Ready to ship">Ready to ship</option>
                     <option value="Order has been sent">Order has been sent</option>
                     <option value="Transferred to the delivery service">Transferred to the delivery service</option>
-                    <option value="Delivered">delivered</option>
-                </select> 
-            </span>
-            <span v-if="order_status_updating_loader">
-                <div class="justify-content-center">
-                    <div class="col-md-4">
-                        <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
-                    </div>
+                    <option value="Delivered">Delivered</option>
+                </select>
+            </div>
+            <div v-if="order_status_updating_loader" class="d-flex justify-content-center p-4">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
                 </div>
-            </span>
-        </pre>
+            </div>
+        </div>
     </StackModal>
 </template>
 
@@ -56,15 +54,21 @@ export default {
     components: {},
     data(){
         return {
-            is_order_status_edit_model: false
+            is_order_status_edit_model: false,
+            activ_order_id: null,
+            activ_order_status: {},
+            order_status: {},
+            selected_order_status: '',
+            order_status_updating_loader: false,
         }
     },
     mounted() {
         //
     },
     methods: {
-        show_modal(){
-            this.is_order_status_model = true
+        show_modal(order_id){
+            this.activ_order_id = order_id
+            this.get_activ_order('edit')
         },
 
         get_activ_order(action){

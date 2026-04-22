@@ -136,9 +136,9 @@
                     map: '',
                 },
 
-                us_text_editor_config: this.$editor_config.get_big_editor_config(),
-                // ru_text_editor_config: this.$editor_config.get_big_editor_config(),
-                ka_text_editor_config: this.$editor_config.get_big_editor_config(),
+                us_text_editor_config: {},
+                // ru_text_editor_config: {},
+                ka_text_editor_config: {},
 
                 tab_num: 1,
 
