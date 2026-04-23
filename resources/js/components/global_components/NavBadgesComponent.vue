@@ -148,11 +148,16 @@ export default {
     justify-content: center;
     padding: 15px 10px;
     cursor: pointer;
-    color: inherit !important;
+    color: #fff !important;
     font-size: 1.1em;
     text-decoration: none !important;
     line-height: 20px;
     background: transparent !important;
+}
+@media (max-width: 992px) {
+    .nav-badge-li {
+        display: block;
+    }
 }
 .nav-badge-btn:hover {
     opacity: 0.75;

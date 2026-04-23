@@ -10,11 +10,12 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-// use App\Notifications\WelcomeEmailNotification;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 
-use App\Models\Role;
-use App\Models\User_role;
-use App\Models\user_notification;
+use App\Models\User\Role;
+use App\Models\User\User_role;
+use App\Models\User\user_notification;
 
 class RegisterController extends Controller
 {
@@ -46,7 +47,34 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('guest')->except('apiRegister');
+    }
+
+    public function apiRegister(Request $request)
+    {
+        $validator = $this->validator($request->all());
+
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $user = $this->create($request->all());
+
+        event(new Registered($user));
+
+        auth()->login($user);
+
+        $user->tokens()->where('name', 'authToken')->delete();
+        $token = $user->createToken('authToken')->plainTextToken;
+
+        return response()->json([
+            'token' => $token,
+            'user'  => $user,
+            'message' => 'Registration successful. Please check your email to verify your account.'
+        ], 201);
     }
 
     /**

@@ -73,9 +73,8 @@ class VerificationController extends Controller
             ], 200);
         }
 
-        // In Laravel, you would typically use the Notification facade here
-        // $user->sendEmailVerificationNotification();
-        
+        $user->sendEmailVerificationNotification();
+
         return response()->json([
             'message' => 'Verification email sent'
         ], 200);

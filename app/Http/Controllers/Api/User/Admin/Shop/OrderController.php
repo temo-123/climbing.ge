@@ -300,13 +300,13 @@ class OrderController extends Controller
     public function get_order_detals(Request $request)
     {
         $order = Order::where("id", "=", $request->order_id)->first();
-        // $order_status = Order_status::where("order_id", "=", $order->id)->first();
         $order_products = (new static)->get_order_products($order->id);
+        $buyer_address = $order->buyerAddress()->first();
 
         $order_detals = [
             'order' => $order,
-            // 'order_status' => $order_status,
-            'order_products' => $order_products
+            'order_products' => $order_products,
+            'buyer_address' => $buyer_address,
         ];
 
         return $order_detals;

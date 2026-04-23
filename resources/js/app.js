@@ -231,8 +231,14 @@ const router = createRouter({
 
 import { getCurrentLocale } from './services/routerUtils.js';
 
+let isFirstNavigation = true;
+
 router.beforeEach((to, from, next) => {
-    isRouteLoading.value = true;
+    if (isFirstNavigation) {
+        isFirstNavigation = false;
+    } else {
+        isRouteLoading.value = true;
+    }
     window.scrollTo(0, 0);
 
     let locale = localStorage.getItem('lang') || 'us';

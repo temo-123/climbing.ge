@@ -205,6 +205,12 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/del_from_favorite/{product_id}', 'del_from_favorite');
     });
 
+    Route::controller(CustomOrderController::class)->prefix('custom_order')->group(function () {
+        Route::post('/store', 'store');
+        Route::get('/index', 'index');
+        Route::get('/show/{order_id}', 'show');
+    });
+
     Route::controller(OrderController::class)->prefix('set_order')->group( function() {
         // Route::get('/get_all_orders', 'get_all_orders');
         Route::post('/create_order', 'create_order');

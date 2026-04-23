@@ -31,33 +31,31 @@
                 </div>
 
                 <div class="form-group mt-2">
-                    <label>Category *</label>
-                    <select class="form-control" v-model="data.category_id" required>
-                        <option :value="0" disabled>Select category</option>
-                        <option v-for="cat in tasks_categories" :key="cat.id" :value="cat.id">{{ cat.title }}</option>
+                    <label>Task type *</label>
+                    <select class="form-control" v-model="data.category" required>
+                        <option value="" disabled>Select type</option>
+                        <option value="production">Production</option>
+                        <option value="delivery">Delivery</option>
+                        <option value="other">Other</option>
                     </select>
                 </div>
 
                 <div class="form-group mt-2">
                     <label>Assign to *</label>
-                    <select class="form-control" v-model="data.user_id" required>
-                        <option :value="0" disabled>Select user</option>
+                    <select class="form-control" v-model="data.for_user_id" required>
+                        <option :value="0" disabled>Select worker</option>
                         <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
                     </select>
                 </div>
             </form>
         </div>
 
-        <div slot="modal-footer">
+        <template #footer>
             <div class="modal-footer">
-                <button type="submit" form="update_task" class="btn btn-primary" :disabled="is_loading">
-                    Save
-                </button>
-                <button type="button" class="btn btn-secondary" @click="close_modal()">
-                    Cancel
-                </button>
+                <button type="submit" form="update_task" class="btn btn-primary" :disabled="is_loading">Save</button>
+                <button type="button" class="btn btn-secondary" @click="close_modal()">Cancel</button>
             </div>
-        </div>
+        </template>
     </stack-modal>
 </template>
 
@@ -72,10 +70,9 @@
                     title: '',
                     text: '',
                     deadline: '',
-                    category_id: 0,
-                    user_id: 0,
+                    category: '',
+                    for_user_id: 0,
                 },
-                tasks_categories: [],
                 users: [],
             }
         },
@@ -83,24 +80,12 @@
             show_modal(task_id) {
                 this.is_modal = true
                 this.task_id = task_id
-                this.data = {
-                    title: '',
-                    text: '',
-                    deadline: '',
-                    category_id: 0,
-                    user_id: 0,
-                }
-                this.get_all_tasks_category()
+                this.data = { title: '', text: '', deadline: '', category: '', for_user_id: 0 }
                 this.get_users()
                 this.load_task(task_id)
             },
             close_modal() {
                 this.is_modal = false
-            },
-            get_all_tasks_category() {
-                axios.get('get_task/task_category/get_all_task_categories/')
-                    .then(response => { this.tasks_categories = response.data })
-                    .catch(() => {});
             },
             get_users() {
                 axios.get('get_user/get_worker_users/')
@@ -110,7 +95,16 @@
             load_task(task_id) {
                 this.is_loading = true
                 axios.get('get_task/get_task_data/' + task_id)
-                    .then(response => { this.data = response.data })
+                    .then(response => {
+                        const t = response.data
+                        this.data = {
+                            title: t.title || '',
+                            text: t.text || '',
+                            deadline: t.deadline ? t.deadline.substring(0, 10) : '',
+                            category: t.category || '',
+                            for_user_id: t.for_user_id || 0,
+                        }
+                    })
                     .catch(() => {})
                     .finally(() => this.is_loading = false)
             },

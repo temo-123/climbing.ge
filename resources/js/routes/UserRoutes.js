@@ -183,7 +183,7 @@ const router = createRouter({
     }
 });
 
-const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify'];
+const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify', 'create_pass'];
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('x_xsrf_token');

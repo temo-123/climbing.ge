@@ -1,121 +1,170 @@
 <template>
     <div class="row">
-
         <left-menu />
-            
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-md-12">
                     <breadcrumb />
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-2">
                 <div class="col-md-12">
-
-                    <div class="tabs"> 
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="row">
-                                    <div class="col" >
-                                        <input type="radio" id="1" :value="1" v-model="tab_num">
-                                        
-                                        <label for="1" >Tasks</label>
-                                    </div>
-                                </div>
+                    <div class="task-panel">
+                        <div class="task-panel-toolbar mb-3">
+                            <strong>My Tasks</strong>
+                            <button class="btn btn-outline-secondary btn-sm ml-3" @click="load_tasks">
+                                <i class="fa fa-refresh"></i> Refresh
+                            </button>
+                            <div class="task-legend ml-auto">
+                                <span class="legend-dot dot-yellow"></span> Created
+                                <span class="legend-dot dot-green ml-2"></span> In Progress
+                                <span class="legend-dot dot-gray ml-2"></span> Finished
+                                <span class="legend-dot dot-red ml-2"></span> Problem
                             </div>
                         </div>
 
-                        <div class="row" v-if="tab_num == 1">
-                            <div class="col-md-12 mb-2">
-                                <button class="btn btn-success pull-right" @click="get_user_tasks">Refresh</button>
-                            </div>
-                            
-                            <div class="col-md-12" v-for="task in tasks" :kay="task.id">
-                                <div :class="'alert ' + task_status_color(task.status)" role="alert">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <strong>{{ task.status }}</strong> {{ task.title }}
-                                            <p>{{ task.deadline }}</p>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <button class="btn btn-success float-right" @click="show_task_modal(task.id)">Show detals</button>
-                                            <button class="btn btn-primary float-right" v-if="task.status != 'confirmation_completion' && task.status != 'finished'" @click="show_task_status_model(task.id)">Update status</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
+                        <div v-if="tasks.length === 0" class="text-center text-muted p-4">
+                            No tasks assigned to you.
                         </div>
 
+                        <div v-for="task in tasks" :key="task.id" class="task-card" :class="task_card_class(task.status)">
+                            <div class="task-card-left" :class="task_bar_class(task.status)"></div>
+                            <div class="task-card-body">
+                                <div class="task-card-top">
+                                    <div>
+                                        <span class="task-title">{{ task.title }}</span>
+                                        <span class="task-badge ml-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
+                                        <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
+                                    </div>
+                                    <div class="task-card-actions">
+                                        <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" title="Details">
+                                            <i class="fa fa-eye"></i>
+                                        </button>
+                                        <button
+                                            v-if="task.status !== 'finished' && task.status !== 'confirmation_completion'"
+                                            class="btn btn-sm btn-outline-primary ml-1"
+                                            @click="show_status_modal(task.id)"
+                                            title="Update status"
+                                        >
+                                            <i class="fa fa-exchange"></i> Update
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="task-card-meta">
+                                    <span class="text-muted" :class="is_overdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
+                                        <i class="fa fa-calendar"></i> {{ format_date(task.deadline) }}
+                                        <span v-if="is_overdue(task.deadline)"> (overdue!)</span>
+                                    </span>
+                                    <span v-if="task.from_user" class="text-muted ml-3">
+                                        <i class="fa fa-user"></i> From: {{ task.from_user.name }} {{ task.from_user.surname }}
+                                    </span>
+                                </div>
+                                <div v-if="task.status === 'problem' && task.worker_comment" class="task-problem-note mt-1">
+                                    <i class="fa fa-exclamation-triangle text-danger"></i>
+                                    <strong class="text-danger"> Problem:</strong> {{ task.worker_comment }}
+                                </div>
+                                <div v-else-if="task.worker_comment" class="mt-1 text-muted" style="font-size:0.85em;">
+                                    <i class="fa fa-comment-o"></i> {{ task.worker_comment }}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
         </div>
 
-        <taskStatusModal ref="task_status_modal" @restart="get_user_tasks"/>
-        <showTaskModal ref="show_task_modal" />
+        <showTaskModal ref="show_task_modal"/>
+        <taskStatusModal ref="status_modal" @restart="load_tasks"/>
     </div>
 </template>
 
 <script>
     import breadcrumb from '../../../items/BreadcrumbComponent.vue'
-
-    import taskStatusModal from '../../../items/modal/task/task/TaskStatusModalComponent.vue'
     import showTaskModal from '../../../items/modal/task/task/ShowTaskModalComponent.vue'
+    import taskStatusModal from '../../../items/modal/task/task/TaskStatusModalComponent.vue'
 
     export default {
-        components: {
-            breadcrumb,
-
-            showTaskModal,
-            taskStatusModal
+        components: { breadcrumb, showTaskModal, taskStatusModal },
+        data() {
+            return { tasks: [] }
         },
-        data(){
-            return{
-                tab_num: 1,
-                tasks: []
-            }
-        },
-        mounted(){
-            this.get_user_tasks()
+        mounted() {
+            this.load_tasks()
         },
         methods: {
-            show_task_status_model(task_id){
-                this.$refs.task_status_modal.show_modal(task_id)
-            },  
-            show_task_modal(task_id){
-                this.$refs.show_task_modal.show_modal(task_id)
+            load_tasks() {
+                axios.get('/get_task/get_user_tasks', { params: { global_category: 'shop' } })
+                    .then(r => { this.tasks = r.data })
+                    .catch(() => {})
             },
-
-            get_user_tasks(){
-                axios
-                .get("/task/get_user_tasks/")
-                .then(response => {
-                    this.tasks = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },    
-            task_status_color(status){
-                if(status == 'in_process'){
-                    return 'alert-warning'
+            show_task_modal(id) { this.$refs.show_task_modal.show_modal(id) },
+            show_status_modal(id) { this.$refs.status_modal.show_modal(id) },
+            task_card_class(status) {
+                const map = {
+                    set_task: 'card-yellow', in_process: 'card-green',
+                    finished: 'card-gray', confirmation_completion: 'card-blue', problem: 'card-red'
                 }
-                else if(status == 'finished'){
-                    return 'alert-success'
+                return map[status] || 'card-gray'
+            },
+            task_bar_class(status) {
+                const map = {
+                    set_task: 'bar-yellow', in_process: 'bar-green',
+                    finished: 'bar-gray', confirmation_completion: 'bar-blue', problem: 'bar-red'
                 }
-                else if(status == 'confirmation_completion'){
-                    return 'alert-info'
+                return map[status] || 'bar-gray'
+            },
+            task_badge_class(status) {
+                const map = {
+                    set_task: 'badge-warning', in_process: 'badge-success',
+                    finished: 'badge-secondary', confirmation_completion: 'badge-info', problem: 'badge-danger'
                 }
-                else{
-                    return 'alert-danger'
-                } 
-            }      
+                return map[status] || 'badge-secondary'
+            },
+            status_label(status) {
+                const map = {
+                    set_task: 'Created', in_process: 'In Progress',
+                    finished: 'Finished', confirmation_completion: 'Awaiting Confirm', problem: 'Problem'
+                }
+                return map[status] || status
+            },
+            is_overdue(deadline) {
+                return deadline && new Date(deadline) < new Date()
+            },
+            format_date(d) {
+                return d ? d.substring(0, 10) : '—'
+            },
         }
     }
 </script>
 
 <style scoped>
+.task-panel-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.task-legend { display: flex; align-items: center; font-size: 0.8em; color: #666; }
+.legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 
+.task-card {
+    display: flex; border-radius: 6px; margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; background: #fff;
+}
+.task-card-left { width: 5px; flex-shrink: 0; }
+.task-card-body { flex: 1; padding: 10px 14px; }
+.task-card-top { display: flex; justify-content: space-between; align-items: flex-start; }
+.task-title { font-weight: 600; font-size: 0.95em; }
+.task-card-meta { margin-top: 4px; font-size: 0.82em; }
+.task-card-actions { display: flex; flex-shrink: 0; }
+.task-problem-note { font-size: 0.85em; }
+
+.card-red    { background: #fff8f8; }
+.card-gray   { background: #f8f9fa; }
+.bar-yellow  { background: #ffc107; }
+.bar-green   { background: #28a745; }
+.bar-gray    { background: #6c757d; }
+.bar-blue    { background: #17a2b8; }
+.bar-red     { background: #dc3545; }
+
+.dot-yellow  { background: #ffc107; }
+.dot-green   { background: #28a745; }
+.dot-gray    { background: #6c757d; }
+.dot-blue    { background: #17a2b8; }
+.dot-red     { background: #dc3545; }
 </style>

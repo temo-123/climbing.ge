@@ -4,7 +4,7 @@
         title="Task details"
         @close="close_modal()"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: false }"
     >
         <div class="container">
             <div class="text-center py-4" v-if="is_loading">
@@ -12,19 +12,62 @@
                 <p class="mt-2">Loading...</p>
             </div>
 
-            <div v-else>
-                <h5 class="mb-1">{{ task.title }}</h5>
-                <p class="text-muted mb-2">
-                    <strong>Status:</strong>
-                    <span :class="'badge ' + status_badge(task.status)">{{ task.status }}</span>
-                </p>
-                <p class="mb-2"><strong>Deadline:</strong> {{ task.deadline }}</p>
-                <p class="mb-3" v-if="task.text">{{ task.text }}</p>
-                <hr>
-                <p class="mb-1 text-muted"><small>Category ID: {{ task.category_id }} &nbsp;|&nbsp; Assigned user ID: {{ task.user_id }}</small></p>
-                <p class="mb-0 text-muted" v-if="task.worker_comment"><small><strong>Comment:</strong> {{ task.worker_comment }}</small></p>
+            <div v-else-if="task.id">
+                <div class="d-flex align-items-center mb-3">
+                    <span class="task-status-dot mr-2" :class="statusDotClass(task.status)"></span>
+                    <h5 class="mb-0">{{ task.title }}</h5>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <small class="text-muted">Status</small>
+                        <div><span class="badge" :class="statusBadgeClass(task.status)">{{ statusLabel(task.status) }}</span></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-muted">Type</small>
+                        <div>{{ task.category || '—' }}</div>
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <small class="text-muted">Assigned to</small>
+                        <div>{{ task.for_user ? task.for_user.name + ' ' + task.for_user.surname : '—' }}</div>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-muted">Created by</small>
+                        <div>{{ task.from_user ? task.from_user.name + ' ' + task.from_user.surname : '—' }}</div>
+                    </div>
+                </div>
+
+                <div class="mb-2">
+                    <small class="text-muted">Deadline</small>
+                    <div :class="isOverdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
+                        {{ task.deadline ? task.deadline.substring(0, 10) : '—' }}
+                        <span v-if="isOverdue(task.deadline)"> (overdue)</span>
+                    </div>
+                </div>
+
+                <div class="mb-2" v-if="task.text">
+                    <small class="text-muted">Description</small>
+                    <p class="mb-0">{{ task.text }}</p>
+                </div>
+
+                <div class="alert alert-danger mt-3 mb-0" v-if="task.status === 'problem' && task.worker_comment">
+                    <strong><i class="fa fa-exclamation-triangle"></i> Problem:</strong> {{ task.worker_comment }}
+                </div>
+                <div class="mb-0 mt-2" v-else-if="task.worker_comment">
+                    <small class="text-muted">Comment</small>
+                    <p class="mb-0">{{ task.worker_comment }}</p>
+                </div>
             </div>
         </div>
+
+        <template #footer>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" @click="close_modal()">Close</button>
+            </div>
+        </template>
     </stack-modal>
 </template>
 
@@ -54,15 +97,41 @@
                     .catch(() => {})
                     .finally(() => this.is_loading = false)
             },
-            status_badge(status) {
+            isOverdue(deadline) {
+                return deadline && new Date(deadline) < new Date()
+            },
+            statusLabel(status) {
                 const map = {
-                    in_process: 'badge-warning',
-                    finished: 'badge-success',
-                    confirmation_completion: 'badge-info',
-                    problem: 'badge-danger',
+                    set_task: 'Created', in_process: 'In Progress',
+                    finished: 'Finished', confirmation_completion: 'Awaiting Confirmation', problem: 'Problem'
+                }
+                return map[status] || status
+            },
+            statusDotClass(status) {
+                const map = {
+                    set_task: 'dot-yellow', in_process: 'dot-green',
+                    finished: 'dot-gray', confirmation_completion: 'dot-blue', problem: 'dot-red'
+                }
+                return map[status] || 'dot-gray'
+            },
+            statusBadgeClass(status) {
+                const map = {
+                    set_task: 'badge-warning', in_process: 'badge-success',
+                    finished: 'badge-secondary', confirmation_completion: 'badge-info', problem: 'badge-danger'
                 }
                 return map[status] || 'badge-secondary'
             }
         }
     }
 </script>
+
+<style scoped>
+.task-status-dot {
+    width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0;
+}
+.dot-yellow { background: #ffc107; }
+.dot-green  { background: #28a745; }
+.dot-gray   { background: #6c757d; }
+.dot-blue   { background: #17a2b8; }
+.dot-red    { background: #dc3545; }
+</style>

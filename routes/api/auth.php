@@ -34,6 +34,7 @@ Route::group(['namespace'=>'Auth'], function() {
         Route::get('/verify/{user_id}/{hash}', 'verify');
     });
 
+    Route::post('/register', 'RegisterController@apiRegister');
     // POST login route for encrypted password authentication
     Route::post('/login', 'LoginController@apiLogin');
 

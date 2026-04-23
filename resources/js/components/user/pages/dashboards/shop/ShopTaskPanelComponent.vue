@@ -1,41 +1,58 @@
 <template>
-  <div>
-    <h2>Shop Task Panel (Table Test)</h2>
-    <tabs-component :table_data="sampleTableData" @update="loadData" />
-  </div>
+    <div class="row">
+        <left-menu />
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <breadcrumb />
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-md-12">
+                    <div class="tabs">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col">
+                                        <input type="radio" id="sp_tab_1" :value="1" v-model="tab_num">
+                                        <label for="sp_tab_1">Production Tasks</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="radio" id="sp_tab_2" :value="2" v-model="tab_num">
+                                        <label for="sp_tab_2">Delivery Tasks</label>
+                                    </div>
+                                    <div class="col">
+                                        <input type="radio" id="sp_tab_3" :value="3" v-model="tab_num">
+                                        <label for="sp_tab_3">All Shop Tasks</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-3" v-if="tab_num === 1">
+                            <task_panel ref="prod_panel" global-category="shop" filter-category="production" />
+                        </div>
+                        <div class="row mt-3" v-if="tab_num === 2">
+                            <task_panel ref="del_panel" global-category="shop" filter-category="delivery" />
+                        </div>
+                        <div class="row mt-3" v-if="tab_num === 3">
+                            <task_panel ref="all_panel" global-category="shop" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
-import TabsComponent from '../../../items/data_table/TabsComponent.vue';
+    import breadcrumb from '../../../items/BreadcrumbComponent.vue'
+    import task_panel from './assets/WorkerTaskControlComponent.vue'
 
-export default {
-  components: { TabsComponent },
-  data() {
-    return {
-      sampleTableData: [
-        {
-          id: 1,
-          table_name: 'Sample Tasks',
-          tab_data: {
-            data: [
-              { id: 1, name: 'Task 1', status: 'pending', actions: 'edit' },
-              { id: 2, name: 'Task 2', status: 'done', actions: 'view' },
-              { id: 3, name: 'Task 3', status: 'pending', actions: 'delete' }
-            ],
-            head: [
-              ['data', ['name'], 'text'],
-              ['data', ['status'], 'bool'],
-              ['action_router', 'editTask', 'btn btn-primary', 'Edit']
-            ]
-          }
+    export default {
+        components: { breadcrumb, task_panel },
+        data() {
+            return { tab_num: 1 }
         }
-      ]
-    };
-  },
-  methods: {
-    loadData() {
-      console.log('Table refreshed');
     }
-  }
-};
 </script>

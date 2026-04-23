@@ -38,16 +38,12 @@
             </div>
         </div>
 
-        <div slot="modal-footer">
+        <template #footer>
             <div class="modal-footer">
-                <button type="submit" form="edit_task_status" class="btn btn-primary" :disabled="is_loading">
-                    Update
-                </button>
-                <button type="button" class="btn btn-secondary" @click="close_modal()">
-                    Cancel
-                </button>
+                <button type="submit" form="edit_task_status" class="btn btn-primary" :disabled="is_loading">Update</button>
+                <button type="button" class="btn btn-secondary" @click="close_modal()">Cancel</button>
             </div>
-        </div>
+        </template>
     </stack-modal>
 </template>
 

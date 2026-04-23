@@ -1,8 +1,6 @@
 <template>
     <div class="row">
-        <!-- <div class="col-sm-3"> -->
-            <left-menu />
-        <!-- </div> -->
+        <left-menu />
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-md-12">
@@ -11,44 +9,30 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-
-                    <div class="tabs"> 
+                    <div class="tabs">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="row">
                                     <div class="col">
-                                        <input type="radio" id="1" :value="1" v-model="tab_num">
-                                        
-                                        <label for="1" >Workers tasks</label>
+                                        <input type="radio" id="dash_tab_1" :value="1" v-model="tab_num">
+                                        <label for="dash_tab_1">Order Statistics</label>
                                     </div>
-                                    <div class="col" >
-                                        <input type="radio" id="2" :value="2" v-model="tab_num">
-                                        
-                                        <label for="2" >Orders (beta)</label>
-                                    </div>
-                                    <div class="col" >
-                                        <input type="radio" id="3" :value="3" v-model="tab_num">
-                                        
-                                        <label for="3" >Workers</label>
+                                    <div class="col">
+                                        <input type="radio" id="dash_tab_2" :value="2" v-model="tab_num">
+                                        <label for="dash_tab_2">Worker Tasks</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row" v-if="tab_num == 1">
-                            <workers_tasks_panel />
+                        <div class="row mt-3" v-if="tab_num === 1">
+                            <order_diagram />
                         </div>
 
-                        <div class="row" v-if="tab_num == 2">
-                            <order_list />
+                        <div class="row mt-3" v-if="tab_num === 2">
+                            <worker_tasks global-category="shop" />
                         </div>
-
-                        <div class="row" v-if="tab_num == 3">
-                            <!-- <worker_list /> -->
-                        </div>
-
                     </div>
-
                 </div>
             </div>
         </div>
@@ -57,36 +41,13 @@
 
 <script>
     import breadcrumb from '../../../items/BreadcrumbComponent.vue'
-
-    import order_list from '../../../items/dashboards/OrderDiogramComponent.vue'
-
-    import workers_tasks_panel from './assets/WorkerTaskControlComponent.vue'
-    // import worker_list from './WorkerListComponent.vue'
+    import order_diagram from '../../../items/dashboards/OrderDiogramComponent.vue'
+    import worker_tasks from './assets/WorkerTaskControlComponent.vue'
 
     export default {
-        components: {
-            breadcrumb,
-
-            order_list,
-            workers_tasks_panel,
-            // worker_list,
-        },
-        data(){
-            return{
-                tab_num: 1,
-            }
-        },
-        mounted(){
-            // 
-        },
-        methods: {
-            open_notifay_modal(){
-                this.$refs.user_notifications.show_modal()
-            }
+        components: { breadcrumb, order_diagram, worker_tasks },
+        data() {
+            return { tab_num: 1 }
         }
     }
 </script>
-
-<style scoped>
-
-</style>

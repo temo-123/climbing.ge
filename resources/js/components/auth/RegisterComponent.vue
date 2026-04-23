@@ -13,197 +13,109 @@
       </div>
 
       <div class="card-body" v-if="!is_loading">
+
+        <div class="alert alert-success" v-if="success_message">
+          {{ success_message }}
+        </div>
+
         <form id="register_form" v-on:submit.prevent="register">
           <div class="form-group">
-            <label for="email">Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="name"
-              v-model="name"
-              placeholder="Enter name"
-              required
-            />
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name" v-model="name" placeholder="Enter name" required />
+            <div class="invalid-feedback d-block" v-if="error.name">{{ error.name[0] }}</div>
           </div>
           <div class="form-group">
-            <label for="email">surname</label>
-            <input
-              type="text"
-              class="form-control"
-              id="surname"
-              v-model="surname"
-              placeholder="Enter surname"
-              required
-            />
+            <label for="surname">Surname</label>
+            <input type="text" class="form-control" id="surname" v-model="surname" placeholder="Enter surname" required />
+            <div class="invalid-feedback d-block" v-if="error.surname">{{ error.surname[0] }}</div>
           </div>
           <div class="form-group">
             <label for="email">Email address</label>
-            <input
-              type="email"
-              class="form-control"
-              id="email"
-              v-model="email"
-              placeholder="Enter email"
-              required
-            />
-            <div class="alert alert-danger" role="alert" v-if="error.email">
-              User with this email address already exists!
-            </div>
+            <input type="email" class="form-control" id="email" v-model="email" placeholder="Enter email" required />
+            <div class="invalid-feedback d-block" v-if="error.email">{{ error.email[0] }}</div>
           </div>
           <div class="form-group">
-            <label for="country">country</label>
-            <input
-              type="text"
-              class="form-control"
-              id="country"
-              v-model="country"
-              placeholder="Enter country"
-              required
-            />
+            <label for="country">Country</label>
+            <input type="text" class="form-control" id="country" v-model="country" placeholder="Enter country" required />
+            <div class="invalid-feedback d-block" v-if="error.country">{{ error.country[0] }}</div>
           </div>
           <div class="form-group">
-            <label for="city">city</label>
-            <input
-              type="text"
-              class="form-control"
-              id="city"
-              v-model="city"
-              placeholder="Enter city"
-              required
-            />
+            <label for="city">City</label>
+            <input type="text" class="form-control" id="city" v-model="city" placeholder="Enter city" required />
+            <div class="invalid-feedback d-block" v-if="error.city">{{ error.city[0] }}</div>
           </div>
           <div class="form-group">
-            <label for="phone_number">phone_number</label>
-            <input
-              type="tel"
-              class="form-control"
-              id="phone_number"
-              v-model="phone_number"
-              placeholder="Enter phone_number"
-              required
-            />
+            <label for="phone_number">Phone number</label>
+            <input type="tel" class="form-control" id="phone_number" v-model="phone_number" placeholder="Enter phone number" required />
+            <div class="invalid-feedback d-block" v-if="error.phone_number">{{ error.phone_number[0] }}</div>
           </div>
           <div class="form-group">
             <label for="password">Password *</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password"
-              v-model="password"
-              placeholder="Password"
-              minlength="8"
-              required
-            />
+            <input type="password" class="form-control" id="password" v-model="password" placeholder="Password" minlength="8" required />
+            <div class="invalid-feedback d-block" v-if="error.password">{{ error.password[0] }}</div>
           </div>
           <div class="form-group">
             <label for="password_confirmation">Confirm password *</label>
-            <input
-              type="password"
-              class="form-control"
-              id="password_confirmation"
-              v-model="password_confirmation"
-              placeholder="Confirm password"
-              minlength="8"
-              required
-            />
-          </div>
-          <div class="alert alert-danger" role="alert" v-if="error.password">
-            Confirming faild!
+            <input type="password" class="form-control" id="password_confirmation" v-model="password_confirmation" placeholder="Confirm password" minlength="8" required />
           </div>
           <div class="form-group">
-            <input type="checkbox" v-model="terms_of_use" name="One time code" value="One time code">
+            <input type="checkbox" v-model="terms_of_use" name="terms_of_use" value="1">
             I agree with the <span class="cursor_pointer text-warning" @click="open_term_of_use_modal()">terms of use</span>
           </div>
-          <div class="row">
-              <div class="col-md-12">
-                  <div class="form-group form_left">
-                      <!-- <vue-recaptcha 
-                          :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
-                          :loadRecaptchaScript="true"
-                          ref="recaptcha"
-                          type="invisible"
-                          @verify="onCaptchaVerified"
-                          @expired="onCaptchaExpired"
-                      >
-                      </vue-recaptcha> -->
-                  </div>
-              </div>
-          </div>
-          
+
           <div class="row">
             <div class="col-md-12">
-                <div class="form-group"  v-if="is_verify_isset != false && terms_of_use != false">
-                  <button
-                          type="submit"
-                          class="btn btn-default btn-send main-btn"
-                          form="register_form"
-                      >
-                      Save
-                  </button>
-                </div>
-                <div class="form-group"  v-else>
-                  <button
-                          type="submit"
-                          class="btn btn-default btn-send main-btn"
-                          form="register_form"
-                          disabled
-                      >
-                      Save
-                  </button>
-                </div>
+              <div class="form-group">
+                <button
+                  type="submit"
+                  class="btn btn-default btn-send main-btn"
+                  form="register_form"
+                  :disabled="!terms_of_use"
+                >
+                  Register
+                </button>
+              </div>
             </div>
           </div>
-
         </form>
       </div>
 
       <div class="row justify-content-center" v-else-if="is_loading">
-          <div class="col-md-4">
-              <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
-              <p class="text-center">Pless wait!</p>
-          </div>
+        <div class="col-md-4">
+          <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+          <p class="text-center">Please wait!</p>
+        </div>
       </div>
 
     </div>
 
     <stack-modal
-        :show="is_term_of_use_modal"
-        title="Terms of use"
-        @close="close_term_of_use_modal()"
-        :modal-class="{ [ModalClass]: true }"
-        :saveButton="{ visible: true }"
-        :cancelButton="{
-            title: 'Close',
-            btnClass: { 'btn btn-primary': true },
-        }"
+      :show="is_term_of_use_modal"
+      title="Terms of use"
+      @close="close_term_of_use_modal()"
+      :modal-class="{ [ModalClass]: true }"
+      :saveButton="{ visible: true }"
+      :cancelButton="{
+        title: 'Close',
+        btnClass: { 'btn btn-primary': true },
+      }"
     >
-        <div class="model-body">
-            <div class="container">
-                <div class="row">
-                    <span v-html="this.$siteData.data.terms_of_use"></span>
-                </div>
-            </div>
+      <div class="model-body">
+        <div class="container">
+          <div class="row">
+            <span v-html="this.$siteData.data.terms_of_use"></span>
+          </div>
         </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <!-- footer -->
-            </div>
-        </div>
+      </div>
     </stack-modal>
 
   </div>
 </template>
 
 <script>
-// import VueRecaptchaV2 from 'vue3-recaptcha-v2'; //https://www.npmjs.com/package/vue3-recaptcha-v2
-// import StackModal from "@innologica/vue-stackable-modal"; //https://innologica.github.io/vue-stackable-modal/#sample-css
 export default {
-    components: { 
-        // 'vue-recaptcha': VueRecaptchaV2,
-        // StackModal,
-    },
-  name: "Register page",
-  data: function() {
+  name: 'Register page',
+  data() {
     return {
       name: null,
       surname: null,
@@ -215,64 +127,67 @@ export default {
       password_confirmation: null,
 
       is_loading: false,
-
-      is_verify_isset: true,
       terms_of_use: false,
-
-      error: [],
-
-      MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
-
+      error: {},
+      success_message: null,
       is_term_of_use_modal: false,
     };
   },
-    mounted() {
-      document.querySelector('body').style.marginLeft = '0';
-      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-    },
+  mounted() {
+    document.querySelector('body').style.marginLeft = '0';
+    document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+  },
   methods: {
+    open_term_of_use_modal() {
+      this.is_term_of_use_modal = true;
+    },
+    close_term_of_use_modal() {
+      this.is_term_of_use_modal = false;
+    },
+    register() {
+      this.error = {};
+      this.success_message = null;
+      this.is_loading = true;
 
-    onCaptchaVerified() {
-        this.is_verify_isset = true
+      axios.get('/sanctum/csrf-cookie')
+        .then(() => {
+          axios.post('register', {
+            name: this.name,
+            surname: this.surname,
+            email: this.email,
+            phone_number: this.phone_number,
+            country: this.country,
+            city: this.city,
+            password: this.password,
+            password_confirmation: this.password_confirmation,
+          })
+          .then(res => {
+            if (res.data.token) {
+              localStorage.setItem('auth_token', res.data.token);
+            }
+            const xsrf = res.config.headers['X-XSRF-TOKEN'] || document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1];
+            localStorage.setItem('x_xsrf_token', xsrf || '1');
+
+            this.success_message = res.data.message || 'Registration successful! Please check your email to verify your account.';
+            this.$bus.$emit('logged-in');
+
+            setTimeout(() => {
+              this.$router.push({ name: 'home' });
+            }, 2000);
+          })
+          .catch(error => {
+            if (error.response && error.response.status === 422) {
+              this.error = error.response.data.errors || {};
+            }
+          })
+          .finally(() => {
+            this.is_loading = false;
+          });
+        })
+        .catch(() => {
+          this.is_loading = false;
+        });
     },
-    onCaptchaExpired(){
-        this.is_verify_isset = false
-    },
-    open_term_of_use_modal(){
-      this.is_term_of_use_modal = true
-    },
-    close_term_of_use_modal(){
-      this.is_term_of_use_modal = false
-    },
-    register(){
-      this.error = []
-      this.is_loading = true
-      axios
-        .get('/sanctum/csrf-cookie')
-        .then(response => {
-          axios
-            .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/register',{
-              name: this.name,
-              surname: this.surname,
-              email: this.email,
-              phone_number: this.phone_number,
-              country: this.country,
-              city: this.city,
-              password: this.password,
-              password_confirmation: this.password_confirmation
-            })
-            .then(res=>{
-              localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-              this.$router.push({ path: "/" });
-            })
-            .catch((error) => {
-              if(error.response.status === 422) {
-                this.error = error.response.data.errors
-              }
-            })
-            .finally(() => this.is_loading = false);
-      })
-    }
-  }
+  },
 };
 </script>

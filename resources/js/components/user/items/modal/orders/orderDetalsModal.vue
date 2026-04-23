@@ -1,55 +1,121 @@
 <template>
     <StackModal
         v-model="is_order_detals_model"
-        title="Show order detals"
+        title="Order Details"
         @close="is_order_detals_model=false">
-        <div class="space-y-4">
-            <div>
-                <h1>Order</h1>
-                <table class="table table-condensed" border="0" cellspacing="0" cellpadding="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th class="text-center col-xs-7 col-sm-7">Name</th>
-                            <th class="text-center col-xs-1 col-sm-1">Qty</th>
-                            <th class="text-center col-xs-3 col-sm-3">Amount</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in order_product_items" :key="item.id">
-                            <td class="text-center">{{ item.product.url_title }}</td>
-                            <td class="text-right">{{ item.quantity }} Pcs</td>
-                            <td class="text-right">{{ colculat_items_price(item.option.price, item.quantity) }} ₾</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="1" style="background: #fff;"></th>
-                            <th class="text-right">Total</th>
-                            <th class="text-right">{{ total_price }} ₾</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </div>
-            <div>
-                <h1>Active order status</h1>
-                <div class="p-4">
-                    <table class="table table-bordered track_tbl">
-                        <thead>
-                            <tr>
-                                <th>Status</th>
-                                <th>|</th>
-                                <th>Updating Date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{ order_status.status }}</td>
-                                <td>|</td>
-                                <td>{{ order_status.status_updating_data }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div v-if="order">
+
+            <!-- Buyer info (custom orders only) -->
+            <template v-if="order.is_custom && buyer_address">
+                <h6 class="text-muted mb-2">Buyer Information</h6>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" :value="buyer_address.name" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Surname</label>
+                            <input type="text" class="form-control" :value="buyer_address.surname" readonly>
+                        </div>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="text" class="form-control" :value="buyer_address.email || '—'" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Phone</label>
+                            <input type="text" class="form-control" :value="buyer_address.phone || '—'" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <hr>
+            </template>
+
+            <!-- Order Details -->
+            <h6 class="text-muted mb-2">Order Details</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Shipping Method</label>
+                        <input type="text" class="form-control" :value="shippingLabel" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <input type="text" class="form-control" :value="paymentLabel" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <template v-if="order.is_custom && buyer_address && order.shiping === 'delivery'">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Address</label>
+                            <input type="text" class="form-control" :value="buyer_address.address || '—'" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>City</label>
+                            <input type="text" class="form-control" :value="buyer_address.city || '—'" readonly>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Status</label>
+                        <input type="text" class="form-control" :value="order.status" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Status Updated</label>
+                        <input type="text" class="form-control" :value="order.status_updating_data || '—'" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Products -->
+            <h6 class="text-muted mb-2">Products</h6>
+            <div v-for="(item, index) in order_product_items" :key="item.id" class="border rounded p-3 mb-2 bg-light">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <label class="text-muted d-block mb-1" v-if="index === 0">Product</label>
+                        <input type="text" class="form-control" :value="item.product.url_title" readonly>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="text-muted d-block mb-1" v-if="index === 0">Option</label>
+                        <input type="text" class="form-control" :value="item.option ? item.option.name : '—'" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="text-muted d-block mb-1" v-if="index === 0">Qty</label>
+                        <input type="number" class="form-control" :value="item.quantity" readonly>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="text-muted d-block mb-1" v-if="index === 0">Price</label>
+                        <input type="text" class="form-control" :value="(item.option ? item.option.price * item.quantity : 0) + ' ₾'" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end mt-2">
+                <strong>Total: {{ total_price }} ₾</strong>
             </div>
         </div>
     </StackModal>
@@ -57,51 +123,48 @@
 
 <script>
 export default {
-    components: {},
-    data(){
+    data() {
         return {
             is_order_detals_model: false,
+            order: null,
+            buyer_address: null,
             order_product_items: [],
-            order_status: {},
             total_price: 0,
-            price: 0,
         }
     },
-    mounted() {
+    computed: {
+        shippingLabel() {
+            const map = { self_delivery: 'Self-delivery', delivery: 'Delivery' }
+            return map[this.order?.shiping] || this.order?.shiping || '—'
+        },
+        paymentLabel() {
+            const map = {
+                deliverd_payment: 'Payment on delivery',
+                mony_transfer: 'Money transfer',
+                online_payment: 'Online payment',
+            }
+            return map[this.order?.payment] || this.order?.payment || '—'
+        },
     },
     methods: {
-        show_modal(order_id){
+        show_modal(order_id) {
             this.get_order_detals(order_id)
         },
-
-        get_order_detals(order_id){
-            axios
-            .get("/get_order/get_order_detals/"+order_id)
-            .then(response => {
-                this.activ_order_detals = response.data.order
-                this.order_product_items = response.data.order_products
-                this.colculat_total_price()
-                this.is_order_detals_model = true
-            })
-            .catch(error => console.log(error));
+        get_order_detals(order_id) {
+            axios.get('/get_order/get_order_detals/' + order_id)
+                .then(response => {
+                    this.order = response.data.order
+                    this.order_product_items = response.data.order_products
+                    this.buyer_address = response.data.buyer_address || null
+                    this.calculate_total()
+                    this.is_order_detals_model = true
+                })
+                .catch(error => console.log(error))
         },
-
-        colculat_total_price() {
-            this.total_price = 0
-            this.price = 0
-            this.order_product_items.forEach(product => {
-                if (product.quantity > 1) {
-                    this.price = product.quantity * product.option.price
-                }
-                else{
-                    this.price = parseInt(product.option.price)
-                }
-                this.total_price = this.total_price + this.price
-            });
-        },
-        colculat_items_price(price, quantyty) {
-            var colculated_price = price * quantyty
-            return colculated_price
+        calculate_total() {
+            this.total_price = this.order_product_items.reduce((sum, item) => {
+                return sum + (item.option ? item.option.price * item.quantity : 0)
+            }, 0)
         },
     }
 }

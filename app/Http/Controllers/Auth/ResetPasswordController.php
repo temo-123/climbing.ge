@@ -39,34 +39,43 @@ class ResetPasswordController extends Controller
 
     public function reset_password(Request $request)
     {
-        $validator = Validator::make($request->data, [
+        $validator = Validator::make($request->data ?? [], [
             'password' => ['required', 'confirmed', 'min:8'],
-            'token' => ['required'],
+            'token'    => ['required'],
+            'id'       => ['required', 'integer'],
         ]);
 
-        if (!$validator) {
-            return $validator->messages();
+        if ($validator->fails()) {
+            return response()->json(['message' => $validator->errors()->first()], 422);
         }
-        else{
-            $user = User::where('id', '=', $request->data['id'])->first();
 
-            $status = Password::reset(
-                $request->only('data')['data'],
+        $user = User::where('id', $request->data['id'])->first();
 
-                function ($user) use ($request) {
-                    $user->forceFill([
-                        'password' => Hash::make($request->data['password']),
-                        'remember_token' => Str::random(60)
-                    ])->save();
-                }
-            );
-            
-            if ($status === Password::PASSWORD_RESET) {
-                return response()->json(['message' => trans($status)], 200);
-            }
-            else{
-                return response()->json(['message' => 'Password updating error.'], 500);
-            }
+        if (!$user) {
+            return response()->json(['message' => 'User not found.'], 422);
         }
+
+        $credentials = [
+            'email'                 => $user->email,
+            'password'              => $request->data['password'],
+            'password_confirmation' => $request->data['password_confirmation'],
+            'token'                 => $request->data['token'],
+        ];
+
+        $status = Password::reset(
+            $credentials,
+            function ($user) use ($request) {
+                $user->forceFill([
+                    'password'       => Hash::make($request->data['password']),
+                    'remember_token' => Str::random(60),
+                ])->save();
+            }
+        );
+
+        if ($status === Password::PASSWORD_RESET) {
+            return response()->json(['message' => trans($status)], 200);
+        }
+
+        return response()->json(['message' => trans($status)], 422);
     }
 }

@@ -4,176 +4,207 @@
         title="Add Custom Order"
         @close="closeModal"
     >
-        <form @submit.prevent="submitOrder">
+        <form @submit.prevent="submitOrder" v-if="!submitted">
+
+            <!-- Buyer info -->
+            <h6 class="text-muted mb-2">Buyer Information</h6>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="shiping">Shipping Method <span class="text-danger">*</span></label>
-
-                        <select class="form-control" v-model="form.delivery_type" name="currency" > 
-                            <option value="self_delivery">Self-delivery</option> 
-                            <option value="delivery">Delivery</option> 
-                        </select> 
-
-                        <small class="form-text text-muted">Shipping method for the order</small>
+                        <label>Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model="form.name" placeholder="First name" required>
                     </div>
                 </div>
-            </div>
-            <div class="row" v-if="form.delivery_type === 'delivery'" >
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="adres">Address And Map Spot<span class="text-danger">*</span></label>
-
-                        <input type="text" class="form-control" id="adres" v-model="form.adres" placeholder="Enter address" required>
-                        <small class="form-text text-muted">Adres</small>
-
-                        <input type="text" class="form-control" id="map_point" v-model="form.adres" placeholder="Enter map point" required>
-                        <small class="form-text text-muted">Adres map point</small>
+                        <label>Surname <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model="form.surname" placeholder="Last name" required>
                     </div>
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group">
-                        <label for="payment">Payment Method <span class="text-danger">*</span></label>
-                        <select class="form-control" v-model="form.payment_type" name="currency" required>
+                        <label>Email <small class="text-muted">(optional — used to link account)</small></label>
+                        <input type="email" class="form-control" v-model="form.email" placeholder="buyer@example.com">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Phone <small class="text-muted">(optional)</small></label>
+                        <input type="tel" class="form-control" v-model="form.phone" placeholder="+995 ...">
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- Delivery & payment -->
+            <h6 class="text-muted mb-2">Order Details</h6>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Shipping Method <span class="text-danger">*</span></label>
+                        <select class="form-control" v-model="form.delivery_type">
+                            <option value="self_delivery">Self-delivery</option>
+                            <option value="delivery">Delivery</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Payment Method <span class="text-danger">*</span></label>
+                        <select class="form-control" v-model="form.payment_type" required>
                             <option value="deliverd_payment">Payment on delivery</option>
                             <option value="mony_transfer">Money transfer</option>
                             <option value="online_payment" disabled>Online payment (coming soon)</option>
                         </select>
-                        <small class="form-text text-muted">Payment method used for the order</small>
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="create_production_task">
-                            <input type="checkbox" id="create_production_task" v-model="create_production_task">
-                            Create production task if option is not available
-                        </label>
-                        <small class="form-text text-muted">If checked, allows selecting all options and creates a production task for unavailable options</small>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="form-group">
-                        <label for="payment">Contacts <span class="text-danger">*</span></label>
-                        
-                        <input type="text" class="form-control" id="phone_number" v-model="form.phone_number" placeholder="Phone Number" required>
-                        <small class="form-text text-muted">Phone number</small>
 
-                        <input type="email" class="form-control" id="adres" v-model="form.email" placeholder="Email" required>
-                        <small class="form-text text-muted">Email</small>
+            <div class="row" v-if="form.delivery_type === 'delivery'">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Address</label>
+                        <input type="text" class="form-control" v-model="form.address" placeholder="Street address">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" class="form-control" v-model="form.city" placeholder="City">
                     </div>
                 </div>
             </div>
+
             <div class="form-group">
-                <label>Order Products <span class="text-danger">*</span></label>
-                <small class="form-text text-muted">Select products and options for this custom order</small>
-                <div v-if="form.order_product_list.length === 0" class="text-center text-muted p-3 border">
-                    No products added yet. Click "Add Product" to start.
+                <label>
+                    <input type="checkbox" v-model="create_production_task">
+                    Allow out-of-stock (create production task)
+                </label>
+            </div>
+
+            <hr>
+
+            <!-- Products -->
+            <h6 class="text-muted mb-2">Products <span class="text-danger">*</span></h6>
+            <div v-if="form.order_product_list.length === 0" class="text-center text-muted p-3 border mb-2">
+                No products added. Click "Add Product" below.
+            </div>
+            <div v-for="(item, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-2 bg-light">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <strong>Product {{ index + 1 }}</strong>
+                    <button type="button" class="btn btn-danger btn-sm" @click="removeProduct(index)">
+                        <i class="fa fa-trash"></i>
+                    </button>
                 </div>
-                <div v-for="(product, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-3 bg-light">
-                    <h6 class="mb-3">Product {{ index + 1 }}</h6>
-                    <div class="row">
-                        <div class="col-md-3">
-                            <label>Product <span class="text-danger">*</span></label>
-                            <select class="form-control" v-model="product.product_id" @change="onProductChange(product.product_id, index)" required>
-                                <option value="">Select Product</option>
-                                <option v-for="prod in products" :key="prod.id" :value="prod.id">{{ prod.title }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-3" v-if="product.product_id">
-                            <label>Option <span class="text-danger">*</span></label>
-                            <select class="form-control" v-model="product.product_option_id" @change="onOptionChange(product.product_option_id, index)" required>
-                                <option value="">Select Option</option>
-                                <option v-for="option in actyve_product_options" :key="option.id" :value="option.id" :disabled="!create_production_task && option.quantity <= 0">{{ option.name }} ({{ option.price }} GEL) - Stock: {{ option.quantity }}</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2" v-if="product.product_option_id">
-                            <label>Quantity <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" v-model="product.quantity" min="1" :max="product.max_quantity" required>
-                        <small class="form-text text-muted">Max quantity - {{ product.max_quantity }}</small>
-                        </div>
-                        <div class="col-md-2" v-if="product.product_option_id">
-                            <label>Image</label>
-                            <div v-if="product.option_image" class="option-image">
-                                <img :src="'/public/images/product_option_img/' + product.option_image" :alt="'Option Image'" class="img-thumbnail" style="max-width: 100px; max-height: 100px;">
-                            </div>
-                            <div v-else class="text-muted">No image</div>
-                        </div>
-                        <div class="col-md-2 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger btn-sm" @click="removeProduct(index)">
-                                <i class="fa fa-trash"></i> Remove
-                            </button>
-                        </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Product</label>
+                        <select class="form-control" v-model="item.product_id" @change="loadOptions(item)" required>
+                            <option value="">Select product</option>
+                            <option v-for="p in products" :key="p.id" :value="p.id">{{ p.title }}</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4" v-if="item.product_id">
+                        <label>Option</label>
+                        <select class="form-control" v-model="item.product_option_id" @change="onOptionChange(item)" required>
+                            <option value="">Select option</option>
+                            <option
+                                v-for="opt in item.options"
+                                :key="opt.id"
+                                :value="opt.id"
+                                :disabled="!create_production_task && opt.quantity <= 0"
+                            >
+                                {{ opt.name }} ({{ opt.price }} GEL) — Stock: {{ opt.quantity }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-2" v-if="item.product_option_id">
+                        <label>Qty</label>
+                        <input type="number" class="form-control" v-model.number="item.quantity" min="1" :max="item.max_quantity" required>
+                        <small class="text-muted">Max: {{ item.max_quantity }}</small>
+                    </div>
+                    <div class="col-md-2 d-flex align-items-center" v-if="item.option_image">
+                        <img :src="'/public/images/product_option_img/' + item.option_image" class="img-thumbnail" style="max-width:70px;max-height:70px;">
                     </div>
                 </div>
-                <button type="button" class="btn btn-success btn-sm" @click="addProduct">
-                    <i class="fa fa-plus"></i> Add Product
+            </div>
+            <button type="button" class="btn btn-success btn-sm mb-3" @click="addProduct">
+                <i class="fa fa-plus"></i> Add Product
+            </button>
+        </form>
+
+        <!-- Success state -->
+        <div v-if="submitted" class="text-center p-4">
+            <i class="fa fa-check-circle text-success" style="font-size:2.5em;"></i>
+            <h5 class="mt-2">Order #{{ createdOrderId }} created</h5>
+            <div v-if="matchedUsers.length > 0" class="alert alert-info mt-3 text-left">
+                <strong>Linked to existing account{{ matchedUsers.length > 1 ? 's' : '' }}:</strong>
+                <ul class="mb-0 mt-1">
+                    <li v-for="u in matchedUsers" :key="u.id">
+                        {{ u.name }} {{ u.surname }} — {{ u.email }}
+                    </li>
+                </ul>
+            </div>
+            <div v-else class="alert alert-secondary mt-3">
+                No existing account matched by email or name.
+            </div>
+        </div>
+
+        <template #footer>
+            <div class="d-flex gap-2 justify-content-end p-3">
+                <button v-if="!submitted" type="button" class="btn btn-primary" @click="submitOrder" :disabled="submitting">
+                    {{ submitting ? 'Saving...' : 'Create Order' }}
+                </button>
+                <button type="button" class="btn btn-secondary" @click="closeModal">
+                    {{ submitted ? 'Close' : 'Cancel' }}
                 </button>
             </div>
-        </form>
-        <div class="flex gap-3 justify-end mt-4 p-4">
-            <button type="button" class="btn btn-success btn-sm" @click="addProductAndMakeDeliveryTask">
-               Submit & make delivery task
-            </button>
-            <button type="button" class="btn btn-primary" @click="submitOrder">Submit</button>
-        </div>
+        </template>
     </StackModal>
 </template>
 
 <script>
-
-
 export default {
-    components: {},
-        data() {
-            return {
-                showModal: false,
-                products: [],
-                form: {
-                    adres: '',
-                    map: '',
-                    delivery_type: 'self_delivery',
-                    payment_type: 'deliverd_payment',
-                    phone_number: '',
-                    email: '',
-                    order_product_list: []
-                },
-
-                actyve_product_id: null,
-
-                actyve_product_option_id: null,
-                actyve_product_options: [],
-
-                actyve_product_option_image: null,
-
-                create_production_task: false, // Checkbox for creating production task
-
-                data: {
-                    delivery_type: 'self_delivery',
-                    payment_type: 'deliverd_payment'
-                }
-            }
-        },
+    emits: ['orderAdded'],
+    data() {
+        return {
+            showModal: false,
+            products: [],
+            form: {
+                name: '',
+                surname: '',
+                email: '',
+                phone: '',
+                address: '',
+                city: '',
+                delivery_type: 'self_delivery',
+                payment_type: 'deliverd_payment',
+                order_product_list: [],
+            },
+            create_production_task: false,
+            submitting: false,
+            submitted: false,
+            createdOrderId: null,
+            matchedUsers: [],
+        };
+    },
     mounted() {
         this.fetchProducts();
     },
     methods: {
         fetchProducts() {
             axios.get('/get_product/get_current_products')
-                .then(response => {
-                    this.products = response.data;
-                })
-                .catch(error => {
-                    console.log(error);
-                });
+                .then(r => { this.products = r.data; })
+                .catch(() => {});
         },
         show_modal() {
             this.showModal = true;
+            this.submitted = false;
+            this.matchedUsers = [];
+            this.createdOrderId = null;
         },
         closeModal() {
             this.showModal = false;
@@ -184,64 +215,80 @@ export default {
                 product_id: '',
                 product_option_id: '',
                 quantity: 1,
-                max_quantity: 1,
+                max_quantity: 9999,
                 option_image: null,
-                options: []
+                options: [],
             });
         },
         removeProduct(index) {
             this.form.order_product_list.splice(index, 1);
         },
-        onProductChange(productId, productIndex) {
-            if (!productId) return;
-            axios.get(`/get_product/get_product_options/${productId}`)
-            .then(response => {
-                this.actyve_product_options = response.data;
-            })
-            .catch(error => {
-                console.log(error);
-            });
+        loadOptions(item) {
+            item.product_option_id = '';
+            item.options = [];
+            if (!item.product_id) return;
+            axios.get(`/get_product/get_product_options/${item.product_id}`)
+                .then(r => { item.options = r.data; })
+                .catch(() => {});
         },
-
-        onOptionChange(optionId, productIndex) {
-            if (!optionId) return;
-            const product = this.form.order_product_list[productIndex];
-            const option = this.actyve_product_options.find(o => o.id == optionId);
-            if (option) {
-                product.max_quantity = this.create_production_task ? 9999 : (option.quantity || 1); // Allow high quantity if production task
-                product.option_image = option.image; // Set the first image of the option
-                if (product.quantity > product.max_quantity) {
-                    product.quantity = product.max_quantity;
-                }
+        onOptionChange(item) {
+            const opt = item.options.find(o => o.id == item.product_option_id);
+            if (opt) {
+                item.max_quantity = this.create_production_task ? 9999 : (opt.quantity || 1);
+                item.option_image = opt.image || null;
+                if (item.quantity > item.max_quantity) item.quantity = item.max_quantity;
             }
         },
         resetForm() {
             this.form = {
-                adres: '',
-                map: '',
+                name: '', surname: '', email: '', phone: '',
+                address: '', city: '',
                 delivery_type: 'self_delivery',
                 payment_type: 'deliverd_payment',
-                phone_number: '',
-                email: '',
-                order_product_list: []
+                order_product_list: [],
             };
+            this.create_production_task = false;
+            this.submitted = false;
+            this.submitting = false;
+            this.matchedUsers = [];
+            this.createdOrderId = null;
         },
         submitOrder() {
-            const payload = { ...this.form, create_production_task: this.create_production_task };
-            axios.post('/set_order/add_custom_order', payload)
-                .then(response => {
-                    alert('Custom order added successfully');
-                    this.closeModal();
-                    this.$emit('orderAdded');
-                })
-                .catch(error => {
-                    console.log(error);
-                    alert('Error adding order');
-                });
+            if (!this.form.name || !this.form.surname) {
+                alert('Name and surname are required.');
+                return;
+            }
+            if (this.form.order_product_list.length === 0) {
+                alert('Please add at least one product.');
+                return;
+            }
+            const hasIncomplete = this.form.order_product_list.some(
+                i => !i.product_id || !i.product_option_id || !i.quantity
+            );
+            if (hasIncomplete) {
+                alert('Please complete all product selections.');
+                return;
+            }
+
+            this.submitting = true;
+            axios.post('/custom_order/store', {
+                ...this.form,
+                create_production_task: this.create_production_task,
+            })
+            .then(res => {
+                this.createdOrderId = res.data.order_id;
+                this.matchedUsers = res.data.matched_users || [];
+                this.submitted = true;
+                this.$emit('orderAdded');
+            })
+            .catch(error => {
+                const msg = error.response?.data?.error || error.response?.data?.message || 'Error creating order.';
+                alert(msg);
+            })
+            .finally(() => {
+                this.submitting = false;
+            });
         },
-        addProductAndMakeDeliveryTask() {
-            alert('coming soon');
-        }
-    }
-}
+    },
+};
 </script>

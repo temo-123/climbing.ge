@@ -9,8 +9,8 @@
       <Transition name="modal">
         <div
           ref="modalRef"
-          class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 flex flex-col mx-auto w-full max-w-6xl max-h-[95vh] overflow-hidden border border-gray-200/50"
-          :class="[modalClasses, 'max-h-[95vh]']"
+          class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 flex flex-col mx-auto w-full max-w-6xl border border-gray-200/50"
+          :class="[modalClasses]"
           :style="{ zIndex: computedZIndex }"
           role="dialog"
           aria-modal="true"
@@ -38,24 +38,26 @@
           </div>
 
           <!-- Footer -->
-          <div v-if="hasButtons" class="sticky bottom-0 z-20 flex-shrink-0 p-4 md:p-6 lg:p-8 pt-3 md:pt-4 lg:pt-6 bg-white border-t border-gray-200/50 rounded-2xl rounded-t-none shadow-sm">
-            <div class="modal-footer">
-              <button
-                v-if="cancelButton?.visible"
-                type="button" 
-                class="btn btn-danger pull-left"
-                @click="$emit('close')"
-              >
-                {{ cancelButton.title || 'Cancel' }}
-              </button>
-              <button
-                v-if="saveButton?.visible"
-                type="button" 
-                class="btn btn-primary pull-right"
-              >
-                {{ saveButton.title || 'Save' }}
-              </button>
-            </div>
+          <div v-if="hasButtons" class="sticky bottom-0 z-20 flex-shrink-0 bg-white border-t border-gray-200/50 rounded-2xl rounded-t-none shadow-sm">
+            <slot name="footer">
+              <div class="modal-footer p-4 md:p-6 lg:p-8 pt-3 md:pt-4 lg:pt-6">
+                <button
+                  v-if="cancelButton?.visible"
+                  type="button"
+                  class="btn btn-danger pull-left"
+                  @click="$emit('close')"
+                >
+                  {{ cancelButton.title || 'Cancel' }}
+                </button>
+                <button
+                  v-if="saveButton?.visible"
+                  type="button"
+                  class="btn btn-primary pull-right"
+                >
+                  {{ saveButton.title || 'Save' }}
+                </button>
+              </div>
+            </slot>
           </div>
         </div>
       </Transition>
@@ -64,7 +66,7 @@
 </template>
 
 <script setup>
-  import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch } from 'vue'
+  import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch, useSlots } from 'vue'
 
   defineOptions({ inheritAttrs: false })
 
@@ -129,7 +131,8 @@
     [`modal-stack${stackPosition.value}`]: true
   }))
 
-  const hasButtons = computed(() => props.saveButton?.visible || props.cancelButton?.visible)
+  const slots = useSlots()
+  const hasButtons = computed(() => props.saveButton?.visible || props.cancelButton?.visible || !!slots.footer)
 
   onMounted(async () => {
     if (isVisible.value) {
@@ -195,11 +198,12 @@
     position: fixed;
     inset: 0;
     z-index: 99999;
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 100vw;
     height: 100vh;
-    padding: 1.5rem 0 0 0;
+    padding: 3vh 0;
     box-sizing: border-box;
     background-color: #000000d9;
   }
@@ -208,22 +212,20 @@
     display: flex;
     flex-direction: column;
     align-self: center;
-    height: min(95vh, auto);
-    min-height: 200px;
+    height: auto;
+    max-height: 94vh;
+    min-height: 100px;
     width: clamp(320px, 90vw, 1400px);
     max-width: var(--modal-max-width, 720px);
     margin: 0 auto;
     background-color: #f4f4f4;
     box-sizing: border-box;
-    /* overflow: hidden; */
-
-    /* height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory; */
+    overflow: hidden;
   }
   .modal-scrol{
-    height: calc(100vh - 200px);
-    overflow-y: scroll;
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #9ca3af transparent;
@@ -265,9 +267,14 @@
   .modal-full, .modal-fullscreen {
     width: 100vw !important;
     height: 100vh !important;
-    max-height: none !important;
+    max-height: 100vh !important;
     border-radius: 0 !important;
     margin: 0 !important;
+  }
+  /* Remove overlay padding for fullscreen so modal fills edge-to-edge */
+  .stack-modal-overlay:has(.modal-full),
+  .stack-modal-overlay:has(.modal-fullscreen) {
+    padding: 0 !important;
   }
   .modal-full .p-4, .modal-fullscreen .p-4,
   .modal-full .md\\:p-6, .modal-fullscreen .md\\:p-6,

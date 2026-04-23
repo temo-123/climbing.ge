@@ -15,7 +15,7 @@
                     <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menuItem.title}}</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <template v-for="(menu_but, menuButIndex) in menuItem.routes || []" :key="menu_but?.id || menuButIndex">
-                          <router-link v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :to="{path: menu_but.route}" class="dropdown-item nav-link">
+                          <router-link v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :to="{path: menu_but.route}" class="dropdown-item">
                             {{menu_but.name}}
                           </router-link>
                         </template>
@@ -73,33 +73,7 @@
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
-                <li>
-                    <router-link :to="{name: 'cart'}" class="nav-link" exact>
-                        <span>
-                            <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                        </span>
-                    </router-link>
-                </li>
-
-                <li class="nav-item dropdown" v-if="user.length != 0">
-                    <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span>
-                            <i class="fa fa-user-circle"></i>
-                        </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                        <router-link :to="'/options'" class="dropdown-item">
-                            {{ $t('user.menu.options') }}
-                        </router-link>
-
-                        <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
-                            {{ $t('user.menu.my comments') }}
-                        </router-link>
-
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
-                    </div>
-                </li>
+                <nav-badges />
             </ul>
         </div>
     </nav>
@@ -142,6 +116,7 @@
             })
             this.$bus.$on('logged-in', () => {
                 this.fetchPermissions()
+                this.get_user()
             })
             this.get_user()
             this.loadPermissions()

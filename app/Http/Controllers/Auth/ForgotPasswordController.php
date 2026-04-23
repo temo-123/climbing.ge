@@ -27,53 +27,22 @@ class ForgotPasswordController extends Controller
 
     public function send_forget_mail(Request $request)
     {
-        // $activ_user = User::where('email', '=', $request->email)->first();
-        // dd($request->only('email', 'password', 'password_confirmation', 'token'));
-        // if ($activ_user) {
-        //     $status = Password::reset(
-        //         $request->only('email', 'password', 'password_confirmation', 'token'),
-        //         function ($user) use ($request) {
-        //             $user->forceFill([
-        //                 'password' => Hash::make($request->password),
-        //                 'remember_token' => Str::random(60),
-        //             ])->save();
-    
-        //             $user->tokens()->delete();
-    
-        //             event(new PasswordReset($user));
-        //         }
-        //     );
-    
-        // } 
-        // else {
-        //     return response()->json(['message' => 'User of this mail not fined.'], 422);
-        // }
+        $request->validate([
+            'email' => ['required', 'email'],
+        ]);
 
-        $activ_user = User::where('email', '=', $request->email)->first();
+        $user = User::where('email', $request->email)->first();
 
-        if ($activ_user) {
-            $request->validate([
-                'email' => ['required', 'email'],
-            ]);
-
-            $status = Password::sendResetLink(
-                $request->only('email')
-            );
-
-            if ($status === Password::RESET_LINK_SENT) {
-                return back()->with('status', trans($status));
-            }
-
-            return back()->withInput($request->only('email'))
-                        ->withErrors(['email' => trans($status)]);
+        if (!$user) {
+            return response()->json(['message' => 'No user found with this email.'], 422);
         }
-        else {
-            return response()->json(['message' => 'User of this mail not fined.'], 422);
-        }
-    }
 
-    public function forget_password(Request $request)
-    {
-        echo 'ddd';
+        $status = Password::sendResetLink($request->only('email'));
+
+        if ($status === Password::RESET_LINK_SENT) {
+            return response()->json(['message' => trans($status)], 200);
+        }
+
+        return response()->json(['message' => trans($status)], 422);
     }
 }

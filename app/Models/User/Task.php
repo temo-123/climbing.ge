@@ -23,6 +23,11 @@ class Task extends Model
 		return $this->belongsTo(User::class, 'for_user_id');
 	}
 
+	public function user()
+	{
+		return $this->belongsTo(User::class, 'for_user_id');
+	}
+
 	public function orders()
 	{
 		return $this->belongsToMany(Order::class, 'order_tasks');
