@@ -38,7 +38,20 @@ export default {
         },
     },
     mounted() {
-        if (this._isLoggedIn) this.fetchCounts()
+        if (this._isLoggedIn) {
+            this.fetchCounts()
+        } else {
+            // localStorage token not present (e.g. user logged in on a different subdomain),
+            // but the shared session cookie may still be valid — verify via API.
+            axios.get('auth_user')
+                .then(response => {
+                    if (response.data && response.data.id) {
+                        this._isLoggedIn = true
+                        this.fetchCounts()
+                    }
+                })
+                .catch(() => {})
+        }
 
         this._onLoggedIn = () => {
             this._isLoggedIn = true
@@ -127,7 +140,11 @@ export default {
                     localStorage.removeItem('auth_token')
                     this._isLoggedIn = false
                     this.$bus.$emit('logged-out')
-                    if (this.$router) this.$router.push({ name: 'login' })
+                    // Only push to the login route on the user panel subdomain —
+                    // blog / summit / other subdomains don't have a 'login' named route.
+                    if (window.location.hostname === process.env.MIX_USER_PAGE_URL) {
+                        this.$router.push({ name: 'login' })
+                    }
                 })
         },
     }

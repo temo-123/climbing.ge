@@ -88,7 +88,7 @@
 
             async trackAction(blockId, actionType) {
                 try {
-                    const response = await axios.post('/api/admin/set_general_info/track_action', {
+                    const response = await axios.post('get_general_info/track_action', {
                         block_id: blockId,
                         action_type: actionType
                     })

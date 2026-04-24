@@ -6,7 +6,7 @@
         <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }">
             <header>Menu</header>
 
-            <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px;" v-if="menu_items && menu_items.length">
+            <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px; /*padding-bottom: 35%;*/" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
                   <a href="javascript:void(0)" @click.prevent="toggle_dropdown(item.title)" class="dropdown-toggle">
                     <i class="fas fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>

@@ -272,7 +272,21 @@ router.afterEach(() => {
     }, 300);
 });
 
+function getCsrfCookie() {
+    const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
+    return match ? decodeURIComponent(match[1]) : null;
+}
+
+// Shared state to prevent duplicate auth redirects and serialise CSRF refreshes
+let csrfRefreshPromise = null;
+let isHandlingAuthError = false;
+
 window.axios.interceptors.request.use(config => {
+    // Read XSRF-TOKEN cookie fresh on every request so stale tokens never cause 419s
+    const xsrf = getCsrfCookie();
+    if (xsrf) {
+        config.headers['X-XSRF-TOKEN'] = xsrf;
+    }
     const token = localStorage.getItem('auth_token');
     if (token) {
         config.headers['Authorization'] = 'Bearer ' + token;
@@ -280,46 +294,69 @@ window.axios.interceptors.request.use(config => {
     return config;
 });
 
-window.axios.interceptors.response.use(response => response, err => {
-    if(err && err.response){
-        if(err.response.status === 401 || err.response.status === 419){
-            localStorage.removeItem('x_xsrf_token')
-            localStorage.removeItem('auth_token')
-            localStorage.removeItem('user_permissions')
+window.axios.interceptors.response.use(response => response, async err => {
+    if (err && err.response) {
+        const status = err.response.status;
+        const originalRequest = err.config;
 
-            if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-                router.push({name: "login"})
+        if (status === 419 && !originalRequest._csrfRetry) {
+            // Refresh the CSRF cookie once, then retry the original request.
+            // All concurrent 419s share the same refresh promise so we only hit /csrf-cookie once.
+            originalRequest._csrfRetry = true;
+            if (!csrfRefreshPromise) {
+                csrfRefreshPromise = axios.get(window.location.origin + '/sanctum/csrf-cookie').finally(() => {
+                    csrfRefreshPromise = null;
+                });
             }
+            try {
+                await csrfRefreshPromise;
+                const xsrf = getCsrfCookie();
+                if (xsrf) originalRequest.headers['X-XSRF-TOKEN'] = xsrf;
+                return axios(originalRequest);
+            } catch (e) {
+                // CSRF refresh failed — fall through to auth error handling
+            }
+        }
 
-            return Promise.reject(err)
+        if (status === 401 || status === 419) {
+            if (!isHandlingAuthError) {
+                isHandlingAuthError = true;
+                localStorage.removeItem('x_xsrf_token');
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('user_permissions');
+                if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+                    router.push({ name: 'login' });
+                }
+                setTimeout(() => { isHandlingAuthError = false; }, 3000);
+            }
+            return Promise.reject(err);
         }
-        else if(err.response.status === 422){
-            return Promise.reject(err)
+        else if (status === 422) {
+            return Promise.reject(err);
         }
-        else if(err.response.status === 403){
+        else if (status === 403) {
             if (err.response.data && err.response.data.is_banned === true) {
                 if (err.response.data.alert) {
                     alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
                 } else {
                     alert('Your account has been banned.');
                 }
-
                 localStorage.removeItem('x_xsrf_token');
                 localStorage.removeItem('user');
                 window.close();
                 return Promise.reject(err);
             }
-            else{
-                alert("You don't have permission to perform this action.")
-                return Promise.reject(err)
+            else {
+                alert("You don't have permission to perform this action.");
+                return Promise.reject(err);
             }
         }
-        else{
-            alert("Error: " + (err.response.status + ' ' + err.response.statusText).trim())
-            return Promise.reject(err)
+        else {
+            alert("Error: " + (err.response.status + ' ' + err.response.statusText).trim());
+            return Promise.reject(err);
         }
     }
-    return Promise.reject(err)
+    return Promise.reject(err);
 })
 
 app.use(router);

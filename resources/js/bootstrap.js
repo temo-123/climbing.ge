@@ -19,13 +19,8 @@ axios.defaults.withCredentials = true;
  * a simple convenience so we don't have to attach on every request manually.
  */
 
-var token = document.head.querySelector('meta[name="csrf-token"]');
-
-if (token) {
-  window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
-} else {
-  console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+// CSRF token is handled dynamically in the axios request interceptor (app.js)
+// by reading the XSRF-TOKEN cookie on every request — no static header needed here.
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening

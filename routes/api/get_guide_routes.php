@@ -117,6 +117,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     Route::controller(GeneralInfoController::class)->prefix('get_general_info')->group( function() {
         Route::get('/get_all_general_infos', 'get_all_general_infos');
         Route::get('/get_general_info/{id}', 'get_general_info');
+        Route::post('/track_action', 'track_action');
     });
 
     Route::controller(SectorController::class)->prefix('get_sector')->group( function() {

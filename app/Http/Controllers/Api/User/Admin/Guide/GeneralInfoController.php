@@ -61,33 +61,20 @@ class GeneralInfoController extends Controller
     public function get_action_stats(Request $request)
     {
         $validator = validator($request->all(), [
-            'block_id' => 'required|integer',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date',
+            'block_id'    => 'required|integer',
             'action_type' => 'nullable|string',
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'errors' => $validator->messages(),
-            ], 422);
+            return response()->json(['errors' => $validator->messages()], 422);
         }
 
-        $blockId = $request->block_id;
-        $startDate = $request->start_date;
-        $endDate = $request->end_date;
-        $actionType = $request->action_type ?: 'show_more_click';
+        $data = ActionTrackingService::getSummary(
+            (int) $request->block_id,
+            $request->action_type ?: 'show_more_click'
+        );
 
-        if ($startDate && $endDate) {
-            $counts = ActionTrackingService::getActionCountsByDateRange($startDate, $endDate, $blockId, $actionType);
-        } else {
-            $counts = ActionTrackingService::getActionCount($blockId, null, $actionType);
-        }
-
-        return response()->json([
-            'data' => $counts,
-            'status' => 'success'
-        ], 200);
+        return response()->json(['data' => $data, 'status' => 'success'], 200);
     }
     public function add_general_info(Request $request)
     {

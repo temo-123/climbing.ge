@@ -5,7 +5,7 @@ export default {
   actions: {
     async authing_user(ctx){
       try {
-        const response = await axios.get('/auth_user');
+        const response = await axios.get('auth_user');
         ctx.commit('update_user_data', response.data);
       } catch (error) {
         ctx.commit('update_user_data', null);

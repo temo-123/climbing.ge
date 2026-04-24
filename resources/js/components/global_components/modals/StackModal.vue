@@ -229,6 +229,7 @@
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #9ca3af transparent;
+    padding: 3%;
   }
   .modal-scrol::-webkit-scrollbar {
     width: 6px;

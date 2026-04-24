@@ -21,14 +21,17 @@
                         <div class="card-header">Sites index pages</div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-12 col-md-12 col-lg-4 text-center">
+                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
                                     <button class="btn btn_service_guid" @click="go_to_service('guid')">Guidbook</button>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4 text-center">
+                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
                                     <button class="btn btn_service_shop" @click="go_to_service('shop')">Climbing Shop</button>
                                 </div>
-                                <div class="col-sm-12 col-md-12 col-lg-4 text-center">
+                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
                                     <button class="btn btn_service_blog" @click="go_to_service('blog')">Climbing blog</button>
+                                </div>
+                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
+                                    <button class="btn btn_service_summit" @click="go_to_service('summit')">Summits</button>
                                 </div>
                             </div>
                         </div>
@@ -81,13 +84,16 @@
                 else if(service == "blog"){
                     window.open(this.MIX_APP_SSH  + 'blog.' + this.MIX_SITE_URL + '/')
                 }
+                else if(service == "summit"){
+                    window.open(this.MIX_APP_SSH  + 'summit.' + this.MIX_SITE_URL + '/')
+                }
             },
         }
     }
 </script>
 
 <style>
-.btn_service_guid, .btn_service_shop, .btn_service_blog{
+.btn_service_guid, .btn_service_shop, .btn_service_blog, .btn_service_summit{
     margin: 2%;
 }
 .btn_service_guid{
@@ -98,5 +104,8 @@
 }
 .btn_service_blog{
     background-color: #777777;
+}
+.btn_service_summit{
+    background-color: #ff6b6b;
 }
 </style>
