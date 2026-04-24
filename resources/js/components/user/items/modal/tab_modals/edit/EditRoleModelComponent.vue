@@ -91,17 +91,15 @@
                 </table>
             </span>
         </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    :class="{'btn btn-primary': true}"
-                    @click="edit_role()"
-                >
+        <template #footer>
+            <button
+                type="button"
+                class="btn btn-primary"
+                @click="edit_role()"
+            >
                 Save updated role
-                </button>
-            </div>
-        </div>
+            </button>
+        </template>
     </stack-modal>
 </template>
 
@@ -207,7 +205,7 @@
 
             get_editing_role_permissions(role_id){
                 axios
-                .get("/role/get_editing_role_permissions/" + role_id)
+                .get("/set_role/get_editing_role_permissions/" + role_id)
                 .then(response => {
                     this.role_permissions = response.data
                 })
@@ -218,7 +216,7 @@
 
             get_permissions(role_id){
                 axios
-                .get("/permission/get_parmisions_for_role/" + role_id)
+                .get("/set_permission/get_parmisions_for_role/" + role_id)
                 .then(response => {
                     this.permissions = response.data
                 })
@@ -230,7 +228,7 @@
             del_role_permission_from_db(id){
                 if(confirm('Are you sure, you want delite it?')){
                     axios
-                    .post('../../api/role/del_role_permission/' + this.action_role + '/' + id, {
+                    .post('/set_role/del_role_permission/' + this.action_role + '/' + id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

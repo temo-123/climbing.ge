@@ -9,9 +9,16 @@
                     <breadcrumb />
                 </div>
             </div>
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <button v-if="$can('edit', 'role')" class="btn btn-warning btn-sm" @click="sync_admin_permissions">
+                        <i class="fa fa-refresh"></i> Sync Admin Permissions
+                    </button>
+                </div>
+            </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_users"
 
@@ -23,6 +30,9 @@
 
                         @show_edit_role_modal="show_edit_role_modal"
                         @del_role="del_role"
+
+                        @add_permission="show_add_permission_modal"
+                        @del_permission="del_permission"
                     />
                 </div>
             </div>
@@ -37,6 +47,7 @@
         <UserInfoModal ref="user_info_modal"/>
 
         <EditRoleModel ref="edit_role_model"/>
+        <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
 
         <MemberStatusModal 
             ref="teamMemberStatusModal"
@@ -54,6 +65,7 @@
 
     import EditUserRoleAndPermissionsModel from "../items/modal/tab_modals/edit/EditUserRoleAndPermissionsModelComponent"
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
+    import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
     import UserBunModel from "../items/modal/tab_modals/UserBunModelComponent"
     import UserInfoModal from "../items/modal/tab_modals/UserInfoModalComponent"
 
@@ -67,6 +79,7 @@
 
             EditUserRoleAndPermissionsModel,
             EditRoleModel,
+            AddPermissionModal,
             UserBunModel,
             UserInfoModal,
         },
@@ -95,12 +108,7 @@
                     this.data_for_tab.push
                                         ({  
                                             'id': 1,
-                                            'table_name': 'Users', 
-                                            'add_action': {
-                                                'action': 'route',
-                                                'link': 'articleAdd', 
-                                                'class': 'btn btn-primary'
-                                            },
+                                            'table_name': 'Users',
                                             'tab_data': {
                                                 'data': response.data, 
                                                 'tab': {
@@ -147,17 +155,12 @@
             },
             get_roles(){
                 axios
-                .get("/get_role/get_all_roles/")
+                .get("/set_role")
                 .then(response => {
                     this.data_for_tab.push
                                         ({  
                                             'id': 3,
-                                            'table_name': 'Roles', 
-                                            'add_action': {
-                                                'action': 'route',
-                                                'link': 'articleAdd', 
-                                                'class': 'btn btn-primary'
-                                            },
+                                            'table_name': 'Roles',
                                             'tab_data': {
                                                 'data': response.data, 
                                                 'tab': {
@@ -194,38 +197,44 @@
             },
             get_parmisions(){
                 axios
-                .get("/get_permission/get_all_parmisions/")
+                .get("/parmisions_list")
                 .then(response => {
-                    this.data_for_tab.push
-                                        ({  
-                                            'id': 2,
-                                            'table_name': 'Parmissions', 
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'subject',
-                                                        'Action',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['subject']],
-                                                        ['data', ['action']],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                    ]
-                                                }
-                                            },
-                                        })
-                                        ;
+                    const existing = this.data_for_tab.findIndex(t => t.id === 2)
+                    const tab = {
+                        'id': 2,
+                        'table_name': 'Permissions',
+                        'add_action': {
+                            'action': 'fun',
+                            'link': 'add_permission',
+                            'class': 'btn btn-primary',
+                            'btn_title': 'Add Permission'
+                        },
+                        'tab_data': {
+                            'data': response.data,
+                            'tab': {
+                                'head': ['ID', 'Subject', 'Action', 'Delete'],
+                                'body': [
+                                    ['data', ['id']],
+                                    ['data', ['subject']],
+                                    ['data', ['action']],
+                                    ['action_fun_id', 'del_permission', 'btn btn-danger', '<i class="fa fa-trash"></i>'],
+                                ],
+                                'perm': [
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['role', 'del'],
+                                ]
+                            }
+                        },
+                    }
+                    if (existing !== -1) {
+                        this.data_for_tab.splice(existing, 1, tab)
+                    } else {
+                        this.data_for_tab.push(tab)
+                    }
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => console.log(error));
             },
 
             show_edit_role_modal(id){
@@ -285,11 +294,31 @@
                         _method: 'DELETE'
                     })
                     .then(Response => {
-                        // this.$emit('restart')
                         this.get_users()
                     })
                     .catch(error => console.log(error))
                 }
+            },
+
+            show_add_permission_modal(){
+                this.$refs.add_permission_modal.show_modal()
+            },
+
+            del_permission(id){
+                if(!confirm('Delete this permission? It will be removed from all roles and users.')) return
+                axios.post('/set_permission/destroy/'+id, { _method: 'DELETE' })
+                    .then(() => this.get_parmisions())
+                    .catch(error => console.log(error))
+            },
+
+            sync_admin_permissions(){
+                if(!confirm('This will add all missing permissions to the Admin role. Continue?')) return
+                axios.post('/set_role/sync_admin_permissions')
+                    .then(res => {
+                        alert(`Done. Added ${res.data.added} missing permission(s) to Admin role.`)
+                        this.get_users()
+                    })
+                    .catch(error => console.log(error))
             },
         }
     }

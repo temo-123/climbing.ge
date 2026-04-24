@@ -297,6 +297,7 @@ export default {
                         add_action: {
                             action: 'route',
                             link: 'articleAdd',
+                            params: { article_category: this.$route.params.article_category },
                             class: 'btn btn-primary'
                         },
                         tab_data: {

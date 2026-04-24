@@ -191,4 +191,21 @@ class RolesController extends Controller
 
         $role_permision -> delete();
     }
+
+    public function sync_admin_permissions()
+    {
+        $admin = Role::where('slug', 'admin')->firstOrFail();
+        $existing = Role_permission::where('role_id', $admin->id)->pluck('permission_id')->toArray();
+        $all = Permission::pluck('id')->toArray();
+        $missing = array_diff($all, $existing);
+
+        foreach ($missing as $permId) {
+            $rp = new Role_permission;
+            $rp->role_id = $admin->id;
+            $rp->permission_id = $permId;
+            $rp->save();
+        }
+
+        return response()->json(['added' => count($missing)]);
+    }
 }

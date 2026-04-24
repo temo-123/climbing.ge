@@ -64,7 +64,7 @@
                         >
                             <router-link
                                 v-if="currentTabData.add_action.action == 'route'"
-                                :to="{name: currentTabData.add_action.link,}"
+                                :to="{name: currentTabData.add_action.link, params: currentTabData.add_action.params || {}}"
                                 :class="currentTabData.add_action.class"
                             >
                                 <span v-if="currentTabData.add_action.btn_title">{{ currentTabData.add_action.btn_title }}</span>

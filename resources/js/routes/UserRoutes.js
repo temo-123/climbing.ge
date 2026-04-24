@@ -161,6 +161,8 @@ const routes = [
 
             { path: 'article_images', name: 'article_images', component: load('multimedia/ArticleImagesPage'), meta: {title: 'user page'}},
 
+            { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page'}},
+
             { path: 'login', name: 'login', component: login, meta: {title: 'user page'}},
             { path: 'register', name: 'register', component: register ,meta: {title: 'user page'}},
             { path: 'forget_pass', name: 'forget_pass', component: forget_pass ,meta: {title: 'user page'}},

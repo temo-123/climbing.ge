@@ -340,6 +340,21 @@ export default {
                     ]
                 },
                 {
+                    title: "Summit",
+                    name: "summit",
+                    routes: [
+                        {
+                            name: "Summits",
+                            route: "/summits",
+                            permissions: [
+                                ['add', 'summit'],
+                                ['edit', 'summit'],
+                                ['del', 'summit'],
+                            ]
+                        },
+                    ]
+                },
+                {
                     title: "Site options",
                     name: "site_options",
                     routes: [

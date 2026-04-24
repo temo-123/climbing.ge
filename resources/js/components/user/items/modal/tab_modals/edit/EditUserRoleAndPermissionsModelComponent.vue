@@ -88,26 +88,14 @@
                 </div>
             </span>
         </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    :class="'btn btn-success'"
-                    @click="show_team_member_modal()"
-                >
+        <template #footer>
+            <button type="button" class="btn btn-success" @click="show_team_member_modal()">
                 Edit Team Member
-                </button>
-
-                <button
-                    v-show="!is_loading"
-                    type="button"
-                    :class="{'btn btn-primary': true}"
-                    @click="edit_permissions(user_id)"
-                >
+            </button>
+            <button v-show="!is_loading" type="button" class="btn btn-primary" @click="edit_permissions(user_id)">
                 Save Permissions
-                </button>
-            </div>
-        </div>
+            </button>
+        </template>
     </stack-modal>
 </template>
 
@@ -198,9 +186,9 @@
             },
 
             del_user_permission_from_db(id){
-                if(confirm('Are you sure you want to remove this permission from the user? This action cannot be undone.')){
+                if(confirm('Are you sure you want to remove this permission from the user?')){
                     axios
-                    .post('/get_role/del_user_permission/'+id+'/'+this.user_id, {
+                    .post('/set_role/del_user_pemisino/'+id+'/'+this.user_id, {
                         _method: 'DELETE'
                     })
                     .then(response => {
@@ -212,14 +200,12 @@
 
             get_user_permissions_and_roles(){
                 axios
-                .get("/get_role/get_user_permissions/"+this.user_id)
+                .get("/set_role/get_user_permissions/"+this.user_id)
                 .then(response => {
-                    
-                    if(response.data.role.length != 0){
-                        this.user_role  = response.data.role.id
+                    if(response.data.role && response.data.role.id){
+                        this.user_role = response.data.role.id
                     }
-
-                    if(response.data.permissions.length != 0){
+                    if(response.data.permissions && response.data.permissions.length != 0){
                         this.user_permissions = response.data.permissions
                     }
                 })
@@ -227,12 +213,11 @@
                     error => console.log('Error fetching user permissions and roles:', error)
                 );
             },
-                
+
             get_roles(){
                 this.role_loading = true
-
                 axios
-                .get("/get_role/get_all_role/")
+                .get("/set_role")
                 .then(response => {
                     this.roles = response.data
                 })
@@ -244,9 +229,8 @@
 
             get_permissions(){
                 this.perm_loading = true
-
                 axios
-                .get("/get_permissin/get_all_permissions/")
+                .get("/parmisions_list")
                 .then(response => {
                     this.permissions = response.data
                 })

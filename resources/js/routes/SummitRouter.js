@@ -29,7 +29,7 @@ const routes = [
 
           { path: 'summits/list', name: 'summit_list', component: load('lists/SummitListPage'), meta: { title: 'Summit List' } },
 
-          { path: 'summits/map', name: 'summit_map', component: load('maps/SummitMapPage'), meta: { title: 'Summit Map' } },
+          { path: 'summits/map', name: 'summit_map', component: load('SummitMapPage'), meta: { title: 'Summit Map' } },
         ]
       }
 ];

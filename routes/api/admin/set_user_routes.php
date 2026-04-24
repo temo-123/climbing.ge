@@ -58,11 +58,14 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::delete('/del_role/{role_id}', 'del_role');
         Route::post('/edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
         Route::delete('/del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');
+        Route::post('/sync_admin_permissions', 'sync_admin_permissions');
     });
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
     Route::controller(PermissionsController::class)->prefix('set_permission')->group(function() {
         Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
+        Route::post('store', 'store');
+        Route::delete('destroy/{id}', 'destroy');
     });
 
     Route::controller(RolesController::class)->prefix('set_role')->group( function() {
