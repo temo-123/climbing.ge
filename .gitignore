@@ -56,10 +56,10 @@
 /storage/logs/laravel.log
 /vendor
 .env
-.env.backup
-# .env.example
 .phpunit.result.cache
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+
+CLAUDE.md

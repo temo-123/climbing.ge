@@ -1,97 +1,320 @@
-<h1 align="center">Climbing.ge User Panel (user.climbing.ge)</h1>
+# User Dashboard & Admin CMS — user.climbing.ge
 
-<h1>Registration and login</h1>
+The unified user dashboard and content management system for all climbing.ge subdomains.
 
-<p>To register, fill the registration form. API sends confirmation email.</p>
+---
 
-<p>After confirmation, API creates <code>user_role</code> and <code>user_notifications</code> records. All notifications default active. Before that, user service (without role) is impossible.</p>
+## Table of Contents
 
-<p>If no email received, resend.</p>
+- [Overview](#overview)
+- [Authentication Pages](#authentication-pages)
+- [User Dashboard](#user-dashboard)
+- [Admin CMS Sections](#admin-cms-sections)
+- [Roles & Permissions](#roles--permissions)
+- [Notifications & Queues](#notifications--queues)
+- [Frontend Components](#frontend-components)
+- [Backend API](#backend-api)
 
-<h2>Password reset</h2>
+---
 
-<p>Click "Forgot password" on login. Enter email. If user exists, email sent.</p>
+## Overview
 
-<p>Click link and set new password.</p>
+**Subdomain:** `user.climbing.ge`  
+**Root Component:** `resources/js/components/user/HomeComponent.vue`  
+**Router:** `resources/js/routes/UserRoutes.js`  
+**API base URL:** Authenticated routes under `/api/`
 
-<h1>Social login</h1>
+The user panel serves two audiences:
+- **Regular users** — profile, orders, favorites, tour reservations, notifications
+- **Admin/staff users** — full CMS for all subdomains (guide, shop, blog, summit, films)
 
-<p>Login with Google or Facebook. Config in .env.example.</p>
+---
 
-<h2>Logout</h2>
+## Authentication Pages
 
-<p>If server returns 419/401 on one request, user dumped to login (session/cookie cleared).</p>
+All authentication UI lives in `resources/js/components/auth/`:
 
-<h1>Permissions &amp; Roles</h1>
+| Component | Route | Description |
+|---|---|---|
+| `LoginComponent.vue` | `/login` | Email + password login |
+| `RegisterComponent.vue` | `/register` | New user registration |
+| `Verify.vue` | `/verify` | Email verification prompt |
+| `ForgotPassword.vue` | `/forgot-password` | Request reset link |
+| `ResetPassword.vue` | `/reset-password` | Set new password with token |
 
-<p>Uses standard Laravel permissions.</p>
+See [AUTH.md](AUTH.md) for full authentication flow and API details.
 
-<p>Roles/permissions in DB tables.</p>
+---
 
-<img src="docs/DEMO_IMAGES/User_and_admin/Laravel_role_permission.png" alt="Laravel roles/permissions">
+## User Dashboard
 
-<p>More: [laravel.com](https://laravel.com/)</p>
+After login, authenticated users access their personal dashboard.
 
-<h2>Roles on frontend</h2>
+### Profile & Settings
 
-<p>Uses Vue plugin "casl-vue". See official docs.</p>
+- Edit name, surname, email, avatar, bio
+- Change password
+- Notification preferences (email alerts for events, new products, etc.)
+- API: `POST /api/get_options/user_info_update/:user_id`
 
-[casl-vue](https://casl.js.org/v5/en/package/casl-vue)
+### Delivery Addresses
 
-<h1>User and services followers notification</h1>
+CRUD for saved delivery addresses used in shop checkout.
 
-<h2>Queues</h2>
+- API: `GET /api/get_user_adreses`, `POST /api/add_user_adreses`, `POST /api/edit_adres/:id`, `DELETE /api/del_user_adreses/:id`
 
-<p>English docs: [Laravel Queues](https://laravel.com/docs/10.x/queues#main-content)</p>
-<p>Russian docs: [Laravel Queues RU](https://laravel.su/docs/8.x/queues#job-events)</p>
+### Orders
 
-<p>Uses Laravel Queues for bulk emails (background).</p>
+View past shop orders, order status, and download receipts.
 
-<p>Uses <code>jobs</code> table.</p>
+### Favorites
 
-<p>Config .env: <code>QUEUE_CONNECTION=database</code>.</p>
+- Favorite outdoor climbing areas
+- Interested events
+- Favorite films
 
-<p>Run email queue (prefix onQueue('emails')):</p>
+### Tour Reservations
 
-```bash
-php artisan queue:work --queue=emails
+View and manage tour bookings placed through the shop.
+
+---
+
+## Admin CMS Sections
+
+Admin users with appropriate roles see additional sections in the left menu.
+
+### Guide Admin
+
+Manage all content for `climbing.ge`:
+
+| Section | What You Can Manage |
+|---|---|
+| **Articles** | Mount routes, outdoor spots, ice climbing, indoor, events, projects |
+| **Sectors** | Sector data, images, local images for climbing spots |
+| **Routes** | Climbing routes, grades, bolt counts, sector assignment, route topos |
+| **Multi-pitch** | Multi-pitch route pitches |
+| **Regions** | Outdoor climbing regions |
+| **Mount Massifs** | Mountain massif groups |
+| **Events** | Climbing competitions and events |
+| **General Info** | Reusable info blocks (contacts, warnings) |
+| **Sliders** | Hero image sliders per section |
+| **Local Businesses** | Partner businesses linked to climbing areas |
+| **Team Members** | Team/staff profiles |
+| **Live Cameras** | Live webcam embeds |
+
+### Shop Admin
+
+Manage all content for `shop.climbing.ge`:
+
+| Section | What You Can Manage |
+|---|---|
+| **Products** | Product catalogue with locale data, images, options |
+| **Categories / Subcategories** | Product taxonomy |
+| **Brands** | Product brands |
+| **Orders** | Customer orders, status updates |
+| **Custom Orders** | Manual/special orders |
+| **Tours** | Multi-day guided tours |
+| **Tour Categories** | Tour taxonomy |
+| **Reservations** | Tour bookings |
+| **Services** | Additional services offered |
+| **Warehouses** | Inventory tracking |
+| **Sale Codes** | Discount codes |
+| **Shipping Regions** | Shipping zones + prices |
+
+### Summit Admin
+
+Manage all content for `summit.climbing.ge`:
+
+| Section | What You Can Manage |
+|---|---|
+| **Summits** | Summit database — title, height, coordinates, QR code, publish status |
+| **Ascents** | All ascent records across all summits |
+
+See [SUMMIT.md](SUMMIT.md) for full summit admin documentation.
+
+### Blog Admin
+
+Create, edit, publish, and delete blog posts and news articles. Uses Quill rich-text editor.
+
+### Films Admin
+
+Manage film catalogue: add/edit/delete films, categories, and tags.
+
+### User Management
+
+Manage registered users:
+- View all users, search, filter by role
+- Edit user roles and permissions
+- Ban/unban users
+- Export user data
+
+### Tasks
+
+Internal task/todo system for staff. Tasks can be assigned to users with due dates.
+
+### Multimedia
+
+Manage uploaded images and files across all subdomains.
+
+---
+
+## Roles & Permissions
+
+### Backend (Spatie Laravel Permission)
+
+Roles and permissions stored in `roles` and `permissions` tables.
+
+**Default roles:**
+
+| Role | Description |
+|---|---|
+| `super_admin` | Unrestricted access to everything |
+| `admin` | Full CMS access |
+| `editor` | Content creation and editing (no delete, no user management) |
+| `guide` | Shop tours management |
+| `user` | Standard authenticated user |
+
+**Permission naming:** `resource:action`  
+Examples: `article:add`, `article:edit`, `article:del`, `summit:add`, `summit:edit`, `product:del`, `user:manage`
+
+Diagram: `docs/DEMO_IMAGES/User_and_admin/Laravel_role_permission.png`
+
+### Frontend (CASL Vue)
+
+Abilities are synced from `/api/auth_user` response on login.
+
+```javascript
+// Usage in templates
+<button v-if="$can('add', 'summit')">Add Summit</button>
+<router-link v-if="$can('edit', 'article')" :to="...">Edit</router-link>
+
+// Usage in JavaScript
+if (this.$ability.can('del', 'product')) { ... }
 ```
 
-<p>Running commands:</p>
+See [AUTH.md](AUTH.md) for full CASL setup.
 
-```bash
-php artisan queue:work  # watch forever
-php artisan queue:work --timeout=60  # every 60s
+---
+
+## Notifications & Queues
+
+### Email Queue
+
+The platform uses Laravel Queues for sending bulk emails (event notifications, newsletter, etc.).
+
+Queue configuration in `.env`:
+```env
+QUEUE_CONNECTION=database
 ```
 
-<h2>Laravel Task Scheduling</h2>
-
-<p>English: [Scheduling](https://laravel.com/docs/10.x/scheduling#main-content)</p>
-<p>Russian: [Scheduling RU](https://laravel.su/docs/8.x/scheduling#running-the-scheduler-locally)</p>
-
-<p>Automatic event notifications. See <code>app/Console/Kernel.php</code> schedule(). Creates queues in <code>app/Jobs/UserNotifications.php</code>.</p>
-
-<p>Set timezone in <code>config/app.php</code> (<code>'Asia/Tbilisi'</code> for Georgia).</p>
-
-<p>Test command:</p>
-
+Run queue worker:
 ```bash
-php artisan send_event_notification:users
+php artisan queue:work                    # runs indefinitely
+php artisan queue:work --queue=emails     # emails queue only
+php artisan queue:work --timeout=60       # restart every 60s
+php artisan horizon                       # Horizon dashboard
 ```
 
-<p>List tasks:</p>
+### Scheduled Notifications
+
+Laravel Task Scheduling sends automatic event notifications to interested users.
 
 ```bash
-php artisan schedule:list
+php artisan schedule:work          # run scheduler locally
+php artisan schedule:list          # list all scheduled tasks
+php artisan send_event_notification:users  # run manually
 ```
 
-<p>Run scheduler watch:</p>
+Scheduler defined in `app/Console/Kernel.php`. Notification job: `app/Jobs/UserNotifications.php`.
 
-```bash
-php artisan schedule:work
-```
+Timezone: `Asia/Tbilisi` — set in `config/app.php`.
 
-<hr>
+### User Notification Preferences
+
+Each user has a `user_notifications` record controlling which email types they receive. Managed at: `GET/POST /api/get_options/get_user_notification_data` and `/api/get_options/update_user_notification_data`.
+
+---
+
+## Frontend Components
+
+### Layout Components (`resources/js/components/user/items/`)
+
+| Component | Description |
+|---|---|
+| `BreadcrumbComponent.vue` | Breadcrumb navigation bar |
+| `LeftMenuComponent.vue` | Left sidebar navigation |
+| `NavbarComponent.vue` | Top navigation bar |
+| `FooterComponent.vue` | Footer |
+
+### Data Table System (`items/data_table/`)
+
+The admin panel uses a generic tabbed data table system. See [FRONTEND/USER_PANEL_TABLE.md](FRONTEND/USER_PANEL_TABLE.md) for full documentation.
+
+**Components:**
+- `TabsComponent.vue` — Main wrapper with tabs, search, pagination
+- `TabHeaderComponent.vue` — Table `<thead>` renderer
+- `TabBodyComponent.vue` — Table `<tbody>` with action buttons
+- `DataComponent.vue` — Cell value renderer (supports bool icons, nested fields)
+- `FilterComponent.vue` — Dropdown filter
+- `PaginationComponent.vue` — Page navigation
+- `SearchComponent.vue` — Text search
+
+### Modals (`items/modal/`)
+
+| Component | Description |
+|---|---|
+| `StackModal.vue` | Generic reusable modal (see FRONTEND/STACK_MODAL.md) |
+| `ArticleQuickViewModal.vue` | Quick preview for guide articles |
+| `tab_modals/SectorModalComponent.vue` | Sector route management |
+| `tab_modals/ArticleSectorSequenceModalComponent.vue` | Sector ordering |
+
+### Form Editors (`items/form/parts/editor/`)
+
+Three globally registered Quill-based rich text editors:
+
+| Name | Component | Use |
+|---|---|---|
+| `big_editor` | `BigEditorComponent.vue` | Full-featured: text, images, tables |
+| `small_editor` | `SmallEditorComponent.vue` | Basic text formatting |
+| `mini_editor` | `MiniEditorComponent.vue` | Single-line rich text |
+
+---
+
+## Backend API
+
+### User Data Routes (`routes/api/get_user_routes.php`)
+
+All routes behind `auth:sanctum` + `banned` middleware.
+
+**User:**
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/auth_user` | Current user + abilities |
+| GET | `/api/get_user/get_auth_user_data` | Detailed user data |
+| GET | `/api/get_user/get_all_users` | All users (admin) |
+| GET | `/api/get_user/get_auth_user_permissions` | User's permissions array |
+| POST | `/api/get_options/user_info_update/:user_id` | Update profile |
+| POST | `/api/get_options/update_user_notification_data` | Update notifications |
+
+**Addresses:**
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_user_adreses` | All saved addresses |
+| POST | `/api/add_user_adreses` | Add address |
+| POST | `/api/edit_adres/:id` | Edit address |
+| DELETE | `/api/del_user_adreses/:id` | Delete address |
+
+**Favorites:**
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_faworite/get_faworite_outdoor_region` | Favorite areas |
+| GET | `/api/get_faworite/get_interested_events` | Interested events |
+| POST | `/api/set_faworite_by_user/add_to_favorite_outdoor_area/:id` | Add favorite |
+| DELETE | `/api/set_faworite/del_favorite_outdoor_area/:id` | Remove favorite |
+
+---
 
 [Go back](../README.md)
-

@@ -1,105 +1,265 @@
-<h1 align="center">Sport Climbing Spot Structure</h1>
+# Rock Climbing Guidebook — climbing.ge
 
-<p><strong>climbing.ge</strong> is a Georgian climbing guidebook.</p>
+**climbing.ge** is a Georgian rock climbing guidebook covering outdoor sport climbing, mountaineering, ice climbing, bouldering, and indoor facilities.
 
-<p>Below you can see the basic structure of an outdoor sport climbing area. It shows the database table structure for easier use.</p>
+---
 
-<h1>Articles</h1>
+## Table of Contents
 
-<p>Articles have a global table and locale tables. In the global table (<code>articles</code>), global article information is saved: published status, article image, and other data. In the locale table (<code>locale_articles</code>), you find only the article's locale version (English, Georgian, Russian).</p>
+- [Overview](#overview)
+- [Frontend Pages](#frontend-pages)
+- [Backend API](#backend-api)
+- [Database Structure](#database-structure)
+- [Admin Panel](#admin-panel)
 
-<img src="docs/DEMO_IMAGES/Guidbook/Article_structur_diogram.drawio.png" alt="Article structure diagram">
+---
 
-<h2>General info in article</h2>
+## Overview
 
-<p>Sometimes you need to add the same information to many articles (contact information or other). For this, create general values in the <code>general_infos</code> table and insert them into your article blocks.</p>
+**Subdomain:** `climbing.ge`  
+**Root Component:** `resources/js/components/guide/GuideMainComponent.vue` (IndexComponent)  
+**Router:** `resources/js/routes/SiteRoutes.js`
 
-<img src="docs/DEMO_IMAGES/Guidbook/General_info_structur_diogram.drawio.png" alt="General info structure">
+### Article Categories
 
-<h1>Outdoor climbing region description, structure</h1>
+| Category | Description |
+|---|---|
+| `outdoor` | Outdoor sport climbing spots |
+| `mount_route` | Mountaineering routes |
+| `ice` | Ice climbing |
+| `indoor` | Indoor climbing gyms |
+| `bouldering` | Bouldering areas |
+| `other` | Other climbing-related content |
 
-<h2>Outdoor spot</h2>
+---
 
-<p>An outdoor climbing region is also an article with category "outdoor". For describing sectors/rocks, add all or many sector images for easier finding. These images are added in the <code>spot_rocks_images</code> table.</p>
+## Frontend Pages
 
-<img src="docs/DEMO_IMAGES/Guidbook/Climbing_spot_diogram.drawio.png" alt="Climbing spot diagram">
+### `IndexPageComponent.vue` — Homepage
 
-<h2>Sector local images (spot local images)</h2>
+Sections:
+- Hero swiper (`SwiperComponent`)
+- What We Do (`WhatWeDoComponent`)
+- Topo map (from `$globalSiteData.data.map`)
+- Latest news (`newsCard`, `bigNewsCard`)
+- Special/featured articles (`SpecialArticleComponent`)
+- Upcoming events (`EventComponent`)
+- Other articles (`OtherArticlesComponent`)
+- Tech tips (`TechtipsComponent`)
+- Gallery (`IndexGalleryComponent`)
+- Team members slider
+- Products slider (cross-promo from shop)
 
-<p>Sometimes you need a small part of the area rocks. Add them in the <code>sector_local_images</code> table. In the image add form, you can insert multiple sectors.</p>
+### List Pages (`pages/lists/`)
 
-<img src="docs/DEMO_IMAGES/Guidbook/Sector_local_images_(area_local_images).drawio.png" alt="Sector local images">
+Each category has a dedicated list page:
+- `OutdoorListComponent.vue` — sport climbing regions
+- `MountaineeringListComponent.vue` — mountaineering routes
+- `IceListComponent.vue` — ice climbing
+- `IndoorListComponent.vue` — indoor gyms
+- `EventsListPageComponent.vue` — competitions and events
 
-<h2>Sector</h2>
+**Common pattern:**
+```html
+<h1 class="index_h2">Section Title</h1>
+<div class="bar"><i class="fa fa-icon"></i></div>
+<h3 class="article_list_short_description">Description</h3>
+<!-- cards in .article_card_container -->
+```
 
-<p>In sector, add sector images in the individual table <code>sector_images</code>.</p>
+Features: region filter dropdown, grouped/list view toggle (`ViewControlsComponent`).
 
-<img src="docs/DEMO_IMAGES/Guidbook/Sector_images_diogram.drawio.png" alt="Sector images">
+### Article Pages (`pages/pages/`)
 
-<h2>Sector and routes</h2>
+- `OutdoorPageComponent.vue` — outdoor spot with sectors, routes, images, map
+- `MountaineeringPageComponent.vue` — mountaineering route
+- `IcePageComponent.vue` — ice climbing
+- `IndoorPageComponent.vue` — indoor gym
+- `EventPageComponent.vue` — event/competition detail
+- `LocalBisnesPageComponent.vue` — local business
 
-<p>The sector can include many types of climbing routes: sport climbing routes, top rope routes, trad climbing routes, bouldering routes, and multi-pitch routes.</p>
+### Search
 
-<p>For sport climbing routes, it's one table with different categories (sport route or bouldering). For multi-pitch, there are 2 tables: general multi-pitch table (<code>mtps</code>) and multi-pitch pitches (<code>mtp_pitchs</code>).</p>
+`SerchPageComponent.vue` — searches across articles, products, and films.
 
-<img src="docs/DEMO_IMAGES/Guidbook/Multy-pitch_structur_diogram.drawio.png" alt="Multi-pitch structure">
-<img src="docs/DEMO_IMAGES/Guidbook/Route_diogram.drawio.png" alt="Route diagram">
+---
 
-<h1>Mountain climbing spot structure</h1>
+## Backend API
 
-<p>Below you can see the basic structure of mountaineering climbing area.</p>
+**File:** `routes/api/get_guide_routes.php`
 
-<img src="docs/DEMO_IMAGES/Guidbook/Mount_route_diogram.drawio.png" alt="Mount route diagram">
+### Key Public Endpoints
 
-<h1>Gallery</h1>
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_article/get_locale_articles/{category}/{lang}` | Articles by category + language |
+| GET | `/api/get_article/get_locale_article_on_page/{category}/{lang}/{url_title}` | Full article page data |
+| GET | `/api/get_outdoor/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}` | Filtered outdoor spots |
+| GET | `/api/get_sector/get_sector_and_routes/{article_id}` | Sectors + routes for climbing spot |
+| GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail |
+| GET | `/api/get_mount_route/get_mount_routes_by_maunt/{lang}` | Mountaineering routes grouped by mountain |
+| GET | `/api/get_event/get_event_on_site_list/{lang}` | Events list |
+| GET | `/api/get_region/get_all_outdoor_regions` | All outdoor regions |
+| GET | `/api/get_article/last_news/{lang}` | Latest news |
 
-<p>Column <code>image_type</code> in <code>galleries</code> table has 3 values (<code>"header_image"</code>, <code>"index_gallery_image"</code>, <code>"article_image"</code>). Depending on the category, the image is displayed in a specific block.</p>
+Full endpoint list in [BACKEND/API.md](BACKEND/API.md#guide--public).
 
-<p>If category is <code>"article_image"</code>, add dependence in <code>gallery_image_article</code> table.</p>
+---
 
-<img src="docs/DEMO_IMAGES/Guidbook/Guidbook_gallery_structure.drawio.png" alt="Guidebook gallery structure">
+## Database Structure
 
-<h1>Comments</h1>
+### Articles (Global + Locale)
 
-<p>Site guest or auth user can add article comments. If guest, private info (name, surname, email) is required. For registered/auth users, it's automatic.</p>
+Articles have two tables:
+- `articles` — global data: published status, image, category, url_title
+- `locale_articles` — locale version: title, short_description, text content per language
 
-<p>All visitors can see commentator name on comments.</p>
+```
+articles
+├── id, category, url_title, image, published
+└── locale_articles (1:many)
+    └── article_id, lang, title, short_description, text
+```
 
-<img src="docs/DEMO_IMAGES/Guidbook/Guidbook_comments.drawio.png" alt="Guidebook comments">
+![Article structure](DEMO_IMAGES/Guidbook/Article_structur_diogram.drawio.png)
 
-<h2>Finding comment user</h2>
+### General Info
 
-<p>If user is registered but not logged in, service requires private info. After creating comment, service compares email with user email (unique) and creates request. User gets notification in dashboard to confirm (<code>"Is it your comment?"</code>). If yes, comment added; if no, request deleted.</p>
+Reusable info blocks (contact details, warnings) that can be embedded in multiple articles.
 
-<img src="docs/DEMO_IMAGES/Guidbook/Is_it_your_comment.drawio.png" alt="Is it your comment">
+```
+general_infos
+└── inserted into article blocks as references
+```
 
-<h2>Comment violation</h2>
+![General info structure](DEMO_IMAGES/Guidbook/General_info_structur_diogram.drawio.png)
 
-<p>If user finds violation in comment, create complaint. Admin checks and decides. User gets email notification.</p>
+### Outdoor Climbing Spot
 
-<img src="docs/DEMO_IMAGES/Guidbook/Comment_complaints.drawio.png" alt="Comment complaints">
+An outdoor climbing area is an article with `category = 'outdoor'`.
 
-<h1>Local business</h1>
+```
+article (outdoor)
+├── spot_rocks_images       # Overview rock images for the area
+├── sector_local_images     # Sub-area images with multiple sector links
+└── sectors (1:many)
+    ├── sector_images       # Topo images per sector
+    └── routes (1:many)     # Climbing routes
+```
 
-<p>Also local business (guesthouse, tour company, shop) in climbing area. Structure same as article but with <code>article_id</code> and <code>published_date</code>. Select article to show on page, limit by last published date.</p>
+![Climbing spot diagram](DEMO_IMAGES/Guidbook/Climbing_spot_diogram.drawio.png)  
+![Sector images](DEMO_IMAGES/Guidbook/Sector_images_diogram.drawio.png)  
+![Sector local images](DEMO_IMAGES/Guidbook/Sector_local_images_(area_local_images).drawio.png)
 
-<p>For localization: global (<code>suport_local_bisneses</code>) and locale (<code>locale_bisneses</code>) tables.</p>
+### Routes
 
-<img src="docs/DEMO_IMAGES/Guidbook/Locale_bisnes_structur_diogram.drawio.png" alt="Local business structure">
+Sport routes and bouldering share the `routes` table (different `category` value).  
+Multi-pitch routes use two tables:
 
-<p>Business also has gallery (<code>suport_local_bisnes_images</code>): <code>image</code> and <code>bisnes_id</code>.</p>
+```
+mtps (multi-pitch routes)
+└── mtp_pitchs (individual pitches, ordered)
+```
 
-<h1>Events</h1>
+![Route diagram](DEMO_IMAGES/Guidbook/Route_diogram.drawio.png)  
+![Multi-pitch structure](DEMO_IMAGES/Guidbook/Multy-pitch_structur_diogram.drawio.png)
 
-<p>Event articles structure similar to articles: global (<code>events</code>) and locale (<code>locale_events</code>) tables.</p>
+### Mountaineering Routes
 
-<h1>Favorite outdoor articles and interested events</h1>
+```
+mount_masives (mountain groups)
+└── articles (mount_route category)
+    └── locale_articles
+```
 
-<p>Add priority for most interesting events/outdoor areas using <code>favorite_outdoor_areas</code> and <code>interested_events</code> tables.</p>
+![Mount route diagram](DEMO_IMAGES/Guidbook/Mount_route_diogram.drawio.png)
 
-<img src="docs/DEMO_IMAGES/Guidbook/Favorite_outdoor_area_and_interesting_event.drawio.png" alt="Favorites diagram">
+### Gallery
 
-<hr>
+`galleries.image_type` values:
+
+| Value | Used in |
+|---|---|
+| `header_image` | Section hero images |
+| `index_gallery_image` | Homepage gallery |
+| `article_image` | Article-specific gallery |
+
+Article images linked via `gallery_image_article` pivot table.
+
+![Gallery structure](DEMO_IMAGES/Guidbook/Guidbook_gallery_structure.drawio.png)
+
+### Comments
+
+Guests and authenticated users can comment on articles.
+
+**Guest flow:** Name + email required → after submission, email matched against registered users → if match found, "Is it your comment?" notification sent to user's dashboard.
+
+**Comment violations:** Any user can report a comment. Admin reviews and decides. Email notification sent.
+
+![Comments diagram](DEMO_IMAGES/Guidbook/Guidbook_comments.drawio.png)  
+![Is it your comment](DEMO_IMAGES/Guidbook/Is_it_your_comment.drawio.png)  
+![Comment complaints](DEMO_IMAGES/Guidbook/Comment_complaints.drawio.png)
+
+### Local Businesses
+
+Businesses (guesthouses, shops, tour operators) linked to climbing areas.
+
+```
+suport_local_bisneses (global)
+├── locale_bisneses (locale: title, description)
+├── suport_local_bisnes_images (gallery)
+└── article_id (linked climbing spot)
+```
+
+Visibility controlled by `published_date` — only show if still within date range.
+
+![Local business structure](DEMO_IMAGES/Guidbook/Locale_bisnes_structur_diogram.drawio.png)
+
+### Events
+
+```
+events (global)
+└── locale_events (locale: title, description, dates)
+```
+
+Users can mark events as "interested" → stored in `interested_events`.
+
+![Favorites diagram](DEMO_IMAGES/Guidbook/Favorite_outdoor_area_and_interesting_event.drawio.png)
+
+### Favorite Outdoor Areas
+
+Registered users can save favorite climbing areas:
+```
+favorite_outdoor_areas
+├── user_id
+└── article_id (outdoor spot)
+```
+
+---
+
+## Admin Panel
+
+Guide content is managed at `user.climbing.ge` under the **Guide** section.
+
+| Admin Section | Manages |
+|---|---|
+| **Articles** | Create/edit/delete articles by category |
+| **Sectors** | Add sectors to outdoor spots |
+| **Routes** | Add climbing routes to sectors |
+| **Multi-pitch** | Add MTP routes and pitches |
+| **Regions** | Outdoor climbing regions |
+| **Mount Massifs** | Mountain group definitions |
+| **Events** | Competitions and events |
+| **General Info** | Reusable info blocks |
+| **Sliders** | Hero image sliders |
+| **Local Businesses** | Partner businesses |
+| **Team Members** | Staff profiles |
+| **Live Cameras** | Webcam embeds |
+| **Comments** | Moderate user comments |
+| **Gallery** | Manage images |
+
+All admin tables use the `tabsComponent` pattern. See [FRONTEND/USER_PANEL_TABLE.md](FRONTEND/USER_PANEL_TABLE.md).
+
+---
 
 [Go back](../README.md)
-
