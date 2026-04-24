@@ -21,7 +21,7 @@
             <div class="form-group clearfix row">
                 <label for="name" class='col-md-2 control-label'> Short description </label>
                 <div class="col-md-10">
-                    <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
+                    <small_editor v-model="data.short_description" />
                     <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                         {{ errors.short_description[0] }}
                     </div>
@@ -32,7 +32,7 @@
                 <label for="name" class='col-md-2 control-label'> text </label>
                 <div class="col-md-10">
 
-                    <ckeditor id="text" :editor="'text'" v-model="data.text" :config="editor_config.text" ></ckeditor>
+                    <big_editor v-model="data.text" />
                 </div>
             </div>
 

@@ -134,7 +134,7 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Description (Text) </label>
           <div class="col-md-10">
-            <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+            <big_editor v-model="data.text" />
           </div>
         </div>
 

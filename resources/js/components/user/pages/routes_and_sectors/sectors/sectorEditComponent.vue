@@ -106,7 +106,7 @@
                 <!-- <div class="form-group clearfix row">
                     <label class="col-md-2 control-label"> Text </label>
                     <div class="col-md-10">
-                        <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+                        <big_editor v-model="data.text" />
                     </div>
                 </div> -->
 
@@ -131,14 +131,14 @@
                             <label for="name" class='col-md-2 control-label'> English description </label>
 
                             <div class="col-md-10">
-                                <ckeditor v-model="data.us_description" :config="us_description_editor"></ckeditor>
+                                <big_editor v-model="data.us_description" />
                             </div>
                         </div>
                         <div class="form-group clearfix row"  v-show="tab_num == 2">
                             <label for="name" class='col-md-2 control-label'> Georgian description </label>
 
                             <div class="col-md-10">
-                                <ckeditor v-model="data.ka_description" :config="ka_description_editor"></ckeditor>
+                                <big_editor v-model="data.ka_description" />
                             </div>
                         </div>
                     </div>
@@ -701,7 +701,7 @@
             },
 
             go_back(back_action = false) {
-                this.is_back_action_query = going.back(this, back_action)
+                this.is_back_action_query = this.$going.back(this, back_action)
             },
         },
     }

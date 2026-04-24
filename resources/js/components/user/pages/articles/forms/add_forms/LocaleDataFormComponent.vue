@@ -24,7 +24,7 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> Short description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
+                            <small_editor v-model="data.short_description" />
                             <div class="alert alert-danger" role="alert" v-if="errors.short_description">
                                 {{ errors.short_description[0] }}
                             </div>
@@ -34,22 +34,20 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> text </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.text"></ckeditor>
+                            <!-- <big_editor v-model="data.text" />
                             <div class="alert alert-danger" role="alert" v-if="errors.text">
                                 {{ errors.text[0] }}
                             </div> -->
 
-                            <!-- <ckeditor v-model="data.text" /> -->
-
-                            <ckeditor id="text" :editor="'text'" v-model="data.text" :config="editor_config.text" ></ckeditor>
+                            <!-- <big_editor v-model="data.text" />
                         </div>
                     </div>
 
                     <div class="form-group clearfix row" v-if="category != 'mount_route' && category != 'partners' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
                         <label for="name" class='col-md-2 control-label'> How to get hear </label>
                         <div class="col-md-10">
-                            <!-- <ckeditor v-model="data.how_get" :config="editorConfig" :config="this.$editorConfig"></ckeditor> -->
-                            <ckeditor v-model="data.how_get" :config="editor_config.how_get"></ckeditor>
+                            <!-- <big_editor v-model="data.how_get" /> -->
+                            <big_editor v-model="data.how_get" />
                         </div>
                     </div>
 
@@ -140,7 +138,7 @@
                             <label for="name" class='col-md-2 control-label'> Info / contact </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
-                                    <ckeditor v-model="data.info" :config="editor_config.text"></ckeditor>
+                                    <small_editor v-model="data.info" />
                                 </div>
                             </div>
                         </div>
@@ -150,7 +148,7 @@
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> Price description </label>
                         <div class="col-md-10">
-                            <ckeditor v-model="data.price_text" :config="editor_config.price_text"></ckeditor>
+                            <small_editor v-model="data.price_text" />
                         </div>
                     </div>
 

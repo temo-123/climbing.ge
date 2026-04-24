@@ -146,14 +146,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_tour.short_description"  :config="editor_config.us_short_description_text"></ckeditor>
+                                <small_editor v-model="data.us_tour.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_tour.text"  :config="editor_config.us_text"></ckeditor>
+                                <big_editor v-model="data.us_tour.text" />
                             </div>
                         </div>
                     </form>
@@ -190,14 +190,14 @@
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_tour.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-                                <ckeditor v-model="data.ka_tour.short_description" :config="editor_config.ka_short_description_text"></ckeditor>
+                                <small_editor v-model="data.ka_tour.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_tour.text"  :config="editor_config.ka_text"></ckeditor>
+                                <big_editor v-model="data.ka_tour.text" />
                             </div>
                         </div>
                     </form>

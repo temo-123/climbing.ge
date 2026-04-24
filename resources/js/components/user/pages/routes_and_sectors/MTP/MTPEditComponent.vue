@@ -60,7 +60,7 @@
           <label for="name" class='col-md-2 control-label'> text </label>
           <div class="col-md-10">
             <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-            <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+            <big_editor v-model="data.text" />
           </div>
         </div>
 

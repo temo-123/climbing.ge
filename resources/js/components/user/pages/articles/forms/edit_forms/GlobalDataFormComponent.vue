@@ -74,7 +74,7 @@
                         <div class="col-md-10">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="price_from" v-model="data.price_from" class="form-control"> 
-                            <!-- <ckeditor :editor="editor" v-model="data.us_price_from" :config="editorConfig"></ckeditor> -->
+                            <!-- <big_editor v-model="data.us_price_from" /> -->
                         </div>
                     </div>
 

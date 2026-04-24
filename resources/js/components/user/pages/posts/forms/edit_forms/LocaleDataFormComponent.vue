@@ -23,13 +23,13 @@
                 <div class="form-group clearfix row">
                     <label for="name" class='col-md-2 control-label'> Short description </label>
                     <div class="col-md-10">
-                        <ckeditor v-model="data.short_description" :config="editor_config.short_description_text"></ckeditor>
+                        <small_editor v-model="data.short_description" />
                     </div>
                 </div>
                 <div class="form-group clearfix row">
                     <label for="name" class='col-md-2 control-label'> Text </label>
                     <div class="col-md-10">
-                        <ckeditor v-model="data.text" :config="editor_config.text" />
+                        <big_editor v-model="data.text" />
                     </div>
                 </div>
             </form>

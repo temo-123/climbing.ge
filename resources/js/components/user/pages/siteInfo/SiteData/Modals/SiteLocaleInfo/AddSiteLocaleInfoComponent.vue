@@ -14,8 +14,8 @@
             <form method="POST" id="add_site_locale_data_form" v-on:submit.prevent="add_site_local_data">
                 <input type="text" class="form-control" v-model="data.slug" name="slug" id="Title" placeholder="Title" slug="Title">
 
-                <ckeditor v-model="data.ka_data" :config="editor_config.ka_data"></ckeditor>
-                <ckeditor v-model="data.us_data" :config="editor_config.us_data"></ckeditor>
+                <big_editor v-model="data.ka_data" />
+                <big_editor v-model="data.us_data" />
             </form>
         </div>
         <div slot="modal-footer">

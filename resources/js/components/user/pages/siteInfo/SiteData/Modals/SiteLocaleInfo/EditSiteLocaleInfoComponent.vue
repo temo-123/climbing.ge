@@ -14,11 +14,11 @@
             <p><strong>Slug:</strong> {{ current_item && current_item.slug ? current_item.slug : '' }}</p>
             <div v-if="current_language === 'ka'">
                 <label>Georgian Data:</label>
-                <ckeditor v-model="data.ka_data" :config="editor_config.ka_data"></ckeditor>
+                <big_editor v-model="data.ka_data" />
             </div>
             <div v-else-if="current_language === 'us'">
                 <label>English Data:</label>
-                <ckeditor v-model="data.us_data" :config="editor_config.us_data"></ckeditor>
+                <big_editor v-model="data.us_data" />
             </div>
         </form>
         <div slot="modal-footer">

@@ -31,7 +31,7 @@
                 <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
                 <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
 
-                <ckeditor v-model="data.text" :config="description_editor"></ckeditor>
+                <big_editor v-model="data.text" />
             </form>
         </div>
         <div slot="modal-footer">

@@ -79,7 +79,7 @@
                         <div class="form-group clearfix row">
                             <label for="region" class='col-md-2 control-label '> English text </label>
                             
-                            <ckeditor v-model="data.us_text" :config="us_text_editor_config"></ckeditor>
+                            <big_editor v-model="data.us_text" />
                         </div>
                     </form>
                 </div>
@@ -101,7 +101,7 @@
                         <div class="form-group clearfix row">
                             <label for="region" class='col-md-2 control-label '> Georgian text </label>
                             
-                            <ckeditor v-model="data.ka_text" :config="ka_text_editor_config"></ckeditor>
+                            <big_editor v-model="data.ka_text" />
                         </div>
                     </form>
                 </div>

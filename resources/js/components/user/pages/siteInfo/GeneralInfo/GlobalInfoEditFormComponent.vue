@@ -39,7 +39,7 @@
                             <div class="form-group clearfix">
                                 <label for="name" class='col-xs-2 control-label'> English name </label>
                                 <div class="col-xs-10">
-                                    <ckeditor v-model="data.text_us" :config="this.$editorConfig"></ckeditor>
+                                    <big_editor v-model="data.text_us" />
                                 </div>
                                 <div class="alert alert-danger" role="alert" v-if="errors.text_us">
                                     {{ errors.text_us[0] }}
@@ -48,7 +48,7 @@
                             <div class="form-group clearfix">
                                 <label for="name" class='col-xs-2 control-label'> Georgian name </label>
                                 <div class="col-xs-10">
-                                    <ckeditor v-model="data.text_ka" :config="this.$editorConfig"></ckeditor>
+                                    <big_editor v-model="data.text_ka" />
                                 </div>
                                 <div class="alert alert-danger" role="alert" v-if="errors.text_ka">
                                     {{ errors.text_ka[0] }}

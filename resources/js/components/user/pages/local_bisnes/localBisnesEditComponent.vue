@@ -112,14 +112,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_bisnes.short_description"  :config="editor_config.us_short_description"></ckeditor>
+                                <small_editor v-model="data.us_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.us_bisnes.text"  :config="editor_config.us_text"></ckeditor>
+                                <big_editor v-model="data.us_bisnes.text" />
                             </div>
                         </div>
                     </form>
@@ -143,14 +143,14 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Short description </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_bisnes.short_description" :config="editor_config.ka_short_description"></ckeditor>
+                                <small_editor v-model="data.ka_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> text </label>
                             <div class="col-xs-8">
-                                <ckeditor v-model="data.ka_bisnes.text"  :config="editor_config.ka_text"></ckeditor>
+                                <big_editor v-model="data.ka_bisnes.text" />
                             </div>
                         </div>
                     </form>
