@@ -3,7 +3,7 @@
 
         <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check" class="menu-checkbox">
         
-        <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }">
+        <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }" style="padding-bottom: 15%;">
             <header>Menu</header>
 
             <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px; /*padding-bottom: 35%;*/" v-if="menu_items && menu_items.length">
