@@ -174,6 +174,49 @@ class SummitPublicController extends Controller
         ], 201);
     }
 
+    public function get_ascents($url_title)
+    {
+        $summit = Summit::where('url_title', $url_title)->where('published', true)->firstOrFail();
+
+        $ascents = $summit->ascents()
+            ->with(['ascentRoutes.route.sector'])
+            ->orderBy('ascent_date', 'desc')
+            ->get()
+            ->map(function ($ascent) {
+                $routeName  = null;
+                $routeGrade = null;
+                $routeArticleUrl = null;
+
+                if ($ascent->ascentRoutes->isNotEmpty()) {
+                    $ar = $ascent->ascentRoutes->first();
+                    if ($ar->route) {
+                        $routeName  = $ar->route->name;
+                        $routeGrade = $ar->route->grade;
+                        if ($ar->route->sector && $ar->route->sector->article) {
+                            $routeArticleUrl = $ar->route->sector->article->url_title;
+                        }
+                    } elseif ($ar->other_route_name) {
+                        $routeName = $ar->other_route_name;
+                    }
+                }
+
+                return [
+                    'id'               => $ascent->id,
+                    'name'             => $ascent->name,
+                    'surname'          => $ascent->surname,
+                    'comment'          => $ascent->comment,
+                    'photo'            => $ascent->photo,
+                    'is_gps_validated' => $ascent->is_gps_validated,
+                    'ascent_date'      => $ascent->ascent_date,
+                    'route_name'       => $routeName,
+                    'route_grade'      => $routeGrade,
+                    'route_article_url'=> $routeArticleUrl,
+                ];
+            });
+
+        return response()->json(['summit' => ['id' => $summit->id, 'title' => $summit->title], 'ascents' => $ascents]);
+    }
+
     private function haversine(float $lat1, float $lon1, float $lat2, float $lon2): float
     {
         $R    = 6371000;

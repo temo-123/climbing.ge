@@ -1,51 +1,42 @@
 <script setup>
-import { onMounted, watch, nextTick } from 'vue'
+import { computed } from 'vue'
+import { useSeoMeta, useHead } from '@unhead/vue'
 
 const props = defineProps({
-  title: {
-    type: String,
-    default: 'My Page Title'
-  },
-  description: {
-    type: String,
-    default: 'Page description'
-  },
-  image: {
-    type: String,
-    default: ''
-  }
+  title: { type: String, default: 'Climbing.ge' },
+  description: { type: String, default: '' },
+  image: { type: String, default: '' },
 })
 
-const updateHead = () => {
-  nextTick(() => {
-    document.title = props.title || ''
+const fullImage = computed(() => {
+  if (!props.image) return ''
+  if (props.image.startsWith('http') || props.image.startsWith('//')) return props.image
+  return props.image.startsWith('/') ? window.location.origin + props.image : window.location.origin + '/' + props.image
+})
 
-    const metas = {
-      'description': { name: 'description', content: props.description },
-      'og:title': { property: 'og:title', content: props.title },
-      'og:description': { property: 'og:description', content: props.description },
-      'og:image': { property: 'og:image', content: props.image },
-      'twitter:title': { name: 'twitter:title', content: props.title },
-      'twitter:description': { name: 'twitter:description', content: props.description },
-      'twitter:image': { name: 'twitter:image', content: props.image }
-    }
+const lang = computed(() => {
+  const stored = localStorage.getItem('lang')
+  return stored === 'ka' ? 'ka' : 'en'
+})
 
-    Object.entries(metas).forEach(([key, meta]) => {
-      let el = document.querySelector(`meta[${meta.name ? 'name' : 'property'}="${key}"]`)
-      if (!el) {
-        el = document.createElement('meta')
-        if (meta.name) el.setAttribute('name', key)
-        else el.setAttribute('property', key)
-        document.head.appendChild(el)
-      }
-      el.content = meta.content || ''
-    })
-  })
-}
+useHead({
+  title: computed(() => props.title),
+  htmlAttrs: { lang },
+  link: [{ rel: 'canonical', href: computed(() => window.location.href) }],
+})
 
-watch(() => props, updateHead, { deep: true, immediate: true })
-
-onMounted(updateHead)
+useSeoMeta({
+  description:        computed(() => props.description),
+  ogTitle:            computed(() => props.title),
+  ogDescription:      computed(() => props.description),
+  ogImage:            computed(() => fullImage.value),
+  ogType:             'website',
+  ogUrl:              computed(() => window.location.href),
+  twitterCard:        'summary_large_image',
+  twitterTitle:       computed(() => props.title),
+  twitterDescription: computed(() => props.description),
+  twitterImage:       computed(() => fullImage.value),
+})
 </script>
 
 <template></template>

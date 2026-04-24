@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 use App\Models\Summit\Summit;
+use App\Models\Summit\SummitAscent;
 use App\Models\Guide\Region;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
@@ -167,6 +168,55 @@ class SummitController extends Controller
             });
 
         return response()->json(['summit' => ['id' => $summit->id, 'title' => $summit->title], 'ascents' => $ascents]);
+    }
+
+    public function get_all_ascents()
+    {
+        $ascents = SummitAscent::with(['summit', 'users.user', 'ascentRoutes.route.sector'])
+            ->orderBy('ascent_date', 'desc')
+            ->get()
+            ->map(function ($ascent) {
+                $routeName       = null;
+                $routeGrade      = null;
+                $routeArticleUrl = null;
+
+                if ($ascent->ascentRoutes->isNotEmpty()) {
+                    $ar = $ascent->ascentRoutes->first();
+                    if ($ar->route) {
+                        $routeName  = $ar->route->name;
+                        $routeGrade = $ar->route->grade;
+                        if ($ar->route->sector && $ar->route->sector->article) {
+                            $routeArticleUrl = $ar->route->sector->article->url_title;
+                        }
+                    } elseif ($ar->other_route_name) {
+                        $routeName = $ar->other_route_name;
+                    }
+                }
+
+                return [
+                    'id'               => $ascent->id,
+                    'summit_id'        => $ascent->summit_id,
+                    'summit_title'     => $ascent->summit?->title,
+                    'summit_url'       => $ascent->summit?->url_title,
+                    'name'             => $ascent->name,
+                    'surname'          => $ascent->surname,
+                    'email'            => $ascent->email,
+                    'comment'          => $ascent->comment,
+                    'photo'            => $ascent->photo,
+                    'is_gps_validated' => $ascent->is_gps_validated,
+                    'ascent_date'      => $ascent->ascent_date,
+                    'route_name'       => $routeName,
+                    'route_grade'      => $routeGrade,
+                    'route_article_url'=> $routeArticleUrl,
+                    'matched_users'    => $ascent->users->map(fn($u) => [
+                        'id'      => $u->user?->id,
+                        'name'    => $u->user?->name,
+                        'surname' => $u->user?->surname,
+                    ]),
+                ];
+            });
+
+        return response()->json($ascents);
     }
 
     private function generateUniqueUrlTitle(string $title, int $excludeId = null): string

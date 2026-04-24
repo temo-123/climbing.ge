@@ -26,7 +26,6 @@
           </div>
         </section>
       </div>
-      <rightMenu />
     </div>
 
     <metaData

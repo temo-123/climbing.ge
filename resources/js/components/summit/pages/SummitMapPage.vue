@@ -1,45 +1,39 @@
 <template>
-    <main class="summit_map_page">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center py-5">
-                    <h1 class="display-4 mb-3 summit-title">{{ $t('summit.menu.map') }}</h1>
-                    <div class="bar mb-4"><i class="fa fa-map-marker" style="font-size: 3rem; color: #005f43;"></i></div>
-                    <p class="lead text-muted">{{ $t('summit.summit_map_description') }}</p>    
-                </div>
-            </div>
+    <div>
+        <div class="h-recent-work">
+            <div class="container">
 
-            <metaData
-                :title="$t('summit.scan_qr.title') || 'Scan QR Code - Summit Climbing'"
-                :description="$t('summit.scan_qr.meta') || 'Scan QR code to register your summit climb'"
-                :image="'/public/images/meta_img/qr-scan.jpg'"
-            />
+                <h1 class="index_h2">{{ $t('summit.menu.map') }}</h1>
+
+                <div class="bar"><i class="fa fa-map-marker"></i></div>
+
+                <h3 class="article_list_short_description">
+                    {{ $t('summit.summit_map_description') }}
+                </h3>
+
+                <div class="text-center py-5 text-muted">
+                    <i class="fa fa-map fa-4x mb-3"></i>
+                    <p>Map coming soon.</p>
+                    <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
+                        <i class="fa fa-list"></i> {{ $t('summit.menu.list') }}
+                    </router-link>
+                </div>
+
+            </div>
         </div>
-    </main>
+
+        <metaData
+            :title="$t('summit.menu.map') + ' – Summit Climbing Georgia'"
+            :description="$t('summit.summit_map_description')"
+            :image="'/public/images/meta_img/mountain.jpg'"
+        />
+    </div>
 </template>
 
 <script>
-import { Html5QrcodeScanner } from 'html5-qrcode';
 import metaData from '../items/MetaDataComponent.vue';
 
 export default {
-  components: {
-    metaData
-  },
-  data() {
-    return {
-      isScanning: false,
-      scanner: null,
-      scanError: '',
-      scannedData: '',
-      handleClick: this.handleClick // declare if needed elsewhere
-    };
-  },
-  computed: {
-    //
-  },
-  methods: {
-    //
-  }
+    components: { metaData }
 };
 </script>

@@ -13,7 +13,6 @@
             </div>
           </section>
         </div>
-        <rightMenu />
       </div>
     </main>
 

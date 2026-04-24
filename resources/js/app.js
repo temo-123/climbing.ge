@@ -1,7 +1,10 @@
 import { createApp } from "vue";
 import "./bootstrap";
+import { createHead } from "@unhead/vue/client";
 
 const app = createApp({});
+const head = createHead();
+app.use(head);
 
 import { createPinia } from "pinia";
 app.use(createPinia());

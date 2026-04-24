@@ -63,6 +63,14 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a @click="go_to_service('summit')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-street-view" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
                     <nav-badges />
                 </ul>
 

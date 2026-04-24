@@ -69,10 +69,10 @@
 
         <productsSliderComponent />
         
-        <metaData 
-            :title = " $t('guide.meta.index') "
-            :description = "this.$siteData.data.guid_short_description"
-            :image = "'/public/images/meta_img/outdoor.jpg'"
+        <metaData
+            :title="$t('guide.meta.index')"
+            :description="$siteData.data.guid_short_description || 'Explore rock climbing spots, mountaineering routes, and outdoor adventures in Georgia. The complete Georgian climbing guidebook.'"
+            :image="'/public/images/meta_img/outdoor.jpg'"
         />
     </div>
 </template>

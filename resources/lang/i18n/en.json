@@ -1,28 +1,23 @@
 {
     "all": "All",
     "and": "and",
-
     "guide": {
         "name": "Climbing Guidebook",
-        
         "view": {
             "grid": "Grid",
             "list": "List",
             "cube": "Cube"
         },
-        
         "group": {
             "by_region": "By Region",
             "by_mountain": "By Mountain",
             "flat": "Flat List"
         },
-
         "stats": {
             "sectors": "Sectors",
             "routes": "Routes",
             "multipitch": "Multi-pitch"
         },
-
         "donation": {
             "support": "Support",
             "support_title": "Support Our Work",
@@ -53,7 +48,6 @@
             "age_placeholder": "Enter your age"
         },
         "close": "Close",
-
         "meta": {
             "index": "Rock Climbing & Mountaineering in Georgia",
             "indoor climbing": "Indoor Climbing",
@@ -66,7 +60,6 @@
             "search": "Search Climbing Spots in Georgia",
             "spots projects": "New Outdoor Spots Project"
         },
-
         "menu": {
             "climbing": "Rock Climbing",
             "indoor climbing": "Indoor Climbing",
@@ -81,7 +74,6 @@
             "spots projects": "Spots Project",
             "shop": "Shop"
         },
-
         "article_right_nabar": {
             "menu_title": "Navigation Menu",
             "similar_articles": "Similar Articles",
@@ -91,7 +83,6 @@
             "sectors": "Climbing Sectors & Routes",
             "recomended_services": "Recommended Services"
         },
-
         "title": {
             "news": "News",
             "special_article": "Warning",
@@ -111,10 +102,8 @@
             "partner": "Partners",
             "message": "Send Message",
             "search": "Search Climbing Spots",
-
             "donation_products": "Donation Products"
         },
-
         "route": {
             "name": "Name",
             "height": "Height",
@@ -141,7 +130,6 @@
             "show_feedbacks": "Show Feedbacks",
             "pleas_login": "Please log in to add route feedback!",
             "no_feedbacks": "No Feedbacks",
-
             "create_feedback_title": "Create Route Feedback",
             "climbing_status": "Climbing Status",
             "climb_details": "Climb Details",
@@ -158,14 +146,12 @@
             "feedback": "Feedback",
             "feedback_placeholder": "Share your thoughts about the route...",
             "all_feedbacks_title": "Route Feedbacks",
-
             "mtp_title": "Multi Pitch Details",
             "pitches": "Pitches",
             "loading_mtp_details": "Loading MTP details...",
             "loading_route_details": "Loading route details...",
             "no_pitch_info": "No pitch information available",
             "route_name_not_available": "Route Name Not Available",
-
             "route_details_title": "Route Details",
             "additional_info": "Additional Information",
             "technical_details": "Technical Details",
@@ -173,9 +159,6 @@
             "glued_bolts": "Route have a glued-in bolts",
             "hangerr_bolts": "Route have a hangerr bolts"
         },
-
-
-
         "sector": {
             "name": "Sector Name",
             "routes_authers_list_title": "Routes Authors List",
@@ -206,7 +189,6 @@
             "auther_routes_quantity": "Number of Routes",
             "routes_list_button": "Popular Routes List",
             "modal_title": "Popular Routes List",
-
             "route_name": "Route Name",
             "reviev_count": "Review Count",
             "stars": "Stars",
@@ -214,7 +196,6 @@
             "sector": "Sector",
             "sectors": "sectors",
             "spot_name": "Spot",
-
             "countinue": "Continue",
             "per_page": "Per page",
             "routes_per_page": "Routes to show",
@@ -228,28 +209,22 @@
             "no_popular_sport_routes": "No popular sport routes found",
             "no_popular_boulder_routes": "No popular boulder routes found",
             "no_reviews_available_boulder": "No reviews available for boulder routes yet",
-
             "be_first_to_review_boulder": "Be the first to review a boulder route!",
             "no_popular_routes_any": "No popular routes found",
-
             "be_first_to_review_any": "Be the first to review any route!",
             "be_first_to_review_sport": "Be the first to review a sport route!",
-            
             "sport_climbing": "Sport Climbing",
             "bouldering": "Bouldering",
             "dry": "Dry Tooling",
             "ice": "Ice Climbing",
             "mtp": "Multi-Pitch",
-            
             "sport_climbing_routes_title": "Popular Sport Climbing Routes",
             "boulder_routes_title": "Popular Boulder Routes",
             "ice_climbing_routes_title": "Popular Ice Climbing Routes",
             "dry_tooling_routes_title": "Popular Dry Tooling Routes",
-            
             "ice_routes_title": "Popular Ice Climbing Routes",
             "dry_routes_title": "Popular Dry Tooling Routes"
         },
-
         "article": {
             "title": {
                 "mount massive": "Massive Mountain",
@@ -270,17 +245,14 @@
                 "back": "Go Back",
                 "all articles": "All Articles"
             },
-
             "route_quantyty": "Georgia has {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, and {mtps} multi-pitch routes. Find all outdoor climbing area info on this page.",
             "route_quantyty_sport": "Georgia has {sectors} sport climbing sectors with {sport_routes} sport climbing routes.",
             "route_quantyty_boulder": "Georgia has {sectors} bouldering sectors with {boulder_routes} boulder routes.",
             "route_quantyty_ice": "Georgia has {sectors} ice climbing sectors with {ice_routes} ice climbing routes.",
             "route_quantyty_dry": "Georgia has {sectors} dry tooling sectors with {dry_routes} dry tooling routes.",
             "route_quantyty_mtp": "Georgia has {sectors} sectors with {mtps} multi-pitch routes.",
-            
             "routes_short_line_single": "Georgia is waiting for you with {sectors} {label} {sector_word} and {routes} {label} {route_word}!",
             "routes_short_line_multiple": "Georgia is waiting for you! Find {totalSectors} {sector_word} with {totalRoutes} routes for {categories}!",
-            
             "routes_extended_intro": "All climbing spots are ready to welcome you.",
             "routes_extended_detail": "{routes} {label} {route_word} in {sectors} {area_word}",
             "routes_extended_outro": "Your next adventure is waiting. Come and explore Georgia's amazing climbing areas today!",
@@ -291,18 +263,13 @@
             "mount_route_filtr": "Select Mount System and Filter Routes",
             "region_filtr": "Select Region and Filter Spots by Region"
         },
-
         "breadcrumb home": "Home",
-
         "news_flag": "News",
         "atention_flag": "Attention",
-
         "search_no_result_faild": "Nothing found! Try again! :)"
     },
-
     "shop": {
         "name": "Climbing Shop",
-
         "meta": {
             "products": "Product List",
             "services": "Service List",
@@ -312,11 +279,10 @@
             "tours": "Tour List",
             "mein page": "Climbing.ge: Products, Services & Tours",
             "climbing wall": "Climbing Wall Price Calculator",
-
             "climbing_wall_title": "Climbing Wall Price Calculator",
-            "climbing_wall_description": "Calculate climbing wall price. Get instant pricing for your climbing wall project."
+            "climbing_wall_description": "Calculate climbing wall price. Get instant pricing for your climbing wall project.",
+            "mein_page_description": "Discover climbing gear, guided tours, and services at Climbing.ge – Georgia's premier outdoor sports marketplace."
         },
-
         "menu": {
             "products": "Products",
             "sale_products": "Sale Products",
@@ -326,7 +292,6 @@
             "climbing wall": "Climbing Wall",
             "tours": "Tours"
         },
-
         "title": {
             "services": "Our Services",
             "products": "Products",
@@ -335,14 +300,12 @@
             "gallery": "Gallery",
             "climbing wall colculator": "Climbing Wall Calculator",
             "tours": "Tours",
-
             "similar": {
                 "products": "You might also like",
                 "services": "Other Services",
                 "tours": "Other Tours"
             }
         },
-
         "wall": {
             "title": "Climbing Wall Price Calculator",
             "wall_type": "Wall Type",
@@ -395,7 +358,6 @@
                 "mat_depth": "Safety mat depth dimension"
             }
         },
-
         "product": {
             "castom_prodaction": "This product is made to order! Please send us a message, and we'll contact you.",
             "enter_full_information": "Your profile information is incomplete. Please go to your user options and complete your details!",
@@ -405,7 +367,6 @@
             "warning": "Warning",
             "quick_view": "Quick View",
             "open_product": "Open Product Page",
-
             "made_in_georgia": "Made in Georgia",
             "new": "New",
             "bestseller": "Bestseller",
@@ -426,9 +387,7 @@
             "add_to_favorite": "Add to Favorite",
             "remove_from_favorite": "Remove from Favorite",
             "share": "Share",
-
             "donation": "Donation Product",
-
             "message": {
                 "title": "Send Message",
                 "form_title": "Write us a message about the product you're interested in!",
@@ -437,25 +396,21 @@
                 "form_text_area": "Message",
                 "send": "Send Email"
             },
-
             "review": {
                 "send": "Send Email"
             },
-
             "product_desc": {
                 "category": "Category",
                 "material": "Material",
                 "weight": "Weight"
             }
         },
-
         "tour": {
             "warning": "Warning",
             "more": "Read More",
             "location": "Location",
             "duration": "Duration",
             "guide": "Guide",
-
             "message": {
                 "enter_full_information": "Your profile information is incomplete. Please go to your user options and complete your details!",
                 "befor_enter_full_information": "You cannot place an order until your information is complete!",
@@ -471,26 +426,20 @@
                 "send": "Send Email"
             }
         },
-
         "seller": {
             "seller_contact": "Seller Contacts",
             "email": "Email",
             "phone": "Phone Number"
         },
-
         "limited quantity": "Limited Quantity",
         "out of stock": "Out of Stock",
-
         "product description": "Description",
-
         "add to cart": "Add to Cart",
-
         "all products": "All Products",
         "max products": "This is the maximum quantity for this product!",
         "add successful": "Product added successfully!",
         "custom product": "Custom Product"
     },
-
     "blog": {
         "name": "Climbing Blog",
         "meta": {
@@ -498,13 +447,14 @@
             "posts": "Posts",
             "categories": "Categories",
             "tags": "Tags",
-            "search": "Blog Search"
+            "search": "Blog Search",
+            "index_description": "Read the latest climbing news, trip reports, and stories from Georgia's rock climbing and mountaineering community.",
+            "post": "Climbing Post - Climbing.ge Blog",
+            "news": "Climbing News - Climbing.ge Blog"
         },
-
         "menu": {
             "about_us": "About Us"
         },
-
         "title": {
             "index_title": "Climbing.ge Blog",
             "blog": "Blog",
@@ -516,7 +466,6 @@
                 "posts": "Similar Posts"
             }
         },
-
         "loading": {
             "more_posts": "Loading more posts... ({{ countdown }}s)",
             "loading": "Loading...",
@@ -526,42 +475,34 @@
             "post_not_found": "Post not found.",
             "created": "Created • {{ date }}"
         },
-
         "about_us": {
             "title": "About Us",
             "welcome": "Welcome to our blog! We are passionate about sharing knowledge and stories.",
             "mission": "Our mission is to provide valuable content on various topics."
         },
-
         "labels": {
             "post": "Post",
             "news": "News"
         },
-
         "modal": {
             "created": "Created:",
             "view_full_post": "View Full Post"
         },
-
         "search": {
             "placeholder": "Search product. (English words only!)"
         },
-
         "pagination_button": {
             "show_older_articles": "Show Older Article"
         }
     },
-
     "summit": {
         "name": "Summit Ascents",
-
         "meta": {
             "summit": "Summit Ascents",
             "summits": "Summits",
             "regions": "Regions",
             "search": "Search Summits"
         },
-
         "menu": {
             "summits": "Summits",
             "regions": "Regions",
@@ -570,7 +511,6 @@
             "list": "Summit List",
             "map": "Summit Map"
         },
-
         "title": {
             "index_title": "Summit Ascents",
             "summits": "Summits",
@@ -579,12 +519,27 @@
             "summit_detail": "Summit Detail",
             "summit_list": "Summit List",
             "summit_map": "Summit Map"
-        }
+        },
+        "scan_qr": {
+            "title": "Scan QR Code – Summit Climbing Georgia",
+            "button": "Scan QR Code",
+            "instruction": "Point your camera at the QR code to register your summit climb",
+            "instruction_scan": "Point camera at QR code inside the frame",
+            "pc_message": "This feature is only available on mobile devices",
+            "scanning": "Scanning QR Code...",
+            "meta": "Scan a QR code at the summit to register your climb and track your ascents in Georgia."
+        },
+        "about": {
+            "title": "About Summit Climbing Georgia",
+            "welcome": "Welcome to Summit Climbing – your ultimate platform for mountain adventures in Georgia.",
+            "mission": "Our mission is to connect climbers with epic summits through QR code registration and community sharing.",
+            "view_list": "View Summit List",
+            "meta": "Learn about Summit Climbing Georgia – a QR-based platform for registering and tracking your mountain ascents."
+        },
+        "summit_map_description": "Explore summits on the map and plan your next climb in Georgia."
     },
-
     "user": {
         "name": "User Panel",
-
         "menu": {
             "favorite products": "My Favorite Products",
             "favorite films": "My Favorite Films",
@@ -624,7 +579,6 @@
             "my favorite outdoor area": "My Favorite Outdoor Areas"
         }
     },
-
     "global": {
         "footer": {
             "links": "Links",
@@ -634,11 +588,9 @@
             "follow": "Follow Us",
             "qr": "QR Code"
         },
-
         "form": {
             "save": "Save"
         },
-
         "message": {
             "title": "Message",
             "form": {
@@ -651,13 +603,11 @@
             },
             "send": "Send"
         },
-
         "login": "Login",
         "comments": "Comments",
         "page is empty": "This page is empty",
         "services": "Services"
     },
-
     "error": {
         "404": {
             "title": "Oops! Error 404! Page Not Found",
@@ -669,7 +619,6 @@
             "description": "Sorry, an error has occurred. There is a site configuration or hosting error. Please contact support!"
         }
     },
-
     "unfollow": {
         "title": "Unfollow",
         "description": "We're sorry to see you go!",

@@ -53,17 +53,25 @@
                     <localeSwitcher />
 
                     <li>
-                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
+                        <a @click="go_to_service('guid')" class="cursor_pointer"> 
                             <span>
-                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                                <i class="fa fa-map-o" aria-hidden="true"></i>
                             </span>
                         </a>
                     </li>
 
                     <li>
-                        <a @click="go_to_service('guid')" class="cursor_pointer"> 
+                        <a @click="go_to_service('summit')" class="cursor_pointer"> 
                             <span>
-                                <i class="fa fa-map-o" aria-hidden="true"></i>
+                                <i class="fa fa-street-view" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                             </span>
                         </a>
                     </li>

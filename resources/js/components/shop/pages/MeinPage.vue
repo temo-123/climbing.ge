@@ -70,10 +70,10 @@
             <emptyPageComponent />
         </div>
 
-        <metaData 
-            :title = " $t('shop.meta.mein page') "
-            :description = "'Climbing.ge product, services & tours.'"
-            :image = "'/public/images/meta_img/services.jpg'"
+        <metaData
+            :title="$t('shop.meta.mein page')"
+            :description="'Discover climbing gear, guided tours, and outdoor services at Climbing.ge – Georgia\'s premier marketplace for rock climbing and mountaineering.'"
+            :image="'/public/images/meta_img/services.jpg'"
         />
     </div>
 </template>

@@ -22,11 +22,11 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li><router-link :to="'/about_us'"> <span> {{ $t('summit.menu.about') }} </span></router-link></li>
                     <li><router-link :to="'/summits/list'"> <span> {{ $t('summit.menu.list') }} </span></router-link></li>
                     <li><router-link :to="'/summits/map'"> <span> {{ $t('summit.menu.map') }} </span></router-link></li>
+                    <li><router-link :to="'/about_us'"> <span> {{ $t('summit.menu.about') }} </span></router-link></li>
 
-                    <li class="dropdown">
+                    <!-- <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">
                             <span>
                                 <i class="fa fa-search"  aria-hidden="true"></i>
@@ -42,7 +42,7 @@
                                 </button>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
 
                     <locale-switcher />
 
@@ -58,6 +58,15 @@
                         <a @click="go_to_service('shop')" class="cursor_pointer"> 
                             <span>
                                 <i class="fa fa-shopping-bag" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+
+                    <li>
+                        <a @click="go_to_service('blog')" class="cursor_pointer"> 
+                            <span>
+                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                             </span>
                         </a>
                     </li>

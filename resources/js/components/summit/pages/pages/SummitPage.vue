@@ -1,81 +1,171 @@
 <template>
-  <main role="main" class="container">
-    <div v-if="loading" class="text-center py-5">
-      <div class="spinner-border" role="status"></div>
-    </div>
-
-    <div v-else-if="!summit" class="text-center py-5">
-      <h3>Summit not found</h3>
-      <router-link to="/summits/list" class="btn btn-primary mt-3">Back to list</router-link>
-    </div>
-
-    <div v-else class="row">
-      <div class="col-md-8">
-        <nav aria-label="breadcrumb" class="mb-3">
-          <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-              <router-link to="/summits/list">Summits</router-link>
-            </li>
-            <li class="breadcrumb-item active">{{ summit.title }}</li>
-          </ol>
-        </nav>
-
-        <h1 class="display-5 mb-2">{{ summit.title }}</h1>
-
-        <div class="d-flex flex-wrap gap-3 mb-4 text-muted">
-          <span v-if="summit.height">
-            <i class="fa fa-arrows-alt-v"></i> {{ summit.height }}m
-          </span>
-          <span v-if="summit.region">
-            <i class="fa fa-map-marker-alt"></i> {{ summit.region.us_name }}
-          </span>
-          <span v-if="summit.latitude && summit.longitude">
-            <i class="fa fa-crosshairs"></i>
-            {{ parseFloat(summit.latitude).toFixed(6) }}, {{ parseFloat(summit.longitude).toFixed(6) }}
-          </span>
-        </div>
-
-        <img
-          v-if="summit.image"
-          :src="'/storage/' + summit.image"
-          :alt="summit.title"
-          class="img-fluid rounded mb-4"
-          style="max-height: 400px; width: 100%; object-fit: cover;"
-        />
-
-        <div v-if="summit.description" class="mb-4">
-          <p class="lead">{{ summit.description }}</p>
-        </div>
-
-        <router-link :to="'/make_ascent/' + summit.id" class="btn btn-primary btn-lg">
-          <i class="fa fa-flag"></i> Make Ascent
-        </router-link>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card shadow-sm">
-          <div class="card-body text-center">
-            <h5 class="card-title mb-3">Scan to Record Ascent</h5>
-            <div class="d-flex justify-content-center mb-3">
-              <qrcode-vue
-                :value="ascentUrl"
-                :size="180"
-                level="H"
-                render-as="svg"
-              />
+    <div>
+        <div v-if="loading" class="h-recent-work">
+            <div class="container text-center py-5">
+                <i class="fa fa-spinner fa-spin fa-3x"></i>
             </div>
-            <p class="text-muted small">Scan this QR code at the summit to record your ascent</p>
-          </div>
         </div>
-      </div>
-    </div>
 
-    <metaData
-      :title="summit ? summit.title : 'Summit'"
-      :description="summit ? summit.description : ''"
-      :image="summit && summit.image ? '/storage/' + summit.image : '/public/images/meta_img/mountain.jpg'"
-    />
-  </main>
+        <div v-else-if="!summit" class="h-recent-work">
+            <div class="container text-center py-5">
+                <i class="fa fa-exclamation-circle fa-3x text-muted mb-3"></i>
+                <h3>Summit not found</h3>
+                <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
+                    <i class="fa fa-arrow-left"></i> Back to list
+                </router-link>
+            </div>
+        </div>
+
+        <div v-else>
+            <!-- Hero section -->
+            <div class="h-recent-work">
+                <div class="container">
+
+                    <h1 class="index_h2">{{ summit.title }}</h1>
+                    <p v-if="summit.ka_title" class="text-muted text-center" style="font-size:1.1rem; margin-top:-10px; margin-bottom:10px">{{ summit.ka_title }}</p>
+
+                    <div class="bar"><i class="fa fa-flag-checkered"></i></div>
+
+                    <!-- Badges row -->
+                    <div class="text-center" style="margin-bottom:30px">
+                        <span v-if="summit.height" class="label label-default" style="font-size:13px; margin:2px">
+                            <i class="fa fa-arrow-up"></i> {{ summit.height }}m
+                        </span>
+                        <span v-if="summit.region" class="label label-default" style="font-size:13px; margin:2px">
+                            <i class="fa fa-map-marker"></i> {{ summit.region.us_name }}
+                        </span>
+                        <span v-if="summit.latitude && summit.longitude" class="label label-default" style="font-size:13px; margin:2px">
+                            <i class="fa fa-crosshairs"></i>
+                            {{ parseFloat(summit.latitude).toFixed(4) }}°, {{ parseFloat(summit.longitude).toFixed(4) }}°
+                        </span>
+                    </div>
+
+                    <!-- Description -->
+                    <div v-if="summit.description" class="row">
+                        <div class="col-md-8 col-md-offset-2">
+                            <p class="article_list_short_description" style="font-size:15px; line-height:1.8">
+                                {{ summit.description }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Make Ascent button -->
+                    <div class="text-center" style="margin: 20px 0 40px">
+                        <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-lg btn-send main-btn">
+                            <i class="fa fa-flag-checkered"></i> Record My Ascent
+                        </router-link>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Ascents + QR section -->
+            <div class="h-recent-work">
+                <div class="container">
+
+                    <div class="row">
+
+                        <!-- Ascent list -->
+                        <div class="col-md-8">
+
+                            <h2 class="index_h2" style="font-size:180%">
+                                <i class="fa fa-list"></i> Ascents
+                                <span v-if="ascents.length" class="badge" style="background:#1d7a48">{{ ascents.length }}</span>
+                            </h2>
+                            <div class="bar" style="margin-top:20px"><i class="fa fa-users"></i></div>
+
+                            <div v-if="loadingAscents" class="text-center py-4">
+                                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                            </div>
+                            <div v-else-if="ascents.length === 0" class="text-center py-4 text-muted">
+                                <i class="fa fa-flag fa-2x mb-2"></i>
+                                <p>No ascents recorded yet. Be the first!</p>
+                            </div>
+                            <div v-else class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Climber</th>
+                                            <th>Date</th>
+                                            <th>Route</th>
+                                            <th class="text-center">GPS</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="a in ascents" :key="a.id">
+                                            <td><strong>{{ a.name }} {{ a.surname }}</strong></td>
+                                            <td class="text-muted small">{{ formatDate(a.ascent_date) }}</td>
+                                            <td>
+                                                <a v-if="a.route_name && a.route_article_url"
+                                                   :href="guideRouteUrl(a.route_article_url)"
+                                                   target="_blank"
+                                                   class="text-success">
+                                                    {{ a.route_name }}
+                                                    <span v-if="a.route_grade" class="label label-default">{{ a.route_grade }}</span>
+                                                    <i class="fa fa-external-link fa-xs ml-1"></i>
+                                                </a>
+                                                <span v-else-if="a.route_name">
+                                                    {{ a.route_name }}
+                                                    <span v-if="a.route_grade" class="label label-default">{{ a.route_grade }}</span>
+                                                </span>
+                                                <span v-else class="text-muted">—</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span v-if="a.is_gps_validated" class="label label-success">
+                                                    <i class="fa fa-check"></i>
+                                                </span>
+                                                <span v-else class="label label-default">
+                                                    <i class="fa fa-minus"></i>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <button v-if="a.comment" class="btn btn-xs btn-link p-0" @click="toggleComment(a.id)">
+                                                    <i class="fa fa-comment-o"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        <template v-for="a in ascents" :key="'c' + a.id">
+                                            <tr v-if="expandedComment === a.id">
+                                                <td colspan="5" class="bg-light small text-muted" style="font-style:italic">
+                                                    <i class="fa fa-quote-left mr-1"></i>{{ a.comment }}
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- QR code sidebar -->
+                        <div class="col-md-4">
+                            <div class="portfolio-img" style="padding:20px; text-align:center">
+                                <h4 class="text-muted text-uppercase" style="letter-spacing:.05em; font-size:12px; margin-bottom:16px">
+                                    <i class="fa fa-qrcode"></i> Scan to Record
+                                </h4>
+                                <div class="d-flex justify-content-center mb-3">
+                                    <qrcode-vue :value="ascentUrl" :size="160" level="H" render-as="svg" />
+                                </div>
+                                <p class="text-muted small">Scan this QR at the summit to record your ascent</p>
+                                <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-block btn-send main-btn">
+                                    <i class="fa fa-flag"></i> Record Ascent
+                                </router-link>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <metaData
+            v-if="summit"
+            :title="summit.title + ' – Summit Climbing Georgia'"
+            :description="summit.description || 'Explore summit details and record your ascent in Georgia.'"
+            :image="summit.image ? '/storage/' + summit.image : '/public/images/meta_img/mountain.jpg'"
+        />
+    </div>
 </template>
 
 <script>
@@ -83,51 +173,61 @@ import metaData from '../../items/MetaDataComponent.vue'
 import QrcodeVue from 'qrcode.vue'
 
 export default {
-  name: 'SummitPage',
-  components: {
-    metaData,
-    QrcodeVue,
-  },
-  data() {
-    return {
-      summit: null,
-      loading: true,
-    }
-  },
-  computed: {
-    ascentUrl() {
-      if (!this.summit) return ''
-      const base = process.env.MIX_SUMMIT_URL
-        ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
-        : window.location.origin
-      return `${base}/make_ascent/${this.summit.id}`
-    }
-  },
-  mounted() {
-    this.fetchSummit()
-  },
-  methods: {
-    fetchSummit() {
-      this.loading = true
-      const urlTitle = this.$route.params.url_title
-      axios.get(`summit/show/${urlTitle}`)
-        .then(response => {
-          this.summit = response.data
-        })
-        .catch(error => {
-          console.error('Error fetching summit:', error)
-          this.summit = null
-        })
-        .finally(() => {
-          this.loading = false
-        })
+    name: 'SummitPage',
+    components: { metaData, QrcodeVue },
+    data() {
+        return {
+            summit: null,
+            loading: true,
+            ascents: [],
+            loadingAscents: false,
+            expandedComment: null,
+        }
     },
-  }
+    computed: {
+        ascentUrl() {
+            if (!this.summit) return ''
+            const base = process.env.MIX_APP_SSH
+                ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
+                : window.location.origin
+            return `${base}/make_ascent/${this.summit.id}`
+        }
+    },
+    mounted() {
+        this.fetchSummit()
+    },
+    methods: {
+        fetchSummit() {
+            this.loading = true
+            axios.get(`summit/show/${this.$route.params.url_title}`)
+                .then(r => {
+                    this.summit = r.data
+                    this.fetchAscents()
+                })
+                .catch(() => { this.summit = null })
+                .finally(() => { this.loading = false })
+        },
+        fetchAscents() {
+            if (!this.summit) return
+            this.loadingAscents = true
+            axios.get(`summit/ascents/${this.summit.url_title}`)
+                .then(r => { this.ascents = r.data.ascents || [] })
+                .catch(() => {})
+                .finally(() => { this.loadingAscents = false })
+        },
+        formatDate(d) {
+            if (!d) return '—'
+            return new Date(d).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })
+        },
+        guideRouteUrl(articleUrl) {
+            const base = process.env.MIX_APP_SSH
+                ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '')
+                : window.location.origin
+            return `${base}/outdoor/${articleUrl}`
+        },
+        toggleComment(id) {
+            this.expandedComment = this.expandedComment === id ? null : id
+        },
+    }
 }
 </script>
-
-<style scoped>
-.gap-3 {
-  gap: 1rem;
-}
-</style>

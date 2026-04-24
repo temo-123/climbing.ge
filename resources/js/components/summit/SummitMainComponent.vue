@@ -2,10 +2,9 @@
     <div>
         <preloader />
         <routeloader />
-         <navbar />
         <navbar />
-        <div class="container top_menu_margin h-recent-work">
-            <router-view /> 
+        <div class="top_menu_margin">
+            <router-view />
         </div>
 
         <div class="footer__graphic" :style="'background-image: url(../images/svg/mountains.svg)'"></div>

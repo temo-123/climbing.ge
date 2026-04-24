@@ -8,6 +8,7 @@ Route::prefix('summit')->group(function () {
         Route::get('/list', 'index');
         Route::get('/show/{url_title}', 'show');
         Route::get('/routes/{id}', 'get_routes_for_summit');
+        Route::get('/ascents/{url_title}', 'get_ascents');
         Route::post('/ascent/{summit_id}', 'submit_ascent');
     });
 });

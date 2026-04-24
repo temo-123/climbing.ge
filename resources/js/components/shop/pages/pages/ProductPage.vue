@@ -283,9 +283,9 @@
         </div>
 
         <metaData
-            :title = "product.locale_product.title"
-            :description = "product.locale_product.short_description"
-            :image = "'/public/images/meta_img/shop.jpg'"
+            :title="product.locale_product.title"
+            :description="product.locale_product.short_description"
+            :image="items.length ? items[0].src : '/public/images/meta_img/shop.jpg'"
         />
 
     </div>

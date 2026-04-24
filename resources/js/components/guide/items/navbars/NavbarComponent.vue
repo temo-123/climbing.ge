@@ -87,7 +87,7 @@
 
                     <localeSwitcher />
 
-                    <li class="navbar_menu_divider"></li>
+                    <!-- <li class="navbar_menu_divider"></li> -->
 
                     <li>
                         <a @click="go_to_service('blog')" class="cursor_pointer"> 

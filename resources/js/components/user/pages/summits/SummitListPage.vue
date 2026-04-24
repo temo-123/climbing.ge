@@ -9,82 +9,24 @@
             </div>
 
             <div class="row">
-                <div class="col-sm-12">
-                    <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h4 class="mb-0">Summits</h4>
-                            <button v-if="$can('add', 'summit')" class="btn btn-primary btn-sm" @click="open_add">
-                                <i class="fa fa-plus"></i> Add Summit
-                            </button>
-                        </div>
-                        <div class="card-body">
-                            <div v-if="loading" class="text-center py-4">
-                                <div class="spinner-border" role="status"></div>
-                            </div>
-
-                            <div v-else-if="summits.length === 0" class="text-center py-4 text-muted">
-                                No summits found.
-                            </div>
-
-                            <div v-else class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>ID</th>
-                                            <th>Title / KA</th>
-                                            <th>Height</th>
-                                            <th>Mount Route</th>
-                                            <th>Coordinates</th>
-                                            <th>QR</th>
-                                            <th>Published</th>
-                                            <th>Actions</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="s in summits" :key="s.id">
-                                            <td>{{ s.id }}</td>
-                                            <td>
-                                                <div>{{ s.title }}</div>
-                                                <div v-if="s.ka_title" class="text-muted small">{{ s.ka_title }}</div>
-                                            </td>
-                                            <td>{{ s.height ? s.height + 'm' : '-' }}</td>
-                                            <td>{{ s.mount_route_name || '-' }}</td>
-                                            <td class="small">
-                                                <span v-if="s.latitude && s.longitude">
-                                                    {{ parseFloat(s.latitude).toFixed(5) }},<br>{{ parseFloat(s.longitude).toFixed(5) }}
-                                                </span>
-                                                <span v-else>-</span>
-                                            </td>
-                                            <td class="text-center">
-                                                <span v-if="s.qr_code" class="badge badge-success" title="QR saved">
-                                                    <i class="fa fa-qrcode"></i> Saved
-                                                </span>
-                                                <span v-else class="badge badge-secondary" title="QR not saved">
-                                                    <i class="fa fa-qrcode"></i> None
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span :class="s.published ? 'badge badge-success' : 'badge badge-secondary'">
-                                                    {{ s.published ? 'Yes' : 'No' }}
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-sm btn-info mr-1" @click="open_qr(s)" title="QR Code">
-                                                    <i class="fa fa-qrcode"></i>
-                                                </button>
-                                                <button v-if="$can('edit', 'summit')" class="btn btn-sm btn-warning mr-1" @click="open_edit(s)" title="Edit">
-                                                    <i class="fa fa-pencil"></i>
-                                                </button>
-                                                <button v-if="$can('del', 'summit')" class="btn btn-sm btn-danger" @click="confirm_delete(s)" title="Delete">
-                                                    <i class="fa fa-trash"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                <div class="col-md-12" v-if="loading">
+                    <div class="text-center py-4">
+                        <i class="fa fa-spinner fa-spin fa-3x"></i>
+                        <p>Loading summits...</p>
                     </div>
+                </div>
+                <div class="col-sm-12" v-else-if="data_for_tab.length">
+                    <tabsComponent
+                        :table_data="data_for_tab"
+                        @update="load_all"
+                        @open_add="open_add"
+                        @open_qr="open_qr_by_id"
+                        @open_edit="open_edit_by_id"
+                        @confirm_delete="confirm_delete_by_id"
+                    />
+                </div>
+                <div v-else class="col-sm-12 text-center py-4">
+                    No data available.
                 </div>
             </div>
         </div>
@@ -133,15 +75,17 @@
 
 <script>
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
+import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import QrcodeVue from 'qrcode.vue'
 import SummitFormModal from './SummitFormModal.vue'
 
 export default {
     name: 'SummitListPage',
-    components: { breadcrumb, QrcodeVue, SummitFormModal },
+    components: { breadcrumb, tabsComponent, QrcodeVue, SummitFormModal },
     data() {
         return {
             summits: [],
+            ascents: [],
             loading: false,
 
             qr_modal: false,
@@ -160,34 +104,104 @@ export default {
                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
                 : window.location.origin
             return `${base}/make_ascent/${this.selected.id}`
+        },
+        data_for_tab() {
+            if (this.loading) return []
+            return [
+                {
+                    id: 1,
+                    table_name: 'Summits',
+                    add_action: {
+                        action: 'fun',
+                        link: 'open_add',
+                        btn_title: '+ Add Summit',
+                        class: 'btn btn-primary',
+                    },
+                    tab_data: {
+                        data: this.summits,
+                        tab: {
+                            head: ['ID', 'Title', 'KA Title', 'Height', 'Mount Route', 'QR', 'Published', 'QR Code', 'Edit', 'Delete'],
+                            body: [
+                                ['data', ['id']],
+                                ['data', ['title']],
+                                ['data', ['ka_title']],
+                                ['data', ['height']],
+                                ['data', ['mount_route_name']],
+                                ['data', ['qr_code'], 'bool'],
+                                ['data', ['published'], 'bool'],
+                                ['action_fun_id', 'open_qr',        'btn btn-sm btn-info',    '<i class="fa fa-qrcode"></i>'],
+                                ['action_fun_id', 'open_edit',      'btn btn-sm btn-warning', '<i class="fa fa-pencil"></i>'],
+                                ['action_fun_id', 'confirm_delete', 'btn btn-sm btn-danger',  '<i class="fa fa-trash"></i>'],
+                            ],
+                            perm: [
+                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['no'],
+                                ['summit', 'edit'],
+                                ['summit', 'del'],
+                            ]
+                        }
+                    }
+                },
+                {
+                    id: 2,
+                    table_name: 'Ascents',
+                    tab_data: {
+                        data: this.ascents,
+                        tab: {
+                            head: ['ID', 'Name', 'Surname', 'Email', 'Summit', 'Date', 'Route', 'Grade', 'GPS', 'Comment'],
+                            body: [
+                                ['data', ['id']],
+                                ['data', ['name']],
+                                ['data', ['surname']],
+                                ['data', ['email']],
+                                ['data', ['summit_title']],
+                                ['data', ['ascent_date']],
+                                ['data', ['route_name']],
+                                ['data', ['route_grade']],
+                                ['data', ['is_gps_validated'], 'bool'],
+                                ['data', ['comment']],
+                            ],
+                            perm: [
+                                ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['no'], ['no'], ['no'], ['no'], ['no'],
+                            ]
+                        }
+                    }
+                }
+            ]
         }
     },
     mounted() {
-        this.load()
+        this.load_all()
     },
     methods: {
-        load() {
+        load_all() {
             this.loading = true
-            axios.get('get_summit_admin/index')
-                .then(r => { this.summits = r.data })
-                .catch(() => {})
-                .finally(() => { this.loading = false })
+            Promise.all([
+                axios.get('get_summit_admin/index'),
+                axios.get('get_summit_admin/get_all_ascents'),
+            ]).then(([s, a]) => {
+                this.summits = s.data
+                this.ascents = a.data
+            }).catch(() => {}).finally(() => { this.loading = false })
+        },
+        on_saved() { this.load_all() },
+
+        open_add() { this.$refs.form_modal.show_modal() },
+
+        open_edit_by_id(id) {
+            const s = this.summits.find(x => x.id === id)
+            if (s) this.$refs.form_modal.show_modal(s)
+        },
+        open_qr_by_id(id) {
+            const s = this.summits.find(x => x.id === id)
+            if (s) { this.selected = s; this.qr_modal = true }
+        },
+        confirm_delete_by_id(id) {
+            const s = this.summits.find(x => x.id === id)
+            if (s) { this.to_delete = s; this.del_modal = true }
         },
 
-        open_add() {
-            this.$refs.form_modal.show_modal()
-        },
-        open_edit(summit) {
-            this.$refs.form_modal.show_modal(summit)
-        },
-        on_saved(data) {
-            this.load()
-        },
-
-        open_qr(summit) {
-            this.selected = summit
-            this.qr_modal = true
-        },
         save_qr() {
             if (!this.selected) return
             this.saving_qr = true
@@ -201,10 +215,6 @@ export default {
                 .finally(() => { this.saving_qr = false })
         },
 
-        confirm_delete(summit) {
-            this.to_delete = summit
-            this.del_modal = true
-        },
         delete_summit() {
             if (!this.to_delete) return
             this.deleting = true

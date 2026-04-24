@@ -5,7 +5,7 @@
 
             <div class="bar"><i class="fa fa-dribbble"></i></div>
 
-            <bigPost :items="sortedItems" />
+            <bigPost :items="items" />
 
             <button v-if="hasMorePages" @click="loadNextPage" class="show-older-button" :disabled="loadingMore">
                 {{ $t('blog.pagination_button.show_older_articles') }}
@@ -22,9 +22,9 @@
         <PostModal :show="showModal" :post="selectedPost" @close="closeModal" @view-full-post="handleViewFullPost" />
 
         <metaData
-            :title = " $t('blog.title.index_title') "
-            :description = "this.$siteData.data.guid_short_description"
-            :image = "'/public/images/meta_img/outdoor.jpg'"
+            :title="$t('blog.title.index_title')"
+            :description="$siteData.data.guid_short_description || $t('blog.meta.index_description')"
+            :image="'/public/images/meta_img/outdoor.jpg'"
         />
     </main>
 </template>
