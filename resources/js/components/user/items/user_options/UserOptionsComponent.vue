@@ -274,10 +274,7 @@
 
 
     export default {
-        components: {
-            SlickItem,
-            SlickList,
-        },
+        components: {},
         data(){
             return {
                 tab_num: 1,

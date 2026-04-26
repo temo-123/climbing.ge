@@ -8,7 +8,7 @@
                 <div class="row">
 
                     <div class="col-md-6 offset-md-3">
-                        <div class="card-counter primary">
+                        <div class="card-counter card-counter-info primary">
                             <i class="fa fa-window-maximize" aria-hidden="true"></i>
                             <span class="count-numbers">{{this.counts['global_articles_count']}}</span>
                             <span class="count-name">Articles</span>
@@ -19,7 +19,7 @@
                 <div class="row">
 
                     <div class="col-md-4">
-                        <div class="card-counter primary">
+                        <div class="card-counter card-counter-info primary">
                             <i class="fa fa-language" aria-hidden="true"></i>
                             <span class="count-numbers">{{this.counts['us_articles_count']}}</span>
                             <span class="count-name">English articles</span>
@@ -27,7 +27,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card-counter primary">
+                        <div class="card-counter card-counter-info primary">
                             <i class="fa fa-language" aria-hidden="true"></i>
                             <span class="count-numbers">{{this.counts['ru_articles_count']}}</span>
                             <span class="count-name">Russian articles</span>
@@ -35,7 +35,7 @@
                     </div>
 
                     <div class="col-md-4">
-                        <div class="card-counter primary">
+                        <div class="card-counter card-counter-info primary">
                             <i class="fa fa-language" aria-hidden="true"></i>
                             <span class="count-numbers">{{this.counts['ka_articles_count']}}</span>
                             <span class="count-name">Georgian articles</span>
@@ -45,35 +45,59 @@
                 </div>
 
                 <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
-                    <div class="col" v-if="this.counts['us_article_errors']">
-                        <i class="fa fa-bug" aria-hidden="true"></i>
-                        us_articles error_count - {{this.counts['us_article_errors']}}
-
-                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bug (delete all these articles)
+                    <i class="fa fa-bug" aria-hidden="true"></i>
+                    EN article errors — {{ this.counts['us_article_errors'] }}
+                    <div class="float-right">
+                        <button class="btn btn-warning btn-sm mr-1" @click="show_errors('us')">
+                            <i class="fa fa-eye"></i> View
                         </button>
-                    </div>
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="this.counts['ru_article_errors']">
-                    <div class="col" v-if="this.counts['ru_article_errors']">
-                        <i class="fa fa-bug" aria-hidden="true"></i>
-                        ru_articles error_count - {{this.counts['ru_article_errors']}}
-
-                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bug (delete all these articles)
+                        <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
+                            <i class="fa fa-trash"></i> Fix (delete)
                         </button>
                     </div>
                 </div>
 
                 <div class="alert alert-danger" role="alert" v-if="this.counts['ka_article_errors']">
-                    <div class="col" v-if="this.counts['ka_article_errors']">
-                        <i class="fa fa-bug" aria-hidden="true"></i>
-                        ka_articles error_count - {{this.counts['ka_article_errors']}}
-
-                        <button class="btn btn-danger float-right" @click="fix_article_bug()">
-                            Fix bug (delete all these articles)
+                    <i class="fa fa-bug" aria-hidden="true"></i>
+                    KA article errors — {{ this.counts['ka_article_errors'] }}
+                    <div class="float-right">
+                        <button class="btn btn-warning btn-sm mr-1" @click="show_errors('ka')">
+                            <i class="fa fa-eye"></i> View
                         </button>
+                        <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
+                            <i class="fa fa-trash"></i> Fix (delete)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Error articles modal -->
+                <div v-if="error_modal_open" class="error-modal-backdrop" @click.self="error_modal_open = false">
+                    <div class="error-modal">
+                        <div class="error-modal-header">
+                            <strong>Orphaned {{ error_modal_locale.toUpperCase() }} articles ({{ error_articles.length }})</strong>
+                            <button class="btn btn-xs btn-default" @click="error_modal_open = false"><i class="fa fa-times"></i></button>
+                        </div>
+                        <div class="error-modal-body">
+                            <div v-if="error_modal_loading" class="text-center py-3">
+                                <i class="fa fa-spinner fa-spin fa-2x"></i>
+                            </div>
+                            <table v-else class="table table-condensed table-hover mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Title</th>
+                                        <th>Locale</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="a in error_articles" :key="a.id">
+                                        <td class="text-muted small">{{ a.id }}</td>
+                                        <td>{{ a.title }}</td>
+                                        <td><span class="label label-default">{{ a.locale }}</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -620,7 +644,11 @@
 export default {
     data(){
         return{
-            counts: []
+            counts: [],
+            error_modal_open: false,
+            error_modal_locale: '',
+            error_modal_loading: false,
+            error_articles: [],
         }
     },
     mounted(){
@@ -629,7 +657,7 @@ export default {
     methods: {
         get_site_counts(){
             axios
-            .get('/siteData/site_data_counts')
+            .get('set_site_data/site_data_counts')
             .then(response => {
                 this.counts = response.data
             })
@@ -638,10 +666,21 @@ export default {
             );
         },
 
+        show_errors(locale){
+            this.error_modal_locale = locale
+            this.error_modal_open = true
+            this.error_modal_loading = true
+            this.error_articles = []
+            axios.get('set_site_data/article_errors/' + locale)
+                .then(r => { this.error_articles = r.data })
+                .catch(() => {})
+                .finally(() => { this.error_modal_loading = false })
+        },
+
         fix_article_bug(){
             if (window.confirm('This action will delete all conflicting items! Are you sure?')) {
                 axios
-                .get('/siteData/fix_article_bugs')
+                .get('set_site_data/fix_article_bugs')
                 .then(response => {
                     // this.counts = response.data
                     this.get_site_counts()
@@ -656,7 +695,39 @@ export default {
 </script>
 
 <style>
+.error-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.55);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.error-modal {
+    background: #fff;
+    border-radius: 6px;
+    width: 90vw;
+    max-width: 560px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 8px 32px rgba(0,0,0,.25);
+}
+.error-modal-header {
+    padding: 14px 18px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.error-modal-body {
+    overflow-y: auto;
+    padding: 0;
+}
+
 .card-counter{
+    position: relative;
     box-shadow: 2px 2px 10px #DADADA;
     margin: 5px;
     padding: 20px 10px;
@@ -664,11 +735,21 @@ export default {
     height: 100px;
     border-radius: 5px;
     transition: .3s linear all;
+    cursor: pointer;
   }
 
   .card-counter:hover{
     box-shadow: 4px 4px 20px #DADADA;
     transition: .3s linear all;
+  }
+
+  .card-counter.card-counter-info{
+    cursor: default;
+    opacity: 0.85;
+  }
+
+  .card-counter.card-counter-info:hover{
+    box-shadow: 2px 2px 10px #DADADA;
   }
 
   .card-counter.primary{

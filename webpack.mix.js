@@ -11,14 +11,24 @@ mix.js('resources/js/app.js', 'public/assets/js').vue({
   }
 });
 
-mix.sass('resources/sass/app.scss', 'public/assets/css', {
-  sassOptions: {
-    api: 'modern'
-  }
-});
+mix.sass('resources/sass/app.scss', 'public/assets/css');
 
 mix.override((webpackConfig) => {
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => !(plugin instanceof webpack.ProgressPlugin));
+
+    const patchSassLoader = (rules) => {
+        rules.forEach((rule) => {
+            if (rule.oneOf) patchSassLoader(rule.oneOf);
+            if (Array.isArray(rule.use)) {
+                rule.use.forEach((u) => {
+                    if (u.loader && u.loader.includes('sass-loader')) {
+                        u.options = { ...u.options, api: 'modern' };
+                    }
+                });
+            }
+        });
+    };
+    patchSassLoader(webpackConfig.module.rules);
 });
 
 mix.webpackConfig({

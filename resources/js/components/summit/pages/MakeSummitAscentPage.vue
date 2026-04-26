@@ -4,13 +4,13 @@
     <!-- Loading summit -->
     <div v-if="loadingSummit" class="text-center py-5">
       <div class="spinner-border" role="status"></div>
-      <p class="mt-2">Loading summit...</p>
+      <p class="mt-2">{{ $t('summit.ascent_page.loading') }}</p>
     </div>
 
     <!-- Summit not found -->
     <div v-else-if="!summit" class="text-center py-5">
-      <h3>Summit not found</h3>
-      <router-link to="/summits/list" class="btn btn-primary mt-3">Back to list</router-link>
+      <h3>{{ $t('summit.ascent_page.not_found') }}</h3>
+      <router-link to="/summits/list" class="btn btn-primary mt-3">{{ $t('summit.ascent_page.back_to_list') }}</router-link>
     </div>
 
     <!-- Success screen -->
@@ -18,33 +18,33 @@
       <div class="mb-4">
         <i class="fa fa-check-circle fa-5x text-success"></i>
       </div>
-      <h2 class="mb-3">Ascent Recorded!</h2>
-      <p class="lead mb-2">Your ascent of <strong>{{ summit.title }}</strong> has been successfully recorded.</p>
+      <h2 class="mb-3">{{ $t('summit.ascent_page.ascent_recorded') }}</h2>
+      <p class="lead mb-2">{{ $t('summit.ascent_page.success_text').replace('{summit}', summit.title) }}</p>
 
       <div class="card d-inline-block text-left mt-3 mb-4 px-4 py-3 shadow-sm" style="min-width: 260px;">
         <div class="mb-2">
           <span v-if="submitResult.is_gps_validated" class="badge badge-success badge-pill px-3 py-2">
-            <i class="fa fa-check-circle"></i> GPS Location Verified
+            <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
           </span>
           <span v-else class="badge badge-warning badge-pill px-3 py-2">
-            <i class="fa fa-exclamation-triangle"></i> GPS Not Verified
+            <i class="fa fa-exclamation-triangle"></i> {{ $t('summit.ascent_page.gps_not_verified') }}
           </span>
         </div>
         <div v-if="submitResult.matched_users_count > 0" class="text-success mt-2">
           <i class="fa fa-user-check"></i>
-          Matched to {{ submitResult.matched_users_count }} registered user(s)
+          {{ $t('summit.ascent_page.matched_users').replace('{count}', submitResult.matched_users_count) }}
         </div>
         <div v-else class="text-muted mt-2">
-          <i class="fa fa-user"></i> No registered user matched
+          <i class="fa fa-user"></i> {{ $t('summit.ascent_page.no_user_matched') }}
         </div>
       </div>
 
       <div>
         <router-link :to="'/summit/' + summit.url_title" class="btn btn-outline-primary mr-2">
-          Back to Summit
+          {{ $t('summit.ascent_page.back_to_summit') }}
         </router-link>
         <router-link to="/summits/list" class="btn btn-outline-secondary">
-          All Summits
+          {{ $t('summit.ascent_page.all_summits') }}
         </router-link>
       </div>
     </div>
@@ -54,9 +54,9 @@
       <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
           <li class="breadcrumb-item">
-            <router-link to="/summits/list">Summits</router-link>
+            <router-link to="/summits/list">{{ $t('summit.ascent_page.summits') }}</router-link>
           </li>
-          <li class="breadcrumb-item active">Record Ascent: {{ summit.title }}</li>
+          <li class="breadcrumb-item active">{{ $t('summit.ascent_page.record_ascent') }}: {{ summit.title }}</li>
         </ol>
       </nav>
 
@@ -66,7 +66,7 @@
           <div class="card shadow mb-4">
             <div class="card-header bg-primary text-white">
               <h4 class="mb-0">
-                <i class="fa fa-flag"></i> Record Ascent — {{ summit.title }}
+                <i class="fa fa-flag"></i> {{ $t('summit.ascent_page.record_ascent') }} — {{ summit.title }}
                 <span v-if="summit.height" class="small ml-2">({{ summit.height }}m)</span>
               </h4>
             </div>
@@ -75,9 +75,9 @@
               <!-- Step 1: GPS Check -->
               <div class="mb-4">
                 <h5 class="border-bottom pb-2 mb-3">
-                  Step 1: Location Verification
-                  <span v-if="gpsValidated" class="badge badge-success ml-2">Verified</span>
-                  <span v-else-if="gpsChecked && !gpsValidated" class="badge badge-warning ml-2">Not at summit</span>
+                  {{ $t('summit.ascent_page.step1_title') }}
+                  <span v-if="gpsValidated" class="badge badge-success ml-2">{{ $t('summit.ascent_page.verified_badge') }}</span>
+                  <span v-else-if="gpsChecked && !gpsValidated" class="badge badge-warning ml-2">{{ $t('summit.ascent_page.not_at_summit_badge') }}</span>
                 </h5>
 
                 <div v-if="!gpsChecked && !skipGps" class="d-flex gap-2 flex-wrap">
@@ -89,10 +89,10 @@
                   >
                     <span v-if="checkingLocation">
                       <span class="spinner-border spinner-border-sm mr-1"></span>
-                      Checking location...
+                      {{ $t('summit.ascent_page.checking') }}
                     </span>
                     <span v-else>
-                      <i class="fa fa-crosshairs"></i> Check my location
+                      <i class="fa fa-crosshairs"></i> {{ $t('summit.ascent_page.check_location') }}
                     </span>
                   </button>
                   <button
@@ -100,7 +100,7 @@
                     class="btn btn-outline-secondary"
                     @click="skipGps = true"
                   >
-                    Continue without GPS
+                    {{ $t('summit.ascent_page.skip_gps') }}
                   </button>
                 </div>
 
@@ -108,39 +108,35 @@
                   <div v-if="gpsValidated" class="alert alert-success d-flex align-items-center">
                     <i class="fa fa-check-circle fa-lg mr-2"></i>
                     <div>
-                      <strong>Location verified!</strong>
-                      You are within {{ Math.round(gpsDistance) }}m of the summit.
+                      <strong>{{ $t('summit.ascent_page.location_verified') }}</strong>
                     </div>
                   </div>
                   <div v-else class="alert alert-warning d-flex align-items-center">
                     <i class="fa fa-exclamation-triangle fa-lg mr-2"></i>
-                    <div>
-                      <strong>You are {{ Math.round(gpsDistance) }}m away</strong> from the summit.
-                      You can still record your ascent, but it will not be GPS-verified.
-                    </div>
+                    <div>{{ $t('summit.ascent_page.gps_not_verified') }}</div>
                   </div>
                   <button type="button" class="btn btn-sm btn-outline-secondary mt-1" @click="retryGps">
-                    <i class="fa fa-redo"></i> Try again
+                    <i class="fa fa-redo"></i> {{ $t('summit.ascent_page.try_again') }}
                   </button>
                 </div>
 
                 <div v-if="skipGps && !gpsChecked" class="alert alert-info mt-2">
                   <i class="fa fa-info-circle"></i>
-                  Continuing without GPS verification. Your ascent will be recorded without location validation.
+                  {{ $t('summit.ascent_page.no_gps_info') }}
                 </div>
 
                 <div v-if="gpsError" class="alert alert-danger mt-2">
                   <i class="fa fa-exclamation-circle"></i>
                   {{ gpsError }}
                   <button type="button" class="btn btn-sm btn-outline-danger ml-2" @click="skipGps = true">
-                    Continue anyway
+                    {{ $t('summit.ascent_page.continue_anyway') }}
                   </button>
                 </div>
               </div>
 
               <!-- Step 2: Ascent Form (shown after GPS check or skip) -->
               <div v-if="showForm">
-                <h5 class="border-bottom pb-2 mb-3">Step 2: Ascent Details</h5>
+                <h5 class="border-bottom pb-2 mb-3">{{ $t('summit.ascent_page.step2_title') }}</h5>
 
                 <div v-if="formErrors && Object.keys(formErrors).length" class="alert alert-danger">
                   <ul class="mb-0">
@@ -162,7 +158,7 @@
                       />
                     </div>
                     <div class="form-group col-md-6">
-                      <label>Last Name <span class="text-danger">*</span></label>
+                      <label>{{ $t('summit.ascent_page.last_name') }} <span class="text-danger">*</span></label>
                       <input
                         type="text"
                         v-model="form.surname"
@@ -184,7 +180,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Ascent Date</label>
+                    <label>{{ $t('summit.ascent_page.ascent_date') }}</label>
                     <input
                       type="date"
                       v-model="form.ascent_date"
@@ -193,7 +189,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Route</label>
+                    <label>{{ $t('summit.ascent_page.route_label') }}</label>
                     <select v-model="form.route_id" class="form-control" @change="onRouteChange">
                       <option :value="null">-- Select route (optional) --</option>
                       <option v-for="route in routes" :key="route.id" :value="route.id">
@@ -214,7 +210,7 @@
                   </div>
 
                   <div class="form-group">
-                    <label>Comment <span class="text-muted small">(optional)</span></label>
+                    <label>{{ $t('summit.ascent_page.comment_label') }}</label>
                     <textarea
                       v-model="form.comment"
                       class="form-control"
@@ -247,10 +243,10 @@
                   >
                     <span v-if="submitting">
                       <span class="spinner-border spinner-border-sm mr-1"></span>
-                      Recording ascent...
+                      {{ $t('summit.ascent_page.submitting') }}
                     </span>
-                    <span v-else">
-                      <i class="fa fa-flag-checkered"></i> Record My Ascent
+                    <span v-else>
+                      <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
                     </span>
                   </button>
 

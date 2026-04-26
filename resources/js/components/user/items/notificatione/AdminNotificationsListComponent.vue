@@ -176,7 +176,7 @@
 
             get_article_comments_complaints(){
                 axios
-                .get('/guide_comment/get_comments_complaints')
+                .get('set_article/set_guide_comment/get_comments_complaints')
                 .then(response => {
                     this.comment_complaints = response.data
                 })
@@ -184,7 +184,7 @@
 
             get_product_feedback_complaints(){
                 axios
-                .get('/product_feedback/get_feedbacks_complaints')
+                .get('set_product/set_product_feedback/get_feedbacks_complaints')
                 .then(response => {
                     this.feedback_complaints = response.data
                 })
@@ -204,7 +204,7 @@
                 else{
                     this.decision_loader = true
                     axios
-                    .post('/guide_comment/make_decision',{
+                    .post('set_article/set_guide_comment/make_decision',{
                         decision: this.comment_decision,
                         comment_id: this.action_comment_id,
                         complaint_id: this.complaint_id,
@@ -219,7 +219,7 @@
             get_action_comment(comment_id){
                 this.actyve_comment = []
                 axios
-                .get("/guide_comment/get_actyve_comment/"+comment_id)
+                .get("set_article/set_guide_comment/get_actyve_comment/"+comment_id)
                 .then(response => {
                     this.actyve_comment = response.data
                 })

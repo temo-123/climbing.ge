@@ -9,9 +9,9 @@
         <div v-else-if="!summit" class="h-recent-work">
             <div class="container text-center py-5">
                 <i class="fa fa-exclamation-circle fa-3x text-muted mb-3"></i>
-                <h3>Summit not found</h3>
+                <h3>{{ $t('summit.summit_page.not_found') }}</h3>
                 <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
-                    <i class="fa fa-arrow-left"></i> Back to list
+                    <i class="fa fa-arrow-left"></i> {{ $t('summit.summit_page.back_to_list') }}
                 </router-link>
             </div>
         </div>
@@ -52,7 +52,7 @@
                     <!-- Make Ascent button -->
                     <div class="text-center" style="margin: 20px 0 40px">
                         <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-lg btn-send main-btn">
-                            <i class="fa fa-flag-checkered"></i> Record My Ascent
+                            <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
                         </router-link>
                     </div>
 
@@ -69,7 +69,7 @@
                         <div class="col-md-8">
 
                             <h2 class="index_h2" style="font-size:180%">
-                                <i class="fa fa-list"></i> Ascents
+                                <i class="fa fa-list"></i> {{ $t('summit.summit_page.ascents') }}
                                 <span v-if="ascents.length" class="badge" style="background:#1d7a48">{{ ascents.length }}</span>
                             </h2>
                             <div class="bar" style="margin-top:20px"><i class="fa fa-users"></i></div>
@@ -79,15 +79,15 @@
                             </div>
                             <div v-else-if="ascents.length === 0" class="text-center py-4 text-muted">
                                 <i class="fa fa-flag fa-2x mb-2"></i>
-                                <p>No ascents recorded yet. Be the first!</p>
+                                <p>{{ $t('summit.summit_page.no_ascents') }}</p>
                             </div>
                             <div v-else class="table-responsive">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Climber</th>
-                                            <th>Date</th>
-                                            <th>Route</th>
+                                            <th>{{ $t('summit.summit_page.climber') }}</th>
+                                            <th>{{ $t('summit.summit_page.date') }}</th>
+                                            <th>{{ $t('summit.summit_page.route') }}</th>
                                             <th class="text-center">GPS</th>
                                             <th></th>
                                         </tr>
@@ -141,14 +141,14 @@
                         <div class="col-md-4">
                             <div class="portfolio-img" style="padding:20px; text-align:center">
                                 <h4 class="text-muted text-uppercase" style="letter-spacing:.05em; font-size:12px; margin-bottom:16px">
-                                    <i class="fa fa-qrcode"></i> Scan to Record
+                                    <i class="fa fa-qrcode"></i> {{ $t('summit.summit_page.scan_to_record') }}
                                 </h4>
                                 <div class="d-flex justify-content-center mb-3">
                                     <qrcode-vue :value="ascentUrl" :size="160" level="H" render-as="svg" />
                                 </div>
-                                <p class="text-muted small">Scan this QR at the summit to record your ascent</p>
+                                <p class="text-muted small">{{ $t('summit.summit_page.scan_instruction') }}</p>
                                 <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-block btn-send main-btn">
-                                    <i class="fa fa-flag"></i> Record Ascent
+                                    <i class="fa fa-flag"></i> {{ $t('summit.summit_page.record_ascent_short') }}
                                 </router-link>
                             </div>
                         </div>

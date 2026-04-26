@@ -46,7 +46,11 @@
                         
                         <div class="row" v-if="tab_num == 5">
 
-                            <div class="col-md-12" >
+                            <div class="col-md-4 mb-3">
+                                <mail_notification_widget />
+                            </div>
+
+                            <div class="col-md-8">
                                 <div class="card">
                                     <div class="card-body">
                                         <button class="btn btn-primary" @click="open_notifay_modal()">Make mail notification for user</button>
@@ -54,7 +58,9 @@
                                 </div>
                             </div>
 
-                            <admin_notifications_list />
+                            <div class="col-md-12 mt-3">
+                                <admin_notifications_list />
+                            </div>
                         </div>
 
 
@@ -77,6 +83,7 @@
     import data_counts_list from '../../../items/dashboards/SiteDataCountListComponent.vue'
 
     import tam_members_tasks_panel from './assets/TeamMembersTaskControlComponent.vue'
+    import mail_notification_widget from '../../../items/dashboards/MailNotificationWidget.vue'
 
     export default {
         components: {
@@ -87,6 +94,7 @@
             admin_notifications_list,
             data_counts_list,
             tam_members_tasks_panel,
+            mail_notification_widget,
         },
         data(){
             return{

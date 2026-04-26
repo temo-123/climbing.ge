@@ -16,7 +16,7 @@
                 </div>
 
                 <div v-else-if="summits.length === 0" class="text-center py-5">
-                    <p class="text-muted">{{ $t('summit.no_summits') || 'No summits available yet.' }}</p>
+                    <p class="text-muted">{{ $t('summit.no_summits') }}</p>
                 </div>
 
                 <div v-else class="row article_card_container">

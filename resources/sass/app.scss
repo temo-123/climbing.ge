@@ -3129,12 +3129,6 @@ select:focus {
 }
 
 .m-image-hero--container {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
     display: flex;
     background-position: center;
     background-size: cover;
@@ -3281,12 +3275,6 @@ select:focus {
 }
 
 .m-image-hero--text-panel {
-    display: -webkit-box;
-    display: -moz-box;
-    display: box;
-    display: -webkit-flex;
-    display: -moz-flex;
-    display: -ms-flexbox;
     display: flex;
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;

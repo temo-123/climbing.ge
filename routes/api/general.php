@@ -64,5 +64,6 @@ Route::group(['namespace'=>'Api'], function() {
 
         Route::get('/fix_article_bugs', 'fix_article_bugs');
         Route::get('/site_data_counts', 'site_data_counts');
+        Route::get('/article_errors/{locale}', 'get_article_errors');
     });
 });

@@ -17,54 +17,47 @@ class FaworitesController extends Controller
 {
     public function add_to_interested_events(Request $request)
     {
-        if (Auth::user()) {
-            if(Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $request->event_id)->count() > 0){
-                return 'this event are in faworite';
-            }
-            else{
-                $faworit = new Interested_event;
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['event_id'] = $request->event_id;
-
-                $faworit -> save();
-
-                $global_event = Event::where('id', '=', $request->event_id)->first();
-                if($global_event){
-                    $locale_event = $global_event->us_event;
-                    $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-                    $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
-                    $subject = $locale_event->title;
-                }
-
-                UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
-
-                return 'Event added in your favorite event list successfully';
-            }
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
         }
-        else{
-            return 'Plees login';
+
+        if (Interested_event::where('user_id', Auth::id())->where('event_id', $request->event_id)->exists()) {
+            return response()->json(['message' => 'Already in favorites']);
         }
+
+        $faworit = new Interested_event;
+        $faworit['user_id'] = Auth::id();
+        $faworit['event_id'] = $request->event_id;
+        $faworit->save();
+
+        $global_event = Event::where('id', $request->event_id)->first();
+        if ($global_event && $global_event->us_event) {
+            $locale_event = $global_event->us_event;
+            $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
+            $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
+            $subject = $locale_event->title;
+            UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
+        }
+
+        return response()->json(['message' => 'Event added to favorites']);
     }
 
     public function get_interested_events(Request $request)
     {
-        if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->get();
-            $articles = [];
-            foreach ($fav_area as $area) {
-                $global_events = Event::where('id', '=', $area->event_id)->get();
-                // $outdoors = ArticlesService::get_locale_article_use_locale($global_events, $request->lang);
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
+        }
 
-                // dd($global_events);
-                array_push($articles, $global_events[0]);
+        $fav_items = Interested_event::where('user_id', Auth::id())->get();
+        $articles = [];
+        foreach ($fav_items as $item) {
+            $event = Event::with(['us_event', 'ka_event'])->where('id', $item->event_id)->first();
+            if ($event) {
+                array_push($articles, $event);
             }
-            
-            return $articles;
         }
-        else{
-            return 'Plees login!';
-        }
+
+        return response()->json($articles);
     }
 
     public function del_interested_event(Request $request, $favoryte_ivent_if)
@@ -110,33 +103,40 @@ class FaworitesController extends Controller
 
     public function get_faworite_outdoor_region(Request $request)
     {
-        if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->get();
-            $articles = [];
-            foreach ($fav_area as $area) {
-                $global_articles = Article::where('id', '=', $area->article_id)->get();
-                $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
+        }
+
+        $fav_area = Favorite_outdoor_area::where('user_id', Auth::id())->get();
+        $articles = [];
+        foreach ($fav_area as $area) {
+            $global_articles = Article::where('id', $area->article_id)->get();
+            if ($global_articles->isEmpty()) continue;
+            $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
+            if (!empty($outdoors)) {
                 array_push($articles, $outdoors[0]);
             }
+        }
 
-            return $articles;
-        }
-        else{
-            return 'Plees login!';
-        }
+        return response()->json($articles);
     }
 
 
     public function del_favorite_outdoor_area(Request $request)
     {
-        if (Auth::user()) {
-            $fav_area = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->favorite_outdoor_id)->first();
-            $fav_area ->delete();
-            return 'Outdoor area removed from favorites successfully';
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
         }
-        else{
-            return 'Plees login!';
+
+        $fav_area = Favorite_outdoor_area::where('user_id', Auth::id())
+            ->where('article_id', $request->article_id)
+            ->first();
+
+        if ($fav_area) {
+            $fav_area->delete();
         }
+
+        return response()->json(['message' => 'Removed from favorites']);
     }
 
     public function check_favorite_status(Request $request, $article_id)

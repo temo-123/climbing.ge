@@ -7,9 +7,7 @@
 
                 <div class="bar"><i class="fa fa-qrcode"></i></div>
 
-                <h3 class="article_list_short_description">
-                    {{ $t('summit.scan_qr.instruction') }}
-                </h3>
+                <h3 class="article_list_short_description" v-html="$siteData.data.summit_index_intro || $t('summit.scan_qr.instruction')"></h3>
 
                 <!-- Scan card -->
                 <div class="row">
@@ -38,24 +36,39 @@
                 </div>
 
                 <!-- How it works -->
-                <div class="row text-center" style="margin-top: 60px">
-                    <div class="col-md-4">
-                        <div class="bar" style="width:60px; margin: 0 auto 16px;">
-                            <i class="fa fa-map-marker"></i>
+                <div style="margin-top: 60px">
+                    <h3 class="text-center" style="margin-bottom: 30px; text-transform: uppercase; letter-spacing: .08em; font-size: 14px; color: #888">
+                        {{ $t('summit.how.title') }}
+                    </h3>
+                    <div class="row text-center">
+                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
+                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
+                                <i class="fa fa-map-marker"></i>
+                            </div>
+                            <h4>{{ $t('summit.how.reach') }}</h4>
+                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_reach_desc"></p>
                         </div>
-                        <h4>{{ $t('summit.how.reach') || 'Reach the summit' }}</h4>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bar" style="width:60px; margin: 0 auto 16px;">
-                            <i class="fa fa-qrcode"></i>
+                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
+                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
+                                <i class="fa fa-qrcode"></i>
+                            </div>
+                            <h4>{{ $t('summit.how.scan') }}</h4>
+                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_scan_desc"></p>
                         </div>
-                        <h4>{{ $t('summit.how.scan') || 'Scan the QR code' }}</h4>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="bar" style="width:60px; margin: 0 auto 16px;">
-                            <i class="fa fa-flag-checkered"></i>
+                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
+                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
+                                <i class="fa fa-check-circle"></i>
+                            </div>
+                            <h4>{{ $t('summit.how.validate') }}</h4>
+                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_validate_desc"></p>
                         </div>
-                        <h4>{{ $t('summit.how.record') || 'Record your ascent' }}</h4>
+                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
+                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
+                                <i class="fa fa-share-alt"></i>
+                            </div>
+                            <h4>{{ $t('summit.how.share') }}</h4>
+                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_share_desc"></p>
+                        </div>
                     </div>
                 </div>
 
@@ -154,6 +167,11 @@ export default {
             this.isScanning = false;
             this.scanError = '';
             this.scannedData = '';
+        }
+    },
+    mounted() {
+        if (!this.$siteData.loaded) {
+            this.get_site_data();
         }
     },
     beforeUnmount() { this.closeScanner(); }

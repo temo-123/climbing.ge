@@ -19,6 +19,23 @@ use App\Services\PermissionService;
 
 class ProductFeedbackController extends Controller
 {
+    public function get_all_feedbacks()
+    {
+        if (Product_feedback::count() > 0) {
+            $all_feedbacks = Product_feedback::get();
+            $feedbacks = [];
+            foreach ($all_feedbacks as $feedback) {
+                array_push($feedbacks, [
+                    'feedback'       => $feedback,
+                    'locale_product' => $feedback->product->us_product,
+                    'global_product' => $feedback->product,
+                ]);
+            }
+            return $feedbacks;
+        }
+        return [];
+    }
+
     public function del_feedback($id)
     {
         $auth = PermissionService::authorize('product_feedback', 'del');

@@ -508,6 +508,7 @@
             "regions": "Regions",
             "search": "Search Summits",
             "about_us": "About Us",
+            "about": "About Us",
             "list": "Summit List",
             "map": "Summit Map"
         },
@@ -529,14 +530,74 @@
             "scanning": "Scanning QR Code...",
             "meta": "Scan a QR code at the summit to register your climb and track your ascents in Georgia."
         },
+        "how": {
+            "title": "How It Works",
+            "reach": "Reach the Summit",
+            "scan": "Scan the QR Code",
+            "validate": "Validate Your Ascent",
+            "share": "Share with Community"
+        },
         "about": {
             "title": "About Summit Climbing Georgia",
             "welcome": "Welcome to Summit Climbing – your ultimate platform for mountain adventures in Georgia.",
             "mission": "Our mission is to connect climbers with epic summits through QR code registration and community sharing.",
             "view_list": "View Summit List",
-            "meta": "Learn about Summit Climbing Georgia – a QR-based platform for registering and tracking your mountain ascents."
+            "meta": "Learn about Summit Climbing Georgia – a QR-based platform for registering and tracking your mountain ascents.",
+            "explore_title": "Explore Summits",
+            "qr_title": "QR Registration",
+            "community_title": "Climber Community"
         },
-        "summit_map_description": "Explore summits on the map and plan your next climb in Georgia."
+        "summit_map_description": "Explore summits on the map and plan your next climb in Georgia.",
+        "map": {
+            "coming_soon": "Interactive map coming soon."
+        },
+        "no_summits": "No summits available yet.",
+        "summit_page": {
+            "not_found": "Summit not found",
+            "back_to_list": "Back to list",
+            "record_ascent": "Record My Ascent",
+            "record_ascent_short": "Record Ascent",
+            "ascents": "Ascents",
+            "no_ascents": "No ascents recorded yet. Be the first!",
+            "climber": "Climber",
+            "date": "Date",
+            "route": "Route",
+            "scan_to_record": "Scan to Record",
+            "scan_instruction": "Scan this QR at the summit to record your ascent"
+        },
+        "ascent_page": {
+            "loading": "Loading summit...",
+            "not_found": "Summit not found",
+            "back_to_list": "Back to list",
+            "summits": "Summits",
+            "record_ascent": "Record Ascent",
+            "ascent_recorded": "Ascent Recorded!",
+            "success_text": "Your ascent of {summit} has been successfully recorded.",
+            "back_to_summit": "Back to Summit",
+            "all_summits": "All Summits",
+            "gps_verified": "GPS Location Verified",
+            "gps_not_verified": "GPS Not Verified",
+            "matched_users": "Matched to {count} registered user(s)",
+            "no_user_matched": "No registered user matched",
+            "step1_title": "Step 1: Location Verification",
+            "step2_title": "Step 2: Ascent Details",
+            "check_location": "Check my location",
+            "checking": "Checking location...",
+            "skip_gps": "Continue without GPS",
+            "try_again": "Try again",
+            "continue_anyway": "Continue anyway",
+            "location_verified": "Location verified!",
+            "no_gps_info": "Continuing without GPS verification. Your ascent will be recorded without location validation.",
+            "first_name": "First Name",
+            "last_name": "Last Name",
+            "ascent_date": "Ascent Date",
+            "route_label": "Route (optional)",
+            "comment_label": "Comment (optional)",
+            "submit": "Submit Ascent",
+            "submitting": "Submitting...",
+            "verified_badge": "Verified",
+            "not_at_summit_badge": "Not at summit"
+        }
     },
     "user": {
         "name": "User Panel",

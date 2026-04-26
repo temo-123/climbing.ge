@@ -34,10 +34,10 @@ use App\Models\Shop\Product;
 use App\Models\Shop\Product_category;
 
 use App\Models\User\Service_follower;
-use App\Models\User\Social_account;
 use App\Models\Guide\Article_comment_complaint;
 
 use App\Models\Guide\Comment;
+use App\Models\Shop\Product_feedback;
 
 use App\Models\Guide\Region;
 
@@ -50,7 +50,7 @@ class SiteDataController extends Controller
         $counts = [];
 
         $counts['index_header_images'] = Header_image::count();
-        $counts['article_gallery_images'] = Article_image::count();
+        $counts['gallery_images'] = Article_image::count();
 
         $counts['mount_masives'] = Mount::count();
         $counts['mountaineering_route'] = Article::where("category", "=", 'mount_route')->count();
@@ -94,16 +94,16 @@ class SiteDataController extends Controller
         // $counts['mtp_pitch_count'] = Mtp_pitch::count();
         
         $counts['article_comments_count'] = Comment::count();
-        $counts['product_comments_count'] = Comment::count();
+        $counts['product_comments_count'] = Product_feedback::count();
 
         $counts['users'] = User::count();
         $counts['following_users'] = Following_users::count();
 
-        $counts['guid_follovers'] = Service_follower::where("service", "=", 'shop')->count();
+        $counts['guid_follovers'] = Service_follower::where("service", "=", 'guide')->count();
         $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
         
-        // $counts['google_accounts_count'] = Social_account::where("provider", "=", 'google')->count();
-        // $counts['facebook_accounts_count'] = Social_account::where("provider", "=", 'facebook')->count();
+        $counts['google_accounts_count'] = 0;
+        $counts['facebook_accounts_count'] = 0;
 
         $counts['roles'] = Role::count();
         $counts['permissions'] = Permission::count();
@@ -163,6 +163,31 @@ class SiteDataController extends Controller
                 $local_article -> delete();
             }
         }
+    }
+
+    public function get_article_errors(Request $request, $locale)
+    {
+        $allowed = ['us', 'ka'];
+        if (!in_array($locale, $allowed)) {
+            return response()->json([], 400);
+        }
+
+        $errors = [];
+        foreach (Locale_article::where('locale', $locale)->get() as $local_article) {
+            $global = $locale === 'us'
+                ? $local_article->global_article_us
+                : $local_article->global_article_ka;
+
+            if (!$global) {
+                $errors[] = [
+                    'id'    => $local_article->id,
+                    'title' => $local_article->title ?: '(no title)',
+                    'locale' => $locale,
+                ];
+            }
+        }
+
+        return response()->json($errors);
     }
 
     public function get_site_global_data(){

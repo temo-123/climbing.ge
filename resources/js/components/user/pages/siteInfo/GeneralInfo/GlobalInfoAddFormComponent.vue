@@ -25,7 +25,7 @@
                                 <label for="name" class='col-xs-2 control-label'> Title </label>
                                 <div class="col-xs-10">
                                     <input type="text" v-model="data.title" name="us_name" class="form-control" required> 
-                                    <div class="alert alert-danger" role="alert" v-if="errors.us_name">
+                                    <div class="alert alert-danger" role="alert" v-if="errors.title">
                                         {{ errors.title[0] }}
                                     </div>
                                 </div>

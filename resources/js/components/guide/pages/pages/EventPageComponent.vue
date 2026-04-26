@@ -209,7 +209,7 @@
                     })
                     .then(response => {
                         this.is_interested = true;
-                        alert(response.data);
+                        alert(response.data.message || response.data);
                     })
                     .catch(error => {
                         if(error.response && error.response.status === 401) {

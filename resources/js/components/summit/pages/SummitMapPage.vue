@@ -13,7 +13,7 @@
 
                 <div class="text-center py-5 text-muted">
                     <i class="fa fa-map fa-4x mb-3"></i>
-                    <p>Map coming soon.</p>
+                    <p>{{ $t('summit.map.coming_soon') }}</p>
                     <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
                         <i class="fa fa-list"></i> {{ $t('summit.menu.list') }}
                     </router-link>

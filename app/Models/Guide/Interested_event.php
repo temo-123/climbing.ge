@@ -8,10 +8,10 @@ class Interested_event extends Model
 {
     public $table = 'interested_events';
 
-    // protected $fillable = [
-    //     "user_id",
-    //     "event_id",
-    // ];
+    protected $fillable = [
+        "user_id",
+        "event_id",
+    ];
 
     public function event()
     {

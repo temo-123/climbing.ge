@@ -58,7 +58,7 @@
 								<div :class='"info " + row_action(event.end_data)'>
 
 									<h2 class="title cursor_pointer">
-										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.url_title }}</a>
+										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.us_event ? event.us_event.title : event.url_title }}</a>
 									</h2>
 									<span @click="del_interested_event(event.id)" class="float-right">X</span>
 									<p class="desc" v-if="row_action(event.end_data) == 'completed_event'">Finished</p>
@@ -84,7 +84,6 @@
 	export default {
 		components: {
 			breadcrumb,
-            moment
 		},
         data: function () {
             return {
@@ -98,55 +97,8 @@
         },
         methods: {
 			row_action(end_data){
-                let end_houre = Number(moment(end_data).format("H"))
-
-                if(end_houre != 0){
-                    let end_day = Number(moment(end_data).format("D"))
-                    let end_month = Number(moment(end_data).format("MM"))
-                    let end_year = Number(moment(end_data).format("YYYY"))
-
-                    if( new Date().getDate() > end_day && 
-                        new Date().getMonth() >= end_month && 
-                        new Date().getFullYear() >= end_year
-                    ){
-                        return 'completed_event'
-                    }
-                    if( new Date().getDate() > end_day && 
-                        new Date().getMonth() == end_month && 
-                        new Date().getFullYear() == end_year
-                    ){
-                        return 'completed_event'
-                    }
-                    else if( 
-                        new Date().getDate() == end_day && 
-                        new Date().getMonth() >= end_month && 
-                        new Date().getFullYear() >= end_year
-                    ){
-                        return 'completed_event'
-                    }
-                    else if(
-                        new Date().getMonth() > end_month && 
-                        new Date().getFullYear() > end_year
-                    ){
-                        return 'completed_event'
-                    }
-                    else if(
-                        new Date().getMonth() > end_month
-                    ){
-                        return 'completed_event'
-                    }
-                    else if(
-                        new Date().getFullYear() > end_year
-                    ){
-                        return 'completed_event'
-                    }
-					else{
-                        return ''
-					}
-                }
-				else{
-					return ''
-				}
+                if (!end_data) return '';
+                return moment(end_data).isBefore(moment()) ? 'completed_event' : '';
             },
 			show_y(data){return moment(data).format("Y")},
 			show_m(data){return moment(data).format("MMM")},

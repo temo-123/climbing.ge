@@ -154,10 +154,7 @@
 
 
     export default {
-        components: {
-            SlickItem,
-            SlickList,
-        },
+        components: {},
         props: [],
         data(){
             return {

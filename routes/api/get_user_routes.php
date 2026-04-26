@@ -71,4 +71,8 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::post('/edit_adres/{adres_id}', 'edit_adres');
         Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
     });
+
+    Route::controller(\App\Http\Controllers\Api\User\MailCheckController::class)->group(function () {
+        Route::get('/mail/unread_count', 'get_unread_count');
+    });
 });

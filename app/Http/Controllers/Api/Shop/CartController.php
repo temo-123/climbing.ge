@@ -82,44 +82,34 @@ class CartController extends Controller
         $cart_item -> save();
     }
 
-    public function add_to_favorite(Request $request)
+    public function add_to_favorite(Request $request, $product_id)
     {
-        if (Auth::user()) {
-            
-            if(Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->count() > 0){
-                $editing_faworit = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+        $existing = Favorite_product::where('user_id', Auth::id())
+            ->where('product_id', $product_id)
+            ->first();
 
-                $editing_faworit['user_id'] = Auth::user()->id;
-                $editing_faworit['product_id'] = $request->product_id;
-                
-                $editing_faworit -> save();
-            }
-            else{
-                $faworit = new Favorite_product();
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['product_id'] = $request->product_id;
-                
-                $faworit -> save();
-            }
+        if (!$existing) {
+            $faworit = new Favorite_product();
+            $faworit['user_id'] = Auth::id();
+            $faworit['product_id'] = $product_id;
+            $faworit->save();
         }
-        else{
-            dd('Gaajvi');
-        }
+
+        return response()->json(['status' => 'ok']);
     }
 
-    public function del_from_favorite(Request $request)
+    public function del_from_favorite(Request $request, $product_id)
     {
-        if (Auth::user()) {
-            $product = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+        $product = Favorite_product::where('user_id', Auth::id())
+            ->where('product_id', $product_id)
+            ->first();
 
-            if ($product) {
-                $product -> delete();
-            }
-            else {
-                dd('err');
-            }
+        if ($product) {
+            $product->delete();
+            return response()->json(['status' => 'ok']);
         }
+
+        return response()->json(['status' => 'not_found'], 404);
     }
     /**
      * Show the form for creating a new resource.
