@@ -234,6 +234,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_order_products/{order_id}', 'get_order_products');
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
+        Route::get('/get_order_finance_statistics/{period}', 'get_order_finance_statistics');
     });
     // Route::apiResource('/sale_code', 'SaleCodeController');
 

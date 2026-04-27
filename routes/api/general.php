@@ -17,9 +17,17 @@ Route::controller('Api\CKEditorController')->prefix('ckeditor')->group( function
 /*
 *   Editing routes
 */
+// Legacy search endpoints (backward compatibility)
 Route::post('/productSearch/{query_request}', 'Api\SearchController@productSearch');
 Route::post('/articleSearch/{query_request}', 'Api\SearchController@articleSearch');
 Route::post('/filmSearch/{query_request}', 'Api\SearchController@filmSearch');
+
+// Unified search endpoints with locale + fuzzy "maybe you mean" support
+Route::post('/search/suggest', 'Api\SearchController@suggest');
+Route::post('/guide/search', 'Api\SearchController@guideSearch');
+Route::post('/shop/search', 'Api\SearchController@shopSearch');
+Route::post('/blog/search', 'Api\SearchController@blogSearch');
+Route::post('/summit/search', 'Api\SearchController@summitSearch');
 
 // Canvas image save route
 Route::post('/save-canvas-image', 'Api\CanvasController@saveImage');

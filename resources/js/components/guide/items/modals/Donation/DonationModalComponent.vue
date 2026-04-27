@@ -206,11 +206,14 @@
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
-
 export default {
     name: 'DonationModalComponent',
 
+    data: function() {
+        return {
+            is_show_donation_modal: false,
+        };
+    },
     data: function() {
         return {
             is_show_donation_modal: false,
@@ -222,6 +225,7 @@ export default {
             loading: false,
             donationSuccess: false,
             errorMessage: '',
+            authUser: null,
             donator: {
                 name: '',
                 surname: '',
@@ -239,7 +243,6 @@ export default {
     },
 
     computed: {
-        // ...mapGetters({ authUser: 'auth_user/get_auth_user' }),
         displayAmount() {
             if (this.selectedAmount !== null) return this.selectedAmount;
             if (this.customAmount !== null && this.customAmount !== '') return parseFloat(this.customAmount).toFixed(2);
@@ -267,7 +270,7 @@ export default {
         show() {
             this.is_show_donation_modal = true;
             this.$emit('close_warning_modal');
-            this.$store.dispatch('auth_user/authing_user');
+            axios.get('auth_user').then(r => { this.authUser = r.data; }).catch(() => { this.authUser = null; });
         },
 
         close() {

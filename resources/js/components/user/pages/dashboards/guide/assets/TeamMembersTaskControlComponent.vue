@@ -63,7 +63,7 @@
 
             </div>
 
-            <addTaskModal ref="show_add_task_modal" @restart="get_all_tasks" />
+            <addTaskModal ref="show_add_task_modal" globalCategory="guide" @restart="get_all_tasks" />
             <editTaskModal ref="show_edit_task_modal" @restart="get_all_tasks" />
             <showTaskModal ref="show_task_modal" />
             <adminTaskStatusModal ref="task_status_modal" @restart="get_all_tasks" />
@@ -112,7 +112,7 @@
 
             get_all_tasks() {
                 this.is_loading = true
-                axios.get('get_task/get_all_tasks/')
+                axios.get('get_task/get_all_tasks/', { params: { global_category: 'guide' } })
                     .then(response => { this.tasks = response.data })
                     .catch(() => {})
                     .finally(() => this.is_loading = false)

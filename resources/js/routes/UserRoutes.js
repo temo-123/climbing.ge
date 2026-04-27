@@ -31,12 +31,15 @@ const routes = [
             }
         },
         children: [
-{ path: '', name: 'home', component: load('HomePageComponent'), meta: { title: 'Home' } },
+            { path: '', name: 'home', component: load('HomePageComponent'), meta: { title: 'Home' } },
 
             { path: 'shop_task_panel', name: 'shopTaskPanel', component: load('dashboards/shop/ShopTaskPanelComponent'),meta: {title: 'user page'}},
             { path: 'shop_dashboard_page', name: 'shopDashboardPage', component: load('dashboards/shop/ShopDashboardPageComponent'), meta: {title: 'user page'}},
+            { path: 'shop_worker_tasks_page', name: 'shopWorkerTasksPage', component: load('dashboards/shop/WorkerTaskPanelPageComponent'), meta: {title: 'user page'}},
+
             { path: 'guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent'),meta: {title: 'user page'}},
             { path: 'guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent'), meta: {title: 'user page'}},
+            { path: 'team_member_tasks_page', name: 'teamMemberTasksPage', component: load('dashboards/guide/TeamMembersTaskPanelPageComponent'), meta: {title: 'user page'}},
 
             { path: 'purchases', name: 'userPurchases', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
             { path: 'order/user_orders', name: 'userOrders', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
@@ -103,7 +106,7 @@ const routes = [
             { path: 'route/add/:category', name: 'routeAdd', component: load('routes_and_sectors/routes/routeAddComponent'), meta: {title: 'user page'}},
             { path: 'route/edit/:id', name: 'routeEdit', component: load('routes_and_sectors/routes/routeEditComponent'), meta: {title: 'user page'}},
             { path: 'sector/add/:category', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent'), meta: {title: 'user page'}},
-{ path: 'sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent'), props: true, meta: {title: 'user page'}},
+            { path: 'sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent'), props: true, meta: {title: 'user page'}},
 
             { path: 'MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent'), meta: {title: 'user page'}},
             { path: 'MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent'), meta: {title: 'user page'}},
@@ -121,7 +124,6 @@ const routes = [
             { path: 'warehouse/options/:id', name: 'warehouseOptions', component: load('warehouses/warehouseOptionsComponent'), meta: {title: 'user page'}},
 
             { path: 'live_cameras', name: 'liveCamerasList', component: load('live_camera/LiveCamerasListComponent'), meta: {title: 'user page'}},
-            { path: 'donations', name: 'donationsList', component: load('donations/DonationListPageComponent'), meta: {title: 'user page'}},
 
             { path: 'export_tips', name: 'exportTips', component: load('expoet/exportComponent'), meta: {title: 'user page'}},
 

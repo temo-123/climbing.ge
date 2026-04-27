@@ -27,23 +27,7 @@
                     
                     <li><router-link :to="{name: 'about_us',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('blog.menu.about_us') }}  </span> </router-link></li>
 
-                    <li class="dropdown">
-                        <a class="margin_right cursor_pointer" data-toggle="dropdown">
-                            <span>
-                                <i class="fa fa-search"  aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu shadows search_window" role="menu">
-                            <li>
-                                <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" :placeholder="$t('blog.search.placeholder')" autocomplete="off" autofocus="autofocus" type="text" lang="en">
-                                </form>
-                                <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </li>
-                        </ul>
-                    </li>
+                    <navbar-search site="blog" search_route="search_posts" />
 
                     <localeSwitcher />
 
@@ -91,7 +75,6 @@
         ],
         data: function () {
             return {
-                search_query: '',
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
@@ -118,29 +101,6 @@
             }
         },
         methods: {
-            search(){
-                this.$router.push({name: 'search_products', query: { 'query': this.search_query} });
-                this.search_query = ''
-            },
-
-            // localization(leng){
-            //     window.location.href = leng;
-            // },
-
-            isLetter(e) {
-                let char = String.fromCharCode(e.keyCode); // Get the character
-                if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
-                else e.preventDefault(); // If not match, don't add to input text
-            },
-
-            // goTo(page = ''){
-            //     window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL + page) ;
-            // },
-
-            currency(){
-
-            },
-
             open_navbar(){
                 if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
                     this.navbar_class = this.navbar_open_class

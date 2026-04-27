@@ -45,24 +45,7 @@
                     <li><router-link :to="{name: 'others', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>          <span> {{ $t('guide.menu.other') }}               </span> </router-link></li>
                     <li><router-link :to="{name: 'about_us', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>        <span> {{ $t('guide.menu.about us') }}            </span> </router-link></li>
 
-                    <li class="dropdown">
-                        <a class="margin_right cursor_pointer" data-toggle="dropdown">
-                            <span>
-                                <i class="fa fa-search"  aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu shadows search_window" role="menu">
-                            <li>
-                                <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input v-if="activ_lang == 'us' || activ_lang == 'en'" class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="Search climbing spot here. (English words only!)" autocomplete="off" autofocus="autofocus" type="text" lang="en-US">
-                                    <input v-else-if="activ_lang == 'ka'" class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" placeholder="რისი მოძებნა გსურთ? (გამოიყენეთ მხოლოდ ქართული ალფავიტი)" autocomplete="off" autofocus="autofocus" type="text" lang="ka-GE">
-                                </form>
-                                <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </li>
-                        </ul>
-                    </li>
+                    <navbar-search site="guide" search_route="search_articles" />
 
                     <li class="dropdown">
                         <a data-toggle="dropdown" class="cursor_pointer">
@@ -132,7 +115,6 @@
         ],
         data: function () {
             return {
-                search_query: null,
                 show: false,
                 navbar_general_class: 'collapse navbar-collapse',
                 navbar_class: 'collapse navbar-collapse',
@@ -173,15 +155,6 @@
         },
 
         methods: {
-            search(){
-                this.$router.push({name: 'search_articles', query: { 'query': this.search_query} });
-                this.search_query = ''
-            },
-            isLetter(e) {
-                let char = String.fromCharCode(e.keyCode); // Get the character
-                if(/^[A-Za-z]+$/.test(char)) return true; // Match with regex 
-                else e.preventDefault(); // If not match, don't add to input text
-            },
             grade_charts(grade){
                 localStorage.setItem('grade', grade)
 

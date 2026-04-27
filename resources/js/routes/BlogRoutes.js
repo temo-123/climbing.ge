@@ -31,6 +31,7 @@ const routes = [
 
             { path: "post/:url_title", name: "post", component: load("pages/PostPage"), meta: { title: 'Post' }},
             { path: "news/:url_title", name: "news", component: load("pages/NewsPage"), meta: { title: 'News' }},
+            { path: "search", name: "search_posts", component: load("SearchPageComponent"), meta: { title: 'Search Blog' }},
 
             { path: "*", name: "NotFound", component: NotFound,  meta: { title: 'Not Found' }},
         ],

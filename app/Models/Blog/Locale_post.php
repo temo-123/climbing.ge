@@ -17,4 +17,14 @@ class Locale_post extends Model
     ];
 
     protected $table = 'locale_posts';
+
+    public function global_post_us()
+    {
+        return $this->hasOne(Post::class, 'us_post_id');
+    }
+
+    public function global_post_ka()
+    {
+        return $this->hasOne(Post::class, 'ka_post_id');
+    }
 }

@@ -26,23 +26,7 @@
                     <li><router-link :to="'/summits/map'"> <span> {{ $t('summit.menu.map') }} </span></router-link></li>
                     <li><router-link :to="'/about_us'"> <span> {{ $t('summit.menu.about') }} </span></router-link></li>
 
-                    <!-- <li class="dropdown">
-                        <a class="margin_right cursor_pointer" data-toggle="dropdown">
-                            <span>
-                                <i class="fa fa-search"  aria-hidden="true"></i>
-                            </span>
-                        </a>
-                        <ul class="dropdown-menu shadows search_window" role="menu">
-                            <li>
-                                <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" v-on:keypress="isLetter($event)" :placeholder="$t('blog.search.placeholder')" autocomplete="off" autofocus="autofocus" type="text" lang="en">
-                                </form>
-                                <button type="submit" form="searchForm" class="monail_navbar_form_button btn btn-success"> 
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </li>
-                        </ul>
-                    </li> -->
+                    <navbar-search site="summit" search_route="search_summits" />
 
                     <locale-switcher />
 
@@ -95,7 +79,6 @@ import { RouterLink } from 'vue-router'
         ],
         data: function () {
             return {
-                search_query: '',
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
@@ -120,17 +103,6 @@ import { RouterLink } from 'vue-router'
             }
         },
         methods: {
-            search(){
-                window.location.href = '/search?q=' + encodeURIComponent(this.search_query);
-                this.search_query = ''
-            },
-
-            isLetter(e) {
-                let char = String.fromCharCode(e.keyCode); 
-                if(/^[A-Za-z]+$/.test(char)) return true; 
-                else e.preventDefault(); 
-            },
-
             open_navbar(){
                 if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
                     this.navbar_class = this.navbar_open_class

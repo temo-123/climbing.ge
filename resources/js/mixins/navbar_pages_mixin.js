@@ -206,6 +206,13 @@ export default {
                                 ['edit_status', 'guide_task'],
                             ]
                         },
+                        {
+                            name: "My tasks for guide",
+                            route: "/team_member_tasks_page",
+                            permissions: [
+                                ['edit_status', 'guide_task'],
+                            ]
+                        },
                     ]
                 },
                 {
@@ -278,13 +285,6 @@ export default {
                                 ['del', 'services'],
                             ]
                         },
-                        {
-                            name: "Shop dashboard",
-                            route: "/shop_dashboard_page",
-                            permissions: [
-                                ['show', 'shop_dashboard'],
-                            ]
-                        },
                     ],
                 },
                 {
@@ -293,9 +293,9 @@ export default {
                     routes: [
                         {
                             name: "Shop Dashboard",
-                            route: "/guide_task_panel",
+                            route: "/shop_dashboard_page",
                             permissions: [
-                                ['add', 'guide_task'],
+                                ['show', 'shop_dashboard']
                             ]
                         },
                         {
@@ -309,10 +309,10 @@ export default {
                             ]
                         },
                         {
-                            name: "My Task Fot Shop",
-                            route: "/guide_task_panel",
+                            name: "My Tasks (Shop)",
+                            route: "/shop_worker_tasks_page",
                             permissions: [
-                                ['add', 'guide_task'],
+                                ['edit_status', 'shop_task'],
                             ]
                         },
                     ],

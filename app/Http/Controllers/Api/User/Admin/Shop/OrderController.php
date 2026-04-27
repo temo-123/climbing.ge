@@ -448,4 +448,57 @@ class OrderController extends Controller
         return response()->json($data);
     }
 
+    public function get_order_finance_statistics(Request $request)
+    {
+        $period = $request->route('period');
+
+        $startDate = null;
+        switch ($period) {
+            case '30days': $startDate = now()->subDays(30); break;
+            case '1month': $startDate = now()->subMonth(); break;
+            case '3months': $startDate = now()->subMonths(3); break;
+            case '6months': $startDate = now()->subMonths(6); break;
+            case '1year': $startDate = now()->subYear(); break;
+            case '2years': $startDate = now()->subYears(2); break;
+            case '3years': $startDate = now()->subYears(3); break;
+            case 'all': break;
+            default: return response()->json(['error' => 'Invalid period'], 400);
+        }
+
+        $query = Order_products::join('orders', 'order_products.order_id', '=', 'orders.id')
+            ->whereNotNull('order_products.total_price');
+
+        if ($startDate) {
+            $query->where('orders.created_at', '>=', $startDate);
+        }
+
+        if (in_array($period, ['30days', '1month'])) {
+            $rows = $query->selectRaw('DATE(orders.created_at) as date, SUM(order_products.total_price) as revenue')
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get();
+
+            $data = [['Day', 'Revenue']];
+            $i = 1;
+            foreach ($rows as $row) {
+                $data[] = [$i, (float) $row->revenue];
+                $i++;
+            }
+        } else {
+            $rows = $query->selectRaw('YEAR(orders.created_at) as year, MONTH(orders.created_at) as month, SUM(order_products.total_price) as revenue')
+                ->groupByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
+                ->orderByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
+                ->get();
+
+            $data = [['Month', 'Revenue']];
+            $i = 1;
+            foreach ($rows as $row) {
+                $data[] = [$i, (float) $row->revenue];
+                $i++;
+            }
+        }
+
+        return response()->json($data);
+    }
+
 }

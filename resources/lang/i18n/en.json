@@ -268,7 +268,18 @@
         "breadcrumb home": "Home",
         "news_flag": "News",
         "atention_flag": "Attention",
-        "search_no_result_faild": "Nothing found! Try again! :)"
+        "search_no_result_faild": "Nothing found! Try again! :)",
+        "search_suggested": "Did you mean these results?",
+        "search": {
+            "articles_title": "Articles",
+            "sectors_title": "Sectors",
+            "routes_title": "Climbing Routes",
+            "no_results": "Nothing found! Try again.",
+            "placeholder": "Search climbing spots...",
+            "lang_error": "Please use only English or Georgian text",
+            "did_you_mean": "Did you mean",
+            "you_searched": "You searched for"
+        }
     },
     "shop": {
         "name": "Climbing Shop",
@@ -440,7 +451,18 @@
         "all products": "All Products",
         "max products": "This is the maximum quantity for this product!",
         "add successful": "Product added successfully!",
-        "custom product": "Custom Product"
+        "custom product": "Custom Product",
+        "search_suggested": "Did you mean these results?",
+        "search": {
+            "products_title": "Products",
+            "tours_title": "Tours",
+            "services_title": "Services",
+            "no_results": "Nothing found! Try again.",
+            "placeholder": "Search products, tours, services...",
+            "lang_error": "Please use only English or Georgian text",
+            "did_you_mean": "Did you mean",
+            "you_searched": "You searched for"
+        }
     },
     "blog": {
         "name": "Climbing Blog",
@@ -491,7 +513,14 @@
             "view_full_post": "View Full Post"
         },
         "search": {
-            "placeholder": "Search product. (English words only!)"
+            "placeholder": "Search blog posts...",
+            "no_results": "Nothing found! Try again.",
+            "suggested": "Did you mean these results?",
+            "posts_title": "Posts",
+            "news_title": "News Articles",
+            "lang_error": "Please use only English or Georgian text",
+            "did_you_mean": "Did you mean",
+            "you_searched": "You searched for"
         },
         "pagination_button": {
             "show_older_articles": "Show Older Article"
@@ -599,6 +628,16 @@
             "submitting": "Submitting...",
             "verified_badge": "Verified",
             "not_at_summit_badge": "Not at summit"
+        },
+        "search": {
+            "placeholder": "Search summits...",
+            "no_results": "Nothing found! Try again.",
+            "suggested": "Did you mean these results?",
+            "summits_title": "Summits",
+            "mount_routes_title": "Mountain Routes",
+            "lang_error": "Please use only English or Georgian text",
+            "did_you_mean": "Did you mean",
+            "you_searched": "You searched for"
         }
     },
     "user": {
