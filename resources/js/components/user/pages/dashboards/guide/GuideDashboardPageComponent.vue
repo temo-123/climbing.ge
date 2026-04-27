@@ -28,9 +28,12 @@
                                     </div>
                                     <div class="col" >
                                         <input type="radio" id="5" :value="5" v-model="tab_num">
-                                        
+
                                         <label for="5" >User mails</label>
-                                        <!-- <label for="5" >Notifications and Mails</label> -->
+                                    </div>
+                                    <div class="col">
+                                        <input type="radio" id="6" :value="6" v-model="tab_num">
+                                        <label for="6">Donations</label>
                                     </div>
                                 </div>
                             </div>
@@ -63,7 +66,9 @@
                             </div>
                         </div>
 
-
+                        <div class="row" v-if="tab_num == 6">
+                            <donation_list />
+                        </div>
                     </div>
 
                     <user_notifications_modal ref="user_notifications"/>
@@ -84,6 +89,7 @@
 
     import tam_members_tasks_panel from './assets/TeamMembersTaskControlComponent.vue'
     import mail_notification_widget from '../../../items/dashboards/MailNotificationWidget.vue'
+    import donation_list from '../../donations/DonationListPageComponent.vue'
 
     export default {
         components: {
@@ -95,6 +101,7 @@
             data_counts_list,
             tam_members_tasks_panel,
             mail_notification_widget,
+            donation_list,
         },
         data(){
             return{

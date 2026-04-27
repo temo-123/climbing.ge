@@ -1,16 +1,12 @@
 <template>
     <span>
-        <div class="h-recent-work" v-if="speciales != [] && speciales">
+        <div class="h-recent-work" v-if="speciales && speciales.global_data">
             <div class="container">
                 <h2 class='index_h2' id="news">{{ $t('guide.title.special_article')}}</h2>
                 <div class="bar"><i class="fa fa-exclamation" aria-hidden="true"></i></div>
                 <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.special_article_description"></span> </h3>
 
-                <span v-if="speciales && speciales.length > 0">
-                    <specialArticleCard 
-                        :speciales_prop="speciales"
-                    />
-                </span>
+                <specialArticleCard :speciales_prop="speciales" />
 
             </div>
         </div>
@@ -45,12 +41,11 @@
         methods: {
             get_special(){
                 axios
-                .get('/get_article/get_locale_articles/special/'+localStorage.getItem('lang'))
+                .get('get_article/get_locale_articles/special/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.speciales = response.data[0]
                 })
-                .catch(error =>{
-                })
+                .catch(error => console.log(error))
             },
         }
     }

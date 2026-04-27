@@ -183,13 +183,6 @@ export default {
                                 ['show', 'export']
                             ]
                         },
-                        {
-                            name: "Guidbook dashboard",
-                            route: "/guide_dashboard_page",
-                            permissions: [
-                                ['show', 'guide_dashboard']
-                            ]
-                        },
                     ]
                 },
                 {

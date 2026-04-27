@@ -13,7 +13,7 @@
                             <router-link
                                 :to="{
                                     name: 'about_us',
-                                    params: { lang: this.$i18n.locale },
+                                    params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                 }"
                             >
                             {{ $t("global.footer.more") }}
@@ -31,7 +31,7 @@
                                 <router-link
                                     :to="{
                                         name: 'indoors',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.indoor climbing") }}
@@ -41,7 +41,7 @@
                                 <router-link
                                     :to="{
                                         name: 'outdoors',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.outdoor climbing") }}
@@ -51,7 +51,7 @@
                                 <router-link
                                     :to="{
                                         name: 'mountaineerings',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.mountaineering") }}
@@ -61,7 +61,7 @@
                                 <router-link
                                     :to="{
                                         name: 'ices',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.ice climbing") }}
@@ -71,7 +71,7 @@
                                 <router-link
                                     :to="{
                                         name: 'others',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.other") }}
@@ -81,7 +81,7 @@
                                 <router-link
                                     :to="{
                                         name: 'about_us',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale === 'ka' ? 'ka' : undefined },
                                     }"
                                 >
                                     {{ $t("guide.menu.about us") }}

@@ -366,7 +366,7 @@ class SiteDataController extends Controller
         
         // Validate the data
         $validator = Validator::make($data, [
-            'slug' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:locale_sites,slug',
             'ka_data' => 'nullable|string',
             'us_data' => 'nullable|string',
         ]);
@@ -375,18 +375,13 @@ class SiteDataController extends Controller
             return response()->json(['validation' => $validator->messages()], 422);
         }
 
-        try {
-            // Create new locale site record
-            $localeSite = new Locale_site();
-            $localeSite->slug = $data['slug'];
-            $localeSite->ka_data = $data['ka_data'] ?? '';
-            $localeSite->us_data = $data['us_data'] ?? '';
-            $localeSite->save();
+        $localeSite = new Locale_site();
+        $localeSite->slug = $data['slug'];
+        $localeSite->ka_data = $data['ka_data'] ?? '';
+        $localeSite->us_data = $data['us_data'] ?? '';
+        $localeSite->save();
 
-            return response()->json(['message' => 'Site locale data added successfully'], 200);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Failed to add site locale data'], 500);
-        }
+        return response()->json(['message' => 'Site locale data added successfully'], 200);
     }
 
     /**

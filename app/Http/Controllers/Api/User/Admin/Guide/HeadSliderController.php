@@ -45,6 +45,7 @@ class HeadSliderController extends Controller
             $new_gallery_image['published']=$data["published"];
             $new_gallery_image['category']=$data["category"];
             $new_gallery_image['link']=$data["link"];
+            $new_gallery_image['text_position']=$data["text_position"] ?? 'center';
 
             if($request->hasFile('image')){
                 $new_gallery_image['image'] =  ImageControllService::image_upload('images/head_slider_img/'.$data['category'].'/', $request, 'image', 1);
@@ -83,6 +84,7 @@ class HeadSliderController extends Controller
                 $edit_gallery_image['text']=$data["text"];
                 $edit_gallery_image['published']=$data["published"];
                 $edit_gallery_image['link']=$data["link"];
+                $edit_gallery_image['text_position']=$data["text_position"] ?? 'center';
                 
                 if($request->hasFile('image')){
                     $edit_gallery_image['image'] =  ImageControllService::image_update('images/head_slider_img/'.$data['category'].'/', $edit_gallery_image, $request, 'image', 'image', 1);
@@ -117,45 +119,48 @@ class HeadSliderController extends Controller
     {
         $validator = Validator::make($data, [
             'published' => 'required',
-            'title' => 'required|max:35',
+            'title' => 'required|max:255',
         ]);
         if ($validator->fails()) {
             return $validator->messages();
         }
 
-        $request->validate(
+        $imageValidator = Validator::make(
+            ['image' => $request->file('image')],
+            ['image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048'],
             [
-                'image' => 'nullable|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            ],
-            [
-                'image' => 'Your image is uncorect',
                 'image.max' => 'Your image is wery big. (Max size = 2048Kb)',
-                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif or svg format',
-                'image.image' => 'Your file is not a image'
+                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif, svg or webp format',
+                'image.image' => 'Your file is not a image',
             ]
         );
+        if ($imageValidator->fails()) {
+            return $imageValidator->messages();
+        }
     }
+
     public function gallery_image_add_validate($data, $request)
     {
         $validator = Validator::make($data, [
             'published' => 'required',
             'category' => 'required',
-            'title' => 'required|max:35',
+            'title' => 'required|max:255',
         ]);
         if ($validator->fails()) {
             return $validator->messages();
         }
 
-        $request->validate(
+        $imageValidator = Validator::make(
+            ['image' => $request->file('image')],
+            ['image' => 'required|image|mimes:jpg,png,jpeg,gif,svg,webp|max:2048'],
             [
-                'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-            ],
-            [
-                'image' => 'Your image is uncorect',
                 'image.max' => 'Your image is wery big. (Max size = 2048Kb)',
-                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif or svg format',
-                'image.image' => 'Your file is not a image'
+                'image.mimes' => 'Your image need by in jpg, png, jpeg, gif, svg or webp format',
+                'image.image' => 'Your file is not a image',
             ]
         );
+        if ($imageValidator->fails()) {
+            return $imageValidator->messages();
+        }
     }
 }

@@ -114,26 +114,16 @@
                 v-model="is_add_user_site"
                 title="Add your site"
                 @close="is_add_user_site=false"
+                @save="$refs.add_user_site_form.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <div>
-                <form class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
+                <form ref="add_user_site_form" class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
                     <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="sdd_site"
-                    >
-                    Save
-                    </button>
-                </div>
             </div>
         </StackModal>
 
@@ -141,27 +131,17 @@
                 v-model="is_edit_user_site"
                 title="Edit your site"
                 @close="close_edit_modal()"
+                @save="$refs.edit_site_form.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
 
             <div>
-                <form class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
+                <form ref="edit_site_form" class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
                     <label for="url">Enter an https:// URL:</label>
 
                     <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
                 </form>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="edit_site"
-                    >
-                    Update
-                    </button>
-                </div>
             </div>
         </StackModal>
 
@@ -169,33 +149,21 @@
                 v-model="is_edit_data"
                 title="Edit user data"
                 @close="is_edit_data=false"
+                @save="$refs.registrationForm.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
 
-
             <div>
-                <form class="form" method="POST" id="registrationForm">
+                <form ref="registrationForm" class="form" method="POST" id="registrationForm" v-on:submit.prevent="user_data_update">
 
                     <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="Enter your name" title="Enter your name">
                     <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" placeholder="Enter your last name" title="Enter your last name">
                     <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="Enter your phone number" title="Enter your phone number">
                     <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="Enter your email" title="Enter your email">
                     <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    country" title="Enter your country">
-
+                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="Enter your country" title="Enter your country">
                 </form>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="button"
-                        :class="{'btn btn-primary': true}"
-                        @click="user_data_update()"
-                    >
-                    Save
-                    </button>
-                </div>
             </div>
         </StackModal>
 
@@ -203,8 +171,9 @@
                 :show="is_change_image"
                 title="Edit image"
                 @close="is_change_image=false"
+                @save="$refs.myForm.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <div>
 
@@ -214,21 +183,10 @@
                 <form ref="myForm" v-on:submit.prevent="edit_image" id="profil_image_form">
                     <div class="container">
                         <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" value="image">
+                            <input type="file" name="image" id="image">
                         </div>
                     </div>
                 </form>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        :class="{'btn btn-primary': true}"
-                        form="profil_image_form"
-                    >
-                    Save
-                    </button>
-                </div>
             </div>
         </StackModal>
 
@@ -236,11 +194,12 @@
                 :show="is_change_password"
                 title="Edit password"
                 @close="close_edit_password_model()"
+                @save="$refs.edit_password_form.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
             <div>
-                <form class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
+                <form ref="edit_password_form" class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
                     <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
                         Your password is incorrect!
                     </div>
@@ -253,17 +212,6 @@
                     </div>
                     <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat your new password" v-model="password_edit_data.confirm_new_pass" title="Repeat your new password" required>
                 </form>
-            </div>
-            <div slot="modal-footer">
-                <div class="modal-footer">
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                        form="edit_password"
-                    >
-                    Save
-                    </button>
-                </div>
             </div>
         </StackModal>
 
@@ -327,7 +275,7 @@
             get_user_data: function(){
                 this.user_is_refresh = true
                 axios
-                .get('/auth_user')
+                .get('auth_user')
                 .then((response)=>{
                     this.user = response.data
 
@@ -342,7 +290,7 @@
             },
             user_data_update() {
                 axios
-                .post('/options/user_info_update/' + this.user.id, {
+                .post('get_options/user_info_update/' + this.user.id, {
                     data: this.edit_data,
                 })
                 .then(Response => {
@@ -380,7 +328,7 @@
                 if(this.password_edit_data.new_pass === this.password_edit_data.confirm_new_pass){
                     if(confirm('Are you sure, you want edit your password?')){
                         axios
-                        .post("/user/update_password/",{
+                        .post("user/update_password",{
                             data: this.password_edit_data,
                         })
                         .then(response => {
@@ -410,7 +358,7 @@
                 var myFormData = new FormData(this.$refs.myForm)
                 axios({
                     method: 'post',
-                    url: '/user/user_image_update/'+this.user.id,
+                    url: 'user/user_image_update/'+this.user.id,
                     data: myFormData,
                     config: { 
                         headers: {'Content-Type': 'multipart/form-data' },
@@ -460,7 +408,7 @@
 
             add_user_site(){
                 axios
-                .post('/user_site/', {
+                .post('user_site/', {
                     data: this.user_site_form_data,
                     _method: 'POST'
                 })
@@ -479,7 +427,7 @@
             },
             edit_user_site(){
                 axios
-                .post('/user_site/' + this.editing_site_id, {        
+                .post('user_site/' + this.editing_site_id, {        
                     editing_data: this.user_site_form_data,
                     _method: 'PATCH'
                 })
@@ -507,7 +455,7 @@
             del_user_site(site_id){
                 if(confirm('Are you sure you want to delete this site? This action cannot be undone.')){
                     axios
-                    .post('/user_site/'+site_id, {
+                    .post('user_site/'+site_id, {
                         _method: 'DELETE'
                     })
                     .then(response => {

@@ -14,6 +14,11 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
 
     Route::apiResource('/user_site', 'UserSiteController');
 
+    Route::controller(UsersController::class)->prefix('user')->group( function() {
+        Route::post('/user_image_update/{user_id}', 'user_image_update');
+        Route::post('/update_password', 'update_password');
+    });
+
     Route::controller(UsersController::class)->prefix('get_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');
@@ -62,6 +67,8 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         
         Route::get('/get_user_notification_data', 'get_user_notification_data');
     });
+
+    Route::get('/get_countries', [\App\Http\Controllers\Api\Shop\ShipedRegionController::class, 'get_all_shiped_regions']);
 
     Route::controller(UserAdresesController::class)->group( function() {
         Route::get('/get_user_adreses', 'get_user_adreses');

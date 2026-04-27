@@ -1,39 +1,88 @@
 <template>
-    <vue-instagram 
-            token="IGQWRQTmZA5Y1plbzR6em0tTGMtRVUyaG55Um5vUDVOMU43WEdrblN6bVR4TkxQanZAoX0tIckF6aVc1dWdfTnNSWmZA5ZAU1Kb240Ym5xSGVxWDlSUjN2dkVpNm5WWElIYWJmNGpOTFlqald0aHVITF9RRzlld1JmWVkZD" 
-            :tags="['girl']" 
-            mediaType="image" 
-            username="temo_samsonadze" 
-            :count="8"
+  <div class="insta-section" v-if="feedId">
+    <div class="container">
+      <h2 class="index_h2">Instagram</h2>
+      <div class="bar"><i class="fa fa-instagram"></i></div>
+
+      <div class="insta-tabs" v-if="tags.length > 1">
+        <button
+          v-for="tag in tags"
+          :key="tag"
+          class="insta-tab"
+          :class="{ active: activeTag === tag }"
+          @click="activeTag = tag"
         >
-        <template slot="feeds" slot-scope="props">
-            <li class="fancy-list"> {{ props.feed.link }} </li>
-        </template>
-        <template slot="error" slot-scope="props">
-            <div class="fancy-alert"> {{ props.error.error_message }} </div>
-        </template>
-        <!-- <template slot="feeds" scope="props">
-            <li class="instagram-media fancy-list"> {{ props.feed.link }} </li>
-            <img :src=" props.feed.images.standard_resolution.url " alt="">
-        </template>
-        <template slot="error" scope="props">
-            <div class="fancy-alert"> {{ props.error.error_message }} </div>
-        </template> -->
-    </vue-instagram>
+          #{{ tag }}
+        </button>
+      </div>
+
+      <!-- Behold widget — injected programmatically to avoid Vue component resolution -->
+      <div ref="widgetContainer"></div>
+    </div>
+  </div>
 </template>
 
 <script>
-    import VueInstagram from 'vue-instagram' // https://www.npmjs.com/package/vue-instagram
+export default {
+  name: 'InstaPostsComponent',
 
-    // token generation (2024) -> https://wpsocialninja.com/instagram-access-token/
+  data() {
+    const raw = process.env.MIX_INSTAGRAM_HASHTAGS || '';
+    const tags = raw.split(',').map(t => t.trim()).filter(Boolean);
+    return {
+      feedId: process.env.MIX_INSTAGRAM_FEED_ID || '',
+      tags,
+      activeTag: tags[0] || '',
+    };
+  },
 
-    export default {
-        components: {
-            VueInstagram
-        }
+  mounted() {
+    console.log('[InstaPost] feedId:', this.feedId);
+    if (!this.feedId) return;
+
+    if (!window.customElements.get('behold-widget')) {
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = 'https://w.behold.so/widget.js';
+      document.head.appendChild(script);
     }
+
+    const widget = document.createElement('behold-widget');
+    widget.setAttribute('feed-id', this.feedId);
+    this.$refs.widgetContainer.appendChild(widget);
+  },
+};
 </script>
 
-<style>
+<style scoped>
+.insta-section {
+  padding: 60px 0;
+}
 
+.insta-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.insta-tab {
+  padding: 6px 18px;
+  border: 2px solid #c13584;
+  background: transparent;
+  color: #c13584;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.insta-tab.active,
+.insta-tab:hover {
+  background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+  border-color: transparent;
+  color: #fff;
+}
 </style>

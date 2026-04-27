@@ -113,6 +113,10 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_actyve_slide/{slide_id}', 'get_actyve_slide');
     });
 
+    Route::controller(\App\Http\Controllers\Api\Guide\InstagramController::class)->prefix('get_instagram')->group(function () {
+        Route::get('/posts/{tag?}', 'get_posts');
+    });
+
 
     Route::controller(GeneralInfoController::class)->prefix('get_general_info')->group( function() {
         Route::get('/get_all_general_infos', 'get_all_general_infos');
@@ -196,5 +200,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::post('/create', 'create');
         Route::post('/callback', 'callback')->name('donations.callback');
         Route::get('/status/{id}', 'status');
+    });
+
+    Route::controller(\App\Http\Controllers\Api\Guide\Donations\DonationPaymentController::class)->prefix('get_donation')->group( function() {
+        Route::get('/tbc_info', 'get_tbc_info');
     });
 });

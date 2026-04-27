@@ -3,31 +3,21 @@
             :show="is_show_modal"
             title="Add locale data"
             @close="close_model"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            @save="$refs.add_site_locale_form.requestSubmit()"
+            :saveButton="{ visible: true, title: 'Save' }"
+            :cancelButton="{ visible: false }"
         >
         <div>
             <validator_alerts_component
                 :errors_prop="error"
             />
 
-            <form method="POST" id="add_site_locale_data_form" v-on:submit.prevent="add_site_local_data">
+            <form ref="add_site_locale_form" id="add_site_locale_data_form" v-on:submit.prevent="add_site_local_data">
                 <input type="text" class="form-control" v-model="data.slug" name="slug" id="Title" placeholder="Title" slug="Title">
 
                 <big_editor v-model="data.ka_data" />
                 <big_editor v-model="data.us_data" />
             </form>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    :class="{'btn btn-primary': true}"
-                    form="add_site_locale_data_form"
-                >
-                Save
-                </button>
-            </div>
         </div>
     </StackModal>
 </template>
@@ -74,7 +64,7 @@
         methods: {
             add_site_local_data(){
                 axios
-                .post('/set_site_data/add_site_local_data', {        
+                .post('set_site_data/add_site_local_data', {
                     data: this.data,
                     _method: 'post'
                 })

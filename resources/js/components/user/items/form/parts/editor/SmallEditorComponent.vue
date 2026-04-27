@@ -3,7 +3,7 @@
     <button
       type="button" 
       @click="showSource = !showSource" 
-      class="btn btn-outline-secondary mb-2"
+      class="btn btn-secondary mb-2"
       :class="{ 'btn-success': showSource }"
     >
       {{ showSource ? 'Hide Source' : 'Check Source' }}
@@ -15,7 +15,7 @@
         <button
           type="button" 
           @click="copySource" 
-          class="btn btn-sm btn-secondary"
+          class="btn btn-secondary btn-sm"
         >
           Copy to Clipboard
         </button>

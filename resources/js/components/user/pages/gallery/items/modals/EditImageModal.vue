@@ -3,9 +3,10 @@
     <StackModal
             :show="is_edit_image_modal"
             title="Edit image"
-            @close="close_edit_image_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            @close="close_edit_image_modal(true)"
+            @save="$refs.editingForm.requestSubmit()"
+            :saveButton="{ visible: true, title: 'Save' }"
+            :cancelButton="{ visible: false }"
         >
         <div>
             <span v-show="is_loading">
@@ -24,7 +25,7 @@
                         </div>
                         
                         <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" value="image" v-on:change="onEditImageChange">
+                            <input type="file" name="image" id="image" v-on:change="onEditImageChange">
                         </div>
 
                         <div class="row">
@@ -59,23 +60,24 @@
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12 image_add_modal_form">
+                                <select class="form-control" name="text_position" v-model="editing_data.text_position">
+                                    <option value="center">Center</option>
+                                    <option value="left-top">Top Left</option>
+                                    <option value="right-top">Top Right</option>
+                                    <option value="left-bottom">Bottom Left</option>
+                                    <option value="right-bottom">Bottom Right</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix row">
+                            <div class="col-md-12 image_add_modal_form">
                                 <input type="text" name="link" class="form-control" placeholder="Article Link" v-model="editing_data.link">
                             </div>
                         </div>
                     </div>
                 </form>
             </span>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    form="slider_iamge_edit_form"
-                    :class="{'btn btn-primary': true}"
-                >
-                Save
-                </button>
-            </div>
         </div>
     </StackModal>
 </template>
@@ -113,7 +115,7 @@
             get_actyve_image(id){
                 this.is_loading = true
                 axios
-                .get("/set_head_slider/get_editing_slide/"+id)
+                .get("set_head_slider/get_editing_slide/"+id)
                 .then(response => {
                     this.editing_data = response.data
                 })
@@ -167,13 +169,13 @@
                 this.category_id = ''
 
                 let formData = new FormData();
-                if(this.editing_image != [] || this.editing_image != null){
+                if(this.editing_image instanceof File){
                     formData.append('image', this.editing_image);
                 }
                 formData.append('data', JSON.stringify(this.editing_data))
 
                 axios
-                .post('/set_head_slider/edit_slide/' + id, 
+                .post('set_head_slider/edit_slide/' + id,
                     formData,
                 )
                 .then(response => {

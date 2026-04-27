@@ -19,7 +19,13 @@ class Donation extends Model
         'flitt_order_id',
         'response_url',
         'server_callback_url',
+        'user_id',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(\App\Models\User::class);
+    }
 
     public const STATUS_PENDING = 'pending';
     public const STATUS_PROCESSING = 'processing';

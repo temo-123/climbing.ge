@@ -4,7 +4,7 @@
             <div class="container">
 
                 <h2 class='index_h2 functional_block_title'>
-                    <router-link :to="{name: 'events', params: {lang: this.$i18n.locale}}">
+                    <router-link :to="{name: 'events', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}">
                         {{ $t('guide.title.events') }}
                     </router-link>
                 </h2>

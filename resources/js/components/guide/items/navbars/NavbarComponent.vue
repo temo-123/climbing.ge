@@ -33,17 +33,17 @@
                         </a>
 
                         <ul class="dropdown-menu dropdown_menu_right_unset" role="menu" style="background-color: #278da5;">
-                            <li><router-link style="font-size: 1.5em;" :to="{name: 'indoors', params: {lang: this.$i18n.locale}}" exact>  <span> {{ $t('guide.menu.indoor climbing') }}  </span> </router-link></li>
-                            <li><router-link style="font-size: 1.5em;" :to="{name: 'outdoors', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('guide.menu.outdoor climbing') }} </span> </router-link></li>
-                            <li><router-link style="font-size: 1.5em;" :to="{name: 'spot_projects', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('guide.menu.spots projects') }} </span> </router-link></li>
+                            <li><router-link style="font-size: 1.5em;" :to="{name: 'indoors', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>  <span> {{ $t('guide.menu.indoor climbing') }}  </span> </router-link></li>
+                            <li><router-link style="font-size: 1.5em;" :to="{name: 'outdoors', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact> <span> {{ $t('guide.menu.outdoor climbing') }} </span> </router-link></li>
+                            <li><router-link style="font-size: 1.5em;" :to="{name: 'spot_projects', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact> <span> {{ $t('guide.menu.spots projects') }} </span> </router-link></li>
                         </ul>
                     </li>
 
-                    <li><router-link :to="{name: 'mountaineerings', params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('guide.menu.mountaineering') }}      </span> </router-link></li>
-                    <li><router-link :to="{name: 'ices', params: {lang: this.$i18n.locale}}" exact>            <span> {{ $t('guide.menu.ice climbing') }}        </span> </router-link></li>
-                    <li><router-link :to="{name: 'events', params: {lang: this.$i18n.locale}}" exact>          <span> {{ $t('guide.menu.events') }}              </span> </router-link></li>
-                    <li><router-link :to="{name: 'others', params: {lang: this.$i18n.locale}}" exact>          <span> {{ $t('guide.menu.other') }}               </span> </router-link></li>
-                    <li><router-link :to="{name: 'about_us', params: {lang: this.$i18n.locale}}" exact>        <span> {{ $t('guide.menu.about us') }}            </span> </router-link></li>
+                    <li><router-link :to="{name: 'mountaineerings', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact> <span> {{ $t('guide.menu.mountaineering') }}      </span> </router-link></li>
+                    <li><router-link :to="{name: 'ices', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>            <span> {{ $t('guide.menu.ice climbing') }}        </span> </router-link></li>
+                    <li><router-link :to="{name: 'events', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>          <span> {{ $t('guide.menu.events') }}              </span> </router-link></li>
+                    <li><router-link :to="{name: 'others', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>          <span> {{ $t('guide.menu.other') }}               </span> </router-link></li>
+                    <li><router-link :to="{name: 'about_us', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}" exact>        <span> {{ $t('guide.menu.about us') }}            </span> </router-link></li>
 
                     <li class="dropdown">
                         <a class="margin_right cursor_pointer" data-toggle="dropdown">

@@ -2,15 +2,16 @@
     <StackModal
             :show="is_show_modal"
             title="Edit locale data"
-            @close="close_model"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            @save="$refs.edit_site_locale_data_form.requestSubmit()"
+            @close="close_model"
         >
         <validator_alerts_component
             :errors_prop="error"
         />
 
-        <form method="POST" id="edit_site_locale_data_form" v-on:submit.prevent="edit_site_local_data">
+        <form ref="edit_site_locale_data_form" id="edit_site_locale_data_form" v-on:submit.prevent="edit_site_local_data">
             <p><strong>Slug:</strong> {{ current_item && current_item.slug ? current_item.slug : '' }}</p>
             <div v-if="current_language === 'ka'">
                 <label>Georgian Data:</label>
@@ -21,17 +22,6 @@
                 <big_editor v-model="data.us_data" />
             </div>
         </form>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    :class="{'btn btn-primary': true}"
-                    form="edit_site_locale_data_form"
-                >
-                Save
-                </button>
-            </div>
-        </div>
     </StackModal>
 </template>
 
@@ -78,7 +68,7 @@
         methods: {
             edit_site_local_data(){
                 axios
-                .post('/set_site_data/edit_site_local_data/' + this.current_item.id + '/' + this.current_language, {
+                .post('set_site_data/edit_site_local_data/' + this.current_item.id + '/' + this.current_language, {
                     data: this.data,
                     _method: 'post'
                 })

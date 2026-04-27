@@ -66,14 +66,12 @@
 
 <script>
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
-    // import articlPage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
-    // import Donation from '../../items/DonationComponent.vue'
+    import Donation from '../../items/DonationComponent.vue'
 
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
     import articleRightMenu from '../../items/navbars/RightMenuComponent'
-    // import SimilarArticles from '../../items/SimilarArticlesComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import articleTextBlocks from '../../items/article/ArticleTextBlocksComponent'
 
@@ -87,7 +85,7 @@
 
             articlePreloader,
             metaData,
-            // Donation
+            Donation,
         },
         data: function () {
             return {
@@ -108,14 +106,11 @@
         methods: {
             get_partner(){
                 axios
-                .get('/get_article/get_locale_article_on_page/tech_tip/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
+                .get('get_article/get_locale_article_on_page/special_article/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.partner = response.data
-
-                    this.$refs.article_page.update_similar_articles_component(this.partner.id)
                 })
-                .catch(error =>{
-                })
+                .catch(error => console.log(error))
                 .finally(() => this.article_loading = false);
             },
         }

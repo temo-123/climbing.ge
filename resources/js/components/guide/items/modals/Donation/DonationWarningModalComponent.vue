@@ -2,20 +2,29 @@
     <div>
         <StackModal 
             v-model="is_show_warning_donation_modal" 
-            title="Support Title"
+            :title="$t('guide.donation.support_title')"
             size="md"
             :cancelButton="{
                 visible: true,
                 title: $t('guide.close'),
                 btnClass: { 'btn btn-secondary px-4 py-2': true },
             }"
+            :saveButton="{ visible: false, title: 'Save' }"
             @close="closeModal"
         >
             <div class="p-8">
-                <h4 class="modal-title text-center mb-8 text-2xl font-bold text-gray-800">
+                <!-- <h4 class="modal-title text-center mb-8 text-2xl font-bold text-gray-800">
                     <i class="fa fa-heart text-red-500 mr-4 text-3xl"></i>
-                    {{ $t('guide.donation.support_title') }}
+                    {{ $t('guide.donation.support_terms_of_use_title') }}
+                </h4> -->
+
+                <span v-html="this.$siteData.data.donation_short_description" class="block mb-6 text-gray-700 text-lg" style="text-align: center;"></span>
+
+                <h4 class="modal-title text-center mb-8 text-2xl font-bold text-gray-800">
+                    {{ $t('guide.donation.support_terms_of_use_title') }}
                 </h4>
+
+                <span v-html="this.$siteData.data.donation_terms_of_use" class="block mb-6 text-gray-700 text-lg" style="text-align: center;"></span>
                 
                 <div class="space-y-6 text-center">
                     <label class="checkbox-label flex items-center justify-center cursor-pointer mx-auto mb-8">

@@ -7,6 +7,7 @@ use App\Models\Guide\Donation;
 use App\Services\FlittPaymentService;
 use Flitt\Result\Result;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class DonationPaymentController extends Controller
 {
@@ -18,35 +19,53 @@ class DonationPaymentController extends Controller
      */
     public function processDonation(Request $request)
     {
-        $validated = $request->validate([
-            'amount' => 'required|numeric|min:1',
-            'name' => 'nullable|string|max:255',
-            'surname' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-            'age' => 'nullable|integer|min:1|max:150',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|string|max:20',
-        ]);
+        $request->validate(['amount' => 'required|numeric|min:1']);
 
-        $amount = $validated['amount'];
-        $name = $validated['name'] ?? null;
-        $surname = $validated['surname'] ?? null;
-        $country = $validated['country'] ?? null;
-        $age = $validated['age'] ?? null;
-        $email = $validated['email'] ?? null;
-        $phoneNumber = $validated['phone_number'] ?? null;
+        $authUser = \Auth::user();
+        $userId = null;
+
+        if ($authUser) {
+            $name        = $authUser->name;
+            $surname     = $authUser->surname;
+            $email       = $authUser->email;
+            $phoneNumber = $authUser->phone_number ?? null;
+            $country     = $authUser->country ?? null;
+            $age         = null;
+            $userId      = $authUser->id;
+        } else {
+            $request->validate([
+                'name'         => 'nullable|string|max:255',
+                'surname'      => 'nullable|string|max:255',
+                'country'      => 'nullable|string|max:255',
+                'age'          => 'nullable|integer|min:1|max:150',
+                'email'        => 'nullable|email|max:255',
+                'phone_number' => 'nullable|string|max:20',
+            ]);
+            $name        = $request->name;
+            $surname     = $request->surname;
+            $email       = $request->email;
+            $phoneNumber = $request->phone_number;
+            $country     = $request->country;
+            $age         = $request->age;
+
+            if ($email) {
+                $matched = \App\Models\User::where('email', $email)->first();
+                if ($matched) $userId = $matched->id;
+            }
+        }
 
         // Create donation record
         $donation = Donation::create([
-            'name' => $name,
-            'surname' => $surname,
-            'country' => $country,
-            'age' => $age,
-            'email' => $email,
+            'name'         => $name,
+            'surname'      => $surname,
+            'country'      => $country,
+            'age'          => $age,
+            'email'        => $email,
             'phone_number' => $phoneNumber,
-            'amount' => $amount,
-            'currency' => 'GEL',
-            'status' => Donation::STATUS_PENDING,
+            'amount'       => $request->amount,
+            'currency'     => 'GEL',
+            'status'       => Donation::STATUS_PENDING,
+            'user_id'      => $userId,
         ]);
 
         // Generate Flitt checkout URL
@@ -271,6 +290,49 @@ class DonationPaymentController extends Controller
      * @param Donation $donation
      * @return void
      */
+    public function get_tbc_info(Request $request)
+    {
+        $ip = $request->header('CF-Connecting-IP')
+            ?? $request->header('X-Forwarded-For')
+            ?? $request->ip();
+
+        // Take the first IP if comma-separated list
+        $ip = trim(explode(',', $ip)[0]);
+
+        $isGeorgian = $this->isGeorgianIp($ip);
+
+        if (!$isGeorgian) {
+            return response()->json(['allowed' => false]);
+        }
+
+        return response()->json([
+            'allowed'      => true,
+            'iban'         => env('DONATION_TBC_IBAN', ''),
+            'account_name' => env('DONATION_TBC_ACCOUNT_NAME', ''),
+            'bank_code'    => env('DONATION_TBC_BANK_CODE', 'TBCBGE22'),
+            'bank_name'    => env('DONATION_TBC_BANK_NAME', 'TBC Bank'),
+        ]);
+    }
+
+    private function isGeorgianIp(string $ip): bool
+    {
+        // Allow localhost / private ranges in development
+        if (in_array($ip, ['127.0.0.1', '::1']) || str_starts_with($ip, '192.168.') || str_starts_with($ip, '10.')) {
+            return app()->environment('local', 'development');
+        }
+
+        try {
+            $response = Http::timeout(3)->get("http://ip-api.com/json/{$ip}?fields=countryCode");
+            if ($response->successful()) {
+                return $response->json('countryCode') === 'GE';
+            }
+        } catch (\Exception $e) {
+            \Log::warning('Geo IP check failed: ' . $e->getMessage());
+        }
+
+        return false;
+    }
+
     private function checkFlittStatus(Donation $donation): void
     {
         if (!$donation->flitt_order_id || $donation->isPaid() || $donation->isFailed()) {

@@ -3,8 +3,9 @@
         :show="is_add_image_modal"
         title="Add image"
         @close="close_add_image_modal()"
-        :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        @save="$refs.slider_image_add_form.requestSubmit()"
+        :saveButton="{ visible: true, title: 'Save' }"
+        :cancelButton="{ visible: false }"
     >
         <div>
             <span v-show="is_loading">
@@ -19,7 +20,7 @@
                         />
 
                         <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" value="image" v-on:change="onAddImageChange" required>
+                            <input type="file" name="image" id="image" v-on:change="onAddImageChange" required>
                         </div>
 
                         <div class="row">
@@ -54,23 +55,24 @@
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12 image_add_modal_form">
+                                <select class="form-control" name="text_position" v-model="form_data.text_position">
+                                    <option value="center">Center</option>
+                                    <option value="left-top">Top Left</option>
+                                    <option value="right-top">Top Right</option>
+                                    <option value="left-bottom">Bottom Left</option>
+                                    <option value="right-bottom">Bottom Right</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix row">
+                            <div class="col-md-12 image_add_modal_form">
                                     <input type="text" name="link" class="form-control" placeholder="Article Link"  v-model="form_data.link">
                             </div>
                         </div>
                     </div>
                 </form>
             </span>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    :class="{'btn btn-primary': true}"
-                    form="slider_image_add_form"
-                >
-                Save
-                </button>
-            </div>
         </div>
     </StackModal>
 </template>
@@ -142,6 +144,7 @@
                     title: '',
                     text: '',
                     link: '',
+                    text_position: 'center',
                 }
             },
 
@@ -159,7 +162,7 @@
 
 
                 axios
-                .post('/set_head_slider/add_slide/', 
+                .post('set_head_slider/add_slide/',
                     formData,
                 )
                 .then(response => {

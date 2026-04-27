@@ -63,18 +63,19 @@
                 v-model="is_add_adres"
                 title="Add New Address"
                 @close="is_add_adres=false"
+                @save="$refs.add_user_adres_form.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <form class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
+            <form ref="add_user_adres_form" class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
                     <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
 
-                    <select class="form-control" v-model="adding_data.country_id" name="Currency"> 
+                    <select class="form-control" v-model="adding_data.region_id" name="Currency"> 
                         <option :value="0" disabled>Country</option>
-                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
+                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.region }}</option>
                     </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Please select a country.</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">Please select a country.</div>
 
                     <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
                     <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
@@ -98,19 +99,20 @@
                 v-model="is_edit_adres"
                 title="Edit Address"
                 @close="is_edit_adres=false"
+                @save="$refs.edit_user_adres_form.requestSubmit()"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
             >
-            <form class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres" >
+            <form ref="edit_user_adres_form" class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres">
 
                     <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
                     <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
 
-                    <select class="form-control" v-model="edit_data.country_id" name="Currency"> 
+                    <select class="form-control" v-model="edit_data.region_id" name="Currency"> 
                         <option :value="0" disabled>Country</option>
-                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.country }}</option>
+                        <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.region }}</option>
                     </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.country_id">Please select a country.</div>
+                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">Please select a country.</div>
 
                     <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
                     <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
@@ -170,7 +172,7 @@
 
                 adding_data: {
                     demo_name: null,
-                    country_id: 0,
+                    region_id: 0,
                     city: null,
                     strit: null,
                     number: null,
@@ -181,7 +183,7 @@
                 },
                 errors: {
                     demo_name: false,
-                    country_id: false,
+                    region_id: false,
                     city: false,
                     strit: false,
                     number: false,
@@ -191,7 +193,7 @@
                 editing_adres_id: null,
                 edit_data: {
                     demo_name: null,
-                    country_id: 0,
+                    region_id: 0,
                     city: null,
                     strit: null,
                     number: null,
@@ -211,7 +213,7 @@
         methods: {
             get_shipd_countries(){
                 axios
-                .get("/get_countries/")
+                .get("get_countries")
                 .then(response => {
                     this.qounties = response.data
                 })
@@ -235,7 +237,7 @@
             add_new_adres() {
                 this.errors = {
                     demo_name: false,
-                    country_id: false,
+                    region_id: false,
                     city: false,
                     strit: false,
                     number: false,
@@ -243,7 +245,7 @@
                 }
                 if(
                     this.adding_data.demo_name && 
-                    this.adding_data.country_id &&
+                    this.adding_data.region_id &&
                     this.adding_data.city &&
                     this.adding_data.strit &&
                     this.adding_data.number &&
@@ -259,7 +261,7 @@
                         this.get_adres(true)
                         this.adding_data = {
                             demo_name: null,
-                            country_id: 0,
+                            region_id: 0,
                             city: null,
                             strit: null,
                             number: null,
@@ -275,8 +277,8 @@
                     if(!this.adding_data.demo_name){
                         this.errors.demo_name = true
                     }
-                    if(!this.adding_data.country_id){
-                        this.errors.country_id = true
+                    if(!this.adding_data.region_id){
+                        this.errors.region_id = true
                     }
                     if(!this.adding_data.city){
                         this.errors.city = true
@@ -296,7 +298,7 @@
             edit_adres() {
                 this.errors = {
                     demo_name: false,
-                    country_id: false,
+                    region_id: false,
                     city: false,
                     strit: false,
                     number: false,
@@ -304,7 +306,7 @@
                 }
                 if(
                     this.edit_data.demo_name && 
-                    this.edit_data.country_id &&
+                    this.edit_data.region_id &&
                     this.edit_data.city &&
                     this.edit_data.strit &&
                     this.edit_data.number &&
@@ -325,8 +327,8 @@
                     if(!this.edit_data.demo_name){
                         this.errors.demo_name = true
                     }
-                    if(!this.edit_data.country_id){
-                        this.errors.country_id = true
+                    if(!this.edit_data.region_id){
+                        this.errors.region_id = true
                     }
                     if(!this.edit_data.city){
                         this.errors.city = true
@@ -359,7 +361,7 @@
             get_editing_adres(adres_id) {
                 this.edit_data = {
                     demo_name: '',
-                    country_id: 0,
+                    region_id: 0,
                     city: '',
                     strit: '',
                     number: '',
@@ -377,7 +379,7 @@
 
                     this.edit_data = {
                         demo_name: Response.data.name,
-                        country_id: Response.data.country_id,
+                        region_id: Response.data.region_id,
                         city: Response.data.city,
                         strit: Response.data.strit,
                         number: Response.data.number,
@@ -406,7 +408,7 @@
             open_edit_modal(adres_id) {
                 this.errors = {
                     demo_name: false,
-                    country_id: false,
+                    region_id: false,
                     city: false,
                     strit: false,
                     number: false,
@@ -418,7 +420,7 @@
             open_add_modal() {
                 this.errors = {
                     demo_name: false,
-                    country_id: false,
+                    region_id: false,
                     city: false,
                     strit: false,
                     number: false,

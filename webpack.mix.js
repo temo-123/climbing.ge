@@ -6,7 +6,7 @@ mix.js('resources/js/app.js', 'public/assets/js').vue({
   version: 3,
   options: {
     compilerOptions: {
-      //
+      isCustomElement: (tag) => tag === 'behold-widget'
     }
   }
 });
@@ -16,19 +16,37 @@ mix.sass('resources/sass/app.scss', 'public/assets/css');
 mix.override((webpackConfig) => {
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => !(plugin instanceof webpack.ProgressPlugin));
 
-    const patchSassLoader = (rules) => {
+    // Inject Instagram env vars into whichever DefinePlugin Mix registered
+    webpackConfig.plugins.forEach((plugin) => {
+        if (plugin.constructor.name === 'DefinePlugin' && plugin.definitions) {
+            plugin.definitions['process.env.MIX_INSTAGRAM_FEED_ID'] = JSON.stringify(process.env.MIX_INSTAGRAM_FEED_ID || '');
+            plugin.definitions['process.env.MIX_INSTAGRAM_HASHTAGS'] = JSON.stringify(process.env.MIX_INSTAGRAM_HASHTAGS || '');
+        }
+    });
+
+    const patchRules = (rules) => {
         rules.forEach((rule) => {
-            if (rule.oneOf) patchSassLoader(rule.oneOf);
+            if (rule.oneOf) patchRules(rule.oneOf);
             if (Array.isArray(rule.use)) {
                 rule.use.forEach((u) => {
                     if (u.loader && u.loader.includes('sass-loader')) {
                         u.options = { ...u.options, api: 'modern' };
                     }
+                    if (u.loader && u.loader.includes('vue-loader')) {
+                        u.options = u.options || {};
+                        u.options.compilerOptions = u.options.compilerOptions || {};
+                        u.options.compilerOptions.isCustomElement = (tag) => tag === 'behold-widget';
+                    }
                 });
+            }
+            if (rule.loader && rule.loader.includes('vue-loader')) {
+                rule.options = rule.options || {};
+                rule.options.compilerOptions = rule.options.compilerOptions || {};
+                rule.options.compilerOptions.isCustomElement = (tag) => tag === 'behold-widget';
             }
         });
     };
-    patchSassLoader(webpackConfig.module.rules);
+    patchRules(webpackConfig.module.rules);
 });
 
 mix.webpackConfig({

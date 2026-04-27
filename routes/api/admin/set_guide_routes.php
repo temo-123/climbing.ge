@@ -99,6 +99,13 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_article_categories', 'get_article_categories');
     });
 
+    Route::controller(DonationController::class)->prefix('set_donation_admin')->group( function() {
+        Route::get('/get_all_donations', 'get_all_donations');
+        Route::get('/get_donation/{id}', 'get_donation');
+        Route::post('/update_status/{id}', 'update_status');
+        Route::delete('/del_donation/{id}', 'del_donation');
+    });
+
     Route::controller(HeadSliderController::class)->prefix('set_head_slider')->group( function() {
         Route::post('/add_slide', 'add_slide');
         Route::post('/edit_slide/{slide_id}', 'edit_slide');

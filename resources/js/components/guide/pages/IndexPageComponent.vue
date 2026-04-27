@@ -63,7 +63,7 @@
 
         <indexGalleryComponent />
 
-        <!-- <instaPost /> -->
+        <instaPost />
 
         <teamMembersSliderComponent />
 
@@ -92,7 +92,7 @@
     import productsSliderComponent from '../items/shop_items_for_guide/ProductsSliderComponent'
     import teamMembersSliderComponent from '../items/TeamMembersSliderComponent'
 
-    // import instaPost from '../../global_components/InstaPostsComponent.vue'
+    import instaPost from '../../global_components/InstaPostsComponent.vue'
 
     import metaData from '../items/MetaDataComponent'
 
@@ -125,7 +125,7 @@
             specialArticleComponent,
             productsSliderComponent,
             teamMembersSliderComponent,
-            // instaPost,
+            instaPost,
         },
         mounted() {
             this.get_news()

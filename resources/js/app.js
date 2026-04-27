@@ -3,6 +3,7 @@ import "./bootstrap";
 import { createHead } from "@unhead/vue/client";
 
 const app = createApp({});
+app.config.compilerOptions.isCustomElement = (tag) => tag === 'behold-widget';
 const head = createHead();
 app.use(head);
 
@@ -185,7 +186,7 @@ app.mixin({
             
             const lang = localStorage.getItem('lang') || 'us';
             axios
-                .get("/get_site_data/get_site_locale_data_for_site/" + lang)
+                .get("get_site_data/get_site_locale_data_for_site/" + lang)
                 .then((response) => {
                     this.$siteData.data = response.data.locale_data;
                     this.$siteData.loaded = true;
@@ -368,7 +369,7 @@ setTimeout(() => {
     const lang = localStorage.getItem('lang') || 'us';
     if (!app.config.globalProperties.$siteData.loaded) {
         axios
-            .get("/get_site_data/get_site_locale_data_for_site/" + lang)
+            .get("get_site_data/get_site_locale_data_for_site/" + lang)
             .then((response) => {
                 app.config.globalProperties.$siteData.data = response.data.locale_data;
                 app.config.globalProperties.$siteData.loaded = true;

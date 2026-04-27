@@ -121,6 +121,7 @@ const routes = [
             { path: 'warehouse/options/:id', name: 'warehouseOptions', component: load('warehouses/warehouseOptionsComponent'), meta: {title: 'user page'}},
 
             { path: 'live_cameras', name: 'liveCamerasList', component: load('live_camera/LiveCamerasListComponent'), meta: {title: 'user page'}},
+            { path: 'donations', name: 'donationsList', component: load('donations/DonationListPageComponent'), meta: {title: 'user page'}},
 
             { path: 'export_tips', name: 'exportTips', component: load('expoet/exportComponent'), meta: {title: 'user page'}},
 

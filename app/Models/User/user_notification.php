@@ -11,6 +11,8 @@ class user_notification extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['user_id', 'notification_type'];
+
 	public function user()
 	{
 		return $this->hasOne(User::class, 'id', 'user_id');

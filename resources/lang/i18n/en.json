@@ -45,8 +45,10 @@
             "country": "Country",
             "country_placeholder": "Enter your country",
             "age": "Age",
-            "age_placeholder": "Enter your age"
+            "age_placeholder": "Enter your age",
+            "warning_message": "I understand that this is a voluntary donation and is non-refundable"
         },
+        "continue_donation": "Continue to Donation",
         "close": "Close",
         "meta": {
             "index": "Rock Climbing & Mountaineering in Georgia",

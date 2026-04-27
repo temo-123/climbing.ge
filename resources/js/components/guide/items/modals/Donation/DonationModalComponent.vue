@@ -3,158 +3,225 @@
     v-model="is_show_donation_modal"
     title="Support"
     size="lg"
-    :cancelButton="{ visible: true, title: $t('guide.close'), btnClass: { 'btn btn-secondary': true } }"
+    :cancelButton="{ visible: false }"
+    :saveButton="{ visible: false }"
     @close="close"
   >
-    <div class="modal-body p-4 md:p-8">
-      
+    <div class="modal-body p-4">
+
       <!-- Header -->
-      <div class="text-center mb-8">
-        <i class="fa fa-heart text-4xl text-danger mb-4 block"></i>
-        <h4 class="text-2xl font-bold mb-2">{{ $t('guide.donation.support_title') }}</h4>
-        <p class="text-muted">{{ $t('guide.donation.description') }}</p>
+      <div class="text-center mb-4">
+        <i class="fa fa-heart text-danger fa-2x mb-2 d-block"></i>
+        <h4 class="font-bold mb-1">{{ $t('guide.donation.support_title') }}</h4>
+        <span v-html="this.$siteData.data.donation_description" class="block mb-6 text-gray-700 text-lg" style="text-align: center;"></span>
       </div>
 
-      <!-- Donator Info -->
-      <div class="bg-light p-6 rounded mb-6">
-        <h5 class="font-weight-bold mb-5">
-          <i class="fa fa-user mr-2 text-primary"></i>{{ $t('guide.donation.donator_info') }}
-        </h5>
-        
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">{{ $t('guide.donation.name') }}</label>
-            <input v-model="donator.name" type="text" class="form-control" :placeholder="$t('guide.donation.name_placeholder')">
+      <!-- Payment method tabs -->
+      <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+          <a class="nav-link" :class="{ active: activeTab === 'card' }" href="#" @click.prevent="activeTab = 'card'">
+            <i class="fa fa-credit-card mr-1"></i> Card
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" :class="{ active: activeTab === 'bank' }" href="#" @click.prevent="switchToBank">
+            <i class="fa fa-bank mr-1"></i> Bank Transfer
+          </a>
+        </li>
+      </ul>
+
+      <!-- ── CARD PAYMENT TAB ── -->
+      <div v-show="activeTab === 'card'">
+
+        <!-- Donator Info -->
+        <div class="bg-light p-3 rounded mb-4">
+          <h5 class="font-weight-bold mb-3">
+            <i class="fa fa-user mr-2 text-primary"></i>{{ $t('guide.donation.donator_info') }}
+          </h5>
+
+          <!-- Logged-in user: show read-only summary -->
+          <div v-if="authUser" class="alert alert-info mb-0">
+            <i class="fa fa-check-circle mr-2"></i>
+            Donating as <strong>{{ authUser.name }} {{ authUser.surname }}</strong> ({{ authUser.email }})
           </div>
-          
-          <div class="col-md-6 mb-3">
-            <label class="form-label">{{ $t('guide.donation.surname') }}</label>
-            <input v-model="donator.surname" type="text" class="form-control" :placeholder="$t('guide.donation.surname_placeholder')">
+
+          <!-- Guest: manual form -->
+          <template v-else>
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ $t('guide.donation.name') }}</label>
+                <input v-model="donator.name" type="text" class="form-control" :placeholder="$t('guide.donation.name_placeholder')">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ $t('guide.donation.surname') }}</label>
+                <input v-model="donator.surname" type="text" class="form-control" :placeholder="$t('guide.donation.surname_placeholder')">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label fw-bold">{{ $t('guide.donation.email') }} *</label>
+                <input v-model="donator.email" type="email" class="form-control" :placeholder="$t('guide.donation.email_placeholder')">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ $t('guide.donation.phone') }}</label>
+                <input v-model="donator.phone_number" type="tel" class="form-control" :placeholder="$t('guide.donation.phone_placeholder')">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ $t('guide.donation.country') }}</label>
+                <input v-model="donator.country" type="text" class="form-control" :placeholder="$t('guide.donation.country_placeholder')">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">{{ $t('guide.donation.age') }}</label>
+                <input v-model="donator.age" type="number" class="form-control" :placeholder="$t('guide.donation.age_placeholder')" min="1" max="150">
+              </div>
+            </div>
+          </template>
+        </div>
+
+        <!-- Amount Selection -->
+        <div class="bg-light p-3 rounded mb-4">
+          <h5 class="font-weight-bold mb-3 text-center">
+            <i class="fa fa-money mr-2 text-warning"></i>{{ $t('guide.donation.select_amount') }}
+          </h5>
+
+          <div class="d-flex flex-wrap justify-content-center mb-3">
+            <button
+              v-for="amount in predefinedAmounts"
+              :key="amount"
+              @click="selectAmount(amount)"
+
+              class="btn btn-primary rounded-pill"
+              :class="{ 'btn-primary text-white': selectedAmount === amount }"
+
+              style="max-width: 100%; margin-right: 2%; margin-bottom: 10px;"
+            >
+              {{ amount }} {{ $t('guide.donation.gel') }}
+            </button>
+          </div>
+
+          <div class="input-group mb-3">
+            <span class="input-group-text bg-success text-white"><i class="fa fa-money"></i></span>
+            <input
+              type="number"
+              v-model="customAmount"
+              @input="onCustomAmountInput"
+              class="form-control"
+              placeholder="Custom amount (GEL)"
+              min="1"
+            >
+            <span class="input-group-text bg-success text-white font-weight-bold">GEL</span>
+          </div>
+
+          <div class="alert alert-success text-center mb-0">
+            <strong>{{ $t('guide.donation.selected') }}: {{ displayAmount }} {{ $t('guide.donation.gel') }}</strong>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label fw-bold">{{ $t('guide.donation.email') }} *</label>
-            <input v-model="donator.email" type="email" class="form-control" :placeholder="$t('guide.donation.email_placeholder')" required>
+        <!-- Donate Button -->
+        <button
+          @click="processDonation"
+          :disabled="!isValidAmount || loading"
+          class="btn btn-success btn-lg btn-block mb-3"
+        >
+          <span v-if="loading" class="spinner-border spinner-border-sm mr-2"></span>
+          <i v-else class="fa fa-heart mr-2"></i>
+          {{ $t('guide.donation.donate_button') + ' ' + displayAmount + ' ' + $t('guide.donation.gel') }}
+        </button>
+
+        <div v-if="donationSuccess" class="alert alert-success text-center">
+          <i class="fa fa-check-circle mr-2"></i> {{ $t('guide.donation.success') }}
+        </div>
+        <div v-if="errorMessage" class="alert alert-danger text-center">
+          <i class="fa fa-exclamation-circle mr-2"></i> {{ errorMessage }}
+        </div>
+      </div>
+
+      <!-- ── BANK TRANSFER TAB ── -->
+      <div v-show="activeTab === 'bank'">
+
+        <div v-if="bankLoading" class="text-center py-5">
+          <span class="spinner-border text-success"></span>
+          <p class="mt-2 text-muted">Checking availability...</p>
+        </div>
+
+        <!-- Not allowed (outside Georgia) -->
+        <div v-else-if="bankInfo && !bankInfo.allowed" class="text-center py-4">
+          <i class="fa fa-map-marker fa-3x text-muted mb-3 d-block"></i>
+          <h5 class="text-muted">Bank transfer is only available in Georgia</h5>
+          <p class="text-muted">Please use card payment to donate from your country.</p>
+        </div>
+
+        <!-- Georgian user — show IBAN -->
+        <div v-else-if="bankInfo && bankInfo.allowed">
+          <div class="alert alert-info mb-4">
+            <i class="fa fa-info-circle mr-2"></i>
+            Transfer any amount directly to our TBC Bank account. After the transfer, your donation will be confirmed.
           </div>
-          
-          <div class="col-md-6 mb-3">
-            <label class="form-label">{{ $t('guide.donation.phone') }}</label>
-            <input v-model="donator.phone_number" type="tel" class="form-control" :placeholder="$t('guide.donation.phone_placeholder')">
+
+          <div class="bank-detail-card p-4 rounded mb-2">
+            <div class="bank-detail-row">
+              <span class="bank-detail-label">Bank</span>
+              <span class="bank-detail-value">{{ bankInfo.bank_name }}</span>
+            </div>
+            <div class="bank-detail-row">
+              <span class="bank-detail-label">SWIFT / BIC</span>
+              <span class="bank-detail-value">{{ bankInfo.bank_code }}</span>
+            </div>
+            <div class="bank-detail-row">
+              <span class="bank-detail-label">Account name</span>
+              <span class="bank-detail-value">{{ bankInfo.account_name }}</span>
+            </div>
+            <div class="bank-detail-row iban-row">
+              <span class="bank-detail-label">IBAN</span>
+              <span class="bank-detail-value iban-value">{{ bankInfo.iban }}</span>
+              <button class="btn btn-sm btn-outline-secondary ml-2 copy-btn" @click="copyIban" :class="{ 'btn-success text-white': ibanCopied }">
+                <i class="fa" :class="ibanCopied ? 'fa-check' : 'fa-copy'"></i>
+                {{ ibanCopied ? 'Copied!' : 'Copy' }}
+              </button>
+            </div>
+            <div class="bank-detail-row">
+              <span class="bank-detail-label">Currency</span>
+              <span class="bank-detail-value">GEL (Georgian Lari)</span>
+            </div>
+          </div>
+
+          <div class="alert alert-warning mt-3 mb-0">
+            <i class="fa fa-exclamation-triangle mr-2"></i>
+            Please use <strong>donation</strong> as the payment description.
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">{{ $t('guide.donation.country') }}</label>
-            <input v-model="donator.country" type="text" class="form-control" :placeholder="$t('guide.donation.country_placeholder')">
-          </div>
-          
-          <div class="col-md-6 mb-3">
-            <label class="form-label">{{ $t('guide.donation.age') }}</label>
-            <input v-model="donator.age" type="number" class="form-control" :placeholder="$t('guide.donation.age_placeholder')" min="1" max="150">
-          </div>
-        </div>
-      </div>
-
-      <!-- Amount Selection -->
-      <div class="bg-light p-6 rounded mb-6">
-        <h5 class="font-weight-bold mb-5 text-center">
-          <i class="fa fa-money mr-2 text-warning"></i>{{ $t('guide.donation.select_amount') }}
-        </h5>
-
-        <div class="d-flex flex-wrap gap-3 mb-6 justify-content-center donation_button_group">
-          <button 
-            v-for="amount in predefinedAmounts" 
-            :key="amount"
-            @click="selectAmount(amount)"
-            class="btn btn-outline-primary btn-lg px-5 py-4 m-2 rounded-pill shadow-sm hover:shadow-md transition-shadow donation_btn"
-            :class="{ 'btn-primary text-white shadow-lg': selectedAmount === amount }"
-          >
-            {{ amount }} {{ $t('guide.donation.gel') }}
-          </button>
+        <div v-else-if="bankError" class="alert alert-danger text-center">
+          <i class="fa fa-exclamation-circle mr-2"></i> {{ bankError }}
         </div>
 
-        <div class="input-group mb-6">
-          <span class="input-group-text bg-success text-white border-0 px-4" style="min-width: 55px;">
-            <i class="fa fa-money"></i>
-          </span>
-          <input 
-            type="number" 
-            v-model="customAmount"
-            @input="onCustomAmountInput"
-            class="form-control form-control-lg border-start-0 rounded-end-pill"
-            placeholder="Enter custom amount (GEL)"
-            min="1"
-          >
-          <span class="input-group-text bg-success text-white border-0 rounded-end-pill px-4" style="min-width: 70px; font-weight: bold;">
-            GEL
-          </span>
-        </div>
-
-        <div class="alert alert-success text-center p-4 rounded-pill">
-          <strong>{{ $t('guide.donation.selected') }}: {{ displayAmount }} {{ $t('guide.donation.gel') }}</strong>
-        </div>
       </div>
 
-      <!-- Donate Button -->
-      <button 
-        @click="processDonation"
-        :disabled="!isValidAmount || loading"
-        class="btn btn-success btn-lg btn-block mb-4 px-6 py-5 font-weight-bold rounded-pill shadow-lg border-0 position-relative overflow-hidden"
-        style="background: linear-gradient(135deg, #28a745 0%, #20c997 50%, #28a745 100%) !important; font-size: 1.25rem;"
-      >
-        <span v-if="loading" class="spinner-border spinner-border-sm me-2" role="status"></span>
-        <i v-else class="fa fa-heart me-3"></i>
-        {{ loading ? $t('guide.donation.processing') : $t('guide.donation.donate_button') }} {{ displayAmount }} {{ $t('guide.donation.gel') }}
-        <span class="position-absolute top-0 start-0 w-100 h-100 opacity-0 hover:opacity-100 transition-opacity d-flex align-items-center justify-content-center">
-          <i class="fa fa-arrow-right fa-2x"></i>
-        </span>
-      >
-        <i v-if="loading" class="fa fa-spinner fa-spin mr-2"></i>
-        <i v-else class="fa fa-heart mr-2"></i>
-        {{ loading ? $t('guide.donation.processing') : $t('guide.donation.donate_button') + ' ' + displayAmount + ' ' + $t('guide.donation.gel') }}
-      </button>
-
-      <!-- Messages -->
-      <div v-if="donationSuccess && checkoutUrl" class="alert alert-success text-center p-4 rounded">
-        <i class="fa fa-check-circle fa-2x mr-2 text-success"></i>
-        {{ $t('guide.donation.redirecting') }}
-      </div>
-
-      <div v-if="donationSuccess && !checkoutUrl" class="alert alert-success text-center p-4 rounded">
-        <i class="fa fa-check-circle fa-2x mr-2 text-success"></i>
-        {{ $t('guide.donation.success') }}
-      </div>
-
-      <div v-if="errorMessage" class="alert alert-danger text-center p-4 rounded">
-        <i class="fa fa-exclamation-circle fa-2x mr-2 text-danger"></i>
-        {{ errorMessage }}
-      </div>
     </div>
   </StackModal>
 </template>
 
 <script>
-import axios from 'axios';
-// import StackModal from '@innologica/vue-stackable-modal'  // Global
+// import { mapGetters } from 'vuex';
 
 export default {
     name: 'DonationModalComponent',
 
-    props: {},
-
     data: function() {
         return {
             is_show_donation_modal: false,
+            activeTab: 'card',
+
             predefinedAmounts: [5, 10, 20, 50, 100, 200],
             selectedAmount: null,
             customAmount: null,
             loading: false,
             donationSuccess: false,
             errorMessage: '',
-            checkoutUrl: '',
             donator: {
                 name: '',
                 surname: '',
@@ -163,23 +230,23 @@ export default {
                 country: '',
                 age: null,
             },
+
+            bankLoading: false,
+            bankInfo: null,
+            bankError: '',
+            ibanCopied: false,
         };
     },
 
     computed: {
+        // ...mapGetters({ authUser: 'auth_user/get_auth_user' }),
         displayAmount() {
-            if (this.selectedAmount !== null) {
-                return this.selectedAmount;
-            }
-            if (this.customAmount !== null && this.customAmount !== '') {
-                return parseFloat(this.customAmount).toFixed(2);
-            }
+            if (this.selectedAmount !== null) return this.selectedAmount;
+            if (this.customAmount !== null && this.customAmount !== '') return parseFloat(this.customAmount).toFixed(2);
             return '0';
         },
-
         isValidAmount() {
-            const amount = parseFloat(this.displayAmount);
-            return amount > 0;
+            return parseFloat(this.displayAmount) > 0;
         },
     },
 
@@ -200,6 +267,7 @@ export default {
         show() {
             this.is_show_donation_modal = true;
             this.$emit('close_warning_modal');
+            this.$store.dispatch('auth_user/authing_user');
         },
 
         close() {
@@ -213,63 +281,62 @@ export default {
             this.loading = false;
             this.donationSuccess = false;
             this.errorMessage = '';
-            this.checkoutUrl = '';
-            this.donator = {
-                name: '',
-                surname: '',
-                email: '',
-                phone_number: '',
-                country: '',
-                age: null,
-            };
+            this.activeTab = 'card';
+            this.bankInfo = null;
+            this.bankError = '';
+            this.ibanCopied = false;
+            this.donator = { name: '', surname: '', email: '', phone_number: '', country: '', age: null };
         },
 
-        async processDonation() {
+        switchToBank() {
+            this.activeTab = 'bank';
+            if (!this.bankInfo && !this.bankLoading) {
+                this.fetchBankInfo();
+            }
+        },
+
+        fetchBankInfo() {
+            this.bankLoading = true;
+            this.bankError = '';
+            axios.get('get_donation/tbc_info')
+                .then(response => { this.bankInfo = response.data; })
+                .catch(() => { this.bankError = 'Could not load bank transfer details. Please try again later.'; })
+                .finally(() => { this.bankLoading = false; });
+        },
+
+        copyIban() {
+            if (!this.bankInfo?.iban) return;
+            navigator.clipboard.writeText(this.bankInfo.iban).then(() => {
+                this.ibanCopied = true;
+                setTimeout(() => { this.ibanCopied = false; }, 2000);
+            });
+        },
+
+        processDonation() {
             if (!this.isValidAmount) {
-                this.errorMessage = $t('guide.donation.invalid_amount');
+                this.errorMessage = 'Please select or enter a valid amount.';
                 return;
             }
-
             this.loading = true;
             this.errorMessage = '';
-            this.donationSuccess = false;
-            this.checkoutUrl = '';
 
-            const amount = parseFloat(this.displayAmount);
-
-            const donatorData = {
-                amount: amount,
-            };
-
-            if (this.donator.name) donatorData.name = this.donator.name;
-            if (this.donator.surname) donatorData.surname = this.donator.surname;
-            if (this.donator.email) donatorData.email = this.donator.email;
-            if (this.donator.phone_number) donatorData.phone_number = this.donator.phone_number;
-            if (this.donator.country) donatorData.country = this.donator.country;
-            if (this.donator.age) donatorData.age = this.donator.age;
-
-            try {
-                const response = await axios.post('/set_donation/process', donatorData);
-
-                console.log('Donation processed:', response.data);
-
-                if (response.data.checkout_url) {
-                    this.checkoutUrl = response.data.checkout_url;
-                    this.donationSuccess = true;
-
-                    setTimeout(() => {
-                        window.location.href = this.checkoutUrl;
-                    }, 1500);
-                } else {
-                    this.donationSuccess = true;
-                }
-
-            } catch (error) {
-                console.error('Donation error:', error);
-                this.errorMessage = error.response?.data?.message || $t('guide.donation.error');
-            } finally {
-                this.loading = false;
+            const payload = { amount: parseFloat(this.displayAmount) };
+            if (!this.authUser) {
+                Object.assign(payload, this.donator);
             }
+
+            axios.post('set_donation/process', payload)
+                .then(response => {
+                    if (response.data.checkout_url) {
+                        window.location.href = response.data.checkout_url;
+                    } else {
+                        this.donationSuccess = true;
+                    }
+                })
+                .catch(err => {
+                    this.errorMessage = err?.response?.data?.message || 'Something went wrong. Please try again.';
+                })
+                .finally(() => { this.loading = false; });
         },
     },
 };
@@ -281,25 +348,51 @@ export default {
   overflow-y: auto;
 }
 
-.donation-amounts {
-  max-width: 500px;
-  margin: 0 auto;
+.bank-detail-card {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
 }
 
-@media (max-width: 768px) {
-  .modal-body {
-    padding: 1.5rem;
-  }
-  
-  .btn-lg {
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-  }
+.bank-detail-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #e9ecef;
 }
-.donation_button_group{
-  margin-bottom: 1.5rem;
+.bank-detail-row:last-child {
+  border-bottom: none;
 }
-.donation_btn {
-  margin: 0.2rem; 
+
+.bank-detail-label {
+  width: 140px;
+  font-weight: 600;
+  color: #495057;
+  flex-shrink: 0;
+}
+
+.bank-detail-value {
+  flex: 1;
+  color: #212529;
+}
+
+.iban-value {
+  font-family: monospace;
+  font-size: 1.05rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+}
+
+@media (max-width: 576px) {
+  .iban-row {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .bank-detail-label {
+    width: 110px;
+  }
 }
 </style>

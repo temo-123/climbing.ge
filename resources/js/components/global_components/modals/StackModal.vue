@@ -53,6 +53,7 @@
                   v-if="saveButton?.visible"
                   type="button"
                   class="btn btn-primary pull-right"
+                  @click="$emit('save')"
                 >
                   {{ saveButton.title || 'Save' }}
                 </button>
