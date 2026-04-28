@@ -399,12 +399,19 @@ export default {
                             ]
                         },
                         {
-                            name: "Article all images",
-                            route: "/article_images",
+                            name: "Multimedia",
+                            route: "/multimedia",
                             permissions: [
                                 ['add', 'gallery'],
                                 ['edit', 'gallery'],
                                 ['del', 'gallery'],
+                            ]
+                        },
+                        {
+                            name: "Database",
+                            route: "/database",
+                            permissions: [
+                                ['show', 'admin'],
                             ]
                         },
                         {

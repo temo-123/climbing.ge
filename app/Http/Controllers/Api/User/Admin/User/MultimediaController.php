@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -19,25 +19,71 @@ class MultimediaController extends Controller
     public function __construct()
     {
         $this->basePath = public_path('images');
-        
-        // Debug: Check if base path exists
-        if (!File::exists($this->basePath)) {
-            \Log::warning('Images directory not found at: ' . $this->basePath);
-        }
     }
 
     /**
-     * Get the folder structure with enhanced metadata
+     * Get the folder structure with used/unused flag for each image.
      */
     public function getImagesFolderStructure(Request $request): JsonResponse
     {
-        $search = $request->get('search', '');
-        $sortBy = $request->get('sort_by', 'name');
+        $search     = $request->get('search', '');
+        $sortBy     = $request->get('sort_by', 'name');
         $filterType = $request->get('filter_type', '');
-        
-        $structure = $this->getDirectoryStructure($this->basePath, '', $search, $sortBy, $filterType);
+
+        $usedFilenames = $this->collectUsedImageFilenames();
+
+        $structure = $this->getDirectoryStructure(
+            $this->basePath, '', $search, $sortBy, $filterType, $usedFilenames
+        );
 
         return response()->json($structure);
+    }
+
+    /**
+     * Collect every image filename referenced in the database.
+     * Returns a flat Set-like array (values are keys for O(1) lookup).
+     */
+    private function collectUsedImageFilenames(): array
+    {
+        $used = [];
+
+        // Tables with a simple `image` column
+        $simpleTables = [
+            'articles', 'posts', 'summits', 'header_images',
+            'sector_local_images', 'spot_rocks_images',
+            'mount_route_images', 'service_images', 'tour_images',
+            'article_images', 'users',
+        ];
+
+        foreach ($simpleTables as $table) {
+            try {
+                $rows = DB::table($table)->whereNotNull('image')->pluck('image');
+                foreach ($rows as $img) {
+                    if ($img) $used[basename($img)] = true;
+                }
+            } catch (\Exception $e) {
+                // table might not exist in some environments
+            }
+        }
+
+        // Scan editor HTML content for embedded <img src="..."> filenames
+        $textColumns = [
+            ['table' => 'locale_articles', 'col' => 'text'],
+            ['table' => 'locale_posts',    'col' => 'text'],
+        ];
+        foreach ($textColumns as $tc) {
+            try {
+                $rows = DB::table($tc['table'])->whereNotNull($tc['col'])->pluck($tc['col']);
+                foreach ($rows as $html) {
+                    preg_match_all('/src=["\']([^"\']+)["\']/', $html ?? '', $m);
+                    foreach ($m[1] as $src) {
+                        $used[basename($src)] = true;
+                    }
+                }
+            } catch (\Exception $e) {}
+        }
+
+        return $used;
     }
 
     /**
@@ -45,63 +91,46 @@ class MultimediaController extends Controller
      */
     public function uploadImages(Request $request): JsonResponse
     {
-        $auth = PermissionService::authorize('multimedia', 'add');
-        // if ($auth) return $auth;
-        
         $validator = Validator::make($request->all(), [
-            'files.*' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp,svg|max:10240', // 10MB max
-            'folder' => 'nullable|string|max:255'
+            'files.*' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp,svg|max:10240',
+            'folder'  => 'nullable|string|max:255'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
         try {
             $uploadedFiles = [];
-            $folder = $request->get('folder', '');
-            $targetPath = $folder ? $this->basePath . '/' . $folder : $this->basePath;
+            $folder        = $request->get('folder', '');
+            $targetPath    = $folder ? $this->basePath . '/' . $folder : $this->basePath;
 
-            // Ensure target directory exists
             if (!File::exists($targetPath)) {
                 File::makeDirectory($targetPath, 0755, true);
             }
 
             foreach ($request->file('files') as $file) {
                 $fileName = $this->generateUniqueFileName($file);
-                $filePath = $targetPath . '/' . $fileName;
-                
-                // Move uploaded file
                 $file->move($targetPath, $fileName);
-                
-                // Get file metadata
-                $metadata = $this->getMetadataForUploadedFile($filePath);
-                
+                $filePath   = $targetPath . '/' . $fileName;
+                $metadata   = $this->getFileMetadataFromPath($filePath);
+
                 $uploadedFiles[] = [
-                    'name' => $fileName,
-                    'path' => $folder ? $folder . '/' . $fileName : $fileName,
-                    'url' => url('images/' . ($folder ? $folder . '/' . $fileName : $fileName)),
-                    'type' => $file->getClientOriginalExtension(),
-                    'size' => $metadata['size'],
+                    'name'       => $fileName,
+                    'path'       => $folder ? $folder . '/' . $fileName : $fileName,
+                    'url'        => url('images/' . ($folder ? $folder . '/' . $fileName : $fileName)),
+                    'type'       => $file->getClientOriginalExtension(),
+                    'size'       => $metadata['size'],
                     'dimensions' => $metadata['dimensions'],
-                    'modified' => $metadata['modified']
+                    'modified'   => $metadata['modified'],
+                    'used'       => false,
                 ];
             }
 
-            return response()->json([
-                'success' => true,
-                'files' => $uploadedFiles,
-                'message' => 'Files uploaded successfully'
-            ]);
+            return response()->json(['success' => true, 'files' => $uploadedFiles, 'message' => 'Files uploaded successfully']);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Upload failed: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Upload failed: ' . $e->getMessage()], 500);
         }
     }
 
@@ -110,55 +139,35 @@ class MultimediaController extends Controller
      */
     public function deleteItems(Request $request): JsonResponse
     {
-        $auth = PermissionService::authorize('multimedia', 'del');
-        // if ($auth) return $auth;
-        
         $validator = Validator::make($request->all(), [
-            'paths' => 'required|array',
+            'paths'   => 'required|array',
             'paths.*' => 'required|string'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
         try {
             $deletedItems = [];
-            $failedItems = [];
+            $failedItems  = [];
 
             foreach ($request->paths as $path) {
                 $fullPath = $this->basePath . '/' . $path;
-                
                 if (File::exists($fullPath)) {
-                    if (File::isDirectory($fullPath)) {
-                        // Remove directory and all contents
-                        File::deleteDirectory($fullPath);
-                        $deletedItems[] = $path;
-                    } else {
-                        // Remove file
-                        File::delete($fullPath);
-                        $deletedItems[] = $path;
-                    }
+                    File::isDirectory($fullPath)
+                        ? File::deleteDirectory($fullPath)
+                        : File::delete($fullPath);
+                    $deletedItems[] = $path;
                 } else {
                     $failedItems[] = $path;
                 }
             }
 
-            return response()->json([
-                'success' => true,
-                'deleted' => $deletedItems,
-                'failed' => $failedItems,
-                'message' => 'Items deleted successfully'
-            ]);
+            return response()->json(['success' => true, 'deleted' => $deletedItems, 'failed' => $failedItems]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Delete failed: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Delete failed: ' . $e->getMessage()], 500);
         }
     }
 
@@ -167,134 +176,42 @@ class MultimediaController extends Controller
      */
     public function createFolder(Request $request): JsonResponse
     {
-        $auth = PermissionService::authorize('multimedia', 'add');
-        // if ($auth) return $auth;
-        
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|regex:/^[a-zA-Z0-9\-_\s]+$/',
+            'name'   => 'required|string|max:255|regex:/^[a-zA-Z0-9\-_\s]+$/',
             'parent' => 'nullable|string'
         ]);
 
         if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
         try {
             $folderName = Str::slug($request->name);
             $parentPath = $request->get('parent', '');
-            $fullPath = $parentPath 
+            $fullPath   = $parentPath
                 ? $this->basePath . '/' . $parentPath . '/' . $folderName
                 : $this->basePath . '/' . $folderName;
 
             if (File::exists($fullPath)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Folder already exists'
-                ], 422);
+                return response()->json(['success' => false, 'message' => 'Folder already exists'], 422);
             }
 
             File::makeDirectory($fullPath, 0755, true);
 
             return response()->json([
                 'success' => true,
-                'folder' => [
-                    'name' => $folderName,
-                    'path' => $parentPath ? $parentPath . '/' . $folderName : $folderName,
-                    'type' => 'directory'
-                ],
-                'message' => 'Folder created successfully'
+                'folder'  => ['name' => $folderName, 'path' => $parentPath ? $parentPath . '/' . $folderName : $folderName, 'type' => 'directory'],
             ]);
 
         } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Folder creation failed: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => 'Folder creation failed: ' . $e->getMessage()], 500);
         }
     }
 
     /**
-     * Get file metadata
+     * Get enhanced directory structure with used/unused flag per image.
      */
-    public function getFileMetadata(Request $request): JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'path' => 'required|string'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $fullPath = $this->basePath . '/' . $request->path;
-            
-            if (!File::exists($fullPath)) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'File not found'
-                ], 404);
-            }
-
-            $metadata = $this->getFileMetadataForPath($fullPath);
-
-            return response()->json([
-                'success' => true,
-                'metadata' => $metadata
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Failed to get metadata: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Search files and folders
-     */
-    public function search(Request $request): JsonResponse
-    {
-        $validator = Validator::make($request->all(), [
-            'query' => 'required|string|min:1|max:255'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors()
-            ], 422);
-        }
-
-        try {
-            $query = $request->query;
-            $results = $this->searchInDirectory($this->basePath, $query);
-
-            return response()->json([
-                'success' => true,
-                'results' => $results,
-                'query' => $query
-            ]);
-
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Search failed: ' . $e->getMessage()
-            ], 500);
-        }
-    }
-
-    /**
-     * Get enhanced directory structure
-     */
-    private function getDirectoryStructure($path, $relativePath = '', $search = '', $sortBy = 'name', $filterType = '')
+    private function getDirectoryStructure($path, $relativePath = '', $search = '', $sortBy = 'name', $filterType = '', array $usedFilenames = [])
     {
         $structure = [];
 
@@ -302,255 +219,106 @@ class MultimediaController extends Controller
             return $structure;
         }
 
-        // Get directories first
-        $directories = File::directories($path);
-        foreach ($directories as $dir) {
-            $dirName = basename($dir);
+        foreach (File::directories($path) as $dir) {
+            $dirName    = basename($dir);
             $dirRelative = $relativePath ? $relativePath . '/' . $dirName : $dirName;
-            
-            // Apply search filter
+
             if ($search && !str_contains(strtolower($dirName), strtolower($search))) {
                 continue;
             }
 
-            $folderData = [
-                'type' => 'directory',
-                'name' => $dirName,
-                'path' => $dirRelative,
-                'size' => $this->getFolderSize($dir),
+            $structure[] = [
+                'type'     => 'directory',
+                'name'     => $dirName,
+                'path'     => $dirRelative,
+                'size'     => $this->getFolderSize($dir),
                 'modified' => filemtime($dir),
-                'children' => $this->getDirectoryStructure($dir, $dirRelative, $search, $sortBy, $filterType)
+                'children' => $this->getDirectoryStructure($dir, $dirRelative, $search, $sortBy, $filterType, $usedFilenames),
             ];
-            
-            $structure[] = $folderData;
         }
 
-        // Get files
-        $files = File::files($path);
-        foreach ($files as $file) {
-            $fileName = $file->getFilename();
+        foreach (File::files($path) as $file) {
+            $fileName    = $file->getFilename();
             $fileRelative = $relativePath ? $relativePath . '/' . $fileName : $fileName;
-            
-            // Apply search filter
+
             if ($search && !str_contains(strtolower($fileName), strtolower($search))) {
                 continue;
             }
 
             $extension = strtolower($file->getExtension());
-            
-            if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
-                $metadata = $this->getFileMetadataFromPath($file->getPathname());
-                
-                // Generate correct image URL
-                $imageUrl = $this->generateImageUrl($fileRelative);
-                
-                $fileData = [
-                    'type' => 'file',
-                    'name' => $fileName,
-                    'path' => $fileRelative,
-                    'url' => $imageUrl,
-                    'size' => $metadata['size'],
-                    'extension' => $extension,
-                    'dimensions' => $metadata['dimensions'],
-                    'modified' => $metadata['modified']
-                ];
-                
-                // Apply filter for files
-                if (!$filterType || $this->fileMatchesFilter($fileData, $filterType)) {
-                    $structure[] = $fileData;
-                }
+            if (!in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
+                continue;
+            }
+
+            $metadata  = $this->getFileMetadataFromPath($file->getPathname());
+            $imageUrl  = $this->generateImageUrl($fileRelative);
+            $isUsed    = isset($usedFilenames[basename($fileName)]);
+
+            $fileData = [
+                'type'       => 'file',
+                'name'       => $fileName,
+                'path'       => $fileRelative,
+                'url'        => $imageUrl,
+                'size'       => $metadata['size'],
+                'extension'  => $extension,
+                'dimensions' => $metadata['dimensions'],
+                'modified'   => $metadata['modified'],
+                'used'       => $isUsed,
+            ];
+
+            if (!$filterType || $extension === strtolower($filterType)) {
+                $structure[] = $fileData;
             }
         }
 
-        // Sort the structure
-        $structure = $this->sortStructure($structure, $sortBy);
-
-        return $structure;
+        return $this->sortStructure($structure, $sortBy);
     }
 
-    /**
-     * Generate correct image URL
-     */
     private function generateImageUrl($relativePath)
     {
-        // Try different possible locations for images
-        $possiblePaths = [
-            'images/' . $relativePath,
-            'storage/images/' . $relativePath,
-            'public/images/' . $relativePath,
-            $relativePath
-        ];
-
-        foreach ($possiblePaths as $path) {
-            $fullPath = public_path($path);
-            if (File::exists($fullPath)) {
-                return url($path);
-            }
+        if (File::exists(public_path('images/' . $relativePath))) {
+            return url('images/' . $relativePath);
         }
-
-        // If no file found, return the asset path anyway (might be a path issue)
         return url('images/' . $relativePath);
     }
 
-    /**
-     * Get file metadata from path
-     */
     private function getFileMetadataFromPath($filePath)
     {
-        $metadata = [
-            'size' => filesize($filePath),
-            'modified' => filemtime($filePath),
-            'dimensions' => null
-        ];
-
-        // Get image dimensions for image files
+        $metadata  = ['size' => filesize($filePath), 'modified' => filemtime($filePath), 'dimensions' => null];
         $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            if (function_exists('getimagesize')) {
-                $imageInfo = @getimagesize($filePath);
-                if ($imageInfo) {
-                    $metadata['dimensions'] = $imageInfo[0] . 'x' . $imageInfo[1];
-                }
-            }
+        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']) && function_exists('getimagesize')) {
+            $info = @getimagesize($filePath);
+            if ($info) $metadata['dimensions'] = $info[0] . 'x' . $info[1];
         }
-
         return $metadata;
     }
 
-    /**
-     * Get file metadata for newly uploaded files
-     */
-    private function getMetadataForUploadedFile($filePath)
-    {
-        $metadata = [
-            'size' => filesize($filePath),
-            'modified' => filemtime($filePath),
-            'dimensions' => null
-        ];
-
-        $extension = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
-        if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])) {
-            if (function_exists('getimagesize')) {
-                $imageInfo = @getimagesize($filePath);
-                if ($imageInfo) {
-                    $metadata['dimensions'] = $imageInfo[0] . 'x' . $imageInfo[1];
-                }
-            }
-        }
-
-        return $metadata;
-    }
-
-    /**
-     * Generate unique filename
-     */
     private function generateUniqueFileName($file)
     {
         $extension = $file->getClientOriginalExtension();
-        $name = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
-        $name = Str::slug($name);
-        $timestamp = time();
-        
-        return $name . '_' . $timestamp . '.' . $extension;
+        $name      = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+        return $name . '_' . time() . '.' . $extension;
     }
 
-    /**
-     * Get folder size recursively
-     */
     private function getFolderSize($folderPath)
     {
         $size = 0;
-        
         foreach (File::allFiles($folderPath) as $file) {
             $size += $file->getSize();
         }
-        
         return $size;
     }
 
-    /**
-     * Check if folder matches filter
-     */
-    private function folderMatchesFilter($folderData, $filterType)
-    {
-        return true; // Directories always pass filter for now
-    }
-
-    /**
-     * Check if file matches filter
-     */
-    private function fileMatchesFilter($fileData, $filterType)
-    {
-        return !$filterType || $fileData['type'] === $filterType;
-    }
-
-    /**
-     * Sort structure by criteria
-     */
     private function sortStructure($structure, $sortBy)
     {
-        usort($structure, function($a, $b) use ($sortBy) {
+        usort($structure, function ($a, $b) use ($sortBy) {
             switch ($sortBy) {
-                case 'name':
-                    return strcmp($a['name'], $b['name']);
-                case 'date':
-                    return ($b['modified'] ?? 0) - ($a['modified'] ?? 0);
-                case 'size':
-                    return ($b['size'] ?? 0) - ($a['size'] ?? 0);
-                case 'type':
-                    return strcmp($a['type'], $b['type']);
-                default:
-                    return 0;
+                case 'name': return strcmp($a['name'], $b['name']);
+                case 'date': return ($b['modified'] ?? 0) - ($a['modified'] ?? 0);
+                case 'size': return ($b['size'] ?? 0) - ($a['size'] ?? 0);
+                default:     return 0;
             }
         });
-
         return $structure;
-    }
-
-    /**
-     * Search in directory
-     */
-    private function searchInDirectory($path, $query)
-    {
-        $results = [];
-        
-        if (!File::exists($path)) {
-            return $results;
-        }
-
-        $items = collect(File::allFiles($path))->merge(File::directories($path));
-
-        foreach ($items as $item) {
-            $itemName = basename($item);
-            
-            if (str_contains(strtolower($itemName), strtolower($query))) {
-                if (File::isDirectory($item)) {
-                    $results[] = [
-                        'type' => 'directory',
-                        'name' => $itemName,
-                        'path' => str_replace($this->basePath . '/', '', $item),
-                        'size' => $this->getFolderSize($item),
-                        'modified' => filemtime($item)
-                    ];
-                } else {
-                    $extension = strtolower(pathinfo($item, PATHINFO_EXTENSION));
-                    if (in_array($extension, ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg'])) {
-                        $metadata = $this->getFileMetadataFromPath($item);
-                        $results[] = [
-                            'type' => 'file',
-                            'name' => $itemName,
-                            'path' => str_replace($this->basePath . '/', '', $item),
-                            'url' => url('images/' . str_replace($this->basePath . '/', '', $item)),
-                            'size' => $metadata['size'],
-                            'extension' => $extension,
-                            'dimensions' => $metadata['dimensions'],
-                            'modified' => $metadata['modified']
-                        ];
-                    }
-                }
-            }
-        }
-
-        return $results;
     }
 }

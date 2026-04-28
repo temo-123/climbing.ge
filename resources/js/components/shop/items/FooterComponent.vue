@@ -30,7 +30,7 @@
                                 <router-link
                                     :to="{
                                         name: 'catalog',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.products') }}
@@ -40,7 +40,7 @@
                                 <router-link
                                 :to="{
                                         name: 'sale_products',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.sale') }}
@@ -51,7 +51,7 @@
                                 <router-link
                                 :to="{
                                         name: 'wall_price_colculator',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.Climbing Walls') }}
@@ -62,7 +62,7 @@
                                 <router-link
                                     :to="{
                                         name: 'services',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.services') }}
@@ -72,7 +72,7 @@
                                 <router-link
                                 :to="{
                                         name: 'tours',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.tours') }}
@@ -83,7 +83,7 @@
                                 <router-link
                                     :to="{
                                         name: 'about_store',
-                                        params: { lang: this.$i18n.locale },
+                                        params: { locale: this.$i18n.locale },
                                     }"
                                 >
                                     {{ $t('shop.menu.about us') }}

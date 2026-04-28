@@ -263,7 +263,8 @@
             "working_time": "Working Hours",
             "no_info_working_time": "No information available about the gym's working hours.",
             "mount_route_filtr": "Select Mount System and Filter Routes",
-            "region_filtr": "Select Region and Filter Spots by Region"
+            "region_filtr": "Select Region and Filter Spots by Region",
+            "other_sites": "Other Resources"
         },
         "breadcrumb home": "Home",
         "news_flag": "News",
@@ -303,7 +304,9 @@
             "categories": "Categories",
             "about us": "About Us",
             "climbing wall": "Climbing Wall",
-            "tours": "Tours"
+            "tours": "Tours",
+            "sale": "Sale",
+            "Climbing Walls": "Climbing Walls"
         },
         "title": {
             "services": "Our Services",
@@ -474,7 +477,8 @@
             "search": "Blog Search",
             "index_description": "Read the latest climbing news, trip reports, and stories from Georgia's rock climbing and mountaineering community.",
             "post": "Climbing Post - Climbing.ge Blog",
-            "news": "Climbing News - Climbing.ge Blog"
+            "news": "Climbing News - Climbing.ge Blog",
+            "index": "About Us - Climbing Blog"
         },
         "menu": {
             "about_us": "About Us"
@@ -510,7 +514,8 @@
         },
         "modal": {
             "created": "Created:",
-            "view_full_post": "View Full Post"
+            "view_full_post": "View Full Post",
+            "loading_post": "Loading post..."
         },
         "search": {
             "placeholder": "Search blog posts...",
@@ -541,7 +546,8 @@
             "about_us": "About Us",
             "about": "About Us",
             "list": "Summit List",
-            "map": "Summit Map"
+            "map": "Summit Map",
+            "summit": "Summits"
         },
         "title": {
             "index_title": "Summit Ascents",
@@ -708,7 +714,10 @@
         "login": "Login",
         "comments": "Comments",
         "page is empty": "This page is empty",
-        "services": "Services"
+        "services": "Services",
+        "menu": {
+            "about us": "About Us"
+        }
     },
     "error": {
         "404": {
@@ -725,5 +734,8 @@
         "title": "Unfollow",
         "description": "We're sorry to see you go!",
         "go_home": "Go to Home Page"
+    },
+    "common": {
+        "close": "Close"
     }
 }

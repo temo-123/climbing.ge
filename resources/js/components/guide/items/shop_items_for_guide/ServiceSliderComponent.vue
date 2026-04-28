@@ -14,9 +14,9 @@
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
-                <div class="services-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
-                    <div class="services-slider" :style="{ display: 'flex', width: (services.length * 49) + '%', transform: 'translateX(' + (-slider_index * 49) + '%)', transition: 'transform 0.5s ease' }">
-                        <div class="service-slider-item" v-for="service in services" :key='service.id'>
+                <div ref="sliderWrapper" class="services-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
+                    <div class="services-slider" :style="{ display: 'flex', width: (services.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / services.length) + '%)', transition: 'transform 0.5s ease' }">
+                        <div class="service-slider-item" v-for="service in services" :key='service.id' :style="{ flex: '0 0 ' + (100 / services.length) + '%' }">
                             <ServiceItem :service_data="service">
                             </ServiceItem>
                         </div>
@@ -43,7 +43,7 @@
             return {
                 services: [],
                 slider_index: 0,
-                visibleCount: 2,
+                visibleCount: 3,
                 autoSlideInterval: null,
                 isPaused: false,
                 touchStartX: 0,
@@ -52,13 +52,6 @@
         },
         mounted() {
             this.get_services()
-            this.$nextTick(() => {
-                this.startAutoSlide()
-                const wrapper = this.$el.querySelector('.services-slider-wrapper');
-                wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-                wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-                wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
-            })
         },
         beforeUnmount() {
             this.stopAutoSlide()
@@ -75,10 +68,18 @@
                 .get('/get_service/get_local_services/'+localStorage.getItem('lang'))
                 .then(response => {
                     this.services = response.data;
+                    this.$nextTick(() => {
+                        this.startAutoSlide()
+                        const wrapper = this.$el.querySelector('.services-slider-wrapper');
+                        if (wrapper) {
+                            wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+                            wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+                            wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                        }
+                    })
                 })
                 .catch(error =>{
                 })
-                // .finally(() => this.services_loading = false);
             },
 
             startAutoSlide() {
@@ -162,12 +163,17 @@
     }
 
     .service-slider-item {
-        flex: 0 0 48%;
-        /* Override Bootstrap col classes */
-        width: 48% !important;
-        max-width: 48% !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
+        box-sizing: border-box;
+        padding: 0 8px;
+    }
+
+    .service-slider-item :deep(.col-md-4),
+    .service-slider-item :deep(.col-sm-6) {
+        width: 100%;
+        max-width: 100%;
+        padding-left: 0;
+        padding-right: 0;
+        float: none;
     }
 
     .previes_services_bottom, .next_services_bottom {

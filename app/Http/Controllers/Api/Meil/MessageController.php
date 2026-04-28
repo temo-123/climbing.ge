@@ -4,19 +4,29 @@ namespace App\Http\Controllers\Api\Meil;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use Illuminate\Notifications\Messages\MailMessage;
- 
+
 use App\Models\Site;
-use App\Models\User\Service_follower;
+use App\Services\ReCaptchaV3Service;
 
 use App\Mail\Message;
 use Mail;
 
 class MessageController extends Controller
 {
+    protected ReCaptchaV3Service $captcha;
+
+    public function __construct(ReCaptchaV3Service $captcha)
+    {
+        $this->captcha = $captcha;
+    }
+
     public function store(Request $request)
     {
         $this->message_validate($request);
+
+        if (!$request->recaptcha_token || !$this->captcha->verify($request->recaptcha_token, $request->ip())) {
+            return response()->json(['errors' => ['recaptcha' => ['Captcha verification failed. Please try again.']]], 422);
+        }
 
         if($request->name != null)      $name = $request->name;           else $name = null;
         if($request->surname != null)   $surname = $request->surname;     else $surname = null;

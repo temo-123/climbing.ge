@@ -438,7 +438,7 @@
                 <div class="row">
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'article_images'}">
+                        <router-link :to="{name: 'multimedia'}">
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['gallery_images']}}</span>
@@ -448,7 +448,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <router-link :to="{name: 'article_images'}">
+                        <router-link :to="{name: 'multimedia'}">
                             <div class="card-counter success">
                                 <i class="fa fa-picture-o" aria-hidden="true"></i>
                                 <span class="count-numbers">{{this.counts['index_header_images']}}</span>

@@ -142,11 +142,11 @@
                             Images
                         </h3>
                         <div class="images-grid">
-                            <div 
-                                v-for="image in filteredImages" 
+                            <div
+                                v-for="image in filteredImages"
                                 :key="image.path"
                                 class="image-card"
-                                :class="{ 'selected': selectedItems.includes(image.path) }"
+                                :class="{ 'selected': selectedItems.includes(image.path), 'unused': image.used === false }"
                                 @click="openImage(image)"
                             >
                                 <div class="image-preview-container">
@@ -162,8 +162,8 @@
                                 </div>
                                 <div class="image-info">
                                     <div class="checkbox-container">
-                                        <input 
-                                            type="checkbox" 
+                                        <input
+                                            type="checkbox"
                                             :checked="selectedItems.includes(image.path)"
                                             @change="toggleSelection(image.path)"
                                             @click.stop
@@ -172,7 +172,8 @@
                                     </div>
                                     <div class="image-details">
                                         <h4 class="image-name">{{ image.name }}</h4>
-                                        <p class="image-meta">{{ formatFileSize(image.size) }} • {{ image.type }}</p>
+                                        <p class="image-meta">{{ formatFileSize(image.size) }} • {{ image.extension }}</p>
+                                        <span v-if="image.used === false" class="badge-unused">unused</span>
                                     </div>
                                 </div>
                             </div>
@@ -1434,5 +1435,42 @@
         .media-manager-container .btn {
             justify-content: center;
         }
+    }
+
+    /* Unused image highlight */
+    .media-manager-container .image-card.unused {
+        border: 2px solid #dc3545;
+        box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.2);
+    }
+
+    .media-manager-container .image-card.unused .image-preview-container::after {
+        content: 'UNUSED';
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        background: #dc3545;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 2px 6px;
+        border-radius: 3px;
+        letter-spacing: 0.5px;
+    }
+
+    .media-manager-container .image-preview-container {
+        position: relative;
+    }
+
+    .media-manager-container .badge-unused {
+        display: inline-block;
+        background: #dc3545;
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 1px 6px;
+        border-radius: 3px;
+        margin-top: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.4px;
     }
 </style>

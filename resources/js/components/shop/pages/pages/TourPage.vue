@@ -1,5 +1,5 @@
 <template>
-    <div class="tour-container container h-recent-work">
+    <div v-if="tour" class="tour-container container h-recent-work">
         <div class="tour-header">
             <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
         </div>
@@ -91,7 +91,7 @@
         data: function () {
             return {
                 tours: [],
-                tour: [],
+                tour: null,
             };
         },
         watch: {

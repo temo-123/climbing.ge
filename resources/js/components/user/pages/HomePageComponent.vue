@@ -25,10 +25,10 @@
                                     <button class="btn btn_service_guid" @click="go_to_service('guid')">Guidbook</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">Climbing Shop</button>
+                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">Shop</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">Climbing blog</button>
+                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">Blog</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
                                     <button class="btn btn_service_summit" @click="go_to_service('summit')">Summits</button>

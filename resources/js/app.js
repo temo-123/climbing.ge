@@ -50,6 +50,9 @@ app.config.globalProperties.$bus = {
 import StackModal from "./components/global_components/modals/StackModal.vue"
 app.component('StackModal', StackModal)
 
+import SkeletonLoader from "./components/global_components/SkeletonLoaderComponent.vue"
+app.component('skeleton-loader', SkeletonLoader)
+
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 app.component("goToAdminPage", goToAdminPage);
 
@@ -100,6 +103,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     app.component("main-wrapper-component", MainWrapper);
     app.component("shop-img", shop_img);
+    app.component("site-img", shop_img);
 
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;

@@ -25,7 +25,7 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li><router-link :to="{name: 'about_us',  params: {lang: this.$i18n.locale}}" exact> <span> {{ $t('blog.menu.about_us') }}  </span> </router-link></li>
+                    <li><router-link :to="{name: 'about_us',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('blog.menu.about_us') }}  </span> </router-link></li>
 
                     <navbar-search site="blog" search_route="search_posts" />
 

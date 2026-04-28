@@ -135,7 +135,8 @@
             // this.form_title
         },
         methods: {
-            send_message() {
+            send_message(token) {
+                this.recaptcha_token = token
                 this.isLoading = true,
                 this.isSuccess = false,
 
@@ -158,7 +159,7 @@
                 })
                 .catch(error =>{
                     if (error.response.status == 422) {
-                        this.error = error.response.data.error
+                        this.error = error.response.data.errors || error.response.data.error || {}
                         this.isLoading = false
                     }
                     else if (error.response.status == 500) {

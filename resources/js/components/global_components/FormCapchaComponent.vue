@@ -39,6 +39,7 @@ export default {
     methods: {
         async executeRecaptcha(action = 'follow') {
             try {
+                await new Promise(resolve => window.grecaptcha.ready(resolve));
                 const token = await window.grecaptcha.execute(this.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY, {action});
                 return token;
             } catch (error) {

@@ -45,6 +45,11 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/search', 'search');
     });
 
+    Route::controller(DatabaseController::class)->prefix('set_database')->group(function () {
+        Route::get('/table_stats', 'getTableStats');
+        Route::post('/fix_issue', 'fixIssue');
+    });
+
     Route::controller(RolesController::class)->prefix('set_role')->group( function() {
         Route::apiResource('/', 'RolesController');
 
@@ -86,5 +91,11 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         Route::post('/articles_pdf', 'exportArticlesPdf');
+    });
+});
+
+Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
+    Route::controller(TeamMemberController::class)->prefix('set_user/team')->group(function() {
+        Route::post('/edit_member_status/{id}', 'edit_member_status');
     });
 });

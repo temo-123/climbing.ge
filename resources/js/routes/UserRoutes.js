@@ -162,7 +162,8 @@ const routes = [
             { path: 'service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), meta: {title: 'user page'}},
             { path: 'service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), meta: {title: 'user page'}},
 
-            { path: 'article_images', name: 'article_images', component: load('multimedia/ArticleImagesPage'), meta: {title: 'user page'}},
+            { path: 'multimedia', name: 'multimedia', component: load('multimedia/ArticleImagesPage'), meta: {title: 'user page'}},
+            { path: 'database', name: 'database', component: load('database/DatabasePage'), meta: {title: 'user page'}},
 
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page'}},
 

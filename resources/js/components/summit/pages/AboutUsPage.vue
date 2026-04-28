@@ -91,6 +91,8 @@
             </div>
         </div>
 
+        <messageComponent />
+
         <metaData
             :title="$t('summit.about.title') + ' – Summit Climbing Georgia'"
             :description="$t('summit.about.meta')"
@@ -101,10 +103,11 @@
 
 <script>
 import metaData from '../items/MetaDataComponent.vue'
+import messageComponent from '../../global_components/MessageComponent.vue'
 
 export default {
     name: 'AboutUsPage',
-    components: { metaData },
+    components: { metaData, messageComponent },
     mounted() {
         if (!this.$siteData.loaded) {
             this.get_site_data();

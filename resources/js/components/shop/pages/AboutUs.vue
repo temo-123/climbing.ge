@@ -11,7 +11,7 @@
 
                             <hr>
 
-                            <h3>{{ $t('shop.seller.seller contact') }}</h3>
+                            <h3>{{ $t('shop.seller.seller_contact') }}</h3>
                             <p v-if="this.$globalSiteData.data.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.data.email }}</p>
                             <p v-if="this.$globalSiteData.data.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.data.number }}</p>
                             

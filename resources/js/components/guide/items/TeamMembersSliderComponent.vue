@@ -13,8 +13,8 @@
                 </div>
 
                 <div ref="teamSliderWrapper" class="team-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
-                    <div class="team-slider" :style="{ display: 'flex', gap: '2%', width: (team_members.length * 32) + '%', transform: 'translateX(' + (-slider_index * 32) + '%)', transition: 'transform 0.5s ease' }">
-                        <div class="team-item" v-for="user in team_members" :key="user.id" @click="show_user_modal(user.id)">
+                    <div class="team-slider" :style="{ display: 'flex', width: (team_members.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / team_members.length) + '%)', transition: 'transform 0.5s ease' }">
+                        <div class="team-item" v-for="user in team_members" :key="user.id" :style="{ flex: '0 0 ' + (100 / team_members.length) + '%' }" @click="show_user_modal(user.id)">
                             <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='user_img' v-if='user.image == null'> </div>
                             <div :style="'background-image: url(/public/images/user_profil_img/' + user.image + ');'" class='user_img' v-else> </div>
                             <span class="user_name">{{ user.name }} {{ user.surname }}</span>
@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="next_team_bottom" v-if="team_members.length > visibleCount && slider_index < team_members.length - visibleCount - 1" @click="next">
+                <div class="next_team_bottom" v-if="team_members.length > visibleCount && slider_index < team_members.length - visibleCount" @click="next">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>
@@ -60,15 +60,6 @@
         },
         mounted() {
             this.get_team_members()
-            this.$nextTick(() => {
-                this.startAutoSlide()
-                const wrapper = this.$refs.teamSliderWrapper;
-                if (wrapper) {
-                    wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
-                    wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
-                    wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
-                }
-            })
         },
         beforeUnmount() {
             this.stopAutoSlide()
@@ -89,6 +80,15 @@
                 .get('/get_team/get_team_members/')
                 .then(response => {
                     this.team_members = response.data
+                    this.$nextTick(() => {
+                        this.startAutoSlide()
+                        const wrapper = this.$refs.teamSliderWrapper;
+                        if (wrapper) {
+                            wrapper.addEventListener('touchstart', this.handleTouchStart, { passive: false });
+                            wrapper.addEventListener('touchmove', this.handleTouchMove, { passive: false });
+                            wrapper.addEventListener('touchend', this.handleTouchEnd, { passive: false });
+                        }
+                    })
                 })
                 .catch(error =>{
                 })
@@ -97,10 +97,10 @@
             startAutoSlide() {
                 if (this.autoSlideInterval) return;
                 this.autoSlideInterval = setInterval(() => {
-                    if (this.slider_index < this.team_members.length - this.visibleCount - 1) {
+                    if (this.slider_index < this.team_members.length - this.visibleCount) {
                         this.slider_index += 1;
                     } else {
-                        this.stopAutoSlide();
+                        this.slider_index = 0;
                     }
                 }, 5000);
             },
@@ -122,7 +122,7 @@
 
             next(){
                 this.pauseAutoSlide();
-                if (this.slider_index < this.team_members.length - this.visibleCount - 1) {
+                if (this.slider_index < this.team_members.length - this.visibleCount) {
                     this.slider_index += 1;
                 }
                 this.resumeAutoSlide();
@@ -189,9 +189,8 @@
     }
 
     .team-item {
-        flex: 0 0 14%;
-        /* max-width: 32%; */
-
+        box-sizing: border-box;
+        padding: 0 8px;
         text-align: center;
         cursor: pointer;
     }

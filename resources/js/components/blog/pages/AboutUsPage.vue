@@ -16,7 +16,9 @@
       </div>
     </main>
 
-    <metaData 
+    <messageComponent />
+
+    <metaData
         :title = " $t('blog.meta.index') "
         :description = "this.$siteData.data.guid_short_description"
         :image = "'/public/images/meta_img/outdoor.jpg'"
@@ -26,11 +28,13 @@
 
 <script>
   import metaData from '../items/MetaDataComponent'
+  import messageComponent from '../../global_components/MessageComponent.vue'
 
   export default {
     name: 'AboutUsPage',
     components: {
-      metaData
+      metaData,
+      messageComponent,
     },
   }
 </script>

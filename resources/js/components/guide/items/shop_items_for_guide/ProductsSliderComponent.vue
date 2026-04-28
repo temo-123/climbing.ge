@@ -15,13 +15,13 @@
                 </div>
 
                 <div class="products-slider-wrapper">
-                    <div class="products-slider" :style="{ display: 'flex', gap: '1%', width: (products.length * 20) + '%', transform: 'translateX(' + (-slider_index * 20) + '%)', transition: 'transform 0.5s ease' }">
-                        <catalogItem
-                            v-for="product in products"
-                            :key='product.id'
-                            :product_data="product"
-                            @quick_view="$emit('quick_view', $event)"
-                        />
+                    <div class="products-slider" :style="{ display: 'flex', width: (products.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / products.length) + '%)', transition: 'transform 0.5s ease' }">
+                        <div class="product-slide-item" v-for="product in products" :key='product.id' :style="{ flex: '0 0 ' + (100 / products.length) + '%', boxSizing: 'border-box', padding: '0 8px' }">
+                            <catalogItem
+                                :product_data="product"
+                                @quick_view="$emit('quick_view', $event)"
+                            />
+                        </div>
                     </div>
                 </div>
 
@@ -43,7 +43,7 @@
         data: function () {
             return {
                 slider_index: 0,
-                visibleCount: 5,
+                visibleCount: 3,
                 products: [],
                 autoScrollInterval: null
             };
@@ -114,12 +114,11 @@
 
     .products-slider {
         display: flex;
-        gap: 2%;
     }
 
-    .products-slider .grid-tile {
-        flex: 0 0 25em;
-        max-height: 25%;
+    .product-slide-item :deep(.grid-tile) {
+        width: 100%;
+        max-width: 100%;
     }
 
     .previes_products_bottom, .next_products_bottom {
