@@ -25,7 +25,7 @@ export default {
         return {
             cartCount: 0,
             notifCount: 0,
-            _isLoggedIn: !!localStorage.getItem('auth_token'),
+            _isLoggedIn: false,
             userMenuOpen: false,
         }
     },
@@ -38,20 +38,7 @@ export default {
         },
     },
     mounted() {
-        if (this._isLoggedIn) {
-            this.fetchCounts()
-        } else {
-            // localStorage token not present (e.g. user logged in on a different subdomain),
-            // but the shared session cookie may still be valid — verify via API.
-            axios.get('auth_user')
-                .then(response => {
-                    if (response.data && response.data.id) {
-                        this._isLoggedIn = true
-                        this.fetchCounts()
-                    }
-                })
-                .catch(() => {})
-        }
+        this.verifyAuth(true)
 
         this._onLoggedIn = () => {
             this._isLoggedIn = true
@@ -71,19 +58,50 @@ export default {
                 this.userMenuOpen = false
             }
         }
+        this._onVisibilityChange = () => {
+            if (!document.hidden) this.verifyAuth()
+        }
 
         this.$bus.$on('logged-in', this._onLoggedIn)
         this.$bus.$on('cart-updated', this._onCartUpdated)
         this.$bus.$on('logged-out', this._onLoggedOut)
         document.addEventListener('click', this._onDocClick)
+        document.addEventListener('visibilitychange', this._onVisibilityChange)
+
+        // Poll every 5 minutes so other-subdomain logouts are reflected
+        // even when the user never switches away from this tab.
+        this._authPollInterval = setInterval(() => this.verifyAuth(), 5 * 60 * 1000)
     },
     beforeUnmount() {
         this.$bus.$off('logged-in', this._onLoggedIn)
         this.$bus.$off('cart-updated', this._onCartUpdated)
         this.$bus.$off('logged-out', this._onLoggedOut)
         document.removeEventListener('click', this._onDocClick)
+        document.removeEventListener('visibilitychange', this._onVisibilityChange)
+        clearInterval(this._authPollInterval)
     },
     methods: {
+        verifyAuth(forceCountRefresh = false) {
+            axios.get('auth_user')
+                .then(response => {
+                    if (response.data && response.data.id) {
+                        const wasLoggedOut = !this._isLoggedIn
+                        this._isLoggedIn = true
+                        if (wasLoggedOut || forceCountRefresh) this.fetchCounts()
+                    } else {
+                        this._isLoggedIn = false
+                        this.cartCount = 0
+                        this.notifCount = 0
+                        this.clearLocalTokens()
+                    }
+                })
+                .catch(() => {
+                    this._isLoggedIn = false
+                    this.cartCount = 0
+                    this.notifCount = 0
+                    this.clearLocalTokens()
+                })
+        },
         fetchCounts() {
             this.fetchCartCount()
             this.fetchNotifCount()
@@ -117,7 +135,20 @@ export default {
                 this.goToUser()
             }
         },
-        goToCart() {
+        async goToCart() {
+            // Always re-verify with the server before opening the cart.
+            // The local _isLoggedIn flag can be stale after a logout on another
+            // subdomain or tab — the server is the only reliable source of truth.
+            try {
+                const response = await axios.get('auth_user')
+                if (!response.data || !response.data.id) throw new Error('unauthenticated')
+                this._isLoggedIn = true
+            } catch {
+                this._isLoggedIn = false
+                this.clearLocalTokens()
+                this.goToLogin()
+                return
+            }
             if (this.isUserPage) {
                 this.$router.push({ name: 'cart' })
             } else {
@@ -131,20 +162,28 @@ export default {
                 window.open(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/')
             }
         },
+        goToLogin() {
+            if (this.isUserPage) {
+                this.$router.push({ name: 'login' })
+            } else {
+                window.location.href = process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/login'
+            }
+        },
+        clearLocalTokens() {
+            localStorage.removeItem('auth_token')
+            localStorage.removeItem('x_xsrf_token')
+            localStorage.removeItem('user_permissions')
+        },
         logout() {
             this.userMenuOpen = false
             axios.post('logout')
                 .finally(() => {
-                    localStorage.removeItem('x_xsrf_token')
-                    localStorage.removeItem('user_permissions')
-                    localStorage.removeItem('auth_token')
+                    this.clearLocalTokens()
                     this._isLoggedIn = false
+                    this.cartCount = 0
+                    this.notifCount = 0
                     this.$bus.$emit('logged-out')
-                    // Only push to the login route on the user panel subdomain —
-                    // blog / summit / other subdomains don't have a 'login' named route.
-                    if (window.location.hostname === process.env.MIX_USER_PAGE_URL) {
-                        this.$router.push({ name: 'login' })
-                    }
+                    this.goToLogin()
                 })
         },
     }

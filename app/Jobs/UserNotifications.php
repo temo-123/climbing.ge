@@ -9,7 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-use App\Mail\UserNotificationeMessage;
+use App\Mail\UserNotificationMessage;
 use Mail;
 
 class UserNotifications implements ShouldQueue
@@ -49,6 +49,6 @@ class UserNotifications implements ShouldQueue
             'text' => $this->text,
         );
 
-        Mail::to($this->email)->send(new UserNotificationeMessage($emailData));
+        Mail::to($this->email)->send(new UserNotificationMessage($emailData));
     }
 }

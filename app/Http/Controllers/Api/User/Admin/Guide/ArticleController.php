@@ -54,7 +54,7 @@ class ArticleController extends Controller
     public function add_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
         
@@ -89,7 +89,7 @@ class ArticleController extends Controller
     public function edit_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
         $global_blocks = json_decode($request->global_blocks, true );
 
@@ -310,7 +310,7 @@ class ArticleController extends Controller
     public function del_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $global_id=$request->article_id;
 
         $global_article = Article::where('id',strip_tags($global_id))->first();

@@ -191,10 +191,20 @@ const router = createRouter({
 
 const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify', 'create_pass'];
 
-router.beforeEach((to, from, next) => {
-    const token = localStorage.getItem('x_xsrf_token');
+// Tracks whether the current session token has been verified with the backend.
+// Reset to false on logout / 401 or when the tab regains visibility (catches
+// logouts that happened on another subdomain or browser tab).
+let authVerified = false;
+
+document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) authVerified = false;
+});
+
+router.beforeEach(async (to, from, next) => {
+    const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
 
     if (!token) {
+        authVerified = false;
         if (publicRoutes.includes(to.name)) return next();
         return next({ name: 'login', query: { redirect: to.fullPath } });
     }
@@ -202,6 +212,22 @@ router.beforeEach((to, from, next) => {
     // Logged in — redirect away from auth pages
     if (publicRoutes.includes(to.name)) {
         return next({ name: 'home' });
+    }
+
+    // First protected navigation in this session: verify the token is still
+    // valid server-side. This catches stale tokens left in localStorage after
+    // a logout that happened on a different subdomain.
+    if (!authVerified) {
+        try {
+            await axios.get('auth_user');
+            authVerified = true;
+        } catch {
+            localStorage.removeItem('auth_token');
+            localStorage.removeItem('x_xsrf_token');
+            localStorage.removeItem('user_permissions');
+            authVerified = false;
+            return next({ name: 'login', query: { redirect: to.fullPath } });
+        }
     }
 
     next();

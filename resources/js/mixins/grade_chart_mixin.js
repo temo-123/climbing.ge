@@ -1,150 +1,115 @@
+const LEAD_FR_TO_YDS = {
+    "4":    "5.6",
+    "5a":   "5.7",  "5a+": "5.7",
+    "5b":   "5.8",  "5b+": "5.8",
+    "5c":   "5.9",  "5c+": "5.9",
+    "6a":   "5.10a",
+    "6a+":  "5.10b",
+    "6b":   "5.10c",
+    "6b+":  "5.10d",
+    "6c":   "5.11a/5.11b",
+    "6c+":  "5.11c",
+    "7a":   "5.11d",
+    "7a+":  "5.12a",
+    "7b":   "5.12b",
+    "7b+":  "5.12c",
+    "7c":   "5.12d",
+    "7c+":  "5.13a",
+    "8a":   "5.13b",
+    "8a+":  "5.13c",
+    "8b":   "5.13d",
+    "8b+":  "5.14a",
+    "8c":   "5.14b",
+    "8c+":  "5.14c",
+    "9a":   "5.14d",
+    "9a+":  "5.15a",
+    "9b":   "5.15b",
+    "9b+":  "5.15c",
+    "9c":   "5.15d",
+    "9c+":  "5.16a",
+    "Project": "Project",
+};
+
+const LEAD_FR_TO_UIAA = {
+    "4":    "IV",
+    "5a":   "V+",  "5a+": "V+",
+    "5b":   "VI-", "5b+": "VI-",
+    "5c":   "VI",  "5c+": "VI",
+    "6a":   "VI+",
+    "6a+":  "VII-",
+    "6b":   "VII",
+    "6b+":  "VII+",
+    "6c":   "VII+/VIII-",
+    "6c+":  "VIII-",
+    "7a":   "VIII",
+    "7a+":  "VIII+",
+    "7b":   "VIII+/IX-",
+    "7b+":  "IX-",
+    "7c":   "IX",
+    "7c+":  "IX+",
+    "8a":   "IX+/X-",
+    "8a+":  "X-",
+    "8b":   "X",
+    "8b+":  "X+",
+    "8c":   "XI-",
+    "8c+":  "XI",
+    "9a":   "XI+",
+    "9a+":  "XII-",
+    "9b":   "XII",
+    "9b+":  "XII+",
+    "9c":   "XIII",
+    "Project": "Project",
+};
+
+const BOULDER_V_TO_YDS = {
+    "VB":  "4-",  "V0-": "4",  "V0":  "4+", "V0+": "5a",
+    "V1":  "5b",  "V2":  "5c", "V3":  "6a", "V4":  "6b",
+    "V5":  "6c+", "V6":  "7a", "V7":  "7a+","V8":  "7b",
+    "V9":  "7c",  "V10": "7c+","V11": "8a", "V12": "8a+",
+    "V13": "8b",  "V14": "8b+","V15": "8c", "V16": "8c+",
+    "V17": "9a",  "Project": "Project",
+};
+
+const BOULDER_V_TO_UIAA = {
+    "VB":  "4-",     "V0-": "VI+",     "V0":  "VII-",    "V0+": "VII",
+    "V1":  "VII+",   "V2":  "VII+/VII-","V3": "VIII-",   "V4":  "VIII",
+    "V5":  "VIII/VIII+","V6":"VIII+",   "V7":  "IX-",     "V8":  "IX",
+    "V9":  "IX/IX+", "V10": "IX+",     "V11": "X-",      "V12": "X",
+    "V13": "X+",     "V14": "XI-",     "V15": "XI",      "V16": "XI+",
+    "V17": "XII-",   "Project": "Project",
+};
+
+const ALPINE_RUSS_TO_EU = {
+    "1A": "F",   "1B": "F+",  "2A": "PD",    "2B": "PD+",
+    "3A": "AD",  "3B": "AD+", "4A": "D",     "4B": "D+",
+    "5A": "TD",  "5B": "TD+/ED1", "6A": "ED2", "6B": "ED2+",
+    "7A": "ED3",
+};
+
+function getGradeSetting() {
+    return (localStorage.getItem("grade") || "").toLowerCase();
+}
+
 export default {
     methods: {
         lead(grade_fr) {
-            var grad = "";
-            if (localStorage.getItem("grade") == "yds" || localStorage.getItem("grade") == "YDS") {
-                if (grade_fr == "4") grad = "5.6";
-                else if (grade_fr == "5a" || grade_fr == "5a+") grad = "5.7";
-                else if (grade_fr == "5b" || grade_fr == "5b+") grad = "5.8";
-                else if (grade_fr == "5c" || grade_fr == "5c+") grad = "5.9";
-                else if (grade_fr == "6a") grad = "5.10a";
-                else if (grade_fr == "6a+") grad = "5.10b";
-                else if (grade_fr == "6b") grad = "5.10c";
-                else if (grade_fr == "6b+") grad = "5.10d";
-                else if (grade_fr == "6c") grad = "5.11a/5.11b";
-                else if (grade_fr == "6c+") grad = "5.11c";
-                else if (grade_fr == "7a") grad = "5.11d";
-                else if (grade_fr == "7a+") grad = "5.12a";
-                else if (grade_fr == "7b") grad = "5.12b";
-                else if (grade_fr == "7b+") grad = "5.12c";
-                else if (grade_fr == "7c") grad = "5.12d";
-                else if (grade_fr == "7c+") grad = "5.13a";
-                else if (grade_fr == "8a") grad = "5.13b";
-                else if (grade_fr == "8a+") grad = "5.13c";
-                else if (grade_fr == "8b") grad = "5.13d";
-                else if (grade_fr == "8b+") grad = "5.14a";
-                else if (grade_fr == "8c") grad = "5.14b";
-                else if (grade_fr == "8c+") grad = "5.14c";
-                else if (grade_fr == "9a") grad = "5.14d";
-                else if (grade_fr == "9a+") grad = "5.15a";
-                else if (grade_fr == "9b") grad = "5.15b";
-                else if (grade_fr == "9b+") grad = "5.15c";
-                else if (grade_fr == "9c") grad = "5.15d";
-                else if (grade_fr == "9c+") grad = "5.16a";
-                else if (grade_fr == "Project") grad = "Project";
-                else grad = "?";
-            } else if (localStorage.getItem("grade") == "UIAA" || localStorage.getItem("grade") == "uiaa") {
-                // console.log(localStorage.getItem("grade"))
-                if (grade_fr == "4") grad = "IV";
-                else if (grade_fr == "5a" || grade_fr == "5a+") grad = "V+";
-                else if (grade_fr == "5b" || grade_fr == "5b+") grad = "VI-";
-                else if (grade_fr == "5c" || grade_fr == "5c+") grad = "VI";
-                else if (grade_fr == "6a") grad = "VI+";
-                else if (grade_fr == "6a+") grad = "VII-";
-                else if (grade_fr == "6b") grad = "VII";
-                else if (grade_fr == "6b+") grad = "VII+";
-                else if (grade_fr == "6c") grad = "VII+/VIII-";
-                else if (grade_fr == "6c+") grad = "VIII-";
-                else if (grade_fr == "7a") grad = "VIII";
-                else if (grade_fr == "7a+") grad = "VIII+";
-                else if (grade_fr == "7b") grad = "VIII+/IX-";
-                else if (grade_fr == "7b+") grad = "IX-";
-                else if (grade_fr == "7c") grad = "IX";
-                else if (grade_fr == "7c+") grad = "IX+";
-                else if (grade_fr == "8a") grad = "IX+/X-";
-                else if (grade_fr == "8a+") grad = "X-";
-                else if (grade_fr == "8b") grad = "X";
-                else if (grade_fr == "8b+") grad = "X+";
-                else if (grade_fr == "8c") grad = "XI-";
-                else if (grade_fr == "8c+") grad = "XI";
-                else if (grade_fr == "9a") grad = "XI+";
-                else if (grade_fr == "9a+") grad = "XII-";
-                else if (grade_fr == "9b") grad = "XII";
-                else if (grade_fr == "9b+") grad = "XII+";
-                else if (grade_fr == "9c") grad = "XIII";
-                else if (grade_fr == "Project") grad = "Project";
-                else grad = "?";
-            } else {
-                grad = "Error";
-            }
-            return grad;
+            const setting = getGradeSetting();
+            if (setting === "yds") return LEAD_FR_TO_YDS[grade_fr] ?? "?";
+            if (setting === "uiaa") return LEAD_FR_TO_UIAA[grade_fr] ?? "?";
+            return "Error";
         },
+
         boulder(grade_fr) {
-            var grade = "";
-            if (localStorage.getItem("grade") == "yds" || localStorage.getItem("grade") == "YDS") {
-                if (grade_fr == "VB") grade = "4-";
-                else if (grade_fr == "V0-") grade = "4";
-                else if (grade_fr == "V0") grade = "4+";
-                else if (grade_fr == "V0+") grade = "5a";
-                else if (grade_fr == "V1") grade = "5b";
-                else if (grade_fr == "V2") grade = "5c";
-                else if (grade_fr == "V3") grade = "6a";
-                else if (grade_fr == "V4") grade = "6b";
-                else if (grade_fr == "V5") grade = "6c+";
-                else if (grade_fr == "V6") grade = "7a";
-                else if (grade_fr == "V7") grade = "7a+";
-                else if (grade_fr == "V8") grade = "7b";
-                else if (grade_fr == "V9") grade = "7c";
-                else if (grade_fr == "V10") grade = "7c+";
-                else if (grade_fr == "V11") grade = "8a";
-                else if (grade_fr == "V12") grade = "8a+";
-                else if (grade_fr == "V13") grade = "8b";
-                else if (grade_fr == "V14") grade = "8b+";
-                else if (grade_fr == "V15") grade = "8c";
-                else if (grade_fr == "V16") grade = "8c+";
-                else if (grade_fr == "V17") grade = "9a";
-                else if (grade_fr == "Project") grad = "Project";
-                else grade = "?";
-            } else if (localStorage.getItem("grade") == "UIAA" || localStorage.getItem("grade") == "uiaa") {
-                if (grade_fr == "VB") grade = "4-";
-                else if (grade_fr == "V0-") grade = "VI+";
-                else if (grade_fr == "V0") grade = "VII-";
-                else if (grade_fr == "V0+") grade = "VII";
-                else if (grade_fr == "V1") grade = "VII+";
-                else if (grade_fr == "V2") grade = "VII+/VII-";
-                else if (grade_fr == "V3") grade = "VIII-";
-                else if (grade_fr == "V4") grade = "VIII";
-                else if (grade_fr == "V5") grade = "VIII/VIII+";
-                else if (grade_fr == "V6") grade = "VIII+";
-                else if (grade_fr == "V7") grade = "IX-";
-                else if (grade_fr == "V8") grade = "IX";
-                else if (grade_fr == "V9") grade = "IX/IX+";
-                else if (grade_fr == "V10") grade = "IX+";
-                else if (grade_fr == "V11") grade = "X-";
-                else if (grade_fr == "V12") grade = "X";
-                else if (grade_fr == "V13") grade = "X+";
-                else if (grade_fr == "V14") grade = "XI-";
-                else if (grade_fr == "V15") grade = "XI";
-                else if (grade_fr == "V16") grade = "XI+";
-                else if (grade_fr == "V17") grade = "XII-";
-                else if (grade_fr == "Project") grad = "Project";
-                else grade = "?";
-            } else {
-                grad = "Error";
-            }
-            return grade;
+            const setting = getGradeSetting();
+            if (setting === "yds") return BOULDER_V_TO_YDS[grade_fr] ?? "?";
+            if (setting === "uiaa") return BOULDER_V_TO_UIAA[grade_fr] ?? "?";
+            return "Error";
         },
+
         alpine(grade_russ) {
-            var grad = "";
-            if (localStorage.getItem("EU") == "yds" || localStorage.getItem("grade") == "eu") {
-                if (grade_russ == "1A") grad = "F";
-                else if (grade_russ == "1B") grad = "F+";
-                else if (grade_russ == "2A") grad = "PD";
-                else if (grade_russ == "2B") grad = "PD+";
-                else if (grade_russ == "3A") grad = "AD";
-                else if (grade_russ == "3B") grad = "AD+";
-                else if (grade_russ == "4A") grad = "D";
-                else if (grade_russ == "4B") grad = "D+";
-                else if (grade_russ == "5A") grad = "TD";
-                else if (grade_russ == "5B") grad = "TD+/ED1";
-                else if (grade_russ == "6A") grad = "ED2";
-                else if (grade_russ == "6B") grad = "ED2+";
-                else if (grade_russ == "7A") grad = "ED3";
-                else grad = "?";
-            } else {
-                grad = "Error";
-            }
-            return grad;
+            const setting = (localStorage.getItem("EU") || localStorage.getItem("grade") || "").toLowerCase();
+            if (setting === "yds" || setting === "eu") return ALPINE_RUSS_TO_EU[grade_russ] ?? "?";
+            return "Error";
         },
     }
 }

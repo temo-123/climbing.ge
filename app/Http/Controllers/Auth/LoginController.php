@@ -133,7 +133,7 @@ class LoginController extends Controller
                 ], 403);
             }
             
-            $user->tokens()->where('name', 'auth_token')->delete();
+            $user->tokens()->delete();
             $token = $user->createToken('authToken')->plainTextToken;
             
             \Log::info('Login successful for user: ' . $user->email);

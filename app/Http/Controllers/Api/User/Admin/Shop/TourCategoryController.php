@@ -13,7 +13,7 @@ class TourCategoryController extends Controller
     public function get_editing_category($category_id)
     {
         $auth = PermissionService::authorize('tour_category', 'view');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         return Tour_category::where('id', '=', $category_id)->first();
     }
@@ -21,7 +21,7 @@ class TourCategoryController extends Controller
     public function add_category(Request $request)
     {
         $auth = PermissionService::authorize('tour_category', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         // dd($request->data);
         $validate = $this->validation($request);
@@ -43,7 +43,7 @@ class TourCategoryController extends Controller
     public function edit_category(Request $request)
     {
         $auth = PermissionService::authorize('tour_category', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $validate = $this->validation($request);
 
@@ -64,7 +64,7 @@ class TourCategoryController extends Controller
     public function del_category($id)
     {
         $auth = PermissionService::authorize('tour_category', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $deleted_product_category = Tour_category::where("id", "=", $id)->first();
         $deleted_product_category -> delete();

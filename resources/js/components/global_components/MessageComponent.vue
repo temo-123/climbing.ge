@@ -2,7 +2,7 @@
     <div class="container">
         <h2 class="block_title">{{ $t('global.message.title') }}</h2>
         <div class="bar"><i class="fa fa-envelope" aria-hidden="true"></i></div>
-        <h3> <span v-html="this.$siteData.data.message"></span> </h3>
+        <h3> <span v-html="safeMessage"></span> </h3>
         
         <div class="alert alert-danger" role="alert" v-if="fatal_error">
             <h2 class="text-center">Fatal error! Please contact support!</h2>
@@ -129,6 +129,21 @@
 
                 isLoading: false,
                 isSuccess: false,
+            }
+        },
+        computed: {
+            safeMessage() {
+                const raw = this.$siteData?.data?.message || '';
+                const doc = new DOMParser().parseFromString(raw, 'text/html');
+                doc.querySelectorAll('script, iframe, object, embed, form, input, link[rel="import"]').forEach(el => el.remove());
+                doc.querySelectorAll('*').forEach(el => {
+                    [...el.attributes].forEach(attr => {
+                        if (/^on/i.test(attr.name) || (attr.name === 'href' && /^javascript:/i.test(attr.value))) {
+                            el.removeAttribute(attr.name);
+                        }
+                    });
+                });
+                return doc.body.innerHTML;
             }
         },
         mounted() {

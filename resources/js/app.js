@@ -26,6 +26,8 @@ import { abilityDefaults } from "./services/ability/ability.js"
 app.config.globalProperties.$ability = abilityDefaults
 app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(action, subject)
 
+import { useAuthStore } from "./store/auth.js"
+
 import { going } from './mixins/easy_navigation_mixin.js';
 app.config.globalProperties.$going = going;
 app.config.globalProperties.$bus = {
@@ -52,6 +54,9 @@ app.component('StackModal', StackModal)
 
 import SkeletonLoader from "./components/global_components/SkeletonLoaderComponent.vue"
 app.component('skeleton-loader', SkeletonLoader)
+
+import ToastNotification from "./components/global_components/ToastNotificationComponent.vue"
+app.component('toast-notification', ToastNotification)
 
 import goToAdminPage from "./components/global_components/GoToComponrnt.vue";
 app.component("goToAdminPage", goToAdminPage);
@@ -344,23 +349,31 @@ window.axios.interceptors.response.use(response => response, async err => {
         }
         else if (status === 403) {
             if (err.response.data && err.response.data.is_banned === true) {
-                if (err.response.data.alert) {
-                    alert(err.response.data.alert.title + '\n\n' + err.response.data.alert.message);
-                } else {
-                    alert('Your account has been banned.');
-                }
+                const alertData = err.response.data.alert;
+                app.config.globalProperties.$bus.$emit('toast', {
+                    type: 'danger',
+                    title: alertData ? alertData.title : 'Account Banned',
+                    message: alertData ? alertData.message : 'Your account has been banned.',
+                    duration: 10000,
+                });
                 localStorage.removeItem('x_xsrf_token');
-                localStorage.removeItem('user');
-                window.close();
+                localStorage.removeItem('auth_token');
+                setTimeout(() => window.location.href = '/', 3000);
                 return Promise.reject(err);
             }
             else {
-                alert("You don't have permission to perform this action.");
+                app.config.globalProperties.$bus.$emit('toast', {
+                    type: 'warning',
+                    message: "You don't have permission to perform this action.",
+                });
                 return Promise.reject(err);
             }
         }
         else {
-            alert("Error: " + (err.response.status + ' ' + err.response.statusText).trim());
+            app.config.globalProperties.$bus.$emit('toast', {
+                type: 'danger',
+                message: "Error " + err.response.status + ': ' + err.response.statusText,
+            });
             return Promise.reject(err);
         }
     }
@@ -370,6 +383,12 @@ window.axios.interceptors.response.use(response => response, async err => {
 app.use(router);
 
 app.mount("#app");
+
+// Fetch authenticated user once on mount so CASL rules are updated globally
+if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+    const authStore = useAuthStore();
+    authStore.fetchUser();
+}
 
 // Auto load site data after app mount - direct global call to avoid multiple
 setTimeout(() => {

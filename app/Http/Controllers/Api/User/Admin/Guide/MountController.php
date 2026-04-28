@@ -22,7 +22,7 @@ class MountController extends Controller
     public function add_mount_massive(Request $request)
     {
         $auth = PermissionService::authorize('mount_massive', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $validation_issets = [];
 
         $ka_validate = $this->local_mount_validate($request['data']['ka_data']);
@@ -134,7 +134,7 @@ class MountController extends Controller
     public function get_editing_mount_massive_data(Request $request)
     {
         $auth = PermissionService::authorize('mount_massive', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $mounts_system = Mount::where('id', '=', $request->mount_id)->first();
 
         $data = [
@@ -156,7 +156,7 @@ class MountController extends Controller
     public function edit_mount_massive(Request $request)
     {
         $auth = PermissionService::authorize('mount_massive', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $validation_issets = [];
 
         $ka_validate = $this->local_mount_validate($request['data']['ka_data']);
@@ -271,7 +271,7 @@ class MountController extends Controller
     public function update(Request $request, $id)
     {
         $auth = PermissionService::authorize('mount_massive', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $editing_product_category = Mount::where("id", "=", $id)->first();
 
         $editing_product_category['map'] = $request->editing_data['map'];
@@ -288,7 +288,7 @@ class MountController extends Controller
     public function del_mount_massive($id)
     {
         $auth = PermissionService::authorize('mount_massive', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $deleted_product_category = Mount::where("id", "=", $id)->first();
         $deleted_product_category -> delete();
     }
@@ -306,7 +306,7 @@ class MountController extends Controller
     public function get_filtred_mount_route_for_admin(Request $request)
     {
         $auth = PermissionService::authorize('mount_route', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $mount_id = $request->filter_id;
         

@@ -17,14 +17,14 @@ class ProductSubcategoryController extends Controller
 
     function get_editing_subcategory(Request $request) {
         $auth = PermissionService::authorize('product_subcategory', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         return Product_subcategory::where("id", "=", $request->id,)->first();
     }
 
     function add_subcategory(Request $request) {
         $auth = PermissionService::authorize('product_subcategory', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $validate = $this->validation($request);
 
@@ -51,7 +51,7 @@ class ProductSubcategoryController extends Controller
 
     function edit_subcategory(Request $request) {
         $auth = PermissionService::authorize('product_subcategory', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $validate = $this->validation($request);
 

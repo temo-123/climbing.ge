@@ -20,8 +20,20 @@ class AuthenticationController extends Controller
         if ($user) {
             $user->tokens()->delete();
         }
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+
+        // Log out the web (session) guard — this removes the auth identity from
+        // the session so any subdomain sharing the parent-domain session cookie
+        // immediately loses authentication.
+        try {
+            \Illuminate\Support\Facades\Auth::guard('web')->logout();
+        } catch (\Throwable) {}
+
+        // Belt-and-suspenders: also flush + invalidate the session directly.
+        if ($request->hasSession()) {
+            $request->session()->flush();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+        }
 
         return response()->json(['message' => 'Logged out']);
     }
@@ -52,7 +64,14 @@ class AuthenticationController extends Controller
             ], 403);
         }
 
-        return response()->json($user);
+        $allPermissions = $user->getAllPermissions()->map(fn($p) => [
+            'action'  => $p->action,
+            'subject' => $p->subject,
+        ])->values();
+
+        return response()->json(array_merge($user->toArray(), [
+            'casl_permissions' => $allPermissions,
+        ]));
     }
 }
 

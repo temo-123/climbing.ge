@@ -34,7 +34,7 @@ class ProductController extends Controller
     public function add_product(Request $request)
     {
         $auth = PermissionService::authorize('product_category', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $data = json_decode($request->data, true );
         
         $validator = Validator::make($data['global_product'], [
@@ -180,7 +180,7 @@ class ProductController extends Controller
     public function edit_product(Request $request)
     {
         $auth = PermissionService::authorize('product_category', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         // $data = $request->data;
         $data = json_decode($request->data, true );
 

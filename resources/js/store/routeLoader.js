@@ -1,6 +1,5 @@
-// loading.js
-import { ref } from 'vue'
+import { ref } from 'vue';
 
-
-
-export const isRouteLoading = ref(false)
+// Kept as a plain ref since app.js router hooks use it directly.
+// New code should use useRouteLoaderStore from Pinia instead.
+export const isRouteLoading = ref(false);

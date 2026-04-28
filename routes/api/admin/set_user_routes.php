@@ -73,20 +73,6 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::delete('destroy/{id}', 'destroy');
     });
 
-    Route::controller(RolesController::class)->prefix('set_role')->group( function() {
-        Route::apiResource('/', 'RolesController');
-
-        Route::get('get_editing_role/{role_id}', 'get_editing_role');
-        Route::get('get_editing_role_permissions/{role_id}', 'get_editing_role_permissions');
-
-        Route::get('get_user_permissions/{user_id}', 'get_user_permissions');
-    });
-    Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
-
-    Route::controller(PermissionsController::class)->prefix('set_permission')->group(function() {
-        Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
-    });
-
     Route::controller(ExportController::class)->prefix('set_export')->group(function() {
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');

@@ -13,21 +13,21 @@ use App\Services\PermissionService;
 class WarehouseController extends Controller
 {
     public function get_warehouses () {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         return Warehouse::all();
     }
 
     public function add_warehouse (Request $request) {
         $auth = PermissionService::authorize('warehouse', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::create($request->all('data')['data']);
         return response()->json($warehouse, 201);
     }
 
     public function edit_warehouse (Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Not found'], 400);
@@ -37,26 +37,26 @@ class WarehouseController extends Controller
     }
 
     public function get_editing_warehouse (Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
     public function get_warehouse_data(Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
     public function get_activ_warehouse (Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         return Warehouse::find($request->id);
     }
 
     public function del_warehouse (Request $request) {
         $auth = PermissionService::authorize('warehouse', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $deleted = Warehouse::where('id', $request->id)->delete();
         return response()->json(['deleted' => $deleted > 0], $deleted ? 200 : 400);
     }
@@ -65,7 +65,7 @@ class WarehouseController extends Controller
 
     public function add_product_option_to_warehouse(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -97,7 +97,7 @@ class WarehouseController extends Controller
 
     public function remove_product_option_from_warehouse(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -107,8 +107,8 @@ class WarehouseController extends Controller
     }
 
     public function get_warehouse_product_options(Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -117,8 +117,8 @@ class WarehouseController extends Controller
     }
 
     public function get_warehouse_product_options_grouped_by_product(Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -142,7 +142,7 @@ class WarehouseController extends Controller
 
     public function edit_product_option_quantity(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -171,7 +171,7 @@ class WarehouseController extends Controller
 
     public function delete_product_option_from_warehouse(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -187,8 +187,8 @@ class WarehouseController extends Controller
     }
 
     public function get_product_option_details(Request $request) {
-        // $auth = PermissionService::authorize('warehouse', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('warehouse', 'view');
+        if ($auth) return $auth;
         $warehouse = Warehouse::find($request->id);
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
@@ -209,7 +209,7 @@ class WarehouseController extends Controller
 
     public function migrate_product_option(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $fromWarehouse = Warehouse::find($request->id);
 
         if (!$fromWarehouse) {

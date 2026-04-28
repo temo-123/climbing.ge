@@ -25,8 +25,8 @@ class UsersController extends Controller
 {
     public function get_all_users()
     {
-        // $auth = PermissionService::authorize('user', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('user', 'view');
+        if ($auth) return $auth;
         return User::latest('id')->get();
     }
 
@@ -35,14 +35,14 @@ class UsersController extends Controller
     }
 
     public function get_user_data(Request $request) {
-        // $auth = PermissionService::authorize('user', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('user', 'view');
+        if ($auth) return $auth;
         return user::where('id', '=', $request->user_id)->first();
     }
 
     public function get_worker_users() {
-        // $auth = PermissionService::authorize('user', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('user', 'view');
+        if ($auth) return $auth;
         $all_users = User::get();
         $prmishened_users = [];
 
@@ -60,15 +60,15 @@ class UsersController extends Controller
     }
 
     public function get_team_members() {
-        // $auth = PermissionService::authorize('user', 'view');
-        // if ($auth) return $auth;
+        $auth = PermissionService::authorize('user', 'view');
+        if ($auth) return $auth;
         return User::where('is_team_member', '!=', null)->get();
     }
 
     public function create_user_by_admin(Request $request)
     {
         $auth = PermissionService::authorize('user', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $validator = Validator::make($request['data'], [
             'name' => 'required',
             'surname' => 'required',
@@ -220,7 +220,7 @@ class UsersController extends Controller
     public function del_user(Request $request)
     {
         $auth = PermissionService::authorize('user', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $deliting_user = User::where('id',strip_tags($request->user_id))->first();
 
         if (Auth::user()->id != $deliting_user->id) {

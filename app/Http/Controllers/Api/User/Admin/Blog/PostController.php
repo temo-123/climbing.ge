@@ -16,7 +16,7 @@ class PostController extends Controller
 {
     function add_post(Request $request) {
         $auth = PermissionService::authorize('post', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
 
         $data = json_decode($request->data, true );
 
@@ -29,7 +29,7 @@ class PostController extends Controller
 
     function edit_post(Request $request) {
         $auth = PermissionService::authorize('post', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $post_editing = PostService::edit_content(Post::class, Locale_post::class, '_post', $request, 'images/blog_img/');
 
@@ -38,7 +38,7 @@ class PostController extends Controller
 
     function get_editing_post(Request $request) {
         $auth = PermissionService::authorize('post', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $post = Post::where('id', strip_tags($request->id))->first();
         $us_post = Locale_post::where('id', $post->us_post_id ?? null)->first();
         $ka_post = Locale_post::where('id', $post->ka_post_id ?? null)->first();
@@ -73,7 +73,7 @@ class PostController extends Controller
 
     function del_post(Request $request) {
         $auth = PermissionService::authorize('post', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $global_id=$request->id;
 
         $global_post = Post::where('id',strip_tags($global_id))->first();

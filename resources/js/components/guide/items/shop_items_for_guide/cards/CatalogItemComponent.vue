@@ -10,8 +10,8 @@
                 </div>
                 <a class="cursor_pointer" @click="go_to_service('product/'+product_data.global_product.url_title)" aria-label="View product details">
                     <div class="item-img">
-                        <shop-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
-                        <shop-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product.title" />
+                        <site-img v-if="product_data.product_images.length" :src="'/public/images/product_option_img/'+get_product_image()" :alt="product_data.locale_product.title" />
+                        <site-img v-else :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product_data.locale_product.title" />
                     </div>
                 </a>
                 <div class="image-nav next-image" v-if="image_num < (this.image_length - 1)">
@@ -245,7 +245,7 @@
         justify-content: center;
     }
 
-    .item-img shop-img {
+    .item-img site-img {
         width: 100%;
         height: 100%;
         object-fit: cover;

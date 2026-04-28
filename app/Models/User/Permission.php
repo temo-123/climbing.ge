@@ -20,6 +20,6 @@ class Permission extends Model
 
     public function user()
     {
-        return $this->belongsToOne(User::class, 'user_role', 'user_id', 'role_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

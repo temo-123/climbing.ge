@@ -315,7 +315,7 @@ class OrderController extends Controller
     public function order_is_confirm(Request $request)
     {
         $auth = PermissionService::authorize('order', 'edit_order_status');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
 
         $order = Order::where("id", "=", $request->order_id)->first();
         $order['confirm'] = 1;
@@ -344,7 +344,7 @@ class OrderController extends Controller
     public function edit_order_status(Request $request)
     {
         $auth = PermissionService::authorize('order', 'edit_order_status');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
 
         $editing_order_status = Order::where("id", "=", $request->order_id)->first();
         $editing_order_status['status'] = $request->status;

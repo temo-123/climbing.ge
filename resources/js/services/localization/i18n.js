@@ -10,8 +10,7 @@ const numberFormats = {
     en: {
         currency: {
             style: "currency",
-            currency: currency,
-            currency: 'USD'
+            currency: 'USD',
         },
         decimal: {
             style: "decimal",
@@ -26,7 +25,6 @@ const numberFormats = {
     ka: {
         currency: {
             style: "currency",
-            currency: currency,
             currency: 'GEL',
         },
         decimal: {

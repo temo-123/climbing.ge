@@ -47,13 +47,17 @@
             })
             .then(response => {
                 const cookieMatch = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
-                const token = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null
-                if (token) {
-                    localStorage.setItem('x_xsrf_token', token)
+                const xsrfToken = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null
+                if (xsrfToken) {
+                    localStorage.setItem('x_xsrf_token', xsrfToken)
                 }
 
                 if(response.data.status == 'login'){
-                    window.location.href = '/'
+                    axios.get('token').then(tokenRes => {
+                        localStorage.setItem('auth_token', tokenRes.data)
+                    }).finally(() => {
+                        window.location.href = '/'
+                    })
                 }
                 else if(response.data.status == 'registratione'){
                     window.location.href = '/create_password/' + response.data.new_user_email

@@ -23,7 +23,7 @@ class EventController extends Controller
     public function edit_event(Request $request)
     {
         $auth = PermissionService::authorize('event', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         // dd($request->global_blocks);
 
         $validation_issets = [];
@@ -190,7 +190,7 @@ class EventController extends Controller
     public function del_event(Request $request)
     {
         $auth = PermissionService::authorize('event', 'del');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $global_global_info_relatione = General_info_event::where('event_id', '=', $request->event_id)->first();
 
         $global_event = Event::where('id',strip_tags($request->event_id))->first();
@@ -227,7 +227,7 @@ class EventController extends Controller
     public function add_event(Request $request)
     {
         $auth = PermissionService::authorize('event', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         $validation_issets = [];
 
         // dd($request);

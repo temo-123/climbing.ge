@@ -4,23 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\VerificationController;
 use App\Http\Controllers\Auth\AuthenticationController;
 
-// Public debug endpoints - no authentication required
-Route::get('/debug/login', function () {
-    return response()->json([
-        'message' => 'Login endpoint is accessible',
-        'method' => request()->method(),
-        'headers' => request()->headers->all(),
-        'accept_header' => request()->header('Accept'),
-    ]);
-});
-
-Route::get('/debug/test', function () {
-    return response()->json([
-        'authenticated' => auth()->check(),
-        'user' => auth()->user() ? auth()->user()->only('id', 'email', 'name') : null,
-    ]);
-});
-
 // Protected routes - authentication required
 Route::middleware(['auth:sanctum', 'banned'])->group(function () {
     Route::get('token', function () {

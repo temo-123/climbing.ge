@@ -114,26 +114,41 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Check if user has permission for a specific subject and action
-     * @param string $subject
-     * @param string $action
-     * @return bool
+     * Check if user has permission for a specific subject and action.
+     * Loads roles+permissions once per request and caches in-memory.
      */
     public function hasPermissionFor($subject, $action)
     {
-        // Check direct permissions
-        if ($this->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
-            return true;
-        }
+        $allPermissions = $this->getAllPermissions();
 
-        // Check through roles
-        foreach ($this->role as $role) {
-            if ($role->permissions()->where('subject', $subject)->where('action', $action)->count() > 0) {
+        foreach ($allPermissions as $permission) {
+            if ($permission->subject === $subject && $permission->action === $action) {
                 return true;
             }
         }
 
         return false;
+    }
+
+    /**
+     * Return a flat collection of all permissions (direct + via roles).
+     * Result is cached on the model instance for the lifetime of the request.
+     */
+    public function getAllPermissions()
+    {
+        if (isset($this->_permissionsCache)) {
+            return $this->_permissionsCache;
+        }
+
+        $direct = $this->permissions()->get();
+
+        $viaRoles = $this->role()->with('permissions')->get()
+            ->pluck('permissions')
+            ->flatten();
+
+        $this->_permissionsCache = $direct->merge($viaRoles)->unique('id');
+
+        return $this->_permissionsCache;
     }
 
 

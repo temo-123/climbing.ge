@@ -18,7 +18,7 @@ class MTPController extends Controller
     public function mtp_add(Request $request)
     {
         $auth = PermissionService::authorize('mtp', 'add');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         // dd($request->data);
         $mtp_validate = $this->mtp_validate($request->data);
@@ -57,7 +57,7 @@ class MTPController extends Controller
     public function mtp_edit(Request $request, $id)
     {
         $auth = PermissionService::authorize('mtp', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $mtp_validate = $this->mtp_validate($request->data);
         if ($mtp_validate != null) { 
@@ -84,7 +84,7 @@ class MTPController extends Controller
     public function get_editing_mtp(Request $request, $id)
     {
         $auth = PermissionService::authorize('mtp', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         return Mtp::where('id',strip_tags($request->mtp_id))->first();
     }
@@ -115,7 +115,7 @@ class MTPController extends Controller
     public function get_mtp_editing_data(Request $request)
     {
         $auth = PermissionService::authorize('mtp', 'edit');
-        // if ($auth) return $auth;
+        if ($auth) return $auth;
         
         $mtp = Mtp::where('id',strip_tags($request->id))->first();
         return(
