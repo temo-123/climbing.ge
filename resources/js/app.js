@@ -3,7 +3,6 @@ import "./bootstrap";
 import { createHead } from "@unhead/vue/client";
 
 const app = createApp({});
-app.config.compilerOptions.isCustomElement = (tag) => tag === 'behold-widget';
 const head = createHead();
 app.use(head);
 

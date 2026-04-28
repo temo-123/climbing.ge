@@ -113,9 +113,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_actyve_slide/{slide_id}', 'get_actyve_slide');
     });
 
-    Route::controller(\App\Http\Controllers\Api\Guide\InstagramController::class)->prefix('get_instagram')->group(function () {
-        Route::get('/posts/{tag?}', 'get_posts');
-    });
 
 
     Route::controller(GeneralInfoController::class)->prefix('get_general_info')->group( function() {
