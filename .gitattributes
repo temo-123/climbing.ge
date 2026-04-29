@@ -33,8 +33,9 @@
 *.css linguist-vendored
 *.scss linguist-vendored=false
 
-# JavaScript Libraries and Frameworks
+# JavaScript/Vue Libraries and Frameworks
 *.js linguist-vendored
+*.vue linguist-vendored
 vue.config.js linguist-vendored=false
 webpack.mix.js linguist-vendored=false
 

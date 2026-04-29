@@ -147,7 +147,7 @@
         align-self: flex-start;
         max-height: calc(100vh - 90px);
         overflow-y: auto;
-        padding-left: 15rem;
+        padding-left: 1.5rem;
     }
     .caption h3 {
         margin: 0;
