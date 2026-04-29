@@ -159,7 +159,20 @@
             "technical_details": "Technical Details",
             "description": "Description",
             "glued_bolts": "Route have a glued-in bolts",
-            "hangerr_bolts": "Route have a hangerr bolts"
+            "hangerr_bolts": "Route have a hangerr bolts",
+            "grade_fr": "Grade FR",
+            "grade_uiaa": "Grade UIAA",
+            "grade_yds": "Grade YDS",
+            "route_details": "Route Details",
+            "please_login": "Please log in to add route feedback!",
+            "mtp_details": "Multi-Pitch Details",
+            "category": "Category",
+            "boulder": "Boulder",
+            "sport_climbing": "Sport Climbing",
+            "mtp": "Multi-Pitch",
+            "routes": "Routes",
+            "no_feedbacks_message": "No feedbacks yet for this route",
+            "already_reviewed": "You already have a review for this route."
         },
         "sector": {
             "name": "Sector Name",

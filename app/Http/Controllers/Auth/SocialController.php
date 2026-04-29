@@ -4,136 +4,124 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use Socialite;
-use Hash;
-use Auth;
-use Redirect;
-use Validator;
-use Password;
-use Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 use App\Models\user_notification;
 use App\Models\User_role;
 use App\Models\Role;
 use App\Models\Social_account;
-
 use App\Models\User;
 
 class SocialController extends Controller
 {
     public function redirect($provider)
     {
-        // dd(Socialite::driver($provider));
-        // return Socialite::driver($provider)->redirect();
-
-        // return Socialite::driver($provider)->stateless()->redirect();
-        $url = Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
-        // dd($url);
-
-        return response()->json(["url" => $url]);
+        try {
+            $url = \Socialite::driver($provider)->stateless()->redirect()->getTargetUrl();
+            return response()->json(['url' => $url]);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Could not initiate social login.'], 500);
+        }
     }
 
     public function callback($provider, Request $request)
     {
-        // dd($provider, $request); 
-        $social_user = Socialite::driver($provider)->stateless()->user();
-        // dd($social_user->id); 
-        $user = User::where(['email' => $social_user->getEmail()])->first();
-        // dd($user);
-
-        if(!$social_user->token){
-            return response()->json(['Token error'], 500);
+        try {
+            $social_user = \Socialite::driver($provider)->stateless()->user();
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Social login failed: could not retrieve user from provider.'], 422);
         }
-        else{
-            if($user){
-                Auth::login($user);
-                // return Redirect::to('/');
-                // return response()->json("login");
-                return response()->json(['status' => 'login']);
-            }
-            else{
 
-                // $stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-                // $pieces = [];
-                // $max = mb_strlen($stringSpace, '8bit') - 1;
-                // for ($i = 0; $i < 16; ++ $i) {
-                //     $pieces[] = $stringSpace[random_int(0, $max)];
-                // }
-                // $rendom_password = implode('', $pieces);
-                
-
-                $new_user = User::create([
-                    'name'      => $social_user->getName(),
-                    'email'     => $social_user->getEmail(),
-                    'image'     => $social_user->getAvatar(),
-                    // 'password'  => Hash::make($rendom_password)
-                    'password'  => Hash::make(Str::random(10))
-                ]);
-
-                // dd((int) $new_user->id, (int) $social_user->id, $provider);
-
-                // $new_social_provaider = Social_account::create([
-                //     // 'provider' => $provider,
-                //     // 'provider_user_id' => (int) $social_user->id,
-                //     'user_id' => (int) $new_user->id
-                // ]);
-
-                $new_social_provaider =  new Social_account();
-
-                $new_social_provaider['provider'] = $provider;
-                $new_social_provaider['provider_user_id'] = (int) $social_user->id;
-                $new_social_provaider['user_id'] = (int) $new_user->id;
-
-                $new_social_provaider -> save();
-
-
-
-                $this -> create_user_permissions_and_notificationes($new_user->id);
-                
-                // return Redirect::to('/create_password/' . $new_user->email);
-                // return response()->json(["" "registratione");
-                return response()->json(['status' => 'registratione', 'new_user_email' => $new_user->email]);
-            }
+        $email = $social_user->getEmail();
+        if (!$email) {
+            return response()->json(['message' => 'No email returned from provider. Please allow email access.'], 422);
         }
+
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            // Existing user — check ban before allowing login
+            if ($user->isBanned()) {
+                return response()->json([
+                    'message'   => 'Your account has been banned.',
+                    'is_banned' => true,
+                ], 403);
+            }
+
+            Auth::login($user);
+            return response()->json(['status' => 'login']);
+        }
+
+        // New user — split full name into name / surname
+        $fullName = $social_user->getName() ?? '';
+        $nameParts = explode(' ', trim($fullName), 2);
+        $firstName = $nameParts[0] ?? '';
+        $lastName  = $nameParts[1] ?? '';
+
+        $new_user = User::create([
+            'name'              => $firstName,
+            'surname'           => $lastName,
+            'email'             => $email,
+            'email_verified_at' => now(), // Google/Facebook already verified the email
+            'password'          => Hash::make(Str::random(32)),
+        ]);
+
+        // Save avatar URL separately (not in $fillable, use direct update)
+        $avatar = $social_user->getAvatar();
+        if ($avatar) {
+            $new_user->forceFill(['image' => $avatar])->save();
+        }
+
+        $socialAccount = new Social_account();
+        $socialAccount['provider']          = $provider;
+        $socialAccount['provider_user_id']  = (string) $social_user->getId();
+        $socialAccount['user_id']           = $new_user->id;
+        $socialAccount->save();
+
+        $this->createUserPermissionsAndNotifications($new_user->id);
+
+        return response()->json([
+            'status'         => 'registratione',
+            'new_user_email' => $email,
+        ]);
     }
 
-    private function create_user_permissions_and_notificationes(int $user_id)
+    private function createUserPermissionsAndNotifications(int $user_id): void
     {
-        if(user_notification::where('user_id', '=', $user_id)->count() == 0){
-            $new_notification_item =  new user_notification();
-
-            $new_notification_item['user_id'] = $user_id;
-
-            $new_notification_item['add_new_gym'] = 1;
-            $new_notification_item['news'] = 1;
-            $new_notification_item['add_new_ice_spot'] = 1;
-            $new_notification_item['add_new_outdoor_spot'] = 1;
-            $new_notification_item['add_new_product'] = 1;
-            $new_notification_item['add_new_sector'] = 1;
-            $new_notification_item['add_new_service'] = 1;
-            $new_notification_item['add_new_techtip'] = 1;
-            $new_notification_item['favorite_film'] = 1;
-            $new_notification_item['favorite_outdoor'] = 1;
-            $new_notification_item['favorite_product'] = 1;
-            $new_notification_item['interested_event'] = 1;
-
-            $new_notification_item -> save();
+        if (user_notification::where('user_id', $user_id)->count() === 0) {
+            $notif = new user_notification();
+            $notif->user_id                = $user_id;
+            $notif->add_new_gym            = 1;
+            $notif->news                   = 1;
+            $notif->add_new_ice_spot       = 1;
+            $notif->add_new_outdoor_spot   = 1;
+            $notif->add_new_product        = 1;
+            $notif->add_new_sector         = 1;
+            $notif->add_new_service        = 1;
+            $notif->add_new_techtip        = 1;
+            $notif->favorite_film          = 1;
+            $notif->favorite_outdoor       = 1;
+            $notif->favorite_product       = 1;
+            $notif->interested_event       = 1;
+            $notif->save();
         }
 
-        if(User_role::where('user_id', '=', $user_id)->count() == 0){
-            $new_permission_item =  new User_role();
-
-            $new_permission_item['user_id'] = (int) $user_id;
-            $new_permission_item['role_id'] = Role::where('slug', '=', 'user')->first()->id; // ID 1 in role tab is a user
-
-            $new_permission_item -> save();
+        if (User_role::where('user_id', $user_id)->count() === 0) {
+            $role = Role::where('slug', 'user')->first();
+            if ($role) {
+                $userRole = new User_role();
+                $userRole->user_id = $user_id;
+                $userRole->role_id = $role->id;
+                $userRole->save();
+            }
         }
     }
 
     public function create_password(Request $request)
     {
-        $validator = Validator::make($request->data, [
+        $validator = \Validator::make($request->data ?? [], [
             'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
@@ -141,7 +129,9 @@ class SocialController extends Controller
             return response()->json(['message' => $validator->errors()->first()], 422);
         }
 
-        User::where('email', '=', $request->email)->update(['password' => Hash::make($request->data['password'])]);
+        User::where('email', $request->email)->update([
+            'password' => Hash::make($request->data['password']),
+        ]);
 
         return response()->json(['message' => 'Password created successfully']);
     }

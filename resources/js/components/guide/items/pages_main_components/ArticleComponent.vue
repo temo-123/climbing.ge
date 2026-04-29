@@ -20,19 +20,19 @@
            
                 <articleTextBlocks :article_prop="this.article_prop"/>
                 
-                <galleryComponent 
-                    :images_prop="this.article_prop.gallery_images" 
+                <galleryComponent
+                    :images_prop="this.article_prop.gallery_images"
+                />
+
+                <commentForm
+                    :article_id="this.article_prop.global_data.id"
+                    ref="comments"
                 />
             </div>
 
             <articleRightMenu />
-            
-        </div>
 
-        <commentForm 
-            :article_id="this.article_prop.global_data.id" 
-            ref="comments"
-        />
+        </div>
 
         <SimilarArticles 
             :article_id="this.article_prop.global_data.id" 

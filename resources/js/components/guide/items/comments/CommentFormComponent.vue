@@ -1,18 +1,11 @@
 <template>
     <div>
         <div>
-            <div class="col-md-8">
+            <div class="col-md-12">
                 <h2 id='comments' class="section-title">{{ $t('guide.article.title.comments')}}</h2>
                 <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
                     <div v-if="user.length == 0">
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-outline-primary btn-block login-comment-btn" @click="$bus.$emit('open-login-modal', get_user_info)">
-                                    <i class="fa fa-sign-in"></i> Login for easy comments — name &amp; email fill automatically
-                                </button>
-                            </div>
-                        </div>
                         <div class="row" >
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -84,18 +77,25 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <FormCapchaComponent 
-                                    :buttonTextProp="'Add comment'"
-                                    @recaptcha-verified="add_comment"
-                                    @expired="onCaptchaExpired"
-                                />
+                        <div class="col-md-8">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <FormCapchaComponent 
+                                        :buttonTextProp="'Add comment'"
+                                        @recaptcha-verified="add_comment"
+                                        @expired="onCaptchaExpired"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <button type="button" class="btn btn-primary" @click="$bus.$emit('open-login-modal', get_user_info)">
+                                    <i class="fa fa-sign-in"></i>
+                                </button>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="row" v-if="!comment_loader">
-                                <div class="col-xs-6 col-md-6">
+                                <div class="col-xs-6 col-md-6 float-right">
                                     <button type="button" @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
                                     <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
                                 </div>
@@ -194,7 +194,7 @@
             </div>
         </div>
 
-<StackModal
+            <StackModal
                 v-if="is_user_comment_complaint_model"
                 v-model:show="is_user_comment_complaint_model"
                 title="Please select a reason for deleting the comment"
@@ -487,7 +487,7 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
         border-radius: 8px;
     }
     .login-comment-btn {
-        width: 100%;
+        /* width: 100%; */
         padding: 10px;
         font-size: 0.95rem;
         border-radius: 6px;

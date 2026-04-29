@@ -15,9 +15,12 @@
       </div>
 
       <div v-else>
-        <div class="social-row mb-3">
-          <button type="button" class="btn btn-danger btn-block" @click="social_login('google')">
-            <i class="fa fa-google" aria-hidden="true"></i> Continue with Google
+        <div class="social-row mb-3 d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')">
+            <i class="fa fa-google" aria-hidden="true"></i> Google
+          </button>
+          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')">
+            <i class="fa fa-facebook" aria-hidden="true"></i> Facebook
           </button>
         </div>
 
@@ -35,22 +38,25 @@
             />
           </div>
           <div class="form-group mt-2">
-            <div class="position-relative">
+            <div style="position: relative;">
               <input
                 :type="showPassword ? 'text' : 'password'"
                 class="form-control"
+                style="padding-right: 42px;"
                 v-model="password"
                 placeholder="Password"
                 autocomplete="current-password"
                 required
               />
-              <span
-                class="pwd-toggle"
+              <button
+                type="button"
+                class="pwd-toggle-btn"
+                tabindex="-1"
                 @click="showPassword = !showPassword"
                 :title="showPassword ? 'Hide password' : 'Show password'"
               >
                 <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-              </span>
+              </button>
             </div>
           </div>
 
@@ -119,6 +125,11 @@ export default {
     methods: {
         show_modal(callback = null) {
             this.after_login_callback = callback
+            const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token')
+            if (token) {
+                if (callback) callback()
+                return
+            }
             this.auth_error = ''
             this.email = ''
             this.password = ''
@@ -132,14 +143,20 @@ export default {
         },
         social_login(service) {
             this.is_loading = true
+            this.auth_error = ''
             axios.get('login/' + service)
                 .then(response => {
                     if (response.data && response.data.url) {
                         window.location.href = response.data.url
+                    } else {
+                        this.auth_error = 'Could not initiate social login. Please try again.'
+                        this.is_loading = false
                     }
                 })
-                .catch(() => { this.auth_error = 'Social login failed. Please try again.' })
-                .finally(() => this.is_loading = false)
+                .catch(() => {
+                    this.auth_error = 'Social login failed. Please try again.'
+                    this.is_loading = false
+                })
         },
         async login() {
             if (!this.email || !this.password) return
@@ -191,22 +208,3 @@ export default {
     },
 }
 </script>
-
-<style scoped>
-.login-modal-body { max-width: 380px; margin: 0 auto; }
-.btn-block { width: 100%; }
-.divider-text {
-    text-align: center; position: relative; margin: 12px 0;
-    color: #aaa; font-size: 0.85rem;
-}
-.divider-text::before, .divider-text::after {
-    content: ''; position: absolute; top: 50%; width: 44%;
-    height: 1px; background: #ddd;
-}
-.divider-text::before { left: 0; }
-.divider-text::after { right: 0; }
-.pwd-toggle {
-    position: absolute; right: 10px; top: 50%;
-    transform: translateY(-50%); cursor: pointer; color: #888;
-}
-</style>

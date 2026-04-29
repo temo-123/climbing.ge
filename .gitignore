@@ -62,4 +62,9 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 
+# Claude AI files
 CLAUDE.md
+/.claude/
+
+# Private docs (local setup guides, credentials)
+/docs/SOCIAL_LOGIN_GUIDE.md

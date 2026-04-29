@@ -71,3 +71,8 @@
     }
 </script>
 
+<style scoped>
+    .article-horizontal-card {
+        width: 100%;
+    }
+</style>

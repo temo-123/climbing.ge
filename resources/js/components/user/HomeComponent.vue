@@ -55,10 +55,7 @@
                 }
             }
 
-            this.get_user_data()
-
-            const body = document.querySelector('body');
-            if (body) body.style.marginLeft = '0';
+            this.get_user_data();
 
             // Listen for permissions loaded after login so left menu updates without page refresh
             this.$bus.$on('permissions-loaded', this.on_permissions_loaded)

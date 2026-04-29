@@ -126,7 +126,20 @@
             "technical_details": "ტექნიკური დეტალები",
             "description": "აღწერა",
             "glued_bolts": "მარშრუტს აქვს ჩამონტჟილი ანკერები",
-            "hangerr_bolts": "მარშრუტს აქვს hangerr ანკერები"
+            "hangerr_bolts": "მარშრუტს აქვს hangerr ანკერები",
+            "grade_fr": "სირთულე FR",
+            "grade_uiaa": "სირთულე UIAA",
+            "grade_yds": "სირთულე YDS",
+            "route_details": "მარშრუტის დეტალები",
+            "please_login": "გთხოვთ შეხვიდეთ სისტემაში შეფასების დასამატებლად!",
+            "mtp_details": "მულტიპიჩის დეტალები",
+            "category": "კატეგორია",
+            "boulder": "ბოულდერი",
+            "sport_climbing": "სპორტული ცოცვა",
+            "mtp": "მულტიპიჩი",
+            "routes": "მარშრუტები",
+            "no_feedbacks_message": "ამ მარშრუტს შეფასება ჯერ არ აქვს",
+            "already_reviewed": "თქვენ უკვე გაქვთ შეფასება ამ მარშრუტისთვის."
         },
         "donation": {
             "support": "მხარდაჭერა",

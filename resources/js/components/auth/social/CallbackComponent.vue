@@ -60,7 +60,7 @@
                     })
                 }
                 else if(response.data.status == 'registratione'){
-                    window.location.href = '/create_password/' + response.data.new_user_email
+                    window.location.href = '/create_password/' + encodeURIComponent(response.data.new_user_email)
                 }
                 else{
                     this.show_error()

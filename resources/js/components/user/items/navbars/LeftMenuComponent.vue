@@ -84,29 +84,19 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                 });
             });
 
-            if (window.innerWidth > 993) {
-              if(!localStorage.getItem('left_menu_position')){
-                localStorage.setItem('left_menu_position', true);
-                this.menu_position = true
-
-                document.querySelector('body').style.marginLeft = '22em';
-                document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
-              }
-              else{
-                this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
-                if(this.menu_position){
-                  document.querySelector('body').style.marginLeft = '22em';
-                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
+            this.$nextTick(() => {
+                if (window.innerWidth > 993) {
+                    if (!localStorage.getItem('left_menu_position')) {
+                        localStorage.setItem('left_menu_position', true);
+                        this.menu_position = true;
+                    } else {
+                        this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
+                    }
+                } else {
+                    this.menu_position = false;
                 }
-                else{
-                  document.querySelector('body').style.marginLeft = '0';
-                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-                }
-              }
-            } else {
-              document.querySelector('body').style.marginLeft = '0';
-              document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-            }
+                this.apply_sidebar_margin(this.menu_position);
+            });
         },
 
         beforeUnmount() {
@@ -161,27 +151,21 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                 }
             },
 
+            apply_sidebar_margin(open) {
+                if (open && window.innerWidth > 993) {
+                    document.body.classList.add('sidebar-open');
+                } else {
+                    document.body.classList.remove('sidebar-open');
+                }
+            },
+
             update_menu_position() {
-              this.animate_enabled = true;
-              
-              requestAnimationFrame(() => {
-                if(!this.menu_position){
-                  localStorage.setItem('left_menu_position', false)
-                  this.menu_position = false
-                  document.querySelector('body').style.marginLeft = '0';
-                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-                }
-                else{
-                  localStorage.setItem('left_menu_position', true)
-                  this.menu_position = true
-                  document.querySelector('body').style.marginLeft = '22em';
-                  document.querySelector('.admin_page_header_navbar').style.marginLeft = '22em';
-                }
-                
+                this.animate_enabled = true;
+                localStorage.setItem('left_menu_position', this.menu_position);
+                this.apply_sidebar_margin(this.menu_position);
                 setTimeout(() => {
-                  this.animate_enabled = false;
+                    this.animate_enabled = false;
                 }, 500);
-              });
             },
             
             isActive(route) {
@@ -220,12 +204,16 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   width: 22em;
   height: 100%;
   background: #042331;
+  transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .sidebar.animate {
-  transition: all .5s ease;
+  transition: left 0.5s ease;
+}
+.sidebar.open {
+  left: 0;
 }
 .left_sidebar {
-  overflow:auto;
+  overflow: auto;
 }
 .sidebar header {
   font-size: 22px;
@@ -235,7 +223,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   background: #063146;
   user-select: none;
 }
-.sidebar ul a{
+.sidebar ul a {
   display: block;
   height: 100%;
   width: 100%;
@@ -247,54 +235,20 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   border-bottom: 1px solid black;
   transition: .4s;
 }
-.sidebar ul a i{
+.sidebar ul a i {
   margin-right: 16px;
 }
-/* Hide original checkbox styling since we use custom label */
 .menu-checkbox {
   position: fixed;
   opacity: 0;
   z-index: -1;
 }
-label #open_menu,label #close_menu{
-  position: absolute;
-  cursor: pointer;
-}
-
-/* Dropdown icon rotation */
 .dropdown-icon {
   transition: transform 0.3s ease;
   margin-right: 10px;
 }
 .dropdown-icon.rotated {
   transform: rotate(90deg);
-}
-
-/* Smooth transitions */
-.sidebar {
-  transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-#check:checked ~ .sidebar{
-  left: 0;
-}
-#check:checked ~ label #open_menu{
-  left: 22em;
-  opacity: 0;
-  pointer-events: none;
-}
-#check:checked ~ label #close_menu{
-  left: 195px;
-}
-@media (max-width: 993px) {
-  .left_navbar{
-    margin-left: 0;
-  }
-  .admin_page_header_navbar{
-    margin-left: 0;
-  }
-  body{
-    margin-left: 0;
-  }
 }
 .active {
   background-color: #063146 !important;

@@ -1,5 +1,5 @@
 <template>
-    <div :class='"col-sm-3 col-md-3 col-xs-offset-1 display-biger-then-768px right_fixed_menu "+[right_navbar_class]'>
+    <div class="col-sm-3 col-md-3 col-xs-offset-1 display-biger-then-768px right_fixed_menu">
 
         <h3 class="navbar_title display-biger-then-768px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
@@ -101,136 +101,66 @@
 <script>
     export default {
         name: "article-right-navigation-menu",
-        props: [
-            'article_id'
-        ],
+        props: ['article_id'],
         data(){
-            return{
-                right_navbar_class: '',
-                // local_businesses: [],
+            return {
                 sectors: [],
-                margin_bottom_position: 0,
-                document_body_offsetHeight: document.body.offsetHeight,
-                window_scrollY: window.scrollY,
             }
         },
-
         mounted() {
-            // console.log('RightMenuComponent mounted, article_id:', this.article_id);
-            // console.log('Route name:', this.$route.name);
-            // this.get_local_bisnes_for_article()
-            this.get_sectors_for_article()
-            this.handleScroll()
+            this.get_sectors_for_article();
         },
         watch: {
-            '$route' (to, from) {
-                // this.get_local_bisnes_for_article()
-                this.get_sectors_for_article()
+            '$route'() {
+                this.get_sectors_for_article();
             },
-            'article_id' (newVal, oldVal) {
+            'article_id'(newVal, oldVal) {
                 if (newVal !== oldVal) {
-                    this.get_sectors_for_article()
+                    this.get_sectors_for_article();
                 }
             }
         },
         methods: {
             scrollToSection(sectionId) {
-                const targetElement = document.getElementById(sectionId);
-                if (targetElement) {
-                    const yOffset = -80; // adjust this value to control the offset from the top
-                    const y = targetElement.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                const target = document.getElementById(sectionId);
+                if (target) {
+                    const y = target.getBoundingClientRect().top + window.pageYOffset - 80;
                     window.scrollTo({ top: y, behavior: 'smooth' });
                 }
             },
-
-
-            // get_local_bisnes_for_article(){
-            //     axios
-            //     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + localStorage.getItem('lang'))
-            //     .then(response => {
-            //         this.local_businesses = response.data
-            //     })
-            //     .catch(error =>{
-            //     })
-            // },
-
-            get_sectors_for_article(){
-                if (this.article_id) {
-                    const url = '/get_sector/get_sector_and_routes/' + this.article_id;
-                    
-                    axios
-                    .get(url)
+            get_sectors_for_article() {
+                if (!this.article_id) { this.sectors = []; return; }
+                axios.get('/get_sector/get_sector_and_routes/' + this.article_id)
                     .then(response => {
-                        if (response.data && Array.isArray(response.data)) {
-                            this.sectors = response.data;
-                        } else {
-                            this.sectors = [];
-                        }
+                        this.sectors = Array.isArray(response.data) ? response.data : [];
                     })
-                    .catch(error =>{
-                        this.sectors = [];
-                    })
-                } else {
-                    this.sectors = [];
-                }
+                    .catch(() => { this.sectors = []; });
             },
-
-            handleScroll (event) {
-                this.margin_bottom_position = document.body.offsetHeight - window.scrollY
-                
-                const menu = document.querySelector('.right_fixed_menu');
-                const footer = document.querySelector('.footer');
-                const footer__graphic = document.querySelector('.footer__graphic');
-
-                if (!menu) return;
-                const menuBottom = menu.getBoundingClientRect().bottom;
-                if (!footer) return;
-                const footerTop = footer.getBoundingClientRect().top;
-                const footer__graphic_top = footer__graphic.offsetHeight;
-
-                if(this.margin_bottom_position > window.scrollY){
-                    this.right_navbar_class = ''
-                }
-                else if(footerTop - footer__graphic_top - 50 < menuBottom){                    
-                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine_bottom'
-                }
-                else{
-                    this.right_navbar_class = 'right_navigarion_menu_fixed_on_scrine'
-                }
-            }
-        },
-        created () {
-            window.addEventListener('scroll', this.handleScroll);
-        },
-        unmounted () {
-            window.removeEventListener('scroll', this.handleScroll);
         },
     };
 </script> 
 
 <style scoped>
-    .right_navigarion_menu_fixed_on_scrine{
-        position: fixed;
-        right: 0;
-        margin-top: -13%;
+    .right_fixed_menu {
+        position: sticky;
+        top: 80px;
+        align-self: flex-start;
+        max-height: calc(100vh - 90px);
+        overflow-y: auto;
+        padding-left: 15rem;
     }
-    .right_navigarion_menu_fixed_on_scrine_bottom{
-        position: absolute;
-        right: 0;
-        bottom: 570px;
-    }
-    .caption h3{
+    .caption h3 {
         margin: 0;
     }
-    .navbar_title{
+    .navbar_title {
         font-size: 20px;
         text-align: left;
         margin: 0 0 8% 0;
     }
-    .local_bisnes{
+    .local_bisnes {
         margin-top: 8%;
     }
-    .fading-side-menu{
+    .fading-side-menu {
         margin-bottom: 4%;
     }
     .submenu {

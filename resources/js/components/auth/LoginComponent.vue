@@ -9,17 +9,16 @@
               <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
           </div>
       </div>
-      <div class="row mt-2" v-show="!is_loading">
-          <div class="col-12 text-center">
-            <button type="button" class="btn btn-danger" @click="social_login('google')">
-              <i class="fa fa-google" aria-hidden="true"></i> Login with Google
-            </button>
-          </div>
-          <!-- <div class="col-6 text-center">
-            <button type="button" class="btn btn-primary" @click="social_login('facebook')">
-              <i class="fa fa-facebook" aria-hidden="true"></i>
-            </button>
-          </div> -->
+      <div class="social-btns mt-3 px-3" v-show="!is_loading">
+        <div class="d-flex gap-2 justify-content-center">
+          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')">
+            <i class="fa fa-google" aria-hidden="true"></i> Google
+          </button>
+          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')">
+            <i class="fa fa-facebook" aria-hidden="true"></i> Facebook
+          </button>
+        </div>
+        <div class="divider-or"><span>or</span></div>
       </div>
       <div class="card-body" v-show="!is_loading">
         <form id="login_form" v-on:submit.prevent="login">
@@ -46,24 +45,26 @@
                   Return password
                 </router-link>
               )
-            <div class="position-relative">
+            <div style="position: relative;">
               <input
                 :type="showPassword ? 'text' : 'password'"
-                class="form-control pe-5"
+                class="form-control"
+                style="padding-right: 42px;"
                 id="password"
                 v-model="password"
                 placeholder="Password"
                 autocomplete="on"
                 required
               />
-              <span 
-                class="position-absolute top-50 end-0 translate-middle-y me-3 cursor-pointer pull-right" 
-                style="z-index: 10;"
+              <button
+                type="button"
+                class="pwd-toggle-btn"
+                tabindex="-1"
                 @click="togglePassword()"
                 title="Toggle password visibility"
               >
                 <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
-              </span>
+              </button>
             </div>
             <div class="alert alert-danger" role="alert" v-if="error.password">
               Password is required
@@ -160,15 +161,21 @@ export default {
       };
     },
     async mounted() {
-      document.querySelector('body').style.marginLeft = '0';
-      document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
-      
-      // Preload JSEncrypt to ensure it's available when needed
+      // Redirect already-authenticated users to home
+      try {
+          const res = await axios.get('auth_user')
+          if (res.data && res.data.id) {
+              this.$router.push({ name: 'home' })
+              return
+          }
+      } catch (e) {}
+
+      document.body.classList.remove('sidebar-open');
+
       try {
           await loadJSEncrypt();
           this.JSEncryptLoaded = true;
       } catch (e) {
-          console.error('Failed to load JSEncrypt:', e);
           this.auth_error = 'Encryption library failed to load. Please refresh the page.';
       }
     },
@@ -303,6 +310,6 @@ export default {
           this.showPassword = !this.showPassword;
         }
       }
-    
+
   };
 </script>

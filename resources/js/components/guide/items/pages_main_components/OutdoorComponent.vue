@@ -43,20 +43,18 @@
                     ref="routes_tab"
                 />
                 
-                <galleryComponent 
-                    :images_prop="this.article_prop.gallery_images" 
+                <galleryComponent
+                    :images_prop="this.article_prop.gallery_images"
+                />
+
+                <commentForm
+                    :article_id="this.article_prop.global_data.id"
+                    ref="comments"
                 />
             </div>
 
-                <articleRightMenu :article_id="this.article_prop.global_data.id" />
-            
-        </div>
+            <articleRightMenu :article_id="this.article_prop.global_data.id" />
 
-        <div class="row"> 
-            <commentForm 
-                :article_id="this.article_prop.global_data.id" 
-                ref="comments"
-            />
         </div>
 
         <SimilarArticles 

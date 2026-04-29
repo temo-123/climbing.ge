@@ -843,31 +843,31 @@ time > .month {
     color: rgb(30, 30, 30);
     background-color: rgb(200, 200, 200);
 }
-.facebook a,
-.twitter a,
-.google-plus a {
-    display: block;
-    width: 100%;
-    color: rgb(75, 110, 168) !important;
-}
-.twitter a {
-    color: rgb(79, 213, 248) !important;
-}
-.google-plus a {
-    color: rgb(221, 75, 57) !important;
-}
-.facebook:hover a {
-    color: rgb(255, 255, 255) !important;
-    background-color: rgb(75, 110, 168) !important;
-}
-.twitter:hover a {
-    color: rgb(255, 255, 255) !important;
-    background-color: rgb(79, 213, 248) !important;
-}
-.google-plus:hover a {
-    color: rgb(255, 255, 255) !important;
-    background-color: rgb(221, 75, 57) !important;
-}
+// .facebook a,
+// .twitter a,
+// .google-plus a {
+//     display: block;
+//     width: 100%;
+//     color: rgb(75, 110, 168) !important;
+// }
+// .twitter a {
+//     color: rgb(79, 213, 248) !important;
+// }
+// .google-plus a {
+//     color: rgb(221, 75, 57) !important;
+// }
+// .facebook:hover a {
+//     color: rgb(255, 255, 255) !important;
+//     background-color: rgb(75, 110, 168) !important;
+// }
+// .twitter:hover a {
+//     color: rgb(255, 255, 255) !important;
+//     background-color: rgb(79, 213, 248) !important;
+// }
+// .google-plus:hover a {
+//     color: rgb(255, 255, 255) !important;
+//     background-color: rgb(221, 75, 57) !important;
+// }
 
 @media (min-width: 768px) {
     .event-list > li {
@@ -5330,5 +5330,71 @@ ul.portfolioFilter a.current {
     .product-horizontal-card .favorite-btn {
         padding: 12px 16px;
         font-size: 12px;
+    }
+}
+
+
+
+.btn-social {
+  font-size: 0.82rem;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin: 1%;
+}
+button.btn-google-outline {
+  background: #db4437 !important;
+  color: #fff !important;
+  border: 1.5px solid #db4437 !important;
+}
+button.btn-google-outline:hover { background: #db4437 !important; color: #fff !important; }
+
+button.btn-facebook-outline {
+  background: #1877f2 !important;
+  color: #fff !important;
+  border: 1.5px solid #1877f2 !important;
+}
+button.btn-facebook-outline:hover { background: #1877f2 !important; color: #fff !important; }
+
+.divider-text, .divider-or {
+    text-align: center; position: relative; margin: 12px 0;
+    color: #aaa; font-size: 0.82rem;
+}
+.divider-text::before, .divider-text::after,
+.divider-or::before, .divider-or::after {
+    content: ''; position: absolute; top: 50%; width: 44%;
+    height: 1px; background: #ddd;
+}
+.divider-text::before, .divider-or::before { left: 0; }
+.divider-text::after, .divider-or::after { right: 0; }
+.pwd-toggle-btn {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    border: none;
+    background: transparent;
+    padding: 0 12px;
+    color: #6c757d;
+    cursor: pointer;
+    z-index: 5;
+    border-radius: 0 4px 4px 0;
+}
+.pwd-toggle-btn:hover { color: #343a40; }
+
+/* Left sidebar open state — class toggled by JS so it survives navbar re-renders */
+body.sidebar-open {
+    margin-left: 22em;
+}
+body.sidebar-open .admin_page_header_navbar {
+    margin-left: 22em;
+}
+@media (max-width: 993px) {
+    body.sidebar-open,
+    body.sidebar-open .admin_page_header_navbar {
+        margin-left: 0;
     }
 }

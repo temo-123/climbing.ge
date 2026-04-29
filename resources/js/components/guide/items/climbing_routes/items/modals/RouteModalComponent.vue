@@ -1,13 +1,12 @@
 <template>
-<StackModal
+        <StackModal
             v-model="is_show_route_modal"
-            title="$t('guide.route.route_details_title')"
+            :title="$t('guide.route.route_details_title')"
             :modal-class="{ [modalClass]: true }"
-            :saveButton="{ visible: true }"
-            :cancelButton="{
-                title: $t('guide.route.close_modal'),
-                btnClass: { 'btn btn-secondary': true },
-            }"
+
+            :saveButton="{ visible: false }"
+            :cancelButton="{ visible: false }"
+
             @close="close_route_modal"
         >
             <div class="model-body">
@@ -117,31 +116,30 @@
                                 :reviews_stars_prop="route.reviews_stars"
                             />
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center">
-                <button
-                    class="btn btn-success mb-2 mb-md-0"
-                    @click="create_route_review_modal(route.id)"
-                    v-if="user && user.length > 0"
-                >
-                    {{ $t('guide.route.make_review') }}
-                </button>
-                
-                <div v-else class="alert alert-info cursor_pointer mb-2 mb-md-0 p-2" role="alert" @click="goTo('/login')" style="border-radius: 5px; cursor: pointer;">
-                    <div class="col-md-12">
-                        <p class="mb-0">{{ $t('guide.route.please_login') }}</p>
-                    </div>
-                </div>
 
-                <button
-                    class="btn btn-primary pull-right"
-                    @click="show_route_all_review_modal(route.id)"
-                    v-if="route.reviews_count && route.reviews_count > 0"
-                >
-                    {{ $t('guide.route.show_feedbacks') }}
-                </button>
+                        <div class="flex-row mt-3 w-100">
+                            <button
+                                class="btn btn-success"
+                                @click="create_route_review_modal(route.id)"
+                                v-if="user && user.id"
+                            >
+                                {{ $t('guide.route.make_review') }}
+                            </button>
+
+                            <div v-else class="alert alert-info mb-0 p-2" role="alert" @click="open_login_then_reopen" style="border-radius: 5px; cursor: pointer;">
+                                <p class="mb-0">{{ $t('guide.route.please_login') }}</p>
+                            </div>
+
+                            <button
+                                class="btn btn-primary float-right"
+                                @click="show_route_all_review_modal(route.id)"
+                                v-if="route.reviews_count && route.reviews_count > 0"
+                            >
+                                {{ $t('guide.route.show_feedbacks') }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </StackModal>
 </template>
@@ -165,6 +163,7 @@ export default {
             route: {},
             user: [],
             modalClass: '',
+            _current_route_id: null,
 
             activ_grade: {
                 get() {
@@ -177,12 +176,7 @@ export default {
         };
     },
     methods: {
-        goTo(page = '/') {
-            this.is_show_route_modal = false;
-            window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page, '_blank');
-        },
-
-        getCategoryText(category) {
+getCategoryText(category) {
             const categories = {
                 'tred': this.$t('guide.route.tred'),
                 'top': this.$t('guide.route.top_rope'),
@@ -206,7 +200,16 @@ export default {
             this.$emit('show_route_all_review_modal', route_id);
         },
 
+        open_login_then_reopen() {
+            const route_id = this._current_route_id;
+            this.is_show_route_modal = false;
+            this.$bus.$emit('open-login-modal', () => {
+                this.show_route_modal(route_id);
+            });
+        },
+
         show_route_modal(id) {
+            this._current_route_id = id;
             this.clear_data();
             this.auth_user();
             this.is_loading = true;
