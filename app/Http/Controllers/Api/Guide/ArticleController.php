@@ -45,7 +45,7 @@ class ArticleController extends Controller
 {
     public function get_category_articles(Request $request)
     {
-        return Article::latest('id')->where('category', '=', $request->category)->get();
+        return Article::with('global_article_us')->latest('id')->where('category', '=', $request->category)->get();
     }
 
 

@@ -21,6 +21,12 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         });
     });
 
+    Route::controller(BanController::class)->prefix('set_user')->group(function() {
+        Route::get('/get_ban_status/{user_id}', 'get_ban_status');
+        Route::post('/create_ban/{user_id}', 'create_ban');
+        Route::delete('/remove_ban/{user_id}', 'remove_ban');
+    });
+
     Route::controller(UsersController::class)->prefix('set_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');
@@ -28,6 +34,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/get_all_users', 'get_all_users');
 
         Route::get('/get_worker_users', 'get_worker_users');
+        Route::post('/reset_password/{user_id}', 'reset_password');
 
         Route::get('/post_user/{user_id}', 'get_post_user');
 

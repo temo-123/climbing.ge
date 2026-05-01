@@ -3,6 +3,7 @@
         
         <left-menu />
 
+        <div class="col-sm-12">
         <div class="media-manager-container">
             <!-- Main Content Area -->
             <div class="main-content">
@@ -10,7 +11,7 @@
                 <!-- Header Section -->
                 <div class="header-section">
                     <h1 class="page-title">
-                        <i class="fas fa-images"></i>
+                        <i class="fa fa-images"></i>
                         Media Files Manager
                     </h1>
                     
@@ -24,7 +25,7 @@
                                 class="search-input"
                                 @input="filterItems"
                             />
-                            <i class="fas fa-search search-icon"></i>
+                            <i class="fa fa-search search-icon"></i>
                         </div>
                         
                         <div class="filter-controls">
@@ -56,13 +57,13 @@
                     <div v-if="selectedItems.length > 0" class="bulk-actions">
                         <span class="selected-count">{{ selectedItems.length }} item(s) selected</span>
                         <button @click="bulkDownload" class="btn btn-primary">
-                            <i class="fas fa-download"></i> Download Selected
+                            <i class="fa fa-download"></i> Download Selected
                         </button>
                         <button @click="bulkDelete" class="btn btn-danger">
-                            <i class="fas fa-trash"></i> Delete Selected
+                            <i class="fa fa-trash"></i> Delete Selected
                         </button>
                         <button @click="clearSelection" class="btn btn-secondary">
-                            <i class="fas fa-times"></i> Clear Selection
+                            <i class="fa fa-times"></i> Clear Selection
                         </button>
                     </div>
                 </div>
@@ -75,7 +76,7 @@
                 
                 <!-- Error State -->
                 <div v-else-if="error" class="error-state">
-                    <i class="fas fa-exclamation-triangle"></i>
+                    <i class="fa fa-exclamation-triangle"></i>
                     <p>{{ error }}</p>
                     <button @click="fetchImages" class="btn btn-primary">Retry</button>
                 </div>
@@ -84,10 +85,27 @@
                 <div v-else class="content-area">
                     <!-- Folder Tree View -->
                     <div class="folder-section">
-                        <h3 class="section-title">
-                            <i class="fas fa-folder-open"></i>
-                            Folders
-                        </h3>
+                        <div class="section-title-row">
+                            <h3 class="section-title">
+                                <i class="fa fa-folder-open"></i>
+                                Folders
+                            </h3>
+                            <button @click="showCreateFolder = !showCreateFolder" class="btn btn-sm btn-outline-secondary">
+                                <i class="fa fa-folder"></i> New Folder
+                            </button>
+                        </div>
+                        <div v-if="showCreateFolder" class="create-folder-form">
+                            <input
+                                v-model="newFolderName"
+                                type="text"
+                                class="form-control form-control-sm"
+                                placeholder="Folder name"
+                                @keyup.enter="createFolder"
+                                @keyup.esc="showCreateFolder = false"
+                            />
+                            <button @click="createFolder" class="btn btn-sm btn-primary">Create</button>
+                            <button @click="showCreateFolder = false; newFolderName = ''" class="btn btn-sm btn-secondary">Cancel</button>
+                        </div>
                         <div class="folder-tree">
                             <div class="all-folders-tree">
                                 <div 
@@ -107,7 +125,7 @@
                                         @click="setCurrentFolder(folder)"
                                     >
                                         <div class="folder-info">
-                                            <i :class="expandedFolders[folder.path] ? 'fas fa-folder-open' : 'fas fa-folder'"></i>
+                                            <i :class="expandedFolders[folder.path] ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
                                             <span class="folder-name">{{ folder.name }}</span>
                                             <span class="folder-count">({{ getItemCount(folder) }})</span>
                                         </div>
@@ -137,10 +155,16 @@
                     
                     <!-- Images Grid View -->
                     <div class="images-section">
-                        <h3 class="section-title">
-                            <i class="fas fa-images"></i>
-                            Images
-                        </h3>
+                        <div class="section-title-row">
+                            <h3 class="section-title">
+                                <i class="fa fa-images"></i>
+                                Images{{ currentFolder ? ` — ${currentFolder.name}` : '' }}
+                            </h3>
+                            <label class="btn btn-sm btn-primary" style="cursor:pointer; margin-bottom:0;">
+                                <i class="fa fa-upload"></i> Upload
+                                <input type="file" multiple accept="image/*" style="display:none" @change="handleFileSelect">
+                            </label>
+                        </div>
                         <div class="images-grid">
                             <div
                                 v-for="image in filteredImages"
@@ -157,7 +181,7 @@
                                         @error="handleImageError"
                                     />
                                     <div class="image-overlay">
-                                        <i class="fas fa-search-plus"></i>
+                                        <i class="fa fa-search-plus"></i>
                                     </div>
                                 </div>
                                 <div class="image-info">
@@ -182,11 +206,11 @@
                     
                     <!-- Empty State -->
                     <div v-if="!loading && filteredImages.length === 0 && filteredFolders.length === 0" class="empty-state">
-                        <i class="fas fa-folder-open"></i>
+                        <i class="fa fa-folder-open"></i>
                         <h3>No files found</h3>
                         <p>{{ searchQuery ? 'Try adjusting your search or filters' : 'Upload some images to get started' }}</p>
                         <button v-if="!searchQuery" @click="showUploadModal = true" class="btn btn-primary">
-                            <i class="fas fa-upload"></i> Upload Images
+                            <i class="fa fa-upload"></i> Upload Images
                         </button>
                     </div>
                 </div>
@@ -202,6 +226,7 @@
                 @next="nextImage"
             />
 
+        </div>
         </div>
     </div>
 </template>
@@ -233,7 +258,11 @@
                 filterType: '',
                 
                 // File handling
-                currentImageIndex: 0
+                currentImageIndex: 0,
+
+                // Create folder
+                showCreateFolder: false,
+                newFolderName: ''
             }
         },
         
@@ -446,7 +475,7 @@
                 event.target.style.display = 'none';
                 const overlay = event.target.parentElement.querySelector('.image-overlay');
                 if (overlay) {
-                    overlay.innerHTML = '<i class="fas fa-image"></i><p>Failed to load</p>';
+                    overlay.innerHTML = '<i class="fa fa-image"></i><p>Failed to load</p>';
                 }
             },
             
@@ -475,33 +504,23 @@
             // Individual delete operations with confirmation
             async deleteItem(item) {
                 const itemType = item.type === 'directory' ? 'folder' : 'file';
-                const confirmMessage = `Are you sure you want to delete this ${itemType} "${item.name}"? ${item.type === 'directory' ? 'This will also delete all contents inside the folder.' : ''}`;
-                
-                if (!confirm(confirmMessage)) {
-                    return;
-                }
-                
+                const msg = item.type === 'directory'
+                    ? `Delete folder "${item.name}" and all its contents?`
+                    : `Delete file "${item.name}"?`;
+
+                if (!confirm(msg)) return;
+
                 try {
-                    // Remove from selection if it was selected
-                    const index = this.selectedItems.indexOf(item.path);
-                    if (index > -1) {
-                        this.selectedItems.splice(index, 1);
-                    }
-                    
-                    // Remove from local data structure
+                    await axios.delete('/set_multimedia/delete_items', { data: { paths: [item.path] } });
+                    const idx = this.selectedItems.indexOf(item.path);
+                    if (idx > -1) this.selectedItems.splice(idx, 1);
                     this.removeItemFromStructure(item);
-                    
-                    // In a real implementation, this would call the API
-                    // await axios.delete(`/api/set_multimedia/delete/${encodeURIComponent(item.path)}`);
-                    
-                    console.log(`Deleted ${itemType}:`, item.name);
-                    
-                    // For now, just show a success message
-                    alert(`${itemType.charAt(0).toUpperCase() + itemType.slice(1)} "${item.name}" has been deleted.`);
-                    
+                    if (this.currentFolder && this.currentFolder.path === item.path) {
+                        this.currentFolder = null;
+                    }
                 } catch (error) {
                     console.error(`Error deleting ${itemType}:`, error);
-                    alert(`Failed to delete ${itemType}. Please try again.`);
+                    alert(error.response?.data?.message || `Failed to delete ${itemType}.`);
                 }
             },
             
@@ -528,17 +547,30 @@
             },
             
             async bulkDelete() {
-                if (!confirm(`Are you sure you want to delete ${this.selectedItems.length} item(s)?`)) {
-                    return;
-                }
-                
+                if (!confirm(`Delete ${this.selectedItems.length} selected item(s)? This cannot be undone.`)) return;
+
                 try {
-                    // This would require a new API endpoint for bulk deletion
-                    // For now, just clear the selection
+                    await axios.delete('/set_multimedia/delete_items', { data: { paths: [...this.selectedItems] } });
                     this.clearSelection();
-                    alert('Bulk delete functionality would be implemented with backend API');
+                    await this.fetchImages();
                 } catch (error) {
                     console.error('Error deleting files:', error);
+                    alert(error.response?.data?.message || 'Failed to delete items.');
+                }
+            },
+
+            async createFolder() {
+                const name = this.newFolderName.trim();
+                if (!name) return;
+
+                try {
+                    const parent = this.currentFolder ? this.currentFolder.path : '';
+                    await axios.post('/set_multimedia/create_folder', { name, parent });
+                    this.newFolderName = '';
+                    this.showCreateFolder = false;
+                    await this.fetchImages();
+                } catch (error) {
+                    alert(error.response?.data?.message || 'Failed to create folder.');
                 }
             },
             
@@ -560,7 +592,10 @@
                     files.forEach(file => {
                         formData.append('files[]', file);
                     });
-                    
+                    if (this.currentFolder) {
+                        formData.append('folder', this.currentFolder.path);
+                    }
+
                     const response = await axios.post('/set_multimedia/upload_images', formData, {
                         headers: {
                             'Content-Type': 'multipart/form-data'
@@ -818,14 +853,29 @@
         display: block !important;
     }
 
+    .media-manager-container .section-title-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 8px;
+    }
     .media-manager-container .section-title {
         font-size: 18px;
         font-weight: 600;
-        margin-bottom: 16px;
+        margin-bottom: 0;
         color: #495057;
         display: flex;
         align-items: center;
         gap: 8px;
+    }
+    .media-manager-container .create-folder-form {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+    .media-manager-container .create-folder-form .form-control {
+        flex: 1;
     }
 
     .media-manager-container .folder-tree {

@@ -33,6 +33,8 @@
 
                         @add_permission="show_add_permission_modal"
                         @del_permission="del_permission"
+
+                        @reset_user_password="show_reset_password_modal"
                     />
                 </div>
             </div>
@@ -43,11 +45,12 @@
             @show_team_member_modal="$refs.teamMemberStatusModal.show_modal($event)"
             @update="get_users"
         />
-        <UserBunModel ref="user_ban_modal"/>
+        <UserBunModel ref="user_ban_modal" @update="get_users"/>
         <UserInfoModal ref="user_info_modal"/>
 
         <EditRoleModel ref="edit_role_model"/>
         <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
+        <ResetUserPasswordModal ref="reset_password_modal"/>
 
         <MemberStatusModal 
             ref="teamMemberStatusModal"
@@ -68,6 +71,7 @@
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
     import UserBunModel from "../items/modal/tab_modals/UserBunModelComponent"
     import UserInfoModal from "../items/modal/tab_modals/UserInfoModalComponent"
+    import ResetUserPasswordModal from "../items/modal/tab_modals/ResetUserPasswordModalComponent"
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
     export default {
@@ -82,6 +86,7 @@
             AddPermissionModal,
             UserBunModel,
             UserInfoModal,
+            ResetUserPasswordModal,
         },
         data(){
             return {
@@ -100,100 +105,119 @@
         },
         methods: {
             get_users(){
-                this.data_for_tab = [],
+                this.data_for_tab = []
+                this.get_roles()
+                this.get_parmisions()
 
                 axios
                 .get("/get_user/get_all_users/")
                 .then(response => {
-                    this.data_for_tab.push
-                                        ({  
-                                            'id': 1,
-                                            'table_name': 'Users',
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Email',
-                                                        'Team',
-                                                        'Verifay',
-                                                        'Role',
-                                                        'Ban',
-                                                        'Delite',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
-                                                        ['data', ['email']],
-                                                        ['data', ['is_team_member'],'bool'],
-                                                        ['data', ['email_verified_at'],'bool_2'],
-                                                        ['action_fun_id', 'edit_user_role', 'btn btn-primary', 'Edit Role'],
-                                                        ['action_fun_id', 'user_ban', 'btn btn-warning', '<i class="fa fa-times" aria-hidden="true"></i>'],
-                                                        ['action_fun_id', 'del_user', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['user', 'edit_permissions'],
-                                                        ['user', 'create_ban'],
-                                                        ['user', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        })
-                                        ;
-                    
-                    this.get_roles()
+                    const existing = this.data_for_tab.findIndex(t => t.id === 1)
+                    const tab = {
+                        'id': 1,
+                        'table_name': 'Users',
+                        'tab_data': {
+                            'data': response.data,
+                            'tab': {
+                                'head': [
+                                    'ID',
+                                    'Name',
+                                    'Email',
+                                    'Team',
+                                    'Verifay',
+                                    'Banned',
+                                    'Role',
+                                    'Ban',
+                                    'Reset',
+                                    'Delite',
+                                ],
+                                'body': [
+                                    ['data', ['id']],
+                                    ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
+                                    ['data', ['email']],
+                                    ['data', ['is_team_member'],'bool'],
+                                    ['data', ['email_verified_at'],'bool_2'],
+                                    ['data', ['is_banned'],'bool'],
+                                    ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', 'Edit Role'],
+                                    ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
+                                    ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
+                                    ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                ],
+                                'perm': [
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['user', 'edit_permissions'],
+                                    ['user', 'create_ban'],
+                                    ['user', 'edit'],
+                                    ['user', 'del'],
+                                ]
+                            }
+                        },
+                    }
+                    if (existing !== -1) {
+                        this.data_for_tab.splice(existing, 1, tab)
+                    } else {
+                        this.data_for_tab.push(tab)
+                    }
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    console.log(error)
+                    if (this.data_for_tab.findIndex(t => t.id === 1) === -1) {
+                        this.data_for_tab.push({ 'id': 1, 'table_name': 'Users', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                    }
+                });
             },
             get_roles(){
                 axios
                 .get("/set_role")
                 .then(response => {
-                    this.data_for_tab.push
-                                        ({  
-                                            'id': 3,
-                                            'table_name': 'Roles',
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Slug',
-                                                        'Edit',
-                                                        'Delite',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data_action_id', ['name']],
-                                                        ['data', ['slug']],
-                                                        ['action_fun_id', 'show_edit_role_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_role', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['article', 'edit'],
-                                                        ['article', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        });
-                    
-                    this.get_parmisions()
+                    const existing = this.data_for_tab.findIndex(t => t.id === 3)
+                    const tab = {
+                        'id': 3,
+                        'table_name': 'Roles',
+                        'tab_data': {
+                            'data': response.data,
+                            'tab': {
+                                'head': [
+                                    'ID',
+                                    'Name',
+                                    'Slug',
+                                    'Edit',
+                                    'Delite',
+                                ],
+                                'body': [
+                                    ['data', ['id']],
+                                    ['data_action_id', ['name']],
+                                    ['data', ['slug']],
+                                    ['action_fun_id', 'show_edit_role_modal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                    ['action_fun_id', 'del_role', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                ],
+                                'perm': [
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['role', 'edit'],
+                                    ['role', 'del'],
+                                ]
+                            }
+                        },
+                    }
+                    if (existing !== -1) {
+                        this.data_for_tab.splice(existing, 1, tab)
+                    } else {
+                        this.data_for_tab.push(tab)
+                    }
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => {
+                    console.log(error)
+                    if (this.data_for_tab.findIndex(t => t.id === 3) === -1) {
+                        this.data_for_tab.push({ 'id': 3, 'table_name': 'Roles', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                    }
+                });
             },
             get_parmisions(){
                 axios
@@ -234,7 +258,12 @@
                         this.data_for_tab.push(tab)
                     }
                 })
-                .catch(error => console.log(error));
+                .catch(error => {
+                    console.log(error)
+                    if (this.data_for_tab.findIndex(t => t.id === 2) === -1) {
+                        this.data_for_tab.push({ 'id': 2, 'table_name': 'Permissions', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                    }
+                });
             },
 
             show_edit_role_modal(id){
@@ -302,6 +331,10 @@
 
             show_add_permission_modal(){
                 this.$refs.add_permission_modal.show_modal()
+            },
+
+            show_reset_password_modal(id){
+                this.$refs.reset_password_modal.show_modal(id)
             },
 
             del_permission(id){

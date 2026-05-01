@@ -436,7 +436,7 @@ export default {
                 }
             })
             if (article) {
-                this.$refs.quick_view_modal.show_quick_view_modal(article, this.current_article_category)
+                this.$refs.quick_view_modal.show_modal(article, this.current_article_category)
             } else {
                 console.warn(`Article not found for ID: ${article_id}`)
             }

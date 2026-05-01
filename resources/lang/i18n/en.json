@@ -728,6 +728,8 @@
         "comments": "Comments",
         "page is empty": "This page is empty",
         "services": "Services",
+        "save": "Save",
+        "loading": "Loading",
         "menu": {
             "about us": "About Us"
         }

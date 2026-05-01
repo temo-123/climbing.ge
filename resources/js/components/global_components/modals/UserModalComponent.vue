@@ -67,17 +67,20 @@ export default {
     mounted() {
     },
     methods: {
-        show_modal(user_id){
+        show_modal(user_id, type = 'user'){
             this.loading = true;
             this.localUser = {};
-            this.get_user_data(user_id)
+            this.get_user_data(user_id, type)
         },
         from_user_site_url_get_domen(url){
             return new URL(url).hostname;
         },
-        get_user_data(id) {
+        get_user_data(id, type) {
+            const url = type === 'guide'
+                ? '/get_tour/get_guide/' + id
+                : '/get_user/get_user_data/' + id;
             axios
-                .get("/get_tour/get_guide/" + id)
+                .get(url)
                 .then((response) => {
                     this.localUser = response.data;
                     this.loading = false;

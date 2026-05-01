@@ -14,6 +14,8 @@ class PermissionsController extends Controller
 {
     public function get_parmisions_for_role(Request $request)
     {
+        $auth = PermissionService::authorize('permission', 'edit');
+        if ($auth) return $auth;
         $role = Role::where('id', '=', $request->role_id)->first();
         $all_permissions = Permission::get();
         return $all_permissions;
@@ -21,6 +23,8 @@ class PermissionsController extends Controller
 
     public function store(Request $request)
     {
+        $auth = PermissionService::authorize('permission', 'edit');
+        if ($auth) return $auth;
         $request->validate([
             'subject' => 'required|string|max:100',
             'action'  => 'required|string|max:100',
@@ -44,6 +48,8 @@ class PermissionsController extends Controller
 
     public function destroy($id)
     {
+        $auth = PermissionService::authorize('permission', 'edit');
+        if ($auth) return $auth;
         Permission::findOrFail($id)->delete();
         return response()->json(['message' => 'Deleted']);
     }

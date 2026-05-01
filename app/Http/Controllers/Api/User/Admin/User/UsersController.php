@@ -27,7 +27,10 @@ class UsersController extends Controller
     {
         $auth = PermissionService::authorize('user', 'view');
         if ($auth) return $auth;
-        return User::latest('id')->get();
+        return User::latest('id')->get()->map(function ($user) {
+            $user->is_banned = $user->isBanned();
+            return $user;
+        });
     }
 
     public function get_auth_user_data() {
@@ -215,6 +218,19 @@ class UsersController extends Controller
         $new_notification['interested_event'] = 1;
 
         $new_notification -> save();
+    }
+
+    public function reset_password(Request $request, $user_id)
+    {
+        $auth = PermissionService::authorize('user', 'edit');
+        if ($auth) return $auth;
+
+        $user = User::findOrFail($user_id);
+        $user->password = bcrypt($request->password);
+        $user->save();
+        $user->tokens()->delete();
+
+        return response()->json(['message' => 'Password has been reset.']);
     }
 
     public function del_user(Request $request)

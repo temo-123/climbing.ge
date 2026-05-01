@@ -2,6 +2,7 @@
     <div class="row">
         <left-menu />
 
+        <div class="col-sm-12">
         <div class="db-page-container">
 
             <div class="db-header">
@@ -97,6 +98,7 @@
                 </table>
             </div>
 
+        </div>
         </div>
     </div>
 </template>

@@ -24,7 +24,10 @@ class UsersController extends Controller
 {
     public function get_all_users()
     {
-        return User::latest('id')->get();
+        return User::latest('id')->get()->map(function ($user) {
+            $user->is_banned = $user->isBanned();
+            return $user;
+        });
     }
 
     public function get_auth_user_data() {

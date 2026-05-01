@@ -423,6 +423,10 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
                 .catch()
             },
 
+            onCaptchaExpired() {
+                this.recaptcha_token = null;
+            },
+
             get_comments: function(){
                 this.is_refresh = true
                 axios

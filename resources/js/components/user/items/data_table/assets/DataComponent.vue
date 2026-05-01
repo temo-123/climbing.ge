@@ -44,7 +44,7 @@
                 {{ data_prop[data_item_prop[1][0]] }}
                 {{ data_prop[data_item_prop[2][0]] }}
         </span>
-        <span v-else> 
+        <span v-else>
             <!-- ['data', ['item'], 'bool||boolean / bool_2||boolean_2'] -->
             <span v-if="typeof data_prop[data_item_prop[1][0]] == 'boolean' || data_item_prop[2] == 'bool'">
                 <span v-if="data_prop[data_item_prop[1][0]] == false || data_prop[data_item_prop[1][0]] == null || data_prop[data_item_prop[1][0]] == 0">

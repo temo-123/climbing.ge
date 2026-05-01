@@ -161,9 +161,17 @@
                 :key="`table-${currentTabData.id}-${currentPage}`"
             >
                 <table class="table table-hover" id="dev-table">
-                    <TabHeaderComponent :head_data_prop="currentTabData.tab_data" :selected-items="selectedItems" :total-items="currentTabData.tab_data?.data?.length || 0" @toggle-select-all="toggleSelectAll"/>
+                    <TabHeaderComponent
+                        :head_data_prop="currentTabData.tab_data"
+                        :selected-items="selectedItems"
+                        :total-items="currentTabData.tab_data?.data?.length || 0"
+                        :sort-col-index="sortColIndex"
+                        :sort-dir="sortDir"
+                        @toggle-select-all="toggleSelectAll"
+                        @sort="onSort"
+                    />
                     <TabBodyComponent
-                        :body_data_prop="currentTabData.tab_data"
+                        :body_data_prop="paginatedTableData[0] ? paginatedTableData[0].tab_data : currentTabData.tab_data"
                         v-model:selected-items="selectedItems"
                         @action_for_perent_component_with_option="action_for_perent_component_with_option"
                         @action_for_perent_component="action_for_perent_component"
@@ -227,6 +235,9 @@ export default {
             itemsPerPage: 10,
             itemsPerPageOptions: [10, 20, 30, 50, 100, 'All'],
             selectedItems: [],
+            sortColIndex: null,
+            sortKey: null,
+            sortDir: 'asc',
         };
     },
     
@@ -245,6 +256,9 @@ export default {
         tab_num(newTab) {
             this.currentPage = 1;
             this.searchQuery = '';
+            this.sortColIndex = null;
+            this.sortKey = null;
+            this.sortDir = 'asc';
         }
     },
     computed: {
@@ -253,7 +267,7 @@ export default {
                 if (!tab || typeof tab !== 'object' || tab.id === undefined) return false;
                 if (!tab.tab_data || !Array.isArray(tab.tab_data.data)) return false;
                 return tab.tab_data.data.every(item => item && item.id !== undefined);
-            });
+            }).sort((a, b) => a.id - b.id);
         },
         filteredTableData() {
             const safeData = this.safeTableData;
@@ -279,6 +293,23 @@ export default {
                             }
                             return false;
                         });
+                    });
+                }
+                if (this.sortKey && tab.id === this.tab_num) {
+                    const key = this.sortKey;
+                    const dir = this.sortDir;
+                    filteredData = [...filteredData].sort((a, b) => {
+                        const av = a[key];
+                        const bv = b[key];
+                        if (av == null && bv == null) return 0;
+                        if (av == null) return 1;
+                        if (bv == null) return -1;
+                        if (typeof av === 'string' && typeof bv === 'string') {
+                            return dir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+                        }
+                        if (av < bv) return dir === 'asc' ? -1 : 1;
+                        if (av > bv) return dir === 'asc' ? 1 : -1;
+                        return 0;
                     });
                 }
                 return {
@@ -313,6 +344,24 @@ export default {
     methods: {
         update() {
             this.$emit("update");
+        },
+        onSort(colIndex) {
+            const currentTab = this.safeTableData.find(t => t.id === this.tab_num);
+            if (!currentTab) return;
+            const body = currentTab.tab_data?.tab?.body;
+            if (!body) return;
+            const config = body[colIndex];
+            if (!config) return;
+            if ((config[0] !== 'data' && config[0] !== 'data_action_id') || !Array.isArray(config[1]) || !config[1][0]) return;
+            const field = config[1][0];
+            if (this.sortColIndex === colIndex) {
+                this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
+            } else {
+                this.sortColIndex = colIndex;
+                this.sortKey = field;
+                this.sortDir = 'asc';
+            }
+            this.currentPage = 1;
         },
         filter_data_with_multi_id(emit_fun) {
             this.$emit(emit_fun[0], emit_fun[1], emit_fun[2]);
