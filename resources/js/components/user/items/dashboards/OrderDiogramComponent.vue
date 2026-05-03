@@ -68,8 +68,8 @@
                     { value: 'all',     label: 'All Time' },
                 ],
                 loading: false,
-                qty_data: [['Day', 'Orders']],
-                fin_data: [['Day', 'Revenue']],
+                qty_data: [['Date', 'Orders']],
+                fin_data: [['Date', 'Revenue']],
                 qty_options: {
                     legend: 'none',
                     colors: ['#4CAF50'],
@@ -105,12 +105,12 @@
                         axios.get(`/get_order/get_order_statistics/${this.selectedPeriod}`),
                         axios.get(`/get_order/get_order_finance_statistics/${this.selectedPeriod}`),
                     ])
-                    this.qty_data = qtyRes.data && qtyRes.data.length > 1 ? qtyRes.data : [['Day', 'Orders'], [1, 0]]
-                    this.fin_data = finRes.data && finRes.data.length > 1 ? finRes.data : [['Day', 'Revenue'], [1, 0]]
+                    this.qty_data = qtyRes.data && qtyRes.data.length > 1 ? qtyRes.data : [['Date', 'Orders'], ['—', 0]]
+                    this.fin_data = finRes.data && finRes.data.length > 1 ? finRes.data : [['Date', 'Revenue'], ['—', 0]]
                 } catch (e) {
                     console.error('Order statistics error:', e)
-                    this.qty_data = [['Day', 'Orders'], [1, 0]]
-                    this.fin_data = [['Day', 'Revenue'], [1, 0]]
+                    this.qty_data = [['Date', 'Orders'], ['—', 0]]
+                    this.fin_data = [['Date', 'Revenue'], ['—', 0]]
                 } finally {
                     this.loading = false
                 }

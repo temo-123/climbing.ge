@@ -54,8 +54,9 @@
                         <li class="menu_item" @click.stop>
                             <select class="form-control" v-model="sale_type" name="sort_by_sale_type" @change="updateSaleType()">
                                 <option :value="0">All</option>
-                                <option :value="'custom_production'">Custom production</option>
                                 <option :value="'online_order'">Online sale</option>
+                                <option :value="'produced_by_order'">Produced by order</option>
+                                <option :value="'custom_production'">Custom production</option>
                             </select>
                         </li>
                     </ul>

@@ -61,10 +61,11 @@
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> Sale type </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.sale_type" name="published" > 
-                                    <option value="" disabled>Select order type</option> 
-                                    <option value="custom_production">Custom production</option> 
-                                    <option value="online_order">Online order</option> 
+                                <select class="form-control" v-model="data.global_product.sale_type" name="published" >
+                                    <option value="" disabled>Select order type</option>
+                                    <option value="online_order">Online order (2-4 days)</option>
+                                    <option value="produced_by_order">Produced by order (5-9 days)</option>
+                                    <option value="custom_production">Custom production</option>
                                 </select>
                             </div>
                         </div>

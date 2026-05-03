@@ -190,6 +190,24 @@
                                 </div>
                             </div>
 
+                           <!-- Delivery time badge -->
+                           <div class="row" v-if="product.global_product.sale_type === 'online_order'">
+                                <div class="col-12 mb-2">
+                                    <div class="alert alert-info alert-with-icon py-2 mb-0">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        <strong> Delivery: 2-4 business days</strong>
+                                    </div>
+                                </div>
+                            </div>
+                           <div class="row" v-if="product.global_product.sale_type === 'produced_by_order'">
+                                <div class="col-12 mb-2">
+                                    <div class="alert alert-warning alert-with-icon py-2 mb-0">
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        <strong> Made to order: 5-9 business days</strong>
+                                    </div>
+                                </div>
+                            </div>
+
                            <div class="row" v-if="product.global_product.sale_type == 'custom_production'">
                                 <div class="alert alert-success alert-with-icon" role="alert">
                                     <i class="fa fa-info-circle" aria-hidden="true"></i>

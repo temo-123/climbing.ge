@@ -1,28 +1,12 @@
 <template>
     <div>
-        <!-- Toolbar and Color Controls at the top -->
-        <div class="row mb-3">
+        <!-- Toolbar + Color Controls -->
+        <div class="row mb-2">
             <div class="col-12">
-                <!-- Color and Stroke Controls -->
-                <div class="d-flex align-items-center mb-2" style="gap: 15px;">
-                    <div class="d-flex align-items-center" style="gap: 10px;">
-                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Stroke Color:</label>
-                        <input type="color" :value="currentStrokeColor" @input="handleColorChange('stroke', $event.target.value)" class="form-control form-control-sm" style="width: 50px; height: 30px; padding: 0; border: 1px solid #ced4da;">
-                    </div>
-                    <div class="d-flex align-items-center" style="gap: 10px;">
-                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Fill Color:</label>
-                        <input type="color" :value="currentFillColor || '#ffffff'" @input="handleColorChange('fill', $event.target.value)" class="form-control form-control-sm" style="width: 50px; height: 30px; padding: 0; border: 1px solid #ced4da;">
-                    </div>
-                    <div class="d-flex align-items-center" style="gap: 10px;">
-                        <label class="mb-0" style="font-weight: 500; font-size: 14px;">Stroke Width: {{ strokeWidth }}</label>
-                        <input type="range" min="1" max="20" :value="strokeWidth" @input="handleStrokeWidthChange(parseInt($event.target.value))" class="form-control form-control-sm" style="width: 100px;">
-                    </div>
-                </div>
-
                 <ToolbarComponent
                     :action="action"
-                    :history-length="history.length"
-                    :redo-length="redoStack.length"
+                    :history-length="historyCount"
+                    :redo-length="redoCount"
                     @reset="handleReset"
                     @undo="handleUndo"
                     @redo="handleRedo"
@@ -46,6 +30,22 @@
                     @export-svg="handleExportSVG"
                     @save-image="handleSaveImage"
                 />
+
+                <!-- Color & Stroke Controls -->
+                <div class="d-flex flex-wrap align-items-center gap-3 mt-2 p-2 bg-light border rounded">
+                    <div class="d-flex align-items-center gap-1">
+                        <label class="mb-0 small text-muted">Stroke</label>
+                        <input type="color" :value="currentStrokeColor" @input="handleColorChange('stroke', $event.target.value)" class="form-control form-control-sm p-0" style="width:34px; height:30px;">
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <label class="mb-0 small text-muted">Fill</label>
+                        <input type="color" :value="currentFillColor || '#ffffff'" @input="handleColorChange('fill', $event.target.value)" class="form-control form-control-sm p-0" style="width:34px; height:30px;">
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <label class="mb-0 small text-muted">Width: <strong>{{ strokeWidth }}</strong></label>
+                        <input type="range" min="1" max="20" :value="strokeWidth" @input="handleStrokeWidthChange(parseInt($event.target.value))" class="form-range" style="width:100px;">
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -61,6 +61,7 @@
                     @canvas_data="handleCanvasData"
                     @layers_updated="updateLayersList"
                     @layers_ready="updateLayersList"
+                    @history-changed="onHistoryChanged"
                 />
 
                 <LayersPanelComponent
@@ -132,8 +133,8 @@ export default {
             action: 1,
             layers: [],
             showLayersTable: false,
-            history: [], // Store drawing history for undo functionality
-            redoStack: [], // Store undone states for redo functionality
+            historyCount: 0,
+            redoCount: 0,
             moveToGroupModal: {
                 show: false,
                 layer: null,
@@ -151,17 +152,18 @@ export default {
         }),
         mounted() {
             if (this.image_prop) {
-                // this.change_image(this.image_prop);
                 this.image = this.image_prop;
             }
-            // Delay layers update to ensure canvas is fully initialized
             this.$nextTick(() => {
                 setTimeout(() => {
                     this.updateLayersList();
-                }, 100);
+                    // Sync initial color/stroke values into the canvas manager
+                    if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                        this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                    }
+                }, 150);
             });
 
-            // Add keyboard event listeners
             window.addEventListener('keydown', this.handleKeyDown);
         },
 
@@ -169,52 +171,30 @@ export default {
             // Remove keyboard event listeners
             window.removeEventListener('keydown', this.handleKeyDown);
         },
-        updated() {
-            // Also update layers when component updates
-            this.$nextTick(() => {
-                setTimeout(() => {
-                    this.updateLayersList();
-                }, 50);
-            });
-        },
         watch: {
             image_prop: function(newVal, oldVal) {
                 if (newVal && newVal !== oldVal) {
-                    // this.change_image(newVal);
-                    this.image = this.newVal;
+                    this.image = newVal;
                 }
             },
             json_prop: {
                 handler: function(newVal, oldVal) {
-                    if (newVal && newVal !== oldVal && this.$refs.canvasContainer) {
-                        // Pass the JSON data to the CanvasContainerComponent
-                        this.$refs.canvasContainer.json_prop = newVal;
-                        console.log('JSON prop updated in EditorComponent:', newVal);
-                    }
-                    // Update layers list when JSON changes
+                    // Props flow automatically through template bindings — no manual mutation needed.
+                    // Only refresh the layers panel after the canvas processes the new JSON.
                     this.$nextTick(() => {
-                        setTimeout(() => {
-                            this.updateLayersList();
-                        }, 200);
+                        setTimeout(() => { this.updateLayersList(); }, 300);
                     });
                 },
-                immediate: true
+                immediate: false
             },
             related_jsons: {
                 handler: function(newVal, oldVal) {
-                    if (newVal && newVal !== oldVal && this.$refs.canvasContainer) {
-                        // Pass the related JSONs to the CanvasContainerComponent
-                        this.$refs.canvasContainer.related_jsons = newVal;
-                        console.log('Related JSONs prop updated in EditorComponent:', newVal);
-                    }
-                    // Update layers list when related JSONs change
+                    // Props flow automatically through template bindings — no manual mutation needed.
                     this.$nextTick(() => {
-                        setTimeout(() => {
-                            this.updateLayersList();
-                        }, 200);
+                        setTimeout(() => { this.updateLayersList(); }, 300);
                     });
                 },
-                immediate: true
+                immediate: false
             }
         },
         computed: {
@@ -305,6 +285,11 @@ export default {
                 this.$refs.canvasContainer.redoLastAction();
             },
 
+            onHistoryChanged(histLen, redoLen) {
+                this.historyCount = histLen;
+                this.redoCount = redoLen;
+            },
+
             // Canvas event handlers
             handleCanvasData(event) {
                 this.$emit('canvas_data', event);
@@ -321,14 +306,7 @@ export default {
                 if (scope) {
                     const canvasData = JSON.stringify(scope.project.exportJSON());
                     this.$emit('canvas_data', canvasData);
-                } else {
-                    console.log('Canvas not available for data extraction');
                 }
-            },
-
-            import_json_in_editor(event) {
-                console.log('import_json_in_editor ~ event:', event);
-                // this.$refs.canvasContainer.import_json(json)
             },
 
             updateLayersList() {
@@ -354,6 +332,8 @@ export default {
                                                 layerName: layer.name,
                                                 isGroup: true,
                                                 expanded: expandedStates[item.name] || false,
+                                                isEditing: false,
+                                                editText: '',
                                                 children: item.children.map(child => ({
                                                     name: child.name || 'unnamed',
                                                     displayName: child.name || 'unnamed',
@@ -361,7 +341,9 @@ export default {
                                                     locked: child.locked || false,
                                                     parentGroup: item.name,
                                                     isText: child instanceof paper.PointText || (child.name && child.name.startsWith('text ')),
-                                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null)
+                                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null),
+                                                    isEditing: false,
+                                                    editText: ''
                                                 }))
                                             });
                                         } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
@@ -373,143 +355,73 @@ export default {
                                                 locked: item.locked || false,
                                                 layerName: layer.name,
                                                 isText: item instanceof paper.PointText || (item.name && item.name.startsWith('text ')),
-                                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null)
+                                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
+                                                isEditing: false,
+                                                editText: ''
                                             });
                                         }
                                     });
                     });
                 } else {
                     this.layers = [];
-                    // Retry after a short delay if canvas is not ready
-                    setTimeout(() => {
-                        this.updateLayersList();
-                    }, 100);
                 }
             },
 
             toggleLayerVisibility(layer) {
-                console.log('toggleLayerVisibility called for item:', layer);
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Find the item by name across all layers
-                    let foundItem = null;
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            if (item.name === layer.name) {
-                                foundItem = item;
-                            }
-                        });
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if (item.name === layer.name) {
+                            item.visible = !item.visible;
+                        }
                     });
-
-                    if (foundItem) {
-                        // Toggle the visibility
-                        foundItem.visible = !foundItem.visible;
-                        console.log('Toggled item visibility to:', foundItem.visible);
-                        scope.view.update();
-                        console.log('Item visibility updated');
-                        // Refresh the layers list to reflect changes
-                        this.updateLayersList();
-                    } else {
-                        console.log('Item not found');
-                    }
-                } else {
-                    console.log('Canvas not available for visibility toggle');
-                }
+                });
+                scope.view.update();
+                this.updateLayersList();
             },
 
             toggleLayerLock(layer) {
-                console.log('toggleLayerLock called for item:', layer);
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Find the item by name across all layers
-                    let foundItem = null;
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            if (item.name === layer.name) {
-                                foundItem = item;
-                            }
-                        });
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if (item.name === layer.name) {
+                            item.locked = !item.locked;
+                        }
                     });
-
-                    if (foundItem && layer.layerName !== 'main') {
-                        // Toggle the lock status
-                        foundItem.locked = !foundItem.locked;
-                        console.log('Toggled item lock to:', foundItem.locked);
-                        scope.view.update();
-                        console.log('Item lock updated');
-                        // Refresh the layers list to reflect changes
-                        this.updateLayersList();
-                    } else if (layer.layerName === 'main') {
-                        console.log('Cannot lock main layer items');
-                    } else {
-                        console.log('Item not found');
-                    }
-                } else {
-                    console.log('Canvas not available for lock toggle');
-                }
+                });
+                scope.view.update();
+                this.updateLayersList();
             },
 
             toggleLayersVisibility() {
-                console.log('toggleLayersVisibility called');
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Check if all items are currently visible
-                    const allVisible = this.layers.every(layer => layer.visible);
-
-                    // Set all items to the opposite state
-                    const newVisibility = !allVisible;
-
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            item.visible = newVisibility;
-                        });
-                    });
-
-                    scope.view.update();
-                    console.log('All items visibility set to:', newVisibility);
-                    // Refresh the layers list to reflect changes
-                    this.updateLayersList();
-                } else {
-                    console.log('Canvas not available for visibility toggle');
-                }
+                if (!scope || !scope.project) return;
+                const allVisible = this.layers.every(layer => layer.visible);
+                const newVisibility = !allVisible;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => { item.visible = newVisibility; });
+                });
+                scope.view.update();
+                this.updateLayersList();
             },
 
             deleteLayerItem(layer) {
-                console.log('deleteLayerItem called for item:', layer);
-
                 const itemType = layer.isGroup ? 'group' : 'item';
-                if (confirm(`Are you sure you want to delete the ${itemType} "${layer.name}"? This action cannot be undone.`)) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Find and remove the item
-                        let foundItem = null;
-                        let foundLayer = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if ((item.name || 'unnamed') === layer.name) {
-                                    foundItem = item;
-                                    foundLayer = paperLayer;
-                                }
-                            });
-                        });
-
-                        if (foundItem && foundLayer) {
-                            foundItem.remove();
-                            scope.view.update();
-                            console.log(`${itemType} deleted successfully`);
-                            // Refresh the layers list to reflect changes
-                            this.updateLayersList();
-                            // Save the canvas data
-                            this.saveCanvasData();
-                        } else {
-                            console.log(`${itemType} not found for deletion`);
+                if (!confirm(`Are you sure you want to delete the ${itemType} "${layer.name}"?`)) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if ((item.name || 'unnamed') === layer.name) {
+                            item.remove();
                         }
-                    } else {
-                        console.log('Canvas not available for item deletion');
-                    }
-                } else {
-                    console.log(`Delete ${itemType} cancelled by user`);
-                }
+                    });
+                });
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             toggleLayersTable() {
@@ -521,111 +433,53 @@ export default {
             },
 
             toggleChildVisibility(layer, child) {
-                console.log('toggleChildVisibility called for child:', child, 'in group:', layer);
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Find the group by name
-                    let foundGroup = null;
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            if (item.name === layer.name) {
-                                foundGroup = item;
-                            }
-                        });
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if (item.name === layer.name && item.children) {
+                            item.children.forEach(c => {
+                                if (c.name === child.name) c.visible = !c.visible;
+                            });
+                        }
                     });
-
-                    if (foundGroup) {
-                        // Find the child item within the group
-                        foundGroup.children.forEach(item => {
-                            if (item.name === child.name) {
-                                item.visible = !item.visible;
-                                console.log('Toggled child visibility to:', item.visible);
-                            }
-                        });
-                        scope.view.update();
-                        // Refresh the layers list to reflect changes
-                        this.updateLayersList();
-                    } else {
-                        console.log('Group not found');
-                    }
-                } else {
-                    console.log('Canvas not available for child visibility toggle');
-                }
+                });
+                scope.view.update();
+                this.updateLayersList();
             },
 
             toggleChildLock(layer, child) {
-                console.log('toggleChildLock called for child:', child, 'in group:', layer);
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Find the group by name
-                    let foundGroup = null;
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            if (item.name === layer.name) {
-                                foundGroup = item;
-                            }
-                        });
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if (item.name === layer.name && item.children) {
+                            item.children.forEach(c => {
+                                if (c.name === child.name) c.locked = !c.locked;
+                            });
+                        }
                     });
-
-                    if (foundGroup) {
-                        // Find the child item within the group
-                        foundGroup.children.forEach(item => {
-                            if (item.name === child.name) {
-                                item.locked = !item.locked;
-                                console.log('Toggled child lock to:', item.locked);
-                            }
-                        });
-                        scope.view.update();
-                        // Refresh the layers list to reflect changes
-                        this.updateLayersList();
-                    } else {
-                        console.log('Group not found');
-                    }
-                } else {
-                    console.log('Canvas not available for child lock toggle');
-                }
+                });
+                scope.view.update();
+                this.updateLayersList();
             },
 
             deleteChildItem(layer, child) {
-                console.log('deleteChildItem called for child:', child, 'in group:', layer);
-                if (confirm(`Are you sure you want to delete "${child.name}" from group "${layer.name}"? This action cannot be undone.`)) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Find the group by name
-                        let foundGroup = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name) {
-                                    foundGroup = item;
-                                }
+                if (!confirm(`Are you sure you want to delete "${child.name}" from group "${layer.name}"?`)) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(paperLayer => {
+                    paperLayer.children.forEach(item => {
+                        if (item.name === layer.name && item.children) {
+                            item.children.forEach(c => {
+                                if (c.name === child.name) c.remove();
                             });
-                        });
-
-                        if (foundGroup) {
-                            // Find and remove the child item from the group
-                            let childToRemove = null;
-                            foundGroup.children.forEach(item => {
-                                if (item.name === child.name) {
-                                    childToRemove = item;
-                                }
-                            });
-
-                            if (childToRemove) {
-                                childToRemove.remove();
-                                scope.view.update();
-                                console.log('Child item deleted successfully');
-                                // Refresh the layers list to reflect changes
-                                this.updateLayersList();
-                            } else {
-                                console.log('Child item not found for deletion');
-                            }
-                        } else {
-                            console.log('Group not found');
                         }
-                    } else {
-                        console.log('Canvas not available for child item deletion');
-                    }
-                }
+                    });
+                });
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             moveLayerUp(index) {
@@ -709,8 +563,9 @@ export default {
                         if (foundItem && foundLayer) {
                             // Create a new group
                             const newGroup = new paper.Group();
-                            newGroup.name = `group ${this.$refs.canvasContainer.groupCounter + 1}`;
-                            this.$refs.canvasContainer.groupCounter++;
+                            const currentCount = this.$refs.canvasContainer.getGroupCounter();
+                            newGroup.name = `group ${currentCount + 1}`;
+                            this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
 
                             // Move the item into the group
                             foundItem.remove();
@@ -759,8 +614,6 @@ export default {
                             this.saveCanvasData();
                         }
                     }
-                } else {
-                    console.log('Ungroup cancelled by user');
                 }
             },
 
@@ -838,22 +691,17 @@ export default {
             },
 
             deleteAllLayers() {
-                if (confirm('Are you sure you want to delete ALL layers? This action cannot be undone.')) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Clear all layers except the main layer if it exists
-                        scope.project.layers.forEach(layer => {
-                            if (layer.name !== 'main') {
-                                layer.removeChildren();
-                            }
-                        });
-                        scope.view.update();
-                        this.updateLayersList();
-                        this.saveCanvasData();
+                if (!confirm('Are you sure you want to delete ALL layers? This action cannot be undone.')) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                scope.project.layers.forEach(layer => {
+                    if (!layer.name || !layer.name.startsWith('related-')) {
+                        layer.removeChildren();
                     }
-                } else {
-                    console.log('Delete all layers cancelled by user');
-                }
+                });
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             startEditingLayerName(layer, event) {
@@ -1076,8 +924,8 @@ export default {
             },
 
             handleSaveImage() {
-                if (this.$refs.canvasContainer && this.$refs.canvasContainer.saveImageToServer) {
-                    this.$refs.canvasContainer.saveImageToServer();
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.exportCanvas) {
+                    this.$refs.canvasContainer.exportCanvas('png');
                 }
             },
 

@@ -12,11 +12,14 @@ class Tour_reservation extends Model
     protected $fillable = [
         'check_in',
         'persons',
+        'name',
         'email',
         'phone',
         'country',
         'city',
         'text',
         'tour_id',
-	];
+        'verificate',
+        'confirm',
+    ];
 }

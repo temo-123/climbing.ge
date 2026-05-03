@@ -9,10 +9,10 @@
             </div>
             <div class="col-md-2">
                 <a
+                    v-if="sector.sector.has_route_drawings"
                     @click="show_sector_canvas_modal()"
                     data-toggle="modal"
                     data-target="#squarespaceModal_route_info_"
-
                     class="show_sector_canvas_modal_link"
                 >
                     <i class="fa fa-list-alt show_sector_canvas_modal_icon" aria-hidden="true"></i>

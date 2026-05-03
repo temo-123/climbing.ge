@@ -5,6 +5,15 @@
         @close="is_order_detals_model=false">
         <div v-if="order">
 
+            <!-- Order type badge -->
+            <div class="mb-3">
+                <span v-if="order.is_custom" class="badge badge-warning mr-2">Custom Order</span>
+                <span v-else class="badge badge-primary mr-2">Cart Order</span>
+                <span class="badge badge-info">
+                    <i class="fa fa-clock-o"></i> Delivery: {{ delivery_days }} business days
+                </span>
+            </div>
+
             <!-- Buyer info (custom orders only) -->
             <template v-if="order.is_custom && buyer_address">
                 <h6 class="text-muted mb-2">Buyer Information</h6>
@@ -35,6 +44,20 @@
                             <input type="text" class="form-control" :value="buyer_address.phone || '—'" readonly>
                         </div>
                     </div>
+                </div>
+
+                <!-- Linked users from DB -->
+                <template v-if="related_users && related_users.length">
+                    <h6 class="text-muted mb-2">Linked User Accounts</h6>
+                    <div v-for="u in related_users" :key="u.id" class="alert alert-success py-2">
+                        <i class="fa fa-user"></i>
+                        <strong>{{ u.name }} {{ u.surname }}</strong>
+                        <span class="text-muted ml-2">{{ u.email }}</span>
+                        <span class="badge badge-secondary ml-2">ID #{{ u.id }}</span>
+                    </div>
+                </template>
+                <div v-else-if="order.is_custom" class="alert alert-secondary py-2">
+                    <i class="fa fa-user-times"></i> No registered user found for this email
                 </div>
 
                 <hr>
@@ -129,6 +152,7 @@ export default {
             order: null,
             buyer_address: null,
             order_product_items: [],
+            related_users: [],
             total_price: 0,
         }
     },
@@ -145,6 +169,12 @@ export default {
             }
             return map[this.order?.payment] || this.order?.payment || '—'
         },
+        delivery_days() {
+            const has_produced = this.order_product_items.some(
+                item => item.product && item.product.sale_type === 'produced_by_order'
+            )
+            return has_produced ? '5-9' : '2-4'
+        },
     },
     methods: {
         show_modal(order_id) {
@@ -156,6 +186,7 @@ export default {
                     this.order = response.data.order
                     this.order_product_items = response.data.order_products
                     this.buyer_address = response.data.buyer_address || null
+                    this.related_users = response.data.related_users || []
                     this.calculate_total()
                     this.is_order_detals_model = true
                 })

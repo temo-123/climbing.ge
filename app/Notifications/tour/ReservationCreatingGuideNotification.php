@@ -16,9 +16,11 @@ class ReservationCreatingGuideNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    protected $reservation;
+
+    public function __construct($reservation = null)
     {
-        //
+        $this->reservation = $reservation;
     }
 
     /**
@@ -43,6 +45,7 @@ class ReservationCreatingGuideNotification extends Notification
         return (new MailMessage)
         ->markdown('emails.tour.reservation_completed', [
             'message' => "A new tour reservation has arrived. Please visit the dashboard as soon as possible to view it!",
+            'reservation' => $this->reservation,
         ])
         ->subject('New tour reservation');
     }

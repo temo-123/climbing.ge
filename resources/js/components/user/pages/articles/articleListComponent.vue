@@ -250,7 +250,7 @@ export default {
         get_filtred_mount_routes(mount_id){
             axios.get("/set_mount/get_filtred_mount_route_for_admin/" + mount_id)
                 .then(response => {
-                    const validData = this.validateData(response.data, null) // no idPath for nested
+                    const validData = this.validateData(response.data)
                     if (this.data_for_tab[0]?.tab_data) {
                         this.data_for_tab[0].tab_data.data = validData
                     }
@@ -344,7 +344,7 @@ export default {
         },
         get_mounts(){
             axios.get("/get_mount/get_all_mount").then(response => {
-                const validData = this.validateData(response.data, null)
+                const validData = this.validateData(response.data)
                 this.data_for_tab.push({
                     id: 2,
                     table_name: 'Mount Masives',

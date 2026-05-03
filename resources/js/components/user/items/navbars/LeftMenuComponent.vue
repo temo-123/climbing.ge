@@ -60,6 +60,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
         mounted() {
             this.window_size()
             this.open_dropdowns = JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}');
+            this.syncMenuPosition();
 
             this.$bus.$on('permissions-loaded', (permissions) => {
                 if (this.$ability) this.$ability.update(permissions)
@@ -83,26 +84,18 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                     }, 500);
                 });
             });
-
-            this.$nextTick(() => {
-                if (window.innerWidth > 993) {
-                    if (!localStorage.getItem('left_menu_position')) {
-                        localStorage.setItem('left_menu_position', true);
-                        this.menu_position = true;
-                    } else {
-                        this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
-                    }
-                } else {
-                    this.menu_position = false;
-                }
-                this.apply_sidebar_margin(this.menu_position);
-            });
         },
 
         beforeUnmount() {
             this.$bus.$off('permissions-loaded');
             this.$bus.$off('logged-in');
             this.$bus.$off('menu-toggle');
+        },
+
+        watch: {
+            $route() {
+                this.$nextTick(() => this.apply_sidebar_margin(this.menu_position));
+            }
         },
 
         methods: {
@@ -149,6 +142,20 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
                     this.menu = false
                     this.menu_but = false
                 }
+            },
+
+            syncMenuPosition() {
+                if (window.innerWidth > 993) {
+                    if (!localStorage.getItem('left_menu_position')) {
+                        localStorage.setItem('left_menu_position', 'true');
+                        this.menu_position = true;
+                    } else {
+                        this.menu_position = (localStorage.getItem('left_menu_position') === 'true');
+                    }
+                } else {
+                    this.menu_position = false;
+                }
+                this.apply_sidebar_margin(this.menu_position);
             },
 
             apply_sidebar_margin(open) {
@@ -203,6 +210,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   left: -22em;
   width: 22em;
   height: 100%;
+  z-index: 1001;
   background: #042331;
   transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }

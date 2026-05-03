@@ -171,6 +171,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::get('/get_user_reservations', 'get_user_reservations');
 
             Route::get('/get_all_reservations', 'get_all_reservations');
+            Route::get('/get_declarations', 'get_declarations');
             Route::get('/get_reservation/{id}', 'get_reservation');
 
             // Editing routes moved to adminAction.php

@@ -3,38 +3,39 @@
         <!-- Checkbox column -->
         <tr v-for="(row, rowIndex) in tab_data.data" :key="row.id || rowIndex">
             <td style="text-align: center">
-                <input 
-                    type="checkbox" 
-                    :value="row.id" 
-                    v-model="localSelectedItems" 
+                <input
+                    type="checkbox"
+                    :value="row.id"
+                    v-model="localSelectedItems"
                 />
             </td>
-                <td v-for="(cellConfig, colIndex) in (tab_data.head || tab_data.tab?.body || [])" :key="colIndex">
+                <td v-for="(cellConfig, colIndex) in (tab_data.tab?.body || [])" :key="colIndex">
+                <template v-if="canShowCell(colIndex)">
                 <!-- Data cell -->
-                <DataComponent 
-                    v-if="cellConfig[0] === 'data'" 
-                    :data_item_prop="cellConfig" 
+                <DataComponent
+                    v-if="cellConfig[0] === 'data'"
+                    :data_item_prop="cellConfig"
                     :data_prop="row"
                 />
                 <!-- Action function cell -->
-                <button 
-                    v-else-if="cellConfig[0] === 'action_fun_id'" 
+                <button
+                    v-else-if="cellConfig[0] === 'action_fun_id'"
                     :class="cellConfig[2] || 'btn btn-primary'"
                     @click="$emit('action_for_perent_component', [cellConfig[1], row.id])"
                 >
                     <span v-html="cellConfig[3]"></span>
                 </button>
-                <!-- Data action ID cell (modal trigger) -->
-                <span 
-                    v-else-if="cellConfig[0] === 'data_action_id'" 
-                    @click="$emit('action_for_perent_component', [cellConfig[2], row.id])"
-                    class="cursor-pointer hover:underline"
+                <!-- Data action ID cell (clickable text with optional modal trigger) -->
+                <span
+                    v-else-if="cellConfig[0] === 'data_action_id'"
+                    @click="onDataActionClick(cellConfig, row.id)"
+                    :style="getDataActionName(cellConfig) ? 'cursor:pointer;text-decoration:underline' : ''"
                 >
-                    <DataComponent :data_item_prop="[cellConfig[0], cellConfig[1]]" :data_prop="row" />
+                    {{ getDataActionDisplay(row, cellConfig) }}
                 </span>
                 <!-- Router link cell -->
-                <router-link 
-                    v-else-if="cellConfig[0] === 'action_router'" 
+                <router-link
+                    v-else-if="cellConfig[0] === 'action_router'"
                     :to="{ name: cellConfig[1], params: { id: row.id } }"
                     :class="cellConfig[2] || 'btn btn-primary'"
                     class="no-vue-link"
@@ -45,6 +46,7 @@
                 <span v-else>
                     {{ row[cellConfig[1]] || '' }}
                 </span>
+                </template>
             </td>
         </tr>
     </tbody>
@@ -92,6 +94,37 @@ export default {
         this.tab_data = this.body_data_prop
     },
     methods: {
+        canShowCell(colIndex) {
+            const perm = this.tab_data?.tab?.perm?.[colIndex]
+            if (!perm || perm[0] === 'no') return true
+            if (perm.length >= 2) return this.$can(perm[1], perm[0])
+            return true
+        },
+        getDataActionName(cellConfig) {
+            // Action name is the last element if it's a string (and there's more than just the type + one field)
+            // ['data_action_id', ['field']] → no action
+            // ['data_action_id', ['field'], 'action'] → 'action'
+            // ['data_action_id', ['field1'], ['field2'], 'action'] → 'action'
+            const last = cellConfig[cellConfig.length - 1]
+            return typeof last === 'string' && cellConfig.length > 2 ? last : null
+        },
+        getDataActionDisplay(row, cellConfig) {
+            // Collect display values from all array elements in the config (skip the string action name)
+            const parts = []
+            for (let i = 1; i < cellConfig.length; i++) {
+                if (Array.isArray(cellConfig[i])) {
+                    const val = row[cellConfig[i][0]]
+                    if (val != null && val !== '') parts.push(val)
+                }
+            }
+            return parts.join(' ')
+        },
+        onDataActionClick(cellConfig, id) {
+            const actionName = this.getDataActionName(cellConfig)
+            if (actionName) {
+                this.$emit('action_for_perent_component', [actionName, id])
+            }
+        },
         send_action_to_tab_with_option(emit_fun, sending_id) {
             this.$emit('action_for_perent_component_with_option', [emit_fun, sending_id]);
         },

@@ -84,12 +84,12 @@
             <div class="row" v-if="show_editor">
                 <div class="col-md-12" v-for="image in sector_images" :key="image.id" 
                     v-if="images_tab_num == image.id" >
-                <Editor
-                  ref="editorComponent"
-                  :image_prop="'/public/images/sector_img/' + image.image"
-                  :related_jsons="related_jsons"
-                  @canvas_data="handleCanvasData"
-                />
+                    <Editor
+                      ref="editorComponent"
+                      :image_prop="'/public/images/sector_img/' + image.image"
+                      :related_jsons="related_jsons"
+                      @canvas_data="handleCanvasData"
+                    />
                 </div>
             </div>
             <div class="row" v-else>

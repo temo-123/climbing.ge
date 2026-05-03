@@ -51,7 +51,20 @@ class OrderController extends Controller
     public function get_user_purchules() {
         $user = Auth::user();
         if (!$user) return [];
-        return Order::where('user_id', $user->id)->latest()->get();
+
+        $orders = Order::where('user_id', $user->id)
+            ->with(['orderProducts.option.product'])
+            ->latest()
+            ->get();
+
+        return $orders->map(function ($order) {
+            $has_produced = $order->orderProducts->contains(
+                fn($op) => $op->option?->product?->sale_type === 'produced_by_order'
+            );
+            $data = $order->toArray();
+            $data['delivery_days'] = $has_produced ? '5-9' : '2-4';
+            return $data;
+        });
     }
 
     public function get_order_status($order_id)
@@ -299,17 +312,27 @@ class OrderController extends Controller
 
     public function get_order_detals(Request $request)
     {
-        $order = Order::where("id", "=", $request->order_id)->first();
+        $order = Order::where("id", "=", $request->order_id)
+            ->with(['relatedUsers:id,name,surname,email'])
+            ->first();
         $order_products = (new static)->get_order_products($order->id);
         $buyer_address = $order->buyerAddress()->first();
 
-        $order_detals = [
-            'order' => $order,
+        $related_users = $order->is_custom
+            ? $order->relatedUsers->map(fn($u) => [
+                'id'      => $u->id,
+                'name'    => $u->name,
+                'surname' => $u->surname,
+                'email'   => $u->email,
+            ])->values()
+            : [];
+
+        return [
+            'order'         => $order,
             'order_products' => $order_products,
             'buyer_address' => $buyer_address,
+            'related_users' => $related_users,
         ];
-
-        return $order_detals;
     }
 
     public function order_is_confirm(Request $request)
@@ -425,11 +448,9 @@ class OrderController extends Controller
                 ->orderBy('date')
                 ->get();
 
-            $data = [['Day', 'Orders']];
-            $i = 1;
+            $data = [['Date', 'Orders']];
             foreach($orders as $order){
-                $data[] = [$i, (int)$order->count];
-                $i++;
+                $data[] = [$order->date, (int)$order->count];
             }
         } else {
             $orders = $query->selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, COUNT(*) as count')
@@ -438,10 +459,8 @@ class OrderController extends Controller
                 ->get();
 
             $data = [['Month', 'Orders']];
-            $i = 1;
             foreach($orders as $order){
-                $data[] = [$i, (int)$order->count];
-                $i++;
+                $data[] = [sprintf('%04d-%02d', $order->year, $order->month), (int)$order->count];
             }
         }
 
@@ -466,35 +485,33 @@ class OrderController extends Controller
         }
 
         $query = Order_products::join('orders', 'order_products.order_id', '=', 'orders.id')
-            ->whereNotNull('order_products.total_price');
+            ->leftJoin('product_options', 'order_products.product_option_id', '=', 'product_options.id');
 
         if ($startDate) {
             $query->where('orders.created_at', '>=', $startDate);
         }
 
+        $revenueExpr = 'SUM(COALESCE(order_products.total_price, CAST(product_options.price AS DECIMAL(10,2)) * order_products.quantity))';
+
         if (in_array($period, ['30days', '1month'])) {
-            $rows = $query->selectRaw('DATE(orders.created_at) as date, SUM(order_products.total_price) as revenue')
+            $rows = $query->selectRaw("DATE(orders.created_at) as date, {$revenueExpr} as revenue")
                 ->groupBy('date')
                 ->orderBy('date')
                 ->get();
 
-            $data = [['Day', 'Revenue']];
-            $i = 1;
+            $data = [['Date', 'Revenue']];
             foreach ($rows as $row) {
-                $data[] = [$i, (float) $row->revenue];
-                $i++;
+                $data[] = [$row->date, (float) $row->revenue];
             }
         } else {
-            $rows = $query->selectRaw('YEAR(orders.created_at) as year, MONTH(orders.created_at) as month, SUM(order_products.total_price) as revenue')
+            $rows = $query->selectRaw("YEAR(orders.created_at) as year, MONTH(orders.created_at) as month, {$revenueExpr} as revenue")
                 ->groupByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
                 ->orderByRaw('YEAR(orders.created_at), MONTH(orders.created_at)')
                 ->get();
 
             $data = [['Month', 'Revenue']];
-            $i = 1;
             foreach ($rows as $row) {
-                $data[] = [$i, (float) $row->revenue];
-                $i++;
+                $data[] = [sprintf('%04d-%02d', $row->year, $row->month), (float) $row->revenue];
             }
         }
 

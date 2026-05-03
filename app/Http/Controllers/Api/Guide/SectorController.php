@@ -14,6 +14,7 @@ use App\Models\Guide\Sector_image;
 use App\Models\Guide\Spot_rocks_image;
 use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
+use App\Models\Guide\ClimbingRoutesJson;
 
 use App\Services\Abstract\ImageControllService;
 
@@ -241,16 +242,21 @@ class SectorController extends Controller
         }
         else $mtp_info = array();
         
-        array_push($area_info, 
+        $sector_image_ids = collect($sector_imgs)->pluck('id')->toArray();
+        $has_route_drawings = !empty($sector_image_ids)
+            && ClimbingRoutesJson::whereIn('sector_image_id', $sector_image_ids)->exists();
+
+        array_push($area_info,
             array(
-                "sector" => $sector,  
+                "sector" => $sector,
                 'sector_imgs'=>$sector_imgs,
                 "sport_routes" => $sport_route_info,
                 "boulder_route"=>$boulder_route_info,
                 "mtps" => $mtp_info,
+                "has_route_drawings" => $has_route_drawings,
             )
         );
-        
+
         return $area_info[0];
     }
 
@@ -510,6 +516,9 @@ class SectorController extends Controller
     public function get_sector_images(Request $request)
     {
         $sector = Sector::where('id',strip_tags($request->sector_id))->first();
-        return $sector->images;
+        return $sector->images->map(function ($img) {
+            $img->has_original = file_exists(public_path('images/sector_img/origin_img/' . $img->image));
+            return $img;
+        });
     }
 }

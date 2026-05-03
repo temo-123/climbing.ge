@@ -98,6 +98,7 @@
                                                 'tab': {
                                                     'head': [
                                                         'ID',
+                                                        'Type',
                                                         'Status',
                                                         'Payment',
                                                         'Shipping',
@@ -107,6 +108,7 @@
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
+                                                        ['data', ['is_custom'], 'bool'],
                                                         ['data', ['status']],
                                                         ['data', ['payment']],
                                                         ['data', ['shiping']],
@@ -115,6 +117,7 @@
                                                         ['action_fun_id', 'show_order_detals_modal', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                                                     ],
                                                     'perm': [
+                                                        ['no'],
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],

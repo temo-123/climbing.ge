@@ -13,19 +13,19 @@
             <nav aria-label="Page navigation example">
                 <ul class="pagination justify-content-end">
                     <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                        <a class="page-link action" href="#" tabindex="-1" @click="privies_page_pagination()">
+                        <a class="page-link action" href="#" tabindex="-1" @click.prevent="privies_page_pagination()">
                             <i class="fa fa-chevron-left" aria-hidden="true"></i>
                         </a>
                     </li>
 
                     <li class="page-item" v-for="page in visiblePages" :key="page" :class="{ active: page === currentPage, disabled: page === '...' }">
-                        <a class="page-link action" href="#" :class="{ 'disabled-link': page === '...' }" @click="page !== '...' && nomber_page_pagination(page)">
+                        <a class="page-link action" href="#" :class="{ 'disabled-link': page === '...' }" @click.prevent="page !== '...' && nomber_page_pagination(page)">
                             {{ page }}
                         </a>
                     </li>
 
                     <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                        <a class="page-link action" href="#" @click="next_page_pagination()">
+                        <a class="page-link action" href="#" @click.prevent="next_page_pagination()">
                             <i class="fa fa-chevron-right" aria-hidden="true"></i>
                         </a>
                     </li>

@@ -48,9 +48,7 @@ export default {
 
             this.tool.onMouseDrag = (event) => {
                 if (this.action == 1 || this.action == 3) {
-                    if (this.path) {
-                        this.path.add(event.point);
-                    }
+                    if (this.path) this.path.add(event.point);
                 } else if (this.action == 4) {
                     if (this.path && this.path.data && this.path.data.isRectangle) {
                         const startPoint = this.path.data.startPoint;
@@ -66,13 +64,10 @@ export default {
                     if (this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
                         const rectBounds = this.path.bounds;
                         const isInsideRect = event.point.x >= rectBounds.left &&
-                                           event.point.x <= rectBounds.right &&
-                                           event.point.y >= rectBounds.top &&
-                                           event.point.y <= rectBounds.bottom;
-
-                        if (!isInsideRect) {
-                            this.currentLine.add(event.point);
-                        }
+                                            event.point.x <= rectBounds.right &&
+                                            event.point.y >= rectBounds.top &&
+                                            event.point.y <= rectBounds.bottom;
+                        if (!isInsideRect) this.currentLine.add(event.point);
                     }
                 } else if (this.action == 8) {
                     if (this.selectedItem) {
@@ -84,24 +79,41 @@ export default {
                 } else if (this.action == 9) {
                     this.panCanvas(event);
                 } else if (this.action == 10) {
+                    // Resize circle in-place (no counter increment, no recreation)
                     if (this.path && this.path.data && this.path.data.isCircle) {
                         const center = this.path.data.center;
-                        const radius = center.getDistance(event.point);
+                        const radius = Math.max(1, center.getDistance(event.point));
+                        const savedName = this.path.name;
+                        const savedData = this.path.data;
                         this.path.remove();
-                        this.add_circle_at_point(center, radius);
+                        this.path = new paper.Path.Circle({
+                            center: center,
+                            radius: radius,
+                            strokeColor: this._stroke(),
+                            strokeWidth: this._width(),
+                            fillColor: this._fill(),
+                            name: savedName
+                        });
+                        this.path.data = savedData;
                     }
                 } else if (this.action == 11) {
+                    // Resize ellipse in-place
                     if (this.path && this.path.data && this.path.data.isEllipse) {
                         const startPoint = this.path.data.startPoint;
-                        const width = Math.abs(event.point.x - startPoint.x);
-                        const height = Math.abs(event.point.y - startPoint.y);
+                        const width  = Math.max(1, Math.abs(event.point.x - startPoint.x));
+                        const height = Math.max(1, Math.abs(event.point.y - startPoint.y));
+                        const savedName = this.path.name;
+                        const savedData = this.path.data;
                         this.path.remove();
-                        this.add_ellipse_at_point(startPoint, width, height);
-                    }
-                } else if (this.action == 12) {
-                    if (this.path && this.path.data && this.path.data.isPolygon) {
-                        // Update polygon preview
-                        this.update_polygon_preview(event.point);
+                        this.path = new paper.Path.Ellipse({
+                            point: startPoint,
+                            size: [width, height],
+                            strokeColor: this._stroke(),
+                            strokeWidth: this._width(),
+                            fillColor: this._fill(),
+                            name: savedName
+                        });
+                        this.path.data = savedData;
                     }
                 } else if (this.action == 14) {
                     this.updateSelectionRectangle(event);
@@ -110,40 +122,25 @@ export default {
 
             this.tool.onMouseUp = (event) => {
                 if (this.action == 1 || this.action == 3) {
-                    if (this.path) {
-                        this.add_point(event);
-                    }
+                    if (this.path) this.add_point(event);
                 }
                 if (this.action == 4 && this.path && this.path.data && this.path.data.isRectangle) {
-                    const bounds = this.path.bounds;
-                    const center = bounds.center;
                     if (this.path.data.textLabel) {
-                        this.path.data.textLabel.point = center;
+                        this.path.data.textLabel.point = this.path.bounds.center;
                     }
                 }
                 if (this.action == 7) {
                     this.add_point(event);
                     this.currentLine = null;
                 }
-                if (this.action == 8) {
-                    if (this.selectedItem) {
-                        this.saveCanvasData();
-                    }
+                if (this.action == 8 && this.selectedItem) {
+                    this.saveCanvasData();
                 }
                 if (this.action == 9) {
                     this.endPan();
                 }
-                if (this.action == 10) {
-                    // Circle creation handled in onMouseDrag
-                }
-                if (this.action == 11) {
-                    // Ellipse creation handled in onMouseDrag
-                }
                 if (this.action == 12) {
                     this.finish_polygon(event);
-                }
-                if (this.action == 13) {
-                    // Text creation handled in onMouseDown
                 }
                 if (this.action == 14) {
                     this.finishSelection(event);
@@ -162,7 +159,6 @@ export default {
             };
         },
 
-        // New methods for enhanced features
         startPan(event) {
             this.isPanning = true;
             this.panStartPoint = event.point;
@@ -184,7 +180,6 @@ export default {
         },
 
         selectMultipleItems(event) {
-            // Start selection rectangle
             this.selectionRect = new paper.Path.Rectangle(event.point, event.point);
             this.selectionRect.strokeColor = '#007bff';
             this.selectionRect.strokeWidth = 1;
@@ -216,7 +211,6 @@ export default {
                     });
                 });
 
-                // Create a group from selected items if multiple
                 if (selectedItems.length > 1) {
                     const group = new paper.Group(selectedItems);
                     group.name = `group ${this.groupCounter + 1}`;
@@ -255,13 +249,10 @@ export default {
 
                 if (!itemToSelect.locked) {
                     this.selectedItem = itemToSelect;
-                    console.log('Item selected for moving:', this.selectedItem.name);
                 } else {
-                    console.log('Cannot move locked item (related route)');
                     this.selectedItem = null;
                 }
             } else {
-                console.log('No item found at click point');
                 this.selectedItem = null;
             }
         },
@@ -274,20 +265,13 @@ export default {
                 tolerance: 15
             });
 
-            if (hitResult && hitResult.item) {
-                if (!hitResult.item.locked) {
-                    if (hitResult.item.data && hitResult.item.data.textLabel) {
-                        hitResult.item.data.textLabel.remove();
-                    }
-                    hitResult.item.remove();
-                    this.scope.view.update();
-                    this.saveCanvasData();
-                    console.log('Item erased completely');
-                } else {
-                    console.log('Cannot erase locked item (related route)');
+            if (hitResult && hitResult.item && !hitResult.item.locked) {
+                if (hitResult.item.data && hitResult.item.data.textLabel) {
+                    hitResult.item.data.textLabel.remove();
                 }
-            } else {
-                console.log('No item found at click point');
+                hitResult.item.remove();
+                this.scope.view.update();
+                this.saveCanvasData();
             }
         },
 
@@ -299,217 +283,100 @@ export default {
                 tolerance: 20
             });
 
-            console.log('Erase segment called, hitResult:', hitResult);
-
-            if (hitResult && hitResult.item) {
-                console.log('Item found:', hitResult.item, 'Locked:', hitResult.item.locked);
-                if (!hitResult.item.locked) {
-                    console.log('Item is not locked, proceeding with erase');
-                    if (hitResult.item instanceof paper.Path && hitResult.item.segments && hitResult.item.segments.length > 1) {
-                        console.log('Item is a path with', hitResult.item.segments.length, 'segments');
-                        let closestSegment = null;
-                        let minDistance = Infinity;
-
-                        hitResult.item.segments.forEach((segment, index) => {
-                            const distance = segment.point.getDistance(event.point);
-                            console.log('Segment', index, 'distance:', distance);
-                            if (distance < minDistance) {
-                                minDistance = distance;
-                                closestSegment = { segment, index };
-                            }
-                        });
-
-                        console.log('Closest segment:', closestSegment, 'at distance:', minDistance);
-
-                        if (closestSegment && hitResult.item.segments.length > 2) {
-                            console.log('Removing segment at index', closestSegment.index);
-                            hitResult.item.removeSegment(closestSegment.index);
-                            console.log('Segment erased from path');
-                        } else if (closestSegment && hitResult.item.segments.length <= 2) {
-                            console.log('Path has <=2 segments, removing entire path');
-                            if (hitResult.item.data && hitResult.item.data.textLabel) {
-                                hitResult.item.data.textLabel.remove();
-                            }
-                            hitResult.item.remove();
-                            console.log('Small path erased completely');
+            if (hitResult && hitResult.item && !hitResult.item.locked) {
+                const item = hitResult.item;
+                if (item instanceof paper.Path && item.segments && item.segments.length > 2) {
+                    let closestSegment = null;
+                    let minDistance = Infinity;
+                    item.segments.forEach((segment, index) => {
+                        const distance = segment.point.getDistance(event.point);
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            closestSegment = { segment, index };
                         }
-                    } else {
-                        console.log('Item is not a path, removing entire item');
-                        if (hitResult.item.data && hitResult.item.data.textLabel) {
-                            hitResult.item.data.textLabel.remove();
-                        }
-                        hitResult.item.remove();
-                        console.log('Item erased completely');
+                    });
+                    if (closestSegment) {
+                        item.removeSegment(closestSegment.index);
                     }
-
-                    this.scope.view.update();
-                    this.saveCanvasData();
                 } else {
-                    console.log('Cannot erase locked item (related route)');
+                    if (item.data && item.data.textLabel) item.data.textLabel.remove();
+                    item.remove();
                 }
-            } else {
-                console.log('No item found at click point');
+                this.scope.view.update();
+                this.saveCanvasData();
             }
         },
 
         importJsonData(jsonData) {
-            if (jsonData && this.scope) {
-                try {
-                    let parsedData = jsonData;
-                    if (typeof jsonData === 'string') {
-                        parsedData = JSON.parse(jsonData);
-                    }
-                    this.scope.activate();
+            if (!jsonData || !this.scope) return;
+            try {
+                let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+                this.scope.activate();
 
-                    const mainLayer = new paper.Layer();
-                    mainLayer.name = 'main';
+                // Remove existing main layer to prevent duplicates
+                const existing = this.scope.project.layers.find(l => l.name === 'main');
+                if (existing) existing.remove();
 
-                    const importedItems = mainLayer.importJSON(parsedData);
+                const mainLayer = new paper.Layer();
+                mainLayer.name = 'main';
+                mainLayer.importJSON(parsedData);
 
-                    const setMainItemProperties = (item) => {
-                        if (item.strokeColor) {
-                            item.strokeColor = '#ff0000';
-                        }
-                        if (item.fillColor) {
-                            item.fillColor = '#ff0000';
-                        }
-                        if (item.children) {
-                            item.children.forEach(child => setMainItemProperties(child));
-                        }
-                    };
-
-                    if (Array.isArray(importedItems)) {
-                        importedItems.forEach((item, index) => {
-                            setMainItemProperties(item);
-                            if (!item.name) {
-                                if (item instanceof paper.Path && item.closed) {
-                                    this.layerCounters.rectangle++;
-                                    item.name = `rectangle ${this.layerCounters.rectangle}`;
-                                    const bounds = item.bounds;
-                                    const bottomCenter = new paper.Point(bounds.center.x, bounds.bottom);
-                                    const text = new paper.PointText({
-                                        point: bottomCenter,
-                                        content: this.layerCounters.rectangle.toString(),
-                                        fillColor: '#ff0000',
-                                        fontFamily: 'Arial',
-                                        fontSize: 14,
-                                        justification: 'center'
-                                    });
-                                    text.name = `text ${this.layerCounters.rectangle}`;
-                                    item.data = item.data || {};
-                                    item.data.textLabel = text;
-                                } else if (item instanceof paper.Path) {
-                                    this.layerCounters.line++;
-                                    item.name = `line ${this.layerCounters.line}`;
-                                } else if (item instanceof paper.Path.Circle) {
-                                    this.layerCounters.point++;
-                                    item.name = `point ${this.layerCounters.point}`;
-                                }
-                            }
-                        });
-                    } else if (importedItems && !importedItems.name) {
-                        setMainItemProperties(importedItems);
-                        if (importedItems instanceof paper.Path && importedItems.closed) {
-                            this.layerCounters.rectangle++;
-                            importedItems.name = `rectangle ${this.layerCounters.rectangle}`;
-                            const bounds = importedItems.bounds;
-                            const bottomCenter = new paper.Point(bounds.center.x, bounds.bottom);
-                            const text = new paper.PointText({
-                                point: bottomCenter,
-                                content: this.layerCounters.rectangle.toString(),
-                                fillColor: '#ff0000',
-                                fontFamily: 'Arial',
-                                fontSize: 14,
-                                justification: 'center'
-                            });
-                            text.name = `text ${this.layerCounters.rectangle}`;
-                            importedItems.data = importedItems.data || {};
-                            importedItems.data.textLabel = text;
-                        } else if (importedItems instanceof paper.Path) {
-                            this.layerCounters.line++;
-                            importedItems.name = `line ${this.layerCounters.line}`;
-                        } else if (importedItems instanceof paper.Path.Circle) {
-                            this.layerCounters.point++;
-                            importedItems.name = `point ${this.layerCounters.point}`;
-                        }
-                    }
-
-                    this.scope.project.addLayer(mainLayer);
-                    this.scope.view.update();
-                    console.log('Main JSON imported successfully');
-                    this.$emit('layers_ready');
-                } catch (error) {
-                    console.log('Error importing main JSON:', error);
-                }
-            }
+                this.scope.project.addLayer(mainLayer);
+                this.scope.view.update();
+                this.$emit('layers_ready');
+            } catch (e) {}
         },
 
         importRelatedJsons() {
-            if (this.relatedJsons && Array.isArray(this.relatedJsons) && this.scope) {
-                const colors = ['#0000ff', '#00ff00', '#ff00ff', '#ffff00', '#00ffff', '#ff8000', '#8000ff', '#00ff80', '#ff0080', '#808080'];
+            if (!this.scope) return;
 
-                this.relatedJsons.forEach((jsonData, index) => {
+            // Remove any previously imported related layers before re-importing
+            const toRemove = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
+            toRemove.forEach(l => l.remove());
+
+            if (!this.relatedJsons || !Array.isArray(this.relatedJsons) || this.relatedJsons.length === 0) return;
+
+            const colors = ['#0000ff', '#00cc00', '#ff00ff', '#cccc00', '#00cccc', '#ff8000', '#8000ff', '#00ff80', '#ff0080', '#808080'];
+
+            this.relatedJsons.forEach((jsonData, index) => {
+                if (!jsonData) return;
+                try {
+                    let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
+                    this.scope.activate();
+
+                    const relatedLayer = new paper.Layer();
+                    relatedLayer.name = `related-${index}`;
+
+                    let importedItems;
                     try {
-                        let parsedData = jsonData;
-                        if (typeof jsonData === 'string') {
-                            parsedData = JSON.parse(jsonData);
-                        }
-                        this.scope.activate();
-
-                        const relatedLayer = new paper.Layer();
-                        relatedLayer.name = `related-${index}`;
-
-                        let importedItems;
-                        try {
-                            if (!parsedData || typeof parsedData !== 'object') {
-                                throw new Error('Invalid JSON data for PaperJS import');
-                            }
-                            importedItems = relatedLayer.importJSON(parsedData);
-                        } catch (importError) {
-                            console.error(`Error during importJSON for related route ${index + 1}:`, importError);
-                            console.error('JSON data:', parsedData);
-                            return;
-                        }
-
-                        const color = colors[index % colors.length];
-
-                        const setItemProperties = (item) => {
-                            try {
-                                if (item && typeof item === 'object' && item.constructor && item.constructor.name) {
-                                    if (item.strokeColor !== undefined || item.fillColor !== undefined || item.locked !== undefined) {
-                                        if (item.strokeColor !== undefined) {
-                                            item.strokeColor = color;
-                                        }
-                                        if (item.fillColor !== undefined) {
-                                            item.fillColor = color;
-                                        }
-                                        if (item.locked !== undefined) {
-                                            item.locked = true;
-                                        }
-                                        if (item.children && Array.isArray(item.children)) {
-                                            item.children.forEach(child => setItemProperties(child));
-                                        }
-                                    }
-                                }
-                            } catch (propError) {
-                                console.warn(`Error setting properties for item in related route ${index + 1}:`, propError);
-                            }
-                        };
-
-                        if (Array.isArray(importedItems)) {
-                            importedItems.forEach(item => setItemProperties(item));
-                        } else if (importedItems) {
-                            setItemProperties(importedItems);
-                        }
-
-                        this.scope.project.addLayer(relatedLayer);
-                        this.scope.view.update();
-                        console.log(`Related JSON ${index + 1} imported successfully with color ${color}`);
-                    } catch (error) {
-                        console.error(`Error importing related JSON ${index + 1}:`, error);
+                        importedItems = relatedLayer.importJSON(parsedData);
+                    } catch (e) {
+                        return;
                     }
-                });
-            }
+
+                    const color = colors[index % colors.length];
+
+                    const applyColor = (item) => {
+                        if (!item || typeof item !== 'object') return;
+                        try {
+                            if (item.strokeColor !== undefined) item.strokeColor = color;
+                            if (item.fillColor !== undefined) item.fillColor = color;
+                            item.locked = true;
+                            if (item.children) item.children.forEach(child => applyColor(child));
+                        } catch (e) {}
+                    };
+
+                    if (Array.isArray(importedItems)) {
+                        importedItems.forEach(item => applyColor(item));
+                    } else if (importedItems) {
+                        applyColor(importedItems);
+                    }
+
+                    this.scope.project.addLayer(relatedLayer);
+                    this.scope.view.update();
+                } catch (e) {}
+
+            });
         }
     }
 }

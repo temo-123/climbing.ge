@@ -39,7 +39,7 @@ class UserTourReservationController extends Controller
             $tour = Tour::where('id', '=', $request->tour_id)->first();
             $guide = $tour->user;
 
-            $this->reservatione_completed_notification($guide[0]->email, Auth::user()->email);
+            $this->reservatione_completed_notification($guide[0]->email, Auth::user()->email, $new_reservation);
 
             return 'The reservation is complete and it is linked to you as a acaunt. You can find it in the user panel!';
         }
@@ -47,8 +47,8 @@ class UserTourReservationController extends Controller
             $check_user_cout = User::where('email', '=', $new_reservation['email'])->count();
             if ($check_user_cout > 0) {
                 $valid_item = Tour_reservation::where('id', '=', $saved_id)->first();
-                $valid_item['verificate'] = 1;
-                $valid_item -> save();
+                $valid_item->verificate = 1;
+                $valid_item->save();
 
                 $tour = Tour::where('id', '=', $valid_item->tour_id)->first();
 
@@ -57,7 +57,7 @@ class UserTourReservationController extends Controller
                 $fined_user = User::where('email', '=', $new_reservation['email'])->first();
                 $this->create_reservatione_user_relatione($saved_id, $fined_user->id);
 
-                $this->reservatione_completed_notification($tour_user->email , $valid_item->email);
+                $this->reservatione_completed_notification($tour_user->email, $valid_item->email, $valid_item->toArray());
 
                 return "The reservation is complete. You are not logined or your login session is dead, but don't worry reservation is linked to your acaunt whith your mail. You can find it in the user panel!";
             }
@@ -83,19 +83,19 @@ class UserTourReservationController extends Controller
 
     function verifiation_reservation(Request $request){
         $valid_item = Tour_reservation::where('id', '=', $request->reservation_id)->first();
-        $valid_item['verificate'] = 1;
-        $valid_item -> save();
+        $valid_item->verificate = 1;
+        $valid_item->save();
 
         $tour = Tour::where('id', '=', $valid_item->tour_id)->first();
 
         $tour_user = $tour->user->first();
 
-        $this->reservatione_completed_notification($tour_user->email, $valid_item->email);
+        $this->reservatione_completed_notification($tour_user->email, $valid_item->email, $valid_item->toArray());
     }
 
-    private function reservatione_completed_notification($guide_email, $client_email) {
-        Notification::route('mail', $guide_email)->notify(new ReservationCreatingGuideNotification());
-        Notification::route('mail', $client_email)->notify(new ReservationSacsesfulNotification());
+    private function reservatione_completed_notification($guide_email, $client_email, $reservation = null) {
+        Notification::route('mail', $guide_email)->notify(new ReservationCreatingGuideNotification($reservation));
+        Notification::route('mail', $client_email)->notify(new ReservationSacsesfulNotification($reservation));
     }
     
 }

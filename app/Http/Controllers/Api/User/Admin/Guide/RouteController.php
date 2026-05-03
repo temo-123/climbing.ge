@@ -13,6 +13,7 @@ use App\Models\Guide\Article;
 use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
 use App\Models\Guide\ClimbingRoutesJson;
+use App\Models\Guide\Sector_image;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
 
@@ -207,6 +208,63 @@ class RouteController extends Controller
         }
 
         return $route;
+    }
+
+    public function save_route_drawing(Request $request)
+    {
+        $auth = PermissionService::authorize('route', 'edit');
+        if ($auth) return $auth;
+
+        $routeId = $request->route_id;
+        $sectorImageId = $request->sector_image_id;
+        $json = $request->json;
+        $editedImageData = $request->edited_image; // base64 data URL
+
+        if (!$routeId || !$sectorImageId || !$json) {
+            return response()->json(['error' => 'route_id, sector_image_id and json are required'], 422);
+        }
+
+        // Get the sector image filename
+        $sectorImage = Sector_image::find($sectorImageId);
+        if (!$sectorImage) {
+            return response()->json(['error' => 'Sector image not found'], 404);
+        }
+
+        $filename = $sectorImage->image;
+        $originalDir = public_path('images/sector_img/origin_img/');
+        $editedPath  = public_path('images/sector_img/' . $filename);
+        $originalPath = $originalDir . $filename;
+
+        // Ensure origin_img directory exists
+        if (!is_dir($originalDir)) {
+            mkdir($originalDir, 0775, true);
+        }
+
+        // Save original (only once — do not overwrite if already backed up)
+        if (!file_exists($originalPath) && file_exists($editedPath)) {
+            copy($editedPath, $originalPath);
+        }
+
+        // Save the edited image (composite: background + drawn lines)
+        if ($editedImageData) {
+            // Strip data URL prefix: "data:image/jpeg;base64," or "data:image/png;base64,"
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $editedImageData);
+            file_put_contents($editedPath, base64_decode($imageData));
+        }
+
+        // Save / update JSON in climbing_routes_jsons
+        $existing = ClimbingRoutesJson::where('route_id', $routeId)->first();
+        if ($existing) {
+            $existing->update(['json' => $json, 'sector_image_id' => $sectorImageId]);
+        } else {
+            ClimbingRoutesJson::create([
+                'route_id'        => $routeId,
+                'sector_image_id' => $sectorImageId,
+                'json'            => $json,
+            ]);
+        }
+
+        return response()->json(['success' => true, 'filename' => $filename]);
     }
 
     public function get_related_routes_jsons(Request $request)

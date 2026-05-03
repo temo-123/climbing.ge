@@ -42,15 +42,17 @@ export default {
                     tab_data: {
                         data: response.data,
                         tab: {
-                            head: ['ID', 'Status', 'Payment', 'Shipping', 'Date'],
+                            head: ['ID', 'Custom', 'Status', 'Payment', 'Shipping', 'Delivery', 'Date'],
                             body: [
                                 ['data', ['id']],
+                                ['data', ['is_custom'], 'bool'],
                                 ['data', ['status']],
                                 ['data', ['payment']],
                                 ['data', ['shiping']],
+                                ['data', ['delivery_days']],
                                 ['data', ['created_at']],
                             ],
-                            perm: [['no'], ['no'], ['no'], ['no'], ['no']],
+                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
                         }
                     },
                 })

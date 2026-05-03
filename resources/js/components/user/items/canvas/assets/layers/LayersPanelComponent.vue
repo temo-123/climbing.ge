@@ -1,247 +1,197 @@
 <template>
-    <div class="layers-panel mt-3">
-        <div class="d-flex justify-content-between align-items-center mb-2">
-            <button type="button" class="btn btn-sm btn-info" @click="toggleLayersTable">
-                <i class="fa fa-list" aria-hidden="true"></i> {{ showLayersTable ? 'Hide' : 'Show' }} Layers Table
+    <div class="mt-3">
+        <!-- Header bar -->
+        <div class="d-flex justify-content-between align-items-center mb-1">
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="toggleLayersTable">
+                <i :class="showLayersTable ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" class="me-1"></i>
+                Layers ({{ layers.length }})
             </button>
-            <div v-if="showLayersTable">
-                <button type="button" class="btn btn-sm btn-info" @click="$emit('refresh-layers')">Refresh</button>
-                <button type="button" class="btn btn-sm btn-success" @click="$emit('toggle-all-visibility')">
-                    <i class="fa fa-eye" aria-hidden="true"></i> Show / Hide All
+            <div v-if="showLayersTable" class="d-flex gap-1">
+                <button type="button" class="btn btn-sm btn-outline-secondary" @click="$emit('refresh-layers')" title="Refresh list">
+                    <i class="fa fa-refresh"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-danger" @click="$emit('delete-all-layers')" :disabled="layers.length === 0">
-                    <i class="fa fa-trash" aria-hidden="true"></i> Delete All
+                <button type="button" class="btn btn-sm btn-outline-primary" @click="$emit('toggle-all-visibility')" title="Toggle all visibility">
+                    <i class="fa fa-eye"></i>
+                </button>
+                <button type="button" class="btn btn-sm btn-outline-danger" :disabled="layers.length === 0" @click="$emit('delete-all-layers')" title="Delete all">
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
         </div>
-        <div v-if="showLayersTable" class="layers-list" style="max-height: 300px; overflow-y: auto; background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 4px;">
-            <div v-for="(layer, index) in layers" :key="layer.name" class="layer-item" :class="{ 'group-item': layer.isGroup, 'individual-item': !layer.isGroup }">
-                <div class="d-flex align-items-center justify-content-between p-2 border-bottom" :style="{ backgroundColor: layer.isGroup ? 'rgb(184 184 184)' : 'rgb(220 220 220)' }">
-                    <div class="d-flex align-items-center flex-grow-1">
-                        <!-- Move up/down buttons -->
-                        <div class="move-buttons mr-2">
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-info p-0 mr-1"
+
+        <!-- Layers list -->
+        <div v-if="showLayersTable" class="border rounded" style="max-height:280px; overflow-y:auto;">
+
+            <div v-if="layers.length === 0" class="text-center text-muted py-3 small">
+                <i class="fa fa-paint-brush me-1"></i>No items drawn yet
+            </div>
+
+            <div v-for="(layer, index) in layers" :key="layer.name + index">
+
+                <!-- Layer row -->
+                <div class="d-flex align-items-center px-2 py-1 border-bottom"
+                     :class="layer.isGroup ? 'bg-primary bg-opacity-10 border-start border-3 border-primary fw-semibold' : 'bg-white'">
+
+                    <!-- Reorder -->
+                    <div class="d-flex flex-column me-1" style="gap:2px; flex-shrink:0;">
+                        <button type="button" class="btn btn-sm btn-light border-0 p-0 lh-1"
+                                style="width:18px; height:14px; font-size:9px;"
                                 @click="$emit('move-layer-up', index)"
-                                :disabled="index === 0 || (index > 0 && layer.layerName !== layers[index - 1].layerName)"
-                                :title="'Move up'"
-                            >
-                                <i class="fa fa-chevron-up"></i>
-                            </button>
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-info p-0"
-                                @click="$emit('move-layer-down', index)"
-                                :disabled="index === layers.length - 1 || (index < layers.length - 1 && layer.layerName !== layers[index + 1].layerName)"
-                                :title="'Move down'"
-                            >
-                                <i class="fa fa-chevron-down"></i>
-                            </button>
-                        </div>
-
-                        <!-- Group expansion toggle -->
-                        <button
-                            v-if="layer.isGroup"
-                            type="button"
-                            class="btn btn-xs btn-link p-0 mr-2"
-                            @click="$emit('toggle-group-expansion', layer)"
-                            :title="layer.expanded ? 'Collapse group' : 'Expand group'"
-                        >
-                            <i :class="layer.expanded ? 'fa fa-folder-open' : 'fa fa-folder'" style="color: #007bff;"></i>
+                                :disabled="index === 0 || layer.layerName !== layers[index-1].layerName">
+                            <i class="fa fa-caret-up"></i>
                         </button>
-                        <i v-else class="fa fa-file-o mr-2" style="color: #6c757d;"></i>
+                        <button type="button" class="btn btn-sm btn-light border-0 p-0 lh-1"
+                                style="width:18px; height:14px; font-size:9px;"
+                                @click="$emit('move-layer-down', index)"
+                                :disabled="index === layers.length-1 || layer.layerName !== layers[index+1].layerName">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                    </div>
 
-                        <div v-if="!layer.isText" class="layer-name flex-grow-1">
-                            <span
-                                :class="{ 'font-weight-bold': layer.isGroup }"
-                                @click="startEditingLayerName(layer, $event)"
-                                :contenteditable="layer.isEditing"
-                                @blur="finishEditingLayerName(layer, $event)"
-                                @keydown.enter.prevent="finishEditingLayerName(layer, $event)"
-                                @keydown.esc.prevent="cancelEditingLayerName(layer)"
-                                style="cursor: pointer; outline: none; min-width: 100px;"
-                            >
+                    <!-- Expand/icon -->
+                    <button v-if="layer.isGroup" type="button" class="btn btn-sm btn-link p-0 me-1 text-primary"
+                            style="font-size:13px; width:18px;"
+                            @click="$emit('toggle-group-expansion', layer)">
+                        <i :class="layer.expanded ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
+                    </button>
+                    <i v-else class="fa fa-file-o text-muted me-1" style="font-size:12px; width:18px; text-align:center;"></i>
+
+                    <!-- Name -->
+                    <div class="flex-grow-1 overflow-hidden me-2 small">
+                        <template v-if="!layer.isText">
+                            <span :contenteditable="layer.isEditing"
+                                  @click="startEditingLayerName(layer, $event)"
+                                  @blur="finishEditingLayerName(layer, $event)"
+                                  @keydown.enter.prevent="finishEditingLayerName(layer, $event)"
+                                  @keydown.esc.prevent="cancelEditingLayerName(layer)"
+                                  style="cursor:pointer; outline:none;">
                                 {{ layer.displayName || layer.name }}
                             </span>
-                        </div>
-                        <div v-else class="layer-name flex-grow-1">
-                            <div class="d-flex flex-column">
-                                <small class="text-muted" style="font-size: 10px; line-height: 1;">
-                                    {{ layer.displayName || layer.name }}
-                                </small>
-                                <div v-if="!layer.isEditing" @click="startEditingText(layer)" style="cursor: pointer; font-size: 12px;">
-                                    "{{ layer.textContent || 'Empty text' }}"
-                                </div>
-                                <input
-                                    v-else
-                                    v-model="layer.editText"
-                                    @blur="onTextBlur(layer)"
-                                    @keydown.enter.prevent="finishEditingText(layer)"
-                                    @keydown.esc.prevent="cancelEditingText(layer)"
-                                    :ref="'textInput-' + layer.name"
-                                    class="form-control form-control-sm"
-                                    style="font-size: 12px; padding: 2px 4px; height: auto;"
-                                />
-                            </div>
-                        </div>
+                        </template>
+                        <template v-else>
+                            <div class="text-muted" style="font-size:10px;">{{ layer.displayName || layer.name }}</div>
+                            <span v-if="!layer.isEditing"
+                                  @click="startEditingText(layer)"
+                                  class="text-truncate d-block"
+                                  style="cursor:pointer; color:#555; font-size:11px;">
+                                "{{ layer.textContent || 'Empty' }}"
+                            </span>
+                            <input v-else v-model="layer.editText"
+                                   class="form-control form-control-sm py-0"
+                                   @blur="onTextBlur(layer)"
+                                   @keydown.enter.prevent="finishEditingText(layer)"
+                                   @keydown.esc.prevent="cancelEditingText(layer)"
+                                   :ref="'textInput-' + layer.name" />
+                        </template>
                     </div>
 
-                    <div class="layer-controls d-flex">
-                        <!-- Group management buttons for individual items -->
-                        <div v-if="!layer.isGroup" class="group-management mr-2">
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-success"
-                                @click="$emit('create-group-from-layer', layer)"
-                                :title="'Create group from this layer'"
-                                style="padding: 2px 6px; font-size: 11px;"
-                            >
-                                <i class="fa fa-object-group"></i>
+                    <!-- Action buttons -->
+                    <div class="d-flex gap-1" style="flex-shrink:0;">
+                        <!-- Individual item: group actions -->
+                        <template v-if="!layer.isGroup">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    @click="$emit('create-group-from-layer', layer)" title="Create group">
+                                <i class="fa fa-object-group" style="font-size:11px;"></i>
                             </button>
-                            <button
-                                v-if="availableGroups.length > 0"
-                                type="button"
-                                class="btn btn-xs btn-primary ml-1"
-                                @click="$emit('show-move-to-group-modal', layer)"
-                                :title="'Move to group'"
-                                style="padding: 2px 6px; font-size: 11px;"
-                            >
-                                <i class="fa fa-arrow-right"></i>
+                            <button v-if="availableGroups.length > 0"
+                                    type="button" class="btn btn-sm btn-outline-secondary"
+                                    @click="$emit('show-move-to-group-modal', layer)" title="Move to group">
+                                <i class="fa fa-arrow-right" style="font-size:11px;"></i>
                             </button>
-                        </div>
+                        </template>
 
-                        <!-- Ungroup button for groups -->
-                        <button
-                            v-if="layer.isGroup"
-                            type="button"
-                            class="btn btn-xs btn-warning mr-2"
-                            @click="$emit('ungroup-layer', layer)"
-                            :title="'Ungroup this layer'"
-                            style="padding: 2px 6px; font-size: 11px;"
-                        >
-                            <i class="fa fa-object-ungroup"></i>
+                        <!-- Group: ungroup -->
+                        <button v-if="layer.isGroup"
+                                type="button" class="btn btn-sm btn-outline-warning"
+                                @click="$emit('ungroup-layer', layer)" title="Ungroup">
+                            <i class="fa fa-object-ungroup" style="font-size:11px;"></i>
                         </button>
 
-                        <!-- Delete button for groups -->
-                        <button
-                            v-if="layer.isGroup"
-                            type="button"
-                            class="btn btn-xs btn-danger mr-2"
-                            @click="$emit('delete-layer-item', layer)"
-                            title="Delete group"
-                        >
-                            <i class="fa fa-trash" aria-hidden="true"></i>
+                        <!-- Visibility -->
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                @click="$emit('toggle-layer-visibility', layer)"
+                                :title="layer.visible ? 'Hide' : 'Show'">
+                            <i :class="layer.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-secondary'"
+                               style="font-size:11px;"></i>
                         </button>
 
-                        <!-- Standard controls -->
-                        <button
-                            type="button"
-                            class="btn btn-xs btn-secondary mr-1"
-                            @click="$emit('toggle-layer-visibility', layer)"
-                            :title="layer.visible ? 'Hide item' : 'Show item'"
-                        >
-                            <i :class="layer.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-muted'"></i>
+                        <!-- Lock -->
+                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                                @click="$emit('toggle-layer-lock', layer)"
+                                :title="layer.locked ? 'Unlock' : 'Lock'">
+                            <i :class="layer.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-secondary'"
+                               style="font-size:11px;"></i>
                         </button>
-                        <button
-                            type="button"
-                            class="btn btn-xs btn-warning mr-1"
-                            @click="$emit('toggle-layer-lock', layer)"
-                            :disabled="layer.layerName === 'main'"
-                            :title="layer.locked ? 'Unlock item' : 'Lock item'"
-                        >
-                            <i :class="layer.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-muted'"></i>
-                        </button>
-                        <button
-                            v-if="!layer.isGroup"
-                            type="button"
-                            class="btn btn-xs btn-danger"
-                            @click="$emit('delete-layer-item', layer)"
-                            title="Delete item"
-                        >
-                            <i class="fa fa-trash" aria-hidden="true"></i>
+
+                        <!-- Delete -->
+                        <button type="button" class="btn btn-sm btn-outline-danger"
+                                @click="$emit('delete-layer-item', layer)" title="Delete">
+                            <i class="fa fa-trash" style="font-size:11px;"></i>
                         </button>
                     </div>
                 </div>
 
-                <!-- Sub-layers for groups -->
-                <div v-if="layer.isGroup && layer.expanded" class="group-children">
-                    <div v-for="child in layer.children" :key="child.name" class="layer-item d-flex align-items-center justify-content-between p-2 border-bottom" style="padding-left: 60px; background-color: rgb(240 240 240);">
-                        <div class="d-flex align-items-center flex-grow-1">
-                            <i class="fa fa-file-o mr-2" style="color: #6c757d;"></i>
-                            <div v-if="!child.isText" class="layer-name flex-grow-1">
-                                <span
-                                    @click="startEditingChildName(layer, child, $event)"
-                                    :contenteditable="child.isEditing"
-                                    @blur="finishEditingChildName(layer, child, $event)"
-                                    @keydown.enter.prevent="finishEditingChildName(layer, child, $event)"
-                                    @keydown.esc.prevent="cancelEditingChildName(child)"
-                                    style="cursor: pointer; outline: none; min-width: 100px;"
-                                >
+                <!-- Group children -->
+                <template v-if="layer.isGroup && layer.expanded">
+                    <div v-for="child in layer.children" :key="child.name"
+                         class="d-flex align-items-center px-2 py-1 border-bottom bg-white border-start border-3 border-primary border-opacity-25"
+                         style="padding-left:2.5rem !important;">
+
+                        <i class="fa fa-file-o text-muted me-1" style="font-size:12px; width:18px; text-align:center;"></i>
+
+                        <div class="flex-grow-1 overflow-hidden me-2 small">
+                            <template v-if="!child.isText">
+                                <span :contenteditable="child.isEditing"
+                                      @click="startEditingChildName(layer, child, $event)"
+                                      @blur="finishEditingChildName(layer, child, $event)"
+                                      @keydown.enter.prevent="finishEditingChildName(layer, child, $event)"
+                                      @keydown.esc.prevent="cancelEditingChildName(child)"
+                                      style="cursor:pointer; outline:none;">
                                     {{ child.displayName || child.name }}
                                 </span>
-                            </div>
-                            <div v-else class="layer-name flex-grow-1">
-                                <div class="d-flex flex-column">
-                                    <small class="text-muted" style="font-size: 10px; line-height: 1;">
-                                        {{ child.displayName || child.name }}
-                                    </small>
-                                    <div v-if="!child.isEditing" @click="startEditingChildText(layer, child)" style="cursor: pointer; font-size: 12px;">
-                                        "{{ child.textContent || 'Empty text' }}"
-                                    </div>
-                                    <input
-                                        v-else
-                                        v-model="child.editText"
-                                        @blur="onChildTextBlur(layer, child)"
-                                        @keydown.enter.prevent="finishEditingChildText(layer, child)"
-                                        @keydown.esc.prevent="cancelEditingChildText(child)"
-                                        :ref="'childTextInput-' + child.name"
-                                        class="form-control form-control-sm"
-                                        style="font-size: 12px; padding: 2px 4px; height: auto;"
-                                    />
-                                </div>
-                            </div>
+                            </template>
+                            <template v-else>
+                                <div class="text-muted" style="font-size:10px;">{{ child.displayName || child.name }}</div>
+                                <span v-if="!child.isEditing"
+                                      @click="startEditingChildText(layer, child)"
+                                      class="text-truncate d-block"
+                                      style="cursor:pointer; color:#555; font-size:11px;">
+                                    "{{ child.textContent || 'Empty' }}"
+                                </span>
+                                <input v-else v-model="child.editText"
+                                       class="form-control form-control-sm py-0"
+                                       @blur="onChildTextBlur(layer, child)"
+                                       @keydown.enter.prevent="finishEditingChildText(layer, child)"
+                                       @keydown.esc.prevent="cancelEditingChildText(child)"
+                                       :ref="'childTextInput-' + child.name" />
+                            </template>
                         </div>
-                        <div class="layer-controls d-flex">
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-primary mr-2"
-                                @click="$emit('move-child-out-of-group', layer, child)"
-                                :title="'Move out of group'"
-                                style="padding: 2px 6px; font-size: 11px;"
-                            >
-                                <i class="fa fa-arrow-left"></i>
+
+                        <div class="d-flex gap-1" style="flex-shrink:0;">
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    @click="$emit('move-child-out-of-group', layer, child)" title="Move out of group">
+                                <i class="fa fa-arrow-left" style="font-size:11px;"></i>
                             </button>
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-secondary mr-1"
-                                @click="$emit('toggle-child-visibility', layer, child)"
-                                :title="child.visible ? 'Hide item' : 'Show item'"
-                            >
-                                <i :class="child.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-muted'"></i>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    @click="$emit('toggle-child-visibility', layer, child)"
+                                    :title="child.visible ? 'Hide' : 'Show'">
+                                <i :class="child.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-secondary'"
+                                   style="font-size:11px;"></i>
                             </button>
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-warning mr-1"
-                                @click="$emit('toggle-child-lock', layer, child)"
-                                :title="child.locked ? 'Unlock item' : 'Lock item'"
-                            >
-                                <i :class="child.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-muted'"></i>
+                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                                    @click="$emit('toggle-child-lock', layer, child)"
+                                    :title="child.locked ? 'Unlock' : 'Lock'">
+                                <i :class="child.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-secondary'"
+                                   style="font-size:11px;"></i>
                             </button>
-                            <button
-                                type="button"
-                                class="btn btn-xs btn-danger"
-                                @click="$emit('delete-child-item', layer, child)"
-                                :title="'Delete item'"
-                            >
-                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            <button type="button" class="btn btn-sm btn-outline-danger"
+                                    @click="$emit('delete-child-item', layer, child)" title="Delete">
+                                <i class="fa fa-trash" style="font-size:11px;"></i>
                             </button>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div v-if="layers.length === 0" class="text-center text-muted p-3">
-                <i class="fa fa-info-circle mr-2"></i>No items drawn yet
+                </template>
+
             </div>
         </div>
     </div>
@@ -260,14 +210,9 @@ export default {
             default: false
         }
     },
-    data() {
-        return {
-            // Local state for group expansion
-        }
-    },
     computed: {
         availableGroups() {
-            return this.layers.filter(layer => layer.isGroup);
+            return this.layers.filter(l => l.isGroup);
         }
     },
     methods: {
@@ -276,23 +221,17 @@ export default {
         },
 
         startEditingLayerName(layer, event) {
-            // Stop editing any other layer first
-            this.layers.forEach(l => {
-                if (l.isEditing) {
-                    this.cancelEditingLayerName(l);
-                }
-            });
+            this.layers.forEach(l => { if (l.isEditing) this.cancelEditingLayerName(l); });
             layer.isEditing = true;
             layer.originalName = layer.name;
             this.$nextTick(() => {
                 if (event && event.target) {
                     event.target.focus();
-                    // Select all text
                     const range = document.createRange();
                     range.selectNodeContents(event.target);
-                    const selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
                 }
             });
         },
@@ -302,7 +241,6 @@ export default {
             if (newName && newName !== layer.originalName) {
                 this.$emit('finish-editing-layer-name', layer, newName);
             } else {
-                // Revert to original name if no change or empty
                 layer.name = layer.originalName;
             }
             layer.isEditing = false;
@@ -316,27 +254,19 @@ export default {
         },
 
         startEditingChildName(layer, child, event) {
-            // Stop editing any other child first
             this.layers.forEach(l => {
-                if (l.children) {
-                    l.children.forEach(c => {
-                        if (c.isEditing) {
-                            this.cancelEditingChildName(c);
-                        }
-                    });
-                }
+                if (l.children) l.children.forEach(c => { if (c.isEditing) this.cancelEditingChildName(c); });
             });
             child.isEditing = true;
             child.originalName = child.name;
             this.$nextTick(() => {
                 if (event && event.target) {
                     event.target.focus();
-                    // Select all text
                     const range = document.createRange();
                     range.selectNodeContents(event.target);
-                    const selection = window.getSelection();
-                    selection.removeAllRanges();
-                    selection.addRange(range);
+                    const sel = window.getSelection();
+                    sel.removeAllRanges();
+                    sel.addRange(range);
                 }
             });
         },
@@ -346,7 +276,6 @@ export default {
             if (newName && newName !== child.originalName) {
                 this.$emit('finish-editing-child-name', layer, child, newName);
             } else {
-                // Revert to original name if no change or empty
                 child.name = child.originalName;
             }
             child.isEditing = false;
@@ -359,39 +288,27 @@ export default {
             this.$emit('cancel-editing-child-name');
         },
 
-        // Text editing methods
         startEditingText(layer) {
-            // Stop editing any other layer first
-            this.layers.forEach(l => {
-                if (l.isEditing) {
-                    this.cancelEditingText(l);
-                }
-            });
+            this.layers.forEach(l => { if (l.isEditing) this.cancelEditingText(l); });
             layer.isEditing = true;
             layer.originalText = layer.textContent;
             layer.editText = layer.textContent || '';
             this.$nextTick(() => {
-                const inputRef = this.$refs['textInput-' + layer.name];
-                if (inputRef && inputRef.length > 0) {
-                    inputRef[0].focus();
-                    inputRef[0].select();
-                }
+                const ref = this.$refs['textInput-' + layer.name];
+                const el = Array.isArray(ref) ? ref[0] : ref;
+                if (el) { el.focus(); el.select(); }
             });
         },
 
         onTextBlur(layer) {
-            // Delay to allow for potential click events
-            setTimeout(() => {
-                this.finishEditingText(layer);
-            }, 100);
+            setTimeout(() => this.finishEditingText(layer), 100);
         },
 
         finishEditingText(layer) {
-            const newText = layer.editText.trim();
+            const newText = (layer.editText || '').trim();
             if (newText !== layer.originalText) {
                 this.$emit('finish-editing-text', layer, newText);
             } else {
-                // Revert to original text if no change
                 layer.textContent = layer.originalText;
             }
             layer.isEditing = false;
@@ -407,41 +324,28 @@ export default {
         },
 
         startEditingChildText(layer, child) {
-            // Stop editing any other child first
             this.layers.forEach(l => {
-                if (l.children) {
-                    l.children.forEach(c => {
-                        if (c.isEditing) {
-                            this.cancelEditingChildText(c);
-                        }
-                    });
-                }
+                if (l.children) l.children.forEach(c => { if (c.isEditing) this.cancelEditingChildText(c); });
             });
             child.isEditing = true;
             child.originalText = child.textContent;
             child.editText = child.textContent || '';
             this.$nextTick(() => {
-                const inputRef = this.$refs['childTextInput-' + child.name];
-                if (inputRef && inputRef.length > 0) {
-                    inputRef[0].focus();
-                    inputRef[0].select();
-                }
+                const ref = this.$refs['childTextInput-' + child.name];
+                const el = Array.isArray(ref) ? ref[0] : ref;
+                if (el) { el.focus(); el.select(); }
             });
         },
 
         onChildTextBlur(layer, child) {
-            // Delay to allow for potential click events
-            setTimeout(() => {
-                this.finishEditingChildText(layer, child);
-            }, 100);
+            setTimeout(() => this.finishEditingChildText(layer, child), 100);
         },
 
         finishEditingChildText(layer, child) {
-            const newText = child.editText.trim();
+            const newText = (child.editText || '').trim();
             if (newText !== child.originalText) {
                 this.$emit('finish-editing-child-text', layer, child, newText);
             } else {
-                // Revert to original text if no change
                 child.textContent = child.originalText;
             }
             child.isEditing = false;

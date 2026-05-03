@@ -18,6 +18,7 @@
             @canvas_data="handleCanvasData"
             @layers_updated="handleLayersUpdated"
             @layers_ready="handleLayersReady"
+            @history-changed="onHistoryChanged"
         />
     </div>
 </template>
@@ -91,6 +92,10 @@ export default {
             this.$emit('layers_ready');
         },
 
+        onHistoryChanged(histLen, redoLen) {
+            this.$emit('history-changed', histLen, redoLen);
+        },
+
         // Delegate methods to canvas manager
         reset() {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.reset === 'function') {
@@ -122,11 +127,11 @@ export default {
         },
 
         // Access to group counter for layer management
-        get groupCounter() {
+        getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;
         },
 
-        set groupCounter(value) {
+        setGroupCounter(value) {
             if (this.isCanvasManagerReady && this.$refs.canvasManager) {
                 this.$refs.canvasManager.setGroupCounter(value);
             }

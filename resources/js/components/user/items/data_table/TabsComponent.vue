@@ -240,11 +240,11 @@ export default {
             sortDir: 'asc',
         };
     },
-    
+
     mounted() {
         // console.log('TabsComponent mounted, table_data:', this.table_data);
     },
-    
+
     watch: {
         table_data(newVal) {
             const safeData = this.safeTableData;
@@ -261,7 +261,11 @@ export default {
             this.sortDir = 'asc';
         }
     },
+
     computed: {
+        effectiveItemsPerPage() {
+            return this.itemsPerPage === 'All' ? Number.MAX_SAFE_INTEGER : parseInt(this.itemsPerPage)
+        },
         safeTableData() {
             return (this.table_data || []).filter(tab => {
                 if (!tab || typeof tab !== 'object' || tab.id === undefined) return false;
@@ -328,8 +332,9 @@ export default {
         },
         paginatedTableData() {
             if (!this.currentTabData) return [];
-            const start = (this.currentPage - 1) * this.itemsPerPage;
-            const end = start + this.itemsPerPage;
+            const perPage = this.effectiveItemsPerPage;
+            const start = (this.currentPage - 1) * perPage;
+            const end = start + perPage;
             const paginatedData = this.currentTabData.tab_data.data.slice(start, end);
             return [{
                 ...this.currentTabData,
@@ -372,7 +377,7 @@ export default {
         filter_data_with_id(emit_fun) {
             this.$emit(emit_fun[0], emit_fun[1]);
         },
-        action_for_perent_component_with_option(event){            
+        action_for_perent_component_with_option(event){
             this.$emit(event[0], event[1])
         },
         action_for_perent_component(event){
@@ -410,19 +415,16 @@ export default {
             this.searchQuery = query;
             this.currentPage = 1;
         },
-        updateItemsPerPage(newItemsPerPage) {
-            if (newItemsPerPage === 'All') {
-                this.itemsPerPage = 999999;
-            } else {
-                this.itemsPerPage = parseInt(newItemsPerPage);
-            }
+        updateItemsPerPage(newVal) {
+            this.itemsPerPage = newVal === 'All' ? 'All' : parseInt(newVal)
             this.currentPage = 1;
         },
         getMaxPage() {
             if (!this.currentTabData) return 1;
             const filteredLength = this.currentTabData.tab_data.filteredLength || 0;
-            if (this.itemsPerPage >= filteredLength) return 1;
-            return Math.ceil(filteredLength / this.itemsPerPage);
+            const perPage = this.effectiveItemsPerPage;
+            if (perPage >= filteredLength) return 1;
+            return Math.ceil(filteredLength / perPage);
         },
         getTabFilteredCount(tabData) {
             return tabData?.tab_data?.filteredLength || 0;

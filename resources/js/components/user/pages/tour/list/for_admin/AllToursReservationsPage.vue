@@ -74,57 +74,50 @@
         methods: {
             get_reservations: function(){
                 this.data_for_tab = []
-                axios
-                .get("/set_tour/get_reservation/get_all_reservations/")
-                .then(response => {
+
+                const tabHead = ['ID', 'Persons', 'Check In', 'Name', 'Email', 'Verified', 'Details', 'Delete'];
+                const tabBody = [
+                    ['data', ['id']],
+                    ['data', ['persons']],
+                    ['data', ['check_in']],
+                    ['data', ['name']],
+                    ['data', ['email']],
+                    ['data', ['verificate'], 'bool'],
+                    ['action_fun_id', 'show_reservation_details', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
+                    ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                ];
+                const tabPerm = [
+                    ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                    ['tour', 'del'],
+                ];
+
+                Promise.all([
+                    axios.get("/set_tour/get_reservation/get_all_reservations/"),
+                    axios.get("/set_tour/get_reservation/get_declarations/"),
+                ]).then(([allResponse, declResponse]) => {
                     this.data_for_tab.push({
-                                            'id': 1,
-                                            'table_name': 'All Tours Reservations',
-                                            'add_action': {
-                                                'action': 'fun',
-                                                'link': 'show_reservation_calendar_modal', 
-                                                'class': 'btn btn-primary'
-                                            },
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'Persons',
-                                                        'Check In',
-                                                        'Reserver name',
-                                                        'Reserver Email',
-                                                        'Verificate',
-                                                        'Details',
-                                                        'Delete'
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['persons']],
-                                                        ['data', ['check_in']],
-                                                        ['data', ['name'], ['surname']],
-                                                        ['data', ['email']],
-                                                        ['data', ['verificate'], 'bool'],
-                                                        ['action_fun_id', 'show_reservation_details', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
-                                                        ['action_fun_id', 'del_tour_reservation', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['tour', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        });
+                        'id': 1,
+                        'table_name': 'All Reservations',
+                        'add_action': {
+                            'action': 'fun',
+                            'link': 'show_reservation_calendar_modal',
+                            'class': 'btn btn-primary'
+                        },
+                        'tab_data': {
+                            'data': allResponse.data,
+                            'tab': { 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
+                        },
+                    });
+                    this.data_for_tab.push({
+                        'id': 2,
+                        'table_name': 'Declarations',
+                        'tab_data': {
+                            'data': declResponse.data,
+                            'tab': { 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
+                        },
+                    });
                 })
-                .catch(
-                    error => console.log(error)
-                );
+                .catch(error => console.log(error));
             },
             show_reservation_calendar_modal(){
                 if (this.data_for_tab.length > 0 && 

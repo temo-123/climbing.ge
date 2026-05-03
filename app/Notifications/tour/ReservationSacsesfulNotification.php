@@ -16,9 +16,11 @@ class ReservationSacsesfulNotification extends Notification
      *
      * @return void
      */
-    public function __construct()
+    protected $reservation;
+
+    public function __construct($reservation = null)
     {
-        //
+        $this->reservation = $reservation;
     }
 
     /**
@@ -43,6 +45,7 @@ class ReservationSacsesfulNotification extends Notification
         return (new MailMessage)
         ->markdown('emails.tour.reservation_completed', [
             'message' => "Thank you for your reservation. We'll get back to you soon",
+            'reservation' => $this->reservation,
         ])
         ->subject('Thank you for your reservation');
     }

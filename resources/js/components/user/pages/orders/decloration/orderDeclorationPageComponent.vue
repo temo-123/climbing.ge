@@ -33,6 +33,16 @@
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ order_error }}
                     </div>
 
+                    <div v-if="!create_order_loading && cart_items.length" class="row mb-3">
+                        <div class="col-12">
+                            <div class="alert alert-info">
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <strong> Estimated delivery: {{ delivery_days }} business days</strong>
+                                <span v-if="has_produced_by_order" class="ml-2 text-muted">(includes made-to-order items)</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div v-if="!create_order_loading" class="row mb-3">
                         <div class="col-md-6">
                             <div class="alert alert-secondary">
@@ -137,6 +147,14 @@
                 create_order_loading: false,
                 order_error: null,
             }
+        },
+        computed: {
+            has_produced_by_order() {
+                return this.cart_items.some(item => item.product && item.product.sale_type === 'produced_by_order')
+            },
+            delivery_days() {
+                return this.has_produced_by_order ? '5-9' : '2-4'
+            },
         },
         mounted() {
             if (!this.$route.params.payment || !this.$route.params.adres) {

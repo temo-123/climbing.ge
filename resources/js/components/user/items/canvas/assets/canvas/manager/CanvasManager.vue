@@ -1,9 +1,5 @@
 <template>
-    <canvas
-        :id="canvasId"
-        class="canvas-style"
-        v-on:mousedown="handleMouseDown"
-    />
+    <canvas :id="canvasId" class="canvas-style" v-on:mousedown="handleMouseDown" />
 </template>
 
 <script>
@@ -69,23 +65,32 @@ export default {
             text: 0,
             group: 0
         },
-        // New properties for enhanced features
+        history: [],
+        redoStack: [],
+        jsonLoaded: false,
         isPanning: false,
         panStartPoint: null,
-        selectionRect: null
+        selectionRect: null,
+        currentStrokeColor: '#ff0000',
+        currentFillColor: null,
+        currentStrokeWidth: 3
     }),
     watch: {
         jsonProp: {
             handler: function(newVal) {
-                this.importJsonData(newVal);
+                // Only import once on first non-null value to avoid re-importing on every canvas_data emit
+                if (!this.jsonLoaded && newVal) {
+                    this.importJsonData(newVal);
+                    this.jsonLoaded = true;
+                }
             },
             immediate: true
         },
         relatedJsons: {
             handler: function(newVal) {
-                this.importRelatedJsons();
+                if (this.scope) this.importRelatedJsons();
             },
-            immediate: true
+            immediate: false
         }
     },
         mounted() {
@@ -106,6 +111,8 @@ export default {
             if (this.jsonProp) {
                 this.importJsonData(this.jsonProp);
             }
+            // Mark JSON as loaded so the jsonProp watcher doesn't re-import on canvas_data updates
+            this.jsonLoaded = true;
 
             // Save initial empty state for undo functionality
             this.saveCanvasData();
@@ -129,67 +136,56 @@ export default {
         },
 
         reset() {
-            this.scope.project.activeLayer.removeChildren();
+            this.scope.project.layers.forEach(layer => {
+                if (!layer.name || !layer.name.startsWith('related-')) {
+                    layer.removeChildren();
+                }
+            });
             this.selectedItem = null;
             this.saveCanvasData();
         },
 
         saveCanvasData() {
             const canvasData = JSON.stringify(this.scope.project.exportJSON());
-            // Store current state in history before saving
-            if (this.$parent && this.$parent.history) {
-                const currentState = JSON.parse(canvasData);
-                const lastState = this.$parent.history.length > 0 ? this.$parent.history[this.$parent.history.length - 1] : null;
-
-                if (!lastState || JSON.stringify(currentState) !== JSON.stringify(lastState)) {
-                    this.$parent.history.push(currentState);
-                    if (this.$parent.history.length > 10) {
-                        this.$parent.history.shift();
-                    }
-                    if (this.$parent.redoStack) {
-                        this.$parent.redoStack = [];
-                    }
-                }
+            const currentState = JSON.parse(canvasData);
+            const lastState = this.history.length > 0 ? this.history[this.history.length - 1] : null;
+            if (!lastState || JSON.stringify(currentState) !== JSON.stringify(lastState)) {
+                this.history.push(currentState);
+                if (this.history.length > 20) this.history.shift();
+                this.redoStack = [];
             }
             this.$emit('canvas_data', canvasData);
+            this.$emit('history-changed', this.history.length, this.redoStack.length);
         },
 
         undoLastAction() {
-            if (this.$parent && this.$parent.history && this.$parent.history.length > 0) {
-                const currentState = JSON.stringify(this.scope.project.exportJSON());
-                this.$parent.redoStack.push(JSON.parse(currentState));
+            if (this.history.length === 0) return;
+            const currentState = JSON.stringify(this.scope.project.exportJSON());
+            this.redoStack.push(JSON.parse(currentState));
+            if (this.redoStack.length > 20) this.redoStack = this.redoStack.slice(-20);
 
-                const lastState = this.$parent.history.pop();
-                this.scope.project.clear();
-                if (lastState) {
-                    this.scope.project.importJSON(lastState);
-                }
-                this.scope.view.update();
-                this.$emit('layers_updated');
-                this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
-            }
-            if (this.$parent.redoStack && this.$parent.redoStack.length > 10) {
-                this.$parent.redoStack = this.$parent.redoStack.slice(-10);
-            }
+            const lastState = this.history.pop();
+            this.scope.project.clear();
+            if (lastState) this.scope.project.importJSON(lastState);
+            this.scope.view.update();
+            this.$emit('layers_updated');
+            this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
+            this.$emit('history-changed', this.history.length, this.redoStack.length);
         },
 
         redoLastAction() {
-            if (this.$parent && this.$parent.redoStack && this.$parent.redoStack.length > 0) {
-                const currentState = JSON.stringify(this.scope.project.exportJSON());
-                this.$parent.history.push(JSON.parse(currentState));
+            if (this.redoStack.length === 0) return;
+            const currentState = JSON.stringify(this.scope.project.exportJSON());
+            this.history.push(JSON.parse(currentState));
+            if (this.history.length > 20) this.history = this.history.slice(-20);
 
-                const nextState = this.$parent.redoStack.pop();
-                this.scope.project.clear();
-                if (nextState) {
-                    this.scope.project.importJSON(nextState);
-                }
-                this.scope.view.update();
-                this.$emit('layers_updated');
-                this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
-            }
-            if (this.$parent.history && this.$parent.history.length > 10) {
-                this.$parent.history = this.$parent.history.slice(-10);
-            }
+            const nextState = this.redoStack.pop();
+            this.scope.project.clear();
+            if (nextState) this.scope.project.importJSON(nextState);
+            this.scope.view.update();
+            this.$emit('layers_updated');
+            this.$emit('canvas_data', JSON.stringify(this.scope.project.exportJSON()));
+            this.$emit('history-changed', this.history.length, this.redoStack.length);
         },
 
         getCanvasScope() {
@@ -253,7 +249,6 @@ export default {
         },
 
         updateColors(strokeColor, fillColor, strokeWidth) {
-            // This will be used by drawing tools to get current colors
             this.currentStrokeColor = strokeColor;
             this.currentFillColor = fillColor;
             this.currentStrokeWidth = strokeWidth;
@@ -280,50 +275,8 @@ export default {
             }
         },
 
-        saveImageToServer() {
-            if (this.scope && this.scope.project) {
-                const canvas = this.scope.view.element;
-                const imageData = canvas.toDataURL('image/png');
-
-                // Create a form data to send to server
-                const formData = new FormData();
-                formData.append('image', this.dataURLToBlob(imageData), 'canvas-image.png');
-
-                // Send to server endpoint (you'll need to create this endpoint)
-                fetch('/api/save-canvas-image', {
-                    method: 'POST',
-                    body: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert('Image saved successfully to public/images folder!');
-                    } else {
-                        alert('Failed to save image: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error saving image:', error);
-                    alert('Error saving image to server');
-                });
-            }
-        },
-
-        dataURLToBlob(dataURL) {
-            const arr = dataURL.split(',');
-            const mime = arr[0].match(/:(.*?);/)[1];
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-            return new Blob([u8arr], { type: mime });
-        }
     }
+
 }
 </script>
 

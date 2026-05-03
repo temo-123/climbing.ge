@@ -144,6 +144,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/add_route', 'add_route');
         Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
         Route::post('/edit_route/{route_id}', 'edit_route');
+        Route::post('/save_route_drawing', 'save_route_drawing');
         Route::delete('/del_route/{route_id}', 'del_route');
 
         Route::controller(RouteJsonController::class)->prefix('set_route_json')->group( function() {
