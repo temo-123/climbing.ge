@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User\Admin\Guide;
 
 use App\Http\Controllers\Controller;
+use App\Services\PermissionService;
 use Illuminate\Http\Request;
 
 use Auth;
@@ -95,6 +96,8 @@ class OutdoorController extends Controller
 
     public function get_filtred_outdoor_spots_for_admin(Request $request)
     {
+        if ($auth = PermissionService::authorize('article', 'show')) return $auth;
+
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;

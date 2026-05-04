@@ -43,8 +43,7 @@ class RegionController extends Controller
 
     public function get_editing_region_data(Request $request)
     {
-        $auth = PermissionService::authorize('region', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('region', 'show')) return $auth;
         
         return Region::where('id',strip_tags($request->id))->first();
     }

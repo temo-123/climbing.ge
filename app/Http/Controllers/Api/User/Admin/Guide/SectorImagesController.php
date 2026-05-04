@@ -32,8 +32,7 @@ class SectorImagesController extends Controller
 
     public function get_sector_editing_data(Request $request)
     {
-        $auth = PermissionService::authorize('sector', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('sector', 'show')) return $auth;
         
         $sector = Sector::where('id',strip_tags($request->id))->first();
         return(

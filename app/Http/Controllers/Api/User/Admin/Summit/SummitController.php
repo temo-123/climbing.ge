@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User\Admin\Summit;
 
 use App\Http\Controllers\Controller;
+use App\Services\PermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -16,6 +17,8 @@ class SummitController extends Controller
 {
     public function index()
     {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
         $summits = Summit::with(['region', 'mountRoute.global_article_us', 'mountRoute.global_article_ka'])
             ->orderBy('id', 'desc')
             ->get()
@@ -47,6 +50,8 @@ class SummitController extends Controller
 
     public function store(Request $request)
     {
+        if ($auth = PermissionService::authorize('summit', 'add')) return $auth;
+
         $request->validate([
             'title'          => 'required|string|max:255',
             'ka_title'       => 'nullable|string|max:255',
@@ -77,6 +82,8 @@ class SummitController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
         $summit = Summit::findOrFail($id);
 
         $request->validate([
@@ -107,12 +114,16 @@ class SummitController extends Controller
 
     public function destroy($id)
     {
+        if ($auth = PermissionService::authorize('summit', 'del')) return $auth;
+
         Summit::findOrFail($id)->delete();
         return response()->json(['message' => 'Deleted']);
     }
 
     public function save_qr(Request $request, $id)
     {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
         $request->validate(['qr_code' => 'required|string']);
         $summit = Summit::findOrFail($id);
         $summit->update(['qr_code' => $request->qr_code]);
@@ -121,6 +132,8 @@ class SummitController extends Controller
 
     public function get_mount_routes()
     {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
         $articles = Article::where('category', 'mount_route')
             ->where('published', 1)
             ->with(['global_article_us', 'global_article_ka'])
@@ -137,11 +150,15 @@ class SummitController extends Controller
 
     public function get_regions()
     {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
         return response()->json(Region::orderBy('us_name')->get(['id', 'us_name', 'ka_name']));
     }
 
     public function get_ascents($id)
     {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
         $summit = Summit::findOrFail($id);
 
         $ascents = $summit->ascents()
@@ -172,6 +189,8 @@ class SummitController extends Controller
 
     public function get_all_ascents()
     {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
         $ascents = SummitAscent::with(['summit', 'users.user', 'ascentRoutes.route.sector'])
             ->orderBy('ascent_date', 'desc')
             ->get()

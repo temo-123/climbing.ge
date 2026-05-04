@@ -18,7 +18,7 @@ class MTPPitchController extends Controller
 {
     public function get_mtp_pitchs_for_model(Request $request)
     {
-        $auth = PermissionService::authorize('mtp_pitch', 'view');
+        $auth = PermissionService::authorize('mtp_pitch', 'show');
         if ($auth) return $auth;
         
         return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();

@@ -25,7 +25,7 @@ class UsersController extends Controller
 {
     public function get_all_users()
     {
-        $auth = PermissionService::authorize('user', 'view');
+        $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
         return User::latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
@@ -38,13 +38,13 @@ class UsersController extends Controller
     }
 
     public function get_user_data(Request $request) {
-        $auth = PermissionService::authorize('user', 'view');
+        $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
         return user::where('id', '=', $request->user_id)->first();
     }
 
     public function get_worker_users() {
-        $auth = PermissionService::authorize('user', 'view');
+        $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
         $all_users = User::get();
         $prmishened_users = [];
@@ -63,7 +63,7 @@ class UsersController extends Controller
     }
 
     public function get_team_members() {
-        $auth = PermissionService::authorize('user', 'view');
+        $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
         return User::where('is_team_member', '!=', null)->get();
     }

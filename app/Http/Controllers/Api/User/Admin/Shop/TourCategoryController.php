@@ -12,7 +12,7 @@ class TourCategoryController extends Controller
 {
     public function get_editing_category($category_id)
     {
-        $auth = PermissionService::authorize('tour_category', 'view');
+        $auth = PermissionService::authorize('tour_category', 'show');
         if ($auth) return $auth;
         
         return Tour_category::where('id', '=', $category_id)->first();

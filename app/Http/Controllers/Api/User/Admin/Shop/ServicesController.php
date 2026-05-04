@@ -47,8 +47,7 @@ class ServicesController extends Controller
 
     public function get_editing_service(Request $request)
     {
-        $auth = PermissionService::authorize('services', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('services', 'show')) return $auth;
         
         $service = Service::where('id', '=', $request->service_id)->first();
         
@@ -93,6 +92,7 @@ class ServicesController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($auth = PermissionService::authorize('services', 'show')) return $auth;
         $page_service = Service::latest('id')
                             ->where('published', '=', 1)
                             ->where('id', '=', $id)

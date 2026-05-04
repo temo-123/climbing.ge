@@ -25,7 +25,7 @@ class CommentController extends Controller
 {
     public function get_user_comments()
     {
-        $auth = PermissionService::authorize('comment', 'view');
+        $auth = PermissionService::authorize('comment', 'show');
         if ($auth) return $auth;
         $user_id = auth()->user()->id;
 
@@ -81,7 +81,7 @@ class CommentController extends Controller
 
     public function get_actyve_comment($comment_id)
     {
-        $auth = PermissionService::authorize('comment', 'view');
+        $auth = PermissionService::authorize('comment', 'show');
         if ($auth) return $auth;
         return Comment::where('id',strip_tags($comment_id))->first();
     }
@@ -93,7 +93,7 @@ class CommentController extends Controller
 
     public function get_comments_complaints(Request $request)
     {
-        $auth = PermissionService::authorize('comment', 'view');
+        $auth = PermissionService::authorize('comment', 'show');
         if ($auth) return $auth;
         return Article_comment_complaint::get();
     }

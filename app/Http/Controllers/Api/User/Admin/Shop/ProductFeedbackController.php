@@ -21,6 +21,7 @@ class ProductFeedbackController extends Controller
 {
     public function get_all_feedbacks()
     {
+        if ($auth = PermissionService::authorize('product_feedback', 'show')) return $auth;
         if (Product_feedback::count() > 0) {
             $all_feedbacks = Product_feedback::get();
             $feedbacks = [];
@@ -46,8 +47,7 @@ class ProductFeedbackController extends Controller
 
     public function get_feedbacks_complaints(Request $request)
     {
-        $auth = PermissionService::authorize('product_feedback', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('product_feedback', 'show')) return $auth;
         
         return Product_feedback_complaint::get();
     }

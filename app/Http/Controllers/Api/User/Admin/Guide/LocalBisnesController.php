@@ -310,6 +310,7 @@ class LocalBisnesController extends Controller
 
     public function get_editing_local_bisnes_info($bisnes_id)
     {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
         if (!$bisnes_id) {
             return response()->json(['error' => 'Business ID is required'], 400);
         }
@@ -336,6 +337,7 @@ class LocalBisnesController extends Controller
 
     public function get_bisnes_article_relation(Request $request)
     {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
         $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
 
         // Return article relations with article details
@@ -354,6 +356,7 @@ class LocalBisnesController extends Controller
 
     public function get_bisnes_article_relations($bisnes_id)
     {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
         $bisnes = Suport_local_bisnes::where('id', '=', $bisnes_id)->first();
 
         if (!$bisnes) {
@@ -438,6 +441,7 @@ class LocalBisnesController extends Controller
 
     public function get_article_categories(Request $request)
     {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
         // Get unique categories from articles table with their IDs
         $categories = Article::whereNotNull('category')
                            ->where('category', '!=', '')

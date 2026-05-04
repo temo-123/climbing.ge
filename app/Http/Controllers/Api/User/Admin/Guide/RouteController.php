@@ -25,16 +25,19 @@ class RouteController extends Controller
 {
     public function get_all_routes()
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         return Route::latest('id')->get();
     }
 
     public function get_routes_by_category(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         return Route::where('category', $request->category)->latest('id')->get();
     }
 
     public function get_routes_by_category_array(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $searchTerms = $request->categories;
         
         return Route::
@@ -48,6 +51,7 @@ class RouteController extends Controller
     }
 
     public function routes_authers() {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $routes = Route::get('author');
 
         $routes_authors = [];
@@ -65,11 +69,13 @@ class RouteController extends Controller
 
     public function show($id)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         return route::where('id',strip_tags($id))->get();
     }
 
     public function get_route_for_modal(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $route = route::where('id',strip_tags($request->route_id))->first();
         $revs = $route->review;
 
@@ -190,14 +196,14 @@ class RouteController extends Controller
 
     public function get_routes_quantity(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         return SportClimbingRoutesService::get_routes_quantity($request);
     }
 
 
     public function get_route_editing_data(Request $request)
     {
-        $auth = PermissionService::authorize('route', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $route = Route::where('id',strip_tags($request->route_id))->first();
 
         // Fetch JSON data from the separate table
@@ -269,6 +275,7 @@ class RouteController extends Controller
 
     public function get_related_routes_jsons(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $sectorImageId = strip_tags($request->sector_image_id);
         $excludeRouteId = $request->has('exclude_route_id') ? strip_tags($request->exclude_route_id) : null;
 
@@ -286,6 +293,7 @@ class RouteController extends Controller
 
     public function get_route_jsons_for_sector_image(Request $request)
     {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $sectorImageId = strip_tags($request->sector_image_id);
 
         $routeJsons = ClimbingRoutesJson::where('sector_image_id', $sectorImageId)

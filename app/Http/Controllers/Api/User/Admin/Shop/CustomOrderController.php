@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
+use App\Services\PermissionService;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -16,6 +17,8 @@ class CustomOrderController extends Controller
 {
     public function store(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+
         $request->validate([
             'name'               => 'required|string|max:100',
             'surname'            => 'required|string|max:100',
@@ -109,6 +112,8 @@ class CustomOrderController extends Controller
 
     public function index()
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
+
         $orders = Order::where('is_custom', true)
             ->with(['buyerAddress', 'relatedUsers', 'orderProducts.option'])
             ->latest()
@@ -145,6 +150,8 @@ class CustomOrderController extends Controller
 
     public function show($order_id)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
+
         $order = Order::where('id', $order_id)
             ->where('is_custom', true)
             ->with(['buyerAddress', 'relatedUsers', 'orderProducts'])

@@ -162,6 +162,7 @@ class EventController extends Controller
 
     public function get_editing_event(Request $request)
     {
+        if ($auth = PermissionService::authorize('event', 'show')) return $auth;
         $global_event = Event::where('id',strip_tags($request->event_id))->first();
 
         $blobal_data = [];

@@ -14,7 +14,7 @@ use Validator;
 class RouteJsonController extends Controller
 {
     public function get_editing_route_json(Request $request) {
-        $auth = PermissionService::authorize('route', 'view');
+        $auth = PermissionService::authorize('route', 'show');
         if ($auth) return $auth;
         
         $act_route = Route::where('id', '=', $request->route_id)->first();

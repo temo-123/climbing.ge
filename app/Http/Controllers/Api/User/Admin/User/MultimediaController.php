@@ -26,6 +26,8 @@ class MultimediaController extends Controller
      */
     public function getImagesFolderStructure(Request $request): JsonResponse
     {
+        if ($auth = PermissionService::authorize('export', 'show')) return $auth;
+
         $search     = $request->get('search', '');
         $sortBy     = $request->get('sort_by', 'name');
         $filterType = $request->get('filter_type', '');
@@ -91,6 +93,8 @@ class MultimediaController extends Controller
      */
     public function uploadImages(Request $request): JsonResponse
     {
+        if ($auth = PermissionService::authorize('export', 'show')) return $auth;
+
         $validator = Validator::make($request->all(), [
             'files.*' => 'required|file|image|mimes:jpeg,jpg,png,gif,webp,svg|max:10240',
             'folder'  => 'nullable|string|max:255'
@@ -139,6 +143,8 @@ class MultimediaController extends Controller
      */
     public function deleteItems(Request $request): JsonResponse
     {
+        if ($auth = PermissionService::authorize('export', 'show')) return $auth;
+
         $validator = Validator::make($request->all(), [
             'paths'   => 'required|array',
             'paths.*' => 'required|string'
@@ -176,6 +182,8 @@ class MultimediaController extends Controller
      */
     public function createFolder(Request $request): JsonResponse
     {
+        if ($auth = PermissionService::authorize('export', 'show')) return $auth;
+
         $validator = Validator::make($request->all(), [
             'name'   => 'required|string|max:255|regex:/^[a-zA-Z0-9\-_\s]+$/',
             'parent' => 'nullable|string'

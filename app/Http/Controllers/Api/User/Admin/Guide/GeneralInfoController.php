@@ -23,6 +23,7 @@ class GeneralInfoController extends Controller
      */
     public function track_action(Request $request)
     {
+        if ($auth = PermissionService::authorize('general_info', 'show')) return $auth;
         $validator = validator($request->all(), [
             'block_id' => 'required|integer',
             'action_type' => 'required|string',
@@ -60,6 +61,7 @@ class GeneralInfoController extends Controller
      */
     public function get_action_stats(Request $request)
     {
+        if ($auth = PermissionService::authorize('general_info', 'show')) return $auth;
         $validator = validator($request->all(), [
             'block_id'    => 'required|integer',
             'action_type' => 'nullable|string',
@@ -102,8 +104,7 @@ class GeneralInfoController extends Controller
 
     public function get_editing_general_info($id)
     {
-        $auth = PermissionService::authorize('general_info', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('general_info', 'show')) return $auth;
         return General_info::where("id", "=", $id)->first();
     }
 

@@ -12,12 +12,12 @@ use App\Services\PermissionService;
 class ProductSubcategoryController extends Controller
 {
     function get_subcategories_for_category(Request $request) {
+        if ($auth = PermissionService::authorize('product_subcategory', 'show')) return $auth;
         return Product_subcategory::where("category_id", "=", $request->category_id,)->get();
     }
 
     function get_editing_subcategory(Request $request) {
-        $auth = PermissionService::authorize('product_subcategory', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('product_subcategory', 'show')) return $auth;
         
         return Product_subcategory::where("id", "=", $request->id,)->first();
     }

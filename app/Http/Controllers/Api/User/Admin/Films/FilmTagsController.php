@@ -12,6 +12,7 @@ class FilmTagsController extends Controller
 {
     public function index()
     {
+        if ($auth = PermissionService::authorize('film_teg', 'show')) return $auth;
         return Film_tag::get();
     }
 
@@ -30,6 +31,7 @@ class FilmTagsController extends Controller
 
     public function show($id)
     {
+        if ($auth = PermissionService::authorize('film_teg', 'show')) return $auth;
         return Film_tag::where("id", "=", $id)->first();
     }
 

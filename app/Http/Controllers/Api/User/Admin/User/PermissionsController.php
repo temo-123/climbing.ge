@@ -14,8 +14,7 @@ class PermissionsController extends Controller
 {
     public function get_parmisions_for_role(Request $request)
     {
-        $auth = PermissionService::authorize('permission', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('permission', 'show')) return $auth;
         $role = Role::where('id', '=', $request->role_id)->first();
         $all_permissions = Permission::get();
         return $all_permissions;

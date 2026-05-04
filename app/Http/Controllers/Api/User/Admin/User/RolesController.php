@@ -21,27 +21,26 @@ class RolesController extends Controller
 {
     public function index()
     {
-        $auth = PermissionService::authorize('role', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('role', 'show')) return $auth;
         return Role::latest('id')->get();
     }
 
     public function get_parmisions_list()
     {
-        $auth = PermissionService::authorize('role', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('role', 'show')) return $auth;
         return Permission::latest('id')->get();
     }
 
     public function get_user_role(Type $var = null)
     {
+        $auth = PermissionService::authorize('role', 'show');
+        if ($auth) return $auth;
         # code...
     }
 
     public function get_user_permissions(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('role', 'show')) return $auth;
         $user = User::where("id", "=", $request->user_id)->first();
         $user_role = array();
         if($user->role->count() > 0){
@@ -64,8 +63,7 @@ class RolesController extends Controller
 
     public function del_user_pemisino(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('role', 'del')) return $auth;
         $permission = User_permission::where("permission_id", "=", $request->permission_id)->where("user_id", "=", $request->user_id)->first();
         $permission -> delete();
     }
@@ -111,7 +109,7 @@ class RolesController extends Controller
 
     public function create_role(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
+        $auth = PermissionService::authorize('role', 'add');
         if ($auth) return $auth;
         $per = new Role;
         $per['name'] = $request->role_data['name'];
@@ -123,14 +121,14 @@ class RolesController extends Controller
 
     public function get_editing_role(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
+        $auth = PermissionService::authorize('role', 'show');
         if ($auth) return $auth;
         return Role::where("id", "=", $request->role_id)->first();
     }
 
     public function get_editing_role_permissions(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
+        $auth = PermissionService::authorize('role', 'show');
         if ($auth) return $auth;
         $role = Role::where("id", "=", $request->role_id)->first();
         return $role->permissions;
@@ -171,7 +169,7 @@ class RolesController extends Controller
 
     public function del_role(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
+        $auth = PermissionService::authorize('role', 'del');
         if ($auth) return $auth;
         $role = Role::where("id", "=", $request->role_id)->first();
 
@@ -186,7 +184,8 @@ class RolesController extends Controller
     
     public function del_role_permission(Request $request)
     {
-        $auth = PermissionService::authorize('role', 'edit');
+        $auth = PermissionService::authorize('role', 'del');
+        if ($auth) return $auth;
         $role_permision = Role_permission::where("role_id", "=", $request->role_id)->where("permission_id", "=", $request->permission_id)->first();
 
         $role_permision -> delete();
@@ -194,6 +193,8 @@ class RolesController extends Controller
 
     public function sync_admin_permissions()
     {
+        $auth = PermissionService::authorize('role', 'edit');
+        if ($auth) return $auth;
         $admin = Role::where('slug', 'admin')->firstOrFail();
         $existing = Role_permission::where('role_id', $admin->id)->pluck('permission_id')->toArray();
         $all = Permission::pluck('id')->toArray();

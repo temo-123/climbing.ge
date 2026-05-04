@@ -16,8 +16,7 @@ class HeadSliderController extends Controller
 {
     public function get_editing_slide(Request $request)
     {
-        $auth = PermissionService::authorize('head_slider', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('head_slider', 'show')) return $auth;
         return Header_image::where('id', '=', $request->slide_id)->first();
     }
 

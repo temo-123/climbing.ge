@@ -13,8 +13,7 @@ use App\Services\PermissionService;
 class ProductBrandController extends Controller
 {
     function get_editing_brand(Request $request) {
-        $auth = PermissionService::authorize('product_brand', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('product_brand', 'show')) return $auth;
         
         $brand = Product_brand::where("id", "=", $request->id)->first();
         $brand->us_brand;

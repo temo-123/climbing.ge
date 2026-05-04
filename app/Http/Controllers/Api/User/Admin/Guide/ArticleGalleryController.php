@@ -17,8 +17,7 @@ class ArticleGalleryController extends Controller
 {
     public function get_editing_images(Request $request)
     {
-        $auth = PermissionService::authorize('article', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('article', 'show')) return $auth;
         return Article_image::where('article_id', '=', $request->article_id)->get();
     }
 

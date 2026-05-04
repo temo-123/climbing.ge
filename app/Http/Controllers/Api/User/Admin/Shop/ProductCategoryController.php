@@ -37,8 +37,7 @@ class ProductCategoryController extends Controller
     }
 
     public function get_editing_product_category(Request $request){
-        $auth = PermissionService::authorize('product_category', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('product_category', 'show')) return $auth;
         $editing_product_category = Product_category::where("id", "=", request()->id)->first();
 
         return response()->json($editing_product_category);

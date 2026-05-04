@@ -11,8 +11,7 @@ use App\Services\PermissionService;
 class NonRegisteredCommenterController extends Controller
 {
     public function get_non_registered_commenter() {
-        $auth = PermissionService::authorize('commenter', 'del');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('commenter', 'show')) return $auth;
         
         $comenters = Non_registered_commenter::count();
 

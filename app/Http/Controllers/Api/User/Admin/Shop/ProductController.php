@@ -26,6 +26,7 @@ class ProductController extends Controller
 {
     public function get_quick_product(Request $request)
     {
+        if ($auth = PermissionService::authorize('product', 'show')) return $auth;
         $global_product = Product::where('id', '=', $request->product_id)->get();
         return ProductService::get_locale_product_use_locale($global_product, $request->lang);
     }
@@ -33,7 +34,7 @@ class ProductController extends Controller
 
     public function add_product(Request $request)
     {
-        $auth = PermissionService::authorize('product_category', 'add');
+        $auth = PermissionService::authorize('product', 'add');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
         
@@ -72,8 +73,9 @@ class ProductController extends Controller
         $new_user_relatione -> save();
     }
 
-    public function change_user_relation(Request $request) 
+    public function change_user_relation(Request $request)
     {
+        if ($auth = PermissionService::authorize('product', 'edit')) return $auth;
         if($request['data']['old_user_id'] != null && $request['data']['old_user_id'] != []){
             $user_relatione = User_product::where('product_id', '=', $request['data']['product_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();
             if($user_relatione != []){
@@ -92,6 +94,7 @@ class ProductController extends Controller
      */
     public function get_product_user_relation(Request $request)
     {
+        if ($auth = PermissionService::authorize('product', 'show')) return $auth;
         $product_id = $request->product_id;
         
         $user_relations = User_product::where('product_id', '=', $product_id)->get();
@@ -133,6 +136,7 @@ class ProductController extends Controller
      */
     public function fix_product_user_relation(Request $request)
     {
+        if ($auth = PermissionService::authorize('product', 'edit')) return $auth;
         $product_id = $request->product_id;
         
         $user_relations = User_product::where('product_id', '=', $product_id)->orderBy('id', 'asc')->get();
@@ -163,6 +167,7 @@ class ProductController extends Controller
     
     public function get_product_editing_data(Request $request)
     {
+        if ($auth = PermissionService::authorize('product', 'show')) return $auth;
         $product = product::where('id', '=', $request->product_id)->first();
         $us_product = $product->us_product;
         // $ru_product = $product->ru_product;
@@ -179,7 +184,7 @@ class ProductController extends Controller
 
     public function edit_product(Request $request)
     {
-        $auth = PermissionService::authorize('product_category', 'edit');
+        $auth = PermissionService::authorize('product', 'edit');
         if ($auth) return $auth;
         // $data = $request->data;
         $data = json_decode($request->data, true );
@@ -207,6 +212,7 @@ class ProductController extends Controller
 
     public function update(Request $request, $id)
     {
+        if ($auth = PermissionService::authorize('product', 'show')) return $auth;
         $page_product = Product::latest('id')
                             ->where('published', '=', 1)
                             ->where('id', '=', $id)
@@ -224,7 +230,8 @@ class ProductController extends Controller
 
     public function del_product(Request $request)
     {
-        $auth = PermissionService::authorize('product_category', 'del');
+        $auth = PermissionService::authorize('product', 'del');
+        if ($auth) return $auth;
 
         ProductService::del_content($request->product_id, Product::class, Locale_product::class, '_product', 'image', 'images/product_option_img/');
     }

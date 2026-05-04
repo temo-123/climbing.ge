@@ -18,8 +18,7 @@ class SectorLocalImagesController extends Controller
 {
     public function get_editing_sectors(Request $request)
     {
-        $auth = PermissionService::authorize('sector_local_image', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('sector_local_image', 'show')) return $auth;
         
         $sector_local_image = Sector_local_image::where("id", "=", $request->image_id)->first();
         return $sector_local_image->sectors;
@@ -27,8 +26,7 @@ class SectorLocalImagesController extends Controller
 
     public function get_editing_locale_image($id)
     {
-        $auth = PermissionService::authorize('sector_local_image', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('sector_local_image', 'show')) return $auth;
         
         $sector_local_image = Sector_local_image::where("id", "=", $id)->first();
         $sector_local_image_sectors = $sector_local_image->sectors;

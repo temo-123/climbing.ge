@@ -16,6 +16,7 @@ use Auth;
 class RoutesReitingController extends Controller
 {
     public function get_all_review() {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'show')) return $auth;
         // return Sport_route_review::get();
 
         if(Sport_route_review::count() > 0){
@@ -35,6 +36,7 @@ class RoutesReitingController extends Controller
     }
 
     public function get_all_route_reviews(Request $request) {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'show')) return $auth;
         $rews = Sport_route_review::where('route_id', '=', $request->route_id)->get();
         foreach ($rews as $rew) {
             $rew -> user;
@@ -43,6 +45,7 @@ class RoutesReitingController extends Controller
     }
 
     public function get_user_review() {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'show')) return $auth;
         $user = auth()->user();
         // return $user->sport_route_reviews;
 
@@ -63,6 +66,7 @@ class RoutesReitingController extends Controller
     }
 
     public function get_user_sport_routes_review() {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'show')) return $auth;
         // if (Auth::user()) {
         //     $user_review = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->get();
 
@@ -80,6 +84,7 @@ class RoutesReitingController extends Controller
     }
 
     public function create_route_review(Request $request) {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'add')) return $auth;
         if (!Auth::user()) {
             return response()->json(['message' => 'Unauthenticated.'], 401);
         }
@@ -124,10 +129,12 @@ class RoutesReitingController extends Controller
     // }
 
     public function get_actyve_review($review_id){
+        if ($auth = PermissionService::authorize('routes_rewiew', 'show')) return $auth;
         return Sport_route_review::where('id',strip_tags($review_id))->first();
     }
 
     public function edit_route_review(Request $request) {
+        if ($auth = PermissionService::authorize('routes_rewiew', 'edit')) return $auth;
         $review = Sport_route_review::where('id',strip_tags($request->review_id))->first();
         $data = $request->all();
         unset($data['_url']);

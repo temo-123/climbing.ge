@@ -18,8 +18,7 @@ class MountRouteController extends Controller
 {
     public function get_filtred_mount_route_for_admin(Request $request)
     {
-        $auth = PermissionService::authorize('mount_route', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('mount_route', 'show')) return $auth;
         
         $mount_article_count = Mount::where('id', '=', $request->filter_id)->count();
         if($mount_article_count > 0){
@@ -30,8 +29,7 @@ class MountRouteController extends Controller
 
     public function get_mount_routes_images(Request $request)
     {
-        $auth = PermissionService::authorize('mount_route', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('mount_route', 'show')) return $auth;
         
         return Mount_route_image::where('article_id', '=', $request->article_id)->get();
     }

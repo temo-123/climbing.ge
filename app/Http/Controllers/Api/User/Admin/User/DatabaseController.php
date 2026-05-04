@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User\Admin\User;
 
 use App\Http\Controllers\Controller;
+use App\Services\PermissionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +15,8 @@ class DatabaseController extends Controller
      */
     public function getTableStats(): JsonResponse
     {
+        if ($auth = PermissionService::authorize('database', 'show')) return $auth;
+
         $dbName = DB::selectOne('SELECT DATABASE() as db')->db;
 
         $tables = DB::select("
@@ -50,6 +53,8 @@ class DatabaseController extends Controller
      */
     public function fixIssue(Request $request): JsonResponse
     {
+        if ($auth = PermissionService::authorize('database', 'edit')) return $auth;
+
         $key = $request->input('key');
 
         $fixes = $this->getFixMap();

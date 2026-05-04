@@ -133,8 +133,7 @@ class MountController extends Controller
 
     public function get_editing_mount_massive_data(Request $request)
     {
-        $auth = PermissionService::authorize('mount_massive', 'edit');
-        if ($auth) return $auth;
+        if ($auth = PermissionService::authorize('mount_massive', 'show')) return $auth;
         $mounts_system = Mount::where('id', '=', $request->mount_id)->first();
 
         $data = [
@@ -305,9 +304,8 @@ class MountController extends Controller
 
     public function get_filtred_mount_route_for_admin(Request $request)
     {
-        $auth = PermissionService::authorize('mount_route', 'edit');
-        if ($auth) return $auth;
-        
+        if ($auth = PermissionService::authorize('mount_massive', 'show')) return $auth;
+
         $mount_id = $request->filter_id;
         
         // Get articles through the article_mount pivot table

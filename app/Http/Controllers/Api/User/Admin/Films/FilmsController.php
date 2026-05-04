@@ -17,23 +17,24 @@ class FilmsController extends Controller
 {
     public function index()
     {
+        if ($auth = PermissionService::authorize('film', 'show')) return $auth;
         return Film::get();
     }
 
     public function get_films(Request $request)
     {
         $films = Film::where('public', '=', 1)->get();
-        return GetFilmService::get_films_list_use_locale($films, $request->locale);
+        return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_same_films(Request $request){
         $films = Film::where('public', '=', 1)->where('category_id', '=', $request->category_id)->where('id', '!=', $request->film_id)->limit(4)->get();
-        return GetFilmService::get_films_list_use_locale($films, $request->locale);
+        return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_film(Request $request){
         $film = Film::where('public', '=', 1)->where('url_title', '=', $request->url_title)->first();
-        return GetFilmService::get_film_on_page_use_locale($film, $request->locale);
+        return FilmService::get_film_on_page_use_locale($film, $request->locale);
     }
 
     public function get_films_categories(Request $request){
@@ -72,7 +73,7 @@ class FilmsController extends Controller
             // return Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->first();
 
             $film = Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->get();
-            return GetFilmService::get_films_list_use_locale($film, $request->locale);
+            return FilmService::get_films_list_use_locale($film, $request->locale);
 
         }
     }
@@ -107,7 +108,7 @@ class FilmsController extends Controller
             $films = [];
             foreach ($fav_film as $film) {
                 $global_films = Film::where('id', '=', $film->film_id)->get();
-                $f_film = GetFilmService::get_films_list_use_locale($global_films, $request->lang);
+                $f_film = FilmService::get_films_list_use_locale($global_films, $request->lang);
                 array_push($films, $f_film[0]);
             }
             return $films;
@@ -130,28 +131,18 @@ class FilmsController extends Controller
 
     public function films_search(Request $request)
     {
+        $query = $request->query ?? '';
         if ($query != "") {
-            $count_articles = 0;
-            // $count_articles = Film::where('published', '=', 1)->Where('url_title', 'LIKE', '%'.$query.'%')->count();
-            // dd($count_articles);
-            if ($count_articles > 0) {
-                // $global_articles = Article::
-                //                             where('published', '=', 1)->
-                //                             where('category', '!=', 'news')->
-                //                             where('category', '!=', 'security')->
-                //                             where('category', '!=', 'event')->
-                //                             where('category', '!=', 'partner')->
-                //                             Where('url_title', 'LIKE', '%'.$query.'%')->
-                //                             get();
-                // $articles = GetArticlesService::get_locale_article($global_articles);
-                // return $articles;
+            $films = Film::where('public', '=', 1)
+                ->where('url_title', 'LIKE', '%' . $query . '%')
+                ->get();
+            if ($films->count() > 0) {
+                return FilmService::get_films_list_use_locale($films, $request->locale);
+            } else {
+                return response()->json(['message' => '0 films found. Try to search again!']);
             }
-            else {
-                return '0 articles is fined. Try to search again !';
-            }
-        }
-        else {
-            return 'No Details found. Try to search again !';
+        } else {
+            return response()->json(['message' => 'No search query provided.']);
         }
     }
 }

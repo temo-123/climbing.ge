@@ -35,11 +35,13 @@ class OrderController extends Controller
 {
     public function get_all_orders()
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         return Order::latest()->get();
     }
 
     public function get_user_orders()
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $user_products = Auth::user()->products->first();
         
         if($user_products->count() > 0){
@@ -49,6 +51,7 @@ class OrderController extends Controller
     }
 
     public function get_user_purchules() {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $user = Auth::user();
         if (!$user) return [];
 
@@ -69,10 +72,12 @@ class OrderController extends Controller
 
     public function get_order_status($order_id)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         return Order_status::where("order_id", "=", $order_id)->first();
     }
 
     public function castam_prodaction_message(Request $request) {
+        if ($auth = PermissionService::authorize('order', 'edit')) return $auth;
         if(Auth::user()){
             $actyve_product = Product::where('id', '=', $request->product_id)->first();
             $actyve_product_user = $actyve_product->user->first();
@@ -98,6 +103,7 @@ class OrderController extends Controller
 
     public function create_order(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
         if (!Auth::user()) {
             return response()->json(['error' => 'Please login'], 401);
         }
@@ -144,6 +150,7 @@ class OrderController extends Controller
 
     public function add_custom_order(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
         // Validate stock before creating custom order, unless production task is enabled
         if (!$request->create_production_task) {
             foreach ($request->order_product_list as $product) {
@@ -285,6 +292,7 @@ class OrderController extends Controller
 
     public function get_order_products($order_id)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         // return Order_products::where("order_id", "=", $request->order_id)->get();
         if (Auth::user()) {
             $product_items = Order_products::where("order_id", "=", $order_id)->get();
@@ -312,6 +320,7 @@ class OrderController extends Controller
 
     public function get_order_detals(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $order = Order::where("id", "=", $request->order_id)
             ->with(['relatedUsers:id,name,surname,email'])
             ->first();
@@ -337,7 +346,7 @@ class OrderController extends Controller
 
     public function order_is_confirm(Request $request)
     {
-        $auth = PermissionService::authorize('order', 'edit_order_status');
+        $auth = PermissionService::authorize('order', 'edit');
         if ($auth) return $auth;
 
         $order = Order::where("id", "=", $request->order_id)->first();
@@ -351,6 +360,7 @@ class OrderController extends Controller
     }
     public function is_order_confirm(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $order = Order::where("id", "=", $request->order_id)->first();
         // dd($order->confirm);
         $status;
@@ -366,7 +376,7 @@ class OrderController extends Controller
 
     public function edit_order_status(Request $request)
     {
-        $auth = PermissionService::authorize('order', 'edit_order_status');
+        $auth = PermissionService::authorize('order', 'edit');
         if ($auth) return $auth;
 
         $editing_order_status = Order::where("id", "=", $request->order_id)->first();
@@ -390,6 +400,7 @@ class OrderController extends Controller
 
     public function get_activ_order(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         return Order::where("id", "=", $request->order_id)->first();
     }
 
@@ -405,6 +416,7 @@ class OrderController extends Controller
 
     public function get_order_statistics(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $period = $request->route('period');
 
         $startDate = null;
@@ -469,6 +481,7 @@ class OrderController extends Controller
 
     public function get_order_finance_statistics(Request $request)
     {
+        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $period = $request->route('period');
 
         $startDate = null;

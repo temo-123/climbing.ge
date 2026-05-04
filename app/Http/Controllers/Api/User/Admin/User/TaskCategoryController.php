@@ -12,10 +12,14 @@ use App\Services\PermissionService;
 class TaskCategoryController extends Controller
 {
     function get_all_task_categories(){
+        $auth = PermissionService::authorize('task_category', 'show');
+        if ($auth) return $auth;
         return Task_category::get();
     }
 
     function get_task_category_data(Request $request){
+        $auth = PermissionService::authorize('task_category', 'show');
+        if ($auth) return $auth;
         return Task_category::where("id", "=", $request->task_category_id)->first();
     }
 
