@@ -47,7 +47,7 @@
         data: function () {
             return {
                 slider_index: 0,
-                visibleCount: 3,
+                visibleCount: window.innerWidth < 768 ? 1 : 3,
                 team_members: [],
                 autoSlideInterval: null,
                 isPaused: false,
@@ -60,9 +60,11 @@
         },
         mounted() {
             this.get_team_members()
+            window.addEventListener('resize', this.onResize)
         },
         beforeUnmount() {
             this.stopAutoSlide()
+            window.removeEventListener('resize', this.onResize)
             const wrapper = this.$refs.teamSliderWrapper;
             if (wrapper) {
                 wrapper.removeEventListener('touchstart', this.handleTouchStart);
@@ -157,6 +159,14 @@
                     } else {
                         this.previous();
                     }
+                }
+            },
+
+            onResize() {
+                const count = window.innerWidth < 768 ? 1 : 3
+                if (count !== this.visibleCount) {
+                    this.visibleCount = count
+                    this.slider_index = 0
                 }
             },
         }

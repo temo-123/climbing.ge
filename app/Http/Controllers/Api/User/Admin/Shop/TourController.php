@@ -22,7 +22,7 @@ use Auth;
 class TourController extends Controller
 {
     function get_user_tours(){
-        $auth = PermissionService::authorize('tour', 'view');
+        $auth = PermissionService::authorize('tour', 'edit');
         if ($auth) return $auth;
         return Auth::user()->tours;
     }

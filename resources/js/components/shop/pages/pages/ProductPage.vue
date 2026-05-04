@@ -1028,5 +1028,18 @@
         .all-products-section {
             padding: 20px 0;
         }
+
+        .main-image-container {
+            height: 260px;
+        }
+
+        .quantity-input {
+            font-size: 16px;
+        }
+
+        .quantity-btn {
+            min-width: 44px;
+            min-height: 44px;
+        }
     }
 </style>

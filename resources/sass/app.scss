@@ -369,27 +369,26 @@ hr {
 }
 @media (max-width: 900px) {
     .top_menu_margin {
-        margin-top: 18% !important;
+        margin-top: 70px;
     }
     .destroy_top_menu_margin {
-        margin-top: -18% !important;
-    }
-}
-@media (max-width: 900px) {
-    .top_menu_margin {
-        margin-top: 37%;
-    }
-    .destroy_top_menu_margin {
-        margin-top: -37%;
+        margin-top: -70px;
     }
     .mobile_nav_menu {
         height: auto;
-        /* margin-top: 15%; */
         float: left;
         width: 100%;
     }
     .top_menu_buttons {
         float: left !important;
+    }
+}
+@media (max-width: 480px) {
+    .top_menu_margin {
+        margin-top: 60px;
+    }
+    .destroy_top_menu_margin {
+        margin-top: -60px;
     }
 }
 
@@ -2657,7 +2656,8 @@ select:focus {
     padding: 10px 60px 8px 10px;
     border: none;
     border-radius: 4px;
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
     font-family: "Rokkitt", serif;
     font-size: 14px;
     color: #8d8d8d;
@@ -2727,6 +2727,12 @@ select:focus {
 @media (max-width: 720px) {
     .isotope-item-dtls h3 {
         font-size: 25px;
+    }
+}
+
+@media (max-width: 720px) {
+    .display-none-720px {
+        display: none !important;
     }
 }
 
@@ -5396,5 +5402,57 @@ body.sidebar-open .admin_page_header_navbar {
     body.sidebar-open,
     body.sidebar-open .admin_page_header_navbar {
         margin-left: 0;
+    }
+}
+
+/* ============================================================
+   Global mobile improvements
+   ============================================================ */
+
+@media (max-width: 767px) {
+    /* Prevent horizontal overflow on mobile */
+    .container, .container-fluid {
+        overflow-x: hidden;
+    }
+
+    /* Make bare tables inside rows scrollable */
+    .row table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Touch-friendly minimum tap target size */
+    .btn, button, a.btn,
+    .navbar-nav > li > a,
+    .nav > li > a {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* Reduce padding on cards */
+    .card-body, .panel-body {
+        padding: 12px;
+    }
+}
+
+/* Prevent oversized images in content areas */
+.product-detail img,
+.article-content img,
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Compact form groups on small screens — prevents iOS auto-zoom on inputs */
+@media (max-width: 480px) {
+    .form-group {
+        margin-bottom: 10px;
+    }
+    input.form-control,
+    select.form-control,
+    textarea.form-control {
+        font-size: 16px;
     }
 }

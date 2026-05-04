@@ -34,7 +34,7 @@ class ProductOptionController extends Controller
 {
     public function get_product_options($product_id)
     {
-        $auth = PermissionService::authorize('product_option', 'view');
+        $auth = PermissionService::authorize('product_option', 'edit');
         if ($auth) return $auth;
         
         $product = Product::where('id', '=', $product_id)->first();

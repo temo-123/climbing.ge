@@ -9,13 +9,13 @@
                     
             <div>
                 <div class="tips-slider-container">
-                    <div class="previes_tip_bottom" v-if="techtips.length > 3 && slider_index > 0" @click="previousTips">
+                    <div class="previes_tip_bottom" v-if="techtips.length > visibleCount && slider_index > 0" @click="previousTips">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </div>
 
                     <div class="tips-slider-wrapper" @mouseenter="pauseAutoSlide" @mouseleave="resumeAutoSlide">
-                        <div class="tips-slider" :style="{ display: 'flex', gap: '2%', width: (techtips.length * 31) + '%', transform: 'translateX(' + (-slider_index * 31) + '%)', transition: 'transform 0.4s ease-in-out' }">
-                            <div class="tip-item" v-for="tip in techtips" :key="tip.global_data.id">
+                        <div class="tips-slider" :style="{ display: 'flex', width: (techtips.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / techtips.length) + '%)', transition: 'transform 0.4s ease-in-out' }">
+                            <div class="tip-item" v-for="tip in techtips" :key="tip.global_data.id" :style="{ flex: '0 0 ' + (100 / techtips.length) + '%', boxSizing: 'border-box', padding: '0 8px' }">
                                 <div class="product-image" v-if="tip.global_data.new_flag">
                                     <div class="discount-percent-badge discount_percent_badge_for_techtip discount-badge-fourty">NEW</div>
                                 </div>
@@ -51,7 +51,7 @@
             return {
                 techtips: [],
                 slider_index: 0,
-                visibleCount: 3,
+                visibleCount: window.innerWidth < 768 ? 1 : 3,
                 autoSlideInterval: null,
                 isPaused: false,
                 touchStartX: 0,
@@ -62,6 +62,7 @@
         mounted() {
             this.get_techtips()
             this.startAutoSlide()
+            window.addEventListener('resize', this.onResize)
             this.$nextTick(() => {
                 const wrapper = this.$el?.querySelector('.tips-slider-wrapper');
                 if (wrapper) {
@@ -73,6 +74,7 @@
         },
         beforeUnmount() {
             this.stopAutoSlide()
+            window.removeEventListener('resize', this.onResize)
             const wrapper = this.$el?.querySelector('.tips-slider-wrapper');
             if (wrapper) {
                 wrapper.removeEventListener('touchstart', this.handleTouchStart);
@@ -157,6 +159,14 @@
                     }
                 }
             },
+
+            onResize() {
+                const count = window.innerWidth < 768 ? 1 : 3
+                if (count !== this.visibleCount) {
+                    this.visibleCount = count
+                    this.slider_index = 0
+                }
+            },
         }
     };
 </script>
@@ -222,11 +232,7 @@
 }
 
 .tip-item {
-    /* flex: 0 0 32%;
-    max-width: 32%; */
-
-    flex: 0 0 23em;
-    max-width: 31%;
+    box-sizing: border-box;
 }
 
 .previes_tip_bottom, .next_tip_bottom {

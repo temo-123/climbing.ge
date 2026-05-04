@@ -43,7 +43,7 @@
         data: function () {
             return {
                 slider_index: 0,
-                visibleCount: 3,
+                visibleCount: window.innerWidth < 768 ? 1 : 3,
                 products: [],
                 autoScrollInterval: null
             };
@@ -57,11 +57,13 @@
                     this.next();
                 }, 5000);
             });
+            window.addEventListener('resize', this.onResize)
         },
         beforeUnmount() {
             if (this.autoScrollInterval) {
                 clearInterval(this.autoScrollInterval);
             }
+            window.removeEventListener('resize', this.onResize)
         },
         methods: {
             next(){
@@ -84,6 +86,14 @@
                 this.autoScrollInterval = setInterval(() => {
                     this.next();
                 }, 3000);
+            },
+
+            onResize() {
+                const count = window.innerWidth < 768 ? 1 : 3
+                if (count !== this.visibleCount) {
+                    this.visibleCount = count
+                    this.slider_index = 0
+                }
             },
 
             get_products(){

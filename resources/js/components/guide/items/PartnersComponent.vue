@@ -14,8 +14,8 @@
                 </div>
 
                 <div class="partners-slider-wrapper" @wheel="onWheel">
-                    <div class="partners-slider" :style="{ display: 'flex', gap: '2%', width: (partners.length * 25) + '%', transform: 'translateX(' + (-slider_index * 25) + '%)', transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)' }">
-                        <div class="partner-item" v-for="partner in partners" :key="partner.global_data.id">
+                    <div class="partners-slider" :style="{ display: 'flex', width: (partners.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / partners.length) + '%)', transition: 'transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55)' }">
+                        <div class="partner-item" v-for="partner in partners" :key="partner.global_data.id" :style="{ flex: '0 0 ' + (100 / partners.length) + '%', boxSizing: 'border-box', padding: '0 8px' }">
                             <div class="thumbnail partner_thumbnail">
                                 <site-img v-if="partner.global_data.image != null" :src="'/public/images/partner_img/'+partner.global_data.image" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
                                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='partner.locale_data.title'/>
@@ -49,7 +49,7 @@
         data: function () {
             return {
                 slider_index: 0,
-                visibleCount: 4,
+                visibleCount: window.innerWidth < 480 ? 1 : window.innerWidth < 768 ? 2 : 4,
                 autoSlide: null,
 
                 partners: []
@@ -58,11 +58,13 @@
         mounted() {
             this.get_partners()
             this.startAutoSlide();
+            window.addEventListener('resize', this.onResize)
         },
         beforeUnmount() {
             if (this.autoSlide) {
                 clearInterval(this.autoSlide);
             }
+            window.removeEventListener('resize', this.onResize)
         },
         methods: {
             next(){
@@ -119,6 +121,14 @@
                 }
                 this.pauseAutoSlide();
             },
+
+            onResize() {
+                const count = window.innerWidth < 480 ? 1 : window.innerWidth < 768 ? 2 : 4
+                if (count !== this.visibleCount) {
+                    this.visibleCount = count
+                    this.slider_index = 0
+                }
+            },
         }
     };
 </script>
@@ -140,8 +150,8 @@
     }
 
     .partner-item {
-        flex: 0 0 25%;
         text-align: center;
+        box-sizing: border-box;
     }
 
     .previes_partners_bottom, .next_partners_bottom {

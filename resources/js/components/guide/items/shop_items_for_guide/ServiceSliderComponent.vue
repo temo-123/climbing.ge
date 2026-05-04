@@ -43,7 +43,7 @@
             return {
                 services: [],
                 slider_index: 0,
-                visibleCount: 3,
+                visibleCount: window.innerWidth < 768 ? 1 : 3,
                 autoSlideInterval: null,
                 isPaused: false,
                 touchStartX: 0,
@@ -52,9 +52,11 @@
         },
         mounted() {
             this.get_services()
+            window.addEventListener('resize', this.onResize)
         },
         beforeUnmount() {
             this.stopAutoSlide()
+            window.removeEventListener('resize', this.onResize)
             const wrapper = this.$el.querySelector('.services-slider-wrapper');
             if (wrapper) {
                 wrapper.removeEventListener('touchstart', this.handleTouchStart);
@@ -145,6 +147,14 @@
                     } else {
                         this.previous();
                     }
+                }
+            },
+
+            onResize() {
+                const count = window.innerWidth < 768 ? 1 : 3
+                if (count !== this.visibleCount) {
+                    this.visibleCount = count
+                    this.slider_index = 0
                 }
             },
         }
