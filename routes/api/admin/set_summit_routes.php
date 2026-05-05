@@ -11,6 +11,8 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::post('/update/{id}', 'update');
             Route::delete('/destroy/{id}', 'destroy');
             Route::post('/save_qr/{id}', 'save_qr');
+            Route::post('/add_mount_route_relation', 'add_mount_route_relation');
+            Route::delete('/remove_mount_route_relation/{id}', 'remove_mount_route_relation');
         });
     });
 
@@ -19,6 +21,7 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::get('/index', 'index');
             Route::get('/get_regions', 'get_regions');
             Route::get('/get_mount_routes', 'get_mount_routes');
+            Route::get('/get_summit_mount_routes/{summit_id}', 'get_summit_mount_routes');
             Route::get('/get_ascents/{id}', 'get_ascents');
             Route::get('/get_all_ascents', 'get_all_ascents');
         });

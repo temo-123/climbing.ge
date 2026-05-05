@@ -8,7 +8,26 @@
                 </div>
             </div>
 
-            <div class="row">
+            <!-- Page-level tabs -->
+            <div class="row mb-2">
+                <div class="col-md-12">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{ active: page_tab === 'summits' }" href="#" @click.prevent="page_tab = 'summits'">
+                                Summits & Ascents
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" :class="{ active: page_tab === 'relations' }" href="#" @click.prevent="page_tab = 'relations'">
+                                Mount Route Relations
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Summits & Ascents tab -->
+            <div v-show="page_tab === 'summits'" class="row">
                 <div class="col-md-12" v-if="loading">
                     <div class="text-center py-4">
                         <i class="fa fa-spinner fa-spin fa-3x"></i>
@@ -27,6 +46,13 @@
                 </div>
                 <div v-else class="col-sm-12 text-center py-4">
                     No data available.
+                </div>
+            </div>
+
+            <!-- Mount Route Relations tab -->
+            <div v-show="page_tab === 'relations'" class="row">
+                <div class="col-md-12">
+                    <SummitRoutesRelationTab :summits="summits" />
                 </div>
             </div>
         </div>
@@ -78,12 +104,14 @@ import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import QrcodeVue from 'qrcode.vue'
 import SummitFormModal from './SummitFormModal.vue'
+import SummitRoutesRelationTab from './SummitRoutesRelationTab.vue'
 
 export default {
     name: 'SummitListPage',
-    components: { breadcrumb, tabsComponent, QrcodeVue, SummitFormModal },
+    components: { breadcrumb, tabsComponent, QrcodeVue, SummitFormModal, SummitRoutesRelationTab },
     data() {
         return {
+            page_tab: 'summits',
             summits: [],
             ascents: [],
             loading: false,
@@ -120,13 +148,13 @@ export default {
                     tab_data: {
                         data: this.summits,
                         tab: {
-                            head: ['ID', 'Title', 'KA Title', 'Height', 'Mount Route', 'QR', 'Published', 'QR Code', 'Edit', 'Delete'],
+                            head: ['ID', 'Title', 'KA Title', 'Height', 'Mount Routes', 'QR', 'Published', 'QR Code', 'Edit', 'Delete'],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['title']],
                                 ['data', ['ka_title']],
                                 ['data', ['height']],
-                                ['data', ['mount_route_name']],
+                                ['data', ['mount_routes_display']],
                                 ['data', ['qr_code'], 'bool'],
                                 ['data', ['published'], 'bool'],
                                 ['action_fun_id', 'open_qr',        'btn btn-sm btn-info',    '<i class="fa fa-qrcode"></i>'],

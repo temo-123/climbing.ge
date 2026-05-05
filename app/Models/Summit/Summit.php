@@ -18,7 +18,7 @@ class Summit extends Model
         'image',
         'height',
         'latitude', 'longitude',
-        'region_id', 'mount_route_id',
+        'region_id',
         'qr_code',
         'published',
     ];
@@ -35,9 +35,14 @@ class Summit extends Model
         return $this->belongsTo(Region::class, 'region_id');
     }
 
-    public function mountRoute()
+    public function mountRoutes()
     {
-        return $this->belongsTo(Article::class, 'mount_route_id');
+        return $this->hasMany(SummitMountRoute::class, 'summit_id');
+    }
+
+    public function mountRouteArticles()
+    {
+        return $this->hasManyThrough(Article::class, SummitMountRoute::class, 'summit_id', 'id', 'id', 'article_id');
     }
 
     public function ascents()

@@ -63,14 +63,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Mount Route</label>
-                    <select class="form-control" v-model="form.mount_route_id">
-                        <option :value="null">-- Select mount route --</option>
-                        <option v-for="r in mount_routes" :key="r.id" :value="r.id">{{ r.name }}</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="publishedSwitch" v-model="form.published" />
                         <label class="custom-control-label" for="publishedSwitch">Published</label>
@@ -100,7 +92,6 @@ export default {
             error: null,
             lang: 'en',
             summit_id: null,
-            mount_routes: [],
             form: {
                 title: '',
                 ka_title: '',
@@ -109,7 +100,6 @@ export default {
                 height: null,
                 latitude: null,
                 longitude: null,
-                mount_route_id: null,
                 published: false,
             },
         }
@@ -125,22 +115,15 @@ export default {
                 ka_title:       summit?.ka_title       || '',
                 description:    summit?.description    || '',
                 ka_description: summit?.ka_description || '',
-                height:          summit?.height          || null,
-                latitude:        summit?.latitude        || null,
-                longitude:       summit?.longitude       || null,
-                mount_route_id:  summit?.mount_route_id  || null,
-                published:       summit?.published       ?? false,
+                height:         summit?.height         || null,
+                latitude:       summit?.latitude       || null,
+                longitude:      summit?.longitude      || null,
+                published:      summit?.published      ?? false,
             }
-            if (!this.mount_routes.length) this.load_mount_routes()
         },
         close() {
             this.visible = false
             this.summit_id = null
-        },
-        load_mount_routes() {
-            axios.get('get_summit_admin/get_mount_routes')
-                .then(r => { this.mount_routes = r.data })
-                .catch(() => {})
         },
         save() {
             if (!this.form.title.trim()) {
@@ -171,3 +154,4 @@ export default {
     }
 }
 </script>
+

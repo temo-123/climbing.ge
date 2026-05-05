@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 use App\Models\Summit\Summit;
 use App\Models\Summit\SummitAscent;
+use App\Models\Summit\SummitMountRoute;
 use App\Models\Guide\Region;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
@@ -19,12 +20,18 @@ class SummitController extends Controller
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
 
-        $summits = Summit::with(['region', 'mountRoute.global_article_us', 'mountRoute.global_article_ka'])
+        $summits = Summit::with(['region', 'mountRoutes.article.global_article_us', 'mountRoutes.article.global_article_ka'])
             ->orderBy('id', 'desc')
             ->get()
             ->map(function ($summit) {
-                $mr = $summit->mountRoute;
-                $mr_name = $mr?->global_article_us?->title ?? $mr?->global_article_ka?->title ?? null;
+                $routes = $summit->mountRoutes->map(function ($smr) {
+                    $a = $smr->article;
+                    return [
+                        'id'   => $a?->id,
+                        'name' => $a?->global_article_us?->title ?? $a?->global_article_ka?->title ?? $a?->url_title,
+                    ];
+                })->filter(fn($r) => $r['id'])->values();
+
                 return [
                     'id'               => $summit->id,
                     'title'            => $summit->title,
@@ -37,8 +44,9 @@ class SummitController extends Controller
                     'longitude'        => $summit->longitude,
                     'region_id'        => $summit->region_id,
                     'region_name'      => $summit->region?->us_name,
-                    'mount_route_id'   => $summit->mount_route_id,
-                    'mount_route_name' => $mr_name,
+                    'mount_route_ids'       => $routes->pluck('id'),
+                    'mount_route_names'     => $routes->pluck('name'),
+                    'mount_routes_display'  => $routes->pluck('name')->implode(', '),
                     'qr_code'          => $summit->qr_code,
                     'published'        => $summit->published,
                     'created_at'       => $summit->created_at,
@@ -60,7 +68,6 @@ class SummitController extends Controller
             'height'         => 'nullable|integer|min:0',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
-            'mount_route_id' => 'nullable|integer|exists:articles,id',
             'published'      => 'nullable|boolean',
         ]);
 
@@ -73,11 +80,10 @@ class SummitController extends Controller
             'height'         => $request->height,
             'latitude'       => $request->latitude,
             'longitude'      => $request->longitude,
-            'mount_route_id' => $request->mount_route_id,
             'published'      => $request->published ?? false,
         ]);
 
-        return response()->json($summit->fresh()->load('mountRoute'), 201);
+        return response()->json($summit->fresh(), 201);
     }
 
     public function update(Request $request, $id)
@@ -94,13 +100,12 @@ class SummitController extends Controller
             'height'         => 'nullable|integer|min:0',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
-            'mount_route_id' => 'nullable|integer|exists:articles,id',
             'published'      => 'nullable|boolean',
         ]);
 
         $data = $request->only([
             'title', 'ka_title', 'description', 'ka_description',
-            'height', 'latitude', 'longitude', 'mount_route_id', 'published'
+            'height', 'latitude', 'longitude', 'published'
         ]);
 
         if (isset($data['title']) && $data['title'] !== $summit->title) {
@@ -109,7 +114,7 @@ class SummitController extends Controller
 
         $summit->update($data);
 
-        return response()->json($summit->fresh()->load('mountRoute'));
+        return response()->json($summit->fresh());
     }
 
     public function destroy($id)
@@ -130,22 +135,103 @@ class SummitController extends Controller
         return response()->json(['message' => 'QR code saved']);
     }
 
+    public function get_summit_mount_routes($summit_id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $summit = Summit::findOrFail($summit_id);
+
+        $routes = SummitMountRoute::where('summit_id', $summit_id)
+            ->with(['article.global_article_us', 'article.global_article_ka'])
+            ->get()
+            ->map(fn($smr) => [
+                'id'         => $smr->id,
+                'article_id' => $smr->article_id,
+                'name'       => $smr->article?->global_article_us?->title
+                    ?? $smr->article?->global_article_ka?->title
+                    ?? $smr->article?->url_title,
+            ]);
+
+        return response()->json([
+            'summit' => ['id' => $summit->id, 'title' => $summit->title],
+            'routes' => $routes,
+        ]);
+    }
+
+    public function add_mount_route_relation(Request $request)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        $request->validate([
+            'summit_id'  => 'required|integer|exists:summits,id',
+            'article_id' => 'required|integer|exists:articles,id',
+        ]);
+
+        // Reassign if already linked to another summit
+        SummitMountRoute::where('article_id', $request->article_id)->delete();
+
+        $relation = SummitMountRoute::create([
+            'summit_id'  => $request->summit_id,
+            'article_id' => $request->article_id,
+        ]);
+
+        $relation->load(['article.global_article_us', 'article.global_article_ka']);
+
+        return response()->json([
+            'id'         => $relation->id,
+            'article_id' => $relation->article_id,
+            'name'       => $relation->article?->global_article_us?->title
+                ?? $relation->article?->global_article_ka?->title
+                ?? $relation->article?->url_title,
+        ], 201);
+    }
+
+    public function remove_mount_route_relation($id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        SummitMountRoute::findOrFail($id)->delete();
+
+        return response()->json(['message' => 'Removed']);
+    }
+
     public function get_mount_routes()
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $assigned = SummitMountRoute::pluck('summit_id', 'article_id');
 
         $articles = Article::where('category', 'mount_route')
             ->where('published', 1)
             ->with(['global_article_us', 'global_article_ka'])
             ->get()
             ->map(fn($a) => [
-                'id'   => $a->id,
-                'name' => $a->global_article_us?->title ?? $a->global_article_ka?->title ?? $a->url_title,
+                'id'        => $a->id,
+                'name'      => $a->global_article_us?->title ?? $a->global_article_ka?->title ?? $a->url_title,
+                'summit_id' => $assigned[$a->id] ?? null,
             ])
             ->sortBy('name')
             ->values();
 
         return response()->json($articles);
+    }
+
+    private function syncMountRoutes(int $summitId, array $articleIds): void
+    {
+        // Remove relations that are no longer selected
+        SummitMountRoute::where('summit_id', $summitId)
+            ->whereNotIn('article_id', $articleIds)
+            ->delete();
+
+        // Add new relations (skip if the article is already linked to another summit)
+        $existing = SummitMountRoute::where('summit_id', $summitId)->pluck('article_id')->toArray();
+
+        foreach ($articleIds as $articleId) {
+            if (in_array($articleId, $existing)) continue;
+            // Remove from other summit if assigned elsewhere
+            SummitMountRoute::where('article_id', $articleId)->delete();
+            SummitMountRoute::create(['summit_id' => $summitId, 'article_id' => $articleId]);
+        }
     }
 
     public function get_regions()

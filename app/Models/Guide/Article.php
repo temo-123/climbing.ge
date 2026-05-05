@@ -33,13 +33,13 @@ class Article extends Model
 		'url_title',
 		'map',
 		'weather',
-	
+
 		'image',
 
 		'mount_route',
 
 		'price_from',
-		
+
 		'open_timen',
 		'closed_time'
 	];
