@@ -1,8 +1,6 @@
-import { defineAbility } from '@casl/ability';
+import { createMongoAbility } from '@casl/ability';
 
-export const abilityDefaults = defineAbility((can) => {
-    can('read', 'public');
-});
+export const abilityDefaults = createMongoAbility([]);
 
 /**
  * Call this after auth_user loads to sync CASL rules with backend permissions.

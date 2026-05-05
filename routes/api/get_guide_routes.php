@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Api\Guide\Donations\DonationPaymentController;
 
-Route::group(['namespace'=>'Api\Guide'], function() {
+Route::group(['namespace'=>'Api\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
     Route::controller(ArticleController::class)->prefix('get_article')->group( function() {
         Route::get('/get_category_articles/{category}', 'get_category_articles');
         Route::get('/get_articles_for_bisnes_suport', 'get_articles_for_bisnes_suport');

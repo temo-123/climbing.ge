@@ -743,6 +743,14 @@
         "host_error": {
             "title": "Oops! There is a site configuration or hosting error!",
             "description": "Sorry, an error has occurred. There is a site configuration or hosting error. Please contact support!"
+        },
+        "banned": {
+            "title": "Account Suspended",
+            "subtitle": "Your account has been permanently suspended",
+            "reason": "Your account was suspended due to a violation of our Terms of Service.",
+            "blacklist": "Your email address has been added to our blacklist. You cannot create a new account using this email address.",
+            "no_appeal": "This suspension cannot be reversed. Please do not attempt to contact support regarding this decision.",
+            "email_banned": "This email address is banned and cannot be used to create a new account."
         }
     },
     "unfollow": {

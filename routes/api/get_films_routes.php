@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Public routes - no authentication required for viewing content
-Route::group(['namespace'=>'Api\Films'], function() {
+Route::group(['namespace'=>'Api\Films', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
     *   Films routes
     */

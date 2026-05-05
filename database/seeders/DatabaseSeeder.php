@@ -20,10 +20,8 @@ class DatabaseSeeder extends Seeder
 
             // LocaleSiteSeeder::class,
             // SiteTableSeeder::class,
-
             // UserTableSeeder::class,
-            
-            User_notificationsTableSeeder::class,
+            // User_notificationsTableSeeder::class,
         ]);
     }
 }

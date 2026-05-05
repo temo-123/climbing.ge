@@ -119,39 +119,14 @@ class UsersController extends Controller
 
     public function get_auth_user_permissions(Request $request)
     {
-        if (Auth::user()) {
-            $user = Auth::user();
-
-            $user_all_permissions = [];
-
-            $user_permissons = $user->permissions;
-            if ($user_permissons) {
-                foreach ($user_permissons as $permisson) {
-                    array_push($user_all_permissions, 
-                        ['subject' => $permisson->subject,  'action' => $permisson->action]
-                    );
-                }
-            }
-
-            $user_role = $user->role->first();
-
-            if ($user_role) {
-                $user_role_perissions = $user_role->permissions;
-                if ($user_role_perissions) {
-                    foreach ($user_role_perissions as $user_role_perission) {
-                        array_push($user_all_permissions, 
-                            ['subject' => $user_role_perission->subject,  'action' => $user_role_perission->action]
-                        );
-                    }
-                }
-            }
-
-            return $user_all_permissions;
-        }
-        else{
-            // return 'plees login';
+        if (!Auth::user()) {
             return response()->json('Plees login', 401);
         }
+
+        return Auth::user()->getAllPermissions()->map(fn($p) => [
+            'action'  => $p->action,
+            'subject' => $p->subject,
+        ])->values();
     }
     public function user_image_update(Request $request)
     {

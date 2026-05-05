@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 // Public routes - no authentication required for viewing content
-Route::group(['namespace'=>'Api\Shop'], function() {
+Route::group(['namespace'=>'Api\Shop', 'middleware'=>['auth:sanctum', 'banned']], function() {
     Route::controller(ProductController::class)->prefix('get_product')->group( function() {
         Route::get('/get_products_for_index/{lang}', 'get_products_for_index');
         Route::get('/get_all_products', 'get_all_products');

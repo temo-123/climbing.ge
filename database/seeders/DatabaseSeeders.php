@@ -16,13 +16,13 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
+            UserRoleSeeder::class,
+            AssignUserRoleToAllSeeder::class,
 
             // LocaleSiteSeeder::class,
             // SiteTableSeeder::class,
-
             // UserTableSeeder::class,
-            
-            User_notificationsTableSeeder::class,
+            // User_notificationsTableSeeder::class,
         ]);
     }
 }

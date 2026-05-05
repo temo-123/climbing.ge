@@ -42,27 +42,18 @@ class CommentController extends Controller
 
     public function get_user_comments()
     {
-        $user_id = auth()->user()->id;
+        $user = auth()->user();
 
-        if(user::where("id", "=", $user_id)->count() > 0){
-            $user = user::where("id", "=", $user_id)->latest()->first();
-
-            if($user->product_feedbacks){
-                $user_comments = $user->article_comments;
-
-                $comments = [];
-                foreach ($user_comments as $comment) {
-
-                    array_push($comments, [
-                        'comment' => $comment, 
-                        'locale_article' => $comment->article->us_article,
-                        'global_article' => $comment->article
-                    ]);
-                }
-                
-                return $comments;
-            }
+        $comments = [];
+        foreach ($user->article_comments as $comment) {
+            $comments[] = [
+                'comment' => $comment,
+                'locale_article' => $comment->article->us_article,
+                'global_article' => $comment->article,
+            ];
         }
+
+        return $comments;
     }
 
     public static function get_article_comments(Request $request)

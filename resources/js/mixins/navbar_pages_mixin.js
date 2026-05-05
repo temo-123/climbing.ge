@@ -6,7 +6,7 @@ export default {
                     id: 1,
                     title: "Home",
                     route: "/",
-                }, 
+                },
                 {
                     title: "Favorites",
                     name: "favorites",
@@ -33,147 +33,106 @@ export default {
                             name: "Indoor climbing",
                             route: "/article/indoor",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Outdoor climbing",
                             route: "/article/outdoor",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Sectors & Routes",
                             route: "/routes_and_sectors",
                             permissions: [
-                                ['add', 'route'],
-                                ['edit', 'route'],
-                                ['del', 'route'],
-                                ['add', 'mtp'],
-                                ['edit', 'mtp'],
-                                ['del', 'mtp'],
-                                ['add', 'mtp_pitch'],
-                                ['edit', 'mtp_pitch'],
-                                ['del', 'mtp_pitch'],
-                                ['add', 'sector'],
-                                ['edit', 'sector'],
-                                ['del', 'sector'],
+                                ['show', 'route'],
                             ]
                         },
                         {
                             name: "Ice & Mix",
                             route: "/article/ice",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Sectors local images",
                             route: "/sector_local_images",
                             permissions: [
-                                ['add', 'sector_local_images'],
-                                ['edit', 'sector_local_images'],
-                                ['del', 'sector_local_images'],
+                                ['show', 'sector_local_image'],
                             ]
                         },
                         {
                             name: "Spot projects",
                             route: "/article/spot_projects",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Mountaineering",
                             route: "/article/mount_route",
                             permissions: [
-                                ['add', 'mount_route'],
-                                ['edit', 'mount_route'],
-                                ['del', 'mount_route'],
-                                ['add', 'mount_massive'],
-                                ['edit', 'mount_massive'],
-                                ['del', 'mount_massive'],
+                                ['show', 'article'],
+                                ['show', 'mount_massive'],
                             ]
                         },
                         {
                             name: "Other activity",
                             route: "/article/other",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "News",
                             route: "/article/news",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Security (tech tip)",
                             route: "/article/tech_tip",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Partners",
                             route: "/article/partners",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Special article",
                             route: "/article/special",
                             permissions: [
-                                ['add', 'article'],
-                                ['edit', 'article'],
-                                ['del', 'article'],
+                                ['show', 'article'],
                             ]
                         },
                         {
                             name: "Live cameras",
                             route: "/live_cameras",
                             permissions: [
-                                ['add', 'live_camera'],
-                                ['edit', 'live_camera'],
-                                ['del', 'live_camera'],
+                                ['show', 'live_camera'],
                             ]
                         },
                         {
                             name: "Events & Competitions",
                             route: "/event",
                             permissions: [
-                                ['add', 'event'],
-                                ['edit', 'event'],
-                                ['del', 'event'],
+                                ['show', 'event'],
                             ]
                         },
                         {
                             name: "Local bisnes",
                             route: "/local_bisnes",
                             permissions: [
-                                ['add', 'local_bisnes'],
-                                ['edit', 'local_bisnes'],
-                                ['del', 'local_bisnes'],
+                                ['show', 'local_bisnes'],
                             ]
                         },
                         {
@@ -193,24 +152,21 @@ export default {
                             name: "Guide Dashboard",
                             route: "/guide_dashboard_page",
                             permissions: [
-                                ['show', 'guide_dashboard']
+                                ['show', 'task'],
                             ]
                         },
                         {
                             name: "Guide task panel",
                             route: "/guide_task_panel",
                             permissions: [
-                                ['add', 'guide_task'],
-                                ['edit', 'guide_task'],
-                                ['del', 'guide_task'],
-                                ['edit_status', 'guide_task'],
+                                ['show', 'task'],
                             ]
                         },
                         {
                             name: "My tasks for guide",
                             route: "/team_member_tasks_page",
                             permissions: [
-                                ['edit_status', 'guide_task'],
+                                ['show', 'team'],
                             ]
                         },
                     ]
@@ -227,62 +183,46 @@ export default {
                             name: "All products & categories",
                             route: "/products_and_categories",
                             permissions: [
-                                ['add', 'product'],
-                                ['edit', 'product'],
-                                ['del', 'product'],
-                                ['add', 'product_category'],
-                                ['edit', 'product_category'],
-                                ['del', 'product_category'],
-                                ['add', 'product_option'],
-                                ['edit', 'product_option'],
-                                ['del', 'product_option'],
-                                ['add', 'sale_code'],
-                                ['edit', 'sale_code'],
-                                ['del', 'sale_code']
+                                ['show', 'product'],
+                                ['show', 'product_category'],
+                                ['show', 'product_option'],
+                                ['show', 'sale_code'],
                             ]
                         },
                         {
                             name: "Warehouses",
                             route: "/warehouses",
                             permissions: [
-                                ['add', 'warehouse'],
-                                ['edit', 'warehouse'],
-                                ['del', 'warehouse']
+                                ['show', 'warehouse'],
                             ]
                         },
                         {
                             name: "All orders",
                             route: "/order/all_orders",
                             permissions: [
-                                ['edit_order_status', 'order'],
+                                ['show', 'order'],
                             ]
                         },
                         {
                             name: "All tours",
                             route: "/all_tours_list",
                             permissions: [
-                                ['add', 'tour'],
-                                ['edit', 'tour'],
-                                ['del', 'tour'],
-                                ['add', 'tour_category'],
-                                ['edit', 'tour_category'],
-                                ['del', 'tour_category'],
+                                ['show', 'tour'],
+                                ['show', 'tour_category'],
                             ]
                         },
                         {
                             name: "All tours reservations",
                             route: "/all_tours_reservations_list",
                             permissions: [
-                                ['show_all', 'tour_reservation'],
+                                ['show', 'tour_reservation'],
                             ]
                         },
                         {
                             name: "Services",
                             route: "/services_list",
                             permissions: [
-                                ['add', 'services'],
-                                ['edit', 'services'],
-                                ['del', 'services'],
+                                ['show', 'services'],
                             ]
                         },
                     ],
@@ -295,24 +235,21 @@ export default {
                             name: "Shop Dashboard",
                             route: "/shop_dashboard_page",
                             permissions: [
-                                ['show', 'shop_dashboard']
+                                ['show', 'task'],
                             ]
                         },
                         {
                             name: "Shop task panel",
                             route: "/shop_task_panel",
                             permissions: [
-                                ['add', 'shop_task'],
-                                ['edit', 'shop_task'],
-                                ['del', 'shop_task'],
-                                ['edit_status', 'shop_task'],
+                                ['show', 'task'],
                             ]
                         },
                         {
                             name: "My Tasks (Shop)",
                             route: "/shop_worker_tasks_page",
                             permissions: [
-                                ['edit_status', 'shop_task'],
+                                ['show', 'task'],
                             ]
                         },
                     ],
@@ -325,9 +262,7 @@ export default {
                             name: "Posts",
                             route: "/posts",
                             permissions: [
-                                ['add', 'post'],
-                                ['edit', 'post'],
-                                ['del', 'post'],
+                                ['show', 'post'],
                             ]
                         },
                     ]
@@ -340,9 +275,7 @@ export default {
                             name: "Summits",
                             route: "/summits",
                             permissions: [
-                                ['add', 'summit'],
-                                ['edit', 'summit'],
-                                ['del', 'summit'],
+                                ['show', 'summit'],
                             ]
                         },
                     ]
@@ -355,20 +288,14 @@ export default {
                             name: "About us",
                             route: "/site_info",
                             permissions: [
-                                ['edit', 'site_data'],
-                                ['add', 'site_data'],
+                                ['show', 'site_data'],
                             ]
                         },
                         {
                             name: "Head Sliders",
                             route: "/head_sliders_images",
                             permissions: [
-                                ['add', 'store_slides'],
-                                ['edit', 'store_slides'],
-                                ['del', 'store_slides'],
-                                ['add', 'guide_slides'],
-                                ['edit', 'guide_slides'],
-                                ['del', 'guide_slides'],
+                                ['show', 'head_slider'],
                             ]
                         },
                         {
@@ -376,50 +303,41 @@ export default {
                             route: "/site_folloers",
                             permissions: [
                                 ['show', 'site_folloers'],
-                                ['add', 'site_folloers'],
-                                ['del', 'site_folloers']
                             ]
                         },
                         {
                             name: "Users & Permissions",
                             route: "/users_list",
                             permissions: [
-                                ['add', 'user'],
-                                ['edit', 'user'],
-                                ['del', 'user'],
-                                ['edit_permissions', 'user'],
-                                ['create_ban', 'user'],
+                                ['show', 'user'],
                             ]
                         },
                         {
                             name: "Other commenters",
                             route: "/non_registered_commenter_list",
                             permissions: [
-                                ['del', 'non_registered_commenter'],
+                                ['show', 'commenter'],
                             ]
                         },
                         {
                             name: "Multimedia",
                             route: "/multimedia",
                             permissions: [
-                                ['add', 'gallery'],
-                                ['edit', 'gallery'],
-                                ['del', 'gallery'],
+                                ['show', 'export'],
                             ]
                         },
                         {
                             name: "Database",
                             route: "/database",
                             permissions: [
-                                ['show', 'admin'],
+                                ['show', 'database'],
                             ]
                         },
                         {
                             name: "All comments",
                             route: "/comments_and_reviews",
                             permissions: [
-                                ['show', 'comments'],
-                                ['del_comment', 'comments'],
+                                ['show', 'comment'],
                             ]
                         },
                     ],

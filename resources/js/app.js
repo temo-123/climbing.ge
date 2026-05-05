@@ -22,8 +22,8 @@ import mini_editor from './components/user/items/form/parts/editor/MiniEditorCom
 app.component("mini_editor", mini_editor);
 
 import { abilityDefaults } from "./services/ability/ability.js"
-app.config.globalProperties.$ability = abilityDefaults
-app.config.globalProperties.$can = (action, subject) => abilityDefaults.can(action, subject)
+import { abilitiesPlugin } from '@casl/vue'
+app.use(abilitiesPlugin, abilityDefaults, { useGlobalProperties: true })
 
 import { useAuthStore } from "./store/auth.js"
 
@@ -348,16 +348,15 @@ window.axios.interceptors.response.use(response => response, async err => {
         }
         else if (status === 403) {
             if (err.response.data && err.response.data.is_banned === true) {
-                const alertData = err.response.data.alert;
-                app.config.globalProperties.$bus.$emit('toast', {
-                    type: 'danger',
-                    title: alertData ? alertData.title : 'Account Banned',
-                    message: alertData ? alertData.message : 'Your account has been banned.',
-                    duration: 10000,
-                });
                 localStorage.removeItem('x_xsrf_token');
                 localStorage.removeItem('auth_token');
-                setTimeout(() => window.location.href = '/', 3000);
+                localStorage.removeItem('user_permissions');
+                sessionStorage.setItem('banned_redirect', '1');
+                if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+                    router.push({ name: 'banned' });
+                } else {
+                    window.location.href = (process.env.MIX_APP_SSH || '') + '/banned';
+                }
                 return Promise.reject(err);
             }
             else {
@@ -382,12 +381,6 @@ window.axios.interceptors.response.use(response => response, async err => {
 app.use(router);
 
 app.mount("#app");
-
-// Fetch authenticated user once on mount so CASL rules are updated globally
-if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-    const authStore = useAuthStore();
-    authStore.fetchUser();
-}
 
 // Auto load site data after app mount - direct global call to avoid multiple
 setTimeout(() => {

@@ -51,7 +51,6 @@ class OrderController extends Controller
     }
 
     public function get_user_purchules() {
-        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
         $user = Auth::user();
         if (!$user) return [];
 
