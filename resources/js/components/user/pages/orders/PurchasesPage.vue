@@ -12,18 +12,23 @@
                     <tabsComponent
                         :table_data="data_for_tab"
                         @update="get_purchules()"
+                        @show_customer_order_details="show_customer_order_details"
                     />
                 </div>
             </div>
         </div>
+
+        <customerOrderDetailsModal ref="customerOrderDetailsModal" />
     </div>
 </template>
 
 <script>
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
+import customerOrderDetailsModal from '../../items/modal/orders/CustomerOrderDetailsModal.vue'
+
 export default {
-    components: { breadcrumb, tabsComponent },
+    components: { breadcrumb, tabsComponent, customerOrderDetailsModal },
     data(){
         return { data_for_tab: [] }
     },
@@ -32,6 +37,9 @@ export default {
         '$route'() { this.get_purchules(); window.scrollTo(0,0) }
     },
     methods: {
+        show_customer_order_details(order_id) {
+            this.$refs.customerOrderDetailsModal.show_modal(order_id)
+        },
         get_purchules(){
             axios.get("get_order/get_user_purchules")
             .then(response => {
@@ -42,15 +50,15 @@ export default {
                     tab_data: {
                         data: response.data,
                         tab: {
-                            head: ['ID', 'Custom', 'Status', 'Payment', 'Shipping', 'Delivery', 'Date'],
+                            head: ['ID', 'Status', 'Payment', 'Shipping', 'Delivery', 'Date', 'Details'],
                             body: [
                                 ['data', ['id']],
-                                ['data', ['is_custom'], 'bool'],
                                 ['data', ['status']],
                                 ['data', ['payment']],
                                 ['data', ['shiping']],
                                 ['data', ['delivery_days']],
                                 ['data', ['created_at']],
+                                ['action_fun_id', 'show_customer_order_details', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                             ],
                             perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
                         }

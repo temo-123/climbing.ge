@@ -44,10 +44,11 @@ class UserAdresesController extends Controller
         $editing_item['flat'] = $request->adding_data['flat'];
         $editing_item['entrance'] = $request->adding_data['entrance'];
         $editing_item['zip_code'] = $request->adding_data['zip_code'];
+        $editing_item['map'] = $request->adding_data['map'] ?? null;
 
         $editing_item['user_id'] = Auth::user()->id;
 
-        $editing_item -> save();
+        $editing_item->save();
     }
 
     public function edit_adres(Request $request)

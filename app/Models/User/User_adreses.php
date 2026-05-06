@@ -11,8 +11,9 @@ class User_adreses extends Model
     // public $table = 'articles';
 
     protected $fillable = [
+        'user_id',
         'name',
-        'country_id',
+        'region_id',
         'city',
         'strit',
         'number',
@@ -20,7 +21,8 @@ class User_adreses extends Model
         'flat',
         'entrance',
         'zip_code',
-	];
+        'map',
+    ];
 
 	public function user()
 	{

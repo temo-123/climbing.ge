@@ -47,6 +47,7 @@ class CommentController extends Controller
         $comments = [];
         foreach ($user->article_comments as $comment) {
             $comments[] = [
+                'id' => $comment->id,
                 'comment' => $comment,
                 'locale_article' => $comment->article->us_article,
                 'global_article' => $comment->article,

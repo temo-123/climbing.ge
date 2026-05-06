@@ -21,7 +21,7 @@ app.component("small_editor", small_editor);
 import mini_editor from './components/user/items/form/parts/editor/MiniEditorComponent.vue'
 app.component("mini_editor", mini_editor);
 
-import { abilityDefaults } from "./services/ability/ability.js"
+import { abilityDefaults, updateAbility } from "./services/ability/ability.js"
 import { abilitiesPlugin } from '@casl/vue'
 app.use(abilitiesPlugin, abilityDefaults, { useGlobalProperties: true })
 
@@ -275,6 +275,16 @@ router.beforeEach((to, from, next) => {
         return next('/ka' + to.path);
     }
 
+    if (to.name === 'banned') {
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
+        if (token) return next({ name: 'home' });
+        if (sessionStorage.getItem('banned_redirect')) {
+            sessionStorage.removeItem('banned_redirect');
+            return next();
+        }
+        return next({ name: 'login' });
+    }
+
     next();
 });
 
@@ -283,6 +293,71 @@ router.afterEach(() => {
         isRouteLoading.value = false;
     }, 300);
 });
+
+// ── User subdomain: auth + permission guard ───────────────────────────────────
+// The UserRoutes.js beforeEach guards never execute because app.js extracts
+// only the routes array and creates a new router. All real guard logic lives here.
+if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
+    const userPublicRoutes = [
+        'login', 'register', 'forget_pass', 'reset_pass',
+        'callback', 'verify', 'create_pass',
+    ];
+
+    let authVerified = false;
+
+    document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) authVerified = false;
+    });
+
+    router.beforeEach(async (to, from, next) => {
+        // Banned page access is fully handled by the locale guard above
+        if (to.name === 'banned') return next();
+
+        const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
+
+        if (!token) {
+            authVerified = false;
+            if (userPublicRoutes.includes(to.name)) return next();
+            return next({ name: 'login', query: { redirect: to.fullPath } });
+        }
+
+        // Logged in — bounce away from public/auth pages
+        if (userPublicRoutes.includes(to.name)) {
+            return next({ name: 'home' });
+        }
+
+        // First protected navigation: verify token + load CASL rules
+        if (!authVerified) {
+            try {
+                const response = await axios.get('auth_user');
+                updateAbility(response.data.casl_permissions || []);
+                authVerified = true;
+            } catch (e) {
+                if (e.response?.data?.is_banned === true) {
+                    sessionStorage.setItem('banned_redirect', '1');
+                    return next({ name: 'banned' });
+                }
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('x_xsrf_token');
+                localStorage.removeItem('user_permissions');
+                authVerified = false;
+                return next({ name: 'login', query: { redirect: to.fullPath } });
+            }
+        }
+
+        // Block routes the user lacks permission for
+        const requiredPermissions = to.meta.permissions;
+        if (requiredPermissions?.length) {
+            const hasPermission = requiredPermissions.some(([action, subject]) =>
+                abilityDefaults.can(action, subject)
+            );
+            if (!hasPermission) return next({ name: 'home' });
+        }
+
+        next();
+    });
+}
+// ─────────────────────────────────────────────────────────────────────────────
 
 function getCsrfCookie() {
     const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);

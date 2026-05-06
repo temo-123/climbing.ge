@@ -10,20 +10,10 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-12" v-if="event_loading">
-                    <content-loader
-                        viewBox="0 0 500 150"
-                        primaryColor="#f3f3f3"
-                        secondaryColor="#7427bb75"
-                    >
-                        <rect x="0" y="0" rx="2" ry="2" width="100%" height="25" />
-
-                        <rect x="0" y="45" rx="3" ry="3" width="100%" height="10" />
-                        <rect x="0" y="60" rx="3" ry="3" width="100%" height="10" />
-                        <rect x="0" y="75" rx="3" ry="3" width="100%" height="10" />
-                        <rect x="0" y="90" rx="3" ry="3" width="100%" height="10" />
-                        <rect x="0" y="105" rx="3" ry="3" width="100%" height="10" />
-                    </content-loader>
+                <div class="col-md-12 text-center py-4" v-if="event_loading">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
                 </div>
                 <div class="col-sm-12" v-else>
                     <tabsComponent 
@@ -46,7 +36,6 @@
         components: {
             breadcrumb,
             tabsComponent,
-            ContentLoader
         },
         // props: [
         //     'status',

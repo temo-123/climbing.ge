@@ -14,6 +14,26 @@
                 </span>
             </div>
 
+            <!-- Delivery address (regular orders) -->
+            <template v-if="!order.is_custom && buyer_address">
+                <h6 class="text-muted mb-2">Delivery Address</h6>
+                <div class="alert alert-secondary py-2 mb-3">
+                    <strong>{{ buyer_address.name }}</strong>
+                    <p class="mb-0 small">
+                        {{ buyer_address.city }}<span v-if="buyer_address.strit">, {{ buyer_address.strit }} {{ buyer_address.number }}</span>
+                        <span v-if="buyer_address.floor">, Floor {{ buyer_address.floor }}</span>
+                        <span v-if="buyer_address.flat">, Flat {{ buyer_address.flat }}</span>
+                    </p>
+                    <p class="mb-0 small" v-if="buyer_address.zip_code">Zip: {{ buyer_address.zip_code }}</p>
+                    <p class="mb-0 small" v-if="buyer_address.map">
+                        <a :href="buyer_address.map" target="_blank" rel="noopener">
+                            <i class="fa fa-map-o"></i> View on map
+                        </a>
+                    </p>
+                </div>
+                <hr>
+            </template>
+
             <!-- Buyer info (custom orders only) -->
             <template v-if="order.is_custom && buyer_address">
                 <h6 class="text-muted mb-2">Buyer Information</h6>

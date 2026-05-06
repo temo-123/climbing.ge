@@ -76,6 +76,11 @@
                                             <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
                                             <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code">
 
+                                            <div class="mt-2">
+                                                <label class="text-muted small">Map location (optional) — paste Google Maps link or coordinates</label>
+                                                <textarea class="form-control" v-model="adding_data.map" name="map" id="map" rows="2" placeholder="e.g. https://maps.google.com/?q=41.69,44.83"></textarea>
+                                            </div>
+
                                             <button
                                                 type="button"
                                                 :class="{'btn btn-primary': true}"
@@ -99,6 +104,7 @@
                                             <p>Flat - {{ quick_adres.flat }}</p>
                                             <p>Entrance - {{ quick_adres.entrance }}</p>
                                             <p>Zip Code - {{ quick_adres.zip_code }}</p>
+                                            <p v-if="quick_adres.map">Map - <a :href="quick_adres.map" target="_blank" rel="noopener">View location</a></p>
                                         </div>
                                     </div>
                                 </div>
@@ -250,6 +256,7 @@ export default {
                 flat: null,
                 entrance: null,
                 zip_code: null,
+                map: null,
             },
             errors: {
                 demo_name: false,
@@ -394,6 +401,7 @@ export default {
                         flat: null,
                         entrance: null,
                         zip_code: null,
+                        map: null,
                     }
                 })
                 .catch(error => console.log(error))

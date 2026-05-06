@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Shop\Product;
 use App\Models\Shop\CustomOrderAddress;
 use App\Models\User;
+use App\Models\User\User_adreses;
 
 class Order extends Model
 {
@@ -39,5 +40,15 @@ class Order extends Model
     public function relatedUsers()
     {
         return $this->belongsToMany(User::class, 'orders_user', 'order_id', 'user_id');
+    }
+
+    public function userAdres()
+    {
+        return $this->belongsTo(User_adreses::class, 'adres_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

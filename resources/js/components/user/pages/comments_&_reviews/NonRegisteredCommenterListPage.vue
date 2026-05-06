@@ -65,7 +65,7 @@
                 this.data_for_tab = [],
 
                 axios
-                .get("/get_non_registered_commenter/get_non_registered_commenter/")
+                .get("/set_non_registered_commenter/get_non_registered_commenter")
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,

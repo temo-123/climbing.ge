@@ -52,10 +52,11 @@ class TourController extends Controller
             $image = $tour_images ? $tour_images->image : '';
             
             array_push($returned_array, [
+                'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
-                'image' => $image,
-                'user' => $tour->user[0] ?? null
+                'image'       => $image,
+                'user'        => $tour->user[0] ?? null
             ]);
         }
         return $returned_array;
@@ -83,10 +84,11 @@ class TourController extends Controller
             $image = $tour_images ? $tour_images->image : '';
             
             array_push($returned_array, [
+                'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
-                'image' => $image,
-                'user' => $tour->user[0] ?? null
+                'image'       => $image,
+                'user'        => $tour->user[0] ?? null
             ]);
         }
         return $returned_array;

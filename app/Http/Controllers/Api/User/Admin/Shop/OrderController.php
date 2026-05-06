@@ -14,7 +14,6 @@ use App\Models\Site;
 use App\Models\User\User_adreses;
 use App\Models\Shop\Order;
 use App\Models\Shop\Order_products;
-use App\Models\Shop\Order_status;
 
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Product;
@@ -72,7 +71,7 @@ class OrderController extends Controller
     public function get_order_status($order_id)
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        return Order_status::where("order_id", "=", $order_id)->first();
+        return Order::where("id", "=", $order_id)->select('id', 'status', 'status_updating_data')->first();
     }
 
     public function castam_prodaction_message(Request $request) {
@@ -142,6 +141,10 @@ class OrderController extends Controller
 
         try {
             (new static)->send_order_confirm_mail_to_user($new_order->id);
+        } catch (\Exception $e) {}
+
+        try {
+            (new static)->send_order_mail_ot_admin();
         } catch (\Exception $e) {}
 
         return response()->json(['message' => 'Order created successfully', 'order_id' => $new_order->id]);
@@ -292,41 +295,44 @@ class OrderController extends Controller
     public function get_order_products($order_id)
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        // return Order_products::where("order_id", "=", $request->order_id)->get();
-        if (Auth::user()) {
-            $product_items = Order_products::where("order_id", "=", $order_id)->get();
-            $products = array();
-            foreach ($product_items as $item) {
-
-                $option = Product_option::where('id', strip_tags($item->product_option_id))->get();
-
-                foreach ($option as $opt) {
-                    $product = Product::where('id', strip_tags($opt->product_id))->get();
-
-                    array_push($products, [
-                        "product"=>$product[0],
-                        "option"=>$option[0],
-                        "quantity"=>$item->quantity,
-                    ]);
-                }
-
-                // array_push($products, [$option]);
-            }
-            // dd($products);
-            return $products;
-        }
+        return $this->get_order_products_raw($order_id);
     }
 
     public function get_order_detals(Request $request)
     {
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        $order = Order::where("id", "=", $request->order_id)
-            ->with(['relatedUsers:id,name,surname,email'])
-            ->first();
-        $order_products = (new static)->get_order_products($order->id);
-        $buyer_address = $order->buyerAddress()->first();
+        return $this->build_order_detail($request->order_id);
+    }
 
-        $related_users = $order->is_custom
+    public function get_my_purchase_detail(Request $request)
+    {
+        $user = Auth::user();
+        if (!$user) return response()->json(['error' => 'Unauthorized'], 401);
+
+        $order = Order::where('id', $request->order_id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        return $this->build_order_detail($request->order_id, false);
+    }
+
+    private function build_order_detail($order_id, $include_related_users = true)
+    {
+        $order = Order::where("id", "=", $order_id)
+            ->with(['relatedUsers:id,name,surname,email', 'userAdres'])
+            ->first();
+
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        $order_products = (new static)->get_order_products_raw($order->id);
+
+        $buyer_address = $order->is_custom
+            ? $order->buyerAddress()->first()
+            : $order->userAdres;
+
+        $related_users = ($include_related_users && $order->is_custom)
             ? $order->relatedUsers->map(fn($u) => [
                 'id'      => $u->id,
                 'name'    => $u->name,
@@ -336,11 +342,28 @@ class OrderController extends Controller
             : [];
 
         return [
-            'order'         => $order,
+            'order'          => $order,
             'order_products' => $order_products,
-            'buyer_address' => $buyer_address,
-            'related_users' => $related_users,
+            'buyer_address'  => $buyer_address,
+            'related_users'  => $related_users,
         ];
+    }
+
+    private function get_order_products_raw($order_id)
+    {
+        $product_items = Order_products::where("order_id", "=", $order_id)->get();
+        $products = [];
+        foreach ($product_items as $item) {
+            $option = Product_option::where('id', strip_tags($item->product_option_id))->first();
+            if (!$option) continue;
+            $product = Product::where('id', strip_tags($option->product_id))->first();
+            $products[] = [
+                'product'  => $product,
+                'option'   => $option,
+                'quantity' => $item->quantity,
+            ];
+        }
+        return $products;
     }
 
     public function order_is_confirm(Request $request)
@@ -378,12 +401,20 @@ class OrderController extends Controller
         $auth = PermissionService::authorize('order', 'edit');
         if ($auth) return $auth;
 
-        $editing_order_status = Order::where("id", "=", $request->order_id)->first();
-        $editing_order_status['status'] = $request->status;
-        $editing_order_status['status_updating_data'] = date("Y-m-d H:I:s");
-        $editing_order_status->update();
+        $order = Order::where("id", "=", $request->order_id)->first();
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
 
-        (new static)->order_status_notification($request->status, date("Y-m-d H:I:s"), $order->user_id, $editing_order_status->order_id);
+        $order['status'] = $request->status;
+        $order['status_updating_data'] = date("Y-m-d H:i:s");
+        $order->update();
+
+        if ($order->user_id) {
+            try {
+                (new static)->order_status_notification($request->status, date("Y-m-d H:i:s"), $order->user_id, $order->id);
+            } catch (\Exception $e) {}
+        }
+
+        return response()->json(['message' => 'Status updated', 'status' => $order->status]);
     }
 
     public function order_status_notification($status, $data_time, $user_id, $order_id)

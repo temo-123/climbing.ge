@@ -29,25 +29,20 @@ class CommentController extends Controller
         if ($auth) return $auth;
         $user_id = auth()->user()->id;
 
-        if(user::where("id", "=", $user_id)->count() > 0){
-            $user = user::where("id", "=", $user_id)->latest()->first();
+        $user = user::find($user_id);
+        if (!$user) return [];
 
-            if($user->product_feedbacks){
-                $user_comments = $user->article_comments;
-
-                $comments = [];
-                foreach ($user_comments as $comment) {
-
-                    array_push($comments, [
-                        'comment' => $comment, 
-                        'locale_article' => $comment->article->us_article,
-                        'global_article' => $comment->article
-                    ]);
-                }
-                
-                return $comments;
-            }
+        $comments = [];
+        foreach ($user->article_comments as $comment) {
+            $comments[] = [
+                'id' => $comment->id,
+                'comment' => $comment,
+                'locale_article' => $comment->article->us_article,
+                'global_article' => $comment->article,
+            ];
         }
+
+        return $comments;
     }
 
     public function del_comment($id)

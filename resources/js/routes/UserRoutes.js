@@ -1,7 +1,6 @@
-import { createRouter, createWebHistory, createMemoryHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import { h } from "vue";
 import { RouterView } from "vue-router";
-import { abilityDefaults, updateAbility } from '../services/ability/ability.js';
 
 import NotFound from '../components/errors/404Component.vue'
 import BannedPage from '../components/user/pages/BannedPageComponent.vue'
@@ -191,75 +190,6 @@ const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
         return { top: 0 };
     }
-});
-
-const publicRoutes = ['login', 'register', 'forget_pass', 'reset_pass', 'callback', 'verify', 'create_pass'];
-
-// Tracks whether the current session token has been verified with the backend.
-// Reset to false on logout / 401 or when the tab regains visibility (catches
-// logouts that happened on another subdomain or browser tab).
-let authVerified = false;
-
-document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) authVerified = false;
-});
-
-router.beforeEach(async (to, from, next) => {
-    const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
-
-    // Banned page: only reachable via a ban redirect, not directly
-    if (to.name === 'banned') {
-        if (token) return next({ name: 'home' });
-        if (sessionStorage.getItem('banned_redirect')) {
-            sessionStorage.removeItem('banned_redirect');
-            return next();
-        }
-        return next({ name: 'login' });
-    }
-
-    if (!token) {
-        authVerified = false;
-        if (publicRoutes.includes(to.name)) return next();
-        return next({ name: 'login', query: { redirect: to.fullPath } });
-    }
-
-    // Logged in — redirect away from auth pages
-    if (publicRoutes.includes(to.name)) {
-        return next({ name: 'home' });
-    }
-
-    // First protected navigation in this session: verify the token is still
-    // valid server-side and populate CASL ability rules.
-    if (!authVerified) {
-        try {
-            const response = await axios.get('auth_user');
-            updateAbility(response.data.casl_permissions || []);
-            authVerified = true;
-        } catch (e) {
-            if (e.response?.data?.is_banned === true) {
-                sessionStorage.setItem('banned_redirect', '1');
-                return next({ name: 'banned' });
-            }
-            localStorage.removeItem('auth_token');
-            localStorage.removeItem('x_xsrf_token');
-            localStorage.removeItem('user_permissions');
-            authVerified = false;
-            return next({ name: 'login', query: { redirect: to.fullPath } });
-        }
-    }
-
-    // Block navigation to pages the user lacks permission for
-    const requiredPermissions = to.meta.permissions;
-    if (requiredPermissions && requiredPermissions.length) {
-        const hasPermission = requiredPermissions.some(([action, subject]) =>
-            abilityDefaults.can(action, subject)
-        );
-        if (!hasPermission) {
-            return next({ name: 'home' });
-        }
-    }
-
-    next();
 });
 
 export default router;

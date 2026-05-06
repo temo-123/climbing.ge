@@ -233,6 +233,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_activ_order/{order_id}', 'get_activ_order');
         Route::get('/get_order_detals/{order_id}', 'get_order_detals');
         Route::get('/get_order_products/{order_id}', 'get_order_products');
+        Route::get('/get_my_purchase_detail/{order_id}', 'get_my_purchase_detail');
 
         Route::get('/get_order_statistics/{period}', 'get_order_statistics');
         Route::get('/get_order_finance_statistics/{period}', 'get_order_finance_statistics');
