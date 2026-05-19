@@ -149,7 +149,7 @@
                     persons: '',
                     text: ''
                 },
-                user: [],
+                user: {},
 
                 is_loading: false,
 

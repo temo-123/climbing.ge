@@ -24,6 +24,7 @@
                     
                     <li><router-link :to="'/summits/list'"> <span> {{ $t('summit.menu.list') }} </span></router-link></li>
                     <li><router-link :to="'/summits/map'"> <span> {{ $t('summit.menu.map') }} </span></router-link></li>
+                    <li><router-link :to="'/my_ascents'"> <span> {{ $t('summit.menu.my_ascents') }} </span></router-link></li>
                     <li><router-link :to="'/about_us'"> <span> {{ $t('summit.menu.about') }} </span></router-link></li>
 
                     <navbar-search site="summit" search_route="search_summits" />

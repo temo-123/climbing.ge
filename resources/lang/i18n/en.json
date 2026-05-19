@@ -276,6 +276,11 @@
             "working_time": "Working Hours",
             "no_info_working_time": "No information available about the gym's working hours.",
             "mount_route_filtr": "Select Mount System and Filter Routes",
+            "mount_route": {
+                "grade": "Route Grade",
+                "easy": "Easy",
+                "hard": "Hard"
+            },
             "region_filtr": "Select Region and Filter Spots by Region",
             "other_sites": "Other Resources"
         },
@@ -560,6 +565,7 @@
             "about": "About Us",
             "list": "Summit List",
             "map": "Summit Map",
+            "my_ascents": "My Ascents",
             "summit": "Summits"
         },
         "title": {
@@ -599,7 +605,21 @@
         },
         "summit_map_description": "Explore summits on the map and plan your next climb in Georgia.",
         "map": {
-            "coming_soon": "Interactive map coming soon."
+            "coming_soon": "Interactive map coming soon.",
+            "summits_on_map": "summits shown",
+            "view": "View Summit"
+        },
+        "my_ascents": {
+            "login_required": "Please log in to view your ascent history.",
+            "go_to_login": "Go to Login",
+            "no_ascents": "You haven't recorded any ascents yet.",
+            "total": "ascents recorded",
+            "summit": "Summit",
+            "date": "Date",
+            "route": "Route",
+            "grade": "Grade",
+            "gps": "GPS",
+            "comment": "Comment"
         },
         "no_summits": "No summits available yet.",
         "summit_page": {
@@ -641,6 +661,7 @@
             "first_name": "First Name",
             "last_name": "Last Name",
             "ascent_date": "Ascent Date",
+            "ascent_time": "Ascent Time",
             "route_label": "Route (optional)",
             "comment_label": "Comment (optional)",
             "submit": "Submit Ascent",
@@ -759,6 +780,29 @@
         "go_home": "Go to Home Page"
     },
     "common": {
+        "close": "Close"
+    },
+    "head_slider": {
+        "guide_images": "Guide header images",
+        "shop_images": "Shop header images",
+        "refresh": "Refresh",
+        "add_image": "Add image",
+        "edit_image": "Edit image",
+        "preview": "Preview",
+        "read_more": "Read more",
+        "title": "Title",
+        "article_link": "Article link",
+        "text": "Text",
+        "text_position": "Text position",
+        "center": "Center",
+        "top_left": "Top Left",
+        "top_right": "Top Right",
+        "bottom_left": "Bottom Left",
+        "bottom_right": "Bottom Right",
+        "public": "Public",
+        "not_public": "Not public",
+        "no_public_label": "Not public",
+        "save": "Save",
         "close": "Close"
     }
 }

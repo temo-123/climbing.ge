@@ -9,7 +9,7 @@
                     
             <div>
                 <div class="tips-slider-container">
-                    <div class="previes_tip_bottom" v-if="techtips.length > visibleCount && slider_index > 0" @click="previousTips">
+                    <div class="previes_tip_bottom" v-if="techtips.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previousTips">
                         <i class="fa fa-chevron-left" aria-hidden="true"></i>
                     </div>
 
@@ -36,7 +36,7 @@
                         </div>
                     </div>
 
-                    <div class="next_tip_bottom" v-if="techtips.length > visibleCount && slider_index < techtips.length - visibleCount - 1" @click="nextTips">
+                    <div class="next_tip_bottom" v-if="techtips.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index >= techtips.length - visibleCount }" @click="nextTips">
                         <i class="fa fa-chevron-right" aria-hidden="true"></i>
                     </div>
                 </div>
@@ -96,7 +96,7 @@
 
             nextTips(){
                 this.pauseAutoSlide();
-                if (this.slider_index < this.techtips.length - this.visibleCount - 1) {
+                if (this.slider_index < this.techtips.length - this.visibleCount) {
                     this.slider_index += 1;
                 }
                 this.resumeAutoSlide();
@@ -113,7 +113,7 @@
             startAutoSlide() {
                 if (this.autoSlideInterval) return;
                 this.autoSlideInterval = setInterval(() => {
-                    if (this.slider_index < this.techtips.length - this.visibleCount - 1) {
+                    if (this.slider_index < this.techtips.length - this.visibleCount) {
                         this.slider_index += 1;
                     } else {
                         this.stopAutoSlide();
@@ -233,6 +233,12 @@
 
 .tip-item {
     box-sizing: border-box;
+}
+
+.slider-btn-disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .previes_tip_bottom, .next_tip_bottom {

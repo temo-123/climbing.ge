@@ -272,6 +272,7 @@
     max-height: 100vh !important;
     border-radius: 0 !important;
     margin: 0 !important;
+    max-width: none !important;
   }
   /* Remove overlay padding for fullscreen so modal fills edge-to-edge */
   .stack-modal-overlay:has(.modal-full),

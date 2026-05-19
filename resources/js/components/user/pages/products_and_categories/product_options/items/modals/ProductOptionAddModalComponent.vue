@@ -3,6 +3,7 @@
             :show="is_add_option_modal"
             :title="'Add option'" 
             @close="close_option_add_model"
+            @save="add_option"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
@@ -58,11 +59,11 @@
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
+            <!-- <div slot="modal-footer">
                 <div class="modal-footer">
                     <button type="submit" form="add_new_option" class="btn btn-primary">Add new option</button>
                 </div>
-            </div>
+            </div> -->
         </stack-modal>
 </template>
 

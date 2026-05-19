@@ -2,7 +2,10 @@
     <StackModal
         v-model="is_order_detals_model"
         title="Order Details"
-        @close="is_order_detals_model=false">
+        @close="is_order_detals_model=false"
+        :saveButton="{ visible: false }"
+        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+    >
         <div v-if="order">
 
             <!-- Order type badge -->
@@ -201,7 +204,7 @@ export default {
             this.get_order_detals(order_id)
         },
         get_order_detals(order_id) {
-            axios.get('/get_order/get_order_detals/' + order_id)
+            axios.get('get_order/get_order_detals/' + order_id)
                 .then(response => {
                     this.order = response.data.order
                     this.order_product_items = response.data.order_products

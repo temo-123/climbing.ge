@@ -239,7 +239,7 @@
             },
             validateFile(file) {
                 const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-                const maxSize = 5 * 1024 * 1024; // 5MB
+                const maxSize = 2 * 1024 * 1024; // 2MB
 
                 if (!allowedTypes.includes(file.type)) {
                     alert('Invalid file type. Please select a JPEG, PNG, GIF, or WebP image.');
@@ -247,7 +247,7 @@
                 }
 
                 if (file.size > maxSize) {
-                    alert('File size too large. Please select an image smaller than 5MB.');
+                    alert('File size too large. Please select an image smaller than 2MB.');
                     return false;
                 }
 

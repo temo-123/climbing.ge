@@ -69,6 +69,9 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Events',
+                                            'list_page': process.env.MIX_APP_SSH
+                                                ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
+                                                : window.location.origin + '/events',
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'eventAdd', 
@@ -127,6 +130,9 @@
                     this.data_for_tab.push({
                                             'id': 2,
                                             'table_name': 'Competitions',
+                                            'list_page': process.env.MIX_APP_SSH
+                                                ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
+                                                : window.location.origin + '/events',
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'competitionAdd', 

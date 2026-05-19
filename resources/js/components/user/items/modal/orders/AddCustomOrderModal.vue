@@ -3,6 +3,7 @@
         v-model="showModal"
         title="Add Custom Order"
         @close="closeModal"
+        @shown="() => { if (!submitted) this.$nextTick(() => this.$el.querySelector('input').focus()); }"
     >
         <form @submit.prevent="submitOrder" v-if="!submitted">
 
@@ -153,7 +154,7 @@
             </div>
         </div>
 
-        <template #footer>
+        <!-- <template #footer>
             <div class="d-flex gap-2 justify-content-end p-3">
                 <button v-if="!submitted" type="button" class="btn btn-primary" @click="submitOrder" :disabled="submitting">
                     {{ submitting ? 'Saving...' : 'Create Order' }}
@@ -162,7 +163,7 @@
                     {{ submitted ? 'Close' : 'Cancel' }}
                 </button>
             </div>
-        </template>
+        </template> -->
     </StackModal>
 </template>
 

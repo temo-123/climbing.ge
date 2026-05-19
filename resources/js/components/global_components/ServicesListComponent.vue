@@ -29,7 +29,7 @@
             </div>
             <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('blog')">
                 <div class="row service_icon" >
-                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                 </div>
                 <div class="row">
                     <h2>{{ $t('blog.name') }}</h2>
@@ -38,7 +38,7 @@
             </div>
             <div class="col-md-3 col-xs-6 text-center service-item" @click="go_to_service('summit')">
                 <div class="row service_icon" >
-                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
+                    <i class="fa fa-street-view" aria-hidden="true"></i>
                 </div>
                 <div class="row">
                     <h2>{{ $t('summit.name') }}</h2>
@@ -70,7 +70,7 @@
             go_to_service(service){
                 if(service == "blog"){
                     if(window.location.href == this.MIX_APP_SSH + 'blog.' + this.MIX_SITE_URL + '/about_us'){
-                        this.$router.push({name: 'blog_index'});
+                        this.$router.push({name: 'index'});
                     }
                     else{
                         window.open(this.MIX_APP_SSH + 'blog.' + this.MIX_SITE_URL + '/')

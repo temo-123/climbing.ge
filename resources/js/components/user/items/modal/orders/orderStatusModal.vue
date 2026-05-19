@@ -2,7 +2,10 @@
     <StackModal
         v-model="is_order_status_model"
         title="Show order status"
-        @close="is_order_status_model=false">
+        @close="is_order_status_model=false"
+        :saveButton="{ visible: false }"
+        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+    >
         <div class="p-4">
             <h3>Order Tracking</h3>
             <table class="table table-bordered track_tbl">
@@ -47,19 +50,7 @@ export default {
             .get("/get_order/get_order_status/" + this.activ_order_id)
             .then(response => {
                 this.order_status = response.data
-
-                if(!this.order_status.status){
-                    this.row_color = 'row_deanger'
-                }
-                else if(this.order_status.status ){
-                    this.row_color = 'row_worning'
-                }
-                else if(this.order_status.status ){
-                    this.row_color = ''
-                }
-                else{
-                    this.row_color = ''
-                }
+                this.is_order_status_model = true
             })
             .catch(error => console.log(error));
         },

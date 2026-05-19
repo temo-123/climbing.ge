@@ -24,7 +24,12 @@
                                 <button class="btn btn-primary" @click="goToShop()">Browse products</button>
                             </div>
 
-                            <div v-for="product in cart_items" :key="product.id" class="cart-item">
+                            <div v-if="has_unavailable_items" class="alert alert-warning">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                Some items in your cart are out of stock. Remove them to proceed to checkout.
+                            </div>
+
+                            <div v-for="product in cart_items" :key="product.id" class="cart-item" :class="{ 'cart-item-unavailable': product.is_out_of_stock }">
                                 <div class="row align-items-center">
                                     <div class="col-sm-12 col-md-2 text-center">
                                         <img
@@ -56,18 +61,21 @@
                                             <small><i class="fa fa-tag" aria-hidden="true"></i> {{ product.option.name }}</small>
                                         </div>
 
-                                        <div v-if="product.stock_quantity > 0 && product.stock_quantity <= 5" class="text-warning mt-1">
+                                        <div v-if="product.is_out_of_stock" class="text-danger mt-1">
+                                            <small><i class="fa fa-times-circle" aria-hidden="true"></i> Out of stock — please remove this item</small>
+                                        </div>
+                                        <div v-else-if="product.stock_quantity > 0 && product.stock_quantity <= 5" class="text-warning mt-1">
                                             <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Only {{ product.stock_quantity }} left in stock</small>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12 col-md-4">
                                         <div class="d-flex align-items-center justify-content-md-end">
-                                            <div class="cart-price mr-3">
+                                            <div class="cart-price mr-3" v-if="!product.is_out_of_stock">
                                                 <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ each</small></div>
                                                 <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
                                             </div>
-                                            <div class="quantity-wrap">
+                                            <div class="quantity-wrap" v-if="!product.is_out_of_stock">
                                                 <span v-if="is_quantity_updating" class="text-muted">Updating...</span>
                                                 <div v-else class="d-flex align-items-center">
                                                     <button class="qty-btn" @click="changeQty(product, -1)" :disabled="product.quantity <= 1">−</button>
@@ -86,7 +94,7 @@
                                     </div>
 
                                     <div class="col-sm-12 col-md-2 text-right">
-                                        <button @click="del_from_cart(product.id)" class="btn btn-outline-danger btn-sm">
+                                        <button @click="del_from_cart(product.id)" class="btn btn-danger btn-sm">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </div>
@@ -95,7 +103,7 @@
                             </div>
 
                             <div class="text-right mt-2" v-if="cart_items.length">
-                                <button type="button" @click="get_products_cart" class="btn btn-outline-secondary btn-sm" v-if="!is_products_refresh">
+                                <button type="button" @click="get_products_cart" class="btn btn-secondary btn-sm" v-if="!is_products_refresh">
                                     <i class="fa fa-refresh" aria-hidden="true"></i> Refresh ({{ products_reset_id }})
                                 </button>
                                 <span class="badge badge-secondary" v-if="is_products_refresh">Updating...</span>
@@ -107,11 +115,14 @@
                                 <div class="total-price">
                                     Total: <strong>{{ total_price }} ₾</strong>
                                 </div>
-                                <router-link :to="{name: 'orderPayment'}">
+                                <router-link :to="{name: 'orderPayment'}" v-if="!has_unavailable_items">
                                     <button type="button" class="btn btn-success">
                                         <i class="fa fa-credit-card" aria-hidden="true"></i> Checkout
                                     </button>
                                 </router-link>
+                                <button v-else type="button" class="btn btn-secondary" disabled title="Remove out-of-stock items to checkout">
+                                    <i class="fa fa-credit-card" aria-hidden="true"></i> Checkout
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -137,6 +148,11 @@
                 MIX_SHOP_URL: process.env.MIX_SHOP_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
                 is_quantity_updating: false,
+            }
+        },
+        computed: {
+            has_unavailable_items() {
+                return this.cart_items.some(p => p.is_out_of_stock);
             }
         },
         mounted() {
@@ -203,6 +219,7 @@
 
 <style scoped>
 .cart-item { padding: 12px 0; }
+.cart-item-unavailable { opacity: 0.6; background: #fff8f8; border-radius: 4px; }
 .cart-thumb { max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 4px; }
 .cart-product-name { font-size: 0.95rem; font-weight: 600; color: #333; text-decoration: none; }
 .cart-product-name:hover { color: #007bff; text-decoration: underline; cursor: pointer; }

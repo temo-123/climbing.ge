@@ -16,7 +16,8 @@ class PostController extends Controller
 {
     public function get_all_posts_and_news_for_blog(Request $request)
     {
-        $lang = $request->locale ?? 'en'; // Use locale from route param
+        $locale = $request->locale ?? 'en';
+        $lang = $locale === 'us' ? 'en' : $locale;
         $perPage = $request->get('per_page', 5);
         $page = $request->get('page', 1);
 
@@ -51,9 +52,13 @@ class PostController extends Controller
 
         // Sort by creation date descending
         usort($resp, function($a, $b) {
-            $aTime = strtotime($a['data']->created_at ?? now());
-            $bTime = strtotime($b['data']->created_at ?? now());
-            return $bTime - $aTime;
+            $aCreated = $a['type'] === 'post'
+                ? ($a['data']['global_data']->created_at ?? '')
+                : (is_object($a['data']) ? ($a['data']->created_at ?? '') : ($a['data']['created_at'] ?? ''));
+            $bCreated = $b['type'] === 'post'
+                ? ($b['data']['global_data']->created_at ?? '')
+                : (is_object($b['data']) ? ($b['data']->created_at ?? '') : ($b['data']['created_at'] ?? ''));
+            return strtotime($bCreated ?: '1970-01-01') - strtotime($aCreated ?: '1970-01-01');
         });
 
         // Paginate the array

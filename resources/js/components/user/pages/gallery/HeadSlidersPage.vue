@@ -15,38 +15,34 @@
                         <div class="row">
                             <div class="col">
                                 <input type="radio" id="1" :value="1" v-model="tab_num" />
-
-                                <label for="1">Guide header images</label>
+                                <label for="1">{{ $t('head_slider.guide_images') }}</label>
                             </div>
                             <div class="col">
                                 <input type="radio" id="2" :value="2" v-model="tab_num" />
-
-                                <label for="2">Shop header images</label>
+                                <label for="2">{{ $t('head_slider.shop_images') }}</label>
                             </div>
                         </div>
 
                         <div class="row" v-show="tab_num == 1">
                             <div class="col-md-12">
-                                Guide header images
-
-                                <images_tab 
+                                <h5>{{ $t('head_slider.guide_images') }}</h5>
+                                <images_tab
                                     :image_path_prop="'/images/head_slider_img/guide/'"
                                     :category_prop="'guide'"
-                                    ref="guide_slides" 
-                                    @get_all_images="get_header_images()" 
+                                    ref="guide_slides"
+                                    @get_all_images="get_header_images()"
                                 />
                             </div>
                         </div>
 
                         <div class="row" v-show="tab_num == 2">
                             <div class="col-md-12">
-                                Shop header images
-
-                                <images_tab 
+                                <h5>{{ $t('head_slider.shop_images') }}</h5>
+                                <images_tab
                                     :image_path_prop="'/images/head_slider_img/shop/'"
                                     :category_prop="'shop'"
-                                    ref="shop_slides" 
-                                    @get_all_images="get_header_images()" 
+                                    ref="shop_slides"
+                                    @get_all_images="get_header_images()"
                                 />
                             </div>
                         </div>

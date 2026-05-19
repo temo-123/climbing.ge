@@ -30,6 +30,7 @@ use App\Models\Shop\Tour;
 use App\Models\Shop\Tour_reservation;
 
 use App\Models\Films\Favorite_film;
+use App\Models\Summit\SummitAscent;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -265,5 +266,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function reservation()
     {
         return $this->belongsToMany(Tour_reservation::class, 'tour_reservation_users', 'user_id', 'reservation_id')->latest('id');
+    }
+
+    public function ascents()
+    {
+        return $this->belongsToMany(SummitAscent::class, 'summit_ascent_users', 'user_id', 'ascent_id');
     }
 }

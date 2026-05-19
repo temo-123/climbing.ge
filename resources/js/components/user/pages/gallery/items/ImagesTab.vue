@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-groupe float-right">
-                    <button class="btn btn-success"  @click="update_data()">refresh</button>
+                    <button class="btn btn-success" @click="update_data()">{{ $t('head_slider.refresh') }}</button>
                 </div>
             </div>
         </div>
@@ -11,30 +11,29 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="thumbnail">
-                    <img @click="show_add_image_modal()" alt="Add image" src="images/site_img/function_imgs/add_image.png">
+                    <img @click="show_add_image_modal()" :alt="$t('head_slider.add_image')" src="images/site_img/function_imgs/add_image.png">
                 </div>
             </div>
             <div class="col-md-4 mt-3" v-for="image in headSliderImages" :key="image.id">
                 <div class="thumbnail">
-
                     <img @click="show_image_modal(image.id)" :alt="image.title" :src="image_path_prop+image.image" class="cursor_pointer">
                     <div class="row">
                         <div class="col-md-12">
                             {{ image.image_type }}
                         </div>
                         <div class="col-md-12" style='color: #f00' v-if="image.published == 0">
-                            No public
+                            {{ $t('head_slider.no_public_label') }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <button @click="show_edit_image_modal(image.id)" type="submit" class="btn btn-primary float-left">    
-                                Edit
+                            <button @click="show_edit_image_modal(image.id)" type="button" class="btn btn-primary float-left">
+                                <i class="fa fa-pencil"></i>
                             </button>
                         </div>
                         <div class="col-md-6">
-                            <button @click="del_image(image.id)" type="submit" class="btn btn-danger float-right">    
-                                Del
+                            <button @click="del_image(image.id)" type="button" class="btn btn-danger float-right">
+                                <i class="fa fa-trash"></i>
                             </button>
                         </div>
                     </div>

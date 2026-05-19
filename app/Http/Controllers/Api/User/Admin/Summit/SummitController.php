@@ -125,6 +125,28 @@ class SummitController extends Controller
         return response()->json(['message' => 'Deleted']);
     }
 
+    public function update_coordinates(Request $request, $id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        $request->validate([
+            'latitude'  => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+        ]);
+
+        $summit = Summit::findOrFail($id);
+        $summit->update([
+            'latitude'  => $request->latitude,
+            'longitude' => $request->longitude,
+        ]);
+
+        return response()->json([
+            'message'   => 'Coordinates updated',
+            'latitude'  => $summit->latitude,
+            'longitude' => $summit->longitude,
+        ]);
+    }
+
     public function save_qr(Request $request, $id)
     {
         if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;

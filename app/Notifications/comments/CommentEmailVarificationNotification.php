@@ -21,6 +21,7 @@ class CommentEmailVarificationNotification extends Notification
         $this->host = $info['host'];
         $this->id = $info['id'];
         $this->user_email = $info['user_email'];
+        $this->token = $info['token'];
     }
 
     /**
@@ -44,7 +45,7 @@ class CommentEmailVarificationNotification extends Notification
     {
         return (new MailMessage)
         ->markdown('emails.comment.comment_email_varification', [
-            'action_url'=> url(env('APP_SSH').$this->host.'/confirm_comment_email/'.$this->id.'/'.$this->user_email),
+            'action_url'=> url(env('APP_SSH').$this->host.'/confirm_comment_email/'.$this->id.'/'.$this->user_email.'/'.$this->token),
             // 'title'=> 'Confirmation completion of your task.',
             // 'text'=> 'Thank you for execution task. Pleas visit your task panel for check other tasks',
         ])

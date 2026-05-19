@@ -14,8 +14,8 @@ class VerifyEmail extends Notification
      */
     protected function verificationUrl($notifiable)
     {
-        $hash = sha1($notifiable->email . $notifiable->created_at);
-        $base = rtrim(env('MIX_APP_SSH', 'https://') . env('MIX_USER_PAGE_URL', ''), '/');
+        $hash = hash_hmac('sha256', $notifiable->email . '|' . $notifiable->id, config('app.key'));
+        $base = rtrim(env('APP_SSH', 'https://') . env('USER_PAGE_URL', ''), '/');
         return $base . '/email/verify/' . $notifiable->id . '/' . $hash;
     }
 }

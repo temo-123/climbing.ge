@@ -3,6 +3,7 @@
         v-model="is_order_status_edit_model"
         title="Edit order status"
         @close="is_order_status_edit_model=false"
+        @save="edit_order_status"
         :saveButton="{ visible: true, title: 'Edit status', btnClass: { 'btn btn-primary': true }, onClick: edit_order_status }"
         :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
     >
@@ -104,6 +105,7 @@ export default {
                     else if(action == 'show'){
                         this.is_order_status_model = true
                     }
+                    
                 })
                 .catch(
                     error => console.log(error)
@@ -122,7 +124,9 @@ export default {
                     })
                     .then(response => {
                         this.is_order_status_edit_model = false
-                        alert('Order updated!')
+
+                        this.$emit('restart')
+                        // alert('Order updated!')
                     })
                     .catch(
                         error => console.log(error)

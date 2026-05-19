@@ -64,7 +64,7 @@
             // 'vue-recaptcha': VueRecaptchaV2
         },
         mounted() {
-            // 
+            this.is_verify_isset = true;
         },
         watch: {
             '$route' (to, from) {
@@ -80,15 +80,20 @@
             },
 
             confirm_email(){
+                this.is_loading = true
                 axios
-                .post('/guide_comment/confirm_email/'+this.$route.params.email)
+                .post('/set_guide_comment/confirm_email/'+this.$route.params.email, {
+                    token: this.$route.params.token,
+                    comment_id: this.$route.params.comment_id,
+                })
                 .then(response => {
                     alert('Your email is confirmed! This page will be closed!')
                     window.close();
                 })
                 .catch(error =>{
+                    alert('Confirmation failed. The link may have expired.')
                 })
-                .finally(() => this.article_loading = false);
+                .finally(() => this.is_loading = false);
             },
         }
     }

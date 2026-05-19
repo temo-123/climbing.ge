@@ -49,39 +49,42 @@
                 .then(response => {
                     this.data_for_tab.push({
                         'id': 1,
-                                            'table_name': 'My Tours', 
-                                            'add_action': {
-                                                'action': 'route',
-                                                'link': 'tourAdd', 
-                                                'class': 'btn btn-primary'
-                                            },
-                                            'tab_data': {
-                                                'data': response.data, 
-                                                'tab': {
-                                                    'head': [
-                                                        'ID',
-                                                        'URL Title',
-                                                        'Public',
-                                                        'Edit',
-                                                        'Delite',
-                                                    ],
-                                                    'body': [
-                                                        ['data', ['id']],
-                                                        ['data', ['url_title']],
-                                                        ['data', ['published'], 'bool'],
-                                                        ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                                    ],
-                                                    'perm': [
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['no'],
-                                                        ['tour', 'edit'],
-                                                        ['tour', 'del'],
-                                                    ]
-                                                }
-                                            },
-                                        });
+                        'table_name': 'My Tours', 
+                        list_page: process.env.MIX_APP_SSH
+                            ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/tours'
+                            : window.location.origin + '/tours',
+                        'add_action': {
+                            'action': 'route',
+                            'link': 'tourAdd', 
+                            'class': 'btn btn-primary'
+                        },
+                        'tab_data': {
+                            'data': response.data, 
+                            'tab': {
+                                'head': [
+                                    'ID',
+                                    'URL Title',
+                                    'Public',
+                                    'Edit',
+                                    'Delite',
+                                ],
+                                'body': [
+                                    ['data', ['id']],
+                                    ['data', ['url_title']],
+                                    ['data', ['published'], 'bool'],
+                                    ['action_router', 'tourEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                    ['action_fun_id', 'del_tour', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                ],
+                                'perm': [
+                                    ['no'],
+                                    ['no'],
+                                    ['no'],
+                                    ['tour', 'edit'],
+                                    ['tour', 'del'],
+                                ]
+                            }
+                        },
+                    });
                 })
                 .catch(
                     error => console.log(error)

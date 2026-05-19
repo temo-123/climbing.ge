@@ -28,9 +28,8 @@ class VerificationController extends Controller
             ], 404);
         }
 
-        // Simple hash verification (you might want to use a more secure method)
-        $expectedHash = sha1($user->email . $user->created_at);
-        
+        $expectedHash = hash_hmac('sha256', $user->email . '|' . $user->id, config('app.key'));
+
         if (!hash_equals($expectedHash, $hash)) {
             return response()->json([
                 'message' => 'Invalid verification link'

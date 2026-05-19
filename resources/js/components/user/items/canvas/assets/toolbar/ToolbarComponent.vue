@@ -35,12 +35,8 @@
             <button type="button" :class="['btn', 'btn-primary', { active: action === 7 }]" @click.prevent="$emit('combined')" title="Combined (rect + line + point)">
                 <i class="fa fa-object-group"></i>
             </button>
-        </div>
 
-        <div class="vr mx-1"></div>
-
-        <!-- Shape tools -->
-        <div class="btn-group btn-group-sm">
+            
             <button type="button" :class="['btn', 'btn-primary', { active: action === 10 }]" @click.prevent="$emit('circle')" title="Circle">
                 <i class="fa fa-circle-o"></i>
             </button>
@@ -77,13 +73,13 @@
 
         <!-- View tools (active = grey) -->
         <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-secondary" @click.prevent="$emit('zoom-in')" title="Zoom In">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-in')" title="Zoom In">
                 <i class="fa fa-search-plus"></i>
             </button>
-            <button type="button" class="btn btn-outline-secondary" @click.prevent="$emit('zoom-out')" title="Zoom Out">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-out')" title="Zoom Out">
                 <i class="fa fa-search-minus"></i>
             </button>
-            <button type="button" :class="['btn', action === 9 ? 'btn-secondary' : 'btn-outline-secondary']" @click.prevent="$emit('pan')" title="Pan">
+            <button type="button" :class="['btn', action === 9 ? 'btn-secondary' : 'btn-secondary']" @click.prevent="$emit('pan')" title="Pan">
                 <i class="fa fa-hand-paper-o"></i>
             </button>
         </div>
@@ -92,13 +88,13 @@
 
         <!-- Export -->
         <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-outline-secondary" @click.prevent="$emit('export-png')" title="Export PNG">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('export-png')" title="Export PNG">
                 <i class="fa fa-download"></i> PNG
             </button>
-            <button type="button" class="btn btn-outline-secondary" @click.prevent="$emit('export-svg')" title="Export SVG">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('export-svg')" title="Export SVG">
                 <i class="fa fa-download"></i> SVG
             </button>
-            <button type="button" class="btn btn-outline-secondary" @click.prevent="$emit('save-image')" title="Download image">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('save-image')" title="Download image">
                 <i class="fa fa-save"></i>
             </button>
         </div>

@@ -21,6 +21,7 @@ mix.override((webpackConfig) => {
         if (plugin.constructor.name === 'DefinePlugin' && plugin.definitions) {
             plugin.definitions['process.env.MIX_INSTAGRAM_FEED_ID'] = JSON.stringify(process.env.MIX_INSTAGRAM_FEED_ID || '');
             plugin.definitions['process.env.MIX_INSTAGRAM_HASHTAGS'] = JSON.stringify(process.env.MIX_INSTAGRAM_HASHTAGS || '');
+            plugin.definitions['process.env.MIX_GOOGLE_MAPS_API_KEY'] = JSON.stringify(process.env.MIX_GOOGLE_MAPS_API_KEY || '');
         }
     });
 

@@ -69,8 +69,9 @@
           this.loadingMore = true
         }
         
+        const lang = localStorage.getItem('lang') === 'us' ? 'en' : (localStorage.getItem('lang') || 'en')
         axios
-        .get(`/get_post/get_all_posts_and_news_for_blog/${localStorage.getItem('lang') || 'en'}`, {
+        .get(`/get_post/get_all_posts_and_news_for_blog/${lang}`, {
           params: {
             page: page,
             per_page: this.perPage

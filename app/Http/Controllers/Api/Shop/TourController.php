@@ -39,24 +39,22 @@ class TourController extends Controller
         $returned_array = [];
         
         foreach($tours as $tour){
-            // Get locale data for the tour
             $localeData = null;
             if ($locale === 'ka' && $tour->ka_tour) {
                 $localeData = $tour->ka_tour;
             } elseif (($locale === 'us' || $locale === 'en') && $tour->us_tour) {
                 $localeData = $tour->us_tour;
             }
-            
-            // Get first tour image
             $tour_images = Tour_image::where('tour_id', '=', $tour->id)->first();
             $image = $tour_images ? $tour_images->image : '';
-            
+            $users = $tour->user->values();
             array_push($returned_array, [
                 'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
                 'image'       => $image,
-                'user'        => $tour->user[0] ?? null
+                'users'       => $users,
+                'user'        => $users->first() ?? null,
             ]);
         }
         return $returned_array;
@@ -64,31 +62,26 @@ class TourController extends Controller
 
     public function get_all_tours($lang = null)
     {
-        // Map locale codes
         $locale = $lang ?? 'us';
-        
         $tours = Tour::latest('id')->get();
         $returned_array = [];
-        
         foreach($tours as $tour){
-            // Get locale data for the tour
             $localeData = null;
             if ($locale === 'ka' && $tour->ka_tour) {
                 $localeData = $tour->ka_tour;
             } elseif (($locale === 'us' || $locale === 'en') && $tour->us_tour) {
                 $localeData = $tour->us_tour;
             }
-            
-            // Get first tour image
             $tour_images = Tour_image::where('tour_id', '=', $tour->id)->first();
             $image = $tour_images ? $tour_images->image : '';
-            
+            $users = $tour->user->values();
             array_push($returned_array, [
                 'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
                 'image'       => $image,
-                'user'        => $tour->user[0] ?? null
+                'users'       => $users,
+                'user'        => $users->first() ?? null,
             ]);
         }
         return $returned_array;

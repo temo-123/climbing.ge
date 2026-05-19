@@ -111,6 +111,36 @@ class TourController extends Controller
         $new_user_relatione -> save();
     }
 
+    public function get_tour_users($tour_id)
+    {
+        if ($auth = PermissionService::authorize('tour', 'show')) return $auth;
+        $relations = User_tour::where('tour_id', $tour_id)->get();
+        return $relations->map(fn($r) => [
+            'relation_id' => $r->id,
+            'user'        => $r->user,
+        ])->filter(fn($r) => $r['user'] !== null)->values();
+    }
+
+    public function add_tour_user(Request $request, $tour_id)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        if (User_tour::where('tour_id', $tour_id)->count() >= 4) {
+            return response()->json(['error' => 'Maximum 4 guides allowed per tour'], 422);
+        }
+        if (User_tour::where('tour_id', $tour_id)->where('user_id', $request->user_id)->exists()) {
+            return response()->json(['error' => 'This user is already a guide for this tour'], 422);
+        }
+        User_tour::create(['tour_id' => $tour_id, 'user_id' => $request->user_id]);
+        return response()->json(['success' => true]);
+    }
+
+    public function remove_tour_user($tour_id, $user_id)
+    {
+        if ($auth = PermissionService::authorize('tour', 'edit')) return $auth;
+        User_tour::where('tour_id', $tour_id)->where('user_id', $user_id)->delete();
+        return response()->json(['success' => true]);
+    }
+
     public function change_user_relation(Request $request) {
         if($request['data']['old_user_id'] != []){
             $user_relatione = User_tour::where('tour_id', '=', $request['data']['tour_id'])->where('user_id', '=', $request['data']['old_user_id'])->first();

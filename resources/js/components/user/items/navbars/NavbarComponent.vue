@@ -11,24 +11,23 @@
         <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 mobali_menu" id="navbarNav">
             <ul v-if="!menuLoading" class="navbar-nav admin_navbar">
                 <template v-for="(menuItem, index) in safe_menu_items" :key="menuItem?.id || index">
-                  <li v-if="menuItem.routes && haveMenuBlockPermission(menuItem)" class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menuItem.title}}</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <template v-for="(menu_but, menuButIndex) in menuItem.routes || []" :key="menu_but?.id || menuButIndex">
-                          <router-link v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :to="{path: menu_but.route}" class="dropdown-item">
-                            {{menu_but.name}}
-                          </router-link>
-                        </template>
-                    </div>
-                  </li>
-                  <li v-else-if="menuItem.route && menuItem.hasOwnProperty('permissions') && haveMenuButPermission(menuItem.permissions)" class="nav-item">
-                    <router-link :to="{path: menuItem.route}" class="nav-link">{{menuItem.title}}</router-link>
-                  </li>
-                  <li v-else-if="menuItem.route && !menuItem.hasOwnProperty('permissions')" class="nav-item">
-                    <router-link :to="{path: menuItem.route}" class="nav-link">{{menuItem.title}}</router-link>
-                  </li>
+                    <li v-if="menuItem.routes && haveMenuBlockPermission(menuItem)" class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{menuItem.title}}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <template v-for="(menu_but, menuButIndex) in menuItem.routes || []" :key="menu_but?.id || menuButIndex">
+                                <router-link v-if="menu_but && (menu_but.hasOwnProperty('permissions') ? haveMenuButPermission(menu_but.permissions) : true)" :to="{path: menu_but.route}" class="dropdown-item">
+                                {{menu_but.name}}
+                                </router-link>
+                            </template>
+                        </div>
+                    </li>
+                    <li v-else-if="menuItem.route && menuItem.hasOwnProperty('permissions') && haveMenuButPermission(menuItem.permissions)" class="nav-item">
+                        <router-link :to="{path: menuItem.route}" class="nav-link">{{menuItem.title}}</router-link>
+                    </li>
+                    <li v-else-if="menuItem.route && !menuItem.hasOwnProperty('permissions')" class="nav-item">
+                        <router-link :to="{path: menuItem.route}" class="nav-link">{{menuItem.title}}</router-link>
+                    </li>
                 </template>
-
 
                 <nav-badges />
 
@@ -44,10 +43,15 @@
                         </router-link>
 
                         <router-link :to="'/my_comments_and_reviews'" class="dropdown-item">
-                            {{ $t('user.menu.my comments') }}
+                            {{ $t('user.menu.my comments and product reviews') }}
+                        </router-link>
+
+                        <router-link :to="'/purchases'" class="dropdown-item">
+                            {{ $t('user.menu.my purchases') }}
                         </router-link>
 
                         <div class="dropdown-divider"></div>
+
                         <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
                     </div>
                 </li>
@@ -55,7 +59,7 @@
             <ul v-else class="navbar-nav admin_navbar" style="min-height: 50px;"></ul>
         </div>
             
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0 && hasLeftMenu">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <label for="check" @click="toggle_menu">
@@ -101,6 +105,7 @@
                 animate_enabled: false,
                 menuKey: 0,
                 user: [],
+                hasLeftMenu: false,
             };
         },
         mounted(){
@@ -128,11 +133,15 @@
                     }, 500);
                 });
             });
+            this.$bus.$on('left-menu-mounted', () => { this.hasLeftMenu = true; });
+            this.$bus.$on('left-menu-unmounted', () => { this.hasLeftMenu = false; });
         },
         beforeUnmount() {
             this.$bus.$off('menu-toggle');
             this.$bus.$off('permissions-loaded');
             this.$bus.$off('logged-in');
+            this.$bus.$off('left-menu-mounted');
+            this.$bus.$off('left-menu-unmounted');
         },
         watch: {
             '$route' (to, from) {
@@ -253,6 +262,28 @@
     .admin_navbar{
         max-height: 380px;
         overflow-y: auto;
+    }
+    @media (max-width: 992px) {
+        .mobali_menu .admin_navbar {
+            max-height: none;
+            overflow-y: visible;
+        }
+        .mobali_menu .dropdown-menu {
+            position: static !important;
+            float: none;
+            width: 100%;
+            border: none;
+            box-shadow: none;
+            background-color: transparent;
+        }
+        .mobali_menu .dropdown-menu .dropdown-item {
+            color: rgba(255, 255, 255, 0.5);
+            padding-left: 2rem;
+        }
+        .mobali_menu .dropdown-menu .dropdown-item:hover {
+            color: #fff;
+            background-color: transparent;
+        }
     }
     .menu_but{
         position: fixed;

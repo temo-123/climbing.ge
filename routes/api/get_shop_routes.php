@@ -21,6 +21,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
 
         Route::get('/get_local_saled_products/{lang}', 'get_local_saled_products');
+        Route::get('/gallery/{product_id}', 'get_product_gallery');
 
         Route::controller(ProductBrandController::class)->prefix('get_brand')->group( function() {
             Route::get('/get_all_brands', 'get_all_brands');

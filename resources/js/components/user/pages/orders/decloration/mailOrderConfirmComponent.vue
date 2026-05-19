@@ -48,35 +48,33 @@ export default {
         return{
             create_order_loading: true,
             error_status: '',
-            order_id: this.$route.params.order_id
+            order_id: this.$route.params.order_id,
+            token: this.$route.params.token,
         }
     },
 
     methods: {
         confirm_order() {
             axios
-            .post('/order/order_is_confirm/' + this.order_id)
-            .then(response => { 
+            .post('/set_order/order_is_confirm/' + this.order_id, { token: this.token })
+            .then(response => {
                 //
             })
             .catch(error => {
-                this.error_status = 'Undefined error!'
+                this.error_status = error.response?.data?.error || 'Undefined error!'
             })
             .finally(() => this.create_order_loading = false);
         },
         check_order_confirm() {
             axios
+            .get('/set_order/is_order_confirm/' + this.order_id)
             .then(response => {
                 if(response.data){
                     this.confirm_order()
                 }
-                else if(!response.data){
+                else {
                     this.create_order_loading = false
-                    this.error_status = 'Order olredy confirm!'
-                }
-                else{
-                    this.create_order_loading = false
-                    this.error_status = 'Undefined order error!'
+                    this.error_status = 'Order already confirmed!'
                 }
             })
             .catch(error => {
@@ -86,12 +84,13 @@ export default {
         },
         check_user_authing() {
             axios
-            .get('/order/auth_user')
-            .then(response => { 
-                this.check_order_confirm() 
+            .get('/auth_user')
+            .then(response => {
+                this.check_order_confirm()
             })
             .catch(error => {
-                this.error_status = 'Plees login!'
+                this.create_order_loading = false
+                this.error_status = 'Please login to confirm your order!'
             })
         },
     }

@@ -87,6 +87,13 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
     });
 });
 
+Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']], function() {
+    Route::controller(SummitController::class)->prefix('get_user_ascents')->group(function() {
+        Route::get('/get_all_my_ascents', 'get_all_my_ascents');
+        Route::delete('/del_ascent/{id}', 'del_ascent');
+    });
+});
+
 Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {
     Route::controller(TeamMemberController::class)->prefix('set_user/team')->group(function() {
         Route::post('/edit_member_status/{id}', 'edit_member_status');

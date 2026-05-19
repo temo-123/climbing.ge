@@ -25,7 +25,7 @@ class ServicesController extends Controller
 
     public function get_services_for_index(Request $request)
     {
-        $global_services = Service::where('published', '=', 1)->get();
+        $global_services = Service::where('published', '=', 1)->take(3)->get();
         return $services = ServicesService::get_locale_services_use_locale($global_services, $request->lang);
     }
 

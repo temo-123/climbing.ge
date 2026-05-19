@@ -2,18 +2,18 @@
     <div class="mt-3">
         <!-- Header bar -->
         <div class="d-flex justify-content-between align-items-center mb-1">
-            <button type="button" class="btn btn-sm btn-outline-secondary" @click="toggleLayersTable">
+            <button type="button" class="btn btn-sm btn-secondary" @click="toggleLayersTable">
                 <i :class="showLayersTable ? 'fa fa-chevron-up' : 'fa fa-chevron-down'" class="me-1"></i>
                 Layers ({{ layers.length }})
             </button>
             <div v-if="showLayersTable" class="d-flex gap-1">
-                <button type="button" class="btn btn-sm btn-outline-secondary" @click="$emit('refresh-layers')" title="Refresh list">
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" title="Refresh list">
                     <i class="fa fa-refresh"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-primary" @click="$emit('toggle-all-visibility')" title="Toggle all visibility">
+                <button type="button" class="btn btn-sm btn-primary" @click="$emit('toggle-all-visibility')" title="Toggle all visibility">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-danger" :disabled="layers.length === 0" @click="$emit('delete-all-layers')" title="Delete all">
+                <button type="button" class="btn btn-sm btn-danger" :disabled="layers.length === 0" @click="$emit('delete-all-layers')" title="Delete all">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
@@ -89,12 +89,12 @@
                     <div class="d-flex gap-1" style="flex-shrink:0;">
                         <!-- Individual item: group actions -->
                         <template v-if="!layer.isGroup">
-                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                            <button type="button" class="btn btn-sm btn-secondary"
                                     @click="$emit('create-group-from-layer', layer)" title="Create group">
                                 <i class="fa fa-object-group" style="font-size:11px;"></i>
                             </button>
                             <button v-if="availableGroups.length > 0"
-                                    type="button" class="btn btn-sm btn-outline-secondary"
+                                    type="button" class="btn btn-sm btn-secondary"
                                     @click="$emit('show-move-to-group-modal', layer)" title="Move to group">
                                 <i class="fa fa-arrow-right" style="font-size:11px;"></i>
                             </button>
@@ -102,13 +102,13 @@
 
                         <!-- Group: ungroup -->
                         <button v-if="layer.isGroup"
-                                type="button" class="btn btn-sm btn-outline-warning"
+                                type="button" class="btn btn-sm btn-warning"
                                 @click="$emit('ungroup-layer', layer)" title="Ungroup">
                             <i class="fa fa-object-ungroup" style="font-size:11px;"></i>
                         </button>
 
                         <!-- Visibility -->
-                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                        <button type="button" class="btn btn-sm btn-secondary"
                                 @click="$emit('toggle-layer-visibility', layer)"
                                 :title="layer.visible ? 'Hide' : 'Show'">
                             <i :class="layer.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-secondary'"
@@ -116,7 +116,7 @@
                         </button>
 
                         <!-- Lock -->
-                        <button type="button" class="btn btn-sm btn-outline-secondary"
+                        <button type="button" class="btn btn-sm btn-secondary"
                                 @click="$emit('toggle-layer-lock', layer)"
                                 :title="layer.locked ? 'Unlock' : 'Lock'">
                             <i :class="layer.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-secondary'"
@@ -124,7 +124,7 @@
                         </button>
 
                         <!-- Delete -->
-                        <button type="button" class="btn btn-sm btn-outline-danger"
+                        <button type="button" class="btn btn-sm btn-danger"
                                 @click="$emit('delete-layer-item', layer)" title="Delete">
                             <i class="fa fa-trash" style="font-size:11px;"></i>
                         </button>
@@ -168,23 +168,23 @@
                         </div>
 
                         <div class="d-flex gap-1" style="flex-shrink:0;">
-                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                            <button type="button" class="btn btn-sm btn-secondary"
                                     @click="$emit('move-child-out-of-group', layer, child)" title="Move out of group">
                                 <i class="fa fa-arrow-left" style="font-size:11px;"></i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                            <button type="button" class="btn btn-sm btn-secondary"
                                     @click="$emit('toggle-child-visibility', layer, child)"
                                     :title="child.visible ? 'Hide' : 'Show'">
                                 <i :class="child.visible ? 'fa fa-eye text-success' : 'fa fa-eye-slash text-secondary'"
                                    style="font-size:11px;"></i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-secondary"
+                            <button type="button" class="btn btn-sm btn-secondary"
                                     @click="$emit('toggle-child-lock', layer, child)"
                                     :title="child.locked ? 'Unlock' : 'Lock'">
                                 <i :class="child.locked ? 'fa fa-lock text-warning' : 'fa fa-unlock text-secondary'"
                                    style="font-size:11px;"></i>
                             </button>
-                            <button type="button" class="btn btn-sm btn-outline-danger"
+                            <button type="button" class="btn btn-sm btn-danger"
                                     @click="$emit('delete-child-item', layer, child)" title="Delete">
                                 <i class="fa fa-trash" style="font-size:11px;"></i>
                             </button>

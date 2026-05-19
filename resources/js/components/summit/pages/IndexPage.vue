@@ -34,49 +34,14 @@
 
                     </div>
                 </div>
+    
+                <how_summit_works />
 
-                <!-- How it works -->
-                <div style="margin-top: 60px">
-                    <h3 class="text-center" style="margin-bottom: 30px; text-transform: uppercase; letter-spacing: .08em; font-size: 14px; color: #888">
-                        {{ $t('summit.how.title') }}
-                    </h3>
-                    <div class="row text-center">
-                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
-                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
-                                <i class="fa fa-map-marker"></i>
-                            </div>
-                            <h4>{{ $t('summit.how.reach') }}</h4>
-                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_reach_desc"></p>
-                        </div>
-                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
-                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
-                                <i class="fa fa-qrcode"></i>
-                            </div>
-                            <h4>{{ $t('summit.how.scan') }}</h4>
-                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_scan_desc"></p>
-                        </div>
-                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
-                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
-                                <i class="fa fa-check-circle"></i>
-                            </div>
-                            <h4>{{ $t('summit.how.validate') }}</h4>
-                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_validate_desc"></p>
-                        </div>
-                        <div class="col-md-3 col-sm-6" style="margin-bottom: 20px">
-                            <div class="bar" style="width:60px; margin: 0 auto 12px;">
-                                <i class="fa fa-share-alt"></i>
-                            </div>
-                            <h4>{{ $t('summit.how.share') }}</h4>
-                            <p style="font-size:13px; color:#888" v-html="$siteData.data.summit_how_share_desc"></p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center" style="margin-top: 40px">
+                <!-- <div class="text-center" style="margin-top: 40px">
                     <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
                         <i class="fa fa-arrow-right"></i> {{ $t('summit.menu.list') }}
                     </router-link>
-                </div>
+                </div> -->
 
             </div>
         </div>
@@ -112,9 +77,13 @@
 <script>
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import metaData from '../items/MetaDataComponent.vue';
+import how_summit_works from '../items/how_summit_works.vue'
 
 export default {
-    components: { metaData },
+    components: { 
+        metaData, 
+        how_summit_works 
+    },
     data() {
         return {
             isScanning: false,

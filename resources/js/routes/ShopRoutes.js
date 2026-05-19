@@ -47,7 +47,7 @@ const routes = [
             { path: 'search_products', name: 'search_products', component: load('SearchPage'), meta: { title: 'Search Products' }, },
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
-            { path: "confirm_comment_email/:comment_id/:email", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
+            { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
             { path: "*", name: 'NotFound', component: NotFound, meta: { title: 'Not Found' } }
         ]

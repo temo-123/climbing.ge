@@ -25,7 +25,9 @@ use App\Models\Guide\Article_region;
 class OutdoorController extends Controller
 {
     public function get_filtred_outdoor_spots(Request $request)
-    {        
+    {
+        if ($auth = PermissionService::authorize('article', 'show')) return $auth;
+
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
         if($region_article_count > 0){
             $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
@@ -77,7 +79,8 @@ class OutdoorController extends Controller
                     $mtp_sum=array_sum($mtps_a);
                     array_push($route_quantity, array("article_id" => $outdoor->id, "sectors" => $sector_count, "routes" => $route_sum, "mtps" => $mtp_sum) ); // push route num in last array
                 }
-                else $route_sum=0;{
+                else {
+                    $route_sum = 0;
                     $route_num = 0;
                 }
             }

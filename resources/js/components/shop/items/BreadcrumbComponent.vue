@@ -19,16 +19,18 @@
             }
         },
         mounted() {
-            this.page = this.general_pathname.split("/").pop();
-            var path = this.general_pathname.split("/")[1]
-            
+            var segments = this.general_pathname.split("/").filter(s => s.length > 0)
+            var locales = ['en', 'ka']
+            var offset = locales.includes(segments[0]) ? 1 : 0
+
+            this.page = segments[segments.length - 1] || ''
+            var path = segments[offset] || ''
             this.path = path
 
-            if(this.path == 'product'){
+            if (path == 'product') {
                 this.path_url = 'catalog'
-            }
-            else{
-                this.path_url = path+'s'
+            } else {
+                this.path_url = path + 's'
             }
         },
     }

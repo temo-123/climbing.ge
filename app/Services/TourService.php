@@ -39,15 +39,17 @@ class TourService extends LocaleContentService
     {
         $locale_tour = [];
 
-        $tour = (new static)->get_locale_content_in_page($tour, Locale_tour::class, '_tour_id',$locale);
+        $tour = (new static)->get_locale_content_in_page($tour, Locale_tour::class, '_tour_id', $locale);
 
-        $tour_user = User_tour::where('tour_id', '=', $tour['global_data']['id'])->first();
-        
+        $relations  = User_tour::where('tour_id', '=', $tour['global_data']['id'])->get();
+        $tour_users = $relations->map(fn($r) => $r->user)->filter()->values();
+
         array_push($locale_tour, [
-            "locale_data"=>$tour['locale_data'], 
-            "global_data"=>$tour['global_data'], 
-            "user"=>$tour_user->user, 
-            "tour_images"=>$tour['global_data']->tour_images
+            "locale_data"  => $tour['locale_data'],
+            "global_data"  => $tour['global_data'],
+            "users"        => $tour_users,
+            "user"         => $tour_users->first(),
+            "tour_images"  => $tour['global_data']->tour_images,
         ]);
 
         return $locale_tour[0];

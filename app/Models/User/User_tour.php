@@ -12,6 +12,10 @@ class User_tour extends Model
 {
     use HasFactory;
 
+    protected $table = 'user_tours';
+
+    protected $fillable = ['tour_id', 'user_id'];
+
     public function user()
     {
         return $this->hasOne(User::class, 'id', 'user_id');

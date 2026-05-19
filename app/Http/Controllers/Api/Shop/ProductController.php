@@ -17,6 +17,7 @@ use App\Models\Shop\Favorite_product;
 use App\Models\Shop\Cart;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Option_image;
+use App\Models\Shop\Product_image;
 use App\Models\Shop\Product_category;
 use App\Models\User\User_product;
 
@@ -208,6 +209,11 @@ class ProductController extends Controller
                 }
             }
         }
+    }
+
+    public function get_product_gallery($product_id)
+    {
+        return Product_image::where('product_id', $product_id)->get();
     }
 
     public function get_product_price_interval()

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Shop\Locale_product;
 use App\Models\Shop\Product;
 use App\Models\Shop\Option_image;
+use App\Models\Shop\Product_image;
 use App\Models\Shop\Product_option;
 
 use App\Services\Abstract\LocaleContentService;
@@ -117,6 +118,8 @@ class ProductService extends LocaleContentService
 
         $product = (new static)->get_locale_content_in_page($product, Locale_product::class, '_product_id', $locale);
 
+        $gallery_images = Product_image::where('product_id', '=', $product['global_data']->id)->get();
+
         $options = product_option::where('product_id', '=', $product['global_data']->id)->with('warehouse')->get();
 
         foreach($options as $option){
@@ -170,6 +173,7 @@ class ProductService extends LocaleContentService
                 "new_min_price"=>$new_min_price,
 
                 'product_option' => $product_option,
+                'gallery_images' => $gallery_images,
                 'has_discount' => $has_discount,
                 'max_discount' => $max_discount,
                 'out_of_stock' => $out_of_stock,
@@ -185,6 +189,7 @@ class ProductService extends LocaleContentService
                 "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
 
                 'product_option' => $product_option,
+                'gallery_images' => $gallery_images,
                 'has_discount' => $has_discount,
                 'out_of_stock' => $out_of_stock,
             ]);

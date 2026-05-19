@@ -89,7 +89,7 @@
         methods: {
             load_tasks() {
                 const params = { global_category: this.globalCategory }
-                axios.get('/get_task/get_all_tasks', { params })
+                axios.get('get_task/get_all_tasks', { params })
                     .then(r => {
                         this.tasks = this.filterCategory
                             ? r.data.filter(t => t.category === this.filterCategory)

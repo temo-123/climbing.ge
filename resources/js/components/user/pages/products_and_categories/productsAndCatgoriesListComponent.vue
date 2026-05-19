@@ -31,6 +31,8 @@
                         @filter_by_brand_with_multi_id="filter_by_brand_with_multi_id"
                         @filter_by_sale_type_with_multi_id="filter_by_sale_type_with_multi_id"
                         @filter_by_subcategory_with_multi_id="filter_by_subcategory_with_multi_id"
+
+                        @show_product_quick_view="show_product_quick_view"
                     />
                 </div>
             </div>
@@ -42,6 +44,7 @@
         <addProductBrandModal ref="addProductBrandModal" @update="get_products_data"/>
 
         <change_user_modal ref="userRelationModal" @update="get_products_data" />
+        <productAdminQuickViewModal ref="productAdminQuickViewModal" />
     </div>
 </template>
 
@@ -56,6 +59,7 @@
     import addProductBrandModal from "../../items/modal/tab_modals/add/AddProductBrandModal.vue";
 
     import change_user_modal from '../../items/modal/tab_modals/ChangeUserModalComponent.vue'
+    import productAdminQuickViewModal from '../../items/modal/ProductAdminQuickViewModal.vue'
     export default {
         components: {
             tabsComponent ,
@@ -68,6 +72,7 @@
             addProductBrandModal,
 
             change_user_modal,
+            productAdminQuickViewModal,
         },
         
         data() {
@@ -164,6 +169,7 @@
                                 'Donation',
                                 'Options',
                                 'User',
+                                'View',
                                 'Edit user',
                                 'Edit Options',
                                 'Edit',
@@ -177,12 +183,14 @@
                                 ['data', ['product', 'is_donation_product'], 'bool'],
                                 ['data', ['options']],
                                 ['data', [['user', 'name'], ['user', 'surname']]],
+                                ['action_fun_id', 'show_product_quick_view', 'btn btn-info', '<i class="fa fa-eye" aria-hidden="true"></i>', ['product', 'id']],
                                 ['action_fun_id', 'show_user_change_modal', 'btn btn-secondary', '<i class="fa fa-user-plus" aria-hidden="true"></i>', ['product', 'id']],
                                 ['action_router', 'productOptionsControl', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>', ['product', 'id']],
                                 ['action_router', 'productEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>', ['product', 'id']],
                                 ['action_fun_id', 'del_product', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>',['product', 'id']],
                             ],
                             'perm': [
+                                ['no'],
                                 ['no'],
                                 ['no'],
                                 ['no'],
@@ -476,6 +484,9 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            show_product_quick_view(id) {
+                this.$refs.productAdminQuickViewModal.show_modal(id)
             },
             show_user_change_modal(id){
                 this.$refs.userRelationModal.show_modal(id)

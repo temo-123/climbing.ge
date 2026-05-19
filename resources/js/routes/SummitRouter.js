@@ -30,6 +30,7 @@ const routes = [
           { path: 'summits/list', name: 'summit_list', component: load('lists/SummitListPage'), meta: { title: 'Summit List' } },
 
           { path: 'summits/map', name: 'summit_map', component: load('SummitMapPage'), meta: { title: 'Summit Map' } },
+          { path: 'my_ascents', name: 'my_ascents', component: load('MyAscentsPage'), meta: { title: 'My Ascents' } },
           { path: 'search', name: 'search_summits', component: load('SearchPageComponent'), meta: { title: 'Search Summits' } },
         ]
       }

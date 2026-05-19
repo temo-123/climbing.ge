@@ -18,6 +18,8 @@ class SummitPublicController extends Controller
     {
         $summits = Summit::with('region')
             ->where('published', true)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
             ->orderBy('title')
             ->get()
             ->map(function ($summit) {
@@ -91,6 +93,7 @@ class SummitPublicController extends Controller
             'user_latitude' => 'nullable|numeric',
             'user_longitude'=> 'nullable|numeric',
             'ascent_date'   => 'nullable|date',
+            'ascent_time'   => 'nullable|date_format:H:i',
         ]);
 
         // GPS validation via Haversine
@@ -130,6 +133,7 @@ class SummitPublicController extends Controller
             'user_latitude'   => $request->user_latitude,
             'user_longitude'  => $request->user_longitude,
             'ascent_date'     => $request->ascent_date ?? now()->toDateString(),
+            'ascent_time'     => $request->ascent_time ?? now()->format('H:i'),
         ]);
 
         // Create ascent route record
@@ -208,6 +212,7 @@ class SummitPublicController extends Controller
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
                     'ascent_date'      => $ascent->ascent_date,
+                    'ascent_time'      => $ascent->ascent_time,
                     'route_name'       => $routeName,
                     'route_grade'      => $routeGrade,
                     'route_article_url'=> $routeArticleUrl,
@@ -215,6 +220,53 @@ class SummitPublicController extends Controller
             });
 
         return response()->json(['summit' => ['id' => $summit->id, 'title' => $summit->title], 'ascents' => $ascents]);
+    }
+
+    public function my_ascents()
+    {
+        $userId = auth('sanctum')->id();
+
+        $ascents = SummitAscentUser::where('user_id', $userId)
+            ->with(['ascent.summit', 'ascent.ascentRoutes.route'])
+            ->get()
+            ->map(function ($au) {
+                $ascent = $au->ascent;
+                if (!$ascent) return null;
+
+                $routeName  = null;
+                $routeGrade = null;
+
+                if ($ascent->ascentRoutes->isNotEmpty()) {
+                    $ar = $ascent->ascentRoutes->first();
+                    if ($ar->route) {
+                        $routeName  = $ar->route->name;
+                        $routeGrade = $ar->route->grade;
+                    } elseif ($ar->other_route_name) {
+                        $routeName = $ar->other_route_name;
+                    }
+                }
+
+                return [
+                    'id'               => $ascent->id,
+                    'summit_id'        => $ascent->summit_id,
+                    'summit_title'     => $ascent->summit?->title,
+                    'summit_url'       => $ascent->summit?->url_title,
+                    'name'             => $ascent->name,
+                    'surname'          => $ascent->surname,
+                    'comment'          => $ascent->comment,
+                    'photo'            => $ascent->photo,
+                    'is_gps_validated' => $ascent->is_gps_validated,
+                    'ascent_date'      => $ascent->ascent_date,
+                    'ascent_time'      => $ascent->ascent_time,
+                    'route_name'       => $routeName,
+                    'route_grade'      => $routeGrade,
+                ];
+            })
+            ->filter()
+            ->sortByDesc('ascent_date')
+            ->values();
+
+        return response()->json($ascents);
     }
 
     private function haversine(float $lat1, float $lon1, float $lat2, float $lon2): float

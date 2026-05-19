@@ -64,8 +64,6 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::get('/get_user_notification_data', 'get_user_notification_data');
         Route::post('/user_info_update/{user_id}', 'user_info_update');
         Route::post('/update_user_notification_data', 'update_user_notification_data');
-        
-        Route::get('/get_user_notification_data', 'get_user_notification_data');
     });
 
     Route::get('/get_countries', [\App\Http\Controllers\Api\Shop\ShipedRegionController::class, 'get_all_shiped_regions']);

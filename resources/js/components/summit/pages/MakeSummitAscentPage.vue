@@ -43,9 +43,9 @@
         <router-link :to="'/summit/' + summit.url_title" class="btn btn-outline-primary mr-2">
           {{ $t('summit.ascent_page.back_to_summit') }}
         </router-link>
-        <router-link to="/summits/list" class="btn btn-outline-secondary">
+        <!-- <router-link to="/summits/list" class="btn btn-outline-secondary">
           {{ $t('summit.ascent_page.all_summits') }}
-        </router-link>
+        </router-link> -->
       </div>
     </div>
 
@@ -80,20 +80,18 @@
                   <span v-else-if="gpsChecked && !gpsValidated" class="badge badge-warning ml-2">{{ $t('summit.ascent_page.not_at_summit_badge') }}</span>
                 </h5>
 
-                <div v-if="!gpsChecked && !skipGps" class="d-flex gap-2 flex-wrap">
+                <div v-if="!gpsChecked && !skipGps && checkingLocation" class="d-flex align-items-center text-muted">
+                  <span class="spinner-border spinner-border-sm mr-2"></span>
+                  {{ $t('summit.ascent_page.checking') }}
+                </div>
+
+                <div v-if="!gpsChecked && !skipGps && !checkingLocation" class="d-flex gap-2 flex-wrap">
                   <button
                     type="button"
                     class="btn btn-primary"
                     @click="checkLocation"
-                    :disabled="checkingLocation"
                   >
-                    <span v-if="checkingLocation">
-                      <span class="spinner-border spinner-border-sm mr-1"></span>
-                      {{ $t('summit.ascent_page.checking') }}
-                    </span>
-                    <span v-else>
-                      <i class="fa fa-crosshairs"></i> {{ $t('summit.ascent_page.check_location') }}
-                    </span>
+                    <i class="fa fa-crosshairs"></i> {{ $t('summit.ascent_page.check_location') }}
                   </button>
                   <button
                     type="button"
@@ -179,13 +177,23 @@
                     />
                   </div>
 
-                  <div class="form-group">
-                    <label>{{ $t('summit.ascent_page.ascent_date') }}</label>
-                    <input
-                      type="date"
-                      v-model="form.ascent_date"
-                      class="form-control"
-                    />
+                  <div class="form-row">
+                    <div class="form-group col-md-6">
+                      <label>{{ $t('summit.ascent_page.ascent_date') }}</label>
+                      <input
+                        type="date"
+                        v-model="form.ascent_date"
+                        class="form-control"
+                      />
+                    </div>
+                    <div class="form-group col-md-6">
+                      <label>{{ $t('summit.ascent_page.ascent_time') }}</label>
+                      <input
+                        type="time"
+                        v-model="form.ascent_time"
+                        class="form-control"
+                      />
+                    </div>
                   </div>
 
                   <div class="form-group">
@@ -312,6 +320,7 @@ export default {
         other_route: '',
         comment: '',
         ascent_date: new Date().toISOString().slice(0, 10),
+        ascent_time: new Date().toTimeString().slice(0, 5),
         photo: null,
       },
       showOtherRoute: false,
@@ -349,11 +358,13 @@ export default {
             .then(r => {
               this.summit = r.data
               this.loadRoutes()
+              this.checkLocation()
             })
             .catch(error => {
               console.error('Error loading summit details:', error)
               this.summit = found
               this.loadRoutes()
+              this.checkLocation()
             })
             .finally(() => {
               this.loadingSummit = false
@@ -367,6 +378,9 @@ export default {
     },
     loadRoutes() {
       if (!this.summit) return
+      if (!this.summit.latitude || !this.summit.longitude) {
+        this.skipGps = true
+      }
       axios.get(`summit/routes/${this.summit.id}`)
         .then(response => {
           this.routes = response.data
@@ -376,6 +390,12 @@ export default {
         })
     },
     checkLocation() {
+      if (!window.isSecureContext) {
+        this.gpsError = 'GPS verification requires a secure (HTTPS) connection. You can skip and submit without GPS.'
+        this.skipGps = true
+        return
+      }
+
       if (!navigator.geolocation) {
         this.gpsError = 'Geolocation is not supported by your browser.'
         return
@@ -467,6 +487,7 @@ export default {
       if (this.showOtherRoute && this.form.other_route) formData.append('other_route', this.form.other_route)
       if (this.form.comment) formData.append('comment', this.form.comment)
       if (this.form.ascent_date) formData.append('ascent_date', this.form.ascent_date)
+      if (this.form.ascent_time) formData.append('ascent_time', this.form.ascent_time)
       if (this.form.photo) formData.append('photo', this.form.photo)
 
       // GPS data

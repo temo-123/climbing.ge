@@ -152,14 +152,14 @@ export default {
                             name: "Guide Dashboard",
                             route: "/guide_dashboard_page",
                             permissions: [
-                                ['show', 'task'],
+                                ['show', 'guide_task'],
                             ]
                         },
                         {
                             name: "Guide task panel",
                             route: "/guide_task_panel",
                             permissions: [
-                                ['show', 'task'],
+                                ['show', 'guide_task'],
                             ]
                         },
                         {
@@ -175,10 +175,10 @@ export default {
                     title: "Shop",
                     name: "shop",
                     routes: [
-                        {
-                            name: "My purchases",
-                            route: "/purchases"
-                        },
+                        // {
+                        //     name: "My purchases",
+                        //     route: "/purchases"
+                        // },
                         {
                             name: "All products & categories",
                             route: "/products_and_categories",
@@ -235,21 +235,21 @@ export default {
                             name: "Shop Dashboard",
                             route: "/shop_dashboard_page",
                             permissions: [
-                                ['show', 'task'],
+                                ['show', 'shop_task'],
                             ]
                         },
                         {
                             name: "Shop task panel",
                             route: "/shop_task_panel",
                             permissions: [
-                                ['show', 'task'],
+                                ['show', 'shop_task'],
                             ]
                         },
                         {
                             name: "My Tasks (Shop)",
                             route: "/shop_worker_tasks_page",
                             permissions: [
-                                ['show', 'task'],
+                                ['show', 'shop_task'],
                             ]
                         },
                     ],
@@ -277,6 +277,11 @@ export default {
                             permissions: [
                                 ['show', 'summit'],
                             ]
+                        },
+                        {
+                            name: "My ascents",
+                            route: "/my_ascents",
+                            permissions: []
                         },
                     ]
                 },
@@ -320,15 +325,8 @@ export default {
                             ]
                         },
                         {
-                            name: "Multimedia",
+                            name: "Multimedia and Database",
                             route: "/multimedia",
-                            permissions: [
-                                ['show', 'export'],
-                            ]
-                        },
-                        {
-                            name: "Database",
-                            route: "/database",
                             permissions: [
                                 ['show', 'database'],
                             ]

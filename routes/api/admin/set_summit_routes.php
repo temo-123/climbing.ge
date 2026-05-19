@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::post('/update/{id}', 'update');
             Route::delete('/destroy/{id}', 'destroy');
             Route::post('/save_qr/{id}', 'save_qr');
+            Route::post('/update_coordinates/{id}', 'update_coordinates');
             Route::post('/add_mount_route_relation', 'add_mount_route_relation');
             Route::delete('/remove_mount_route_relation/{id}', 'remove_mount_route_relation');
         });

@@ -1,8 +1,7 @@
 <template>
     <StackModal
-        v-model="is_show_modal"
+        :show="is_show_modal"
         title="Export Articles to PDF"
-        :modal-class="{ 'export-modal': true }"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
         @close="close_modal"
@@ -104,7 +103,9 @@
                 </div>
             </div>
         </div>
-            <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-t">
+
+        <template #footer>
+            <div class="modal-footer">
                 <button
                     type="button"
                     class="btn btn-secondary"
@@ -121,7 +122,8 @@
                     Export Selected Articles ({{ selectedArticles.length }})
                 </button>
             </div>
-        </StackModal>
+        </template>
+    </StackModal>
 </template>
 
 <script>
@@ -129,8 +131,11 @@
 
 export default {
     name: 'ExportArticlesModal',
-    components: {
-        // StackModal,
+    props: {
+        showModal: {
+            type: Boolean,
+            default: false,
+        }
     },
     data() {
         return {
@@ -147,6 +152,7 @@ export default {
     },
     watch: {
         showModal(newVal) {
+            this.is_show_modal = newVal
             if (newVal) {
                 this.loadCategories()
             }
@@ -238,7 +244,7 @@ export default {
                     document.body.appendChild(link)
                     link.click()
                     document.body.removeChild(link)
-                    this.closeModal()
+                    this.close_modal()
                 })
                 .catch(error => {
                     console.log(error)

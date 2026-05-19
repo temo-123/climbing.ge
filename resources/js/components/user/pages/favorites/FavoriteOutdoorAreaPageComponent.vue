@@ -53,7 +53,7 @@
                                     <div class="card">
 
                                         <span @click="go_to_spots_list('/outdoor/'+spot.global_data.url_title)" >
-                                            <site-img v-if="spot.global_data.image != NULL" :src="'/public/images/outdoor_img/'+spot.global_data.image" :img_class="'card-img-top cursor_pointer'" :alt='spot.locale_data.title'/>
+                                            <site-img v-if="spot.global_data.image != null" :src="'/public/images/outdoor_img/'+spot.global_data.image" :img_class="'card-img-top cursor_pointer'" :alt='spot.locale_data.title'/>
                                             <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'card-img-top cursor_pointer'" :alt='spot.locale_data.title'/>
                                         </span>
 

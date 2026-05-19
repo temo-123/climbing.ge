@@ -13,6 +13,7 @@
         <div class="nb-dropdown" v-if="isUserPage && isLoggedIn && userMenuOpen" @click.stop>
             <router-link :to="'/options'" class="nb-dropdown-item">{{ $t('user.menu.options') }}</router-link>
             <router-link :to="'/my_comments_and_reviews'" class="nb-dropdown-item">{{ $t('user.menu.my comments') }}</router-link>
+            <router-link :to="'/purchases'" class="nb-dropdown-item">{{ $t('user.menu.my purchases') }}</router-link>
             <div class="nb-dropdown-divider"></div>
             <a class="nb-dropdown-item" href="#" @click.prevent="logout">{{ $t('user.menu.logout') }}</a>
         </div>

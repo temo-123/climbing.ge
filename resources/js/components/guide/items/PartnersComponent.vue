@@ -9,7 +9,7 @@
             <h3 class="article_list_short_description"> <span v-html="$siteData.data.partners_description"></span> </h3>
 
             <div class="partners-slider-container">
-                <div class="previes_partners_bottom" v-if="partners.length > visibleCount && slider_index > 0" @click="previous">
+                <div class="previes_partners_bottom" v-if="partners.length > visibleCount" @click="previous">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
@@ -28,7 +28,7 @@
                     </div>
                 </div>
 
-                <div class="next_partners_bottom" v-if="partners.length > visibleCount && slider_index < partners.length - visibleCount" @click="next">
+                <div class="next_partners_bottom" v-if="partners.length > visibleCount" @click="next">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>

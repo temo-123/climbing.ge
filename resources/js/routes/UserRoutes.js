@@ -34,12 +34,12 @@ const routes = [
         children: [
             { path: '', name: 'home', component: load('HomePageComponent'), meta: { title: 'Home' } },
 
-            { path: 'shop_task_panel', name: 'shopTaskPanel', component: load('dashboards/shop/ShopTaskPanelComponent'), meta: {title: 'user page', permissions: [['show', 'task']]}},
-            { path: 'shop_dashboard_page', name: 'shopDashboardPage', component: load('dashboards/shop/ShopDashboardPageComponent'), meta: {title: 'user page', permissions: [['show', 'task']]}},
-            { path: 'shop_worker_tasks_page', name: 'shopWorkerTasksPage', component: load('dashboards/shop/WorkerTaskPanelPageComponent'), meta: {title: 'user page', permissions: [['show', 'task']]}},
+            { path: 'shop_task_panel', name: 'shopTaskPanel', component: load('dashboards/shop/ShopTaskPanelComponent'), meta: {title: 'user page', permissions: [['show', 'shop_task']]}},
+            { path: 'shop_dashboard_page', name: 'shopDashboardPage', component: load('dashboards/shop/ShopDashboardPageComponent'), meta: {title: 'user page', permissions: [['show', 'shop_task']]}},
+            { path: 'shop_worker_tasks_page', name: 'shopWorkerTasksPage', component: load('dashboards/shop/WorkerTaskPanelPageComponent'), meta: {title: 'user page', permissions: [['show', 'shop_task']]}},
 
-            { path: 'guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent'), meta: {title: 'user page', permissions: [['show', 'task']]}},
-            { path: 'guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent'), meta: {title: 'user page', permissions: [['show', 'task']]}},
+            { path: 'guide_task_panel', name: 'guideTaskPanel', component: load('dashboards/guide/GuideTaskPanelComponent'), meta: {title: 'user page', permissions: [['show', 'guide_task']]}},
+            { path: 'guide_dashboard_page', name: 'guideDashboardPage', component: load('dashboards/guide/GuideDashboardPageComponent'), meta: {title: 'user page', permissions: [['show', 'guide_task']]}},
             { path: 'team_member_tasks_page', name: 'teamMemberTasksPage', component: load('dashboards/guide/TeamMembersTaskPanelPageComponent'), meta: {title: 'user page', permissions: [['show', 'team']]}},
 
             { path: 'purchases', name: 'userPurchases', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
@@ -50,7 +50,7 @@ const routes = [
             { path: 'order/decloration/order_payment', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), meta: {title: 'user page'}},
             { path: 'order/decloration/confirm_order/:order_decloration?', name: 'confirmOrder', component: load('orders/decloration/confirmOrderPageComponent'), meta: {title: 'user page'}},
 
-            { path: 'order/confirm_order/:order_id/user/:user_id', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent'), meta: {title: 'user page'}},
+            { path: 'order/confirm_order/:order_id/user/:user_id/token/:token', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent'), meta: {title: 'user page'}},
 
             { path: 'posts', name: 'posts', component: load('posts/PostsListComponent'), meta: {title: 'user page', permissions: [['show', 'post']]}},
             { path: 'post/add', name: 'add_post', component: load('posts/AddPostFormComponent'), meta: {title: 'user page', permissions: [['show', 'post']]}},
@@ -163,10 +163,12 @@ const routes = [
             { path: 'service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), meta: {title: 'user page', permissions: [['show', 'services']]}},
             { path: 'service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), meta: {title: 'user page', permissions: [['show', 'services']]}},
 
-            { path: 'multimedia', name: 'multimedia', component: load('multimedia/ArticleImagesPage'), meta: {title: 'user page', permissions: [['show', 'export']]}},
-            { path: 'database', name: 'database', component: load('database/DatabasePage'), meta: {title: 'user page', permissions: [['show', 'database']]}},
+            { path: 'multimedia', name: 'multimedia', component: load('database_&_multimedia/DatabasePage'), meta: {title: 'user page', permissions: [['show', 'export']]}},
 
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
+            { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
+            { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
+            { path: 'my_ascents', name: 'myAscents', component: load('myAscents/MyAscentsListPage'), meta: {title: 'user page'}},
 
             { path: 'banned', name: 'banned', component: BannedPage, meta: { title: 'Account Suspended' } },
 

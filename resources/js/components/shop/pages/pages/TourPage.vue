@@ -23,10 +23,10 @@
             <div class="tour-description" v-html="tour.locale_data.text"></div>
         </div>
 
-        <div class="tour-guide-section">
+        <div class="tour-guide-section" v-if="tour.users && tour.users.length > 0">
             <h2 class="section-title">{{ $t('shop.tour.guide') }}</h2>
             <usersIconsComponent
-                :users_prop="[tour.user]"
+                :users_prop="tour.users"
             />
         </div>
 

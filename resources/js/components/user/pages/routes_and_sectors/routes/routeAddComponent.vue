@@ -51,53 +51,12 @@
           </div>
         </div>
 
-        <div class="tabs form-group clearfix">
-            <!-- Toggle Editor Button -->
-            <div class="row" style="margin-bottom: 15px;">
-                <div class="col">
-                    <button 
-                        type="button" 
-                        class="btn" 
-                        :class="show_editor ? 'btn-danger' : 'btn-primary'"
-                        @click="toggleEditor"
-                    >
-                        {{ show_editor ? 'Close Editor' : 'Open Editor' }}
-                    </button>
-                </div>
-            </div>
-
-            <div class="row" v-if="show_editor">
-                <div class="col" v-for="(image, index) in sector_images" :key="'col-' + image.id + '-' + index" >
-                    <input
-                        type="radio"
-                        :id="'input-' + image.id"
-                        :value="image.id"
-                        v-model="images_tab_num"
-                        @change="updateSectorImageId"
-                    />
-                    <label :for="'input-' + image.id">
-                        Image ID -> {{ image.id }}
-                    </label>
-                </div>
-            </div>
-
-            <div class="row" v-if="show_editor">
-                <div class="col-md-12" v-for="image in sector_images" :key="image.id" 
-                    v-if="images_tab_num == image.id" >
-                    <Editor
-                      ref="editorComponent"
-                      :image_prop="'/public/images/sector_img/' + image.image"
-                      :related_jsons="related_jsons"
-                      @canvas_data="handleCanvasData"
-                    />
-                </div>
-            </div>
-            <div class="row" v-else>
-                <div class="col-md-12 text-center">
-                    <p>Click "Open Editor" to draw route</p>
-                </div>
-            </div>    
-        </div>
+        <route_editor_component
+            v-if="data.sector_id != ''"
+            ref="editorComponent"
+            :route_json_prop="data.route_json"
+            @update:route_json_prop="data.route_json = $event"
+        />
 
         <div class="form-group clearfix row" v-if="errors.sector_id">
             <div class="col-md-12">
@@ -214,16 +173,18 @@
 
 <script>
   import Editor from '../../../items/canvas/EditorComponent.vue'
-  // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+  import validator_alerts_component from '../../../items/form/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
+  import route_editor_component from './assets/CanvasRouteEditorComponent.vue'
 
   export default {
       mixins: [
           ],
       components: {
           Editor,
-          // validator_alerts_component,
-          grades_form
+          validator_alerts_component,
+          grades_form,
+          route_editor_component
       },
     data() {
       return {

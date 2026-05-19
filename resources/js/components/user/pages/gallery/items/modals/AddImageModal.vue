@@ -1,183 +1,193 @@
 <template>
     <StackModal
         :show="is_add_image_modal"
-        title="Add image"
-        @close="close_add_image_modal()"
-        @save="$refs.slider_image_add_form.requestSubmit()"
-        :saveButton="{ visible: true, title: 'Save' }"
+        :title="$t('head_slider.add_image')"
+        @close="close_modal()"
+        @save="$refs.add_form.requestSubmit()"
+        :saveButton="{ visible: true, title: $t('head_slider.save') }"
         :cancelButton="{ visible: false }"
     >
         <div>
-            <span v-show="is_loading">
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
-            </span>
-            <span v-show="!is_loading">
-                <form ref="slider_image_add_form" id="slider_image_add_form" v-on:submit.prevent="add_image">
-                    <div class="container">
+            <div v-if="is_loading" class="text-center py-3">
+                <i class="fa fa-spinner fa-spin fa-2x"></i>
+            </div>
 
-                        <validator_alerts_component
-                            :errors_prop="error"
-                        />
+            <form v-else ref="add_form" @submit.prevent="add_image">
+                <div class="container">
 
-                        <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image" v-on:change="onAddImageChange" required>
-                        </div>
+                    <!-- Error messages -->
+                    <div v-if="errors.length > 0" class="alert alert-danger">
+                        <div v-for="(msg, i) in errors" :key="i">{{ msg }}</div>
+                    </div>
 
-                        <div class="row">
-                            <div class="col-md-12" v-if="error.length != 0">
-                                <div class="alert alert-danger" role="alert" v-if="error.image">
-                                    {{ error.image[0] }}
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="published" id="published" v-model="form_data.published"  required>
-                                        <option value="0">Not public</option> 
-                                        <option value="1">Public</option>
-                                </select> 
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="title" class="form-control" placeholder="Title"  v-model="form_data.title" required>
-                            </div>
-                        </div>
-
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12">
-                                <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"  v-model="form_data.text"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                <select class="form-control" name="text_position" v-model="form_data.text_position">
-                                    <option value="center">Center</option>
-                                    <option value="left-top">Top Left</option>
-                                    <option value="right-top">Top Right</option>
-                                    <option value="left-bottom">Bottom Left</option>
-                                    <option value="right-bottom">Bottom Right</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group clearfix row">
-                            <div class="col-md-12 image_add_modal_form">
-                                    <input type="text" name="link" class="form-control" placeholder="Article Link"  v-model="form_data.link">
-                            </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">{{ $t('head_slider.title') }} *</label>
+                        <div class="col-md-9">
+                            <input
+                                type="text"
+                                class="form-control"
+                                :placeholder="$t('head_slider.title')"
+                                v-model="form_data.title"
+                                required
+                            >
                         </div>
                     </div>
-                </form>
-            </span>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">{{ $t('head_slider.text') }}</label>
+                        <div class="col-md-9">
+                            <textarea
+                                rows="4"
+                                class="form-control"
+                                v-model="form_data.text"
+                            ></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">{{ $t('head_slider.text_position') }}</label>
+                        <div class="col-md-9">
+                            <select class="form-control" v-model="form_data.text_position">
+                                <option value="center">{{ $t('head_slider.center') }}</option>
+                                <option value="left-top">{{ $t('head_slider.top_left') }}</option>
+                                <option value="right-top">{{ $t('head_slider.top_right') }}</option>
+                                <option value="left-bottom">{{ $t('head_slider.bottom_left') }}</option>
+                                <option value="right-bottom">{{ $t('head_slider.bottom_right') }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">{{ $t('head_slider.article_link') }}</label>
+                        <div class="col-md-9">
+                            <input
+                                type="text"
+                                class="form-control"
+                                :placeholder="$t('head_slider.article_link')"
+                                v-model="form_data.link"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">{{ $t('head_slider.public') }} *</label>
+                        <div class="col-md-9">
+                            <select class="form-control" v-model="form_data.published" required>
+                                <option value="0">{{ $t('head_slider.not_public') }}</option>
+                                <option value="1">{{ $t('head_slider.public') }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">Image *</label>
+                        <div class="col-md-9">
+                            <input
+                                type="file"
+                                accept="image/*,.webp"
+                                @change="on_image_change"
+                                required
+                            >
+                            <small class="text-muted">jpg, png, gif, webp — max 2 MB</small>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
         </div>
     </StackModal>
 </template>
 
 <script>
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
-    // import validator_alerts_component from '../../../../items/validator_alerts_component.vue'
-    export default {
-        components: {
-            // validator_alerts_component,
-            // StackModal,
+export default {
+    props: ['category_prop'],
+    data() {
+        return {
+            is_add_image_modal: false,
+            is_loading: false,
+            errors: [],
+            image_file: null,
+            form_data: {
+                published: 0,
+                category: '',
+                title: '',
+                text: '',
+                link: '',
+                text_position: 'center',
+            }
+        }
+    },
+    methods: {
+        show_modal() {
+            this.reset()
+            this.is_add_image_modal = true
         },
-        props: [
-            'category_prop'
-        ],
-        data(){
-            return{
-                user: [],
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
-
-                is_add_image_modal: false,
-                error: [],
-                is_loading: false,
-
-                form_data: {
-                    published: 0,
-                    category: ''
-                }
+        close_modal() {
+            this.is_add_image_modal = false
+            this.reset()
+        },
+        reset() {
+            this.errors = []
+            this.image_file = null
+            this.form_data = {
+                published: 0,
+                category: this.category_prop,
+                title: '',
+                text: '',
+                link: '',
+                text_position: 'center',
             }
         },
-        watch: {
-            category_prop: function(){
-                this.form_data.category = this.category_prop
-            },
+        on_image_change(e) {
+            this.image_file = e.target.files[0] || null
         },
-        mounted(){
-            // this.form_data.category = this.category_prop
-        },
-        methods: {
-            close_add_image_modal(action = false){
-                if(!action){
-                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
-                        this.is_add_image_modal = false
-                        this.clear_input_data()
-                    }
-                }
-                else{
-                    this.is_add_image_modal = false
-                    this.clear_input_data()
-                }
-            },
-            
-            // show_modal(category){
-            show_modal(){
-                this.clear_input_data()
-                // this.form_data.category = category
-                this.is_add_image_modal = true
-            },
+        add_image() {
+            this.errors = []
 
-            clear_input_data(){
-                this.error = []
+            if (!this.image_file) {
+                this.errors = ['Please select an image.']
+                return
+            }
 
-                this.form_data = {
-                    published: 0,
-                    category:  this.category_prop,
+            this.is_loading = true
 
-                    title: '',
-                    text: '',
-                    link: '',
-                    text_position: 'center',
-                }
-            },
+            const formData = new FormData()
+            formData.append('image', this.image_file)
+            formData.append('data', JSON.stringify(this.form_data))
 
-            onAddImageChange(e){
-                this.image = e.target.files[0];
-            },
-
-            add_image(){
-                this.is_loading = true
-                this.errors = []
-
-                let formData = new FormData();
-                formData.append('image', this.image);
-                formData.append('data', JSON.stringify(this.form_data))
-
-
-                axios
-                .post('set_head_slider/add_slide/',
-                    formData,
-                )
-                .then(response => {
-                    this.is_add_image_modal = false
-                    this.$emit("update");
+            axios.post('set_head_slider/add_slide/', formData)
+                .then(() => {
+                    this.close_modal()
+                    this.$emit('update')
                 })
                 .catch(error => {
-                    if (error.response.status == 422) {
-                        this.error = error.response.data
+                    if (error.response && error.response.status === 422) {
+                        this.errors = this.extract_errors(error.response.data)
+                    } else {
+                        this.errors = ['An error occurred. Please try again.']
                     }
                 })
-                .finally(() =>
-                    this.is_loading = false
-                )
-            },
-        }
+                .finally(() => { this.is_loading = false })
+        },
+        extract_errors(data) {
+            const msgs = []
+            if (Array.isArray(data)) {
+                data.forEach(item => {
+                    if (typeof item === 'object' && item !== null) {
+                        Object.values(item).forEach(arr => {
+                            if (Array.isArray(arr)) arr.forEach(m => msgs.push(m))
+                            else msgs.push(String(arr))
+                        })
+                    }
+                })
+            } else if (typeof data === 'object') {
+                Object.values(data).forEach(arr => {
+                    if (Array.isArray(arr)) arr.forEach(m => msgs.push(m))
+                    else msgs.push(String(arr))
+                })
+            }
+            return msgs
+        },
     }
+}
 </script>

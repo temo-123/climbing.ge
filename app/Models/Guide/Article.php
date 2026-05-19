@@ -37,6 +37,7 @@ class Article extends Model
 		'image',
 
 		'mount_route',
+		'mount_grade',
 
 		'price_from',
 

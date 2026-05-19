@@ -33,6 +33,10 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::post('/create_comment/{article_id}', 'create_comment');
     });
 
+    Route::controller(CommentController::class)->prefix('set_guide_comment')->group( function() {
+        Route::post('/confirm_email/{email}', 'confirm_email');
+    });
+
     Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
         Route::get('/get_member_status/{id}', 'get_member_status');
         Route::get('/get_team_members', 'get_team_members');
@@ -85,7 +89,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_locale_mounts/{lang}', 'get_locale_mounts');
 
         Route::get('/get_editing_mount_data/{mount_id}', 'get_editing_mount_data');
-        Route::get('/{lang}/{mount_id}', 'get_locale_mount');
         Route::get('/{lang}/{mount_id}', 'get_locale_mount');
         Route::get('/on_page/{lang}/{mount_route_id}', 'get_locale_mount_on_route_page');
     });

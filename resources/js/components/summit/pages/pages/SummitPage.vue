@@ -72,7 +72,7 @@
                                 <i class="fa fa-list"></i> {{ $t('summit.summit_page.ascents') }}
                                 <span v-if="ascents.length" class="badge" style="background:#1d7a48">{{ ascents.length }}</span>
                             </h2>
-                            <div class="bar" style="margin-top:20px"><i class="fa fa-users"></i></div>
+                            <!-- <div class="bar" style="margin-top:20px"><i class="fa fa-users"></i></div> -->
 
                             <div v-if="loadingAscents" class="text-center py-4">
                                 <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -143,7 +143,7 @@
                                 <h4 class="text-muted text-uppercase" style="letter-spacing:.05em; font-size:12px; margin-bottom:16px">
                                     <i class="fa fa-qrcode"></i> {{ $t('summit.summit_page.scan_to_record') }}
                                 </h4>
-                                <div class="d-flex justify-content-center mb-3">
+                                <div class="d-flex justify-content-center mb-3" style="text-align: center;">
                                     <qrcode-vue :value="ascentUrl" :size="160" level="H" render-as="svg" />
                                 </div>
                                 <p class="text-muted small">{{ $t('summit.summit_page.scan_instruction') }}</p>

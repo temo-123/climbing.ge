@@ -102,8 +102,8 @@
                 this.loading = true
                 try {
                     const [qtyRes, finRes] = await Promise.all([
-                        axios.get(`/get_order/get_order_statistics/${this.selectedPeriod}`),
-                        axios.get(`/get_order/get_order_finance_statistics/${this.selectedPeriod}`),
+                        axios.get(`get_order/get_order_statistics/${this.selectedPeriod}`),
+                        axios.get(`get_order/get_order_finance_statistics/${this.selectedPeriod}`),
                     ])
                     this.qty_data = qtyRes.data && qtyRes.data.length > 1 ? qtyRes.data : [['Date', 'Orders'], ['—', 0]]
                     this.fin_data = finRes.data && finRes.data.length > 1 ? finRes.data : [['Date', 'Revenue'], ['—', 0]]

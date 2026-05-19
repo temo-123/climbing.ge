@@ -34,26 +34,21 @@ class CartController extends Controller
             $product_image = '';
             foreach ($cart_items as $cart_item) {
 
-                $option = Product_option::where('id', strip_tags($cart_item->option_id))->get();
+                $option = Product_option::with('warehouse')->where('id', strip_tags($cart_item->option_id))->get();
 
                 foreach ($option as $opt) {
                     $product = Product::where('id', strip_tags($opt->product_id))->get();
-                    // dd($product);
-                
+
                     $images = Option_image::where('option_id', strip_tags($opt->id))->get();
                     $image_count = Option_image::where('option_id', strip_tags($opt->id))->count();
-    
+
                     foreach($images as $image){
                         if ($image_count == 1) {
                             $product_image = $image->image;
                         }
-                        if ($image_count == 1 && $image->general_image == NULL) {
-                            # code...
-                        } 
-                        else {
-                            # code...
-                        }
                     }
+
+                    $stock_quantity = ProductService::get_option_stock_quantity($opt);
 
                     array_push($products, [
                         "id"=>$cart_item->id,
@@ -62,10 +57,9 @@ class CartController extends Controller
                         "option"=>$option[0],
                         "quantity"=>$cart_item->quantity,
                         "product_image" => $product_image,
+                        "stock_quantity" => $stock_quantity,
+                        "is_out_of_stock" => $stock_quantity <= 0,
                     ]);
-                
-                    // dd($products);
-                    // echo $product_image;
                 }
             }
             

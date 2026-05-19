@@ -131,8 +131,17 @@ class CommentController extends Controller
     }
 
 
-    public function confirm_email(Request $request) 
-    {        
-        return CommentService::confirm_email($request->email);
+    public function confirm_email(Request $request)
+    {
+        $email = $request->route('email') ?? $request->email;
+        $commentId = $request->comment_id;
+        $token = $request->token;
+
+        $expectedToken = hash_hmac('sha256', $email . '|' . $commentId, config('app.key'));
+        if (!hash_equals($expectedToken, (string)($token ?? ''))) {
+            return response()->json(['message' => 'Invalid verification link'], 400);
+        }
+
+        return CommentService::confirm_email($email);
     }
 }

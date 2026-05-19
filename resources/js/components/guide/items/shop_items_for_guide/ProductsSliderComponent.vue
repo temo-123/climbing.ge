@@ -10,7 +10,7 @@
             </h3>
 
             <div class="products-slider-container">
-                <div class="previes_products_bottom" v-if="products.length > visibleCount && slider_index > 0" @click="previous">
+                <div class="previes_products_bottom" v-if="products.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previous">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
@@ -25,7 +25,7 @@
                     </div>
                 </div>
 
-                <div class="next_products_bottom" v-if="products.length > visibleCount && slider_index < products.length - visibleCount" @click="next">
+                <div class="next_products_bottom" v-if="products.length > visibleCount" @click="next">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>
@@ -129,6 +129,12 @@
     .product-slide-item :deep(.grid-tile) {
         width: 100%;
         max-width: 100%;
+    }
+
+    .slider-btn-disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 
     .previes_products_bottom, .next_products_bottom {

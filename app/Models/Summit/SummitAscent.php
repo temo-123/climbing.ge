@@ -23,6 +23,7 @@ class SummitAscent extends Model
         'user_latitude',
         'user_longitude',
         'ascent_date',
+        'ascent_time',
     ];
 
     protected $casts = [

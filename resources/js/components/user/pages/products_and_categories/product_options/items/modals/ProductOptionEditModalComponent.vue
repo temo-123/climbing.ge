@@ -3,6 +3,7 @@
             :show="is_edit_option_modal"
             :title="'Edit option'" 
             @close="close_option_edit_model"
+            @save="edit_option"
             :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
         >
@@ -81,11 +82,11 @@
                     </div>
                 </div>
             </div>
-            <div slot="modal-footer">
+            <!-- <div slot="modal-footer">
                 <div class="modal-footer">
                     <button type="submit" form="edit_new_option" class="btn btn-primary">Update option</button>
                 </div>
-            </div>
+            </div> -->
         </stack-modal>
 </template>
 

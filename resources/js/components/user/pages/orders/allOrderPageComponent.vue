@@ -123,7 +123,7 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
-                                                        ['edit_order_status', 'edit'],
+                                                        ['order', 'edit'],
                                                         ['no'],
                                                     ]
                                                 }
@@ -171,8 +171,8 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['no'],
-                                                        ['shiping_region', 'edit'],
-                                                        ['shiping_region', 'del'],
+                                                        ['shipping_region', 'edit'],
+                                                        ['shipping_region', 'del'],
                                                     ]
                                                 }
                                             },

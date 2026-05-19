@@ -78,13 +78,13 @@
                                         <td>
                                             <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                                         </td>
-                                        <td class="d-none d-md-table-cell">{{ option.id }}</td>
+                                        <td>{{ option.id }}</td>
                                         <td>{{ option.name }}</td>
-                                        <td class="d-none d-md-table-cell">{{ option.price }} {{ option.currency }}</td>
+                                        <td>{{ option.price }} {{ option.currency }}</td>
                                         <td>
                                             <div class="quantity-controls d-flex align-items-center justify-content-center">
-                                                <button 
-                                                    type="button" 
+                                                <button
+                                                    type="button"
                                                     class="btn btn-sm btn-danger"
                                                     @click="decrementQuantity(option)"
                                                     :disabled="option.pivot.quantity <= 0"
@@ -92,7 +92,7 @@
                                                 >
                                                     -
                                                 </button>
-                                                
+
                                                 <input
                                                     type="number"
                                                     v-model="option.pivot.quantity"
@@ -101,9 +101,9 @@
                                                     min="0"
                                                     style="width: 70px; text-align: center; height: 36px;"
                                                 />
-                                                
-                                                <button 
-                                                    type="button" 
+
+                                                <button
+                                                    type="button"
                                                     class="btn btn-sm btn-info"
                                                     @click="incrementQuantity(option)"
                                                     title="Increase quantity"
@@ -112,7 +112,7 @@
                                                 </button>
                                             </div>
                                         </td>
-                                        <td v-if="warehouse.general" class="d-none d-md-table-cell">
+                                        <td v-if="warehouse.general">
                                             <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
                                                 Make task
                                             </button>
@@ -137,16 +137,16 @@
 
             <!-- Flat View -->
             <div v-else-if="viewMode === 'flat' && product_options.length > 0" class="table-responsive">
-                <table class="table table-striped" style="overflow-x: hidden;">
+                <table class="table table-striped">
                     <thead>
                         <tr>
                             <th>Image</th>
-                            <th class="d-none d-md-table-cell">ID</th>
+                            <th>ID</th>
                             <th>Product Name</th>
-                            <th class="d-none d-md-table-cell">Option Name</th>
-                            <th class="d-none d-md-table-cell">Price</th>
+                            <th>Option Name</th>
+                            <th>Price</th>
                             <th>Quantity</th>
-                            <th v-if="warehouse.general" class="d-none d-md-table-cell">Task</th>
+                            <th v-if="warehouse.general">Task</th>
                             <th>Migration</th>
                             <th>Delete</th>
                         </tr>
@@ -156,14 +156,14 @@
                             <td>
                                 <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                             </td>
-                            <td class="d-none d-md-table-cell">{{ option.id }}</td>
+                            <td>{{ option.id }}</td>
                             <td>{{ option.product.url_title }}</td>
-                            <td class="d-none d-md-table-cell">{{ option.name }}</td>
-                            <td class="d-none d-md-table-cell">{{ option.price }} {{ option.currency }}</td>
+                            <td>{{ option.name }}</td>
+                            <td>{{ option.price }} {{ option.currency }}</td>
                             <td>
                                 <div class="quantity-controls d-flex align-items-center justify-content-center">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         class="btn btn-sm btn-danger"
                                         @click="decrementQuantity(option)"
                                         :disabled="option.pivot.quantity <= 0"
@@ -171,7 +171,7 @@
                                     >
                                         -
                                     </button>
-                                    
+
                                     <input
                                         type="number"
                                         v-model="option.pivot.quantity"
@@ -180,9 +180,9 @@
                                         min="0"
                                         style="width: 70px; text-align: center; height: 36px;"
                                     />
-                                    
-                                    <button 
-                                        type="button" 
+
+                                    <button
+                                        type="button"
                                         class="btn btn-sm btn-info"
                                         @click="incrementQuantity(option)"
                                         title="Increase quantity"
@@ -191,7 +191,7 @@
                                     </button>
                                 </div>
                             </td>
-                            <td v-if="warehouse.general" class="d-none d-md-table-cell">
+                            <td v-if="warehouse.general">
                                 <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
                                     Make task
                                 </button>

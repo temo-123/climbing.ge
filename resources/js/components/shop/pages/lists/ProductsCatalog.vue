@@ -109,6 +109,9 @@
                     this.loadFiltersFromUrl();
                 },
                 deep: true
+            },
+            viewMode(newMode) {
+                this.updateUrl();
             }
         },
         computed: {
@@ -158,6 +161,7 @@
                 if (this.currentFilters.subcategory_id && this.currentFilters.subcategory_id !== 0) query.subcategory_id = this.currentFilters.subcategory_id;
                 if (this.currentFilters.price_min !== null && this.currentFilters.price_min !== 0 && this.currentFilters.price_min !== undefined) query.price_min = this.currentFilters.price_min;
                 if (this.currentFilters.price_max !== null && this.currentFilters.price_max !== 0 && this.currentFilters.price_max !== undefined && this.currentFilters.price_max < 5000) query.price_max = this.currentFilters.price_max;
+                if (this.viewMode && this.viewMode !== 'grid') query.view = this.viewMode;
                 this.$router.replace({ query });
             },
 
@@ -170,6 +174,7 @@
                     price_min: query.price_min ? Number(query.price_min) : null,
                     price_max: query.price_max ? Number(query.price_max) : null
                 };
+                if (query.view === 'list') this.viewMode = 'list';
             },
 
             applyFilters(filters) {

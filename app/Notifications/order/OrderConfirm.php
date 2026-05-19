@@ -23,6 +23,7 @@ class OrderConfirm extends Notification
 
         $this->user_id = $user_order_info['user_id'];
         $this->order_id = $user_order_info['order_id'];
+        $this->token = hash_hmac('sha256', $this->order_id . '|' . $this->user_id, config('app.key'));
     }
 
     /**
@@ -65,7 +66,7 @@ class OrderConfirm extends Notification
             // ->line('Best regards!')
             ->markdown('emails.order.order_confirm', 
                 [
-                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/confirm_order/'. strval($this->order_id) .'/user/' . strval($this->user_id),
+                    'action_url'=>env('APP_SSH').env('USER_PAGE_URL').'/order/confirm_order/'. strval($this->order_id) .'/user/' . strval($this->user_id) . '/token/' . $this->token,
                 ]
             )
             // ->action('url', url(env('USER_PAGE_URL').'/confir_ordr/order_id/for_user/user_id'))

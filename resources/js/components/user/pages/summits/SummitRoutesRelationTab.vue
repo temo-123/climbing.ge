@@ -1,8 +1,8 @@
 <template>
     <div class="summit-routes-relation">
 
-        <!-- Summit selector -->
-        <div class="row mb-3">
+        <!-- Summit selector (hidden when presetSummitId is given) -->
+        <div v-if="!presetSummitId" class="row mb-3">
             <div class="col-md-5">
                 <label class="font-weight-bold">Select Summit</label>
                 <select class="form-control" v-model="selected_summit_id" @change="load_routes">
@@ -116,6 +116,7 @@ export default {
     name: 'SummitRoutesRelationTab',
     props: {
         summits: { type: Array, default: () => [] },
+        presetSummitId: { type: Number, default: null },
     },
     data() {
         return {
@@ -149,6 +150,10 @@ export default {
     },
     mounted() {
         this.load_all_routes()
+        if (this.presetSummitId) {
+            this.selected_summit_id = this.presetSummitId
+            this.load_routes()
+        }
     },
     methods: {
         load_all_routes() {

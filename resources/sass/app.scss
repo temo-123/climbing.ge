@@ -3653,8 +3653,9 @@ select:focus {
     border-bottom: 1px solid #d8d8d8;
     width: 80%;
     height: 1px;
-    margin: 20px auto;
-    margin-top: 50px;
+    margin: 50px auto;
+    // margin-top: 50px;
+    // margin: 50px 20px 20px 20px;
     text-align: center;
 }
 

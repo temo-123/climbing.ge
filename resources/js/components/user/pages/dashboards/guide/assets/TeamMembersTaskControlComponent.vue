@@ -1,73 +1,79 @@
 <template>
     <div class="col-md-12">
-        <div class="tabs task_tub">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col">
-                            <input type="radio" id="task_1" :value="1" v-model="task_tab_num">
-                            <label for="task_1">Tasks</label>
-                        </div>
-                    </div>
+        <div class="task-panel">
+            <div class="task-panel-toolbar mb-3">
+                <button v-if="$can('add', 'task')" class="btn btn-primary btn-sm" @click="show_add_task_modal">
+                    <i class="fa fa-plus"></i> New Task
+                </button>
+                <button class="btn btn-outline-secondary btn-sm ml-2" @click="get_all_tasks" :disabled="is_loading">
+                    <i class="fa fa-refresh"></i> Refresh
+                </button>
+                <div class="task-legend ml-auto">
+                    <span class="legend-dot dot-yellow"></span> Created
+                    <span class="legend-dot dot-green ml-2"></span> In Progress
+                    <span class="legend-dot dot-gray ml-2"></span> Finished
+                    <span class="legend-dot dot-red ml-2"></span> Problem
                 </div>
             </div>
 
-            <div class="row" v-if="task_tab_num == 1">
-
-                <div class="col-md-12 mb-2">
-                    <button v-if="$can('add', 'task')" class="btn btn-primary pull-left" @click="show_add_task_modal">
-                        Create new task
-                    </button>
-                    <button class="btn btn-success pull-right" @click="get_all_tasks">Refresh</button>
-                </div>
-
-                <div class="col-md-12 text-center py-3" v-if="is_loading">
-                    <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2 text-muted">Loading tasks...</p>
-                </div>
-
-                <div class="col-md-12" v-else-if="tasks.length === 0">
-                    <p class="text-muted text-center py-3">No tasks found.</p>
-                </div>
-
-                <div class="col-md-12" v-for="task in tasks" :key="task.id" v-else>
-                    <div :class="'alert ' + task_status_color(task.status)" role="alert">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong>{{ task.status }}</strong> &mdash; {{ task.title }}
-                                <p class="mb-0 mt-1 text-muted"><small>Deadline: {{ task.deadline }}</small></p>
-                            </div>
-                            <div class="col-md-12 mt-2">
-                                <button class="btn btn-success btn-sm float-right ml-1" @click="show_task_modal(task.id)">
-                                    Show details
-                                </button>
-                                <button v-if="$can('edit_status', 'task') && task.status !== 'confirmation_completion'"
-                                    class="btn btn-primary btn-sm float-right ml-1"
-                                    @click="show_task_status_model(task.id)">
-                                    Update status
-                                </button>
-                                <button v-if="$can('edit', 'task') && task.status !== 'confirmation_completion'"
-                                    class="btn btn-warning btn-sm float-right ml-1"
-                                    @click="show_edit_task_modal(task.id)">
-                                    Edit
-                                </button>
-                                <button v-if="$can('del', 'task')"
-                                    class="btn btn-danger btn-sm float-right ml-1"
-                                    @click="del_task(task.id)">
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+            <div class="text-center py-4 text-muted" v-if="is_loading">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Loading tasks...</p>
             </div>
 
-            <addTaskModal ref="show_add_task_modal" globalCategory="guide" @restart="get_all_tasks" />
-            <editTaskModal ref="show_edit_task_modal" @restart="get_all_tasks" />
-            <showTaskModal ref="show_task_modal" />
-            <adminTaskStatusModal ref="task_status_modal" @restart="get_all_tasks" />
+            <div v-else-if="tasks.length === 0" class="text-center text-muted p-4">
+                No guide tasks found.
+            </div>
+
+            <div v-for="task in tasks" :key="task.id" class="task-card" :class="task_card_class(task.status)">
+                <div class="task-card-left" :class="task_bar_class(task.status)"></div>
+                <div class="task-card-body">
+                    <div class="task-card-top">
+                        <div>
+                            <span class="task-title">{{ task.title }}</span>
+                            <span class="task-badge ml-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
+                            <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
+                        </div>
+                        <div class="task-card-actions">
+                            <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" title="Details">
+                                <i class="fa fa-eye"></i>
+                            </button>
+                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" title="Edit">
+                                <i class="fa fa-pencil"></i>
+                            </button>
+                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_task_status_model(task.id)" title="Update status">
+                                <i class="fa fa-exchange"></i>
+                            </button>
+                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="task-card-meta">
+                        <span class="text-muted">
+                            <i class="fa fa-user"></i>
+                            {{ task.for_user ? task.for_user.name + ' ' + task.for_user.surname : '—' }}
+                        </span>
+                        <span class="text-muted ml-3" :class="is_overdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
+                            <i class="fa fa-calendar"></i> {{ format_date(task.deadline) }}
+                            <span v-if="is_overdue(task.deadline)"> (overdue!)</span>
+                        </span>
+                    </div>
+                    <div v-if="task.status === 'problem' && task.worker_comment" class="task-problem-note mt-1">
+                        <i class="fa fa-exclamation-triangle text-danger"></i>
+                        <strong class="text-danger"> Problem:</strong> {{ task.worker_comment }}
+                    </div>
+                    <div v-else-if="task.worker_comment" class="mt-1 text-muted" style="font-size:0.85em;">
+                        <i class="fa fa-comment-o"></i> {{ task.worker_comment }}
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <addTaskModal ref="show_add_task_modal" globalCategory="guide" @restart="get_all_tasks" />
+        <editTaskModal ref="show_edit_task_modal" @restart="get_all_tasks" />
+        <showTaskModal ref="show_task_modal" />
+        <adminTaskStatusModal ref="task_status_modal" @restart="get_all_tasks" />
     </div>
 </template>
 
@@ -78,80 +84,86 @@
     import adminTaskStatusModal from '../../../../items/modal/task/task/AdminTaskStatusModalComponent.vue'
 
     export default {
-        components: {
-            addTaskModal,
-            editTaskModal,
-            showTaskModal,
-            adminTaskStatusModal,
-        },
+        components: { addTaskModal, editTaskModal, showTaskModal, adminTaskStatusModal },
         data() {
             return {
-                task_tab_num: 1,
                 is_loading: false,
                 tasks: [],
-                task_categorys: [],
             }
         },
         mounted() {
             this.get_all_tasks()
-            this.get_all_tasks_category()
         },
         methods: {
-            show_task_status_model(task_id) {
-                this.$refs.task_status_modal.show_modal(task_id)
-            },
-            show_add_task_modal() {
-                this.$refs.show_add_task_modal.show_modal()
-            },
-            show_edit_task_modal(task_id) {
-                this.$refs.show_edit_task_modal.show_modal(task_id)
-            },
-            show_task_modal(task_id) {
-                this.$refs.show_task_modal.show_modal(task_id)
-            },
+            show_task_status_model(task_id) { this.$refs.task_status_modal.show_modal(task_id) },
+            show_add_task_modal()          { this.$refs.show_add_task_modal.show_modal() },
+            show_edit_task_modal(task_id)  { this.$refs.show_edit_task_modal.show_modal(task_id) },
+            show_task_modal(task_id)       { this.$refs.show_task_modal.show_modal(task_id) },
 
             get_all_tasks() {
                 this.is_loading = true
-                axios.get('get_task/get_all_tasks/', { params: { global_category: 'guide' } })
+                axios.get('get_task/get_all_tasks', { params: { global_category: 'guide' } })
                     .then(response => { this.tasks = response.data })
                     .catch(() => {})
-                    .finally(() => this.is_loading = false)
+                    .finally(() => { this.is_loading = false })
             },
-
             del_task(task_id) {
                 if (confirm('Are you sure you want to delete this task?')) {
-                    axios.post('set_task/del_task/' + task_id, { _method: 'DELETE' })
-                        .then(() => { this.get_all_tasks() })
+                    axios.delete('set_task/del_task/' + task_id)
+                        .then(() => this.get_all_tasks())
                         .catch(() => {})
                 }
             },
-
-            get_all_tasks_category() {
-                axios.get('get_task/task_category/get_all_task_categories/')
-                    .then(response => { this.task_categorys = response.data })
-                    .catch(() => {})
+            task_card_class(status) {
+                const map = { set_task: 'card-yellow', in_process: 'card-green', finished: 'card-gray', confirmation_completion: 'card-blue', problem: 'card-red' }
+                return map[status] || 'card-gray'
             },
-
-            task_status_color(status) {
-                const map = {
-                    in_process: 'alert-warning',
-                    finished: 'alert-success',
-                    confirmation_completion: 'alert-info',
-                }
-                return map[status] || 'alert-danger'
-            }
+            task_bar_class(status) {
+                const map = { set_task: 'bar-yellow', in_process: 'bar-green', finished: 'bar-gray', confirmation_completion: 'bar-blue', problem: 'bar-red' }
+                return map[status] || 'bar-gray'
+            },
+            task_badge_class(status) {
+                const map = { set_task: 'badge-warning', in_process: 'badge-success', finished: 'badge-secondary', confirmation_completion: 'badge-info', problem: 'badge-danger' }
+                return map[status] || 'badge-secondary'
+            },
+            status_label(status) {
+                const map = { set_task: 'Created', in_process: 'In Progress', finished: 'Finished', confirmation_completion: 'Awaiting Confirm', problem: 'Problem' }
+                return map[status] || status
+            },
+            is_overdue(deadline) { return deadline && new Date(deadline) < new Date() },
+            format_date(d)       { return d ? d.substring(0, 10) : '—' },
         }
     }
 </script>
 
 <style scoped>
-.task_tub {
-    border: 1px solid #7427bb69;
-    border-radius: 1px 1px 5px 5px;
-    background-color: #eaeaea;
-    padding: 10px;
+.task-panel-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.task-legend { display: flex; align-items: center; font-size: 0.8em; color: #666; }
+.legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
+
+.task-card {
+    display: flex; border-radius: 6px; margin-bottom: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; background: #fff;
 }
-.ml-1 {
-    margin-left: 4px;
-}
+.task-card-left  { width: 5px; flex-shrink: 0; }
+.task-card-body  { flex: 1; padding: 10px 14px; }
+.task-card-top   { display: flex; justify-content: space-between; align-items: flex-start; }
+.task-title      { font-weight: 600; font-size: 0.95em; }
+.task-card-meta  { margin-top: 4px; font-size: 0.82em; }
+.task-card-actions { display: flex; flex-shrink: 0; gap: 4px; }
+.task-problem-note { font-size: 0.85em; }
+
+.card-gray { background: #f8f9fa; }
+.card-red  { background: #fff8f8; }
+
+.bar-yellow { background: #ffc107; }
+.bar-green  { background: #28a745; }
+.bar-gray   { background: #6c757d; }
+.bar-blue   { background: #17a2b8; }
+.bar-red    { background: #dc3545; }
+
+.dot-yellow { background: #ffc107; }
+.dot-green  { background: #28a745; }
+.dot-gray   { background: #6c757d; }
+.dot-red    { background: #dc3545; }
 </style>

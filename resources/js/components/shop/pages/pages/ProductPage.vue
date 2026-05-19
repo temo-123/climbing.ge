@@ -483,55 +483,68 @@
             },
 
             get_product_options_images(){
+                // Gallery images first
+                if (this.product.gallery_images && this.product.gallery_images.length) {
+                    this.product.gallery_images.forEach(img => {
+                        this.items.push({
+                            src: this.publicPath + '/public/images/product_img/' + img.image,
+                            thumbnail: this.publicPath + '/public/images/product_img/' + img.image,
+                            caption: this.product.locale_product.title,
+                        })
+                    })
+                }
+                // Option images
                 this.product.product_option.forEach(option => {
                     this.prices.push(option.option.price)
-                    if(option.images.length){
-                        option.images.forEach(image => {
-                            // if(image.image != null){
-                                this.items.push({
-                                    src: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                    thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                    caption: option.option.title,
-                                    id:  option.option.id
-                                })
-                            // }
-                        });
-                    }
-                    else{
-                        this.items = []
-                    }
-                });
+                    option.images.forEach(image => {
+                        this.items.push({
+                            src: this.publicPath + '/public/images/product_option_img/' + image.image,
+                            thumbnail: this.publicPath + '/public/images/product_option_img/' + image.image,
+                            caption: option.option.title,
+                            id: option.option.id
+                        })
+                    })
+                })
             },
 
             select_option(){
-                this.items = [];
+                this.items = []
                 this.is_adding_in_cart_socsesful = false
-                this.select_product_max_quantyty = 0; // Reset quantity
+                this.select_product_max_quantyty = 0
                 if (this.product_modification_for_cart == "All") {
                     this.get_product_options_images()
                 }
                 else if (this.product && this.product.product_option) {
                     this.product.product_option.forEach(option => {
                         if (option.option && this.product_modification_for_cart == option.option.id) {
-                            // Use stock_quantity from backend instead of global_product.quantity
                             this.select_product_max_quantyty = option.stock_quantity || 0
-
                             this.actyve_price.price = option.option.price
-                            if(option.option.discount > 0){
+                            if (option.option.discount > 0) {
                                 this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, option.option.discount)
                             } else {
                                 this.actyve_price.new_price = option.option.price
                             }
-                            option.images.forEach(image => {
-                                this.items.push({
-                                    src: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                    thumbnail: this.publicPath + '/public/images/product_option_img/'+image.image,
-                                    caption: option.option.title,
-                                    id:  option.option.id
+                            if (option.images.length) {
+                                option.images.forEach(image => {
+                                    this.items.push({
+                                        src: this.publicPath + '/public/images/product_option_img/' + image.image,
+                                        thumbnail: this.publicPath + '/public/images/product_option_img/' + image.image,
+                                        caption: option.option.title,
+                                        id: option.option.id
+                                    })
                                 })
-                            });
+                            } else if (this.product.gallery_images && this.product.gallery_images.length) {
+                                // Fall back to gallery images when option has no own images
+                                this.product.gallery_images.forEach(img => {
+                                    this.items.push({
+                                        src: this.publicPath + '/public/images/product_img/' + img.image,
+                                        thumbnail: this.publicPath + '/public/images/product_img/' + img.image,
+                                        caption: this.product.locale_product.title,
+                                    })
+                                })
+                            }
                         }
-                    });
+                    })
                 }
             },
 

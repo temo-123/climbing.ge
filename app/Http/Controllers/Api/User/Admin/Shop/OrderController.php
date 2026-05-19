@@ -177,7 +177,7 @@ class OrderController extends Controller
 
         $new_order['confirm'] = 1; // Auto confirm for admin added orders
         $new_order['status'] = 'pending';
-        $new_order['status_updating_data'] = date("Y-m-d H:I:s");
+        $new_order['status_updating_data'] = date("Y-m-d H:i:s");
 
         $saved = $new_order->save();
 
@@ -220,8 +220,7 @@ class OrderController extends Controller
     {
         $cart_items = Cart::where('user_id', '=', $user_id)->get();
         foreach ($cart_items as $item) {
-            $cart_item = Cart::where('id', '=', $item->id)->first();
-            $cart_item ->delete();
+            $item->delete();
         }
         return 'All items is deleted';
     }
@@ -368,32 +367,50 @@ class OrderController extends Controller
 
     public function order_is_confirm(Request $request)
     {
-        $auth = PermissionService::authorize('order', 'edit');
-        if ($auth) return $auth;
+        $user = Auth::user();
+        $orderId = $request->route('order_id') ?? $request->order_id;
+        $order = Order::where("id", "=", $orderId)->first();
 
-        $order = Order::where("id", "=", $request->order_id)->first();
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        if ($order->user_id !== $user->id) {
+            $auth = PermissionService::authorize('order', 'edit');
+            if ($auth) return $auth;
+        }
+
+        $expectedToken = hash_hmac('sha256', $order->id . '|' . $order->user_id, config('app.key'));
+        if (!hash_equals($expectedToken, (string)($request->token ?? ''))) {
+            return response()->json(['error' => 'Invalid verification link'], 400);
+        }
+
+        if ($order->confirm == 1) {
+            return response()->json(['error' => 'Order already confirmed'], 400);
+        }
+
         $order['confirm'] = 1;
         $order['status'] = 'treatment';
-        $order['status_updating_data'] = date("Y-m-d H:I:s");
+        $order['status_updating_data'] = date("Y-m-d H:i:s");
         $order->update();
 
-        //send mail to admin
         (new static)->send_order_mail_ot_admin();
+
+        return response()->json(['message' => 'Order confirmed successfully']);
     }
+
     public function is_order_confirm(Request $request)
     {
-        if ($auth = PermissionService::authorize('order', 'show')) return $auth;
-        $order = Order::where("id", "=", $request->order_id)->first();
-        // dd($order->confirm);
-        $status;
-        if($order->confirm == 1){
-            $status = false;
-        }
-        else{
-            $status = true;
+        $user = Auth::user();
+        $orderId = $request->route('order_id') ?? $request->order_id;
+        $order = Order::where("id", "=", $orderId)->first();
+
+        if (!$order) return response()->json(['error' => 'Order not found'], 404);
+
+        if ($order->user_id !== $user->id) {
+            $auth = PermissionService::authorize('order', 'show');
+            if ($auth) return $auth;
         }
 
-        return $status;
+        return $order->confirm != 1;
     }
 
     public function edit_order_status(Request $request)

@@ -207,6 +207,20 @@ import PaginationComponent from"./assets/PaginationComponent.vue";
 import SearchComponent from "./assets/SearchComponent.vue";
 import TabBodyComponent from"./assets/TabBodyComponent.vue";
 import TabHeaderComponent from"./assets/TabHeaderComponent.vue";
+
+function deepSearchValue(val, query) {
+    if (val === null || val === undefined) return false;
+    if (typeof val === 'string') return val.toLowerCase().includes(query);
+    if (typeof val === 'number') return String(val).includes(query);
+    if (typeof val === 'object') return Object.values(val).some(v => deepSearchValue(v, query));
+    return false;
+}
+
+function getByPath(obj, path) {
+    if (!Array.isArray(path)) return obj?.[path];
+    return path.reduce((acc, key) => (acc != null ? acc[key] : undefined), obj);
+}
+
 export default {
     components: {
         FilterComponent,
@@ -270,7 +284,7 @@ export default {
             return (this.table_data || []).filter(tab => {
                 if (!tab || typeof tab !== 'object' || tab.id === undefined) return false;
                 if (!tab.tab_data || !Array.isArray(tab.tab_data.data)) return false;
-                return tab.tab_data.data.every(item => item && item.id !== undefined);
+                return tab.tab_data.data.every(item => item && typeof item === 'object');
             }).sort((a, b) => a.id - b.id);
         },
         filteredTableData() {
@@ -288,23 +302,18 @@ export default {
                     };
                 }
                 const query = this.searchQuery.trim().toLowerCase();
-                let filteredData = tab.tab_data.data.filter(item => item && item.id !== undefined);
+                let filteredData = tab.tab_data.data.filter(item => item && typeof item === 'object');
                 if (query !== '') {
                     filteredData = filteredData.filter(item => {
-                        return Object.values(item).some(value => {
-                            if (typeof value === 'string') {
-                                return value.toLowerCase().includes(query);
-                            }
-                            return false;
-                        });
+                        return Object.values(item).some(value => deepSearchValue(value, query));
                     });
                 }
                 if (this.sortKey && tab.id === this.tab_num) {
-                    const key = this.sortKey;
+                    const keyPath = this.sortKey;
                     const dir = this.sortDir;
                     filteredData = [...filteredData].sort((a, b) => {
-                        const av = a[key];
-                        const bv = b[key];
+                        const av = getByPath(a, keyPath);
+                        const bv = getByPath(b, keyPath);
                         if (av == null && bv == null) return 0;
                         if (av == null) return 1;
                         if (bv == null) return -1;
@@ -358,12 +367,12 @@ export default {
             const config = body[colIndex];
             if (!config) return;
             if ((config[0] !== 'data' && config[0] !== 'data_action_id') || !Array.isArray(config[1]) || !config[1][0]) return;
-            const field = config[1][0];
+            const keyPath = config[1];
             if (this.sortColIndex === colIndex) {
                 this.sortDir = this.sortDir === 'asc' ? 'desc' : 'asc';
             } else {
                 this.sortColIndex = colIndex;
-                this.sortKey = field;
+                this.sortKey = keyPath;
                 this.sortDir = 'asc';
             }
             this.currentPage = 1;

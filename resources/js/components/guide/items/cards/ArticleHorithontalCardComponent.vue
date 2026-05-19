@@ -7,7 +7,7 @@
                         <div class="discount-percent-badge discount-badge-fourty">NEW</div>
                     </div>
                     <site-img 
-                        v-if="item.global_data.image != NULL" 
+                        v-if="item.global_data.image != null" 
                         :src="'/public/' + image_dir + item.global_data.image" 
                         :img_class="'img-responsive horizontal-card-image'" 
                         :alt='item.locale_data.title'

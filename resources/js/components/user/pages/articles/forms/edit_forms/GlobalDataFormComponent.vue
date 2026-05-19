@@ -39,12 +39,26 @@
                     <div class="form-group clearfix row" v-if="this.category == 'mount_route'">
                         <label for="name" class='col-md-2 control-label'> Mountain </label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="data.mount_id" name="mount_id"> 
-                                <option :value="'select_mount'" disabled>Select mount</option> 
-                                <option :value="null" style="color:red">Whithout Mount</option> 
-                                <!-- <option :value="'select_mount'">Select mount</option>  -->
-                                <option v-for="mount in mount_masive" :key="mount.global_data.id" v-bind:value="mount.global_data.id">{{mount.global_data.name}}</option> 
-                            </select> 
+                            <select class="form-control" v-model="data.mount_id" name="mount_id">
+                                <option :value="'select_mount'" disabled>Select mount</option>
+                                <option :value="null" style="color:red">Whithout Mount</option>
+                                <option v-for="mount in mount_masive" :key="mount.global_data.id" v-bind:value="mount.global_data.id">{{mount.global_data.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group clearfix row" v-if="this.category == 'mount_route'">
+                        <label for="mount_grade" class='col-md-2 control-label'> Route Grade </label>
+                        <div class="col-md-10">
+                            <select class="form-control" v-model="data.mount_grade" name="mount_grade">
+                                <option :value="null">— No grade —</option>
+                                <optgroup label="French Alpine">
+                                    <option v-for="g in french_grades" :key="g" :value="g">{{ g }}</option>
+                                </optgroup>
+                                <optgroup label="Russian / CIS">
+                                    <option v-for="g in russian_grades" :key="g" :value="g">{{ g }}</option>
+                                </optgroup>
+                            </select>
                         </div>
                     </div>
 
@@ -136,6 +150,9 @@
 
                 regions: [],
                 mount_masive: [],
+
+                french_grades: ['F', 'PD-', 'PD', 'PD+', 'AD-', 'AD', 'AD+', 'D-', 'D', 'D+', 'TD-', 'TD', 'TD+', 'ED1', 'ED2', 'ED3', 'ED4', 'ABO'],
+                russian_grades: ['1А', '1Б', '2А', '2Б', '3А', '3Б', '4А', '4Б', '5А', '5Б', '6А', '6Б'],
             }
         },
         watch: {

@@ -8,7 +8,7 @@
             <h3 class='article_list_short_description'> <span v-html="this.$siteData.data.team_member_description"></span> </h3>
 
             <div class="team-members-slider-container">
-                <div class="previes_team_bottom" v-if="team_members.length > visibleCount && slider_index > 0" @click="previous">
+                <div class="previes_team_bottom" v-if="team_members.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previous">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
@@ -22,7 +22,7 @@
                     </div>
                 </div>
 
-                <div class="next_team_bottom" v-if="team_members.length > visibleCount && slider_index < team_members.length - visibleCount" @click="next">
+                <div class="next_team_bottom" v-if="team_members.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index >= team_members.length - visibleCount }" @click="next">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>
@@ -203,6 +203,12 @@
         padding: 0 8px;
         text-align: center;
         cursor: pointer;
+    }
+
+    .slider-btn-disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 
     .previes_team_bottom, .next_team_bottom {

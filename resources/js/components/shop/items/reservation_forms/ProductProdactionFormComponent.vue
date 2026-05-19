@@ -89,7 +89,7 @@
             send_message(){
                 this.is_loader = true
                 axios
-                .post('/order/castam_prodaction_message/'+this.product_id_prop,{
+                .post('/set_order/castam_prodaction_message/'+this.product_id_prop,{
                     form_data: this.form_data
                 })
                 .then(response => {

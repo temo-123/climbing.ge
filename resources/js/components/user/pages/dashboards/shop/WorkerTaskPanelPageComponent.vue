@@ -93,7 +93,7 @@
         },
         methods: {
             load_tasks() {
-                axios.get('/get_task/get_user_tasks', { params: { global_category: 'shop' } })
+                axios.get('get_task/get_user_tasks', { params: { global_category: 'shop' } })
                     .then(r => { this.tasks = r.data })
                     .catch(() => {})
             },

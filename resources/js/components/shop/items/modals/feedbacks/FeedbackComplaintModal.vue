@@ -83,7 +83,7 @@
                 // loadComplaintRecaptchaScript: false,
 
                 errors: [],
-                user: [],
+                user: {},
                 user_id: 0,
 
                 complaint_feedback_id: 0,

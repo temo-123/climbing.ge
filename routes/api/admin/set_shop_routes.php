@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\User\Admin\Shop\ProductImageController;
 
 Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
@@ -36,6 +37,12 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
         // Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
 
+
+        Route::controller(ProductImageController::class)->prefix('set_product_img')->group(function () {
+            Route::get('/get_images/{product_id}', 'get_images');
+            Route::post('/add_images/{product_id}', 'add_images');
+            Route::delete('/del_image/{image_id}', 'del_image');
+        });
 
         Route::controller(ProductOptionController::class)->prefix('set_product_option')->group( function() {
             Route::get('/get_all_product_options', 'get_all_product_options');
@@ -137,6 +144,9 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/add_tour', 'add_tour');
         Route::post('/edit_tour/{tour_id}', 'edit_tour');
         Route::post('/change_user_relation', 'change_user_relation');
+        Route::get('/get_tour_users/{tour_id}', 'get_tour_users');
+        Route::post('/add_tour_user/{tour_id}', 'add_tour_user');
+        Route::delete('/remove_tour_user/{tour_id}/{user_id}', 'remove_tour_user');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
         Route::delete('/del_tour/{tour_id}', 'del_tour');
 

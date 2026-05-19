@@ -44,90 +44,12 @@
           </div>
         </div>
         
-        <div class="form-group clearfix row" v-if="show_alert_modal">
-          <div role="alert" class="alert alert-danger cursor_pointer">
-            <div class="row">
-              <div class="col-md-12">
-                <p>This route doesn't have a drawing yet. You can create one by adding a new route or editing an existing one with drawing tools.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="form-group clearfix row" v-if="data.sector_id != ''">
-          <div class="col-md-12">
-            <!-- Toggle Editor Button -->
-            <div class="row">
-                <div class="col-md-12">
-                    <button
-                        type="button"
-                        class="btn"
-                        :class="show_editor ? 'btn-danger' : 'btn-primary'"
-                        @click="toggleEditor"
-                    >
-                        {{ show_editor ? 'Close Editor' : 'Open Editor' }}
-                    </button>
-                </div>
-            </div>
-
-            <div class="row" v-if="show_editor && sector_images.length > 0">
-                <div class="tabs">
-                    <input
-                        v-for="(image, index) in sector_images"
-                        :key="'input-' + image.id + '-' + index"
-                        type="radio"
-                        :id="'input-' + image.id"
-                        :value="image.id"
-                        v-model="images_tab_num"
-                        @change="updateSectorImageId"
-                    />
-                    <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'input-' + image.id">
-                        Image ID → {{ image.id }}
-                        <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">original saved</span>
-                        <img
-                            :src="getSectorImageThumb(image)"
-                            :alt="'Sector Image ' + image.id"
-                            class="img-thumbnail"
-                            style="max-width: 100px; max-height: 100px; margin-left: 10px;" />
-                    </label>
-                </div>
-
-                <!-- Save Drawing button -->
-                <div class="col-md-12 mt-2 mb-2">
-                    <button
-                        type="button"
-                        class="btn btn-success"
-                        :disabled="drawing_saving"
-                        @click="saveRouteDrawing"
-                    >
-                        <i class="fa fa-save"></i>
-                        {{ drawing_saving ? 'Saving...' : 'Save Drawing' }}
-                    </button>
-                    <span v-if="drawing_save_status" class="ml-2" :class="drawing_save_status === 'ok' ? 'text-success' : 'text-danger'">
-                        {{ drawing_save_status === 'ok' ? '✓ Drawing saved' : '✗ Save failed' }}
-                    </span>
-                </div>
-
-                <Editor
-                  ref="editorComponent"
-                  :image_prop="getSectorImage()"
-                  :json_prop="data.route_json"
-                  :related_jsons="related_jsons"
-                  @canvas_data="handleCanvasData"
-                />
-            </div>
-            <div class="row" v-else-if="!show_editor">
-                <div class="col-md-12 text-center">
-                    <p>Click "Open Editor" to edit route drawing</p>
-                </div>
-            </div>
-            <div class="row" v-else>
-                <div class="col-md-12 text-center">
-                    <p>Loading sector image...</p>
-                </div>
-            </div>
-          </div>
-        </div>
+        <route_editor_component
+            v-if="data.sector_id != ''"
+            ref="editorComponent"
+            :route_json_prop="data.route_json"
+            @update:route_json_prop="data.route_json = $event"
+        />
 
         <div class="form-group clearfix row" v-if="errors.sector_id">
             <div class="col-md-12">
@@ -247,16 +169,19 @@
 
 <script>
   import Editor from '../../../items/canvas/EditorComponent.vue'
-  // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+  import validator_alerts_component from '../../../items/form/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
+  import route_editor_component from './assets/CanvasRouteEditorComponent.vue'
 
   export default {
       mixins: [
-          ],
+
+      ],
       components: {
           Editor,
-          // validator_alerts_component,
-          grades_form
+          validator_alerts_component,
+          grades_form,
+          route_editor_component
       },
     data() {
       return {

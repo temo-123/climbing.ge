@@ -1,4 +1,4 @@
-import { createApp } from "vue";
+import { createApp, reactive } from "vue";
 import "./bootstrap";
 import { createHead } from "@unhead/vue/client";
 
@@ -181,8 +181,8 @@ createGtag({
 });
 
 app.config.productionTip = false;
-app.config.globalProperties.$siteData = { data: [], loaded: false };
-app.config.globalProperties.$globalSiteData = { data: [], loaded: false };
+app.config.globalProperties.$siteData = reactive({ data: [], loaded: false });
+app.config.globalProperties.$globalSiteData = reactive({ data: [], loaded: false });
 
 app.mixin({
     methods: {
@@ -457,8 +457,8 @@ app.use(router);
 
 app.mount("#app");
 
-// Auto load site data after app mount - direct global call to avoid multiple
-setTimeout(() => {
+// Auto load site data immediately after app mount
+{
     const lang = localStorage.getItem('lang') || 'us';
     if (!app.config.globalProperties.$siteData.loaded) {
         axios
@@ -473,7 +473,7 @@ setTimeout(() => {
                 console.error('Failed to load site data:', error);
             });
     }
-}, 500);
+}
 
 window._ = require('lodash');
 

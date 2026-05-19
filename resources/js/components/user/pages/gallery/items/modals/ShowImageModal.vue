@@ -2,7 +2,7 @@
 <template>
     <stack-modal
         :show="is_show_image"
-        title="Preview"
+        :title="$t('head_slider.preview')"
         @close="close_modal()"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
@@ -24,7 +24,7 @@
                 >
                     <div class="preview_title" v-if="modal_image.title">{{ modal_image.title }}</div>
                     <div class="preview_desc" v-if="modal_image.text">{{ modal_image.text }}</div>
-                    <a v-if="modal_image.link" :href="modal_image.link" class="preview_btn">Read more</a>
+                    <a v-if="modal_image.link" :href="modal_image.link" class="preview_btn">{{ $t('head_slider.read_more') }}</a>
                 </div>
             </div>
         </div>

@@ -58,6 +58,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
             }
         },
         mounted() {
+            this.$bus.$emit('left-menu-mounted');
             this.window_size()
             this.open_dropdowns = JSON.parse(localStorage.getItem('left_menu_open_dropdowns') || '{}');
             this.syncMenuPosition();
@@ -87,6 +88,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
         },
 
         beforeUnmount() {
+            this.$bus.$emit('left-menu-unmounted');
             this.$bus.$off('permissions-loaded');
             this.$bus.$off('logged-in');
             this.$bus.$off('menu-toggle');
@@ -250,6 +252,8 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   position: fixed;
   opacity: 0;
   z-index: -1;
+  pointer-events: none;
+  left: -9999px;
 }
 .dropdown-icon {
   transition: transform 0.3s ease;

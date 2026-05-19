@@ -31,11 +31,11 @@
                         <span v-show="masiv_desc">
                             <span v-html="this.mounts_system.locale_data.text"></span>
 
-                            <div v-if="this.mounts_system.global_data.weather == NULL && this.mounts_system.locale_data.best_time != NULL">
+                            <div v-if="this.mounts_system.global_data.weather == null && this.mounts_system.locale_data.best_time != null">
                                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
                                 <span v-html="this.mounts_system.locale_data.best_time"></span>
                             </div>  
-                            <div v-else-if="this.mounts_system.global_data.weather != NULL && this.mounts_system.locale_data.best_time != NULL">
+                            <div v-else-if="this.mounts_system.global_data.weather != null && this.mounts_system.locale_data.best_time != null">
                                 <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
                                 <div class="row">
@@ -55,13 +55,19 @@
                             </div>
 
                             <!-- map -->
-                            <div v-if="this.mounts_system.global_data.map != NULL">
+                            <div v-if="this.mounts_system.global_data.map != null">
                                 <div class="article_map">
                                     <span v-html="this.mounts_system.global_data.map"></span>
                                 </div>
                             </div>
                         </span>
                     </div> 
+
+                    <!-- grade bar -->
+                    <div v-if="mount_route.global_data && mount_route.global_data.mount_grade" class="mount-grade-section">
+                        <h3 class="mount-grade-title">{{ $t('guide.article.mount_route.grade') }}</h3>
+                        <MountGradeBar :grade="mount_route.global_data.mount_grade" />
+                    </div>
 
                     <articleTextBlocks :article_prop="this.mount_route"/>
 
@@ -119,6 +125,7 @@
     import MountaineeringRouteImages from '../../items/MountaineeringRouteImages'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import articleTextBlocks from '../../items/article/ArticleTextBlocksComponent'
+    import MountGradeBar from '../../items/MountGradeBarComponent.vue'
 
     export default {
         props: [
@@ -141,6 +148,7 @@
             SimilarArticles,
             MountaineeringRouteImages,
             articleTextBlocks,
+            MountGradeBar,
 
         },
         
@@ -187,3 +195,21 @@
         }
     }
 </script>
+
+<style scoped>
+.mount-grade-section {
+    margin: 24px 0;
+    padding: 16px 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 4px solid #495057;
+}
+.mount-grade-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+</style>

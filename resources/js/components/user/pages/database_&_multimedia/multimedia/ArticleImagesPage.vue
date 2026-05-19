@@ -1,10 +1,5 @@
 <template>
-     <div class="row">
-        
-        <left-menu />
-
-        <div class="col-sm-12">
-        <div class="media-manager-container">
+    <div class="media-manager-container">
             <!-- Main Content Area -->
             <div class="main-content">
                 
@@ -226,8 +221,6 @@
                 @next="nextImage"
             />
 
-        </div>
-        </div>
     </div>
 </template>
 
@@ -297,8 +290,8 @@
                     this.folderStructure = Array.isArray(response.data) ? response.data : [];
                     
                     // Debug logging
-                    console.log('API Response:', response.data);
-                    console.log('Folder Structure:', this.folderStructure);
+                    // console.log('API Response:', response.data);
+                    // console.log('Folder Structure:', this.folderStructure);
                     
                 } catch (error) {
                     console.error('Error fetching images:', error);

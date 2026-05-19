@@ -179,7 +179,7 @@ export default {
 
             is_loading: false,
 
-            user: [],
+            user: {},
             errors: [],
 
             MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,

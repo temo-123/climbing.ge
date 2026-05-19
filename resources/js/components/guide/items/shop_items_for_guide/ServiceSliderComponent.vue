@@ -10,7 +10,7 @@
             </h3>
 
             <div class="services-slider-container">
-                <div class="previes_services_bottom" v-if="services.length > visibleCount && slider_index > 0" @click="previous">
+                <div class="previes_services_bottom" v-if="services.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previous">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
 
@@ -23,7 +23,7 @@
                     </div>
                 </div>
 
-                <div class="next_services_bottom" v-if="services.length > visibleCount && slider_index < services.length - visibleCount" @click="next">
+                <div class="next_services_bottom" v-if="services.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index >= services.length - visibleCount }" @click="next">
                     <i class="fa fa-chevron-right" aria-hidden="true"></i>
                 </div>
             </div>
@@ -184,6 +184,12 @@
         padding-left: 0;
         padding-right: 0;
         float: none;
+    }
+
+    .slider-btn-disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+        pointer-events: none;
     }
 
     .previes_services_bottom, .next_services_bottom {
