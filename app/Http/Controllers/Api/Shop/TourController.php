@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Shop\Tour;
 use App\Models\Shop\Locale_tour;
-use App\Models\Shop\Tour_image;
 use App\Models\User\User_tour;
 
 use App\Services\TourService;
@@ -29,30 +28,24 @@ class TourController extends Controller
     }
     
     function get_tours(Request $request){
-        // $global_tours = Tour::where("published", "=", 1)->get();
-        // return $tours = TourService::get_tours_use_locale($global_tours, $request->lang);
-
-        // Map locale codes
         $locale = $request->lang ?? 'us';
-        
-        $tours = Tour::latest('id')->where("published", "=", 1)->get();
+
+        $tours = Tour::latest('id')
+            ->where('published', 1)
+            ->with(['us_tour', 'ka_tour', 'tour_images', 'user'])
+            ->get();
+
         $returned_array = [];
-        
-        foreach($tours as $tour){
-            $localeData = null;
-            if ($locale === 'ka' && $tour->ka_tour) {
-                $localeData = $tour->ka_tour;
-            } elseif (($locale === 'us' || $locale === 'en') && $tour->us_tour) {
-                $localeData = $tour->us_tour;
-            }
-            $tour_images = Tour_image::where('tour_id', '=', $tour->id)->first();
-            $image = $tour_images ? $tour_images->image : '';
-            $users = $tour->user->values();
+
+        foreach ($tours as $tour) {
+            $localeData = ($locale === 'ka') ? $tour->ka_tour : $tour->us_tour;
+            $firstImage = $tour->tour_images->first();
+            $users = $tour->user;
             array_push($returned_array, [
                 'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
-                'image'       => $image,
+                'image'       => $firstImage ? $firstImage->image : '',
                 'users'       => $users,
                 'user'        => $users->first() ?? null,
             ]);
@@ -63,23 +56,22 @@ class TourController extends Controller
     public function get_all_tours($lang = null)
     {
         $locale = $lang ?? 'us';
-        $tours = Tour::latest('id')->get();
+
+        $tours = Tour::latest('id')
+            ->with(['us_tour', 'ka_tour', 'tour_images', 'user'])
+            ->get();
+
         $returned_array = [];
-        foreach($tours as $tour){
-            $localeData = null;
-            if ($locale === 'ka' && $tour->ka_tour) {
-                $localeData = $tour->ka_tour;
-            } elseif (($locale === 'us' || $locale === 'en') && $tour->us_tour) {
-                $localeData = $tour->us_tour;
-            }
-            $tour_images = Tour_image::where('tour_id', '=', $tour->id)->first();
-            $image = $tour_images ? $tour_images->image : '';
-            $users = $tour->user->values();
+
+        foreach ($tours as $tour) {
+            $localeData = ($locale === 'ka') ? $tour->ka_tour : $tour->us_tour;
+            $firstImage = $tour->tour_images->first();
+            $users = $tour->user;
             array_push($returned_array, [
                 'id'          => $tour->id,
                 'global_data' => $tour,
                 'locale_data' => $localeData,
-                'image'       => $image,
+                'image'       => $firstImage ? $firstImage->image : '',
                 'users'       => $users,
                 'user'        => $users->first() ?? null,
             ]);

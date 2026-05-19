@@ -13,6 +13,11 @@
                 <i class="fa fa-spinner fa-spin fa-3x text-muted"></i>
             </div>
 
+            <div v-else-if="!mapsApiKey" class="text-center py-5 text-muted">
+                <i class="fa fa-map fa-3x mb-3"></i>
+                <p>Map is not configured. Set <code>MIX_GOOGLE_MAPS_API_KEY</code> in <code>.env</code> to enable it.</p>
+            </div>
+
             <div v-else>
                 <p class="text-muted mb-2 small">
                     {{ summits.length }} {{ $t('summit.map.summits_on_map') }}
