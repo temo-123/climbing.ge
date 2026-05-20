@@ -180,10 +180,12 @@ const routes = [
             { path: 'login/:provaider/callback', name: 'callback', component: callback_password ,meta: {title: 'user page'}},
             { path: 'email/verify/:user_id/:hash', name: 'verify', component: verify ,meta: {title: 'user page'}},
 
-            { path: "*", name: 'NotFound', component: NotFound ,meta: {title: 'user page'}},
-
+            { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+            { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+            { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
         ],
     },
+    { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },
 ];
 
 const router = createRouter({

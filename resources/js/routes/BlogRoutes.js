@@ -33,9 +33,12 @@ const routes = [
             { path: "news/:url_title", name: "news", component: load("pages/NewsPage"), meta: { title: 'News' }},
             { path: "search", name: "search_posts", component: load("SearchPageComponent"), meta: { title: 'Search Blog' }},
 
-            { path: "*", name: "NotFound", component: NotFound,  meta: { title: 'Not Found' }},
+            { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+            { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+            { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
         ],
     },
+    { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },
 ];
 
 

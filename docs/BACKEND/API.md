@@ -97,7 +97,10 @@ Password must be **RSA-encrypted** by the client using the server's public key.
   "email": "john@example.com",
   "avatar": "avatars/john.jpg",
   "roles": ["admin"],
-  "abilities": ["article:add", "summit:edit", ...]
+  "casl_permissions": [
+    { "action": "add",  "subject": "article" },
+    { "action": "edit", "subject": "summit" }
+  ]
 }
 
 // Response 401 — not authenticated
@@ -115,9 +118,15 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_site_data/get_site_locale_data/{lang}` | No | Locale-specific site data |
 | GET | `/api/get_site_data/get_site_locale_data_for_site/{lang}` | No | Site data for frontend use |
 | GET | `/api/get_site_social_links/get_site_social_links` | No | Social media links |
-| POST | `/api/productSearch/{query}` | No | Search products |
-| POST | `/api/articleSearch/{query}` | No | Search articles |
-| POST | `/api/filmSearch/{query}` | No | Search films |
+| POST | `/api/search/suggest` | No | Live search suggest (locale-aware, ≥ 2 chars) |
+| POST | `/api/guide/search` | No | Full guide search with locale + fuzzy support |
+| POST | `/api/shop/search` | No | Full shop search |
+| POST | `/api/blog/search` | No | Full blog search |
+| POST | `/api/summit/search` | No | Summit search |
+| POST | `/api/productSearch/{query}` | No | *(legacy)* Search products |
+| POST | `/api/articleSearch/{query}` | No | *(legacy)* Search articles |
+| POST | `/api/filmSearch/{query}` | No | *(legacy)* Search films |
+| POST | `/api/save-canvas-image` | No | Save canvas PNG to `storage/images/` |
 | POST | `/api/ckeditor/upload` | Yes | Upload image from CKEditor |
 | GET | `/api/get_follow/following_users_list` | Yes | Followed users/services |
 | POST | `/api/set_follow/{service_id}` | Yes | Follow a service |
@@ -333,6 +342,19 @@ All require `auth:sanctum` + `banned` middleware.
 | DELETE | `/api/set_faworite/del_favorite_outdoor_area/{id}` | Remove favorite |
 | DELETE | `/api/set_faworite/del_interested_event/{id}` | Remove event interest |
 
+### Mail
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/mail/unread_count` | Unread message count for nav badge |
+
+### Ascents (User)
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_user_ascents/get_all_my_ascents` | All ascents submitted by the current user |
+| DELETE | `/api/get_user_ascents/del_ascent/{id}` | Delete own ascent |
+
 ---
 
 ## Admin — Summit
@@ -351,6 +373,9 @@ Requires `auth:sanctum` + `banned`.
 | POST | `/api/set_summit/update/{id}` | Update summit |
 | DELETE | `/api/set_summit/destroy/{id}` | Delete summit |
 | POST | `/api/set_summit/save_qr/{id}` | Save QR code URL |
+| POST | `/api/set_summit/update_coordinates/{id}` | Update GPS coordinates |
+| POST | `/api/set_summit/add_mount_route_relation` | Link summit to a mount route |
+| DELETE | `/api/set_summit/remove_mount_route_relation/{id}` | Remove mount route link |
 
 ---
 
@@ -405,17 +430,77 @@ Requires `auth:sanctum` + `banned`.
 **File:** `routes/api/admin/set_user_routes.php`  
 Requires `auth:sanctum` + `banned`.
 
+### User Management
+
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_user/get_all_users` | All users |
-| GET | `/api/get_user/get_worker_users` | Staff users |
-| POST | `/api/set_user/ban_user/{id}` | Ban user |
-| POST | `/api/set_user/unban_user/{id}` | Unban user |
+| GET | `/api/set_user/get_all_users` | All users |
+| GET | `/api/set_user/get_worker_users` | Staff users |
+| POST | `/api/set_user/reset_password/{user_id}` | Reset user password |
+| GET | `/api/set_user/get_ban_status/{user_id}` | Check if user is banned |
+| POST | `/api/set_user/create_ban/{user_id}` | Ban user (attach `ban` role + revoke tokens) |
+| DELETE | `/api/set_user/remove_ban/{user_id}` | Unban user (detach `ban` role) |
+
+### Roles & Permissions
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/parmisions_list` | All available permissions |
+| GET | `/api/set_role/get_editing_role/{role_id}` | Role for editing |
+| GET | `/api/set_role/get_user_permissions/{user_id}` | User's permissions |
+| POST | `/api/set_role/create_role` | Create role |
+| POST | `/api/set_role/edit_role/{role_id}` | Edit role |
+| POST | `/api/set_role/edit_permissions_and_role/{user_id}` | Assign roles + permissions to user |
+| DELETE | `/api/set_role/del_role/{role_id}` | Delete role |
+| POST | `/api/set_role/sync_admin_permissions` | Sync all permissions to admin role |
+| POST | `/api/set_permission/store` | Create permission |
+| DELETE | `/api/set_permission/destroy/{id}` | Delete permission |
+
+### Tasks
+
+| Method | Path | Description |
+|---|---|---|
 | GET | `/api/get_task/get_all_tasks` | All tasks |
-| POST | `/api/set_task/add_task` | Create task |
-| GET | `/api/get_user/get_auth_user_permissions` | User permissions |
-| GET | `/api/set_site_data/site_data_counts` | Dashboard counts |
-| POST | `/api/set_site_data/edit_site_global_data` | Update site settings |
+| GET | `/api/get_task/get_user_tasks` | Current user's tasks |
+| POST | `/api/set_task/create_task` | Create task |
+| POST | `/api/set_task/update_task/{task_id}` | Update task |
+| POST | `/api/set_task/update_task_status/{task_id}` | Update task status |
+| DELETE | `/api/set_task/del_task/{task_id}` | Delete task |
+| POST | `/api/set_task/set_task_category/create_task_category` | Create task category |
+| POST | `/api/set_task/set_task_category/update_task_category/{id}` | Update task category |
+| DELETE | `/api/set_task/set_task_category/del_task_category/{id}` | Delete task category |
+
+### Multimedia Manager
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/set_multimedia/get_images_folder_structure` | Folder tree with used/unused flag |
+| POST | `/api/set_multimedia/upload_images` | Upload images |
+| DELETE | `/api/set_multimedia/delete_items` | Delete files or folders |
+| POST | `/api/set_multimedia/create_folder` | Create folder |
+| GET | `/api/set_multimedia/get_file_metadata` | File metadata |
+| GET | `/api/set_multimedia/search` | Search images |
+
+### Database
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/set_database/table_stats` | All tables with row counts and integrity issues |
+| POST | `/api/set_database/fix_issue` | Apply an integrity fix |
+
+### Export
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/set_export/categories` | Unique article categories |
+| GET | `/api/set_export/articles/{category}` | Articles for a category |
+| POST | `/api/set_export/articles_pdf` | Export articles to PDF |
+
+### User Notifications
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/api/set_user/set_notifications/send_user_favorites_notification/{action}` | Send notification to users with favorites |
 
 ---
 

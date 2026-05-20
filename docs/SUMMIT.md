@@ -229,6 +229,9 @@ Note: `email` is intentionally omitted from the public response.
 | POST | `/api/set_summit/update/{id}` | `update` | Update summit |
 | DELETE | `/api/set_summit/destroy/{id}` | `destroy` | Delete summit |
 | POST | `/api/set_summit/save_qr/{id}` | `save_qr` | Save QR URL to DB |
+| POST | `/api/set_summit/update_coordinates/{id}` | `update_coordinates` | Update GPS lat/lng |
+| POST | `/api/set_summit/add_mount_route_relation` | `add_mount_route_relation` | Link summit to a mount route |
+| DELETE | `/api/set_summit/remove_mount_route_relation/{id}` | `remove_mount_route_relation` | Remove mount route link |
 
 ### Store / Update Validation
 
@@ -246,6 +249,16 @@ published      nullable|boolean
 
 `url_title` is auto-generated: `Str::slug(title)` with `-1`, `-2` suffix for uniqueness.  
 On update, `url_title` regenerates only if `title` changed.
+
+### User Ascent Management
+
+**Controller:** `App\Http\Controllers\Api\User\SummitController`  
+**Middleware:** `auth:sanctum` + `banned`
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_user_ascents/get_all_my_ascents` | All ascents submitted by the current user |
+| DELETE | `/api/get_user_ascents/del_ascent/{id}` | Delete own ascent |
 
 ---
 

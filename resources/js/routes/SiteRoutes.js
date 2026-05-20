@@ -66,9 +66,14 @@ const routes = [
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
             { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
-            { path: "*", name: "NotFound", component: NotFound, meta: { title: 'Not Found' } },
+            { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+            { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+            { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
+            { path: "banned", name: "banned-page",  component: NotFound, meta: { title: 'Account Suspended' } },
         ],
     },
+    // Root-level catch-all: matches any path the locale-parent couldn't match (e.g. /bad-url)
+    { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },
 ];
 
 const router = createRouter({

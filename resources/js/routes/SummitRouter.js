@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, createMemoryHistory } from 'vue-router'
 import { h } from 'vue';
 import { RouterView } from 'vue-router';
 
+import NotFound from '../components/errors/404Component.vue';
+
 function load(component) {
     return () => import(`../components/summit/pages/${component}.vue`)
 }
@@ -32,8 +34,13 @@ const routes = [
           { path: 'summits/map', name: 'summit_map', component: load('SummitMapPage'), meta: { title: 'Summit Map' } },
 
           { path: 'search', name: 'search_summits', component: load('SearchPageComponent'), meta: { title: 'Search Summits' } },
+
+          { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+          { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+          { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
         ]
-      }
+      },
+    { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },
 ];
 
 const router = createRouter({

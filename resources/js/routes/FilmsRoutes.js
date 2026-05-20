@@ -23,13 +23,17 @@ const routes = [
         }
     },
     children: [
-{ path: '', name: 'studia', component: load('PortalPageComponent') },
+        { path: '', name: 'studia', component: load('PortalPageComponent') },
         { path: 'film/:url_title', name: 'film', component: load('FilmPageComponent') },
         { path: 'about_us', name: 'about_films', component: load('AboutUsComponent') },
         { path: 'search_films', name: 'search_films', component: load('SerchPageComponent') },
-{ path: '', name: 'NotFound', component: NotFound }
+        { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+        { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+        { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
     ]
-}];
+},
+    { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },
+];
 
 const router = createRouter({
     routes,

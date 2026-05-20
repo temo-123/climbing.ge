@@ -98,7 +98,7 @@ const encryptedPassword = encrypt.encrypt(plainPassword)
     "name": "John",
     "email": "john@example.com",
     "roles": ["user"],
-    "abilities": ["article:edit", "summit:add", ...]
+    "casl_permissions": [{"action":"edit","subject":"article"}, ...]
   }
 }
 ```
@@ -217,7 +217,10 @@ Used on every page load to restore user state in Vue. Returns:
   "email": "john@example.com",
   "avatar": "avatars/john.jpg",
   "roles": ["admin"],
-  "abilities": ["article:add", "article:edit", "summit:add", ...]
+  "casl_permissions": [
+    {"action":"add","subject":"article"},
+    {"action":"edit","subject":"summit"}
+  ]
 }
 ```
 
@@ -231,9 +234,9 @@ Returns `401` if not authenticated — intercepted by axios to clear `localStora
 
 Laravel Sanctum token/session authentication. Applied to all admin and user routes.
 
-### `banned` (Custom)
+### `banned` (Custom: `CheckBannedUser`)
 
-Checks `users.is_banned` flag. Returns `403` if user is banned, preventing access to protected routes.
+Checks if the user has a role with `slug = 'ban'` in the `user_role` pivot table. If banned, it revokes all tokens and returns `403`. The ban is managed via `BanController` (attach/detach the `ban` role).
 
 ### `AjaxHeader`
 
@@ -243,25 +246,38 @@ Enforces `X-Requested-With: XMLHttpRequest` header on API calls. Set globally in
 
 ## Role & Permission System
 
-### Backend: Spatie Laravel Permission
+### Backend: Custom Role/Permission Tables
 
-**Models:** `Role`, `Permission` (from spatie/laravel-permission)
+Roles and permissions use **custom tables**, not Spatie:
 
-Roles and permissions are managed in the admin panel at `user.climbing.ge/roles` and `user.climbing.ge/permissions`.
+| Table | Purpose |
+|---|---|
+| `roles` | Role definitions (`id`, `name`, `slug`) |
+| `permissions` | Permission definitions (`id`, `subject`, `action`) |
+| `user_role` | User ↔ Role pivot |
+| `user_permissions` | Direct user ↔ permission grants |
+| `role_permissions` | Role ↔ Permission pivot |
+
+Roles and permissions are managed in the admin panel under User Management.
+
+**Permission check:** `User::hasPermissionFor($subject, $action)` — loads all permissions once per request (no N+1) via `getAllPermissions()`.
+
+**In controllers:** `PermissionService::authorize($subject, $action)` returns a 403 JSON response or `null` (allow).
 
 **Default roles:**
-- `super_admin` — full access
-- `admin` — content management
-- `user` — standard user
+- `admin` — full CMS access
+- `ban` — special system role; having this role means the user is banned
+- `user` — standard authenticated user
 - `guide` — tour guide (shop tours)
 
-**Permission naming convention:** `resource:action` e.g. `article:add`, `summit:edit`, `product:del`
+**Permission naming:** separate `subject` and `action` columns.  
+Examples: `subject='article', action='add'` | `subject='summit', action='edit'` | `subject='user', action='create_ban'`
 
 ### Frontend: CASL
 
 **Location:** `resources/js/services/ability/ability.js`
 
-Abilities are loaded from `/api/auth_user` response and set into the CASL `Ability` instance on login.
+Abilities are loaded from `/api/auth_user` → `casl_permissions: [{action, subject}]` and set into the CASL `Ability` instance via `updateAbility()`.
 
 **Usage in templates:**
 

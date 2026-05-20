@@ -145,37 +145,46 @@ Manage film catalogue: add/edit/delete films, categories, and tags.
 Manage registered users:
 - View all users, search, filter by role
 - Edit user roles and permissions
-- Ban/unban users
-- Export user data
+- Ban/unban users (attaches/detaches the `ban` role)
+- Reset user passwords
 
 ### Tasks
 
-Internal task/todo system for staff. Tasks can be assigned to users with due dates.
+Internal task/todo system for staff. Tasks can be assigned to users with due dates, and organised by task categories.
 
-### Multimedia
+### Multimedia Manager
 
-Manage uploaded images and files across all subdomains.
+Browse, upload, and delete images across all subdomains. The file tree shows which images are in use and which are orphaned.
+
+### Database
+
+View all database tables with row counts and detected integrity issues. Apply fixes directly from the UI.
+
+### Export
+
+Export guide articles by category to PDF.
 
 ---
 
 ## Roles & Permissions
 
-### Backend (Spatie Laravel Permission)
+### Backend (Custom Role/Permission Tables)
 
-Roles and permissions stored in `roles` and `permissions` tables.
+Roles and permissions stored in custom `roles`, `permissions`, `user_role`, `user_permissions`, `role_permissions` tables (not Spatie).
 
 **Default roles:**
 
 | Role | Description |
 |---|---|
-| `super_admin` | Unrestricted access to everything |
 | `admin` | Full CMS access |
-| `editor` | Content creation and editing (no delete, no user management) |
+| `ban` | System role — having this role means the user is banned |
 | `guide` | Shop tours management |
 | `user` | Standard authenticated user |
 
-**Permission naming:** `resource:action`  
-Examples: `article:add`, `article:edit`, `article:del`, `summit:add`, `summit:edit`, `product:del`, `user:manage`
+**Permission columns:** `subject` + `action` (stored separately).  
+Examples: `subject='article', action='add'` | `subject='summit', action='edit'` | `subject='user', action='create_ban'`
+
+Use the **Sync Admin Permissions** button to assign all existing permissions to the admin role at once.
 
 Diagram: `docs/DEMO_IMAGES/User_and_admin/Laravel_role_permission.png`
 

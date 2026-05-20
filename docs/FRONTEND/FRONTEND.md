@@ -60,10 +60,12 @@ resources/js/
 │   ├── BlogRoutes.js               # blog.climbing.ge
 │   ├── SummitRouter.js             # summit.climbing.ge
 │   ├── FilmsRoutes.js              # films.climbing.ge
-│   └── UserRoutes.js               # user.climbing.ge
+│   ├── UserRoutes.js               # user.climbing.ge
+│   └── ErrorRoutes.js              # fallback / error pages
 ├── store/
-│   ├── index.js                    # Pinia root
-│   └── auth_user.js                # Auth user module
+│   ├── auth.js                     # useAuthStore — user + CASL sync
+│   ├── dataTableTabs.js            # useDataTableTabsStore — pagination state
+│   └── routeLoader.js              # isRouteLoading ref for router hooks
 ├── services/
 │   ├── ability/
 │   │   └── ability.js              # CASL instance
@@ -113,6 +115,9 @@ Registered globally in `app.js` — available in every subdomain without importi
 | `ServicesListComponent` | `<services-list>` | Services widget |
 | `ViewControlsComponent` | `<view-controls-component>` | Grid/list view toggle |
 | `MetaDataComponent` | `<metaData>` | SEO meta tags (per subdomain) |
+| `NavbarSearchComponent` | `<navbar-search>` | Live search bar (calls `POST /search/suggest`) |
+| `SkeletonLoaderComponent` | `<skeleton-loader>` | Loading placeholder skeleton |
+| `ToastNotificationComponent` | `<toast-notification>` | Bootstrap 5 toast container (place in each root layout) |
 
 ### `StackModal`
 
@@ -196,32 +201,32 @@ this.get_articles('outdoor', 'en', (data) => { this.articles = data }, onError, 
 
 **Location:** `resources/js/store/`
 
-### `auth_user.js` module
+Three stores:
 
-Stores authenticated user data loaded from `GET /api/auth_user`.
+### `auth.js` — `useAuthStore`
 
-**State:**
-```javascript
-{
-  user: null,         // user object or null
-  loading: false,
-  permissions: [],    // array of permission strings
-}
-```
+Stores authenticated user data loaded from `GET /api/auth_user` and syncs CASL abilities.
 
 **Actions:**
 ```javascript
-fetchUser()           // GET /api/auth_user, stores result
-clearUser()           // clears on logout
+fetchUser()      // GET /api/auth_user → stores user, calls updateAbility()
+clearUser()      // clears on logout
 ```
 
 **Usage:**
 ```javascript
-import { useAuthUserStore } from '@/store/auth_user'
-const store = useAuthUserStore()
-store.fetchUser()
-const user = store.user
+import { useAuthStore } from './store/auth'
+const store = useAuthStore()
+await store.fetchUser()
 ```
+
+### `dataTableTabs.js` — `useDataTableTabsStore`
+
+Stores per-tab pagination state for the admin data table system.
+
+### `routeLoader.js`
+
+Exports the `isRouteLoading` ref, set by router `beforeEach`/`afterEach` hooks to drive the route transition loader.
 
 ---
 
@@ -455,12 +460,12 @@ shop/
 
 ```
 blog/
-lokkelly├── pages/
+├── pages/
 │   ├── IndexPage.vue
 │   ├── pages/PostPage.vue
 │   └── pages/NewsPage.vue
 ├── items/
-│   └── Empire Modals/PostModal.vue
+│   └── modals/PostModal.vue
 └── BlogMainComponent.vue
 ```
 
