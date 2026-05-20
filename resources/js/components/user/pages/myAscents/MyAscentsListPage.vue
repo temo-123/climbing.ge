@@ -85,7 +85,7 @@
 
             del_ascent(id) {
                 if (!confirm('Delete this ascent?')) return
-                axios.delete('/del_ascent/' + id)
+                axios.delete('/get_user_ascents/del_ascent/' + id)
                     .then(() => this.load_ascents())
                     .catch(error => console.log(error))
             },

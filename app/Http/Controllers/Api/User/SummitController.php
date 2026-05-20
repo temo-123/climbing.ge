@@ -13,9 +13,9 @@ class SummitController extends Controller
         return response()->json($ascents);
     }
 
-    public function del_ascent() {
+    public function del_ascent($id) {
         $auth_user = auth()->user();
-        $ascent = $auth_user->ascents()->find(request()->id);
+        $ascent = $auth_user->ascents()->find($id);
         if ($ascent) {
             $ascent->delete();
             return response()->json(['message' => 'Ascent deleted successfully']);
