@@ -4,19 +4,16 @@ namespace App\Http\Controllers\Site;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\Article;
-use App\Models\Gallery_image;
-
-use App\Services\GetArticlesService;
+use App\Services\SeoService;
 
 class IndexController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         if (view()->exists('site.index')) {
-            return view('site.index');
-    	}
-    	abort(404);
+            $seo = (new SeoService())->forSite($request);
+            return view('site.index', compact('seo'));
+        }
+        abort(404);
     }
 }
