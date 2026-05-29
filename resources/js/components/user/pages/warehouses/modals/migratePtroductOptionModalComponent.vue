@@ -4,8 +4,8 @@
         title="Migrate Product Option"
         @close="closeMigrateModal()"
         :modal-class="{ ['']: true }"
-        :saveButton="{ visible: true }"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+        :saveButton="{ visible: false }"
+        :cancelButton="{ visible: false }">
             <p class="text-muted mb-3">Move this product option to another warehouse with the specified quantity. If the option already exists in the target warehouse, the quantity will be updated.</p>
 
             <div v-if="errors.general" class="alert alert-danger">
@@ -110,7 +110,7 @@
                 }
 
                 this.submitting = true;
-                axios.post(`/warehouse/migrate_product_option/${this.$route.params.id}/${this.migrateData.product_option_id}`, {
+                axios.post(`/set_warehouse/migrate_product_option/${this.$route.params.id}/${this.migrateData.product_option_id}`, {
                     to_warehouse_id: this.migrateData.to_warehouse_id,
                     quantity: this.migrateData.quantity
                 })

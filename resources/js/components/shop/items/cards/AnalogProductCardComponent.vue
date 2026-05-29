@@ -1,239 +1,197 @@
 <template>
-    <div class="collection-list col-lg-4 col-md-4 col-sm-4">
-        <article class="product-card" role="article">
-            <div class="product-image-container">
-                <router-link :to="'../product/'+product.global_product.url_title" aria-label="View product details">
-                    <div class="product-image">
-                        <div v-if="product.product_images[0]" class="image-bg" :style="'background-image: url(../../images/product_option_img/' + product.product_images[0] + ')'"></div>
-                        <div v-else class="image-bg" :style="'background-image: url(../../../public/images/site_img/demo_imgs/shop_demo.jpg)'"></div>
-                    </div>
-                </router-link>
+    <article class="analog-card" :class="{ 'is-out-of-stock': product.out_of_stock }" role="article">
+        <div class="analog-img-wrap">
+            <router-link :to="'../product/' + product.global_product.url_title" aria-label="View product">
+                <div
+                    class="analog-img"
+                    :style="product.product_images && product.product_images[0]
+                        ? 'background-image: url(' + publicPath + '/public/images/product_option_img/' + product.product_images[0] + ')'
+                        : 'background-image: url(' + publicPath + '/public/images/site_img/demo_imgs/shop_demo.jpg)'"
+                ></div>
+            </router-link>
+
+            <div v-if="product.out_of_stock" class="oos-overlay">
+                <span>{{ $t('shop.product.out_of_stock') }}</span>
             </div>
-            <div class="product-info">
-                <router-link :to="'../product/'+product.global_product.url_title" aria-label="View product details">
-                    <h3 class="product-title">{{product.locale_product.title}}</h3>
-                </router-link>
-                <div class="product-price" v-if="product.global_product.discount != null && product.global_product.discount > 0">
-                    <span class="current-price">
-                        <span v-if="product.new_min_price != product.new_max_price">{{ product.new_min_price }} ₾ - {{ product.new_max_price }} ₾</span>
-                        <span v-else>{{ product.new_max_price }} ₾</span>
-                    </span>
-                    <span class="old-price">
-                        <span v-if="product.min_price != product.max_price">{{ product.min_price }} ₾ - {{ product.max_price }} ₾</span>
-                        <span v-else>{{ product.max_price }} ₾</span>
-                    </span>
-                </div>
-                <div class="product-price" v-else>
-                    <span class="current-price">
-                        <span v-if="product.min_price != product.max_price">{{ product.min_price }} ₾ - {{ product.max_price }} ₾</span>
-                        <span v-else>{{ product.max_price }} ₾</span>
-                    </span>
-                </div>
-                <div class="product-actions">
-                    <button class="quick-view-btn" @click="product_quick_view(product.global_product.id)" aria-label="Quick view">
-                        <i class="fa fa-eye"></i>
-                    </button>
-                    <button class="favorite-btn" @click="favorite_product(product.global_product.id)" aria-label="Add to favorites">
-                        <i class="fa fa-heart-o"></i>
-                    </button>
-                </div>
+            <div v-if="product.has_discount" class="discount-chip">-{{ product.max_discount }}%</div>
+        </div>
+
+        <div class="analog-info">
+            <router-link :to="'../product/' + product.global_product.url_title" class="analog-title-link">
+                <h3 class="analog-title">{{ product.locale_product.title }}</h3>
+            </router-link>
+
+            <div class="analog-price" v-if="product.has_discount">
+                <span class="price-now">
+                    {{ product.new_min_price != product.new_max_price
+                        ? product.new_min_price + ' – ' + product.new_max_price
+                        : product.new_max_price }} ₾
+                </span>
+                <span class="price-was">
+                    {{ product.min_price != product.max_price
+                        ? product.min_price + ' – ' + product.max_price
+                        : product.max_price }} ₾
+                </span>
             </div>
-        </article>
+            <div class="analog-price" v-else>
+                <span class="price-now">
+                    {{ product.min_price != product.max_price
+                        ? product.min_price + ' – ' + product.max_price
+                        : product.max_price }} ₾
+                </span>
+            </div>
+
+            <div class="analog-actions">
+                <button class="analog-btn eye-btn" @click="product_quick_view(product.global_product.id)" title="Quick view">
+                    <i class="fa fa-eye"></i>
+                </button>
+                <button class="analog-btn fav-btn" @click="favorite_product(product.global_product.id)" title="Add to favorites">
+                    <i class="fa fa-heart-o"></i>
+                </button>
+            </div>
+        </div>
+
         <productQuickViewModal ref="quick_view_modal" />
-    </div>
+    </article>
 </template>
 
 <script>
     import ProductQuickViewModal from '../../../global_components/modals/ProductQuickViewModal'
 
     export default {
-        props:[
-            'product',
-        ],
-        data: function () {
+        props: ['product'],
+        components: { productQuickViewModal: ProductQuickViewModal },
+        data() {
             return {
-
+                publicPath: window.location.protocol + '//' + window.location.hostname
             };
         },
-        components: {
-            productQuickViewModal: ProductQuickViewModal
-        },
-        mounted() {
-        },
         methods: {
-            product_quick_view(product_id){
+            product_quick_view(product_id) {
                 this.$refs.quick_view_modal.show_modal(product_id);
             },
-            favorite_product(product_id){
-                axios
-                .post('add_to_favorite/'+ product_id)
-                .then(() => {
-                    alert("Product added to your favorite list!");
-                })
-                .catch(error => {
-                    if (error.response && error.response.status === 401) {
-                        this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id))
-                    } else {
-                        alert("Error adding to favorites");
-                    }
-                })
+            favorite_product(product_id) {
+                axios.post('add_to_favorite/' + product_id)
+                    .then(() => { alert("Product added to your favorite list!"); })
+                    .catch(error => {
+                        if (error.response && error.response.status === 401) {
+                            this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id));
+                        } else {
+                            alert("Error adding to favorites");
+                        }
+                    });
             }
         }
     }
 </script>
 
 <style scoped>
-    .product-card {
+    .analog-card {
         background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         overflow: hidden;
-        transition: all 0.3s ease;
-        margin-bottom: 20px;
+        transition: box-shadow 0.25s, transform 0.25s;
         position: relative;
+        display: flex;
+        flex-direction: column;
     }
-
-    .product-card:hover {
-        box-shadow: 0 4px 16px rgba(0,0,0,0.2);
-        transform: translateY(-5px);
+    .analog-card:hover {
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        transform: translateY(-4px);
     }
+    .analog-card.is-out-of-stock { opacity: 0.7; }
 
-    .product-image-container {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .product-image {
-        position: relative;
-        aspect-ratio: 16 / 9;
-        overflow: hidden;
-    }
-
-    .image-bg {
+    /* Image */
+    .analog-img-wrap { position: relative; overflow: hidden; }
+    .analog-img {
         width: 100%;
-        height: 100%;
+        padding-bottom: 70%;
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
+        transition: transform 0.35s;
     }
+    .analog-card:hover .analog-img { transform: scale(1.05); }
 
-    .product-info {
-        padding: 15px;
-        position: relative;
-    }
-
-    .product-title {
-        font-size: 1.2em;
-        font-weight: bold;
-        margin: 0 0 10px 0;
-        color: #333;
-    }
-
-    .product-title a {
-        text-decoration: none;
-        color: inherit;
-    }
-
-    .product-title a:hover {
-        color: #007bff;
-    }
-
-    .product-price {
-        margin-bottom: 15px;
-    }
-
-    .current-price {
-        font-size: 1.1em;
-        font-weight: bold;
-        color: #333;
-    }
-
-    .old-price {
-        font-size: 0.9em;
-        color: #999;
-        text-decoration: line-through;
-        margin-left: 10px;
-    }
-
-    .product-actions {
+    .oos-overlay {
         position: absolute;
-        top: 10px;
-        right: 10px;
+        inset: 0;
+        background: rgba(0,0,0,0.55);
         display: flex;
-        gap: 8px;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: 700;
+        font-size: 0.85em;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .discount-chip {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        background: #f54d5c;
+        color: #fff;
+        font-size: 0.75em;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 10px;
+        z-index: 2;
+    }
+
+    /* Info */
+    .analog-info { padding: 12px 14px 14px; flex: 1; display: flex; flex-direction: column; }
+
+    .analog-title-link { text-decoration: none; }
+    .analog-title {
+        font-size: 0.95em;
+        font-weight: 600;
+        color: #222;
+        margin: 0 0 8px;
+        line-height: 1.3;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        transition: color 0.2s;
+    }
+    .analog-title-link:hover .analog-title { color: #27bb7d; }
+
+    .analog-price { margin-bottom: 10px; display: flex; align-items: baseline; gap: 6px; flex-wrap: wrap; }
+    .price-now { font-size: 1em; font-weight: 700; color: #1a1a1a; }
+    .price-was { font-size: 0.82em; color: #aaa; text-decoration: line-through; }
+
+    /* Actions */
+    .analog-actions {
+        display: flex;
+        gap: 6px;
+        margin-top: auto;
         opacity: 0;
-        transition: opacity 0.3s ease;
+        transition: opacity 0.25s;
     }
+    .analog-card:hover .analog-actions { opacity: 1; }
 
-    .product-card:hover .product-actions {
-        opacity: 1;
-    }
-
-    .quick-view-btn,
-    .favorite-btn {
-        background: rgba(255, 255, 255, 0.9);
+    .analog-btn {
+        background: #f5f5f5;
         border: none;
         border-radius: 50%;
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
         display: flex;
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        transition: all 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        font-size: 13px;
+        color: #555;
+        transition: background 0.2s, color 0.2s, transform 0.15s;
     }
+    .eye-btn:hover { background: #27bb7d; color: #fff; transform: scale(1.1); }
+    .fav-btn:hover { background: #f54d5c; color: #fff; transform: scale(1.1); }
 
-    .quick-view-btn:hover {
-        background: #007bff;
-        color: #fff;
-        transform: scale(1.1);
-    }
-
-    .favorite-btn:hover {
-        background: #dc3545;
-        color: #fff;
-        transform: scale(1.1);
-    }
-
-    .quick-view-btn i,
-    .favorite-btn i {
-        font-size: 14px;
-    }
-
-    /* Mobile responsiveness */
     @media (max-width: 768px) {
-        .product-card {
-            margin-bottom: 15px;
-        }
-
-        .product-info {
-            padding: 10px;
-        }
-
-        .product-title {
-            font-size: 1em;
-        }
-
-        .current-price {
-            font-size: 1em;
-        }
-
-        .old-price {
-            font-size: 0.8em;
-        }
-
-        .product-actions {
-            opacity: 1;
-            position: static;
-            justify-content: center;
-            margin-top: 10px;
-        }
-
-        .quick-view-btn,
-        .favorite-btn {
-            width: 30px;
-            height: 30px;
-        }
+        .analog-actions { opacity: 1; }
+        .analog-title { font-size: 0.88em; }
     }
 </style>

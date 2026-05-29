@@ -36,8 +36,11 @@
             </div>
         </div>
 
-        <div class="col-md-12">
+        <div class="col-md-12 d-flex justify-content-between align-items-center">
             <h3>Warehouse Product Options</h3>
+            <div class="alert alert-info mb-0 py-2 px-3">
+                <strong>Total Stock Value: {{ totalWarehousePrice }} ₾</strong>
+            </div>
         </div>
 
         <div class="col-md-12">
@@ -238,6 +241,15 @@
         props: [
             // 'warehouse_id'
         ],
+        computed: {
+            totalWarehousePrice() {
+                return this.product_options.reduce((total, option) => {
+                    const price = parseFloat(option.price) || 0;
+                    const qty = parseInt(option.pivot?.quantity) || 0;
+                    return total + (price * qty);
+                }, 0).toFixed(2);
+            }
+        },
         data(){
             return {
                 product_options: [],
@@ -418,22 +430,18 @@
 
             updateQuantity(option, newQuantity) {
                 if (newQuantity <= 0) {
-                    // Automatically delete the option if quantity is 0 or negative
                     this.deleteOption(option);
                 } else {
-                    // Update the quantity
                     axios.post(`/set_warehouse/edit_product_option_quantity/${this.$route.params.id}/${option.id}`, {
                         quantity: newQuantity
                     })
-                    .then(response => {
-                        console.log('Quantity updated successfully');
+                    .then(() => {
+                        this.getWarehouseProductOptions();
+                        this.getWarehouseProductOptionsGrouped();
                     })
                     .catch(error => {
                         alert(error);
                     });
-
-                    this.getWarehouseProductOptions();
-                    this.getWarehouseProductOptionsGrouped();
                 }
             },
         }

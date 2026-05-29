@@ -126,7 +126,7 @@ class ProductController extends Controller
         // Get products that have at least one option with a discount, and are published
         $global_products = Product::where('published', '=', 1)
             ->whereHas('product_options', function($query) {
-                $query->where('discount', '!=', null);
+                $query->where('discount', '>', 0);
             })
             ->latest('id')
             ->get();
@@ -188,27 +188,56 @@ class ProductController extends Controller
 
     public function get_similar_product(Request $request)
     {
-        $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->count();
+        $target  = 4;
+        $lang    = $request->lang;
+        $current = (int) $request->product_id;
 
-        if($this_product > 0){
-            $this_product = product::where('published', '=', 1)->where('id', '=', $request->product_id)->first();
-            if ($this_product->subcategory_id != null) {
-                if($this_product->product_subcategory){
-                    $product_subcategory = $this_product->product_subcategory;
-                    if($product_subcategory->count() > 0){
-                        if($product_subcategory->products->count() > 1){
-                            if ($product_subcategory->products->count() > 3) {
-                                $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random(3);
-                            }
-                            else{
-                                $similar_products = $product_subcategory->products->where('published', '=', 1)->where('id', '!=', $request->product_id)->random($product_subcategory->products->count()-1);
-                            }
-                            return $products = ProductService::get_locale_product_use_locale(array_slice($similar_products->all(), 0, 3), $request->lang);
-                        }
-                    }
-                }
-            }
+        $this_product = Product::where('published', 1)->where('id', $current)->first();
+        if (!$this_product) return [];
+
+        $excluded = collect([$current]);
+        $pool     = collect();
+
+        // 1 — same subcategory
+        if ($this_product->subcategory_id) {
+            $sub = Product::where('published', 1)
+                ->where('subcategory_id', $this_product->subcategory_id)
+                ->whereNotIn('id', $excluded)
+                ->inRandomOrder()
+                ->limit($target)
+                ->get();
+            $pool     = $pool->merge($sub);
+            $excluded = $excluded->merge($sub->pluck('id'));
         }
+
+        // 2 — same brand (fill remaining slots)
+        if ($pool->count() < $target && $this_product->brand_id) {
+            $need  = $target - $pool->count();
+            $brand = Product::where('published', 1)
+                ->where('brand_id', $this_product->brand_id)
+                ->whereNotIn('id', $excluded)
+                ->inRandomOrder()
+                ->limit($need)
+                ->get();
+            $pool     = $pool->merge($brand);
+            $excluded = $excluded->merge($brand->pluck('id'));
+        }
+
+        // 3 — random published (final fallback)
+        if ($pool->count() < $target) {
+            $need   = $target - $pool->count();
+            $latest = Product::where('published', 1)
+                ->whereNotIn('id', $excluded)
+                ->inRandomOrder()
+                ->limit($need)
+                ->get();
+            $pool = $pool->merge($latest);
+        }
+
+        return ProductService::get_locale_product_use_locale(
+            $pool->take($target)->all(),
+            $lang
+        );
     }
 
     public function get_product_gallery($product_id)
