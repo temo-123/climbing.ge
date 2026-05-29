@@ -25,8 +25,9 @@ TIMEZONE=Asia/Tbilisi
 # User mail verificaion conf (https://user.climbing.loc/api/email/verify/{id}/{cesh} (id = user_id))
 #
 #
- 
+
 FRONTPAGE_VERIFY_URL=http://user.climbing.loc/api/email/verify/
+# VUE_APP_API_URL=http://api.test/api/
 
 
 
@@ -37,6 +38,7 @@ FRONTPAGE_VERIFY_URL=http://user.climbing.loc/api/email/verify/
 #
 
 QUEUE_CONNECTION=database
+# QUEUE_DRIVER=database
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
 SESSION_DRIVER=file
@@ -62,9 +64,12 @@ REDIS_PORT=6379
 #
 #
 
-SANCTUM_STATEFUL_DOMAINS=climbing.loc,user.climbing.loc,shop.climbing.loc,forum.climbing.loc
+SANCTUM_STATEFUL_DOMAINS=climbing.loc,user.climbing.loc,shop.climbing.loc,forum.climbing.loc,blog.climbing.loc,summit.climbing.loc,films.climbing.loc
 SESSION_DOMAIN=.climbing.loc
 SPA_URL=http://climbing.loc
+
+# Token lifetime in minutes (default 10080 = 7 days)
+SANCTUM_TOKEN_EXPIRATION=10080
 
 
 
@@ -85,24 +90,31 @@ MIX_APP_SSH="${APP_SSH}"
 #
 #
 
-SITE_URL=climbing.loc
-SHOP_URL=shop.climbing.loc
-FORUM_URL=forum.climbing.loc
-FILMS_URL=films.climbing.loc
-BLOG_URL=blog.climbing.loc
-SUMMIT_URL=summit.climbing.loc
-USER_PAGE_URL=user.climbing.loc
-
 MIX_SITE_NAME="${APP_NAME}"
-MIX_SITE_URL="${SITE_URL}"
-MIX_SHOP_URL="${SHOP_URL}"
-MIX_FORUM_URL="${FORUM_URL}"
-MIX_FILMS_URL="${FILMS_URL}"
-MIX_BLOG_URL="${BLOG_URL}"
-MIX_SUMMIT_URL="${SUMMIT_URL}"
-MIX_USER_PAGE_URL="${USER_PAGE_URL}"
 
+SITE_URL=climbing.loc
+MIX_SITE_URL="${SITE_URL}"
 MIX_GUIDBOOK_URL="${SITE_URL}"
+
+SHOP_URL=shop.climbing.loc
+MIX_SHOP_URL="${SHOP_URL}"
+
+FORUM_URL=forum.climbing.loc
+MIX_FORUM_URL="${FORUM_URL}"
+
+FILMS_URL=films.climbing.loc
+MIX_FILMS_URL="${FILMS_URL}"
+
+BLOG_URL=blog.climbing.loc
+MIX_BLOG_URL="${BLOG_URL}"
+
+SUMMIT_URL=summit.climbing.loc
+MIX_SUMMIT_URL="${SUMMIT_URL}"
+
+USER_PAGE_URL=user.climbing.loc
+MIX_USER_PAGE_URL="${USER_PAGE_URL}"
+MIX_PHPMYADMIN_URL="${APP_SSH}${SITE_URL}/phpmyadmin"
+
 
 
 
@@ -125,7 +137,7 @@ IMAP_HOST=mx.sys.ge
 IMAP_PORT=993
 IMAP_ENCRYPTION=ssl
 IMAP_VALIDATE_CERT=false
-IMAP_USERNAME=temo@climbing.ge
+IMAP_USERNAME=
 IMAP_PASSWORD=
 IMAP_WEBMAIL_URL=
 
@@ -174,6 +186,7 @@ MIX_SHOP_ANALITICS_ID="..."
 MIX_FILMS_ANALITICS_ID="..."
 MIX_USER_ANALITICS_ID="..."
 MIX_SUMMIT_ANALITICS_ID="..."
+MIX_GOOGLE_MAPS_API_KEY=""
 MIX_BLOG_ANALITICS_ID="..."
 MIX_ERROR_PAGE_ANALITICS_ID="..."
 
@@ -185,6 +198,13 @@ MIX_ERROR_PAGE_ANALITICS_ID="..."
 #
 #
 
+# Google reCAPTCHA v2 (legacy)
+# GOOGLE_CAPTCHA_SITE_KEY=
+# GOOGLE_CAPTCHA_SECRET_KEY=
+# MIX_GOOGLE_CAPTCHA_SITE_KEY="${GOOGLE_CAPTCHA_SITE_KEY}"
+# MIX_GOOGLE_CAPTCHA_SECRET_KEY="${GOOGLE_CAPTCHA_SECRET_KEY}"
+
+# Google reCAPTCHA v3
 GOOGLE_CAPTCHA_V3_SITE_KEY=
 GOOGLE_CAPTCHA_V3_SECRET_KEY=
 
@@ -199,14 +219,14 @@ MIX_GOOGLE_CAPTCHA_V3_SITE_KEY="${GOOGLE_CAPTCHA_V3_SITE_KEY}"
 #
 # -> http://developers.facebook.com/?no_redirect=1
 
-FACEBOOK_CLIENT_ID= ...
-FACEBOOK_CLIENT_SECRET= ...
+FACEBOOK_CLIENT_ID=
+FACEBOOK_CLIENT_SECRET=
 FACEBOOK_URL=http://user.climbing.loc/login/facebook/callback
 
 # -> http://console.cloud.google.com/apis/dashboard?hl=ru&project=climbing-loc-374622
 
-GOOGLE_CLIENT_ID= ...
-GOOGLE_CLIENT_SECRET= ...
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
 GOOGLE_URL=http://user.climbing.loc/login/google/callback
 
 
@@ -215,15 +235,21 @@ GOOGLE_URL=http://user.climbing.loc/login/google/callback
 # Flitt payment system configuration
 #
 #
-FLITT_MERCHANT_ID= ...
-FLITT_SECRET_KEY= ...
+FLITT_MERCHANT_ID=
+FLITT_SECRET_KEY=
 FLITT_API_VERSION=1.0
+
+# TBC Bank donation account
+DONATION_TBC_IBAN=
+DONATION_TBC_ACCOUNT_NAME=
+DONATION_TBC_BANK_CODE=TBCBGE22
+DONATION_TBC_BANK_NAME="TBC Bank"
 
 
 # Pusher Configuration
 PUSHER_APP_ID=
 PUSHER_APP_SECRET=
-PUSHER_APP_KEY=f004f16ff28c2feb606a
+PUSHER_APP_KEY=
 PUSHER_APP_CLUSTER=ap2
 
 MIX_PUSHER_APP_KEY="${PUSHER_APP_KEY}"

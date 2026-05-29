@@ -210,6 +210,18 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | POST | `/api/set_donation/callback` | Payment gateway callback |
 | GET | `/api/set_donation/status/{id}` | Donation status |
 
+Uses the Flitt payment gateway. TBC Bank display details come from env:
+```env
+FLITT_MERCHANT_ID=...
+FLITT_SECRET_KEY=...
+FLITT_API_VERSION=1.0
+
+DONATION_TBC_IBAN=
+DONATION_TBC_ACCOUNT_NAME=
+DONATION_TBC_BANK_CODE=TBCBGE22
+DONATION_TBC_BANK_NAME="TBC Bank"
+```
+
 ---
 
 ## Shop — Public

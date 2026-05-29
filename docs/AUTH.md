@@ -139,14 +139,21 @@ localStorage.setItem('x_xsrf_token', response.data.token)
 ### Environment Variables
 
 ```env
-FACEBOOK_CLIENT_ID=...
-FACEBOOK_CLIENT_SECRET=...
-FACEBOOK_REDIRECT_URL=https://climbing.ge/api/login/facebook/callback
+# Local dev
+FACEBOOK_CLIENT_ID=your_app_id
+FACEBOOK_CLIENT_SECRET=your_app_secret
+FACEBOOK_URL=http://user.climbing.loc/login/facebook/callback
 
-GOOGLE_CLIENT_ID=...
-GOOGLE_CLIENT_SECRET=...
-GOOGLE_REDIRECT_URL=https://climbing.ge/api/login/google/callback
+GOOGLE_CLIENT_ID=xxxxxxxxxxxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxx
+GOOGLE_URL=http://user.climbing.loc/login/google/callback
+
+# Production
+# FACEBOOK_URL=https://user.climbing.ge/login/facebook/callback
+# GOOGLE_URL=https://user.climbing.ge/login/google/callback
 ```
+
+See [SOCIAL_LOGIN_GUIDE.md](SOCIAL_LOGIN_GUIDE.md) for full OAuth app setup instructions.
 
 ---
 
@@ -160,6 +167,12 @@ GOOGLE_REDIRECT_URL=https://climbing.ge/api/login/google/callback
 | GET | `/api/email/resend` | Resend verification email (auth required) |
 
 The `User` model implements `MustVerifyEmail`. A signed URL is emailed after registration. Clicking it sets `email_verified_at`.
+
+**Required env var:**
+```env
+FRONTPAGE_VERIFY_URL=http://user.climbing.loc/api/email/verify/
+# Format: https://user.climbing.ge/api/email/verify/{user_id}/{hash}
+```
 
 ### Custom Notification
 
@@ -204,6 +217,13 @@ The `User` model implements `MustVerifyEmail`. A signed URL is emailed after reg
 | GET | `/api/auth_user` | Returns authenticated user + abilities |
 | POST | `/api/logout` | Revokes current Sanctum token |
 | GET | `/api/token` | Creates new Sanctum token |
+
+**Related env vars:**
+```env
+SANCTUM_STATEFUL_DOMAINS=climbing.loc,user.climbing.loc,shop.climbing.loc,...
+SESSION_DOMAIN=.climbing.loc
+SANCTUM_TOKEN_EXPIRATION=10080   # minutes — default 10080 = 7 days
+```
 
 ### `GET /api/auth_user`
 

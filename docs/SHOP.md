@@ -196,7 +196,7 @@ Payment flow:
 ```env
 FLITT_MERCHANT_ID=...
 FLITT_SECRET_KEY=...
-FLITT_CURRENCY=GEL
+FLITT_API_VERSION=1.0
 ```
 
 ---

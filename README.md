@@ -55,6 +55,24 @@ php artisan queue:work
 
 See `docs/BACKEND/examples/apatch_config.conf.example` for Apache virtual host configuration.
 
+### Key Environment Variable Groups
+
+| Group | Variables | Notes |
+|---|---|---|
+| **App** | `APP_NAME`, `APP_KEY`, `APP_ENV`, `APP_URL` | Run `php artisan key:generate` after copy |
+| **Subdomains** | `SITE_URL`, `SHOP_URL`, `BLOG_URL`, `SUMMIT_URL`, `FILMS_URL`, `USER_PAGE_URL`, `FORUM_URL` | Set to actual hostnames; `MIX_*` mirrors expose them to Vue |
+| **Sanctum** | `SANCTUM_STATEFUL_DOMAINS`, `SESSION_DOMAIN`, `SANCTUM_TOKEN_EXPIRATION` | Must list all subdomains; token expiry in minutes (default 10080 = 7 days) |
+| **Database** | `DB_HOST`, `DB_DATABASE`, `DB_USERNAME`, `DB_PASSWORD` | MySQL 8+ |
+| **Mail** | `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD` | SMTP for outgoing queued notifications |
+| **IMAP** | `IMAP_HOST`, `IMAP_PORT`, `IMAP_USERNAME`, `IMAP_PASSWORD` | Inbox access for messaging features |
+| **Social OAuth** | `FACEBOOK_CLIENT_ID/SECRET/URL`, `GOOGLE_CLIENT_ID/SECRET/URL` | Callback URLs must match OAuth app settings |
+| **reCAPTCHA v3** | `GOOGLE_CAPTCHA_V3_SITE_KEY`, `GOOGLE_CAPTCHA_V3_SECRET_KEY` | Frontend key also exposed as `MIX_GOOGLE_CAPTCHA_V3_SITE_KEY` |
+| **Analytics** | `MIX_*_ANALITICS_ID`, `MIX_GOOGLE_MAPS_API_KEY` | Per-subdomain Google Analytics IDs |
+| **Payments** | `FLITT_MERCHANT_ID`, `FLITT_SECRET_KEY`, `FLITT_API_VERSION` | Flitt payment gateway |
+| **Donations** | `DONATION_TBC_IBAN`, `DONATION_TBC_ACCOUNT_NAME`, `DONATION_TBC_BANK_CODE` | TBC Bank donation display info |
+| **Realtime** | `PUSHER_APP_ID`, `PUSHER_APP_KEY`, `PUSHER_APP_SECRET`, `PUSHER_APP_CLUSTER` | Laravel Echo / Pusher for live events |
+| **Queue / Redis** | `QUEUE_CONNECTION`, `REDIS_HOST`, `REDIS_PORT` | `database` driver by default; Redis required for Horizon |
+
 ---
 
 ## Architecture Overview
