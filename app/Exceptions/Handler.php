@@ -50,6 +50,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        // When debug is off and it's not an HTTP exception, render the 500 blade
+        // directly so a secondary exception in the error view can't produce a blank page.
+        if (!config('app.debug') && !$this->isHttpException($exception) && !$request->expectsJson()) {
+            return response()->view('errors.500', [], 500);
+        }
+
         return parent::render($request, $exception);
     }
 }

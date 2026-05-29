@@ -11,6 +11,7 @@
     <link href="{{ asset('assets/img/site_logo/x.png') }}" rel="shortcut icon">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <style>
         body {
@@ -18,28 +19,46 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            padding-top: 50px;
         }
-        .error-topbar {
-            background-color: #bb2727;
-            padding: 12px 24px;
+
+        /* ---- Navbar — matches Vue .navbar.navbar-inverse.navbar-fixed-top.bg-dark ---- */
+        .navbar {
+            background-color: #222;
+            border: none;
+            border-radius: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1030;
+            min-height: 50px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
         }
-        .error-topbar .brand {
+        .navbar .container-fluid {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0 15px;
+        }
+        .navbar .navbar-header {
+            display: flex;
+            align-items: center;
+        }
+        .site_title {
+            margin-left: 1em;
             color: #fff;
-            font-size: 1.4rem;
-            font-weight: 700;
+            font-size: 135%;
+            white-space: nowrap;
+            display: inline-block;
             text-decoration: none;
-            letter-spacing: 1px;
         }
-        .error-topbar .go-back {
-            color: #fff;
-            text-decoration: none;
-            font-size: 0.95rem;
-            opacity: 0.9;
-        }
-        .error-topbar .go-back:hover { opacity: 1; text-decoration: underline; }
+        .site_title:hover { color: #ccc; }
+        .navbar span { color: #fff; }
+        .navbar span:hover { color: #838383; transition: 0.2s; }
+
+        /* ---- Error card ---- */
         .error-body {
             flex: 1;
             display: flex;
@@ -77,23 +96,8 @@
             width: 100%;
             max-width: 420px;
             border-radius: 8px;
-            margin-bottom: 28px;
+            margin-bottom: 8px;
             object-fit: cover;
-        }
-        .btn-back {
-            background-color: #bb2727;
-            border-color: #bb2727;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 6px;
-            font-size: 1rem;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-back:hover {
-            background-color: #9e1f1f;
-            border-color: #9e1f1f;
-            color: #fff;
         }
         .site-footer {
             text-align: center;
@@ -104,13 +108,20 @@
     </style>
 </head>
 <body>
-    <div class="error-topbar">
-        <a href="https://climbing.ge" class="brand">climbing.ge</a>
-        <a href="{{ URL::previous() }}" class="go-back">&larr; Go Back</a>
-    </div>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a href="https://climbing.ge" class="site_title">
+                    <span>climbing.ge</span>
+                </a>
+            </div>
+        </div>
+    </nav>
 
     @yield('content')
 
     <div class="site-footer">&copy; {{ date('Y') }} climbing.ge</div>
+
 </body>
 </html>
