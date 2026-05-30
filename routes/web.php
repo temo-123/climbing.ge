@@ -4,9 +4,11 @@ use Illuminate\Support\Facades\Route;
 
 // Error-page helper: serves the SPA shell with the correct HTTP status code.
 // Must be registered BEFORE each domain's catch-all so these specific paths win.
-function spaError(string $view, int $status): \Illuminate\Http\Response
-{
-    return response(view($view), $status);
+if (!function_exists('spaError')) {
+    function spaError(string $view, int $status): \Illuminate\Http\Response
+    {
+        return response(view($view), $status);
+    }
 }
 
     Route::domain(config('app.url'))->group(function () {
