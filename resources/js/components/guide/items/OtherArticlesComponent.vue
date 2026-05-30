@@ -58,8 +58,4 @@
 </script>
 
 <style>
-/* .article_card_container {
-    display: flex;
-    flex-flow: row wrap;
-} */
 </style>

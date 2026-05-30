@@ -214,6 +214,18 @@ hr {
     flex-flow: row wrap;
     justify-content: center;
 }
+.article_card_container .food {
+    display: flex;
+    flex-direction: column;
+}
+.article_card_container .food .portfolio-img {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+.article_card_container .food .isotope-item-dtls {
+    flex: 1;
+}
 
 
 /*
