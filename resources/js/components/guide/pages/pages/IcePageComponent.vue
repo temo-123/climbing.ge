@@ -40,9 +40,10 @@
         },
         watch: {
             '$route' (to, from) {
-                this.ice = [],
-                this.get_ice(),
-                window.scrollTo(0,0)
+                this.article_loading = true
+                this.ice = []
+                this.get_ice()
+                window.scrollTo(0, 0)
             }
         },
         methods: {
@@ -51,12 +52,10 @@
                 .get('/get_article/get_locale_article_on_page/ice/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.ice = response.data
-
-                    this.$refs.article_page.update_similar_articles_component(this.ice.global_data.id)
                 })
                 .catch(error =>{
                 })
-                .finally(() => this.article_loading = false);
+                .finally(() => this.article_loading = false)
             },
         }
     }

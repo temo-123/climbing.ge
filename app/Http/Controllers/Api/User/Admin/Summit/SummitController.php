@@ -256,6 +256,34 @@ class SummitController extends Controller
         }
     }
 
+    public function get_summits_list()
+    {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $summits = Summit::orderBy('title')->get(['id', 'title', 'ka_title', 'url_title']);
+
+        return response()->json($summits);
+    }
+
+    public function get_article_summit_relation($article_id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $relation = SummitMountRoute::where('article_id', $article_id)
+            ->with('summit')
+            ->first();
+
+        if (!$relation) {
+            return response()->json(null);
+        }
+
+        return response()->json([
+            'relation_id' => $relation->id,
+            'summit_id'   => $relation->summit_id,
+            'summit_title' => $relation->summit->title ?? $relation->summit->ka_title ?? null,
+        ]);
+    }
+
     public function get_regions()
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;

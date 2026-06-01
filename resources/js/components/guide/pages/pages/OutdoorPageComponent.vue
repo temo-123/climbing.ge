@@ -41,39 +41,23 @@
 
         watch: {
             '$route' (to, from) {
-                this.get_outdoor(),
-                window.scrollTo(0,0)
+                this.article_loading = true
+                this.outdoor = []
+                this.get_outdoor()
+                window.scrollTo(0, 0)
             }
         },
-        
-        updated() {
-            // Check for navigation parameters when component updates
-            this.$nextTick(() => {
-                if (this.$refs.article_page && (this.$route.query.sector || this.$route.query.route)) {
-                    this.$refs.article_page.handleRouteNavigation();
-                }
-            });
-        },
-        methods: {
 
+        methods: {
             get_outdoor(){
-                this.outdoor = []
                 axios
                 .get('/get_article/get_locale_article_on_page/outdoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.outdoor = response.data
-
-                    // Wait for the article page to be fully rendered before handling navigation
-                    this.$nextTick(() => {
-                        if (this.$refs.article_page) {
-                            this.$refs.article_page.update_similar_articles_component(this.outdoor.global_data.id)
-                        }
-                    })
                 })
                 .catch(error =>{
-                    console.error('Error loading outdoor article:', error);
                 })
-                .finally(() => this.article_loading = false);
+                .finally(() => this.article_loading = false)
             },
         }
     }

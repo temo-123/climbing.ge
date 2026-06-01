@@ -2,7 +2,7 @@
     <!-- How It Works -->
     <div style="margin-top: 50px">
         <h2 class="index_h2" style="font-size: 200%">{{ $t('summit.how.title') }}</h2>
-        <div class="bar"><i class="fa fa-lightbulb-o"></i></div>
+        <!-- <div class="bar"><i class="fa fa-lightbulb-o"></i></div> -->
 
         <div class="row text-center" style="margin-top: 30px">
             <div class="col-md-3 col-sm-6" style="margin-bottom: 30px">

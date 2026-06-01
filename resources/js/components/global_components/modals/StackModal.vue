@@ -266,7 +266,21 @@
   .modal-xxl { --modal-max-width: 1100px; width: 90% !important; max-width: 1100px !important; }
   .modal-xxxl { --modal-max-width: 1300px; width: 90% !important; max-width: 1300px !important; }
   .modal-90per { width: 90vw; max-width: 90vw; }
-  .modal-full, .modal-fullscreen {
+  /* full = near full-screen with small side margins */
+  .modal-full {
+    width: calc(100vw - 10px) !important;
+    height: calc(100vh - 10px) !important;
+    max-height: calc(100vh - 10px) !important;
+    border-radius: 8px !important;
+    margin: 5px !important;
+    max-width: none !important;
+  }
+  .stack-modal-overlay:has(.modal-full) {
+    padding: 0 !important;
+  }
+
+  /* fullscreen = true edge-to-edge, no chrome */
+  .modal-fullscreen {
     width: 100vw !important;
     height: 100vh !important;
     max-height: 100vh !important;
@@ -274,14 +288,9 @@
     margin: 0 !important;
     max-width: none !important;
   }
-  /* Remove overlay padding for fullscreen so modal fills edge-to-edge */
-  .stack-modal-overlay:has(.modal-full),
   .stack-modal-overlay:has(.modal-fullscreen) {
     padding: 0 !important;
   }
-  .modal-full .p-4, .modal-fullscreen .p-4,
-  .modal-full .md\\:p-6, .modal-fullscreen .md\\:p-6,
-  .modal-full .lg\\:p-8, .modal-fullscreen .lg\\:p-8 { padding: 0 !important; }
 
   @media (max-width: 640px) {
     .stack-modal { width: 100vw !important; border-radius: 0 0 1rem 1rem !important; }

@@ -124,9 +124,51 @@ img {
     // Stronger outline with increased blur for better visibility and readability
 }
 
-.cards_block{
-    display: flex;
-    flex-flow: row wrap;
+.cards_block {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.cards_block .article_card,
+.cards_block .food {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    float: none !important;
+}
+
+.cards_block .view {
+    margin-bottom: 0;
+}
+
+.cards_block .portfolio-img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .cards_block {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .otdoor_buttoms [class*="col-"] {
+        text-align: center;
+    }
+    .otdoor_buttoms .btn {
+        float: none !important;
+        display: inline-block;
+        margin-bottom: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cards_block {
+        grid-template-columns: 1fr;
+    }
 }
 
 a {
@@ -214,17 +256,23 @@ hr {
     flex-flow: row wrap;
     justify-content: center;
 }
+.article_card_container {
+    align-items: stretch;
+    gap: 0 0 20px 0;
+}
 .article_card_container .food {
     display: flex;
     flex-direction: column;
+    margin-bottom: 20px;
 }
 .article_card_container .food .portfolio-img {
     flex: 1;
+    margin-bottom: 0;
     display: flex;
     flex-direction: column;
 }
-.article_card_container .food .isotope-item-dtls {
-    flex: 1;
+.article_card_container .food .portfolio-img .isotope-item-dtls {
+    margin-top: auto;
 }
 
 
@@ -3929,11 +3977,11 @@ a:active {
 
     /*line-height: 1.5;*/
 }
-@media (max-width: 720px) {
-    .article_size, p {
-        font-size: 28px;
-    }
-}
+// @media (max-width: 720px) {
+//     .article_size {
+//         font-size: 14px;
+//     }
+// }
 
 .event_size {
     height: 88px;

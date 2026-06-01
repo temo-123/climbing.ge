@@ -209,4 +209,25 @@
         color: white;
         border-color: #7c7cfd;
     }
+
+    @media (max-width: 768px) {
+        .services-slider-container {
+            position: relative;
+        }
+        .previes_services_bottom, .next_services_bottom {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            font-size: 100%;
+            padding: 6px 10px;
+            margin: 0;
+        }
+        .previes_services_bottom {
+            left: 4px;
+        }
+        .next_services_bottom {
+            right: 4px;
+        }
+    }
 </style>

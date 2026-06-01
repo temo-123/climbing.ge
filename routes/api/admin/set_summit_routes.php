@@ -25,6 +25,8 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::get('/get_summit_mount_routes/{summit_id}', 'get_summit_mount_routes');
             Route::get('/get_ascents/{id}', 'get_ascents');
             Route::get('/get_all_ascents', 'get_all_ascents');
+            Route::get('/get_summits_list', 'get_summits_list');
+            Route::get('/get_article_summit_relation/{article_id}', 'get_article_summit_relation');
         });
     });
 

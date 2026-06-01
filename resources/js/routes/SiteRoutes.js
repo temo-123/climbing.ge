@@ -35,7 +35,6 @@ const routes = [
 
             { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
             { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },
-            { path: "local_bisnes/:url_title", name: "local_bisnes", component: load("pages/LocalBisnesPageComponent"), meta: { title: 'Local Business' } },
                         
             { path: "news/:url_title", name: "news", component: load("pages/NewsPageComponent"), meta: { title: 'News' } },
             { path: "special_article/:url_title", name: "special_article", component: load("pages/SpecialAericlePage"), meta: { title: 'Special Article' } },

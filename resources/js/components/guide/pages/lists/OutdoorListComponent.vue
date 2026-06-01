@@ -40,15 +40,12 @@
                 </div>
             </div>
 
-            <div class="row articles_filter_bar" v-if="filter_spot != 'All'">
-                <div class="col-md-12" style="text-align: center;">
-                    <h2>{{ selected_region_data?.name || '' }}</h2>
-                    <span v-html="selected_region_data?.text || ''"></span>
+            <div class="region-list-header" v-if="filter_spot != 'All' && selected_region_data?.name">
+                <div class="region-header-top">
+                    <h2>{{ selected_region_data.name }}</h2>
+                    <RegionMapModal v-if="selected_region_data.map" :region="selected_region_data" />
                 </div>
-
-                <div class="col-md-12" style="text-align: center;" v-if="selected_region_data?.map">
-                    <button class="btn btn-default btn-send main-btn" @click="map_modal()">Show map</button>
-                </div>
+                <p v-if="selected_region_data.text" v-html="selected_region_data.text"></p>
             </div>
 
             <!-- View Controls Component -->
@@ -76,11 +73,13 @@
                                         <!-- Grid View by Region -->
                                         <div class="row width_100" v-if="viewMode === 'grid'" v-for="region in (regions_and_spots || [])">
                                             <div class="col-md-12">
-                                                <div class="row" v-if="region.region?.['name'] != 'other'">
-                                                    <h2 class="article_list_short_description">{{region.region?.name}}</h2>
-                                                </div>
-                                                <div v-else>
-                                                    <h2 class="article_list_short_description">Other</h2>
+                                                <div class="region-list-header">
+                                                    <div class="region-header-top">
+                                                        <h2 v-if="region.region?.['name'] != 'other'">{{ region.region?.name }}</h2>
+                                                        <h2 v-else>Other</h2>
+                                                        <RegionMapModal v-if="region.region?.map" :region="region.region" />
+                                                    </div>
+                                                    <p v-if="region.region?.text" class="region-header-desc" v-html="region.region.text"></p>
                                                 </div>
                                             </div>
                                             <div class="col-md-12 cards_block">
@@ -95,11 +94,13 @@
                                         
                                         <!-- List View by Region -->
                                         <div v-if="viewMode === 'list'" v-for="region in (regions_and_spots || [])">
-                                            <div v-if="region.region?.['name'] != 'other'" class="region-list-header">
-                                                <h2 class="article_list_short_description">{{region.region?.name}}</h2>
-                                            </div>
-                                            <div v-else class="region-list-header">
-                                                <h2 class="article_list_short_description">Other</h2>
+                                            <div class="region-list-header">
+                                                <div class="region-header-top">
+                                                    <h2 v-if="region.region?.['name'] != 'other'">{{ region.region?.name }}</h2>
+                                                    <h2 v-else>Other</h2>
+                                                    <RegionMapModal v-if="region.region?.map" :region="region.region" />
+                                                </div>
+                                                <p v-if="region.region?.text" class="region-header-desc" v-html="region.region.text"></p>
                                             </div>
                                             <div class="list-view-container">
                                                 <outdoorHorizontalCard
@@ -188,11 +189,6 @@
                 </div>
             </section>
 
-            <StackModal v-model="show_map_modal" :title="(selected_region_data?.name || '') + ' map'" :size="'xxxl'" @close="show_map_modal = false">
-                <pre class="language-vue">
-                    <span v-html="selected_region_data?.map || ''"></span>
-                </pre>
-            </StackModal> 
 
         </div>
 
@@ -215,6 +211,7 @@
     import routesAutersModal from '../../items/climbing_routes/items/modals/statistic_modals/RoutesAutersListModal.vue'
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/statistic_modals/MostPopularRoutesModal.vue'
     import ViewControlsComponent from '../../items/ViewControlsComponent.vue'
+    import RegionMapModal from '../../items/modals/RegionMapModalComponent.vue'
 
     export default {
 
@@ -252,7 +249,8 @@
             sectorQuantyt,
             routesAutersModal,
             mostPopularRoutesModal,
-            ViewControlsComponent
+            ViewControlsComponent,
+            RegionMapModal
         },
         mounted() {
             this.get_outdoor_articles()
@@ -389,9 +387,23 @@
 
 .region-list-header {
   background: #f8f9fa;
-  padding: 1rem;
+  padding: 0.875rem 1rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
   border-left: 4px solid #007bff;
+}
+
+.region-header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.region-list-header h2 {
+  margin: 0;
+  text-align: left;
 }
 
 .list-view-container {

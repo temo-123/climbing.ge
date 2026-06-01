@@ -157,18 +157,14 @@
         },
         watch: {
             '$route' (to, from) {
-                this.get_mount_route(),
-                window.scrollTo(0,0)
+                this.article_loading = true
+                this.mount_route = []
+                this.mounts_system = []
+                this.get_mount_route()
+                window.scrollTo(0, 0)
             },
         },
         methods: {
-            update_similar_articles_component(id){
-                this.$refs.similar_articles.update(id)
-                this.$refs.gallery_component.update(id)
-                this.$refs.comments.update(id)
-                this.$refs.mountaineeringRouteImages.update(id)
-            },
-
             get_mount_route(){
                 this.article_loading = true
                 axios
@@ -176,8 +172,6 @@
                 .then(response => {
                     this.mount_route = response.data
                     this.get_mount_masiv()
-                    
-                    this.update_similar_articles_component(response.data.global_data.id)
                 })
                 .catch(error =>{
                 })

@@ -67,7 +67,12 @@
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
 
-                    @mount_route_img="mount_route_images = $event" 
+                    @mount_route_img="mount_route_images = $event"
+                />
+
+                <SummitRelationForm
+                    v-if="this.category == 'mount_route' && article_id"
+                    :article_id="article_id"
                 />
 
                 <gallery_images_edit 
@@ -119,6 +124,7 @@
     import ArticleImage from './forms/edit_forms/ArticleImageFormComponent.vue'
     import SectorsImagesForm from './forms/edit_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
+    import SummitRelationForm from './forms/edit_forms/SummitRelationFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
@@ -135,6 +141,7 @@
             ArticleImage,
             SectorsImagesForm,
             MountRouteImagesForm,
+            SummitRelationForm,
 
             gallery_images_edit,
             // validator_alerts_component

@@ -112,7 +112,7 @@
         </div>
 
         <div class="row mt-1">
-            <div class="col-xs-12 col-md-8">
+            <div class="col-xs-12 col-md-12">
                 <div class="wrap">
                     <ul>
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">

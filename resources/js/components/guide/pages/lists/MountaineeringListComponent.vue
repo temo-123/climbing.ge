@@ -52,8 +52,12 @@
                             <!-- Grid View by Mountain -->
                             <div class="row width_100" v-if="viewMode === 'grid'" v-for="masiv in mount_routes_by_masiv">
                                 <div class="col-md-12">
-                                    <h2 v-if="masiv.mount" class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
-                                    <h2 v-else class="article_list_short_description">Other</h2>
+                                    <div v-if="masiv.mount" class="mountain-list-header">
+                                        <h2 class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
+                                    </div>
+                                    <div v-else class="mountain-list-header">
+                                        <h2 class="article_list_short_description">Other</h2>
+                                    </div>
                                 </div>
                                 <div class="col-md-12 cards_block">
                                     <mountCard 
@@ -308,6 +312,7 @@
 .mountain-list-header {
   background: #f8f9fa;
   padding: 1rem;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
   border-left: 4px solid #007bff;
 }
