@@ -50,9 +50,21 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        // When debug is off and it's not an HTTP exception, render the 500 blade
-        // directly so a secondary exception in the error view can't produce a blank page.
-        if (!config('app.debug') && !$this->isHttpException($exception) && !$request->expectsJson()) {
+        // API requests always get JSON — even if AjaxHeader middleware hasn't run yet
+        // (e.g. exceptions thrown in EnsureFrontendRequestsAreStateful before our middleware).
+        $isApiRequest = str_starts_with($request->getPathInfo(), '/api/');
+
+        if (!config('app.debug') && !$this->isHttpException($exception)) {
+            if ($isApiRequest || $request->expectsJson()) {
+                \Log::error('API exception: ' . $exception->getMessage(), [
+                    'exception' => get_class($exception),
+                    'file' => $exception->getFile(),
+                    'line' => $exception->getLine(),
+                    'url' => $request->fullUrl(),
+                ]);
+                return response()->json(['message' => 'Server Error'], 500);
+            }
+            // Non-API, non-JSON: render blade 500 so a secondary exception can't blank the page.
             return response()->view('errors.500', [], 500);
         }
 

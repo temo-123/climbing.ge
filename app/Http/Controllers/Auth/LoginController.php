@@ -115,37 +115,46 @@ class LoginController extends Controller
             'password' => $decryptedPassword
         ];
 
-        if (auth()->attempt($credentials, $request->remember)) {
-            $user = auth()->user();
-            
-            // Check if user is banned
-            if ($user->isBanned()) {
-                auth()->logout();
-                return response()->json([
-                    'alert' => [
-                        'type' => 'error',
-                        'title' => 'Account Banned',
-                        'message' => 'Your account has been banned. Please contact support.',
-                        'icon' => 'ban'
-                    ],
-                    'is_banned' => true,
-                    'message' => 'Your account has been banned. Please contact support.',
-                ], 403);
-            }
-            
-            $user->tokens()->delete();
-            $token = $user->createToken('authToken')->plainTextToken;
-            
-            \Log::info('Login successful for user: ' . $user->email);
-            
-            return response()->json([
-                'token' => $token,
-                'user' => $user,
-                'message' => 'Login successful'
-            ], 200);
-        }
+        try {
+            if (auth()->attempt($credentials, $request->remember)) {
+                $user = auth()->user();
 
-        \Log::warning('Login failed for email: ' . $request->email);
-        return response()->json(['message' => 'auth.failed'], 422);
+                if ($user->isBanned()) {
+                    auth()->logout();
+                    return response()->json([
+                        'alert' => [
+                            'type' => 'error',
+                            'title' => 'Account Banned',
+                            'message' => 'Your account has been banned. Please contact support.',
+                            'icon' => 'ban'
+                        ],
+                        'is_banned' => true,
+                        'message' => 'Your account has been banned. Please contact support.',
+                    ], 403);
+                }
+
+                $user->tokens()->delete();
+                $token = $user->createToken('authToken')->plainTextToken;
+
+                \Log::info('Login successful for user: ' . $user->email);
+
+                return response()->json([
+                    'token' => $token,
+                    'user' => $user,
+                    'message' => 'Login successful'
+                ], 200);
+            }
+
+            \Log::warning('Login failed for email: ' . $request->email);
+            return response()->json(['message' => 'auth.failed'], 422);
+
+        } catch (\Throwable $e) {
+            \Log::error('Login exception for ' . $request->email . ': ' . $e->getMessage(), [
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+            return response()->json(['message' => 'Login failed due to a server error. Please try again later.'], 500);
+        }
     }
 }
