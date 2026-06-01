@@ -98,9 +98,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 
     homeComponent = Index;
     serviceRoutes = site_routes.options ? site_routes.options.routes : site_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let siteUrl = (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = siteUrl ? baseUrl + '/' + siteUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
 } 
@@ -111,9 +109,7 @@ else if (window.location.hostname == process.env.MIX_SHOP_URL) {
 
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let shopUrl = (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = shopUrl ? baseUrl + '/' + shopUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
 } 
@@ -122,9 +118,7 @@ else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
 
     homeComponent = Summit;
     serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let userUrl = (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_SUMMIT_ANALITICS_ID;
 } 
@@ -133,9 +127,7 @@ else if (window.location.hostname == process.env.MIX_FILMS_URL) {
 
     homeComponent = Films;
     serviceRoutes = films_routes.options ? films_routes.options.routes : films_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let filmsUrl = (process.env.MIX_FILMS_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = filmsUrl ? baseUrl + '/' + filmsUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
 } 
@@ -144,9 +136,7 @@ else if (window.location.hostname == process.env.MIX_BLOG_URL) {
 
     homeComponent = Blog;
     serviceRoutes = blog_routes.options ? blog_routes.options.routes : blog_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let blogUrl = (process.env.MIX_BLOG_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = blogUrl ? baseUrl + '/' + blogUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_BLOG_ANALITICS_ID;
 } 
@@ -161,9 +151,7 @@ else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 
     homeComponent = Home;
     serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
-    let baseUrl = process.env.MIX_APP_SSH.replace(/\/$/, '');
-    let userUrl = (process.env.MIX_USER_PAGE_URL || '').replace(/^\/|\/$/g, '');
-    axios.defaults.baseURL = userUrl ? baseUrl + '/' + userUrl + '/api' : baseUrl + '/api';
+    axios.defaults.baseURL = window.location.origin + '/api';
 
     analytic_id = process.env.MIX_USER_ANALITICS_ID;
 } 

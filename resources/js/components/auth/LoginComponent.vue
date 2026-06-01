@@ -206,7 +206,7 @@ export default {
       async login(){
         this.is_loading = true
         axios
-          .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/sanctum/csrf-cookie', {
+          .get(window.location.origin + '/sanctum/csrf-cookie', {
             headers: {
               'Accept': 'application/json'
             }
@@ -245,7 +245,7 @@ export default {
               }
 
               axios
-                .post(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api/login', {
+                .post('login', {
                   email: this.email, 
                   password: encryptedPassword, // Send encrypted password
                   remember: this.remember
@@ -261,7 +261,7 @@ export default {
                   
                   // Fetch permissions immediately after successful login
                   return axios
-                    .get(process.env.MIX_APP_SSH + process.env.MIX_USER_PAGE_URL + '/api/get_user/get_auth_user_permissions/', {
+                    .get('get_user/get_auth_user_permissions/', {
                       headers: {
                         'Accept': 'application/json',
                         'Authorization': 'Bearer ' + response.data.token
