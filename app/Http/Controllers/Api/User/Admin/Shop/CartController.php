@@ -13,20 +13,14 @@ use App\Models\Shop\Favorite_product;
 use App\Models\User\User_adreses;
 use App\Services\PermissionService;
 use App\Services\ProductService;
-use Auth;
 
 class CartController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('auth');
-    }
-    
-    public function index()
-    {
-        if (!Auth::user()) return [];
+        $user = $request->user();
 
-        $user = Auth::user();
+        if (!$user) return [];
         $cart_items = Cart::where('user_id', $user->id)->get();
         $products = [];
 
@@ -63,41 +57,29 @@ class CartController extends Controller
 
     public function add_to_favorite(Request $request)
     {
-        if (Auth::user()) {
-            
-            if(Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->count() > 0){
-                $editing_faworit = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+        $userId = $request->user()->id;
 
-                $editing_faworit['user_id'] = Auth::user()->id;
-                $editing_faworit['product_id'] = $request->product_id;
-                
-                $editing_faworit -> save();
-            }
-            else{
-                $faworit = new Favorite_product();
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['product_id'] = $request->product_id;
-                
-                $faworit -> save();
-            }
-        }
-        else{
-            dd('Gaajvi');
+        if (Favorite_product::where('user_id', $userId)->where('product_id', $request->product_id)->count() > 0) {
+            $editing_faworit = Favorite_product::where('user_id', $userId)->where('product_id', $request->product_id)->first();
+            $editing_faworit['user_id'] = $userId;
+            $editing_faworit['product_id'] = $request->product_id;
+            $editing_faworit->save();
+        } else {
+            $faworit = new Favorite_product();
+            $faworit['user_id'] = $userId;
+            $faworit['product_id'] = $request->product_id;
+            $faworit->save();
         }
     }
 
     public function del_from_favorite(Request $request)
     {
-        if (Auth::user()) {
-            $product = Favorite_product::where('user_id', '=', Auth::user()->id)->where('product_id', '=', $request->product_id)->first();
+        $product = Favorite_product::where('user_id', $request->user()->id)
+            ->where('product_id', $request->product_id)
+            ->first();
 
-            if ($product) {
-                $product -> delete();
-            }
-            else {
-                dd('err');
-            }
+        if ($product) {
+            $product->delete();
         }
     }
     
@@ -105,55 +87,45 @@ class CartController extends Controller
     {
         $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','us_manager','seller']);
 
-        if (Auth::user()) {
-            // Assume $request->id is option_id for stock check
-            $option = Product_option::find($request->id);
-            if (!$option || $option->quantity < 1) {
-                return response()->json(['error' => 'Out of stock'], 400);
-            }
+        $userId = $request->user()->id;
 
-            $old_cart_products = Cart::where('user_id', strip_tags(Auth::user()->id))->get();
-            $old_cart_products_count = Cart::where('user_id', strip_tags(Auth::user()->id))->count();
-            $is_update_cart_item = true;
-            if ($old_cart_products_count > 0) {
-                foreach ($old_cart_products as $old_cart_product) {
-                    if ($old_cart_product->option_id == $request->id) {  // Changed to option_id
-                        $editing_cart_item = Cart::where('user_id', strip_tags(Auth::user()->id))->where('option_id', strip_tags($request->id))->first();
-                        $new_quantity = $old_cart_product->quantity + 1;
-
-                        // Check if new quantity exceeds stock
-                        if ($new_quantity > $option->quantity) {
-                            return response()->json(['error' => 'Not enough stock available'], 400);
-                        }
-
-                        $editing_cart_item['quantity'] = $new_quantity;
-                        $editing_cart_item -> update();
-
-                        $is_update_cart_item = false;
-                    }
-                }
-                if($is_update_cart_item) {
-                    $cart = new Cart();
-
-                    $cart['option_id'] = $request->id;  // Changed to option_id
-                    $cart['user_id'] = Auth::user()->id;
-                    $cart['quantity'] = 1;
-
-                    $cart -> save();
-                }
-            }
-            else {
-                $cart = new Cart();
-
-                $cart['option_id'] = $request->id;  // Changed to option_id
-                $cart['user_id'] = Auth::user()->id;
-                $cart['quantity'] = 1;
-
-                $cart -> save();
-            }
+        $option = Product_option::find($request->id);
+        if (!$option || $option->quantity < 1) {
+            return response()->json(['error' => 'Out of stock'], 400);
         }
-        else {
-            return 'login';
+
+        $old_cart_products = Cart::where('user_id', strip_tags($userId))->get();
+        $old_cart_products_count = $old_cart_products->count();
+        $is_update_cart_item = true;
+
+        if ($old_cart_products_count > 0) {
+            foreach ($old_cart_products as $old_cart_product) {
+                if ($old_cart_product->option_id == $request->id) {
+                    $editing_cart_item = Cart::where('user_id', strip_tags($userId))->where('option_id', strip_tags($request->id))->first();
+                    $new_quantity = $old_cart_product->quantity + 1;
+
+                    if ($new_quantity > $option->quantity) {
+                        return response()->json(['error' => 'Not enough stock available'], 400);
+                    }
+
+                    $editing_cart_item['quantity'] = $new_quantity;
+                    $editing_cart_item->update();
+                    $is_update_cart_item = false;
+                }
+            }
+            if ($is_update_cart_item) {
+                $cart = new Cart();
+                $cart['option_id'] = $request->id;
+                $cart['user_id'] = $userId;
+                $cart['quantity'] = 1;
+                $cart->save();
+            }
+        } else {
+            $cart = new Cart();
+            $cart['option_id'] = $request->id;
+            $cart['user_id'] = $userId;
+            $cart['quantity'] = 1;
+            $cart->save();
         }
     }
 
@@ -174,7 +146,7 @@ class CartController extends Controller
         $stock = ProductService::get_option_stock_quantity($option_item);
         $requested_quantity = (int) $request->quantity;
 
-        $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
+        $cart_item = Cart::where('user_id', '=', $request->user()->id)->where('option_id', '=', $request->modification_id)->first();
         if ($cart_item) {
             $new_total = $cart_item->quantity + $requested_quantity;
             if ($new_total > $stock) {
@@ -195,14 +167,14 @@ class CartController extends Controller
             $cart = new Cart;
             $cart['option_id'] = $request->modification_id;
             $cart['quantity'] = $requested_quantity;
-            $cart['user_id'] = Auth::user()->id;
+            $cart['user_id'] = $request->user()->id;
             $cart->save();
         }
     }
 
     public function destroy($id, Request $request)
     {
-        $item = Cart::where('id', '=', $id)->where('user_id', '=', Auth::user()->id)->first();
+        $item = Cart::where('id', '=', $id)->where('user_id', '=', $request->user()->id)->first();
         if ($item) {
             $item->delete();
         }

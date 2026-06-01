@@ -85,11 +85,10 @@ class RoutesReitingController extends Controller
 
     public function create_route_review(Request $request) {
         if ($auth = PermissionService::authorize('routes_rewiew', 'add')) return $auth;
-        if (!Auth::user()) {
-            return response()->json(['message' => 'Unauthenticated.'], 401);
-        }
 
-        $user_review_count = Auth::user()->sport_route_reviews
+        $user = $request->user();
+
+        $user_review_count = $user->sport_route_reviews
             ->where('route_id', '=', $request["route_id"])
             ->count();
 
@@ -105,7 +104,7 @@ class RoutesReitingController extends Controller
         $review['ascent_style']= $request["ascent_style"];
         $review['text']        = $request["text"];
         $review['stars']       = $request["stars"];
-        $review['user_id']     = Auth::user()->id;
+        $review['user_id']     = $user->id;
 
         if (isset($request['climbed']) && $request['climbed']) {
             $review['climbed_data'] = $request["climbed_data"];
@@ -148,12 +147,9 @@ class RoutesReitingController extends Controller
         $auth = PermissionService::authorize('routes_rewiew', 'del');
         if ($auth) return $auth;
         
-        if (Auth::user()) {
-            $review = Sport_route_review::where('id',strip_tags($review_id))->first();
-            // $user_review_relation = Sport_route_review_user::where('user_id', '=', Auth::user()->id)->where('review_id', '=', $review->id)->first();
-
-            // $user_review_relation -> delete();
-            $review -> delete();
+        $review = Sport_route_review::where('id', strip_tags($review_id))->first();
+        if ($review) {
+            $review->delete();
         }
     }
 }

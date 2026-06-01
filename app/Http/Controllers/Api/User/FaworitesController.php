@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use Auth;
 use App\Services\ArticlesService;
 use App\Models\Guide\Interested_event;
 use App\Models\Guide\Favorite_outdoor_area;
@@ -17,16 +16,14 @@ class FaworitesController extends Controller
 {
     public function add_to_interested_events(Request $request)
     {
-        if (!Auth::user()) {
-            return response()->json(['message' => 'Please login'], 401);
-        }
+        $user = $request->user();
 
-        if (Interested_event::where('user_id', Auth::id())->where('event_id', $request->event_id)->exists()) {
+        if (Interested_event::where('user_id', $user->id)->where('event_id', $request->event_id)->exists()) {
             return response()->json(['message' => 'Already in favorites']);
         }
 
         $faworit = new Interested_event;
-        $faworit['user_id'] = Auth::id();
+        $faworit['user_id'] = $user->id;
         $faworit['event_id'] = $request->event_id;
         $faworit->save();
 
@@ -36,7 +33,7 @@ class FaworitesController extends Controller
             $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
             $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
             $subject = $locale_event->title;
-            UserNotifications::dispatch($url, $text, $subject, Auth::user()->email)->onQueue('emails');
+            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
         }
 
         return response()->json(['message' => 'Event added to favorites']);
@@ -44,11 +41,9 @@ class FaworitesController extends Controller
 
     public function get_interested_events(Request $request)
     {
-        if (!Auth::user()) {
-            return response()->json(['message' => 'Please login'], 401);
-        }
+        $user = $request->user();
 
-        $fav_items = Interested_event::where('user_id', Auth::id())->get();
+        $fav_items = Interested_event::where('user_id', $user->id)->get();
         $articles = [];
         foreach ($fav_items as $item) {
             $event = Event::with(['us_event', 'ka_event'])->where('id', $item->event_id)->first();
@@ -62,52 +57,37 @@ class FaworitesController extends Controller
 
     public function del_interested_event(Request $request, $favoryte_ivent_if)
     {
-        if (Auth::user()) {
-            $fav_area = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $favoryte_ivent_if)->first();
-            if ($fav_area) {
-                $fav_area->delete();
-                return 'Event removed from favorites successfully';
-            }
-            return 'Event not found in favorites';
+        $user = $request->user();
+
+        $fav_area = Interested_event::where('user_id', $user->id)->where('event_id', $favoryte_ivent_if)->first();
+        if ($fav_area) {
+            $fav_area->delete();
+            return 'Event removed from favorites successfully';
         }
-        else{
-            return 'Please login';
-        }
+        return 'Event not found in favorites';
     }
-
-
 
     public function add_to_favorite_outdoor_area(Request $request)
     {
-        if (Auth::user()) {
-            if(Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $request->article_id)->count() > 0){
-                return 'This area olredy are in faworite';
-            }
-            else{
-                $faworit = new Favorite_outdoor_area();
-            
-                $faworit['user_id'] = Auth::user()->id;
-                $faworit['article_id'] = $request->article_id;
-                
-                $faworit -> save();
+        $user = $request->user();
 
-                return 'Area added successfully!';
-            }
+        if (Favorite_outdoor_area::where('user_id', $user->id)->where('article_id', $request->article_id)->count() > 0) {
+            return 'This area olredy are in faworite';
         }
-        else{
-            // return 'Ples login';
-            return response()->json('Plees login', 401);
-        }
+
+        $faworit = new Favorite_outdoor_area();
+        $faworit['user_id'] = $user->id;
+        $faworit['article_id'] = $request->article_id;
+        $faworit->save();
+
+        return 'Area added successfully!';
     }
-
 
     public function get_faworite_outdoor_region(Request $request)
     {
-        if (!Auth::user()) {
-            return response()->json(['message' => 'Please login'], 401);
-        }
+        $user = $request->user();
 
-        $fav_area = Favorite_outdoor_area::where('user_id', Auth::id())->get();
+        $fav_area = Favorite_outdoor_area::where('user_id', $user->id)->get();
         $articles = [];
         foreach ($fav_area as $area) {
             $global_articles = Article::where('id', $area->article_id)->get();
@@ -121,14 +101,11 @@ class FaworitesController extends Controller
         return response()->json($articles);
     }
 
-
     public function del_favorite_outdoor_area(Request $request)
     {
-        if (!Auth::user()) {
-            return response()->json(['message' => 'Please login'], 401);
-        }
+        $user = $request->user();
 
-        $fav_area = Favorite_outdoor_area::where('user_id', Auth::id())
+        $fav_area = Favorite_outdoor_area::where('user_id', $user->id)
             ->where('article_id', $request->article_id)
             ->first();
 
@@ -141,23 +118,17 @@ class FaworitesController extends Controller
 
     public function check_favorite_status(Request $request, $article_id)
     {
-        if (Auth::user()) {
-            $is_favorite = Favorite_outdoor_area::where('user_id', '=', Auth::user()->id)->where('article_id', '=', $article_id)->exists();
-            return response()->json(['is_favorite' => $is_favorite]);
-        }
-        else{
-            return response()->json(['is_favorite' => false], 401);
-        }
+        $user = $request->user();
+
+        $is_favorite = Favorite_outdoor_area::where('user_id', $user->id)->where('article_id', $article_id)->exists();
+        return response()->json(['is_favorite' => $is_favorite]);
     }
 
     public function check_interested_status(Request $request, $event_id)
     {
-        if (Auth::user()) {
-            $is_interested = Interested_event::where('user_id', '=', Auth::user()->id)->where('event_id', '=', $event_id)->exists();
-            return response()->json(['is_interested' => $is_interested]);
-        }
-        else{
-            return response()->json(['is_interested' => false], 401);
-        }
+        $user = $request->user();
+
+        $is_interested = Interested_event::where('user_id', $user->id)->where('event_id', $event_id)->exists();
+        return response()->json(['is_interested' => $is_interested]);
     }
 }

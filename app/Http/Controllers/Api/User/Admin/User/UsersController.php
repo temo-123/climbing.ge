@@ -119,11 +119,13 @@ class UsersController extends Controller
 
     public function get_auth_user_permissions(Request $request)
     {
-        if (!Auth::user()) {
+        $user = $request->user();
+
+        if (!$user) {
             return response()->json('Plees login', 401);
         }
 
-        return Auth::user()->getAllPermissions()->map(fn($p) => [
+        return $user->getAllPermissions()->map(fn($p) => [
             'action'  => $p->action,
             'subject' => $p->subject,
         ])->values();
