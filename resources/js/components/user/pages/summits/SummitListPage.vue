@@ -198,10 +198,11 @@ export default {
                     tab_data: {
                         data: this.summits,
                         tab: {
-                            head: ['ID', 'Title', 'KA Title', 'Height', 'Lat/Lng', 'QR Saved', 'Published', 'QR', 'GPS', 'Edit', 'Delete'],
+                            head: ['ID', 'Title', 'URL Title', 'KA Title', 'Height', 'Lat/Lng', 'QR Saved', 'Published', 'QR', 'GPS', 'Edit', 'Delete'],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['title']],
+                                ['data', ['url_title']],
                                 ['data', ['ka_title']],
                                 ['data', ['height']],
                                 ['data', ['coords_display']],
@@ -213,7 +214,7 @@ export default {
                                 ['action_fun_id', 'confirm_delete', 'btn btn-sm btn-danger',  '<i class="fa fa-trash"></i>'],
                             ],
                             perm: [
-                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                                 ['no'],
                                 ['summit', 'edit'],
                                 ['summit', 'edit'],

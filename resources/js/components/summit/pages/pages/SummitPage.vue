@@ -51,9 +51,9 @@
 
                     <!-- Make Ascent button -->
                     <div class="text-center" style="margin: 20px 0 40px">
-                        <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-lg btn-send main-btn">
+                        <button @click="openAscentModal" class="btn btn-success btn-lg btn-send main-btn">
                             <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
-                        </router-link>
+                        </button>
                     </div>
 
                 </div>
@@ -88,50 +88,33 @@
                                             <th>{{ $t('summit.summit_page.climber') }}</th>
                                             <th>{{ $t('summit.summit_page.date') }}</th>
                                             <th>{{ $t('summit.summit_page.route') }}</th>
-                                            <th class="text-center">GPS</th>
+                                            <th>GPS</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-for="a in ascents" :key="a.id">
+                                        <tr v-for="a in ascents" :key="a.id"
+                                            style="cursor:pointer"
+                                            @click="openAscentDetail(a)">
                                             <td><strong>{{ a.name }} {{ a.surname }}</strong></td>
                                             <td class="text-muted small">{{ formatDate(a.ascent_date) }}</td>
                                             <td>
-                                                <a v-if="a.route_name && a.route_article_url"
-                                                   :href="guideRouteUrl(a.route_article_url)"
-                                                   target="_blank"
-                                                   class="text-success">
+                                                <span v-if="a.route_name">
                                                     {{ a.route_name }}
-                                                    <span v-if="a.route_grade" class="label label-default">{{ a.route_grade }}</span>
-                                                    <i class="fa fa-external-link fa-xs ml-1"></i>
-                                                </a>
-                                                <span v-else-if="a.route_name">
-                                                    {{ a.route_name }}
-                                                    <span v-if="a.route_grade" class="label label-default">{{ a.route_grade }}</span>
+                                                    <span v-if="a.route_grade" class="label label-default ml-1">{{ a.route_grade }}</span>
                                                 </span>
                                                 <span v-else class="text-muted">—</span>
                                             </td>
-                                            <td class="text-center">
-                                                <span v-if="a.is_gps_validated" class="label label-success">
-                                                    <i class="fa fa-check"></i>
-                                                </span>
-                                                <span v-else class="label label-default">
-                                                    <i class="fa fa-minus"></i>
-                                                </span>
-                                            </td>
                                             <td>
-                                                <button v-if="a.comment" class="btn btn-xs btn-link p-0" @click="toggleComment(a.id)">
-                                                    <i class="fa fa-comment-o"></i>
-                                                </button>
+                                                <span v-if="a.is_gps_validated" class="label label-success">
+                                                    <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
+                                                </span>
+                                                <span v-else class="text-muted">—</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <i class="fa fa-chevron-right text-muted" style="font-size:11px"></i>
                                             </td>
                                         </tr>
-                                        <template v-for="a in ascents" :key="'c' + a.id">
-                                            <tr v-if="expandedComment === a.id">
-                                                <td colspan="5" class="bg-light small text-muted" style="font-style:italic">
-                                                    <i class="fa fa-quote-left mr-1"></i>{{ a.comment }}
-                                                </td>
-                                            </tr>
-                                        </template>
                                     </tbody>
                                 </table>
                             </div>
@@ -147,9 +130,9 @@
                                     <qrcode-vue :value="ascentUrl" :size="160" level="H" render-as="svg" />
                                 </div>
                                 <p class="text-muted small">{{ $t('summit.summit_page.scan_instruction') }}</p>
-                                <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-block btn-send main-btn">
+                                <button @click="openAscentModal" class="btn btn-success btn-block btn-send main-btn">
                                     <i class="fa fa-flag"></i> {{ $t('summit.summit_page.record_ascent_short') }}
-                                </router-link>
+                                </button>
                             </div>
                         </div>
 
@@ -165,23 +148,38 @@
             :description="summit.description || 'Explore summit details and record your ascent in Georgia.'"
             :image="summit.image ? '/storage/' + summit.image : '/public/images/meta_img/mountain.jpg'"
         />
+
+        <make-ascent-modal
+            v-model="showAscentModal"
+            :summit="summit"
+            @submitted="fetchAscents"
+        />
+
+        <ascent-detail-modal
+            v-model="showAscentDetail"
+            :ascent="selectedAscent"
+        />
     </div>
 </template>
 
 <script>
 import metaData from '../../items/MetaDataComponent.vue'
 import QrcodeVue from 'qrcode.vue'
+import MakeAscentModal from '../../items/Modals/MakeAscentModal.vue'
+import AscentDetailModal from '../../items/Modals/AscentDetailModal.vue'
 
 export default {
     name: 'SummitPage',
-    components: { metaData, QrcodeVue },
+    components: { metaData, QrcodeVue, MakeAscentModal, AscentDetailModal },
     data() {
         return {
             summit: null,
             loading: true,
             ascents: [],
             loadingAscents: false,
-            expandedComment: null,
+            showAscentModal: false,
+            selectedAscent: null,
+            showAscentDetail: false,
         }
     },
     computed: {
@@ -190,8 +188,20 @@ export default {
             const base = process.env.MIX_APP_SSH
                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
                 : window.location.origin
-            return `${base}/make_ascent/${this.summit.id}`
+            return `${base}/summit/${this.summit.url_title}?make_ascent=${this.summit.id}`
         }
+    },
+    watch: {
+        '$route.query.make_ascent'(val) {
+            if (val !== undefined && this.summit) {
+                this.showAscentModal = true
+            }
+        },
+        showAscentModal(val) {
+            if (!val && 'make_ascent' in this.$route.query) {
+                this.$router.replace({ query: {} })
+            }
+        },
     },
     mounted() {
         this.fetchSummit()
@@ -203,9 +213,22 @@ export default {
                 .then(r => {
                     this.summit = r.data
                     this.fetchAscents()
+                    if ('make_ascent' in this.$route.query) {
+                        this.showAscentModal = true
+                    }
                 })
                 .catch(() => { this.summit = null })
                 .finally(() => { this.loading = false })
+        },
+        openAscentModal() {
+            this.showAscentModal = true
+            if (!('make_ascent' in this.$route.query)) {
+                this.$router.replace({ query: { ...this.$route.query, make_ascent: this.summit.id } })
+            }
+        },
+        openAscentDetail(ascent) {
+            this.selectedAscent = ascent
+            this.showAscentDetail = true
         },
         fetchAscents() {
             if (!this.summit) return
@@ -224,9 +247,6 @@ export default {
                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '')
                 : window.location.origin
             return `${base}/outdoor/${articleUrl}`
-        },
-        toggleComment(id) {
-            this.expandedComment = this.expandedComment === id ? null : id
         },
     }
 }

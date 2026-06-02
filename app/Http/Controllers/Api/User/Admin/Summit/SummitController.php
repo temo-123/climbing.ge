@@ -4,13 +4,12 @@ namespace App\Http\Controllers\Api\User\Admin\Summit;
 
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
+use App\Services\URLTitleService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 use App\Models\Summit\Summit;
 use App\Models\Summit\SummitAscent;
 use App\Models\Summit\SummitMountRoute;
-use App\Models\Guide\Region;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
 
@@ -20,7 +19,7 @@ class SummitController extends Controller
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
 
-        $summits = Summit::with(['region', 'mountRoutes.article.global_article_us', 'mountRoutes.article.global_article_ka'])
+        $summits = Summit::with(['mountRoutes.article.global_article_us', 'mountRoutes.article.global_article_ka'])
             ->orderBy('id', 'desc')
             ->get()
             ->map(function ($summit) {
@@ -42,8 +41,6 @@ class SummitController extends Controller
                     'height'           => $summit->height,
                     'latitude'         => $summit->latitude,
                     'longitude'        => $summit->longitude,
-                    'region_id'        => $summit->region_id,
-                    'region_name'      => $summit->region?->us_name,
                     'mount_route_ids'       => $routes->pluck('id'),
                     'mount_route_names'     => $routes->pluck('name'),
                     'mount_routes_display'  => $routes->pluck('name')->implode(', '),
@@ -93,14 +90,15 @@ class SummitController extends Controller
         $summit = Summit::findOrFail($id);
 
         $request->validate([
-            'title'          => 'sometimes|required|string|max:255',
-            'ka_title'       => 'nullable|string|max:255',
-            'description'    => 'nullable|string',
-            'ka_description' => 'nullable|string',
-            'height'         => 'nullable|integer|min:0',
-            'latitude'       => 'nullable|numeric|between:-90,90',
-            'longitude'      => 'nullable|numeric|between:-180,180',
-            'published'      => 'nullable|boolean',
+            'title'               => 'sometimes|required|string|max:255',
+            'ka_title'            => 'nullable|string|max:255',
+            'description'         => 'nullable|string',
+            'ka_description'      => 'nullable|string',
+            'height'              => 'nullable|integer|min:0',
+            'latitude'            => 'nullable|numeric|between:-90,90',
+            'longitude'           => 'nullable|numeric|between:-180,180',
+            'published'           => 'nullable|boolean',
+            'url_title'           => 'nullable|string|max:255|unique:summits,url_title,' . $id,
         ]);
 
         $data = $request->only([
@@ -108,8 +106,10 @@ class SummitController extends Controller
             'height', 'latitude', 'longitude', 'published'
         ]);
 
-        if (isset($data['title']) && $data['title'] !== $summit->title) {
-            $data['url_title'] = $this->generateUniqueUrlTitle($data['title'], $summit->id);
+        if ($request->boolean('is_change_url_title')) {
+            $data['url_title'] = $this->generateUniqueUrlTitle($request->input('title', $summit->title), $summit->id);
+        } elseif ($request->filled('url_title')) {
+            $data['url_title'] = $request->url_title;
         }
 
         $summit->update($data);
@@ -284,13 +284,6 @@ class SummitController extends Controller
         ]);
     }
 
-    public function get_regions()
-    {
-        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
-
-        return response()->json(Region::orderBy('us_name')->get(['id', 'us_name', 'ka_name']));
-    }
-
     public function get_ascents($id)
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
@@ -376,12 +369,12 @@ class SummitController extends Controller
 
     private function generateUniqueUrlTitle(string $title, int $excludeId = null): string
     {
-        $base  = Str::slug($title);
+        $base  = URLTitleService::get_url_title($title);
         $slug  = $base;
         $count = 1;
 
         while (Summit::where('url_title', $slug)->when($excludeId, fn($q) => $q->where('id', '!=', $excludeId))->exists()) {
-            $slug = $base . '-' . $count++;
+            $slug = $base . '_' . $count++;
         }
 
         return $slug;

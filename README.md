@@ -42,6 +42,14 @@ php artisan key:generate
 # 3. Database
 php artisan migrate --seed
 
+DELETE FROM user_role;
+DELETE FROM role_permissions;
+DELETE FROM user_permissions;
+DELETE FROM permissions;
+DELETE FROM roles;
+
+php artisan db:seed
+
 # 4. Storage symlink
 php artisan storage:link
 

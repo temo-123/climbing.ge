@@ -4,7 +4,7 @@ namespace App\Models\Summit;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Guide\Route;
+use App\Models\Guide\Article;
 
 class SummitAscentRoute extends Model
 {
@@ -12,7 +12,7 @@ class SummitAscentRoute extends Model
 
     protected $fillable = [
         'ascent_id',
-        'route_id',
+        'article_id',
         'other_route_name',
     ];
 
@@ -21,8 +21,8 @@ class SummitAscentRoute extends Model
         return $this->belongsTo(SummitAscent::class, 'ascent_id');
     }
 
-    public function route()
+    public function article()
     {
-        return $this->belongsTo(Route::class, 'route_id');
+        return $this->belongsTo(Article::class, 'article_id');
     }
 }

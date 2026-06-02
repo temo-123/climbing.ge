@@ -4,7 +4,6 @@ namespace App\Models\Summit;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Guide\Region;
 use App\Models\Guide\Article;
 
 class Summit extends Model
@@ -18,7 +17,6 @@ class Summit extends Model
         'image',
         'height',
         'latitude', 'longitude',
-        'region_id',
         'qr_code',
         'published',
     ];
@@ -29,11 +27,6 @@ class Summit extends Model
         'longitude'  => 'float',
         'height'     => 'integer',
     ];
-
-    public function region()
-    {
-        return $this->belongsTo(Region::class, 'region_id');
-    }
 
     public function mountRoutes()
     {

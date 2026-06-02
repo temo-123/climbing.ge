@@ -20,7 +20,6 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
     Route::prefix('get_summit_admin')->group(function () {
         Route::controller(SummitController::class)->group(function () {
             Route::get('/index', 'index');
-            Route::get('/get_regions', 'get_regions');
             Route::get('/get_mount_routes', 'get_mount_routes');
             Route::get('/get_summit_mount_routes/{summit_id}', 'get_summit_mount_routes');
             Route::get('/get_ascents/{id}', 'get_ascents');

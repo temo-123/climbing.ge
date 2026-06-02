@@ -16,26 +16,20 @@ class SummitPublicController extends Controller
 {
     public function index()
     {
-        $summits = Summit::with('region')
-            ->where('published', true)
+        $summits = Summit::where('published', true)
             ->whereNotNull('latitude')
             ->whereNotNull('longitude')
             ->orderBy('title')
             ->get()
             ->map(function ($summit) {
                 return [
-                    'id'          => $summit->id,
-                    'title'       => $summit->title,
-                    'url_title'   => $summit->url_title,
-                    'height'      => $summit->height,
-                    'latitude'    => $summit->latitude,
-                    'longitude'   => $summit->longitude,
-                    'image'       => $summit->image,
-                    'region'      => $summit->region ? [
-                        'id'      => $summit->region->id,
-                        'us_name' => $summit->region->us_name,
-                        'ka_name' => $summit->region->ka_name,
-                    ] : null,
+                    'id'        => $summit->id,
+                    'title'     => $summit->title,
+                    'url_title' => $summit->url_title,
+                    'height'    => $summit->height,
+                    'latitude'  => $summit->latitude,
+                    'longitude' => $summit->longitude,
+                    'image'     => $summit->image,
                 ];
             });
 
@@ -44,8 +38,7 @@ class SummitPublicController extends Controller
 
     public function show($url_title)
     {
-        $summit = Summit::with('region')
-            ->where('url_title', $url_title)
+        $summit = Summit::where('url_title', $url_title)
             ->where('published', true)
             ->firstOrFail();
 
@@ -59,21 +52,26 @@ class SummitPublicController extends Controller
             'latitude'    => $summit->latitude,
             'longitude'   => $summit->longitude,
             'qr_code'     => $summit->qr_code,
-            'region'      => $summit->region ? [
-                'id'      => $summit->region->id,
-                'us_name' => $summit->region->us_name,
-                'ka_name' => $summit->region->ka_name,
-            ] : null,
         ]);
     }
 
     public function get_routes_for_summit($id)
     {
-        $summit = Summit::findOrFail($id);
+        $summit = Summit::with([
+            'mountRoutes.article.global_article_us',
+            'mountRoutes.article.global_article_ka',
+        ])->findOrFail($id);
 
-        $routes = Route::orderBy('name')
-            ->limit(50)
-            ->get(['id', 'name', 'grade']);
+        $routes = $summit->mountRoutes->map(function ($smr) {
+            $a = $smr->article;
+            if (!$a) return null;
+            return [
+                'id'        => $a->id,
+                'name'      => $a->global_article_us?->title ?? $a->global_article_ka?->title ?? $a->url_title,
+                'grade'     => $a->mount_grade ?: null,
+                'url_title' => $a->url_title,
+            ];
+        })->filter()->values();
 
         return response()->json($routes);
     }
@@ -82,18 +80,18 @@ class SummitPublicController extends Controller
     {
         $summit = Summit::findOrFail($summit_id);
 
+        $authUser = auth('sanctum')->user();
+
         $request->validate([
-            'name'          => 'required|string|max:100',
-            'surname'       => 'required|string|max:100',
+            'name'          => $authUser ? 'nullable|string|max:100' : 'required|string|max:100',
+            'surname'       => $authUser ? 'nullable|string|max:100' : 'required|string|max:100',
             'email'         => 'nullable|email|max:255',
-            'route_id'      => 'nullable|integer|exists:routes,id',
+            'article_id'    => 'nullable|integer|exists:articles,id',
             'other_route'   => 'nullable|string|max:255',
             'comment'       => 'nullable|string',
             'photo'         => 'nullable|image|max:10240',
             'user_latitude' => 'nullable|numeric',
             'user_longitude'=> 'nullable|numeric',
-            'ascent_date'   => 'nullable|date',
-            'ascent_time'   => 'nullable|date_format:H:i',
         ]);
 
         // GPS validation via Haversine
@@ -122,9 +120,9 @@ class SummitPublicController extends Controller
         // Create ascent record
         $ascent = SummitAscent::create([
             'summit_id'       => $summit->id,
-            'name'            => $request->name,
-            'surname'         => $request->surname,
-            'email'           => $request->email,
+            'name'            => $authUser ? $authUser->name    : $request->name,
+            'surname'         => $authUser ? $authUser->surname : $request->surname,
+            'email'           => $authUser ? $authUser->email   : $request->email,
             'route_id'        => $request->route_id,
             'other_route'     => $request->other_route,
             'comment'         => $request->comment,
@@ -132,15 +130,15 @@ class SummitPublicController extends Controller
             'is_gps_validated'=> $isGpsValidated,
             'user_latitude'   => $request->user_latitude,
             'user_longitude'  => $request->user_longitude,
-            'ascent_date'     => $request->ascent_date ?? now()->toDateString(),
-            'ascent_time'     => $request->ascent_time ?? now()->format('H:i'),
+            'ascent_date'     => now()->toDateString(),
+            'ascent_time'     => now()->format('H:i'),
         ]);
 
         // Create ascent route record
-        if ($request->route_id || $request->other_route) {
+        if ($request->article_id || $request->other_route) {
             SummitAscentRoute::create([
                 'ascent_id'        => $ascent->id,
-                'route_id'         => $request->route_id,
+                'article_id'       => $request->article_id,
                 'other_route_name' => $request->other_route,
             ]);
         }
@@ -148,18 +146,15 @@ class SummitPublicController extends Controller
         // User matching
         $matchedUserIds = collect();
 
-        if (auth('sanctum')->check()) {
-            // Auth user: link directly
-            $matchedUserIds->push(auth('sanctum')->id());
+        if ($authUser) {
+            // Logged-in: link directly by auth user id
+            $matchedUserIds->push($authUser->id);
         } elseif ($request->email) {
-            $byEmail = User::where('email', $request->email)->pluck('id');
-            $matchedUserIds = $matchedUserIds->merge($byEmail);
-        } else {
-            $byName = User::where('name', $request->name)
-                ->where('surname', $request->surname)
-                ->pluck('id');
-            $matchedUserIds = $matchedUserIds->merge($byName);
+            // Guest with email: check users table, link only if found
+            $matched = User::where('email', $request->email)->pluck('id');
+            $matchedUserIds = $matchedUserIds->merge($matched);
         }
+        // Guest with no email: no relation created, ascent saved anonymously
 
         $matchedUserIds = $matchedUserIds->unique();
 
@@ -183,7 +178,10 @@ class SummitPublicController extends Controller
         $summit = Summit::where('url_title', $url_title)->where('published', true)->firstOrFail();
 
         $ascents = $summit->ascents()
-            ->with(['ascentRoutes.route.sector'])
+            ->with([
+                'ascentRoutes.article.global_article_us',
+                'ascentRoutes.article.global_article_ka',
+            ])
             ->orderBy('ascent_date', 'desc')
             ->get()
             ->map(function ($ascent) {
@@ -193,12 +191,12 @@ class SummitPublicController extends Controller
 
                 if ($ascent->ascentRoutes->isNotEmpty()) {
                     $ar = $ascent->ascentRoutes->first();
-                    if ($ar->route) {
-                        $routeName  = $ar->route->name;
-                        $routeGrade = $ar->route->grade;
-                        if ($ar->route->sector && $ar->route->sector->article) {
-                            $routeArticleUrl = $ar->route->sector->article->url_title;
-                        }
+                    if ($ar->article) {
+                        $routeName       = $ar->article->global_article_us?->title
+                            ?? $ar->article->global_article_ka?->title
+                            ?? $ar->article->url_title;
+                        $routeGrade      = $ar->article->mount_grade ?: null;
+                        $routeArticleUrl = $ar->article->url_title;
                     } elseif ($ar->other_route_name) {
                         $routeName = $ar->other_route_name;
                     }
