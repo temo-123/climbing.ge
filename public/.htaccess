@@ -4,3 +4,10 @@
 	RewriteCond %{REQUEST_FILENAME} !-f
 	RewriteRule ^((?s).*)$ index.php?_url=/$1 [QSA,L]
 </IfModule>
+
+# Cache versioned assets (app.js?id=xxx) for 1 year — safe because the ?id hash changes on every build
+<IfModule mod_headers.c>
+    <FilesMatch "\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+</IfModule>
