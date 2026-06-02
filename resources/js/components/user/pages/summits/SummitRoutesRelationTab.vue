@@ -63,6 +63,15 @@
                     <div v-if="add_error" class="alert alert-danger py-2">{{ add_error }}</div>
                     <div class="form-row align-items-end">
                         <div class="col-md-7">
+                            <!-- Mount massive filter -->
+                            <label>Filter by Mount Massive</label>
+                            <select class="form-control mb-2" v-model="filter_mount_id" @change="selected_article_id = null">
+                                <option :value="null">— All massives —</option>
+                                <option v-for="m in available_massives" :key="m.id" :value="m.id">
+                                    {{ m.name }}
+                                </option>
+                            </select>
+
                             <label>Search & Select Route</label>
                             <input
                                 type="text"
@@ -79,6 +88,7 @@
                                     :class="{ 'text-warning': r.summit_id && r.summit_id !== selected_summit_id }"
                                 >
                                     {{ r.name }}
+                                    <span v-if="!r.published" class="text-muted"> (unpublished)</span>
                                     <template v-if="r.summit_id && r.summit_id !== selected_summit_id"> (other summit)</template>
                                 </option>
                             </select>
@@ -126,6 +136,7 @@ export default {
             removing_id: null,
 
             all_routes: [],
+            filter_mount_id: null,
             search_query: '',
             selected_article_id: null,
             adding: false,
@@ -133,11 +144,24 @@ export default {
         }
     },
     computed: {
+        available_massives() {
+            const seen = new Set()
+            const massives = []
+            for (const r of this.all_routes) {
+                if (r.mount_id && !seen.has(r.mount_id)) {
+                    seen.add(r.mount_id)
+                    massives.push({ id: r.mount_id, name: r.mount_name || `Massive #${r.mount_id}` })
+                }
+            }
+            return massives.sort((a, b) => a.name.localeCompare(b.name))
+        },
         filtered_available() {
             const q = this.search_query.toLowerCase()
-            return this.all_routes.filter(r =>
-                !q || r.name.toLowerCase().includes(q)
-            )
+            return this.all_routes.filter(r => {
+                if (this.filter_mount_id && r.mount_id !== this.filter_mount_id) return false
+                if (q && !r.name.toLowerCase().includes(q)) return false
+                return true
+            })
         },
         selected_route_info() {
             if (!this.selected_article_id) return null
@@ -166,6 +190,8 @@ export default {
             this.routes_loading = true
             this.linked_routes = []
             this.selected_article_id = null
+            this.filter_mount_id = null
+            this.search_query = ''
             this.add_error = null
             axios.get(`get_summit_admin/get_summit_mount_routes/${this.selected_summit_id}`)
                 .then(r => { this.linked_routes = r.data.routes })

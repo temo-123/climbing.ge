@@ -60,57 +60,51 @@
         </div>
       </div>
 
-      <!-- Step 1: GPS -->
+      <!-- GPS status bar -->
       <div class="mb-4">
-        <h5 class="border-bottom pb-2 mb-3">
-          {{ $t('summit.ascent_page.step1_title') }}
-          <span v-if="gpsValidated" class="badge badge-success ml-2">
-            {{ $t('summit.ascent_page.verified_badge') }}
-          </span>
-          <span v-else-if="gpsChecked && !gpsValidated" class="badge badge-warning ml-2">
-            {{ $t('summit.ascent_page.not_at_summit_badge') }}
-          </span>
-        </h5>
 
-        <div v-if="!gpsChecked && !skipGps && checkingLocation" class="d-flex align-items-center text-muted">
+        <!-- Checking -->
+        <div v-if="checkingLocation" class="d-flex align-items-center text-muted py-2">
           <span class="spinner-border spinner-border-sm mr-2"></span>
           {{ $t('summit.ascent_page.checking') }}
         </div>
 
-        <div v-if="!gpsChecked && !skipGps && !checkingLocation" class="d-flex flex-wrap" style="gap:0.5rem">
-          <button type="button" class="btn btn-primary btn-send main-btn" @click="checkLocation">
-            <i class="fa fa-crosshairs"></i> {{ $t('summit.ascent_page.check_location') }}
-          </button>
-          <button type="button" class="btn btn-outline-secondary btn-send main-btn" @click="skipGps = true">
-            {{ $t('summit.ascent_page.skip_gps') }}
-          </button>
+        <!-- GPS valid -->
+        <div v-else-if="gpsChecked && gpsValidated" class="alert alert-success d-flex align-items-center mb-0">
+          <i class="fa fa-check-circle fa-lg mr-2"></i>
+          <div>
+            <strong>{{ $t('summit.ascent_page.location_verified') }}</strong>
+            <div v-if="gpsDistance > 0" class="small">{{ formatDistance(gpsDistance) }} from summit</div>
+          </div>
         </div>
 
-        <div v-if="gpsChecked" class="mt-2">
-          <div v-if="gpsValidated" class="alert alert-success d-flex align-items-center">
-            <i class="fa fa-check-circle fa-lg mr-2"></i>
-            <strong>{{ $t('summit.ascent_page.location_verified') }}</strong>
+        <!-- GPS checked but NOT within 20 m — prominent warning -->
+        <div v-else-if="gpsChecked && !gpsValidated" class="alert alert-danger mb-0">
+          <div class="d-flex align-items-center">
+            <i class="fa fa-times-circle fa-lg mr-2"></i>
+            <div>
+              <strong>{{ $t('summit.ascent_page.gps_not_verified') }}</strong>
+              <div class="small mt-1">
+                You are <strong>{{ formatDistance(gpsDistance) }}</strong> from the summit — must be within 20 m for GPS validation.
+                Your ascent will still be recorded but without GPS verification.
+              </div>
+            </div>
           </div>
-          <div v-else class="alert alert-warning d-flex align-items-center">
-            <i class="fa fa-exclamation-triangle fa-lg mr-2"></i>
-            {{ $t('summit.ascent_page.gps_not_verified') }}
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary mt-1" @click="retryGps">
+          <button type="button" class="btn btn-sm btn-outline-danger mt-2" @click="retryGps">
             <i class="fa fa-redo"></i> {{ $t('summit.ascent_page.try_again') }}
           </button>
         </div>
 
-        <div v-if="skipGps && !gpsChecked" class="alert alert-info mt-2">
-          <i class="fa fa-info-circle"></i> {{ $t('summit.ascent_page.no_gps_info') }}
+        <!-- GPS unavailable (no HTTPS / denied / unsupported) -->
+        <div v-else-if="gpsError && !checkingLocation" class="alert alert-info mb-0">
+          <i class="fa fa-info-circle mr-1"></i> {{ gpsError }}
         </div>
 
-        <div v-if="gpsError && !skipGps" class="alert alert-danger mt-2">
-          <i class="fa fa-exclamation-circle"></i>
-          {{ gpsError }}
-          <button type="button" class="btn btn-sm btn-outline-danger ml-2" @click="skipGps = true">
-            {{ $t('summit.ascent_page.continue_anyway') }}
-          </button>
+        <!-- Summit has no coordinates — GPS irrelevant -->
+        <div v-else-if="skipGps" class="alert alert-secondary mb-0">
+          <i class="fa fa-map-marker-slash mr-1"></i> GPS coordinates not set for this summit.
         </div>
+
       </div>
 
       <!-- Step 2: Ascent form (shown after GPS check or skip) -->
@@ -263,7 +257,7 @@ export default {
   },
   computed: {
     showForm() {
-      return this.gpsChecked || this.skipGps
+      return this.gpsChecked || this.skipGps || (this.gpsError !== null && !this.checkingLocation)
     },
     isLoggedIn() {
       return useAuthStore().isLoggedIn
@@ -330,14 +324,21 @@ export default {
         .then(r => { this.routes = r.data })
         .catch(() => {})
     },
+    formatDistance(meters) {
+      if (!meters) return ''
+      return meters >= 1000
+        ? `${(meters / 1000).toFixed(1)} km`
+        : `${Math.round(meters)} m`
+    },
     checkLocation() {
       if (!window.isSecureContext) {
-        this.gpsError = 'GPS verification requires a secure (HTTPS) connection. You can skip and submit without GPS.'
-        this.skipGps = true
+        this.gpsError = 'GPS verification requires a secure (HTTPS) connection.'
+        this.checkingLocation = false
         return
       }
       if (!navigator.geolocation) {
         this.gpsError = 'Geolocation is not supported by your browser.'
+        this.checkingLocation = false
         return
       }
       this.checkingLocation = true
@@ -385,7 +386,9 @@ export default {
       this.gpsValidated = false
       this.gpsDistance = 0
       this.gpsError = null
-      this.skipGps = false
+      this.userLatitude = null
+      this.userLongitude = null
+      this.checkLocation()
     },
     onRouteChange() {
       this.showOtherRoute = this.form.article_id === 'other'

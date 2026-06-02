@@ -224,14 +224,28 @@ class SummitController extends Controller
         $assigned = SummitMountRoute::pluck('summit_id', 'article_id');
 
         $articles = Article::where('category', 'mount_route')
-            ->where('published', 1)
-            ->with(['global_article_us', 'global_article_ka'])
-            ->get()
-            ->map(fn($a) => [
-                'id'        => $a->id,
-                'name'      => $a->global_article_us?->title ?? $a->global_article_ka?->title ?? $a->url_title,
-                'summit_id' => $assigned[$a->id] ?? null,
+            ->with([
+                'global_article_us',
+                'global_article_ka',
+                'mount_masiv.us_mount',
+                'mount_masiv.ka_mount',
             ])
+            ->get()
+            ->map(function ($a) use ($assigned) {
+                $mount      = $a->mount_masiv->first();
+                $mountName  = $mount
+                    ? ($mount->us_mount?->title ?? $mount->ka_mount?->title ?? null)
+                    : null;
+
+                return [
+                    'id'         => $a->id,
+                    'name'       => $a->global_article_us?->title ?? $a->global_article_ka?->title ?? $a->url_title,
+                    'summit_id'  => $assigned[$a->id] ?? null,
+                    'published'  => (bool) $a->published,
+                    'mount_id'   => $mount?->id,
+                    'mount_name' => $mountName,
+                ];
+            })
             ->sortBy('name')
             ->values();
 
@@ -320,7 +334,11 @@ class SummitController extends Controller
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
 
-        $ascents = SummitAscent::with(['summit', 'users.user', 'ascentRoutes.route.sector'])
+        $ascents = SummitAscent::with([
+                'summit', 'users.user',
+                'ascentRoutes.article.global_article_us',
+                'ascentRoutes.article.global_article_ka',
+            ])
             ->orderBy('ascent_date', 'desc')
             ->get()
             ->map(function ($ascent) {
@@ -330,12 +348,12 @@ class SummitController extends Controller
 
                 if ($ascent->ascentRoutes->isNotEmpty()) {
                     $ar = $ascent->ascentRoutes->first();
-                    if ($ar->route) {
-                        $routeName  = $ar->route->name;
-                        $routeGrade = $ar->route->grade;
-                        if ($ar->route->sector && $ar->route->sector->article) {
-                            $routeArticleUrl = $ar->route->sector->article->url_title;
-                        }
+                    if ($ar->article) {
+                        $routeName       = $ar->article->global_article_us?->title
+                            ?? $ar->article->global_article_ka?->title
+                            ?? $ar->article->url_title;
+                        $routeGrade      = $ar->article->mount_grade ?: null;
+                        $routeArticleUrl = $ar->article->url_title;
                     } elseif ($ar->other_route_name) {
                         $routeName = $ar->other_route_name;
                     }
