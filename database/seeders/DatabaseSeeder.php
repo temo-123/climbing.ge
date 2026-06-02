@@ -16,8 +16,9 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionTableSeeder::class,
             RoleTableSeeder::class,
-            UserRoleSeeder::class,
+            AssignRolesByUserIdSeeder::class,
 
+            // UserRoleSeeder::class,          // creates users by email — use for fresh installs
             // LocaleSiteSeeder::class,
             // SiteTableSeeder::class,
             // UserTableSeeder::class,
