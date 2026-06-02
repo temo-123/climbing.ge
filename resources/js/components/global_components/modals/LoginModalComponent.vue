@@ -140,6 +140,7 @@ export default {
             this.is_show_modal = false
             this.auth_error = ''
             this.$emit('close')
+            this.$bus.$emit('login-modal-closed')
         },
         social_login(service) {
             this.is_loading = true

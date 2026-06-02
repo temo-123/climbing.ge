@@ -301,7 +301,25 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
         // Banned page access is fully handled by the locale guard above
         if (to.name === 'banned') return next();
 
-        const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
+        let token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
+
+        // No local token — try to recover auth via the shared Sanctum session cookie.
+        // This handles the case where the user logged in on another subdomain
+        // (climbing.ge, shop.climbing.ge, etc.) whose localStorage we can't access.
+        // _tokenRecovery flag tells the 401 interceptor not to handle this error.
+        if (!token && !userPublicRoutes.includes(to.name)) {
+            authVerified = false;
+            try {
+                const raw = await axios.get('token', { _tokenRecovery: true });
+                const newToken = String(raw.data).trim();
+                if (newToken) {
+                    localStorage.setItem('auth_token', newToken);
+                    token = newToken;
+                }
+            } catch {
+                // No valid session cookie either — fall through to login redirect
+            }
+        }
 
         if (!token) {
             authVerified = false;

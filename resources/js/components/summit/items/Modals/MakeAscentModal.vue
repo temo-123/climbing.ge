@@ -44,18 +44,15 @@
     <div v-else>
 
       <!-- Login prompt for guests -->
-      <div v-if="!authLoading && !isLoggedIn && !guestMode"
+      <div v-if="!authLoading && !isLoggedIn"
            class="alert alert-light border mb-4 d-flex align-items-center justify-content-between flex-wrap">
         <span class="text-muted">
           <i class="fa fa-user-circle mr-1"></i>
           Log in to record this ascent to your account.
         </span>
         <div class="mt-2 mt-sm-0">
-          <button type="button" class="btn btn-primary btn-sm mr-2" @click="openLogin">
+          <button type="button" class="btn btn-primary btn-sm" @click="openLogin">
             <i class="fa fa-sign-in-alt"></i> Login
-          </button>
-          <button type="button" class="btn btn-outline-secondary btn-sm" @click="guestMode = true">
-            Continue as guest
           </button>
         </div>
       </div>
@@ -107,92 +104,93 @@
 
       </div>
 
-      <!-- Step 2: Ascent form (shown after GPS check or skip) -->
+      <!-- Ascent form (shown after GPS check or skip) -->
       <div v-if="showForm">
         <h5 class="border-bottom pb-2 mb-3">{{ $t('summit.ascent_page.step2_title') }}</h5>
 
-        <div v-if="authLoading" class="text-center py-3">
-          <span class="spinner-border spinner-border-sm"></span>
+        <div v-if="formErrors && Object.keys(formErrors).length" class="alert alert-danger">
+          <ul class="mb-0">
+            <li v-for="(msgs, field) in formErrors" :key="field">{{ msgs[0] }}</li>
+          </ul>
         </div>
 
-        <div v-else-if="isLoggedIn || guestMode">
-          <div v-if="formErrors && Object.keys(formErrors).length" class="alert alert-danger">
-            <ul class="mb-0">
-              <li v-for="(msgs, field) in formErrors" :key="field">{{ msgs[0] }}</li>
-            </ul>
+        <form @submit.prevent="submitAscent" enctype="multipart/form-data">
+
+          <!-- Auth loading spinner in user section -->
+          <div v-if="authLoading" class="text-center py-3 mb-3">
+            <span class="spinner-border spinner-border-sm"></span>
           </div>
 
-          <form @submit.prevent="submitAscent" enctype="multipart/form-data">
+          <!-- Logged-in user info -->
+          <div v-else-if="isLoggedIn && authUser" class="alert alert-info d-flex align-items-center mb-3">
+            <i class="fa fa-user-circle fa-lg mr-3"></i>
+            <div>
+              <strong>{{ authUser.name }} {{ authUser.surname }}</strong>
+              <div v-if="authUser.email" class="small text-muted">{{ authUser.email }}</div>
+            </div>
+          </div>
 
-            <div v-if="isLoggedIn && authUser" class="alert alert-info d-flex align-items-center mb-3">
-              <i class="fa fa-user-circle fa-lg mr-3"></i>
-              <div>
-                <strong>{{ authUser.name }} {{ authUser.surname }}</strong>
-                <div v-if="authUser.email" class="small text-muted">{{ authUser.email }}</div>
+          <!-- Guest name/email fields -->
+          <template v-else>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label>First Name <span class="text-danger">*</span></label>
+                <input type="text" v-model="form.name" class="form-control" required placeholder="Your first name" />
+              </div>
+              <div class="form-group col-md-6">
+                <label>{{ $t('summit.ascent_page.last_name') }} <span class="text-danger">*</span></label>
+                <input type="text" v-model="form.surname" class="form-control" required placeholder="Your last name" />
               </div>
             </div>
-
-            <template v-else>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label>First Name <span class="text-danger">*</span></label>
-                  <input type="text" v-model="form.name" class="form-control" required placeholder="Your first name" />
-                </div>
-                <div class="form-group col-md-6">
-                  <label>{{ $t('summit.ascent_page.last_name') }} <span class="text-danger">*</span></label>
-                  <input type="text" v-model="form.surname" class="form-control" required placeholder="Your last name" />
-                </div>
-              </div>
-              <div class="form-group">
-                <label>Email <span class="text-muted small">(optional — links to your account if found)</span></label>
-                <input type="email" v-model="form.email" class="form-control" placeholder="your@email.com" />
-              </div>
-            </template>
-
             <div class="form-group">
-              <label>{{ $t('summit.ascent_page.route_label') }}</label>
-              <select v-model="form.article_id" class="form-control" @change="onRouteChange">
-                <option :value="null">-- Select route (optional) --</option>
-                <option v-for="route in routes" :key="route.id" :value="route.id">
-                  {{ route.name }}<span v-if="route.grade"> ({{ route.grade }})</span>
-                </option>
-                <option value="other">Other route...</option>
-              </select>
+              <label>Email <span class="text-muted small">(optional — links to your account if found)</span></label>
+              <input type="email" v-model="form.email" class="form-control" placeholder="your@email.com" />
             </div>
+          </template>
 
-            <div v-if="showOtherRoute" class="form-group">
-              <label>Route Name <span class="text-danger">*</span></label>
-              <input type="text" v-model="form.other_route" class="form-control" placeholder="Enter route name" />
+          <div class="form-group">
+            <label>{{ $t('summit.ascent_page.route_label') }}</label>
+            <select v-model="form.article_id" class="form-control" @change="onRouteChange">
+              <option :value="null">-- Select route (optional) --</option>
+              <option v-for="route in routes" :key="route.id" :value="route.id">
+                {{ route.name }}<span v-if="route.grade"> ({{ route.grade }})</span>
+              </option>
+              <option value="other">Other route...</option>
+            </select>
+          </div>
+
+          <div v-if="showOtherRoute" class="form-group">
+            <label>Route Name <span class="text-danger">*</span></label>
+            <input type="text" v-model="form.other_route" class="form-control" placeholder="Enter route name" />
+          </div>
+
+          <div class="form-group">
+            <label>{{ $t('summit.ascent_page.comment_label') }}</label>
+            <textarea v-model="form.comment" class="form-control" rows="3"
+                      placeholder="Notes about your ascent..."></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Photo <span class="text-muted small">(optional)</span></label>
+            <input type="file" class="form-control-file" accept="image/*" capture="environment"
+                   @change="handlePhoto" />
+            <small class="form-text text-muted">You can use your camera to take a photo directly.</small>
+            <div v-if="photoPreview" class="mt-2">
+              <img :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
             </div>
+          </div>
 
-            <div class="form-group">
-              <label>{{ $t('summit.ascent_page.comment_label') }}</label>
-              <textarea v-model="form.comment" class="form-control" rows="3"
-                        placeholder="Notes about your ascent..."></textarea>
-            </div>
+          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting">
+            <span v-if="submitting">
+              <span class="spinner-border spinner-border-sm mr-1"></span>
+              {{ $t('summit.ascent_page.submitting') }}
+            </span>
+            <span v-else>
+              <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
+            </span>
+          </button>
 
-            <div class="form-group">
-              <label>Photo <span class="text-muted small">(optional)</span></label>
-              <input type="file" class="form-control-file" accept="image/*" capture="environment"
-                     @change="handlePhoto" />
-              <small class="form-text text-muted">You can use your camera to take a photo directly.</small>
-              <div v-if="photoPreview" class="mt-2">
-                <img :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
-              </div>
-            </div>
-
-            <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting">
-              <span v-if="submitting">
-                <span class="spinner-border spinner-border-sm mr-1"></span>
-                {{ $t('summit.ascent_page.submitting') }}
-              </span>
-              <span v-else>
-                <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
-              </span>
-            </button>
-
-          </form>
-        </div>
+        </form>
       </div>
 
     </div>
@@ -228,7 +226,7 @@ export default {
   data() {
     return {
       authLoading: true,
-      guestMode: false,
+      pendingReopen: false,
       gpsChecked: false,
       gpsValidated: false,
       gpsDistance: 0,
@@ -271,6 +269,12 @@ export default {
       if (val) this.onOpen()
     },
   },
+  created() {
+    this.$bus.$on('login-modal-closed', this.onLoginModalClosed)
+  },
+  beforeUnmount() {
+    this.$bus.$off('login-modal-closed', this.onLoginModalClosed)
+  },
   methods: {
     onOpen() {
       this.resetForm()
@@ -288,7 +292,6 @@ export default {
     },
     resetForm() {
       this.authLoading = true
-      this.guestMode = false
       this.gpsChecked = false
       this.gpsValidated = false
       this.gpsDistance = 0
@@ -312,10 +315,15 @@ export default {
       setTimeout(() => this.resetForm(), 300)
     },
     openLogin() {
-      this.$bus.$emit('open-login-modal', () => {
-        useAuthStore().fetchUser().finally(() => {
-          this.authLoading = false
-        })
+      this.pendingReopen = true
+      this.$emit('update:modelValue', false)
+      this.$bus.$emit('open-login-modal')
+    },
+    onLoginModalClosed() {
+      if (!this.pendingReopen) return
+      this.pendingReopen = false
+      this.$nextTick(() => {
+        this.$emit('update:modelValue', true)
       })
     },
     loadRoutes() {
