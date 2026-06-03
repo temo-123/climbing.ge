@@ -40,6 +40,7 @@ class DonationPaymentController extends Controller
                 'age'          => 'nullable|integer|min:1|max:150',
                 'email'        => 'nullable|email|max:255',
                 'phone_number' => 'nullable|string|max:20',
+                'comment'      => 'nullable|string|max:1000',
             ]);
             $name        = $request->name;
             $surname     = $request->surname;
@@ -62,6 +63,7 @@ class DonationPaymentController extends Controller
             'age'          => $age,
             'email'        => $email,
             'phone_number' => $phoneNumber,
+            'comment'      => $request->comment,
             'amount'       => $request->amount,
             'currency'     => 'GEL',
             'status'       => Donation::STATUS_PENDING,

@@ -92,6 +92,10 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::get('/get_all_my_ascents', 'get_all_my_ascents');
         Route::delete('/del_ascent/{id}', 'del_ascent');
     });
+
+    Route::controller(UserDonationController::class)->prefix('get_user_donations')->group(function() {
+        Route::get('/my_donations', 'my_donations');
+    });
 });
 
 Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum', 'banned']], function() {

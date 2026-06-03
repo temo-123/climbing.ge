@@ -43,6 +43,31 @@
             </div>
         </div>
 
+        <!-- Filters -->
+        <div class="col-md-12 mb-3">
+            <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
+                <div style="min-width: 180px;">
+                    <select class="form-control" v-model="filterBrand">
+                        <option value="">All Brands</option>
+                        <option v-for="brand in availableBrands" :key="brand.id" :value="brand.id">
+                            {{ brand.name }}
+                        </option>
+                    </select>
+                </div>
+                <div style="min-width: 180px;">
+                    <select class="form-control" v-model="filterCategory">
+                        <option value="">All Categories</option>
+                        <option v-for="cat in availableCategories" :key="cat.id" :value="cat.id">
+                            {{ cat.name }}
+                        </option>
+                    </select>
+                </div>
+                <button v-if="filterBrand || filterCategory" class="btn btn-secondary btn-sm" @click="filterBrand = ''; filterCategory = ''">
+                    Clear Filters
+                </button>
+            </div>
+        </div>
+
         <div class="col-md-12">
             <!-- Loading state -->
             <div v-if="loading" class="text-center">
@@ -52,8 +77,8 @@
             </div>
 
             <!-- Grouped View -->
-            <div v-else-if="viewMode === 'grouped' && grouped_options.length > 0">
-                <div v-for="productGroup in grouped_options" :key="productGroup.product_id" class="card mb-3">
+            <div v-else-if="viewMode === 'grouped' && filtered_grouped_options.length > 0">
+                <div v-for="productGroup in filtered_grouped_options" :key="productGroup.product_id" class="card mb-3">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">
                             <span class="badge badge-info mr-2">Product</span>
@@ -139,7 +164,7 @@
             </div>
 
             <!-- Flat View -->
-            <div v-else-if="viewMode === 'flat' && product_options.length > 0" class="table-responsive">
+            <div v-else-if="viewMode === 'flat' && filtered_options.length > 0" class="table-responsive">
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -155,7 +180,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="option in product_options" :key="option.id">
+                        <tr v-for="option in filtered_options" :key="option.id">
                             <td>
                                 <img :src="getOptionImage(option)" :alt="option.name" style="width: 50px; height: 50px; object-fit: cover;" />
                             </td>
@@ -216,8 +241,9 @@
 
             <!-- Empty state -->
             <div v-else class="text-center">
-                <p>No product options found in this warehouse.</p>
-                <button class="btn btn-primary" @click="showAddOptionModal()">
+                <p v-if="filterBrand || filterCategory">No products match the selected filters.</p>
+                <p v-else>No product options found in this warehouse.</p>
+                <button v-if="!filterBrand && !filterCategory" class="btn btn-primary" @click="showAddOptionModal()">
                     Add First Product Option
                 </button>
             </div>
@@ -242,8 +268,60 @@
             // 'warehouse_id'
         ],
         computed: {
+            availableBrands() {
+                const map = {};
+                this.product_options.forEach(opt => {
+                    const brand = opt.product?.brand;
+                    if (brand) {
+                        const name = brand.us_brand?.title || `Brand #${brand.id}`;
+                        map[brand.id] = { id: brand.id, name };
+                    }
+                });
+                return Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+            },
+
+            availableCategories() {
+                const map = {};
+                this.product_options.forEach(opt => {
+                    const sub = opt.product?.product_subcategory;
+                    if (sub) {
+                        const cat = sub.category;
+                        if (cat) {
+                            map[cat.id] = { id: cat.id, name: cat.us_name || `Category #${cat.id}` };
+                        }
+                    }
+                });
+                return Object.values(map).sort((a, b) => a.name.localeCompare(b.name));
+            },
+
+            filtered_options() {
+                return this.product_options.filter(opt => {
+                    if (this.filterBrand && opt.product?.brand_id != this.filterBrand) return false;
+                    if (this.filterCategory) {
+                        const catId = opt.product?.product_subcategory?.category?.id;
+                        if (catId != this.filterCategory) return false;
+                    }
+                    return true;
+                });
+            },
+
+            filtered_grouped_options() {
+                if (!this.filterBrand && !this.filterCategory) return this.grouped_options;
+                return this.grouped_options.map(group => {
+                    const filtered = group.options.filter(opt => {
+                        if (this.filterBrand && opt.product?.brand_id != this.filterBrand) return false;
+                        if (this.filterCategory) {
+                            const catId = opt.product?.product_subcategory?.category?.id;
+                            if (catId != this.filterCategory) return false;
+                        }
+                        return true;
+                    });
+                    return { ...group, options: filtered };
+                }).filter(group => group.options.length > 0);
+            },
+
             totalWarehousePrice() {
-                return this.product_options.reduce((total, option) => {
+                return this.filtered_options.reduce((total, option) => {
                     const price = parseFloat(option.price) || 0;
                     const qty = parseInt(option.pivot?.quantity) || 0;
                     return total + (price * qty);
@@ -256,7 +334,9 @@
                 grouped_options: [],
                 loading: false,
                 warehouse: [],
-                viewMode: 'grouped' // 'flat' or 'grouped'
+                viewMode: 'grouped',
+                filterBrand: '',
+                filterCategory: ''
             }
         },
 

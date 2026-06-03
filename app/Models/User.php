@@ -272,4 +272,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(SummitAscent::class, 'summit_ascent_users', 'user_id', 'ascent_id');
     }
+
+    public function donations()
+    {
+        return $this->hasMany(\App\Models\Guide\Donation::class, 'user_id');
+    }
 }

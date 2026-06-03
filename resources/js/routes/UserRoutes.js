@@ -169,6 +169,7 @@ const routes = [
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'my_ascents', name: 'myAscents', component: load('myAscents/MyAscentsListPage'), meta: {title: 'user page'}},
+            { path: 'my_donations', name: 'myDonations', component: load('donations/MyDonationsPageComponent'), meta: {title: 'user page'}},
 
             { path: 'banned', name: 'banned', component: BannedPage, meta: { title: 'Account Suspended' } },
 

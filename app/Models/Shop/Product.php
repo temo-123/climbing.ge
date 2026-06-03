@@ -64,6 +64,11 @@ class Product extends Model
     return $this->hasOne(Product_subcategory::class, 'id', 'subcategory_id');
   }
 
+  public function brand()
+  {
+    return $this->belongsTo(Product_brand::class, 'brand_id');
+  }
+
   public function product_options()
   {
     return $this->hasMany(Product_option::class, 'product_id');

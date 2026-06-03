@@ -46,7 +46,9 @@
             "country_placeholder": "Enter your country",
             "age": "Age",
             "age_placeholder": "Enter your age",
-            "warning_message": "I understand that this is a voluntary donation and is non-refundable"
+            "warning_message": "I understand that this is a voluntary donation and is non-refundable",
+            "comment": "Message (optional)",
+            "comment_placeholder": "Leave a message or note with your donation"
         },
         "continue_donation": "Continue to Donation",
         "close": "Close",
@@ -718,7 +720,11 @@
             "sectors & routes": "Sectors & Routes",
             "sectors local images": "Sector Local Images",
             "local bisnes": "Support Local Business",
-            "my favorite outdoor area": "My Favorite Outdoor Areas"
+            "my favorite outdoor area": "My Favorite Outdoor Areas",
+            "my comments and product reviews": "My Comments & Reviews",
+            "my purchases": "My Purchases",
+            "my ascents": "My Ascents",
+            "my donations": "My Donations"
         }
     },
     "global": {

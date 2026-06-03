@@ -121,6 +121,12 @@
           </div>
         </div>
 
+        <!-- Optional comment -->
+        <div class="mb-4">
+          <label class="form-label">{{ $t('guide.donation.comment') }}</label>
+          <textarea v-model="comment" class="form-control" rows="2" :placeholder="$t('guide.donation.comment_placeholder')"></textarea>
+        </div>
+
         <!-- Donate Button -->
         <button
           @click="processDonation"
@@ -235,6 +241,8 @@ export default {
                 age: null,
             },
 
+            comment: '',
+
             bankLoading: false,
             bankInfo: null,
             bankError: '',
@@ -289,6 +297,7 @@ export default {
             this.bankError = '';
             this.ibanCopied = false;
             this.donator = { name: '', surname: '', email: '', phone_number: '', country: '', age: null };
+            this.comment = '';
         },
 
         switchToBank() {
@@ -311,7 +320,7 @@ export default {
             if (!this.bankInfo?.iban) return;
             navigator.clipboard.writeText(this.bankInfo.iban).then(() => {
                 this.ibanCopied = true;
-                setTimeout(() => { this.ibanCopied = false; }, 2000);
+                setTimeout(() => { this.ibanCopied = false; }, 1000);
             });
         },
 
@@ -323,7 +332,7 @@ export default {
             this.loading = true;
             this.errorMessage = '';
 
-            const payload = { amount: parseFloat(this.displayAmount) };
+            const payload = { amount: parseFloat(this.displayAmount), comment: this.comment };
             if (!this.authUser) {
                 Object.assign(payload, this.donator);
             }
@@ -334,6 +343,8 @@ export default {
                         window.location.href = response.data.checkout_url;
                     } else {
                         this.donationSuccess = true;
+                        this.$bus.$emit('donation-completed');
+                        setTimeout(() => { this.close(); }, 1000);
                     }
                 })
                 .catch(err => {

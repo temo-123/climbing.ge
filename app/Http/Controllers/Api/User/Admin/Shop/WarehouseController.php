@@ -113,7 +113,7 @@ class WarehouseController extends Controller
         if (!$warehouse) {
             return response()->json(['error' => 'Warehouse not found'], 400);
         }
-        return $warehouse->productOptions()->with(['images', 'product'])->get();
+        return $warehouse->productOptions()->with(['images', 'product.brand.us_brand', 'product.product_subcategory.category'])->get();
     }
 
     public function get_warehouse_product_options_grouped_by_product(Request $request) {
@@ -124,7 +124,7 @@ class WarehouseController extends Controller
             return response()->json(['error' => 'Warehouse not found'], 400);
         }
 
-        $productOptions = $warehouse->productOptions()->with(['images', 'product'])->get();
+        $productOptions = $warehouse->productOptions()->with(['images', 'product.brand.us_brand', 'product.product_subcategory.category'])->get();
 
         // Group options by product
         $groupedOptions = $productOptions->groupBy('product_id')->map(function ($options) {

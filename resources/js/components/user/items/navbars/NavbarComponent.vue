@@ -31,7 +31,7 @@
 
                 <nav-badges />
 
-                <li class="nav-item dropdown">
+                <!-- <li class="nav-item dropdown">
                     <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span>
                             <i class="fa fa-bars"></i>
@@ -50,11 +50,19 @@
                             {{ $t('user.menu.my purchases') }}
                         </router-link>
 
+                        <router-link :to="'/my_ascents'" class="dropdown-item">
+                            {{ $t('user.menu.my ascents') }}
+                        </router-link>
+
+                        <router-link :to="'/my_donations'" class="dropdown-item">
+                            {{ $t('user.menu.my donations') }}
+                        </router-link>
+
                         <div class="dropdown-divider"></div>
 
                         <a class="dropdown-item" href="#" @click="logout()">{{ $t('user.menu.logout') }}</a>
                     </div>
-                </li>
+                </li> -->
             </ul>
             <ul v-else class="navbar-nav admin_navbar" style="min-height: 50px;"></ul>
         </div>

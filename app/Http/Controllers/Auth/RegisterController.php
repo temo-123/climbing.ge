@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Models\User\Role;
 use App\Models\User\User_role;
 use App\Models\User\user_notification;
+use App\Services\GuestDataLinkingService;
 
 class RegisterController extends Controller
 {
@@ -147,6 +148,8 @@ class RegisterController extends Controller
                 'role_id' => Role::where('slug', 'user')->first()->id,
             ]);
         }
+
+        GuestDataLinkingService::link_all($user);
 
         return $user;
     }

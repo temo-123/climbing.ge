@@ -13,6 +13,7 @@ class Donation extends Model
         'age',
         'email',
         'phone_number',
+        'comment',
         'amount',
         'currency',
         'status',
