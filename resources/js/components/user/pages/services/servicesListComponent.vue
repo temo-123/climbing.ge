@@ -52,9 +52,7 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': 'Services', 
-                                            'list_page': process.env.MIX_APP_SSH
-                                                ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/services'
-                                                : window.location.origin + '/services',
+                                            'list_page': (process.env.MIX_APP_SSH || 'http://') + (process.env.MIX_SHOP_URL || '') + '/services',
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'serviceAdd', 
