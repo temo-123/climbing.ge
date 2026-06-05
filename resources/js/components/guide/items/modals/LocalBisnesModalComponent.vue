@@ -18,14 +18,32 @@
                     <h4>{{ $t('gallery') || 'Gallery' }}</h4>
                     <div class="bisnes-gallery-grid">
                         <div
-                            v-for="img in bisnes_data.images"
+                            v-for="(img, index) in bisnes_data.images"
                             :key="img.id"
                             class="bisnes-gallery-item"
+                            @click="open_image(img, index)"
                         >
                             <img
                                 :src="'/public/images/suport_local_bisnes_img/' + img.image"
                                 :alt="bisnes_data.locale_data.title"
                             />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lightbox -->
+                <div class="open_img" v-if="open_img" @click.self="close_image">
+                    <div class="close_bottom" @click="close_image">X</div>
+                    <img
+                        :src="'/public/images/suport_local_bisnes_img/' + active_img.image"
+                        :alt="bisnes_data.locale_data.title"
+                    />
+                    <div class="image_moving">
+                        <div class="previes_img_bottom" @click="prev_image">
+                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                        </div>
+                        <div class="next_img_bottom" @click="next_image">
+                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
@@ -52,6 +70,9 @@
             return {
                 bisnes_data: null,
                 loading: false,
+                open_img: false,
+                active_img: null,
+                active_index: 0,
             }
         },
         computed: {
@@ -90,8 +111,40 @@
                     .finally(() => this.loading = false)
             },
             close() {
+                this.close_image()
                 this.show = false
-            }
+            },
+            open_image(img, index) {
+                this.active_img = img
+                this.active_index = index
+                this.open_img = true
+                this.add_keyboard_actions()
+            },
+            close_image() {
+                this.open_img = false
+                this.active_img = null
+            },
+            prev_image() {
+                const images = this.bisnes_data.images
+                this.active_index = this.active_index === 0 ? images.length - 1 : this.active_index - 1
+                this.active_img = images[this.active_index]
+                this.add_keyboard_actions()
+            },
+            next_image() {
+                const images = this.bisnes_data.images
+                this.active_index = this.active_index === images.length - 1 ? 0 : this.active_index + 1
+                this.active_img = images[this.active_index]
+                this.add_keyboard_actions()
+            },
+            add_keyboard_actions() {
+                const that = this
+                document.addEventListener('keydown', function handler(evt) {
+                    if (evt.keyCode === 27) { that.close_image() }
+                    else if (evt.keyCode === 37) { that.prev_image() }
+                    else if (evt.keyCode === 39) { that.next_image() }
+                    document.removeEventListener('keydown', handler)
+                }, { once: true })
+            },
         }
     }
 </script>
@@ -114,5 +167,61 @@
         object-fit: cover;
         border-radius: 6px;
         cursor: pointer;
+    }
+
+    .open_img {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 2000;
+        background: #000000d9;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .open_img img {
+        max-width: 96%;
+        max-height: 80%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    .close_bottom {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        color: #b3b2b2d9;
+        font-size: 2.5em;
+        margin-right: 0.4em;
+        margin-top: 0.4em;
+        z-index: 2001;
+    }
+
+    .image_moving {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .previes_img_bottom, .next_img_bottom {
+        cursor: pointer;
+        font-size: 3.5em;
+        color: #b3b2b2d9;
+        padding: 0 12px;
+    }
+
+    .previes_img_bottom:hover, .next_img_bottom:hover {
+        color: #ffffff;
     }
 </style>

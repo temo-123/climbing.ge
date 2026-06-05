@@ -221,6 +221,12 @@
             </div>
         </div>
 
+        <GalleryComponent
+            v-if="product.gallery_images && product.gallery_images.length"
+            :images_prop="product.gallery_images"
+            :folder_path_prop="'/public/images/product_img/'"
+        />
+
         <div class="container reviews-section" v-if="!is_loading">
             <div class="row">
                 <feedbackForm
@@ -257,6 +263,7 @@
     import similarProduct from '../../items/SimilarProductComponent.vue'
     import feedbackForm from '../../items/FeedbacksComponent.vue'
     import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
+    import GalleryComponent from '../../items/GalleryComponent.vue'
     export default {
         components: {
             metaData,
@@ -264,6 +271,7 @@
             similarProduct,
             feedbackForm,
             ProductProdaction,
+            GalleryComponent,
         },
         data () {
             return {
@@ -418,17 +426,7 @@
             },
 
             get_product_options_images(){
-                // Gallery images first
-                if (this.product.gallery_images && this.product.gallery_images.length) {
-                    this.product.gallery_images.forEach(img => {
-                        this.items.push({
-                            src: this.publicPath + '/public/images/product_img/' + img.image,
-                            thumbnail: this.publicPath + '/public/images/product_img/' + img.image,
-                            caption: this.product.locale_product.title,
-                        })
-                    })
-                }
-                // Option images
+                // Option images only — gallery images shown separately below
                 this.product.product_option.forEach(option => {
                     this.prices.push(option.option.price)
                     option.images.forEach(image => {
@@ -459,25 +457,14 @@
                             } else {
                                 this.actyve_price.new_price = option.option.price
                             }
-                            if (option.images.length) {
-                                option.images.forEach(image => {
-                                    this.items.push({
-                                        src: this.publicPath + '/public/images/product_option_img/' + image.image,
-                                        thumbnail: this.publicPath + '/public/images/product_option_img/' + image.image,
-                                        caption: option.option.title,
-                                        id: option.option.id
-                                    })
+                            option.images.forEach(image => {
+                                this.items.push({
+                                    src: this.publicPath + '/public/images/product_option_img/' + image.image,
+                                    thumbnail: this.publicPath + '/public/images/product_option_img/' + image.image,
+                                    caption: option.option.title,
+                                    id: option.option.id
                                 })
-                            } else if (this.product.gallery_images && this.product.gallery_images.length) {
-                                // Fall back to gallery images when option has no own images
-                                this.product.gallery_images.forEach(img => {
-                                    this.items.push({
-                                        src: this.publicPath + '/public/images/product_img/' + img.image,
-                                        thumbnail: this.publicPath + '/public/images/product_img/' + img.image,
-                                        caption: this.product.locale_product.title,
-                                    })
-                                })
-                            }
+                            })
                         }
                     })
                 }

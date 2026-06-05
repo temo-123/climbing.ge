@@ -1,4 +1,5 @@
 <template>
+<div>
 <stack-modal
             :show="is_edit_option_modal"
             :title="'Edit option'" 
@@ -40,9 +41,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr v-for="option_image in editing_option_images" :key="option_image.id">
+                                <tr v-for="(option_image, idx) in editing_option_images" :key="option_image.id">
                                     <td>
-                                        <img class="img-responsive" :src="'../../../../images/product_option_img/'+option_image.image" :alt="option_image.title" style="max-width: 100px; max-height: 100px;">
+                                        <img class="img-responsive" :src="'../../../../images/product_option_img/'+option_image.image" :alt="option_image.title" style="max-width: 100px; max-height: 100px; cursor: pointer;" @click="open_image(idx)">
                                     </td>
                                     <td>|</td>
                                     <td>
@@ -88,6 +89,18 @@
                 </div>
             </div> -->
         </stack-modal>
+
+    <Teleport to="body">
+        <div class="lb-overlay" v-if="open_img" @click.self="close_image">
+            <div class="lb-close" @click="close_image">&#x2715;</div>
+            <img :src="'../../../../images/product_option_img/' + editing_option_images[active_index].image" :alt="editing_option_images[active_index].title || ''" class="lb-img" />
+            <div class="lb-nav" v-if="editing_option_images.length > 1">
+                <div class="lb-prev" @click="prev_image"><i class="fa fa-chevron-left"></i></div>
+                <div class="lb-next" @click="next_image"><i class="fa fa-chevron-right"></i></div>
+            </div>
+        </div>
+    </Teleport>
+</div>
 </template>
 
 <script>
@@ -123,6 +136,12 @@ export default {
             default: () => []
         }
     },
+    data() {
+        return {
+            open_img: false,
+            active_index: 0,
+        }
+    },
     computed: {
         local_editing_data: {
             get() {
@@ -131,6 +150,31 @@ export default {
         }
     },
     methods: {
+        open_image(index) {
+            this.active_index = index
+            this.open_img = true
+            this.add_keyboard_actions()
+        },
+        close_image() {
+            this.open_img = false
+        },
+        prev_image() {
+            this.active_index = this.active_index === 0 ? this.editing_option_images.length - 1 : this.active_index - 1
+            this.add_keyboard_actions()
+        },
+        next_image() {
+            this.active_index = this.active_index === this.editing_option_images.length - 1 ? 0 : this.active_index + 1
+            this.add_keyboard_actions()
+        },
+        add_keyboard_actions() {
+            const that = this
+            document.addEventListener('keydown', function handler(evt) {
+                if (evt.keyCode === 27) that.close_image()
+                else if (evt.keyCode === 37) that.prev_image()
+                else if (evt.keyCode === 39) that.next_image()
+                document.removeEventListener('keydown', handler)
+            }, { once: true })
+        },
         close_option_edit_model() {
             this.$emit('close_option_edit_model')
         },
@@ -154,6 +198,31 @@ export default {
 </script>
 
 <style scoped>
+.lb-overlay {
+    position: fixed; top: 0; right: 0; bottom: 0; left: 0;
+    z-index: 9999; background: #000000d9;
+    display: flex; align-items: center; justify-content: center;
+}
+.lb-img {
+    max-width: 92%; max-height: 85%;
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+}
+.lb-close {
+    position: absolute; top: 14px; right: 18px;
+    color: #ccc; font-size: 2em; cursor: pointer; z-index: 10000;
+}
+.lb-close:hover { color: #fff; }
+.lb-nav {
+    position: absolute; top: 50%; left: 0; right: 0;
+    transform: translateY(-50%);
+    display: flex; justify-content: space-between;
+}
+.lb-prev, .lb-next {
+    cursor: pointer; font-size: 3em; color: #ccc; padding: 0 14px;
+}
+.lb-prev:hover, .lb-next:hover { color: #fff; }
+
 .language-vue {
     padding: 15px;
 }
