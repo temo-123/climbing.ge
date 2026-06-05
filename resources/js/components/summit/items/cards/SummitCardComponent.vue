@@ -153,7 +153,7 @@ export default {
 }
 .smt-card__title {
     margin: 0 0 4px;
-    font-size: 1rem;
+    font-size: 130%;
     font-weight: 600;
     color: #222;
     line-height: 1.3;
