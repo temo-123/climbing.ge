@@ -13,53 +13,33 @@
                 <i class="fa fa-spinner fa-spin fa-3x text-muted"></i>
             </div>
 
-            <div v-else-if="!mapsApiKey" class="text-center py-5 text-muted">
-                <i class="fa fa-map fa-3x mb-3"></i>
-                <p>Map is not configured. Set <code>MIX_GOOGLE_MAPS_API_KEY</code> in <code>.env</code> to enable it.</p>
-            </div>
-
             <div v-else>
                 <p class="text-muted mb-2 small">
                     {{ summits.length }} {{ $t('summit.map.summits_on_map') }}
                 </p>
 
-                <GoogleMap
-                    :api-key="mapsApiKey"
+                <l-map
+                    ref="map"
                     style="width: 100%; height: 540px; border-radius: 8px;"
-                    :center="mapCenter"
                     :zoom="mapZoom"
+                    :center="mapCenter"
+                    :use-global-leaflet="false"
                 >
-                    <Marker
-                        v-for="summit in summits"
-                        :key="summit.id"
-                        :options="{
-                            position: { lat: summit.latitude, lng: summit.longitude },
-                            title: summit.title,
-                        }"
-                        @click="selectSummit(summit)"
+                    <l-tile-layer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
                     />
 
-                    <InfoWindow
-                        v-if="selected"
-                        :options="{ position: { lat: selected.latitude, lng: selected.longitude } }"
-                        @closeclick="selected = null"
+                    <l-marker
+                        v-for="summit in summits"
+                        :key="summit.id"
+                        :lat-lng="[summit.latitude, summit.longitude]"
                     >
-                        <div class="map-info-window">
-                            <strong>{{ selected.title }}</strong>
-                            <div v-if="selected.height" class="text-muted small">
-                                <i class="fa fa-arrow-up"></i> {{ selected.height }} m
-                            </div>
-                            <div v-if="selected.region" class="text-muted small">
-                                <i class="fa fa-map-o"></i> {{ selected.region.us_name }}
-                            </div>
-                            <div class="mt-1">
-                                <a :href="summitUrl(selected)" target="_blank" class="btn btn-xs btn-primary" style="font-size:0.8rem;padding:2px 8px;">
-                                    {{ $t('summit.map.view') }}
-                                </a>
-                            </div>
-                        </div>
-                    </InfoWindow>
-                </GoogleMap>
+                        <l-popup :options="{ maxWidth: 260, minWidth: 240 }">
+                            <summit-card :summit="summit" />
+                        </l-popup>
+                    </l-marker>
+                </l-map>
             </div>
 
             <div class="text-center mt-4">
@@ -79,18 +59,18 @@
 
 <script>
     import metaData from '../items/MetaDataComponent.vue'
-    import { GoogleMap, Marker, InfoWindow } from 'vue3-google-map'
+    import SummitCard from '../items/cards/SummitCardComponent.vue'
+    import { LMap, LTileLayer, LMarker, LPopup } from '@vue-leaflet/vue-leaflet'
+    import 'leaflet/dist/leaflet.css'
 
-    const GEORGIA_CENTER = { lat: 42.3154, lng: 43.3569 }
+    const GEORGIA_CENTER = [42.3154, 43.3569]
 
     export default {
-        components: { metaData, GoogleMap, Marker, InfoWindow },
+        components: { metaData, SummitCard, LMap, LTileLayer, LMarker, LPopup },
         data() {
             return {
                 summits: [],
                 loading: true,
-                selected: null,
-                mapsApiKey: process.env.MIX_GOOGLE_MAPS_API_KEY || '',
             }
         },
         computed: {
@@ -98,10 +78,10 @@
                 if (this.summits.length === 0) return GEORGIA_CENTER
                 const lats = this.summits.map(s => s.latitude)
                 const lngs = this.summits.map(s => s.longitude)
-                return {
-                    lat: (Math.min(...lats) + Math.max(...lats)) / 2,
-                    lng: (Math.min(...lngs) + Math.max(...lngs)) / 2,
-                }
+                return [
+                    (Math.min(...lats) + Math.max(...lats)) / 2,
+                    (Math.min(...lngs) + Math.max(...lngs)) / 2,
+                ]
             },
             mapZoom() {
                 return this.summits.length > 0 ? 8 : 7
@@ -117,14 +97,6 @@
                     .catch(() => {})
                     .finally(() => { this.loading = false })
             },
-            selectSummit(summit) {
-                this.selected = summit
-            },
-            summitUrl(summit) {
-                const base = (process.env.MIX_APP_SSH || '').replace(/\/$/, '')
-                const summit_sub = (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
-                return `${base}/${summit_sub}/summit/${summit.url_title}`
-            }
         }
     }
 </script>
