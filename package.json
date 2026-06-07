@@ -12,7 +12,7 @@
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",
-        "@vue/devtools": "^6.6.4",
+        "@vue/devtools": "^8.1.2",
         "autoprefixer": "^10.4.21",
         "axios": "^1.7.2",
         "bootstrap": "^5.3.3",
