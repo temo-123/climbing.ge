@@ -162,11 +162,9 @@ else {
 }
 
 import { createGtag } from "vue-gtag";
-createGtag({
-    gtag: {
-        id: analytic_id
-    }
-});
+if (analytic_id && analytic_id !== "...") {
+    app.use(createGtag({ tagId: analytic_id }));
+}
 
 app.config.productionTip = false;
 app.config.globalProperties.$siteData = reactive({ data: [], loaded: false });
