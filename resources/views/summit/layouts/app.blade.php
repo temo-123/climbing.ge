@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
     @include('partials.seo')
+    @include('partials.adsense')
 
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
