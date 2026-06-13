@@ -810,5 +810,10 @@
         "no_public_label": "Not public",
         "save": "Save",
         "close": "Close"
+    },
+    "terms": {
+        "title": "Terms of Use",
+        "meta_description": "Terms of Use — Climbing Georgia",
+        "menu_label": "Terms of Use"
     }
 }

@@ -798,5 +798,10 @@
         "no_public_label": "არ არის საჯარო",
         "save": "შენახვა",
         "close": "დახურვა"
+    },
+    "terms": {
+        "title": "გამოყენების პირობები",
+        "meta_description": "გამოყენების პირობები — Climbing Georgia",
+        "menu_label": "გამოყენების პირობები"
     }
 }

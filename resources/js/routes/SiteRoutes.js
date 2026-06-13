@@ -32,6 +32,7 @@ const routes = [
         children: [
             { path: '', name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
             { path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
+            { path: "terms_of_use", name: "guide_terms", component: load("TermsOfUsePage"), meta: { title: 'Terms of Use' } },
 
             { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
             { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },

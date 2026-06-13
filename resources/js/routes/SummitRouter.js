@@ -25,6 +25,7 @@ const routes = [
         children: [
             { path: '', name: 'index', component: load('IndexPage'), meta: { title: 'Site Index' } },
           { path: 'about_us', name: 'about_us', component: load('AboutUsPage'), meta: { title: 'About Us' } },
+          { path: 'terms_of_use', name: 'summit_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
           { path: 'make_ascent/:id', name: 'make_ascent', component: load('MakeSummitAscentPage'), meta: { title: 'Add Summit' } },
 
           { path: 'summit/:url_title', name: 'summit', component: load('pages/SummitPage'), meta: { title: 'Summit Detail' } },

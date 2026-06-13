@@ -173,6 +173,8 @@ const routes = [
 
             { path: 'banned', name: 'banned', component: BannedPage, meta: { title: 'Account Suspended' } },
 
+            { path: 'terms_of_use', name: 'user_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
+
             { path: 'login', name: 'login', component: login, meta: {title: 'user page'}},
             { path: 'register', name: 'register', component: register ,meta: {title: 'user page'}},
             { path: 'forget_pass', name: 'forget_pass', component: forget_pass ,meta: {title: 'user page'}},

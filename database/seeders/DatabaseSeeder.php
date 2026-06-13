@@ -14,9 +14,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-            PermissionTableSeeder::class,
-            RoleTableSeeder::class,
-            AssignRolesByUserIdSeeder::class,
+            // PermissionTableSeeder::class,   // uncomment in production
+            // RoleTableSeeder::class,          // uncomment in production
+            // AssignRolesByUserIdSeeder::class, // uncomment in production
+
+            TermsOfUseSeeder::class,
 
             // UserRoleSeeder::class,          // creates users by email — use for fresh installs
             // LocaleSiteSeeder::class,
