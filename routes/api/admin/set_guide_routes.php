@@ -166,6 +166,11 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         });
     });
 
+    Route::controller(MtpReitingController::class)->prefix('set_mtp_review')->group(function () {
+        Route::post('/create_mtp_review/{mtp_id}', 'create_mtp_review');
+        Route::delete('/del_mtp_review/{review_id}', 'del_mtp_review');
+    });
+
     Route::controller(MTPController::class)->prefix('set_mtp')->group( function() {
         Route::post('/mtp_add', 'mtp_add');
         Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');

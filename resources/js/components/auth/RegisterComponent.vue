@@ -63,6 +63,11 @@
             I agree with the <span class="cursor_pointer text-warning" @click="open_term_of_use_modal()">terms of use</span>
           </div>
 
+          <div class="alert alert-warning" v-if="captcha_error">
+            <i class="fa fa-exclamation-triangle"></i>
+            reCAPTCHA failed to load. Please reload the page and try again.
+          </div>
+
           <div class="row">
             <div class="col-md-12">
               <div class="form-group">
@@ -70,7 +75,7 @@
                   type="submit"
                   class="btn btn-default btn-send main-btn"
                   form="register_form"
-                  :disabled="!terms_of_use"
+                  :disabled="!terms_of_use || captcha_error"
                 >
                   Register
                 </button>
@@ -130,12 +135,21 @@ export default {
       terms_of_use: false,
       error: {},
       success_message: null,
+      captcha_error: false,
       is_term_of_use_modal: false,
     };
   },
   mounted() {
     document.querySelector('body').style.marginLeft = '0';
     document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
+    if (!window.grecaptcha) {
+        const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+        if (key) {
+            const s = document.createElement('script')
+            s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+            document.head.appendChild(s)
+        }
+    }
   },
   methods: {
     open_term_of_use_modal() {
@@ -144,10 +158,26 @@ export default {
     close_term_of_use_modal() {
       this.is_term_of_use_modal = false;
     },
-    register() {
+    async get_recaptcha_token(action = 'register') {
+        const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+        if (!key || !window.grecaptcha) return null
+        try {
+            await new Promise(resolve => window.grecaptcha.ready(resolve))
+            return await window.grecaptcha.execute(key, { action })
+        } catch { return null }
+    },
+
+    async register() {
       this.error = {};
       this.success_message = null;
       this.is_loading = true;
+
+      const recaptcha_token = await this.get_recaptcha_token('register')
+      if (!recaptcha_token) {
+          this.captcha_error = true
+          this.is_loading = false
+          return
+      }
 
       axios.get('/sanctum/csrf-cookie')
         .then(() => {
@@ -160,6 +190,7 @@ export default {
             city: this.city,
             password: this.password,
             password_confirmation: this.password_confirmation,
+            recaptcha_token,
           })
           .then(res => {
             if (res.data.token) {
@@ -176,8 +207,12 @@ export default {
             }, 2000);
           })
           .catch(error => {
-            if (error.response && error.response.status === 422) {
-              this.error = error.response.data.errors || {};
+            if (error.response?.status === 422) {
+              if (error.response.data?.message?.toLowerCase().includes('recaptcha')) {
+                this.captcha_error = true;
+              } else {
+                this.error = error.response.data.errors || {};
+              }
             }
           })
           .finally(() => {

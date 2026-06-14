@@ -109,7 +109,11 @@
                             <div class="row">
                                 <div class="col-xl-12 col-lg-12 col-md-12">
                                     <div class="form-group">
-                                        <button v-if="is_verify_isset == false" type="submit" class="btn btn-success" disabled>{{ $t('shop.tour.message.send') }}</button>
+                                        <div v-if="captcha_error" class="alert alert-warning mb-2">
+                                            <i class="fa fa-exclamation-triangle"></i>
+                                            reCAPTCHA failed to load. Please reload the page and try again.
+                                        </div>
+                                        <button v-if="captcha_error" type="button" class="btn btn-secondary" disabled>{{ $t('shop.tour.message.send') }}</button>
                                         <button v-else type="submit" class="btn btn-success">{{ $t('shop.tour.message.send') }}</button>
                                     </div>
                                 </div>
@@ -158,8 +162,9 @@
 
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
 
-                is_verify_isset: false,
-                
+                is_verify_isset: true,
+                captcha_error: false,
+
                 // Flag to prevent duplicate submissions
                 is_submitting: false,
             }
@@ -174,23 +179,47 @@
         ],
         mounted() {
             this.get_user_info()
+            if (!window.grecaptcha) {
+                const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+                if (key) {
+                    const s = document.createElement('script')
+                    s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+                    document.head.appendChild(s)
+                }
+            }
         },
         methods: {
             goTo(page = '/'){
                 window.open(process.env.MIX_APP_SSH + 'user.' + process.env.MIX_SITE_URL + page) ;
             },
-            create_reservation(){
+            async get_recaptcha_token(action = 'reservation') {
+                const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+                if (!key || !window.grecaptcha) return null
+                try {
+                    await new Promise(resolve => window.grecaptcha.ready(resolve))
+                    return await window.grecaptcha.execute(key, { action })
+                } catch { return null }
+            },
+            async create_reservation(){
                 // Prevent duplicate submissions
                 if (this.is_submitting) {
                     return;
                 }
-                
+
                 this.is_submitting = true;
                 this.is_loading = true;
+                const recaptcha_token = await this.get_recaptcha_token('reservation')
+                if (!recaptcha_token) {
+                    this.captcha_error = true;
+                    this.is_loading = false;
+                    this.is_submitting = false;
+                    return;
+                }
 
                 axios
                 .post('/set_user_reservation/create_reservation/'+this.tour_id_prop, {
-                    form_data: this.form_data
+                    form_data: this.form_data,
+                    recaptcha_token,
                 })
                 .then(response => {
                     // Reset form data
@@ -210,8 +239,9 @@
                     alert(response.data);
                 })
                 .catch(error =>{
-                    // Show error message
-                    if (error.response && error.response.data && error.response.data.message) {
+                    if (error.response?.status === 422 && error.response?.data?.message?.toLowerCase().includes('recaptcha')) {
+                        this.captcha_error = true;
+                    } else if (error.response && error.response.data && error.response.data.message) {
                         alert(error.response.data.message);
                     } else {
                         alert('An error occurred while creating the reservation.');

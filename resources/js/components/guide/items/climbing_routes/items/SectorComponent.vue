@@ -203,7 +203,7 @@
                         ></a>
                     </td>
 
-                    <td class="route-seo-col" v-html="[route.text, route.author, route.creation_data, route.first_ascent, route.anchor_type].filter(Boolean).join(' | ')"></td>
+                    <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -257,7 +257,7 @@
                         ></a>
                     </td>
 
-                    <td class="route-seo-col" v-html="[route.text, route.author, route.creation_data, route.first_ascent, route.anchor_type].filter(Boolean).join(' | ')"></td>
+                    <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -274,6 +274,11 @@
                         <strong>{{ mtp.mtp_name }}</strong>
                     </h3></span
                 >
+                <starsReiting
+                    v-if="mtp.reviews_count > 0"
+                    :reviews_count_prop="mtp.reviews_count"
+                    :reviews_stars_prop="mtp.reviews_stars"
+                />
             </div>
 
             <div class="col-md-4">
@@ -365,6 +370,18 @@
 
         <mtp_modal
             ref="open_mtp_modal"
+            @show_mtp_review_modal="show_mtp_review_modal"
+            @show_mtp_all_review_modal="show_mtp_all_review_modal"
+        />
+
+        <create_mtp_review_modal
+            ref="open_mtp_review_modal"
+            @back_mtp_modal="show_mtp_madel"
+        />
+
+        <mtp_all_reviews_modal
+            ref="show_mtp_all_review_modal"
+            @back_mtp_modal="show_mtp_madel"
         />
 
         <sector_canvas_modal
@@ -383,7 +400,10 @@ import route_modal from "./modals/RouteModalComponent.vue";
 import create_route_review_modal from "./modals/feedbacks/CreateRouteReviewModal.vue";
 import route_all_reviews_modal from "./modals/feedbacks/RouteAllReviewsModal.vue";
 import mtp_modal from "./modals/MTPModalComponent.vue";
+import create_mtp_review_modal from "./modals/feedbacks/CreateMtpReviewModal.vue";
+import mtp_all_reviews_modal from "./modals/feedbacks/MtpAllReviewsModal.vue";
 import sector_canvas_modal from "./modals/SectorCanvasModalComponent.vue";
+import starsReiting from '../../../../global_components/StarReitingShowComponent.vue';
 
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
@@ -400,8 +420,11 @@ export default {
         mtp_modal,
         create_route_review_modal,
         route_all_reviews_modal,
+        create_mtp_review_modal,
+        mtp_all_reviews_modal,
         route_json,
-        sector_canvas_modal
+        sector_canvas_modal,
+        starsReiting,
     },
     props: [
         "sector",
@@ -459,6 +482,12 @@ export default {
         },
         show_mtp_madel(mtp_id) {
             this.$refs.open_mtp_modal.show_mtp_modal(mtp_id)
+        },
+        show_mtp_review_modal(mtp_id) {
+            this.$refs.open_mtp_review_modal.show_mtp_review_modal(mtp_id)
+        },
+        show_mtp_all_review_modal(mtp_id) {
+            this.$refs.show_mtp_all_review_modal.show_mtp_all_review_modal(mtp_id)
         },
         show_sector_canvas_modal() {
             this.$refs.sector_canvas_modal.show_sector_modal(this.sector)

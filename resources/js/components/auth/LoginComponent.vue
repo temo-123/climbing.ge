@@ -77,7 +77,11 @@
           <div class="alert alert-danger" role="alert" v-if="auth_error">
             Invalid credentials
           </div>
-          <button type="button" @click.prevent="login" class="btn btn-primary">
+          <div class="alert alert-warning" v-if="captcha_error">
+            <i class="fa fa-exclamation-triangle"></i>
+            reCAPTCHA failed to load. Please reload the page and try again.
+          </div>
+          <button type="button" @click.prevent="login" class="btn btn-primary" :disabled="captcha_error">
             Login
           </button>
         </form>
@@ -139,9 +143,10 @@ export default {
         remember: false,
 
         is_loading: false,
-        
+
         error: [],
         auth_error: '',
+        captcha_error: false,
         JSEncryptLoaded: false,
 
         MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
@@ -172,6 +177,15 @@ export default {
 
       document.body.classList.remove('sidebar-open');
 
+      if (!window.grecaptcha) {
+          const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+          if (key) {
+              const s = document.createElement('script')
+              s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+              document.head.appendChild(s)
+          }
+      }
+
       try {
           await loadJSEncrypt();
           this.JSEncryptLoaded = true;
@@ -187,6 +201,15 @@ export default {
           return JSEncrypt;
       },
       
+      async get_recaptcha_token(action = 'login') {
+          const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+          if (!key || !window.grecaptcha) return null
+          try {
+              await new Promise(resolve => window.grecaptcha.ready(resolve))
+              return await window.grecaptcha.execute(key, { action })
+          } catch { return null }
+      },
+
       social_login(service){
         this.is_loading = true
 
@@ -244,11 +267,19 @@ export default {
                 return
               }
 
+              const recaptcha_token = await this.get_recaptcha_token('login')
+              if (!recaptcha_token) {
+                  this.captcha_error = true
+                  this.is_loading = false
+                  return
+              }
+
               axios
                 .post('login', {
-                  email: this.email, 
-                  password: encryptedPassword, // Send encrypted password
-                  remember: this.remember
+                  email: this.email,
+                  password: encryptedPassword,
+                  remember: this.remember,
+                  recaptcha_token,
                 }, {
                   headers: {
                     'Accept': 'application/json',
@@ -297,6 +328,8 @@ export default {
                   } else if (error.response && error.response.status === 302) {
                     // Handle redirect - try direct API call
                     this.auth_error = 'Redirect detected - please check credentials'
+                  } else if (error.response?.status === 422 && error.response?.data?.message?.toLowerCase().includes('recaptcha')) {
+                    this.captcha_error = true
                   }
                 })
                 .finally(() => this.is_loading = false);

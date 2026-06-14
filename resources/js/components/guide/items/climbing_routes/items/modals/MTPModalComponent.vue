@@ -1,13 +1,9 @@
 <template>
 <StackModal
             v-model="is_show_mtp_modal"
-            title="$t('guide.route.mtp_title')"
+            :title="$t('guide.route.mtp_title')"
             :modal-class="{ [modalClass]: true }"
-            :saveButton="{
-                visible: true,
-                title: $t('global.form.save'),
-                btnClass: { 'btn btn-primary': true },
-            }"
+            :saveButton="{ visible: false }"
             :cancelButton="{
                 visible: true,
                 title: $t('guide.route.close_modal'),
@@ -29,11 +25,17 @@
                     <!-- Content State -->
                     <div v-else>
                         <div class="modal-section overview">
-"guide.route.mtp_details"
-
+                            <h2 class="section-title">{{ $t('guide.route.mtp_details') }}</h2>
                             <div class="overview-details">
                                 <p class="route-detail">{{ $t("guide.route.name") }} - {{ (mtp_detals && mtp_detals.mtp && mtp_detals.mtp.name) ? mtp_detals.mtp.name : $t('guide.route.route_name_not_available') }}</p>
                                 <p class="route-detail" v-if="mtp_detals && mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("guide.route.height") }} - {{ mtp_detals.mtp.height }}</p>
+                            </div>
+
+                            <div class="mt-3" v-if="mtp_detals.reviews_count > 0">
+                                <starsReiting
+                                    :reviews_count_prop="mtp_detals.reviews_count"
+                                    :reviews_stars_prop="mtp_detals.reviews_stars"
+                                />
                             </div>
                         </div>
 
@@ -100,6 +102,21 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="flex-row mt-3 w-100">
+                            <button
+                                class="btn btn-success"
+                                @click="open_review_modal"
+                            >
+                                {{ $t('guide.route.make_review') }}
+                            </button>
+                            <button
+                                class="btn btn-primary float-right"
+                                v-if="mtp_detals.reviews_count > 0"
+                                @click="open_all_reviews_modal"
+                            >
+                                {{ $t('guide.route.show_feedbacks') }}
+                            </button>
+                        </div>
                     </div>
                 </div>
         </div>
@@ -107,15 +124,12 @@
 </template>
 
 <script>
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
-import  grade_chart  from '../../../../../../mixins/grade_chart_mixin.js'
+import grade_chart from '../../../../../../mixins/grade_chart_mixin.js'
+import starsReiting from '../../../../../global_components/StarReitingShowComponent.vue'
 
 export default {
-    mixins: [
-        grade_chart,
-    ],
-    components: {
-    },
+    mixins: [grade_chart],
+    components: { starsReiting },
     props: [
         // "sector",
     ],
@@ -161,6 +175,14 @@ export default {
             this.is_show_mtp_modal = false;
             this.loading = false;
             this.mtp_detals = {};
+        },
+        open_review_modal() {
+            this.is_show_mtp_modal = false;
+            this.$emit('show_mtp_review_modal', this.mtp_detals.mtp.id);
+        },
+        open_all_reviews_modal() {
+            this.is_show_mtp_modal = false;
+            this.$emit('show_mtp_all_review_modal', this.mtp_detals.mtp.id);
         },
     },
 };

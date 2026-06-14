@@ -20,4 +20,9 @@ class Mtp extends Model
     {
         return $this->hasMany(Mtp_pitch::class);
     }
+
+    public function review()
+    {
+        return $this->hasMany(Mtp_review::class);
+    }
 }

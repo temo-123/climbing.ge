@@ -8,7 +8,7 @@
             <h2 class="text-center">Fatal error! Please contact support!</h2>
         </div>
 
-        <form method="POST"  @submit.prevent="send_message"  id="js_form" v-if="!is_mail_sending && !fatal_error">
+        <form method="POST" @submit.prevent id="js_form" v-if="!is_mail_sending && !fatal_error">
         <!-- <form method="POST" id="js_form"> -->
             <div class='row'>
                 <div class="col-md-6">
@@ -80,10 +80,14 @@
 
             <div class="row">
                 <div class="col-md-12">
-                    <FormCapchaComponent 
+                    <div v-if="captcha_error" class="alert alert-warning mb-2">
+                        <i class="fa fa-exclamation-triangle"></i>
+                        reCAPTCHA failed to load. Please reload the page and try again.
+                    </div>
+                    <FormCapchaComponent
                         :buttonTextProp="'Send message'"
                         @recaptcha-verified="send_message"
-                        @expired="onCaptchaExpired" 
+                        @expired="onCaptchaExpired"
                     />
                 </div>
             </div>
@@ -121,6 +125,7 @@
 
                 recaptcha_token: null,
                 is_verify_isset: false,
+                captcha_error: false,
 
                 is_mail_sending: false,
 
@@ -151,7 +156,12 @@
         },
         methods: {
             send_message(token) {
+                if (!token) {
+                    this.captcha_error = true;
+                    return;
+                }
                 this.recaptcha_token = token
+                this.captcha_error = false
                 this.isLoading = true,
                 this.isSuccess = false,
 
@@ -173,11 +183,15 @@
                     this.clear_form()
                 })
                 .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.error = error.response.data.errors || error.response.data.error || {}
+                    if (error.response?.status === 422) {
+                        if (error.response.data?.message?.toLowerCase().includes('recaptcha')) {
+                            this.captcha_error = true;
+                        } else {
+                            this.error = error.response.data.errors || error.response.data.error || {}
+                        }
                         this.isLoading = false
                     }
-                    else if (error.response.status == 500) {
+                    else if (error.response?.status === 500) {
                         this.fatal_error = true
                     }
                 })

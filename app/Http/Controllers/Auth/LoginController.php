@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Notifications\LoginEmailNotification;
+use App\Services\ReCaptchaV3Service;
 use Illuminate\Http\Request;
 
 class LoginController extends Controller
@@ -62,6 +63,14 @@ class LoginController extends Controller
             'user_agent' => $request->userAgent(),
             'referer' => $request->header('Referer'),
         ]);
+
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            $token = $request->input('recaptcha_token');
+            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
 
         $validator = \Validator::make($request->all(), [
             'email' => 'required|email',

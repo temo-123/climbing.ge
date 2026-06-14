@@ -180,7 +180,11 @@
             </div>
           </div>
 
-          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting">
+          <div v-if="captcha_error" class="alert alert-warning mb-2">
+            <i class="fa fa-exclamation-triangle"></i>
+            reCAPTCHA failed to load. Please reload the page and try again.
+          </div>
+          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting || captcha_error">
             <span v-if="submitting">
               <span class="spinner-border spinner-border-sm mr-1"></span>
               {{ $t('summit.ascent_page.submitting') }}
@@ -251,6 +255,7 @@ export default {
       submitted: false,
       submitResult: null,
       formErrors: {},
+      captcha_error: false,
     }
   },
   computed: {
@@ -271,6 +276,14 @@ export default {
   },
   created() {
     this.$bus.$on('login-modal-closed', this.onLoginModalClosed)
+    if (!window.grecaptcha) {
+        const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+        if (key) {
+            const s = document.createElement('script')
+            s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+            document.head.appendChild(s)
+        }
+    }
   },
   beforeUnmount() {
     this.$bus.$off('login-modal-closed', this.onLoginModalClosed)
@@ -308,6 +321,7 @@ export default {
       this.submitted = false
       this.submitResult = null
       this.formErrors = {}
+      this.captcha_error = false
     },
     handleClose() {
       if (!this.modelValue) return
@@ -414,7 +428,16 @@ export default {
       reader.onload = (e) => { this.photoPreview = e.target.result }
       reader.readAsDataURL(file)
     },
-    submitAscent() {
+    async get_recaptcha_token(action = 'ascent') {
+        const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+        if (!key || !window.grecaptcha) return null
+        try {
+            await new Promise(resolve => window.grecaptcha.ready(resolve))
+            return await window.grecaptcha.execute(key, { action })
+        } catch { return null }
+    },
+
+    async submitAscent() {
       this.submitting = true
       this.formErrors = {}
       const formData = new FormData()
@@ -430,6 +453,13 @@ export default {
       if (this.userLatitude !== null) formData.append('user_latitude', this.userLatitude)
       if (this.userLongitude !== null) formData.append('user_longitude', this.userLongitude)
       formData.append('is_gps_validated', this.gpsValidated ? 1 : 0)
+      const recaptcha_token = await this.get_recaptcha_token('ascent')
+      if (!recaptcha_token) {
+        this.captcha_error = true
+        this.submitting = false
+        return
+      }
+      formData.append('recaptcha_token', recaptcha_token)
       axios.post(`summit/ascent/${this.summit.id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -439,7 +469,9 @@ export default {
           this.$emit('submitted', response.data)
         })
         .catch(error => {
-          if (error.response?.data?.errors) {
+          if (error.response?.status === 422 && error.response?.data?.message?.toLowerCase().includes('recaptcha')) {
+            this.captcha_error = true
+          } else if (error.response?.data?.errors) {
             this.formErrors = error.response.data.errors
           } else {
             alert('Failed to record ascent. Please try again.')

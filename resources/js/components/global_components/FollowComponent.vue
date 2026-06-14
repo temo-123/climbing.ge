@@ -10,14 +10,18 @@
             </div>
 
             <div class="col-md-10" v-if="!loading">
-                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent="follow" enctyp="multipart/form-data">
+                <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent enctyp="multipart/form-data">
                     <input type="text" v-model="email" name="email" class="form-control footer_input"> 
 
                     <div class="footer_re_capcha">
-                        <FormCapchaComponent 
+                        <div v-if="captcha_error" class="alert alert-warning mb-2">
+                            <i class="fa fa-exclamation-triangle"></i>
+                            reCAPTCHA failed to load. Please reload the page and try again.
+                        </div>
+                        <FormCapchaComponent
                             :buttonTextProp="'Follow'"
                             @recaptcha-verified="follow"
-                            @expired="onCaptchaExpired" 
+                            @expired="onCaptchaExpired"
                         />
                     </div>
                     <div v-if="loading == true">
@@ -44,6 +48,7 @@
                 MIX_GOOGLE_CAPTCHA_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_SITE_KEY,
                 recaptcha_token: null,
                 loading: false,
+                captcha_error: false,
             };
         },
     components: {
@@ -59,6 +64,11 @@
         },
         methods: {
             follow(token){
+                if (!token) {
+                    this.captcha_error = true;
+                    return;
+                }
+                this.captcha_error = false
                 this.recaptcha_token = token
                 if(window.location.hostname == process.env.MIX_SITE_URL){
                     this.service = 'guid'
@@ -82,11 +92,15 @@
                     this.email = ''
                 })
                 .catch(error =>{
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
+                    if (error.response?.status === 422) {
+                        if (error.response.data?.message?.toLowerCase().includes('recaptcha')) {
+                            this.captcha_error = true;
+                        } else {
+                            this.errors = error.response.data.errors
+                        }
                         this.loading = false
                     }
-                    else if (error.response.status == 419){
+                    else if (error.response?.status === 419){
                         alert("CSRF token mismatch. Ples reload page and try again!")
                     }
                 })

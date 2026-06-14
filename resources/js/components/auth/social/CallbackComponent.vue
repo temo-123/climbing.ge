@@ -41,28 +41,22 @@
       },
       methods: {
         social_login_callback(){
+            if (this.$route.query.error) {
+                this.show_error()
+                return
+            }
+
             this.error = false
             axios.get('login/' + this.$route.params.provaider + '/callback', {
-                params: {code: this.$route.query.code}
+                params: { code: this.$route.query.code }
             })
             .then(response => {
-                const cookieMatch = document.cookie.match(/(?:^|;\s*)XSRF-TOKEN=([^;]+)/)
-                const xsrfToken = cookieMatch ? decodeURIComponent(cookieMatch[1]) : null
-                if (xsrfToken) {
-                    localStorage.setItem('x_xsrf_token', xsrfToken)
-                }
-
-                if(response.data.status == 'login'){
-                    axios.get('token').then(tokenRes => {
-                        localStorage.setItem('auth_token', tokenRes.data)
-                    }).finally(() => {
-                        window.location.href = '/'
-                    })
-                }
-                else if(response.data.status == 'registratione'){
+                if (response.data.status == 'login') {
+                    localStorage.setItem('auth_token', response.data.token)
+                    window.location.href = '/'
+                } else if (response.data.status == 'registratione') {
                     window.location.href = '/create_password/' + encodeURIComponent(response.data.new_user_email)
-                }
-                else{
+                } else {
                     this.show_error()
                 }
             }).catch(() => {

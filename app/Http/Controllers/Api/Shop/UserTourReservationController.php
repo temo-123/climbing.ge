@@ -8,6 +8,7 @@ use App\Http\Requests\TourReservationRequest;
 
 use Auth;
 use Notification;
+use App\Services\ReCaptchaV3Service;
 
 use App\Models\User;
 use App\Models\Shop\Tour;
@@ -21,6 +22,14 @@ use App\Notifications\tour\ReservationVerifyEmail;
 class UserTourReservationController extends Controller
 {    
     function create_reservation(TourReservationRequest $request){
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            $token = $request->input('recaptcha_token');
+            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
+
         // Validation is automatically handled by TourReservationRequest
         $validated = $request->validated();
         

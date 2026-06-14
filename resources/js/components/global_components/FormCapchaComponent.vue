@@ -4,11 +4,16 @@
             <!-- reCAPTCHA v3 native integration -->
         </div>
 
+        <div v-if="captcha_error" class="alert alert-warning mb-2">
+            <i class="fa fa-exclamation-triangle"></i>
+            reCAPTCHA failed to load. Please reload the page and try again.
+        </div>
+
         <div v-if="loading == false" class="form-group">
-            <button class="btn btn-default btn-send main-btn" @click="handleSubmit">{{ buttonTextProp }}</button>
+            <button class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp }}</button>
         </div>
         <div v-if="loading == true">
-            <h4  class="footer_title">Loading</h4>
+            <h4 class="footer_title">Loading</h4>
         </div>
     </span>
 </template>
@@ -26,6 +31,7 @@ export default {
             MIX_GOOGLE_CAPTCHA_V3_SITE_KEY: process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY,
             is_verify_isset: false,
             loading: false,
+            captcha_error: false,
         };
     },
     mounted() {
@@ -52,6 +58,8 @@ export default {
             const token = await this.executeRecaptcha('message');
             if (token) {
                 this.$emit('recaptcha-verified', token);
+            } else {
+                this.captcha_error = true;
             }
             this.loading = false;
         },

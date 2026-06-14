@@ -50,8 +50,8 @@ class SocialController extends Controller
                 ], 403);
             }
 
-            Auth::login($user);
-            return response()->json(['status' => 'login']);
+            $token = $user->createToken('socialToken')->plainTextToken;
+            return response()->json(['status' => 'login', 'token' => $token]);
         }
 
         // New user — split full name into name / surname
@@ -129,10 +129,10 @@ class SocialController extends Controller
             return response()->json(['message' => $validator->errors()->first()], 422);
         }
 
-        User::where('email', $request->email)->update([
-            'password' => Hash::make($request->data['password']),
-        ]);
+        $user = User::where('email', $request->email)->firstOrFail();
+        $user->update(['password' => Hash::make($request->data['password'])]);
 
-        return response()->json(['message' => 'Password created successfully']);
+        $token = $user->createToken('socialToken')->plainTextToken;
+        return response()->json(['message' => 'Password created successfully', 'token' => $token]);
     }
 }

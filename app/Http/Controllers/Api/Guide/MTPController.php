@@ -26,20 +26,18 @@ class MTPController extends Controller
 
     public function get_mtp_for_modal(Request $request)
     {
-        $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
+        $mtp = Mtp::with('review')->where('id', strip_tags($request->mtp_id))->first();
         $mtp_pitchs = $mtp->pitchs;
-        // dd($mtp_pitchs);
 
-        $mtp_model_info = [];
+        $reviews_count = $mtp->review->count();
+        $reviews_stars = $reviews_count > 0 ? round($mtp->review->avg('stars'), 1) : null;
 
-        array_push($mtp_model_info, 
-            array(
-                'mtp' => $mtp,
-                'mtp_pitchs' => $mtp_pitchs,
-            )
-        );
-
-        return $mtp_model_info[0];
+        return [
+            'mtp'           => $mtp,
+            'mtp_pitchs'    => $mtp_pitchs,
+            'reviews_count' => $reviews_count,
+            'reviews_stars' => $reviews_stars,
+        ];
     }
 
 }

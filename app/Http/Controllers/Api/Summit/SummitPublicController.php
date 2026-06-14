@@ -11,6 +11,7 @@ use App\Models\Summit\SummitAscentUser;
 use App\Models\Summit\SummitAscentRoute;
 use App\Models\Guide\Route;
 use App\Models\User;
+use App\Services\ReCaptchaV3Service;
 
 class SummitPublicController extends Controller
 {
@@ -78,6 +79,14 @@ class SummitPublicController extends Controller
 
     public function submit_ascent(Request $request, $summit_id)
     {
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            $token = $request->input('recaptcha_token');
+            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
+
         $summit = Summit::findOrFail($summit_id);
 
         $authUser = auth('sanctum')->user();

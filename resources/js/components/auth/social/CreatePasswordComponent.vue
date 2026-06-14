@@ -87,8 +87,10 @@
           this.error = ''
           axios
           .post('login/social/create_password/' + this.$route.params.email, { data: this.data })
-          .then(() => {
+          .then((response) => {
+            localStorage.setItem('auth_token', response.data.token)
             this.success = true
+            setTimeout(() => { window.location.href = '/' }, 1500)
           })
           .catch((error) => {
             this.error = error.response?.data?.message || 'Something went wrong. Please try again.'

@@ -99,6 +99,10 @@ class CommentController extends Controller
     {
         $return = CommentService::create_comment($request, Comment::class, Article_comment_user::class, 'article', 'comment');
 
+        if ($return instanceof \Illuminate\Http\JsonResponse) {
+            return $return;
+        }
+
         if($request->answer_array['answer']){
             $new_answer = new Article_comment_answer;
             $new_answer['answer_id'] = $return['new_comment_id'];

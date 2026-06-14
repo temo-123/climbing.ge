@@ -10,6 +10,7 @@ use App\Models\Guide\Sport_route_review;
 // use App\Models\Guide\Sport_route_review_user;
 
 use App\Services\PermissionService;
+use App\Services\ReCaptchaV3Service;
 
 use Auth;
 
@@ -85,6 +86,14 @@ class RoutesReitingController extends Controller
 
     public function create_route_review(Request $request) {
         if ($auth = PermissionService::authorize('routes_rewiew', 'add')) return $auth;
+
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            $token = $request->input('recaptcha_token');
+            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
 
         $user = $request->user();
 

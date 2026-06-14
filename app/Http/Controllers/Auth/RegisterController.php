@@ -17,6 +17,7 @@ use App\Models\User\Role;
 use App\Models\User\User_role;
 use App\Models\User\user_notification;
 use App\Services\GuestDataLinkingService;
+use App\Services\ReCaptchaV3Service;
 
 class RegisterController extends Controller
 {
@@ -53,6 +54,14 @@ class RegisterController extends Controller
 
     public function apiRegister(Request $request)
     {
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            $token = $request->input('recaptcha_token');
+            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
+
         $validator = $this->validator($request->all());
 
         if ($validator->fails()) {

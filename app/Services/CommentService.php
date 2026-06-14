@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Services\Abstract\EmailVarificationeService;
+use App\Services\ReCaptchaV3Service;
 
 use Auth;
 use Validator;
@@ -39,9 +40,14 @@ class CommentService extends EmailVarificationeService
 
         $validate = (new static)->comment_validate($request);
         
-        $is_verify_isset = isset($request->recaptcha_token);
-        
-        if($is_verify_isset && !$validate){
+        $captcha = new ReCaptchaV3Service();
+        if ($captcha->isConfigured()) {
+            if (empty($request->recaptcha_token) || !$captcha->verify($request->recaptcha_token, request()->ip(), 0.5)) {
+                return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
+            }
+        }
+
+        if(!$validate){
             $data = $request->data;
 
             $auth = Auth::user();

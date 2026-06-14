@@ -132,12 +132,12 @@
             </div>
             <!-- Custom footer moved to content area - StackModal handles buttons -->
             <div v-show="!is_loading" class="text-center pt-4 mt-4 border-t border-gray-200">
-                <span v-if="is_verify_isset == false">
-                    <button class="btn btn-primary" disabled>Add feedback</button>
-                </span>
-                <span v-else>
-                    <button type="submit" form="feedback_form" class="btn btn-primary">Add feedback</button>
-                </span>
+                <div v-if="captcha_error" class="alert alert-warning mb-2">
+                    <i class="fa fa-exclamation-triangle"></i>
+                    reCAPTCHA failed to load. Please reload the page and try again.
+                </div>
+                <button v-if="captcha_error" class="btn btn-secondary" disabled>Add feedback</button>
+                <button v-else type="submit" form="feedback_form" class="btn btn-primary">Add feedback</button>
             </div>
         </StackModal>
 </template>
@@ -175,7 +175,8 @@ export default {
 
                 is_verify_isset: false,
             },
-            is_verify_isset: false,
+            is_verify_isset: true,
+            captcha_error: false,
 
             is_loading: false,
 
@@ -186,12 +187,19 @@ export default {
         };
     },
     mounted() {
-        //
+        if (!window.grecaptcha) {
+            const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+            if (key) {
+                const s = document.createElement('script')
+                s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+                document.head.appendChild(s)
+            }
+        }
     },
     methods: {
         show_modal(id){
             this.is_show_modal = true;
-            // this.is_loading = true
+            this.captcha_error = false;
             this.clear_data()
 
             this.product_id = id
@@ -250,30 +258,47 @@ export default {
             .finally(() => this.is_loading == false);
         },
 
-        add_feedback() {
+        async get_recaptcha_token(action = 'feedback') {
+            const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+            if (!key || !window.grecaptcha) return null
+            try {
+                await new Promise(resolve => window.grecaptcha.ready(resolve))
+                return await window.grecaptcha.execute(key, { action })
+            } catch { return null }
+        },
+
+        async add_feedback() {
             this.data.product_id = this.product_id
-            this.data.is_verify_isset = this.is_verify_isset
 
             this.is_loading = true
+            const recaptcha_token = await this.get_recaptcha_token('feedback')
+            if (!recaptcha_token) {
+                this.captcha_error = true;
+                this.is_loading = false;
+                return;
+            }
 
             axios
             .post('/set_product_feedback_by_gest/create_feedback/' + this.product_id, {
                 data: this.data,
+                recaptcha_token,
             })
             .then(response => {
-        this.close_modal()
-
+                this.close_modal()
                 this.$emit('restart')
-
                 alert(response.data)
             })
             .catch(error => {
-                this.is_loading == false
-                if (error.response.status == 422) {
-                    this.errors = error.response.data.errors
+                this.is_loading = false
+                if (error.response?.status === 422) {
+                    if (error.response.data?.message?.toLowerCase().includes('recaptcha')) {
+                        this.captcha_error = true;
+                    } else {
+                        this.errors = error.response.data.errors
+                    }
                 }
             })
-            .finally(() => this.is_loading == false);
+            .finally(() => this.is_loading = false);
         },
     }
 }

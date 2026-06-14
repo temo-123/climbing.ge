@@ -3,7 +3,7 @@
         <div>
             <div class="col-md-12">
                 <h2 id='comments' class="section-title">{{ $t('guide.article.title.comments')}}</h2>
-                <form @submit.prevent="add_comment" id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
+                <form @submit.prevent id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
                     <div v-if="user.length == 0">
                         <div class="row" >
@@ -80,7 +80,11 @@
                         <div class="col-md-8">
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <FormCapchaComponent 
+                                    <div v-if="captcha_error" class="alert alert-warning mb-2">
+                                        <i class="fa fa-exclamation-triangle"></i>
+                                        reCAPTCHA failed to load. Please reload the page and try again.
+                                    </div>
+                                    <FormCapchaComponent
                                         :buttonTextProp="'Add comment'"
                                         @recaptcha-verified="add_comment"
                                         @expired="onCaptchaExpired"
@@ -273,6 +277,7 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
                 },
 
                 recaptcha_token: null,
+                captcha_error: false,
                 // is_complaint_verify_isset: false,
 
                 comments: [],
@@ -384,7 +389,12 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
             },
 
             add_comment(token) {
+                if (!token) {
+                    this.captcha_error = true;
+                    return;
+                }
                 this.recaptcha_token = token
+                this.captcha_error = false
                 this.comment_loader = true
                 axios
                 .post('/set_guide_comment_by_gest/create_comment/' + this.id, {
@@ -405,8 +415,12 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
                     alert(response.data)
                 })
                 .catch(error => {
-                    if (error.response.status == 422) {
-                        this.errors = error.response.data.errors
+                    if (error.response?.status === 422) {
+                        if (error.response.data?.message?.toLowerCase().includes('recaptcha')) {
+                            this.captcha_error = true;
+                        } else {
+                            this.errors = error.response.data.errors
+                        }
                     }
                 })
                 .finally(() => this.comment_loader = false);
