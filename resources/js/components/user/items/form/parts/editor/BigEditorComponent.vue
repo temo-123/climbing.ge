@@ -1,35 +1,35 @@
 <template>
   <div>
-    <button 
-      type="button" 
-      @click="showSource = !showSource" 
+    <button
+      type="button"
+      @click="showSource = !showSource"
       class="btn btn-secondary mb-2"
       :class="{ 'btn-success': showSource }"
     >
       {{ showSource ? 'Hide Source' : 'Check Source' }}
     </button>
-    
+
     <div v-if="showSource" class="source-container mb-3">
       <div class="d-flex justify-content-between align-items-center mb-2">
         <h6 class="mb-0">HTML Source Code</h6>
-        <button 
-          type="button" 
-          @click="copySource" 
+        <button
+          type="button"
+          @click="copySource"
           class="btn btn-secondary btn-sm"
         >
           Copy to Clipboard
         </button>
       </div>
       <div style="max-height: 400px; overflow-y: auto;">
-        <textarea 
-          v-model="content" 
+        <textarea
+          v-model="content"
           class="form-control source-textarea"
           style="height: 400px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4;"
           placeholder="Edit raw HTML source here..."
         ></textarea>
       </div>
     </div>
-    
+
     <QuillEditor
       v-if="!showSource"
       v-model:content="content"
@@ -57,21 +57,50 @@ const showSource = ref(false)
 // Editor options
 const editorOptions = {
   modules: {
-    toolbar: [
-      [{ header: 1 }, { header: 2 }, { font: [] }],
-      [{ size: ['small', false, 'large', 'huge'] }],
-      [{ color: [] }, { background: [] }],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{ 'align': [] }, { 'direction': 'rtl' ? 'ltr' : false }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image', 'video'],
-      ['clean']
-    ],
+    toolbar: {
+      container: [
+        [{ header: 1 }, { header: 2 }, { font: [] }],
+        [{ size: ['small', false, 'large', 'huge'] }],
+        [{ color: [] }, { background: [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'align': [] }, { 'direction': 'rtl' ? 'ltr' : false }],
+        [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+        [{ 'indent': '-1'}, { 'indent': '+1' }],
+        ['link', 'image', 'video'],
+        ['clean']
+      ],
+      handlers: {
+        image: imageUploadHandler,
+      }
+    },
     history: {
       delay: 1000,
       maxStack: 100,
       userOnly: true
+    }
+  }
+}
+
+// Secure image upload to the server
+function imageUploadHandler() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = 'image/jpeg,image/png,image/gif,image/webp'
+  input.click()
+  input.onchange = async () => {
+    const file = input.files[0]
+    if (!file) return
+    const fd = new FormData()
+    fd.append('image', file)
+    try {
+      const { data } = await axios.post('/upload/editor-image', fd)
+      const quill = document.querySelector('.ql-editor')
+      const range = window.getSelection()
+      // Insert image at current cursor
+      const img = `<img src="${data.url}" />`
+      document.execCommand('insertHTML', false, img)
+    } catch {
+      alert('Image upload failed')
     }
   }
 }

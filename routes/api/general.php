@@ -9,9 +9,8 @@ use Illuminate\Support\Facades\Route;
 /*
 *   Login verify routes
 */
-Route::controller('Api\CKEditorController')->prefix('ckeditor')->group( function() {
-    // Route::get('', 'index');
-    Route::post('/upload', 'upload');
+Route::middleware(['auth:sanctum', 'banned'])->group(function () {
+    Route::post('/upload/editor-image', 'Api\EditorImageController@upload');
 });
 
 /*

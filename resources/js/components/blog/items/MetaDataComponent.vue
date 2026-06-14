@@ -19,10 +19,26 @@ const lang = computed(() => {
   return stored === 'ka' ? 'ka' : 'en'
 })
 
+const enUrl = computed(() => {
+  const path = window.location.pathname.replace(/^\/ka(?=\/|$)/, '') || '/'
+  return window.location.origin + path + window.location.search
+})
+
+const kaUrl = computed(() => {
+  const path = window.location.pathname
+  const kaPath = path.startsWith('/ka') ? path : '/ka' + path
+  return window.location.origin + kaPath + window.location.search
+})
+
 useHead({
   title: computed(() => props.title),
   htmlAttrs: { lang },
-  link: [{ rel: 'canonical', href: computed(() => window.location.href) }],
+  link: [
+    { rel: 'canonical', href: computed(() => window.location.href) },
+    { rel: 'alternate', hreflang: 'en', href: enUrl },
+    { rel: 'alternate', hreflang: 'ka', href: kaUrl },
+    { rel: 'alternate', hreflang: 'x-default', href: enUrl },
+  ],
 })
 
 useSeoMeta({

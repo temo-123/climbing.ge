@@ -164,12 +164,9 @@
                 </tr>
             </tbody>
             <tbody>
-
-
-
-                <tr 
-                    v-for="route in sector.sport_routes" 
-                    :key="route.id" 
+                <tr
+                    v-for="route in sector.sport_routes"
+                    :key="route.id"
                     :data-route-id="route.id"
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
@@ -205,6 +202,8 @@
                             ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
+
+                    <td class="route-seo-col" v-html="[route.text, route.author, route.creation_data, route.first_ascent, route.anchor_type].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -227,9 +226,9 @@
 
 
 
-                <tr 
-                    v-for="route in sector.boulder_route" 
-                    :key="route.id" 
+                <tr
+                    v-for="route in sector.boulder_route"
+                    :key="route.id"
                     :data-route-id="route.id"
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
@@ -257,6 +256,8 @@
                             ><i class="fa fa-arrow-right" aria-hidden="true"></i
                         ></a>
                     </td>
+
+                    <td class="route-seo-col" v-html="[route.text, route.author, route.creation_data, route.first_ascent, route.anchor_type].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -583,6 +584,11 @@ h2 {
 
 
 
+
+/* SEO column — in DOM for Google, hidden from users */
+.route-seo-col {
+    display: none;
+}
 
 /* Active route highlighting - no layout shift */
 .route-active {

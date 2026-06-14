@@ -103,7 +103,7 @@ All six subdomains share a **single compiled Vue bundle** (`public/assets/js/app
 ```
 routes/api/
 ├── auth.php                    # Login, register, OAuth, password reset
-├── general.php                 # Search, site data, CKEditor, social links
+├── general.php                 # Search, site data, editor image upload, social links
 ├── get_guide_routes.php        # Public guide/climbing data
 ├── get_shop_routes.php         # Public shop/product data
 ├── get_blog_routes.php         # Public blog posts
@@ -144,6 +144,161 @@ php artisan migrate --seed    # Fresh DB with seed data
 php artisan queue:work        # Process queued jobs
 php artisan test              # Run all tests
 ```
+
+---
+
+## Production Deployment
+
+### 1. Environment — fill every placeholder in `.env`
+
+```bash
+# Core
+APP_ENV=production
+APP_DEBUG=false
+APP_URL=https://climbing.ge
+
+# Real subdomain URLs (used by Vue router switch)
+MIX_SITE_URL=climbing.ge
+MIX_SHOP_URL=shop.climbing.ge
+MIX_BLOG_URL=blog.climbing.ge
+MIX_USER_PAGE_URL=user.climbing.ge
+MIX_SUMMIT_URL=summit.climbing.ge
+MIX_FILMS_URL=films.climbing.ge
+
+# Sanctum — list every subdomain or cross-domain auth breaks
+SANCTUM_STATEFUL_DOMAINS=climbing.ge,shop.climbing.ge,blog.climbing.ge,user.climbing.ge,summit.climbing.ge,films.climbing.ge
+SESSION_DOMAIN=.climbing.ge
+
+# Database — use production credentials (not root:123)
+DB_HOST=...
+DB_DATABASE=...
+DB_USERNAME=...
+DB_PASSWORD=...
+
+# Mail — use real SMTP, not Mailtrap
+MAIL_MAILER=smtp
+MAIL_HOST=...
+MAIL_PORT=465
+MAIL_USERNAME=...
+MAIL_PASSWORD=...
+
+# These are "..." placeholders that must be filled before going live:
+FACEBOOK_CLIENT_ID=...
+FACEBOOK_CLIENT_SECRET=...
+FLITT_MERCHANT_ID=...
+FLITT_SECRET_KEY=...
+DONATION_TBC_IBAN=...
+DONATION_TBC_ACCOUNT_NAME=...
+MIX_SITE_ANALITICS_ID=...       # Google Analytics per subdomain
+MIX_SHOP_ANALITICS_ID=...
+MIX_BLOG_ANALITICS_ID=...
+MIX_SUMMIT_ANALITICS_ID=...
+MIX_FILMS_ANALITICS_ID=...
+MIX_USER_ANALITICS_ID=...
+```
+
+### 2. One-time server commands
+
+```bash
+# Production frontend build (versioned + minified)
+npm run build
+
+# Laravel performance caches
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Database
+php artisan migrate
+
+# Make uploaded files publicly accessible
+php artisan storage:link
+
+# Generate sitemap
+php artisan generate:sitemap
+```
+
+### 3. Queue worker — required for emails
+
+The app sends emails asynchronously via the `UserNotifications` job. Without a running worker emails are never delivered. Use **supervisord** or systemd to keep it alive:
+
+```ini
+# /etc/supervisor/conf.d/climbing-horizon.conf
+[program:climbing-horizon]
+command=php /var/www/html/artisan horizon
+user=www-data
+autostart=true
+autorestart=true
+redirect_stderr=true
+stdout_logfile=/var/log/climbing-horizon.log
+```
+
+```bash
+supervisorctl reread && supervisorctl update && supervisorctl start climbing-horizon
+```
+
+Or without Horizon:
+```bash
+php artisan queue:work --tries=3 --sleep=3
+```
+
+### 4. Nginx — one server block per subdomain
+
+```nginx
+server {
+    listen 443 ssl;
+    server_name climbing.ge;
+    root /var/www/html/public;
+    index index.php;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    location ~ /\.(?!well-known).* { deny all; }
+}
+# Repeat for shop., blog., user., summit., films.
+```
+
+### 5. SSL certificates
+
+```bash
+certbot --nginx \
+  -d climbing.ge \
+  -d shop.climbing.ge \
+  -d blog.climbing.ge \
+  -d user.climbing.ge \
+  -d summit.climbing.ge \
+  -d films.climbing.ge
+```
+
+> Sanctum session cookies use `SESSION_DOMAIN=.climbing.ge` which requires HTTPS across all subdomains.
+
+### 6. File permissions
+
+```bash
+chmod -R 775 storage bootstrap/cache
+chown -R www-data:www-data storage bootstrap/cache
+```
+
+### Deployment checklist
+
+| # | Task | Why |
+|---|---|---|
+| 1 | Fill all `.env` placeholders | App won't start without `APP_KEY`; features break without other keys |
+| 2 | `npm run build` | Must be production build — dev build is slow and exposes source maps |
+| 3 | `php artisan migrate` + `storage:link` | Database up to date; uploaded files accessible |
+| 4 | `config:cache` + `route:cache` | Significant performance improvement |
+| 5 | SSL on all 6 subdomains | Required for Sanctum cross-subdomain cookies |
+| 6 | Nginx block per subdomain | Each domain needs its own `server_name` |
+| 7 | Horizon / queue worker running | Without it, notification emails never send |
+| 8 | `generate:sitemap` | Submit to Google Search Console after first run |
 
 ---
 
