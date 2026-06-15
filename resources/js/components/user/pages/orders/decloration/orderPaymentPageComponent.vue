@@ -137,10 +137,10 @@
 
                                 <div class="row justify-content-center">
                                     <div class="col-md-12 col-xs-12">
-                                        <select class="form-control" v-model="selected_payment_type" name="currency" > 
-                                            <option value="deliverd payment">Payment on delivery</option> 
-                                            <option value="online payment" disabled>Online payment (coming soon)</option> 
-                                        </select> 
+                                        <select class="form-control" v-model="selected_payment_type" name="currency" >
+                                            <option value="deliverd payment">Payment on delivery</option>
+                                            <option value="online payment">Online payment (TBC Pay)</option>
+                                        </select>
                                     </div>
                                 </div>
 
@@ -154,8 +154,9 @@
 
                                 <div class="row justify-content-center" v-else-if="selected_payment_type == 'online payment'">
                                     <div class="col-md-12 col-xs-12">
-                                        <div class="alert alert-danger" role="alert">
-                                            <p>This feature is not currently available</p>
+                                        <div class="alert alert-info" role="alert">
+                                            <i class="fa fa-credit-card mr-2"></i>
+                                            <p class="mb-0">You will be redirected to TBC Bank secure payment page after placing the order.</p>
                                         </div>
                                     </div>
                                 </div>

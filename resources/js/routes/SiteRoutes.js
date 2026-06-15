@@ -34,6 +34,9 @@ const routes = [
             { path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
             { path: "terms_of_use", name: "guide_terms", component: load("TermsOfUsePage"), meta: { title: 'Terms of Use' } },
 
+            { path: "donation-success", name: "donationSuccess", component: load("DonationSuccessPage"), meta: { title: 'Donation Success' } },
+            { path: "donation-cancel",  name: "donationCancel",  component: load("DonationCancelPage"),  meta: { title: 'Donation Cancelled' } },
+
             { path: "tech_tip/:url_title", name: "tech_tip", component: load("pages/TechTipPageComponent"), meta: { title: 'Tech Tip' } },
             { path: "partner/:url_title", name: "partner", component: load("pages/PartnerPageComponent"), meta: { title: 'Partner' } },
                         

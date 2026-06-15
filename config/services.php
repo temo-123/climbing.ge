@@ -45,4 +45,16 @@ return [
         // 'redirect' => env('APP_SSH' , 'https://') . env('USER_PAGE_URL', 'user.climbing.ge').'/api/login/google/callback',
         'redirect' => env('GOOGLE_URL'),
     ],
+
+    'tbc_pay' => [
+        'base_url' => env('TBC_PAY_BASE_URL', 'https://api.tbcbank.ge/v1/tpay'),
+        'shop' => [
+            'client_id'     => env('TBC_PAY_SHOP_CLIENT_ID'),
+            'client_secret' => env('TBC_PAY_SHOP_CLIENT_SECRET'),
+        ],
+        'donation' => [
+            'client_id'     => env('TBC_PAY_DONATION_CLIENT_ID'),
+            'client_secret' => env('TBC_PAY_DONATION_CLIENT_SECRET'),
+        ],
+    ],
 ];

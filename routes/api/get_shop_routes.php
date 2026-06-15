@@ -103,4 +103,14 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_activ_region/{region_id}', 'get_activ_region');
     });
 
+    // TBC Pay — shop orders (public callback, no auth)
+    Route::post('/payment/shop/callback', [\App\Http\Controllers\Api\Shop\Payment\OrderPaymentController::class, 'callback'])
+        ->name('shop.payment.callback');
+
+    // TBC Pay — shop orders (require auth)
+    Route::middleware(['auth:sanctum', 'banned'])->group(function () {
+        Route::post('/payment/shop/initiate/{order_id}', [\App\Http\Controllers\Api\Shop\Payment\OrderPaymentController::class, 'initiate']);
+        Route::get('/payment/shop/status/{order_id}',   [\App\Http\Controllers\Api\Shop\Payment\OrderPaymentController::class, 'status']);
+    });
+
 });

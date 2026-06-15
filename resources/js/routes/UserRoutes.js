@@ -49,6 +49,8 @@ const routes = [
             { path: 'order/decloration/order_decloration/:payment/:adres/:discount?', name: 'orderDecloration', component: load('orders/decloration/orderDeclorationPageComponent'), meta: {title: 'user page'}},
             { path: 'order/decloration/order_payment', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), meta: {title: 'user page'}},
             { path: 'order/decloration/confirm_order/:order_decloration?', name: 'confirmOrder', component: load('orders/decloration/confirmOrderPageComponent'), meta: {title: 'user page'}},
+            { path: 'payment/success', name: 'paymentSuccess', component: load('orders/PaymentSuccessPage'), meta: {title: 'Payment Success'}},
+            { path: 'payment/cancel',  name: 'paymentCancel',  component: load('orders/PaymentCancelPage'),  meta: {title: 'Payment Cancelled'}},
 
             { path: 'order/confirm_order/:order_id/user/:user_id/token/:token', name: 'mailConfirmOrder', component: load('orders/decloration/mailOrderConfirmComponent'), meta: {title: 'user page'}},
 

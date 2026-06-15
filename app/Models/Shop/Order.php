@@ -20,6 +20,9 @@ class Order extends Model
         'is_custom',
         'status',
         'status_updating_data',
+        'tbc_pay_id',
+        'tbc_pay_status',
+        'payment_amount',
     ];
 
     public function products()

@@ -4,25 +4,26 @@ namespace App\Http\Controllers\Api\Guide\Donations;
 
 use App\Http\Controllers\Controller;
 use App\Models\Guide\Donation;
-use App\Services\FlittPaymentService;
-use Flitt\Result\Result;
+use App\Services\TbcPaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class DonationPaymentController extends Controller
 {
-    /**
-     * Process a donation payment
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    private TbcPaymentService $tbc;
+
+    public function __construct()
+    {
+        $this->tbc = new TbcPaymentService('donation');
+    }
+
+    // POST /api/set_donation/process
     public function processDonation(Request $request)
     {
         $request->validate(['amount' => 'required|numeric|min:1']);
 
         $authUser = \Auth::user();
-        $userId = null;
 
         if ($authUser) {
             $name        = $authUser->name;
@@ -49,13 +50,13 @@ class DonationPaymentController extends Controller
             $country     = $request->country;
             $age         = $request->age;
 
+            $userId = null;
             if ($email) {
                 $matched = \App\Models\User::where('email', $email)->first();
                 if ($matched) $userId = $matched->id;
             }
         }
 
-        // Create donation record
         $donation = Donation::create([
             'name'         => $name,
             'surname'      => $surname,
@@ -70,240 +71,159 @@ class DonationPaymentController extends Controller
             'user_id'      => $userId,
         ]);
 
-        // Generate Flitt checkout URL
-        $checkoutUrl = $this->generateFlittCheckoutUrl($donation);
+        $checkoutUrl = $this->initiateTbcPayment($donation);
 
         if ($checkoutUrl) {
             return response()->json([
-                'success' => true,
-                'message' => 'Redirect to payment',
+                'success'      => true,
+                'message'      => 'Redirect to payment',
                 'checkout_url' => $checkoutUrl,
-                'donation_id' => $donation->id,
-                'donator' => [
-                    'name' => $donation->name,
-                    'surname' => $donation->surname,
-                    'country' => $donation->country,
-                    'age' => $donation->age,
-                    'email' => $donation->email,
-                    'phone_number' => $donation->phone_number,
-                ],
-                'donation' => [
-                    'amount' => $donation->amount,
-                    'currency' => $donation->currency,
-                    'status' => $donation->status,
-                ],
+                'donation_id'  => $donation->id,
+                'donator'      => $this->donatorData($donation),
+                'donation'     => $this->donationData($donation),
             ]);
         }
 
-        // If no checkout URL generated, return donation details
         return response()->json([
-            'success' => true,
-            'message' => 'Donation created',
+            'success'     => true,
+            'message'     => 'Donation created',
             'donation_id' => $donation->id,
-            'donator' => [
-                'name' => $donation->name,
-                'surname' => $donation->surname,
-                'country' => $donation->country,
-                'age' => $donation->age,
-                'email' => $donation->email,
-                'phone_number' => $donation->phone_number,
-            ],
-            'donation' => [
-                'amount' => $donation->amount,
-                'currency' => $donation->currency,
-                'status' => $donation->status,
-            ],
-            'timestamp' => now()->toIso8601String(),
+            'donator'     => $this->donatorData($donation),
+            'donation'    => $this->donationData($donation),
         ]);
     }
 
-    /**
-     * Generate Flitt checkout URL for donation
-     *
-     * @param Donation $donation
-     * @return string|null
-     */
-    private function generateFlittCheckoutUrl(Donation $donation): ?string
+    private function initiateTbcPayment(Donation $donation): ?string
     {
-        // Initialize Flitt configuration
-        $this->initFlittConfig();
+        $siteBase = rtrim(env('APP_SSH', 'http://') . env('SITE_URL', 'climbing.ge'), '/');
 
-        $orderDescription = 'Donation';
+        $desc = 'Donation';
         if ($donation->name) {
-            $orderDescription = 'Donation from ' . $donation->name;
-            if ($donation->surname) {
-                $orderDescription .= ' ' . $donation->surname;
-            }
+            $desc = 'Donation from ' . $donation->name;
+            if ($donation->surname) $desc .= ' ' . $donation->surname;
         }
 
-        $checkoutData = [
-            'order_id' => $donation->id,
-            'order_desc' => $orderDescription,
-            'currency' => $donation->currency,
-            'amount' => $donation->getAmountInCents(),
-            'response_url' => config('app.frontend_url') . '/donation-success',
-            'server_callback_url' => route('donations.callback'),
-        ];
-
         try {
-            $response = \Flitt\Checkout::url($checkoutData);
-            $url = $response->getUrl();
+            $result = $this->tbc->createOrder([
+                'amount'            => ['currency' => 'GEL', 'total' => (float) $donation->amount],
+                'intent'            => 'CAPTURE',
+                'returnUrl'         => $siteBase . '/donation-success?donation_id=' . $donation->id,
+                'cancelUrl'         => $siteBase . '/donation-cancel?donation_id=' . $donation->id,
+                'callbackUrl'       => url('/api/set_donation/callback'),
+                'merchantPaymentId' => 'donation_' . $donation->id,
+                'lang'              => 'KA',
+            ]);
 
-            if ($url) {
-                // Update donation with Flitt order ID and URLs
+            $paymentUrl = TbcPaymentService::extractPaymentUrl($result);
+
+            if ($paymentUrl) {
                 $donation->update([
-                    'flitt_order_id' => $donation->id,
-                    'response_url' => $checkoutData['response_url'],
-                    'server_callback_url' => $checkoutData['server_callback_url'],
+                    'tbc_pay_id'     => $result['payId'],
+                    'tbc_pay_status' => $result['status'] ?? 'CREATED',
                 ]);
-
-                return $url;
+                return $paymentUrl;
             }
         } catch (\Exception $e) {
-            \Log::error('Flitt Checkout Error: ' . $e->getMessage());
+            Log::error('TBC Pay donation error: ' . $e->getMessage());
         }
 
         return null;
     }
 
-    /**
-     * Initialize Flitt configuration
-     */
-    private function initFlittConfig(): void
-    {
-        \Flitt\Configuration::setMerchantId(config('flitt.merchant_id'));
-        \Flitt\Configuration::setSecretKey(config('flitt.secret_key'));
-    }
-
-    /**
-     * Handle Flitt payment callback
-     *
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
+    // POST /api/set_donation/callback  (no auth — called by TBC server)
     public function callback(Request $request)
     {
-        $this->initFlittConfig();
+        $payId             = $request->input('PaymentId') ?? $request->input('payId');
+        $merchantPaymentId = $request->input('MerchantPaymentId') ?? $request->input('merchantPaymentId');
+
+        $donation = null;
+
+        if ($merchantPaymentId && str_starts_with((string) $merchantPaymentId, 'donation_')) {
+            $donationId = (int) substr($merchantPaymentId, 9);
+            $donation   = Donation::find($donationId);
+        }
+
+        if (!$donation && $payId) {
+            $donation = Donation::where('tbc_pay_id', $payId)->first();
+        }
+
+        if (!$donation) {
+            Log::warning('TBC donation callback: donation not found', $request->all());
+            return response()->json(['error' => 'Donation not found'], 404);
+        }
 
         try {
-            // Get callback data
-            $callbackData = $request->all();
-            
-            if (empty($callbackData)) {
-                $callbackData = json_decode(file_get_contents('php://input'), true) ?? [];
-            }
-
-            if (empty($callbackData)) {
-                return response()->json(['message' => 'No callback data received'], 400);
-            }
-
-            // Create Result object and validate signature
-            $result = new Result($callbackData, config('flitt.secret_key'));
-
-            if (!$result->isValid()) {
-                \Log::warning('Invalid Flitt callback signature', ['data' => $callbackData]);
-                return response()->json(['message' => 'Invalid signature'], 400);
-            }
-
-            $data = $result->getData();
-
-            // Find donation by order_id
-            $donation = Donation::find($data['order_id'] ?? null);
-
-            if (!$donation) {
-                \Log::error('Donation not found for callback', ['order_id' => $data['order_id'] ?? null]);
-                return response()->json(['message' => 'Donation not found'], 404);
-            }
-
-            // Update donation status based on payment result
-            if ($result->isApproved()) {
-                $donation->update([
-                    'status' => Donation::STATUS_PAID,
-                    'flitt_order_id' => $data['order_id'] ?? $donation->id,
-                ]);
-                \Log::info('Donation payment approved', ['donation_id' => $donation->id]);
-            } elseif ($result->isDeclined()) {
-                $donation->update([
-                    'status' => Donation::STATUS_DECLINED,
-                ]);
-                \Log::info('Donation payment declined', ['donation_id' => $donation->id]);
-            } elseif ($result->isExpired()) {
-                $donation->update([
-                    'status' => Donation::STATUS_EXPIRED,
-                ]);
-                \Log::info('Donation payment expired', ['donation_id' => $donation->id]);
-            } elseif ($result->isProcessing()) {
-                $donation->update([
-                    'status' => Donation::STATUS_PROCESSING,
-                ]);
-                \Log::info('Donation payment processing', ['donation_id' => $donation->id]);
-            }
-
-            return response()->json(['status' => 'ok']);
+            $tbcOrder  = $this->tbc->getOrder($donation->tbc_pay_id);
+            $tbcStatus = $tbcOrder['status'] ?? null;
         } catch (\Exception $e) {
-            \Log::error('Flitt callback error: ' . $e->getMessage());
-            return response()->json(['message' => 'Callback processing error'], 500);
+            Log::error('TBC donation callback: getOrder failed', ['error' => $e->getMessage()]);
+            return response()->json(['error' => 'Could not verify payment'], 500);
         }
+
+        $update = ['tbc_pay_status' => $tbcStatus];
+
+        if (TbcPaymentService::isSucceeded($tbcStatus)) {
+            $update['status'] = Donation::STATUS_PAID;
+        } elseif (TbcPaymentService::isFailed($tbcStatus)) {
+            $update['status'] = $tbcStatus === 'EXPIRED'
+                ? Donation::STATUS_EXPIRED
+                : Donation::STATUS_DECLINED;
+        }
+
+        $donation->update($update);
+
+        return response()->json(['ok' => true]);
     }
 
-    /**
-     * Check donation payment status
-     *
-     * @param int $id
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function status($id)
+    // GET /api/set_donation/status/{id}
+    public function status(int $id)
     {
         $donation = Donation::find($id);
 
         if (!$donation) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Donation not found',
-            ], 404);
+            return response()->json(['success' => false, 'message' => 'Donation not found'], 404);
         }
 
-        // Optionally check status with Flitt API
-        // $this->checkFlittStatus($donation);
+        if ($donation->tbc_pay_id && !$donation->isPaid() && !$donation->isFailed()) {
+            try {
+                $tbcOrder  = $this->tbc->getOrder($donation->tbc_pay_id);
+                $tbcStatus = $tbcOrder['status'] ?? null;
+
+                if ($tbcStatus && $tbcStatus !== $donation->tbc_pay_status) {
+                    $update = ['tbc_pay_status' => $tbcStatus];
+                    if (TbcPaymentService::isSucceeded($tbcStatus)) {
+                        $update['status'] = Donation::STATUS_PAID;
+                    } elseif (TbcPaymentService::isFailed($tbcStatus)) {
+                        $update['status'] = $tbcStatus === 'EXPIRED'
+                            ? Donation::STATUS_EXPIRED
+                            : Donation::STATUS_DECLINED;
+                    }
+                    $donation->update($update);
+                    $donation->refresh();
+                }
+            } catch (\Exception $e) {
+                Log::warning('TBC donation status check failed: ' . $e->getMessage());
+            }
+        }
 
         return response()->json([
-            'success' => true,
+            'success'     => true,
             'donation_id' => $donation->id,
-            'donator' => [
-                'name' => $donation->name,
-                'surname' => $donation->surname,
-                'country' => $donation->country,
-                'age' => $donation->age,
-                'email' => $donation->email,
-                'phone_number' => $donation->phone_number,
-            ],
-            'donation' => [
-                'amount' => $donation->amount,
-                'currency' => $donation->currency,
-                'status' => $donation->status,
-                'is_paid' => $donation->isPaid(),
-            ],
+            'donator'     => $this->donatorData($donation),
+            'donation'    => array_merge($this->donationData($donation), ['is_paid' => $donation->isPaid()]),
         ]);
     }
 
-    /**
-     * Optional: Check payment status with Flitt API
-     *
-     * @param Donation $donation
-     * @return void
-     */
+    // GET /api/get_donation/tbc_info  (bank transfer details for Georgian users)
     public function get_tbc_info(Request $request)
     {
-        $ip = $request->header('CF-Connecting-IP')
+        $ip = trim(explode(',', (string) (
+            $request->header('CF-Connecting-IP')
             ?? $request->header('X-Forwarded-For')
-            ?? $request->ip();
+            ?? $request->ip()
+        ))[0]);
 
-        // Take the first IP if comma-separated list
-        $ip = trim(explode(',', $ip)[0]);
-
-        $isGeorgian = $this->isGeorgianIp($ip);
-
-        if (!$isGeorgian) {
+        if (!$this->isGeorgianIp($ip)) {
             return response()->json(['allowed' => false]);
         }
 
@@ -318,7 +238,6 @@ class DonationPaymentController extends Controller
 
     private function isGeorgianIp(string $ip): bool
     {
-        // Allow localhost / private ranges in development
         if (in_array($ip, ['127.0.0.1', '::1']) || str_starts_with($ip, '192.168.') || str_starts_with($ip, '10.')) {
             return app()->environment('local', 'development');
         }
@@ -329,82 +248,30 @@ class DonationPaymentController extends Controller
                 return $response->json('countryCode') === 'GE';
             }
         } catch (\Exception $e) {
-            \Log::warning('Geo IP check failed: ' . $e->getMessage());
+            Log::warning('Geo IP check failed: ' . $e->getMessage());
         }
 
         return false;
     }
 
-    private function checkFlittStatus(Donation $donation): void
+    private function donatorData(Donation $d): array
     {
-        if (!$donation->flitt_order_id || $donation->isPaid() || $donation->isFailed()) {
-            return;
-        }
-
-        $this->initFlittConfig();
-
-        try {
-            $statusResponse = \Flitt\Order::status(['order_id' => $donation->flitt_order_id]);
-            
-            if ($statusResponse->isApproved()) {
-                $donation->update(['status' => Donation::STATUS_PAID]);
-            }
-        } catch (\Exception $e) {
-            \Log::error('Flitt status check error: ' . $e->getMessage());
-        }
+        return [
+            'name'         => $d->name,
+            'surname'      => $d->surname,
+            'country'      => $d->country,
+            'age'          => $d->age,
+            'email'        => $d->email,
+            'phone_number' => $d->phone_number,
+        ];
     }
 
-    /**
-     * Create donation order (alternative method)
-     *
-     * @param Request $request
-     * @param FlittPaymentService $flitt
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function create(Request $request, FlittPaymentService $flitt)
+    private function donationData(Donation $d): array
     {
-        $validated = $request->validate([
-            'amount' => 'required|numeric|min:1',
-            'name' => 'nullable|string|max:255',
-            'surname' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-            'age' => 'nullable|integer|min:1|max:150',
-            'email' => 'nullable|email|max:255',
-            'phone_number' => 'nullable|string|max:20',
-        ]);
-
-        $donation = Donation::create([
-            'name' => $validated['name'] ?? null,
-            'surname' => $validated['surname'] ?? null,
-            'country' => $validated['country'] ?? null,
-            'age' => $validated['age'] ?? null,
-            'email' => $validated['email'] ?? null,
-            'phone_number' => $validated['phone_number'] ?? null,
-            'amount' => $validated['amount'],
-            'currency' => 'GEL',
-            'status' => Donation::STATUS_PENDING,
-        ]);
-
-        $checkoutUrl = $flitt->createDonationCheckout($donation);
-
-        return response()->json([
-            'success' => true,
-            'checkout_url' => $checkoutUrl,
-            'donation_id' => $donation->id,
-            'donator' => [
-                'name' => $donation->name,
-                'surname' => $donation->surname,
-                'country' => $donation->country,
-                'age' => $donation->age,
-                'email' => $donation->email,
-                'phone_number' => $donation->phone_number,
-            ],
-            'donation' => [
-                'amount' => $donation->amount,
-                'currency' => $donation->currency,
-                'status' => $donation->status,
-            ],
-        ]);
+        return [
+            'amount'   => $d->amount,
+            'currency' => $d->currency,
+            'status'   => $d->status,
+        ];
     }
 }
-

@@ -12,8 +12,11 @@
                         </div>
                         <div class="col text-right">
                             <button class="btn btn-success" @click="create_order()" :disabled="create_order_loading || !cart_items.length">
-                                <i class="fa fa-check" aria-hidden="true"></i>
-                                {{ create_order_loading ? 'Placing order...' : 'Place order' }}
+                                <i v-if="!create_order_loading" :class="selected_payment === 'online payment' ? 'fa fa-credit-card' : 'fa fa-check'" aria-hidden="true"></i>
+                                <i v-else class="fa fa-spinner fa-spin" aria-hidden="true"></i>
+                                {{ create_order_loading
+                                    ? (selected_payment === 'online payment' ? 'Redirecting to payment...' : 'Placing order...')
+                                    : (selected_payment === 'online payment' ? 'Place order & Pay online' : 'Place order') }}
                             </button>
                         </div>
                     </div>
@@ -23,9 +26,13 @@
                     </div>
 
                     <div v-if="create_order_loading" class="row justify-content-center py-4">
-                        <div class="col-md-2 text-center">
+                        <div class="col-md-4 text-center">
                             <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i>
-                            <p class="mt-2">Placing your order...</p>
+                            <p class="mt-2">
+                                {{ selected_payment === 'online payment'
+                                    ? 'Creating order and redirecting to TBC Bank...'
+                                    : 'Placing your order...' }}
+                            </p>
                         </div>
                     </div>
 
@@ -59,10 +66,49 @@
                                 <span v-else class="text-muted">Loading address...</span>
                             </div>
                         </div>
+
                         <div class="col-md-6">
-                            <div class="alert alert-secondary">
-                                <h5><i class="fa fa-credit-card" aria-hidden="true"></i> Payment</h5>
-                                <strong>{{ $route.params.payment }}</strong>
+                            <div class="card border-0 shadow-sm">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-3">
+                                        <i class="fa fa-credit-card mr-2"></i> Payment method
+                                    </h5>
+
+                                    <div class="payment-options mb-3">
+                                        <label class="payment-option" :class="{ active: selected_payment === 'deliverd payment' }">
+                                            <input
+                                                type="radio"
+                                                value="deliverd payment"
+                                                v-model="selected_payment"
+                                                class="sr-only"
+                                            />
+                                            <i class="fa fa-truck mr-2 text-secondary"></i>
+                                            <span class="font-weight-bold">Pay on delivery</span>
+                                            <small class="d-block text-muted mt-1">Cash or card when you receive the order</small>
+                                        </label>
+
+                                        <label class="payment-option" :class="{ active: selected_payment === 'online payment' }">
+                                            <input
+                                                type="radio"
+                                                value="online payment"
+                                                v-model="selected_payment"
+                                                class="sr-only"
+                                            />
+                                            <span class="tbc-logo mr-2">TBC</span>
+                                            <span class="font-weight-bold">Pay online</span>
+                                            <small class="d-block text-muted mt-1">Secure card payment via TBC Bank</small>
+                                        </label>
+                                    </div>
+
+                                    <div v-if="selected_payment === 'online payment'" class="alert alert-info mb-0 py-2 small">
+                                        <i class="fa fa-lock mr-1"></i>
+                                        You will be redirected to TBC Bank secure payment page after clicking <strong>Place order</strong>.
+                                    </div>
+                                    <div v-else class="alert alert-warning mb-0 py-2 small">
+                                        <i class="fa fa-info-circle mr-1"></i>
+                                        Pay the courier when you receive your order.
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -146,6 +192,7 @@
                 shiping_country: {},
                 create_order_loading: false,
                 order_error: null,
+                selected_payment: 'deliverd payment',
             }
         },
         computed: {
@@ -157,9 +204,12 @@
             },
         },
         mounted() {
-            if (!this.$route.params.payment || !this.$route.params.adres) {
+            if (!this.$route.params.adres) {
                 this.go_back()
                 return
+            }
+            if (this.$route.params.payment) {
+                this.selected_payment = this.$route.params.payment
             }
             this.get_products_cart()
         },
@@ -231,10 +281,16 @@
                 this.create_order_loading = true
                 axios.post('set_order/create_order', {
                     order_product_list: this.cart_items,
-                    payment_tupe: this.$route.params.payment,
+                    payment_tupe: this.selected_payment,
                     adres: this.$route.params.adres,
                     shiping: this.shiping,
-                }).then(() => {
+                }).then(response => {
+                    const orderId = response.data && response.data.order_id
+                    if (this.selected_payment === 'online payment' && orderId) {
+                        return axios.post('payment/shop/initiate/' + orderId).then(payRes => {
+                            window.location.href = payRes.data.payment_url
+                        })
+                    }
                     this.$router.push({ name: 'confirmOrder', params: { order_decloration: true } })
                 }).catch(error => {
                     this.order_error = error.response && error.response.data && error.response.data.error
@@ -248,4 +304,41 @@
 
 <style scoped>
 .purchase { background-color: #fff; min-height: 500px; padding: 20px; }
+
+.payment-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.payment-option {
+    display: block;
+    padding: 14px 16px;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-bottom: 0;
+    transition: border-color 0.15s, background-color 0.15s;
+}
+
+.payment-option:hover {
+    border-color: #6c757d;
+    background-color: #f8f9fa;
+}
+
+.payment-option.active {
+    border-color: #007bff;
+    background-color: #e8f0fe;
+}
+
+.tbc-logo {
+    display: inline-block;
+    background: #00529b;
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.75rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
 </style>

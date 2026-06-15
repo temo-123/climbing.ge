@@ -21,6 +21,8 @@ class Donation extends Model
         'response_url',
         'server_callback_url',
         'user_id',
+        'tbc_pay_id',
+        'tbc_pay_status',
     ];
 
     public function user()
