@@ -206,9 +206,10 @@ class SectorController extends Controller
         $sport_routes = $sector->sport_routes()->with('review')->get();
         if ($sport_routes->isNotEmpty()) {
             $sport_route_info = $sport_routes->map(function ($route) {
-                $count = $route->review->count();
+                $published = $route->review->where('published', 1);
+                $count = $published->count();
                 $route['reviews_count'] = $count;
-                $route['reviews_stars'] = $count > 0 ? round($route->review->avg('stars'), 1) : null;
+                $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
                 return $route;
             });
         }
@@ -217,9 +218,10 @@ class SectorController extends Controller
         $boulder_routes = $sector->boulder_routes()->with('review')->get();
         if ($boulder_routes->isNotEmpty()) {
             $boulder_route_info = $boulder_routes->map(function ($route) {
-                $count = $route->review->count();
+                $published = $route->review->where('published', 1);
+                $count = $published->count();
                 $route['reviews_count'] = $count;
-                $route['reviews_stars'] = $count > 0 ? round($route->review->avg('stars'), 1) : null;
+                $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
                 return $route;
             });
         }
@@ -239,7 +241,8 @@ class SectorController extends Controller
                         );
                     }
                 }
-                $rev_count = $mtp->review->count();
+                $published_reviews = $mtp->review->where('published', 1);
+                $rev_count = $published_reviews->count();
                 array_push($mtp_info,
                     [
                         "mtp_id"            => $mtp['id'],
@@ -248,7 +251,7 @@ class SectorController extends Controller
                         "mtp_text"          => $mtp['text'],
                         "mtp_pitchs"        => $mtp_pitch_info,
                         "reviews_count"     => $rev_count,
-                        "reviews_stars"     => $rev_count > 0 ? round($mtp->review->avg('stars'), 1) : null,
+                        "reviews_stars"     => $rev_count > 0 ? round($published_reviews->avg('stars'), 1) : null,
                     ]
                 );
             }

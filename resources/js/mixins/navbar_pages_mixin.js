@@ -278,16 +278,6 @@ export default {
                                 ['show', 'summit'],
                             ]
                         },
-                        {
-                            name: "My ascents",
-                            route: "/my_ascents",
-                            permissions: []
-                        },
-                        {
-                            name: "My route reviews",
-                            route: "/my_routes_review",
-                            permissions: []
-                        },
                     ]
                 },
                 {

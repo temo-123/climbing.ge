@@ -233,7 +233,7 @@ class RouteController extends Controller
     public function get_route_for_modal(Request $request)
     {
         $route = route::where('id',strip_tags($request->route_id))->first();
-        $revs = $route->review;
+        $revs = $route->review->where('published', 1);
 
         $route['reviews_count'] = $revs->count();
 
@@ -298,9 +298,10 @@ class RouteController extends Controller
             ->with(['review', 'sector', 'sector.article'])
             ->get()
             ->map(function ($route) {
-                $reviewCount = $route->review->count();
-                $averageStars = $reviewCount > 0 
-                    ? round($route->review->avg('stars'), 1) 
+                $publishedReviews = $route->review->where('published', 1);
+                $reviewCount = $publishedReviews->count();
+                $averageStars = $reviewCount > 0
+                    ? round($publishedReviews->avg('stars'), 1)
                     : 0;
                 
 

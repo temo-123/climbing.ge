@@ -58,12 +58,19 @@ class MtpReitingController extends Controller
 
     public function edit_mtp_review(Request $request, $review_id)
     {
-        $review = Mtp_review::find($review_id);
-        if ($review) {
-            $review->stars = $request->input('stars');
-            $review->text  = $request->input('text');
-            $review->save();
+        $hasAdminPermission = PermissionService::authorize('comment', 'edit') === null;
+        if ($hasAdminPermission) {
+            $review = Mtp_review::find($review_id);
+        } else {
+            $review = Mtp_review::where('id', $review_id)->where('user_id', Auth::id())->first();
         }
+        if (!$review) return response()->json(['error' => 'Not found'], 404);
+        if (!$hasAdminPermission && $review->admin_hidden) {
+            return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
+        }
+        $review->stars = $request->input('stars');
+        $review->text  = $request->input('text');
+        $review->save();
         return response()->json(['success' => true]);
     }
 
@@ -71,6 +78,7 @@ class MtpReitingController extends Controller
     {
         $review = Mtp_review::where('id', $review_id)->where('user_id', Auth::id())->first();
         if (!$review) return response()->json(['error' => 'Not found'], 404);
+        if ($review->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $review->published = 0;
         $review->save();
         return response()->json(['success' => true]);
@@ -109,9 +117,11 @@ class MtpReitingController extends Controller
             $review = Mtp_review::where('id', $review_id)->where('user_id', Auth::id())->first();
         }
 
-        if ($review) {
-            $review->delete();
+        if (!$review) return response()->json(['success' => true]);
+        if (!$hasAdminPermission && $review->admin_hidden) {
+            return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         }
+        $review->delete();
         return response()->json(['success' => true]);
     }
 }

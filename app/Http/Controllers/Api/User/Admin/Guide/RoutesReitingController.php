@@ -155,6 +155,7 @@ class RoutesReitingController extends Controller
     public function user_hide_review($review_id) {
         $review = Sport_route_review::where('id', $review_id)->where('user_id', auth()->id())->first();
         if (!$review) return response()->json(['error' => 'Not found'], 404);
+        if ($review->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $review->published = 0;
         $review->save();
         return response()->json(['success' => true]);

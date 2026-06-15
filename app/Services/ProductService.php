@@ -75,7 +75,7 @@ class ProductService extends LocaleContentService
                         "max_price"=>$old_max_price,
                         "min_price"=>$old_min_price,
 
-                        "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
+                        "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks->where('published', 1)),
 
                         "new_max_price"=>$new_max_price,
                         "new_min_price"=>$new_min_price,
@@ -167,7 +167,7 @@ class ProductService extends LocaleContentService
                 "max_price"=>$old_max_price,
                 "min_price"=>$old_min_price,
 
-                "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
+                "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks->where('published', 1)),
 
                 "new_max_price"=>$new_max_price,
                 "new_min_price"=>$new_min_price,
@@ -186,7 +186,7 @@ class ProductService extends LocaleContentService
                 "max_price"=>(new static)->get_product_price($product['global_data'], 'max'),
                 "min_price"=>(new static)->get_product_price($product['global_data'], 'min'),
 
-                "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks),
+                "reviews"=>ReitingService::colculate_stars($product['global_data']->feedbacks->where('published', 1)),
 
                 'product_option' => $product_option,
                 'gallery_images' => $gallery_images,

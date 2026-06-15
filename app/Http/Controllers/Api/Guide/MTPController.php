@@ -29,8 +29,9 @@ class MTPController extends Controller
         $mtp = Mtp::with('review')->where('id', strip_tags($request->mtp_id))->first();
         $mtp_pitchs = $mtp->pitchs;
 
-        $reviews_count = $mtp->review->count();
-        $reviews_stars = $reviews_count > 0 ? round($mtp->review->avg('stars'), 1) : null;
+        $published_reviews = $mtp->review->where('published', 1);
+        $reviews_count = $published_reviews->count();
+        $reviews_stars = $reviews_count > 0 ? round($published_reviews->avg('stars'), 1) : null;
 
         return [
             'mtp'           => $mtp,

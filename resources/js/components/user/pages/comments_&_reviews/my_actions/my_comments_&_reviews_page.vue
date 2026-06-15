@@ -152,9 +152,19 @@ export default {
             }
         },
         on_edit_comment(id) {
+            const row = this.find_comment_row(id);
+            if (row?.comment?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This comment was hidden by an admin and cannot be modified.' });
+                return;
+            }
             this.$refs.comment_edit_modal.show_modal(id);
         },
         on_del_comment(id) {
+            const row = this.find_comment_row(id);
+            if (row?.comment?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This comment was hidden by an admin and cannot be modified.' });
+                return;
+            }
             if (confirm('Are you sure you want to delete this comment?')) {
                 axios.delete('/set_article/set_guide_comment/user_del_comment/' + id)
                     .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
@@ -183,9 +193,19 @@ export default {
             }
         },
         on_edit_feedback_modal(id) {
+            const row = this.find_feedback_row(id);
+            if (row?.feedback?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             this.$refs.feedback_edit_modal.show_modal(id);
         },
         on_del_feedback(id) {
+            const row = this.find_feedback_row(id);
+            if (row?.feedback?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             if (confirm('Are you sure you want to delete this feedback?')) {
                 axios.delete('/set_product/set_product_feedback/del_feedback/' + id)
                     .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));

@@ -79,6 +79,7 @@ class CommentController extends Controller
         $user = auth()->user();
         $comment = $user->article_comments()->find($comment_id);
         if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        if ($comment->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $comment->published = 0;
         $comment->save();
         return response()->json(['success' => true]);
@@ -100,6 +101,7 @@ class CommentController extends Controller
         $user = auth()->user();
         $comment = $user->article_comments()->find($comment_id);
         if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        if ($comment->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $comment->text = strip_tags($request->input('text'));
         $comment->save();
         return response()->json(['success' => true]);
@@ -110,6 +112,7 @@ class CommentController extends Controller
         $user = auth()->user();
         $comment = $user->article_comments()->find($comment_id);
         if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        if ($comment->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $comment->delete();
         return response()->json(['success' => true]);
     }

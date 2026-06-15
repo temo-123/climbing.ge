@@ -144,18 +144,33 @@ export default {
             }
         },
         del_review(id) {
+            const row = this.find_row(id, 1);
+            if (row?.review?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             if (confirm('Are you sure you want to delete this review?')) {
                 axios.delete('/set_route/set_route_review/del_route_review/' + id)
                     .then(() => this.load_data()).catch(e => console.log(e));
             }
         },
         del_mtp_review(id) {
+            const row = this.find_row(id, 2);
+            if (row?.review?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             if (confirm('Are you sure you want to delete this review?')) {
                 axios.delete('/set_mtp_review/del_mtp_review/' + id)
                     .then(() => this.load_data()).catch(e => console.log(e));
             }
         },
         edit_review_modal(id) {
+            const row = this.find_row(id, 1);
+            if (row?.review?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             this.$refs.review_edit_modal.show_modal(id);
         },
         show_review_modal(id) {
@@ -167,6 +182,11 @@ export default {
             if (row) this.$refs.mtp_review_show_modal.show_modal(row);
         },
         edit_mtp_review_modal_fn(id) {
+            const row = this.find_row(id, 2);
+            if (row?.review?.admin_hidden) {
+                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                return;
+            }
             this.$refs.mtp_review_edit_modal.show_modal(id);
         },
     },
