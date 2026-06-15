@@ -70,8 +70,63 @@ class CommentController extends Controller
         $data = $request['data'];
 
         $actyve_comment = Comment::where("id", '=', $data['comment_id'])->first();
-        
+
         return CommentService::comment_hide($data['complaint'], date("Y-m-d H:I:s"), $data['email'], $actyve_comment->id, $data['comment_id'], Comment::class, Article::class, 'article', 'comment');
+    }
+
+    public function user_hide_comment($comment_id)
+    {
+        $user = auth()->user();
+        $comment = $user->article_comments()->find($comment_id);
+        if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        $comment->published = 0;
+        $comment->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function user_show_comment($comment_id)
+    {
+        $user = auth()->user();
+        $comment = $user->article_comments()->find($comment_id);
+        if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        if ($comment->admin_hidden) return response()->json(['error' => 'Hidden by admin', 'admin_hidden' => true], 403);
+        $comment->published = 1;
+        $comment->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function user_edit_comment(Request $request, $comment_id)
+    {
+        $user = auth()->user();
+        $comment = $user->article_comments()->find($comment_id);
+        if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        $comment->text = strip_tags($request->input('text'));
+        $comment->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function user_del_comment($comment_id)
+    {
+        $user = auth()->user();
+        $comment = $user->article_comments()->find($comment_id);
+        if (!$comment) return response()->json(['error' => 'Not found'], 404);
+        $comment->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function admin_hide_comment(Request $request, $comment_id)
+    {
+        if ($auth = PermissionService::authorize('comment', 'edit')) return $auth;
+        $comment = Comment::find(strip_tags($comment_id));
+        if ($comment) {
+            $comment->published = 0;
+            $comment->admin_hidden = 1;
+            $comment->hidden_reason = $request->input('hidden_reason');
+            $comment->hidden_reason_text = $request->input('hidden_reason_text');
+            $comment->deleted_reason = $request->input('hidden_reason');
+            $comment->save();
+        }
+        return response()->json(['success' => true]);
     }
 
     public function get_actyve_comment($comment_id)

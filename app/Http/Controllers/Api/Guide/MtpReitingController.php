@@ -18,6 +18,13 @@ class MtpReitingController extends Controller
         return $reviews;
     }
 
+    public function get_user_mtp_reviews()
+    {
+        return Mtp_review::where('user_id', Auth::id())->with('mtp')->get()->map(function ($r) {
+            return ['review' => $r, 'mtp' => $r->mtp];
+        });
+    }
+
     public function create_mtp_review(Request $request, $mtp_id)
     {
         $user = $request->user();

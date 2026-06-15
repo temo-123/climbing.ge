@@ -31,6 +31,11 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::post('/make_decision', 'make_decision');
 
             Route::post('/hide_comment/{comment_id}', 'hide_comment');
+            Route::post('/admin_hide_comment/{comment_id}', 'admin_hide_comment');
+            Route::post('/user_hide_comment/{comment_id}', 'user_hide_comment');
+            Route::post('/user_show_comment/{comment_id}', 'user_show_comment');
+            Route::post('/user_edit_comment/{comment_id}', 'user_edit_comment');
+            Route::delete('/user_del_comment/{comment_id}', 'user_del_comment');
 
             Route::delete('/del_comment/{comment_id}', 'del_comment');
         });
@@ -161,13 +166,22 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
 
             Route::post('/create_route_review/{route_id}', 'create_route_review');
             Route::post('/edit_route_review/{review_id}', 'edit_route_review');
+            Route::post('/hide_route_review/{review_id}', 'hide_route_review');
+            Route::post('/user_hide_review/{review_id}', 'user_hide_review');
+            Route::post('/user_show_review/{review_id}', 'user_show_review');
 
             Route::delete('/del_route_review/{review_id}', 'del_route_review');
         });
     });
 
     Route::controller(MtpReitingController::class)->prefix('set_mtp_review')->group(function () {
+        Route::get('/get_all_mtp_reviews_admin', 'get_all_mtp_reviews_admin');
+        Route::get('/get_actyve_mtp_review/{review_id}', 'get_actyve_mtp_review');
         Route::post('/create_mtp_review/{mtp_id}', 'create_mtp_review');
+        Route::post('/edit_mtp_review/{review_id}', 'edit_mtp_review');
+        Route::post('/hide_mtp_review/{review_id}', 'hide_mtp_review');
+        Route::post('/user_hide_mtp_review/{review_id}', 'user_hide_mtp_review');
+        Route::post('/user_show_mtp_review/{review_id}', 'user_show_mtp_review');
         Route::delete('/del_mtp_review/{review_id}', 'del_mtp_review');
     });
 

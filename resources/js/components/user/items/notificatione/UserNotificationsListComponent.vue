@@ -24,7 +24,7 @@
                         <span v-else-if="is_email_sending_loader">
                             <div class="row justify-content-center" >
                                 <div class="col-md-3">
-                                    <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                                    <img :src="'/images/site_img/loading.gif'" alt="loading">
                                     <p class="text-center">Pless wait!</p>
                                 </div>
                             </div>

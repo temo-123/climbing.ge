@@ -63,8 +63,10 @@ const routes = [
             { path: 'users_list', name: 'usersList', component: load('usersListPageComponent'), meta: {title: 'user page', permissions: [['show', 'user']]}},
 
             { path: 'comments_and_reviews', name: 'commentsAndReviewsList', component: load('comments_&_reviews/all_actions/comments_&_reviews_page'), meta: {title: 'user page', permissions: [['show', 'comment']]}},
+            { path: 'all_routes_reviews', name: 'allRoutesReviews', component: load('comments_&_reviews/all_actions/all_routes_reviews_page'), meta: {title: 'user page', permissions: [['show', 'comment']]}},
 
             { path: 'my_comments_and_reviews', name: 'myCommentsAndReviewsList', component: load('comments_&_reviews/my_actions/my_comments_&_reviews_page'), meta: {title: 'user page'}},
+            { path: 'my_routes_review', name: 'myRoutesReview', component: load('comments_&_reviews/my_actions/my_routes_review_page'), meta: {title: 'user page'}},
 
             { path: 'favorite_films', name: 'favoriteFilmsPage', component: load('favorites/FavoriteFilmsPageComponent'), meta: {title: 'user page'}},
             { path: 'my_favorite_outdoor_area', name: 'favoriteOutdoorArea', component: load('favorites/FavoriteOutdoorAreaPageComponent'), meta: {title: 'user page'}},

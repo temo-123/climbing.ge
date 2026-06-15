@@ -21,7 +21,7 @@
                     <option v-for="sector in filtred_sectors" :key="sector.id" :value="{'id': sector.id, 'name': sector.name}">{{ sector.name }}</option>
                 </select>
 
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading" v-if="sectors_loading">
+                <img :src="'/images/site_img/loading.gif'" alt="loading" v-if="sectors_loading">
             </form>
         </div>
         <div slot="modal-footer">

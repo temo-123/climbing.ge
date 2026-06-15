@@ -95,7 +95,7 @@
 
         <div class="row" v-else-if="is_mail_sending && !fatal_error">
             <div class="text-center loader_margin">
-                <img :src="'../../../../../../public/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
                 <p>Pless wait!</p>
             </div>
         </div>

@@ -4,7 +4,8 @@
             title="Edit review"
             @close="close_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
-            :saveButton="{ visible: true, onClick: edit_route_review }"
+            :saveButton="{ visible: true }"
+            @save="edit_route_review"
             :cancelButton="{
                 title: 'Close',
                 btnClass: { 'btn btn-primary': true },
@@ -14,7 +15,7 @@
                 <div class="container">  
                     <div class="row justify-content-center" v-show="is_loading">
                         <div class="col-md-4">
-                            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                            <img :src="'/images/site_img/loading.gif'" alt="loading">
                         </div>
                     </div>
 
@@ -106,7 +107,7 @@ export default {
         get_editing_review(){
             this.is_loading = true
             axios
-                .get("/get_route_review/get_actyve_review/" + this.route_id)
+                .get("/set_route/set_route_review/get_actyve_review/" + this.route_id)
                 .then((response) => {
                     this.data = {
                         stars: response.data.stars,
@@ -122,9 +123,10 @@ export default {
         edit_route_review() {
             this.is_loading = true
             axios
-                .post("/set_route_review/edit_route_review/" + this.route_id, this.data)
+                .post("/set_route/set_route_review/edit_route_review/" + this.route_id, this.data)
                 .then((response) => {
-                    this.close_route_review_modal(this.route_id)
+                    this.$emit('restart');
+                    this.close_modal();
                 })
                 .catch((error) => {
                 })

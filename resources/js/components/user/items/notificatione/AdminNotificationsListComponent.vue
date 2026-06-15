@@ -71,7 +71,7 @@
             <div>
                 <div class="row justify-content-center" v-if="decision_loader">
                     <div class="col-md-4">
-                        <img :src="'../public/images/site_img/loading.gif'" alt="loading">
+                        <img :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
 

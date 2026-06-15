@@ -196,6 +196,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
     Route::controller(MtpReitingController::class)->prefix('get_mtp_review')->group(function () {
         Route::get('/get_all_mtp_reviews/{mtp_id}', 'get_all_mtp_reviews');
+        Route::get('/get_user_mtp_reviews', 'get_user_mtp_reviews');
     });
 
     Route::controller(\App\Http\Controllers\Api\Guide\Donations\DonationPaymentController::class)->prefix('set_donation')->group( function() {

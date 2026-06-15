@@ -16,6 +16,7 @@
             <router-link :to="'/purchases'" class="nb-dropdown-item">{{ $t('user.menu.my purchases') }}</router-link>
             <router-link :to="'/my_ascents'" class="nb-dropdown-item">{{ $t('user.menu.my ascents') }}</router-link>
             <router-link :to="'/my_donations'" class="nb-dropdown-item">{{ $t('user.menu.my donations') }}</router-link>
+            <router-link :to="'/my_routes_review'" class="nb-dropdown-item">{{ $t('user.menu.my routes reviews') }}</router-link>
             <div class="nb-dropdown-divider"></div>
             <a class="nb-dropdown-item" href="#" @click.prevent="logout">{{ $t('user.menu.logout') }}</a>
         </div>

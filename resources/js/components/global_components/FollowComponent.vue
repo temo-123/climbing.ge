@@ -6,7 +6,7 @@
         <div class="form-group row">
 
             <div class="col-md-10" v-if="loading">
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
 
             <div class="col-md-10" v-if="!loading">

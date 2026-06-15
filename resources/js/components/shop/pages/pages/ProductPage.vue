@@ -2,7 +2,7 @@
     <div>
         <div class="row" v-if="is_loading">
             <div class="col-md-4">
-                <img :src="'../../../../../../../../public/images/site_img/loading.gif'" alt="loading" class="article_loader">
+                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
         <div class="product-detail" v-if="!is_loading">

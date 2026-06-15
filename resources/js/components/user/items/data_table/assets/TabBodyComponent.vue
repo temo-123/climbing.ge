@@ -1,7 +1,7 @@
 <template>
 <tbody v-if="tab_data && tab_data.data">
         <!-- Checkbox column -->
-        <tr v-for="(row, rowIndex) in tab_data.data" :key="row.id || rowIndex">
+        <tr v-for="(row, rowIndex) in tab_data.data" :key="row.id || rowIndex" :class="row._row_class || ''">
             <td style="text-align: center">
                 <input
                     type="checkbox"
@@ -17,6 +17,12 @@
                     :data_item_prop="cellConfig"
                     :data_prop="row"
                 />
+                <!-- Stars cell -->
+                <span v-else-if="cellConfig[0] === 'stars'">
+                    <i v-for="n in 5" :key="n"
+                       :class="n <= getNestedValue(row, cellConfig[1]) ? 'fa fa-star rating-color' : 'fa fa-star'"
+                       aria-hidden="true"></i>
+                </span>
                 <!-- Action function cell -->
                 <button
                     v-else-if="cellConfig[0] === 'action_fun_id'"
@@ -125,6 +131,10 @@ export default {
                 this.$emit('action_for_perent_component', [actionName, id])
             }
         },
+        getNestedValue(row, path) {
+            if (!Array.isArray(path)) return 0;
+            return path.reduce((acc, key) => acc != null ? acc[key] : 0, row) || 0;
+        },
         send_action_to_tab_with_option(emit_fun, sending_id) {
             this.$emit('action_for_perent_component_with_option', [emit_fun, sending_id]);
         },
@@ -161,5 +171,8 @@ export default {
 .fa_exclamation_color{
     color: orange;
     font-size: 250%;
+}
+.rating-color {
+    color: #fbc634;
 }
 </style>

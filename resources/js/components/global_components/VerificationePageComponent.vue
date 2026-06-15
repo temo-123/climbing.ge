@@ -2,7 +2,7 @@
     <span>
         <div class="row" v-if="is_loading">
             <div class="col-md-4 text-center loader_margin">
-                <img :src="'../../../../../../public/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
                 <p>Pless wait!</p>
             </div>
         </div>

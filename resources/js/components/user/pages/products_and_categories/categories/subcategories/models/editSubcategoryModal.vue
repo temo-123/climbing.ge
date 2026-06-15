@@ -9,7 +9,7 @@
         >
         <div>
             <span v-show="is_loading">
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" alt="loading">
             </span>
             <span v-show="!is_loading">
                 <form ref="editingForm" id="slider_iamge_edit_form" v-on:submit.prevent="edit_image(data.id)">

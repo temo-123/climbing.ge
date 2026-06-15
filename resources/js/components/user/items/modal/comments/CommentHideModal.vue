@@ -4,7 +4,7 @@
             title="Show comment"
             @close="close_model()">
         <div v-show="is_loading" class="text-center">
-            <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+            <img :src="'/images/site_img/loading.gif'" alt="loading">
         </div>
 
         <div v-show="!is_loading">
@@ -38,7 +38,7 @@
             <div class="container" v-show="is_loading">
                 <div class="row justify-content-center">
                     <div class="col-md-4">
-                        <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                        <img :src="'/images/site_img/loading.gif'" alt="loading">
                     </div>
                 </div>
             </div>

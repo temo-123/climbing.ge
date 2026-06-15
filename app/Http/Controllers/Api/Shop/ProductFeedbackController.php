@@ -95,8 +95,68 @@ class ProductFeedbackController extends Controller
         return Product_feedback::where('id',strip_tags($feedback_id))->first();
     }
 
-    public function confirm_email(Request $request) 
-    {        
+    public function hide_feedback(Request $request, $feedback_id)
+    {
+        $feedback = Product_feedback::find($feedback_id);
+        if ($feedback) {
+            $data = $request->input('data', []);
+            $feedback->published = 0;
+            $feedback->deleted_reason = $data['complaint'] ?? 'hidden';
+            $feedback->save();
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function admin_hide_feedback(Request $request, $feedback_id)
+    {
+        $feedback = Product_feedback::find($feedback_id);
+        if ($feedback) {
+            $feedback->published = 0;
+            $feedback->admin_hidden = 1;
+            $feedback->hidden_reason = $request->input('hidden_reason');
+            $feedback->hidden_reason_text = $request->input('hidden_reason_text');
+            $feedback->deleted_reason = $request->input('hidden_reason');
+            $feedback->save();
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function user_hide_feedback($feedback_id)
+    {
+        $user = auth()->user();
+        $feedback = $user->product_feedbacks()->find($feedback_id);
+        if (!$feedback) return response()->json(['error' => 'Not found'], 404);
+        $feedback->published = 0;
+        $feedback->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function user_show_feedback($feedback_id)
+    {
+        $user = auth()->user();
+        $feedback = $user->product_feedbacks()->find($feedback_id);
+        if (!$feedback) return response()->json(['error' => 'Not found'], 404);
+        if ($feedback->admin_hidden) {
+            return response()->json(['error' => 'Hidden by admin', 'admin_hidden' => true], 403);
+        }
+        $feedback->published = 1;
+        $feedback->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function edit_feedback(Request $request, $feedback_id)
+    {
+        $feedback = Product_feedback::find($feedback_id);
+        if ($feedback) {
+            if ($request->has('stars')) $feedback->stars = $request->input('stars');
+            if ($request->has('text'))  $feedback->text  = $request->input('text');
+            $feedback->save();
+        }
+        return response()->json(['success' => true]);
+    }
+
+    public function confirm_email(Request $request)
+    {
         return CommentService::confirm_email($request->email);
     }
 }

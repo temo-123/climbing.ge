@@ -31,7 +31,7 @@
 
                 <td>
                     <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="$emit('edit_option_modal', option.id)">Edit</button>
-                    <img v-if="is_loading_editing_modal" :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
+                    <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                 </td>
                 <td>
                     <button type="submit" class="btn btn-danger" @click="$emit('del_option', option.id)">Delete</button>

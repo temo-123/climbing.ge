@@ -8,7 +8,7 @@
     >
         <div>
             <span v-show="is_loading">
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" alt="loading">
             </span>
             <span v-show="!is_loading">
                 <form ref="slider_image_add_form" id="slider_image_add_form" v-on:submit.prevent="add_image">

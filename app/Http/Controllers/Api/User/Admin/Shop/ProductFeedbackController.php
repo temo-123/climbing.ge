@@ -19,6 +19,20 @@ use App\Services\PermissionService;
 
 class ProductFeedbackController extends Controller
 {
+    public function get_user_feedbacks()
+    {
+        $user = auth()->user();
+        $feedbacks = [];
+        foreach ($user->product_feedbacks ?? [] as $feedback) {
+            $feedbacks[] = [
+                'feedback'       => $feedback,
+                'locale_product' => $feedback->product->us_product,
+                'global_product' => $feedback->product,
+            ];
+        }
+        return $feedbacks;
+    }
+
     public function get_all_feedbacks()
     {
         if ($auth = PermissionService::authorize('product_feedback', 'show')) return $auth;

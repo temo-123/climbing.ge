@@ -2,7 +2,7 @@
         <div class="col-md-12">
             <div v-if="is_loading_product" class="row justify-content-center">
                 <div class="col-md-4">
-                    <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+                    <img :src="'/images/site_img/loading.gif'" alt="loading">
                 </div>
             </div>
 

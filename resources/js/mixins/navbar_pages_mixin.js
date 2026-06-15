@@ -283,6 +283,11 @@ export default {
                             route: "/my_ascents",
                             permissions: []
                         },
+                        {
+                            name: "My route reviews",
+                            route: "/my_routes_review",
+                            permissions: []
+                        },
                     ]
                 },
                 {
@@ -334,6 +339,13 @@ export default {
                         {
                             name: "All comments",
                             route: "/comments_and_reviews",
+                            permissions: [
+                                ['show', 'comment'],
+                            ]
+                        },
+                        {
+                            name: "All routes reviews",
+                            route: "/all_routes_reviews",
                             permissions: [
                                 ['show', 'comment'],
                             ]

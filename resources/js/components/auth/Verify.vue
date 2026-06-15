@@ -2,7 +2,7 @@
   <div class="verify text-center mt-5">
     <div v-if="status === 'loading'">
       <h2>Verifying your email...</h2>
-      <img :src="'../../../../../../public/images/site_img/loading.gif'" alt="loading">
+      <img :src="'/images/site_img/loading.gif'" alt="loading">
     </div>
 
     <div v-else-if="status === 'success'" class="card mx-auto" style="max-width: 480px;">

@@ -10,7 +10,7 @@
     >
         <div>
             <span v-show="is_loading">
-                <img :src="'../../../public/images/site_img/loading.gif'" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" alt="loading">
             </span>
             <div class="preview_wrap" v-show="!is_loading">
                 <img :src="image_path_prop + modal_image.image" :alt="modal_image.title" class="preview_img">

@@ -152,6 +152,35 @@ class RoutesReitingController extends Controller
         $saved = $review->update($data); 
     }
 
+    public function user_hide_review($review_id) {
+        $review = Sport_route_review::where('id', $review_id)->where('user_id', auth()->id())->first();
+        if (!$review) return response()->json(['error' => 'Not found'], 404);
+        $review->published = 0;
+        $review->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function user_show_review($review_id) {
+        $review = Sport_route_review::where('id', $review_id)->where('user_id', auth()->id())->first();
+        if (!$review) return response()->json(['error' => 'Not found'], 404);
+        if ($review->admin_hidden) return response()->json(['error' => 'Hidden by admin', 'admin_hidden' => true], 403);
+        $review->published = 1;
+        $review->save();
+        return response()->json(['success' => true]);
+    }
+
+    public function hide_route_review(Request $request, $review_id) {
+        $review = Sport_route_review::find(strip_tags($review_id));
+        if ($review) {
+            $review->published = 0;
+            $review->admin_hidden = 1;
+            $review->hidden_reason = $request->input('hidden_reason');
+            $review->hidden_reason_text = $request->input('hidden_reason_text');
+            $review->save();
+        }
+        return response()->json(['success' => true]);
+    }
+
     public function del_route_review($review_id) {
         $auth = PermissionService::authorize('routes_rewiew', 'del');
         if ($auth) return $auth;

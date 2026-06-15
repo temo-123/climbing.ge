@@ -100,6 +100,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/make_decision', 'make_decision');
 
             Route::post('/hide_feedback/{feedback_id}', 'hide_feedback');
+            Route::post('/admin_hide_feedback/{feedback_id}', 'admin_hide_feedback');
+            Route::post('/user_hide_feedback/{feedback_id}', 'user_hide_feedback');
+            Route::post('/user_show_feedback/{feedback_id}', 'user_show_feedback');
+            Route::post('/edit_feedback/{feedback_id}', 'edit_feedback');
 
             Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
         });
