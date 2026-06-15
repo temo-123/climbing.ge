@@ -21,105 +21,157 @@
         </div>
         <div class="row">
             <div class="col-md-6">
-                <img
+                <span
                     v-if="sector.sector.in_shade_after_10"
-                    class="sun_svg"
-                    :src="'/images/svg/in shade after 10.00 am.svg'"
-                    alt="In shade after 10.00 am"
-                    title="In shade after 10.00 am"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'shade10' }"
+                    @mouseenter="activeTooltip = 'shade10'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'shade10' ? null : 'shade10'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in shade after 10.00 am.svg'" alt="In shade after 10:00 am" />
+                    <span class="tip-text">In shade after 10:00 am</span>
+                </span>
+                <span
                     v-if="sector.sector.in_shade_after_15"
-                    class="sun_svg"
-                    :src="'/images/svg/in shade after 15.00 pm.svg'"
-                    alt="In shade after 15.00 pm"
-                    title="In shade after 15.00 pm"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'shade15' }"
+                    @mouseenter="activeTooltip = 'shade15'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'shade15' ? null : 'shade15'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in shade after 15.00 pm.svg'" alt="In shade after 15:00 pm" />
+                    <span class="tip-text">In shade after 15:00 pm</span>
+                </span>
+                <span
                     v-if="sector.sector.in_the_shade_befornoon"
-                    class="sun_svg"
-                    :src="'/images/svg/in shade befor noon.svg'"
-                    alt="In shade befor noon"
-                    title="In shade befor noon"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'shadeNoon' }"
+                    @mouseenter="activeTooltip = 'shadeNoon'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'shadeNoon' ? null : 'shadeNoon'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in shade befor noon.svg'" alt="In shade before noon" />
+                    <span class="tip-text">In shade before noon</span>
+                </span>
+                <span
                     v-if="sector.sector.in_the_shade_afternoon"
-                    class="sun_svg"
-                    :src="'/images/svg/in shade in the afternoon.svg'"
-                    alt="In shade in the afternoon"
-                    title="In shade in the afternoon"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'shadeAfternoon' }"
+                    @mouseenter="activeTooltip = 'shadeAfternoon'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'shadeAfternoon' ? null : 'shadeAfternoon'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in shade in the afternoon.svg'" alt="In shade in the afternoon" />
+                    <span class="tip-text">In shade in the afternoon</span>
+                </span>
+                <span
                     v-if="sector.sector.all_day_in_shade"
-                    class="sun_svg"
-                    :src="'/images/svg/in the shade whole day.svg'"
-                    alt="In the shade whole day"
-                    title="In the shade whole day"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'shadeAllDay' }"
+                    @mouseenter="activeTooltip = 'shadeAllDay'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'shadeAllDay' ? null : 'shadeAllDay'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in the shade whole day.svg'" alt="In the shade whole day" />
+                    <span class="tip-text">In the shade whole day</span>
+                </span>
+                <span
                     v-if="sector.sector.all_day_in_sun"
-                    class="sun_svg"
-                    :src="'/images/svg/in the sun the whole day.svg'"
-                    alt="In the sun the whole day"
-                    title="In the sun the whole day"
-                />
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'sunAllDay' }"
+                    @mouseenter="activeTooltip = 'sunAllDay'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'sunAllDay' ? null : 'sunAllDay'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/in the sun the whole day.svg'" alt="In the sun the whole day" />
+                    <span class="tip-text">In the sun the whole day</span>
+                </span>
             </div>
             <div class="col-md-6">
-                <img
+                <span
                     v-if="sector.sector.roof"
-                    class="relief_svg"
-                    :src="'/images/svg/roof.svg'"
-                    alt="Roof"
-                    title="Roof"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'roof' }"
+                    @mouseenter="activeTooltip = 'roof'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'roof' ? null : 'roof'"
+                >
+                    <img class="relief_svg" :src="'/images/svg/roof.svg'" alt="Roof" />
+                    <span class="tip-text">Roof</span>
+                </span>
+                <span
                     v-if="sector.sector.overhang"
-                    class="relief_svg"
-                    :src="'/images/svg/overhang.svg'"
-                    alt="Overhang"
-                    title="Overhang"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'overhang' }"
+                    @mouseenter="activeTooltip = 'overhang'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'overhang' ? null : 'overhang'"
+                >
+                    <img class="relief_svg" :src="'/images/svg/overhang.svg'" alt="Overhang" />
+                    <span class="tip-text">Overhang</span>
+                </span>
+                <span
                     v-if="sector.sector.vertical"
-                    class="relief_svg"
-                    :src="'/images/svg/vertical.svg'"
-                    alt="Vertical"
-                    title="Vertical"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'vertical' }"
+                    @mouseenter="activeTooltip = 'vertical'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'vertical' ? null : 'vertical'"
+                >
+                    <img class="relief_svg" :src="'/images/svg/vertical.svg'" alt="Vertical" />
+                    <span class="tip-text">Vertical</span>
+                </span>
+                <span
                     v-if="sector.sector.slabby"
-                    class="relief_svg"
-                    :src="'/images/svg/slabby.svg'"
-                    alt="Slabby"
-                    title="Slabby"
-                />
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'slabby' }"
+                    @mouseenter="activeTooltip = 'slabby'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'slabby' ? null : 'slabby'"
+                >
+                    <img class="relief_svg" :src="'/images/svg/slabby.svg'" alt="Slabby" />
+                    <span class="tip-text">Slabby</span>
+                </span>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6">
-                <img
+                <span
                     v-if="sector.sector.for_family"
-                    class="sun_svg"
-                    :src="'/images/svg/for family.svg'"
-                    alt="This sector recomendidi family climbing. It`s seifty for kids"
-                    title="This sector recomendidi family climbing. It`s seifty for kids"
-                />
-                <img
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'family' }"
+                    @mouseenter="activeTooltip = 'family'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'family' ? null : 'family'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/for family.svg'" alt="For family" />
+                    <span class="tip-text">Recommended for family climbing. Safe for kids</span>
+                </span>
+                <span
                     v-if="sector.sector.for_kids"
-                    class="sun_svg"
-                    :src="'/images/svg/for kids.svg'"
-                    alt="This sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing"
-                    title="This sector recomendidi for kids. It`a seifty for kids and poseble to kid climbing"
-                />
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'kids' }"
+                    @mouseenter="activeTooltip = 'kids'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'kids' ? null : 'kids'"
+                >
+                    <img class="sun_svg" :src="'/images/svg/for kids.svg'" alt="For kids" />
+                    <span class="tip-text">Recommended for kids. Safe and possible for kids to climb</span>
+                </span>
             </div>
             <div class="col-md-6" v-if="sector.sector.wolking_time">
                 <span class="sector_walking_time"> ~ {{ sector.sector.wolking_time }}.</span>
-                <img
-                    class="relief_svg"
-                    :src="'/images/svg/walking.svg'"
-                    alt="Wolging time from parking to climbing sector."
-                    title="Wolging time from parking to climbing sector."
-                />
+                <span
+                    class="icon-tip"
+                    :class="{ 'tip-open': activeTooltip === 'walking' }"
+                    @mouseenter="activeTooltip = 'walking'"
+                    @mouseleave="activeTooltip = null"
+                    @click.stop="activeTooltip = activeTooltip === 'walking' ? null : 'walking'"
+                >
+                    <img class="relief_svg" :src="'/images/svg/walking.svg'" alt="Walking time" />
+                    <span class="tip-text">~ {{ sector.sector.wolking_time }} walk from parking to sector</span>
+                </span>
             </div>
         </div>
 
@@ -432,7 +484,7 @@ export default {
 
     data: function () {
         return {
-            // climbing_sector: [],
+            activeTooltip: null,
 
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
@@ -443,10 +495,17 @@ export default {
         };
     },
     mounted() {
-        // this.get_spot_rocks_images();
+        document.addEventListener('click', this.closeTooltip);
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.closeTooltip);
     },
 
     methods: {
+        closeTooltip() {
+            this.activeTooltip = null;
+        },
+
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
         },
@@ -613,6 +672,44 @@ h2 {
 
 
 
+
+.icon-tip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tip-text {
+    display: none;
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(30, 30, 30, 0.88);
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    z-index: 300;
+    pointer-events: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tip-text::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: rgba(30, 30, 30, 0.88);
+}
+
+.icon-tip:hover .tip-text,
+.icon-tip.tip-open .tip-text {
+    display: block;
+}
 
 /* SEO column — in DOM for Google, hidden from users */
 .route-seo-col {

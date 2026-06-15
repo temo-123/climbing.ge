@@ -91,7 +91,7 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-4" v-if="user.length == 0">
                                 <button type="button" class="btn btn-primary" @click="$bus.$emit('open-login-modal', get_user_info)">
                                     <i class="fa fa-sign-in"></i>
                                 </button>
