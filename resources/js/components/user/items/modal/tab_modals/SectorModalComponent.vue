@@ -3,8 +3,9 @@
         v-model="is_show_sector_modal"
         title="Sector"
         @close="close_sector_model()"
+        @save="save_routes_sequence"
         :modal-class="{ [SectorModalClass]: true }"
-        :saveButton="{ visible: true, title: 'Save sequence', onClick: save_routes_sequence }"
+        :saveButton="{ visible: true, title: 'Save sequence' }"
         :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
 
         <div v-show="is_show_sector_modal" class="root">

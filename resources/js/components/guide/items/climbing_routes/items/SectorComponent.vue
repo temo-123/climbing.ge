@@ -2,6 +2,7 @@
     <div class="sector-block">
         <div class="row align-items-start">
             <div class="col-10 col-md-10">
+                <!-- <h2 :id="'sector-' + sector.sector.id"> -->
                 <h2 :id="'sector-' + sector.sector.id">
                     {{ $t("guide.article.title.sector name") }} —
                     <strong>{{ sector.sector.name }}</strong>
@@ -436,13 +437,13 @@ export default {
     padding-right: 0;
 }
 
-h2 {
+/* h2 {
     font-size: 1.6rem;
     font-weight: 700;
     color: #343a40;
     margin-bottom: 0.75rem;
     line-height: 1.3;
-}
+} */
 
 .sun_svg, .relief_svg {
     height: 40px;
@@ -533,14 +534,6 @@ h2 {
     line-height: 1.3;
 }
 
-/* Table header */
-.table thead th {
-    white-space: nowrap;
-    font-weight: 600;
-    background-color: #f8f9fa;
-    border-bottom: 2px solid #dee2e6;
-}
-
 /* Info column — narrow, centered arrow */
 .col-info {
     width: 1%;
@@ -587,7 +580,7 @@ h2 {
 }
 
 .mtp-name {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
@@ -619,9 +612,9 @@ h2 {
 
 /* Mobile */
 @media (max-width: 767px) {
-    h2 {
+    /* h2 {
         font-size: 1.2rem;
-    }
+    } */
     .icon-col.icons-left,
     .icon-col.icons-right {
         justify-content: center;

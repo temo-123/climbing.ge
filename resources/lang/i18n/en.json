@@ -255,6 +255,9 @@
             "ice_routes_title": "Popular Ice Climbing Routes",
             "dry_routes_title": "Popular Dry Tooling Routes"
         },
+        "region": {
+            "show_map": "Show Map"
+        },
         "article": {
             "title": {
                 "mount massive": "Massive Mountain",
@@ -829,5 +832,9 @@
         "title": "Terms of Use",
         "meta_description": "Terms of Use — Climbing Georgia",
         "menu_label": "Terms of Use"
-    }
+    },
+    "user edit en article title": "English Title",
+    "user edit en article description": "English Description (SEO)",
+    "user edit ka article title": "Georgian Title",
+    "user edit ka article description": "Georgian Description (SEO)"
 }

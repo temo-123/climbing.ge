@@ -2,32 +2,25 @@
     <!-- <div> -->
 <StackModal
             :show="add_sector_modal"
-            :title="'Add sector'" 
+            :title="'Add sector'"
             @close="close_add_sector_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            @save="add_sector_from_modal"
+            :saveButton="{ visible: true, title: 'Add sector' }"
+            :cancelButton="{ visible: true, title: 'Close' }"
         >
         <div>
-            <form v-on:submit.prevent="add_sector_from_modal" id="add_new_sector" class="form">
-                <!-- <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" v-on:input="get_region_sectors()">  -->
-                <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" @click="get_region_sectors()"> 
-                    <option value="Select outdoor area" disabled>Select outdoor area</option>
-                    <option value="All sectors">Show all sectors</option>
-                    <option v-for="outdoor_area in outdoor_areas" :key="outdoor_area.id" :value="outdoor_area.id" >{{ outdoor_area.url_title }}</option>
-                </select>
+            <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" @click="get_region_sectors()">
+                <option value="Select outdoor area" disabled>Select outdoor area</option>
+                <option value="All sectors">Show all sectors</option>
+                <option v-for="outdoor_area in outdoor_areas" :key="outdoor_area.id" :value="outdoor_area.id">{{ outdoor_area.url_title }}</option>
+            </select>
 
-                <select class="form-control" v-model="selected_sector" name="comment delete cause" v-if="!sectors_loading && sectors.length != 0"> 
-                    <option value="Select sector" disabled>Select sector</option>
-                    <option v-for="sector in filtred_sectors" :key="sector.id" :value="{'id': sector.id, 'name': sector.name}">{{ sector.name }}</option>
-                </select>
+            <select class="form-control" v-model="selected_sector" name="comment delete cause" v-if="!sectors_loading && sectors.length != 0">
+                <option value="Select sector" disabled>Select sector</option>
+                <option v-for="sector in filtred_sectors" :key="sector.id" :value="{'id': sector.id, 'name': sector.name}">{{ sector.name }}</option>
+            </select>
 
-                <img :src="'/images/site_img/loading.gif'" alt="loading" v-if="sectors_loading">
-            </form>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button type="submit" form="add_new_sector" class="btn btn-primary">Add new sector</button>
-            </div>
+            <img :src="'/images/site_img/loading.gif'" alt="loading" v-if="sectors_loading">
         </div>
     </StackModal>
     <!-- </div> -->

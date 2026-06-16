@@ -5,26 +5,28 @@
         <LocalBisnesListComponentComponent />
 
         <!-- Best time for climbing block -->
-        <div v-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0">
-            <div v-if="(this.article_prop.global_data.weather == null && this.article_prop.locale_data.best_time != null)">
-                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
+        <div class="row">
+            <div class="container" v-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0">
+                <div v-if="(this.article_prop.global_data.weather == null && this.article_prop.locale_data.best_time != null)">
+                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
-                <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
-            </div>  
-            <div v-else-if="this.article_prop.global_data.weather != null && this.article_prop.locale_data.best_time != null">
-                <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
-
-                <div class="row">
                     <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
+                </div>  
+                <div v-else-if="this.article_prop.global_data.weather != null && this.article_prop.locale_data.best_time != null">
+                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
-                    <div class="col-md-6" style="text-align: center;">
-                        <span v-html="this.article_prop.global_data.weather"></span>
+                    <div>
+                        <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
+
+                        <div class="col-md-6" style="text-align: center;">
+                            <span v-html="this.article_prop.global_data.weather"></span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div v-else-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0 || this.article_prop.global_data.weather != null">
-            <span v-html="this.article_prop.global_data.weather"></span>
+            <div class="container" v-else-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0 || this.article_prop.global_data.weather != null">
+                <span v-html="this.article_prop.global_data.weather"></span>
+            </div>
         </div>
 
         <!-- addres -->

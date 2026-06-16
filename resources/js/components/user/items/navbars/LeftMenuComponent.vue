@@ -223,7 +223,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   left: 0;
 }
 .left_sidebar {
-  overflow: auto;
+    overflow: auto;
 }
 .sidebar header {
   font-size: 22px;

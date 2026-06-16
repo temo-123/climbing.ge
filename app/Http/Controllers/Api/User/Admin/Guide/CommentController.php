@@ -139,10 +139,10 @@ class CommentController extends Controller
         return Comment::where('id',strip_tags($comment_id))->first();
     }
 
-    // public function add_comment_complaint(Request $request)
-    // {
-    //     return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
-    // }
+    public function add_comment_complaint(Request $request)
+    {
+        return CommentService::add_complaint($request, Article_comment_complaint::class, 'article', 'comment');
+    }
 
     public function get_comments_complaints(Request $request)
     {

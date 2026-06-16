@@ -251,6 +251,9 @@
             "ice_routes_title": "პოპულარული ყინულის ცოცვის მარშრუტები",
             "dry_routes_title": "პოპულარული Dry Tooling მარშრუტები"
         },
+        "region": {
+            "show_map": "რუკის ნახვა"
+        },
         "article": {
             "title": {
                 "locatione": "ადგილმდებარეობა",
@@ -602,7 +605,7 @@
             "index": "ჩვენ შესახებ - სასვლელი ბლოგი"
         },
         "menu": {
-            "about us": "ჩვენ შესახებ"
+            "about_us": "ჩვენ შესახებ"
         },
         "title": {
             "index_title": "Climbing.ge ბლოგი",
@@ -817,5 +820,9 @@
         "title": "გამოყენების პირობები",
         "meta_description": "გამოყენების პირობები — Climbing Georgia",
         "menu_label": "გამოყენების პირობები"
-    }
+    },
+    "user edit en article title": "ინგლისური სათაური",
+    "user edit en article description": "ინგლისური აღწერა (SEO)",
+    "user edit ka article title": "ქართული სათაური",
+    "user edit ka article description": "ქართული აღწერა (SEO)"
 }

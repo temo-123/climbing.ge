@@ -56,3 +56,10 @@
         }
     }
 </script>
+
+<style scoped>
+.mount_size {
+    color: #666;
+    line-height: 1.5;
+}
+</style>

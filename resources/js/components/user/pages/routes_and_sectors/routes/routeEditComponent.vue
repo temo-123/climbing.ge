@@ -47,8 +47,13 @@
         <route_editor_component
             v-if="data.sector_id != ''"
             ref="editorComponent"
+            :sector_id_prop="data.sector_id"
             :route_json_prop="data.route_json"
+            :show_alert_prop="show_alert_modal"
+            :sector_image_id_prop="data.sector_image_id"
+            :route_id_prop="$route.params.id"
             @update:route_json_prop="data.route_json = $event"
+            @update:sector_image_id_prop="data.sector_image_id = $event"
         />
 
         <div class="form-group clearfix row" v-if="errors.sector_id">
@@ -96,11 +101,11 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Bolts & height </label>
 
-          <div class="col-md-2" v-if="data.category != '' && data.category == 'sport climbing'">
+          <div class="col-md-2" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
             <label for="name" class='col-md-12 control-label'> Bolts: </label>
           </div>
-          <div class="col-md-3" v-if="data.category != '' && data.category == 'sport climbing'">
-              <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
+          <div class="col-md-3" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
+              <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts">
           </div>
 
           <div class="col-md-2">
@@ -168,7 +173,6 @@
 </template>
 
 <script>
-  import Editor from '../../../items/canvas/EditorComponent.vue'
   import validator_alerts_component from '../../../items/form/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
   import route_editor_component from './assets/CanvasRouteEditorComponent.vue'
@@ -178,7 +182,6 @@
 
       ],
       components: {
-          Editor,
           validator_alerts_component,
           grades_form,
           route_editor_component
@@ -193,14 +196,11 @@
         regions: [],
         all_sectors: [],
         sectors: [],
-        sector_images: [],
 
         status: "",
         problem_status: "",
 
         article_id: "",
-        images_tab_num: "",
-        related_jsons: [], // Related routes JSONs (kept separate, not sent to server)
 
         data: {
           sector_id: "",
@@ -231,10 +231,6 @@
         is_back_action_query: false,
         show_no_json_alert: false,
         show_alert_modal: false,
-        show_editor: false,
-
-        drawing_saving: false,
-        drawing_save_status: null,
       }
     },
     
@@ -261,11 +257,6 @@
       document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
     },
     watch: {
-      'data.sector_id': function(newVal, oldVal) {
-        if (newVal && newVal !== oldVal) {
-          this.get_sector_images(newVal);
-        }
-      },
       'data.category': function() {
         this.$forceUpdate();
       }
@@ -350,15 +341,9 @@
           // Set sector_image_id if available from response
           if (response.data.sector_image_id) {
             this.data.sector_image_id = response.data.sector_image_id;
-            this.images_tab_num = response.data.sector_image_id;
           }
 
           this.get_sectors_data()
-          this.get_sector_images(this.data.sector_id)
-          // Fetch related routes JSONs after loading route data
-          if (this.data.sector_image_id) {
-            this.get_related_routes_jsons(this.data.sector_image_id, this.data.id);
-          }
         })
         .catch(
           () => {}
@@ -443,152 +428,6 @@
         this.is_back_action_query = this.$going.back(this, back_action)
       },
 
-      get_sector_images(sectorId) {
-        axios
-        .get("/get_sector/get_sector_images/" + sectorId)
-        .then(response => {
-          this.sector_images = response.data
-          if (this.sector_images.length > 0 && !this.data.sector_image_id) {
-            this.data.sector_image_id = this.sector_images[0].id;
-            this.images_tab_num = this.sector_images[0].id;
-          }
-        })
-        .catch(
-          () => {}
-        );
-      },
-
-      getSectorImage() {
-        if (this.sector_images.length > 0) {
-          const img = this.sector_images.find(i => i.id === this.images_tab_num) || this.sector_images[0];
-          const dir = img.has_original
-            ? '/public/images/sector_img/origin_img/'
-            : '/public/images/sector_img/';
-          return dir + img.image;
-        }
-        return null;
-      },
-
-      getSectorImageThumb(image) {
-        return '/public/images/sector_img/' + image.image;
-      },
-
-      // Handle canvas data from Editor component
-      handleCanvasData(canvasData) {
-        this.data.route_json = canvasData;
-      },
-
-      updateSectorImageId() {
-        this.data.sector_image_id = this.images_tab_num;
-        // Fetch related routes JSONs when sector image changes
-        this.get_related_routes_jsons(this.data.sector_image_id, this.data.id);
-      },
-
-      get_related_routes_jsons(sectorImageId, excludeRouteId) {
-        axios
-        .get("/get_route/get_related_routes_jsons", {
-          params: {
-            sector_image_id: sectorImageId,
-            exclude_route_id: excludeRouteId
-          }
-        })
-        .then(response => {
-          this.related_jsons = response.data;
-        })
-        .catch(() => {});
-      },
-
-      // closeAlertModal() {
-      //   this.show_alert_modal = false;
-      // },
-
-      toggleEditor() {
-        this.show_editor = !this.show_editor;
-      },
-
-      async saveRouteDrawing() {
-        if (!this.data.sector_image_id) {
-          alert('Please select a sector image first');
-          return;
-        }
-        if (!this.$refs.editorComponent) {
-          alert('Editor is not open');
-          return;
-        }
-
-        this.drawing_saving = true;
-        this.drawing_save_status = null;
-
-        try {
-          const canvasContainer = this.$refs.editorComponent.$refs.canvasContainer;
-          const scope = canvasContainer.getCanvasScope();
-
-          let json = this.data.route_json;
-          if (scope) {
-            json = JSON.stringify(scope.project.exportJSON());
-            this.data.route_json = json;
-          }
-
-          if (!json) {
-            alert('No drawing data found. Draw something first.');
-            return;
-          }
-
-          const paperCanvas = canvasContainer.$refs.canvasManager.$el;
-          const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
-          const bgPath = selectedImage && selectedImage.has_original
-            ? '/public/images/sector_img/origin_img/' + selectedImage.image
-            : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
-
-          const editedImageData = await this.createCompositeImage(bgPath, paperCanvas);
-
-          const response = await axios.post('/set_route/save_route_drawing', {
-            route_id: this.$route.params.id,
-            sector_image_id: this.data.sector_image_id,
-            json: json,
-            edited_image: editedImageData,
-          });
-
-          if (response.data.success) {
-            this.drawing_save_status = 'ok';
-            if (selectedImage) selectedImage.has_original = true;
-            setTimeout(() => { this.drawing_save_status = null; }, 3000);
-          } else {
-            this.drawing_save_status = 'error';
-          }
-        } catch (e) {
-          this.drawing_save_status = 'error';
-        } finally {
-          this.drawing_saving = false;
-        }
-      },
-
-      createCompositeImage(bgPath, paperCanvas) {
-        return new Promise((resolve) => {
-          const offscreen = document.createElement('canvas');
-          offscreen.width = paperCanvas.width;
-          offscreen.height = paperCanvas.height;
-          const ctx = offscreen.getContext('2d');
-
-          const finish = () => {
-            ctx.drawImage(paperCanvas, 0, 0);
-            resolve(offscreen.toDataURL('image/jpeg', 0.9));
-          };
-
-          if (!bgPath) {
-            finish();
-            return;
-          }
-
-          const img = new Image();
-          img.onload = () => {
-            ctx.drawImage(img, 0, 0, offscreen.width, offscreen.height);
-            finish();
-          };
-          img.onerror = () => finish();
-          img.src = bgPath;
-        });
-      },
     }
   }
 </script>

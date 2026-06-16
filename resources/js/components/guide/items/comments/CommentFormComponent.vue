@@ -171,7 +171,7 @@
                                                 <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
 
                                                 <span v-if="user.length != 0">
-                                                    <button @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id" class="btn btn-danger">
+                                                    <button @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id" class="btn btn-warning">
                                                         <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                                     </button>
                                                 </span>
@@ -203,6 +203,7 @@
                 v-model:show="is_user_comment_complaint_model"
                 title="Please select a reason for deleting the comment"
                 @close="is_user_comment_complaint_model=false"
+                @save="make_complaint"
                 :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
                 :cancelButton="{ visible: false }"
             >

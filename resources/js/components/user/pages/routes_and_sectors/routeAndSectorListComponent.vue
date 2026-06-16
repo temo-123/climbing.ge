@@ -179,6 +179,7 @@ export default {
                             'head': [
                                 'ID',
                                 'Name',
+                                'Category',
                                 'Grade',
                                 'Height',
                                 'Bolts',
@@ -188,6 +189,7 @@ export default {
                             'body': [
                                 ['data', ['id']],
                                 ['data', ['name']],
+                                ['data', ['category']],
                                 ['data', ['grade'], ['or_grade']],
                                 ['data', ['height']],
                                 ['data', ['bolts']],
@@ -195,6 +197,7 @@ export default {
                                 ['action_fun_id', 'del_route', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [
+                                ['no'],
                                 ['no'],
                                 ['no'],
                                 ['no'],

@@ -6,9 +6,11 @@
 /public/assets/js
 /public/mix-manifest.json
 
+/public/sitemap.xml
 /public/guide-sitemap.xml
 /public/shop-sitemap.xml
-/public/sitemap.xml
+/public/blog-sitemap.xml
+/public/summit-sitemap.xml
 
 /public/images/special_img
 /public/images/event_img

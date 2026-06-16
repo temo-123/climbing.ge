@@ -3,8 +3,9 @@
         v-model="is_show_mtp_pitch_modal"
         title="MTP Pitches Sequence"
         @close="close_model()"
+        @save="save_pitchs_sequence"
         :modal-class="{ [MTPPitchModalClass]: true }"
-        :saveButton="{ visible: true }"
+        :saveButton="{ visible: true, title: 'Save sequence' }"
         :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
         <template #default>
             <div>
@@ -12,25 +13,41 @@
                     <div class="col-md-12">
                         <div class="row">
                             <h2 v-if="mtp_pitchs.length > 0">MTP Pitches</h2>
-                            <SlickList lockAxis="y" v-model="mtp_pitchs" v-if="mtp_pitchs.length > 0" tag="table" style="width: 100%">
-                                <tr>
-                                    <td>ID</td>
-                                    <td>Num</td>
-                                    <td>Name</td>
-                                    <td>Grade</td>
-                                    <td>Height</td>
-                                    <td>Bolts</td>
-                                </tr>
-                                <SlickItem v-for="(pitch, index) in mtp_pitchs" :index='index' :key="index" tag="tr">
-                                    <td>{{ pitch.id }}</td>
-                                    <td>{{ pitch.num }}</td>
-                                    <td>{{ pitch.name }}</td>
-                                    <td v-if="pitch.or_grade != null">{{pitch.grade}} / {{ pitch.or_grade }}</td>
-                                    <td v-if="pitch.or_grade == null">{{pitch.grade}}</td>
-                                    <td>{{ pitch.height }}</td>
-                                    <td>{{ pitch.bolts }}</td>
-                                </SlickItem>
-                            </SlickList>
+                            <table v-if="mtp_pitchs.length > 0" style="width: 100%">
+                                <thead>
+                                    <tr>
+                                        <td></td>
+                                        <td>ID</td>
+                                        <td>Num</td>
+                                        <td>Name</td>
+                                        <td>Grade</td>
+                                        <td>Height</td>
+                                        <td>Bolts</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr
+                                        v-for="(pitch, index) in mtp_pitchs"
+                                        :key="pitch.id || index"
+                                        draggable="true"
+                                        :class="{ 'drag-over': dragOver === index }"
+                                        @dragstart="dragSrc = index"
+                                        @dragover.prevent="dragOver = index"
+                                        @dragleave="dragOver = null"
+                                        @drop.prevent="onDrop(index)"
+                                        @dragend="dragOver = null"
+                                        style="cursor: grab;"
+                                    >
+                                        <td><i class="fa fa-bars"></i></td>
+                                        <td>{{ pitch.id }}</td>
+                                        <td>{{ pitch.num }}</td>
+                                        <td>{{ pitch.name }}</td>
+                                        <td>{{ pitch.grade }}{{ pitch.or_grade ? ' / ' + pitch.or_grade : '' }}</td>
+                                        <td>{{ pitch.height }}</td>
+                                        <td>{{ pitch.bolts }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                             <div v-else class="col-md-12">
                                 <p>No pitches found for this MTP.</p>
                             </div>
@@ -39,41 +56,25 @@
                 </div>
             </div>
         </template>
-        <template #modal-footer>
-            <div class="modal-footer">
-                <button
-                    type="button"
-                    :class="{'btn btn-primary': true}"
-                    @click="save_pitchs_sequence()">
-                    Save sequence
-                </button>
-            </div>
-        </template>
     </StackModal>
 </template>
 
 <script>
-    import { SlickList, SlickItem } from 'vue-slicksort';
-    // import StackModal from '@innologica/vue-stackable-modal';  // Global now
-     
     export default {
         props: [
             'mtp_id_prop'
         ],
-        components: {
-            // StackModal,
-            SlickItem,
-            SlickList,
-        },
         data(){
             return {
                 is_show_mtp_pitch_modal: false,
-                
+
                 mtp: [],
                 MTPPitchModalClass: 'modal-lg',
 
                 mtp_pitchs: [],
                 mtp_id: null,
+                dragSrc: null,
+                dragOver: null,
             }
         },
 
@@ -110,6 +111,14 @@
                 this.$emit('update');
             },
 
+            onDrop(toIndex) {
+                if (this.dragSrc === null || this.dragSrc === toIndex) return
+                const moved = this.mtp_pitchs.splice(this.dragSrc, 1)[0]
+                this.mtp_pitchs.splice(toIndex, 0, moved)
+                this.dragSrc = null
+                this.dragOver = null
+            },
+
             save_pitchs_sequence(){
                 axios
                 .post('/set_mtp/set_mtp_pitch/pitchs_sequence', {
@@ -130,5 +139,9 @@
     .modal-lg {
         width: 80% !important;
         max-width: 1000px;
+    }
+    .drag-over {
+        background: #d0e8ff;
+        outline: 2px dashed #0d6efd;
     }
 </style>

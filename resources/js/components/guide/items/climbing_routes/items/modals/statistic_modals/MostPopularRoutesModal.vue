@@ -98,6 +98,7 @@
     export default {
     components: {
             StarReitingShowComponent,
+            starsReiting: StarReitingShowComponent,
             // StackModal,
         },
         mounted() {

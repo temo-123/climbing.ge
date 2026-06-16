@@ -152,8 +152,8 @@ export default {
                                 perm: [
                                     ['no'],
                                     ['no'],
-                                    ['spot_region', 'edit'],
-                                    ['spot_region', 'del'],
+                                    ['region', 'edit'],
+                                    ['region', 'del'],
                                 ]
                             }
                         },
@@ -197,9 +197,9 @@ export default {
                                     ['no'],
                                     ['no'],
                                     ['no'],
-                                    ['ice_sector', 'edit'],
-                                    ['ice_sector', 'edit'],
-                                    ['ice_sector', 'del'],
+                                    ['sector', 'edit'],
+                                    ['sector', 'edit'],
+                                    ['sector', 'del'],
                                 ]
                             }
                         },
@@ -223,10 +223,11 @@ export default {
                         tab_data: {
                             data: validData, 
                             tab: {
-                                head: ['ID','Name','Grade','Height','Bolts','Edit','Delite'],
+                                head: ['ID','Name','Category','Grade','Height','Bolts','Edit','Delite'],
                                 body: [
                                     ['data', ['id']],
                                     ['data', ['name']],
+                                    ['data', ['category']],
                                     ['data', ['grade'], ['or_grade']],
                                     ['data', ['height']],
                                     ['data', ['bolts']],
@@ -239,8 +240,9 @@ export default {
                                     ['no'],
                                     ['no'],
                                     ['no'],
-                                    ['article', 'edit'],
-                                    ['article', 'del'],
+                                    ['no'],
+                                    ['route', 'edit'],
+                                    ['route', 'del'],
                                 ]
                             }
                         },

@@ -8,6 +8,7 @@ use App\Models\Guide\Event;
 use App\Models\Guide\Suport_local_bisnes;
 use App\Models\Blog\Post;
 use App\Models\Shop\Product;
+use App\Models\Shop\Product_option;
 use App\Models\Shop\Service;
 use App\Models\Shop\Tour;
 use App\Models\Summit\Summit;
@@ -160,12 +161,16 @@ class SeoService
         $image    = $article->image ? asset($imageDir . $article->image) : $this->defaultImage();
 
         $schema = [
-            '@context' => 'https://schema.org',
-            '@type'    => $this->articleSchema($category),
-            'name'     => $title,
-            'description' => $desc,
-            'image'    => $image,
-            'url'      => request()->url(),
+            '@context'      => 'https://schema.org',
+            '@type'         => $this->articleSchema($category),
+            'name'          => $title,
+            'description'   => $desc,
+            'image'         => $image,
+            'url'           => request()->url(),
+            'datePublished' => optional($article->created_at)->toIso8601String(),
+            'dateModified'  => optional($article->updated_at)->toIso8601String(),
+            'inLanguage'    => $locale === 'ka' ? 'ka' : 'en',
+            'publisher'     => $this->publisherSchema(),
         ];
 
         if ($content?->meta_keyword) {
@@ -192,14 +197,23 @@ class SeoService
         $image   = $event->image ? asset('images/event_img/' . $event->image) : $this->defaultImage();
 
         $schema = [
-            '@context'  => 'https://schema.org',
-            '@type'     => 'Event',
-            'name'      => $title,
-            'description' => $desc,
-            'image'     => $image,
-            'url'       => request()->url(),
-            'startDate' => $event->start_data ?? null,
-            'endDate'   => $event->end_data ?? null,
+            '@context'            => 'https://schema.org',
+            '@type'               => 'Event',
+            'name'                => $title,
+            'description'         => $desc,
+            'image'               => $image,
+            'url'                 => request()->url(),
+            'startDate'           => $event->start_data ?? null,
+            'endDate'             => $event->end_data ?? null,
+            'inLanguage'          => $locale === 'ka' ? 'ka' : 'en',
+            'eventAttendanceMode' => 'https://schema.org/OfflineEventAttendanceMode',
+            'eventStatus'         => 'https://schema.org/EventScheduled',
+            'organizer'           => $this->publisherSchema(),
+            'location'            => [
+                '@type'   => 'Place',
+                'name'    => 'Georgia',
+                'address' => ['@type' => 'PostalAddress', 'addressCountry' => 'GE'],
+            ],
         ];
 
         return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema);
@@ -213,11 +227,23 @@ class SeoService
             return $this->siteDefaults();
         }
 
-        $title = $bisnes->name ?? 'Local Business | climbing.ge';
-        $desc  = $this->truncate($bisnes->short_description ?? '');
-        $image = $this->defaultImage();
+        $bisnes->load(['us_bisnes', 'ka_bisnes']);
+        $content = $locale === 'ka' ? $bisnes->ka_bisnes : $bisnes->us_bisnes;
+        $title   = $content?->title ?? $bisnes->us_bisnes?->title ?? 'Local Business | climbing.ge';
+        $desc    = $this->truncate(strip_tags($content?->short_description ?? $bisnes->us_bisnes?->short_description ?? ''));
+        $image   = $this->defaultImage();
 
-        return $this->build($title . ' | climbing.ge', $desc, $image, 'article');
+        $schema = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'LocalBusiness',
+            'name'        => $title,
+            'description' => $desc,
+            'url'         => request()->url(),
+            'image'       => $image,
+            'address'     => ['@type' => 'PostalAddress', 'addressCountry' => 'GE'],
+        ];
+
+        return $this->build($title . ' | climbing.ge', $desc, $image, 'website', $schema);
     }
 
     private function blogPostMeta(string $slug, string $locale): array
@@ -245,6 +271,9 @@ class SeoService
             'url'           => request()->url(),
             'datePublished' => optional($post->created_at)->toIso8601String(),
             'dateModified'  => optional($post->updated_at)->toIso8601String(),
+            'inLanguage'    => $locale === 'ka' ? 'ka' : 'en',
+            'publisher'     => $this->publisherSchema(),
+            'author'        => $this->publisherSchema(),
         ];
 
         return $this->build($title . ' | blog.climbing.ge', $desc, $image, 'article', $schema);
@@ -275,7 +304,19 @@ class SeoService
             'description' => $desc,
             'image'       => $image,
             'url'         => request()->url(),
+            'brand'       => $this->publisherSchema(),
         ];
+
+        $option = Product_option::where('product_id', $product->id)->orderBy('price')->first();
+        if ($option && $option->price) {
+            $schema['offers'] = [
+                '@type'         => 'Offer',
+                'price'         => $option->discount ?: $option->price,
+                'priceCurrency' => $option->currency ?? 'GEL',
+                'availability'  => 'https://schema.org/InStock',
+                'url'           => request()->url(),
+            ];
+        }
 
         return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema);
     }
@@ -298,7 +339,18 @@ class SeoService
         $firstImage = $service->service_images?->first();
         $image = $firstImage?->image ? asset('images/service_img/' . $firstImage->image) : $this->defaultImage();
 
-        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'website');
+        $schema = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Service',
+            'name'        => $title,
+            'description' => $desc,
+            'image'       => $image,
+            'url'         => request()->url(),
+            'provider'    => $this->publisherSchema(),
+            'areaServed'  => ['@type' => 'Country', 'name' => 'Georgia'],
+        ];
+
+        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'website', $schema);
     }
 
     private function tourMeta(string $slug, string $locale): array
@@ -349,24 +401,32 @@ class SeoService
         $desc  = $this->truncate(($locale === 'ka' ? $summit->ka_description : $summit->description) ?? '');
         $image = $summit->image ? asset('images/summit_img/' . $summit->image) : $this->defaultImage();
 
+        $geo = ['@type' => 'GeoCoordinates'];
+        if ($summit->height)    { $geo['elevation']  = $summit->height; }
+        if ($summit->latitude)  { $geo['latitude']   = $summit->latitude; }
+        if ($summit->longitude) { $geo['longitude']  = $summit->longitude; }
+
         $schema = [
-            '@context'    => 'https://schema.org',
-            '@type'       => 'Place',
-            'name'        => $title,
-            'description' => $desc,
-            'image'       => $image,
-            'url'         => request()->url(),
+            '@context'             => 'https://schema.org',
+            '@type'                => 'Mountain',
+            'name'                 => $title,
+            'description'          => $desc,
+            'image'                => $image,
+            'url'                  => request()->url(),
+            'containedInPlace'     => ['@type' => 'Country', 'name' => 'Georgia', 'identifier' => 'GE'],
         ];
 
-        if ($summit->height) {
-            $schema['geo'] = ['@type' => 'GeoCoordinates', 'elevation' => $summit->height];
+        if (count($geo) > 1) {
+            $schema['geo'] = $geo;
         }
 
-        if ($summit->latitude && $summit->longitude) {
-            $schema['geo'] = array_merge($schema['geo'] ?? ['@type' => 'GeoCoordinates'], [
-                'latitude'  => $summit->latitude,
-                'longitude' => $summit->longitude,
-            ]);
+        if ($summit->height) {
+            $schema['additionalProperty'] = [
+                '@type'     => 'PropertyValue',
+                'name'      => 'elevation',
+                'value'     => $summit->height,
+                'unitCode'  => 'MTR',
+            ];
         }
 
         return $this->build($title . ' | summit.climbing.ge', $desc, $image, 'article', $schema);
@@ -522,6 +582,19 @@ class SeoService
             'indoor'           => 'SportsActivityLocation',
             default            => 'Article',
         };
+    }
+
+    private function publisherSchema(): array
+    {
+        return [
+            '@type' => 'Organization',
+            'name'  => 'climbing.ge',
+            'url'   => 'https://climbing.ge',
+            'logo'  => [
+                '@type' => 'ImageObject',
+                'url'   => asset('images/site_img/x.png'),
+            ],
+        ];
     }
 
     private function defaultImage(): string

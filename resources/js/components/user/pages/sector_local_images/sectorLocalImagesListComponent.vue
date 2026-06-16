@@ -14,7 +14,7 @@
                     <tabsComponent 
                         :table_data="this.data_for_tab"
                         @update="get_sectors"
-                        @del_sector_local_images="del_sector_local_images"
+                        @del_sector_local_image="del_sector_local_image"
                         @show_local_image_modal="show_local_image_modal"
                     />
                 </div>
@@ -83,14 +83,14 @@
                                                         ['data_action_id', ['title'], 'show_local_image_modal'],
                                                         ['action_router', 'sectorLocalImagesOptions', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>'],
                                                         ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                                        ['action_fun_id', 'del_sector_local_images', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                                                        ['action_fun_id', 'del_sector_local_image', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
                                                     'perm': [
                                                         ['no'],
                                                         ['no'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'edit'],
-                                                        ['sector_local_images', 'del'],
+                                                        ['sector_local_image', 'edit'],
+                                                        ['sector_local_image', 'edit'],
+                                                        ['sector_local_image', 'del'],
                                                     ]
                                                 }
                                             },
@@ -100,10 +100,10 @@
                     error => console.log(error)
                 );
             },
-            del_sector_local_images(id){
+            del_sector_local_image(id){
                 if(confirm('Are you sure, you want delite itt?')){
                     axios
-                    .post('/set_sector/set_sector_local_images/del_locale_image/'+id, {
+                    .post('/set_sector/set_sector_local_image/del_locale_image/'+id, {
                         _method: 'DELETE'
                     })
                     .then(Response => {

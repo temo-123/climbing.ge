@@ -8,7 +8,7 @@
         "watch": "mix watch",
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
-        "build": "mix --production && php artisan optimize:clear"
+        "build": "mix --production && php artisan app:generate-sitemap && php artisan optimize:clear"
     },
     "devDependencies": {
         "@popperjs/core": "^2.11.8",

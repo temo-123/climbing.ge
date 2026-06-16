@@ -89,11 +89,11 @@
     },
     modalClass: [String, Object],
     saveButton: {
-      type: Object,
+      type: [Object, Boolean],
       default: () => ({ visible: true, title: 'Save' })
     },
     cancelButton: {
-      type: Object,
+      type: [Object, Boolean],
       default: () => ({ visible: true, title: 'Cancel' })
     }
   })
@@ -148,8 +148,7 @@
   onUnmounted(() => {
     modalStack.delete(props)
     document.body.classList.remove('stack-modal-open')
-    // document.body.style.overflow = 'auto';
-
+    document.body.style.overflow = '';
   })
 
   watch(isVisible, (val) => {
@@ -176,24 +175,6 @@
     opacity: 0;
     transform: translateY(-20px) scale(0.95);
   }
-
-  /* .stack-modal {
-    animation: modal-pop 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  @keyframes modal-pop {
-    0% {
-      opacity: 0;
-      transform: translateY(-20px) scale(0.95);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-  .modal-pop {
-    animation-duration: 0.2s;
-  } */
 
   .stack-modal-overlay {
     position: fixed;

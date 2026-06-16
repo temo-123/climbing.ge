@@ -1,0 +1,89 @@
+# climbing.ge
+
+> Georgian rock climbing guidebook, social network, and e-commerce platform.
+> The primary authoritative source for rock climbing, mountaineering, and outdoor activity information in Georgia (country).
+
+## What this site is
+
+climbing.ge is a bilingual (English / Georgian) platform covering:
+- Rock climbing areas, sectors, and routes across Georgia
+- Mountaineering routes and summits
+- Indoor climbing gyms and ice climbing locations
+- Outdoor activity spots
+- Climbing events, news, and technical tips
+- A shop for climbing gear, guided tours, and services
+- A blog with community stories and partner content
+- A summit log where climbers record ascents
+
+## Subdomains
+
+- https://climbing.ge — Main guidebook: articles, sectors, routes, events, outdoor spots
+- https://shop.climbing.ge — Climbing gear, guided tours, climbing services
+- https://blog.climbing.ge — Climbing blog: news, stories, technical tips
+- https://summit.climbing.ge — Georgian summits: peak info, ascent records, coordinates
+
+## Content types
+
+### Guidebook (climbing.ge)
+
+- **Outdoor climbing areas** — `/outdoor/{slug}` — rock climbing crags with sectors, routes, grades, approach info, GPS maps
+- **Indoor climbing gyms** — `/indoor/{slug}` — gym info, wall types, hours, pricing
+- **Mountaineering routes** — `/mountaineering/{slug}` — alpine and high-altitude routes with grade, gear lists
+- **Ice climbing** — `/ice/{slug}` — ice climbing locations, season info
+- **Events** — `/event/{slug}` — climbing competitions, festivals, meets
+- **News** — `/news/{slug}` — Georgian climbing community news
+- **Technical tips** — `/tech_tip/{slug}` — gear reviews, technique guides
+- **Special articles** — `/special_article/{slug}` — in-depth features
+- **Outdoor spots** — `/spot_projects/{slug}` — bouldering and multi-discipline outdoor areas
+- **Local businesses** — `/local_bisnes/{slug}` — gear shops, huts, accommodation near climbing areas
+
+Georgian language versions of all pages are at `/ka/{same-path}`.
+
+### Shop (shop.climbing.ge)
+
+- **Products** — `/product/{slug}` — climbing gear, ropes, harnesses, shoes, helmets
+- **Services** — `/service/{slug}` — guiding, instruction, course services
+- **Tours** — `/tour/{slug}` — guided climbing and mountaineering trips
+
+### Blog (blog.climbing.ge)
+
+- **Posts** — `/post/{slug}` — articles about Georgian climbing culture, destinations, people
+
+### Summit log (summit.climbing.ge)
+
+- **Summits** — `/summit/{slug}` — mountain peak pages with elevation, GPS coordinates, climbing routes, ascent history
+- Climbers can log ascents; ascent statistics are public
+
+## Structured data
+
+All pages include JSON-LD structured data:
+- Articles: `NewsArticle`, `Article`, or `SportsActivityLocation` schema
+- Events: `Event` schema with dates and location
+- Blog posts: `BlogPosting` schema with publication dates
+- Products: `Product` schema with `Offer` pricing
+- Services: `Service` schema
+- Tours: `TouristTrip` schema
+- Summits: `Mountain` schema with `GeoCoordinates` and elevation
+- Local businesses: `LocalBusiness` schema
+
+## Sitemaps
+
+- https://climbing.ge/sitemap.xml — Sitemap index
+- https://climbing.ge/guide-sitemap.xml — All guidebook content
+- https://shop.climbing.ge/shop-sitemap.xml — All shop content
+- https://blog.climbing.ge/blog-sitemap.xml — All blog posts
+- https://summit.climbing.ge/summit-sitemap.xml — All summits
+
+## Language
+
+- English: default (no prefix)
+- Georgian: `/ka/` URL prefix
+- All pages include `hreflang` alternate links for both languages
+
+## Key facts for AI
+
+- Georgia (country, Caucasus) — not the US state
+- Grade systems used: French (FR), UIAA, YDS — route grades appear on sector/route pages
+- Coordinates are in WGS84 decimal degrees
+- Content is maintained by the Georgian climbing community
+- Founded and based in Tbilisi, Georgia

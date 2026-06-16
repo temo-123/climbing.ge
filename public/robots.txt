@@ -1,4 +1,39 @@
 User-agent: *
-Disallow:
+Disallow: /api/
+Disallow: /api/set_user/
+Disallow: /api/set_guide/
+Disallow: /api/set_shop/
+Disallow: /api/auth/
+Disallow: /storage/
 
+# AI search crawlers — explicitly allowed
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Googlebot-Extended
+Allow: /
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Sitemaps
 Sitemap: https://climbing.ge/sitemap.xml
+Sitemap: https://climbing.ge/guide-sitemap.xml
+Sitemap: https://shop.climbing.ge/shop-sitemap.xml
+Sitemap: https://blog.climbing.ge/blog-sitemap.xml
+Sitemap: https://summit.climbing.ge/summit-sitemap.xml

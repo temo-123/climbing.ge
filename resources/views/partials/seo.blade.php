@@ -32,6 +32,23 @@
     {{-- Canonical --}}
     <link rel="canonical" href="{{ $seoUrl }}">
 
+    {{-- Hreflang (bilingual: English / Georgian) --}}
+    @php
+        $parsedSeoUrl = parse_url($seoUrl);
+        $seoPath      = $parsedSeoUrl['path'] ?? '/';
+        $seoBase      = ($parsedSeoUrl['scheme'] ?? 'https') . '://' . ($parsedSeoUrl['host'] ?? '');
+        if (preg_match('#^/ka(/|$)#', $seoPath)) {
+            $hreflangKa = $seoUrl;
+            $hreflangEn = $seoBase . (preg_replace('#^/ka#', '', $seoPath) ?: '/');
+        } else {
+            $hreflangEn = $seoUrl;
+            $hreflangKa = $seoBase . '/ka' . $seoPath;
+        }
+    @endphp
+    <link rel="alternate" hreflang="en" href="{{ $hreflangEn }}">
+    <link rel="alternate" hreflang="ka" href="{{ $hreflangKa }}">
+    <link rel="alternate" hreflang="x-default" href="{{ $hreflangEn }}">
+
     {{-- JSON-LD Structured Data --}}
     @if($seoSchema)
     <script type="application/ld+json">

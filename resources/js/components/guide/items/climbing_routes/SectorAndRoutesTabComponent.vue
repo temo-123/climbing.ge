@@ -147,7 +147,7 @@ export default {
 <style scoped>
 #sectors {
     padding: 1rem;
-    background-color: #f8f9fa;
+    background-color: #e9e9e9;
     border-radius: 8px;
     margin: 1rem 0;
 }

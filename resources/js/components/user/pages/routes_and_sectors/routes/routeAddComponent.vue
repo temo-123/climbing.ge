@@ -100,11 +100,11 @@
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Bolts & height </label>
 
-          <div class="col-md-2" v-if="data.category != '' && data.category == 'sport climbing'">
+          <div class="col-md-2" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
             <label for="name" class='col-md-12 control-label'> Bolts: </label>
           </div>
-          <div class="col-md-3" v-if="data.category != '' && data.category == 'sport climbing'">
-              <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
+          <div class="col-md-3" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
+              <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts">
           </div>
 
           <div class="col-md-2">

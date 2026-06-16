@@ -4,11 +4,7 @@
             :title="$t('guide.route.mtp_title')"
             :modal-class="{ [modalClass]: true }"
             :saveButton="{ visible: false }"
-            :cancelButton="{
-                visible: true,
-                title: $t('guide.route.close_modal'),
-                btnClass: { 'btn btn-secondary': true },
-            }"
+            :cancelButton="{ visible: false,}"
             @close="close_mtp_modal"
         >
 
@@ -66,7 +62,7 @@
                                     <tbody>
                                         <tr
                                             v-for="pitch in (mtp_detals && mtp_detals.mtp_pitchs ? mtp_detals.mtp_pitchs : [])"
-:key="pitch.pitch_id || pitch.num || pitch.name || index"
+                                                    :key="pitch.pitch_id || pitch.num || pitch.name || index"
                                         >
 
                                             <td>{{ pitch && pitch.num !== undefined ? pitch.num : '-' }}</td>
@@ -133,7 +129,6 @@ export default {
     props: [
         // "sector",
     ],
-
 
     data: function () {
         return {
