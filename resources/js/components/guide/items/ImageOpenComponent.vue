@@ -1,63 +1,75 @@
 <template>
     <span>
-        <div class="smal_img" @click="open_image()" >
+        <div class="smal_img" @click="open_image()">
             <img :src="img" :alt="img_alt" :class="img_class + ' cursor_pointer'" />
         </div>
 
-        <div class="big_img" @click="close_image()">
-            <div class="open_img" v-if="open_img" >
-                <div class="close_bottom cursor_zoom_out" @click="close_image()"> X </div>
-
-                <img :src="img" :alt="img_alt" :class="'big_img_position cursor_zoom_out zoom'" style="
-                                                                                                        max-width: 96%;
-                                                                                                        max-height: 80%;
-                                                                                                        position: absolute;
-                                                                                                        top: 50%;
-                                                                                                        left: 50%;
-                                                                                                        transform: translate(-50%, -50%);
-                                                                                                        "/>
-
+        <Teleport to="body">
+            <div class="open_img" v-if="open_img" @click="close_image()">
+                <div class="close_bottom cursor_zoom_out" @click.stop="close_image()">X</div>
+                <img
+                    :src="img"
+                    :alt="img_alt"
+                    class="big_img_position cursor_zoom_out zoom"
+                    style="max-width:96%;max-height:80%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"
+                />
             </div>
-        </div>
+        </Teleport>
     </span>
 </template>
 
 <script>
     export default {
-        props:[
-            'img',
-            'img_alt',
-            'img_class',
-        ],
-        
-        data: function () {
+        props: ['img', 'img_alt', 'img_class'],
+        data() {
             return {
                 open_img: false,
-                active_url: window.location.href,
             };
         },
         mounted() {
-            this.back_closing(this)
+            this._closeHandler = () => {
+                if (this.open_img) {
+                    this.open_img = false;
+                    document.body.classList.remove('body_hiden');
+                }
+            };
+            window.addEventListener('imageclose', this._closeHandler);
+        },
+        beforeUnmount() {
+            window.removeEventListener('imageclose', this._closeHandler);
+            this._removePopstateHandler();
+            if (this.open_img) {
+                window.__imageOpen = false;
+                document.body.classList.remove('body_hiden');
+            }
         },
         methods: {
-            open_image(){
-                this.open_img = true
-                
-                document.body.classList.add('body_hiden') // off page scroling
-            },
-            close_image(){
-                this.open_img = false
-
-                document.body.classList.remove('body_hiden') // on page scroling
-            },
-            back_closing(th){
-                window.onpopstate = function(event) {
-                    
-                    if(th.open_img){
-                        th.close_image()
-                    }
+            open_image() {
+                this.open_img = true;
+                window.__imageOpen = true;
+                document.body.classList.add('body_hiden');
+                this._savedUrl = location.href;
+                history.pushState({ imageOpen: true }, '', location.href);
+                this._popstateHandler = () => {
+                    // Back button pressed while image is open — close image and stay on same URL
+                    history.pushState(null, '', this._savedUrl);
+                    this.close_image();
                 };
-            }
+                window.addEventListener('popstate', this._popstateHandler);
+            },
+            close_image() {
+                if (!this.open_img) return;
+                this.open_img = false;
+                window.__imageOpen = false;
+                document.body.classList.remove('body_hiden');
+                this._removePopstateHandler();
+            },
+            _removePopstateHandler() {
+                if (this._popstateHandler) {
+                    window.removeEventListener('popstate', this._popstateHandler);
+                    this._popstateHandler = null;
+                }
+            },
         }
     }
 </script>

@@ -235,6 +235,12 @@ import { getCurrentLocale } from './services/routerUtils.js';
 let isFirstNavigation = true;
 
 router.beforeEach((to, from, next) => {
+    if (window.__imageOpen) {
+        window.__imageOpen = false;
+        window.dispatchEvent(new CustomEvent('imageclose'));
+        return next(false);
+    }
+
     if (isFirstNavigation) {
         isFirstNavigation = false;
     } else {

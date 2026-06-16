@@ -1,5 +1,5 @@
 <template>
-    <div class="container" id="sectors">
+    <div id="sectors">
 
 
         <div v-if="spot_images && spot_images.length > 0">
@@ -19,13 +19,12 @@
 
 
         <div v-for="area in climbing_area" :key="area && area.sector && area.sector.id ? area.sector.id : 'area-' + Math.random()">
-            <!-- {{ area }} -->
-            <span v-if="area['local_images']" >
+            <template v-if="area['local_images']">
                 <sector_and_local_area_images :sectors_and_images="area"/>
-            </span>
-            <span v-else>
+            </template>
+            <template v-else>
                 <sector :sector="area"/>
-            </span>
+            </template>
         </div>
 
     </div>

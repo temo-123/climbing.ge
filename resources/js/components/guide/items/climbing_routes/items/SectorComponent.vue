@@ -1,13 +1,13 @@
 <template>
-    <div class="row">
-        <div class="row">
-            <div class="col-md-10">
-                <h2 :id="'sector-' + sector.sector.id" style="font-size: 160%">
-                    {{ $t("guide.article.title.sector name") }} -
+    <div class="sector-block">
+        <div class="row align-items-start">
+            <div class="col-10 col-md-10">
+                <h2 :id="'sector-' + sector.sector.id">
+                    {{ $t("guide.article.title.sector name") }} —
                     <strong>{{ sector.sector.name }}</strong>
                 </h2>
             </div>
-            <div class="col-md-2">
+            <div class="col-2">
                 <a
                     v-if="sector.sector.has_route_drawings"
                     @click="show_sector_canvas_modal()"
@@ -20,162 +20,42 @@
             </div>
         </div>
         <div class="row">
+            <!-- Left: sun / shade icons + walking time -->
             <div class="col-md-6">
-                <span
-                    v-if="sector.sector.in_shade_after_10"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'shade10' }"
-                    @mouseenter="activeTooltip = 'shade10'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'shade10' ? null : 'shade10'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in shade after 10.00 am.svg'" alt="In shade after 10:00 am" />
-                    <span class="tip-text">In shade after 10:00 am</span>
-                </span>
-                <span
-                    v-if="sector.sector.in_shade_after_15"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'shade15' }"
-                    @mouseenter="activeTooltip = 'shade15'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'shade15' ? null : 'shade15'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in shade after 15.00 pm.svg'" alt="In shade after 15:00 pm" />
-                    <span class="tip-text">In shade after 15:00 pm</span>
-                </span>
-                <span
-                    v-if="sector.sector.in_the_shade_befornoon"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'shadeNoon' }"
-                    @mouseenter="activeTooltip = 'shadeNoon'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'shadeNoon' ? null : 'shadeNoon'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in shade befor noon.svg'" alt="In shade before noon" />
-                    <span class="tip-text">In shade before noon</span>
-                </span>
-                <span
-                    v-if="sector.sector.in_the_shade_afternoon"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'shadeAfternoon' }"
-                    @mouseenter="activeTooltip = 'shadeAfternoon'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'shadeAfternoon' ? null : 'shadeAfternoon'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in shade in the afternoon.svg'" alt="In shade in the afternoon" />
-                    <span class="tip-text">In shade in the afternoon</span>
-                </span>
-                <span
-                    v-if="sector.sector.all_day_in_shade"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'shadeAllDay' }"
-                    @mouseenter="activeTooltip = 'shadeAllDay'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'shadeAllDay' ? null : 'shadeAllDay'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in the shade whole day.svg'" alt="In the shade whole day" />
-                    <span class="tip-text">In the shade whole day</span>
-                </span>
-                <span
-                    v-if="sector.sector.all_day_in_sun"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'sunAllDay' }"
-                    @mouseenter="activeTooltip = 'sunAllDay'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'sunAllDay' ? null : 'sunAllDay'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/in the sun the whole day.svg'" alt="In the sun the whole day" />
-                    <span class="tip-text">In the sun the whole day</span>
-                </span>
+                <div class="icon-col icons-left">
+                    <sector-icon-tip v-if="sector.sector.in_shade_after_10"      src="/images/svg/in shade after 10.00 am.svg"    :title="$t('guide.sector.shade after 10.00 am')"    :desc="$t('guide.sector.shade after 10.00 am_desc')" />
+                    <sector-icon-tip v-if="sector.sector.in_shade_after_15"      src="/images/svg/in shade after 15.00 pm.svg"    :title="$t('guide.sector.shade after 15.00 pm')"    :desc="$t('guide.sector.shade after 15.00 pm_desc')" />
+                    <sector-icon-tip v-if="sector.sector.in_the_shade_befornoon" src="/images/svg/in shade befor noon.svg"        :title="$t('guide.sector.shade befor noon')"         :desc="$t('guide.sector.shade befor noon_desc')" />
+                    <sector-icon-tip v-if="sector.sector.in_the_shade_afternoon" src="/images/svg/in shade in the afternoon.svg"  :title="$t('guide.sector.shade in the afternoon')"  :desc="$t('guide.sector.shade in the afternoon_desc')" />
+                    <sector-icon-tip v-if="sector.sector.all_day_in_shade"       src="/images/svg/in the shade whole day.svg"     :title="$t('guide.sector.shade whole day')"          :desc="$t('guide.sector.shade whole day_desc')" />
+                    <sector-icon-tip v-if="sector.sector.all_day_in_sun"         src="/images/svg/in the sun the whole day.svg"   :title="$t('guide.sector.sun the whole day')"        :desc="$t('guide.sector.sun the whole day_desc')" />
+                </div>
+                <div v-if="sector.sector.wolking_time">
+                    <div class="walking-card">
+                        <img class="walking-icon" src="/images/svg/walking.svg" :alt="$t('guide.sector.walking_label')" />
+                        <div class="walking-info">
+                            <strong class="walking-time">~ {{ sector.sector.wolking_time }}</strong>
+                            <small class="walking-desc">{{ $t('guide.sector.walking') }}</small>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- Right: relief icons + family/kids below -->
             <div class="col-md-6">
-                <span
-                    v-if="sector.sector.roof"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'roof' }"
-                    @mouseenter="activeTooltip = 'roof'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'roof' ? null : 'roof'"
-                >
-                    <img class="relief_svg" :src="'/images/svg/roof.svg'" alt="Roof" />
-                    <span class="tip-text">Roof</span>
-                </span>
-                <span
-                    v-if="sector.sector.overhang"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'overhang' }"
-                    @mouseenter="activeTooltip = 'overhang'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'overhang' ? null : 'overhang'"
-                >
-                    <img class="relief_svg" :src="'/images/svg/overhang.svg'" alt="Overhang" />
-                    <span class="tip-text">Overhang</span>
-                </span>
-                <span
-                    v-if="sector.sector.vertical"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'vertical' }"
-                    @mouseenter="activeTooltip = 'vertical'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'vertical' ? null : 'vertical'"
-                >
-                    <img class="relief_svg" :src="'/images/svg/vertical.svg'" alt="Vertical" />
-                    <span class="tip-text">Vertical</span>
-                </span>
-                <span
-                    v-if="sector.sector.slabby"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'slabby' }"
-                    @mouseenter="activeTooltip = 'slabby'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'slabby' ? null : 'slabby'"
-                >
-                    <img class="relief_svg" :src="'/images/svg/slabby.svg'" alt="Slabby" />
-                    <span class="tip-text">Slabby</span>
-                </span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <span
-                    v-if="sector.sector.for_family"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'family' }"
-                    @mouseenter="activeTooltip = 'family'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'family' ? null : 'family'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/for family.svg'" alt="For family" />
-                    <span class="tip-text">Recommended for family climbing. Safe for kids</span>
-                </span>
-                <span
-                    v-if="sector.sector.for_kids"
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'kids' }"
-                    @mouseenter="activeTooltip = 'kids'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'kids' ? null : 'kids'"
-                >
-                    <img class="sun_svg" :src="'/images/svg/for kids.svg'" alt="For kids" />
-                    <span class="tip-text">Recommended for kids. Safe and possible for kids to climb</span>
-                </span>
-            </div>
-            <div class="col-md-6" v-if="sector.sector.wolking_time">
-                <span class="sector_walking_time"> ~ {{ sector.sector.wolking_time }}.</span>
-                <span
-                    class="icon-tip"
-                    :class="{ 'tip-open': activeTooltip === 'walking' }"
-                    @mouseenter="activeTooltip = 'walking'"
-                    @mouseleave="activeTooltip = null"
-                    @click.stop="activeTooltip = activeTooltip === 'walking' ? null : 'walking'"
-                >
-                    <img class="relief_svg" :src="'/images/svg/walking.svg'" alt="Walking time" />
-                    <span class="tip-text">~ {{ sector.sector.wolking_time }} walk from parking to sector</span>
-                </span>
+                <div class="icon-col icons-right">
+                    <sector-icon-tip v-if="sector.sector.roof"     src="/images/svg/roof.svg"     img-class="relief_svg" :title="$t('guide.sector.roof')"     :desc="$t('guide.sector.roof_desc')" />
+                    <sector-icon-tip v-if="sector.sector.overhang" src="/images/svg/overhang.svg" img-class="relief_svg" :title="$t('guide.sector.overhang')" :desc="$t('guide.sector.overhang_desc')" />
+                    <sector-icon-tip v-if="sector.sector.vertical" src="/images/svg/vertical.svg" img-class="relief_svg" :title="$t('guide.sector.vertical')" :desc="$t('guide.sector.vertical_desc')" />
+                    <sector-icon-tip v-if="sector.sector.slabby"   src="/images/svg/slabby.svg"   img-class="relief_svg" :title="$t('guide.sector.slabby')"   :desc="$t('guide.sector.slabby_desc')" />
+                </div>
+                <div class="icon-col icons-right" style="margin-top: 8px;">
+                    <sector-icon-tip v-if="sector.sector.for_family" src="/images/svg/for family.svg" :title="$t('guide.sector.for_family_label')" :desc="$t('guide.sector.for_family')" />
+                    <sector-icon-tip v-if="sector.sector.for_kids"   src="/images/svg/for kids.svg"   :title="$t('guide.sector.for_kids_label')"   :desc="$t('guide.sector.for_kids')" />
+                </div>
             </div>
         </div>
 
-        <span v-html="sector.sector.text"></span>
+        <div class="col-12 sector-text" v-html="sector.sector.text"></div>
 
         <!-- <div
             v-for="image in sector.sector_imgs"
@@ -188,33 +68,30 @@
             />
         </div> -->
 
-        <openImg
-            v-for="image in sector.sector_imgs"
-            :key="image.id"
-            :img="'/public/images/sector_img/' + image.image"
-            :img_alt="image.image"
-            :img_class="
-                'sector_images sector_images_' + sector.sector_imgs.length
-            "
-        />
+        <div class="col-12 sector-images-wrap" v-if="sector.sector_imgs.length > 0">
+            <openImg
+                v-for="image in sector.sector_imgs"
+                :key="image.id"
+                :img="'/public/images/sector_img/' + image.image"
+                :img_alt="image.image"
+                :img_class="'sector_images sector_images_' + sector.sector_imgs.length"
+            />
+        </div>
 
-        <table
-            class="table col-md-12 table table-hover"
-            v-if="sector.sport_routes.length > 0"
-        >
-            <tbody>
+        <div class="col-12 table-responsive" v-if="sector.sport_routes.length > 0">
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <td>N</td>
-                    <td>{{ $t("guide.route.name") }}</td>
-                    <td>{{ $t("guide.route.height") }}</td>
-                    <td>{{ $t("guide.route.bolts") }}</td>
-                    <td>{{ $t("guide.route.grade fr") }}</td>
-                    <!-- <td>{{ $t("guide.route.grade yds") }}</td> -->
-                    <td class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</td>
-                    <td class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</td>
-                    <td>Info</td>
+                    <th>N</th>
+                    <th>{{ $t("guide.route.name") }}</th>
+                    <th>{{ $t("guide.route.height") }}</th>
+                    <th>{{ $t("guide.route.bolts") }}</th>
+                    <th>{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                    <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info">Info</th>
                 </tr>
-            </tbody>
+            </thead>
             <tbody>
                 <tr
                     v-for="route in sector.sport_routes"
@@ -223,61 +100,45 @@
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
                     <td>{{ route.num }}</td>
-                    <td @click="show_route_modal(route.id)">{{ route.name }}</td>
+                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
 
                     <td v-if="route.category == 'tred'">Tred</td>
                     <td v-else-if="route.category == 'top'">Top Rope</td>
-                    <td v-else-if="route.category == 'sport climbing'">
-                        <span v-if="route.bolts">
-                            {{ route.bolts }}
-                        </span>
-                        <span v-else>
-                            ?
-                        </span>
-                    </td>
-                    <td v-else >?</td>
+                    <td v-else-if="route.category == 'sport climbing'">{{ route.bolts || '?' }}</td>
+                    <td v-else>?</td>
 
-                    <td v-if="route.or_grade != null">
-                        {{ route.grade }} / {{ route.or_grade }}
-                    </td>
+                    <td v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
                     <td v-else>{{ route.grade }}</td>
 
                     <td class="display-none-720px" v-if="route.or_grade != null">
-                        {{ lead_grade_chart(route.grade) }} /
-                        {{ lead_grade_chart(route.or_grade) }}
+                        {{ lead_grade_chart(route.grade) }} / {{ lead_grade_chart(route.or_grade) }}
                     </td>
                     <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
-                    <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
-                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
-                        ></a>
+                    <td class="col-info" @click="show_route_modal(route.id)">
+                        <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
                     <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
+        </div>
 
-        <table
-            class="table col-md-12 table table-hover"
-            v-if="sector.boulder_route.length > 0"
-        >
-            <tbody>
+        <div class="col-12 table-responsive" v-if="sector.boulder_route.length > 0">
+        <table class="table table-hover">
+            <thead>
                 <tr>
-                    <td>N</td>
-                    <td>{{ $t("guide.route.name") }}</td>
-                    <td>{{ $t("guide.route.height") }}</td>
-                    <td class="display-none-720px">{{ $t("guide.route.grade fr") }}</td>
-                    <td class="display-none-720px">{{ $t("guide.route.grade yds") }}</td>
-                    <td>Info</td>
+                    <th>N</th>
+                    <th>{{ $t("guide.route.name") }}</th>
+                    <th>{{ $t("guide.route.height") }}</th>
+                    <th>{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info">Info</th>
                 </tr>
-            </tbody>
+            </thead>
             <tbody>
-
-
-
                 <tr
                     v-for="route in sector.boulder_route"
                     :key="route.id"
@@ -285,84 +146,69 @@
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
                     <td>{{ route.num }}</td>
-                    <td @click="show_route_modal(route.id)">
-                        {{ route.name }}
-                    </td>
+                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
                     <td>{{ route.height }}</td>
 
                     <td v-if="route.or_grade != null">
-                        {{ boulder_grade_chart(route.grade) }} /
-                        {{ boulder_grade_chart(route.or_grade) }}
+                        {{ boulder_grade_chart(route.grade) }} / {{ boulder_grade_chart(route.or_grade) }}
                     </td>
-                    <td v-else>
-                        {{ boulder_grade_chart(route.grade) }}
-                    </td>
+                    <td v-else>{{ boulder_grade_chart(route.grade) }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != null">
-                        {{ route.grade }} / {{ route.or_grade }}
-                    </td>
+                    <td class="display-none-720px" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
                     <td class="display-none-720px" v-else>{{ route.grade }}</td>
 
-                    <td @click="show_route_modal(route.id)">
-                        <a style="margin-top: -5%; font-size: 150%; cursor: pointer;"
-                            ><i class="fa fa-arrow-right" aria-hidden="true"></i
-                        ></a>
+                    <td class="col-info" @click="show_route_modal(route.id)">
+                        <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
                     <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
+        </div>
 
-        <span
-            :if="sector.mtps.length > 0"
+        <div
             v-for="mtp in sector.mtps"
             :key="mtp.id"
+            class="col-12 mtp-block"
         >
-            <div class="col-md-8">
-                <span class="mtp_name"
-                    ><h3>
-                        {{ $t("guide.route.mtp name") }} -
+            <div class="row align-items-center">
+                <div class="col-12 col-md-8">
+                    <h3 class="mtp-name">
+                        {{ $t("guide.route.mtp name") }} —
                         <strong>{{ mtp.mtp_name }}</strong>
-                    </h3></span
-                >
-                <starsReiting
-                    v-if="mtp.reviews_count > 0"
-                    :reviews_count_prop="mtp.reviews_count"
-                    :reviews_stars_prop="mtp.reviews_stars"
-                />
+                    </h3>
+                    <starsReiting
+                        v-if="mtp.reviews_count > 0"
+                        :reviews_count_prop="mtp.reviews_count"
+                        :reviews_stars_prop="mtp.reviews_stars"
+                    />
+                </div>
+                <div class="col-12 col-md-4 d-flex align-items-center">
+                    <a
+                        @click="show_mtp_madel(mtp.mtp_id)"
+                        data-toggle="modal"
+                        data-target="#squarespaceModal_mtp_info_"
+                        class="mtp-more-link"
+                    >
+                        More information <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </a>
+                </div>
             </div>
-
-            <div class="col-md-4">
-                <a
-                    @click="show_mtp_madel(mtp.mtp_id)"
-                    data-toggle="modal"
-                    data-target="#squarespaceModal_mtp_info_"
-                    style="margin-top: -5%; font-size: 150%; cursor: pointer;"
-                >
-                    <h4><strong>More information</strong></h4>
-                </a>
-            </div>
-
-            <table class="table col-md-12 table table-hover">
-                <tbody>
+            <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
                     <tr>
-                        <td>N</td>
-                        <td>{{ $t("guide.route.name") }}</td>
-                        <td>{{ $t("guide.route.height") }}</td>
-                        <td>{{ $t("guide.route.bolts") }}</td>
-                        <td>{{ $t("guide.route.grade fr") }}</td>
-                        
-                        <!-- <td >
-                            {{ $t("guide.route.grade yds") }}
-                        </td> -->
-
-                        <td class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</td>
-                        <td class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</td>
+                        <th>N</th>
+                        <th>{{ $t("guide.route.name") }}</th>
+                        <th>{{ $t("guide.route.height") }}</th>
+                        <th>{{ $t("guide.route.bolts") }}</th>
+                        <th>{{ $t("guide.route.grade fr") }}</th>
+                        <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                        <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
                     </tr>
-                </tbody>
+                </thead>
                 <tbody>
-
                     <tr
                         v-for="pitch in mtp.mtp_pitchs"
                         :key="pitch.pitch_id"
@@ -372,37 +218,23 @@
                         <td>{{ pitch.num }}</td>
                         <td>{{ pitch.name }}</td>
                         <td>{{ pitch.height }}</td>
-                        <!-- <td>{{ pitch.bolts }}</td> -->
 
                         <td v-if="pitch.category == 'tred'">Tred</td>
-                        <td v-else-if="pitch.category == 'sport climbing'">
-                            <!-- {{ pitch.bolts }} -->
-                            <span v-if="pitch.bolts">
-                                {{ pitch.bolts }}
-                            </span>
-                            <span v-else>
-                                ?
-                            </span>
-                        </td>
+                        <td v-else-if="pitch.category == 'sport climbing'">{{ pitch.bolts || '?' }}</td>
                         <td v-else>?</td>
 
-                        <td v-if="pitch.or_grade != null">
-                            {{ pitch.grade }} /
-                            {{ pitch.or_grade }}
-                        </td>
+                        <td v-if="pitch.or_grade != null">{{ pitch.grade }} / {{ pitch.or_grade }}</td>
                         <td v-else>{{ pitch.grade }}</td>
 
                         <td class="display-none-720px" v-if="pitch.or_grade != null">
-                            {{ lead_grade_chart(pitch.grade) }} /
-                            {{ lead_grade_chart(pitch.or_grade) }}
+                            {{ lead_grade_chart(pitch.grade) }} / {{ lead_grade_chart(pitch.or_grade) }}
                         </td>
-                        <td class="display-none-720px" v-else>
-                            {{ lead_grade_chart(pitch.grade) }}
-                        </td>
+                        <td class="display-none-720px" v-else>{{ lead_grade_chart(pitch.grade) }}</td>
                     </tr>
                 </tbody>
             </table>
-        </span>
+            </div>
+        </div>
 
         <route_modal 
             ref="open_route_modal"
@@ -456,6 +288,7 @@ import create_mtp_review_modal from "./modals/feedbacks/CreateMtpReviewModal.vue
 import mtp_all_reviews_modal from "./modals/feedbacks/MtpAllReviewsModal.vue";
 import sector_canvas_modal from "./modals/SectorCanvasModalComponent.vue";
 import starsReiting from '../../../../global_components/StarReitingShowComponent.vue';
+import SectorIconTip from './SectorIconTip.vue';
 
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
@@ -477,6 +310,7 @@ export default {
         route_json,
         sector_canvas_modal,
         starsReiting,
+        SectorIconTip,
     },
     props: [
         "sector",
@@ -484,8 +318,6 @@ export default {
 
     data: function () {
         return {
-            activeTooltip: null,
-
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
             },
@@ -494,18 +326,9 @@ export default {
             },
         };
     },
-    mounted() {
-        document.addEventListener('click', this.closeTooltip);
-    },
-    beforeUnmount() {
-        document.removeEventListener('click', this.closeTooltip);
-    },
+    mounted() {},
 
     methods: {
-        closeTooltip() {
-            this.activeTooltip = null;
-        },
-
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
         },
@@ -556,24 +379,7 @@ export default {
 </script>
 
 <style>
-@media (max-width: 767px) {
-    /* table {
-        display: block;
-        overflow-x: scroll;
-    } */
-}
-@media (max-width: 567px) {
-    table {
-        display: block;
-        overflow-x: scroll;
-    }
-}
-@media (max-width: 567px) {
-    table {
-        white-space: nowrap;
-    }
-}
-.sector_walking_time{
+.sector_walking_time {
     float: right;
     font-size: 1.5em;
 }
@@ -582,50 +388,60 @@ export default {
     width: 100%;
 }
 
+/* Sector images — float grid, responsive */
+.sector-images-wrap { overflow: hidden; }
+
 .sector_images {
     float: left;
     margin: 0.45%;
+    border-radius: 6px;
 }
-.sector_images_1 {
-    width: 99% !important;
-}
-.sector_images_2 {
-    width: 49% !important;
-}
-.sector_images_3 {
-    width: 32% !important;
-}
-.sector_images_4 {
-    width: 24% !important;
-}
-.sector_images_5 {
-    width: 19% !important;
-}
-.sector_images_6 {
-    width: 16% !important;
-}
-.sector_images_7 {
-    width: 14% !important;
-}
-.sector_images_8 {
-    width: 12% !important;
-}
-.sector_images_9 {
-    width: 10% !important;
-}
-.sector_images_10 {
-    width: 9% !important;
+.sector_images_1  { width: 99%  !important; }
+.sector_images_2  { width: 49%  !important; }
+.sector_images_3  { width: 32%  !important; }
+.sector_images_4  { width: 24%  !important; }
+.sector_images_5  { width: 19%  !important; }
+.sector_images_6  { width: 16%  !important; }
+.sector_images_7  { width: 14%  !important; }
+.sector_images_8  { width: 12%  !important; }
+.sector_images_9  { width: 10%  !important; }
+.sector_images_10 { width:  9%  !important; }
+
+/* On mobile: max 2 images per row */
+@media (max-width: 576px) {
+    .sector_images_1,
+    .sector_images_2  { width: 99%  !important; }
+    .sector_images_3,
+    .sector_images_4,
+    .sector_images_5,
+    .sector_images_6,
+    .sector_images_7,
+    .sector_images_8,
+    .sector_images_9,
+    .sector_images_10 { width: 49%  !important; }
 }
 </style>
 
 <style scoped>
 /* Friendly styles for SectorComponent */
 
+.sector-block {
+    width: 100%;
+    padding: 0;
+}
+
+/* Zero out column gutters so sector content aligns with page text */
+.sector-block .row.mx-0 > [class*="col"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 h2 {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 1.6rem;
+    font-weight: 700;
     color: #343a40;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
 }
 
 .sun_svg, .relief_svg {
@@ -673,47 +489,155 @@ h2 {
 
 
 
-.icon-tip {
-    position: relative;
-    display: inline-block;
+.icon-col {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 4px 0;
+}
+.icon-col.icons-left  { justify-content: flex-start; }
+.icon-col.icons-right { justify-content: flex-end; }
+
+.walking-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    padding: 10px 16px;
+    margin: 4px 0;
+}
+
+.walking-icon {
+    height: 40px;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+.walking-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.walking-time {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #2c3e50;
+    line-height: 1.2;
+}
+
+.walking-desc {
+    font-size: 1rem;
+    color: #666;
+    line-height: 1.3;
+}
+
+/* Table header */
+.table thead th {
+    white-space: nowrap;
+    font-weight: 600;
+    background-color: #f8f9fa;
+    border-bottom: 2px solid #dee2e6;
+}
+
+/* Info column — narrow, centered arrow */
+.col-info {
+    width: 1%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+/* Route name — clickable */
+.route-name-cell {
     cursor: pointer;
 }
-
-.tip-text {
-    display: none;
-    position: absolute;
-    bottom: 115%;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(30, 30, 30, 0.88);
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 6px;
-    font-size: 0.78rem;
-    white-space: nowrap;
-    z-index: 300;
-    pointer-events: none;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+.route-name-cell:hover {
+    color: #007bff;
 }
 
-.tip-text::after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    border: 5px solid transparent;
-    border-top-color: rgba(30, 30, 30, 0.88);
+/* Arrow icon in info column */
+.route-arrow {
+    font-size: 1.2rem;
+    color: #6c757d;
+    cursor: pointer;
 }
-
-.icon-tip:hover .tip-text,
-.icon-tip.tip-open .tip-text {
-    display: block;
+.route-arrow:hover {
+    color: #007bff;
 }
 
 /* SEO column — in DOM for Google, hidden from users */
 .route-seo-col {
     display: none;
+}
+
+/* Rich-text sector description */
+.sector-text {
+    word-break: break-word;
+    overflow-wrap: break-word;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* MTP section */
+.mtp-block {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid #dee2e6;
+}
+
+.mtp-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+}
+
+.mtp-more-link {
+    display: inline-block;
+    cursor: pointer;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 6px 14px;
+    border: 1px solid #007bff;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+}
+.mtp-more-link:hover {
+    background: #007bff;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Hide grade conversion columns on narrow screens */
+@media (max-width: 720px) {
+    .display-none-720px {
+        display: none !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+    h2 {
+        font-size: 1.2rem;
+    }
+    .icon-col.icons-left,
+    .icon-col.icons-right {
+        justify-content: center;
+    }
+    .walking-card {
+        width: 100%;
+        justify-content: center;
+    }
+    .mtp-more-link {
+        margin-top: 0.5rem;
+        width: 100%;
+        text-align: center;
+    }
+    .show_sector_canvas_modal_icon {
+        font-size: 2em;
+    }
 }
 
 /* Active route highlighting - no layout shift */

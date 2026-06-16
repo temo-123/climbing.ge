@@ -1,5 +1,5 @@
 <template>
-    <span>
+    <div>
 
         <div class="row" v-if="sectors_and_images.local_images && sectors_and_images.local_images.length > 0">
             <div
@@ -21,12 +21,12 @@
         </div>
         
 
-        <div class="row" v-if="sectors_and_images.sectors && sectors_and_images.sectors.length > 0">
-            <div v-for="sector in sectors_and_images.sectors" :key="sector && sector.sector && sector.sector.id ? sector.sector.id : 'sector-' + Math.random()" >
+        <div v-if="sectors_and_images.sectors && sectors_and_images.sectors.length > 0">
+            <div v-for="sector in sectors_and_images.sectors" :key="sector && sector.sector && sector.sector.id ? sector.sector.id : 'sector-' + Math.random()">
                 <sector :sector="sector"/>
             </div>
         </div>
-    </span>
+    </div>
 </template>
 
 <script>
@@ -79,7 +79,7 @@ export default {
 }
 
 .sector_images:hover {
-    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
 .sector_local_images {
