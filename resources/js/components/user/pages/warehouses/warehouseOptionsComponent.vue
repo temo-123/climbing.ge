@@ -11,9 +11,49 @@
                 </div>
                 <div class="d-flex align-items-center flex-column flex-md-row">
                     <button class="btn btn-success mb-2 mb-md-0 mr-md-3" @click="get_data()">Refresh</button>
+                    <button class="btn btn-warning mb-2 mb-md-0 mr-md-3" @click="toggleScanMode()">
+                        {{ scanMode ? 'Close Scanner' : 'Scan Barcode' }}
+                    </button>
                     <button class="btn btn-primary" @click="showAddOptionModal()">
                         Add Product Option
                     </button>
+                </div>
+            </div>
+
+            <!-- Barcode scan panel -->
+            <div v-if="scanMode" class="card border-warning mb-3">
+                <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+                    <strong>Barcode Scanner</strong>
+                    <button type="button" class="btn btn-sm btn-secondary" @click="toggleScanMode()">Close</button>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center" style="gap: 10px;">
+                        <input
+                            ref="barcodeInput"
+                            type="text"
+                            v-model="scanBarcode"
+                            @keydown.enter.prevent="submitScan()"
+                            class="form-control"
+                            placeholder="Scan barcode or type and press Enter..."
+                            autocomplete="off"
+                            style="max-width: 400px;"
+                        />
+                        <input
+                            type="number"
+                            v-model="scanQuantity"
+                            class="form-control"
+                            min="1"
+                            style="width: 90px;"
+                            placeholder="Qty"
+                        />
+                        <button class="btn btn-primary" @click="submitScan()" :disabled="scanLoading || !scanBarcode.trim()">
+                            <span v-if="scanLoading" class="spinner-border spinner-border-sm" role="status"></span>
+                            {{ scanLoading ? '...' : 'Add' }}
+                        </button>
+                    </div>
+                    <div v-if="scanResult" class="mt-2 alert" :class="scanResult.success ? 'alert-success' : 'alert-danger'">
+                        {{ scanResult.message }}
+                    </div>
                 </div>
             </div>
             <div class="d-flex align-items-center">
@@ -336,7 +376,12 @@
                 warehouse: [],
                 viewMode: 'grouped',
                 filterBrand: '',
-                filterCategory: ''
+                filterCategory: '',
+                scanMode: false,
+                scanBarcode: '',
+                scanQuantity: 1,
+                scanLoading: false,
+                scanResult: null,
             }
         },
 
@@ -352,6 +397,50 @@
                 // if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
                     this.$router.go(-1)
                 // }
+            },
+
+            toggleScanMode() {
+                this.scanMode = !this.scanMode;
+                this.scanBarcode = '';
+                this.scanResult = null;
+                this.scanQuantity = 1;
+                if (this.scanMode) {
+                    this.$nextTick(() => {
+                        this.$refs.barcodeInput && this.$refs.barcodeInput.focus();
+                    });
+                }
+            },
+
+            submitScan() {
+                const barcode = this.scanBarcode.trim();
+                if (!barcode) return;
+                this.scanLoading = true;
+                this.scanResult = null;
+                axios.post(`/set_warehouse/scan_barcode/${this.$route.params.id}`, {
+                    barcode: barcode,
+                    quantity: this.scanQuantity || 1
+                })
+                .then(response => {
+                    const opt = response.data.product_option;
+                    const name = opt ? `${opt.product?.url_title || ''} — ${opt.name}` : '';
+                    this.scanResult = { success: true, message: `Added: ${name}` };
+                    this.scanBarcode = '';
+                    this.get_data();
+                    this.$nextTick(() => {
+                        this.$refs.barcodeInput && this.$refs.barcodeInput.focus();
+                    });
+                })
+                .catch(error => {
+                    const msg = error.response?.data?.error || 'Scan failed';
+                    this.scanResult = { success: false, message: msg };
+                    this.scanBarcode = '';
+                    this.$nextTick(() => {
+                        this.$refs.barcodeInput && this.$refs.barcodeInput.focus();
+                    });
+                })
+                .finally(() => {
+                    this.scanLoading = false;
+                });
             },
 
             make_prodaction_task(){

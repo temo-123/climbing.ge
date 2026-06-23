@@ -207,6 +207,44 @@ class WarehouseController extends Controller
         ]);
     }
 
+    public function scan_barcode_to_warehouse(Request $request) {
+        $auth = PermissionService::authorize('warehouse', 'edit');
+        if ($auth) return $auth;
+
+        $warehouse = Warehouse::find($request->id);
+        if (!$warehouse) {
+            return response()->json(['error' => 'Warehouse not found'], 400);
+        }
+
+        $barcode = trim($request->barcode ?? '');
+        if (!$barcode) {
+            return response()->json(['error' => 'Barcode is required'], 422);
+        }
+
+        $productOption = Product_option::where('barcode', $barcode)->first();
+        if (!$productOption) {
+            return response()->json(['error' => 'No product option found with this barcode'], 404);
+        }
+
+        $quantity = (int)($request->quantity ?? 1);
+        if ($quantity < 1) $quantity = 1;
+
+        if ($warehouse->productOptions()->where('product_option_id', $productOption->id)->exists()) {
+            $existing = $warehouse->productOptions()->where('product_option_id', $productOption->id)->first();
+            $warehouse->productOptions()->updateExistingPivot($productOption->id, [
+                'quantity' => $existing->pivot->quantity + $quantity
+            ]);
+        } else {
+            $warehouse->productOptions()->attach($productOption->id, ['quantity' => $quantity]);
+        }
+
+        return response()->json([
+            'success' => true,
+            'product_option' => $productOption->load('product'),
+            'message' => 'Product added to warehouse'
+        ]);
+    }
+
     public function migrate_product_option(Request $request) {
         $auth = PermissionService::authorize('warehouse', 'edit');
         if ($auth) return $auth;

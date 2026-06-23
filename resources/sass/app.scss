@@ -293,7 +293,7 @@ table {
 .add_buttom a { margin-bottom: 2%; }
 .other_line { border-color: #a7a7a7; }
 .serch_title { text-align: center; }
-.index_h2 { text-align: center; }
+.index_h2 { text-align: center; font-size: 4rem;}
 .articles_title { text-align: center; }
 .blog_main_img img { margin: 20px; border: 1px solid; }
 .is-waiting-to-load > img { visibility: hidden; }
@@ -1927,6 +1927,7 @@ body .white-text .feature-details a:hover {
     font-family: $font-sans;
     font-style: normal;
     font-weight: 600;
+    font-size: 1.4rem;
     letter-spacing: inherit;
     text-transform: uppercase;
     color: #333;
@@ -1947,7 +1948,7 @@ body .white-text .feature-details a:hover {
     font-weight: 400;
     letter-spacing: inherit;
     text-transform: none;
-    font-size: 14.3px;
+    font-size: 1rem;
     line-height: 1.4em;
     color: #a1a1a1;
     word-break: break-word;

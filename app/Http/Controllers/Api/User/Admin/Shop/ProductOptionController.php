@@ -66,7 +66,7 @@ class ProductOptionController extends Controller
             $add_option['price'] = $data['price'];
             $add_option['currency'] = $data['currency'];
             $add_option['discount'] = (int)($data['discount'] ?? 0);
-            // $add_option['quantity'] = $data['quantity'];
+            $add_option['barcode'] = !empty($data['barcode']) ? $data['barcode'] : null;
             $add_option['product_id'] = $request['product_id'];
             $add_option->save();
 
@@ -119,7 +119,7 @@ class ProductOptionController extends Controller
             $edit_option['price'] = $data['price'];
             $edit_option['currency'] = $data['currency'];
             $edit_option['discount'] = (int)($data['discount'] ?? 0);
-            // $edit_option['quantity'] = $data['quantity'];
+            $edit_option['barcode'] = !empty($data['barcode']) ? $data['barcode'] : null;
             $edit_option->save();
 
             if($request->hasFile('images')){
@@ -182,6 +182,34 @@ class ProductOptionController extends Controller
         }
     }
 
+    public function find_by_barcode(Request $request)
+    {
+        if ($auth = PermissionService::authorize('product_option', 'show')) return $auth;
+
+        $barcode = trim($request->barcode ?? '');
+        if (!$barcode) {
+            return response()->json(['error' => 'Barcode is required'], 422);
+        }
+
+        $option = Product_option::where('barcode', $barcode)
+            ->with(['product', 'images'])
+            ->first();
+
+        if (!$option) {
+            return response()->json(['error' => 'No product option found with this barcode'], 404);
+        }
+
+        // Total stock across all warehouses
+        $totalStock = $option->warehouse()->sum('quantity');
+
+        return response()->json([
+            'option' => $option,
+            'product' => $option->product,
+            'quantity' => $totalStock,
+            'image' => $option->images->first()?->image ?? null,
+        ]);
+    }
+
     public function option_validation($data)
     {
         $validator = Validator::make($data, [
@@ -189,7 +217,7 @@ class ProductOptionController extends Controller
             'price' => 'required | numeric',
             'currency' => 'required',
             'discount' => 'nullable | numeric | min:0 | max:100',
-            // 'quantity' => 'required',
+            'barcode' => 'nullable | string | max:255',
         ]);
         if ($validator->fails()) {
             return $validator->messages();

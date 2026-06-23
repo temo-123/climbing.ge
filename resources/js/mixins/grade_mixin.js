@@ -28,7 +28,9 @@ export const grade = {
             "9b+",
             "9c",
             "9c+",
-            "Project"
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     boulder() {
@@ -54,6 +56,8 @@ export const grade = {
             "V16",
             "V17",
             "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     ice(){
@@ -64,6 +68,9 @@ export const grade = {
             "WI4",
             "WI5",
             "WI6",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     dry_tooling(){
@@ -85,6 +92,9 @@ export const grade = {
             "D15",
             "D16",
             "D17",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     mix_climbing(){
@@ -104,6 +114,9 @@ export const grade = {
             "M13",
             "M14",
             "M15",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
 
@@ -115,6 +128,9 @@ export const grade = {
             "A3",
             "A4",
             "A5",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     alpine_climbing(){
@@ -132,6 +148,9 @@ export const grade = {
             "ED1",
             "ED2",
             "ED3",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     },
     alpine_climbing_russ(){
@@ -151,6 +170,9 @@ export const grade = {
             "6A",
             "6B",
             "7A",
+            "Project",
+            "Open Project",
+            "Close Project",
         ]
     }
 }

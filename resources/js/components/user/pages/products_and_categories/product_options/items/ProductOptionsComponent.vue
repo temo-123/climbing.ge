@@ -111,7 +111,8 @@
                     name: '',
                     price: 0,
                     currency: '₾',
-                    discount: 0
+                    discount: 0,
+                    barcode: ''
                 },
                 editing_data: {},
                 adding_option_images: [],
@@ -138,7 +139,8 @@
                     name: '',
                     price: 0,
                     currency: '₾',
-                    discount: 0
+                    discount: 0,
+                    barcode: ''
                 };
                 this.adding_option_images = [];
             },

@@ -28,6 +28,8 @@ const LEAD_FR_TO_YDS = {
     "9c":   "5.15d",
     "9c+":  "5.16a",
     "Project": "Project",
+    "Open Project": "Open Project",
+    "Close Project": "Close Project",
 };
 
 const LEAD_FR_TO_UIAA = {
@@ -59,6 +61,8 @@ const LEAD_FR_TO_UIAA = {
     "9b+":  "XII+",
     "9c":   "XIII",
     "Project": "Project",
+    "Open Project": "Open Project",
+    "Close Project": "Close Project",
 };
 
 const BOULDER_V_TO_YDS = {
@@ -67,7 +71,10 @@ const BOULDER_V_TO_YDS = {
     "V5":  "6c+", "V6":  "7a", "V7":  "7a+","V8":  "7b",
     "V9":  "7c",  "V10": "7c+","V11": "8a", "V12": "8a+",
     "V13": "8b",  "V14": "8b+","V15": "8c", "V16": "8c+",
-    "V17": "9a",  "Project": "Project",
+    "V17": "9a", 
+    "Project": "Project",
+    "Open Project": "Open Project",
+    "Close Project": "Close Project",
 };
 
 const BOULDER_V_TO_UIAA = {
@@ -76,7 +83,10 @@ const BOULDER_V_TO_UIAA = {
     "V5":  "VIII+",    "V6":"VIII+",    "V7":  "IX-",     "V8":  "IX",
     "V9":  "IX+",    "V10": "IX+",     "V11": "X-",      "V12": "X",
     "V13": "X+",     "V14": "XI-",     "V15": "XI",      "V16": "XI+",
-    "V17": "XII-",   "Project": "Project",
+    "V17": "XII-",   
+    "Project": "Project",
+    "Open Project": "Open Project",
+    "Close Project": "Close Project",
 };
 
 const ALPINE_RUSS_TO_EU = {

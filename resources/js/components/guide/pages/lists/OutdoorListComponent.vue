@@ -386,11 +386,13 @@
 }
 
 .region-list-header {
-  background: #f8f9fa;
-  padding: 0.875rem 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  border-left: 4px solid #007bff;
+    background: #efeff0;
+    border-left: 3px solid #007bff;
+    border-top: 2px solid #007bff;
+    margin-bottom: 1.2rem;
+    margin-top: 1.5rem;
+    padding: .875rem 1rem;
+    border-radius: 20px 0 0 0;
 }
 
 .region-header-top {

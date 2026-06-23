@@ -90,8 +90,38 @@
 
             <!-- Products -->
             <h6 class="text-muted mb-2">Products <span class="text-danger">*</span></h6>
+
+            <!-- Barcode scan panel -->
+            <div class="mb-2">
+                <button type="button" class="btn btn-warning btn-sm mb-2" @click="toggleScan()">
+                    {{ scanOpen ? 'Close Scanner' : 'Scan Barcode' }}
+                </button>
+                <div v-if="scanOpen" class="card border-warning mb-2">
+                    <div class="card-body py-2 px-3">
+                        <div class="d-flex align-items-center" style="gap:8px;">
+                            <input
+                                ref="scanInput"
+                                type="text"
+                                v-model="scanBarcode"
+                                @keydown.enter.prevent="scanProduct()"
+                                class="form-control form-control-sm"
+                                placeholder="Scan barcode or type and press Enter..."
+                                autocomplete="off"
+                                style="max-width:320px;"
+                            />
+                            <button type="button" class="btn btn-primary btn-sm" @click="scanProduct()" :disabled="scanLoading || !scanBarcode.trim()">
+                                <span v-if="scanLoading" class="spinner-border spinner-border-sm"></span>
+                                {{ scanLoading ? '...' : 'Add' }}
+                            </button>
+                        </div>
+                        <div v-if="scanError" class="text-danger mt-1 small">{{ scanError }}</div>
+                        <div v-if="scanSuccess" class="text-success mt-1 small">{{ scanSuccess }}</div>
+                    </div>
+                </div>
+            </div>
+
             <div v-if="form.order_product_list.length === 0" class="text-center text-muted p-3 border mb-2">
-                No products added. Click "Add Product" below.
+                No products added. Click "Add Product" or scan a barcode below.
             </div>
             <div v-for="(item, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-2 bg-light">
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -190,6 +220,11 @@ export default {
             submitted: false,
             createdOrderId: null,
             matchedUsers: [],
+            scanOpen: false,
+            scanBarcode: '',
+            scanLoading: false,
+            scanError: null,
+            scanSuccess: null,
         };
     },
     mounted() {
@@ -211,6 +246,62 @@ export default {
             this.showModal = false;
             this.resetForm();
         },
+        toggleScan() {
+            this.scanOpen = !this.scanOpen;
+            this.scanBarcode = '';
+            this.scanError = null;
+            this.scanSuccess = null;
+            if (this.scanOpen) {
+                this.$nextTick(() => {
+                    this.$refs.scanInput && this.$refs.scanInput.focus();
+                });
+            }
+        },
+
+        scanProduct() {
+            const barcode = this.scanBarcode.trim();
+            if (!barcode) return;
+            this.scanLoading = true;
+            this.scanError = null;
+            this.scanSuccess = null;
+            axios.get(`/set_product/set_product_option/find_by_barcode/${encodeURIComponent(barcode)}`)
+                .then(r => {
+                    const data = r.data;
+                    const opt = data.option;
+                    const product = data.product;
+                    const stock = data.quantity || 0;
+                    const maxQty = this.create_production_task ? 9999 : (stock || 1);
+                    this.form.order_product_list.push({
+                        product_id: product.id,
+                        product_option_id: opt.id,
+                        quantity: 1,
+                        max_quantity: maxQty,
+                        option_image: data.image || null,
+                        options: [{
+                            id: opt.id,
+                            name: opt.name,
+                            price: opt.price,
+                            quantity: stock,
+                        }],
+                    });
+                    this.scanSuccess = `Added: ${product.title} — ${opt.name} (Stock: ${stock})`;
+                    this.scanBarcode = '';
+                    this.$nextTick(() => {
+                        this.$refs.scanInput && this.$refs.scanInput.focus();
+                    });
+                })
+                .catch(error => {
+                    this.scanError = error.response?.data?.error || 'Barcode not found';
+                    this.scanBarcode = '';
+                    this.$nextTick(() => {
+                        this.$refs.scanInput && this.$refs.scanInput.focus();
+                    });
+                })
+                .finally(() => {
+                    this.scanLoading = false;
+                });
+        },
+
         addProduct() {
             this.form.order_product_list.push({
                 product_id: '',
@@ -253,6 +344,10 @@ export default {
             this.submitting = false;
             this.matchedUsers = [];
             this.createdOrderId = null;
+            this.scanOpen = false;
+            this.scanBarcode = '';
+            this.scanError = null;
+            this.scanSuccess = null;
         },
         submitOrder() {
             if (!this.form.name || !this.form.surname) {

@@ -28,6 +28,8 @@
                     </select>
                     Discount (%)
                     <input type="number" max="100" min="0" v-model="local_editing_data.discount" class="form-control" name="discount" placeholder="Discount" title="enter discount">
+                    Barcode
+                    <input type="text" v-model="local_editing_data.barcode" class="form-control" name="barcode" placeholder="Scan or type barcode" title="product barcode">
                 </form>
 
                 <div v-show="!is_loading">

@@ -55,6 +55,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/edit_option/{option_id}', 'edit_option');
             Route::delete('/del_option/{option_id}', 'del_option');
             Route::delete('/del_option_image/{image_id}', 'del_option_image');
+            Route::get('/find_by_barcode/{barcode}', 'find_by_barcode');
         });
 
         Route::controller(ProductCategoryController::class)->prefix('set_product_category')->group( function() {
@@ -138,6 +139,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
         Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
         Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
+        Route::post('/scan_barcode/{id}', 'scan_barcode_to_warehouse');
     });
     
     Route::controller(TourController::class)->prefix('set_tour')->group( function() {

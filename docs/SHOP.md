@@ -224,4 +224,72 @@ All admin tables use the `tabsComponent` pattern. See [FRONTEND/USER_PANEL_TABLE
 
 ---
 
+## Barcode Scan System
+
+Product options support a barcode field that enables physical scanner devices to be used in the warehouse and when creating custom orders.
+
+### How It Works
+
+Each product option can have a unique barcode (EAN, QR, or any string). Barcode scanners behave like keyboards — they type the code and press Enter — so all scan inputs work with any USB/Bluetooth scanner out of the box.
+
+### Setting a Barcode on a Product Option
+
+In the admin panel: **Shop → Products → (product) → Options → Add / Edit option**
+
+A **Barcode** text field is shown below the Discount field. Type or scan the code directly into the field and save.
+
+- The barcode is stored in `product_options.barcode` (nullable, unique).
+- If left empty, the option simply has no barcode and cannot be targeted by the scan endpoints.
+
+### Warehouse Scan
+
+In the admin panel: **Shop → Warehouses → (warehouse)**
+
+Click **"Scan Barcode"** to open the scan panel. It contains:
+- A barcode input (auto-focused) — scan or type, then press Enter or click **Add**
+- A quantity field (default 1)
+- Inline success / error feedback
+
+**Behaviour:**
+- If the barcode matches a known product option → the option is added to the warehouse (or its quantity incremented) and the list refreshes automatically.
+- If the barcode is unknown → an error message is shown inline. The input stays focused for the next scan.
+- The manual **"Add Product Option"** dropdown is still available alongside the scanner.
+
+**API endpoint:**
+```
+POST /api/set_warehouse/scan_barcode/{warehouse_id}
+Body: { barcode: string, quantity?: number }
+Returns: { success, product_option, message }
+Errors: 404 if barcode not found, 422 if barcode missing
+Permission: warehouse › edit
+```
+
+### Custom Order Scan
+
+In the admin panel: **Shop → Custom Orders → Add Custom Order**
+
+Click **"Scan Barcode"** (above the product list) to open the scan panel. Scanning a barcode immediately appends the product option to the order's product list with quantity 1 and the correct stock information pre-filled.
+
+- The scanned item appears as a fully populated row (product, option, max quantity from warehouse stock).
+- The row can be edited manually after scanning (change quantity, remove item).
+- If the barcode is unknown → an error is shown inline and the input stays focused.
+- Manual **"Add Product"** dropdowns remain available alongside the scanner.
+
+**API endpoint:**
+```
+GET /api/set_product/set_product_option/find_by_barcode/{barcode}
+Returns: { option, product, quantity (total warehouse stock), image }
+Errors: 404 if barcode not found
+Permission: product_option › show
+```
+
+### Database
+
+```
+product_options
+└── barcode  (string, nullable, unique)  -- added by migration 2026_06_23_174849
+```
+
+---
+
 [Go back](../README.md)
