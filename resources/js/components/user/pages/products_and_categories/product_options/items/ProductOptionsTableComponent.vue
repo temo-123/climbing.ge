@@ -8,6 +8,7 @@
                 <th>Option name</th>
                 <th>Price</th>
                 <th>Discount</th>
+                <th>Barcode</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
@@ -30,6 +31,13 @@
                 <td>{{ option.discount }} </td>
 
                 <td>
+                    <span v-if="option.barcode" class="barcode-badge">
+                        <i class="fa fa-barcode"></i> {{ option.barcode }}
+                    </span>
+                    <span v-else class="text-muted">—</span>
+                </td>
+
+                <td>
                     <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="$emit('edit_option_modal', option.id)">Edit</button>
                     <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                 </td>
@@ -40,7 +48,7 @@
         </tbody>
         <tbody v-else>
             <tr>
-                <td colspan="7" class="text-center">No options available</td>
+                <td colspan="8" class="text-center">No options available</td>
             </tr>
         </tbody>
     </table>
@@ -211,6 +219,17 @@ export default {
 
 .text-muted {
     color: #6c757d;
+}
+.barcode-badge {
+    display: inline-block;
+    background: #f0f4ff;
+    border: 1px solid #c0cfff;
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: monospace;
+    font-size: 12px;
+    color: #2c4a9e;
+    white-space: nowrap;
 }
 
 /* Responsive adjustments */

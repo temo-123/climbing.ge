@@ -28,7 +28,26 @@
                     Discount (%)
                     <input type="number" max="100" min="0" v-model="local_adding_data.discount" class="form-control" name="discount" placeholder="Discount" title="enter discount">
                     Barcode
-                    <input type="text" v-model="local_adding_data.barcode" class="form-control" name="barcode" placeholder="Scan or type barcode" title="product barcode">
+                    <div v-if="!local_adding_data.barcode" class="barcode-empty-state">
+                        <div class="barcode-actions">
+                            <input type="text" v-model="barcode_input" class="form-control barcode-input" placeholder="Scan barcode here..." @keydown.enter.prevent="set_barcode_from_input">
+                            <button type="button" class="btn btn-outline-secondary" @click="set_barcode_from_input" :disabled="!barcode_input">
+                                <i class="fa fa-check"></i> Set
+                            </button>
+                            <button type="button" class="btn btn-outline-primary" @click="generate_barcode">
+                                <i class="fa fa-barcode"></i> Generate
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else class="barcode-set-state">
+                        <div class="barcode-display">
+                            <span class="barcode-value">{{ local_adding_data.barcode }}</span>
+                            <button type="button" class="btn btn-sm btn-outline-danger" @click="clear_barcode">
+                                <i class="fa fa-times"></i> Clear
+                            </button>
+                        </div>
+                        <barcode-image :code="local_adding_data.barcode" />
+                    </div>
                 </form>
 
                 <div v-show="!is_loading">
@@ -71,10 +90,11 @@
 
 <script>
 // import StackModal from '@innologica/vue-stackable-modal'  // Global now
+import BarcodeImage from '../BarcodeImageComponent.vue'
 
 export default {
     components: {
-        // StackModal
+        BarcodeImage
     },
     props: {
         is_add_option_modal: {
@@ -100,6 +120,11 @@ export default {
             default: false
         }
     },
+    data() {
+        return {
+            barcode_input: ''
+        }
+    },
     computed: {
         local_adding_data: {
             get() {
@@ -108,7 +133,31 @@ export default {
         }
     },
     methods: {
+        generate_barcode() {
+            let digits = '';
+            for (let i = 0; i < 12; i++) {
+                digits += Math.floor(Math.random() * 10).toString();
+            }
+            let sum = 0;
+            for (let i = 0; i < 12; i++) {
+                sum += parseInt(digits[i]) * (i % 2 === 0 ? 1 : 3);
+            }
+            const check = (10 - (sum % 10)) % 10;
+            this.local_adding_data.barcode = digits + check;
+            this.barcode_input = '';
+        },
+        set_barcode_from_input() {
+            if (this.barcode_input.trim()) {
+                this.local_adding_data.barcode = this.barcode_input.trim();
+                this.barcode_input = '';
+            }
+        },
+        clear_barcode() {
+            this.local_adding_data.barcode = '';
+            this.barcode_input = '';
+        },
         close_option_add_model() {
+            this.barcode_input = '';
             this.$emit('close_option_add_model')
         },
         add_new_option_image_value() {
@@ -128,29 +177,41 @@ export default {
 </script>
 
 <style scoped>
-.language-vue {
-    padding: 15px;
+.language-vue { padding: 15px; }
+.form-control { margin-bottom: 15px; }
+.table { margin-top: 15px; }
+.table th { background-color: #f5f5f5; font-weight: 600; text-align: center; }
+.table td { vertical-align: middle; text-align: center; }
+.float-left { float: left; }
+.modal-footer { width: 100%; }
+
+.barcode-empty-state { margin-bottom: 15px; }
+.barcode-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
 }
-.form-control {
-    margin-bottom: 15px;
+.barcode-input {
+    margin-bottom: 0;
+    flex: 1;
 }
-.table {
-    margin-top: 15px;
+.barcode-set-state { margin-bottom: 15px; }
+.barcode-display {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: #f0f4ff;
+    border: 1px solid #c0cfff;
+    border-radius: 6px;
+    padding: 8px 12px;
+    margin-bottom: 6px;
 }
-.table th {
-    background-color: #f5f5f5;
+.barcode-value {
+    font-family: monospace;
+    font-size: 15px;
     font-weight: 600;
-    text-align: center;
-}
-.table td {
-    vertical-align: middle;
-    text-align: center;
-}
-.float-left {
-    float: left;
-}
-.modal-footer {
-    width: 100%;
+    color: #2c4a9e;
+    flex: 1;
 }
 </style>
 
