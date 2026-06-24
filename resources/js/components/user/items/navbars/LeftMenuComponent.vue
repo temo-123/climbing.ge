@@ -161,6 +161,12 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
             },
 
             apply_sidebar_margin(open) {
+                // Clear inline styles that full-screen editor pages set directly on body/navbar,
+                // otherwise they override the sidebar-open CSS class when navigating back.
+                document.body.style.marginLeft = '';
+                const navbar = document.querySelector('.admin_page_header_navbar');
+                if (navbar) navbar.style.marginLeft = '';
+
                 if (open && window.innerWidth > 993) {
                     document.body.classList.add('sidebar-open');
                 } else {

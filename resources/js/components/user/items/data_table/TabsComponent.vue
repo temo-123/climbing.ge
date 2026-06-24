@@ -256,15 +256,29 @@ export default {
     },
 
     mounted() {
-        // console.log('TabsComponent mounted, table_data:', this.table_data);
+        const saved = this._getStorageKey() ? parseInt(localStorage.getItem(this._getStorageKey())) : null;
+        if (saved) {
+            const safeData = this.safeTableData;
+            if (safeData.length > 0 && safeData.some(t => t.id === saved)) {
+                this.tab_num = saved;
+            } else {
+                this._pendingSavedTab = saved;
+            }
+        }
     },
 
     watch: {
         table_data(newVal) {
             const safeData = this.safeTableData;
-            if (safeData.length > 0 && !this.tab_num) {
-                this.tab_num = safeData[0].id;
-                this.currentPage = 1;
+            if (safeData.length > 0) {
+                if (this._pendingSavedTab && safeData.some(t => t.id === this._pendingSavedTab)) {
+                    this.tab_num = this._pendingSavedTab;
+                    this._pendingSavedTab = null;
+                    this.currentPage = 1;
+                } else if (!safeData.some(t => t.id === this.tab_num)) {
+                    this.tab_num = safeData[0].id;
+                    this.currentPage = 1;
+                }
             }
         },
         tab_num(newTab) {
@@ -273,6 +287,10 @@ export default {
             this.sortColIndex = null;
             this.sortKey = null;
             this.sortDir = 'asc';
+            const key = this._getStorageKey();
+            if (key && newTab) {
+                localStorage.setItem(key, newTab);
+            }
         }
     },
 
@@ -356,6 +374,9 @@ export default {
     },
 
     methods: {
+        _getStorageKey() {
+            return this.$route?.name ? `tab_num_${this.$route.name}` : null;
+        },
         update() {
             this.$emit("update");
         },
