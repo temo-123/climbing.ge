@@ -1,57 +1,85 @@
 <template>
-    <div>
-        <!-- Toolbar + Color Controls -->
-        <div class="row mb-2">
-            <div class="col-12">
-                <ToolbarComponent
-                    :action="action"
-                    :history-length="historyCount"
-                    :redo-length="redoCount"
-                    @reset="handleReset"
-                    @undo="handleUndo"
-                    @redo="handleRedo"
-                    @line="handleLine"
-                    @point="handlePoint"
-                    @number="handleNumber"
-                    @rectangle="handleRectangle"
-                    @combined="handleCombined"
-                    @eraser="handleEraser"
-                    @erase_segment="handleEraseSegment"
-                    @move="handleMove"
-                    @zoom-in="handleZoomIn"
-                    @zoom-out="handleZoomOut"
-                    @pan="handlePan"
-                    @circle="handleCircle"
-                    @ellipse="handleEllipse"
-                    @polygon="handlePolygon"
-                    @text="handleText"
-                    @selection="handleSelection"
-                    @export-png="handleExportPNG"
-                    @export-svg="handleExportSVG"
-                    @save-image="handleSaveImage"
-                />
+    <div class="canvas-editor">
 
-                <!-- Color & Stroke Controls -->
-                <div class="d-flex flex-wrap align-items-center gap-3 mt-2 p-2 bg-light border rounded">
-                    <div class="d-flex align-items-center gap-1">
-                        <label class="mb-0 small text-muted">Stroke</label>
-                        <input type="color" :value="currentStrokeColor" @input="handleColorChange('stroke', $event.target.value)" class="form-control form-control-sm p-0" style="width:34px; height:30px;">
-                    </div>
-                    <div class="d-flex align-items-center gap-1">
-                        <label class="mb-0 small text-muted">Fill</label>
-                        <input type="color" :value="currentFillColor || '#ffffff'" @input="handleColorChange('fill', $event.target.value)" class="form-control form-control-sm p-0" style="width:34px; height:30px;">
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <label class="mb-0 small text-muted">Width: <strong>{{ strokeWidth }}</strong></label>
-                        <input type="range" min="1" max="20" :value="strokeWidth" @input="handleStrokeWidthChange(parseInt($event.target.value))" class="form-range" style="width:100px;">
-                    </div>
-                </div>
+        <!-- Toolbar -->
+        <div class="mb-1">
+            <ToolbarComponent
+                :action="action"
+                :history-length="historyCount"
+                :redo-length="redoCount"
+                @reset="handleReset"
+                @undo="handleUndo"
+                @redo="handleRedo"
+                @line="handleLine"
+                @point="handlePoint"
+                @number="handleNumber"
+                @rectangle="handleRectangle"
+                @combined="handleCombined"
+                @eraser="handleEraser"
+                @erase_segment="handleEraseSegment"
+                @move="handleMove"
+                @zoom-in="handleZoomIn"
+                @zoom-out="handleZoomOut"
+                @zoom-reset="handleZoomReset"
+                @pan="handlePan"
+                @circle="handleCircle"
+                @ellipse="handleEllipse"
+                @polygon="handlePolygon"
+                @text="handleText"
+                @selection="handleSelection"
+                @export-png="handleExportPNG"
+                @export-svg="handleExportSVG"
+                @save-image="handleSaveImage"
+            />
+        </div>
+
+        <!-- Color & Stroke Controls -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 px-2 py-1 bg-light border rounded">
+            <span class="small fw-semibold text-secondary me-1">Style:</span>
+
+            <div class="d-flex align-items-center gap-1">
+                <label class="mb-0 small text-muted">Stroke</label>
+                <input type="color" :value="currentStrokeColor"
+                       @input="handleColorChange('stroke', $event.target.value)"
+                       class="form-control form-control-sm p-0 border-0"
+                       style="width:30px; height:26px; cursor:pointer;">
+                <span class="small text-muted" style="font-size:11px;">{{ currentStrokeColor }}</span>
+            </div>
+
+            <div class="vr"></div>
+
+            <div class="d-flex align-items-center gap-1">
+                <label class="mb-0 small text-muted">Fill</label>
+                <input type="color" :value="currentFillColor || '#ffffff'"
+                       @input="handleColorChange('fill', $event.target.value)"
+                       class="form-control form-control-sm p-0 border-0"
+                       style="width:30px; height:26px; cursor:pointer;">
+                <span class="small text-muted" style="font-size:11px;">{{ currentFillColor || 'none' }}</span>
+            </div>
+
+            <div class="vr"></div>
+
+            <div class="d-flex align-items-center gap-2">
+                <label class="mb-0 small text-muted">Width:</label>
+                <input type="range" min="1" max="20" :value="strokeWidth"
+                       @input="handleStrokeWidthChange(parseInt($event.target.value))"
+                       class="form-range" style="width:80px;">
+                <span class="badge bg-primary" style="min-width:24px;">{{ strokeWidth }}</span>
+            </div>
+
+            <div class="vr"></div>
+
+            <div class="d-flex align-items-center gap-1">
+                <label class="mb-0 small text-muted">Zoom:</label>
+                <span class="badge bg-secondary" style="min-width:46px; font-size:12px;">{{ Math.round(currentZoom * 100) }}%</span>
+                <button type="button" class="btn btn-sm btn-secondary py-0 px-1" style="font-size:11px; line-height:1.6;"
+                        @click="handleZoomReset" title="Reset to fit">⊙</button>
             </div>
         </div>
 
-        <!-- Main content area -->
-        <div class="row">
-            <div class="col-12">
+        <!-- Canvas + Layers sidebar -->
+        <div class="row g-2">
+            <div class="col-lg-9 col-md-8">
                 <CanvasContainerComponent
                     :action="action"
                     :json_prop="json_prop"
@@ -62,12 +90,13 @@
                     @layers_updated="updateLayersList"
                     @layers_ready="updateLayersList"
                     @history-changed="onHistoryChanged"
+                    @zoom-changed="onZoomChanged"
                 />
-
+            </div>
+            <div class="col-lg-3 col-md-4">
                 <LayersPanelComponent
                     :layers="layers"
-                    :show-layers-table="showLayersTable"
-                    @toggle-layers-table="toggleLayersTable"
+                    :show-layers-table="true"
                     @refresh-layers="updateLayersList"
                     @toggle-all-visibility="toggleLayersVisibility"
                     @delete-all-layers="deleteAllLayers"
@@ -92,6 +121,10 @@
                     @cancel-editing-text="cancelEditingText"
                     @finish-editing-child-text="finishEditingChildText"
                     @cancel-editing-child-text="cancelEditingChildText"
+                    @change-layer-color="changeLayerColor"
+                    @change-layer-size="changeLayerSize"
+                    @change-child-color="changeChildColor"
+                    @change-child-size="changeChildSize"
                 />
             </div>
         </div>
@@ -122,17 +155,17 @@ export default {
             related_jsons: {
                 type: Array,
                 default: () => []
+            },
+            route_name: {
+                type: String,
+                default: ''
             }
         },
         data: () => ({
             image: '',
 
-            img_h: 0,
-            img_w: 0,
-
             action: 1,
             layers: [],
-            showLayersTable: false,
             historyCount: 0,
             redoCount: 0,
             moveToGroupModal: {
@@ -145,6 +178,7 @@ export default {
             currentFillColor: null,
             strokeWidth: 3,
             zoomLevel: 1,
+            currentZoom: 1,
             panOffset: { x: 0, y: 0 },
             selectedItems: [], // For multi-selection
             isPanning: false,
@@ -251,6 +285,10 @@ export default {
                 this.$refs.canvasContainer.zoomOut();
             },
 
+            handleZoomReset() {
+                this.$refs.canvasContainer.zoomReset();
+            },
+
             handlePan() {
                 this.action = 9;
             },
@@ -290,6 +328,10 @@ export default {
                 this.redoCount = redoLen;
             },
 
+            onZoomChanged(zoom) {
+                this.currentZoom = zoom;
+            },
+
             // Canvas event handlers
             handleCanvasData(event) {
                 this.$emit('canvas_data', event);
@@ -302,11 +344,127 @@ export default {
 
             // Method to get current canvas data and emit it
             getAndEmitCanvasData() {
+                // Delegate to saveCanvasData() which uses _getDrawingJson() to exclude
+                // background and related layers from the emitted JSON.
+                this.$refs.canvasContainer.saveCanvasData();
+            },
+
+            // Finds a Paper.js item anywhere in the project by its unique numeric id.
+            // Using id instead of name avoids false matches when two items share the same name.
+            _itemById(id) {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope) {
-                    const canvasData = JSON.stringify(scope.project.exportJSON());
-                    this.$emit('canvas_data', canvasData);
+                if (!scope || !scope.project) return null;
+                for (const layer of scope.project.layers) {
+                    for (const item of layer.children) {
+                        if (item.id === id) return item;
+                        if (item.children) {
+                            for (const child of item.children) {
+                                if (child.id === id) return child;
+                            }
+                        }
+                    }
                 }
+                return null;
+            },
+
+            // Returns the CSS hex color of a Paper.js item (or its first child for groups).
+            _getItemColor(item) {
+                if (!item) return '#999999';
+                if (item.name && item.name.startsWith('group ') && item.children && item.children.length > 0) {
+                    return this._getItemColor(item.children[0]);
+                }
+                const color = item.strokeColor || item.fillColor;
+                if (!color) return '#999999';
+                try { return color.toCSS(true); } catch (e) { return '#999999'; }
+            },
+
+            _getItemWidth(item) {
+                if (!item) return 3;
+                if (item.name && item.name.startsWith('group ') && item.children && item.children.length > 0) {
+                    return this._getItemWidth(item.children[0]);
+                }
+                if (item.name && item.name.startsWith('text ')) {
+                    return Math.round(item.fontSize) || 16;
+                }
+                return item.strokeWidth || 3;
+            },
+
+            _setItemColor(item, color) {
+                if (!item) return;
+                if (item.name && item.name.startsWith('group ') && item.children) {
+                    [...item.children].forEach(child => this._setItemColor(child, color));
+                    return;
+                }
+                if (item.strokeColor !== null && item.strokeColor !== undefined) item.strokeColor = color;
+                if (item.fillColor !== null && item.fillColor !== undefined) item.fillColor = color;
+            },
+
+            _setItemWidth(item, width) {
+                if (!item) return;
+                if (item.name && item.name.startsWith('group ') && item.children) {
+                    [...item.children].forEach(child => this._setItemWidth(child, width));
+                    return;
+                }
+                if (item.name && item.name.startsWith('text ')) {
+                    item.fontSize = width;
+                } else if (item.strokeWidth !== undefined) {
+                    item.strokeWidth = width;
+                }
+            },
+
+            changeLayerColor(layer, color) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                this._setItemColor(item, color);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            changeLayerSize(layer, width) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                this._setItemWidth(item, parseInt(width));
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            changeChildColor(layer, child, color) {
+                const item = this._itemById(child.id);
+                if (!item) return;
+                this._setItemColor(item, color);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            changeChildSize(layer, child, width) {
+                const item = this._itemById(child.id);
+                if (!item) return;
+                this._setItemWidth(item, parseInt(width));
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            // Builds a human-readable display name for a layer item.
+            // Renames "point" → "dot", strips "group" prefix for groups,
+            // and appends the route name when one is provided.
+            _formatLayerName(rawName, isGroup) {
+                if (!rawName) return 'unnamed';
+                let display = rawName;
+                if (isGroup) {
+                    display = display.replace(/^group /, '');
+                } else {
+                    display = display.replace(/^point /, 'dot ');
+                }
+                if (this.route_name) display += ` ${this.route_name}`;
+                return display;
             },
 
             updateLayersList() {
@@ -321,12 +479,17 @@ export default {
                     });
                     this.layers = [];
                     scope.project.layers.forEach(layer => {
+                                    // Skip background and read-only related layers
+                                    if (layer.name === 'background' || (layer.name && layer.name.startsWith('related-'))) return;
                                     layer.children.forEach(item => {
                                         if (item.name && item.name.startsWith('group ')) {
                                             // Handle groups: add the group itself and its children
                                             this.layers.push({
+                                                id: item.id,
                                                 name: item.name || 'unnamed',
-                                                displayName: item.name ? item.name.replace('group ', '') : 'unnamed',
+                                                displayName: this._formatLayerName(item.name, true),
+                                                color: this._getItemColor(item),
+                                                strokeWidth: this._getItemWidth(item),
                                                 visible: item.visible !== false,
                                                 locked: item.locked || false,
                                                 layerName: layer.name,
@@ -335,8 +498,11 @@ export default {
                                                 isEditing: false,
                                                 editText: '',
                                                 children: item.children.map(child => ({
+                                                    id: child.id,
                                                     name: child.name || 'unnamed',
-                                                    displayName: child.name || 'unnamed',
+                                                    displayName: this._formatLayerName(child.name, false),
+                                                    color: this._getItemColor(child),
+                                                    strokeWidth: this._getItemWidth(child),
                                                     visible: child.visible !== false,
                                                     locked: child.locked || false,
                                                     parentGroup: item.name,
@@ -349,8 +515,11 @@ export default {
                                         } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
                                             // Only add non-group items or items not already included in groups
                                             this.layers.push({
+                                                id: item.id,
                                                 name: item.name || 'unnamed',
-                                                displayName: item.name || 'unnamed',
+                                                displayName: this._formatLayerName(item.name, false),
+                                                color: this._getItemColor(item),
+                                                strokeWidth: this._getItemWidth(item),
                                                 visible: item.visible !== false,
                                                 locked: item.locked || false,
                                                 layerName: layer.name,
@@ -368,30 +537,20 @@ export default {
             },
 
             toggleLayerVisibility(layer) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                item.visible = !item.visible;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if (item.name === layer.name) {
-                            item.visible = !item.visible;
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
             },
 
             toggleLayerLock(layer) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                item.locked = !item.locked;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if (item.name === layer.name) {
-                            item.locked = !item.locked;
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
             },
 
@@ -400,8 +559,9 @@ export default {
                 if (!scope || !scope.project) return;
                 const allVisible = this.layers.every(layer => layer.visible);
                 const newVisibility = !allVisible;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => { item.visible = newVisibility; });
+                this.layers.forEach(layer => {
+                    const item = this._itemById(layer.id);
+                    if (item) item.visible = newVisibility;
                 });
                 scope.view.update();
                 this.updateLayersList();
@@ -409,23 +569,16 @@ export default {
 
             deleteLayerItem(layer) {
                 const itemType = layer.isGroup ? 'group' : 'item';
-                if (!confirm(`Are you sure you want to delete the ${itemType} "${layer.name}"?`)) return;
+                if (!confirm(`Are you sure you want to delete the ${itemType} "${layer.displayName}"?`)) return;
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                // Remove associated text label if this is a rectangle
+                if (item.data && item.data.textLabel) item.data.textLabel.remove();
+                item.remove();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if ((item.name || 'unnamed') === layer.name) {
-                            item.remove();
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
-            },
-
-            toggleLayersTable() {
-                this.showLayersTable = !this.showLayersTable;
             },
 
             toggleGroupExpansion(layer) {
@@ -433,51 +586,31 @@ export default {
             },
 
             toggleChildVisibility(layer, child) {
+                const item = this._itemById(child.id);
+                if (!item) return;
+                item.visible = !item.visible;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if (item.name === layer.name && item.children) {
-                            item.children.forEach(c => {
-                                if (c.name === child.name) c.visible = !c.visible;
-                            });
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
             },
 
             toggleChildLock(layer, child) {
+                const item = this._itemById(child.id);
+                if (!item) return;
+                item.locked = !item.locked;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if (item.name === layer.name && item.children) {
-                            item.children.forEach(c => {
-                                if (c.name === child.name) c.locked = !c.locked;
-                            });
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
             },
 
             deleteChildItem(layer, child) {
-                if (!confirm(`Are you sure you want to delete "${child.name}" from group "${layer.name}"?`)) return;
+                if (!confirm(`Are you sure you want to delete "${child.displayName}" from group "${layer.displayName}"?`)) return;
+                const item = this._itemById(child.id);
+                if (!item) return;
+                if (item.data && item.data.textLabel) item.data.textLabel.remove();
+                item.remove();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                scope.project.layers.forEach(paperLayer => {
-                    paperLayer.children.forEach(item => {
-                        if (item.name === layer.name && item.children) {
-                            item.children.forEach(c => {
-                                if (c.name === child.name) c.remove();
-                            });
-                        }
-                    });
-                });
-                scope.view.update();
+                if (scope) scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
             },
@@ -518,103 +651,63 @@ export default {
 
             updatePaperLayerOrder() {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Group the UI layers by their layerName (paper layer name)
-                    const layersByName = {};
-                    this.layers.forEach(layer => {
-                        if (!layersByName[layer.layerName]) layersByName[layer.layerName] = [];
-                        layersByName[layer.layerName].push(layer);
-                    });
+                if (!scope || !scope.project) return;
 
-                    // For each paper layer, reorder its top-level children based on the UI order
-                    scope.project.layers.forEach(paperLayer => {
-                        const orderedLayers = layersByName[paperLayer.name];
-                        if (orderedLayers) {
-                            const orderedChildren = [];
-                            orderedLayers.forEach(layer => {
-                                const child = paperLayer.children.find(c => c.name === layer.name);
-                                if (child) orderedChildren.push(child);
-                            });
-                            paperLayer.children = orderedChildren;
-                        }
-                    });
+                // Group the UI layers by their layerName (paper layer name)
+                const layersByName = {};
+                this.layers.forEach(layer => {
+                    if (!layersByName[layer.layerName]) layersByName[layer.layerName] = [];
+                    layersByName[layer.layerName].push(layer);
+                });
 
-                    scope.view.update();
-                    this.saveCanvasData();
-                }
+                // Reorder each paper layer's children to match the UI order using item IDs
+                scope.project.layers.forEach(paperLayer => {
+                    const ordered = layersByName[paperLayer.name];
+                    if (!ordered) return;
+                    // Build the desired ordered list of Paper.js items
+                    const orderedItems = ordered
+                        .map(l => paperLayer.children.find(c => c.id === l.id))
+                        .filter(Boolean);
+                    // Append each item in order (Paper.js moves the item to the end of children)
+                    orderedItems.forEach(item => paperLayer.addChild(item));
+                });
+
+                scope.view.update();
+                this.saveCanvasData();
             },
 
             createGroupFromLayer(layer) {
-                if (confirm(`Create a new group containing "${layer.name}"?`)) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Find the item in Paper.js
-                        let foundItem = null;
-                        let foundLayer = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name) {
-                                    foundItem = item;
-                                    foundLayer = paperLayer;
-                                }
-                            });
-                        });
-
-                        if (foundItem && foundLayer) {
-                            // Create a new group
-                            const newGroup = new paper.Group();
-                            const currentCount = this.$refs.canvasContainer.getGroupCounter();
-                            newGroup.name = `group ${currentCount + 1}`;
-                            this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
-
-                            // Move the item into the group
-                            foundItem.remove();
-                            newGroup.addChild(foundItem);
-
-                            // Add the group to the layer
-                            foundLayer.addChild(newGroup);
-
-                            scope.view.update();
-                            this.updateLayersList();
-                            this.saveCanvasData();
-                        }
-                    }
-                }
+                if (!confirm(`Create a new group containing "${layer.displayName}"?`)) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                const foundItem = this._itemById(layer.id);
+                if (!foundItem) return;
+                const foundLayer = foundItem.layer; // Paper.js item.layer = the Layer it belongs to
+                const newGroup = new paper.Group();
+                const currentCount = this.$refs.canvasContainer.getGroupCounter();
+                newGroup.name = `group ${currentCount + 1}`;
+                this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
+                newGroup.addChild(foundItem); // addChild re-parents automatically
+                foundLayer.addChild(newGroup);
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             ungroupLayer(layer) {
-                if (confirm(`Ungroup "${layer.name}"? All items will become individual layers.`)) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Find the group in Paper.js
-                        let foundGroup = null;
-                        let foundLayer = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name && item instanceof paper.Group) {
-                                    foundGroup = item;
-                                    foundLayer = paperLayer;
-                                }
-                            });
-                        });
-
-                        if (foundGroup && foundLayer) {
-                            // Move all children out of the group
-                            const children = foundGroup.children.slice(); // Copy the children array
-                            children.forEach(child => {
-                                child.remove();
-                                foundLayer.addChild(child);
-                            });
-
-                            // Remove the empty group
-                            foundGroup.remove();
-
-                            scope.view.update();
-                            this.updateLayersList();
-                            this.saveCanvasData();
-                        }
-                    }
-                }
+                if (!confirm(`Ungroup "${layer.displayName}"? All items will become individual layers.`)) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                const foundGroup = this._itemById(layer.id);
+                if (!foundGroup || !(foundGroup instanceof paper.Group)) return;
+                const parentLayer = foundGroup.parent; // Direct parent (the Layer)
+                // Copy children first — live list shifts as items are re-parented
+                const children = [...foundGroup.children];
+                children.forEach(child => parentLayer.addChild(child)); // re-parents each child
+                foundGroup.remove();
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             showMoveToGroupModal(layer) {
@@ -629,65 +722,29 @@ export default {
 
             moveLayerToGroup(layer, targetGroup) {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Find the item and target group in Paper.js
-                    let foundItem = null;
-                    let foundGroup = null;
-                    scope.project.layers.forEach(paperLayer => {
-                        paperLayer.children.forEach(item => {
-                            if (item.name === layer.name) {
-                                foundItem = item;
-                            }
-                            if (item.name === targetGroup.name && item instanceof paper.Group) {
-                                foundGroup = item;
-                            }
-                        });
-                    });
-
-                    if (foundItem && foundGroup) {
-                        // Move the item into the group
-                        foundItem.remove();
-                        foundGroup.addChild(foundItem);
-
-                        scope.view.update();
-                        this.updateLayersList();
-                        this.saveCanvasData();
-                    }
+                if (!scope || !scope.project) return;
+                const foundItem  = this._itemById(layer.id);
+                const foundGroup = this._itemById(targetGroup.id);
+                if (foundItem && foundGroup && foundGroup instanceof paper.Group) {
+                    foundGroup.addChild(foundItem); // re-parents automatically
+                    scope.view.update();
+                    this.updateLayersList();
+                    this.saveCanvasData();
                 }
                 this.moveToGroupModal.show = false;
             },
 
             moveChildOutOfGroup(layer, child) {
-                if (confirm(`Move "${child.name}" out of group "${layer.name}"?`)) {
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        // Find the group in Paper.js
-                        let foundGroup = null;
-                        let foundLayer = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name && item instanceof paper.Group) {
-                                    foundGroup = item;
-                                    foundLayer = paperLayer;
-                                }
-                            });
-                        });
-
-                        if (foundGroup && foundLayer) {
-                            // Find and move the child out of the group
-                            foundGroup.children.forEach(item => {
-                                if (item.name === child.name) {
-                                    item.remove();
-                                    foundLayer.addChild(item);
-                                }
-                            });
-
-                            scope.view.update();
-                            this.updateLayersList();
-                            this.saveCanvasData();
-                        }
-                    }
-                }
+                if (!confirm(`Move "${child.displayName}" out of group "${layer.displayName}"?`)) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                const foundChild = this._itemById(child.id);
+                if (!foundChild) return;
+                const parentLayer = foundChild.layer; // The Layer the group belongs to
+                parentLayer.addChild(foundChild); // re-parents: removes from group, adds to layer
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
             },
 
             deleteAllLayers() {
@@ -695,209 +752,66 @@ export default {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
                 scope.project.layers.forEach(layer => {
-                    if (!layer.name || !layer.name.startsWith('related-')) {
-                        layer.removeChildren();
-                    }
+                    if (layer.name && (layer.name.startsWith('related-') || layer.name === 'background')) return;
+                    layer.removeChildren();
                 });
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
             },
 
-            startEditingLayerName(layer, event) {
-                // Stop editing any other layer first
-                this.layers.forEach(l => {
-                    if (l.isEditing) {
-                        this.cancelEditingLayerName(l);
-                    }
-                });
-                layer.isEditing = true;
-                layer.originalName = layer.name;
-                this.$nextTick(() => {
-                    if (event && event.target) {
-                        event.target.focus();
-                        // Select all text
-                        const range = document.createRange();
-                        range.selectNodeContents(event.target);
-                        const selection = window.getSelection();
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                    }
-                });
-            },
-
             finishEditingLayerName(layer, newName) {
-                if (newName && newName !== layer.originalName) {
-                    // Update the name in Paper.js
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        let foundItem = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.originalName) {
-                                    foundItem = item;
-                                }
-                            });
-                        });
-
-                        if (foundItem) {
-                            // For groups, ensure the name starts with 'group '
-                            if (layer.isGroup && !newName.startsWith('group ')) {
-                                foundItem.name = `group ${newName}`;
-                            } else {
-                                foundItem.name = newName;
-                            }
-                            layer.name = foundItem.name;
-                            layer.displayName = layer.isGroup ? newName : foundItem.name;
-                            this.saveCanvasData();
-                            // Update layers list to reflect the change
-                            this.updateLayersList();
-                        }
-                    }
+                const foundItem = this._itemById(layer.id);
+                if (foundItem && newName) {
+                    const finalName = layer.isGroup && !newName.startsWith('group ') ? `group ${newName}` : newName;
+                    foundItem.name = finalName;
+                    this.saveCanvasData();
+                    this.updateLayersList();
                 }
-                layer.isEditing = false;
-                delete layer.originalName;
             },
 
-            cancelEditingLayerName(layer) {
-                layer.isEditing = false;
-                delete layer.originalName;
-                this.updateLayersList(); // Refresh to reset the display
-            },
-
-            startEditingChildName(layer, child, event) {
-                // Stop editing any other child first
-                this.layers.forEach(l => {
-                    if (l.children) {
-                        l.children.forEach(c => {
-                            if (c.isEditing) {
-                                this.cancelEditingChildName(c);
-                            }
-                        });
-                    }
-                });
-                child.isEditing = true;
-                child.originalName = child.name;
-                this.$nextTick(() => {
-                    if (event && event.target) {
-                        event.target.focus();
-                        // Select all text
-                        const range = document.createRange();
-                        range.selectNodeContents(event.target);
-                        const selection = window.getSelection();
-                        selection.removeAllRanges();
-                        selection.addRange(range);
-                    }
-                });
+            cancelEditingLayerName() {
+                // LayersPanelComponent already restored display state; just refresh the list
+                this.updateLayersList();
             },
 
             finishEditingChildName(layer, child, newName) {
-                if (newName && newName !== child.originalName) {
-                    // Update the name in Paper.js
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        let foundGroup = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name && item instanceof paper.Group) {
-                                    foundGroup = item;
-                                }
-                            });
-                        });
-
-                        if (foundGroup) {
-                            foundGroup.children.forEach(item => {
-                                if (item.name === child.originalName) {
-                                    item.name = newName;
-                                    child.name = newName;
-                                    child.displayName = newName;
-                                    this.saveCanvasData();
-                                    // Update layers list to reflect the change
-                                    this.updateLayersList();
-                                }
-                            });
-                        }
-                    }
+                const foundItem = this._itemById(child.id);
+                if (foundItem && newName) {
+                    foundItem.name = newName;
+                    this.saveCanvasData();
+                    this.updateLayersList();
                 }
-                child.isEditing = false;
-                delete child.originalName;
             },
 
-            cancelEditingChildName(child) {
-                child.isEditing = false;
-                delete child.originalName;
-                this.updateLayersList(); // Refresh to reset the display
+            cancelEditingChildName() {
+                this.updateLayersList();
             },
 
-            // Text editing methods
             finishEditingText(layer, newText) {
-                if (newText !== layer.originalText) {
-                    // Update the text content in Paper.js
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        let foundItem = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name) {
-                                    foundItem = item;
-                                }
-                            });
-                        });
-
-                        if (foundItem && foundItem instanceof paper.PointText) {
-                            foundItem.content = newText;
-                            layer.textContent = newText;
-                            this.saveCanvasData();
-                            // Update layers list to reflect the change
-                            this.updateLayersList();
-                        }
-                    }
+                const foundItem = this._itemById(layer.id);
+                if (foundItem && foundItem instanceof paper.PointText) {
+                    foundItem.content = newText;
+                    this.saveCanvasData();
+                    this.updateLayersList();
                 }
-                layer.isEditing = false;
-                delete layer.originalText;
             },
 
-            cancelEditingText(layer) {
-                layer.isEditing = false;
-                delete layer.originalText;
-                this.updateLayersList(); // Refresh to reset the display
+            cancelEditingText() {
+                this.updateLayersList();
             },
 
             finishEditingChildText(layer, child, newText) {
-                if (newText !== child.originalText) {
-                    // Update the text content in Paper.js
-                    const scope = this.$refs.canvasContainer.getCanvasScope();
-                    if (scope && scope.project) {
-                        let foundGroup = null;
-                        scope.project.layers.forEach(paperLayer => {
-                            paperLayer.children.forEach(item => {
-                                if (item.name === layer.name && item instanceof paper.Group) {
-                                    foundGroup = item;
-                                }
-                            });
-                        });
-
-                        if (foundGroup) {
-                            foundGroup.children.forEach(item => {
-                                if (item.name === child.name && item instanceof paper.PointText) {
-                                    item.content = newText;
-                                    child.textContent = newText;
-                                    this.saveCanvasData();
-                                    // Update layers list to reflect the change
-                                    this.updateLayersList();
-                                }
-                            });
-                        }
-                    }
+                const foundItem = this._itemById(child.id);
+                if (foundItem && foundItem instanceof paper.PointText) {
+                    foundItem.content = newText;
+                    this.saveCanvasData();
+                    this.updateLayersList();
                 }
-                child.isEditing = false;
-                delete child.originalText;
             },
 
-            cancelEditingChildText(child) {
-                child.isEditing = false;
-                delete child.originalText;
-                this.updateLayersList(); // Refresh to reset the display
+            cancelEditingChildText() {
+                this.updateLayersList();
             },
 
             saveCanvasData() {
@@ -1006,6 +920,9 @@ export default {
 </script>
 
 <style scoped>
+    .canvas-editor {
+        user-select: none;
+    }
     .but_action{
         background-color: #a5a6a7;
     }

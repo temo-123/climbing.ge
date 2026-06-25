@@ -32,19 +32,14 @@
             <button type="button" :class="['btn', 'btn-primary', { active: action === 4 }]" @click.prevent="$emit('rectangle')" title="Rectangle">
                 <i class="fa fa-square-o"></i>
             </button>
-            <button type="button" :class="['btn', 'btn-primary', { active: action === 7 }]" @click.prevent="$emit('combined')" title="Combined (rect + line + point)">
+            <button type="button" :class="['btn', 'btn-primary', { active: action === 7 }]" @click.prevent="$emit('combined')" title="Combined (numbered box + line + point)">
                 <i class="fa fa-object-group"></i>
             </button>
-
-            
-            <button type="button" :class="['btn', 'btn-primary', { active: action === 10 }]" @click.prevent="$emit('circle')" title="Circle">
+            <button type="button" :class="['btn', 'btn-primary', { active: action === 10 }]" @click.prevent="$emit('circle')" title="Circle (drag to resize)">
                 <i class="fa fa-circle-o"></i>
             </button>
-            <button type="button" :class="['btn', 'btn-primary', { active: action === 11 }]" @click.prevent="$emit('ellipse')" title="Ellipse">
+            <button type="button" :class="['btn', 'btn-primary', { active: action === 11 }]" @click.prevent="$emit('ellipse')" title="Ellipse (drag to resize)">
                 <i class="fa fa-circle-o"></i><small class="ms-1">E</small>
-            </button>
-            <button type="button" :class="['btn', 'btn-primary', { active: action === 12 }]" @click.prevent="$emit('polygon')" title="Polygon">
-                <i class="fa fa-star-o"></i>
             </button>
             <button type="button" :class="['btn', 'btn-primary', { active: action === 13 }]" @click.prevent="$emit('text')" title="Text">
                 <i class="fa fa-font"></i>
@@ -71,15 +66,18 @@
 
         <div class="vr mx-1"></div>
 
-        <!-- View tools (active = grey) -->
+        <!-- View tools -->
         <div class="btn-group btn-group-sm">
-            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-in')" title="Zoom In">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-in')" title="Zoom In (scroll up)">
                 <i class="fa fa-search-plus"></i>
             </button>
-            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-out')" title="Zoom Out">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-out')" title="Zoom Out (scroll down)">
                 <i class="fa fa-search-minus"></i>
             </button>
-            <button type="button" :class="['btn', action === 9 ? 'btn-secondary' : 'btn-secondary']" @click.prevent="$emit('pan')" title="Pan">
+            <button type="button" class="btn btn-secondary" @click.prevent="$emit('zoom-reset')" title="Reset zoom 1:1">
+                <i class="fa fa-search"></i> 1:1
+            </button>
+            <button type="button" :class="['btn', 'btn-secondary', { active: action === 9 }]" @click.prevent="$emit('pan')" title="Pan (drag to move)">
                 <i class="fa fa-hand-paper-o"></i>
             </button>
         </div>

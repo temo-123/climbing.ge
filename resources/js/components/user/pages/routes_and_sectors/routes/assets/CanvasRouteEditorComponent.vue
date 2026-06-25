@@ -38,7 +38,7 @@
                 :cancelButton="{ visible: false }"
                 @close="show_editor = false"
             >
-              <div class="row" v-if="show_editor && sector_images.length > 0">
+              <div class="" v-if="show_editor && sector_images.length > 0">
                   <div class="tabs">
                       <input
                           v-for="(image, index) in sector_images"
@@ -80,6 +80,7 @@
                     :image_prop="getSectorImage()"
                     :json_prop="route_json_prop"
                     :related_jsons="related_jsons"
+                    :route_name="route_name_prop"
                     @canvas_data="handleCanvasData"
                   />
               </div>
@@ -111,6 +112,7 @@ export default {
         show_alert_prop: { default: false },
         sector_image_id_prop: { default: '' },
         route_id_prop: { default: null },
+        route_name_prop: { default: '' },
     },
     emits: ['update:route_json_prop', 'update:sector_image_id_prop'],
     data() {

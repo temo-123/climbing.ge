@@ -16,7 +16,8 @@ class Route extends Model
         "or_grade",
 
         "name",
-        "text",
+        "text_us",
+        "text_ka",
 
         "height",
         "bolts",

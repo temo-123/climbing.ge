@@ -1,4 +1,4 @@
-ut<template>
+<template>
     <!-- <div> -->
         <canvas
             :id="canvas_id_prop"

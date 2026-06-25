@@ -52,6 +52,7 @@
             :show_alert_prop="show_alert_modal"
             :sector_image_id_prop="data.sector_image_id"
             :route_id_prop="$route.params.id"
+            :route_name_prop="data.name"
             @update:route_json_prop="data.route_json = $event"
             @update:sector_image_id_prop="data.sector_image_id = $event"
         />
@@ -91,10 +92,32 @@
           </div>
         </div>
 
-        <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Description (Text) </label>
-          <div class="col-md-10">
-            <big_editor v-model="data.text" />
+        <div class="tabs row">
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col">
+                <input type="radio" id="desc_tab_1" :value="1" v-model="desc_tab_num">
+                <label for="desc_tab_1">English text</label>
+              </div>
+              <div class="col">
+                <input type="radio" id="desc_tab_2" :value="2" v-model="desc_tab_num">
+                <label for="desc_tab_2">Georgian text</label>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12">
+            <div class="form-group clearfix row" v-show="desc_tab_num == 1">
+              <label for="name" class='col-md-2 control-label'> English description </label>
+              <div class="col-md-10">
+                <big_editor v-model="data.text_us" />
+              </div>
+            </div>
+            <div class="form-group clearfix row" v-show="desc_tab_num == 2">
+              <label for="name" class='col-md-2 control-label'> Georgian description </label>
+              <div class="col-md-10">
+                <big_editor v-model="data.text_ka" />
+              </div>
+            </div>
           </div>
         </div>
 
@@ -201,6 +224,7 @@
         problem_status: "",
 
         article_id: "",
+        desc_tab_num: 1,
 
         data: {
           sector_id: "",
@@ -210,7 +234,8 @@
           or_grade: "",
 
           name: "",
-          text: "",
+          text_us: "",
+          text_ka: "",
 
           height: "",
           bolts: "",
@@ -223,7 +248,7 @@
           bolts_type: "",
 
           category: "",
-          route_json: null, // Add canvas JSON data
+          route_json: null,
         },
 
         is_loading: false,
@@ -407,7 +432,8 @@
           or_grade: "",
 
           name: "",
-          text: "",
+          text_us: "",
+          text_ka: "",
 
           height: "",
           bolts: "",

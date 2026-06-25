@@ -103,10 +103,10 @@
                             </div>
                         </div>
 
-                        <div class="modal-section description" v-if="route.text">
+                        <div class="modal-section description" v-if="routeDescription">
                             <h3 class="section-title">{{ $t('guide.route.description') }}</h3>
                             <div class="description-content">
-                                <span v-html="route.text"></span>
+                                <span v-html="routeDescription"></span>
                             </div>
                         </div>
 
@@ -156,6 +156,14 @@ export default {
         starsReiting,
     },
     props: [],
+    computed: {
+        routeDescription() {
+            if (this.$i18n.locale === 'ka' && this.route.text_ka) {
+                return this.route.text_ka;
+            }
+            return this.route.text_us || null;
+        },
+    },
     data() {
         return {
             is_show_route_modal: false,

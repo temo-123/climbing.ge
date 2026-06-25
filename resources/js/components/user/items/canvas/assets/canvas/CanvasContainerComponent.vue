@@ -5,20 +5,18 @@
             :action="action"
             :json-prop="json_prop"
             :related-jsons="related_jsons"
+            :image="image"
             :stroke-color="strokeColor"
             :fill-color="fillColor"
             :stroke-width="strokeWidth"
             :zoom-level="zoomLevel"
             :pan-offset="panOffset"
             ref="canvasManager"
-            :style="{
-                backgroundImage: image ? 'url(' + image + ')' : 'none',
-                backgroundSize: '100%'
-            }"
             @canvas_data="handleCanvasData"
             @layers_updated="handleLayersUpdated"
             @layers_ready="handleLayersReady"
             @history-changed="onHistoryChanged"
+            @zoom-changed="onZoomChanged"
         />
     </div>
 </template>
@@ -96,6 +94,10 @@ export default {
             this.$emit('history-changed', histLen, redoLen);
         },
 
+        onZoomChanged(zoom) {
+            this.$emit('zoom-changed', zoom);
+        },
+
         // Delegate methods to canvas manager
         reset() {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.reset === 'function') {
@@ -166,6 +168,12 @@ export default {
         zoomOut() {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomOut === 'function') {
                 this.$refs.canvasManager.zoomOut();
+            }
+        },
+
+        zoomReset() {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomReset === 'function') {
+                this.$refs.canvasManager.zoomReset();
             }
         }
     }

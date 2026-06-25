@@ -14,11 +14,12 @@ export default {
 
         add_point(event) {
             this.layerCounters.point++;
+            const dotColor = (this.currentFillColor != null) ? this.currentFillColor : '#ffd700';
             const point = new paper.Path.Circle({
                 center: event.point,
                 radius: 7,
-                fillColor: this._stroke(),
-                strokeColor: this._stroke(),
+                fillColor: dotColor,
+                strokeColor: dotColor,
                 name: `point ${this.layerCounters.point}`
             });
             if (this.group) this.group.addChild(point);
@@ -189,35 +190,34 @@ export default {
             return ellipse;
         },
 
-        add_polygon(event) {
-            this.layerCounters.polygon++;
-            const sides = 3;
-            const radius = 30;
-            const points = [];
+        // Builds polygon segments in-place (no remove/recreate needed during drag).
+        _buildPolygon(path, center, radius, sides) {
+            path.removeSegments();
             for (let i = 0; i < sides; i++) {
-                const angle = (i / sides) * Math.PI * 2;
-                points.push(new paper.Point(
-                    event.point.x + Math.cos(angle) * radius,
-                    event.point.y + Math.sin(angle) * radius
+                const angle = (i / sides) * Math.PI * 2 - Math.PI / 2;
+                path.add(new paper.Point(
+                    center.x + Math.cos(angle) * radius,
+                    center.y + Math.sin(angle) * radius
                 ));
             }
+        },
+
+        // Polygon starts tiny; drag from center to define radius (6 sides default).
+        add_polygon(event) {
+            this.layerCounters.polygon++;
             const polygon = new paper.Path({
-                segments: points,
                 closed: true,
                 strokeColor: this._stroke(),
                 strokeWidth: this._width(),
                 fillColor: this._fill(),
                 name: `polygon ${this.layerCounters.polygon}`
             });
-            polygon.data = { isPolygon: true };
+            polygon.data = { isPolygon: true, center: event.point, sides: 6 };
+            this._buildPolygon(polygon, event.point, 5, 6);
             this.path = polygon;
             if (this.group) this.group.addChild(polygon);
             return polygon;
         },
-
-        update_polygon_preview(mousePoint) {},
-
-        finish_polygon(event) {},
 
         add_text(event) {
             this.layerCounters.text++;
