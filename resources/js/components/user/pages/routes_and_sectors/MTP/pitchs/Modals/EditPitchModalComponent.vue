@@ -2,13 +2,14 @@
     <StackModal
             :show="is_show_edit_modal"
             :title="'Edit Pitch'"
+            size="xl"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: false }"
+            :cancelButton="{ visible: false }"
         >
         <div>
             <form id="mtp_edit_form" @submit.prevent="save()">
-                <select class="form-control"  v-model="data.category" required>
+                <select class="form-control" v-model="data.category" required>
                     <option value="" disabled>Please select mtp type</option>
                     <option value="sport climbing">Sport climbing</option>
                     <option value="tred">Tred Climbing</option>
@@ -24,80 +25,70 @@
                     <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
 
-                <input type="text" name="name" v-model="data.name" class="form-control" placeholder="name"> 
-                <input type="number" name="bolts" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
-                <input type="number" name="height" class="form-control" v-model="data.height" placeholder="Height"> 
-                <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter"> 
-                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
-                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+                <input type="text" name="name" v-model="data.name" class="form-control" placeholder="name">
+                <input type="number" name="bolts" v-model="data.bolts" class="form-control" placeholder="Bolts">
+                <input type="number" name="height" class="form-control" v-model="data.height" placeholder="Height">
+                <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter">
+                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data">
+                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent">
 
-                <big_editor v-model="data.text" />
+                <label class="mt-2 mb-1 fw-bold">Description (EN)</label>
+                <big_editor v-model="data.text_us" />
+
+                <label class="mt-2 mb-1 fw-bold">Description (KA)</label>
+                <big_editor v-model="data.text_ka" />
+
+                <div class="mt-3">
+                    <button type="submit" form="mtp_edit_form" class="btn btn-primary">Save</button>
+                </div>
             </form>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    form='mtp_edit_form'
-                    :class="{'btn btn-primary': true}"
-                >
-                    Save
-                </button>
-            </div>
+
+            <!-- Canvas drawing editor for this pitch -->
+            <CanvasPitchEditor
+                v-if="editing_pitch_id"
+                ref="pitchEditorRef"
+                :pitch_id_prop="editing_pitch_id"
+                :sector_id_prop="data.sector_id || mtp_sector_id"
+                :pitch_json_prop="data.json ? data.json.json : null"
+                :sector_image_id_prop="data.json ? data.json.sector_image_id : null"
+                class="mt-4"
+            />
         </div>
     </StackModal>
 </template>
 
 <script>
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
-    // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
-    
-    import Editor from '../../../../../items/canvas/EditorComponent.vue'
+    import CanvasPitchEditor from './CanvasPitchEditorComponent.vue'
 
     export default {
-        components: {
-            // StackModal,
-            Editor,
-            // validator_alerts_component
+        components: { CanvasPitchEditor },
+        props: {
+            mtp_sector_id: { default: null },
         },
-            computed: {
-                description_editor () {
-                    return {};
-                }
-            },
-            data() {
-                return {
-                    description_editor: this.description_editor,
-                    errors: [],
+        data() {
+            return {
+                errors: [],
                 status: "",
-                problem_status: "",
-
                 is_loading: false,
-
                 editing_pitch_id: null,
-        
+
                 data: {
-                    // mtp_id: "",
-            
+                    mtp_id: "",
                     grade: "",
                     or_grade: "",
-            
                     name: "",
-                    text: "",
-                    
+                    text_us: "",
+                    text_ka: "",
                     height: "",
                     bolts: "",
-            
                     author: "",
                     creation_data: "",
                     first_ascent: "",
-            
                     anchor_type: "",
                     category: "",
+                    json: null,
+                    sector_id: null,
                 },
-        
-                go_back_action: false,
 
                 sport_route_grade: [
                     "4",
@@ -110,83 +101,52 @@
                 is_show_edit_modal: false,
             }
         },
-    
-        mounted() {
-            // this.get_region_data()
-        },
-        beforeRouteLeave (to, from, next) {
-            if(this.is_back_action_query == true){
-                if (window.confirm('edited information will be deleted!!! Are you sure, you want go back?')) {
-                    this.is_back_action_query = false;
-                    next()
-                } else {
-                    next(false)
-                }
-            }else {
-                next()
-            }
-        },
-    
+
         methods: {
-            show_modal(id){
-                this.editing_pitch_id = id
-                this.is_show_edit_modal = true
-
-                this.get_editing_mtp_data(id)
+            show_modal(id) {
+                this.editing_pitch_id = id;
+                this.is_show_edit_modal = true;
+                this.get_editing_mtp_data(id);
             },
-            close_modal(){
-                this.is_show_edit_modal = false
-
-                this.clear_form()
+            close_modal() {
+                this.is_show_edit_modal = false;
+                this.clear_form();
             },
 
-            get_editing_mtp_data: function(id){
-                this.is_loading = true
-
-                axios
-                .get("/set_mtp/set_mtp_pitch/get_editin_pitch/" + id)
-                .then(response => {
-                    this.data = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                )
-                .finally(() => this.is_loading = false);
+            get_editing_mtp_data(id) {
+                this.is_loading = true;
+                axios.get("/set_mtp/set_mtp_pitch/get_editin_pitch/" + id)
+                    .then(response => { this.data = response.data; })
+                    .catch(error => console.log(error))
+                    .finally(() => this.is_loading = false);
             },
-            save: function () {
-                this.is_loading = true
-                axios
-                .post('/set_mtp/set_mtp_pitch/mtp_pitch_edit/' + this.editing_pitch_id, {
-                    data: this.data,
-                })
-                .then(response => {
-                    this.close_modal()
-                    this.$emit('update')
-                })
-                .catch(error =>{
-                    this.status = "error"
-                })
-                .finally(() => this.is_loading = false);
+            save() {
+                this.is_loading = true;
+                axios.post('/set_mtp/set_mtp_pitch/mtp_pitch_edit/' + this.editing_pitch_id, { data: this.data })
+                    .then(() => {
+                        this.close_modal();
+                        this.$emit('update');
+                    })
+                    .catch(() => { this.status = "error"; })
+                    .finally(() => this.is_loading = false);
             },
-        
-            clear_form(){
+            clear_form() {
                 this.data = {
                     mtp_id: this.data.mtp_id,
                     category: this.data.category,
-            
                     grade: "",
                     or_grade: "",
-            
                     name: "",
-                    text: "",
-                    
+                    text_us: "",
+                    text_ka: "",
                     height: "",
                     bolts: "",
-            
                     author: "",
                     creation_data: "",
                     first_ascent: "",
-                }
+                    json: null,
+                    sector_id: null,
+                };
             },
         }
     }

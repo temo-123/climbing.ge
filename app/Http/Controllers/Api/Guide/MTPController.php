@@ -9,6 +9,7 @@ use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
+use App\Models\Guide\MtpPitchJson;
 
 use Validator;
 
@@ -27,7 +28,18 @@ class MTPController extends Controller
     public function get_mtp_for_modal(Request $request)
     {
         $mtp = Mtp::with('review')->where('id', strip_tags($request->mtp_id))->first();
-        $mtp_pitchs = $mtp->pitchs;
+        $mtp_pitchs = $mtp->pitchs()->with(['json.pitch'])->orderBy('num')->get();
+
+        // Attach sector image filename to each pitch's json relation
+        $mtp_pitchs->each(function($pitch) {
+            if ($pitch->json && $pitch->json->sector_image_id) {
+                $img = \App\Models\Guide\Sector_image::find($pitch->json->sector_image_id);
+                if ($img) {
+                    $pitch->json->sector_image_filename = $img->image;
+                    $pitch->json->has_original = $img->has_original ?? false;
+                }
+            }
+        });
 
         $published_reviews = $mtp->review->where('published', 1);
         $reviews_count = $published_reviews->count();

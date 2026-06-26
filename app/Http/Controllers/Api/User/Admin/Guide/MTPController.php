@@ -37,7 +37,8 @@ class MTPController extends Controller
 
                 $new_mtp->sector_id = $request->data['sector_id'];
                 $new_mtp->name = $request->data['name'];
-                $new_mtp->text = $request->data['text'];
+                $new_mtp->text_us = $request->data['text_us'] ?? null;
+                $new_mtp->text_ka = $request->data['text_ka'] ?? null;
                 $new_mtp->height = $request->data['height'];
                 $new_mtp->first_ascent = $request->data['first_ascent'];
                 $new_mtp->author = $request->data['author'];
@@ -71,7 +72,8 @@ class MTPController extends Controller
 
                 $edit_mtp->sector_id = $request->data['sector_id'];
                 $edit_mtp->name = $request->data['name'];
-                $edit_mtp->text = $request->data['text'];
+                $edit_mtp->text_us = $request->data['text_us'] ?? null;
+                $edit_mtp->text_ka = $request->data['text_ka'] ?? null;
                 $edit_mtp->height = $request->data['height'];
                 $edit_mtp->first_ascent = $request->data['first_ascent'];
                 $edit_mtp->author = $request->data['author'];

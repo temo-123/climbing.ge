@@ -123,6 +123,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/edit_sector/{sector_id}', 'edit_sector');
         Route::delete('/del_sector/{sector_id}', 'del_sector');
         Route::delete('/del_sector_image_from_db/{image_id}', 'del_sector_image_from_db');
+        Route::post('/replace_sector_image/{image_id}', 'replace_sector_image');
         Route::post('/routes_sequence', 'routes_sequence');
         Route::post('/save_sector_sequence', 'save_sector_sequence');
         Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
@@ -131,13 +132,12 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::post('/add_sector_local_image', 'add_sector_local_image');
             Route::post('/update_image/{image_id}', 'update_image');
             Route::get('/get_editing_locale_image/{image_id}', 'get_editing_locale_image');
+            Route::get('/get_for_editor/{id}', 'get_for_editor');
             Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'del_image_sector_from_db');
-            Route::delete('/del_locale_image/{sector_id}', 'del_locale_image');
-            Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
-
+            Route::delete('/del_locale_image/{image_id}', 'del_locale_image');
+            Route::post('/save_canvas_data/{image_id}', 'save_canvas_data');
+            Route::delete('/del_layout/{layout_id}', 'del_layout');
             Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
-
-            Route::post('/save_canvas_data/{sector_id}', 'save_canvas_data');
         });
 
         Route::controller(SpotRockController::class)->prefix('set_spot_rock_images')->group( function() {
@@ -150,6 +150,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
         Route::post('/edit_route/{route_id}', 'edit_route');
         Route::post('/save_route_drawing', 'save_route_drawing');
+        Route::delete('/del_sector_image_drawing/{sector_image_id}', 'del_sector_image_drawing');
         Route::delete('/del_route/{route_id}', 'del_route');
 
         Route::controller(RouteJsonController::class)->prefix('set_route_json')->group( function() {
@@ -198,6 +199,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::post('/mtp_pitch_edit/{pitch_id}', 'mtp_pitch_edit');
             Route::post('/pitchs_sequence', 'pitchs_sequence');
             Route::delete('/del_pitch/{pitch_id}', 'del_pitch');
+            // Canvas drawing
+            Route::post('/save_pitch_drawing', 'save_pitch_drawing');
+            Route::delete('/del_pitch_drawing/{pitch_id}', 'del_pitch_drawing');
+            Route::get('/get_pitch_jsons_for_sector_image', 'get_pitch_jsons_for_sector_image');
         });
     });
 

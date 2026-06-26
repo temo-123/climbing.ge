@@ -60,6 +60,7 @@ export default {
                 const startPoint = this.getClosestPerimeterPoint(rectBounds, mousePoint);
                 this.currentLine.add(startPoint);
             }
+            if (this.group) this.group.addChild(this.currentLine);
             return this.currentLine;
         },
 
@@ -106,56 +107,26 @@ export default {
             rect.data = { isRectangle: true, startPoint: event.point };
             this.path = rect;
 
-            const text = new paper.PointText({
-                point: event.point,
-                content: this.layerCounters.rectangle.toString(),
-                fillColor: this._stroke(),
-                fontFamily: 'Arial',
-                fontSize: 14,
-                justification: 'center'
-            });
-            text.name = `text ${this.layerCounters.rectangle}`;
-            rect.data.textLabel = text;
-
             return rect;
         },
 
-        add_small_rectangle(event) {
+        add_combined_number(event) {
             this.layerCounters.rectangle++;
-            const size = 20;
-            const halfSize = size / 2;
             const center = event.point;
-
-            const rect = new paper.Path.Rectangle({
-                point: [center.x - halfSize, center.y - halfSize],
-                size: [size, size],
-                radius: 3,
-                strokeColor: this._stroke(),
-                strokeWidth: this._width(),
-                fillColor: this._fill(),
-                name: `rectangle ${this.layerCounters.rectangle}`
-            });
-            rect.data = { isRectangle: true, isSmall: true };
-            this.path = rect;
-
             const text = new paper.PointText({
-                point: new paper.Point(center.x, center.y + 3),
+                point: new paper.Point(center.x, center.y + 6),
                 content: this.layerCounters.rectangle.toString(),
                 fillColor: this._stroke(),
                 fontFamily: 'Arial',
                 fontSize: 20,
                 fontWeight: 'bold',
-                justification: 'center'
+                justification: 'center',
+                name: `text ${this.layerCounters.rectangle}`
             });
-            text.name = `text ${this.layerCounters.rectangle}`;
-            rect.data.textLabel = text;
-
-            if (this.group) {
-                this.group.addChild(rect);
-                this.group.addChild(text);
-            }
-
-            return rect;
+            text.data = { isRectangle: true, startPoint: center };
+            this.path = text;
+            if (this.group) this.group.addChild(text);
+            return text;
         },
 
         add_circle(event) {

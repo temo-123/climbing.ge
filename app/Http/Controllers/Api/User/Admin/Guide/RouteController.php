@@ -206,12 +206,11 @@ class RouteController extends Controller
         if ($auth = PermissionService::authorize('route', 'show')) return $auth;
         $route = Route::where('id',strip_tags($request->route_id))->first();
 
-        // Fetch JSON data from the separate table
+        // Always include json and sector_image_id so the frontend can reliably reset
+        // stale values — null means this route has no saved drawing yet.
         $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
-        if ($routeJson) {
-            $route->json = $routeJson->json;
-            $route->sector_image_id = $routeJson->sector_image_id;
-        }
+        $route->json = $routeJson ? $routeJson->json : null;
+        $route->sector_image_id = $routeJson ? $routeJson->sector_image_id : null;
 
         return $route;
     }
@@ -271,6 +270,31 @@ class RouteController extends Controller
         }
 
         return response()->json(['success' => true, 'filename' => $filename]);
+    }
+
+    public function del_sector_image_drawing(Request $request, $sector_image_id)
+    {
+        $auth = PermissionService::authorize('route', 'edit');
+        if ($auth) return $auth;
+
+        $sectorImage = Sector_image::find($sector_image_id);
+        if (!$sectorImage) {
+            return response()->json(['error' => 'Sector image not found'], 404);
+        }
+
+        // Delete all route JSON drawings for this image
+        $deleted = ClimbingRoutesJson::where('sector_image_id', $sector_image_id)->delete();
+
+        // Restore original clean photo over the composite (undo all baked-in drawings)
+        $originalPath = public_path('images/sector_img/origin_img/' . $sectorImage->image);
+        $editedPath   = public_path('images/sector_img/' . $sectorImage->image);
+        $restored = false;
+        if (file_exists($originalPath)) {
+            copy($originalPath, $editedPath);
+            $restored = true;
+        }
+
+        return response()->json(['success' => true, 'deleted' => $deleted, 'restored' => $restored]);
     }
 
     public function get_related_routes_jsons(Request $request)

@@ -4,7 +4,10 @@
         <div class="d-flex align-items-center justify-content-between px-2 py-1 bg-light border rounded-top border-bottom-0">
             <span class="small fw-semibold text-secondary">
                 <i class="fa fa-list me-1"></i> Layers
-                <span class="badge bg-secondary ms-1">{{ layers.length }}</span>
+                <span class="badge bg-secondary ms-1">{{ layers.filter(l => !l.isRelated).length }}</span>
+                <span v-if="layers.some(l => l.isRelated)" class="badge bg-light text-secondary border ms-1" style="font-size:9px;">
+                    +{{ layers.filter(l => l.isRelated).length }} ref
+                </span>
             </span>
             <div class="d-flex gap-1">
                 <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" title="Refresh">
@@ -29,16 +32,16 @@
 
             <div v-for="(layer, index) in layers" :key="layer.id || layer.name + index">
 
-                <!-- Layer row (2-line layout) -->
+                <!-- Unified layer row (2-line layout) for both regular and related layers -->
                 <div class="border-bottom layer-row"
-                     :class="layer.isGroup ? 'layer-group' : 'layer-item'"
+                     :class="layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item')"
                      :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }">
 
                     <!-- Line 1: reorder + icon + name -->
                     <div class="d-flex align-items-center px-1 pt-1">
 
-                        <!-- Reorder arrows -->
-                        <div class="d-flex flex-column me-1" style="gap:1px; flex-shrink:0;">
+                        <!-- Reorder arrows (hidden for related reference layers) -->
+                        <div v-if="!layer.isRelated" class="d-flex flex-column me-1" style="gap:1px; flex-shrink:0;">
                             <button type="button" class="btn btn-sm btn-secondary p-0 lh-1 reorder-btn"
                                     @click="$emit('move-layer-up', index)"
                                     :disabled="index === 0 || layer.layerName !== layers[index-1].layerName">
@@ -50,6 +53,8 @@
                                 <i class="fa fa-caret-down"></i>
                             </button>
                         </div>
+                        <!-- Spacer keeps alignment for related layers -->
+                        <div v-else style="width:18px; flex-shrink:0;" class="me-1"></div>
 
                         <!-- Expand icon (group) or type icon -->
                         <button v-if="layer.isGroup" type="button" class="btn btn-sm btn-primary p-0 me-1 layer-icon-btn"
@@ -62,7 +67,13 @@
 
                         <!-- Name -->
                         <div class="flex-grow-1 overflow-hidden small layer-name">
-                            <template v-if="!layer.isText">
+                            <!-- Related reference layer: non-editable name with badge -->
+                            <template v-if="layer.isRelated">
+                                <span class="text-muted fst-italic">{{ layer.displayName }}</span>
+                                <span class="badge ms-1" :style="{ background: layer.color || '#999', fontSize: '8px', verticalAlign: 'middle' }">ref</span>
+                            </template>
+                            <!-- Regular non-text layer: editable name -->
+                            <template v-else-if="!layer.isText">
                                 <span v-if="!layer.isEditing"
                                       @click="startEditingLayerName(layer)"
                                       class="editable-name" title="Click to rename">
@@ -75,6 +86,7 @@
                                        @keydown.esc.prevent="cancelEditingLayerName(layer)"
                                        :ref="'nameInput-' + layer.id" />
                             </template>
+                            <!-- Regular text layer: editable content -->
                             <template v-else>
                                 <div class="text-muted layer-type-label">{{ layer.displayName || layer.name }}</div>
                                 <span v-if="!layer.isEditing"
@@ -94,25 +106,29 @@
 
                     <!-- Line 2: color + size + action buttons -->
                     <div class="d-flex align-items-center pb-1 gap-1 layer-controls-row">
-                        <!-- Color swatch -->
+                        <!-- Color swatch (all layers, read-only for related) -->
                         <input type="color" :value="layer.color || '#999999'"
-                               @change="$emit('change-layer-color', layer, $event.target.value)"
-                               class="layer-color-swatch" title="Item color" />
+                               @change="!layer.isRelated && $emit('change-layer-color', layer, $event.target.value)"
+                               :disabled="layer.isRelated"
+                               class="layer-color-swatch" :title="layer.isRelated ? 'Reference route color' : 'Item color'" />
 
-                        <!-- Width / font-size input -->
-                        <input type="number"
-                               :value="layer.strokeWidth || (layer.isText ? 16 : 3)"
-                               :min="layer.isText ? 6 : 1"
-                               :max="layer.isText ? 120 : 20"
-                               @change="$emit('change-layer-size', layer, $event.target.value)"
-                               class="layer-size-input" :title="layer.isText ? 'Font size' : 'Stroke width'" />
-                        <span class="text-muted" style="font-size:10px; flex-shrink:0;">{{ layer.isText ? 'pt' : 'px' }}</span>
+                        <!-- Width / font-size input (hidden for related) -->
+                        <template v-if="!layer.isRelated">
+                            <input type="number"
+                                   :value="layer.strokeWidth || (layer.isText ? 16 : 3)"
+                                   :min="layer.isText ? 6 : 1"
+                                   :max="layer.isText ? 120 : 20"
+                                   @change="$emit('change-layer-size', layer, $event.target.value)"
+                                   class="layer-size-input" :title="layer.isText ? 'Font size' : 'Stroke width'" />
+                            <span class="text-muted" style="font-size:10px; flex-shrink:0;">{{ layer.isText ? 'pt' : 'px' }}</span>
+                        </template>
 
                         <div class="flex-grow-1"></div>
 
                         <!-- Action buttons -->
                         <div class="d-flex gap-1" style="flex-shrink:0;">
-                            <template v-if="!layer.isGroup">
+                            <!-- Group/move actions: only for regular non-group items -->
+                            <template v-if="!layer.isRelated && !layer.isGroup">
                                 <button type="button" class="btn btn-sm btn-primary layer-action-btn"
                                         @click="$emit('create-group-from-layer', layer)" title="Create group">
                                     <i class="fa fa-object-group"></i>
@@ -124,25 +140,30 @@
                                 </button>
                             </template>
 
-                            <button v-if="layer.isGroup"
+                            <!-- Ungroup: only for real groups -->
+                            <button v-if="!layer.isRelated && layer.isGroup"
                                     type="button" class="btn btn-sm btn-warning layer-action-btn"
                                     @click="$emit('ungroup-layer', layer)" title="Ungroup">
                                 <i class="fa fa-object-ungroup"></i>
                             </button>
 
+                            <!-- Visibility toggle (all layers) -->
                             <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
                                     @click="$emit('toggle-layer-visibility', layer)"
                                     :title="layer.visible ? 'Hide' : 'Show'">
                                 <i :class="layer.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                             </button>
 
+                            <!-- Lock toggle (all layers) -->
                             <button type="button" class="btn btn-sm btn-warning layer-action-btn"
                                     @click="$emit('toggle-layer-lock', layer)"
                                     :title="layer.locked ? 'Unlock' : 'Lock'">
                                 <i :class="layer.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
                             </button>
 
-                            <button type="button" class="btn btn-sm btn-danger layer-action-btn"
+                            <!-- Delete (only regular layers) -->
+                            <button v-if="!layer.isRelated"
+                                    type="button" class="btn btn-sm btn-danger layer-action-btn"
                                     @click="$emit('delete-layer-item', layer)" title="Delete">
                                 <i class="fa fa-trash"></i>
                             </button>
@@ -272,6 +293,7 @@ export default {
     methods: {
         getTypeIcon(name) {
             if (!name) return 'fa-file-o';
+            if (name.startsWith('related-')) return 'fa-map-marker';
             if (name.startsWith('line')) return 'fa-minus';
             if (name.startsWith('point')) return 'fa-circle';
             if (name.startsWith('rectangle')) return 'fa-square-o';
@@ -459,6 +481,11 @@ export default {
 
 .layer-item {
     background: #fff;
+}
+
+.layer-related {
+    background: #f5f5f5;
+    opacity: 0.85;
 }
 
 .layer-icon-btn {

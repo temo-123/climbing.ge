@@ -64,10 +64,16 @@
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> text </label>
+          <label class='col-md-2 control-label'>Description (EN)</label>
           <div class="col-md-10">
-            <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
-            <big_editor v-model="data.text" />
+            <big_editor v-model="data.text_us" />
+          </div>
+        </div>
+
+        <div class="form-group clearfix row">
+          <label class='col-md-2 control-label'>Description (KA)</label>
+          <div class="col-md-10">
+            <big_editor v-model="data.text_ka" />
           </div>
         </div>
 
@@ -111,7 +117,8 @@
           article_id: "",
           sector_id: "",
           name: "",
-          text: "",
+          text_us: "",
+          text_ka: "",
           height: "",
           first_ascent: "",
           author: '',

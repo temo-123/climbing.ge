@@ -431,36 +431,113 @@
                 <hr />
             </form>
                             
-            <div class="col-md-12">
-                <div class="row">
-                    Olredy added
-                </div>
-            </div>
+            <div class="col-md-12 mb-3">
+                <h4>Already added images</h4>
+                <table class="table table-sm sector-img-table">
+                    <thead>
+                        <tr>
+                            <td>ID</td>
+                            <td>Num</td>
+                            <td>Canvas Drawing <small class="text-muted">(JSON data)</small></td>
+                            <td>Saved Image <small class="text-muted">(on disk)</small></td>
+                            <td>Actions</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="image in sector_old_images" :key="image.id">
+                            <td>{{ image.id }}</td>
+                            <td>{{ image.num }}</td>
 
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="col-md-12">
-                        <table class="table table-hover" id="dev-table">
-                            <thead>
-                                <tr>
-                                    <th>Image</th>
-                                    <th>Delite</th>
-                                </tr>
-                            </thead>
+                            <!-- Canvas preview -->
+                            <td class="img-cell">
+                                <canvas-json-show
+                                    :fetch_url="'get_route/get_route_jsons_for_sector_image'"
+                                    :fetch_id="image.id"
+                                    :image_src="image.has_original
+                                        ? '/public/images/sector_img/origin_img/' + image.image
+                                        : null"
+                                    :preview_all="true"
+                                    refresh_event="route-drawing-updated"
+                                />
+                            </td>
 
-                            <tbody>
-                                <tr v-for="sector_old_image in sector_old_images" :key="sector_old_image.id">
-                                    <td>
-                                        <img class="img-responsive" :src="'../../../../images/sector_img/'+sector_old_image.image" :alt="sector_old_image.image">
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger" @click="del_sector_image_from_db(sector_old_image.id)">Delete</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                            <!-- Saved composite image -->
+                            <td class="img-cell">
+                                <img
+                                    class="saved-img"
+                                    :src="'/public/images/sector_img/' + image.image + '?v=' + (img_cache_bust[image.id] || 0)"
+                                    :alt="image.image"
+                                />
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="actions-cell">
+
+                                <!-- Delete entire image -->
+                                <button
+                                    class="btn btn-danger btn-sm mb-2 d-block w-100"
+                                    @click="del_sector_image_from_db(image.id)"
+                                >
+                                    <i class="fa fa-trash"></i> Delete Image
+                                </button>
+
+                                <!-- Del Canvas: inline two-step confirm -->
+                                <div class="mb-2">
+                                    <template v-if="canvas_confirm_pending === image.id">
+                                        <span class="text-warning small me-1">Sure?</span>
+                                        <button
+                                            class="btn btn-danger btn-sm me-1"
+                                            :disabled="canvas_deleting === image.id"
+                                            @click="del_sector_canvas(image.id)"
+                                        >Yes</button>
+                                        <button
+                                            class="btn btn-secondary btn-sm"
+                                            @click="canvas_confirm_pending = null"
+                                        >No</button>
+                                    </template>
+                                    <template v-else>
+                                        <button
+                                            class="btn btn-warning btn-sm"
+                                            :disabled="canvas_deleting === image.id"
+                                            @click="canvas_confirm_pending = image.id"
+                                        >
+                                            <i class="fa fa-eraser"></i>
+                                            {{ canvas_deleting === image.id ? 'Deleting...' : 'Del Canvas' }}
+                                        </button>
+                                    </template>
+                                    <span
+                                        v-if="canvas_del_status[image.id]"
+                                        class="ms-1 small"
+                                        :class="canvas_del_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
+                                    >
+                                        {{ canvas_del_status[image.id] === 'ok' ? '✓ Cleared' : '✗ Error' }}
+                                    </span>
+                                </div>
+
+                                <!-- Replace image file -->
+                                <div>
+                                    <label class="small text-muted mb-0">Replace image:</label>
+                                    <input
+                                        type="file"
+                                        accept="image/*"
+                                        class="form-control form-control-sm mt-1"
+                                        :disabled="img_uploading === image.id"
+                                        @change="uploadSectorImage(image.id, $event)"
+                                    />
+                                    <span
+                                        v-if="img_upload_status[image.id]"
+                                        class="small"
+                                        :class="img_upload_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
+                                    >
+                                        {{ img_upload_status[image.id] === 'ok' ? '✓ Uploaded' : '✗ Upload failed' }}
+                                    </span>
+                                    <span v-if="img_uploading === image.id" class="small text-muted">Uploading...</span>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="row">
@@ -571,8 +648,14 @@
                 // image_reset_id: 0,
 
                 // sector_new_images: ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5', 'Item 6', 'Item 7', 'Item 10'],
-                sector_new_images: [],
-                sector_old_images: [],
+                sector_new_images:      [],
+                sector_old_images:      [],
+                canvas_confirm_pending: null,
+                canvas_deleting:        null,
+                canvas_del_status:      {},
+                img_uploading:          null,
+                img_upload_status:      {},
+                img_cache_bust:         {},
             };
         },
         mounted() {
@@ -619,6 +702,54 @@
                 arr.splice(objWithIdIndex, 1);
 
                 return arr;
+            },
+
+            async del_sector_canvas(image_id) {
+                this.canvas_confirm_pending = null;
+                this.canvas_deleting = image_id;
+                this.canvas_del_status = { ...this.canvas_del_status, [image_id]: null };
+                try {
+                    await axios.delete('/set_route/del_sector_image_drawing/' + image_id);
+                    this.canvas_del_status = { ...this.canvas_del_status, [image_id]: 'ok' };
+                    const img = this.sector_old_images.find(i => i.id === image_id);
+                    if (img) img.has_original = false;
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: image_id });
+                    setTimeout(() => {
+                        this.canvas_del_status = { ...this.canvas_del_status, [image_id]: null };
+                    }, 3000);
+                } catch (e) {
+                    this.canvas_del_status = { ...this.canvas_del_status, [image_id]: 'error' };
+                } finally {
+                    this.canvas_deleting = null;
+                }
+            },
+
+            async uploadSectorImage(image_id, event) {
+                const file = event.target.files[0];
+                if (!file) return;
+                this.img_uploading = image_id;
+                this.img_upload_status = { ...this.img_upload_status, [image_id]: null };
+                const formData = new FormData();
+                formData.append('image', file);
+                try {
+                    const res = await axios.post('/set_sector/replace_sector_image/' + image_id, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                    if (res.data && res.data.image) {
+                        const img = this.sector_old_images.find(i => i.id === image_id);
+                        if (img) { img.image = res.data.image; img.has_original = false; }
+                        this.img_cache_bust = { ...this.img_cache_bust, [image_id]: Date.now() };
+                    }
+                    this.img_upload_status = { ...this.img_upload_status, [image_id]: 'ok' };
+                    setTimeout(() => {
+                        this.img_upload_status = { ...this.img_upload_status, [image_id]: null };
+                    }, 4000);
+                } catch (e) {
+                    this.img_upload_status = { ...this.img_upload_status, [image_id]: 'error' };
+                } finally {
+                    this.img_uploading = null;
+                    event.target.value = '';
+                }
             },
 
             del_sector_image_from_db(image_id) {
@@ -708,11 +839,20 @@
 </script>
 
 <style scoped>
-.sector_img{
-  border-radius: 5%;
-  border: 3px solid #a7a7a7;
+.sector-img-table .img-cell {
+    width: 280px;
+    min-width: 180px;
+    vertical-align: top;
 }
-.sector_image_in_table{
-  height: 10em;
+.sector-img-table .actions-cell {
+    min-width: 200px;
+    vertical-align: top;
+    padding: 8px;
+}
+.saved-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
 }
 </style>

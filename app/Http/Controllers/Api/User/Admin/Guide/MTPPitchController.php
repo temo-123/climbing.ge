@@ -11,6 +11,8 @@ use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
+use App\Models\Guide\MtpPitchJson;
+use App\Models\Guide\Sector_image;
 
 use App\Services\PermissionService;
 
@@ -20,7 +22,7 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'show');
         if ($auth) return $auth;
-        
+
         return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
     }
 
@@ -28,7 +30,7 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'edit');
         if ($auth) return $auth;
-        
+
         if($request->pitch_sequence){
             $pitch_num = 0;
             foreach ($request->pitch_sequence as $pitch) {
@@ -45,9 +47,9 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'edit');
         if ($auth) return $auth;
-        
+
         $pitch_validate = $this->pitch_validate($request->data);
-        if ($pitch_validate != null) { 
+        if ($pitch_validate != null) {
             return response()->json([
                 $pitch_validate
             ], 422);
@@ -61,7 +63,8 @@ class MTPPitchController extends Controller
                 $article['grade']=$request->data['grade'];
                 $article['or_grade']=$request->data['or_grade'] ;
                 $article['name']=$request->data['name'];
-                $article['text']=$request->data['text'];
+                $article['text_us']=$request->data['text_us'] ?? null;
+                $article['text_ka']=$request->data['text_ka'] ?? null;
                 $article['height']=$request->data['height'];
                 $article['bolts']=$request->data['bolts'];
 
@@ -78,16 +81,16 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'add');
         if ($auth) return $auth;
-        
+
         $pitch_validate = $this->pitch_validate($request->data);
-        if ($pitch_validate != null) { 
+        if ($pitch_validate != null) {
             return response()->json([
                 $pitch_validate
             ], 422);
         }
         else{
             if ($request -> isMethod('post')) {
-                $new_pitch = new mtp_pitch();
+                $new_pitch = new Mtp_pitch();
 
                 $sector_mtp_pitch_count = Mtp_pitch::where('mtp_id',strip_tags($request->data['mtp_id']))->count();
                 if($sector_mtp_pitch_count == 0){
@@ -103,7 +106,8 @@ class MTPPitchController extends Controller
                 $new_pitch['grade']=$request->data['grade'];
                 $new_pitch['or_grade']=$request->data['or_grade'] ;
                 $new_pitch['name']=$request->data['name'];
-                $new_pitch['text']=$request->data['text'];
+                $new_pitch['text_us']=$request->data['text_us'] ?? null;
+                $new_pitch['text_ka']=$request->data['text_ka'] ?? null;
                 $new_pitch['height']=$request->data['height'];
                 $new_pitch['bolts']=$request->data['bolts'];
 
@@ -120,7 +124,7 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'del');
         if ($auth) return $auth;
-        
+
         $sector = Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
         $sector ->delete();
     }
@@ -129,8 +133,8 @@ class MTPPitchController extends Controller
     {
         $auth = PermissionService::authorize('mtp_pitch', 'edit');
         if ($auth) return $auth;
-        
-        return Mtp_pitch::where('id',strip_tags($request->pitch_id))->first();
+
+        return Mtp_pitch::with('json')->where('id',strip_tags($request->pitch_id))->first();
     }
 
     public function pitchs_sequence(Request $request)
@@ -144,6 +148,86 @@ class MTPPitchController extends Controller
             $pitch->update();
         }
     }
+
+    // ── Canvas drawing ─────────────────────────────────────────────────────────
+
+    public function save_pitch_drawing(Request $request)
+    {
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
+        if ($auth) return $auth;
+
+        $pitchId       = $request->pitch_id;
+        $sectorImageId = $request->sector_image_id;
+        $json          = $request->json;
+        $editedImageData = $request->edited_image;
+
+        if (!$pitchId || !$sectorImageId || !$json) {
+            return response()->json(['error' => 'pitch_id, sector_image_id and json are required'], 422);
+        }
+
+        $sectorImage = Sector_image::find($sectorImageId);
+        if (!$sectorImage) {
+            return response()->json(['error' => 'Sector image not found'], 404);
+        }
+
+        $filename     = $sectorImage->image;
+        $originalDir  = public_path('images/sector_img/origin_img/');
+        $editedPath   = public_path('images/sector_img/' . $filename);
+        $originalPath = $originalDir . $filename;
+
+        if (!is_dir($originalDir)) {
+            mkdir($originalDir, 0775, true);
+        }
+
+        if (!file_exists($originalPath) && file_exists($editedPath)) {
+            copy($editedPath, $originalPath);
+        }
+
+        if ($editedImageData) {
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $editedImageData);
+            file_put_contents($editedPath, base64_decode($imageData));
+        }
+
+        $existing = MtpPitchJson::where('mtp_pitch_id', $pitchId)->first();
+        if ($existing) {
+            $existing->update(['json' => $json, 'sector_image_id' => $sectorImageId]);
+        } else {
+            MtpPitchJson::create([
+                'mtp_pitch_id'   => $pitchId,
+                'sector_image_id' => $sectorImageId,
+                'json'            => $json,
+            ]);
+        }
+
+        return response()->json(['success' => true, 'filename' => $filename]);
+    }
+
+    public function del_pitch_drawing(Request $request, $pitch_id)
+    {
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
+        if ($auth) return $auth;
+
+        MtpPitchJson::where('mtp_pitch_id', $pitch_id)->delete();
+
+        return response()->json(['success' => true]);
+    }
+
+    public function get_pitch_jsons_for_sector_image(Request $request)
+    {
+        $auth = PermissionService::authorize('mtp_pitch', 'show');
+        if ($auth) return $auth;
+
+        $sectorImageId  = strip_tags($request->sector_image_id);
+        $excludePitchId = $request->has('exclude_pitch_id') ? strip_tags($request->exclude_pitch_id) : null;
+
+        $query = MtpPitchJson::where('sector_image_id', $sectorImageId);
+        if ($excludePitchId) {
+            $query->where('mtp_pitch_id', '!=', $excludePitchId);
+        }
+
+        return $query->with('pitch')->get()->pluck('json');
+    }
+
     public function pitch_validate($request)
     {
         $validator = Validator::make($request, [
@@ -151,7 +235,7 @@ class MTPPitchController extends Controller
             'grade' => 'required',
             'mtp_id' => 'required',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json($validator->errors(), 422);
         }

@@ -31,7 +31,11 @@
                 <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
                 <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
 
-                <big_editor v-model="data.text" />
+                <label class="mt-2 mb-1 fw-bold">Description (EN)</label>
+                <big_editor v-model="data.text_us" />
+
+                <label class="mt-2 mb-1 fw-bold">Description (KA)</label>
+                <big_editor v-model="data.text_ka" />
             </form>
         </div>
         <div slot="modal-footer">
@@ -73,20 +77,16 @@
         
                 data: {
                     mtp_id: "",
-            
                     grade: "",
                     or_grade: "",
-            
                     name: "",
-                    text: "",
-                    
+                    text_us: "",
+                    text_ka: "",
                     height: "",
                     bolts: "",
-            
                     author: "",
                     creation_data: "",
                     first_ascent: "",
-            
                     anchor_type: "",
                     category: "",
                 },
@@ -153,21 +153,18 @@
             clear_form(){
                 this.data = {
                     mtp_id: this.data.mtp_id,
-                    category: this.data.category,
-            
+                    category: "",
                     grade: "",
                     or_grade: "",
-            
                     name: "",
-                    text: "",
-                    
+                    text_us: "",
+                    text_ka: "",
                     height: "",
                     bolts: "",
-            
                     author: "",
                     creation_data: "",
                     first_ascent: "",
-                }
+                };
             },
         }
     }

@@ -175,6 +175,14 @@ export default {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomReset === 'function') {
                 this.$refs.canvasManager.zoomReset();
             }
+        },
+
+        // Returns clean JSON (drawing layer only, no background/related layers).
+        getCleanJson() {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager._getDrawingJson === 'function') {
+                return this.$refs.canvasManager._getDrawingJson();
+            }
+            return null;
         }
     }
 }

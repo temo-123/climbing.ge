@@ -363,10 +363,9 @@
             this.show_alert_modal = true;
           }
 
-          // Set sector_image_id if available from response
-          if (response.data.sector_image_id) {
-            this.data.sector_image_id = response.data.sector_image_id;
-          }
+          // Always sync sector_image_id — reset to empty string when no drawing exists
+          // so stale values from a previously-viewed route don't bleed into this one.
+          this.data.sector_image_id = response.data.sector_image_id || '';
 
           this.get_sectors_data()
         })

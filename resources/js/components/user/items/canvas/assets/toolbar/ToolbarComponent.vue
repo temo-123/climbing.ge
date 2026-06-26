@@ -32,8 +32,12 @@
             <button type="button" :class="['btn', 'btn-primary', { active: action === 4 }]" @click.prevent="$emit('rectangle')" title="Rectangle">
                 <i class="fa fa-square-o"></i>
             </button>
-            <button type="button" :class="['btn', 'btn-primary', { active: action === 7 }]" @click.prevent="$emit('combined')" title="Combined (numbered box + line + point)">
-                <i class="fa fa-object-group"></i>
+            <button type="button" :class="['btn', 'btn-primary', { active: action === 7 }]" @click.prevent="$emit('combined')" title="Combined (number + line + point)">
+                <span style="display:inline-flex; align-items:center; gap:2px; vertical-align:middle;">
+                    <b style="font-size:11px; font-weight:bold; line-height:1;">1</b>
+                    <span style="width:10px; height:2px; background:currentColor; display:inline-block; flex-shrink:0;"></span>
+                    <i class="fa fa-circle" style="font-size:6px;"></i>
+                </span>
             </button>
             <button type="button" :class="['btn', 'btn-primary', { active: action === 10 }]" @click.prevent="$emit('circle')" title="Circle (drag to resize)">
                 <i class="fa fa-circle-o"></i>
@@ -61,6 +65,12 @@
             </button>
             <button type="button" :class="['btn', 'btn-warning', { active: action === 14 }]" @click.prevent="$emit('selection')" title="Select multiple">
                 <i class="fa fa-mouse-pointer"></i>
+            </button>
+            <button type="button" :class="['btn', 'btn-warning', { active: action === 15 }]" @click.prevent="$emit('crop')" title="Crop / cut image area">
+                <i class="fa fa-crop"></i>
+            </button>
+            <button type="button" :class="['btn', 'btn-warning', { active: action === 16 }]" @click.prevent="$emit('edit-points')" title="Edit line points (drag a segment point)">
+                <i class="fa fa-share-alt"></i>
             </button>
         </div>
 

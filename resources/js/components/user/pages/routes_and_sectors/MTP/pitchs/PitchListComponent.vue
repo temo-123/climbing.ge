@@ -55,8 +55,9 @@
             @update="get_MTP_pitchs"
             ref="add_pitch_modal"
         />
-        <edit_pitch_modal 
+        <edit_pitch_modal
             @update="get_MTP_pitchs"
+            :mtp_sector_id="sector_id_prop"
             ref="edit_pitch_modal"
         />
         <mtp_pitch_sequence_modal 
@@ -73,9 +74,7 @@
     import mtp_pitch_sequence_modal from "../../../../items/modal/tab_modals/MTPPitchSequenceModalComponent.vue"
 
     export default {
-        props: [
-            'mtp_id_prop'
-        ],
+        props: ['mtp_id_prop', 'sector_id_prop'],
         components: {
             add_pitch_modal,
             edit_pitch_modal,

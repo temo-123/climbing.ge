@@ -72,8 +72,13 @@ class RouteJsonController extends Controller
         }
     }
     
-    public function del_route_json() {
-        
+    public function del_route_json($route_id) {
+        $auth = PermissionService::authorize('route', 'edit');
+        if ($auth) return $auth;
+
+        $deleted = ClimbingRoutesJson::where('route_id', $route_id)->delete();
+
+        return response()->json(['success' => true, 'deleted' => $deleted]);
     }
 
     public static function add_route_json_validate($data) {

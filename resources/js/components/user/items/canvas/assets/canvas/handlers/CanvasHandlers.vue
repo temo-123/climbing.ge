@@ -27,7 +27,7 @@ export default {
                 } else if (this.action == 7) {
                     this.createGroup();
                     this.currentLine = null;
-                    this.add_small_rectangle(event);
+                    this.add_combined_number(event);
                 } else if (this.action == 8) {
                     this.selectItemForMove(event);
                     return;
@@ -43,6 +43,10 @@ export default {
                     this.add_text(event);
                 } else if (this.action == 14) {
                     this.startSelection(event);
+                } else if (this.action == 15) {
+                    this.startCropSelection(event);
+                } else if (this.action == 16) {
+                    this.selectSegmentPoint(event);
                 }
             };
 
@@ -129,6 +133,16 @@ export default {
                     }
                 } else if (this.action == 14) {
                     this.updateSelectionRectangle(event);
+                } else if (this.action == 15) {
+                    this.updateCropRectangle(event);
+                } else if (this.action == 16) {
+                    if (this.editingSegment) {
+                        this.editingSegment.point = event.point;
+                        if (this.editingSegmentDot) {
+                            this.editingSegmentDot.position = this.editingSegmentDot.position.add(event.delta);
+                        }
+                        this.scope.view.update();
+                    }
                 }
             };
 
@@ -137,11 +151,6 @@ export default {
                 // Action 3 = numbered route (line + group) — adds endpoint dot.
                 if (this.action == 3) {
                     if (this.path) this.add_point(event);
-                }
-                if (this.action == 4 && this.path && this.path.data && this.path.data.isRectangle) {
-                    if (this.path.data.textLabel) {
-                        this.path.data.textLabel.point = this.path.bounds.center;
-                    }
                 }
                 if (this.action == 7) {
                     this.add_point(event);
@@ -158,9 +167,19 @@ export default {
                 if (this.action == 14) {
                     this.finishSelection(event);
                 }
+                if (this.action == 15) {
+                    this.finishCropAndDownload();
+                }
+                if (this.action == 16) {
+                    if (this.editingSegment) {
+                        this.editingSegment = null;
+                        this.editingSegmentDot = null;
+                        this.saveCanvasData();
+                    }
+                }
                 this.path = null;
                 if (this.action !== 5 && this.action !== 6) {
-                    if (this.action !== 3 && this.action !== 7 && this.action !== 8 && this.action !== 9) {
+                    if (this.action !== 3 && this.action !== 7 && this.action !== 8 && this.action !== 9 && this.action !== 15 && this.action !== 16) {
                         this.saveCanvasData();
                     }
                 }
@@ -353,20 +372,144 @@ export default {
             this.saveCanvasData();
         },
 
+        // Draws a dashed orange rectangle; on mouseUp the area is cropped and downloaded.
+        startCropSelection(event) {
+            if (this.path) { this.path.remove(); this.path = null; }
+            this.path = new paper.Path.Rectangle(event.point, event.point);
+            this.path.strokeColor = '#ff6600';
+            this.path.strokeWidth = 2;
+            this.path.dashArray = [8, 4];
+            this.path.fillColor = new paper.Color(1, 0.4, 0, 0.15);
+            this.path.data = { isCrop: true, startPoint: event.point };
+        },
+
+        updateCropRectangle(event) {
+            if (this.path && this.path.data && this.path.data.isCrop) {
+                const start = this.path.data.startPoint;
+                this.path.segments[0].point = start;
+                this.path.segments[1].point = new paper.Point(event.point.x, start.y);
+                this.path.segments[2].point = event.point;
+                this.path.segments[3].point = new paper.Point(start.x, event.point.y);
+            }
+        },
+
+        // Crops the canvas pixel area matching the selection and triggers a PNG download.
+        finishCropAndDownload() {
+            if (!this.path || !this.path.data || !this.path.data.isCrop) {
+                this.path = null;
+                return;
+            }
+            const bounds = this.path.bounds;
+            this.path.remove();
+            this.path = null;
+            this.scope.view.update();
+
+            if (bounds.width < 5 || bounds.height < 5) return;
+
+            const tl = this.scope.view.projectToView(bounds.topLeft);
+            const br = this.scope.view.projectToView(bounds.bottomRight);
+            const x = Math.round(Math.min(tl.x, br.x));
+            const y = Math.round(Math.min(tl.y, br.y));
+            const w = Math.round(Math.abs(br.x - tl.x));
+            const h = Math.round(Math.abs(br.y - tl.y));
+            if (w <= 0 || h <= 0) return;
+
+            const temp = document.createElement('canvas');
+            temp.width = w;
+            temp.height = h;
+            temp.getContext('2d').drawImage(this.scope.view.element, x, y, w, h, 0, 0, w, h);
+            const link = document.createElement('a');
+            link.download = 'cropped-image.png';
+            link.href = temp.toDataURL('image/png');
+            link.click();
+        },
+
+        // Finds the closest segment point on any unlocked Path within a 20px tolerance.
+        // If it's an endpoint of a line inside a Group, also tracks the associated dot
+        // so dragging moves both the segment and the endpoint circle together.
+        selectSegmentPoint(event) {
+            this.editingSegment = null;
+            this.editingSegmentDot = null;
+            let closestSeg = null;
+            let minDist = 20;
+
+            const search = (item) => {
+                if (!item || item.locked) return;
+                if (item instanceof paper.Path && item.segments) {
+                    item.segments.forEach(seg => {
+                        const d = seg.point.getDistance(event.point);
+                        if (d < minDist) { minDist = d; closestSeg = seg; }
+                    });
+                }
+                if (item.children) item.children.forEach(search);
+            };
+
+            this.scope.project.layers.forEach(layer => {
+                if (layer.locked) return;
+                layer.children.forEach(search);
+            });
+
+            this.editingSegment = closestSeg;
+
+            if (closestSeg) {
+                const p = closestSeg.path;
+                const isEndpoint = closestSeg.index === 0 || closestSeg.index === p.segments.length - 1;
+                if (isEndpoint && p.parent instanceof paper.Group) {
+                    const segPos = closestSeg.point;
+                    let closestDot = null;
+                    let minDotDist = 40;
+                    p.parent.children.forEach(child => {
+                        if (child instanceof paper.Path && (child.name || '').startsWith('point ')) {
+                            const d = child.bounds.center.getDistance(segPos);
+                            if (d < minDotDist) { minDotDist = d; closestDot = child; }
+                        }
+                    });
+                    this.editingSegmentDot = closestDot;
+                }
+            }
+        },
+
+        // Reposition all related-* layers so they sit BELOW 'main' in the layer stack.
+        // 'main' must be the topmost drawing layer so hit-testing (erase, move) favours it
+        // over locked related-route overlays.
+        _repositionRelatedLayersBelow() {
+            if (!this.scope) return;
+            const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
+            if (!mainLayer) return;
+            this.scope.project.layers
+                .filter(l => l.name && l.name.startsWith('related-'))
+                .sort((a, b) => parseInt(a.name.split('-')[1]) - parseInt(b.name.split('-')[1]))
+                .forEach(l => l.insertBelow(mainLayer));
+        },
+
         importJsonData(jsonData) {
             if (!jsonData || !this.scope) return;
             try {
                 let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
                 this.scope.activate();
 
-                const existing = this.scope.project.layers.find(l => l.name === 'main');
-                if (existing) existing.remove();
+                // Remove existing main layer
+                const existingMain = this.scope.project.layers.find(l => l.name === 'main');
+                if (existingMain) existingMain.remove();
 
-                const mainLayer = new paper.Layer();
-                mainLayer.name = 'main';
-                mainLayer.importJSON(parsedData);
+                // Stash related layers so project.importJSON doesn't lose them
+                const related = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
+                related.forEach(l => l.remove());
 
-                this.scope.project.addLayer(mainLayer);
+                // project.importJSON appends layers at the correct top level (no nesting)
+                this.scope.project.importJSON(parsedData);
+
+                // Rename any imported layers to 'main'
+                this.scope.project.layers
+                    .filter(l => !l.name || (!l.name.startsWith('related-') && l.name !== 'background'))
+                    .forEach(l => { l.name = 'main'; });
+
+                // Restore related layers then reposition them BELOW 'main' so that
+                // hit-testing always hits the editable main layer first.
+                related.forEach(l => this.scope.project.addLayer(l));
+                this._repositionRelatedLayersBelow();
+
+                this._activateMainLayer();
                 this.scope.view.update();
                 this.$emit('layers_ready');
             } catch (e) {}
@@ -375,51 +518,57 @@ export default {
         importRelatedJsons() {
             if (!this.scope) return;
 
-            const toRemove = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
-            toRemove.forEach(l => l.remove());
+            // Remove old related layers
+            this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-')).forEach(l => l.remove());
 
             if (!this.relatedJsons || !Array.isArray(this.relatedJsons) || this.relatedJsons.length === 0) return;
 
             const colors = ['#0000ff', '#00cc00', '#ff00ff', '#cccc00', '#00cccc', '#ff8000', '#8000ff', '#00ff80', '#ff0080', '#808080'];
 
+            this.scope.activate();
+
             this.relatedJsons.forEach((jsonData, index) => {
                 if (!jsonData) return;
                 try {
                     let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-                    this.scope.activate();
 
-                    const relatedLayer = new paper.Layer();
-                    relatedLayer.name = `related-${index}`;
+                    // Record existing layer count so we can identify newly-added layers
+                    const before = this.scope.project.layers.length;
 
-                    let importedItems;
-                    try {
-                        importedItems = relatedLayer.importJSON(parsedData);
-                    } catch (e) {
-                        return;
-                    }
+                    // project.importJSON appends layers — no nesting into a wrapper layer
+                    this.scope.project.importJSON(parsedData);
 
+                    // Grab only the layers that were just added
+                    const newLayers = this.scope.project.layers.slice(before);
                     const color = colors[index % colors.length];
 
-                    const applyColor = (item) => {
-                        if (!item || typeof item !== 'object') return;
-                        try {
-                            if (item.strokeColor !== undefined) item.strokeColor = color;
-                            if (item.fillColor   !== undefined) item.fillColor   = color;
-                            item.locked = true;
-                            if (item.children) item.children.forEach(child => applyColor(child));
-                        } catch (e) {}
-                    };
+                    newLayers.forEach(layer => {
+                        layer.name = `related-${index}`;
+                        layer.locked = true;
 
-                    if (Array.isArray(importedItems)) {
-                        importedItems.forEach(item => applyColor(item));
-                    } else if (importedItems) {
-                        applyColor(importedItems);
-                    }
+                        const applyColor = (item) => {
+                            if (!item || typeof item !== 'object') return;
+                            try {
+                                if (typeof item.strokeColor !== 'undefined') item.strokeColor = color;
+                                if (typeof item.fillColor   !== 'undefined') item.fillColor   = null;
+                                item.locked = true;
+                                if (item.children && item.children.length) {
+                                    item.children.forEach(applyColor);
+                                }
+                            } catch (_) {}
+                        };
 
-                    this.scope.project.addLayer(relatedLayer);
+                        if (layer.children) layer.children.forEach(applyColor);
+                    });
+
                     this.scope.view.update();
                 } catch (e) {}
             });
+
+            // Activate main before repositioning so _activateMainLayer can find / create it,
+            // then move related layers below it so hit-testing favours the main layer.
+            this._activateMainLayer();
+            this._repositionRelatedLayersBelow();
         }
     }
 }

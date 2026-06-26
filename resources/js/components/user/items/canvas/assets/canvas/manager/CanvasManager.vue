@@ -71,7 +71,8 @@ export default {
         },
         history: [],
         redoStack: [],
-        jsonLoaded: false,
+        editingSegment: null,
+        editingSegmentDot: null,
         isPanning: false,
         panLastScreen: null,
         selectionRect: null,
@@ -84,13 +85,20 @@ export default {
     }),
     watch: {
         jsonProp: {
-            handler: function(newVal) {
-                if (!this.jsonLoaded && newVal) {
+            handler: function(newVal, oldVal) {
+                // Only re-import after mount (scope exists) and when value actually changes
+                if (!this.scope || newVal === oldVal) return;
+                if (newVal) {
                     this.importJsonData(newVal);
-                    this.jsonLoaded = true;
+                } else {
+                    // Drawing was cleared — wipe the main layer so the canvas is blank
+                    const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
+                    if (mainLayer) mainLayer.removeChildren();
+                    this._activateMainLayer();
+                    this.scope.view.update();
                 }
             },
-            immediate: true
+            immediate: false,
         },
         relatedJsons: {
             handler: function(newVal) {
@@ -100,7 +108,9 @@ export default {
         },
         action(newVal) {
             if (this.scope && this.scope.view && this.scope.view.element) {
-                this.scope.view.element.style.cursor = newVal === 9 ? 'grab' : 'crosshair';
+                if (newVal === 9) this.scope.view.element.style.cursor = 'grab';
+                else if (newVal === 16) this.scope.view.element.style.cursor = 'cell';
+                else this.scope.view.element.style.cursor = 'crosshair';
             }
         },
         image(newVal) {
@@ -122,9 +132,11 @@ export default {
             // No drawing data — create an empty main layer so the canvas is ready to draw
             this._activateMainLayer();
         }
-        this.jsonLoaded = true;
 
-        this.saveCanvasData();
+        // Initialise the undo history with the current state but do NOT emit canvas_data —
+        // emitting here would overwrite the parent's route_json before the user has drawn anything.
+        this._initHistory();
+
         this.addMouseWheelListener();
 
         if (this.image) this.loadBackgroundRaster(this.image);
@@ -299,6 +311,17 @@ export default {
             return json;
         },
 
+        // Seeds the undo history with the current canvas state without emitting canvas_data.
+        // Called once from mounted() so undo/redo works from the first user action.
+        _initHistory() {
+            try {
+                const state = JSON.parse(this._getDrawingJson());
+                this.history = [state];
+                this.redoStack = [];
+                this.$emit('history-changed', 0, 0);
+            } catch (_) {}
+        },
+
         saveCanvasData() {
             const canvasData = this._getDrawingJson();
             const currentState = JSON.parse(canvasData);
@@ -309,28 +332,27 @@ export default {
                 this.redoStack = [];
             }
             this.$emit('canvas_data', canvasData);
-            this.$emit('history-changed', this.history.length, this.redoStack.length);
+            this.$emit('history-changed', this.history.length - 1, this.redoStack.length);
         },
 
         undoLastAction() {
-            if (this.history.length === 0) return;
+            if (this.history.length <= 1) return;
 
-            const currentJson = this._getDrawingJson();
-            this.redoStack.push(JSON.parse(currentJson));
+            // Move the most-recent state to the redo stack, then restore the one before it.
+            const lastState = this.history.pop();
+            this.redoStack.push(lastState);
             if (this.redoStack.length > 20) this.redoStack = this.redoStack.slice(-20);
 
-            const lastState = this.history.pop();
+            const previousState = this.history[this.history.length - 1];
 
-            // Detach non-drawing layers before clearing
             const bgLayer = this.scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
             if (bgLayer) bgLayer.remove();
             relatedLayers.forEach(l => l.remove());
 
             this.scope.project.clear();
-            if (lastState) this.scope.project.importJSON(lastState);
+            if (previousState) this.scope.project.importJSON(previousState);
 
-            // Restore background and related layers
             if (bgLayer) {
                 const drawingLayers = this.scope.project.layers;
                 this.scope.project.addLayer(bgLayer);
@@ -339,20 +361,20 @@ export default {
             relatedLayers.forEach(l => this.scope.project.addLayer(l));
 
             this._activateMainLayer();
+            this._repositionRelatedLayersBelow();
             this.scope.view.update();
             this.$emit('layers_updated');
             this.$emit('canvas_data', this._getDrawingJson());
-            this.$emit('history-changed', this.history.length, this.redoStack.length);
+            this.$emit('history-changed', this.history.length - 1, this.redoStack.length);
         },
 
         redoLastAction() {
             if (this.redoStack.length === 0) return;
 
-            const currentJson = this._getDrawingJson();
-            this.history.push(JSON.parse(currentJson));
-            if (this.history.length > 20) this.history = this.history.slice(-20);
-
+            // Pop the next state from redo and push it onto history (it becomes the new current).
             const nextState = this.redoStack.pop();
+            this.history.push(nextState);
+            if (this.history.length > 20) this.history = this.history.slice(-20);
 
             const bgLayer = this.scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
@@ -370,10 +392,11 @@ export default {
             relatedLayers.forEach(l => this.scope.project.addLayer(l));
 
             this._activateMainLayer();
+            this._repositionRelatedLayersBelow();
             this.scope.view.update();
             this.$emit('layers_updated');
             this.$emit('canvas_data', this._getDrawingJson());
-            this.$emit('history-changed', this.history.length, this.redoStack.length);
+            this.$emit('history-changed', this.history.length - 1, this.redoStack.length);
         },
 
         getCanvasScope() {

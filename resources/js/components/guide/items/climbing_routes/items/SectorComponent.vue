@@ -1,6 +1,6 @@
 <template>
     <div class="sector-block">
-        <div class="row align-items-start">
+        <div class="align-items-start">
             <div class="col-10 col-md-10">
                 <!-- <h2 :id="'sector-' + sector.sector.id"> -->
                 <h2 :id="'sector-' + sector.sector.id">
@@ -10,7 +10,7 @@
             </div>
             <div class="col-2">
                 <a
-                    v-if="sector.sector.has_route_drawings"
+                    v-if="sector.has_route_drawings"
                     @click="show_sector_canvas_modal()"
                     data-toggle="modal"
                     data-target="#squarespaceModal_route_info_"
@@ -121,7 +121,15 @@
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
-                    <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
+                    <td class="route-seo-col" v-html="[
+                        route.text, 
+                        route.author ? 'Author: ' + route.author : null, 
+                        route.creation_data ? 'Created: ' + route.creation_data : null, 
+                        route.first_ascent ? 'First ascent: ' + route.first_ascent : null, 
+                        route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, 
+                        route.bolts_type ? 'Bolt type: ' + route.bolts_type : null, 
+                        route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null
+                        ].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -162,7 +170,15 @@
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
-                    <td class="route-seo-col" v-html="[route.text, route.author ? 'Author: ' + route.author : null, route.creation_data ? 'Created: ' + route.creation_data : null, route.first_ascent ? 'First ascent: ' + route.first_ascent : null, route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null].filter(Boolean).join(' | ')"></td>
+                    <td class="route-seo-col" v-html="[
+                        route.text,
+                        route.author ? 'Author: ' + route.author : null,
+                        route.creation_data ? 'Created: ' + route.creation_data : null,
+                        route.first_ascent ? 'First ascent: ' + route.first_ascent : null,
+                        route.anchor_type ? 'Anchor type: ' + route.anchor_type : null, 
+                        route.bolts_type ? 'Bolt type: ' + route.bolts_type : null, 
+                        route.reviews_count ? 'Rating: ' + route.reviews_stars + '/5 (' + route.reviews_count + ' reviews)' : null
+                    ].filter(Boolean).join(' | ')"></td>
                 </tr>
             </tbody>
         </table>
@@ -294,8 +310,6 @@ import SectorIconTip from './SectorIconTip.vue';
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
 
-import route_json from './canvas/RouteLinesComponent.vue'
-
 export default {
     mixins: [
         grade_chart,
@@ -308,7 +322,6 @@ export default {
         route_all_reviews_modal,
         create_mtp_review_modal,
         mtp_all_reviews_modal,
-        route_json,
         sector_canvas_modal,
         starsReiting,
         SectorIconTip,
@@ -432,7 +445,8 @@ export default {
 }
 
 /* Zero out column gutters so sector content aligns with page text */
-.sector-block .row.mx-0 > [class*="col"] {
+/* .sector-block .row.mx-0 > [class*="col"] { */
+.sector-block .mx-0 > [class*="col"] {
     padding-left: 0;
     padding-right: 0;
 }

@@ -197,11 +197,11 @@ class SectorController extends Controller
 
         $sector = Sector::where('id', '=', $sector_id)->orderBy('num')->first();
                 
-        $sector_imgs = $sector->images->take(6);
-        if ($sector_imgs) {
-            $sector_imgs = $sector_imgs;
-        }
-        else $sector_imgs = array();
+        $sector_imgs = $sector->images->take(6)->map(function ($img) {
+            $img->has_original = file_exists(public_path('images/sector_img/origin_img/' . $img->image));
+            return $img;
+        });
+        if (!$sector_imgs) $sector_imgs = array();
 
         $sport_routes = $sector->sport_routes()->with('review')->get();
         if ($sport_routes->isNotEmpty()) {
@@ -503,11 +503,11 @@ class SectorController extends Controller
     {
         $sector = Sector::where('id', '=', $request->sector_id)->first();
                 
-        $images = $sector->images->take(6);
-        if ($images) {
-            $images = $images;
-        }
-        else $images = array();
+        $images = $sector->images->take(6)->map(function ($img) {
+            $img->has_original = file_exists(public_path('images/sector_img/origin_img/' . $img->image));
+            return $img;
+        });
+        if (!$images) $images = [];
 
         $routes = $sector->routes;
         if ($routes){

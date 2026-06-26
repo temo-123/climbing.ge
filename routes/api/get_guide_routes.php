@@ -151,7 +151,6 @@ Route::group(['namespace'=>'Api\Guide'], function() {
             
             Route::get('/get_layout/{layout_id}', 'get_layout');
             Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
-            Route::get('/get_layout_old/{sector_id}', 'get_layout_old');
         });
     });
 

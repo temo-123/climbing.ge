@@ -25,7 +25,15 @@
                 <div v-if="sector_images.length > 0" class="row mb-3">
                     <h4>Images <small class="text-muted">(drag to reorder)</small></h4>
                     <table class="table table-sm drag-table">
-                        <thead><tr><td>ID</td><td>Num</td><td>Image</td></tr></thead>
+                        <thead>
+                            <tr>
+                                <td>ID</td>
+                                <td>Num</td>
+                                <td>Canvas Drawing <small class="text-muted">(JSON data)</small></td>
+                                <td>Saved Image <small class="text-muted">(on disk)</small></td>
+                                <td>Actions</td>
+                            </tr>
+                        </thead>
                         <tbody>
                             <tr
                                 v-for="(image, index) in sector_images"
@@ -40,7 +48,87 @@
                             >
                                 <td>{{ image.id }}</td>
                                 <td>{{ image.num }}</td>
-                                <td><img class="image_in_model_tab" :src="'/public/images/sector_img/'+image.image" alt="image" /></td>
+
+                                <!-- Canvas drawing: routes from JSON on original photo (or dark bg if no original) -->
+                                <td @click.stop class="img-cell">
+                                    <canvas-json-show
+                                        :fetch_url="'get_route/get_route_jsons_for_sector_image'"
+                                        :fetch_id="image.id"
+                                        :image_src="image.has_original
+                                            ? '/public/images/sector_img/origin_img/' + image.image
+                                            : null"
+                                        :preview_all="true"
+                                        refresh_event="route-drawing-updated"
+                                    />
+                                </td>
+
+                                <!-- Saved composite image currently on disk -->
+                                <td class="img-cell">
+                                    <img
+                                        class="image_in_model_tab"
+                                        :src="'/public/images/sector_img/' + image.image + '?v=' + (img_cache_bust[image.id] || 0)"
+                                        :alt="image.image"
+                                    />
+                                </td>
+
+                                <!-- Actions: del canvas + upload -->
+                                <td @click.stop class="actions-cell">
+
+                                    <!-- Del Canvas: inline two-step confirmation -->
+                                    <div class="mb-1">
+                                        <template v-if="canvas_confirm_pending === image.id">
+                                            <span class="text-warning small me-1">Sure?</span>
+                                            <button
+                                                class="btn btn-danger btn-sm me-1"
+                                                :disabled="canvas_deleting === image.id"
+                                                @click.stop="do_del_sector_canvas(image.id)"
+                                            >Yes</button>
+                                            <button
+                                                class="btn btn-secondary btn-sm"
+                                                @click.stop="canvas_confirm_pending = null"
+                                            >No</button>
+                                        </template>
+                                        <template v-else>
+                                            <button
+                                                class="btn btn-warning btn-sm"
+                                                :disabled="canvas_deleting === image.id"
+                                                @click.stop="canvas_confirm_pending = image.id"
+                                            >
+                                                <i class="fa fa-eraser"></i>
+                                                {{ canvas_deleting === image.id ? 'Deleting...' : 'Del Canvas' }}
+                                            </button>
+                                        </template>
+
+                                        <span
+                                            v-if="canvas_del_status[image.id]"
+                                            class="ms-1 small"
+                                            :class="canvas_del_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
+                                        >
+                                            {{ canvas_del_status[image.id] === 'ok' ? '✓ Cleared' : '✗ Error' }}
+                                        </span>
+                                    </div>
+
+                                    <!-- Upload new image (always visible) -->
+                                    <div class="upload-wrap">
+                                        <label class="small text-muted mb-0">Replace image:</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            class="form-control form-control-sm mt-1"
+                                            :disabled="img_uploading === image.id"
+                                            @change="uploadSectorImage(image.id, $event)"
+                                        />
+                                        <span
+                                            v-if="img_upload_status[image.id]"
+                                            class="small"
+                                            :class="img_upload_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
+                                        >
+                                            {{ img_upload_status[image.id] === 'ok' ? '✓ Uploaded' : '✗ Upload failed' }}
+                                        </span>
+                                        <span v-if="img_uploading === image.id" class="small text-muted">Uploading...</span>
+                                    </div>
+
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -105,8 +193,8 @@
 </template>
 
 <script>
-    export default {
-        data(){
+export default {
+    data(){
             return {
                 is_show_sector_modal: false,
                 sector: [],
@@ -117,6 +205,12 @@
                 activ_sector_id: 0,
                 dragOver: null,
                 dragSrc: null,
+                canvas_confirm_pending: null,
+                canvas_deleting:   null,
+                canvas_del_status: {},
+                img_uploading:     null,
+                img_upload_status: {},
+                img_cache_bust:    {},
             }
         },
 
@@ -138,6 +232,7 @@
             close_sector_model(){
                 this.is_show_sector_modal = false
                 this.activ_sector_id = 0
+                this.canvas_confirm_pending = null
                 this.$nextTick(() => {
                     this.sector_routes = []
                     this.sector_mtps   = []
@@ -160,6 +255,62 @@
                 arr.splice(toIndex, 0, moved)
                 this.dragSrc = null
                 this.dragOver = null
+            },
+
+            async do_del_sector_canvas(image_id) {
+                this.canvas_confirm_pending = null;
+                this.canvas_deleting = image_id;
+                this.canvas_del_status = { ...this.canvas_del_status, [image_id]: null };
+                try {
+                    await axios.delete('/set_route/del_sector_image_drawing/' + image_id);
+                    this.canvas_del_status = { ...this.canvas_del_status, [image_id]: 'ok' };
+                    // Update has_original so canvas drawing switches to dark background
+                    const img = this.sector_images.find(i => i.id === image_id);
+                    if (img) img.has_original = false;
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: image_id });
+                    setTimeout(() => {
+                        this.canvas_del_status = { ...this.canvas_del_status, [image_id]: null };
+                    }, 4000);
+                } catch (e) {
+                    this.canvas_del_status = { ...this.canvas_del_status, [image_id]: 'error' };
+                } finally {
+                    this.canvas_deleting = null;
+                }
+            },
+
+            async uploadSectorImage(image_id, event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                this.img_uploading = image_id;
+                this.img_upload_status = { ...this.img_upload_status, [image_id]: null };
+
+                const formData = new FormData();
+                formData.append('image', file);
+
+                try {
+                    const res = await axios.post('/set_sector/replace_sector_image/' + image_id, formData, {
+                        headers: { 'Content-Type': 'multipart/form-data' },
+                    });
+                    if (res.data && res.data.image) {
+                        const img = this.sector_images.find(i => i.id === image_id);
+                        if (img) {
+                            img.image = res.data.image;
+                            img.has_original = false;
+                        }
+                        // Bust the cache so the new image loads
+                        this.img_cache_bust = { ...this.img_cache_bust, [image_id]: Date.now() };
+                    }
+                    this.img_upload_status = { ...this.img_upload_status, [image_id]: 'ok' };
+                    setTimeout(() => {
+                        this.img_upload_status = { ...this.img_upload_status, [image_id]: null };
+                    }, 4000);
+                } catch (e) {
+                    this.img_upload_status = { ...this.img_upload_status, [image_id]: 'error' };
+                } finally {
+                    this.img_uploading = null;
+                    event.target.value = '';
+                }
             },
 
             save_routes_sequence(){
@@ -186,6 +337,22 @@
     outline: 2px dashed #0d6efd;
 }
 .image_in_model_tab {
-    max-width: 40%;
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 4px;
+}
+.img-cell {
+    width: 280px;
+    min-width: 200px;
+    vertical-align: top;
+}
+.actions-cell {
+    min-width: 200px;
+    vertical-align: top;
+    padding: 8px;
+}
+.upload-wrap {
+    margin-top: 6px;
 }
 </style>

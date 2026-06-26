@@ -11,7 +11,8 @@ class Mtp extends Model
     protected $fillable = [
         "sector_id",
         "name",
-        "text",
+        "text_us",
+        "text_ka",
         "last_carabin",
         "height",
     ];

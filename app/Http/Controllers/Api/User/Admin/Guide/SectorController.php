@@ -268,4 +268,31 @@ class SectorController extends Controller
         return $data;
     }
 
+    public function replace_sector_image(Request $request, $image_id)
+    {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
+
+        $image = Sector_image::find($image_id);
+        if (!$image) return response()->json(['error' => 'Image not found'], 404);
+
+        if (!$request->hasFile('image')) return response()->json(['error' => 'No image file'], 422);
+
+        $oldName = $image->image;
+
+        // Delete old files (main and origin)
+        $mainPath   = public_path('images/sector_img/' . $oldName);
+        $originPath = public_path('images/sector_img/origin_img/' . $oldName);
+        if (file_exists($mainPath))   @unlink($mainPath);
+        if (file_exists($originPath)) @unlink($originPath);
+
+        // Upload new image
+        $newName = ImageControllService::upload_loop_image('images/sector_img/', $request->file('image'), 0);
+
+        $image->image = $newName;
+        $image->save();
+
+        return response()->json(['success' => true, 'image' => $newName]);
+    }
+
 }

@@ -27,6 +27,8 @@
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
+                @crop="handleCrop"
+                @edit-points="handleEditPoints"
                 @export-png="handleExportPNG"
                 @export-svg="handleExportSVG"
                 @save-image="handleSaveImage"
@@ -313,6 +315,14 @@ export default {
                 this.action = 14;
             },
 
+            handleCrop() {
+                this.action = 15;
+            },
+
+            handleEditPoints() {
+                this.action = 16;
+            },
+
             // Export methods are now handled directly in the new methods below
 
             handleUndo() {
@@ -365,6 +375,20 @@ export default {
                     }
                 }
                 return null;
+            },
+
+            // Finds a Paper.js Layer by its numeric id (used for related layers).
+            _layerById(id) {
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return null;
+                return scope.project.layers.find(l => l.id === id) || null;
+            },
+
+            // Recursively sets locked state on an item and all its children.
+            _deepSetLocked(item, locked) {
+                if (!item) return;
+                item.locked = locked;
+                if (item.children) item.children.forEach(c => this._deepSetLocked(c, locked));
             },
 
             // Returns the CSS hex color of a Paper.js item (or its first child for groups).
@@ -469,74 +493,101 @@ export default {
 
             updateLayersList() {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (scope && scope.project) {
-                    // Preserve expanded states before resetting layers
-                    const expandedStates = {};
-                    this.layers.forEach(layer => {
-                        if (layer.isGroup && layer.expanded) {
-                            expandedStates[layer.name] = true;
+                if (!scope || !scope.project) { this.layers = []; return; }
+
+                const expandedStates = {};
+                this.layers.forEach(layer => {
+                    if (layer.isGroup && layer.expanded) expandedStates[layer.name] = true;
+                });
+
+                // Colors must match those used in importRelatedJsons
+                const relatedColors = ['#0000ff', '#00cc00', '#ff00ff', '#cccc00', '#00cccc', '#ff8000', '#8000ff', '#00ff80', '#ff0080', '#808080'];
+                const mainItems = [];
+                const relatedEntries = [];
+
+                scope.project.layers.forEach(layer => {
+                    if (layer.name === 'background') return;
+
+                    if (layer.name && layer.name.startsWith('related-')) {
+                        const idx = parseInt(layer.name.replace('related-', ''));
+                        const firstChild = layer.children[0];
+                        const isLocked = !firstChild || firstChild.locked !== false;
+                        relatedEntries.push({
+                            id: layer.id,
+                            name: layer.name,
+                            displayName: `Route ${idx + 1}`,
+                            color: relatedColors[idx % relatedColors.length],
+                            visible: layer.visible !== false,
+                            locked: isLocked,
+                            isRelated: true,
+                            isGroup: false,
+                            children: []
+                        });
+                        return;
+                    }
+
+                    layer.children.forEach(item => {
+                        if (item.name && item.name.startsWith('group ')) {
+                            mainItems.push({
+                                id: item.id,
+                                name: item.name || 'unnamed',
+                                displayName: this._formatLayerName(item.name, true),
+                                color: this._getItemColor(item),
+                                strokeWidth: this._getItemWidth(item),
+                                visible: item.visible !== false,
+                                locked: item.locked || false,
+                                layerName: layer.name,
+                                isGroup: true,
+                                expanded: expandedStates[item.name] || false,
+                                isEditing: false,
+                                editText: '',
+                                children: item.children.map(child => ({
+                                    id: child.id,
+                                    name: child.name || 'unnamed',
+                                    displayName: this._formatLayerName(child.name, false),
+                                    color: this._getItemColor(child),
+                                    strokeWidth: this._getItemWidth(child),
+                                    visible: child.visible !== false,
+                                    locked: child.locked || false,
+                                    parentGroup: item.name,
+                                    isText: child instanceof paper.PointText || (child.name && child.name.startsWith('text ')),
+                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null),
+                                    isEditing: false,
+                                    editText: ''
+                                }))
+                            });
+                        } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
+                            mainItems.push({
+                                id: item.id,
+                                name: item.name || 'unnamed',
+                                displayName: this._formatLayerName(item.name, false),
+                                color: this._getItemColor(item),
+                                strokeWidth: this._getItemWidth(item),
+                                visible: item.visible !== false,
+                                locked: item.locked || false,
+                                layerName: layer.name,
+                                isText: item instanceof paper.PointText || (item.name && item.name.startsWith('text ')),
+                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
+                                isEditing: false,
+                                editText: ''
+                            });
                         }
                     });
-                    this.layers = [];
-                    scope.project.layers.forEach(layer => {
-                                    // Skip background and read-only related layers
-                                    if (layer.name === 'background' || (layer.name && layer.name.startsWith('related-'))) return;
-                                    layer.children.forEach(item => {
-                                        if (item.name && item.name.startsWith('group ')) {
-                                            // Handle groups: add the group itself and its children
-                                            this.layers.push({
-                                                id: item.id,
-                                                name: item.name || 'unnamed',
-                                                displayName: this._formatLayerName(item.name, true),
-                                                color: this._getItemColor(item),
-                                                strokeWidth: this._getItemWidth(item),
-                                                visible: item.visible !== false,
-                                                locked: item.locked || false,
-                                                layerName: layer.name,
-                                                isGroup: true,
-                                                expanded: expandedStates[item.name] || false,
-                                                isEditing: false,
-                                                editText: '',
-                                                children: item.children.map(child => ({
-                                                    id: child.id,
-                                                    name: child.name || 'unnamed',
-                                                    displayName: this._formatLayerName(child.name, false),
-                                                    color: this._getItemColor(child),
-                                                    strokeWidth: this._getItemWidth(child),
-                                                    visible: child.visible !== false,
-                                                    locked: child.locked || false,
-                                                    parentGroup: item.name,
-                                                    isText: child instanceof paper.PointText || (child.name && child.name.startsWith('text ')),
-                                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null),
-                                                    isEditing: false,
-                                                    editText: ''
-                                                }))
-                                            });
-                                        } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
-                                            // Only add non-group items or items not already included in groups
-                                            this.layers.push({
-                                                id: item.id,
-                                                name: item.name || 'unnamed',
-                                                displayName: this._formatLayerName(item.name, false),
-                                                color: this._getItemColor(item),
-                                                strokeWidth: this._getItemWidth(item),
-                                                visible: item.visible !== false,
-                                                locked: item.locked || false,
-                                                layerName: layer.name,
-                                                isText: item instanceof paper.PointText || (item.name && item.name.startsWith('text ')),
-                                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
-                                                isEditing: false,
-                                                editText: ''
-                                            });
-                                        }
-                                    });
-                    });
-                } else {
-                    this.layers = [];
-                }
+                });
+
+                this.layers = [...mainItems, ...relatedEntries];
             },
 
             toggleLayerVisibility(layer) {
+                if (layer.isRelated) {
+                    const paperLayer = this._layerById(layer.id);
+                    if (!paperLayer) return;
+                    paperLayer.visible = !paperLayer.visible;
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope) scope.view.update();
+                    this.updateLayersList();
+                    return;
+                }
                 const item = this._itemById(layer.id);
                 if (!item) return;
                 item.visible = !item.visible;
@@ -546,6 +597,16 @@ export default {
             },
 
             toggleLayerLock(layer) {
+                if (layer.isRelated) {
+                    const paperLayer = this._layerById(layer.id);
+                    if (!paperLayer) return;
+                    const newLocked = !layer.locked;
+                    [...paperLayer.children].forEach(child => this._deepSetLocked(child, newLocked));
+                    const scope = this.$refs.canvasContainer.getCanvasScope();
+                    if (scope) scope.view.update();
+                    this.updateLayersList();
+                    return;
+                }
                 const item = this._itemById(layer.id);
                 if (!item) return;
                 item.locked = !item.locked;
@@ -617,9 +678,9 @@ export default {
 
             moveLayerUp(index) {
                 if (index > 0) {
-                    // Check if the layer above is in the same group (same layerName)
                     const currentLayer = this.layers[index];
                     const aboveLayer = this.layers[index - 1];
+                    if (currentLayer.isRelated || aboveLayer.isRelated) return;
 
                     if (currentLayer.layerName === aboveLayer.layerName) {
                         // Swap the layer with the one above it
@@ -634,9 +695,9 @@ export default {
 
             moveLayerDown(index) {
                 if (index < this.layers.length - 1) {
-                    // Check if the layer below is in the same group (same layerName)
                     const currentLayer = this.layers[index];
                     const belowLayer = this.layers[index + 1];
+                    if (currentLayer.isRelated || belowLayer.isRelated) return;
 
                     if (currentLayer.layerName === belowLayer.layerName) {
                         // Swap the layer with the one below it

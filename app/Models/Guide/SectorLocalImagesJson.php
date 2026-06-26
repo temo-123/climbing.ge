@@ -9,15 +9,15 @@ class SectorLocalImagesJson extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['json', 'sector_local_image_id'];
+    protected $fillable = ['json', 'sector_local_image_id', 'sector_id', 'canvas_width', 'canvas_height'];
 
     public function sector_local_image()
     {
         return $this->belongsTo(Sector_local_image::class, 'sector_local_image_id');
     }
 
-    public function sectors()
+    public function sector()
     {
-        return $this->belongsToMany(Sector::class, 'sector_local_images_json_sectors', 'sect_loc_img_json_id', 'sector_id');
+        return $this->belongsTo(Sector::class, 'sector_id');
     }
 }

@@ -63,62 +63,92 @@ class SectorLocalImagesController extends Controller
         }
     }
 
-    public function save_canvas_data(Request $request, $sector_id)
+    public function get_for_editor($id)
+    {
+        if ($auth = PermissionService::authorize('sector_local_image', 'show')) return $auth;
+
+        $image = Sector_local_image::with('allSectors')->findOrFail($id);
+        $image->has_original = file_exists(public_path('images/sector_local_img/origin_img/' . $image->image));
+
+        return [
+            'image'   => $image,
+            'sectors' => $image->allSectors,
+            'layouts' => SectorLocalImagesJson::where('sector_local_image_id', $id)
+                            ->with('sector')
+                            ->get(),
+        ];
+    }
+
+    public function save_canvas_data(Request $request, $image_id)
     {
         $auth = PermissionService::authorize('sector_local_image', 'edit');
         if ($auth) return $auth;
-        
-        $json = json_encode($request->canvasData);
 
-        // Find the sector_local_image
-        $sectorLocalImage = Sector_local_image::find($request->sector_local_image_id ?? $sector_id);
+        $json            = $request->canvasData;
+        $sectorId        = $request->sectorId;
+        $editedImageData = $request->edited_image;
+        $canvasWidth     = $request->canvas_width  ? (int) $request->canvas_width  : null;
+        $canvasHeight    = $request->canvas_height ? (int) $request->canvas_height : null;
 
-        $jsonRecord = null;
-        if ($request->layoutId) {
-            // Update existing layout
-            $jsonRecord = SectorLocalImagesJson::find($request->layoutId);
-            if ($jsonRecord) {
-                $jsonRecord->json = $json;
-                $jsonRecord->save();
-            }
-        } else {
-            // Create new layout - check if there's an existing layout for the first selected sector
-            $existingLayout = null;
-            if ($request->selectedSectors && count($request->selectedSectors) > 0) {
-                $firstSectorId = $request->selectedSectors[0];
-                $existingLayout = SectorLocalImagesJson::whereHas('sectors', function($query) use ($firstSectorId) {
-                    $query->where('sector_id', $firstSectorId);
-                })->where('sector_local_image_id', $sectorLocalImage->id)->first();
-            }
-
-            if ($existingLayout) {
-                // Update existing layout with the same sector name
-                $existingLayout->json = $json;
-                $existingLayout->save();
-                $jsonRecord = $existingLayout;
-            } else {
-                // Create new layout
-                $jsonRecord = SectorLocalImagesJson::create([
-                    'sector_local_image_id' => $sectorLocalImage->id,
-                    'json' => $json
-                ]);
-            }
+        if (!$sectorId) {
+            return response()->json(['error' => 'sectorId is required'], 422);
         }
 
-        // Update sector relations for this layout
-        if ($jsonRecord && $request->selectedSectors) {
-            // Remove existing relations
-            SectorLocalImagesJsonSector::where('sect_loc_img_json_id', $jsonRecord->id)->delete();
-            // Add new relations
-            foreach ($request->selectedSectors as $sectorId) {
-                SectorLocalImagesJsonSector::create([
-                    'sect_loc_img_json_id' => $jsonRecord->id,
-                    'sector_id' => $sectorId
-                ]);
+        $sectorLocalImage = Sector_local_image::findOrFail($image_id);
+        $filename    = $sectorLocalImage->image;
+        $hasOriginal = false;
+
+        // Save composite image (background photo + all drawn strokes baked in)
+        if ($filename && $editedImageData) {
+            $originalDir  = public_path('images/sector_local_img/origin_img/');
+            $editedPath   = public_path('images/sector_local_img/' . $filename);
+            $originalPath = $originalDir . $filename;
+
+            if (!is_dir($originalDir)) {
+                mkdir($originalDir, 0775, true);
             }
+
+            // Backup the clean original once — never overwrite it
+            if (!file_exists($originalPath) && file_exists($editedPath)) {
+                copy($editedPath, $originalPath);
+            }
+
+            // Overwrite main file with the composite (photo + strokes)
+            $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $editedImageData);
+            file_put_contents($editedPath, base64_decode($imageData));
+            $hasOriginal = file_exists($originalPath);
         }
 
-        return response()->json(['message' => 'Canvas data saved successfully']);
+        // Upsert by (sector_local_image_id, sector_id) — guarantees one record per sector,
+        // prevents duplicates regardless of what layoutId the client sends.
+        $jsonRecord = SectorLocalImagesJson::updateOrCreate(
+            [
+                'sector_local_image_id' => $image_id,
+                'sector_id'             => $sectorId,
+            ],
+            [
+                'json'          => $json,
+                'canvas_width'  => $canvasWidth,
+                'canvas_height' => $canvasHeight,
+            ]
+        );
+
+        return response()->json([
+            'success'      => true,
+            'layout_id'    => $jsonRecord->id,
+            'has_original' => $hasOriginal,
+        ]);
+    }
+
+    public function del_layout($layout_id)
+    {
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
+        if ($auth) return $auth;
+
+        $layout = SectorLocalImagesJson::find($layout_id);
+        if ($layout) $layout->delete();
+
+        return response()->json(['success' => true]);
     }
 
     public function update_image(Request $request, $id)

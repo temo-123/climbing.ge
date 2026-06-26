@@ -11,7 +11,13 @@ class Sector_local_image extends Model
 
     public function sectors()
     {
-      return $this->belongsToMany(Sector::class, 'sector_local_image_sector', 'image_id', 'sector_id')->where('published', '=', 1);
+        return $this->belongsToMany(Sector::class, 'sector_local_image_sector', 'image_id', 'sector_id')->where('published', '=', 1);
+    }
+
+    // Same pivot — no published filter (for admin use)
+    public function allSectors()
+    {
+        return $this->belongsToMany(Sector::class, 'sector_local_image_sector', 'image_id', 'sector_id');
     }
 
     public function image_sector()

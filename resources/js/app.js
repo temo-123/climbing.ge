@@ -66,6 +66,9 @@ app.component("nav-badges", NavBadges);
 import NavbarSearch from "./components/global_components/NavbarSearchComponent.vue";
 app.component("navbar-search", NavbarSearch);
 
+import CanvasJsonDataShow from "./components/global_components/CanvasJsonDataShowComponent.vue";
+app.component("canvas-json-show", CanvasJsonDataShow);
+
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
 import GlobalInfoFormBlock from "./components/user/items/form/parts/GlobalInfoFormBlockComponent.vue";
