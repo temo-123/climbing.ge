@@ -99,6 +99,13 @@ class ProductOptionController extends Controller
         return $data;
     }
 
+    public function get_option_images(Request $request)
+    {
+        if ($auth = PermissionService::authorize('product_option', 'show')) return $auth;
+
+        return Option_image::where('option_id', '=', $request->option_id)->get();
+    }
+
     public function edit_option(Request $request)
     {
         $auth = PermissionService::authorize('product_option', 'edit');

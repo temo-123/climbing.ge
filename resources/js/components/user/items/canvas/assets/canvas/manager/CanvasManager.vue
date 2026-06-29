@@ -1,5 +1,7 @@
 <template>
-    <canvas :id="canvasId" class="canvas-style" :style="{ height: canvasHeight + 'px' }" v-on:mousedown="handleMouseDown" />
+    <canvas :id="canvasId" class="canvas-style"
+        :style="canvasWidth > 0 ? { height: canvasHeight + 'px', width: canvasWidth + 'px' } : { height: canvasHeight + 'px' }"
+        v-on:mousedown="handleMouseDown" />
 </template>
 
 <script>
@@ -53,11 +55,10 @@ export default {
         }
     },
     data: () => ({
+        // Primitive / plain-object state — safe as reactive data
         scope: null,
         canvasData: null,
         oldJson: null,
-        selectedItem: null,
-        group: null,
         groupCounter: 0,
         layerCounters: {
             line: 0,
@@ -71,17 +72,18 @@ export default {
         },
         history: [],
         redoStack: [],
-        editingSegment: null,
-        editingSegmentDot: null,
         isPanning: false,
-        panLastScreen: null,
-        selectionRect: null,
         currentStrokeColor: '#ff0000',
         currentFillColor: null,
         currentStrokeWidth: 3,
         minZoom: 1,
         rasterBounds: null,
-        canvasHeight: 500
+        canvasHeight: 500,
+        canvasWidth: 0   // 0 = use CSS width:100%; >0 = portrait mode fixed px width
+        // Paper.js item references (selectedItem, group, editingSegment,
+        // editingSegmentDot, panLastScreen) are initialised in mounted() as
+        // non-reactive plain instance properties so Vue's Proxy never wraps
+        // Paper.js objects — Proxy + Paper.js position/transform chains break.
     }),
     watch: {
         jsonProp: {
@@ -106,11 +108,24 @@ export default {
             },
             immediate: false
         },
-        action(newVal) {
+        action(newVal, oldVal) {
+            // When leaving resize mode, deselect the resize item
+            if (oldVal === 19 && this.clearResizeSelection) this.clearResizeSelection();
+            // When leaving selection mode, clear multi-selection highlight
+            if (oldVal === 14) {
+                if (this._multiSelectedItems) this._multiSelectedItems.forEach(i => { try { i.selected = false; } catch(_){} });
+                this._multiSelectedItems = [];
+            }
             if (this.scope && this.scope.view && this.scope.view.element) {
-                if (newVal === 9) this.scope.view.element.style.cursor = 'grab';
-                else if (newVal === 16) this.scope.view.element.style.cursor = 'cell';
-                else this.scope.view.element.style.cursor = 'crosshair';
+                const cursors = {
+                    9:  'grab',
+                    16: 'cell',
+                    17: 'all-scroll',
+                    18: 'crosshair',
+                    19: 'default',
+                    20: 'nw-resize',
+                };
+                this.scope.view.element.style.cursor = cursors[newVal] || 'crosshair';
             }
         },
         image(newVal) {
@@ -118,6 +133,14 @@ export default {
         }
     },
     mounted() {
+        // Non-reactive Paper.js item references — must NOT be in data() so
+        // Vue's Proxy never wraps them (Proxy breaks Paper.js matrix ops).
+        this.selectedItem      = null;
+        this.group             = null;
+        this.editingSegment    = null;
+        this.editingSegmentDot = null;
+        this.panLastScreen     = null;
+
         this.scope = new paper.PaperScope();
         this.scope.setup(this.canvasId);
         this.scope.activate();
@@ -184,13 +207,24 @@ export default {
             const tempImg = new Image();
             const doLoad = (naturalW, naturalH) => {
                 const canvasEl = this.scope.view.element;
-                const cW = Math.max(100, canvasEl.offsetWidth || 800);
-                const cH = naturalW > 0
-                    ? Math.round(cW * naturalH / naturalW)
-                    : 500;
+                const containerW = Math.max(100, canvasEl.offsetWidth || 800);
+                const isPortrait  = naturalH > naturalW && naturalW > 0;
 
-                // Resize canvas height to match image aspect ratio.
+                let cW, cH;
+                if (isPortrait) {
+                    // Portrait: cap height at 80 % of viewport so it doesn't overflow the screen.
+                    const maxH = Math.floor(window.innerHeight * 0.8);
+                    const fullH = Math.round(containerW * naturalH / naturalW);
+                    cH = Math.min(fullH, maxH);
+                    cW = Math.round(cH * naturalW / naturalH);
+                } else {
+                    // Landscape / square: fill full container width (CSS handles it).
+                    cW = containerW;
+                    cH = naturalW > 0 ? Math.round(cW * naturalH / naturalW) : 500;
+                }
+
                 this.canvasHeight = cH;
+                this.canvasWidth  = isPortrait ? cW : 0;
 
                 this.$nextTick(() => {
                     if (!this.scope) return;

@@ -17,6 +17,7 @@
             @layers_ready="handleLayersReady"
             @history-changed="onHistoryChanged"
             @zoom-changed="onZoomChanged"
+            @crop-save="$emit('crop-save')"
         />
     </div>
 </template>

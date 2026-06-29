@@ -3,9 +3,24 @@ import paper from 'paper';
 
 export default {
     data: () => ({
-        path: null,
-        currentLine: null
+        // Only primitive flags here — no Paper.js object refs in reactive data.
+        _isDraggingSelection: false,
+        _moveAllActive: false,
+        _continueLineActive: false,
     }),
+
+    mounted() {
+        // All Paper.js item / object references as non-reactive instance props.
+        // Vue's Proxy wraps data() values and breaks Paper.js matrix/transform ops.
+        this.path                  = null;
+        this.currentLine           = null;
+        this._multiSelectedItems   = [];
+        this._selectedResizeItem   = null;
+        this._resizeHandle         = null;
+        this._resizeStart          = null;
+        this._resizeOriginalBounds = null;
+    },
+
     methods: {
         mouseDown() {
             this.tool = this.createTool(this.scope);
@@ -47,6 +62,14 @@ export default {
                     this.startCropSelection(event);
                 } else if (this.action == 16) {
                     this.selectSegmentPoint(event);
+                } else if (this.action == 17) {
+                    this._moveAllActive = true;
+                } else if (this.action == 18) {
+                    this.cutPathAtPoint(event);
+                } else if (this.action == 19) {
+                    this.startResizeOrSelect(event);
+                } else if (this.action == 20) {
+                    this.startContinueLine(event);
                 }
             };
 
@@ -62,10 +85,8 @@ export default {
                         this.path.segments[3].point = new paper.Point(startPoint.x, event.point.y);
                     }
                 } else if (this.action == 5) {
-                    // Erase continuously while dragging
                     this.erase_at_point(event);
                 } else if (this.action == 6) {
-                    // Erase segments continuously while dragging
                     this.erase_segment_at_point(event);
                 } else if (this.action == 7) {
                     if (!this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
@@ -81,11 +102,11 @@ export default {
                     }
                 } else if (this.action == 8) {
                     if (this.selectedItem) {
-                        this.selectedItem.position = this.selectedItem.position.add(event.delta);
+                        this.selectedItem.translate(event.delta);
                         if (this.selectedItem.data && this.selectedItem.data.textLabel) {
-                            this.selectedItem.data.textLabel.position =
-                                this.selectedItem.data.textLabel.position.add(event.delta);
+                            this.selectedItem.data.textLabel.translate(event.delta);
                         }
+                        this.scope.view.update();
                     }
                 } else if (this.action == 9) {
                     this.panCanvas(event);
@@ -125,30 +146,44 @@ export default {
                         this.path.data = savedData;
                     }
                 } else if (this.action == 12) {
-                    // Resize polygon radius by dragging
                     if (this.path && this.path.data && this.path.data.isPolygon) {
                         const center = this.path.data.center;
                         const radius = Math.max(5, center.getDistance(event.point));
                         this._buildPolygon(this.path, center, radius, this.path.data.sides || 6);
                     }
                 } else if (this.action == 14) {
-                    this.updateSelectionRectangle(event);
+                    if (this._isDraggingSelection) {
+                        (this._multiSelectedItems || []).forEach(item => {
+                            if (!item.locked) item.translate(event.delta);
+                        });
+                        this.scope.view.update();
+                    } else {
+                        this.updateSelectionRectangle(event);
+                    }
                 } else if (this.action == 15) {
                     this.updateCropRectangle(event);
                 } else if (this.action == 16) {
                     if (this.editingSegment) {
                         this.editingSegment.point = event.point;
                         if (this.editingSegmentDot) {
-                            this.editingSegmentDot.position = this.editingSegmentDot.position.add(event.delta);
+                            this.editingSegmentDot.translate(event.delta);
                         }
                         this.scope.view.update();
                     }
+                } else if (this.action == 17) {
+                    if (this._moveAllActive) {
+                        const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
+                        if (mainLayer) mainLayer.children.forEach(item => item.translate(event.delta));
+                        this.scope.view.update();
+                    }
+                } else if (this.action == 19) {
+                    this.dragResize(event);
+                } else if (this.action == 20) {
+                    if (this.path) this.path.add(event.point);
                 }
             };
 
             this.tool.onMouseUp = (event) => {
-                // Action 1 = plain line — no endpoint dot.
-                // Action 3 = numbered route (line + group) — adds endpoint dot.
                 if (this.action == 3) {
                     if (this.path) this.add_point(event);
                 }
@@ -157,7 +192,6 @@ export default {
                     this.currentLine = null;
                 }
                 if (this.action == 8 && this.selectedItem) {
-                    // Clear visual selection highlight after move
                     this.selectedItem.selected = false;
                     this.saveCanvasData();
                 }
@@ -165,10 +199,18 @@ export default {
                     this.endPan();
                 }
                 if (this.action == 14) {
-                    this.finishSelection(event);
+                    if (this._isDraggingSelection) {
+                        this._isDraggingSelection = false;
+                        this.saveCanvasData();
+                    } else {
+                        this.finishSelection(event);
+                    }
+                    this.path = null;
+                    this.$emit('layers_updated');
+                    return;
                 }
                 if (this.action == 15) {
-                    this.finishCropAndDownload();
+                    this.finishCrop();
                 }
                 if (this.action == 16) {
                     if (this.editingSegment) {
@@ -177,9 +219,29 @@ export default {
                         this.saveCanvasData();
                     }
                 }
+                if (this.action == 17) {
+                    this._moveAllActive = false;
+                    this.saveCanvasData();
+                }
+                if (this.action == 19) {
+                    if (this._resizeHandle) {
+                        this._resizeHandle = null;
+                        this._resizeStart = null;
+                        this._resizeOriginalBounds = null;
+                        this.saveCanvasData();
+                    }
+                }
+                if (this.action == 20) {
+                    this.path = null;
+                    this.saveCanvasData();
+                }
+
                 this.path = null;
-                if (this.action !== 5 && this.action !== 6) {
-                    if (this.action !== 3 && this.action !== 7 && this.action !== 8 && this.action !== 9 && this.action !== 15 && this.action !== 16) {
+
+                // Auto-save for drawing actions that don't handle it themselves
+                const noAutoSave = [5, 6, 8, 9, 15, 16, 17, 18, 19, 20];
+                if (!noAutoSave.includes(this.action)) {
+                    if (this.action !== 3 && this.action !== 7) {
                         this.saveCanvasData();
                     }
                 }
@@ -191,7 +253,7 @@ export default {
             };
         },
 
-        // Pan uses native screen coordinates so deltas remain correct after view.center changes.
+        // ── Pan ──────────────────────────────────────────────────────────────
         startPan(event) {
             this.isPanning = true;
             this.panLastScreen = new paper.Point(event.event.offsetX, event.event.offsetY);
@@ -202,7 +264,6 @@ export default {
             if (!this.isPanning || !this.panLastScreen) return;
             const screenPoint = new paper.Point(event.event.offsetX, event.event.offsetY);
             const delta = screenPoint.subtract(this.panLastScreen);
-            // Convert screen-pixel delta to project units and move center in opposite direction
             this.scope.view.center = this.scope.view.center.subtract(
                 delta.divide(this.scope.view.zoom)
             );
@@ -211,13 +272,33 @@ export default {
         },
 
         endPan() {
-            this.isPanning   = false;
+            this.isPanning    = false;
             this.panLastScreen = null;
             this.scope.view.element.style.cursor = 'crosshair';
         },
 
-        // Draws a dashed selection rectangle; items are highlighted on mouseUp.
+        // ── Selection (action 14) ────────────────────────────────────────────
         startSelection(event) {
+            // If items are already selected, check if clicking on one of them to drag
+            if (this._multiSelectedItems && this._multiSelectedItems.length > 0) {
+                const hitResult = this.scope.project.hitTest(event.point, {
+                    fill: true, stroke: true, tolerance: 10
+                });
+                if (hitResult && hitResult.item && !hitResult.item.locked) {
+                    // Bubble up: hitTest may return a child; check whether any ancestor is selected
+                    let check = hitResult.item;
+                    while (check) {
+                        if (check.selected) { this._isDraggingSelection = true; return; }
+                        check = check.parent;
+                    }
+                }
+            }
+
+            // Clear old selection and start rubber-band
+            this._isDraggingSelection = false;
+            this._multiSelectedItems = [];
+            this.scope.project.layers.forEach(l => l.children.forEach(i => { i.selected = false; }));
+
             this.path = new paper.Path.Rectangle(event.point, event.point);
             this.path.strokeColor = '#007bff';
             this.path.strokeWidth = 1;
@@ -236,21 +317,21 @@ export default {
             }
         },
 
-        // Highlights matching items visually; does NOT auto-group them.
         finishSelection(event) {
             if (!this.path || !this.path.data || !this.path.data.isSelection) return;
             const bounds = this.path.bounds;
 
-            // Clear any previous selection highlight
             this.scope.project.layers.forEach(layer => {
                 layer.children.forEach(item => { item.selected = false; });
             });
 
-            // Highlight items that intersect the selection rectangle
+            this._multiSelectedItems = [];
             this.scope.project.layers.forEach(layer => {
+                if (layer.name === 'background' || (layer.name && layer.name.startsWith('related-'))) return;
                 layer.children.forEach(item => {
                     if (!item.locked && item !== this.path && item.bounds.intersects(bounds)) {
                         item.selected = true;
+                        this._multiSelectedItems.push(item);
                     }
                 });
             });
@@ -260,31 +341,31 @@ export default {
             this.scope.view.update();
         },
 
-        // Selects an item for moving; bubbles up to the parent Group when a child is hit.
+        // ── Move single item (action 8) ──────────────────────────────────────
         selectItemForMove(event) {
-            // Clear previous selection highlight
             if (this.selectedItem) {
                 this.selectedItem.selected = false;
                 this.selectedItem = null;
             }
 
             const hitResult = this.scope.project.hitTest(event.point, {
-                fill: true,
-                stroke: true,
-                segments: true,
-                tolerance: 15
+                fill: true, stroke: true, segments: true, tolerance: 15
             });
 
             if (!hitResult || !hitResult.item) return;
-
             let item = hitResult.item;
 
-            // Bubble up to the topmost unlocked Group
-            while (item.parent && item.parent instanceof paper.Group && !item.parent.locked) {
+            // Bubble up through Groups but STOP at Layer boundaries.
+            // paper.Layer is a subclass of paper.Group, so without this check
+            // the loop would go all the way to the main layer and translate
+            // every item on the canvas (making Move Item = Move All).
+            while (item.parent &&
+                   !(item.parent instanceof paper.Layer) &&
+                   item.parent instanceof paper.Group &&
+                   !item.parent.locked) {
                 item = item.parent;
             }
 
-            // If a text label is clicked, select the associated rectangle instead
             if (item instanceof paper.PointText && item.name && item.name.startsWith('text ')) {
                 const num = item.name.replace('text ', '');
                 let found = null;
@@ -299,17 +380,23 @@ export default {
             if (!item.locked) {
                 this.selectedItem = item;
                 item.selected = true;
+            } else {
+                if (this.$bus) {
+                    this.$bus.$emit('toast', {
+                        type: 'warning',
+                        title: 'Item locked',
+                        message: 'Unlock this item in the Layers panel to move it.',
+                        duration: 2500
+                    });
+                }
             }
         },
 
+        // ── Erase (actions 5, 6) ─────────────────────────────────────────────
         erase_at_point(event) {
             const hitResult = this.scope.project.hitTest(event.point, {
-                fill: true,
-                stroke: true,
-                segments: true,
-                tolerance: 15
+                fill: true, stroke: true, segments: true, tolerance: 15
             });
-
             if (hitResult && hitResult.item && !hitResult.item.locked) {
                 if (hitResult.item.data && hitResult.item.data.textLabel) {
                     hitResult.item.data.textLabel.remove();
@@ -320,46 +407,28 @@ export default {
             }
         },
 
-        // Trims the path: finds the segment closest to the click and removes
-        // it plus all segments from that point to the nearest end of the path.
-        // This gives a natural "cut the tail" behaviour when editing route lines.
         erase_segment_at_point(event) {
             const hitResult = this.scope.project.hitTest(event.point, {
-                fill: true,
-                stroke: true,
-                segments: true,
-                tolerance: 20
+                fill: true, stroke: true, segments: true, tolerance: 20
             });
-
             if (!hitResult || !hitResult.item || hitResult.item.locked) return;
 
             const item = hitResult.item;
             if (item instanceof paper.Path && item.segments && item.segments.length > 1) {
-                // Find the closest segment index
                 let closestIndex = 0;
                 let minDistance = Infinity;
                 item.segments.forEach((seg, i) => {
                     const d = seg.point.getDistance(event.point);
                     if (d < minDistance) { minDistance = d; closestIndex = i; }
                 });
-
                 const total = item.segments.length;
-                // Trim toward whichever end is closer to the click point
                 const trimFromEnd = closestIndex >= total / 2;
                 if (trimFromEnd) {
-                    // Remove from closestIndex to the end
                     const count = total - closestIndex;
-                    for (let i = 0; i < count; i++) {
-                        item.removeSegment(closestIndex);
-                    }
+                    for (let i = 0; i < count; i++) item.removeSegment(closestIndex);
                 } else {
-                    // Remove from start to closestIndex (inclusive)
-                    for (let i = 0; i <= closestIndex; i++) {
-                        item.removeSegment(0);
-                    }
+                    for (let i = 0; i <= closestIndex; i++) item.removeSegment(0);
                 }
-
-                // Remove the entire item if fewer than 2 segments remain
                 if (item.segments.length < 2) {
                     if (item.data && item.data.textLabel) item.data.textLabel.remove();
                     item.remove();
@@ -372,15 +441,198 @@ export default {
             this.saveCanvasData();
         },
 
-        // Draws a dashed orange rectangle; on mouseUp the area is cropped and downloaded.
+        // ── Cut path at point (action 18) ────────────────────────────────────
+        cutPathAtPoint(event) {
+            const hitResult = this.scope.project.hitTest(event.point, {
+                stroke: true, segments: true, tolerance: 15
+            });
+            if (!hitResult || !hitResult.item || hitResult.item.locked) return;
+
+            const item = hitResult.item;
+            if (!(item instanceof paper.Path) || item.segments.length < 2) return;
+
+            const nearestPoint = item.getNearestPoint(event.point);
+            const offset = item.getOffsetOf(nearestPoint);
+
+            // Don't cut too close to endpoints
+            if (offset < 2 || offset > item.length - 2) return;
+
+            const secondPart = item.splitAt(offset);
+            if (secondPart) {
+                this.layerCounters.line++;
+                secondPart.name        = `line ${this.layerCounters.line}`;
+                secondPart.strokeColor = item.strokeColor;
+                secondPart.strokeWidth = item.strokeWidth || this._width();
+                if (item.parent) item.parent.addChild(secondPart);
+            }
+            this.scope.view.update();
+            this.saveCanvasData();
+            this.$emit('layers_updated');
+        },
+
+        // ── Move all (action 17) ─────────────────────────────────────────────
+        // (drag is handled inline in onMouseDrag; mouseUp sets _moveAllActive=false)
+
+        // ── Resize (action 19) ───────────────────────────────────────────────
+        // Single click-drag: click anywhere on a shape and drag to resize.
+        // The quadrant of the shape the user clicks determines which corner moves.
+        startResizeOrSelect(event) {
+            // Always clear previous state on each new click
+            if (this._selectedResizeItem) {
+                try { this._selectedResizeItem.selected = false; } catch (_) {}
+                this._selectedResizeItem = null;
+            }
+            this._resizeHandle        = null;
+            this._resizeStart         = null;
+            this._resizeOriginalBounds = null;
+
+            const hitResult = this.scope.project.hitTest(event.point, {
+                fill: true, stroke: true, tolerance: 15
+            });
+            if (!hitResult || !hitResult.item || hitResult.item.locked) return;
+
+            let item = hitResult.item;
+            // Bubble up to topmost Group but stop at Layer (same fix as selectItemForMove)
+            while (item.parent &&
+                   !(item.parent instanceof paper.Layer) &&
+                   item.parent instanceof paper.Group &&
+                   !item.parent.locked) {
+                item = item.parent;
+            }
+            if (item.locked) return;
+
+            this._selectedResizeItem = item;
+            item.selected = true;
+
+            // Pick the corner to move based on which quadrant of the item was clicked.
+            // The opposite corner acts as the fixed anchor during drag.
+            const b  = item.bounds;
+            const cx = (b.left + b.right)  / 2;
+            const cy = (b.top  + b.bottom) / 2;
+            const pt = event.point;
+
+            if (pt.x <= cx && pt.y <= cy)      this._resizeHandle = 'topLeft';
+            else if (pt.x > cx && pt.y <= cy)  this._resizeHandle = 'topRight';
+            else if (pt.x <= cx && pt.y > cy)  this._resizeHandle = 'bottomLeft';
+            else                               this._resizeHandle = 'bottomRight';
+
+            this._resizeStart          = event.point;
+            this._resizeOriginalBounds = item.bounds.clone();
+        },
+
+        dragResize(event) {
+            if (!this._selectedResizeItem || !this._resizeHandle || !this._resizeOriginalBounds) return;
+
+            let item    = this._selectedResizeItem;
+            const orig  = this._resizeOriginalBounds;
+            // Cumulative delta from the original mouseDown point
+            const delta = event.point.subtract(this._resizeStart);
+
+            let nl = orig.left, nt = orig.top, nr = orig.right, nb = orig.bottom;
+            switch (this._resizeHandle) {
+                case 'topLeft':     nl = orig.left + delta.x; nt = orig.top + delta.y; break;
+                case 'topRight':    nr = orig.right + delta.x; nt = orig.top + delta.y; break;
+                case 'bottomLeft':  nl = orig.left + delta.x; nb = orig.bottom + delta.y; break;
+                case 'bottomRight': nr = orig.right + delta.x; nb = orig.bottom + delta.y; break;
+                case 'topCenter':   nt = orig.top + delta.y; break;
+                case 'bottomCenter':nb = orig.bottom + delta.y; break;
+                case 'leftCenter':  nl = orig.left + delta.x; break;
+                case 'rightCenter': nr = orig.right + delta.x; break;
+            }
+            if (nr - nl < 5) nr = nl + 5;
+            if (nb - nt < 5) nb = nt + 5;
+
+            if (item.data && item.data.isRectangle && item.segments && item.segments.length === 4) {
+                // Direct segment update for rectangles — maintains sharp corners
+                item.segments[0].point = new paper.Point(nl, nt);
+                item.segments[1].point = new paper.Point(nr, nt);
+                item.segments[2].point = new paper.Point(nr, nb);
+                item.segments[3].point = new paper.Point(nl, nb);
+            } else if (item.data && item.data.isCircle) {
+                // Recreate circle fitted to new bounds
+                const cx = (nl + nr) / 2;
+                const cy = (nt + nb) / 2;
+                const radius = Math.max(2, Math.min(nr - nl, nb - nt) / 2);
+                item = this._recreateCircle(item, new paper.Point(cx, cy), radius);
+            } else {
+                // Generic: incremental fitBounds (ellipse, polygon, etc.)
+                item.fitBounds(new paper.Rectangle(nl, nt, nr - nl, nb - nt));
+            }
+
+            this.scope.view.update();
+        },
+
+        _recreateCircle(oldItem, center, radius) {
+            const parent   = oldItem.parent;
+            const newCircle = new paper.Path.Circle({
+                center,
+                radius,
+                strokeColor: oldItem.strokeColor,
+                strokeWidth: oldItem.strokeWidth,
+                fillColor:   oldItem.fillColor,
+                name:        oldItem.name,
+            });
+            newCircle.data     = oldItem.data ? { ...oldItem.data } : {};
+            newCircle.selected = true;
+            oldItem.remove();
+            if (parent) parent.addChild(newCircle);
+            this._selectedResizeItem = newCircle;
+            return newCircle;
+        },
+
+        // Clear resize selection when switching away from action 19
+        clearResizeSelection() {
+            if (this._selectedResizeItem) {
+                try { this._selectedResizeItem.selected = false; } catch (_) {}
+                this._selectedResizeItem  = null;
+            }
+            this._resizeHandle        = null;
+            this._resizeStart         = null;
+            this._resizeOriginalBounds = null;
+        },
+
+        // ── Continue line (action 20) ────────────────────────────────────────
+        startContinueLine(event) {
+            const tol = 20 / (this.scope.view.zoom || 1);
+            let foundPath = null;
+            let fromEnd   = true;
+            let minDist   = tol;
+
+            const search = (item) => {
+                if (!item || item.locked) return;
+                if (item instanceof paper.Path && !item.closed && item.segments.length >= 1) {
+                    const dFirst = item.firstSegment.point.getDistance(event.point);
+                    const dLast  = item.lastSegment.point.getDistance(event.point);
+                    if (dFirst < minDist) { minDist = dFirst; foundPath = item; fromEnd = false; }
+                    if (dLast  < minDist) { minDist = dLast;  foundPath = item; fromEnd = true;  }
+                }
+                if (item.children) item.children.forEach(search);
+            };
+
+            const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
+            if (mainLayer) [...mainLayer.children].forEach(search);
+
+            if (foundPath) {
+                // Reverse so we always append to the end
+                if (!fromEnd) foundPath.reverse();
+                this.path = foundPath;
+                this._continueLineActive = true;
+            } else {
+                // No nearby endpoint — fall back to a new line
+                this.add_line();
+                this._continueLineActive = false;
+            }
+        },
+
+        // ── Crop (action 15) ─────────────────────────────────────────────────
         startCropSelection(event) {
             if (this.path) { this.path.remove(); this.path = null; }
             this.path = new paper.Path.Rectangle(event.point, event.point);
             this.path.strokeColor = '#ff6600';
             this.path.strokeWidth = 2;
-            this.path.dashArray = [8, 4];
-            this.path.fillColor = new paper.Color(1, 0.4, 0, 0.15);
-            this.path.data = { isCrop: true, startPoint: event.point };
+            this.path.dashArray   = [8, 4];
+            this.path.fillColor   = new paper.Color(1, 0.4, 0, 0.15);
+            this.path.data        = { isCrop: true, startPoint: event.point };
         },
 
         updateCropRectangle(event) {
@@ -393,8 +645,7 @@ export default {
             }
         },
 
-        // Crops the canvas pixel area matching the selection and triggers a PNG download.
-        finishCropAndDownload() {
+        finishCrop() {
             if (!this.path || !this.path.data || !this.path.data.isCrop) {
                 this.path = null;
                 return;
@@ -402,36 +653,59 @@ export default {
             const bounds = this.path.bounds;
             this.path.remove();
             this.path = null;
-            this.scope.view.update();
 
-            if (bounds.width < 5 || bounds.height < 5) return;
+            if (bounds.width < 5 || bounds.height < 5) {
+                this.scope.view.update();
+                return;
+            }
 
+            // Capture the cropped area BEFORE zooming (while coordinates are still valid)
             const tl = this.scope.view.projectToView(bounds.topLeft);
             const br = this.scope.view.projectToView(bounds.bottomRight);
-            const x = Math.round(Math.min(tl.x, br.x));
-            const y = Math.round(Math.min(tl.y, br.y));
-            const w = Math.round(Math.abs(br.x - tl.x));
-            const h = Math.round(Math.abs(br.y - tl.y));
-            if (w <= 0 || h <= 0) return;
+            const x  = Math.round(Math.min(tl.x, br.x));
+            const y  = Math.round(Math.min(tl.y, br.y));
+            const w  = Math.round(Math.abs(br.x - tl.x));
+            const h  = Math.round(Math.abs(br.y - tl.y));
 
-            const temp = document.createElement('canvas');
-            temp.width = w;
-            temp.height = h;
-            temp.getContext('2d').drawImage(this.scope.view.element, x, y, w, h, 0, 0, w, h);
-            const link = document.createElement('a');
-            link.download = 'cropped-image.png';
-            link.href = temp.toDataURL('image/png');
-            link.click();
+            let croppedDataUrl = null;
+            if (w > 0 && h > 0) {
+                const temp = document.createElement('canvas');
+                temp.width  = w;
+                temp.height = h;
+                temp.getContext('2d').drawImage(this.scope.view.element, x, y, w, h, 0, 0, w, h);
+                croppedDataUrl = temp.toDataURL('image/jpeg', 0.92);
+            }
+
+            // Zoom canvas to show only the cropped area
+            const viewSize = this.scope.view.viewSize;
+            const zoomX = viewSize.width  / bounds.width;
+            const zoomY = viewSize.height / bounds.height;
+            const newZoom = Math.min(zoomX, zoomY);
+            this.scope.view.zoom   = Math.max(this.minZoom || 0.1, Math.min(newZoom, 20));
+            this.scope.view.center = bounds.center;
+            if (this._clampPan) this._clampPan();
+            this.scope.view.update();
+            this.$emit('zoom-changed', this.scope.view.zoom);
+
+            // Emit the cropped image for the parent to save
+            this.$emit('crop-save', croppedDataUrl);
+
+            if (this.$bus) {
+                this.$bus.$emit('toast', {
+                    type: 'success',
+                    title: 'Crop applied',
+                    message: 'Canvas zoomed to crop area. Press Save to upload to server.',
+                    duration: 4000
+                });
+            }
         },
 
-        // Finds the closest segment point on any unlocked Path within a 20px tolerance.
-        // If it's an endpoint of a line inside a Group, also tracks the associated dot
-        // so dragging moves both the segment and the endpoint circle together.
+        // ── Edit segment points (action 16) ──────────────────────────────────
         selectSegmentPoint(event) {
-            this.editingSegment = null;
+            this.editingSegment    = null;
             this.editingSegmentDot = null;
             let closestSeg = null;
-            let minDist = 20;
+            let minDist    = 20;
 
             const search = (item) => {
                 if (!item || item.locked) return;
@@ -456,8 +730,8 @@ export default {
                 const isEndpoint = closestSeg.index === 0 || closestSeg.index === p.segments.length - 1;
                 if (isEndpoint && p.parent instanceof paper.Group) {
                     const segPos = closestSeg.point;
-                    let closestDot = null;
-                    let minDotDist = 40;
+                    let closestDot  = null;
+                    let minDotDist  = 40;
                     p.parent.children.forEach(child => {
                         if (child instanceof paper.Path && (child.name || '').startsWith('point ')) {
                             const d = child.bounds.center.getDistance(segPos);
@@ -469,9 +743,7 @@ export default {
             }
         },
 
-        // Reposition all related-* layers so they sit BELOW 'main' in the layer stack.
-        // 'main' must be the topmost drawing layer so hit-testing (erase, move) favours it
-        // over locked related-route overlays.
+        // ── Related layer helpers ─────────────────────────────────────────────
         _repositionRelatedLayersBelow() {
             if (!this.scope) return;
             const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
@@ -482,30 +754,25 @@ export default {
                 .forEach(l => l.insertBelow(mainLayer));
         },
 
+        // ── JSON import ───────────────────────────────────────────────────────
         importJsonData(jsonData) {
             if (!jsonData || !this.scope) return;
             try {
                 let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
                 this.scope.activate();
 
-                // Remove existing main layer
                 const existingMain = this.scope.project.layers.find(l => l.name === 'main');
                 if (existingMain) existingMain.remove();
 
-                // Stash related layers so project.importJSON doesn't lose them
                 const related = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
                 related.forEach(l => l.remove());
 
-                // project.importJSON appends layers at the correct top level (no nesting)
                 this.scope.project.importJSON(parsedData);
 
-                // Rename any imported layers to 'main'
                 this.scope.project.layers
                     .filter(l => !l.name || (!l.name.startsWith('related-') && l.name !== 'background'))
                     .forEach(l => { l.name = 'main'; });
 
-                // Restore related layers then reposition them BELOW 'main' so that
-                // hit-testing always hits the editable main layer first.
                 related.forEach(l => this.scope.project.addLayer(l));
                 this._repositionRelatedLayersBelow();
 
@@ -518,7 +785,6 @@ export default {
         importRelatedJsons() {
             if (!this.scope) return;
 
-            // Remove old related layers
             this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-')).forEach(l => l.remove());
 
             if (!this.relatedJsons || !Array.isArray(this.relatedJsons) || this.relatedJsons.length === 0) return;
@@ -531,19 +797,13 @@ export default {
                 if (!jsonData) return;
                 try {
                     let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-
-                    // Record existing layer count so we can identify newly-added layers
                     const before = this.scope.project.layers.length;
-
-                    // project.importJSON appends layers — no nesting into a wrapper layer
                     this.scope.project.importJSON(parsedData);
-
-                    // Grab only the layers that were just added
                     const newLayers = this.scope.project.layers.slice(before);
                     const color = colors[index % colors.length];
 
                     newLayers.forEach(layer => {
-                        layer.name = `related-${index}`;
+                        layer.name   = `related-${index}`;
                         layer.locked = true;
 
                         const applyColor = (item) => {
@@ -552,9 +812,7 @@ export default {
                                 if (typeof item.strokeColor !== 'undefined') item.strokeColor = color;
                                 if (typeof item.fillColor   !== 'undefined') item.fillColor   = null;
                                 item.locked = true;
-                                if (item.children && item.children.length) {
-                                    item.children.forEach(applyColor);
-                                }
+                                if (item.children && item.children.length) item.children.forEach(applyColor);
                             } catch (_) {}
                         };
 
@@ -565,8 +823,6 @@ export default {
                 } catch (e) {}
             });
 
-            // Activate main before repositioning so _activateMainLayer can find / create it,
-            // then move related layers below it so hit-testing favours the main layer.
             this._activateMainLayer();
             this._repositionRelatedLayersBelow();
         }

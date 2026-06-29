@@ -110,39 +110,10 @@
                 </div>
             </div> -->
 
-            <div class="tabs row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col" >
-                            <input type="radio" id="1" :value="1" v-model="tab_num">
-                            
-                            <label for="1" >English text</label>
-                        </div>
-                        <div class="col" >
-                            <input type="radio" id="2" :value="2" v-model="tab_num">
-                            
-                            <label for="2" >Georgian text</label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-12">
-                    <div class="form-group clearfix row"  v-show="tab_num == 1">
-                        <label for="name" class='col-md-2 control-label'> English description </label>
-
-                        <div class="col-md-10">
-                            <big_editor v-model="data.us_description" />
-                        </div>
-                    </div>
-                    <div class="form-group clearfix row"  v-show="tab_num == 2">
-                        <label for="name" class='col-md-2 control-label'> Georgian description </label>
-
-                        <div class="col-md-10">
-                            <big_editor v-model="data.ka_description" />
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <text_block_localization
+                v-model:en_value="data.us_description"
+                v-model:ka_value="data.ka_description"
+            />
 
             <hr />
 
@@ -431,51 +402,17 @@
             
         </form>
         
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="add_sector_new_image_value()">Add new sector image</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <div class="root">
-                <table
-                    tag="table"
-                    :style="'width: 100%'"
-                >
-                    <thead>
-                        <tr>
-                            <td>Image</td>
-                            <td>Delete</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="(image, index) in sector_images" :key="index">
-                            <td>
-                                <form ref="myForm">
-                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, image.id)">
-                                </form> 
-                            </td>
-                            <td>
-                                <button
-                                    class="btn btn-danger"
-                                    @click="del_sector_image(image.id)"
-                                >
-                                    Del
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <gallery_images_add
+            title_prop="Sector Images"
+            @update_gallery_images="sector_images = $event"
+        />
     </div>
 </template>
 <script>
     import Uploader from "vux-uploader-component";
-    import { SlickList, SlickItem } from "vue-slicksort"; //https://www.npmjs.com/package/vue-slicksort/v/2.0.0-alpha.2
+    import { SlickList, SlickItem } from "vue-slicksort";
+    import gallery_images_add from '../../../items/gallery/galleryImageAddComponent.vue'
+    import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
 
     export default {
         mixins: [],
@@ -483,6 +420,8 @@
             Uploader,
             SlickItem,
             SlickList,
+            gallery_images_add,
+            text_block_localization,
         },
         data() {
             return {
@@ -497,8 +436,6 @@
                 editorConfig: {},
 
                 errors: [],
-                tab_num: 1,
-                
                 is_loading: false,
 
                 data: {
@@ -557,30 +494,6 @@
             }
         },
         methods: {
-            add_sector_new_image_value(){
-                var new_item_id = this.sector_images.length+1
-                this.sector_images.push(
-                    {
-                        id: new_item_id,
-                        image: '',
-                    }
-                );
-            },
-            onFileChange(event, item_id){
-                let image = event.target.files[0]
-                let id = item_id - 1 
-                this.sector_images[id]['image'] = image
-            },
-            del_sector_image(id){
-                this.removeObjectWithId(this.sector_images, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
-            },
-
             get_region_data: function () {
                 axios
                 .get("/get_article/get_category_articles/" + this.$route.params.category)

@@ -7,6 +7,8 @@ use App\Models\Shop\Product;
 use App\Models\Shop\Option_image;
 use App\Models\Shop\Product_image;
 use App\Models\Shop\Product_option;
+use App\Models\Shop\ProductOptionCombination;
+use App\Models\Shop\CombinateProductOptionImage;
 
 use App\Services\Abstract\LocaleContentService;
 
@@ -123,7 +125,6 @@ class ProductService extends LocaleContentService
         $options = product_option::where('product_id', '=', $product['global_data']->id)->with('warehouse')->get();
 
         foreach($options as $option){
-            $product_image = [];
             $product_images = Option_image::where('option_id', '=', $option->id)->get();
             array_push($product_option, [
                 'option' => $option,
@@ -131,6 +132,11 @@ class ProductService extends LocaleContentService
                 'stock_quantity' => self::get_option_stock_quantity($option),
                 'is_out_of_stock' => self::get_option_stock_quantity($option) <= 0
             ]);
+        }
+
+        // Append combinations as additional selectable variants
+        foreach (self::get_combination_options($product['global_data']->id) as $combo_entry) {
+            array_push($product_option, $combo_entry);
         }
 
         $options = $product['global_data']->product_options;
@@ -282,6 +288,45 @@ class ProductService extends LocaleContentService
         }
 
         return $product_options;
+    }
+
+    /**
+     * Build combination entries in the same shape as product_option items so the
+     * frontend can render them identically in the variant selector.
+     */
+    public static function get_combination_options($product_id): array
+    {
+        $combinations = ProductOptionCombination::where('product_id', $product_id)
+            ->with(['options.warehouse', 'images'])
+            ->get();
+
+        $result = [];
+        foreach ($combinations as $combo) {
+            $stock = self::get_combination_stock_quantity($combo);
+            $result[] = [
+                'option'          => $combo,
+                'images'          => $combo->images,
+                'stock_quantity'  => $stock,
+                'is_out_of_stock' => $stock <= 0,
+                'is_combination'  => true,
+                'combination_option_ids' => $combo->options->pluck('id')->toArray(),
+            ];
+        }
+        return $result;
+    }
+
+    public static function get_combination_stock_quantity(ProductOptionCombination $combo): int
+    {
+        $options = $combo->options;
+        if ($options->isEmpty()) return 0;
+
+        $min = PHP_INT_MAX;
+        foreach ($options as $option) {
+            $general = $option->warehouse->where('general', 1)->first();
+            $qty = $general ? (int)($general->pivot->quantity ?? 0) : 0;
+            if ($qty < $min) $min = $qty;
+        }
+        return $min === PHP_INT_MAX ? 0 : $min;
     }
 
     /**

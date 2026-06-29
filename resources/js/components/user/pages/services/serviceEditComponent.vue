@@ -67,93 +67,13 @@
                     </form>
                     
                     <div class="col-md-12">
-                        <div class="row">
-                            Olredy added
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="service_old_image in service_old_images" :key="service_old_image.id">
-                                            <td>
-                                                <!-- <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, service_old_image.id)">
-                                                </form>  -->
-
-                                                <img class="img-responsive" :src="'../../../../images/service_img/'+service_old_image.image" :alt="service_old_image.title">
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_service_image_from_db(service_old_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            New images
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_service_new_image_value()" >Add new service imagee</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="service_image in service_new_images" :key="service_image.id">
-                                            <td>
-                                                <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, service_image.id)">
-                                                </form> 
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_service_image(service_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_service_new_image_value()">Add new service imagee</button>
-                                </div>
-                            </div>
-                        </div>
+                        <gallery_images_edit
+                            title_prop="Service Images"
+                            image_path_prop="images/service_img/"
+                            get_images_route_prop="/get_service/get_service_images/"
+                            image_del_route_prop="/set_service/del_service_image/"
+                            @update_gallery_images="service_new_images = $event"
+                        />
                     </div>
 
                 </div>
@@ -234,10 +154,10 @@
 </template>
 
 <script>
-    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     export default {
         components: {
-            // validator_alerts_component,
+            gallery_images_edit,
         },
         mixins: [],
         props: [
@@ -248,8 +168,6 @@
                 tab_num: 1,
 
                 service_new_images: [],
-                service_old_images: [],
-                // regions: [],
 
                 error: [],
 
@@ -297,37 +215,6 @@
             //         })
             //         .catch((error) => console.log(error));
             // },
-            onFileChange(event, item_id){
-                let image = event.target.files[0]
-                let id = item_id - 1 
-                this.service_new_images[id]['image'] = image
-            },
-            add_service_new_image_value(){
-                if(this.service_old_images){
-                    if(this.service_new_images.length + this.service_old_images.length < 8){
-                        var new_item_id = this.service_new_images.length+1
-
-                        this.service_new_images.push(
-                            {
-                                id: new_item_id,
-                                image: '',
-                            }
-                        );
-                    }
-                }
-                else{
-                    if(this.service_new_images.length < 8){
-                        var new_item_id = this.service_new_images.length+1
-
-                        this.service_new_images.push(
-                            {
-                                id: new_item_id,
-                                image: '',
-                            }
-                        );
-                    }
-                }
-            },
             get_editing_service_data(){
                 this.data_for_tab = []
                 this.is_loading = true
@@ -344,10 +231,6 @@
                         ka_service: response.data.ka_service,
                     }
 
-                    this.service_old_images = response.data.service_images
-
-                    this.get_service_images()
-
                     // if(this.data.global_service.published_data != null){
                     //     this.the_date = this.data.global_service.published_data
                     // }
@@ -359,39 +242,6 @@
                     this.is_loading = false
                 )
             },
-            get_service_images(){
-                this.data_for_tab = []
-                axios
-                .get("/get_service/get_service_images/"+this.$route.params.id)
-                .then(response => {
-                    this.service_old_images = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-            del_service_image_from_db(image_id){
-                if(confirm('Are you sure, you want delite this image?')){
-                    axios
-                    .delete("/set_service/del_service_image/"+image_id)
-                    .then(response => {
-                        this.get_service_images()
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-                }
-            },
-            del_service_image(id){
-                this.removeObjectWithId(this.service_new_images, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
-            },
-
             change_url_title_in_global_service(){
                 if(!this.change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){

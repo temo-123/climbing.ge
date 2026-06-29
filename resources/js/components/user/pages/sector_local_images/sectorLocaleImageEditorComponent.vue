@@ -14,20 +14,29 @@
                     <h5>Layouts <small class="text-muted">(1 per sector)</small></h5>
                     <div class="layout-list mb-2">
                         <div
-                            v-for="layout in layouts"
+                            v-for="(layout, index) in layouts"
                             :key="layout.id"
                             class="layout-item d-flex align-items-center justify-content-between mb-1 p-2"
                             :class="{ 'layout-active': activeLayoutId === layout.id }"
                             style="border:1px solid #dee2e6; border-radius:4px; background:#f8f9fa; cursor:pointer;"
                             @click="selectLayout(layout.id)"
                         >
-                            <span style="font-size:0.95rem;">
+                            <span style="font-size:0.95rem; flex:1;">
                                 {{ layout.sector ? layout.sector.name : ('Layout #' + layout.id) }}
                             </span>
-                            <button
-                                class="btn btn-danger btn-sm"
-                                @click.stop="deleteLayout(layout.id)"
-                            >✕</button>
+                            <div class="d-flex gap-1 ms-1" @click.stop>
+                                <button class="btn btn-outline-secondary btn-sm p-0"
+                                    style="width:22px;height:22px;line-height:1;"
+                                    :disabled="index === 0"
+                                    @click="moveLayoutUp(index)" title="Move up">↑</button>
+                                <button class="btn btn-outline-secondary btn-sm p-0"
+                                    style="width:22px;height:22px;line-height:1;"
+                                    :disabled="index >= layouts.length - 1"
+                                    @click="moveLayoutDown(index)" title="Move down">↓</button>
+                                <button class="btn btn-danger btn-sm p-0"
+                                    style="width:22px;height:22px;line-height:1;"
+                                    @click="deleteLayout(layout.id)">✕</button>
+                            </div>
                         </div>
                         <div v-if="layouts.length === 0" class="text-muted small p-2">No layouts yet.</div>
                     </div>
@@ -156,14 +165,25 @@ export default {
         },
 
         selectLayout(layoutId) {
-            axios.get('/get_sector/get_sector_local_images/get_layout/' + layoutId)
-                .then(response => {
-                    const layout = response.data.layout;
-                    this.canvasData       = layout.json;
-                    this.selectedSectorId = layout.sector_id;
-                    this.activeLayoutId   = layout.id;
-                })
-                .catch(error => console.log(error));
+            const layout = this.layouts.find(l => l.id === layoutId);
+            if (!layout) return;
+            this.canvasData       = layout.json;
+            this.selectedSectorId = layout.sector_id;
+            this.activeLayoutId   = layout.id;
+        },
+
+        moveLayoutUp(index) {
+            if (index === 0) return;
+            const arr = [...this.layouts];
+            [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
+            this.layouts = arr;
+        },
+
+        moveLayoutDown(index) {
+            if (index >= this.layouts.length - 1) return;
+            const arr = [...this.layouts];
+            [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
+            this.layouts = arr;
         },
 
         newLayout() {

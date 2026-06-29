@@ -236,8 +236,8 @@
                             'perm': [
                                 ['no'],
                                 ['no'],
-                                ['sector_local_images', 'edit'],
-                                ['sector_local_images', 'del'],
+                                ['product_category', 'edit'],
+                                ['product_category', 'del'],
                             ]
                         }
                     },

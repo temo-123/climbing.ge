@@ -53,30 +53,22 @@
                 </div>
             </div>
         
-            <product-option-add-modal-component 
+            <product-option-add-modal-component
                 :is_add_option_modal="is_add_option_modal"
                 :adding_data="adding_data"
-                :adding_option_images="adding_option_images"
                 :is_loading="is_loading"
                 @close_option_add_model="close_option_add_model"
-                @onFileChange="onFileChange"
-                @del_option_image="del_option_image"
+                @update_adding_images="adding_option_images = $event"
                 @add_option="add_option"
-                @add_new_option_image_value="add_new_option_image_value"
             ></product-option-add-modal-component>
 
-            <product-option-edit-modal-component 
+            <product-option-edit-modal-component
                 :is_edit_option_modal="is_edit_option_modal"
                 :editing_data="editing_data"
-                :editing_option_images="editing_option_images"
-                :adding_option_images="adding_option_images"
                 :is_loading="is_loading"
                 :is_loading_editing_modal="is_loading_editing_modal"
                 @close_option_edit_model="close_option_edit_model"
-                @onFileChange="onFileChange"
-                @del_option_image_from_db="del_option_image_from_db"
-                @del_option_image="del_option_image"
-                @add_new_option_image_value="add_new_option_image_value"
+                @update_adding_images="adding_option_images = $event"
                 @edit_option="edit_option"
             ></product-option-edit-modal-component>
             
@@ -115,8 +107,7 @@
                     barcode: ''
                 },
                 editing_data: {},
-                adding_option_images: [],
-                editing_option_images: []
+                adding_option_images: []
             }
         },
         mounted() {
@@ -154,7 +145,6 @@
             close_option_edit_model() {
                 this.is_edit_option_modal = false;
                 this.editing_data = {};
-                this.editing_option_images = [];
                 this.adding_option_images = [];
             },
             edit_option() {
@@ -165,27 +155,6 @@
                     this.delete_option(option_id);
                 }
             },
-            del_option_image_from_db(image_id) {
-                this.delete_option_image(image_id);
-            },
-            add_new_option_image_value() {
-                const newImage = {
-                    id: Date.now(),
-                    file: null
-                };
-                this.adding_option_images.push(newImage);
-            },
-            del_option_image(image_id) {
-                this.adding_option_images = this.adding_option_images.filter(img => img.id !== image_id);
-            },
-            onFileChange(event, imageId) {
-                const file = event.target.files[0];
-                const image = this.adding_option_images.find(img => img.id === imageId);
-                if (image) {
-                    image.file = file;
-                }
-            },
-            
             // API Methods
             async get_product() {
                 this.is_loading_product = true;
@@ -214,7 +183,6 @@
                 try {
                     const response = await axios.get('/set_product/set_product_option/get_editing_product_option/' + option_id);
                     this.editing_data = response.data.option;
-                    this.editing_option_images = response.data.option_images || [];
                     this.is_edit_option_modal = true;
                 } catch (error) {
                     console.error('Error fetching option for edit:', error);
@@ -233,8 +201,8 @@
                     
                     // Append images
                     this.adding_option_images.forEach((img, index) => {
-                        if (img.file) {
-                            formData.append('images[' + index + ']', img.file);
+                        if (img.image) {
+                            formData.append('images[' + index + ']', img.image);
                         }
                     });
                     
@@ -263,8 +231,8 @@
                     
                     // Append new images
                     this.adding_option_images.forEach((img, index) => {
-                        if (img.file) {
-                            formData.append('images[' + index + ']', img.file);
+                        if (img.image) {
+                            formData.append('images[' + index + ']', img.image);
                         }
                     });
                     
@@ -293,20 +261,6 @@
                 } catch (error) {
                     console.error('Error deleting option:', error);
                     alert('Failed to delete option');
-                }
-            },
-            
-            async delete_option_image(image_id) {
-                try {
-                    await axios.delete('/set_product/set_product_option/del_option_image/' + image_id);
-                    // Refresh edit modal data if open
-                    if (this.is_edit_option_modal && this.editing_data.id) {
-                        await this.open_edit_modal(this.editing_data.id);
-                    }
-                    alert('Image deleted successfully');
-                } catch (error) {
-                    console.error('Error deleting image:', error);
-                    alert('Failed to delete image');
                 }
             }
         }

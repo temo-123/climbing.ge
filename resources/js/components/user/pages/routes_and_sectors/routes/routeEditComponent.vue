@@ -92,34 +92,10 @@
           </div>
         </div>
 
-        <div class="tabs row">
-          <div class="col-md-12">
-            <div class="row">
-              <div class="col">
-                <input type="radio" id="desc_tab_1" :value="1" v-model="desc_tab_num">
-                <label for="desc_tab_1">English text</label>
-              </div>
-              <div class="col">
-                <input type="radio" id="desc_tab_2" :value="2" v-model="desc_tab_num">
-                <label for="desc_tab_2">Georgian text</label>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-12">
-            <div class="form-group clearfix row" v-show="desc_tab_num == 1">
-              <label for="name" class='col-md-2 control-label'> English description </label>
-              <div class="col-md-10">
-                <big_editor v-model="data.text_us" />
-              </div>
-            </div>
-            <div class="form-group clearfix row" v-show="desc_tab_num == 2">
-              <label for="name" class='col-md-2 control-label'> Georgian description </label>
-              <div class="col-md-10">
-                <big_editor v-model="data.text_ka" />
-              </div>
-            </div>
-          </div>
-        </div>
+        <text_block_localization
+            v-model:en_value="data.text_us"
+            v-model:ka_value="data.text_ka"
+        />
 
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Bolts & height </label>
@@ -199,6 +175,7 @@
   import validator_alerts_component from '../../../items/form/validator_alerts_component.vue'
   import grades_form from './assets/gradingFormComponent.vue'
   import route_editor_component from './assets/CanvasRouteEditorComponent.vue'
+  import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
 
   export default {
       mixins: [
@@ -207,7 +184,8 @@
       components: {
           validator_alerts_component,
           grades_form,
-          route_editor_component
+          route_editor_component,
+          text_block_localization,
       },
     data() {
       return {
@@ -224,7 +202,6 @@
         problem_status: "",
 
         article_id: "",
-        desc_tab_num: 1,
 
         data: {
           sector_id: "",

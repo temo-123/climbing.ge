@@ -1,23 +1,26 @@
 <template>
     <div class="canvas-editor">
 
-        <!-- Toolbar -->
-        <div class="mb-1">
+        <!-- Toolbar + style bar (visually connected) -->
+        <div class="mb-2">
             <ToolbarComponent
                 :action="action"
                 :history-length="historyCount"
                 :redo-length="redoCount"
+                :has-drawing="hasDrawing"
+                :has-unlocked-drawing="hasUnlockedDrawing"
                 @reset="handleReset"
                 @undo="handleUndo"
                 @redo="handleRedo"
                 @line="handleLine"
+                @continue-line="handleContinueLine"
                 @point="handlePoint"
                 @number="handleNumber"
                 @rectangle="handleRectangle"
                 @combined="handleCombined"
                 @eraser="handleEraser"
-                @erase_segment="handleEraseSegment"
                 @move="handleMove"
+                @move-all="handleMoveAll"
                 @zoom-in="handleZoomIn"
                 @zoom-out="handleZoomOut"
                 @zoom-reset="handleZoomReset"
@@ -27,6 +30,7 @@
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
+                @resize="handleResize"
                 @crop="handleCrop"
                 @edit-points="handleEditPoints"
                 @export-png="handleExportPNG"
@@ -35,48 +39,67 @@
             />
         </div>
 
-        <!-- Color & Stroke Controls -->
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 px-2 py-1 bg-light border rounded">
-            <span class="small fw-semibold text-secondary me-1">Style:</span>
+        <!-- Style controls bar (attached visually to toolbar) -->
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 px-2 py-1 bg-white border border-top-0 rounded-bottom" style="border-top: 1px solid #dee2e6 !important; border-radius: 0 0 4px 4px !important;">
 
-            <div class="d-flex align-items-center gap-1">
-                <label class="mb-0 small text-muted">Stroke</label>
+            <!-- Stroke color -->
+            <div class="d-flex align-items-center gap-1" title="Stroke / line color">
+                <span class="small text-muted">Stroke</span>
                 <input type="color" :value="currentStrokeColor"
                        @input="handleColorChange('stroke', $event.target.value)"
-                       class="form-control form-control-sm p-0 border-0"
-                       style="width:30px; height:26px; cursor:pointer;">
-                <span class="small text-muted" style="font-size:11px;">{{ currentStrokeColor }}</span>
+                       class="color-swatch-input"
+                       style="width:28px; height:24px;">
+                <code class="small" style="font-size:10px; color:#555;">{{ currentStrokeColor }}</code>
             </div>
 
             <div class="vr"></div>
 
-            <div class="d-flex align-items-center gap-1">
-                <label class="mb-0 small text-muted">Fill</label>
-                <input type="color" :value="currentFillColor || '#ffffff'"
+            <!-- Fill color with on/off toggle -->
+            <div class="d-flex align-items-center gap-1" :title="fillEnabled ? 'Fill color (click to disable fill)' : 'Fill disabled (click to enable)'">
+                <span class="small text-muted">Fill</span>
+                <button type="button"
+                        class="btn btn-sm py-0 px-1"
+                        :class="fillEnabled ? 'btn-primary' : 'btn-outline-secondary'"
+                        style="font-size:10px; line-height:1.6;"
+                        @click="toggleFill"
+                        :title="fillEnabled ? 'Disable fill' : 'Enable fill'">
+                    <i :class="fillEnabled ? 'fa fa-tint' : 'fa fa-tint'" style="opacity: fillEnabled ? 1 : 0.4;"></i>
+                </button>
+                <input type="color" :value="fillColor || '#ffffff'"
                        @input="handleColorChange('fill', $event.target.value)"
-                       class="form-control form-control-sm p-0 border-0"
-                       style="width:30px; height:26px; cursor:pointer;">
-                <span class="small text-muted" style="font-size:11px;">{{ currentFillColor || 'none' }}</span>
+                       :disabled="!fillEnabled"
+                       class="color-swatch-input"
+                       :style="{ width: '28px', height: '24px', opacity: fillEnabled ? 1 : 0.3, cursor: fillEnabled ? 'pointer' : 'default' }">
+                <code v-if="fillEnabled" class="small" style="font-size:10px; color:#555;">{{ fillColor || '#fff' }}</code>
+                <span v-else class="small text-muted" style="font-size:10px; font-style:italic;">off</span>
             </div>
 
             <div class="vr"></div>
 
-            <div class="d-flex align-items-center gap-2">
-                <label class="mb-0 small text-muted">Width:</label>
+            <!-- Stroke width -->
+            <div class="d-flex align-items-center gap-1" title="Stroke / line width in pixels">
+                <span class="small text-muted">Width</span>
                 <input type="range" min="1" max="20" :value="strokeWidth"
                        @input="handleStrokeWidthChange(parseInt($event.target.value))"
-                       class="form-range" style="width:80px;">
-                <span class="badge bg-primary" style="min-width:24px;">{{ strokeWidth }}</span>
+                       class="form-range" style="width:70px;">
+                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ strokeWidth }}</span>
+                <span class="small text-muted" style="font-size:10px;">px</span>
             </div>
 
             <div class="vr"></div>
 
+            <!-- Zoom -->
             <div class="d-flex align-items-center gap-1">
-                <label class="mb-0 small text-muted">Zoom:</label>
-                <span class="badge bg-secondary" style="min-width:46px; font-size:12px;">{{ Math.round(currentZoom * 100) }}%</span>
-                <button type="button" class="btn btn-sm btn-secondary py-0 px-1" style="font-size:11px; line-height:1.6;"
-                        @click="handleZoomReset" title="Reset to fit">⊙</button>
+                <span class="small text-muted">Zoom</span>
+                <span class="badge bg-secondary" style="min-width:44px; font-size:11px; cursor:pointer;" @click="handleZoomReset" title="Click to reset zoom">
+                    {{ Math.round(currentZoom * 100) }}%
+                </span>
+                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size:10px; line-height:1.6;"
+                        @click="handleZoomReset" title="Reset zoom to fit canvas">
+                    <i class="fa fa-search"></i>
+                </button>
             </div>
+
         </div>
 
         <!-- Canvas + Layers sidebar -->
@@ -93,6 +116,7 @@
                     @layers_ready="updateLayersList"
                     @history-changed="onHistoryChanged"
                     @zoom-changed="onZoomChanged"
+                    @crop-save="handleCropSave"
                 />
             </div>
             <div class="col-lg-3 col-md-4">
@@ -175,14 +199,15 @@ export default {
                 layer: null,
                 targetGroup: null
             },
-            // New properties for enhanced features
+            // Style controls
             currentStrokeColor: '#ff0000',
             currentFillColor: null,
+            fillEnabled: false,
             strokeWidth: 3,
             zoomLevel: 1,
             currentZoom: 1,
             panOffset: { x: 0, y: 0 },
-            selectedItems: [], // For multi-selection
+            selectedItems: [],
             isPanning: false,
             panStartPoint: null
         }),
@@ -236,6 +261,16 @@ export default {
         computed: {
             availableGroups() {
                 return this.layers.filter(layer => layer.isGroup);
+            },
+            hasDrawing() {
+                return this.layers.some(l => !l.isRelated);
+            },
+            hasUnlockedDrawing() {
+                return this.layers.some(l => !l.isRelated && !l.locked);
+            },
+            // Effective fill color: null when disabled so canvas draws no fill
+            fillColor() {
+                return this.fillEnabled ? this.currentFillColor || '#ffffff' : null;
             }
         },
         methods: {
@@ -264,10 +299,6 @@ export default {
 
             handleEraser() {
                 this.action = 5;
-            },
-
-            handleEraseSegment() {
-                this.action = 6;
             },
 
             handleCombined() {
@@ -321,6 +352,18 @@ export default {
 
             handleEditPoints() {
                 this.action = 16;
+            },
+
+            handleMoveAll() {
+                this.action = 17;
+            },
+
+            handleResize() {
+                this.action = 19;
+            },
+
+            handleContinueLine() {
+                this.action = 20;
             },
 
             // Export methods are now handled directly in the new methods below
@@ -904,22 +947,37 @@ export default {
                 }
             },
 
+            handleCropSave(croppedDataUrl) {
+                // Emit to parent so each editor (sector, route, pitch) can save via its own endpoint
+                this.$emit('crop-save', croppedDataUrl);
+            },
+
+            toggleFill() {
+                this.fillEnabled = !this.fillEnabled;
+                if (this.fillEnabled && !this.currentFillColor) {
+                    this.currentFillColor = '#ffffff';
+                }
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
+                }
+            },
+
             handleColorChange(type, color) {
                 if (type === 'stroke') {
                     this.currentStrokeColor = color;
                 } else if (type === 'fill') {
                     this.currentFillColor = color;
+                    this.fillEnabled = true;
                 }
-                // Update canvas with new colors if needed
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
                 }
             },
 
             handleStrokeWidthChange(width) {
                 this.strokeWidth = width;
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
                 }
             },
 
@@ -984,7 +1042,18 @@ export default {
     .canvas-editor {
         user-select: none;
     }
-    .but_action{
+    .but_action {
         background-color: #a5a6a7;
+    }
+    .color-swatch-input {
+        padding: 0;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+    .color-swatch-input:disabled {
+        cursor: default;
+        filter: grayscale(0.6);
     }
 </style>

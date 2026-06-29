@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\User\Admin\Shop\ProductImageController;
+// use App\Http\Controllers\Api\User\Admin\Shop\ProductImageController;
 
 Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum', 'banned']], function() {
     /*
@@ -50,12 +50,24 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::get('/get_product_options_for_editing/{product_id}', 'get_product_options');
 
             Route::get('/get_editing_product_option/{option_id}', 'get_editing_product_option');
+            Route::get('/get_option_images/{option_id}', 'get_option_images');
             // Route::get('/get_editing_option/{option_id}', 'get_editing_option');
             Route::post('/add_option', 'add_option');
             Route::post('/edit_option/{option_id}', 'edit_option');
             Route::delete('/del_option/{option_id}', 'del_option');
             Route::delete('/del_option_image/{image_id}', 'del_option_image');
             Route::get('/find_by_barcode/{barcode}', 'find_by_barcode');
+        });
+
+        Route::controller(ProductCombinationController::class)->prefix('set_product_combination')->group(function () {
+            Route::get('/get_combinations/{product_id}', 'get_combinations');
+            Route::get('/get_editing_combination/{id}', 'get_editing_combination');
+            Route::get('/search_products', 'search_products');
+            Route::get('/get_product_options/{product_id}', 'get_product_options_for_combination');
+            Route::post('/add_combination', 'add_combination');
+            Route::post('/edit_combination/{id}', 'edit_combination');
+            Route::delete('/del_combination/{id}', 'del_combination');
+            Route::delete('/del_combination_image/{image_id}', 'del_combination_image');
         });
 
         Route::controller(ProductCategoryController::class)->prefix('set_product_category')->group( function() {

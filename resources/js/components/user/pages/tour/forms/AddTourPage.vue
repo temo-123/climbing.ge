@@ -78,41 +78,10 @@
                     </form>
 
                     <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_tour_new_image_value()" v-if="(tour_images.length < 8)">Add new tour image</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="tour_image in tour_images" :key="tour_image.id">
-                                            <td>
-                                                <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, tour_image.id)">
-                                                </form> 
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_tour_image(tour_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
+                        <gallery_images_add
+                            title_prop="Tour Images"
+                            @update_gallery_images="tour_images = $event"
+                        />
                     </div>
 
                 </div>
@@ -209,13 +178,13 @@
 </template>
 
 <script>
-    // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+    import gallery_images_add from '../../../items/gallery/galleryImageAddComponent.vue'
 
     export default {
         components: {
-            // validator_alerts_component,
-            published_item
+            published_item,
+            gallery_images_add,
         },
         mixins: [],
         props: [
@@ -290,30 +259,6 @@
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
-            onFileChange(event, item_id){
-                let image = event.target.files[0]
-                let id = item_id - 1 
-                this.tour_images[id]['image'] = image
-            },
-            add_tour_new_image_value(){
-                var new_item_id = this.tour_images.length+1
-                this.tour_images.push(
-                    {
-                        id: new_item_id,
-                        image: '',
-                    }
-                );
-            },
-            del_tour_image(id){
-                this.removeObjectWithId(this.tour_images, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
-            },
-
             add_tour() {
                 this.is_loading = true
 

@@ -79,93 +79,13 @@
                     </form>
                     
                     <div class="col-md-12">
-                        <div class="row">
-                            Olredy added
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="tour_old_image in tour_old_images" :key="tour_old_image.id">
-                                            <td>
-                                                <!-- <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, tour_old_image.id)">
-                                                </form>  -->
-
-                                                <img class="img-responsive" :src="'../../../../images/tour_img/'+tour_old_image.image" :alt="tour_old_image.title">
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_tour_image_from_db(tour_old_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            New images
-                        </div>
-                    </div>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_tour_new_image_value()" >Add new tour imagee</button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <table class="table table-hover" id="dev-table">
-                                    <thead>
-                                        <tr>
-                                            <th>Image</th>
-                                            <th>|</th>
-                                            <th>Delite</th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        <tr v-for="tour_image in tour_new_images" :key="tour_image.id">
-                                            <td>
-                                                <form ref="myForm">
-                                                    <input type="file" name="image" id="image" v-on:change="onFileChange($event, tour_image.id)">
-                                                </form> 
-                                            </td>
-                                            <td>|</td>
-                                            <td>
-                                                <button class="btn btn-danger" @click="del_tour_image(tour_image.id)">Delete</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-groupe">
-                                    <button class="btn btn-primary float-left" @click="add_tour_new_image_value()">Add new tour imagee</button>
-                                </div>
-                            </div>
-                        </div>
+                        <gallery_images_edit
+                            title_prop="Tour Images"
+                            image_path_prop="images/tour_img/"
+                            get_images_route_prop="/get_tour/get_tour_images/"
+                            image_del_route_prop="/set_tour/del_tour_image/"
+                            @update_gallery_images="tour_new_images = $event"
+                        />
                     </div>
 
                 </div>
@@ -272,13 +192,13 @@
 </template>
 
 <script>
-    // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+    import gallery_images_edit from '../../../items/gallery/galleryImageEditComponent.vue'
 
     export default {
         components: {
-            // validator_alerts_component,
-            published_item
+            published_item,
+            gallery_images_edit,
         },
         mixins: [],
         props: [
@@ -289,8 +209,6 @@
                 tab_num: 1,
 
                 tour_new_images: [],
-                tour_old_images: [],
-                // regions: [],
 
                 is_change_url_title: false,
 
@@ -344,37 +262,6 @@
                     error => console.log(error)
                 );
             },
-            onFileChange(event, item_id){
-                let image = event.target.files[0]
-                let id = item_id - 1 
-                this.tour_new_images[id]['image'] = image
-            },
-            add_tour_new_image_value(){
-                if(this.tour_old_images){
-                    if(this.tour_new_images.length + this.tour_old_images.length < 8){
-                        var new_item_id = this.tour_new_images.length+1
-
-                        this.tour_new_images.push(
-                            {
-                                id: new_item_id,
-                                image: '',
-                            }
-                        );
-                    }
-                }
-                else{
-                    if(this.tour_new_images.length < 8){
-                        var new_item_id = this.tour_new_images.length+1
-
-                        this.tour_new_images.push(
-                            {
-                                id: new_item_id,
-                                image: '',
-                            }
-                        );
-                    }
-                }
-            },
             get_editing_tour_data(){
                 this.data_for_tab = []
                 this.is_loading = true
@@ -391,9 +278,6 @@
                         ka_tour: response.data.ka_tour,
                     }
 
-                    this.tour_old_images = response.data.tour_images
-
-                    this.get_tour_images()
                 })
                 .catch(
                     error => console.log(error)
@@ -402,39 +286,6 @@
                     this.is_loading = false
                 )
             },
-            get_tour_images(){
-                this.data_for_tab = []
-                axios
-                .get("/get_tour/get_tour_images/"+this.$route.params.id)
-                .then(response => {
-                    this.tour_old_images = response.data
-                })
-                .catch(
-                    error => console.log(error)
-                );
-            },
-            del_tour_image_from_db(image_id){
-                if(confirm('Are you sure, you want delite this image?')){
-                    axios
-                    .delete("/set_tour/del_tour_image/"+image_id)
-                    .then(response => {
-                        this.get_tour_images()
-                    })
-                    .catch(
-                        error => console.log(error)
-                    );
-                }
-            },
-            del_tour_image(id){
-                this.removeObjectWithId(this.tour_new_images, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
-            },
-
             change_url_title_in_global_tour(){
                 if(!this.is_change_url_title){
                     if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){

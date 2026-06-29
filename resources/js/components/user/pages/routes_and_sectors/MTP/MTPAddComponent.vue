@@ -63,19 +63,10 @@
           </div>
         </div>
 
-        <div class="form-group clearfix row">
-          <label class='col-md-2 control-label'>Description (EN)</label>
-          <div class="col-md-10">
-            <big_editor v-model="data.text_us" />
-          </div>
-        </div>
-
-        <div class="form-group clearfix row">
-          <label class='col-md-2 control-label'>Description (KA)</label>
-          <div class="col-md-10">
-            <big_editor v-model="data.text_ka" />
-          </div>
-        </div>
+        <text_block_localization
+            v-model:en_value="data.text_us"
+            v-model:ka_value="data.text_ka"
+        />
 
         <div class="form-group clearfix row">
           <label for="name" class='col-md-2 control-label'> Height </label>
@@ -102,8 +93,11 @@
 
 <script>
 
+  import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
+
   export default {
     mixins: [],
+    components: { text_block_localization },
     data() {
       return {
         description_editor: {},

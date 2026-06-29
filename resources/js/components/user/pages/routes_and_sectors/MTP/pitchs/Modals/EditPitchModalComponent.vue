@@ -32,11 +32,10 @@
                 <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data">
                 <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent">
 
-                <label class="mt-2 mb-1 fw-bold">Description (EN)</label>
-                <big_editor v-model="data.text_us" />
-
-                <label class="mt-2 mb-1 fw-bold">Description (KA)</label>
-                <big_editor v-model="data.text_ka" />
+                <text_block_localization
+                    v-model:en_value="data.text_us"
+                    v-model:ka_value="data.text_ka"
+                />
 
                 <div class="mt-3">
                     <button type="submit" form="mtp_edit_form" class="btn btn-primary">Save</button>
@@ -59,9 +58,13 @@
 
 <script>
     import CanvasPitchEditor from './CanvasPitchEditorComponent.vue'
+    import text_block_localization from '../../../../../items/form/parts/TextBlockLocalithationComponent.vue'
 
     export default {
-        components: { CanvasPitchEditor },
+        components: {
+            CanvasPitchEditor,
+            text_block_localization,
+        },
         props: {
             mtp_sector_id: { default: null },
         },

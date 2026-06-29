@@ -32,224 +32,207 @@
 
             <div v-for="(layer, index) in layers" :key="layer.id || layer.name + index">
 
-                <!-- Unified layer row (2-line layout) for both regular and related layers -->
-                <div class="border-bottom layer-row"
-                     :class="layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item')"
+                <!-- Single-line layer row -->
+                <div class="d-flex align-items-center border-bottom layer-row px-1"
+                     :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '']"
                      :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }">
 
-                    <!-- Line 1: reorder + icon + name -->
-                    <div class="d-flex align-items-center px-1 pt-1">
-
-                        <!-- Reorder arrows (hidden for related reference layers) -->
-                        <div v-if="!layer.isRelated" class="d-flex flex-column me-1" style="gap:1px; flex-shrink:0;">
-                            <button type="button" class="btn btn-sm btn-secondary p-0 lh-1 reorder-btn"
-                                    @click="$emit('move-layer-up', index)"
-                                    :disabled="index === 0 || layer.layerName !== layers[index-1].layerName">
-                                <i class="fa fa-caret-up"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-secondary p-0 lh-1 reorder-btn"
-                                    @click="$emit('move-layer-down', index)"
-                                    :disabled="index === layers.length-1 || layer.layerName !== layers[index+1].layerName">
-                                <i class="fa fa-caret-down"></i>
-                            </button>
-                        </div>
-                        <!-- Spacer keeps alignment for related layers -->
-                        <div v-else style="width:18px; flex-shrink:0;" class="me-1"></div>
-
-                        <!-- Expand icon (group) or type icon -->
-                        <button v-if="layer.isGroup" type="button" class="btn btn-sm btn-primary p-0 me-1 layer-icon-btn"
-                                @click="$emit('toggle-group-expansion', layer)">
-                            <i :class="layer.expanded ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
+                    <!-- Reorder arrows -->
+                    <div v-if="!layer.isRelated" class="d-flex flex-column me-1" style="gap:1px; flex-shrink:0;">
+                        <button type="button" class="btn btn-sm btn-secondary p-0 lh-1 reorder-btn"
+                                @click="$emit('move-layer-up', index)"
+                                :disabled="index === 0 || layer.layerName !== layers[index-1].layerName">
+                            <i class="fa fa-caret-up"></i>
                         </button>
-                        <span v-else class="me-1 layer-icon-btn text-center">
-                            <i :class="'fa ' + getTypeIcon(layer.name)" :style="{ color: layer.color || '#999' }"></i>
-                        </span>
+                        <button type="button" class="btn btn-sm btn-secondary p-0 lh-1 reorder-btn"
+                                @click="$emit('move-layer-down', index)"
+                                :disabled="index === layers.length-1 || layer.layerName !== layers[index+1].layerName">
+                            <i class="fa fa-caret-down"></i>
+                        </button>
+                    </div>
+                    <div v-else style="width:18px; flex-shrink:0;" class="me-1"></div>
 
-                        <!-- Name -->
-                        <div class="flex-grow-1 overflow-hidden small layer-name">
-                            <!-- Related reference layer: non-editable name with badge -->
-                            <template v-if="layer.isRelated">
-                                <span class="text-muted fst-italic">{{ layer.displayName }}</span>
-                                <span class="badge ms-1" :style="{ background: layer.color || '#999', fontSize: '8px', verticalAlign: 'middle' }">ref</span>
-                            </template>
-                            <!-- Regular non-text layer: editable name -->
-                            <template v-else-if="!layer.isText">
-                                <span v-if="!layer.isEditing"
-                                      @click="startEditingLayerName(layer)"
-                                      class="editable-name" title="Click to rename">
-                                    {{ layer.displayName || layer.name }}
-                                </span>
-                                <input v-else v-model="layer.editName"
-                                       class="form-control form-control-sm py-0"
-                                       @blur="onNameBlur(layer)"
-                                       @keydown.enter.prevent="finishEditingLayerName(layer)"
-                                       @keydown.esc.prevent="cancelEditingLayerName(layer)"
-                                       :ref="'nameInput-' + layer.id" />
-                            </template>
-                            <!-- Regular text layer: editable content -->
-                            <template v-else>
-                                <div class="text-muted layer-type-label">{{ layer.displayName || layer.name }}</div>
-                                <span v-if="!layer.isEditing"
-                                      @click="startEditingText(layer)"
-                                      class="text-truncate d-block editable-name layer-text-preview">
-                                    "{{ layer.textContent || 'Empty' }}"
-                                </span>
-                                <input v-else v-model="layer.editText"
-                                       class="form-control form-control-sm py-0"
-                                       @blur="onTextBlur(layer)"
-                                       @keydown.enter.prevent="finishEditingText(layer)"
-                                       @keydown.esc.prevent="cancelEditingText(layer)"
-                                       :ref="'textInput-' + layer.id" />
-                            </template>
-                        </div>
+                    <!-- Type icon / group toggle -->
+                    <button v-if="layer.isGroup" type="button" class="btn btn-sm btn-primary p-0 me-1 layer-icon-btn"
+                            @click="$emit('toggle-group-expansion', layer)">
+                        <i :class="layer.expanded ? 'fa fa-folder-open' : 'fa fa-folder'"></i>
+                    </button>
+                    <span v-else class="me-1 layer-icon-btn text-center">
+                        <i :class="'fa ' + getTypeIcon(layer.name)" :style="{ color: layer.color || '#999' }"></i>
+                    </span>
+
+                    <!-- Name (editable) -->
+                    <div class="overflow-hidden small layer-name me-1" style="min-width:0; max-width:90px;">
+                        <template v-if="layer.isRelated">
+                            <span class="text-muted fst-italic">{{ layer.displayName }}</span>
+                            <span class="badge ms-1" :style="{ background: layer.color || '#999', fontSize: '8px', verticalAlign: 'middle' }">ref</span>
+                        </template>
+                        <template v-else-if="!layer.isText">
+                            <span v-if="!layer.isEditing"
+                                  @click="startEditingLayerName(layer)"
+                                  class="editable-name" :title="'Click to rename: ' + (layer.displayName || layer.name)">
+                                {{ layer.displayName || layer.name }}
+                            </span>
+                            <input v-else v-model="layer.editName"
+                                   class="form-control form-control-sm py-0"
+                                   @blur="onNameBlur(layer)"
+                                   @keydown.enter.prevent="finishEditingLayerName(layer)"
+                                   @keydown.esc.prevent="cancelEditingLayerName(layer)"
+                                   :ref="'nameInput-' + layer.id" />
+                        </template>
+                        <template v-else>
+                            <span class="text-muted" style="font-size:9px;">text</span>
+                            <span v-if="!layer.isEditing"
+                                  @click="startEditingText(layer)"
+                                  class="text-truncate d-block editable-name layer-text-preview"
+                                  :title="'Click to edit: ' + (layer.textContent || 'Empty')">
+                                "{{ layer.textContent || 'Empty' }}"
+                            </span>
+                            <input v-else v-model="layer.editText"
+                                   class="form-control form-control-sm py-0"
+                                   @blur="onTextBlur(layer)"
+                                   @keydown.enter.prevent="finishEditingText(layer)"
+                                   @keydown.esc.prevent="cancelEditingText(layer)"
+                                   :ref="'textInput-' + layer.id" />
+                        </template>
                     </div>
 
-                    <!-- Line 2: color + size + action buttons -->
-                    <div class="d-flex align-items-center pb-1 gap-1 layer-controls-row">
-                        <!-- Color swatch (all layers, read-only for related) -->
-                        <input type="color" :value="layer.color || '#999999'"
-                               @change="!layer.isRelated && $emit('change-layer-color', layer, $event.target.value)"
-                               :disabled="layer.isRelated"
-                               class="layer-color-swatch" :title="layer.isRelated ? 'Reference route color' : 'Item color'" />
+                    <!-- Color + size -->
+                    <input type="color" :value="layer.color || '#999999'"
+                           @change="!layer.isRelated && $emit('change-layer-color', layer, $event.target.value)"
+                           :disabled="layer.isRelated"
+                           class="layer-color-swatch me-1"
+                           :title="layer.isRelated ? 'Reference route color' : 'Color'" />
 
-                        <!-- Width / font-size input (hidden for related) -->
-                        <template v-if="!layer.isRelated">
-                            <input type="number"
-                                   :value="layer.strokeWidth || (layer.isText ? 16 : 3)"
-                                   :min="layer.isText ? 6 : 1"
-                                   :max="layer.isText ? 120 : 20"
-                                   @change="$emit('change-layer-size', layer, $event.target.value)"
-                                   class="layer-size-input" :title="layer.isText ? 'Font size' : 'Stroke width'" />
-                            <span class="text-muted" style="font-size:10px; flex-shrink:0;">{{ layer.isText ? 'pt' : 'px' }}</span>
+                    <template v-if="!layer.isRelated">
+                        <input type="number"
+                               :value="layer.strokeWidth || (layer.isText ? 16 : 3)"
+                               :min="layer.isText ? 6 : 1"
+                               :max="layer.isText ? 120 : 20"
+                               @change="$emit('change-layer-size', layer, $event.target.value)"
+                               class="layer-size-input me-1"
+                               :title="layer.isText ? 'Font size (pt)' : 'Stroke width (px)'" />
+                    </template>
+
+                    <!-- Push buttons to far right -->
+                    <div class="flex-grow-1"></div>
+
+                    <!-- Action buttons -->
+                    <div class="d-flex gap-1" style="flex-shrink:0;">
+                        <!-- Group actions -->
+                        <template v-if="!layer.isRelated && !layer.isGroup">
+                            <button type="button" class="btn btn-sm btn-primary layer-action-btn"
+                                    @click="$emit('create-group-from-layer', layer)" title="Create group">
+                                <i class="fa fa-object-group"></i>
+                            </button>
+                            <button v-if="availableGroups.length > 0"
+                                    type="button" class="btn btn-sm btn-primary layer-action-btn"
+                                    @click="$emit('show-move-to-group-modal', layer)" title="Move into group">
+                                <i class="fa fa-arrow-right"></i>
+                            </button>
                         </template>
+                        <button v-if="!layer.isRelated && layer.isGroup"
+                                type="button" class="btn btn-sm btn-warning layer-action-btn"
+                                @click="$emit('ungroup-layer', layer)" title="Ungroup">
+                            <i class="fa fa-object-ungroup"></i>
+                        </button>
 
-                        <div class="flex-grow-1"></div>
+                        <!-- Visibility -->
+                        <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
+                                @click="$emit('toggle-layer-visibility', layer)"
+                                :title="layer.visible ? 'Hide' : 'Show'">
+                            <i :class="layer.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                        </button>
 
-                        <!-- Action buttons -->
-                        <div class="d-flex gap-1" style="flex-shrink:0;">
-                            <!-- Group/move actions: only for regular non-group items -->
-                            <template v-if="!layer.isRelated && !layer.isGroup">
-                                <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                        @click="$emit('create-group-from-layer', layer)" title="Create group">
-                                    <i class="fa fa-object-group"></i>
-                                </button>
-                                <button v-if="availableGroups.length > 0"
-                                        type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                        @click="$emit('show-move-to-group-modal', layer)" title="Move to group">
-                                    <i class="fa fa-arrow-right"></i>
-                                </button>
-                            </template>
+                        <!-- Lock -->
+                        <button type="button" class="btn btn-sm btn-warning layer-action-btn"
+                                @click="$emit('toggle-layer-lock', layer)"
+                                :title="layer.locked ? 'Unlock item' : 'Lock item'">
+                            <i :class="layer.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
+                        </button>
 
-                            <!-- Ungroup: only for real groups -->
-                            <button v-if="!layer.isRelated && layer.isGroup"
-                                    type="button" class="btn btn-sm btn-warning layer-action-btn"
-                                    @click="$emit('ungroup-layer', layer)" title="Ungroup">
-                                <i class="fa fa-object-ungroup"></i>
-                            </button>
-
-                            <!-- Visibility toggle (all layers) -->
-                            <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
-                                    @click="$emit('toggle-layer-visibility', layer)"
-                                    :title="layer.visible ? 'Hide' : 'Show'">
-                                <i :class="layer.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
-                            </button>
-
-                            <!-- Lock toggle (all layers) -->
-                            <button type="button" class="btn btn-sm btn-warning layer-action-btn"
-                                    @click="$emit('toggle-layer-lock', layer)"
-                                    :title="layer.locked ? 'Unlock' : 'Lock'">
-                                <i :class="layer.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
-                            </button>
-
-                            <!-- Delete (only regular layers) -->
-                            <button v-if="!layer.isRelated"
-                                    type="button" class="btn btn-sm btn-danger layer-action-btn"
-                                    @click="$emit('delete-layer-item', layer)" title="Delete">
-                                <i class="fa fa-trash"></i>
-                            </button>
-                        </div>
+                        <!-- Delete -->
+                        <button v-if="!layer.isRelated"
+                                type="button" class="btn btn-sm btn-danger layer-action-btn"
+                                @click="$emit('delete-layer-item', layer)" title="Delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
                     </div>
                 </div>
 
-                <!-- Group children -->
+                <!-- Group children (single-line, indented) -->
                 <template v-if="layer.isGroup && layer.expanded">
                     <div v-for="child in layer.children" :key="child.id || child.name"
-                         class="border-bottom layer-row layer-child"
-                         :style="{ borderLeft: '3px solid ' + (child.color || '#999') }">
+                         class="d-flex align-items-center border-bottom layer-row layer-child px-1"
+                         :style="{ borderLeft: '3px solid ' + (child.color || '#999'), paddingLeft: '28px' }">
 
-                        <!-- Line 1: icon + name -->
-                        <div class="d-flex align-items-center px-1 pt-1" style="padding-left: 24px !important;">
-                            <span class="me-1 layer-icon-btn text-center">
-                                <i :class="'fa ' + getTypeIcon(child.name)" :style="{ color: child.color || '#999' }"></i>
-                            </span>
+                        <span class="me-1 layer-icon-btn text-center" style="flex-shrink:0;">
+                            <i :class="'fa ' + getTypeIcon(child.name)" :style="{ color: child.color || '#999' }"></i>
+                        </span>
 
-                            <div class="flex-grow-1 overflow-hidden small layer-name">
-                                <template v-if="!child.isText">
-                                    <span v-if="!child.isEditing"
-                                          @click="startEditingChildName(layer, child)"
-                                          class="editable-name" title="Click to rename">
-                                        {{ child.displayName || child.name }}
-                                    </span>
-                                    <input v-else v-model="child.editName"
-                                           class="form-control form-control-sm py-0"
-                                           @blur="onChildNameBlur(layer, child)"
-                                           @keydown.enter.prevent="finishEditingChildName(layer, child)"
-                                           @keydown.esc.prevent="cancelEditingChildName(child)"
-                                           :ref="'childNameInput-' + child.id" />
-                                </template>
-                                <template v-else>
-                                    <div class="text-muted layer-type-label">{{ child.displayName || child.name }}</div>
-                                    <span v-if="!child.isEditing"
-                                          @click="startEditingChildText(layer, child)"
-                                          class="text-truncate d-block editable-name layer-text-preview">
-                                        "{{ child.textContent || 'Empty' }}"
-                                    </span>
-                                    <input v-else v-model="child.editText"
-                                           class="form-control form-control-sm py-0"
-                                           @blur="onChildTextBlur(layer, child)"
-                                           @keydown.enter.prevent="finishEditingChildText(layer, child)"
-                                           @keydown.esc.prevent="cancelEditingChildText(child)"
-                                           :ref="'childTextInput-' + child.id" />
-                                </template>
-                            </div>
+                        <div class="overflow-hidden small layer-name me-1" style="min-width:0; max-width:80px;">
+                            <template v-if="!child.isText">
+                                <span v-if="!child.isEditing"
+                                      @click="startEditingChildName(layer, child)"
+                                      class="editable-name" :title="'Click to rename: ' + (child.displayName || child.name)">
+                                    {{ child.displayName || child.name }}
+                                </span>
+                                <input v-else v-model="child.editName"
+                                       class="form-control form-control-sm py-0"
+                                       @blur="onChildNameBlur(layer, child)"
+                                       @keydown.enter.prevent="finishEditingChildName(layer, child)"
+                                       @keydown.esc.prevent="cancelEditingChildName(child)"
+                                       :ref="'childNameInput-' + child.id" />
+                            </template>
+                            <template v-else>
+                                <span v-if="!child.isEditing"
+                                      @click="startEditingChildText(layer, child)"
+                                      class="text-truncate d-block editable-name layer-text-preview"
+                                      :title="'Click to edit: ' + (child.textContent || 'Empty')">
+                                    "{{ child.textContent || 'Empty' }}"
+                                </span>
+                                <input v-else v-model="child.editText"
+                                       class="form-control form-control-sm py-0"
+                                       @blur="onChildTextBlur(layer, child)"
+                                       @keydown.enter.prevent="finishEditingChildText(layer, child)"
+                                       @keydown.esc.prevent="cancelEditingChildText(child)"
+                                       :ref="'childTextInput-' + child.id" />
+                            </template>
                         </div>
 
-                        <!-- Line 2: color + size + actions -->
-                        <div class="d-flex align-items-center pb-1 gap-1 layer-controls-row" style="padding-left: 24px;">
-                            <input type="color" :value="child.color || '#999999'"
-                                   @change="$emit('change-child-color', layer, child, $event.target.value)"
-                                   class="layer-color-swatch" title="Item color" />
+                        <input type="color" :value="child.color || '#999999'"
+                               @change="$emit('change-child-color', layer, child, $event.target.value)"
+                               class="layer-color-swatch me-1" title="Color" />
 
-                            <input type="number"
-                                   :value="child.strokeWidth || (child.isText ? 16 : 3)"
-                                   :min="child.isText ? 6 : 1"
-                                   :max="child.isText ? 120 : 20"
-                                   @change="$emit('change-child-size', layer, child, $event.target.value)"
-                                   class="layer-size-input" :title="child.isText ? 'Font size' : 'Stroke width'" />
-                            <span class="text-muted" style="font-size:10px; flex-shrink:0;">{{ child.isText ? 'pt' : 'px' }}</span>
+                        <input type="number"
+                               :value="child.strokeWidth || (child.isText ? 16 : 3)"
+                               :min="child.isText ? 6 : 1"
+                               :max="child.isText ? 120 : 20"
+                               @change="$emit('change-child-size', layer, child, $event.target.value)"
+                               class="layer-size-input me-1"
+                               :title="child.isText ? 'Font size (pt)' : 'Stroke width (px)'" />
 
-                            <div class="flex-grow-1"></div>
+                        <div class="flex-grow-1"></div>
 
-                            <div class="d-flex gap-1" style="flex-shrink:0;">
-                                <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                        @click="$emit('move-child-out-of-group', layer, child)" title="Move out of group">
-                                    <i class="fa fa-arrow-left"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
-                                        @click="$emit('toggle-child-visibility', layer, child)"
-                                        :title="child.visible ? 'Hide' : 'Show'">
-                                    <i :class="child.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-warning layer-action-btn"
-                                        @click="$emit('toggle-child-lock', layer, child)"
-                                        :title="child.locked ? 'Unlock' : 'Lock'">
-                                    <i :class="child.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-danger layer-action-btn"
-                                        @click="$emit('delete-child-item', layer, child)" title="Delete">
-                                    <i class="fa fa-trash"></i>
-                                </button>
-                            </div>
+                        <div class="d-flex gap-1" style="flex-shrink:0;">
+                            <button type="button" class="btn btn-sm btn-primary layer-action-btn"
+                                    @click="$emit('move-child-out-of-group', layer, child)" title="Move out of group">
+                                <i class="fa fa-arrow-left"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
+                                    @click="$emit('toggle-child-visibility', layer, child)"
+                                    :title="child.visible ? 'Hide' : 'Show'">
+                                <i :class="child.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-warning layer-action-btn"
+                                    @click="$emit('toggle-child-lock', layer, child)"
+                                    :title="child.locked ? 'Unlock' : 'Lock'">
+                                <i :class="child.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-danger layer-action-btn"
+                                    @click="$emit('delete-child-item', layer, child)" title="Delete">
+                                <i class="fa fa-trash"></i>
+                            </button>
                         </div>
                     </div>
                 </template>
@@ -458,12 +441,15 @@ export default {
 
 .layers-list {
     overflow-y: auto;
-    max-height: 490px;
+    max-height: 540px;
     background: #fff;
 }
 
 .layer-row {
     transition: background 0.1s;
+    min-height: 30px;
+    padding-top: 2px;
+    padding-bottom: 2px;
 }
 
 .layer-row:hover {
@@ -473,6 +459,15 @@ export default {
 .layer-group {
     background: #eef2ff;
     font-weight: 600;
+}
+
+.layer-locked {
+    opacity: 0.75;
+}
+
+.layer-locked .layer-name {
+    text-decoration: line-through;
+    text-decoration-color: #aaa;
 }
 
 .layer-child {
@@ -514,12 +509,6 @@ export default {
 .layer-name {
     min-width: 0;
     font-size: 12px;
-}
-
-.layer-controls-row {
-    padding-left: 40px;
-    padding-right: 4px;
-    min-height: 26px;
 }
 
 .editable-name {

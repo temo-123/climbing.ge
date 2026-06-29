@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\CanvasService;
 use App\Services\PermissionService;
 
 use App\Models\Guide\Sector_local_image;
@@ -202,9 +203,11 @@ class SectorLocalImagesController extends Controller
             }
         }
         
+        CanvasService::deleteSectorLocalImageCanvasData($deleting_sector_local_images->id);
+
         ImageControllService::image_delete('images/sector_local_img/', $deleting_sector_local_images, 'image');
 
-        $deleting_sector_local_images -> delete();
+        $deleting_sector_local_images->delete();
     }
 
     public function del_image_sector_from_db(Request $request)

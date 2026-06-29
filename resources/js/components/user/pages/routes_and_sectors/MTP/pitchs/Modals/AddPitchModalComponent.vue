@@ -31,11 +31,10 @@
                 <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
                 <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
 
-                <label class="mt-2 mb-1 fw-bold">Description (EN)</label>
-                <big_editor v-model="data.text_us" />
-
-                <label class="mt-2 mb-1 fw-bold">Description (KA)</label>
-                <big_editor v-model="data.text_ka" />
+                <text_block_localization
+                    v-model:en_value="data.text_us"
+                    v-model:ka_value="data.text_ka"
+                />
             </form>
         </div>
         <div slot="modal-footer">
@@ -53,17 +52,13 @@
 </template>
 
 <script>
-    // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-
-    // import validator_alerts_component from '../../../../../items/validator_alerts_component.vue'
-    
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
+    import text_block_localization from '../../../../../items/form/parts/TextBlockLocalithationComponent.vue'
 
     export default {
         components: {
-            // StackModal,
             Editor,
-            // validator_alerts_component
+            text_block_localization,
         },
         mixins: [],
         data() {

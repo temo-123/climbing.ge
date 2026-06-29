@@ -16,6 +16,7 @@ use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
 
 use App\Services\Abstract\ImageControllService;
+use App\Services\CanvasService;
 use App\Services\PermissionService;
 
 use Validator;
@@ -179,8 +180,9 @@ class SectorController extends Controller
         if ($sector_images_count > 0) {
             $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
             foreach ($sector_images as $sector_image) {
-                imageControllService::image_delete('images/sector_img/', $sector_image, $request);
-                $sector_image ->delete();
+                CanvasService::deleteSectorImageCanvasData($sector_image->id);
+                ImageControllService::image_delete('images/sector_img/', $sector_image, 'image');
+                $sector_image->delete();
             }
         }
 
@@ -252,8 +254,9 @@ class SectorController extends Controller
         $auth = PermissionService::authorize('sector', 'edit');
         if ($auth) return $auth;
         $image = Sector_image::where('id', '=', $request->image_id)->first();
+        CanvasService::deleteSectorImageCanvasData($image->id);
         ImageControllService::image_delete('images/sector_img/', $image, 'image');
-        $image ->delete();
+        $image->delete();
     }
 
     public function get_sector_editing_data(Request $request)
