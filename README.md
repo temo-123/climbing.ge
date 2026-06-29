@@ -1,4 +1,4 @@
-<p align="center"><img src="public/images/site_img/site_logo/climbing.ge(background).jpg" alt="climbing.ge logo" width="400"></p>
+<p align="center"><img src="public/images/site_img/site_logo/climibng,ge(becground).jpg" alt="climbing.ge logo" width="400"></p>
 <h1 align="center">climbing.ge — Open Source Climbing Platform</h1>
 
 **Laravel 11 (PHP 8.2) · Vue 3 · Multi-subdomain SPA · MySQL · Sanctum**
@@ -434,6 +434,6 @@ All five sitemaps are referenced at the bottom so any crawler that reads `robots
 
 ---
 
-<h5 align="center">Project version 13.0.0</h5>
+<h5 align="center">Project version 13.5.1</h5>
 <h2 align="center">Best wishes from climbing.ge</h2>
-<p align="center"><img src="public/images/site_img/site_logo/header_logo(background).png" alt="header logo" width="400"></p>
+<p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" alt="header logo" width="400"></p>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="780" height="200" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="780" height="200" fill="white"/>
+<rect x="30" y="30" width="380" height="96" rx="6" fill="#fff9c4" stroke="#d6b656" stroke-width="1.5"/>
+<text x="220" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">articles (global)</text>
+<line x1="30" y1="60" x2="410" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="93.33333333333334" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="156.66666666666669" y1="60" x2="156.66666666666669" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="220.00000000000003" y="74.3" text-anchor="middle" font-size="10" fill="#444">us_article_id</text>
+<line x1="283.33333333333337" y1="60" x2="283.33333333333337" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="346.6666666666667" y="74.3" text-anchor="middle" font-size="10" fill="#444">ka_article_id</text>
+<line x1="30" y1="82" x2="410" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="93.33333333333334" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="156.66666666666669" y1="82" x2="156.66666666666669" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="220.00000000000003" y="96.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="283.33333333333337" y1="82" x2="283.33333333333337" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="346.6666666666667" y="96.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="30" y1="104" x2="410" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="93.33333333333334" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="156.66666666666669" y1="104" x2="156.66666666666669" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="220.00000000000003" y="118.3" text-anchor="middle" font-size="10" fill="#444">5</text>
+<line x1="283.33333333333337" y1="104" x2="283.33333333333337" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="346.6666666666667" y="118.3" text-anchor="middle" font-size="10" fill="#444">4</text>
+<rect x="500" y="30" width="240" height="140" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="620" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">locale_articles</text>
+<line x1="500" y1="60" x2="740" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="540" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="580" y1="60" x2="580" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="620" y="74.3" text-anchor="middle" font-size="10" fill="#444">lang</text>
+<line x1="660" y1="60" x2="660" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="700" y="74.3" text-anchor="middle" font-size="10" fill="#444">title</text>
+<line x1="500" y1="82" x2="740" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="540" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="580" y1="82" x2="580" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="620" y="96.3" text-anchor="middle" font-size="10" fill="#444">ka</text>
+<line x1="660" y1="82" x2="660" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="700" y="96.3" text-anchor="middle" font-size="10" fill="#444">კლდე 1</text>
+<line x1="500" y1="104" x2="740" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="540" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="580" y1="104" x2="580" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="620" y="118.3" text-anchor="middle" font-size="10" fill="#444">en</text>
+<line x1="660" y1="104" x2="660" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="700" y="118.3" text-anchor="middle" font-size="10" fill="#444">Rock 1</text>
+<line x1="500" y1="126" x2="740" y2="126" stroke="#bbb" stroke-width="0.8"/>
+<text x="540" y="140.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="580" y1="126" x2="580" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="620" y="140.3" text-anchor="middle" font-size="10" fill="#444">en</text>
+<line x1="660" y1="126" x2="660" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="700" y="140.3" text-anchor="middle" font-size="10" fill="#444">Rock 2</text>
+<line x1="500" y1="148" x2="740" y2="148" stroke="#bbb" stroke-width="0.8"/>
+<text x="540" y="162.3" text-anchor="middle" font-size="10" fill="#444">4</text>
+<line x1="580" y1="148" x2="580" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="620" y="162.3" text-anchor="middle" font-size="10" fill="#444">ka</text>
+<line x1="660" y1="148" x2="660" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="700" y="162.3" text-anchor="middle" font-size="10" fill="#444">კლდე 2</text>
+<line x1="410" y1="68" x2="498" y2="54" stroke="#555" stroke-width="1.5"/>
+<polygon points="498,54 490.270316541091,58.60998846257431 489.22132716377473,52.016340948015234" fill="#555"/><line x1="410" y1="80" x2="498" y2="68" stroke="#555" stroke-width="1.5"/>
+<polygon points="498,68 490.1697058475865,72.43694641467296 489.2676132877622,65.8216009759613" fill="#555"/><line x1="410" y1="90" x2="498" y2="82" stroke="#555" stroke-width="1.5"/>
+<polygon points="498,82 489.97857683786964,86.08127069110081 489.37410873229624,79.43212152979319" fill="#555"/><text x="450" y="54" text-anchor="middle" font-size="10" fill="#888">us_article_id / ka_article_id</text><text x="450" y="66" text-anchor="middle" font-size="10" fill="#888">→ locale_articles.id</text></svg>

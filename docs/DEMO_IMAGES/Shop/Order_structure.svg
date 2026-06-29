@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="840" height="410" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="840" height="410" fill="white"/>
+<rect x="20" y="20" width="840" height="370" rx="14" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
+<text x="440" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Order System</text>
+<rect x="40" y="60" width="240" height="200" rx="10" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
+<text x="160" y="84" text-anchor="14" font-size="tab = orders" fill="middle" font-weight="bold">Order</text>
+<text x="160" y="99" text-anchor="middle" font-size="10" fill="#666">tab = orders</text>
+<text x="55" y="118" text-anchor="start" font-size="10" fill="#444">id, user_id, adres_id</text>
+<text x="55" y="133" text-anchor="start" font-size="10" fill="#444">status, payment, confirm</text>
+<text x="55" y="148" text-anchor="start" font-size="10" fill="#444">discount, shiping</text>
+<text x="55" y="163" text-anchor="start" font-size="10" fill="#444">tbc_pay_id, tbc_pay_status</text>
+<text x="55" y="178" text-anchor="start" font-size="10" fill="#444">is_custom</text>
+<rect x="320" y="60" width="220" height="130" rx="8" fill="#fff9c4" stroke="#d6b656" stroke-width="1.5"/>
+<text x="430" y="82" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">order_products</text>
+<text x="335" y="98" text-anchor="start" font-size="10" fill="#555">order_id → orders</text>
+<text x="335" y="113" text-anchor="start" font-size="10" fill="#555">product_id → products</text>
+<text x="335" y="128" text-anchor="start" font-size="10" fill="#555">product_option_id</text>
+<text x="335" y="143" text-anchor="start" font-size="10" fill="#555">quantity</text>
+<rect x="320" y="210" width="220" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5"/>
+<text x="430" y="230" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">user_adreses</text>
+<text x="335" y="246" text-anchor="start" font-size="10" fill="#555">id, user_id, name</text>
+<text x="335" y="261" text-anchor="start" font-size="10" fill="#555">city, strit, number</text>
+<text x="335" y="276" text-anchor="start" font-size="10" fill="#555">floor, flat, zip_code</text>
+<rect x="580" y="60" width="220" height="90" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
+<text x="690" y="82" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">products</text>
+<text x="595" y="98" text-anchor="start" font-size="10" fill="#555">id, url_title</text>
+<text x="595" y="113" text-anchor="start" font-size="10" fill="#555">price, subcategory_id</text>
+<rect x="580" y="170" width="220" height="80" rx="8" fill="#c8e6c9" stroke="#43a047" stroke-width="1.5"/>
+<text x="690" y="192" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">sale_codes</text>
+<text x="595" y="208" text-anchor="start" font-size="10" fill="#555">id, code, discount</text>
+<text x="595" y="223" text-anchor="start" font-size="10" fill="#555">one_time_code</text>
+<rect x="580" y="270" width="220" height="80" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+<text x="690" y="292" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">shiped_countries</text>
+<text x="595" y="308" text-anchor="start" font-size="10" fill="#555">id, region, shiping_price</text>
+<rect x="40" y="290" width="240" height="80" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="160" y="312" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">users</text>
+<text x="55" y="328" text-anchor="start" font-size="10" fill="#555">id, name, surname</text>
+<text x="55" y="343" text-anchor="start" font-size="10" fill="#555">email, phone</text>
+<line x1="280" y1="120" x2="318" y2="110" stroke="#555" stroke-width="1.5"/>
+<polygon points="318,110 310.76677966178033,115.35542001515898 309.0676377292176,108.89868067142051" fill="#555"/><line x1="280" y1="160" x2="318" y2="250" stroke="#555" stroke-width="1.5"/>
+<polygon points="318,250 311.67358594686516,243.5987122210997 317.82437170263904,241.00171379088405" fill="#555"/><line x1="540" y1="100" x2="578" y2="90" stroke="#555" stroke-width="1.5"/>
+<polygon points="578,90 570.7667796617803,95.35542001515898 569.0676377292176,88.89868067142051" fill="#555"/><line x1="540" y1="115" x2="578" y2="195" stroke="#555" stroke-width="1.5"/>
+<polygon points="578,195 571.3985539435884,188.88273672592985 577.4293480302434,186.0181095347687" fill="#555"/><line x1="540" y1="130" x2="578" y2="295" stroke="#555" stroke-width="1.5"/>
+<polygon points="578,295 572.8711069179661,287.60442999133505 579.3773603766876,286.1060201038719" fill="#555"/><line x1="160" y1="260" x2="160" y2="288" stroke="#673ab7" stroke-width="1.5"/>
+<polygon points="160,288 156.66171577528317,279.6420182798114 163.33828422471683,279.6420182798114" fill="#673ab7"/></svg>

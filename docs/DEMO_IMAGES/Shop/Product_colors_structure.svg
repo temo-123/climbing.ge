@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="800" height="400" fill="white"/>
+<rect x="20" y="20" width="760" height="360" rx="14" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+<text x="400" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Product 1</text>
+<text x="400" y="64" text-anchor="middle" font-size="11" fill="#666">tab = "products"</text><rect x="50" y="70" width="210" height="270" rx="10" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="155" y="98" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Color 1 (Red)</text>
+<text x="155" y="114" text-anchor="middle" font-size="9" fill="#666">tab = "product_options"</text>
+<rect x="65" y="125" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="155" y="148" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 1</text>
+<text x="155" y="162" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="65" y="177" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="155" y="200" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 2</text>
+<text x="155" y="214" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="65" y="229" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="155" y="252" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 3</text>
+<text x="155" y="266" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="290" y="70" width="210" height="270" rx="10" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="395" y="98" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Color 2 (Green)</text>
+<text x="395" y="114" text-anchor="middle" font-size="9" fill="#666">tab = "product_options"</text>
+<rect x="305" y="125" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="395" y="148" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 1</text>
+<text x="395" y="162" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="305" y="177" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="395" y="200" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 2</text>
+<text x="395" y="214" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="305" y="229" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="395" y="252" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 3</text>
+<text x="395" y="266" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="305" y="281" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="395" y="304" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 4</text>
+<text x="395" y="318" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="530" y="70" width="210" height="270" rx="10" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="635" y="98" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Color 3 (Blue)</text>
+<text x="635" y="114" text-anchor="middle" font-size="9" fill="#666">tab = "product_options"</text>
+<rect x="545" y="125" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="635" y="148" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 1</text>
+<text x="635" y="162" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+<rect x="545" y="177" width="180" height="44" rx="6" fill="#fff" stroke="#999" stroke-width="1.5"/>
+<text x="635" y="200" text-anchor="middle" font-size="11" fill="#444" font-weight="bold">Image 2</text>
+<text x="635" y="214" text-anchor="middle" font-size="9" fill="#777">tab = "option_images"</text>
+</svg>

@@ -1,7 +1,7 @@
 {
     "private": true,
     "name": "climbing.ge",
-    "version": "12.0.0",
+    "version": "13.5.1",
     "description": "Climbing Georgia Guidebook",
     "scripts": {
         "dev": "mix",

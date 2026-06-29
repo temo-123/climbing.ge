@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="900" height="400" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="900" height="400" fill="white"/>
+<rect x="10" y="10" width="900" height="410" rx="14" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="460" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Tour System</text>
+<rect x="25" y="55" width="240" height="130" rx="10" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.5"/>
+<text x="145" y="78" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Tour (global)</text>
+<text x="145" y="93" text-anchor="middle" font-size="10" fill="#666">tab = tours</text>
+<text x="40" y="110" text-anchor="start" font-size="10" fill="#333">id, url_title, published</text>
+<text x="40" y="125" text-anchor="start" font-size="10" fill="#333">min_price, category_id</text>
+<text x="40" y="140" text-anchor="start" font-size="10" fill="#333">us_tour_id, ka_tour_id, ru_tour_id</text>
+<rect x="295" y="55" width="185" height="110" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="1.5"/>
+<text x="387.5" y="103" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_tour (EN)</text>
+<text x="387.5" y="119" text-anchor="middle" font-size="9" fill="#666">tab = locale_tours</text><text x="310" y="90" text-anchor="start" font-size="10" fill="#555">locale = "en"</text>
+<text x="310" y="105" text-anchor="start" font-size="10" fill="#555">title, short_description</text>
+<text x="310" y="120" text-anchor="start" font-size="10" fill="#555">text, location, duration</text>
+<rect x="498" y="55" width="185" height="110" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+<text x="590.5" y="103" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_tour (KA)</text>
+<text x="590.5" y="119" text-anchor="middle" font-size="9" fill="#666">tab = locale_tours</text><rect x="700" y="55" width="180" height="80" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="790" y="88" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Tour Category</text>
+<text x="790" y="104" text-anchor="middle" font-size="9" fill="#666">tab = tour_categories</text><text x="715" y="87" text-anchor="start" font-size="10" fill="#555">id, us_name, ka_name</text>
+<rect x="25" y="220" width="240" height="80" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="145" y="253" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Tour Image</text>
+<text x="145" y="269" text-anchor="middle" font-size="9" fill="#666">tab = tour_images</text><text x="40" y="252" text-anchor="start" font-size="10" fill="#555">id, tour_id → tours</text>
+<text x="40" y="267" text-anchor="start" font-size="10" fill="#555">image, title, num</text>
+<rect x="295" y="220" width="260" height="130" rx="10" fill="#b2dfdb" stroke="#00897b" stroke-width="1.5"/>
+<text x="425" y="242" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Tour Reservation</text>
+<text x="425" y="257" text-anchor="middle" font-size="10" fill="#666">tab = tour_reservations</text>
+<text x="310" y="274" text-anchor="start" font-size="10" fill="#333">id, tour_id, name, email</text>
+<text x="310" y="289" text-anchor="start" font-size="10" fill="#333">phone, check_in, persons</text>
+<text x="310" y="304" text-anchor="start" font-size="10" fill="#333">confirm, verificate</text>
+<rect x="590" y="220" width="200" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="690" y="250.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">tour_reservation_users</text>
+<text x="690" y="266.5" text-anchor="middle" font-size="9" fill="#666">(pivot)</text><text x="605" y="250" text-anchor="start" font-size="10" fill="#555">reservation_id</text>
+<text x="605" y="265" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
+<rect x="590" y="315" width="200" height="60" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="690" y="338" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_tours</text>
+<text x="690" y="354" text-anchor="middle" font-size="9" fill="#666">(pivot)</text><text x="605" y="340" text-anchor="start" font-size="10" fill="#555">tour_id → tours</text>
+<text x="605" y="355" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
+<line x1="265" y1="95" x2="293" y2="95" stroke="#555" stroke-width="1.5"/>
+<polygon points="293,95 284.6420182798114,98.33828422471684 284.6420182798114,91.66171577528316" fill="#555"/><line x1="265" y1="110" x2="496" y2="110" stroke="#555" stroke-width="1.5"/>
+<polygon points="496,110 487.6420182798114,113.33828422471684 487.6420182798114,106.66171577528316" fill="#555"/><line x1="265" y1="80" x2="698" y2="80" stroke="#555" stroke-width="1.5"/>
+<polygon points="698,80 689.6420182798114,83.33828422471684 689.6420182798114,76.66171577528316" fill="#555"/><line x1="145" y1="185" x2="145" y2="218" stroke="#e91e63" stroke-width="1.5"/>
+<polygon points="145,218 141.66171577528317,209.6420182798114 148.33828422471683,209.6420182798114" fill="#e91e63"/><line x1="145" y1="185" x2="350" y2="218" stroke="#555" stroke-width="1.5"/>
+<polygon points="350,218 341.217696742738,219.9675236968039 342.2788010733979,213.37581497603747" fill="#555"/><line x1="555" y1="270" x2="588" y2="258" stroke="#555" stroke-width="1.5"/>
+<polygon points="588,258 581.286059222139,263.99357983440404 579.0043882693215,257.71898471415585" fill="#555"/><line x1="145" y1="185" x2="615" y2="313" stroke="#673ab7" stroke-width="1.5"/>
+<polygon points="615,313 606.0585293646578,314.02474527435487 607.8129310992429,307.5828014051755" fill="#673ab7"/></svg>

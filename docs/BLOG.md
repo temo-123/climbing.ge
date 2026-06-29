@@ -83,6 +83,8 @@ Requires `auth:sanctum` + `banned` middleware.
 
 ## Database
 
+![Blog post structure](DEMO_IMAGES/Blog/Blog_post_structure.svg)
+
 **Posts table** (`posts`):
 
 | Column | Type | Notes |

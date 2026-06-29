@@ -10,6 +10,7 @@ Online shop for climbing gear, apparel, guided tours, and services.
 - [Frontend Pages](#frontend-pages)
 - [Backend API](#backend-api)
 - [Database Structure](#database-structure)
+- [Product Combinations](#product-combinations)
 - [Payment](#payment)
 - [Admin Panel](#admin-panel)
 
@@ -99,33 +100,35 @@ Products have a global table and locale-specific data:
 
 ```
 products (global)
-├── id, url_title, image, category_id, subcategory_id
-├── brand_id, price, sale_price, published
-├── product_options (size, color, stock)
-│   └── product_option_values
-├── product_images (gallery)
+├── id, url_title, subcategory_id, brand_id
+├── us_product_id, ka_product_id → locale_products
+├── product_options (size, color, barcode, stock via warehouse)
+│   └── option_images
+├── product_images (general gallery)
+├── product_option_combinations (bundles)
 ├── product_feedbacks (reviews)
-└── locale_products (1:many)
-    └── product_id, lang, title, description
+└── locale_products (title, description per lang)
 ```
 
-![Product tables](DEMO_IMAGES/Shop/Product_table_diograms.drawio.png)
+![Product tables (colors)](DEMO_IMAGES/Shop/Product_colors_structure.svg)
+![Product full structure](DEMO_IMAGES/Shop/Product_full_structure.svg)
 
 ### Orders
 
 ```
 orders
-├── id, user_id, status, total_price
-├── address (delivery details)
-├── sale_code_id (discount applied)
-└── order_products (1:many)
-    ├── product_id, quantity, price
-    └── product_option_id
+├── id, user_id, adres_id (→ user_adreses)
+├── status (pending → shipped → delivered)
+├── payment, confirm, discount, shiping
+├── tbc_pay_id, tbc_pay_status
+└── order_products (pivot)
+    ├── product_id, product_option_id, quantity
 ```
 
 Order statuses: `pending` → `processing` → `shipped` → `delivered` / `cancelled`
 
-![Order structure](DEMO_IMAGES/Shop/Product_order_structur.drawio.png)
+![Order structure](DEMO_IMAGES/Shop/Order_structure.svg)
+![Order full structure](DEMO_IMAGES/Shop/Order_full_structure.svg)
 
 ### Custom Orders
 
@@ -162,11 +165,15 @@ user_adreses
 
 ```
 tours (global)
-├── id, url_title, image, category_id, price, duration
+├── id, url_title, min_price, category_id
 ├── tour_images
-└── locale_tours (1:many)
-    └── tour_id, lang, title, description, program
+├── locale_tours (en, ka, ru — title, description, location, duration)
+├── tour_reservations (check_in, persons, contact)
+│   └── tour_reservation_users (pivot → users)
+└── user_tours (pivot → users, for booked tours)
 ```
+
+![Tour structure](DEMO_IMAGES/Shop/Tour_structure.svg)
 
 ### Services
 
@@ -178,7 +185,129 @@ services (global)
     └── service_id, lang, title, description
 ```
 
-![Services diagram](DEMO_IMAGES/Shop/Sevices.drawio.png)
+![Services diagram](DEMO_IMAGES/Shop/Service_structure.svg)
+
+### Warehouse & Stock
+
+```
+warehouses
+└── warehouses_product_options (pivot)
+    ├── warehouse_id
+    ├── product_option_id
+    └── quantity (stock count)
+```
+
+The `general = 1` warehouse is the canonical stock source used for product option and combination stock calculations.
+
+![Warehouse structure](DEMO_IMAGES/Shop/Warehouse_barcode_structure.svg)
+
+---
+
+## Product Combinations
+
+A **combination** is a bundle of two or more product options sold as a single purchasable variant with its own name, price, discount, and optional barcode. Combinations appear in the storefront variant selector alongside regular product options.
+
+### Concept
+
+A regular product has **options** (e.g. "Red M", "Blue L"). A combination bundles multiple options from any products into one variant:
+
+```
+Combination: "Rope + Harness Bundle"
+  ├── links to: Product_option(id=5, product_id=10, name="60m Rope")
+  └── links to: Product_option(id=8, product_id=14, name="M Harness")
+
+Price:    ₾249   (overrides individual option prices)
+Discount: 10%
+Barcode:  GEO-BUNDLE-001
+```
+
+Stock = **minimum** across all linked options' general-warehouse quantities. If any member option runs out, the combination is out of stock.
+
+### Database Tables
+
+```
+product_option_combinations
+├── id, product_id (FK products)
+├── name, price, currency
+├── discount (0–100), barcode (nullable)
+└── created_at, updated_at
+
+product_option_combination_items  (pivot)
+├── combination_id → product_option_combinations
+└── product_option_id → product_options
+
+combinate_product_option_images
+├── id, combination_id
+├── image (filename in product_option_img/)
+└── title (alt text)
+```
+
+### Stock Calculation
+
+```php
+// ProductService::get_combination_stock_quantity()
+// stock = min quantity across all linked options in the general warehouse
+foreach ($combo->options as $option) {
+    $general = $option->warehouse->where('general', 1)->first();
+    $qty = $general ? (int)($general->pivot->quantity ?? 0) : 0;
+    if ($qty < $min) $min = $qty;
+}
+```
+
+If a linked option has no general warehouse entry its stock is treated as 0, making the whole combination out of stock.
+
+### API Endpoints
+
+All under `/api/set_product_combination/`, require `auth:sanctum + banned`.
+
+| Method | URI | Description | Permission |
+|---|---|---|---|
+| GET | `/get_combinations/{product_id}` | List combinations for a product | `product_option › show` |
+| GET | `/get_editing_combination/{id}` | Get one combination for editing | `product_option › show` |
+| GET | `/search_products?query=…` | Search products (for option selection) | `product_option › show` |
+| GET | `/get_product_options/{product_id}` | Get linkable options | `product_option › show` |
+| POST | `/add_combination` | Create combination | `product_option › add` |
+| POST | `/edit_combination/{id}` | Update combination | `product_option › edit` |
+| DELETE | `/del_combination/{id}` | Delete combination + images | `product_option › del` |
+| DELETE | `/del_combination_image/{image_id}` | Delete one combination image | `product_option › edit` |
+
+**Controller:** `App\Http\Controllers\Api\User\Admin\Shop\ProductCombinationController`
+
+**`add_combination` / `edit_combination` request** (multipart/form-data):
+
+```
+product_id   int       (add only)
+data         JSON string  { name, price, currency, discount, barcode, option_ids: [5, 8] }
+images[]     file uploads (optional)
+```
+
+Images are stored in `public/images/product_option_img/`.
+
+### ProductService Integration
+
+`ProductService::get_combination_options($product_id)` returns entries shaped identically to regular option entries, appended to the options array when building the product detail page. The only addition is:
+
+```php
+'is_combination'          => true,
+'combination_option_ids'  => [5, 8],
+```
+
+### Frontend Display
+
+The `ProductPage.vue` variant selector receives combinations mixed into `product_options`. The `is_combination: true` flag signals the frontend to:
+- Display the variant as a single selectable item (no sub-options).
+- Show a bundle label or icon.
+- Use combination images instead of individual option images.
+- Add a `combination_id` cart item instead of a regular `product_option_id`.
+
+### Permissions Required
+
+| Subject | Action | Used For |
+|---|---|---|
+| `product_option` | `show` | List / view combinations |
+| `product_option` | `add` | Create combination |
+| `product_option` | `edit` | Edit combination or delete an image |
+| `product_option` | `del` | Delete combination |
 
 ---
 

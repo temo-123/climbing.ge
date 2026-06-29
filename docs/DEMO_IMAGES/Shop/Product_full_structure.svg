@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="980" height="510" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="980" height="510" fill="white"/>
+<rect x="10" y="10" width="980" height="540" rx="14" fill="#fff8f0" stroke="#e65100" stroke-width="1.5"/>
+<text x="500" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Product Full Structure</text>
+<rect x="25" y="60" width="220" height="160" rx="10" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
+<text x="135" y="82" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Product (global)</text>
+<text x="135" y="97" text-anchor="middle" font-size="10" fill="#666">tab = products</text>
+<text x="40" y="114" text-anchor="start" font-size="10" fill="#333">id, url_title, published</text>
+<text x="40" y="129" text-anchor="start" font-size="10" fill="#333">subcategory_id, brand_id</text>
+<text x="40" y="144" text-anchor="start" font-size="10" fill="#333">us_product_id, ka_product_id</text>
+<text x="40" y="159" text-anchor="start" font-size="10" fill="#333">sale_type, made_in_georgia</text>
+<text x="40" y="174" text-anchor="start" font-size="10" fill="#333">is_donation_product</text>
+<rect x="275" y="60" width="185" height="75" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+<text x="367.5" y="90.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_product (EN)</text>
+<text x="367.5" y="106.5" text-anchor="middle" font-size="9" fill="#666">tab = locale_products</text><text x="290" y="100" text-anchor="start" font-size="10" fill="#555">title, short_description</text>
+<rect x="275" y="150" width="185" height="75" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+<text x="367.5" y="180.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_product (KA)</text>
+<text x="367.5" y="196.5" text-anchor="middle" font-size="9" fill="#666">tab = locale_products</text><text x="290" y="185" text-anchor="start" font-size="10" fill="#555">title, short_description, text</text>
+<rect x="490" y="60" width="200" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="590" y="90.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">product_images</text>
+<text x="590" y="106.5" text-anchor="middle" font-size="9" fill="#666">tab = product_images</text><text x="505" y="96" text-anchor="start" font-size="10" fill="#555">id, product_id → products</text>
+<rect x="710" y="60" width="200" height="75" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="810" y="97.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Category / Subcategory</text>
+<text x="715" y="90" text-anchor="start" font-size="10" fill="#444" font-weight="bold">product_categories</text>
+<text x="715" y="105" text-anchor="start" font-size="10" fill="#444" font-weight="bold">product_subcategories</text>
+<rect x="710" y="150" width="200" height="75" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5"/>
+<text x="810" y="180.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Brand</text>
+<text x="810" y="196.5" text-anchor="middle" font-size="9" fill="#666">tab = product_brands</text><text x="715" y="180" text-anchor="start" font-size="10" fill="#444">id, image</text>
+<text x="715" y="195" text-anchor="start" font-size="10" fill="#555">→ locale_brands (title)</text>
+<rect x="25" y="255" width="280" height="140" rx="10" fill="#b3e5fc" stroke="#0288d1" stroke-width="1.5"/>
+<text x="165" y="277" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Product Option</text>
+<text x="165" y="292" text-anchor="middle" font-size="10" fill="#666">tab = product_options</text>
+<text x="40" y="308" text-anchor="start" font-size="10" fill="#333">id, product_id → products</text>
+<text x="40" y="323" text-anchor="start" font-size="10" fill="#333">name, price, currency</text>
+<text x="40" y="338" text-anchor="start" font-size="10" fill="#333">discount, barcode (unique)</text>
+<text x="40" y="353" text-anchor="start" font-size="10" fill="#333">published</text>
+<rect x="330" y="255" width="185" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="422.5" y="285.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">option_images</text>
+<text x="422.5" y="301.5" text-anchor="middle" font-size="9" fill="#666">tab = option_images</text><text x="345" y="288" text-anchor="start" font-size="10" fill="#555">id, option_id → product_options</text>
+<rect x="330" y="350" width="185" height="75" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+<text x="422.5" y="380.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">warehouses_product_options</text>
+<text x="422.5" y="396.5" text-anchor="middle" font-size="9" fill="#666">(pivot / stock)</text><text x="345" y="380" text-anchor="start" font-size="10" fill="#555">warehouse_id, product_option_id</text>
+<text x="345" y="395" text-anchor="start" font-size="10" fill="#555">quantity</text>
+<rect x="540" y="255" width="240" height="140" rx="10" fill="#e0f2f1" stroke="#00897b" stroke-width="1.5"/>
+<text x="660" y="277" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Combination</text>
+<text x="660" y="292" text-anchor="middle" font-size="9" fill="#666">product_option_combinations</text>
+<text x="555" y="308" text-anchor="start" font-size="10" fill="#333">id, product_id, name</text>
+<text x="555" y="323" text-anchor="start" font-size="10" fill="#333">price, currency, discount</text>
+<text x="555" y="338" text-anchor="start" font-size="10" fill="#333">barcode</text>
+<text x="555" y="353" text-anchor="start" font-size="10" fill="#888">→ items (pivot)</text>
+<text x="555" y="368" text-anchor="start" font-size="10" fill="#888">→ combinate_option_images</text>
+<rect x="540" y="420" width="240" height="60" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="660" y="450" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">product_feedbacks</text>
+<text x="555" y="448" text-anchor="start" font-size="10" fill="#555">id, product_id, user_id, stars, text</text>
+<rect x="800" y="255" width="160" height="75" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
+<text x="880" y="285.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Warehouse</text>
+<text x="880" y="301.5" text-anchor="middle" font-size="9" fill="#666">tab = warehouses</text><text x="815" y="287" text-anchor="start" font-size="10" fill="#444">id, name</text>
+<text x="815" y="302" text-anchor="start" font-size="10" fill="#444">general (bool)</text>
+<line x1="245" y1="100" x2="273" y2="90" stroke="#555" stroke-width="1.5"/>
+<polygon points="273,90 266.2517248060519,95.95489562517642 264.00615182945785,89.66729129071295" fill="#555"/><line x1="245" y1="165" x2="273" y2="180" stroke="#555" stroke-width="1.5"/>
+<polygon points="273,180 264.0561972318133,178.99581274466544 267.2090158157608,173.11055138796354" fill="#555"/><line x1="245" y1="115" x2="488" y2="90" stroke="#555" stroke-width="1.5"/>
+<polygon points="488,90 480.0275440519067,94.17611615687493 479.3442608570327,87.53460350269921" fill="#555"/><line x1="245" y1="125" x2="708" y2="90" stroke="#555" stroke-width="1.5"/>
+<polygon points="708,90 699.9174331753112,93.95880203147881 699.4141608898128,87.30122865474291" fill="#555"/><line x1="245" y1="145" x2="708" y2="175" stroke="#555" stroke-width="1.5"/>
+<polygon points="708,175 699.4436572924351,177.7908779032233 699.8753590471009,171.12828082288055" fill="#555"/><line x1="135" y1="220" x2="135" y2="253" stroke="#0288d1" stroke-width="1.5"/>
+<polygon points="135,253 131.66171577528317,244.6420182798114 138.33828422471683,244.6420182798114" fill="#0288d1"/><line x1="305" y1="300" x2="328" y2="275" stroke="#555" stroke-width="1.5"/>
+<polygon points="328,275 324.7979207789092,283.41110507970615 319.88442700482034,278.8906908075444" fill="#555"/><line x1="305" y1="365" x2="328" y2="380" stroke="#555" stroke-width="1.5"/>
+<polygon points="328,380 319.17566882871574,378.2304861177428 322.8228630572575,372.6381216339788" fill="#555"/><line x1="245" y1="180" x2="538" y2="300" stroke="#555" stroke-width="1.5"/>
+<polygon points="538,300 529.0003419616173,299.9215449671906 531.5307731240056,293.7430755456925" fill="#555"/><line x1="245" y1="190" x2="538" y2="440" stroke="#555" stroke-width="1.5"/>
+<polygon points="538,440 529.4750983223807,437.1145101998232 533.8087200790255,432.03550550103546" fill="#555"/><line x1="780" y1="310" x2="798" y2="285" stroke="#9c27b0" stroke-width="1.5"/>
+<polygon points="798,285 795.8255240722506,293.733364439873 790.4072594924836,289.8322139424408" fill="#9c27b0"/></svg>

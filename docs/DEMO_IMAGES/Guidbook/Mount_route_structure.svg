@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1100" height="320" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="1100" height="320" fill="white"/>
+<rect x="20" y="20" width="520" height="280" rx="14" fill="#f5f5f5" stroke="#aaa" stroke-width="1.5"/>
+<text x="280" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Mount Route 1</text>
+<text x="280" y="64" text-anchor="middle" font-size="11" fill="#666">tab = articles</text><rect x="560" y="20" width="520" height="280" rx="14" fill="#f5f5f5" stroke="#aaa" stroke-width="1.5"/>
+<text x="820" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Mount Route 2</text>
+<rect x="30" y="70" width="1050" height="50" rx="8" fill="#fff9c4" stroke="#d6b656" stroke-width="1.5"/>
+<text x="555" y="100" text-anchor="middle" font-size="14" fill="#555" font-weight="bold">Mount System  (tab = "mounts")</text>
+<rect x="40" y="145" width="200" height="90" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="140" y="183" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount route image 1</text>
+<text x="140" y="199" text-anchor="middle" font-size="9" fill="#666">tab = "mount_route_images"</text><rect x="280" y="145" width="200" height="90" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="380" y="183" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount route image 2</text>
+<text x="380" y="199" text-anchor="middle" font-size="9" fill="#666">tab = "mount_route_images"</text><rect x="565" y="145" width="150" height="90" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="640" y="183" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount route image 3</text>
+<text x="640" y="199" text-anchor="middle" font-size="9" fill="#666">tab = "mount_route_images"</text><rect x="730" y="145" width="150" height="90" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="805" y="183" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount route image 4</text>
+<text x="805" y="199" text-anchor="middle" font-size="9" fill="#666">tab = "mount_route_images"</text><rect x="895" y="145" width="150" height="90" rx="8" fill="#ffe6cc" stroke="#d79b00" stroke-width="1.5"/>
+<text x="970" y="183" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount route image 5</text>
+<text x="970" y="199" text-anchor="middle" font-size="9" fill="#666">tab = "mount_route_images"</text></svg>

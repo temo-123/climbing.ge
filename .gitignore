@@ -70,4 +70,5 @@ CLAUDE.md
 /.claude/
 
 # Private docs (local setup guides, credentials)
+/docs/TBC_PAYMENT_SETUP.md
 /docs/SOCIAL_LOGIN_GUIDE.md

@@ -55,6 +55,8 @@ Requires `auth:sanctum` + `banned` middleware.
 
 ## Database
 
+![Films structure](DEMO_IMAGES/Films/Film_structure.svg)
+
 **Films table** (`films`):
 
 | Column | Type | Notes |

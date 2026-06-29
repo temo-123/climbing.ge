@@ -172,6 +172,10 @@ Export guide articles by category to PDF.
 
 Roles and permissions stored in custom `roles`, `permissions`, `user_role`, `user_permissions`, `role_permissions` tables (not Spatie).
 
+![User auth full structure](DEMO_IMAGES/User_and_admin/User_auth_full_structure.svg)
+
+![User role/permission overview](DEMO_IMAGES/User_and_admin/User_role_permission.svg)
+
 **Default roles:**
 
 | Role | Description |
@@ -186,7 +190,13 @@ Examples: `subject='article', action='add'` | `subject='summit', action='edit'` 
 
 Use the **Sync Admin Permissions** button to assign all existing permissions to the admin role at once.
 
-Diagram: `docs/DEMO_IMAGES/User_and_admin/Laravel_role_permission.png`
+### User Profile, Addresses & Favorites
+
+![User profile structure](DEMO_IMAGES/User_and_admin/User_profile_structure.svg)
+
+### Task System
+
+![Task structure](DEMO_IMAGES/User_and_admin/Task_structure.svg)
 
 ### Frontend (CASL Vue)
 

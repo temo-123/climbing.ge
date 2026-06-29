@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="830" height="430" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="830" height="430" fill="white"/>
+<rect x="10" y="10" width="960" height="410" rx="14" fill="#ecf3fb" stroke="#2196f3" stroke-width="1.5"/>
+<text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Summit System</text>
+<rect x="30" y="55" width="260" height="155" rx="10" fill="#bbdefb" stroke="#2196f3" stroke-width="1.5"/>
+<text x="160" y="78" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Summit</text>
+<text x="160" y="93" text-anchor="middle" font-size="10" fill="#666">tab = summits</text>
+<text x="45" y="110" text-anchor="start" font-size="10" fill="#333">id, url_title, title, ka_title</text>
+<text x="45" y="125" text-anchor="start" font-size="10" fill="#333">description, ka_description</text>
+<text x="45" y="140" text-anchor="start" font-size="10" fill="#333">image, height, qr_code</text>
+<text x="45" y="155" text-anchor="start" font-size="10" fill="#333">latitude, longitude</text>
+<text x="45" y="170" text-anchor="start" font-size="10" fill="#333">published</text>
+<rect x="330" y="55" width="240" height="90" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
+<text x="450" y="93" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Summit Mount Route</text>
+<text x="450" y="109" text-anchor="middle" font-size="9" fill="#666">tab = summit_mount_routes</text><text x="345" y="90" text-anchor="start" font-size="10" fill="#333">id, summit_id → summits</text>
+<text x="345" y="105" text-anchor="start" font-size="10" fill="#333">article_id → articles</text>
+<rect x="620" y="55" width="180" height="90" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
+<text x="710" y="93" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Climbing Spot</text>
+<text x="710" y="109" text-anchor="middle" font-size="9" fill="#666">tab = articles</text><text x="635" y="90" text-anchor="start" font-size="10" fill="#333">id, url_title</text>
+<rect x="30" y="235" width="260" height="155" rx="10" fill="#c8e6c9" stroke="#43a047" stroke-width="1.5"/>
+<text x="160" y="258" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Summit Ascent</text>
+<text x="160" y="273" text-anchor="middle" font-size="10" fill="#666">tab = summit_ascents</text>
+<text x="45" y="290" text-anchor="start" font-size="10" fill="#333">id, summit_id, name, surname</text>
+<text x="45" y="305" text-anchor="start" font-size="10" fill="#333">email, route_id, other_route</text>
+<text x="45" y="320" text-anchor="start" font-size="10" fill="#333">photo, comment, ascent_date</text>
+<text x="45" y="335" text-anchor="start" font-size="10" fill="#333">is_gps_validated, lat, lng</text>
+<rect x="330" y="235" width="240" height="80" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="450" y="268" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">summit_ascent_users</text>
+<text x="450" y="284" text-anchor="middle" font-size="9" fill="#666">tab = summit_ascent_users</text><text x="345" y="265" text-anchor="start" font-size="10" fill="#333">ascent_id → summit_ascents</text>
+<text x="345" y="280" text-anchor="start" font-size="10" fill="#333">user_id → users</text>
+<rect x="330" y="340" width="240" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="450" y="370.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">summit_ascent_routes</text>
+<text x="450" y="386.5" text-anchor="middle" font-size="9" fill="#666">tab = summit_ascent_routes</text><text x="345" y="370" text-anchor="start" font-size="10" fill="#333">ascent_id → summit_ascents</text>
+<text x="345" y="385" text-anchor="start" font-size="10" fill="#333">article_id → articles</text>
+<rect x="620" y="235" width="180" height="80" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
+<text x="710" y="268" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">User</text>
+<text x="710" y="284" text-anchor="middle" font-size="9" fill="#666">tab = users</text><text x="635" y="265" text-anchor="start" font-size="10" fill="#333">id, name, email</text>
+<rect x="620" y="340" width="180" height="75" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
+<text x="710" y="370.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Route</text>
+<text x="710" y="386.5" text-anchor="middle" font-size="9" fill="#666">tab = routes</text><text x="635" y="370" text-anchor="start" font-size="10" fill="#333">id, name, grade</text>
+<text x="635" y="385" text-anchor="start" font-size="10" fill="#333">sector_id</text>
+<line x1="290" y1="100" x2="328" y2="100" stroke="#555" stroke-width="1.5"/>
+<polygon points="328,100 319.6420182798114,103.33828422471684 319.6420182798114,96.66171577528316" fill="#555"/><line x1="570" y1="100" x2="618" y2="100" stroke="#555" stroke-width="1.5"/>
+<polygon points="618,100 609.6420182798114,103.33828422471684 609.6420182798114,96.66171577528316" fill="#555"/><line x1="160" y1="210" x2="160" y2="233" stroke="#43a047" stroke-width="1.5"/>
+<polygon points="160,233 156.66171577528317,224.6420182798114 163.33828422471683,224.6420182798114" fill="#43a047"/><line x1="290" y1="270" x2="328" y2="265" stroke="#555" stroke-width="1.5"/>
+<polygon points="328,265 320.1489373628132,269.4000926657252 319.27794888009277,262.78058019705037" fill="#555"/><line x1="290" y1="360" x2="328" y2="368" stroke="#555" stroke-width="1.5"/>
+<polygon points="328,368 319.1335772457713,369.5448454755395 320.5090203238013,363.01149085489686" fill="#555"/><line x1="570" y1="265" x2="618" y2="260" stroke="#555" stroke-width="1.5"/>
+<polygon points="618,260 610.0328640765958,264.1862567023539 609.3411309632598,257.5456188143278" fill="#555"/><line x1="570" y1="368" x2="618" y2="365" stroke="#555" stroke-width="1.5"/>
+<polygon points="618,365 609.8665312418897,368.85313975360907 609.4500583446162,362.1895733972343" fill="#555"/></svg>

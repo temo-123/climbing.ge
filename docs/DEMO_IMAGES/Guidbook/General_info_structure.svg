@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="820" height="200" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="820" height="200" fill="white"/>
+<rect x="20" y="30" width="160" height="118" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5"/>
+<text x="100" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">articles</text>
+<line x1="20" y1="60" x2="180" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="60" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="100" y1="60" x2="100" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="140" y="74.3" text-anchor="middle" font-size="10" fill="#444">category</text>
+<line x1="20" y1="82" x2="180" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="60" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="100" y1="82" x2="100" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="140" y="96.3" text-anchor="middle" font-size="10" fill="#444">outdoor</text>
+<line x1="20" y1="104" x2="180" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="60" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="100" y1="104" x2="100" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="140" y="118.3" text-anchor="middle" font-size="10" fill="#444">mount</text>
+<line x1="20" y1="126" x2="180" y2="126" stroke="#bbb" stroke-width="0.8"/>
+<text x="60" y="140.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="100" y1="126" x2="100" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="140" y="140.3" text-anchor="middle" font-size="10" fill="#444">ice</text>
+<rect x="220" y="30" width="360" height="140" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5"/>
+<text x="400" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">general_info_article (pivot)</text>
+<line x1="220" y1="60" x2="580" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="256" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="292" y1="60" x2="292" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="328" y="74.3" text-anchor="middle" font-size="10" fill="#444">article_id</text>
+<line x1="364" y1="60" x2="364" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="400" y="74.3" text-anchor="middle" font-size="10" fill="#444">info_id</text>
+<line x1="436" y1="60" x2="436" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="472" y="74.3" text-anchor="middle" font-size="10" fill="#444">block</text>
+<line x1="508" y1="60" x2="508" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="544" y="74.3" text-anchor="middle" font-size="10" fill="#444">block_action</text>
+<line x1="220" y1="82" x2="580" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="256" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="292" y1="82" x2="292" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="328" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="364" y1="82" x2="364" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="400" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="436" y1="82" x2="436" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="472" y="96.3" text-anchor="middle" font-size="10" fill="#444">routes_info</text>
+<line x1="508" y1="82" x2="508" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="544" y="96.3" text-anchor="middle" font-size="10" fill="#444">after</text>
+<line x1="220" y1="104" x2="580" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="256" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="292" y1="104" x2="292" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="328" y="118.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="364" y1="104" x2="364" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="400" y="118.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="436" y1="104" x2="436" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="472" y="118.3" text-anchor="middle" font-size="10" fill="#444">what_need</text>
+<line x1="508" y1="104" x2="508" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="544" y="118.3" text-anchor="middle" font-size="10" fill="#444">after</text>
+<line x1="220" y1="126" x2="580" y2="126" stroke="#bbb" stroke-width="0.8"/>
+<text x="256" y="140.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="292" y1="126" x2="292" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="328" y="140.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="364" y1="126" x2="364" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="400" y="140.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="436" y1="126" x2="436" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="472" y="140.3" text-anchor="middle" font-size="10" fill="#444">best_time</text>
+<line x1="508" y1="126" x2="508" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="544" y="140.3" text-anchor="middle" font-size="10" fill="#444">before</text>
+<line x1="220" y1="148" x2="580" y2="148" stroke="#bbb" stroke-width="0.8"/>
+<text x="256" y="162.3" text-anchor="middle" font-size="10" fill="#444">4</text>
+<line x1="292" y1="148" x2="292" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="328" y="162.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="364" y1="148" x2="364" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="400" y="162.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="436" y1="148" x2="436" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="472" y="162.3" text-anchor="middle" font-size="10" fill="#444">info_block</text>
+<line x1="508" y1="148" x2="508" y2="170" stroke="#ccc" stroke-width="0.8"/>
+<text x="544" y="162.3" text-anchor="middle" font-size="10" fill="#444">before</text>
+<rect x="630" y="30" width="160" height="118" rx="6" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5"/>
+<text x="710" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">general_infos</text>
+<line x1="630" y1="60" x2="790" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="670" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="710" y1="60" x2="710" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="750" y="74.3" text-anchor="middle" font-size="10" fill="#444">title</text>
+<line x1="630" y1="82" x2="790" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="670" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="710" y1="82" x2="710" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="750" y="96.3" text-anchor="middle" font-size="10" fill="#444">General info 1</text>
+<line x1="630" y1="104" x2="790" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="670" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="710" y1="104" x2="710" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="750" y="118.3" text-anchor="middle" font-size="10" fill="#444">General info 2</text>
+<line x1="630" y1="126" x2="790" y2="126" stroke="#bbb" stroke-width="0.8"/>
+<text x="670" y="140.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="710" y1="126" x2="710" y2="148" stroke="#ccc" stroke-width="0.8"/>
+<text x="750" y="140.3" text-anchor="middle" font-size="10" fill="#444">General info 3</text>
+<line x1="180" y1="60" x2="218" y2="60" stroke="#555" stroke-width="1.5"/>
+<polygon points="218,60 209.6420182798114,63.338284224716844 209.6420182798114,56.661715775283156" fill="#555"/><line x1="180" y1="73" x2="218" y2="73" stroke="#555" stroke-width="1.5"/>
+<polygon points="218,73 209.6420182798114,76.33828422471684 209.6420182798114,69.66171577528316" fill="#555"/><line x1="180" y1="86" x2="218" y2="86" stroke="#555" stroke-width="1.5"/>
+<polygon points="218,86 209.6420182798114,89.33828422471684 209.6420182798114,82.66171577528316" fill="#555"/><line x1="580" y1="60" x2="628" y2="60" stroke="#555" stroke-width="1.5"/>
+<polygon points="628,60 619.6420182798114,63.338284224716844 619.6420182798114,56.661715775283156" fill="#555"/><line x1="580" y1="73" x2="628" y2="73" stroke="#555" stroke-width="1.5"/>
+<polygon points="628,73 619.6420182798114,76.33828422471684 619.6420182798114,69.66171577528316" fill="#555"/><line x1="580" y1="86" x2="628" y2="86" stroke="#555" stroke-width="1.5"/>
+<polygon points="628,86 619.6420182798114,89.33828422471684 619.6420182798114,82.66171577528316" fill="#555"/></svg>

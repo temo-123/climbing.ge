@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="640" height="170" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="640" height="170" fill="white"/>
+<rect x="20" y="30" width="260" height="96" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5"/>
+<text x="150" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">interested_events  (events)</text>
+<line x1="20" y1="60" x2="280" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="63.333333333333336" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="106.66666666666667" y1="60" x2="106.66666666666667" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="150" y="74.3" text-anchor="middle" font-size="10" fill="#444">event_id</text>
+<line x1="193.33333333333334" y1="60" x2="193.33333333333334" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="236.66666666666669" y="74.3" text-anchor="middle" font-size="10" fill="#444">user_id</text>
+<line x1="20" y1="82" x2="280" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="63.333333333333336" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="106.66666666666667" y1="82" x2="106.66666666666667" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="150" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="193.33333333333334" y1="82" x2="193.33333333333334" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="236.66666666666669" y="96.3" text-anchor="middle" font-size="10" fill="#444">3</text>
+<line x1="20" y1="104" x2="280" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="63.333333333333336" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="106.66666666666667" y1="104" x2="106.66666666666667" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="150" y="118.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="193.33333333333334" y1="104" x2="193.33333333333334" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="236.66666666666669" y="118.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<rect x="340" y="30" width="260" height="96" rx="6" fill="#fff9c4" stroke="#d6b656" stroke-width="1.5"/>
+<text x="470" y="51" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">interested_events  (articles)</text>
+<line x1="340" y1="60" x2="600" y2="60" stroke="#bbb" stroke-width="0.8"/>
+<text x="383.3333333333333" y="74.3" text-anchor="middle" font-size="10" fill="#444">id</text>
+<line x1="426.6666666666667" y1="60" x2="426.6666666666667" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="470" y="74.3" text-anchor="middle" font-size="10" fill="#444">article_id</text>
+<line x1="513.3333333333334" y1="60" x2="513.3333333333334" y2="82" stroke="#ccc" stroke-width="0.8"/>
+<text x="556.6666666666667" y="74.3" text-anchor="middle" font-size="10" fill="#444">user_id</text>
+<line x1="340" y1="82" x2="600" y2="82" stroke="#bbb" stroke-width="0.8"/>
+<text x="383.3333333333333" y="96.3" text-anchor="middle" font-size="10" fill="#444">1</text>
+<line x1="426.6666666666667" y1="82" x2="426.6666666666667" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="470" y="96.3" text-anchor="middle" font-size="10" fill="#444">6</text>
+<line x1="513.3333333333334" y1="82" x2="513.3333333333334" y2="104" stroke="#ccc" stroke-width="0.8"/>
+<text x="556.6666666666667" y="96.3" text-anchor="middle" font-size="10" fill="#444">5</text>
+<line x1="340" y1="104" x2="600" y2="104" stroke="#bbb" stroke-width="0.8"/>
+<text x="383.3333333333333" y="118.3" text-anchor="middle" font-size="10" fill="#444">2</text>
+<line x1="426.6666666666667" y1="104" x2="426.6666666666667" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="470" y="118.3" text-anchor="middle" font-size="10" fill="#444">8</text>
+<line x1="513.3333333333334" y1="104" x2="513.3333333333334" y2="126" stroke="#ccc" stroke-width="0.8"/>
+<text x="556.6666666666667" y="118.3" text-anchor="middle" font-size="10" fill="#444">6</text>
+<text x="318" y="30" text-anchor="middle" font-size="10" fill="#888">Both stored in same table "interested_events"</text>
+</svg>

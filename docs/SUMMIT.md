@@ -264,6 +264,8 @@ On update, `url_title` regenerates only if `title` changed.
 
 ## Database Models
 
+![Summit system structure](DEMO_IMAGES/Summit/Summit_structure.svg)
+
 ### `Summit` (`app/Models/Summit/Summit.php`) — table: `summits`
 
 | Column | Type | Notes |

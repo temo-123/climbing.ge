@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="700" height="260" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
+<rect width="700" height="260" fill="white"/>
+<rect x="20" y="20" width="660" height="220" rx="14" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+<text x="350" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Local Business 1</text>
+<text x="350" y="64" text-anchor="middle" font-size="11" fill="#666">id = 1  /  article_id = XXX</text><rect x="50" y="90" width="175" height="90" rx="8" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+<text x="137.5" y="128" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Image 1</text>
+<text x="137.5" y="144" text-anchor="middle" font-size="9" fill="#666">tab = suport_local_bisnes_images
+bisnes_id = 1</text><rect x="242" y="90" width="175" height="90" rx="8" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+<text x="329.5" y="128" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Image 2</text>
+<text x="329.5" y="144" text-anchor="middle" font-size="9" fill="#666">tab = suport_local_bisnes_images
+bisnes_id = 1</text><rect x="434" y="90" width="Image 3" height="" rx="8" fill="undefined" stroke="undefined" stroke-width="1.5"/>
+<text x="NaN" y="83" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">#fff</text>
+<text x="NaN" y="99" text-anchor="middle" font-size="9" fill="#666">#aaa</text><rect x="434" y="90" width="175" height="90" rx="8" fill="#fff" stroke="#aaa" stroke-width="1.5"/>
+<text x="521.5" y="128" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Image 3</text>
+<text x="521.5" y="144" text-anchor="middle" font-size="9" fill="#666">tab = suport_local_bisnes_images
+bisnes_id = 1</text><text x="195" y="142" text-anchor="middle" font-size="10" fill="#666">bisnes_id = 1</text>
+<text x="330" y="142" text-anchor="middle" font-size="10" fill="#666">bisnes_id = 1</text>
+<text x="522" y="142" text-anchor="middle" font-size="10" fill="#666">bisnes_id = 1</text>
+</svg>

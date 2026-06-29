@@ -108,6 +108,10 @@ Full endpoint list in [BACKEND/API.md](BACKEND/API.md#guide--public).
 
 ## Database Structure
 
+### Full Entity Hierarchy
+
+![Guidebook full hierarchy](DEMO_IMAGES/Guidbook/Guide_full_hierarchy.svg)
+
 ### Articles (Global + Locale)
 
 Articles have two tables:
@@ -121,7 +125,7 @@ articles
     └── article_id, lang, title, short_description, text
 ```
 
-![Article structure](DEMO_IMAGES/Guidbook/Article_structur_diogram.drawio.png)
+![Article structure](DEMO_IMAGES/Guidbook/Article_structure.svg)
 
 ### General Info
 
@@ -132,7 +136,7 @@ general_infos
 └── inserted into article blocks as references
 ```
 
-![General info structure](DEMO_IMAGES/Guidbook/General_info_structur_diogram.drawio.png)
+![General info structure](DEMO_IMAGES/Guidbook/General_info_structure.svg)
 
 ### Outdoor Climbing Spot
 
@@ -147,9 +151,9 @@ article (outdoor)
     └── routes (1:many)     # Climbing routes
 ```
 
-![Climbing spot diagram](DEMO_IMAGES/Guidbook/Climbing_spot_diogram.drawio.png)  
-![Sector images](DEMO_IMAGES/Guidbook/Sector_images_diogram.drawio.png)  
-![Sector local images](DEMO_IMAGES/Guidbook/Sector_local_images_(area_local_images).drawio.png)
+![Climbing spot diagram](DEMO_IMAGES/Guidbook/Climbing_spot_overview.svg)  
+![Sector images](DEMO_IMAGES/Guidbook/Sector_images_structure.svg)  
+![Sector local images](DEMO_IMAGES/Guidbook/Sector_local_images_structure.svg)
 
 ### Routes
 
@@ -161,8 +165,8 @@ mtps (multi-pitch routes)
 └── mtp_pitchs (individual pitches, ordered)
 ```
 
-![Route diagram](DEMO_IMAGES/Guidbook/Route_diogram.drawio.png)  
-![Multi-pitch structure](DEMO_IMAGES/Guidbook/Multy-pitch_structur_diogram.drawio.png)
+![Route diagram](DEMO_IMAGES/Guidbook/Route_structure.svg)  
+![Multi-pitch structure](DEMO_IMAGES/Guidbook/Mtp_structure.svg)
 
 ### Mountaineering Routes
 
@@ -172,7 +176,7 @@ mount_masives (mountain groups)
     └── locale_articles
 ```
 
-![Mount route diagram](DEMO_IMAGES/Guidbook/Mount_route_diogram.drawio.png)
+![Mount route diagram](DEMO_IMAGES/Guidbook/Mount_route_structure.svg)
 
 ### Gallery
 
@@ -186,7 +190,7 @@ mount_masives (mountain groups)
 
 Article images linked via `gallery_image_article` pivot table.
 
-![Gallery structure](DEMO_IMAGES/Guidbook/Guidbook_gallery_structure.drawio.png)
+![Gallery structure](DEMO_IMAGES/Guidbook/Gallery_structure.svg)
 
 ### Comments
 
@@ -196,9 +200,9 @@ Guests and authenticated users can comment on articles.
 
 **Comment violations:** Any user can report a comment. Admin reviews and decides. Email notification sent.
 
-![Comments diagram](DEMO_IMAGES/Guidbook/Guidbook_comments.drawio.png)  
-![Is it your comment](DEMO_IMAGES/Guidbook/Is_it_your_comment.drawio.png)  
-![Comment complaints](DEMO_IMAGES/Guidbook/Comment_complaints.drawio.png)
+![Comments diagram](DEMO_IMAGES/Guidbook/Comments_structure.svg)  
+![Is it your comment](DEMO_IMAGES/Guidbook/Comment_queries.svg)  
+![Comment complaints](DEMO_IMAGES/Guidbook/Comment_complaints.svg)
 
 ### Local Businesses
 
@@ -213,7 +217,7 @@ suport_local_bisneses (global)
 
 Visibility controlled by `published_date` — only show if still within date range.
 
-![Local business structure](DEMO_IMAGES/Guidbook/Locale_bisnes_structur_diogram.drawio.png)
+![Local business structure](DEMO_IMAGES/Guidbook/Local_business_structure.svg)
 
 ### Events
 
@@ -224,7 +228,7 @@ events (global)
 
 Users can mark events as "interested" → stored in `interested_events`.
 
-![Favorites diagram](DEMO_IMAGES/Guidbook/Favorite_outdoor_area_and_interesting_event.drawio.png)
+![Favorites diagram](DEMO_IMAGES/Guidbook/Favorites_and_events.svg)
 
 ### Favorite Outdoor Areas
 
