@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Models\Guide\Article;
 use App\Models\Guide\Event;
 use App\Models\Guide\Suport_local_bisnes;
@@ -12,16 +13,20 @@ use App\Models\Shop\Product_option;
 use App\Models\Shop\Service;
 use App\Models\Shop\Tour;
 use App\Models\Summit\Summit;
+use App\Services\Seo\KeywordGeneratorService;
 
 class SeoService
 {
+    /** Loaded once per request from resources/lang/seo/{locale}.json — see keywordTemplate(). */
+    private static array $templateCache = [];
+
     public function forSite(Request $request): array
     {
         $segments = $this->segments($request);
         $locale   = $this->locale($segments);
 
         if (count($segments) === 0) {
-            return $this->siteDefaults();
+            return $this->siteDefaults($locale);
         }
 
         $type = $segments[0];
@@ -56,7 +61,7 @@ class SeoService
             return $this->localBisnesMeta($slug, $locale);
         }
 
-        return $this->siteDefaults();
+        return $this->siteDefaults($locale);
     }
 
     public function forBlog(Request $request): array
@@ -65,7 +70,7 @@ class SeoService
         $locale   = $this->locale($segments);
 
         if (count($segments) === 0) {
-            return $this->blogDefaults();
+            return $this->blogDefaults($locale);
         }
 
         $type = $segments[0];
@@ -77,12 +82,16 @@ class SeoService
 
         // Named blog pages
         if ($type === 'about_us') {
-            $data  = $this->getSiteLocaleData($locale);
-            $desc  = $this->truncate(strip_tags($data['blog_short_description'] ?? ''));
-            return $this->build('About Us | blog.climbing.ge', $desc ?: 'About the climbing.ge blog.', $this->defaultImage(), 'website');
+            $aboutUs  = $this->keywordTemplate($locale)['about_us'] ?? [];
+            $data     = $this->getSiteLocaleData($locale);
+            $desc     = $this->truncate(strip_tags($data['blog_short_description'] ?? '')) ?: ($aboutUs['blog_description'] ?? '');
+            $title    = $aboutUs['title'] ?? 'About Us';
+            $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.blog_post'));
+            $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
+            return $this->build($title . ' | blog.climbing.ge', $desc, $this->defaultImage(), 'website', null, $keywords);
         }
 
-        return $this->blogDefaults();
+        return $this->blogDefaults($locale);
     }
 
     public function forShop(Request $request): array
@@ -91,7 +100,7 @@ class SeoService
         $locale   = $this->locale($segments);
 
         if (count($segments) === 0) {
-            return $this->shopDefaults();
+            return $this->shopDefaults($locale);
         }
 
         $type = $segments[0];
@@ -99,26 +108,32 @@ class SeoService
 
         if (! $slug) {
             $data = $this->getSiteLocaleData($locale);
+            // Structural lookups only — title/topic come from the keyword template.
             $shopSections = [
-                'products' => ['key' => 'products_description', 'title' => 'Climbing Products', 'img' => 'shop.jpg'],
-                'services' => ['key' => 'services_description', 'title' => 'Climbing Services',  'img' => 'services.jpg'],
-                'tours'    => ['key' => 'tour_description',     'title' => 'Climbing Tours',      'img' => null],
+                'products' => ['key' => 'products_description', 'img' => 'shop.jpg'],
+                'services' => ['key' => 'services_description', 'img' => 'services.jpg'],
+                'tours'    => ['key' => 'tour_description',     'img' => null],
             ];
             if (isset($shopSections[$type])) {
-                $s     = $shopSections[$type];
-                $desc  = $this->truncate(strip_tags($data[$s['key']] ?? ''));
-                $img   = ($s['img'] && file_exists(public_path('images/meta_img/' . $s['img'])))
+                $s           = $shopSections[$type];
+                $sectionMeta = $this->keywordTemplate($locale)['shop_sections'][$type] ?? [];
+                $sectionTitle = $sectionMeta['title'] ?? ucwords($type);
+
+                $desc     = $this->truncate(strip_tags($data[$s['key']] ?? '')) ?: 'Climbing gear and services.';
+                $img      = ($s['img'] && file_exists(public_path('images/meta_img/' . $s['img'])))
                             ? asset('images/meta_img/' . $s['img']) : $this->defaultImage();
-                return $this->build($s['title'] . ' | shop.climbing.ge', $desc ?: 'Climbing gear and services.', $img, 'website');
+                $phrases  = array_merge([$sectionTitle], $this->geoPhrases($locale, "shop_sections.{$type}.topic"));
+                $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
+                return $this->build($sectionTitle . ' | shop.climbing.ge', $desc, $img, 'website', null, $keywords);
             }
-            return $this->shopDefaults();
+            return $this->shopDefaults($locale);
         }
 
         return match ($type) {
             'product' => $this->productMeta($slug, $locale),
             'service' => $this->serviceMeta($slug, $locale),
             'tour'    => $this->tourMeta($slug, $locale),
-            default   => $this->shopDefaults(),
+            default   => $this->shopDefaults($locale),
         };
     }
 
@@ -128,7 +143,7 @@ class SeoService
         $locale   = $this->locale($segments);
 
         if (count($segments) < 2 || $segments[0] !== 'summit') {
-            return $this->summitDefaults();
+            return $this->summitDefaults($locale);
         }
 
         $slug = $segments[1] ?? null;
@@ -137,7 +152,35 @@ class SeoService
             return $this->summitMeta($slug, $locale);
         }
 
-        return $this->summitDefaults();
+        return $this->summitDefaults($locale);
+    }
+
+    public function forFilms(Request $request): array
+    {
+        $segments = $this->segments($request);
+        $locale   = $this->locale($segments);
+
+        if (count($segments) === 0) {
+            return $this->filmsDefaults($locale);
+        }
+
+        $type = $segments[0];
+        $slug = $segments[1] ?? null;
+
+        if ($type === 'film' && $slug) {
+            return $this->filmMeta($slug, $locale);
+        }
+
+        if ($type === 'about_us') {
+            $aboutUs  = $this->keywordTemplate($locale)['about_us'] ?? [];
+            $title    = $aboutUs['title'] ?? 'About Us';
+            $desc     = $aboutUs['films_description'] ?? '';
+            $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.film'));
+            $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
+            return $this->build($title . ' | films.climbing.ge', $desc, $this->defaultImage(), 'website', null, $keywords);
+        }
+
+        return $this->filmsDefaults($locale);
     }
 
     // ── Internal resolvers ────────────────────────────────────────────────
@@ -147,11 +190,11 @@ class SeoService
         $article = Article::where('url_title', $slug)
             ->where('category', $category)
             ->where('published', true)
-            ->with(['global_article_us', 'global_article_ka'])
+            ->with(['global_article_us', 'global_article_ka', 'outdoor_region'])
             ->first();
 
         if (! $article) {
-            return $this->siteDefaults();
+            return $this->siteDefaults($locale);
         }
 
         $content  = $locale === 'ka' ? $article->global_article_ka : $article->global_article_us;
@@ -159,6 +202,9 @@ class SeoService
         $desc     = $this->truncate($content?->short_description ?? $article->global_article_us?->short_description ?? '');
         $imageDir = 'images/' . $category . '_img/';
         $image    = $article->image ? asset($imageDir . $article->image) : $this->defaultImage();
+
+        $regionField = $locale === 'ka' ? 'ka_name' : 'us_name';
+        $regionNames = $article->outdoor_region->pluck($regionField)->filter()->take(2)->values()->all();
 
         $schema = [
             '@context'      => 'https://schema.org',
@@ -173,11 +219,16 @@ class SeoService
             'publisher'     => $this->publisherSchema(),
         ];
 
-        if ($content?->meta_keyword) {
-            $schema['keywords'] = $content->meta_keyword;
-        }
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, "categories.{$category}", $regionNames));
+        $keywords = $content?->meta_keyword ?: $this->keywords(
+            "seo_kw:article:{$article->id}:{$locale}:{$article->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
 
-        return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema);
+        return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
     private function eventMeta(string $slug, string $locale): array
@@ -188,7 +239,7 @@ class SeoService
             ->first();
 
         if (! $event) {
-            return $this->siteDefaults();
+            return $this->siteDefaults($locale);
         }
 
         $content = $locale === 'ka' ? $event->ka_event : $event->us_event;
@@ -216,7 +267,16 @@ class SeoService
             ],
         ];
 
-        return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.event'));
+        $keywords = $this->keywords(
+            "seo_kw:event:{$event->id}:{$locale}:{$event->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
     private function localBisnesMeta(string $slug, string $locale): array
@@ -224,7 +284,7 @@ class SeoService
         $bisnes = Suport_local_bisnes::where('url_title', $slug)->first();
 
         if (! $bisnes) {
-            return $this->siteDefaults();
+            return $this->siteDefaults($locale);
         }
 
         $bisnes->load(['us_bisnes', 'ka_bisnes']);
@@ -243,7 +303,16 @@ class SeoService
             'address'     => ['@type' => 'PostalAddress', 'addressCountry' => 'GE'],
         ];
 
-        return $this->build($title . ' | climbing.ge', $desc, $image, 'website', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.local_business'));
+        $keywords = $this->keywords(
+            "seo_kw:bisnes:{$bisnes->id}:{$locale}:{$bisnes->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | climbing.ge', $desc, $image, 'website', $schema, $keywords);
     }
 
     private function blogPostMeta(string $slug, string $locale): array
@@ -254,7 +323,7 @@ class SeoService
             ->first();
 
         if (! $post) {
-            return $this->blogDefaults();
+            return $this->blogDefaults($locale);
         }
 
         $content = $locale === 'ka' ? $post->ka_post : $post->us_post;
@@ -276,7 +345,16 @@ class SeoService
             'author'        => $this->publisherSchema(),
         ];
 
-        return $this->build($title . ' | blog.climbing.ge', $desc, $image, 'article', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.blog_post'));
+        $keywords = $this->keywords(
+            "seo_kw:post:{$post->id}:{$locale}:{$post->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | blog.climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
     private function productMeta(string $slug, string $locale): array
@@ -287,7 +365,7 @@ class SeoService
             ->first();
 
         if (! $product) {
-            return $this->shopDefaults();
+            return $this->shopDefaults($locale);
         }
 
         $content = $locale === 'ka' ? $product->ka_product : $product->us_product;
@@ -318,7 +396,16 @@ class SeoService
             ];
         }
 
-        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.product'));
+        $keywords = $this->keywords(
+            "seo_kw:product:{$product->id}:{$locale}:{$product->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema, $keywords);
     }
 
     private function serviceMeta(string $slug, string $locale): array
@@ -329,7 +416,7 @@ class SeoService
             ->first();
 
         if (! $service) {
-            return $this->shopDefaults();
+            return $this->shopDefaults($locale);
         }
 
         $content = $locale === 'ka' ? $service->ka_service : $service->us_service;
@@ -350,7 +437,16 @@ class SeoService
             'areaServed'  => ['@type' => 'Country', 'name' => 'Georgia'],
         ];
 
-        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'website', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.service'));
+        $keywords = $content?->meta_keyword ?: $this->keywords(
+            "seo_kw:service:{$service->id}:{$locale}:{$service->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'website', $schema, $keywords);
     }
 
     private function tourMeta(string $slug, string $locale): array
@@ -361,7 +457,7 @@ class SeoService
             ->first();
 
         if (! $tour) {
-            return $this->shopDefaults();
+            return $this->shopDefaults($locale);
         }
 
         $content = $locale === 'ka' ? $tour->ka_tour : $tour->us_tour;
@@ -384,7 +480,57 @@ class SeoService
             $schema['itinerary'] = ['@type' => 'ItemList', 'name' => $content->duration];
         }
 
-        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'article', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.tour'));
+        $keywords = $this->keywords(
+            "seo_kw:tour:{$tour->id}:{$locale}:{$tour->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'article', $schema, $keywords);
+    }
+
+    private function filmMeta(string $slug, string $locale): array
+    {
+        $film = \App\Models\Films\Film::where('url_title', $slug)
+            ->where('published', true)
+            ->with(['us_film', 'ka_film'])
+            ->first();
+
+        if (! $film) {
+            return $this->filmsDefaults($locale);
+        }
+
+        $content = $locale === 'ka' ? $film->ka_film : $film->us_film;
+        $title   = $content?->name ?? $film->us_film?->name ?? 'Film | films.climbing.ge';
+        $desc    = $this->truncate($content?->short_description ?? $film->us_film?->short_description ?? '');
+        $image   = $film->image ? asset('images/film_img/' . $film->image) : $this->defaultImage();
+
+        $schema = [
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Movie',
+            'name'        => $title,
+            'description' => $desc,
+            'image'       => $image,
+            'url'         => request()->url(),
+        ];
+        if ($content?->coutry) {
+            $schema['countryOfOrigin'] = ['@type' => 'Country', 'name' => $content->coutry];
+        }
+
+        $extraLocations = $content?->coutry ? [$content->coutry] : [];
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.film', $extraLocations));
+        $keywords = $this->keywords(
+            "seo_kw:film:{$film->id}:{$locale}:{$film->updated_at?->timestamp}",
+            $content?->text ?? $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | films.climbing.ge', $desc, $image, 'video.movie', $schema, $keywords);
     }
 
     private function summitMeta(string $slug, string $locale): array
@@ -394,7 +540,7 @@ class SeoService
             ->first();
 
         if (! $summit) {
-            return $this->summitDefaults();
+            return $this->summitDefaults($locale);
         }
 
         $title = ($locale === 'ka' ? $summit->ka_title : $summit->title) ?? $summit->title ?? 'Summit | summit.climbing.ge';
@@ -429,40 +575,57 @@ class SeoService
             ];
         }
 
-        return $this->build($title . ' | summit.climbing.ge', $desc, $image, 'article', $schema);
+        $phrases  = array_merge([$title], $this->geoPhrases($locale, 'topics.summit'));
+        $keywords = $this->keywords(
+            "seo_kw:summit:{$summit->id}:{$locale}:{$summit->updated_at?->timestamp}",
+            $desc,
+            $phrases,
+            $locale
+        );
+        $schema['keywords'] = $keywords;
+
+        return $this->build($title . ' | summit.climbing.ge', $desc, $image, 'article', $schema, $keywords);
     }
 
     private function siteListMeta(string $type, string $locale): array
     {
         $data = $this->getSiteLocaleData($locale);
 
+        // Structural lookups only (DB field name + asset filename) — display
+        // title and keyword topic come from the keyword template (locale-aware).
         $sections = [
-            'outdoor'         => ['key' => 'outdoor_description',        'title' => 'Outdoor Climbing Georgia',       'img' => 'outdoor.jpg'],
-            'mountaineering'  => ['key' => 'mount_description',          'title' => 'Mountaineering Routes Georgia',  'img' => 'mount.jpg'],
-            'indoor'          => ['key' => 'indoor_description',         'title' => 'Indoor Climbing Georgia',        'img' => 'indoor.jpg'],
-            'ice'             => ['key' => 'ice_description',            'title' => 'Ice Climbing Georgia',           'img' => 'ice.jpg'],
-            'events'          => ['key' => 'event_description',          'title' => 'Climbing Events Georgia',        'img' => null],
-            'other'           => ['key' => 'other_activity_description', 'title' => 'Other Activities Georgia',       'img' => 'other.jpg'],
-            'news'            => ['key' => 'news_description',           'title' => 'Climbing News Georgia',          'img' => null],
-            'tech_tip'        => ['key' => 'tech_tips_description',      'title' => 'Climbing Tech Tips',            'img' => null],
-            'spot_projects'   => ['key' => 'guid_short_description',     'title' => 'Spot Projects Georgia',         'img' => null],
-            'about_us'        => ['key' => 'guid_short_description',     'title' => 'About Us | climbing.ge',        'img' => null],
-            'search_articles' => ['key' => 'guide_search_description',   'title' => 'Search',                       'img' => null],
+            'outdoor'         => ['key' => 'outdoor_description',        'img' => 'outdoor.jpg'],
+            'mountaineering'  => ['key' => 'mount_description',          'img' => 'mount.jpg'],
+            'indoor'          => ['key' => 'indoor_description',         'img' => 'indoor.jpg'],
+            'ice'             => ['key' => 'ice_description',            'img' => 'ice.jpg'],
+            'events'          => ['key' => 'event_description',          'img' => null],
+            'other'           => ['key' => 'other_activity_description', 'img' => 'other.jpg'],
+            'news'            => ['key' => 'news_description',           'img' => null],
+            'tech_tip'        => ['key' => 'tech_tips_description',      'img' => null],
+            'spot_projects'   => ['key' => 'guid_short_description',     'img' => null],
+            'about_us'        => ['key' => 'guid_short_description',     'img' => null],
+            'search_articles' => ['key' => 'guide_search_description',   'img' => null],
         ];
 
         if (! isset($sections[$type])) {
-            return $this->siteDefaults();
+            return $this->siteDefaults($locale);
         }
 
-        $section = $sections[$type];
-        $desc    = $this->truncate(strip_tags($data[$section['key']] ?? ''));
-        $title   = $section['title'] . ' | climbing.ge';
+        $section     = $sections[$type];
+        $sectionMeta = $this->keywordTemplate($locale)['list_sections'][$type] ?? [];
+        $sectionTitle = $sectionMeta['title'] ?? ucwords(str_replace('_', ' ', $type));
+
+        $desc    = $this->truncate(strip_tags($data[$section['key']] ?? '')) ?: 'Georgian rock climbing guidebook.';
+        $title   = $sectionTitle . ' | climbing.ge';
         $imgFile = $section['img'];
         $image   = ($imgFile && file_exists(public_path('images/meta_img/' . $imgFile)))
                     ? asset('images/meta_img/' . $imgFile)
                     : $this->defaultImage();
 
-        return $this->build($title, $desc ?: 'Georgian rock climbing guidebook.', $image, 'website');
+        $phrases  = array_merge([$sectionTitle], $this->geoPhrases($locale, "list_sections.{$type}.topic"));
+        $keywords = app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale);
+
+        return $this->build($title, $desc, $image, 'website', null, $keywords);
     }
 
     private function getSiteLocaleData(string $locale): array
@@ -476,49 +639,56 @@ class SeoService
 
     // ── Defaults ──────────────────────────────────────────────────────────
 
-    private function siteDefaults(): array
+    /**
+     * Title, description and keyword topic for a subdomain's fallback page
+     * all come from resources/lang/seo/{locale}.json#defaults.{key}.
+     */
+    private function defaultsFor(string $locale, string $key): array
     {
+        $tpl   = $this->keywordTemplate($locale)['defaults'][$key] ?? [];
+        $title = $tpl['title'] ?? 'climbing.ge';
+        $desc  = $tpl['description'] ?? '';
+
+        $phrases = $this->geoPhrases($locale, "defaults.{$key}.topic");
+
         return $this->build(
-            'climbing.ge — Georgian Climbing Guidebook',
-            'Georgian rock climbing guidebook, mountaineering routes, outdoor destinations, events and community.',
+            $title,
+            $desc,
             $this->defaultImage(),
-            'website'
+            'website',
+            null,
+            app(KeywordGeneratorService::class)->generate($desc, $phrases, $locale)
         );
     }
 
-    private function blogDefaults(): array
+    private function siteDefaults(string $locale = 'us'): array
     {
-        return $this->build(
-            'blog.climbing.ge — Climbing Blog',
-            'News, articles and stories from the Georgian climbing community.',
-            $this->defaultImage(),
-            'website'
-        );
+        return $this->defaultsFor($locale, 'site');
     }
 
-    private function shopDefaults(): array
+    private function blogDefaults(string $locale = 'us'): array
     {
-        return $this->build(
-            'shop.climbing.ge — Climbing Gear & Tours',
-            'Climbing gear, equipment, guided tours and services in Georgia.',
-            $this->defaultImage(),
-            'website'
-        );
+        return $this->defaultsFor($locale, 'blog');
     }
 
-    private function summitDefaults(): array
+    private function filmsDefaults(string $locale = 'us'): array
     {
-        return $this->build(
-            'summit.climbing.ge — Georgian Summits',
-            'Summit log, ascent records and mountain routes in Georgia.',
-            $this->defaultImage(),
-            'website'
-        );
+        return $this->defaultsFor($locale, 'films');
+    }
+
+    private function shopDefaults(string $locale = 'us'): array
+    {
+        return $this->defaultsFor($locale, 'shop');
+    }
+
+    private function summitDefaults(string $locale = 'us'): array
+    {
+        return $this->defaultsFor($locale, 'summit');
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────
 
-    private function build(string $title, string $description, string $image, string $type, ?array $schema = null): array
+    private function build(string $title, string $description, string $image, string $type, ?array $schema = null, string $keywords = ''): array
     {
         return [
             'title'       => $title,
@@ -527,7 +697,77 @@ class SeoService
             'type'        => $type,
             'schema'      => $schema,
             'url'         => request()->url(),
+            'keywords'    => $keywords,
         ];
+    }
+
+    /**
+     * Cache key already embeds the record's updated_at timestamp, so a
+     * content edit naturally invalidates it — no manual cache clearing needed.
+     */
+    private function keywords(string $cacheKey, string $text, array $phrases, string $locale): string
+    {
+        return Cache::rememberForever($cacheKey, fn () => app(KeywordGeneratorService::class)->generate($text, $phrases, $locale));
+    }
+
+    /**
+     * Loads resources/lang/seo/{en|ka}.json — the editable keyword/title/
+     * description templates — once per request and caches it statically.
+     */
+    private function keywordTemplate(string $locale): array
+    {
+        $file = $locale === 'ka' ? 'ka' : 'en';
+
+        if (! isset(self::$templateCache[$file])) {
+            $path = resource_path("lang/seo/{$file}.json");
+            self::$templateCache[$file] = file_exists($path)
+                ? (json_decode(file_get_contents($path), true) ?? [])
+                : [];
+        }
+
+        return self::$templateCache[$file];
+    }
+
+    /**
+     * Look up a dot-notation path in the locale's keyword template and
+     * always return an array of phrases (templates may store either a
+     * single string or a list).
+     */
+    private function template(string $locale, string $path): array
+    {
+        $value = data_get($this->keywordTemplate($locale), $path);
+
+        if ($value === null) {
+            return [];
+        }
+
+        return is_array($value) ? $value : [$value];
+    }
+
+    /**
+     * Locale-aware "topic + country/region" combos, e.g. "rock climbing Georgia",
+     * "rock climbing in Georgia" / "კლდეზე ცოცვა საქართველო", "კლდეზე ცოცვა საქართველოში".
+     * $topicPaths are dot-notation lookups into the keyword template (e.g.
+     * "topics.product" or "categories.outdoor"). $extraLocations are
+     * additional place names already in the right locale (e.g. a Region's
+     * us_name/ka_name) — no geocoding, just data already on hand.
+     */
+    private function geoPhrases(string $locale, string|array $topicPaths, array $extraLocations = []): array
+    {
+        $kw = app(KeywordGeneratorService::class);
+
+        $topics = [];
+        foreach ((array) $topicPaths as $path) {
+            $topics = array_merge($topics, $this->template($locale, $path));
+        }
+
+        $country   = $this->keywordTemplate($locale)['country'] ?? ($locale === 'ka' ? 'საქართველო' : 'Georgia');
+        $locations = $kw->locationVariants($country, $locale);
+        foreach ($extraLocations as $place) {
+            $locations = array_merge($locations, $kw->locationVariants($place, $locale));
+        }
+
+        return $kw->withLocations($topics, $locations);
     }
 
     private function segments(Request $request): array

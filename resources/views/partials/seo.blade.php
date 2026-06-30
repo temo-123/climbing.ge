@@ -7,11 +7,15 @@
         $seoType        = $seo['type'] ?? 'website';
         $seoUrl         = $seo['url'] ?? request()->url();
         $seoSchema      = $seo['schema'] ?? null;
+        $seoKeywords    = $seo['keywords'] ?? '';
         $seoLocale      = app()->getLocale() === 'ka' ? 'ka_GE' : 'en_US';
     @endphp
 
     <title>{{ $seoTitle }}</title>
     <meta name="description" content="{{ $seoDescription }}">
+    @if($seoKeywords)
+    <meta name="keywords" content="{{ $seoKeywords }}">
+    @endif
 
     {{-- Open Graph --}}
     <meta property="og:title" content="{{ $seoTitle }}">
