@@ -1,42 +1,42 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="960" height="450" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="960" height="450" fill="white"/>
-<rect x="10" y="10" width="960" height="440" rx="14" fill="#f1f8e9" stroke="#558b2f" stroke-width="1.5"/>
-<text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Canvas Drawing — JSON Storage</text>
-<rect x="25" y="55" width="280" height="150" rx="10" fill="#dcedc8" stroke="#558b2f" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="450" font-family="Arial,sans-serif">
+<rect width="960" height="450" fill="white" />
+<rect x="10" y="10" width="960" height="440" rx="14" fill="#f1f8e9" stroke="#558b2f" stroke-width="1.5" />
+<rect x="25" y="55" width="280" height="150" rx="10" fill="#dcedc8" stroke="#558b2f" stroke-width="1.5" />
+<rect x="340" y="55" width="280" height="150" rx="10" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1.5" />
+<rect x="655" y="55" width="290" height="170" rx="10" fill="#b2dfdb" stroke="#00695c" stroke-width="1.5" />
+<rect x="25" y="250" width="280" height="90" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5" />
+<rect x="655" y="265" width="290" height="90" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" />
+<rect x="25" y="375" width="920" height="55" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="1" />
+<line x1="165" y1="205" x2="165" y2="248" stroke="#f9a825" stroke-width="1.5" />
+<polygon points="165,248 161.66171577528317,239.6420182798114 168.33828422471683,239.6420182798114" fill="#f9a825" /><line x1="480" y1="205" x2="165" y2="248" stroke="#f9a825" stroke-width="1.5" />
+<polygon points="165,248 172.82966552215393,243.5619443659195 173.73269522342545,250.17716194500144" fill="#f9a825" /><line x1="800" y1="225" x2="800" y2="263" stroke="#ff9800" stroke-width="1.5" />
+<polygon points="800,263 796.6617157752831,254.6420182798114 803.3382842247169,254.6420182798114" fill="#ff9800" /><text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Canvas Drawing — JSON Storage</text>
 <text x="165" y="78" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Climbing Route JSON</text>
 <text x="165" y="93" text-anchor="middle" font-size="9" fill="#666">tab = climbing_routes_jsons</text>
 <text x="40" y="110" text-anchor="start" font-size="10" fill="#333">id, route_id → routes (unique)</text>
 <text x="40" y="125" text-anchor="start" font-size="10" fill="#333">sector_image_id → sector_images</text>
 <text x="40" y="140" text-anchor="start" font-size="10" fill="#333">json (Paper.js JSON text)</text>
 <text x="40" y="155" text-anchor="start" font-size="10" fill="#333">canvas_width, canvas_height</text>
-<rect x="340" y="55" width="280" height="150" rx="10" fill="#c8e6c9" stroke="#2e7d32" stroke-width="1.5"/>
 <text x="480" y="78" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">MTP Pitch JSON</text>
 <text x="480" y="93" text-anchor="middle" font-size="9" fill="#666">tab = mtp_pitch_jsons</text>
 <text x="355" y="110" text-anchor="start" font-size="10" fill="#333">id, mtp_pitch_id → mtp_pitchs</text>
 <text x="355" y="125" text-anchor="start" font-size="10" fill="#333">sector_image_id → sector_images</text>
 <text x="355" y="140" text-anchor="start" font-size="10" fill="#333">json (Paper.js JSON text)</text>
-<rect x="655" y="55" width="290" height="170" rx="10" fill="#b2dfdb" stroke="#00695c" stroke-width="1.5"/>
 <text x="800" y="78" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Sector Local Image JSON</text>
 <text x="800" y="93" text-anchor="middle" font-size="9" fill="#666">tab = sector_local_images_jsons</text>
 <text x="670" y="110" text-anchor="start" font-size="10" fill="#333">id, sector_local_image_id</text>
 <text x="670" y="125" text-anchor="start" font-size="10" fill="#333">sector_id → sectors</text>
 <text x="670" y="140" text-anchor="start" font-size="10" fill="#333">json (Paper.js JSON text)</text>
 <text x="670" y="155" text-anchor="start" font-size="10" fill="#333">canvas_width, canvas_height</text>
-<rect x="25" y="250" width="280" height="90" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
-<text x="165" y="288" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Image (background)</text>
-<text x="165" y="304" text-anchor="middle" font-size="9" fill="#666">tab = sector_images</text><text x="40" y="280" text-anchor="start" font-size="10" fill="#333">id, title, image (filename)</text>
-<text x="40" y="295" text-anchor="start" font-size="10" fill="#333">sector_id → sectors</text>
-<text x="40" y="310" text-anchor="start" font-size="10" fill="#888">Used as background for route drawings</text>
-<rect x="655" y="265" width="290" height="90" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
-<text x="800" y="303" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Local Image</text>
-<text x="800" y="319" text-anchor="middle" font-size="9" fill="#666">tab = sector_local_images</text><text x="670" y="295" text-anchor="start" font-size="10" fill="#333">id, image (filename)</text>
-<text x="670" y="310" text-anchor="start" font-size="10" fill="#333">Many-to-many: sectors</text>
-<text x="670" y="325" text-anchor="start" font-size="10" fill="#888">via sector_local_image_sector</text>
-<rect x="25" y="375" width="920" height="55" rx="6" fill="#fffde7" stroke="#f9a825" stroke-width="1"/>
+<text x="165" y="270" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Image (background)</text>
+<text x="165" y="284" text-anchor="middle" font-size="9" fill="#666">tab = sector_images</text><text x="40" y="300" text-anchor="start" font-size="10" fill="#333">id, title, image (filename)</text>
+<text x="40" y="316" text-anchor="start" font-size="10" fill="#333">sector_id → sectors</text>
+<text x="40" y="332" text-anchor="start" font-size="10" fill="#888">Used as background for route drawings</text>
+<text x="800" y="285" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Local Image</text>
+<text x="800" y="299" text-anchor="middle" font-size="9" fill="#666">tab = sector_local_images</text><text x="670" y="315" text-anchor="start" font-size="10" fill="#333">id, image (filename)</text>
+<text x="670" y="331" text-anchor="start" font-size="10" fill="#333">Many-to-many: sectors</text>
+<text x="670" y="347" text-anchor="start" font-size="10" fill="#888">via sector_local_image_sector</text>
 <text x="485" y="395" text-anchor="middle" font-size="11" fill="#555">Note: Paper.js saves drawings as JSON text. On first save, original photo is backed up to origin_img/ (never overwritten).</text>
 <text x="485" y="412" text-anchor="middle" font-size="11" fill="#555">Composite image (photo + strokes) overwrites the main file. To restore original: copy from origin_img/.</text>
-<line x1="165" y1="205" x2="165" y2="248" stroke="#f9a825" stroke-width="1.5"/>
-<polygon points="165,248 161.66171577528317,239.6420182798114 168.33828422471683,239.6420182798114" fill="#f9a825"/><line x1="480" y1="205" x2="165" y2="248" stroke="#f9a825" stroke-width="1.5"/>
-<polygon points="165,248 172.82966552215393,243.5619443659195 173.73269522342545,250.17716194500144" fill="#f9a825"/><line x1="800" y1="225" x2="800" y2="263" stroke="#ff9800" stroke-width="1.5"/>
-<polygon points="800,263 796.6617157752831,254.6420182798114 803.3382842247169,254.6420182798114" fill="#ff9800"/></svg>
+</svg>

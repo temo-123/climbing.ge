@@ -1,9 +1,30 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="980" height="520" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="980" height="520" fill="white"/>
-<rect x="20" y="20" width="960" height="500" rx="14" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5"/>
-<text x="500" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">User · Role · Permission System</text>
-<rect x="40" y="70" width="220" height="160" rx="10" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="520" font-family="Arial,sans-serif">
+<rect width="980" height="520" fill="white" />
+<rect x="20" y="20" width="960" height="500" rx="14" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="1.5" />
+<rect x="40" y="70" width="220" height="160" rx="10" fill="#ce93d8" stroke="#7b1fa2" stroke-width="1.5" />
+<rect x="320" y="70" width="220" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5" />
+<rect x="600" y="70" width="200" height="120" rx="10" fill="#e1bee7" stroke="#8e24aa" stroke-width="1.5" />
+<rect x="600" y="220" width="200" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5" />
+<rect x="855" y="70" width="100" height="200" rx="10" fill="#f3e5f5" stroke="#ab47bc" stroke-width="1.5" />
+<rect x="865" y="120" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="865" y="144" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="865" y="168" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="865" y="192" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="865" y="216" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="865" y="240" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5" />
+<rect x="320" y="180" width="220" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5" />
+<rect x="40" y="280" width="220" height="120" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5" />
+<rect x="40" y="430" width="940" height="65" rx="8" fill="#ffcdd2" stroke="#e53935" stroke-width="1" />
+<rect x="320" y="290" width="480" height="120" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1" />
+<line x1="260" y1="130" x2="318" y2="100" stroke="#555" stroke-width="1.5" />
+<polygon points="318,100 312.10997745750325,106.80497130404531 309.0426088924039,100.87472541151995" fill="#555" /><line x1="260" y1="155" x2="318" y2="235" stroke="#555" stroke-width="1.5" />
+<polygon points="318,235 310.39142599603656,230.19275529786432 315.79684553873557,226.27382612940755" fill="#555" /><line x1="540" y1="100" x2="598" y2="110" stroke="#555" stroke-width="1.5" />
+<polygon points="598,110 589.1963447875861,111.86966705617247 590.3307399456816,105.29017513921849" fill="#555" /><line x1="700" y1="190" x2="700" y2="218" stroke="#8e24aa" stroke-width="1.5" />
+<polygon points="700,218 696.6617157752831,209.6420182798114 703.3382842247169,209.6420182798114" fill="#8e24aa" /><line x1="800" y1="130" x2="853" y2="130" stroke="#555" stroke-width="1.5" />
+<polygon points="853,130 844.6420182798114,133.33828422471686 844.6420182798114,126.66171577528316" fill="#555" /><line x1="800" y1="240" x2="853" y2="175" stroke="#555" stroke-width="1.5" />
+<polygon points="853,175 850.305503777043,183.58718173235377 845.1310384583153,179.368002318622" fill="#555" /><line x1="150" y1="260" x2="150" y2="278" stroke="#3f51b5" stroke-width="1.5" />
+<polygon points="150,278 146.66171577528317,269.6420182798114 153.33828422471683,269.6420182798114" fill="#3f51b5" /><text x="500" y="46" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">User · Role · Permission System</text>
 <text x="150" y="92" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">User</text>
 <text x="150" y="108" text-anchor="middle" font-size="10" fill="#ede7f6">tab = users</text>
 <text x="55" y="126" text-anchor="start" font-size="10" fill="#fff">id, name, surname</text>
@@ -13,62 +34,41 @@
 <text x="55" y="186" text-anchor="start" font-size="10" fill="#fff">email_verified_at</text>
 <text x="55" y="201" text-anchor="start" font-size="10" fill="#ffe0fb">→ roles (via user_role)</text>
 <text x="55" y="216" text-anchor="start" font-size="10" fill="#ffe0fb">→ permissions (direct)</text>
-<rect x="320" y="70" width="220" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5"/>
 <text x="430" y="92" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">user_role  (pivot)</text>
 <text x="335" y="110" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
 <text x="335" y="126" text-anchor="start" font-size="10" fill="#555">role_id → roles</text>
-<rect x="600" y="70" width="200" height="120" rx="10" fill="#e1bee7" stroke="#8e24aa" stroke-width="1.5"/>
 <text x="700" y="92" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">Role</text>
 <text x="700" y="108" text-anchor="middle" font-size="10" fill="#666">tab = roles</text>
 <text x="615" y="126" text-anchor="start" font-size="10" fill="#333">id, name (e.g. "Admin")</text>
 <text x="615" y="141" text-anchor="start" font-size="10" fill="#333">slug (e.g. "admin")</text>
 <text x="615" y="156" text-anchor="start" font-size="10" fill="#888">→ permissions (role_perm)</text>
 <text x="615" y="171" text-anchor="start" font-size="9" fill="#c62828">Special: slug="ban" = banned user</text>
-<rect x="600" y="220" width="200" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5"/>
 <text x="700" y="242" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">role_permissions  (pivot)</text>
 <text x="615" y="260" text-anchor="start" font-size="10" fill="#555">role_id → roles</text>
 <text x="615" y="276" text-anchor="start" font-size="10" fill="#555">permission_id → permissions</text>
-<rect x="855" y="70" width="100" height="200" rx="10" fill="#f3e5f5" stroke="#ab47bc" stroke-width="1.5"/>
 <text x="905" y="92" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Permission</text>
 <text x="905" y="108" text-anchor="middle" font-size="9" fill="#666">permissions</text>
-<rect x="865" y="120" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="136" text-anchor="middle" font-size="9" fill="#444">article:add</text>
-<rect x="865" y="144" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="160" text-anchor="middle" font-size="9" fill="#444">article:edit</text>
-<rect x="865" y="168" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="184" text-anchor="middle" font-size="9" fill="#444">route:show</text>
-<rect x="865" y="192" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="208" text-anchor="middle" font-size="9" fill="#444">user:create_ban</text>
-<rect x="865" y="216" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="232" text-anchor="middle" font-size="9" fill="#444">summit:edit</text>
-<rect x="865" y="240" width="80" height="22" rx="4" fill="#fff" stroke="#ce93d8" stroke-width="1.5"/>
 <text x="905" y="256" text-anchor="middle" font-size="9" fill="#444">product:del</text>
-<rect x="320" y="180" width="220" height="80" rx="8" fill="#f8bbd0" stroke="#e91e63" stroke-width="1.5"/>
 <text x="430" y="202" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_permissions  (pivot)</text>
 <text x="335" y="220" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
 <text x="335" y="236" text-anchor="start" font-size="10" fill="#555">permission_id → permissions (direct)</text>
-<rect x="40" y="280" width="220" height="120" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5"/>
 <text x="150" y="302" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">personal_access_tokens</text>
 <text x="55" y="320" text-anchor="start" font-size="10" fill="#555">tokenable_id → users</text>
 <text x="55" y="335" text-anchor="start" font-size="10" fill="#555">token (hashed)</text>
 <text x="55" y="350" text-anchor="start" font-size="10" fill="#555">abilities[] (JSON)</text>
 <text x="55" y="365" text-anchor="start" font-size="10" fill="#555">expires_at, last_used_at</text>
-<rect x="40" y="430" width="940" height="65" rx="8" fill="#ffcdd2" stroke="#e53935" stroke-width="1"/>
 <text x="60" y="450" text-anchor="start" font-size="11" fill="#c62828" font-weight="bold">Ban System:</text>
 <text x="60" y="466" text-anchor="start" font-size="10" fill="#555">Attaching the role slug="ban" to a user marks them as banned. CheckBannedUser middleware revokes all tokens on every API request.</text>
 <text x="60" y="481" text-anchor="start" font-size="10" fill="#555">Admin panel: User list → Ban button calls POST /api/set_user/create_ban/{user_id}.</text>
-<rect x="320" y="290" width="480" height="120" rx="8" fill="#fffde7" stroke="#f9a825" stroke-width="1"/>
 <text x="560" y="312" text-anchor="middle" font-size="11" fill="#555" font-weight="bold">Permission resolution order:</text>
 <text x="335" y="330" text-anchor="start" font-size="10" fill="#444">1. User → user_role → roles → role_permissions → permissions</text>
 <text x="335" y="346" text-anchor="start" font-size="10" fill="#444">2. User → user_permissions → permissions (direct override)</text>
 <text x="335" y="362" text-anchor="start" font-size="10" fill="#666">Frontend check:  this.$can("add", "article")</text>
 <text x="335" y="378" text-anchor="start" font-size="10" fill="#666">Backend check:   PermissionService::authorize($subject, $action)</text>
 <text x="335" y="394" text-anchor="start" font-size="10" fill="#666">Auth token:      Sanctum Bearer in localStorage as auth_token</text>
-<line x1="260" y1="130" x2="318" y2="100" stroke="#555" stroke-width="1.5"/>
-<polygon points="318,100 312.10997745750325,106.80497130404531 309.0426088924039,100.87472541151995" fill="#555"/><line x1="260" y1="155" x2="318" y2="235" stroke="#555" stroke-width="1.5"/>
-<polygon points="318,235 310.39142599603656,230.19275529786432 315.79684553873557,226.27382612940755" fill="#555"/><line x1="540" y1="100" x2="598" y2="110" stroke="#555" stroke-width="1.5"/>
-<polygon points="598,110 589.1963447875861,111.86966705617247 590.3307399456816,105.29017513921849" fill="#555"/><line x1="700" y1="190" x2="700" y2="218" stroke="#8e24aa" stroke-width="1.5"/>
-<polygon points="700,218 696.6617157752831,209.6420182798114 703.3382842247169,209.6420182798114" fill="#8e24aa"/><line x1="800" y1="130" x2="853" y2="130" stroke="#555" stroke-width="1.5"/>
-<polygon points="853,130 844.6420182798114,133.33828422471686 844.6420182798114,126.66171577528316" fill="#555"/><line x1="800" y1="240" x2="853" y2="175" stroke="#555" stroke-width="1.5"/>
-<polygon points="853,175 850.305503777043,183.58718173235377 845.1310384583153,179.368002318622" fill="#555"/><line x1="150" y1="260" x2="150" y2="278" stroke="#3f51b5" stroke-width="1.5"/>
-<polygon points="150,278 146.66171577528317,269.6420182798114 153.33828422471683,269.6420182798114" fill="#3f51b5"/></svg>
+</svg>

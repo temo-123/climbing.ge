@@ -1,9 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="960" height="470" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="960" height="470" fill="white"/>
-<rect x="10" y="10" width="960" height="450" rx="14" fill="#f9fbe7" stroke="#827717" stroke-width="1.5"/>
-<text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Order System</text>
-<rect x="25" y="55" width="260" height="195" rx="10" fill="#f9a825" stroke="#f57f17" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="470" font-family="Arial,sans-serif">
+<rect width="960" height="470" fill="white" />
+<rect x="10" y="10" width="960" height="450" rx="14" fill="#f9fbe7" stroke="#827717" stroke-width="1.5" />
+<rect x="25" y="55" width="260" height="195" rx="10" fill="#f9a825" stroke="#f57f17" stroke-width="1.5" />
+<rect x="325" y="55" width="220" height="120" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5" />
+<rect x="325" y="195" width="220" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5" />
+<rect x="570" y="55" width="200" height="80" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5" />
+<rect x="570" y="155" width="200" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5" />
+<rect x="570" y="295" width="200" height="75" rx="8" fill="#c8e6c9" stroke="#43a047" stroke-width="1.5" />
+<rect x="570" y="390" width="200" height="55" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5" />
+<rect x="800" y="55" width="140" height="75" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5" />
+<rect x="800" y="155" width="140" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<line x1="285" y1="110" x2="323" y2="95" stroke="#555" stroke-width="1.5" />
+<polygon points="323,95 316.45148591392814,101.17389368749724 314.00007341242156,94.96364868368052" fill="#555" /><line x1="285" y1="235" x2="323" y2="245" stroke="#555" stroke-width="1.5" />
+<polygon points="323,245 314.0676377292176,246.10131932857948 315.76677966178033,239.64457998484102" fill="#555" /><line x1="545" y1="95" x2="568" y2="80" stroke="#555" stroke-width="1.5" />
+<polygon points="568,80 562.8228630572575,87.36187836602117 559.1756688287157,81.76951388225716" fill="#555" /><line x1="545" y1="245" x2="568" y2="200" stroke="#555" stroke-width="1.5" />
+<polygon points="568,200 567.168714134343,208.9615268682049 561.223666028911,205.92294672542863" fill="#555" /><line x1="285" y1="140" x2="568" y2="310" stroke="#555" stroke-width="1.5" />
+<polygon points="568,310 559.1163047368789,308.55779388713023 562.5543444842668,302.83446889589015" fill="#555" /><line x1="285" y1="160" x2="568" y2="405" stroke="#555" stroke-width="1.5" />
+<polygon points="568,405 559.4960326094318,402.05338522705244 563.866004308713,397.0056219989032" fill="#555" /><line x1="285" y1="120" x2="798" y2="90" stroke="#555" stroke-width="1.5" />
+<polygon points="798,90 789.8511616124567,93.82052783443615 789.461384934216,87.15534663651866" fill="#555" /><line x1="940" y1="165" x2="798" y2="175" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="798,175 806.1028238286655,171.08282678432383 806.5718431321982,177.7429008944886" fill="#e91e63" /><text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Order System</text>
 <text x="155" y="77" text-anchor="middle" font-size="14" fill="#333" font-weight="bold">Order</text>
 <text x="155" y="92" text-anchor="middle" font-size="10" fill="#666">tab = orders</text>
 <text x="40" y="110" text-anchor="start" font-size="10" fill="#333">id, user_id → users</text>
@@ -14,46 +30,30 @@
 <text x="40" y="185" text-anchor="start" font-size="10" fill="#333">is_custom</text>
 <text x="40" y="200" text-anchor="start" font-size="10" fill="#333">tbc_pay_id, tbc_pay_status</text>
 <text x="40" y="215" text-anchor="start" font-size="10" fill="#333">payment_amount</text>
-<rect x="325" y="55" width="220" height="120" rx="8" fill="#fff9c4" stroke="#f9a825" stroke-width="1.5"/>
-<text x="435" y="108" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">order_products</text>
-<text x="435" y="124" text-anchor="middle" font-size="9" fill="#666">(pivot with details)</text><text x="340" y="88" text-anchor="start" font-size="10" fill="#333">order_id → orders</text>
-<text x="340" y="103" text-anchor="start" font-size="10" fill="#333">product_id → products</text>
-<text x="340" y="118" text-anchor="start" font-size="10" fill="#333">product_option_id</text>
-<text x="340" y="133" text-anchor="start" font-size="10" fill="#333">quantity</text>
-<rect x="325" y="195" width="220" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5"/>
-<text x="435" y="248" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_adreses</text>
-<text x="435" y="264" text-anchor="middle" font-size="9" fill="#666">(delivery address)</text><text x="340" y="228" text-anchor="start" font-size="10" fill="#333">id, user_id, name</text>
-<text x="340" y="243" text-anchor="start" font-size="10" fill="#333">country, city, strit</text>
-<text x="340" y="258" text-anchor="start" font-size="10" fill="#333">number, floor, flat, zip_code</text>
-<rect x="570" y="55" width="200" height="80" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
-<text x="670" y="95" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">products</text>
-<text x="585" y="87" text-anchor="start" font-size="10" fill="#555">id, url_title</text>
-<text x="585" y="102" text-anchor="start" font-size="10" fill="#555">price, options[]</text>
-<rect x="570" y="155" width="200" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5"/>
-<text x="670" y="215" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">custom_order_addresses</text>
+<text x="435" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">order_products</text>
+<text x="435" y="89" text-anchor="middle" font-size="9" fill="#666">(pivot with details)</text><text x="340" y="105" text-anchor="start" font-size="10" fill="#333">order_id → orders</text>
+<text x="340" y="121" text-anchor="start" font-size="10" fill="#333">product_id → products</text>
+<text x="340" y="137" text-anchor="start" font-size="10" fill="#333">product_option_id</text>
+<text x="340" y="153" text-anchor="start" font-size="10" fill="#333">quantity</text>
+<text x="435" y="215" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_adreses</text>
+<text x="435" y="229" text-anchor="middle" font-size="9" fill="#666">(delivery address)</text><text x="340" y="245" text-anchor="start" font-size="10" fill="#333">id, user_id, name</text>
+<text x="340" y="261" text-anchor="start" font-size="10" fill="#333">country, city, strit</text>
+<text x="340" y="277" text-anchor="start" font-size="10" fill="#333">number, floor, flat, zip_code</text>
+<text x="670" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">products</text>
+<text x="585" y="91" text-anchor="start" font-size="10" fill="#555">id, url_title</text>
+<text x="585" y="107" text-anchor="start" font-size="10" fill="#555">price, options[]</text>
+<text x="670" y="175" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">custom_order_addresses</text>
 <text x="585" y="182" text-anchor="start" font-size="10" fill="#555">id, name, surname, phone</text>
-<text x="585" y="197" text-anchor="start" font-size="10" fill="#555">email, country, city</text>
-<text x="585" y="212" text-anchor="start" font-size="10" fill="#555">address, zip, state, map</text>
-<rect x="570" y="295" width="200" height="75" rx="8" fill="#c8e6c9" stroke="#43a047" stroke-width="1.5"/>
+<text x="585" y="191" text-anchor="start" font-size="10" fill="#555">email, country, city</text>
+<text x="585" y="207" text-anchor="start" font-size="10" fill="#555">address, zip, state, map</text>
 <text x="670" y="332.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">sale_codes</text>
 <text x="585" y="322" text-anchor="start" font-size="10" fill="#555">id, code, discount</text>
 <text x="585" y="337" text-anchor="start" font-size="10" fill="#555">one_time_code</text>
-<rect x="570" y="390" width="200" height="55" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
-<text x="670" y="417.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">shiped_countries</text>
-<text x="585" y="414" text-anchor="start" font-size="10" fill="#555">id, region, shiping_price</text>
-<rect x="800" y="55" width="140" height="75" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
-<text x="870" y="85.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">User</text>
-<text x="870" y="101.5" text-anchor="middle" font-size="9" fill="#666">tab = users</text><text x="815" y="87" text-anchor="start" font-size="10" fill="#555">id, name</text>
-<rect x="800" y="155" width="140" height="75" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
-<text x="870" y="185.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">orders_user</text>
-<text x="870" y="201.5" text-anchor="middle" font-size="9" fill="#666">(pivot)</text><text x="815" y="185" text-anchor="start" font-size="10" fill="#555">order_id → orders</text>
-<text x="815" y="200" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
-<line x1="285" y1="110" x2="323" y2="95" stroke="#555" stroke-width="1.5"/>
-<polygon points="323,95 316.45148591392814,101.17389368749724 314.00007341242156,94.96364868368052" fill="#555"/><line x1="285" y1="235" x2="323" y2="245" stroke="#555" stroke-width="1.5"/>
-<polygon points="323,245 314.0676377292176,246.10131932857948 315.76677966178033,239.64457998484102" fill="#555"/><line x1="545" y1="95" x2="568" y2="80" stroke="#555" stroke-width="1.5"/>
-<polygon points="568,80 562.8228630572575,87.36187836602117 559.1756688287157,81.76951388225716" fill="#555"/><line x1="545" y1="245" x2="568" y2="200" stroke="#555" stroke-width="1.5"/>
-<polygon points="568,200 567.168714134343,208.9615268682049 561.223666028911,205.92294672542863" fill="#555"/><line x1="285" y1="140" x2="568" y2="310" stroke="#555" stroke-width="1.5"/>
-<polygon points="568,310 559.1163047368789,308.55779388713023 562.5543444842668,302.83446889589015" fill="#555"/><line x1="285" y1="160" x2="568" y2="405" stroke="#555" stroke-width="1.5"/>
-<polygon points="568,405 559.4960326094318,402.05338522705244 563.866004308713,397.0056219989032" fill="#555"/><line x1="285" y1="120" x2="798" y2="90" stroke="#555" stroke-width="1.5"/>
-<polygon points="798,90 789.8511616124567,93.82052783443615 789.461384934216,87.15534663651866" fill="#555"/><line x1="940" y1="165" x2="798" y2="175" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="798,175 806.1028238286655,171.08282678432383 806.5718431321982,177.7429008944886" fill="#e91e63"/></svg>
+<text x="670" y="410" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">shiped_countries</text>
+<text x="585" y="426" text-anchor="start" font-size="10" fill="#555">id, region, shiping_price</text>
+<text x="870" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">User</text>
+<text x="870" y="89" text-anchor="middle" font-size="9" fill="#666">tab = users</text><text x="815" y="105" text-anchor="start" font-size="10" fill="#555">id, name</text>
+<text x="870" y="175" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">orders_user</text>
+<text x="870" y="189" text-anchor="middle" font-size="9" fill="#666">(pivot)</text><text x="815" y="205" text-anchor="start" font-size="10" fill="#555">order_id → orders</text>
+<text x="815" y="221" text-anchor="start" font-size="10" fill="#555">user_id → users</text>
+</svg>

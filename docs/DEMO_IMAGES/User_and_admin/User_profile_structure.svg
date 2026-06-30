@@ -1,44 +1,44 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="930" height="420" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="930" height="420" fill="white"/>
-<rect x="10" y="10" width="920" height="410" rx="14" fill="#e8eaf6" stroke="#303f9f" stroke-width="1.5"/>
-<text x="470" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">User Profile — Addresses · Notifications · Favorites</text>
-<rect x="330" y="50" width="260" height="80" rx="10" fill="#9fa8da" stroke="#303f9f" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="930" height="420" font-family="Arial,sans-serif">
+<rect width="930" height="420" fill="white" />
+<rect x="10" y="10" width="920" height="410" rx="14" fill="#e8eaf6" stroke="#303f9f" stroke-width="1.5" />
+<rect x="330" y="50" width="260" height="80" rx="10" fill="#9fa8da" stroke="#303f9f" stroke-width="1.5" />
+<rect x="25" y="180" width="220" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5" />
+<rect x="265" y="180" width="200" height="80" rx="8" fill="#b3e5fc" stroke="#0288d1" stroke-width="1.5" />
+<rect x="485" y="180" width="200" height="80" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="1.5" />
+<rect x="700" y="180" width="200" height="215" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<line x1="700" y1="260" x2="900" y2="260" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3" />
+<line x1="700" y1="304" x2="900" y2="304" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3" />
+<line x1="700" y1="348" x2="900" y2="348" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3" />
+<rect x="25" y="340" width="220" height="55" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" />
+<line x1="460" y1="130" x2="135" y2="178" stroke="#3949ab" stroke-width="1.5" />
+<polygon points="135,178 142.78054204443956,173.47637695041814 143.75603798534678,180.08129738364417" fill="#3949ab" /><line x1="460" y1="130" x2="365" y2="178" stroke="#555" stroke-width="1.5" />
+<polygon points="365,178 370.9543768098089,171.2512670221137 373.9652936090607,177.21037318729958" fill="#555" /><line x1="460" y1="130" x2="585" y2="178" stroke="#4caf50" stroke-width="1.5" />
+<polygon points="585,178 576.0008034749351,178.12025765364413 578.3942102143644,171.88742760304692" fill="#4caf50" /><line x1="460" y1="130" x2="800" y2="178" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="800,178 791.2574245028778,180.1371414733513 792.1907438608379,173.52612935446737" fill="#e91e63" /><text x="470" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">User Profile — Addresses · Notifications · Favorites</text>
 <text x="460" y="73" text-anchor="middle" font-size="14" fill="#fff" font-weight="bold">User</text>
 <text x="460" y="88" text-anchor="middle" font-size="10" fill="#c5cae9">tab = users</text>
 <text x="345" y="105" text-anchor="start" font-size="10" fill="#fff">id, name, surname, email, phone</text>
-<rect x="25" y="180" width="220" height="120" rx="8" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5"/>
-<text x="135" y="240" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_adreses</text>
-<text x="40" y="210" text-anchor="start" font-size="10" fill="#333">id, user_id, name</text>
-<text x="40" y="225" text-anchor="start" font-size="10" fill="#333">city, strit, number, floor</text>
-<text x="40" y="240" text-anchor="start" font-size="10" fill="#333">flat, entrance, zip_code</text>
-<rect x="265" y="180" width="200" height="80" rx="8" fill="#b3e5fc" stroke="#0288d1" stroke-width="1.5"/>
-<text x="365" y="220" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_notifications</text>
-<text x="280" y="210" text-anchor="start" font-size="10" fill="#333">id, user_id → users</text>
-<text x="280" y="225" text-anchor="start" font-size="10" fill="#333">notification_type (JSON)</text>
-<rect x="485" y="180" width="200" height="80" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="1.5"/>
-<text x="585" y="220" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_sites</text>
-<text x="500" y="210" text-anchor="start" font-size="10" fill="#333">id, user_id → users</text>
-<text x="500" y="225" text-anchor="start" font-size="10" fill="#333">url (social/website)</text>
-<rect x="700" y="180" width="200" height="195" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
+<text x="135" y="200" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_adreses</text>
+<text x="40" y="216" text-anchor="start" font-size="10" fill="#333">id, user_id, name</text>
+<text x="40" y="232" text-anchor="start" font-size="10" fill="#333">city, strit, number, floor</text>
+<text x="40" y="248" text-anchor="start" font-size="10" fill="#333">flat, entrance, zip_code</text>
+<text x="365" y="200" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_notifications</text>
+<text x="280" y="216" text-anchor="start" font-size="10" fill="#333">id, user_id → users</text>
+<text x="280" y="232" text-anchor="start" font-size="10" fill="#333">notification_type (JSON)</text>
+<text x="585" y="200" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">user_sites</text>
+<text x="500" y="216" text-anchor="start" font-size="10" fill="#333">id, user_id → users</text>
+<text x="500" y="232" text-anchor="start" font-size="10" fill="#333">url (social/website)</text>
 <text x="800" y="202" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">Favorites</text>
 <text x="715" y="228" text-anchor="start" font-size="10" fill="#c62828" font-weight="bold">favorite_products</text>
 <text x="715" y="242" text-anchor="start" font-size="10" fill="#555">user_id, product_id</text>
-<line x1="700" y1="260" x2="900" y2="260" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3"/>
 <text x="715" y="272" text-anchor="start" font-size="10" fill="#c62828" font-weight="bold">favorite_films</text>
 <text x="715" y="286" text-anchor="start" font-size="10" fill="#555">user_id, film_id</text>
-<line x1="700" y1="304" x2="900" y2="304" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3"/>
 <text x="715" y="316" text-anchor="start" font-size="10" fill="#c62828" font-weight="bold">favorite_outdoor_areas</text>
 <text x="715" y="330" text-anchor="start" font-size="10" fill="#555">user_id, article_id</text>
-<line x1="700" y1="348" x2="900" y2="348" stroke="#e91e63" stroke-width="0.8" stroke-dasharray="5,3"/>
 <text x="715" y="360" text-anchor="start" font-size="10" fill="#c62828" font-weight="bold">interested_events</text>
 <text x="715" y="374" text-anchor="start" font-size="10" fill="#555">user_id, event_id</text>
-<rect x="25" y="340" width="220" height="55" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
-<text x="135" y="367.5" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">service_followers</text>
-<text x="40" y="366" text-anchor="start" font-size="10" fill="#555">follower_user_id → users</text>
-<text x="40" y="381" text-anchor="start" font-size="10" fill="#555">followed_user_id → users</text>
-<line x1="460" y1="130" x2="135" y2="178" stroke="#3949ab" stroke-width="1.5"/>
-<polygon points="135,178 142.78054204443956,173.47637695041814 143.75603798534678,180.08129738364417" fill="#3949ab"/><line x1="460" y1="130" x2="365" y2="178" stroke="#555" stroke-width="1.5"/>
-<polygon points="365,178 370.9543768098089,171.2512670221137 373.9652936090607,177.21037318729958" fill="#555"/><line x1="460" y1="130" x2="585" y2="178" stroke="#4caf50" stroke-width="1.5"/>
-<polygon points="585,178 576.0008034749351,178.12025765364413 578.3942102143644,171.88742760304692" fill="#4caf50"/><line x1="460" y1="130" x2="800" y2="178" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="800,178 791.2574245028778,180.1371414733513 792.1907438608379,173.52612935446737" fill="#e91e63"/></svg>
+<text x="135" y="360" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">service_followers</text>
+<text x="40" y="376" text-anchor="start" font-size="10" fill="#555">follower_user_id → users</text>
+<text x="40" y="390" text-anchor="start" font-size="10" fill="#555">followed_user_id → users</text>
+</svg>

@@ -1,9 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="960" height="360" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="960" height="360" fill="white"/>
-<rect x="10" y="10" width="960" height="390" rx="14" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5"/>
-<text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Films / Studia System</text>
-<rect x="35" y="55" width="250" height="140" rx="10" fill="#fff3cd" stroke="#f9a825" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="360" font-family="Arial,sans-serif">
+<rect width="960" height="360" fill="white" />
+<rect x="10" y="10" width="960" height="390" rx="14" fill="#fff8e1" stroke="#f9a825" stroke-width="1.5" />
+<rect x="35" y="55" width="250" height="140" rx="10" fill="#fff3cd" stroke="#f9a825" stroke-width="1.5" />
+<rect x="320" y="55" width="185" height="120" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5" />
+<rect x="525" y="55" width="185" height="120" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5" />
+<rect x="730" y="55" width="200" height="90" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5" />
+<rect x="730" y="165" width="200" height="80" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5" />
+<rect x="730" y="265" width="200" height="70" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<rect x="35" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<rect x="260" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<rect x="485" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5" />
+<line x1="285" y1="105" x2="318" y2="105" stroke="#555" stroke-width="1.5" />
+<polygon points="318,105 309.6420182798114,108.33828422471684 309.6420182798114,101.66171577528316" fill="#555" /><line x1="285" y1="140" x2="523" y2="140" stroke="#555" stroke-width="1.5" />
+<polygon points="523,140 514.6420182798114,143.33828422471686 514.6420182798114,136.66171577528314" fill="#555" /><line x1="285" y1="125" x2="728" y2="90" stroke="#673ab7" stroke-width="1.5" />
+<polygon points="728,90 719.9309100748676,93.98619966636484 719.4050546137062,87.33037197223543" fill="#673ab7" /><line x1="285" y1="155" x2="728" y2="195" stroke="#3f51b5" stroke-width="1.5" />
+<polygon points="728,195 719.3756783506044,197.57314517424987 719.9760862083822,190.92362814936064" fill="#3f51b5" /><line x1="160" y1="195" x2="160" y2="218" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="160,218 156.66171577528317,209.6420182798114 163.33828422471683,209.6420182798114" fill="#e91e63" /><line x1="160" y1="195" x2="380" y2="218" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="380,218 371.3402118967519,220.4511364725046 372.034433256579,213.8107582480709" fill="#e91e63" /><line x1="160" y1="195" x2="605" y2="218" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="605,218 596.4808491017477,220.9024244990709 596.8254701677868,214.2347560474444" fill="#e91e63" /><line x1="285" y1="165" x2="728" y2="285" stroke="#e91e63" stroke-width="1.5" />
+<polygon points="728,285 719.059931029989,286.03690250816834 720.8055716976626,279.59257904334" fill="#e91e63" /><text x="490" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Films / Studia System</text>
 <text x="160" y="78" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Film (global)</text>
 <text x="160" y="93" text-anchor="middle" font-size="10" fill="#666">tab = films</text>
 <text x="50" y="110" text-anchor="start" font-size="10" fill="#444">id, published</text>
@@ -11,43 +27,27 @@
 <text x="50" y="140" text-anchor="start" font-size="10" fill="#444">ka_film_id → locale_films.id</text>
 <text x="50" y="155" text-anchor="start" font-size="10" fill="#444">category_id → film_categories</text>
 <text x="50" y="170" text-anchor="start" font-size="10" fill="#444">→ film_files (hasMany)</text>
-<rect x="320" y="55" width="185" height="120" rx="8" fill="#e8f5e9" stroke="#4caf50" stroke-width="1.5"/>
-<text x="412.5" y="108" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_film (EN)</text>
-<text x="412.5" y="124" text-anchor="middle" font-size="9" fill="#666">tab = locale_films</text><text x="335" y="100" text-anchor="start" font-size="10" fill="#555">id, locale = "en"</text>
-<text x="335" y="115" text-anchor="start" font-size="10" fill="#555">title</text>
-<text x="335" y="130" text-anchor="start" font-size="10" fill="#555">short_description</text>
-<text x="335" y="145" text-anchor="start" font-size="10" fill="#555">text</text>
-<rect x="525" y="55" width="185" height="120" rx="8" fill="#fff3e0" stroke="#ff9800" stroke-width="1.5"/>
-<text x="617.5" y="108" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_film (KA)</text>
-<text x="617.5" y="124" text-anchor="middle" font-size="9" fill="#666">tab = locale_films</text><text x="540" y="100" text-anchor="start" font-size="10" fill="#555">id, locale = "ka"</text>
-<text x="540" y="115" text-anchor="start" font-size="10" fill="#555">title</text>
-<rect x="730" y="55" width="200" height="90" rx="8" fill="#ede7f6" stroke="#673ab7" stroke-width="1.5"/>
-<text x="830" y="93" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film Category</text>
-<text x="830" y="109" text-anchor="middle" font-size="9" fill="#666">tab = film_categories</text><text x="745" y="90" text-anchor="start" font-size="10" fill="#555">id, name</text>
-<rect x="730" y="165" width="200" height="80" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="1.5"/>
-<text x="830" y="198" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film Tags</text>
-<text x="830" y="214" text-anchor="middle" font-size="9" fill="#666">tab = film_tags</text><text x="745" y="198" text-anchor="start" font-size="10" fill="#555">id, film_id, us_name, ka_name</text>
-<rect x="730" y="265" width="200" height="70" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
-<text x="830" y="293" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Favorite Films</text>
-<text x="830" y="309" text-anchor="middle" font-size="9" fill="#666">tab = favorite_films</text><text x="745" y="293" text-anchor="start" font-size="10" fill="#555">user_id, film_id</text>
-<rect x="35" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
-<text x="135" y="263" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 1</text>
-<text x="135" y="279" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="50" y="258" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
-<text x="50" y="273" text-anchor="start" font-size="10" fill="#555">url, type</text>
-<rect x="260" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
-<text x="360" y="263" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 2</text>
-<text x="360" y="279" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="275" y="258" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
-<text x="275" y="273" text-anchor="start" font-size="10" fill="#555">url, type</text>
-<rect x="485" y="220" width="200" height="100" rx="8" fill="#fce4ec" stroke="#e91e63" stroke-width="1.5"/>
-<text x="585" y="263" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 3</text>
-<text x="585" y="279" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="500" y="258" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
-<text x="500" y="273" text-anchor="start" font-size="10" fill="#555">url, type</text>
-<line x1="285" y1="105" x2="318" y2="105" stroke="#555" stroke-width="1.5"/>
-<polygon points="318,105 309.6420182798114,108.33828422471684 309.6420182798114,101.66171577528316" fill="#555"/><line x1="285" y1="140" x2="523" y2="140" stroke="#555" stroke-width="1.5"/>
-<polygon points="523,140 514.6420182798114,143.33828422471686 514.6420182798114,136.66171577528314" fill="#555"/><line x1="285" y1="125" x2="728" y2="90" stroke="#673ab7" stroke-width="1.5"/>
-<polygon points="728,90 719.9309100748676,93.98619966636484 719.4050546137062,87.33037197223543" fill="#673ab7"/><line x1="285" y1="155" x2="728" y2="195" stroke="#3f51b5" stroke-width="1.5"/>
-<polygon points="728,195 719.3756783506044,197.57314517424987 719.9760862083822,190.92362814936064" fill="#3f51b5"/><line x1="160" y1="195" x2="160" y2="218" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="160,218 156.66171577528317,209.6420182798114 163.33828422471683,209.6420182798114" fill="#e91e63"/><line x1="160" y1="195" x2="380" y2="218" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="380,218 371.3402118967519,220.4511364725046 372.034433256579,213.8107582480709" fill="#e91e63"/><line x1="160" y1="195" x2="605" y2="218" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="605,218 596.4808491017477,220.9024244990709 596.8254701677868,214.2347560474444" fill="#e91e63"/><line x1="285" y1="165" x2="728" y2="285" stroke="#e91e63" stroke-width="1.5"/>
-<polygon points="728,285 719.059931029989,286.03690250816834 720.8055716976626,279.59257904334" fill="#e91e63"/></svg>
+<text x="412.5" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_film (EN)</text>
+<text x="412.5" y="89" text-anchor="middle" font-size="9" fill="#666">tab = locale_films</text><text x="335" y="105" text-anchor="start" font-size="10" fill="#555">id, locale = "en"</text>
+<text x="335" y="121" text-anchor="start" font-size="10" fill="#555">title</text>
+<text x="335" y="137" text-anchor="start" font-size="10" fill="#555">short_description</text>
+<text x="335" y="153" text-anchor="start" font-size="10" fill="#555">text</text>
+<text x="617.5" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_film (KA)</text>
+<text x="617.5" y="89" text-anchor="middle" font-size="9" fill="#666">tab = locale_films</text><text x="540" y="105" text-anchor="start" font-size="10" fill="#555">id, locale = "ka"</text>
+<text x="540" y="121" text-anchor="start" font-size="10" fill="#555">title</text>
+<text x="830" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film Category</text>
+<text x="830" y="89" text-anchor="middle" font-size="9" fill="#666">tab = film_categories</text><text x="745" y="105" text-anchor="start" font-size="10" fill="#555">id, name</text>
+<text x="830" y="185" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film Tags</text>
+<text x="830" y="199" text-anchor="middle" font-size="9" fill="#666">tab = film_tags</text><text x="745" y="215" text-anchor="start" font-size="10" fill="#555">id, film_id, us_name, ka_name</text>
+<text x="830" y="285" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Favorite Films</text>
+<text x="830" y="299" text-anchor="middle" font-size="9" fill="#666">tab = favorite_films</text><text x="745" y="315" text-anchor="start" font-size="10" fill="#555">user_id, film_id</text>
+<text x="135" y="240" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 1</text>
+<text x="135" y="254" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="50" y="270" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
+<text x="50" y="286" text-anchor="start" font-size="10" fill="#555">url, type</text>
+<text x="360" y="240" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 2</text>
+<text x="360" y="254" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="275" y="270" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
+<text x="275" y="286" text-anchor="start" font-size="10" fill="#555">url, type</text>
+<text x="585" y="240" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Film File 3</text>
+<text x="585" y="254" text-anchor="middle" font-size="9" fill="#666">tab = film_files</text><text x="500" y="270" text-anchor="start" font-size="10" fill="#555">id, film_id, published</text>
+<text x="500" y="286" text-anchor="start" font-size="10" fill="#555">url, type</text>
+</svg>

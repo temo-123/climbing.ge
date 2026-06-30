@@ -1,75 +1,75 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="1060" height="575" xmlns="http://www.w3.org/2000/svg" font-family="Arial,sans-serif">
-<rect width="1060" height="575" fill="white"/>
-<rect x="10" y="10" width="1060" height="560" rx="14" fill="#fffde7" stroke="#827717" stroke-width="1.5"/>
-<text x="540" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Guidebook Full Hierarchy</text>
-<rect x="25" y="55" width="200" height="80" rx="8" fill="#ffe082" stroke="#f9a825" stroke-width="1.5"/>
-<text x="125" y="88" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Region</text>
-<text x="125" y="104" text-anchor="middle" font-size="9" fill="#666">tab = regions</text><text x="40" y="87" text-anchor="start" font-size="10" fill="#333">id, us_name, ka_name</text>
-<rect x="270" y="55" width="230" height="160" rx="10" fill="#fff3cd" stroke="#ff8f00" stroke-width="1.5"/>
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1060" height="575" font-family="Arial,sans-serif">
+<rect width="1060" height="575" fill="white" />
+<rect x="10" y="10" width="1060" height="560" rx="14" fill="#fffde7" stroke="#827717" stroke-width="1.5" />
+<rect x="25" y="55" width="200" height="80" rx="8" fill="#ffe082" stroke="#f9a825" stroke-width="1.5" />
+<rect x="270" y="55" width="230" height="160" rx="10" fill="#fff3cd" stroke="#ff8f00" stroke-width="1.5" />
+<rect x="545" y="55" width="200" height="130" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="1.5" />
+<rect x="270" y="240" width="230" height="140" rx="10" fill="#b3e5fc" stroke="#0288d1" stroke-width="1.5" />
+<rect x="25" y="240" width="200" height="130" rx="8" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.5" />
+<rect x="545" y="240" width="200" height="90" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5" />
+<rect x="800" y="240" width="240" height="120" rx="10" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5" />
+<rect x="800" y="390" width="240" height="140" rx="10" fill="#dcedc8" stroke="#558b2f" stroke-width="1.5" />
+<rect x="545" y="390" width="200" height="90" rx="8" fill="#ffe082" stroke="#f9a825" stroke-width="1.5" />
+<rect x="25" y="420" width="200" height="100" rx="8" fill="#ffccbc" stroke="#bf360c" stroke-width="1.5" />
+<rect x="270" y="415" width="230" height="100" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5" />
+<line x1="225" y1="80" x2="268" y2="90" stroke="#555" stroke-width="1.5" />
+<polygon points="268,90 259.1030922887795,91.35831998366588 260.6154251405993,84.85528872084083" fill="#555" /><line x1="500" y1="120" x2="543" y2="100" stroke="#555" stroke-width="1.5" />
+<polygon points="543,100 536.8294986303803,106.5517106809994 534.0137844126732,100.49792511292917" fill="#555" /><line x1="385" y1="215" x2="160" y2="238" stroke="#2e7d32" stroke-width="1.5" />
+<polygon points="160,238 167.97517534437853,233.8290794509585 168.65413089366552,240.47103591137477" fill="#2e7d32" /><line x1="385" y1="215" x2="420" y2="238" stroke="#0288d1" stroke-width="1.5" />
+<polygon points="420,238 411.1818770015921,236.1998036815531 414.84850075279854,230.62015884276073" fill="#0288d1" /><line x1="385" y1="215" x2="640" y2="265" stroke="#0288d1" stroke-width="1.5" />
+<polygon points="640,265 631.1558634595963,266.66770766463884 632.440531777261,260.11589924454887" fill="#0288d1" /><line x1="500" y1="300" x2="640" y2="272" stroke="#555" stroke-width="1.5" />
+<polygon points="640,272 632.4590160375493,276.91259207324015 631.1496332372609,270.3656780717978" fill="#555" /><line x1="500" y1="315" x2="798" y2="300" stroke="#3949ab" stroke-width="1.5" />
+<polygon points="798,300 789.8204083569283,303.7542350156313 789.4847644116929,297.08610863695486" fill="#3949ab" /><line x1="920" y1="360" x2="920" y2="388" stroke="#3949ab" stroke-width="1.5" />
+<polygon points="920,388 916.6617157752831,379.6420182798114 923.3382842247169,379.6420182798114" fill="#3949ab" /><line x1="385" y1="215" x2="640" y2="415" stroke="#f9a825" stroke-width="1.5" />
+<polygon points="640,415 631.3633050112136,412.46869605328175 635.4836820313293,407.21521535263423" fill="#f9a825" /><line x1="385" y1="215" x2="160" y2="418" stroke="#bf360c" stroke-width="1.5" />
+<polygon points="160,418 163.96934141538753,409.92260383984484 168.44181303218267,414.87977681412514" fill="#bf360c" /><line x1="385" y1="215" x2="380" y2="413" stroke="#9c27b0" stroke-width="1.5" />
+<polygon points="380,413 376.8737725429165,404.5604086659023 383.548213219368,404.72895514763087" fill="#9c27b0" /><text x="540" y="36" text-anchor="middle" font-size="16" fill="#333" font-weight="bold">Guidebook Full Hierarchy</text>
+<text x="125" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Region</text>
+<text x="125" y="89" text-anchor="middle" font-size="9" fill="#666">tab = regions</text><text x="40" y="105" text-anchor="start" font-size="10" fill="#333">id, us_name, ka_name</text>
 <text x="385" y="78" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Climbing Spot (Article)</text>
 <text x="385" y="93" text-anchor="middle" font-size="10" fill="#666">tab = articles</text>
 <text x="285" y="110" text-anchor="start" font-size="10" fill="#333">id, url_title, image</text>
 <text x="285" y="125" text-anchor="start" font-size="10" fill="#333">map, weather, price_from</text>
 <text x="285" y="140" text-anchor="start" font-size="10" fill="#333">mount_route, mount_grade</text>
 <text x="285" y="155" text-anchor="start" font-size="10" fill="#333">us_article_id, ka_article_id</text>
-<rect x="545" y="55" width="200" height="130" rx="8" fill="#c8e6c9" stroke="#4caf50" stroke-width="1.5"/>
-<text x="645" y="120" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_articles</text>
-<text x="560" y="87" text-anchor="start" font-size="10" fill="#555">id, title</text>
-<text x="560" y="102" text-anchor="start" font-size="10" fill="#555">short_description</text>
-<text x="560" y="117" text-anchor="start" font-size="10" fill="#555">text, route, how_get</text>
-<text x="560" y="132" text-anchor="start" font-size="10" fill="#555">best_time, what_need</text>
-<text x="560" y="147" text-anchor="start" font-size="10" fill="#555">info, meta_keyword</text>
-<rect x="270" y="240" width="230" height="140" rx="10" fill="#b3e5fc" stroke="#0288d1" stroke-width="1.5"/>
+<text x="645" y="75" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">locale_articles</text>
+<text x="560" y="91" text-anchor="start" font-size="10" fill="#555">id, title</text>
+<text x="560" y="107" text-anchor="start" font-size="10" fill="#555">short_description</text>
+<text x="560" y="123" text-anchor="start" font-size="10" fill="#555">text, route, how_get</text>
+<text x="560" y="139" text-anchor="start" font-size="10" fill="#555">best_time, what_need</text>
+<text x="560" y="155" text-anchor="start" font-size="10" fill="#555">info, meta_keyword</text>
 <text x="385" y="262" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Sector</text>
 <text x="385" y="277" text-anchor="middle" font-size="10" fill="#666">tab = sectors</text>
 <text x="285" y="294" text-anchor="start" font-size="10" fill="#333">id, name, article_id</text>
 <text x="285" y="309" text-anchor="start" font-size="10" fill="#333">sun/shade/angle flags</text>
-<rect x="25" y="240" width="200" height="130" rx="8" fill="#a5d6a7" stroke="#2e7d32" stroke-width="1.5"/>
-<text x="125" y="298" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Route</text>
-<text x="125" y="314" text-anchor="middle" font-size="9" fill="#666">tab = routes</text><text x="40" y="272" text-anchor="start" font-size="10" fill="#333">id, sector_id</text>
-<text x="40" y="287" text-anchor="start" font-size="10" fill="#333">category (sport/boulder)</text>
-<text x="40" y="302" text-anchor="start" font-size="10" fill="#333">grade, name, height</text>
-<text x="40" y="317" text-anchor="start" font-size="10" fill="#333">bolts, text_us, text_ka</text>
-<rect x="545" y="240" width="200" height="90" rx="8" fill="#ffe0b2" stroke="#e65100" stroke-width="1.5"/>
-<text x="645" y="278" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Image</text>
-<text x="645" y="294" text-anchor="middle" font-size="9" fill="#666">tab = sector_images</text><text x="560" y="272" text-anchor="start" font-size="10" fill="#555">id, title, image, num</text>
-<text x="560" y="287" text-anchor="start" font-size="10" fill="#555">sector_id</text>
-<rect x="800" y="240" width="240" height="120" rx="10" fill="#c5cae9" stroke="#3949ab" stroke-width="1.5"/>
+<text x="125" y="260" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Route</text>
+<text x="125" y="274" text-anchor="middle" font-size="9" fill="#666">tab = routes</text><text x="40" y="290" text-anchor="start" font-size="10" fill="#333">id, sector_id</text>
+<text x="40" y="306" text-anchor="start" font-size="10" fill="#333">category (sport/boulder)</text>
+<text x="40" y="322" text-anchor="start" font-size="10" fill="#333">grade, name, height</text>
+<text x="40" y="338" text-anchor="start" font-size="10" fill="#333">bolts, text_us, text_ka</text>
+<text x="645" y="260" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Sector Image</text>
+<text x="645" y="274" text-anchor="middle" font-size="9" fill="#666">tab = sector_images</text><text x="560" y="290" text-anchor="start" font-size="10" fill="#555">id, title, image, num</text>
+<text x="560" y="306" text-anchor="start" font-size="10" fill="#555">sector_id</text>
 <text x="920" y="262" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">Multi-Pitch (MTP)</text>
 <text x="920" y="277" text-anchor="middle" font-size="10" fill="#666">tab = mtps</text>
 <text x="815" y="294" text-anchor="start" font-size="10" fill="#333">id, sector_id, name</text>
 <text x="815" y="309" text-anchor="start" font-size="10" fill="#333">text_us, text_ka, height</text>
-<rect x="800" y="390" width="240" height="140" rx="10" fill="#dcedc8" stroke="#558b2f" stroke-width="1.5"/>
 <text x="920" y="412" text-anchor="middle" font-size="12" fill="#333" font-weight="bold">MTP Pitch</text>
 <text x="920" y="427" text-anchor="middle" font-size="10" fill="#666">tab = mtp_pitchs</text>
 <text x="815" y="444" text-anchor="start" font-size="10" fill="#333">id, mtp_id, grade, title</text>
 <text x="815" y="459" text-anchor="start" font-size="10" fill="#333">text_us, text_ka</text>
 <text x="815" y="474" text-anchor="start" font-size="10" fill="#333">height, bolts</text>
-<rect x="545" y="390" width="200" height="90" rx="8" fill="#ffe082" stroke="#f9a825" stroke-width="1.5"/>
-<text x="645" y="428" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount</text>
-<text x="645" y="444" text-anchor="middle" font-size="9" fill="#666">tab = mounts</text><text x="560" y="420" text-anchor="start" font-size="10" fill="#555">id, weather, map</text>
-<text x="560" y="435" text-anchor="start" font-size="10" fill="#555">us_mount_id, ka_mount_id</text>
-<text x="560" y="450" text-anchor="start" font-size="10" fill="#888">→ locale_mounts</text>
-<rect x="25" y="420" width="200" height="100" rx="8" fill="#ffccbc" stroke="#bf360c" stroke-width="1.5"/>
-<text x="125" y="463" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Event</text>
-<text x="125" y="479" text-anchor="middle" font-size="9" fill="#666">tab = events</text><text x="40" y="452" text-anchor="start" font-size="10" fill="#555">id, us_event_id</text>
-<text x="40" y="467" text-anchor="start" font-size="10" fill="#555">→ locale_events</text>
-<text x="40" y="482" text-anchor="start" font-size="10" fill="#888">→ interested_events</text>
-<rect x="270" y="415" width="230" height="100" rx="8" fill="#f3e5f5" stroke="#9c27b0" stroke-width="1.5"/>
-<text x="385" y="458" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">General Info</text>
-<text x="385" y="474" text-anchor="middle" font-size="9" fill="#666">tab = general_infos</text><text x="285" y="447" text-anchor="start" font-size="10" fill="#555">id, title, is_show</text>
-<text x="285" y="462" text-anchor="start" font-size="10" fill="#555">text_us, text_ka</text>
-<text x="285" y="477" text-anchor="start" font-size="10" fill="#888">→ articles (via pivot: block_action)</text>
-<line x1="225" y1="80" x2="268" y2="90" stroke="#555" stroke-width="1.5"/>
-<polygon points="268,90 259.1030922887795,91.35831998366588 260.6154251405993,84.85528872084083" fill="#555"/><line x1="500" y1="120" x2="543" y2="100" stroke="#555" stroke-width="1.5"/>
-<polygon points="543,100 536.8294986303803,106.5517106809994 534.0137844126732,100.49792511292917" fill="#555"/><line x1="385" y1="215" x2="160" y2="238" stroke="#2e7d32" stroke-width="1.5"/>
-<polygon points="160,238 167.97517534437853,233.8290794509585 168.65413089366552,240.47103591137477" fill="#2e7d32"/><line x1="385" y1="215" x2="420" y2="238" stroke="#0288d1" stroke-width="1.5"/>
-<polygon points="420,238 411.1818770015921,236.1998036815531 414.84850075279854,230.62015884276073" fill="#0288d1"/><line x1="385" y1="215" x2="640" y2="265" stroke="#0288d1" stroke-width="1.5"/>
-<polygon points="640,265 631.1558634595963,266.66770766463884 632.440531777261,260.11589924454887" fill="#0288d1"/><line x1="500" y1="300" x2="640" y2="272" stroke="#555" stroke-width="1.5"/>
-<polygon points="640,272 632.4590160375493,276.91259207324015 631.1496332372609,270.3656780717978" fill="#555"/><line x1="500" y1="315" x2="798" y2="300" stroke="#3949ab" stroke-width="1.5"/>
-<polygon points="798,300 789.8204083569283,303.7542350156313 789.4847644116929,297.08610863695486" fill="#3949ab"/><line x1="920" y1="360" x2="920" y2="388" stroke="#3949ab" stroke-width="1.5"/>
-<polygon points="920,388 916.6617157752831,379.6420182798114 923.3382842247169,379.6420182798114" fill="#3949ab"/><line x1="385" y1="215" x2="640" y2="415" stroke="#f9a825" stroke-width="1.5"/>
-<polygon points="640,415 631.3633050112136,412.46869605328175 635.4836820313293,407.21521535263423" fill="#f9a825"/><line x1="385" y1="215" x2="160" y2="418" stroke="#bf360c" stroke-width="1.5"/>
-<polygon points="160,418 163.96934141538753,409.92260383984484 168.44181303218267,414.87977681412514" fill="#bf360c"/><line x1="385" y1="215" x2="380" y2="413" stroke="#9c27b0" stroke-width="1.5"/>
-<polygon points="380,413 376.8737725429165,404.5604086659023 383.548213219368,404.72895514763087" fill="#9c27b0"/></svg>
+<text x="645" y="410" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Mount</text>
+<text x="645" y="424" text-anchor="middle" font-size="9" fill="#666">tab = mounts</text><text x="560" y="440" text-anchor="start" font-size="10" fill="#555">id, weather, map</text>
+<text x="560" y="456" text-anchor="start" font-size="10" fill="#555">us_mount_id, ka_mount_id</text>
+<text x="560" y="472" text-anchor="start" font-size="10" fill="#888">→ locale_mounts</text>
+<text x="125" y="440" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">Event</text>
+<text x="125" y="454" text-anchor="middle" font-size="9" fill="#666">tab = events</text><text x="40" y="470" text-anchor="start" font-size="10" fill="#555">id, us_event_id</text>
+<text x="40" y="486" text-anchor="start" font-size="10" fill="#555">→ locale_events</text>
+<text x="40" y="502" text-anchor="start" font-size="10" fill="#888">→ interested_events</text>
+<text x="385" y="435" text-anchor="middle" font-size="11" fill="#333" font-weight="bold">General Info</text>
+<text x="385" y="449" text-anchor="middle" font-size="9" fill="#666">tab = general_infos</text><text x="285" y="465" text-anchor="start" font-size="10" fill="#555">id, title, is_show</text>
+<text x="285" y="481" text-anchor="start" font-size="10" fill="#555">text_us, text_ka</text>
+<text x="285" y="497" text-anchor="start" font-size="10" fill="#888">→ articles (via pivot: block_action)</text>
+</svg>

@@ -262,8 +262,6 @@ Guide content is managed at `user.climbing.ge` under the **Guide** section.
 | **Comments** | Moderate user comments |
 | **Gallery** | Manage images |
 
-All admin tables use the `tabsComponent` pattern. See [FRONTEND/USER_PANEL_TABLE.md](FRONTEND/USER_PANEL_TABLE.md).
-
 ---
 
 [Go back](../README.md)
