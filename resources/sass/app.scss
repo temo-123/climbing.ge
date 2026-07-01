@@ -418,10 +418,12 @@ table {
     z-index: 1030;
 }
 .navbar_title { z-index: 1001; }
-.top_menu_margin { margin-top: 9%; }
+.top_menu_margin { margin-top: 5%; }
+// .top_menu_margin { margin-top: 9%; }
 
 @media (max-width: 900px) {
-    .top_menu_margin { margin-top: 70px; }
+    .top_menu_margin { margin-top: 7%; }
+    // .top_menu_margin { margin-top: 70px; }
     .mobile_nav_menu { height: auto; float: left; width: 100%; }
     .top_menu_buttons { float: left !important; }
 }

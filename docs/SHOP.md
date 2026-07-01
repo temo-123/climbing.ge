@@ -13,6 +13,7 @@ Online shop for climbing gear, apparel, guided tours, and services.
 - [Product Combinations](#product-combinations)
 - [Payment](#payment)
 - [Admin Panel](#admin-panel)
+- [Climbing Wall Calculator (3D)](WALL_CALCULATOR_3D.md)
 
 ---
 

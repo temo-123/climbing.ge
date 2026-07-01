@@ -6,49 +6,45 @@ export const coepicients_mixin = {
                 'coepicient': 120, //$
             },
 
-            // Wall types - multipliers for different wall types
-            wall_types: {
-                'indoor_bouldering': {
+            // Discipline multiplier (step 1 of the wall-type wizard)
+            disciplines: {
+                'bouldering': {
                     'coepicient': 0.85,
-                    'name': 'Indoor Bouldering Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Indoor bouldering wall designed for low-height climbing (typically 3-4 meters) without rope protection. Perfect for beginners and training facilities. Features softer landing zones and easier route setting options.'
-                    'description': '$siteData.data.indoor_bouldering_description'
+                    'name': 'Bouldering Wall',
+                    'icon': 'fa fa-hand-rock-o',
                 },
-                'outdoor_bouldering': {
-                    'coepicient': 1.1,
-                    'name': 'Outdoor Bouldering Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Outdoor bouldering wall built to withstand weather conditions. Features enhanced durability, UV-resistant coatings, and robust construction. Includes crash pads and impact-absorbing surfaces for safe outdoor climbing.'
-                    'description': '$siteData.data.outdoor_bouldering_description'
-                },
-                'indoor_sport_climbing': {
+                'sport_climbing': {
                     'coepicient': 1.0,
-                    'name': 'Indoor Sport Climbing Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Indoor sport climbing wall with full rope protection systems. Features top-rope and lead climbing areas with anchor points, belay stations, and safety harnesses. Ideal for intermediate to advanced climbers.'
-                    'description': '$siteData.data.indoor_sport_climbing_description'
+                    'name': 'Sport Climbing Wall',
+                    'icon': 'fa fa-building',
                 },
-                'outdoor_sport_climbing': {
-                    'coepicient': 1.35,
-                    'name': 'Outdoor Sport Climbing Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Outdoor sport climbing wall with permanent anchor systems and rope protection. Built with weather-resistant materials, includes lightning protection, drainage systems, and professional-grade safety features for year-round climbing.'
-                    'description': '$siteData.data.outdoor_sport_climbing_description'
+            },
+
+            // Construction-style multiplier (step 2 of the wall-type wizard)
+            structures: {
+                'indoor': {
+                    'coepicient': 1.0,
+                    'name': 'Indoor',
+                    'icon': 'fa fa-home',
+                    'stand_free': false,
                 },
-                'indoor_stand_free_wall': {
-                    'coepicient': 0.9,
-                    'name': 'Indoor Stand-Free Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Indoor stand-alone climbing wall that doesn\'t require attachment to existing structures. Features self-supporting frame, modular design for easy reconfiguration, and versatile climbing surfaces for all skill levels.'
-                    'description': '$siteData.data.indoor_stand_free_wall_description'
+                'outdoor': {
+                    'coepicient': 1.15,
+                    'name': 'Outdoor',
+                    'icon': 'fa fa-tree',
+                    'stand_free': false,
                 },
-                'outdoor_stand_free_wall': {
-                    'coepicient': 1.2,
-                    'name': 'Outdoor Stand-Free Wall',
-                    'image': 'https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U',
-                    // 'description': 'Outdoor stand-alone climbing wall with independent foundation and weatherproof construction. Features heavy-duty steel frame, corrosion-resistant coating, and adjustable angle panels for varied climbing experiences.'
-                    'description': '$siteData.data.outdoor_stand_free_wall_description'
+                'standfree_indoor': {
+                    'coepicient': 1.1,
+                    'name': 'Stand-Free Indoor',
+                    'icon': 'fa fa-cube',
+                    'stand_free': true,
+                },
+                'standfree_outdoor': {
+                    'coepicient': 1.3,
+                    'name': 'Stand-Free Outdoor',
+                    'icon': 'fa fa-cloud',
+                    'stand_free': true,
                 },
             },
 
@@ -152,7 +148,7 @@ export const coepicients_mixin = {
 
             // VAT percentage
             vat: {
-                'coepicient': 20, //%
+                'coepicient': 18, //%
             },
         };
     },

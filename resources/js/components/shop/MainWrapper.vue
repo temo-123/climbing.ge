@@ -13,6 +13,7 @@
         <footter />
         <loginModal />
         <go_to_top />
+        <toast-notification />
     </div>
 </template>
 
@@ -24,6 +25,8 @@
 
     import preloader from "../global_components/loaders/PreloaderComponent.vue";
     import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
+    // toast-notification is already globally registered in app.js — no local
+    // import/registration needed, the tag below resolves to it directly.
 
     export default {
         data: function () {

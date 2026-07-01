@@ -11,7 +11,10 @@ use App\Models\Shop\Order;
 use App\Models\Shop\Order_products;
 use App\Models\Shop\CustomOrderAddress;
 use App\Models\Shop\Product_option;
+use App\Models\Shop\Product;
 use App\Services\ProductService;
+
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CustomOrderController extends Controller
 {
@@ -183,6 +186,150 @@ class CustomOrderController extends Controller
                 'quantity'          => $op->quantity,
             ]),
         ]);
+    }
+
+    public function exportInvoicePdf(Request $request)
+    {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+
+        $request->validate([
+            'name'               => 'required|string|max:100',
+            'surname'            => 'required|string|max:100',
+            'email'              => 'nullable|email|max:255',
+            'phone'              => 'nullable|string|max:50',
+            'address'            => 'nullable|string',
+            'city'               => 'nullable|string',
+            'locale'             => 'nullable|string|in:ka,en',
+            'order_product_list' => 'required|array|min:1',
+            'order_product_list.*.product_option_id' => 'required|integer|exists:product_options,id',
+            'order_product_list.*.product_id'        => 'required|integer|exists:products,id',
+            'order_product_list.*.quantity'          => 'required|integer|min:1',
+        ]);
+
+        $locale = $request->input('locale', 'ka');
+
+        $line_items = [];
+        $total = 0;
+
+        foreach ($request->order_product_list as $item) {
+            $option = Product_option::find($item['product_option_id']);
+            if (!$option) continue;
+
+            $product = Product::with(['us_product', 'ka_product'])->find($item['product_id']);
+            $title = $locale === 'ka'
+                ? ($product?->ka_product?->title ?: $product?->us_product?->title)
+                : ($product?->us_product?->title ?: $product?->ka_product?->title);
+            $title = $title ?: $product?->url_title ?: '—';
+
+            $unit_price = (float) $option->price;
+            $quantity   = (int) $item['quantity'];
+            $line_total = $unit_price * $quantity;
+            $total += $line_total;
+
+            $line_items[] = [
+                'title'      => $title,
+                'option'     => $option->name,
+                'quantity'   => $quantity,
+                'unit_price' => $unit_price,
+                'line_total' => $line_total,
+                'currency'   => $option->currency ?: '₾',
+            ];
+        }
+
+        if (empty($line_items)) {
+            return response()->json(['error' => 'No valid items in product list'], 400);
+        }
+
+        $invoiceNumber = 'INV-' . now()->format('Ymd-His');
+
+        $company = [
+            'name'         => env('COMPANY_LEGAL_NAME', 'climbing.ge'),
+            'tax_id'       => env('COMPANY_TAX_ID', ''),
+            'address'      => env('COMPANY_ADDRESS', ''),
+            'phone'        => env('COMPANY_PHONE', ''),
+            'email'        => env('COMPANY_EMAIL', ''),
+            'bank_name'    => env('COMPANY_BANK_NAME', ''),
+            'bank_iban'    => env('COMPANY_BANK_IBAN', ''),
+            'bank_account_name' => env('COMPANY_BANK_ACCOUNT_NAME', ''),
+            'bank_code'    => env('COMPANY_BANK_CODE', ''),
+        ];
+
+        $labels = $this->invoiceLabels($locale);
+
+        $pdf = Pdf::loadView('pdf.custom_order_invoice', [
+            'buyer' => [
+                'name'    => $request->name,
+                'surname' => $request->surname,
+                'email'   => $request->email,
+                'phone'   => $request->phone,
+                'address' => $request->address,
+                'city'    => $request->city,
+            ],
+            'company'        => $company,
+            'labels'         => $labels,
+            'locale'         => $locale,
+            'invoice_number' => $invoiceNumber,
+            'line_items'     => $line_items,
+            'total'          => $total,
+            'invoice_date'   => now()->format('Y-m-d'),
+        ]);
+
+        return $pdf->download($invoiceNumber . '.pdf');
+    }
+
+    private function invoiceLabels(string $locale): array
+    {
+        if ($locale === 'ka') {
+            return [
+                'invoice'         => 'ინვოისი',
+                'invoice_number'  => 'ინვოისის ნომერი',
+                'date'            => 'თარიღი',
+                'seller'          => 'გამყიდველი',
+                'billed_to'       => 'მყიდველი',
+                'tax_id'          => 'საიდ. კოდი',
+                'phone'           => 'ტელეფონი',
+                'email'           => 'ელ. ფოსტა',
+                'product'         => 'პროდუქტი',
+                'option'          => 'ვარიანტი',
+                'qty'             => 'რაოდ.',
+                'unit_price'      => 'ერთეულის ფასი',
+                'line_total'      => 'ჯამი',
+                'total'           => 'გადასახდელი სულ',
+                'payment_details' => 'გადახდის დეტალები',
+                'bank'            => 'ბანკი',
+                'account_holder'  => 'ანგარიშის მფლობელი',
+                'iban'            => 'ანგარიშის ნომერი (IBAN)',
+                'bank_code'       => 'ბანკის კოდი',
+                'payment_note'    => 'გადახდისას გთხოვთ მიუთითოთ ინვოისის ნომერი დანიშნულებაში.',
+                'thank_you'       => 'გმადლობთ შეკვეთისთვის!',
+                'generated_by'    => 'დოკუმენტი გენერირებულია climbing.ge ადმინ პანელიდან',
+            ];
+        }
+
+        return [
+            'invoice'         => 'Invoice',
+            'invoice_number'  => 'Invoice number',
+            'date'            => 'Date',
+            'seller'          => 'Seller',
+            'billed_to'       => 'Billed to',
+            'tax_id'          => 'Tax ID',
+            'phone'           => 'Phone',
+            'email'           => 'Email',
+            'product'         => 'Product',
+            'option'          => 'Option',
+            'qty'             => 'Qty',
+            'unit_price'      => 'Unit Price',
+            'line_total'      => 'Total',
+            'total'           => 'Total Due',
+            'payment_details' => 'Payment Details',
+            'bank'            => 'Bank',
+            'account_holder'  => 'Account Holder',
+            'iban'            => 'Account Number (IBAN)',
+            'bank_code'       => 'Bank Code',
+            'payment_note'    => 'Please reference the invoice number in the payment description.',
+            'thank_you'       => 'Thank you for your order!',
+            'generated_by'    => 'Generated by the climbing.ge admin panel',
+        ];
     }
 
     private function subtractStock(int $optionId, int $quantity): void

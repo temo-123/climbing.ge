@@ -165,6 +165,15 @@
             <button type="button" class="btn btn-success btn-sm mb-3" @click="addProduct">
                 <i class="fa fa-plus"></i> Add Product
             </button>
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-3 ml-2" @click="exportInvoice" :disabled="exportingInvoice || form.order_product_list.length === 0">
+                <span v-if="exportingInvoice" class="spinner-border spinner-border-sm"></span>
+                <i v-else class="fa fa-file-pdf-o"></i> Export Invoice
+            </button>
+            <select class="form-control form-control-sm d-inline-block ml-2 mb-3" style="width:auto;" v-model="invoiceLocale">
+                <option value="ka">ქართული</option>
+                <option value="en">English</option>
+            </select>
+            <div v-if="exportError" class="text-danger small mb-2">{{ exportError }}</div>
         </form>
 
         <!-- Success state -->
@@ -225,6 +234,9 @@ export default {
             scanLoading: false,
             scanError: null,
             scanSuccess: null,
+            exportingInvoice: false,
+            exportError: null,
+            invoiceLocale: 'ka',
         };
     },
     mounted() {
@@ -348,6 +360,59 @@ export default {
             this.scanBarcode = '';
             this.scanError = null;
             this.scanSuccess = null;
+            this.exportingInvoice = false;
+            this.exportError = null;
+            this.invoiceLocale = 'ka';
+        },
+        exportInvoice() {
+            if (!this.form.name || !this.form.surname) {
+                alert('Name and surname are required.');
+                return;
+            }
+            if (this.form.order_product_list.length === 0) {
+                alert('Please add at least one product.');
+                return;
+            }
+            const hasIncomplete = this.form.order_product_list.some(
+                i => !i.product_id || !i.product_option_id || !i.quantity
+            );
+            if (hasIncomplete) {
+                alert('Please complete all product selections.');
+                return;
+            }
+
+            this.exportingInvoice = true;
+            this.exportError = null;
+            axios.post('/custom_order/export_invoice_pdf', {
+                name: this.form.name,
+                surname: this.form.surname,
+                email: this.form.email,
+                phone: this.form.phone,
+                address: this.form.address,
+                city: this.form.city,
+                locale: this.invoiceLocale,
+                order_product_list: this.form.order_product_list,
+            }, { responseType: 'blob' })
+            .then(response => {
+                const contentDisposition = response.headers['content-disposition'];
+                const filename = contentDisposition
+                    ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                    : 'invoice.pdf';
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', filename);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            })
+            .catch(() => {
+                this.exportError = 'Failed to export invoice PDF.';
+            })
+            .finally(() => {
+                this.exportingInvoice = false;
+            });
         },
         submitOrder() {
             if (!this.form.name || !this.form.surname) {

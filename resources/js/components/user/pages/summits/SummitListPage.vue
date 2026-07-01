@@ -23,6 +23,7 @@
                     @open_gps="open_gps_by_id"
                     @open_edit="open_edit_by_id"
                     @confirm_delete="confirm_delete_by_id"
+                    @export_laser_plate="export_laser_plate_by_id"
                 />
             </div>
             <div v-else class="col-sm-12 text-center py-4">
@@ -198,7 +199,7 @@ export default {
                     tab_data: {
                         data: this.summits,
                         tab: {
-                            head: ['ID', 'Title', 'Height', 'Lat/Lng', 'QR Saved', 'Published', 'QR', 'GPS', 'Edit', 'Delete'],
+                            head: ['ID', 'Title', 'Height', 'Lat/Lng', 'QR Saved', 'Published', 'QR', 'GPS', 'Edit', 'Delete', 'Laser Plate'],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['title']],
@@ -210,6 +211,7 @@ export default {
                                 ['action_fun_id', 'open_gps',       'btn btn-sm btn-success', '<i class="fa fa-map-marker"></i>'],
                                 ['action_fun_id', 'open_edit',      'btn btn-sm btn-warning', '<i class="fa fa-pencil"></i>'],
                                 ['action_fun_id', 'confirm_delete', 'btn btn-sm btn-danger',  '<i class="fa fa-trash"></i>'],
+                                ['action_fun_id', 'export_laser_plate', 'btn btn-sm btn-dark', '<i class="fa fa-file-pdf-o"></i>'],
                             ],
                             perm: [
                                 ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
@@ -217,6 +219,7 @@ export default {
                                 ['summit', 'edit'],
                                 ['summit', 'edit'],
                                 ['summit', 'del'],
+                                ['summit', 'show'],
                             ]
                         }
                     }
@@ -286,6 +289,25 @@ export default {
         confirm_delete_by_id(id) {
             const s = this.summits.find(x => x.id === id)
             if (s) { this.to_delete = s; this.del_modal = true }
+        },
+
+        export_laser_plate_by_id(id) {
+            axios.get(`get_summit_admin/export_laser_plate/${id}`, { responseType: 'blob' })
+                .then(response => {
+                    const contentDisposition = response.headers['content-disposition']
+                    const filename = contentDisposition
+                        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                        : 'summit-laser-plate.pdf'
+                    const url = window.URL.createObjectURL(new Blob([response.data]))
+                    const link = document.createElement('a')
+                    link.href = url
+                    link.setAttribute('download', filename)
+                    document.body.appendChild(link)
+                    link.click()
+                    document.body.removeChild(link)
+                    window.URL.revokeObjectURL(url)
+                })
+                .catch(() => { alert('Failed to export laser plate PDF.') })
         },
 
         save_qr() {

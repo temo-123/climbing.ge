@@ -238,6 +238,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/store', 'store');
         Route::get('/index', 'index');
         Route::get('/show/{order_id}', 'show');
+        Route::post('/export_invoice_pdf', 'exportInvoicePdf');
     });
 
     Route::controller(OrderController::class)->prefix('set_order')->group( function() {
@@ -277,6 +278,13 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/add_region', 'add_region');
         Route::post('/edit_region/{region_id}', 'edit_region');
         Route::delete('/del_region/{region_id}', 'del_region');
+    });
+
+    /*
+    *   Wall calculator PDF export (admin only, 'wall_calculator' > 'export' permission)
+    */
+    Route::controller(WallCalculatorExportController::class)->prefix('set_wall_calculator')->group( function() {
+        Route::post('/export_pdf', 'exportWallPdf');
     });
 
 });

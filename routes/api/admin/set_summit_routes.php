@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::get('/get_all_ascents', 'get_all_ascents');
             Route::get('/get_summits_list', 'get_summits_list');
             Route::get('/get_article_summit_relation/{article_id}', 'get_article_summit_relation');
+            Route::get('/export_laser_plate/{id}', 'export_laser_plate');
         });
     });
 

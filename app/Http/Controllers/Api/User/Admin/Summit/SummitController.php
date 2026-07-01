@@ -12,6 +12,9 @@ use App\Models\Summit\SummitAscent;
 use App\Models\Summit\SummitMountRoute;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\ErrorCorrectionLevel;
 
 class SummitController extends Controller
 {
@@ -155,6 +158,36 @@ class SummitController extends Controller
         $summit = Summit::findOrFail($id);
         $summit->update(['qr_code' => $request->qr_code]);
         return response()->json(['message' => 'QR code saved']);
+    }
+
+    public function export_laser_plate($id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $summit = Summit::findOrFail($id);
+
+        $appSsh = rtrim(config('app.app_ssh'), '/');
+        $summitUrl = trim(env('SUMMIT_URL', 'summit.climbing.ge'), '/');
+        $qrValue = $summit->qr_code ?: ($appSsh . '/' . $summitUrl . '/make_ascent/' . $summit->id);
+
+        $qrResult = Builder::create()
+            ->data($qrValue)
+            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
+            ->size(600)
+            ->margin(10)
+            ->build();
+
+        // Page size (200mm x 120mm) is set via the view's own @page CSS rule.
+        // Calling setPaper() here as well conflicts with it and produces a
+        // spurious blank second page, so the size is left to the view.
+        $pdf = Pdf::loadView('pdf.summit_laser_plate', [
+            'summit'   => $summit,
+            'qr_data_uri' => $qrResult->getDataUri(),
+        ]);
+
+        $filename = ($summit->url_title ?: 'summit') . '-laser-plate.pdf';
+
+        return $pdf->download($filename);
     }
 
     public function get_summit_mount_routes($summit_id)

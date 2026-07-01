@@ -256,6 +256,7 @@ class PermissionTableSeeder extends Seeder
             ['subject' => 'export',              'action' => 'show'],
             ['subject' => 'database',            'action' => 'show'],
             ['subject' => 'database',            'action' => 'edit'],
+            ['subject' => 'wall_calculator',     'action' => 'export'],
         ]));
     }
 }
