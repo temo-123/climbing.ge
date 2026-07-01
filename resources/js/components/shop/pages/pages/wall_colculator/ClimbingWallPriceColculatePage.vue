@@ -679,6 +679,12 @@
             },
         },
         mounted() {
+            // Width/height/depth all start at 0 in data() — opening the page
+            // showed a blank, priceless calculator until the user filled in
+            // every field themselves. Seeding the same sane defaults the
+            // Reset button already uses means there's a real wall (and a
+            // real price) on screen immediately.
+            this.resetWallDimensions();
             this.updatePricePanelPin();
             window.addEventListener('resize', this.updatePricePanelPin);
             window.addEventListener('scroll', this.onScrollForPricePanel, { passive: true });

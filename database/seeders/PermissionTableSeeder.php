@@ -236,6 +236,20 @@ class PermissionTableSeeder extends Seeder
             ['subject' => 'shop_task_category',  'action' => 'edit'],
             ['subject' => 'shop_task_category',  'action' => 'del'],
 
+            // ADMIN: Tasks — the actual backend permission TaskController /
+            // TaskCategoryController check (a single unified task manager,
+            // not split per subdomain). Distinct from guide_task/shop_task
+            // above, which the FRONTEND nav/route guards check separately to
+            // decide whether to show each dashboard's own task panel link —
+            // both are real and neither replaces the other.
+            ['subject' => 'task',                'action' => 'add'],
+            ['subject' => 'task',                'action' => 'edit'],
+            ['subject' => 'task',                'action' => 'del'],
+            ['subject' => 'task_category',       'action' => 'show'],
+            ['subject' => 'task_category',       'action' => 'add'],
+            ['subject' => 'task_category',       'action' => 'edit'],
+            ['subject' => 'task_category',       'action' => 'del'],
+
             // ADMIN: Users & Access Control
             ['subject' => 'user',                'action' => 'show'],
             ['subject' => 'user',                'action' => 'add'],

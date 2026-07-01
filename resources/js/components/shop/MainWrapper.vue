@@ -25,6 +25,7 @@
 
     import preloader from "../global_components/loaders/PreloaderComponent.vue";
     import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
+    import { useAuthStore } from "../../store/auth.js";
     // toast-notification is already globally registered in app.js — no local
     // import/registration needed, the tag below resolves to it directly.
 
@@ -44,7 +45,35 @@
             routeloader,
             go_to_top
         },
-        mounted() {},
+        async mounted() {
+            // Unlike user.climbing.ge, the shop subdomain never fetches CASL
+            // permissions on its own — app.js only does that inside its
+            // user-subdomain-specific router guard. That left $can() stuck at
+            // its empty default here, so any admin-only shop UI (like the wall
+            // calculator's PDF export button) could never show for anyone.
+            let token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token');
+
+            // localStorage is per-subdomain — logging in on user.climbing.ge
+            // (or climbing.ge) leaves shop.climbing.ge's own localStorage
+            // empty even though the same Sanctum session cookie is shared
+            // across every subdomain. Same recovery app.js's user-subdomain
+            // guard already does: ask for a fresh Bearer token off that
+            // shared cookie before concluding no one's logged in.
+            if (!token) {
+                try {
+                    const raw = await axios.get('token', { _tokenRecovery: true });
+                    token = String(raw.data).trim();
+                    if (token) localStorage.setItem('auth_token', token);
+                } catch {
+                    // No valid session cookie either — a genuinely anonymous
+                    // shopper, which is fine, this is a public storefront.
+                }
+            }
+
+            if (token) {
+                useAuthStore().fetchUser();
+            }
+        },
         methods: {},
     };
 </script>
