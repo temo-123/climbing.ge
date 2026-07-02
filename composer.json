@@ -9,7 +9,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2.0",
-        "barryvdh/laravel-dompdf": "^2.2",
+        "barryvdh/laravel-dompdf": "^3.1",
         "doctrine/dbal": "^3.0",
         "endroid/qr-code": "^5.1",
         "flittpayments/php-sdk": "^1.0",
