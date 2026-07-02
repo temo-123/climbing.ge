@@ -115,6 +115,17 @@ export default {
             saveStatus:       null,
         }
     },
+    watch: {
+        // Radio buttons only update selectedSectorId (no handler on the input itself),
+        // so keep canvasData/activeLayoutId in sync whenever the sector changes —
+        // otherwise the previous sector's strokes stay loaded in the canvas and get
+        // saved (duplicated) into the newly selected sector's layout.
+        selectedSectorId(sectorId) {
+            const layout = this.layoutBySector(sectorId);
+            this.canvasData     = layout ? layout.json : null;
+            this.activeLayoutId = layout ? layout.id   : null;
+        },
+    },
     computed: {
         relatedJsons() {
             return this.layouts

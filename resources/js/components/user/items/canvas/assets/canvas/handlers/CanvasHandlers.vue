@@ -355,16 +355,10 @@ export default {
             if (!hitResult || !hitResult.item) return;
             let item = hitResult.item;
 
-            // Bubble up through Groups but STOP at Layer boundaries.
-            // paper.Layer is a subclass of paper.Group, so without this check
-            // the loop would go all the way to the main layer and translate
-            // every item on the canvas (making Move Item = Move All).
-            while (item.parent &&
-                   !(item.parent instanceof paper.Layer) &&
-                   item.parent instanceof paper.Group &&
-                   !item.parent.locked) {
-                item = item.parent;
-            }
+            // Move exactly the item that was clicked, even if it belongs to a Group —
+            // groups only organize items in the Layers panel, they should not force
+            // every member to drag together. Previously this bubbled up to the
+            // top-level Group, so moving one member of a group moved the whole group.
 
             if (item instanceof paper.PointText && item.name && item.name.startsWith('text ')) {
                 const num = item.name.replace('text ', '');

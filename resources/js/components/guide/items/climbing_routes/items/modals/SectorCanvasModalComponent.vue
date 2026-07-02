@@ -2,7 +2,7 @@
   <StackModal
       v-model="is_show_modal"
       :title="sectorData ? ($t('guide.article.title.sector name') + ' — ' + sectorData.sector.name) : ''"
-      size="fullscreen"
+      size="xxl"
       :saveButton="{ visible: false }"
       :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
       @close="close_modal"

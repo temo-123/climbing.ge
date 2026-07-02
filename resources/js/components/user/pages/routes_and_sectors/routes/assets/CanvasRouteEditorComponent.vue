@@ -238,11 +238,20 @@ export default {
                 const editedImageData = await this.compositeImages(bgPath, drawingDataUrl,
                     canvasContainer.$refs.canvasManager.$el);
 
+                // Paper.js view size at save time — the canvas is sized responsively to the
+                // browser container width, not to the photo's pixel dimensions, so any other
+                // renderer (e.g. the public guidebook page) needs this to rescale correctly.
+                const scope = canvasContainer.getCanvasScope();
+                const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
+                const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
+
                 const response = await axios.post('/set_route/save_route_drawing', {
                     route_id:        this.route_id_prop,
                     sector_image_id: this.images_tab_num,
                     json,
                     edited_image:    editedImageData,
+                    canvas_width:    canvasWidth,
+                    canvas_height:   canvasHeight,
                 });
 
                 if (response.data.success) {

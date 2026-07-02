@@ -47,6 +47,7 @@ app.config.globalProperties.$bus = {
         }
     }
 };
+window.$bus = app.config.globalProperties.$bus;
 
 import StackModal from "./components/global_components/modals/StackModal.vue"
 app.component('StackModal', StackModal)
@@ -232,6 +233,7 @@ const router = createRouter({
         return { top: 0 };
     }
 });
+window.router = router;
 
 import { getCurrentLocale } from './services/routerUtils.js';
 
@@ -372,99 +374,9 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
-function getCsrfCookie() {
-    const match = document.cookie.match(/(?:^|; )XSRF-TOKEN=([^;]*)/);
-    return match ? decodeURIComponent(match[1]) : null;
-}
-
-// Shared state to prevent duplicate auth redirects and serialise CSRF refreshes
-let csrfRefreshPromise = null;
-let isHandlingAuthError = false;
-
-window.axios.interceptors.request.use(config => {
-    // Read XSRF-TOKEN cookie fresh on every request so stale tokens never cause 419s
-    const xsrf = getCsrfCookie();
-    if (xsrf) {
-        config.headers['X-XSRF-TOKEN'] = xsrf;
-    }
-    const token = localStorage.getItem('auth_token');
-    if (token) {
-        config.headers['Authorization'] = 'Bearer ' + token;
-    }
-    return config;
-});
-
-window.axios.interceptors.response.use(response => response, async err => {
-    if (err && err.response) {
-        const status = err.response.status;
-        const originalRequest = err.config;
-
-        if (status === 419 && !originalRequest._csrfRetry) {
-            // Refresh the CSRF cookie once, then retry the original request.
-            // All concurrent 419s share the same refresh promise so we only hit /csrf-cookie once.
-            originalRequest._csrfRetry = true;
-            if (!csrfRefreshPromise) {
-                csrfRefreshPromise = axios.get(window.location.origin + '/sanctum/csrf-cookie').finally(() => {
-                    csrfRefreshPromise = null;
-                });
-            }
-            try {
-                await csrfRefreshPromise;
-                const xsrf = getCsrfCookie();
-                if (xsrf) originalRequest.headers['X-XSRF-TOKEN'] = xsrf;
-                return axios(originalRequest);
-            } catch (e) {
-                // CSRF refresh failed — fall through to auth error handling
-            }
-        }
-
-        if (status === 401 || status === 419) {
-            if (!isHandlingAuthError) {
-                isHandlingAuthError = true;
-                localStorage.removeItem('x_xsrf_token');
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('user_permissions');
-                if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-                    router.push({ name: 'login' });
-                }
-                setTimeout(() => { isHandlingAuthError = false; }, 3000);
-            }
-            return Promise.reject(err);
-        }
-        else if (status === 422) {
-            return Promise.reject(err);
-        }
-        else if (status === 403) {
-            if (err.response.data && err.response.data.is_banned === true) {
-                localStorage.removeItem('x_xsrf_token');
-                localStorage.removeItem('auth_token');
-                localStorage.removeItem('user_permissions');
-                sessionStorage.setItem('banned_redirect', '1');
-                if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
-                    router.push({ name: 'banned' });
-                } else {
-                    window.location.href = (process.env.MIX_APP_SSH || '') + '/banned';
-                }
-                return Promise.reject(err);
-            }
-            else {
-                app.config.globalProperties.$bus.$emit('toast', {
-                    type: 'warning',
-                    message: "You don't have permission to perform this action.",
-                });
-                return Promise.reject(err);
-            }
-        }
-        else {
-            app.config.globalProperties.$bus.$emit('toast', {
-                type: 'danger',
-                message: "Error " + err.response.status + ': ' + err.response.statusText,
-            });
-            return Promise.reject(err);
-        }
-    }
-    return Promise.reject(err);
-})
+// CSRF/auth-token attachment and global error-toast handling (401/419/422/403,
+// plus 500/429/etc.) now live in bootstrap.js's axios interceptors, which reach
+// this app instance via window.$bus / window.router (see assignments above).
 
 app.use(router);
 

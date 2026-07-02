@@ -74,11 +74,20 @@ export default {
     }),
 
     computed: {
+        // Each entry: { json, canvas_width, canvas_height }. canvas_width/height are the
+        // Paper.js view size the drawing was authored at (null for legacy rows saved before
+        // this was tracked, in which case rendering falls back to the composite-image scale).
         items() {
             if (this.json_items) {
                 const map = {};
                 (this.json_items || []).forEach(item => {
-                    if (item.id != null && item.json) map[item.id] = item.json;
+                    if (item.id != null && item.json) {
+                        map[item.id] = {
+                            json: item.json,
+                            canvas_width: item.canvas_width || null,
+                            canvas_height: item.canvas_height || null,
+                        };
+                    }
                 });
                 return map;
             }
@@ -177,7 +186,11 @@ export default {
                     try {
                         let parsed = typeof item.json === 'string' ? JSON.parse(item.json) : item.json;
                         if (typeof parsed === 'string') parsed = JSON.parse(parsed);
-                        map[item.route_id] = parsed;
+                        map[item.route_id] = {
+                            json: parsed,
+                            canvas_width: item.canvas_width || null,
+                            canvas_height: item.canvas_height || null,
+                        };
                     } catch (_) {}
                 });
                 this.fetchedItems = map;
@@ -201,6 +214,20 @@ export default {
         _tPt(m, x, y)  { return { x: m[0]*x + m[2]*y + m[4], y: m[1]*x + m[3]*y + m[5] }; },
         _tVec(m, x, y) { return { x: m[0]*x + m[2]*y,         y: m[1]*x + m[3]*y         }; },
 
+        // Each item may have been drawn in a different-sized browser container, so there is
+        // no single scale that fits all of them — always resolve per item. Falls back to the
+        // composite-image-based scale for legacy rows that predate canvas_width/canvas_height.
+        _itemScale(meta, canvas) {
+            const cw = meta && meta.canvas_width;
+            const ch = meta && meta.canvas_height;
+            if (cw && ch) {
+                return { sx: canvas.width / cw, sy: canvas.height / ch };
+            }
+            const sx = this.compositeWidth  ? (canvas.width  / this.compositeWidth)  : 1;
+            const sy = this.compositeHeight ? (canvas.height / this.compositeHeight) : 1;
+            return { sx, sy };
+        },
+
         // ── Hit-path building ─────────────────────────────────────────────────────
         // Builds Path2D objects in canvas-pixel space for each item so we can use
         // isPointInStroke / isPointInPath for accurate hit testing.
@@ -208,11 +235,6 @@ export default {
         _buildHitPaths() {
             const canvas = this.$refs.canvas;
             if (!canvas) return;
-
-            const sx = this.compositeWidth  ? (canvas.width  / this.compositeWidth)  : 1;
-            const sy = this.compositeHeight ? (canvas.height / this.compositeHeight) : 1;
-            // Starting CTM converts Paper.js coords → canvas pixel coords
-            const scaleM = [sx, 0, 0, sy, 0, 0];
 
             const parseSeg = (s) => {
                 if (!Array.isArray(s)) return null;
@@ -225,7 +247,11 @@ export default {
 
             const newHitPaths = {};
 
-            Object.entries(this.items).forEach(([id, json]) => {
+            Object.entries(this.items).forEach(([id, meta]) => {
+                const json = meta.json;
+                // Starting CTM converts this item's own Paper.js coords → canvas pixel coords
+                const { sx, sy } = this._itemScale(meta, canvas);
+                const scaleM = [sx, 0, 0, sy, 0, 0];
                 const paths = [];
 
                 const walk = (item, ctm) => {
@@ -494,16 +520,23 @@ export default {
             }
         },
 
+        // Draws one item scaled from ITS OWN authored coordinate space into canvas-pixel
+        // space. Each item may have been drawn in a differently-sized browser container,
+        // so the scale must be resolved per item rather than once globally.
+        drawItemScaled(ctx, meta, canvas, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize) {
+            const { sx, sy } = this._itemScale(meta, canvas);
+            ctx.save();
+            if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
+            this.drawItem(ctx, meta.json, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize);
+            ctx.restore();
+        },
+
         render() {
             if (!this.canvasReady) return;
             const canvas = this.$refs.canvas;
             if (!canvas) return;
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            const sx = this.compositeWidth  ? (canvas.width  / this.compositeWidth)  : 1;
-            const sy = this.compositeHeight ? (canvas.height / this.compositeHeight) : 1;
-            if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
 
             const refW     = this.compositeWidth  || canvas.width;
             const base     = Math.max(3, refW / 280);
@@ -520,10 +553,10 @@ export default {
             // 1. Draw background items (all non-highlighted ones)
             if (this.preview_all || this.show_all) {
                 const lw = this.preview_all ? base * 1.4 : base;
-                Object.entries(this.items).forEach(([id, json]) => {
+                Object.entries(this.items).forEach(([id, meta]) => {
                     if (selId && id === selId) return;
                     if (hovId && id === String(hovId)) return;
-                    this.drawItem(ctx, json, colorDef, colorDot, colorDef, lw, textSize);
+                    this.drawItemScaled(ctx, meta, canvas, colorDef, colorDot, colorDef, lw, textSize);
                 });
             }
 
@@ -533,7 +566,7 @@ export default {
                 ctx.shadowColor = 'rgba(255,170,0,0.65)';
                 ctx.shadowBlur  = 14;
                 const lw = this.preview_all ? base * 1.4 : base * 2;
-                this.drawItem(ctx, this.items[hovId], colorHov, colorDot, colorHov, lw, textSize);
+                this.drawItemScaled(ctx, this.items[hovId], canvas, colorHov, colorDot, colorHov, lw, textSize);
                 ctx.restore();
             }
 
@@ -542,7 +575,7 @@ export default {
                 ctx.save();
                 ctx.shadowColor = 'rgba(0,220,60,0.55)';
                 ctx.shadowBlur  = 10;
-                this.drawItem(ctx, this.items[selId], colorSel, colorDot, colorDef, base * 2.5, textSize * 1.2);
+                this.drawItemScaled(ctx, this.items[selId], canvas, colorSel, colorDot, colorDef, base * 2.5, textSize * 1.2);
                 ctx.restore();
             }
 

@@ -211,8 +211,33 @@ class RouteController extends Controller
         $routeJson = ClimbingRoutesJson::where('route_id', $route->id)->first();
         $route->json = $routeJson ? $routeJson->json : null;
         $route->sector_image_id = $routeJson ? $routeJson->sector_image_id : null;
+        $route->canvas_width = $routeJson ? $routeJson->canvas_width : null;
+        $route->canvas_height = $routeJson ? $routeJson->canvas_height : null;
 
         return $route;
+    }
+
+    // Aggregates everything the standalone "sector routes drawing" editor page needs
+    // in one call: the sector's routes, its images, and which routes already have a
+    // saved drawing (and on which image) — mirrors SectorLocalImagesController::get_for_editor.
+    public function get_sector_routes_drawing_data($sector_id)
+    {
+        if ($auth = PermissionService::authorize('route', 'show')) return $auth;
+
+        $sector = Sector::findOrFail($sector_id);
+        $routes = Route::where('sector_id', $sector_id)->orderBy('num')->get();
+        $images = Sector_image::where('sector_id', $sector_id)->orderBy('num')->get();
+        foreach ($images as $image) {
+            $image->has_original = file_exists(public_path('images/sector_img/origin_img/' . $image->image));
+        }
+        $drawings = ClimbingRoutesJson::whereIn('route_id', $routes->pluck('id'))->get(['route_id', 'sector_image_id']);
+
+        return [
+            'sector'   => $sector,
+            'routes'   => $routes,
+            'images'   => $images,
+            'drawings' => $drawings,
+        ];
     }
 
     public function save_route_drawing(Request $request)
@@ -224,6 +249,11 @@ class RouteController extends Controller
         $sectorImageId = $request->sector_image_id;
         $json = $request->json;
         $editedImageData = $request->edited_image; // base64 data URL
+        // Paper.js view size at save time — needed so any renderer can correctly rescale
+        // these coordinates later, since the drawing canvas is sized responsively to the
+        // admin's browser container width, not to the background photo's pixel dimensions.
+        $canvasWidth = $request->canvas_width;
+        $canvasHeight = $request->canvas_height;
 
         if (!$routeId || !$sectorImageId || !$json) {
             return response()->json(['error' => 'route_id, sector_image_id and json are required'], 422);
@@ -260,12 +290,19 @@ class RouteController extends Controller
         // Save / update JSON in climbing_routes_jsons
         $existing = ClimbingRoutesJson::where('route_id', $routeId)->first();
         if ($existing) {
-            $existing->update(['json' => $json, 'sector_image_id' => $sectorImageId]);
+            $existing->update([
+                'json' => $json,
+                'sector_image_id' => $sectorImageId,
+                'canvas_width' => $canvasWidth,
+                'canvas_height' => $canvasHeight,
+            ]);
         } else {
             ClimbingRoutesJson::create([
                 'route_id'        => $routeId,
                 'sector_image_id' => $sectorImageId,
                 'json'            => $json,
+                'canvas_width'    => $canvasWidth,
+                'canvas_height'   => $canvasHeight,
             ]);
         }
 
@@ -328,7 +365,9 @@ class RouteController extends Controller
             return [
                 'route_id' => $item->route_id,
                 'json' => $item->json,
-                'route_name' => $item->route ? $item->route->name : null
+                'route_name' => $item->route ? $item->route->name : null,
+                'canvas_width' => $item->canvas_width,
+                'canvas_height' => $item->canvas_height,
             ];
         });
     }

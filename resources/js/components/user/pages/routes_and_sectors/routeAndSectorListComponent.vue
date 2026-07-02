@@ -123,6 +123,7 @@ export default {
                                 'Name',
                                 'Public',
                                 'Edit routes',
+                                'Routes Drawing',
                                 'Edit',
                                 'Delite',
                             ],
@@ -131,7 +132,8 @@ export default {
                                 ['data_action_id', ['name'], 'sector_modal'],
                                 ['data', ['published'], 'bool'],
                                 ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
-['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                ['action_router', 'sectorRoutesDrawing', 'btn btn-info', '<i aria-hidden="true" class="fa fa-pencil-square-o"></i>'],
+                                ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                 ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
                             'perm': [
@@ -139,6 +141,7 @@ export default {
                                 ['no'],
                                 ['no'],
                                 ['sector', 'edit'],
+                                ['route', 'edit'],
                                 ['sector', 'edit'],
                                 ['sector', 'del'],
                             ]

@@ -148,6 +148,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
     Route::controller(RouteController::class)->prefix('set_route')->group( function() {
         Route::post('/add_route', 'add_route');
         Route::get('/get_route_editing_data/{route_id}', 'get_route_editing_data');
+        Route::get('/get_sector_routes_drawing_data/{sector_id}', 'get_sector_routes_drawing_data');
         Route::post('/edit_route/{route_id}', 'edit_route');
         Route::post('/save_route_drawing', 'save_route_drawing');
         Route::delete('/del_sector_image_drawing/{sector_image_id}', 'del_sector_image_drawing');

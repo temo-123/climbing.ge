@@ -112,6 +112,7 @@ const routes = [
             { path: 'route/edit/:id', name: 'routeEdit', component: load('routes_and_sectors/routes/routeEditComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
             { path: 'sector/add/:category', name: 'sectorAdd', component: load('routes_and_sectors/sectors/sectorAddComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
             { path: 'sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent'), props: true, meta: {title: 'user page', permissions: [['show', 'route']]}},
+            { path: 'sector/:id/routes_drawing', name: 'sectorRoutesDrawing', component: load('routes_and_sectors/routes/sectorRouteDrawingsEditorComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
 
             { path: 'MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
             { path: 'MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},

@@ -14,6 +14,8 @@ class ClimbingRoutesJson extends Model
     protected $fillable = [
         'route_id',
         'json',
+        'canvas_width',
+        'canvas_height',
         'sector_image_id',
         'created_at',
         'updated_at'

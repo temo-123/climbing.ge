@@ -393,7 +393,9 @@ class RouteController extends Controller
             return [
                 'route_id' => $item->route_id,
                 'json' => $item->json,
-                'route_name' => $item->route ? $item->route->name : null
+                'route_name' => $item->route ? $item->route->name : null,
+                'canvas_width' => $item->canvas_width,
+                'canvas_height' => $item->canvas_height,
             ];
         });
     }
