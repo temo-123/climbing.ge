@@ -2,7 +2,7 @@
   <StackModal
       v-model="is_show_modal"
       :title="sectorData ? ($t('guide.article.title.sector name') + ' — ' + sectorData.sector.name) : ''"
-      size="xxl"
+      :size="'90per'"
       :saveButton="{ visible: false }"
       :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
       @close="close_modal"
@@ -273,9 +273,14 @@ export default {
 /* ── Image block ── */
 .sector-img-block {
     width: 100%;
-    background: #111;
+    background: transparent;
     border-radius: 6px;
     overflow: hidden;
+    /* The canvas preview now shrink-wraps to the image's own rendered size
+       (so tall/portrait photos don't stretch to full width and blow up in
+       height) — center it instead of letting it hug the left edge, and let
+       the leftover space show the modal's own background instead of a dark bar. */
+    text-align: center;
 }
 
 /* ── Hint ── */

@@ -1,19 +1,16 @@
 <template>
     <div class="sector-block">
-        <div class="align-items-start">
-            <div class="col-10 col-md-10">
+        <div class="sector-header">
+            <div class="sector-header-title">
                 <!-- <h2 :id="'sector-' + sector.sector.id"> -->
                 <h2 :id="'sector-' + sector.sector.id">
                     {{ $t("guide.article.title.sector name") }} —
                     <strong>{{ sector.sector.name }}</strong>
                 </h2>
             </div>
-            <div class="col-2">
+            <div v-if="sector.has_route_drawings" class="sector-header-action">
                 <a
-                    v-if="sector.has_route_drawings"
                     @click="show_sector_canvas_modal()"
-                    data-toggle="modal"
-                    data-target="#squarespaceModal_route_info_"
                     class="show_sector_canvas_modal_link"
                 >
                     <i class="fa fa-list-alt show_sector_canvas_modal_icon" aria-hidden="true"></i>
@@ -290,7 +287,6 @@
             :sector="sector"
             @show_route_modal="show_route_modal"
             @show_mtp_modal="show_mtp_madel"
-            size="xl"
         />
 
     </div>
@@ -494,8 +490,32 @@ export default {
 }
 
 
+/* Flex row instead of floats — floated elements with no clearfix collapsed this
+   row's height on narrow screens, letting the icon-rows below render on top of
+   (and swallow clicks meant for) the modal-open button. */
+.sector-header {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    gap: 8px;
+}
+.sector-header-title {
+    /* flex-basis:0 (not auto) so this always claims the full remaining row
+       width via flex-grow, regardless of the h2 text's own intrinsic/content
+       size — with a break-word content size counted in, "auto" basis could
+       resolve to a near-zero width instead of actually filling the row. */
+    flex: 1 1 0;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.sector-header-action {
+    flex: 0 0 auto;
+    margin-left: auto;
+}
+
 .show_sector_canvas_modal_link {
-    float: right;
+    display: inline-block;
 }
 
 
@@ -629,6 +649,15 @@ export default {
     /* h2 {
         font-size: 1.2rem;
     } */
+    /* Stack title above the modal-open button instead of sharing a row —
+       squeezing the title into a narrow flex column pushed long words past
+       the box edge. */
+    .sector-header {
+        flex-direction: column;
+    }
+    .sector-header-action {
+        align-self: flex-end;
+    }
     .icon-col.icons-left,
     .icon-col.icons-right {
         justify-content: center;

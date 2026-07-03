@@ -587,13 +587,21 @@ export default {
 
 <style scoped>
 .canvas-json-show-wrapper {
+    /* Shrink-wrap to the image's own rendered size (not the modal's full width) so
+       a tall/portrait photo doesn't get stretched to full width and blow up in
+       height — it now scales down by height instead and the wrapper (and the
+       canvas overlay, sized to 100%/100% of it) shrinks right along with it. */
     position: relative;
+    display: inline-block;
+    max-width: 100%;
     line-height: 0;
     background: #111;
 }
 .canvas-bg-img {
     display: block;
-    width: 100%;
+    max-width: 100%;
+    max-height: 65vh;
+    width: auto;
     height: auto;
 }
 .canvas-overlay {
@@ -607,5 +615,11 @@ export default {
 .canvas-interactive {
     pointer-events: auto;
     cursor: default;
+}
+
+@media (max-width: 767px) {
+    .canvas-bg-img {
+        max-height: 45vh;
+    }
 }
 </style>

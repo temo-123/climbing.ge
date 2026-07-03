@@ -240,15 +240,20 @@
         overflow: hidden !important;
   }
 
-  .modal-sm { --modal-max-width: 420px; width: 90% !important; max-width: 420px !important; }
-  .modal-md { --modal-max-width: 560px; width: 90% !important; max-width: 560px !important; }
-  .modal-lg { --modal-max-width: 720px; width: 90% !important; max-width: 720px !important; }
-  .modal-xl { --modal-max-width: 900px; width: 90% !important; max-width: 900px !important; }
-  .modal-xxl { --modal-max-width: 1100px; width: 90% !important; max-width: 1100px !important; }
-  .modal-xxxl { --modal-max-width: 1300px; width: 90% !important; max-width: 1300px !important; }
-  .modal-90per { width: 90vw; max-width: 90vw; }
+  /* Compound selectors (.stack-modal.modal-xxx) so these always outrank any
+     third-party CSS that happens to reuse bare "modal-lg"/"modal-fullscreen"
+     class names on the page (e.g. Bootstrap 3, loaded globally on the public
+     guidebook layout) — a bare-class rule can never out-specificity a
+     two-class compound selector, regardless of load order or !important. */
+  .stack-modal.modal-sm  { --modal-max-width: 420px;  width: 90% !important; max-width: 420px  !important; }
+  .stack-modal.modal-md  { --modal-max-width: 560px;  width: 90% !important; max-width: 560px  !important; }
+  .stack-modal.modal-lg  { --modal-max-width: 720px;  width: 90% !important; max-width: 720px  !important; }
+  .stack-modal.modal-xl  { --modal-max-width: 900px;  width: 90% !important; max-width: 900px  !important; }
+  .stack-modal.modal-xxl { --modal-max-width: 1100px; width: 90% !important; max-width: 1100px !important; }
+  .stack-modal.modal-xxxl{ --modal-max-width: 1300px; width: 90% !important; max-width: 1300px !important; }
+  .stack-modal.modal-90per { width: 90vw !important; max-width: 90vw !important; }
   /* full = near full-screen with small side margins */
-  .modal-full {
+  .stack-modal.modal-full {
     width: calc(100vw - 10px) !important;
     height: calc(100vh - 10px) !important;
     max-height: calc(100vh - 10px) !important;
@@ -256,12 +261,12 @@
     margin: 5px !important;
     max-width: none !important;
   }
-  .stack-modal-overlay:has(.modal-full) {
+  .stack-modal-overlay:has(.stack-modal.modal-full) {
     padding: 0 !important;
   }
 
   /* fullscreen = true edge-to-edge, no chrome */
-  .modal-fullscreen {
+  .stack-modal.modal-fullscreen {
     width: 100vw !important;
     height: 100vh !important;
     max-height: 100vh !important;
@@ -269,7 +274,7 @@
     margin: 0 !important;
     max-width: none !important;
   }
-  .stack-modal-overlay:has(.modal-fullscreen) {
+  .stack-modal-overlay:has(.stack-modal.modal-fullscreen) {
     padding: 0 !important;
   }
 
