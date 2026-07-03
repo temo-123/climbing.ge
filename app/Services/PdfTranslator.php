@@ -3,12 +3,15 @@
 namespace App\Services;
 
 /**
- * Loads the same `shop.wall.pdf.*` strings the frontend's vue-i18n JSON
- * files define (resources/lang/i18n/{locale}.json), so the wall calculator's
- * PDF export can render in the user's own active locale (English or
- * Georgian) instead of always English — reusing one source of translated
- * strings rather than maintaining a second, Laravel-native copy that could
- * drift out of sync with the site's own translations.
+ * Loads the same `shop.wall.*` strings (both the general ones and the
+ * `pdf`-specific subset) the frontend's vue-i18n JSON files define
+ * (resources/lang/i18n/{locale}.json), so the wall calculator's PDF export
+ * can render in the user's own active locale (English or Georgian) instead
+ * of always English — reusing one source of translated strings rather than
+ * maintaining a second, Laravel-native copy that could drift out of sync
+ * with the site's own translations. A key present in both wins from the
+ * `pdf` subset, since a few (e.g. `side_label`) intentionally read
+ * differently in each context.
  */
 class PdfTranslator
 {
@@ -32,7 +35,18 @@ class PdfTranslator
         $path = resource_path("lang/i18n/{$locale}.json");
         if (!is_file($path)) return [];
         $data = json_decode(file_get_contents($path), true);
-        return $data['shop']['wall']['pdf'] ?? [];
+        $wall = $data['shop']['wall'] ?? [];
+        $pdf = $wall['pdf'] ?? [];
+        unset($wall['pdf']);
+
+        // The general shop.wall.* strings (e.g. discipline_name_bouldering,
+        // structure_name_outdoor) are reused here too, not just the
+        // pdf-specific subset — one translated string per concept instead of
+        // duplicating it under both places. Where a key exists in BOTH (e.g.
+        // "side_label": "Side {n}" generally vs "Side" in the pdf block,
+        // deliberately different for their own contexts), the pdf-specific
+        // value wins.
+        return array_merge($wall, $pdf);
     }
 
     /**

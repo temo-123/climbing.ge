@@ -117,12 +117,25 @@
         <div v-else class="text-muted small text-center py-3">
             No images added yet. Drop files above or click "Add Images".
         </div>
+
+        <ImageCropperModal
+            :show="crop_modal_visible"
+            :file="crop_modal_file"
+            :ratio_prop="crop_ratio_prop || { width: 16, height: 9 }"
+            @confirm="onCropConfirm"
+            @cancel="onCropCancel"
+        />
     </div>
 </template>
 
 
 <script>
+    import image_crop_mixin from '../../../../mixins/image_crop_mixin.js'
+    import ImageCropperModal from '../image_cropper/ImageCropperModal.vue'
+
     export default {
+        mixins: [image_crop_mixin],
+        components: { ImageCropperModal },
         props: {
             max_size_mb: { type: Number, default: 1.5 },
             title_prop: { type: String, default: '' },
@@ -174,16 +187,20 @@
             async addFiles(files) {
                 for (const file of files) {
                     if (!this.validateFileType(file)) continue;
+
+                    const cropped = await this.maybeCropImage(file);
+                    if (!cropped) continue;
+
                     const id = this.nextId();
                     const placeholder = { id, image: null, preview: null, compressing: true, compressed: false, originalSize: null };
                     this.new_images.push(placeholder);
 
                     const idx = this.new_images.findIndex(i => i.id === id);
-                    const processed = await this.compressIfNeeded(file);
+                    const processed = await this.compressIfNeeded(cropped);
                     this.new_images[idx].image = processed;
                     this.new_images[idx].preview = URL.createObjectURL(processed);
-                    this.new_images[idx].compressed = processed !== file;
-                    this.new_images[idx].originalSize = processed !== file ? file.size : null;
+                    this.new_images[idx].compressed = processed !== cropped;
+                    this.new_images[idx].originalSize = processed !== cropped ? cropped.size : null;
                     this.new_images[idx].compressing = false;
                 }
                 this.update_perent_component_data();

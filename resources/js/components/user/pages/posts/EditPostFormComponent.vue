@@ -29,10 +29,11 @@
                         @update:global_data_prop="update_global_post"
                     />
                     
-                    <PostImage 
-                        @upload_img="post_image = $event" 
-
-                        :image_prop="post_old_image"
+                    <single_image_edit
+                        title_prop="Post image"
+                        :existing_image_url_prop="post_old_image ? '/public/images/blog_img/'+post_old_image : ''"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
+                        @update_single_image="post_image = $event"
                     />
                 </div>
             </div>
@@ -72,12 +73,12 @@
 <script>
 import GlobalDataForm from './forms/edit_forms/GlobalDataFormComponent.vue'
 import LocaleDataForm from './forms/edit_forms/LocaleDataFormComponent.vue'
-import PostImage from './forms/edit_forms/PostImageFormComponent.vue'
+import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
 // import validator_alerts_component from '../../items/validator_alerts_component.vue'
 
 export default {
     components: {
-        PostImage,
+        single_image_edit,
         GlobalDataForm,
         LocaleDataForm,
         // validator_alerts_component

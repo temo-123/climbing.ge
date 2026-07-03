@@ -27,8 +27,10 @@
                     <GlobalDataForm 
                         @global_form_data="data.global_post = $event" 
                     />
-                    <PostImage
-                        ref="PostImage" @upload_img="upload_post_image"
+                    <single_image_add
+                        title_prop="Post image"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
+                        @update_single_image="upload_post_image"
                     />
                 </div>
             </div>
@@ -69,7 +71,7 @@
 <script>
     import GlobalDataForm from './forms/add_forms/GlobalDataFormComponent.vue'
     import LocaleDataForm from './forms/add_forms/LocaleDataFormComponent.vue'
-    import PostImage from './forms/add_forms/PostImageFormComponent.vue'
+    import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
 
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
@@ -78,7 +80,7 @@
 
             GlobalDataForm,
             LocaleDataForm,
-            PostImage,
+            single_image_add,
         },
         props: [
             // 'back_url',

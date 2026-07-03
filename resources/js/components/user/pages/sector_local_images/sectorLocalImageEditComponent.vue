@@ -31,17 +31,11 @@
                 </div>
 
                 <div class="form-group clearfix row">
-                    <label for="email" class='col-md-2 control-label'>Active image:</label>
-                    <div class="col-md-5">
-                        <img :src="'/public/images/sector_local_img/'+data.image" alt="Locale sectors image">
-                    </div>
-                </div>
-
-                <div class="form-group clearfix row">
-                    <label for="email" class='col-md-2 control-label'>Upload new image:</label>
-                    <div class="col-md-10">
-                        <input type="file" name="image" id="image" v-on:change="onFileChange">
-                    </div>
+                    <single_image_edit
+                        title_prop="Sector local image"
+                        :existing_image_url_prop="data.image ? '/public/images/sector_local_img/'+data.image : ''"
+                        @update_single_image="image = $event"
+                    />
                 </div>
             </form>
 
@@ -133,10 +127,12 @@
 
 <script>
     import addSectorModal from './assets/addSectorModalComponent.vue'
+    import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
 
     export default {
         components: {
-            addSectorModal
+            addSectorModal,
+            single_image_edit
         },
         props: [
             // 'status',
@@ -228,9 +224,6 @@
                 arr.splice(objWithIdIndex, 1);
 
                 return arr;
-            },
-            onFileChange(e){
-                this.image = e.target.files[0];
             },
             update(){
                 this.is_loading = true

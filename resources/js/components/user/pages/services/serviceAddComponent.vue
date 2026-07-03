@@ -71,6 +71,7 @@
                     <div class="col-md-12">
                         <gallery_images_add
                             title_prop="Service Images"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_gallery_images="service_images = $event"
                         />
                     </div>

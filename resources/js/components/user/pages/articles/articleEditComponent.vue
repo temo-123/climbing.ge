@@ -52,11 +52,11 @@
                     :description_prop="$t('user edit en article description')"
                 />
 
-                <ArticleImage 
-                    @upload_img="article_image = $event" 
-
-                    :image_prop="article_old_image"
-                    :category_prop="this.category"
+                <single_image_edit
+                    title_prop="Article image"
+                    :existing_image_url_prop="article_old_image ? '/public/images/'+category+'_img/'+article_old_image : ''"
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
+                    @update_single_image="article_image = $event"
                 />
 
                 <SectorsImagesForm      
@@ -75,12 +75,13 @@
                     :article_id="article_id"
                 />
 
-                <gallery_images_edit 
+                <gallery_images_edit
                     @update_gallery_images="update_gallery_images"
 
                     :image_path_prop="'images/article_gallery_img/'"
                     :image_del_route_prop="'set_article/set_gallery_image/del_image/'"
                     :get_images_route_prop="'set_article/set_gallery_image/get_editing_images/'"
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
                 />
                
             </div>
@@ -121,12 +122,12 @@
 <script>
     import GlobalDataForm from './forms/edit_forms/GlobalDataFormComponent.vue'
     import LocaleDataForm from './forms/edit_forms/LocaleDataFormComponent.vue'
-    import ArticleImage from './forms/edit_forms/ArticleImageFormComponent.vue'
     import SectorsImagesForm from './forms/edit_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
     import SummitRelationForm from './forms/edit_forms/SummitRelationFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
+    import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     // import { going } from '../.p./../../../mixins/easy_navigation_mixin.js'
     export default {
@@ -138,12 +139,12 @@
         components: {
             GlobalDataForm,
             LocaleDataForm,
-            ArticleImage,
             SectorsImagesForm,
             MountRouteImagesForm,
             SummitRelationForm,
 
             gallery_images_edit,
+            single_image_edit,
             // validator_alerts_component
         },
         data(){

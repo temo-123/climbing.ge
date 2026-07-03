@@ -7,6 +7,7 @@
             get_images_route_prop="/set_product/set_product_img/get_images/"
             image_del_route_prop="/set_product/set_product_img/del_image/"
             :item_id_prop="product_id"
+            :crop_ratio_prop="{ width: 16, height: 9 }"
             @update_gallery_images="new_images = $event"
         />
 

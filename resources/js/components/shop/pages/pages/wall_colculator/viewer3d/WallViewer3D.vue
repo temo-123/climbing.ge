@@ -903,11 +903,11 @@ export default {
             const distance = maxDim * 1.7;
 
             const views = [
-                { label: 'Front Elevation', azimuth: 0.001, elevation: 0.06 },
-                { label: 'Front 3/4 View', azimuth: Math.PI * 0.22, elevation: 0.35 },
-                { label: 'Side View', azimuth: Math.PI / 2, elevation: 0.06 },
-                { label: 'Rear 3/4 View', azimuth: Math.PI * 1.22, elevation: 0.35 },
-                { label: 'Overhead Plan View', azimuth: 0.001, elevation: Math.PI / 2 - 0.3 },
+                { label: this.$t('shop.wall.view_label_front_elevation'), azimuth: 0.001, elevation: 0.06 },
+                { label: this.$t('shop.wall.view_label_front_3q'), azimuth: Math.PI * 0.22, elevation: 0.35 },
+                { label: this.$t('shop.wall.view_label_side'), azimuth: Math.PI / 2, elevation: 0.06 },
+                { label: this.$t('shop.wall.view_label_rear_3q'), azimuth: Math.PI * 1.22, elevation: 0.35 },
+                { label: this.$t('shop.wall.view_label_overhead_plan'), azimuth: 0.001, elevation: Math.PI / 2 - 0.3 },
             ];
 
             const snapshots = views.map((v) => {

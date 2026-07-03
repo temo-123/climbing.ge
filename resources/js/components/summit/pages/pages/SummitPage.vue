@@ -280,7 +280,7 @@
             v-if="summit"
             :title="summit.title + ' – Summit Climbing Georgia'"
             :description="summit.description || 'Explore summit details and record your ascent in Georgia.'"
-            :image="summit.image ? '/storage/' + summit.image : '/public/images/meta_img/mountain.jpg'"
+            :image="summit.image ? '/public/images/summit_img/' + summit.image : '/public/images/meta_img/mountain.jpg'"
         />
 
         <make-ascent-modal

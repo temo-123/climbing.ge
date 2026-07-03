@@ -116,16 +116,12 @@
                         </div>
                         
                         <div class="form-group clearfix">
-                            <label for="image" class='col-xs-6 control-label'>Olredi uploaded image:</label>
-                            <div class="col-md-6">
-                                <img class="img-responsive" :src="'../../../../images/event_img/'+data.global_data.image" :alt="'image'">
-                            </div>
-                        </div>
-                        <div class="form-group clearfix">
-                            <label for="image" class='col-xs-6 control-label'>Upload article image:</label>
-                            <div class="col-xs-6">
-                                <input type="file" name="image" id="image" required v-on:change="onFileChange">
-                            </div>
+                            <single_image_edit
+                                title_prop="Competition image"
+                                :existing_image_url_prop="data.global_data.image ? '../../../../images/event_img/'+data.global_data.image : ''"
+                                :crop_ratio_prop="{ width: 16, height: 9 }"
+                                @update_single_image="image = $event"
+                            />
                         </div>
                     </form>
 
@@ -244,6 +240,7 @@
     // import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     // import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+    import single_image_edit from '../../../items/single_image/singleImageEditComponent.vue'
 
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     export default {
@@ -256,6 +253,7 @@
         components: {
             // GlobalInfoFormBlock,
             moment,
+            single_image_edit,
             // validator_alerts_component
         },
         data(){
@@ -263,6 +261,7 @@
                 tab_num: 1,
 
                 images: [],
+                image: null,
                 editorConfig: '',
 
                 error: [],
@@ -333,10 +332,6 @@
             },
             get_global_blocks_id({value_name, block_id}) {
                 this.global_blocks[value_name+"_id"] = block_id
-            },
-
-            onFileChange(event){
-                this.image = event.target.files[0];
             },
 
             event_whithout_day(){

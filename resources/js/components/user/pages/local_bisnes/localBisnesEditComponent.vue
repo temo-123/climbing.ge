@@ -79,12 +79,13 @@
                         :article_del_route_prop="'bisnes/del_bisnes_article_relation/'"
                         :get_articles_route_prop="'bisnes/get_bisnes_article_relation/'"
                     />
-                    <gallery_images_edit 
+                    <gallery_images_edit
                         @update_gallery_images="update_gallery_images"
 
                         :image_path_prop="'images/suport_local_bisnes_img/'"
                         :image_del_route_prop="'set_bisnes/del_local_bisnes_image/'"
                         :get_images_route_prop="'get_bisnes/get_bisnes_images/'"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
                     />
                 </div>
                 <div class="row" v-show="tab_num == 2">

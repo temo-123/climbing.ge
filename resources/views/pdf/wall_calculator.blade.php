@@ -116,8 +116,8 @@
         <div class="info-box">
             <h6>{{ $tr->t('discipline_structure') }}</h6>
             <p>
-                {{ ucfirst(str_replace('_', ' ', $input['discipline'] ?? '—')) }}<br>
-                {{ ucfirst(str_replace('_', ' ', $input['structure'] ?? '—')) }}
+                {{ !empty($input['discipline']) ? $tr->t('discipline_name_' . $input['discipline']) : '—' }}<br>
+                {{ !empty($input['structure']) ? $tr->t('structure_name_' . $input['structure']) : '—' }}
                 @if($sidesCount > 1) &mdash; {{ $sidesCount }}-{{ $tr->t('tower_suffix') }} @endif
             </p>
         </div>
@@ -148,7 +148,7 @@
     @endif
 
     @if(count($snapshots))
-        <div class="section-title">3D Renders</div>
+        <div class="section-title">{{ $tr->t('renders_title') }}</div>
         <div class="renders-grid">
             @foreach($snapshots as $shot)
                 @if(!empty($shot['data_url']))

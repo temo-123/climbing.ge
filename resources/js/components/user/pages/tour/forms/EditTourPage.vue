@@ -84,6 +84,7 @@
                             image_path_prop="images/tour_img/"
                             get_images_route_prop="/get_tour/get_tour_images/"
                             image_del_route_prop="/set_tour/del_tour_image/"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_gallery_images="tour_new_images = $event"
                         />
                     </div>

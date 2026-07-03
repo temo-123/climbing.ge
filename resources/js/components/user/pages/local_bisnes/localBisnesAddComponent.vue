@@ -174,6 +174,7 @@
                         @update_gallery_images="update_gallery_images"
 
                         :image_path_prop="'images/local_bisnes_img/'"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
                     />
                 </div>
                 <div class="row" v-show="tab_num == 2">

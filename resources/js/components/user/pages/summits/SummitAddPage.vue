@@ -67,8 +67,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Image</label>
-                    <input type="file" class="form-control-file" accept="image/*" @change="handleImage" />
+                    <single_image_add
+                        title_prop="Summit image"
+                        @update_single_image="form.image = $event"
+                    />
                 </div>
 
                 <div class="form-group">
@@ -116,10 +118,11 @@
 
 <script>
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
+import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
 
 export default {
     name: 'SummitAddPage',
-    components: { breadcrumb },
+    components: { breadcrumb, single_image_add },
     data() {
         return {
             tab_num: 1,
@@ -143,9 +146,6 @@ export default {
         document.querySelector('.admin_page_header_navbar').style.marginLeft = '0'
     },
     methods: {
-        handleImage(event) {
-            this.form.image = event.target.files[0] || null
-        },
         save() {
             this.is_loading = true
             this.errors = {}

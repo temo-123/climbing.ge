@@ -12,6 +12,7 @@ use App\Models\Summit\SummitAscent;
 use App\Models\Summit\SummitMountRoute;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
+use App\Services\Abstract\ImageControllService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -83,6 +84,10 @@ class SummitController extends Controller
             'published'      => $request->published ?? false,
         ]);
 
+        if ($request->hasFile('image')) {
+            $summit->update(['image' => ImageControllService::image_upload('images/summit_img/', $request, 'image', 1)]);
+        }
+
         return response()->json($summit->fresh(), 201);
     }
 
@@ -113,6 +118,10 @@ class SummitController extends Controller
             $data['url_title'] = $this->generateUniqueUrlTitle($request->input('title', $summit->title), $summit->id);
         } elseif ($request->filled('url_title')) {
             $data['url_title'] = $request->url_title;
+        }
+
+        if ($request->hasFile('image')) {
+            $data['image'] = ImageControllService::image_update('images/summit_img/', $summit, $request, 'image', 'image', 1);
         }
 
         $summit->update($data);

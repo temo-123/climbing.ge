@@ -71,12 +71,11 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Image</label>
-                    <div v-if="currentImage" class="mb-2">
-                        <img :src="'/storage/' + currentImage" alt="Current image" style="max-height: 100px;" class="img-thumbnail" />
-                        <p class="text-muted small mt-1">Current image. Upload a new one to replace it.</p>
-                    </div>
-                    <input type="file" class="form-control-file" accept="image/*" @change="handleImage" />
+                    <single_image_edit
+                        title_prop="Summit image"
+                        :existing_image_url_prop="currentImage ? '/public/images/summit_img/'+currentImage : ''"
+                        @update_single_image="form.image = $event"
+                    />
                 </div>
 
                 <div class="form-group">
@@ -159,10 +158,11 @@
 <script>
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import SummitRoutesRelationTab from './SummitRoutesRelationTab.vue'
+import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
 
 export default {
     name: 'SummitEditPage',
-    components: { breadcrumb, SummitRoutesRelationTab },
+    components: { breadcrumb, SummitRoutesRelationTab, single_image_edit },
     data() {
         return {
             tab_num: 1,
@@ -223,9 +223,6 @@ export default {
                 })
                 .catch(() => {})
                 .finally(() => { this.is_loading = false })
-        },
-        handleImage(event) {
-            this.form.image = event.target.files[0] || null
         },
         save() {
             this.is_loading = true

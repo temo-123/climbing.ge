@@ -47,7 +47,11 @@
                 />
 
                 <div class="col-md-12">
-                    <ArticleImage ref="ArticleImage" @upload_img="upload_adticle_image"/>
+                    <single_image_add
+                        title_prop="Article image"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
+                        @update_single_image="upload_adticle_image"
+                    />
                 </div>
 
                 <SectorsImagesForm      
@@ -68,6 +72,7 @@
                     @update_gallery_images="update_gallery_images"
 
                     :image_path_prop="'images/article_gallery_img/'"
+                    :crop_ratio_prop="{ width: 16, height: 9 }"
                 />
                 
             </div>
@@ -100,12 +105,12 @@
 <script>
     import GlobalDataForm from './forms/add_forms/GlobalDataFormComponent.vue'
     import LocaleDataForm from './forms/add_forms/LocaleDataFormComponent.vue'
-    import ArticleImage from './forms/add_forms/ArticleImageFormComponent.vue'
     import SectorsImagesForm from './forms/add_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/add_forms/MountRouteImageFormComponent.vue'
 
     // import gallery_images_add from './items/galleryImageAddComponent.vue'
     import gallery_images_add from '../../items/gallery/galleryImageAddComponent.vue'
+    import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
 
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
 
@@ -115,11 +120,11 @@
 
             GlobalDataForm,
             LocaleDataForm,
-            ArticleImage,
             SectorsImagesForm,
             MountRouteImagesForm,
 
-            gallery_images_add
+            gallery_images_add,
+            single_image_add
         },
         props: [
             // 'back_url',

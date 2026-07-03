@@ -109,10 +109,11 @@
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="image" class='col-xs-6 control-label'>Upload article image:</label>
-                            <div class="col-xs-6">
-                                <input type="file" name="image" id="image" required v-on:change="onFileChange">
-                            </div>
+                            <single_image_add
+                                title_prop="Competition image"
+                                :crop_ratio_prop="{ width: 16, height: 9 }"
+                                @update_single_image="image = $event"
+                            />
                         </div>
                     </form>
 
@@ -225,6 +226,7 @@
     // import { editor_config } from '../../../../../mixins/editor/editor_config_mixin.js'
     // import GlobalInfoFormBlock from '../../../items/GlobalInfoFormBlockComponent.vue'
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
+    import single_image_add from '../../../items/single_image/singleImageAddComponent.vue'
     export default {
         mixins: [
             // editor_config
@@ -232,6 +234,7 @@
         components: {
             // GlobalInfoFormBlock,
             // validator_alerts_component
+            single_image_add
         },
         props: [
             // 'back_url',
@@ -243,6 +246,7 @@
                 error: [],
 
                 images: [],
+                image: null,
                 editorConfig: '',
 
                 // editor_config: {
@@ -316,10 +320,6 @@
 
             get_global_blocks_id({value_name, block_id}) {
                 this.global_blocks[value_name+"_id"] = block_id
-            },
-
-            onFileChange(event){
-                this.image = event.target.files[0];
             },
 
             event_whithout_day(){

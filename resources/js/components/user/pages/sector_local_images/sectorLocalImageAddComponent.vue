@@ -31,10 +31,10 @@
                 </div>
 
                 <div class="form-group clearfix row">
-                    <label for="email" class='col-md-2 control-label'>Upload image:</label>
-                    <div class="col-md-10">
-                        <input type="file" name="image" id="image" required v-on:change="onFileChange">
-                    </div>
+                    <single_image_add
+                        title_prop="Sector local image"
+                        @update_single_image="data.image = $event"
+                    />
                 </div>
             </form>
 
@@ -111,10 +111,12 @@
 
 <script>
     import addSectorModal from './assets/addSectorModalComponent.vue'
+    import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
 
     export default {
         components: {
-            addSectorModal
+            addSectorModal,
+            single_image_add
         },
         props: [
             // 'status',
@@ -159,9 +161,6 @@
                 arr.splice(objWithIdIndex, 1);
 
                 return arr;
-            },
-            onFileChange(e){
-                this.data.image = e.target.files[0];
             },
             save(){
                 this.is_loading = true

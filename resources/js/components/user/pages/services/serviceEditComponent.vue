@@ -72,6 +72,7 @@
                             image_path_prop="images/service_img/"
                             get_images_route_prop="/get_service/get_service_images/"
                             image_del_route_prop="/set_service/del_service_image/"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_gallery_images="service_new_images = $event"
                         />
                     </div>
