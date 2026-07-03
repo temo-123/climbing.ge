@@ -16,6 +16,10 @@ class ClimbingRoutesJson extends Model
         'json',
         'canvas_width',
         'canvas_height',
+        'bg_left',
+        'bg_top',
+        'bg_width',
+        'bg_height',
         'sector_image_id',
         'created_at',
         'updated_at'

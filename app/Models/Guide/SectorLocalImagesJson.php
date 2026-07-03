@@ -9,7 +9,11 @@ class SectorLocalImagesJson extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['json', 'sector_local_image_id', 'sector_id', 'canvas_width', 'canvas_height'];
+    protected $fillable = [
+        'json', 'sector_local_image_id', 'sector_id',
+        'canvas_width', 'canvas_height',
+        'bg_left', 'bg_top', 'bg_width', 'bg_height',
+    ];
 
     public function sector_local_image()
     {

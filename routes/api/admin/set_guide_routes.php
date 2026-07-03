@@ -143,6 +143,18 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::controller(SpotRockController::class)->prefix('set_spot_rock_images')->group( function() {
             Route::delete('/del_spot_rock_image/{image_id}', 'del_spot_rock_image');
         });
+
+        Route::controller(SectorImageExtraDrawingController::class)->prefix('set_sector_image_extra_drawing')->group( function() {
+            Route::get('/get_for_editor/{sector_image_id}', 'get_for_editor');
+            Route::post('/save/{sector_image_id}', 'save');
+            Route::delete('/delete/{sector_image_id}', 'delete');
+        });
+
+        Route::controller(SectorLocalImageExtraDrawingController::class)->prefix('set_sector_local_image_extra_drawing')->group( function() {
+            Route::get('/get_for_editor/{sector_local_image_id}', 'get_for_editor');
+            Route::post('/save/{sector_local_image_id}', 'save');
+            Route::delete('/delete/{sector_local_image_id}', 'delete');
+        });
     });
 
     Route::controller(RouteController::class)->prefix('set_route')->group( function() {

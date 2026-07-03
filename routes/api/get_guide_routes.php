@@ -148,9 +148,17 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::controller(SectorLocalImagesController::class)->prefix('get_sector_local_images')->group( function() {
             Route::get('/get_all_sector_local_images', 'get_all_sector_local_images');
             Route::get('/get_sector_local_img_for_modal/{image_id}', 'get_sector_local_img_for_modal');
-            
+
             Route::get('/get_layout/{layout_id}', 'get_layout');
             Route::get('/get_layouts/{sector_local_image_id}', 'get_layouts');
+        });
+
+        Route::controller(SectorImageExtraDrawingController::class)->prefix('get_sector_image_extra_drawing')->group( function() {
+            Route::get('/get/{sector_image_id}', 'get');
+        });
+
+        Route::controller(SectorLocalImageExtraDrawingController::class)->prefix('get_sector_local_image_extra_drawing')->group( function() {
+            Route::get('/get/{sector_local_image_id}', 'get');
         });
     });
 

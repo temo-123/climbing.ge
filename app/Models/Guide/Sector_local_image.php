@@ -29,4 +29,9 @@ class Sector_local_image extends Model
     {
         return $this->hasMany(SectorLocalImagesJson::class, 'sector_local_image_id');
     }
+
+    public function extra_drawing()
+    {
+        return $this->hasOne(SectorLocalImageExtraDrawing::class, 'sector_local_image_id');
+    }
 }

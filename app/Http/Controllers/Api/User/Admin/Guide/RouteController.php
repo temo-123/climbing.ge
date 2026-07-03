@@ -254,6 +254,15 @@ class RouteController extends Controller
         // admin's browser container width, not to the background photo's pixel dimensions.
         $canvasWidth = $request->canvas_width;
         $canvasHeight = $request->canvas_height;
+        // The background photo's own actual position + size within that view
+        // (it's fit with a uniform cover-scale, centered — not necessarily
+        // starting at (0,0) or filling the view exactly). Without this, every
+        // other renderer had to assume zero offset, which is exactly what let
+        // saved strokes land in the wrong place once redrawn elsewhere.
+        $bgLeft = $request->bg_left;
+        $bgTop = $request->bg_top;
+        $bgWidth = $request->bg_width;
+        $bgHeight = $request->bg_height;
 
         if (!$routeId || !$sectorImageId || !$json) {
             return response()->json(['error' => 'route_id, sector_image_id and json are required'], 422);
@@ -295,6 +304,10 @@ class RouteController extends Controller
                 'sector_image_id' => $sectorImageId,
                 'canvas_width' => $canvasWidth,
                 'canvas_height' => $canvasHeight,
+                'bg_left' => $bgLeft,
+                'bg_top' => $bgTop,
+                'bg_width' => $bgWidth,
+                'bg_height' => $bgHeight,
             ]);
         } else {
             ClimbingRoutesJson::create([
@@ -303,6 +316,10 @@ class RouteController extends Controller
                 'json'            => $json,
                 'canvas_width'    => $canvasWidth,
                 'canvas_height'   => $canvasHeight,
+                'bg_left'         => $bgLeft,
+                'bg_top'          => $bgTop,
+                'bg_width'        => $bgWidth,
+                'bg_height'       => $bgHeight,
             ]);
         }
 

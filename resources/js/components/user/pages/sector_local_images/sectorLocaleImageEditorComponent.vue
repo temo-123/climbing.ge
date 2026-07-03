@@ -69,13 +69,30 @@
             <!-- Save button + status -->
             <div class="row mb-2">
                 <div class="col-12 d-flex align-items-center gap-2">
+                    <button
+                        class="btn"
+                        :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
+                        :disabled="extra_drawing_loading"
+                        @click="toggleExtraDrawingMode"
+                    >
+                        <i class="fa fa-map-marker"></i>
+                        {{ extra_drawing_loading ? 'Loading…' : (extra_drawing_mode ? 'Extra Drawing Mode: ON' : 'Add Extra Drawing') }}
+                    </button>
                     <button class="btn btn-success" :disabled="saving" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : 'Save Layout' }}
+                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : (extra_drawing_mode ? 'Save Extra Drawing' : 'Save Layout') }}
+                    </button>
+                    <button v-if="extra_drawing_mode" class="btn btn-danger" :disabled="deletingExtraDrawing" @click="deleteExtraDrawing">
+                        <i class="fa fa-trash"></i> {{ deletingExtraDrawing ? 'Deleting…' : 'Delete Extra Drawing' }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'ok' ? 'text-success' : 'text-danger'">
                         {{ saveStatus === 'ok' ? '✓ Saved' : '✗ Error' }}
                     </span>
                     <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">original saved</span>
+                </div>
+                <div class="col-12" v-if="extra_drawing_mode">
+                    <p class="text-muted mb-0" style="font-size:12px;">
+                        Extra drawing mode: this layer isn't tied to any one sector — it's shared by every sector that uses this image. Use it for general info (approach notes, hazards, landmarks). Click the button again to go back to editing the selected sector's own layout.
+                    </p>
                 </div>
             </div>
 
@@ -86,7 +103,7 @@
                         v-if="imageUrl"
                         ref="editorComponent"
                         :image_prop="imageUrl"
-                        :json_prop="canvasData"
+                        :json_prop="activeJsonProp"
                         :related_jsons="relatedJsons"
                         @canvas_data="handleCanvasData"
                     />
@@ -113,6 +130,12 @@ export default {
             activeLayoutId:   null,
             saving:           false,
             saveStatus:       null,
+            // "Extra drawing" mode: a general annotation layer tied only to
+            // this image (not to any one sector) — see SectorLocalImageExtraDrawing.
+            extra_drawing_mode:    false,
+            extra_drawing_json:    null,
+            extra_drawing_loading: false,
+            deletingExtraDrawing:  false,
         }
     },
     watch: {
@@ -137,6 +160,12 @@ export default {
             return this.imageInfo.has_original
                 ? '/public/images/sector_local_img/origin_img/' + this.imageInfo.image
                 : '/public/images/sector_local_img/' + this.imageInfo.image;
+        },
+        // What the Editor actually shows/edits — the selected sector's own
+        // layout normally, or the image's general extra-info layer while
+        // that mode is toggled on.
+        activeJsonProp() {
+            return this.extra_drawing_mode ? this.extra_drawing_json : this.canvasData;
         },
     },
     mounted() {
@@ -204,10 +233,123 @@ export default {
         },
 
         handleCanvasData(data) {
-            this.canvasData = data;
+            if (this.extra_drawing_mode) {
+                this.extra_drawing_json = data;
+            } else {
+                this.canvasData = data;
+            }
+        },
+
+        // The background photo's own actual position + size within the Paper.js
+        // view — the editor fits it with a uniform cover-scale, centered, so it
+        // doesn't necessarily start at (0,0) or fill the view exactly. Without
+        // this, every viewer had to assume zero offset, which is exactly what
+        // let saved strokes land in the wrong place once redrawn elsewhere.
+        bgBoundsPayload(canvasContainer) {
+            const bounds = canvasContainer && typeof canvasContainer.getBackgroundBounds === 'function'
+                ? canvasContainer.getBackgroundBounds()
+                : null;
+            return {
+                bg_left:   bounds ? bounds.left   : null,
+                bg_top:    bounds ? bounds.top    : null,
+                bg_width:  bounds ? bounds.width  : null,
+                bg_height: bounds ? bounds.height : null,
+            };
+        },
+
+        // Switches the editor between "the selected sector's own layout" and
+        // the image's general extra-info layer, shared by every sector using
+        // this image — fetched once when entering the mode.
+        async toggleExtraDrawingMode() {
+            if (!this.extra_drawing_mode) {
+                this.extra_drawing_loading = true;
+                try {
+                    const response = await axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id);
+                    const drawing = response.data && response.data.extra_drawing;
+                    this.extra_drawing_json = drawing ? drawing.json : null;
+                } catch (e) {
+                    this.extra_drawing_json = null;
+                } finally {
+                    this.extra_drawing_loading = false;
+                }
+            }
+            this.extra_drawing_mode = !this.extra_drawing_mode;
+        },
+
+        async saveExtraDrawing() {
+            if (!this.$route.params.id) { alert('No image selected'); return; }
+
+            this.saving    = true;
+            this.saveStatus = null;
+
+            try {
+                const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
+
+                let json = this.extra_drawing_json;
+                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
+                    const cleanJson = canvasContainer.getCleanJson();
+                    if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
+                }
+                if (!json) { alert('No drawing data found. Draw something first.'); return; }
+
+                let editedImageData = null;
+                let canvasWidth = 0;
+                let canvasHeight = 0;
+                if (canvasContainer) {
+                    const scope = canvasContainer.getCanvasScope();
+                    if (scope && scope.view) {
+                        canvasWidth  = Math.round(scope.view.viewSize.width);
+                        canvasHeight = Math.round(scope.view.viewSize.height);
+                    }
+                    const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
+                    editedImageData = await this.compositeImages(
+                        this.bgImageUrl,
+                        drawingDataUrl,
+                        canvasContainer.$refs.canvasManager.$el
+                    );
+                }
+
+                const response = await axios.post(
+                    '/set_sector/set_sector_local_image_extra_drawing/save/' + this.$route.params.id,
+                    {
+                        json, edited_image: editedImageData, canvas_width: canvasWidth, canvas_height: canvasHeight,
+                        ...this.bgBoundsPayload(canvasContainer),
+                    }
+                );
+
+                this.saveStatus = response.data.success ? 'ok' : 'error';
+                if (response.data.success && this.imageInfo) {
+                    this.imageInfo.has_original = true;
+                    this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
+                }
+                setTimeout(() => { this.saveStatus = null; }, 3000);
+            } catch (e) {
+                console.error(e);
+                this.saveStatus = 'error';
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        async deleteExtraDrawing() {
+            if (!confirm('Delete the extra drawing for this image? The JSON data will be removed.')) return;
+
+            this.deletingExtraDrawing = true;
+            try {
+                await axios.delete('/set_sector/set_sector_local_image_extra_drawing/delete/' + this.$route.params.id);
+                this.extra_drawing_json = null;
+                this.saveStatus = 'ok';
+                setTimeout(() => { this.saveStatus = null; }, 3000);
+            } catch (e) {
+                this.saveStatus = 'error';
+            } finally {
+                this.deletingExtraDrawing = false;
+            }
         },
 
         async saveChanges() {
+            if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
+
             if (!this.canvasData)       { alert('Draw something on the canvas first.'); return; }
             if (!this.selectedSectorId) { alert('Select a sector first.'); return; }
 
@@ -250,6 +392,7 @@ export default {
                         edited_image:  editedImageData,
                         canvas_width:  canvasWidth,
                         canvas_height: canvasHeight,
+                        ...this.bgBoundsPayload(canvasContainer),
                     }
                 );
 

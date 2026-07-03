@@ -129,6 +129,10 @@ export default {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getCanvasScope() : null;
         },
 
+        getBackgroundBounds() {
+            return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getBackgroundBounds() : null;
+        },
+
         // Access to group counter for layer management
         getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;

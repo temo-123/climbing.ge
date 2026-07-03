@@ -64,6 +64,14 @@ export default {
         color_selected: { default: '#00e64d' }, // highlighted (selected) item
         color_hover:    { default: '#ffaa00' }, // hovered item
         color_dot:      { default: '#ffd700' }, // endpoint dots
+
+        // ── Extra info layer ──────────────────────────────────────────────────────
+        // A single general-purpose annotation drawing (SectorImageExtraDrawing /
+        // SectorLocalImageExtraDrawing) — not tied to any one route/sector, so it's
+        // not part of `items` and never selectable/hoverable. Shape:
+        // { json, canvas_width, canvas_height, bg_left, bg_top, bg_width, bg_height }.
+        extra_item:   { default: null },
+        color_extra:  { default: '#2b6cff' }, // visually distinct from route red/green
     },
 
     data: () => ({
@@ -74,9 +82,11 @@ export default {
     }),
 
     computed: {
-        // Each entry: { json, canvas_width, canvas_height }. canvas_width/height are the
-        // Paper.js view size the drawing was authored at (null for legacy rows saved before
-        // this was tracked, in which case rendering falls back to the composite-image scale).
+        // Each entry: { json, canvas_width, canvas_height, bg_left, bg_top, bg_width,
+        // bg_height }. canvas_width/height are the Paper.js view size the drawing was
+        // authored at; bg_* are the background photo's own actual position/size within
+        // that view (see _itemScale/_itemOffset) — all null for legacy rows saved before
+        // they were tracked, in which case rendering falls back to older, less precise scaling.
         items() {
             if (this.json_items) {
                 const map = {};
@@ -86,6 +96,10 @@ export default {
                             json: item.json,
                             canvas_width: item.canvas_width || null,
                             canvas_height: item.canvas_height || null,
+                            bg_left: item.bg_left ?? null,
+                            bg_top: item.bg_top ?? null,
+                            bg_width: item.bg_width || null,
+                            bg_height: item.bg_height || null,
                         };
                     }
                 });
@@ -104,6 +118,7 @@ export default {
         selected_id()  { this.render(); },
         fetchedItems() { this._hitPathsDirty = true; this.render(); },
         show_all()     { this.render(); },
+        extra_item()   { this.render(); },
         composite_src: {
             immediate: true,
             handler(src) {
@@ -190,6 +205,10 @@ export default {
                             json: parsed,
                             canvas_width: item.canvas_width || null,
                             canvas_height: item.canvas_height || null,
+                            bg_left: item.bg_left ?? null,
+                            bg_top: item.bg_top ?? null,
+                            bg_width: item.bg_width || null,
+                            bg_height: item.bg_height || null,
                         };
                     } catch (_) {}
                 });
@@ -215,9 +234,24 @@ export default {
         _tVec(m, x, y) { return { x: m[0]*x + m[2]*y,         y: m[1]*x + m[3]*y         }; },
 
         // Each item may have been drawn in a different-sized browser container, so there is
-        // no single scale that fits all of them — always resolve per item. Falls back to the
-        // composite-image-based scale for legacy rows that predate canvas_width/canvas_height.
+        // no single scale that fits all of them — always resolve per item.
+        //
+        // The editor's Paper.js view fits the background photo with a uniform COVER
+        // scale, centered in the view (see CanvasManager.vue's loadBackgroundRaster) —
+        // the photo does NOT necessarily start at view-space (0,0) or exactly fill the
+        // view's own width/height. Scaling by canvas_width/canvas_height (the raw view
+        // size) alone silently assumed zero offset, which is exactly what let strokes
+        // land in the wrong place once redrawn here. bg_width/bg_height (the photo's own
+        // actual displayed size within that view) is the correct scale reference when
+        // present; bg_left/bg_top (see _itemOffset) supplies the missing translation.
+        // Falls back to the old view-size-only scale, then the composite-image-based
+        // scale, for legacy rows saved before these were tracked.
         _itemScale(meta, canvas) {
+            const bw = meta && meta.bg_width;
+            const bh = meta && meta.bg_height;
+            if (bw && bh) {
+                return { sx: canvas.width / bw, sy: canvas.height / bh };
+            }
             const cw = meta && meta.canvas_width;
             const ch = meta && meta.canvas_height;
             if (cw && ch) {
@@ -226,6 +260,16 @@ export default {
             const sx = this.compositeWidth  ? (canvas.width  / this.compositeWidth)  : 1;
             const sy = this.compositeHeight ? (canvas.height / this.compositeHeight) : 1;
             return { sx, sy };
+        },
+
+        // The background photo's own top-left corner, in the same view-space
+        // units the stroke coordinates are recorded in — zero for legacy rows
+        // that predate this tracking (matches their old, offset-less behavior).
+        _itemOffset(meta) {
+            if (meta && meta.bg_left != null && meta.bg_top != null) {
+                return { ox: meta.bg_left, oy: meta.bg_top };
+            }
+            return { ox: 0, oy: 0 };
         },
 
         // ── Hit-path building ─────────────────────────────────────────────────────
@@ -249,9 +293,12 @@ export default {
 
             Object.entries(this.items).forEach(([id, meta]) => {
                 const json = meta.json;
-                // Starting CTM converts this item's own Paper.js coords → canvas pixel coords
+                // Starting CTM converts this item's own Paper.js coords → canvas pixel coords.
+                // Folds the background offset into e/f: translate-then-scale is equivalent to
+                // (e,f) = (-sx*ox, -sy*oy), i.e. x' = sx*(x-ox), y' = sy*(y-oy).
                 const { sx, sy } = this._itemScale(meta, canvas);
-                const scaleM = [sx, 0, 0, sy, 0, 0];
+                const { ox, oy } = this._itemOffset(meta);
+                const scaleM = [sx, 0, 0, sy, -sx * ox, -sy * oy];
                 const paths = [];
 
                 const walk = (item, ctm) => {
@@ -525,8 +572,13 @@ export default {
         // so the scale must be resolved per item rather than once globally.
         drawItemScaled(ctx, meta, canvas, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize) {
             const { sx, sy } = this._itemScale(meta, canvas);
+            const { ox, oy } = this._itemOffset(meta);
             ctx.save();
+            // Order matters: scale first, then translate — so the translate
+            // amount is expressed in the ORIGINAL (unscaled) view-space units
+            // the stroke coordinates and (ox,oy) are both recorded in.
             if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
+            if (ox !== 0 || oy !== 0) ctx.translate(-ox, -oy);
             this.drawItem(ctx, meta.json, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize);
             ctx.restore();
         },
@@ -577,6 +629,13 @@ export default {
                 ctx.shadowBlur  = 10;
                 this.drawItemScaled(ctx, this.items[selId], canvas, colorSel, colorDot, colorDef, base * 2.5, textSize * 1.2);
                 ctx.restore();
+            }
+
+            // 4. General-purpose "extra info" layer (approach notes, hazards,
+            // landmarks — not a route, never selectable/hoverable) — always on
+            // top so it stays readable over any route lines it points at.
+            if (this.extra_item && this.extra_item.json) {
+                this.drawItemScaled(ctx, this.extra_item, canvas, this.color_extra, this.color_dot, this.color_extra, base, textSize);
             }
 
             ctx.setTransform(1, 0, 0, 1, 0, 0);

@@ -42,6 +42,7 @@
             :selected_id="selected_route_id"
             :show_all="!!currentImage.has_original"
             :interactive="true"
+            :extra_item="extraDrawing"
             refresh_event="route-drawing-updated"
             @item-click="e => selectRoute(e.id)"
         />
@@ -183,7 +184,16 @@ export default {
             sectorData:        null,
             selected_route_id: null,
             selectedImageIdx:  0,
+            // The general-purpose "extra info" annotation for the currently
+            // shown sector image (approach notes, hazards, landmarks) — not
+            // tied to any route, fetched separately from the route drawings.
+            extraDrawing:      null,
         };
+    },
+    watch: {
+        currentImage(img) {
+            this.fetchExtraDrawing(img);
+        },
     },
     computed: {
         currentImage() {
@@ -230,10 +240,34 @@ export default {
             this.sectorData        = null;
             this.selected_route_id = null;
             this.selectedImageIdx  = 0;
+            this.extraDrawing      = null;
         },
         selectImage(idx) {
             this.selectedImageIdx  = idx;
             this.selected_route_id = null;
+        },
+        // Fetches the current sector image's general "extra info" annotation
+        // (approach notes, hazards, landmarks) — separate from route drawings,
+        // never selectable/hoverable, drawn as its own layer on the canvas.
+        async fetchExtraDrawing(img) {
+            this.extraDrawing = null;
+            if (!img) return;
+            try {
+                const res = await axios.get('/get_sector/get_sector_image_extra_drawing/get/' + img.id);
+                const drawing = res.data && res.data.extra_drawing;
+                if (!drawing || !drawing.json) return;
+                let parsed = typeof drawing.json === 'string' ? JSON.parse(drawing.json) : drawing.json;
+                if (typeof parsed === 'string') parsed = JSON.parse(parsed);
+                this.extraDrawing = {
+                    json: parsed,
+                    canvas_width: drawing.canvas_width || null,
+                    canvas_height: drawing.canvas_height || null,
+                    bg_left: drawing.bg_left ?? null,
+                    bg_top: drawing.bg_top ?? null,
+                    bg_width: drawing.bg_width || null,
+                    bg_height: drawing.bg_height || null,
+                };
+            } catch (_) {}
         },
         selectRoute(routeId) {
             this.selected_route_id = this.selected_route_id == routeId ? null : routeId;

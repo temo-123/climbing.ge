@@ -12,4 +12,9 @@ class Sector_image extends Model
         "sector_id",
         "num",
     ];
+
+    public function extra_drawing()
+    {
+        return $this->hasOne(SectorImageExtraDrawing::class, 'sector_image_id');
+    }
 }

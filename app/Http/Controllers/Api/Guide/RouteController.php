@@ -396,6 +396,10 @@ class RouteController extends Controller
                 'route_name' => $item->route ? $item->route->name : null,
                 'canvas_width' => $item->canvas_width,
                 'canvas_height' => $item->canvas_height,
+                'bg_left' => $item->bg_left,
+                'bg_top' => $item->bg_top,
+                'bg_width' => $item->bg_width,
+                'bg_height' => $item->bg_height,
             ];
         });
     }

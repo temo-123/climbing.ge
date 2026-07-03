@@ -437,6 +437,26 @@ export default {
             return this.scope;
         },
 
+        // The background raster is fit into the view with a uniform
+        // COVER scale + centered position (see loadBackgroundRaster) — it
+        // does not necessarily start at view-space (0,0) or exactly fill
+        // the view's own width/height. Saving canvas_width/canvas_height
+        // (the raw view size) alone and rescaling by that at display time
+        // silently assumed no offset existed, which is exactly what made
+        // strokes land in the wrong place once redrawn over the full-
+        // resolution photo elsewhere. This exposes the raster's own actual
+        // bounds (in the same view-space units strokes are recorded in) so
+        // callers can save the real offset + size alongside the JSON.
+        getBackgroundBounds() {
+            if (!this.rasterBounds) return null;
+            return {
+                left: this.rasterBounds.left,
+                top: this.rasterBounds.top,
+                width: this.rasterBounds.right - this.rasterBounds.left,
+                height: this.rasterBounds.bottom - this.rasterBounds.top,
+            };
+        },
+
         getGroupCounter() {
             return this.groupCounter;
         },

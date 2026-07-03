@@ -1,5 +1,5 @@
 <template>
-    <div class="canvas-editor">
+    <div class="canvas-editor mb-5">
 
         <!-- Toolbar + style bar (visually connected) -->
         <div class="mb-2">

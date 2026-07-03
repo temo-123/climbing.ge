@@ -90,6 +90,13 @@ class SectorLocalImagesController extends Controller
         $editedImageData = $request->edited_image;
         $canvasWidth     = $request->canvas_width  ? (int) $request->canvas_width  : null;
         $canvasHeight    = $request->canvas_height ? (int) $request->canvas_height : null;
+        // The background photo's own actual position + size within that view —
+        // see the migration/CanvasManager comments for why this can't be
+        // assumed to be (0,0) + the full view size.
+        $bgLeft          = $request->bg_left;
+        $bgTop           = $request->bg_top;
+        $bgWidth         = $request->bg_width;
+        $bgHeight        = $request->bg_height;
 
         if (!$sectorId) {
             return response()->json(['error' => 'sectorId is required'], 422);
@@ -131,6 +138,10 @@ class SectorLocalImagesController extends Controller
                 'json'          => $json,
                 'canvas_width'  => $canvasWidth,
                 'canvas_height' => $canvasHeight,
+                'bg_left'       => $bgLeft,
+                'bg_top'        => $bgTop,
+                'bg_width'      => $bgWidth,
+                'bg_height'     => $bgHeight,
             ]
         );
 
