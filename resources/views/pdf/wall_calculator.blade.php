@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ $locale ?? 'en' }}">
 <head>
 <meta charset="UTF-8">
-<title>Wall Configuration</title>
+<title>{{ $tr->t('doc_title') }}</title>
 <style>
     @page { margin: 14mm; }
     * { box-sizing: border-box; }
@@ -30,25 +30,60 @@
         margin: 6mm 0 3mm;
     }
 
-    table { width: 100%; border-collapse: collapse; margin-bottom: 3mm; }
-    th, td { padding: 2mm 2.5mm; text-align: left; border-bottom: 0.2mm solid #e8ecf0; font-size: 9pt; }
-    th { background: #f4f7fa; color: #555; font-weight: bold; }
-    tr.total-row td { font-weight: bold; font-size: 10.5pt; border-top: 0.4mm solid #1a1a2e; border-bottom: none; color: #1a1a2e; }
+    /* Tables read as one bordered "card" (rounded corners via the wrapper,
+       since border-radius doesn't apply cleanly to <table> itself once
+       border-collapse is in play) with alternating row shading — much
+       easier to scan a multi-row price/materials breakdown than a bare
+       HTML table with only bottom-rules between rows. */
+    .table-card { border: 0.2mm solid #e8ecf0; border-radius: 2mm; overflow: hidden; margin-bottom: 4mm; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 2.5mm 3mm; text-align: left; font-size: 9pt; }
+    /* No text-transform: uppercase here — dompdf's uppercasing corrupts
+       Georgian (and likely other non-Latin) glyphs entirely, rendering them
+       as blank boxes instead of letters. Letter-spacing alone still gives
+       the header row a distinct, label-like look without that risk. */
+    th { background: #eef2f7; color: #46505c; font-weight: bold; font-size: 8.5pt; letter-spacing: 0.02em; }
+    tbody tr:nth-child(even) td { background: #f8fafc; }
+    tbody tr td { border-top: 0.2mm solid #eef1f4; }
+    tbody tr:first-child td { border-top: none; }
+    /* `table tbody tr.total-row td` (not just `tr.total-row td`) so this
+       always outranks the nth-child zebra rule above by specificity —
+       otherwise the total row's own highlight got silently overridden by
+       the zebra shading whenever it happened to land on an even row. */
+    table tbody tr.total-row td { font-weight: bold; font-size: 10.5pt; background: #eaf2fb; border-top: 0.4mm solid #4a90d9; color: #1a1a2e; }
     td.num { text-align: right; }
 
-    .renders-grid { display: flex; flex-wrap: wrap; gap: 3mm; margin-bottom: 3mm; }
-    .render-box { width: 47%; border: 0.2mm solid #e8ecf0; border-radius: 2mm; padding: 2mm; text-align: center; }
+    .renders-grid { margin-bottom: 3mm; }
+    .render-box { width: 100%; border: 0.2mm solid #e8ecf0; border-radius: 2mm; padding: 2mm; text-align: center; margin-bottom: 3mm; }
     .render-box img { width: 100%; height: auto; }
     .render-label { font-size: 8pt; color: #888; margin-top: 1mm; }
 
-    .drawings-grid { display: flex; flex-wrap: wrap; gap: 3mm; margin-bottom: 3mm; }
+    .drawings-grid { margin-bottom: 3mm; }
     .drawing-box { width: 100%; border: 0.2mm solid #e8ecf0; border-radius: 2mm; padding: 3mm; margin-bottom: 3mm; }
-    .drawing-box.half { width: 47%; }
     .drawing-title { font-size: 9pt; font-weight: bold; color: #4a90d9; margin-bottom: 1.5mm; }
+
+    /* dompdf does not paint raw inline <svg>...</svg> markup at all — its SVG
+       support only runs through the normal image-loading pipeline (an
+       <img src="...">), and even routed that way its text positioning is
+       unreliable. So each drawing (shapes AND labels — dimensions,
+       "foundation", "overhang", etc.) is rendered as one GD-drawn PNG
+       (see WallDrawingService) and dropped in here as a plain image —
+       nothing left for dompdf's layout/text engine to get wrong.
+       `width: auto` + `max-width/max-height` (not `width: 100%`) is
+       deliberate: a tall, narrow drawing (e.g. a steep side profile)
+       stretched to the full page width at a fixed 100% would blow well past
+       a sane page height — capping max-height to ~82% of the A4 paper
+       height (297mm) lets a drawing use the full width when its own aspect
+       ratio allows it, but shrinks proportionally instead of overflowing
+       when it can't. */
+    .cad-drawing { text-align: center; }
+    .cad-drawing img { display: inline-block; width: auto; height: auto; max-width: 100%; max-height: 243mm; }
 
     .info-columns { display: flex; justify-content: space-between; gap: 6mm; }
     .info-box { width: 48%; }
-    .info-box h6 { font-size: 8.5pt; font-weight: bold; color: #888; margin: 0 0 1.5mm 0; text-transform: uppercase; }
+    /* Same reason the table header rule above dropped text-transform:
+       uppercase — it silently corrupts Georgian glyphs into blank boxes. */
+    .info-box h6 { font-size: 8.5pt; font-weight: bold; color: #888; margin: 0 0 1.5mm 0; }
     .info-box p { margin: 0; line-height: 1.6; }
 
     .standfree-note {
@@ -69,38 +104,46 @@
     <div class="header">
         <div>
             <p class="brand-title">climbing.ge</p>
-            <p class="brand-sub">Wall Construction &amp; Pricing Export</p>
+            <p class="brand-sub">{{ $tr->t('subtitle') }}</p>
         </div>
         <div class="doc-meta">
-            <h2>Wall Configuration</h2>
-            <div>Generated: {{ $generatedAt }}</div>
+            <h2>{{ $tr->t('doc_title') }}</h2>
+            <div>{{ $tr->t('generated') }}: {{ $generatedAt }}</div>
         </div>
     </div>
 
     <div class="info-columns">
         <div class="info-box">
-            <h6>Discipline &amp; Structure</h6>
+            <h6>{{ $tr->t('discipline_structure') }}</h6>
             <p>
                 {{ ucfirst(str_replace('_', ' ', $input['discipline'] ?? '—')) }}<br>
                 {{ ucfirst(str_replace('_', ' ', $input['structure'] ?? '—')) }}
-                @if($sidesCount > 1) &mdash; {{ $sidesCount }}-sided tower @endif
+                @if($sidesCount > 1) &mdash; {{ $sidesCount }}-{{ $tr->t('tower_suffix') }} @endif
             </p>
         </div>
         <div class="info-box">
-            <h6>Overall Size</h6>
+            <h6>{{ $tr->t('overall_size') }}</h6>
             <p>
-                Height: {{ $input['height'] }}m &nbsp;|&nbsp;
-                Width: {{ $input['width'] }}m &nbsp;|&nbsp;
-                Overhang depth: {{ $input['depth'] ?? 0 }}m
+                {{ $tr->t('height_label') }}: {{ $input['height'] }}m &nbsp;|&nbsp;
+                {{ $tr->t('width_label') }}: {{ $input['width'] }}m &nbsp;|&nbsp;
+                {{ $tr->t('overhang_depth_label') }}: {{ $input['depth'] ?? 0 }}m
             </p>
         </div>
     </div>
 
     @if($isStandFree)
         <div class="standfree-note">
-            <strong>Stand-free structure.</strong> This wall is fully self-supporting (primary frame + diagonal
-            subframe truss carrying the panel load to the ground) rather than attached to an existing building
-            wall — see the detailed construction &amp; materials section below for the full breakdown.
+            {{ $tr->t('standfree_note', [
+                'style' => ($input['depth'] ?? 0) > \App\Services\WallDrawingService::BRACE_OVERHANG_THRESHOLD
+                    ? $tr->t('brace_truss') : $tr->t('brace_prop'),
+                'depth' => round($foundationDepth, 2),
+            ]) }}
+        </div>
+    @endif
+
+    @if($isOutdoor)
+        <div class="standfree-note">
+            {{ $tr->t('outdoor_note') }}
         </div>
     @endif
 
@@ -118,38 +161,45 @@
         </div>
     @endif
 
-    <div class="section-title">2D Technical Drawings</div>
+    <div class="section-title">{{ $tr->t('drawings_title') }}</div>
     <div class="drawings-grid">
-        <div class="drawing-box half">
-            <div class="drawing-title">Front Elevation</div>
-            {!! $frontViewSvg !!}
-        </div>
-        <div class="drawing-box half">
-            <div class="drawing-title">Side Profile</div>
-            {!! $sideViewSvg !!}
+        <div class="drawing-box">
+            <div class="drawing-title">{{ $tr->t('front_elevation') }}</div>
+            <div class="cad-drawing">
+                <img src="{{ $frontView }}" alt="{{ $tr->t('front_elevation') }}">
+            </div>
         </div>
         <div class="drawing-box">
-            <div class="drawing-title">{{ $sidesCount > 1 ? 'Plan View (Tower Footprint)' : 'Plan View' }}</div>
-            {!! $topViewSvg !!}
+            <div class="drawing-title">{{ $tr->t('side_profile') }}</div>
+            <div class="cad-drawing">
+                <img src="{{ $sideView }}" alt="{{ $tr->t('side_profile') }}">
+            </div>
+        </div>
+        <div class="drawing-box">
+            <div class="drawing-title">{{ $sidesCount > 1 ? $tr->t('plan_view_tower') : $tr->t('plan_view') }}</div>
+            <div class="cad-drawing">
+                <img src="{{ $topView }}" alt="{{ $sidesCount > 1 ? $tr->t('plan_view_tower') : $tr->t('plan_view') }}">
+            </div>
         </div>
     </div>
 
-    <div class="section-title">Dimensions</div>
+    <div class="section-title">{{ $tr->t('dimensions_title') }}</div>
+    <div class="table-card">
     <table>
         <thead>
-            <tr><th>Side</th><th class="num">Width</th><th class="num">Overhang Depth</th></tr>
+            <tr><th>{{ $tr->t('side_col') }}</th><th class="num">{{ $tr->t('width_col') }}</th><th class="num">{{ $tr->t('overhang_col') }}</th></tr>
         </thead>
         <tbody>
             @foreach($sides as $i => $side)
                 <tr>
-                    <td>Side {{ $i + 1 }}</td>
+                    <td>{{ $tr->t('side_label') }} {{ $i + 1 }}</td>
                     <td class="num">{{ $side['width'] }}m</td>
                     <td class="num">{{ $side['depth'] }}m</td>
                 </tr>
             @endforeach
             @if(!empty($input['mat']['width']))
                 <tr>
-                    <td>Safety Mat</td>
+                    <td>{{ $tr->t('safety_mat_row') }}</td>
                     <td class="num" colspan="2">
                         {{ round($input['mat']['width'], 2) }}m &times;
                         {{ round($input['mat']['depth'] ?? 0, 2) }}m,
@@ -159,38 +209,73 @@
             @endif
         </tbody>
     </table>
+    </div>
 
     @if(count($price))
-        <div class="section-title">Price Summary</div>
+        <div class="section-title">{{ $tr->t('price_summary') }}</div>
+        <div class="table-card">
         <table>
             <tbody>
                 @if(isset($price['wall_price_sum']))
-                    <tr><td>Base Wall Price</td><td class="num">${{ number_format($price['wall_price_sum'], 2) }}</td></tr>
+                    <tr><td>{{ $tr->t('base_price') }}</td><td class="num">${{ number_format($price['wall_price_sum'], 2) }}</td></tr>
                 @endif
                 @if(!empty($price['mat_price_sum']))
-                    <tr><td>Safety Mat</td><td class="num">${{ number_format($price['mat_price_sum'], 2) }}</td></tr>
+                    <tr><td>{{ $tr->t('mat_price') }}</td><td class="num">${{ number_format($price['mat_price_sum'], 2) }}</td></tr>
+                @endif
+                @if(!empty($price['protection_price_sum']))
+                    <tr>
+                        <td>
+                            {{ $tr->t('protection_price') }}
+                            @if(!empty($price['protection_anchor_count']))
+                                <br><span style="font-size:7.5pt;color:#999;">
+                                    {{ $tr->t('protection_hint', [
+                                        'anchors' => $price['protection_anchor_count'],
+                                        'ropePart' => !empty($price['protection_rope_length'])
+                                            ? $tr->t('protection_rope_part', ['rope' => $price['protection_rope_length']]) : '',
+                                    ]) }}
+                                </span>
+                            @endif
+                        </td>
+                        <td class="num">${{ number_format($price['protection_price_sum'], 2) }}</td>
+                    </tr>
                 @endif
                 @if(!empty($price['holds_total_price']))
-                    <tr><td>Climbing Holds</td><td class="num">${{ number_format($price['holds_total_price'], 2) }}</td></tr>
+                    <tr><td>{{ $tr->t('holds_price') }}</td><td class="num">${{ number_format($price['holds_total_price'], 2) }}</td></tr>
+                @endif
+                @if(!empty($price['foundation_price_sum']))
+                    <tr>
+                        <td>
+                            {{ $tr->t('foundation_price') }}
+                            @if(!empty($price['foundation_depth']))
+                                <br><span style="font-size:7.5pt;color:#999;">{{ $tr->t('foundation_hint', ['depth' => $price['foundation_depth']]) }}</span>
+                            @endif
+                        </td>
+                        <td class="num">${{ number_format($price['foundation_price_sum'], 2) }}</td>
+                    </tr>
+                @endif
+                @if(!empty($price['roof_price_sum']))
+                    <tr><td>{{ $tr->t('roof_price') }}</td><td class="num">${{ number_format($price['roof_price_sum'], 2) }}</td></tr>
                 @endif
                 @if(!empty($price['vat_price']))
-                    <tr><td>VAT ({{ $price['vat_percent'] ?? 20 }}%)</td><td class="num">${{ number_format($price['vat_price'], 2) }}</td></tr>
+                    <tr><td>{{ $tr->t('vat_label') }} ({{ $price['vat_percent'] ?? 20 }}%)</td><td class="num">${{ number_format($price['vat_price'], 2) }}</td></tr>
                 @endif
                 <tr class="total-row">
-                    <td>Total Price</td>
+                    <td>{{ $tr->t('total_price') }}</td>
                     <td class="num">${{ number_format($price['total_price_sum'] ?? 0, 2) }}</td>
                 </tr>
             </tbody>
         </table>
+        </div>
     @endif
 
     @if(count($billOfMaterials))
         <div class="section-title">
-            {{ $isStandFree ? 'Detailed Construction & Bill of Materials' : 'Materials & Quantities' }}
+            {{ $isStandFree ? $tr->t('detailed_construction') : $tr->t('materials_quantities') }}
         </div>
+        <div class="table-card">
         <table>
             <thead>
-                <tr><th>Item</th><th class="num">Quantity</th><th>Unit</th></tr>
+                <tr><th>{{ $tr->t('item_col') }}</th><th class="num">{{ $tr->t('quantity_col') }}</th><th>{{ $tr->t('unit_col') }}</th></tr>
             </thead>
             <tbody>
                 @foreach($billOfMaterials as $row)
@@ -202,12 +287,11 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     @endif
 
     <div class="footer-note">
-        Prices, dimensions and material quantities are approximate estimates generated by the climbing.ge wall
-        calculator, based on the exact configuration shown above. Final construction figures should be confirmed
-        with a structural professional before building.
+        {{ $tr->t('footer_note') }}
     </div>
 
 </body>

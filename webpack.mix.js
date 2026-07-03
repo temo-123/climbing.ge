@@ -25,6 +25,20 @@ mix.override((webpackConfig) => {
         }
     });
 
+    // Lazy-loaded chunks (dynamic imports) default to a bare `[name].js`
+    // filename with no hash, so the browser's immutable 1-year cache
+    // (see public/.htaccess) never sees a new URL when a chunk's content
+    // changes on rebuild. Append a contenthash so stale chunks get busted.
+    const originalChunkFilename = webpackConfig.output.chunkFilename;
+    webpackConfig.output.chunkFilename = (pathData) => {
+        const template =
+            typeof originalChunkFilename === 'function'
+                ? originalChunkFilename(pathData)
+                : originalChunkFilename;
+
+        return template.replace(/\.js$/, '.[contenthash:8].js');
+    };
+
     const patchRules = (rules) => {
         rules.forEach((rule) => {
             if (rule.oneOf) patchRules(rule.oneOf);

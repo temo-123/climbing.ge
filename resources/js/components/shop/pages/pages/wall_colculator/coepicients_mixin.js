@@ -6,43 +6,41 @@ export const coepicients_mixin = {
                 'coepicient': 120, //$
             },
 
-            // Discipline multiplier (step 1 of the wall-type wizard)
+            // Discipline multiplier (step 1 of the wall-type wizard) — the
+            // display name is looked up via $t('shop.wall.discipline_name_' +
+            // key) in the template, not stored here, since a raw English
+            // string can't follow the page's own locale.
             disciplines: {
                 'bouldering': {
                     'coepicient': 0.85,
-                    'name': 'Bouldering Wall',
                     'icon': 'fa fa-hand-rock-o',
                 },
                 'sport_climbing': {
                     'coepicient': 1.0,
-                    'name': 'Sport Climbing Wall',
                     'icon': 'fa fa-building',
                 },
             },
 
             // Construction-style multiplier (step 2 of the wall-type wizard)
+            // — same deal, display name comes from $t('shop.wall.structure_name_' + key).
             structures: {
                 'indoor': {
                     'coepicient': 1.0,
-                    'name': 'Indoor',
                     'icon': 'fa fa-home',
                     'stand_free': false,
                 },
                 'outdoor': {
                     'coepicient': 1.15,
-                    'name': 'Outdoor',
                     'icon': 'fa fa-tree',
                     'stand_free': false,
                 },
                 'standfree_indoor': {
                     'coepicient': 1.1,
-                    'name': 'Stand-Free Indoor',
                     'icon': 'fa fa-cube',
                     'stand_free': true,
                 },
                 'standfree_outdoor': {
                     'coepicient': 1.3,
-                    'name': 'Stand-Free Outdoor',
                     'icon': 'fa fa-cloud',
                     'stand_free': true,
                 },
@@ -141,9 +139,40 @@ export const coepicients_mixin = {
                 'coepicient': 80, //$
             },
 
+            // Lead/sport-climbing protection points — one bolted anchor per
+            // belay-rope line (see computeRopeAnchorXs), priced per anchor,
+            // plus the rope itself priced per meter of climbing length.
+            protection_anchor_price: {
+                'coepicient': 50, //$ per anchor
+            },
+            protection_rope_price: {
+                'coepicient': 10, //$ per meter of rope
+            },
+
             // Hold middle price per unit
             hold_midle_price: {
                 'coepicient': 10, //$
+            },
+
+            // Foundation strip footing — stand-free structures only (a wall
+            // attached to an existing building uses that building's own
+            // foundation, not priced here). Priced per linear meter of wall
+            // width, one footing run under each side, not per square meter —
+            // a strip footing is a long, narrow run, not an area.
+            foundation_price: {
+                'coepicient': 300, //$ per linear meter of wall width
+            },
+            // The footing's own depth into the ground, shown in the PDF's
+            // construction description/drawing — a sizing ratio, not a price.
+            foundation_depth_ratio: {
+                'coepicient': 0.12, // fraction of wall height
+            },
+
+            // Roof — any outdoor wall (attached or stand-free) needs weather
+            // cover overhead; priced per m² of the wall's own footprint area
+            // (width x height, same footprint the wall itself occupies).
+            roof_price: {
+                'coepicient': 15, //$ per m²
             },
 
             // VAT percentage

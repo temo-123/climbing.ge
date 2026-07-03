@@ -56,7 +56,8 @@
                              :class="{selected: discipline === key}"
                              @click="selectDiscipline(key)">
                             <div class="wt-icon"><i :class="d.icon"></i></div>
-                            <div class="wt-name">{{ d.name }}</div>
+                            <div class="wt-name">{{ $t('shop.wall.discipline_name_' + key) }}</div>
+                            <div class="wt-desc">{{ $t('shop.wall.discipline_desc_' + key) }}</div>
                             <div class="wt-check"><i class="fa fa-check-circle"></i></div>
                         </div>
                     </div>
@@ -72,7 +73,8 @@
                                      :class="{selected: structure === key}"
                                      @click="selectStructure(key)">
                                     <div class="wt-icon"><i :class="s.icon"></i></div>
-                                    <div class="wt-name">{{ s.name }}</div>
+                                    <div class="wt-name">{{ $t('shop.wall.structure_name_' + key) }}</div>
+                                    <div class="wt-desc">{{ $t('shop.wall.structure_desc_' + key) }}</div>
                                     <div class="wt-badge"
                                          :class="s.coepicient < 1 ? 'badge-green' : (s.coepicient > 1.2 ? 'badge-orange' : 'badge-blue')">
                                         ×{{ s.coepicient }}
@@ -225,15 +227,19 @@
                                 <label>{{ $t('shop.wall.mat_height') }}</label>
                                 <div class="stepper">
                                     <button type="button" @click="adjustMat('mat_height', -0.05)">−</button>
-                                    <input type="number" :value="mat_height" min="0.05" step="0.05"
+                                    <input type="number" :value="mat_height" min="0.05" :max="matMaxHeight" step="0.05"
                                            :placeholder="$t('shop.wall.mat_height_placeholder')"
                                            @input="e => setMatDim('mat_height', e.target.value)">
-                                    <button type="button" @click="adjustMat('mat_height', 0.05)">+</button>
+                                    <button type="button" :disabled="mat_height >= matMaxHeight" @click="adjustMat('mat_height', 0.05)">+</button>
                                 </div>
                                 <span class="dim-unit">m</span>
                             </div>
 
-                            <div class="dim-field">
+                            <!-- Only a single wall or a 2-sided (parallel) tower has a
+                                 mat shape a single width can describe — a 3+ sided
+                                 tower's mat is a ring sized off the tower's own radius,
+                                 so the field is hidden rather than shown non-functional -->
+                            <div class="dim-field" v-if="matWidthUsable">
                                 <label>{{ $t('shop.wall.mat_width') }}</label>
                                 <div class="stepper">
                                     <button type="button" @click="adjustMat('mat_width', -0.5)">−</button>
@@ -336,6 +342,14 @@
             <div class="col-md-8 calc-price-col" ref="priceCol">
                 <div class="price-panel" :style="pricePanelStyle" ref="pricePanel">
 
+                    <!-- 3D view sizing toggle -->
+                    <div class="viz-toggle" v-if="wallViz">
+                        <button type="button" class="sizing-toggle"
+                                :class="{active: show_3d_sizing}" @click="show_3d_sizing = !show_3d_sizing">
+                            <i class="fa fa-arrows-alt"></i> {{ $t('shop.wall.show_sizes_3d') }}
+                        </button>
+                    </div>
+
                     <!-- Wall Diagram: interactive 3D preview, falls back to SVG if WebGL is unavailable -->
                     <transition name="fade">
                         <div v-if="wallViz" class="wall-viz">
@@ -352,6 +366,7 @@
                                 :mat-enabled="!isSportClimbing && !wall_height_for_mat && mat_price_sum > 0"
                                 :mat-width="mat_width"
                                 :mat-height="mat_height"
+                                :show-dimensions="show_3d_sizing"
                                 :mat-depth="mat_depth"
                                 :holds-enabled="hold_include"
                                 :holds-count="holds_total_quantity"
@@ -444,6 +459,23 @@
                                     </div>
                                 </template>
 
+                                <template v-if="isSportClimbing && protection_price_sum > 0">
+                                    <div class="pr-row">
+                                        <div class="pr-info">
+                                            <span class="pr-dot" style="background:#9c3b30"></span>
+                                            {{ $t('shop.wall.protection_price') }}
+                                        </div>
+                                        <span class="pr-val">${{ protection_price_sum }}</span>
+                                    </div>
+                                    <div class="pr-bar-wrap">
+                                        <div class="pr-bar-fill" style="background:#9c3b30"
+                                             :style="{width: pct(protection_price_sum)}"></div>
+                                    </div>
+                                    <div class="pr-sub-hint">
+                                        {{ $t('shop.wall.protection_hint', { anchors: protection_anchor_count, rope: protection_rope_length }) }}
+                                    </div>
+                                </template>
+
                                 <template v-if="hold_include && holds_total_price > 0">
                                     <div class="pr-row">
                                         <div class="pr-info">
@@ -455,6 +487,34 @@
                                     <div class="pr-bar-wrap">
                                         <div class="pr-bar-fill" style="background:#f0ad4e"
                                              :style="{width: pct(holds_total_price)}"></div>
+                                    </div>
+                                </template>
+
+                                <template v-if="isStandFreeStructure && foundation_price_sum > 0">
+                                    <div class="pr-row">
+                                        <div class="pr-info">
+                                            <span class="pr-dot" style="background:#8a6a2a"></span>
+                                            {{ $t('shop.wall.foundation_price') }}
+                                        </div>
+                                        <span class="pr-val">${{ foundation_price_sum }}</span>
+                                    </div>
+                                    <div class="pr-bar-wrap">
+                                        <div class="pr-bar-fill" style="background:#8a6a2a"
+                                             :style="{width: pct(foundation_price_sum)}"></div>
+                                    </div>
+                                </template>
+
+                                <template v-if="isOutdoorStructure && roof_price_sum > 0">
+                                    <div class="pr-row">
+                                        <div class="pr-info">
+                                            <span class="pr-dot" style="background:#6f42c1"></span>
+                                            {{ $t('shop.wall.roof_price') }}
+                                        </div>
+                                        <span class="pr-val">${{ roof_price_sum }}</span>
+                                    </div>
+                                    <div class="pr-bar-wrap">
+                                        <div class="pr-bar-fill" style="background:#6f42c1"
+                                             :style="{width: pct(roof_price_sum)}"></div>
                                     </div>
                                 </template>
 
@@ -523,6 +583,7 @@
     import { coepicients_mixin } from './coepicients_mixin.js';
     import WallViewer3D from './viewer3d/WallViewer3D.vue';
     import { computeBoltHoleGrid } from './viewer3d/panelTexture.js';
+    import { computeRopeAnchorXs } from './viewer3d/wallGeometryBuilder.js';
     import { WALL_CONSTRUCTION, computeMatThickness, computeMatSideMargin } from './wallConstructionConfig.js';
 
     export default {
@@ -543,6 +604,7 @@
                 wall_square: 0,
                 mat_square: 0,
                 mat_width: 0,
+                mat_width_manual: false,
                 mat_height: 0,
                 mat_depth: 0,
                 holds_quantyty_for_meter: 10,
@@ -550,7 +612,13 @@
                 holds_total_price: 0,
                 wall_price_sum: 0,
                 mat_price_sum: 0,
+                protection_anchor_count: 0,
+                protection_rope_length: 0,
+                protection_price_sum: 0,
+                foundation_price_sum: 0,
+                roof_price_sum: 0,
                 total_price_sum: 0,
+                show_3d_sizing: false, // CAD-style dimension overlay toggle for the 3D view
                 discipline: '',
                 structure: '',
                 sides_count: 1,
@@ -586,22 +654,43 @@
             isStandFreeStructure() {
                 return this.structure === 'standfree_indoor' || this.structure === 'standfree_outdoor';
             },
+            isOutdoorStructure() {
+                return this.structure === 'outdoor' || this.structure === 'standfree_outdoor';
+            },
             wizardComplete() {
                 if (!this.discipline || !this.structure) return false;
                 return !this.isStandFreeStructure || this.sides_count > 0;
             },
+            // Bouldering walls top out around BOULDER_MAX_HEIGHT — past that
+            // height it reads as a lead/sport-climbing wall instead, and a wall
+            // brought back under that height reads as bouldering again (see
+            // setWallDim's own auto-switch). Height itself is never
+            // hard-limited, only the discipline label follows it.
             heightTooTallForBoulder() {
-                return (parseFloat(this.height) || 0) >= 5;
+                return (parseFloat(this.height) || 0) > WALL_CONSTRUCTION.BOULDER_MAX_HEIGHT;
             },
             minWallSize() {
                 return WALL_CONSTRUCTION.MIN_WALL_SIZE;
             },
-            // Real overhang structures don't make sense as a "wall" much past
-            // roughly a 70° lean from vertical — beyond that a wall reads as a
-            // near-flat roof/ceiling (and the 3D viewer's own corner/roof
-            // geometry assumes a moderate tilt range), so depth is capped to
-            // this ratio of height wherever it can be set (side 1 or any extra
-            // tower side), instead of letting it grow independently of height.
+            matMaxHeight() {
+                return WALL_CONSTRUCTION.MAT_MAX_THICKNESS;
+            },
+            // A single "mat width" only maps onto a real, straight-edged shape for
+            // a single wall or a 2-sided (parallel, back-to-back) tower — see
+            // WallViewer3D.vue's addTowerMat. A 3+ sided tower's mat is a ring
+            // that wraps the whole polygon footprint, sized off the tower's own
+            // radius instead of one editable width, so exposing this field there
+            // would let the user set a number that can never actually apply.
+            matWidthUsable() {
+                return this.sides_count <= 2;
+            },
+            // Fixed, discipline-specific overhang caps — same limit for every
+            // structure option and side count: a lead/sport climbing wall
+            // never overhangs past 5m, a bouldering wall never past 3m,
+            // regardless of the wall's own height. An angle-derived cap
+            // (height * tan(some angle)) let a 3m bouldering wall reach an
+            // absurd 5.2m of overhang — deeper than the wall is tall, reading
+            // as a near-flat ceiling rather than a climbing wall.
             //
             // Multi-side towers get a SECOND, tighter cap on top of that: an
             // overhang reaching many multiples of the tower's own footprint
@@ -609,17 +698,14 @@
             // corners twist adjacent faces into a self-crossing mess, however
             // the corner is triangulated — bounding depth to a multiple of the
             // tower's own radius keeps every corner's gap proportional to how
-            // big the tower actually is. An initial 2.5x-radius bound still let
-            // a top reach 3.5x the base radius through — every corner (not
-            // just one asymmetric pair, since even a perfectly SYMMETRIC
-            // overhang leaves a real per-corner gap, verified numerically)
-            // opening that wide at once reads as a converging, needle-like
-            // tower rather than a real structure. Tightened to keep the top
-            // reach at most 2x the base radius.
+            // big the tower actually is. Tightened to keep the top reach at
+            // most 2x the base radius.
             maxOverhangDepth() {
-                if (!(this.height > 0)) return 0;
-                const heightCap = this.height * Math.tan(WALL_CONSTRUCTION.MAX_OVERHANG_ANGLE_DEG * Math.PI / 180);
-                if (this.sides_count <= 1) return heightCap;
+                if (!(this.height > 0) || !this.discipline) return 0;
+                const disciplineCap = this.isBouldering
+                    ? WALL_CONSTRUCTION.BOULDER_MAX_OVERHANG_DEPTH
+                    : WALL_CONSTRUCTION.LEAD_MAX_OVERHANG_DEPTH;
+                if (this.sides_count <= 1) return disciplineCap;
 
                 const avgWidth = this.all_sides.reduce((sum, s) => sum + (parseFloat(s.width) || 0), 0)
                     / this.all_sides.length;
@@ -627,7 +713,7 @@
                     ? Math.max(avgWidth * 0.04, 0.14)
                     : avgWidth / (2 * Math.tan(Math.PI / this.sides_count));
                 const radiusCap = radius * WALL_CONSTRUCTION.TOWER_RADIUS_OVERHANG_RATIO;
-                return Math.min(heightCap, radiusCap);
+                return Math.min(disciplineCap, radiusCap);
             },
             // Side 1 always lives in width/depth; sides 2-4 (stand-free multi-side
             // towers only) come from extra_sides. This is the single place both the
@@ -846,6 +932,12 @@
 
             selectSidesCount(n) {
                 this.sides_count = n;
+                // A manual mat_width belongs to the specific side-count it was set
+                // under (see matWidthUsable) — carrying it across a side-count change
+                // would either apply a stale number to a differently-shaped mat or
+                // silently do nothing once hidden past 2 sides. Reset so the next
+                // calculation starts from a fresh auto value either way.
+                this.mat_width_manual = false;
                 // Every side always matches side 1's own width automatically —
                 // a symmetric tower needs equal-width faces to close up
                 // cleanly. A freshly-added side just starts flat (depth 0)
@@ -930,12 +1022,11 @@
                 if (key === 'width') this.syncExtraSideWidths();
                 if (key === 'width' || key === 'height' || key === 'depth') this.clampAllDepthsToMax();
                 if (key === 'height') {
-                    // Bouldering walls top out around 10m — past that height it's
+                    // Bouldering walls top out around 5m — past that height it's
                     // structurally a sport-climbing (lead) wall instead, and a wall
-                    // brought back under that height reads as bouldering again. Auto-
-                    // switching discipline to match keeps structure/sides/everything
-                    // else the user already configured intact, instead of the old
-                    // behaviour of bouncing the whole wizard back to step 1.
+                    // brought back under that height reads as bouldering again.
+                    // Auto-switching discipline to match keeps structure/sides/
+                    // everything else the user already configured intact.
                     if (this.isBouldering && this.heightTooTallForBoulder) {
                         this.discipline = 'sport_climbing';
                         this.disciplineAutoSwitched = true;
@@ -944,9 +1035,10 @@
                         this.disciplineAutoSwitched = true;
                     }
                 }
-                if (this.height > 5) {
+                if (this.height > WALL_CONSTRUCTION.BOULDER_MAX_HEIGHT) {
                     this.wall_height_for_mat = true;
                     this.mat_width = this.mat_height = this.mat_depth = 0;
+                    this.mat_width_manual = false;
                     this.mat_price_sum = 0;
                 } else {
                     this.wall_height_for_mat = false;
@@ -955,7 +1047,10 @@
             },
 
             setMatDim(key, val) {
-                this[key] = parseFloat(val) || 0;
+                let next = parseFloat(val) || 0;
+                if (key === 'mat_height') next = Math.min(next, this.matMaxHeight);
+                if (key === 'mat_width') this.mat_width_manual = true;
+                this[key] = next;
                 this.colculate_mat_price();
             },
 
@@ -971,14 +1066,45 @@
             },
 
             pct(val) {
-                const total = this.wall_price_sum + this.mat_price_sum + this.holds_total_price + this.vat_price;
+                const total = this.wall_price_sum + this.mat_price_sum + this.protection_price_sum + this.holds_total_price
+                    + this.foundation_price_sum + this.roof_price_sum + this.vat_price;
                 if (!total) return '0%';
                 return Math.round((val / total) * 100) + '%';
             },
 
+            // Stand-free strip footing — priced per linear meter of wall width
+            // (one footing run under each side), not per square meter, since a
+            // footing is a long narrow run rather than an area. Attached walls
+            // (indoor/outdoor, not stand-free) lean on the existing building's
+            // own foundation, so they're never priced here.
+            colculate_foundation_price() {
+                if (!this.isStandFreeStructure) {
+                    this.foundation_price_sum = 0;
+                    return;
+                }
+                const totalWidth = this.all_sides.reduce((sum, side) => sum + (parseFloat(side.width) || 0), 0);
+                this.foundation_price_sum = Math.ceil(totalWidth * this.coepicients.foundation_price.coepicient);
+            },
+
+            // Any outdoor wall (attached or stand-free) needs weather cover overhead —
+            // priced per m² of the wall's own footprint (width x height, not the
+            // slant length wall_square uses, since a roof only needs to span the
+            // wall's footprint, not its climbable surface area).
+            colculate_roof_price() {
+                if (!this.isOutdoorStructure) {
+                    this.roof_price_sum = 0;
+                    return;
+                }
+                const totalWidth = this.all_sides.reduce((sum, side) => sum + (parseFloat(side.width) || 0), 0);
+                this.roof_price_sum = Math.ceil(totalWidth * this.height * this.coepicients.roof_price.coepicient);
+            },
+
+            // The holds density slider only needs to trigger a recalc —
+            // colculate_total_price is the single place that actually derives
+            // holds_total_quantity/price, so this and every other recalc path
+            // (wall/mat/protection changes) can never drift onto two
+            // different counts for the same configuration.
             colculate_holds_price() {
-                this.holds_total_quantity = Math.min(Math.round(this.wall_square * this.holds_quantyty_for_meter), this.maxHolesAvailable);
-                this.holds_total_price = this.holds_total_quantity * this.coepicients.hold_midle_price.coepicient;
                 this.colculate_total_price();
             },
 
@@ -1006,16 +1132,55 @@
                     this.wall_price_sum = this.wall_price_sum * this.coepicients.structures[this.structure].coepicient;
                 }
 
+                this.colculate_foundation_price();
+                this.colculate_roof_price();
+
                 // Sport climbing walls use ropes, not crash pads — never price a mat for them.
                 if (this.isSportClimbing) {
                     this.mat_width = this.mat_height = this.mat_depth = 0;
+                    this.mat_width_manual = false;
                     this.mat_price_sum = 0;
-                    this.colculate_total_price();
-                } else if (!this.wall_height_for_mat) {
-                    this.colculate_mat_size();
+                    this.colculate_protection_price();
                 } else {
-                    this.colculate_total_price();
+                    this.protection_anchor_count = 0;
+                    this.protection_rope_length = 0;
+                    this.protection_price_sum = 0;
+                    if (!this.wall_height_for_mat) {
+                        this.colculate_mat_size();
+                    } else {
+                        this.colculate_total_price();
+                    }
                 }
+            },
+
+            // Lead-climbing protection hardware: one bolted anchor per belay-rope
+            // line (the exact same line count/spacing the 3D viewer's own
+            // addBelayAnchorSystem places, via computeRopeAnchorXs — so the price
+            // always matches what's actually rendered), plus the rope itself.
+            // A real rope run goes UP the climbing (slant) length to the anchor
+            // and back DOWN to the belayer — double the wall's own height, not a
+            // single strand — plus a margin for tie-in/handling slack (e.g. a
+            // 10m wall needs 10*2 + 10% = 22m of rope per line, not just 10m).
+            colculate_protection_price() {
+                let anchors = 0;
+                let ropeLength = 0;
+                this.all_sides.forEach((side) => {
+                    const w = parseFloat(side.width) || 0;
+                    if (w <= 0) return;
+                    const d = parseFloat(side.depth) || 0;
+                    const slant = d > 0 ? Math.sqrt(this.height * this.height + d * d) : this.height;
+                    const ropePerLine = slant * WALL_CONSTRUCTION.ROPE_LENGTH_MULTIPLIER * (1 + WALL_CONSTRUCTION.ROPE_LENGTH_MARGIN);
+                    const lines = computeRopeAnchorXs(w).length;
+                    anchors += lines;
+                    ropeLength += lines * ropePerLine;
+                });
+                this.protection_anchor_count = anchors;
+                this.protection_rope_length = Math.round(ropeLength * 100) / 100;
+                this.protection_price_sum = Math.ceil(
+                    anchors * this.coepicients.protection_anchor_price.coepicient
+                    + ropeLength * this.coepicients.protection_rope_price.coepicient
+                );
+                this.colculate_total_price();
             },
 
             colculate_mat_size() {
@@ -1026,7 +1191,13 @@
                 // needs a deeper landing zone and a thicker pad stack).
                 const totalWidth = this.all_sides.reduce((sum, side) => sum + (parseFloat(side.width) || 0), 0);
                 const maxDepth = Math.max(0, ...this.all_sides.map((side) => parseFloat(side.depth) || 0));
-                this.mat_width = totalWidth + computeMatSideMargin(this.height) * 2;
+                // A manually-entered mat_width only survives a wall-dimension change
+                // where it can actually mean something (1 or 2 side walls, see
+                // matWidthUsable) — otherwise it silently got overwritten right back
+                // to the auto value the instant the user touched any wall field.
+                if (!this.mat_width_manual || !this.matWidthUsable) {
+                    this.mat_width = totalWidth + computeMatSideMargin(this.height) * 2;
+                }
 
                 if (maxDepth > 0 && this.height > 0) {
                     this.mat_depth = maxDepth + (maxDepth * WALL_CONSTRUCTION.MAT_DEPTH_MARGIN);
@@ -1034,7 +1205,7 @@
                     this.mat_depth = WALL_CONSTRUCTION.DEFAULT_MAT_DEPTH;
                 }
                 if (this.height > 0) {
-                    this.mat_height = computeMatThickness(maxDepth);
+                    this.mat_height = computeMatThickness(this.height);
                 }
                 this.mat_square = Math.ceil(this.mat_depth * this.mat_width);
 
@@ -1055,6 +1226,9 @@
             colculate_total_price() {
                 this.wall_price_sum = Math.ceil(this.wall_price_sum);
                 this.mat_price_sum = Math.ceil(this.mat_price_sum);
+                this.protection_price_sum = Math.ceil(this.protection_price_sum || 0);
+                this.foundation_price_sum = Math.ceil(this.foundation_price_sum || 0);
+                this.roof_price_sum = Math.ceil(this.roof_price_sum || 0);
 
                 if (this.hold_include) {
                     this.holds_total_quantity = Math.min(Math.round(this.wall_square * this.holds_quantyty_for_meter), this.maxHolesAvailable);
@@ -1064,7 +1238,8 @@
                     this.holds_total_price = 0;
                 }
 
-                const subtotal = this.wall_price_sum + this.mat_price_sum + this.holds_total_price;
+                const subtotal = this.wall_price_sum + this.mat_price_sum + this.protection_price_sum + this.holds_total_price
+                    + this.foundation_price_sum + this.roof_price_sum;
 
                 if (this.is_vat_include) {
                     this.vat_price = Math.ceil(subtotal * (this.coepicients.vat.coepicient / 100));
@@ -1111,18 +1286,18 @@
 
                 const rows = [
                     {
-                        item: `Plywood sheets (${WALL_CONSTRUCTION.SHEET_SIZE}x${WALL_CONSTRUCTION.SHEET_SIZE}m)`,
+                        item: this.$t('shop.wall.bom_plywood_sheets', { size: WALL_CONSTRUCTION.SHEET_SIZE }),
                         quantity: Math.ceil(totalSheets),
-                        unit: 'sheets',
+                        unit: this.$t('shop.wall.unit_sheets'),
                     },
                     {
-                        item: `Frame studs (${Math.round(WALL_CONSTRUCTION.FRAME_MEMBER_SIZE * 1000)}mm lumber)`,
+                        item: this.$t('shop.wall.bom_frame_studs', { size: Math.round(WALL_CONSTRUCTION.FRAME_MEMBER_SIZE * 1000) }),
                         quantity: Math.ceil(studLinearMeters),
-                        unit: 'linear meters',
+                        unit: this.$t('shop.wall.unit_linear_meters'),
                     },
                 ];
                 if (railLinearMeters > 0) {
-                    rows.push({ item: 'Frame rails (same lumber)', quantity: Math.ceil(railLinearMeters), unit: 'linear meters' });
+                    rows.push({ item: this.$t('shop.wall.bom_frame_rails'), quantity: Math.ceil(railLinearMeters), unit: this.$t('shop.wall.unit_linear_meters') });
                 }
 
                 const holeGridTotal = sides.reduce((sum, side) => {
@@ -1132,27 +1307,41 @@
                     const slant = d > 0 ? Math.sqrt(this.height * this.height + d * d) : this.height;
                     return sum + computeBoltHoleGrid(w, slant).length;
                 }, 0);
-                rows.push({ item: 'T-nut bolt-hole positions (real grid capacity)', quantity: holeGridTotal, unit: 'holes' });
+                rows.push({ item: this.$t('shop.wall.bom_bolt_holes'), quantity: holeGridTotal, unit: this.$t('shop.wall.unit_holes') });
 
                 if (this.hold_include && this.holds_total_quantity > 0) {
-                    rows.push({ item: 'Climbing holds installed', quantity: this.holds_total_quantity, unit: 'holds' });
-                }
-
-                // A 1- or 2-sided stand-free structure gets its own separate
-                // primary-frame box + diagonal subframe truss per side (see
-                // addStandFreePrimaryFrame) — 3-4 sided towers instead rely on
-                // each side's own radiating stud frame, so this section is
-                // only relevant for the simpler stand-free cases.
-                if (this.isStandFreeStructure && sides.length <= 2) {
-                    rows.push({ item: 'Primary frame legs', quantity: sides.length === 2 ? 8 : 4, unit: 'posts' });
-                    rows.push({ item: 'Subframe truss chords', quantity: sides.length === 2 ? 4 : 2, unit: 'members' });
+                    rows.push({ item: this.$t('shop.wall.bom_holds'), quantity: this.holds_total_quantity, unit: this.$t('shop.wall.unit_holds') });
                 }
 
                 if (!this.wall_height_for_mat && this.mat_price_sum > 0 && this.mat_width > 0) {
                     rows.push({
-                        item: 'Safety mat',
+                        item: this.$t('shop.wall.bom_safety_mat'),
                         quantity: 1,
-                        unit: `unit (${Math.round(this.mat_width)}x${Math.round(this.mat_depth)}m)`,
+                        unit: this.$t('shop.wall.bom_safety_mat_unit', { w: Math.round(this.mat_width), d: Math.round(this.mat_depth) }),
+                    });
+                }
+
+                if (this.isSportClimbing && this.protection_anchor_count > 0) {
+                    rows.push({ item: this.$t('shop.wall.bom_protection_anchors'), quantity: this.protection_anchor_count, unit: this.$t('shop.wall.unit_anchors') });
+                    rows.push({ item: this.$t('shop.wall.bom_belay_rope'), quantity: this.protection_rope_length, unit: this.$t('shop.wall.unit_meters') });
+                }
+
+                const totalWidth = this.all_sides.reduce((sum, side) => sum + (parseFloat(side.width) || 0), 0);
+
+                if (this.isStandFreeStructure && this.foundation_price_sum > 0) {
+                    const foundationDepth = Math.round(this.height * this.coepicients.foundation_depth_ratio.coepicient * 100) / 100;
+                    rows.push({
+                        item: this.$t('shop.wall.bom_foundation', { depth: foundationDepth }),
+                        quantity: Math.round(totalWidth * 100) / 100,
+                        unit: this.$t('shop.wall.unit_linear_meters'),
+                    });
+                }
+
+                if (this.isOutdoorStructure && this.roof_price_sum > 0) {
+                    rows.push({
+                        item: this.$t('shop.wall.bom_roof'),
+                        quantity: Math.round(totalWidth * this.height * 100) / 100,
+                        unit: this.$t('shop.wall.unit_sqm'),
                     });
                 }
 
@@ -1190,13 +1379,28 @@
                         price: {
                             wall_price_sum: this.wall_price_sum,
                             mat_price_sum: this.mat_price_sum,
+                            protection_price_sum: this.protection_price_sum,
+                            protection_anchor_count: this.protection_anchor_count,
+                            protection_rope_length: this.protection_rope_length,
                             holds_total_price: this.holds_total_price,
+                            foundation_price_sum: this.foundation_price_sum,
+                            foundation_depth: this.isStandFreeStructure
+                                ? Math.round(this.height * this.coepicients.foundation_depth_ratio.coepicient * 100) / 100
+                                : 0,
+                            roof_price_sum: this.roof_price_sum,
                             vat_price: this.vat_price,
                             vat_percent: this.coepicients.vat.coepicient,
                             total_price_sum: this.total_price_sum,
                         },
                         bill_of_materials: this.computeBillOfMaterials(),
                         snapshots,
+                        // The live vue-i18n locale is the actual source of
+                        // truth for what language this page is showing right
+                        // now — read that directly instead of re-deriving it
+                        // from localStorage (which mirrors it, but a step
+                        // removed), so the PDF can never disagree with what's
+                        // on screen when the export button is clicked.
+                        locale: (this.$i18n && this.$i18n.locale) === 'ka' ? 'ka' : 'en',
                     };
 
                     const response = await axios.post('/set_wall_calculator/export_pdf', payload, { responseType: 'blob' });
@@ -1532,6 +1736,12 @@
     color: #333;
     line-height: 1.3;
 }
+.wt-desc {
+    font-size: 10px;
+    color: #888;
+    line-height: 1.35;
+    margin-top: 4px;
+}
 .wt-badge {
     display: inline-block;
     font-size: 10px;
@@ -1835,6 +2045,41 @@
     margin-bottom: 16px;
 }
 
+/* 3D / 2D toggle */
+.viz-toggle {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+.viz-toggle button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #666;
+    background: #f4f7fa;
+    border: 1px solid #e8ecf0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+.viz-toggle button.active {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+}
+.viz-toggle button.sizing-toggle {
+    flex: 0 0 auto;
+}
+.viz-toggle button.sizing-toggle.active {
+    background: var(--success);
+    border-color: var(--success);
+}
+
 /* Wall SVG */
 .wall-viz {
     text-align: center;
@@ -1922,6 +2167,11 @@
     border-radius: 2px;
     transition: width 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
     min-width: 4px;
+}
+.pr-sub-hint {
+    font-size: 10.5px;
+    color: #999;
+    margin: -4px 0 8px;
 }
 
 .total-row {

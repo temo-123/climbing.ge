@@ -22,7 +22,15 @@
 // across the wall instead.
 import { computeBoltHoleGrid } from './panelTexture.js';
 
-const MAX_RENDERED_HOLDS = 600;
+// A silent render cap well below what a wide/tall wall can actually price
+// (e.g. a 20m-wide bouldering wall's real bolt-hole grid — and so its priced
+// holds_total_quantity — comfortably exceeds a thousand per segment) made the
+// 3D view quietly render fewer holds than the price panel's own "~N holds
+// total" claimed, with no visual indication anything was capped. An
+// InstancedMesh renders many thousands of instances for negligible GPU cost,
+// so this only needs to be comfortably above any real wall's own bolt-hole
+// grid capacity, not tuned for rendering performance.
+const MAX_RENDERED_HOLDS = 5000;
 export const HOLD_COLORS = [0xe74c3c, 0xf1c40f, 0x2ecc71, 0xff8c00, 0x9b59b6, 0x1abc9c];
 
 // Deterministic PRNG so the same dimensions/count always produce the same hold

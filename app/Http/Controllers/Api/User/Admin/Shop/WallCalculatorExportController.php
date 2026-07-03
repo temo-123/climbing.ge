@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\PdfTranslator;
 use App\Services\PermissionService;
 use App\Services\WallDrawingService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -65,12 +66,26 @@ class WallCalculatorExportController extends Controller
                 'snapshots' => 'nullable|array',
                 'snapshots.*.label' => 'nullable|string',
                 'snapshots.*.data_url' => 'nullable|string',
+                'locale' => 'nullable|string|in:en,ka',
             ]);
+
+            // The PDF follows whatever locale the calculator page itself was
+            // showing when the user hit export — sent explicitly rather than
+            // read from the request/session, since this API route has no
+            // locale-prefixed URL for the app's usual setLocale middleware
+            // to key off of.
+            $tr = new PdfTranslator($data['locale'] ?? 'en');
 
             $depth = $data['depth'] ?? 0;
             $sidesCount = $data['sides_count'] ?? 1;
             $isStandFree = str_starts_with($data['structure'] ?? '', 'standfree');
+            $isOutdoor = in_array($data['structure'] ?? '', ['outdoor', 'standfree_outdoor'], true);
             $isBouldering = ($data['discipline'] ?? '') === 'bouldering';
+            // Same 12%-of-height ratio the calculator's own price panel uses
+            // to describe the footing — re-derived here rather than trusted
+            // blindly from the request, since a missing/stale value would
+            // otherwise silently draw a footing of the wrong depth.
+            $foundationDepth = $isStandFree ? round($data['height'] * 0.12, 2) : 0;
 
             // Side 1 (width/depth/mat height as its own straight-base hint)
             // plus any extra sides — the exact same all_sides shape the 3D
@@ -109,10 +124,21 @@ class WallCalculatorExportController extends Controller
                 'price' => $data['price'] ?? [],
                 'billOfMaterials' => $data['bill_of_materials'] ?? [],
                 'snapshots' => $data['snapshots'] ?? [],
-                'frontViewSvg' => $this->drawing->buildFrontView($data['width'], $data['height']),
-                'sideViewSvg' => $this->drawing->buildSideView($data['height'], $depth, $vertHeight),
-                'topViewSvg' => $this->drawing->buildTopView($sides),
+                // Each of these is a base64 PNG data URI, not markup — dompdf
+                // does not paint raw inline <svg> at all, so every drawing is
+                // rendered with GD (shapes and labels baked into one raster
+                // image) and dropped straight into an <img src="..."> in the
+                // blade view.
+                'frontView' => $this->drawing->buildFrontView($data['width'], $data['height']),
+                'sideView' => $this->drawing->buildSideView(
+                    $data['height'], $depth, $vertHeight, $isStandFree, $isOutdoor, $foundationDepth, $tr->drawingLabels()
+                ),
+                'topView' => $this->drawing->buildTopView($sides, $tr->drawingLabels()),
+                'isOutdoor' => $isOutdoor,
+                'foundationDepth' => $foundationDepth,
                 'generatedAt' => now()->format('Y-m-d H:i'),
+                'tr' => $tr,
+                'locale' => $data['locale'] ?? 'en',
             ];
 
             $pdf = Pdf::loadView('pdf.wall_calculator', $viewData)->setPaper('a4', 'portrait');

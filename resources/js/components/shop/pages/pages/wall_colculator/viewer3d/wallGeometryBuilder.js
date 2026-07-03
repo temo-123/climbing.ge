@@ -102,19 +102,6 @@ export function buildWallMeshGroup(THREE, model, extras = {}) {
         topWorld = buildSingleSlantAssembly(THREE, group, model, { frameMaterial, extras });
     }
 
-    // A 3+ sided tower's own radiating stud frames (one per face, meeting at
-    // the shared center) are already the "extra construction" a stand-free wall
-    // needs — calling this separate box+truss once per side there piled up N
-    // overlapping copies in the small central area. A 2-sided back-to-back
-    // tower has no such shared hollow core (each side's own frame extends into
-    // open space in the OPPOSITE direction from the other side, so they never
-    // overlap) — a real freestanding A-frame is exactly two of these braced
-    // structures built back-to-back, so it gets one per side too instead of
-    // the old bare mast+rails.
-    if (extras.isStandFree && (!extras.isTowerSide || extras.isTwoSideTower)) {
-        addStandFreePrimaryFrame(THREE, group, { w: model.width, topWorld, frameMaterial });
-    }
-
     addSiteFeatures(THREE, group, {
         width: model.width,
         topWorld,
@@ -143,6 +130,23 @@ function buildSingleSlantAssembly(THREE, group, model, { frameMaterial, extras }
 
 function buildBoulderingAssembly(THREE, group, model, { frameMaterial, extras }) {
     const { width: w, height: h, vertHeight, angled } = model;
+
+    // A flat (non-overhanging) bouldering wall has no reason to split into a
+    // vertical base + separate angled section at all — that split exists so
+    // the overhang can start above a short mat-height base, but with no
+    // overhang (depth <= 0) the "angled" section is just ANOTHER vertical
+    // panel stacked on the first (angled.tiltAngle works out to 0 too), joined
+    // by a seam rail marking a transition that doesn't actually happen —
+    // a purely cosmetic bar cutting an otherwise flat wall in half partway up.
+    // One continuous full-height panel instead, same as any non-bouldering
+    // wall gets.
+    if (angled.depth <= 0) {
+        addClimbingPanel(THREE, group, w, h);
+        addSupportFrame(THREE, group, { w, L: h, frameMaterial, skipRails: extras.isTowerSide });
+        if (!extras.isTowerSide) addSideClosingPanels(THREE, group, w, h);
+        addHoldsIfEnabled(THREE, group, extras, w, h);
+        return { y: h, z: 0 };
+    }
 
     // Lower section: straight and vertical, matching the mat's footprint —
     // added directly to the (untilted) group since local space == world space here.
@@ -270,6 +274,153 @@ function addBackingGapCloser(THREE, group, { w, topWorld, backWallZFront }) {
     });
 }
 
+const STAND_FREE_BRACE_OVERHANG_THRESHOLD = WALL_CONSTRUCTION.STAND_FREE_BRACE_OVERHANG_THRESHOLD;
+const STAND_FREE_BRACE_SPACING = WALL_CONSTRUCTION.STAND_FREE_BRACE_SPACING;
+
+// Evenly spaced support-leg X positions across the wall's width — same
+// margin/spacing pattern as computeRopeAnchorXs (below): real modular
+// stand-free systems run a leg roughly every 1.5m across the width, not just
+// two braces pinned to the very edges however wide the wall is.
+function computeStandFreeBraceXs(w) {
+    const margin = 0.25;
+    const usable = Math.max(w - margin * 2, 0);
+    const count = usable > 0 ? Math.floor(usable / STAND_FREE_BRACE_SPACING) + 1 : 1;
+    if (count <= 1) return [0];
+    const xs = [];
+    for (let i = 0; i < count; i++) {
+        xs.push(-usable / 2 + (i / (count - 1)) * usable);
+    }
+    return xs;
+}
+
+// A freestanding (single, non-tower) stand-free wall has no building wall
+// behind it to lean on — without its own visible support reaching the ground
+// it just floats. One leg roughly every 1.5m across the width (see
+// computeStandFreeBraceXs), each a simple push-pull prop for a flat/barely
+// overhanging wall or a full braced truss once the overhang genuinely pulls
+// the top forward and down hard enough that a prop would have to be
+// impractically long and shallow — then tied to its neighbors with a
+// horizontal purlin (at the wall attachment height) and a sill (near the
+// ground), so a wide wall reads as one continuous braced structure instead of
+// N disconnected islands.
+function addStandFreeBracing(THREE, group, { w, topWorld }) {
+    const frameBackZ = -(PANEL_THICKNESS / 2 + FRAME_MEMBER_SIZE);
+    const material = new THREE.MeshStandardMaterial({ color: 0x4a5560, roughness: 0.5, metalness: 0.6 });
+
+    const legs = computeStandFreeBraceXs(w).map((x) => {
+        const basePt = new THREE.Vector3(x, 0, frameBackZ);
+        const topPt = new THREE.Vector3(x, topWorld.y, topWorld.z + frameBackZ);
+        return topWorld.z > STAND_FREE_BRACE_OVERHANG_THRESHOLD
+            ? addStandFreeTrussLeg(THREE, group, x, basePt, topPt, material)
+            : addStandFreePropLeg(THREE, group, x, basePt, topPt, material);
+    });
+
+    for (let i = 0; i < legs.length - 1; i++) {
+        addStrut(THREE, group, legs[i].wallPoint, legs[i + 1].wallPoint, 0.04, material, 'stand_free_purlin');
+        addStrut(THREE, group, legs[i].groundPoint, legs[i + 1].groundPoint, 0.04, material, 'stand_free_sill');
+    }
+}
+
+// Flat / barely-overhanging wall: a full-height ladder-frame post, the same
+// simple bracing family real single-side formwork uses when the wall it's
+// holding isn't leaning hard enough to need a full truss — but built as a
+// genuinely solid structure, not a single thin strut. A post that stopped
+// partway up (the old ~60%-of-height cap) read as a brace that mysteriously
+// gave up short of the very top it's supposed to be holding — the post now
+// runs the wall's FULL height, ground to top, with horizontal ledgers tying
+// it back to the wall at multiple heights (not just once) plus a diagonal
+// kicker closing the base triangle, all at thicker radii so the whole
+// assembly reads as load-bearing rather than a decorative wire.
+function addStandFreePropLeg(THREE, group, x, basePt, topPt, material) {
+    const postSetback = Math.min(topPt.y * 0.35, 1.4);
+    const postBase = new THREE.Vector3(x, 0, basePt.z - postSetback);
+    const postTop = new THREE.Vector3(x, topPt.y, postBase.z);
+
+    addStrut(THREE, group, postBase, postTop, 0.055, material, 'stand_free_prop_post');
+
+    // Ledgers at three heights (not just the top) — a real ladder-frame
+    // brace, so the wall is tied back to the post along its whole run
+    // instead of only at one point near the top.
+    const rungFractions = [1 / 3, 2 / 3, 1];
+    let topMount = null;
+    rungFractions.forEach((frac) => {
+        const rungPost = new THREE.Vector3(x, topPt.y * frac, postBase.z);
+        const rungWall = new THREE.Vector3().lerpVectors(basePt, topPt, frac);
+        addStrut(THREE, group, rungPost, rungWall, 0.04, material, 'stand_free_prop_tie');
+        addWallBracket(THREE, group, rungWall, material, 'prop_wall_bracket');
+        topMount = rungWall;
+    });
+
+    // Diagonal kicker closes the base triangle so the ladder can't rack
+    // sideways under load.
+    addStrut(THREE, group, postBase, topMount, 0.045, material, 'stand_free_prop_diagonal');
+
+    addGroundPlate(THREE, group, postBase.x, postBase.z, material, 'prop_ground_plate');
+
+    return { wallPoint: topMount, groundPoint: postBase };
+}
+
+// Genuine overhang: the top is pulling forward and down hard enough that a
+// simple prop would need to be impractically long and shallow — real builds
+// switch to a braced truss instead, sized up as a genuinely substantial
+// structure (thicker members, a wider stance) rather than a spindly
+// wireframe: a vertical rear post standing on the ground, a top tie back to
+// the wall, and TWO crossing diagonals (an X-brace, not a single strut)
+// triangulating the wedge between the post and the leaning wall.
+function addStandFreeTrussLeg(THREE, group, x, basePt, topPt, material) {
+    const postSetback = Math.min(topPt.y * 0.3, 1.2); // a wider stance than a flat wall's post — the leaning top needs a bigger footprint to brace against
+    const postBase = new THREE.Vector3(x, 0, basePt.z - postSetback);
+    const postTop = new THREE.Vector3(x, topPt.y, postBase.z);
+
+    addStrut(THREE, group, postBase, postTop, 0.065, material, 'stand_free_truss_post');
+    addStrut(THREE, group, postTop, topPt, 0.05, material, 'stand_free_truss_tie');
+    addStrut(THREE, group, postBase, topPt, 0.05, material, 'stand_free_truss_diagonal');
+    // Crossing X-brace: two diagonals instead of one, reading as a fuller,
+    // genuinely triangulated truss rather than a single floating rod.
+    addStrut(
+        THREE, group,
+        new THREE.Vector3().lerpVectors(postBase, postTop, 0.3),
+        new THREE.Vector3().lerpVectors(basePt, topPt, 0.75),
+        0.04, material, 'stand_free_truss_brace'
+    );
+    addStrut(
+        THREE, group,
+        new THREE.Vector3().lerpVectors(postBase, postTop, 0.75),
+        new THREE.Vector3().lerpVectors(basePt, topPt, 0.3),
+        0.04, material, 'stand_free_truss_brace_cross'
+    );
+
+    addGroundPlate(THREE, group, postBase.x, postBase.z, material, 'truss_ground_plate');
+    addWallBracket(THREE, group, topPt, material, 'truss_wall_bracket');
+
+    return { wallPoint: topPt, groundPoint: postBase };
+}
+
+function addStrut(THREE, group, p1, p2, radius, material, name) {
+    const dir = new THREE.Vector3().subVectors(p2, p1);
+    const length = dir.length();
+    if (length < 1e-6) return;
+    const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 10), material);
+    mesh.position.copy(p1).addScaledVector(dir, 0.5);
+    mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.normalize());
+    mesh.name = name;
+    group.add(mesh);
+}
+
+function addGroundPlate(THREE, group, x, z, material, name) {
+    const plate = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.04, 0.24), material);
+    plate.position.set(x, 0.02, z);
+    plate.name = name;
+    group.add(plate);
+}
+
+function addWallBracket(THREE, group, point, material, name) {
+    const bracket = new THREE.Mesh(new THREE.BoxGeometry(0.16, 0.16, 0.05), material);
+    bracket.position.set(point.x, point.y, point.z - 0.025);
+    bracket.name = name;
+    group.add(bracket);
+}
+
 // A single standalone wall (not part of a multi-side tower) reads as an open
 // frame from the side without these — real modular wall systems close off
 // their sides into a finished box, matching the reference photo this was
@@ -314,6 +465,12 @@ function addSiteFeatures(THREE, group, { width: w, topWorld, extras }) {
     if (!extras.isStandFree) {
         const backWallZFront = addBackingWall(THREE, group, { w, topWorld, isOutdoor: extras.isOutdoor });
         addBackingGapCloser(THREE, group, { w, topWorld, backWallZFront });
+    } else if (!extras.isTowerSide) {
+        // A single (non-tower) stand-free wall has no building wall behind it
+        // to lean on — without this it was floating with zero visible support.
+        // Towers are skipped: their own ring of faces plus corner infills
+        // already brace each other (see addCornerInfills in WallViewer3D.vue).
+        addStandFreeBracing(THREE, group, { w, topWorld });
     }
 
     // Safety mat sits flat on the ground at the wall's base, on the same (+z) side
@@ -416,9 +573,8 @@ function addSiteFeatures(THREE, group, { width: w, topWorld, extras }) {
         // No separate front support posts — those used to stick out disconnected
         // from the rest of the structure. The roof instead reads as carried by
         // the wall's own construction: the backing building-wall behind it
-        // (non-stand-free) or the primary frame's own legs (stand-free, added
-        // separately in addStandFreePrimaryFrame), both already tall/close enough
-        // to visually support it.
+        // (non-stand-free), or the panel itself and the fascia/gusset brackets
+        // below (stand-free, no separate external frame).
 
         // A header/fascia panel closing the gap between the wall's own top edge
         // and the roof underside — without it that gap reads as an open hole
@@ -484,7 +640,7 @@ const ROPE_TARGET_SPACING = WALL_CONSTRUCTION.ROPE_TARGET_SPACING; // meters bet
 // Evenly spaced anchor X positions (panel-centered, so 0 = wall center) roughly
 // 1.5m apart with a 0.75m margin from each edge — e.g. a 2.5m-wide wall only
 // fits one line (centered), a 3m wall fits exactly two (one 0.75m from each side).
-function computeRopeAnchorXs(width) {
+export function computeRopeAnchorXs(width) {
     const usable = Math.max(width - ROPE_EDGE_MARGIN * 2, 0);
     const count = usable > 0 ? Math.floor(usable / ROPE_TARGET_SPACING) + 1 : 1;
     if (count <= 1) return [0];
@@ -568,112 +724,6 @@ function addBelayRope(THREE, group, anchorX, anchorY, anchorZ) {
         strand.rotation.z = Math.atan2(-dx, dy);
         strand.name = 'belay_rope';
         group.add(strand);
-    });
-}
-
-// Stand-free walls (matching the "primary frame + subframe" reference this was
-// checked against): a free-standing box frame on its own legs, carrying a thick
-// diagonal truss that props the panel up from underneath — real freestanding
-// structures don't just hang the panel off thin studs, they need this kind of
-// independent load path to the ground.
-function addStandFreePrimaryFrame(THREE, group, { w, topWorld, frameMaterial }) {
-    const legHeight = Math.min(topWorld.y * 0.4, 1.3);
-    const boxDepth = 1.1;
-    const boxBackZ = -0.5;
-    const boxFrontZ = boxBackZ - boxDepth;
-    const halfW = w / 2 - 0.1;
-    const trussMaterial = new THREE.MeshStandardMaterial({ color: 0x9c8259, roughness: 0.8, metalness: 0.05 });
-
-    // Four corner legs of the primary frame box.
-    const corners = [
-        [-halfW, boxBackZ], [halfW, boxBackZ], [-halfW, boxFrontZ], [halfW, boxFrontZ],
-    ];
-    corners.forEach(([x, z]) => {
-        const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, legHeight, 8), trussMaterial);
-        leg.position.set(x, legHeight / 2, z);
-        leg.name = 'primary_frame_leg';
-        group.add(leg);
-    });
-
-    // Top rails tying the legs into a box.
-    const topRailPairs = [
-        [[-halfW, boxBackZ], [halfW, boxBackZ]],
-        [[-halfW, boxFrontZ], [halfW, boxFrontZ]],
-        [[-halfW, boxBackZ], [-halfW, boxFrontZ]],
-        [[halfW, boxBackZ], [halfW, boxFrontZ]],
-    ];
-    topRailPairs.forEach(([[x1, z1], [x2, z2]]) => {
-        const dx = x2 - x1;
-        const dz = z2 - z1;
-        const length = Math.sqrt(dx * dx + dz * dz);
-        const rail = new THREE.Mesh(new THREE.BoxGeometry(length, 0.08, 0.08), trussMaterial);
-        rail.position.set((x1 + x2) / 2, legHeight, (z1 + z2) / 2);
-        rail.rotation.y = Math.atan2(-dz, dx);
-        rail.name = 'primary_frame_rail';
-        group.add(rail);
-    });
-
-    // The diagonal subframe: a proper triangulated (Warren) truss running from
-    // the base of the primary frame up to the top-back of the panel — two
-    // parallel chords with a zigzag of diagonal web members between them,
-    // matching the reference structural diagram. A single thick beam with
-    // isolated, unconnected angled blocks scattered along it (the earlier
-    // version) doesn't actually triangulate anything and reads as random
-    // clutter rather than a real truss.
-    [-halfW * 0.6, halfW * 0.6].forEach((x) => {
-        const startY = 0; // the truss carries load all the way to the ground, like the reference
-        const startZ = boxFrontZ + 0.15;
-        const endY = topWorld.y;
-        const endZ = topWorld.z;
-        const dy = endY - startY;
-        const dz = endZ - startZ;
-        const length = Math.sqrt(dy * dy + dz * dz);
-        const dirY = dy / length;
-        const dirZ = dz / length;
-        const perpY = -dirZ; // 90° rotation of the truss direction within the Y-Z plane
-        const perpZ = dirY;
-        const trussDepth = 0.22;
-
-        const chordLine = (side) => ({
-            y1: startY + perpY * trussDepth * side, z1: startZ + perpZ * trussDepth * side,
-            y2: endY + perpY * trussDepth * side, z2: endZ + perpZ * trussDepth * side,
-        });
-        const front = chordLine(0.5);
-        const back = chordLine(-0.5);
-        const pointAt = (c, t) => ({ y: c.y1 + (c.y2 - c.y1) * t, z: c.z1 + (c.z2 - c.z1) * t });
-
-        const addTrussMember = (p1, p2, size, name) => {
-            const mdy = p2.y - p1.y;
-            const mdz = p2.z - p1.z;
-            const mlen = Math.sqrt(mdy * mdy + mdz * mdz);
-            if (mlen < 0.02) return;
-            const beam = new THREE.Mesh(new THREE.BoxGeometry(size, mlen, size), trussMaterial);
-            beam.position.set(x, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2);
-            beam.rotation.x = Math.atan2(mdz, mdy);
-            beam.name = name;
-            group.add(beam);
-        };
-
-        addTrussMember({ y: front.y1, z: front.z1 }, { y: front.y2, z: front.z2 }, 0.08, 'subframe_chord');
-        addTrussMember({ y: back.y1, z: back.z1 }, { y: back.y2, z: back.z2 }, 0.08, 'subframe_chord');
-
-        const segments = 5;
-        for (let i = 0; i <= segments; i++) {
-            const t = i / segments;
-            const fp = pointAt(front, t);
-            const bp = pointAt(back, t);
-            addTrussMember(fp, bp, 0.05, 'subframe_web'); // rung at every node
-
-            if (i < segments) {
-                const tNext = (i + 1) / segments;
-                const fpNext = pointAt(front, tNext);
-                const bpNext = pointAt(back, tNext);
-                // Alternate which chord each diagonal starts from — the zigzag
-                // that actually triangulates the truss.
-                if (i % 2 === 0) addTrussMember(bp, fpNext, 0.05, 'subframe_web');
-                else addTrussMember(fp, bpNext, 0.05, 'subframe_web');
-            }
-        }
     });
 }
 

@@ -38,6 +38,10 @@ export default {
         matDepth: { type: Number, default: 0 },
         holdsEnabled: { type: Boolean, default: false },
         holdsCount: { type: Number, default: 0 },
+        // Off by default — the CAD-style dimension lines/labels are genuinely
+        // useful but also visual clutter on top of the model, so they're
+        // opt-in via the page's own "Show Sizes" toggle rather than always on.
+        showDimensions: { type: Boolean, default: false },
     },
     emits: ['failed'],
     data() {
@@ -83,6 +87,7 @@ export default {
         matDepth() { this.rebuildModel(); },
         holdsEnabled() { this.rebuildModel(); },
         holdsCount() { this.rebuildModel(); },
+        showDimensions() { this.rebuildModel(); },
     },
     mounted() {
         this.initViewer();
@@ -178,10 +183,11 @@ export default {
                 // fields when the user has actually set them (colculate_mat_size)
                 // — falling back to a same-formula guess only while those are
                 // still unset, so a manual override always wins instead of
-                // being silently ignored by the 3D view. A real crash-pad
-                // stack's thickness tracks fall severity (this side's own
-                // overhang depth), not the wall's overall height.
-                const matHeightValue = this.matHeight > 0 ? this.matHeight : computeMatThickness(d);
+                // being silently ignored by the 3D view. A taller wall means a
+                // longer, harder fall even on a wall that isn't very overhung,
+                // so the pad's thickness tracks the wall's own height, not
+                // this side's overhang depth.
+                const matHeightValue = this.matHeight > 0 ? this.matHeight : computeMatThickness(this.height);
                 const matDepthValue = this.matDepth > 0
                     ? this.matDepth
                     : (d > 0 ? d + (d * MAT_DEPTH_MARGIN) : DEFAULT_MAT_DEPTH);
@@ -197,8 +203,12 @@ export default {
                 // falling off near the corner would miss the mat entirely. Real
                 // matting standards extend the pad to the side by roughly half
                 // the wall's own height, not just exactly the wall's width.
+                // A single wall's mat has a genuinely straight-edged shape a
+                // manual width can describe (unlike a 3+ sided tower's ring), so
+                // a user-set matWidth wins here the same way matHeight/matDepth
+                // already do above, instead of always being silently overridden.
                 const mat = !isTower && this.matEnabled && !this.isSportClimbing
-                    ? { width: w + computeMatSideMargin(this.height) * 2, height: matHeightValue, depth: matDepthValue }
+                    ? { width: this.matWidth > 0 ? this.matWidth : w + computeMatSideMargin(this.height) * 2, height: matHeightValue, depth: matDepthValue }
                     : null;
 
                 const group = buildWallMeshGroup(this._THREE, model, {
@@ -208,19 +218,10 @@ export default {
                     // towers) — a non-stand-free structure can never reach
                     // sidesCount > 1 in the wizard, so any tower IS stand-free by
                     // construction, and this flag also controls whether the
-                    // backing building-wall gets skipped (buildWallMeshGroup
-                    // separately uses isTowerSide to suppress just the
-                    // primary-frame+truss for 3+ sided towers, which would
-                    // otherwise repeat once per side and pile up in the tower's
-                    // small central area — but a 2-sided back-to-back tower has
-                    // no such shared hollow core, each side's own primary frame
-                    // extends into open space in the OPPOSITE direction from the
-                    // other side, so isTwoSideTower lets it through instead of
-                    // falling back to the old bare mast+rails spine).
+                    // backing building-wall gets skipped.
                     isOutdoor: !isTower && this.isOutdoor,
                     isStandFree: this.isStandFree,
                     isTowerSide: isTower,
-                    isTwoSideTower: isTower && sides.length === 2,
                     showRope: this.isSportClimbing,
                     mat,
                     holdsEnabled: this.holdsEnabled,
@@ -245,6 +246,15 @@ export default {
                     }
                 }
 
+                // CAD-style sizing overlay (width/height/overhang dimension lines
+                // + labels) — added as children of this side's own LOCAL (pre-
+                // offset, pre-rotation) group, so they inherit the exact same
+                // radius offset + tower rotation as the wall panel itself
+                // without any separate trig. One shared height dimension only
+                // (index 0) — every side shares the same height, so a tower
+                // showing it N times would just be N overlapping copies.
+                if (this.showDimensions) this.addSideDimensions(group, w, d, index === 0);
+
                 group.position.z = radius;
 
                 const pivot = new this._THREE.Group();
@@ -257,7 +267,6 @@ export default {
                 if (this.isOutdoor) this.addTowerRoof(master, sides, radius, towerRoofY, thetas);
                 if (this.matEnabled && !this.isSportClimbing) this.addTowerMat(master, sides, radius);
                 if (sides.length >= 2) this.addCornerInfills(master, sides, radius, thetas);
-                if (sides.length === 2) this.addTwoSideSpine(master, radius);
             }
 
             this._ctx.scene.add(master);
@@ -268,14 +277,18 @@ export default {
 
         // Regular-polygon apothem: for N faces of (average) width W meeting edge
         // to edge, the center-to-face distance is W / (2*tan(pi/N)). A 2-sided
-        // wall isn't a real polygon (tan(pi/2) is undefined) — treated as two
-        // faces back-to-back, as close as they can be while still leaving room
-        // for a visible central spine structure between them (added separately).
+        // wall isn't a real polygon (tan(pi/2) is undefined) — it's two faces
+        // mounted back-to-back on one narrow shared spine (like a real
+        // double-sided systems board), not radiating faces meeting at a hollow
+        // core. Sized as a genuine — if slim — structural gap: 0.3-0.6m
+        // front-to-back total (radius*2), scaling gently with the tower's own
+        // width rather than the old near-zero hairline that left no real room
+        // for a shared support frame between the two faces.
         computeTowerRadius(sides) {
             const n = sides.length;
             if (n <= 1) return 0;
             const avgWidth = sides.reduce((sum, s) => sum + (parseFloat(s.width) || 0), 0) / n;
-            if (n === 2) return Math.max(avgWidth * 0.04, 0.14);
+            if (n === 2) return Math.min(Math.max(avgWidth * 0.08, 0.15), 0.3);
             return avgWidth / (2 * Math.tan(Math.PI / n));
         },
 
@@ -475,50 +488,65 @@ export default {
             addEdgeBeam(topA, topB);
         },
 
-        // One continuous circular mat covering the whole tower's footprint —
-        // separate mats per face left the corners (exactly where a climber is
-        // likely to fall from an outside edge) uncovered.
-        // A shaped (faceted) mat, not a smooth circle — a real cut safety mat
-        // reads as an N-sided polygon, not a perfect disc. Segment count scales
-        // with the tower's own side count (2 sides -> a 4-gon, 3 -> 6-gon,
-        // 4 -> 8-gon) so bigger towers get a proportionally rounder-looking mat.
+        // One continuous mat covering the whole tower's footprint — separate
+        // mats per face left the corners (exactly where a climber is likely to
+        // fall from an outside edge) uncovered.
         addTowerMat(master, sides, radius) {
             const maxWidth = Math.max(...sides.map((s) => parseFloat(s.width) || 0));
             const maxDepth = Math.max(0, ...sides.map((s) => parseFloat(s.depth) || 0));
-            const matThickness = this.matHeight > 0 ? this.matHeight : computeMatThickness(maxDepth);
+            const matThickness = this.matHeight > 0 ? this.matHeight : computeMatThickness(this.height);
             const matReach = this.matDepth > 0
                 ? this.matDepth
                 : (maxDepth > 0 ? maxDepth + maxDepth * MAT_DEPTH_MARGIN : DEFAULT_MAT_DEPTH);
-            const outerRadius = radius + maxWidth / 2 + matReach;
-            const matSegments = sides.length * 2;
+            // Only the 2-sided (rectangular, back-to-back) case below actually
+            // uses matWidth as a single straight edge — the 3+ sided ring further
+            // down is sized off maxWidth/radius directly, so a user-set matWidth
+            // only wins here, matching matWidthUsable on the price page.
+            const matWidth = (this.matWidth > 0 && sides.length === 2)
+                ? this.matWidth
+                : maxWidth + computeMatSideMargin(this.height) * 2;
+            const matMaterial = new this._THREE.MeshStandardMaterial({ color: 0xd64545, roughness: 0.95 });
 
-            const mesh = new this._THREE.Mesh(
-                new this._THREE.CylinderGeometry(outerRadius, outerRadius, matThickness, matSegments),
-                new this._THREE.MeshStandardMaterial({ color: 0xd64545, roughness: 0.95 })
-            );
+            let geometry;
+            if (sides.length === 2) {
+                // Two faces back-to-back on a narrow shared spine (see
+                // computeTowerRadius) have a genuinely RECTANGULAR footprint,
+                // not a circular one — spans both faces' own fall zones plus
+                // the spine's own width between them. A polygon approximating
+                // a circle (used below for 3+ sides) doesn't fit a shape this
+                // elongated along one axis, however it's rotated.
+                const matDepthTotal = matReach * 2 + radius * 2;
+                geometry = new this._THREE.BoxGeometry(matWidth, matThickness, matDepthTotal);
+            } else {
+                const faceReach = radius + maxWidth / 2 + matReach;
+                const matSegments = sides.length * 2;
+
+                // CylinderGeometry's own vertex 0 sits exactly on the +Z axis —
+                // the SAME world direction side 0's wall faces (thetas[0] ===
+                // 0) — so without a rotation offset every wall's own outward
+                // direction lands on a polygon VERTEX (a sharp point jutting
+                // straight out in front of the wall) instead of a flat edge,
+                // while the empty gaps between walls get a flat edge instead
+                // of the corner they actually need. This read as a mat rotated
+                // diagonally out of alignment with the walls it's supposed to
+                // sit under. Half a segment's rotation (thetaStart) puts a
+                // flat edge in front of each wall instead.
+                const thetaStart = Math.PI / matSegments;
+                // A flat edge's own center reach is only cos(pi/segments) of
+                // the circumradius used for its corner vertices — inflate the
+                // radius so the flat edge directly in front of each wall still
+                // reaches the intended faceReach (the same apothem correction
+                // already used for the tower roof, see
+                // computeTowerRoofReach/addTowerRoof).
+                const apothemCorrection = 1 / Math.cos(Math.PI / matSegments);
+                const outerRadius = faceReach * apothemCorrection;
+                geometry = new this._THREE.CylinderGeometry(outerRadius, outerRadius, matThickness, matSegments, 1, false, thetaStart);
+            }
+
+            const mesh = new this._THREE.Mesh(geometry, matMaterial);
             mesh.position.set(0, matThickness / 2, 0);
             mesh.name = 'tower_mat';
             master.add(mesh);
-        },
-
-        // Each side of a 2-sided tower now gets its own full primary-frame +
-        // Warren-truss subframe (a real freestanding A-frame is exactly two of
-        // these built back-to-back — see the isTwoSideTower branch in
-        // buildWallMeshGroup), which already reads as a real structure on its
-        // own. All that's left uncovered is the small residual gap between
-        // the two panels' own backs at the shared center (the tower radius
-        // for n=2 is deliberately small, just enough to clear a visible
-        // central spine) — one thin vertical mast closes it, matching the
-        // shared structural core real double-sided walls have there.
-        addTwoSideSpine(master, radius) {
-            const material = new this._THREE.MeshStandardMaterial({ color: 0xb89770, roughness: 0.85, metalness: 0.02 });
-            const mast = new this._THREE.Mesh(
-                new this._THREE.BoxGeometry(Math.max(radius * 2, 0.2), this.height, Math.max(radius * 2, 0.2)),
-                material
-            );
-            mast.position.set(0, this.height / 2, 0);
-            mast.name = 'two_side_spine_mast';
-            master.add(mast);
         },
 
         // One flat cap roof sized to the tower's actual footprint (radius + the
@@ -702,9 +730,18 @@ export default {
             } else {
                 // Multi-side tower: faces radiate in every direction, so frame it
                 // from an elevated 3/4 angle that doesn't stare straight into any
-                // single face's back.
+                // single face's back. Math.PI/sides.length aims the camera at the
+                // "corner" between two adjacent faces — correct for a real 3+
+                // sided polygon, but a 2-sided tower's two faces are 180° apart
+                // (back-to-back, not adjacent polygon corners), so that formula
+                // works out to exactly 90°: a camera sitting dead-on the axis
+                // the panels are widest along, staring straight down their edge
+                // instead of at their face. Matches the single-wall camera's own
+                // oblique angle instead (~30°, i.e. atan(0.5/0.9) from its x/z
+                // position ratio above) since a 2-sided tower is really just two
+                // single walls back-to-back, not a genuine multi-face polygon.
                 const distance = maxReach * 2.2;
-                const azimuth = Math.PI / sides.length;
+                const azimuth = sides.length === 2 ? Math.PI / 6 : Math.PI / sides.length;
                 this._ctx.controls.target.set(0, this.height * 0.5, 0);
                 this._ctx.camera.position.set(
                     distance * Math.sin(azimuth),
@@ -714,6 +751,114 @@ export default {
             }
 
             this._ctx.controls.update();
+        },
+
+        // Real construction-drawing sizing on the live 3D model itself, not
+        // just the 2D/PDF exports: a width dimension along the base (pulled
+        // behind the wall, clear of the support frame), one shared height
+        // dimension down the left edge, and an overhang dimension along the
+        // top when the wall actually leans. Local wall-space coordinates
+        // (same space addClimbingPanel etc. use, before the per-side radius
+        // offset/tower rotation applied in rebuildModel) so these automatically
+        // land in the right place for every side without separate trig.
+        addSideDimensions(parent, w, d, showHeight) {
+            const halfW = w / 2;
+            const h = this.height;
+
+            this.addDimensionLine(parent,
+                { x: -halfW, y: -0.1, z: -0.35 },
+                { x: halfW, y: -0.1, z: -0.35 },
+                this.fmtDimension(w));
+
+            if (showHeight) {
+                this.addDimensionLine(parent,
+                    { x: -halfW - 0.3, y: 0, z: 0 },
+                    { x: -halfW - 0.3, y: h, z: 0 },
+                    this.fmtDimension(h));
+            }
+
+            if (d > 0.001) {
+                this.addDimensionLine(parent,
+                    { x: halfW + 0.3, y: h, z: 0 },
+                    { x: halfW + 0.3, y: h, z: d },
+                    this.fmtDimension(d));
+            }
+        },
+
+        // Standard CAD dimension: a line between two points, small perpendicular
+        // tick marks at each end, and a text label at the midpoint. Every
+        // dimension line built here is axis-aligned (along X or Z), so a fixed
+        // vertical (+/-Y) tick direction is enough — no need for a general
+        // perpendicular-to-an-arbitrary-3D-line calculation.
+        addDimensionLine(parent, from, to, label) {
+            const THREE = this._THREE;
+            const material = new THREE.LineBasicMaterial({ color: 0x2a6fb0 });
+
+            const main = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(from.x, from.y, from.z),
+                new THREE.Vector3(to.x, to.y, to.z),
+            ]);
+            const line = new THREE.Line(main, material);
+            line.name = 'dimension_line';
+            parent.add(line);
+
+            const tick = 0.05;
+            [from, to].forEach((p) => {
+                const tickGeom = new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(p.x, p.y - tick, p.z),
+                    new THREE.Vector3(p.x, p.y + tick, p.z),
+                ]);
+                const tickLine = new THREE.Line(tickGeom, material);
+                tickLine.name = 'dimension_tick';
+                parent.add(tickLine);
+            });
+
+            const label3d = this.buildDimensionLabel(label);
+            label3d.position.set((from.x + to.x) / 2, (from.y + to.y) / 2, (from.z + to.z) / 2);
+            parent.add(label3d);
+        },
+
+        // Canvas-texture text sprite (same technique buildPanelTexture already
+        // uses for the panel surface) — depthTest disabled so the label always
+        // reads on top of the panel/mat/frame geometry behind it, like a real
+        // CAD annotation overlay rather than a physical object that can be
+        // occluded.
+        buildDimensionLabel(text) {
+            const THREE = this._THREE;
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const fontSize = 48;
+            ctx.font = `600 ${fontSize}px Helvetica, Arial, sans-serif`;
+            const textWidth = ctx.measureText(text).width;
+            canvas.width = Math.ceil(textWidth) + 24;
+            canvas.height = fontSize + 20;
+
+            ctx.font = `600 ${fontSize}px Helvetica, Arial, sans-serif`;
+            ctx.fillStyle = 'rgba(255,255,255,0.92)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeStyle = '#2a6fb0';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(1.5, 1.5, canvas.width - 3, canvas.height - 3);
+            ctx.fillStyle = '#1a1a2e';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2 + 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+            const spriteMaterial = new THREE.SpriteMaterial({ map: texture, depthTest: false, depthWrite: false });
+            const sprite = new THREE.Sprite(spriteMaterial);
+            sprite.name = 'dimension_label';
+            sprite.renderOrder = 999;
+            const worldHeight = 0.22;
+            sprite.scale.set(worldHeight * (canvas.width / canvas.height), worldHeight, 1);
+            return sprite;
+        },
+
+        fmtDimension(meters) {
+            const m = parseFloat(meters) || 0;
+            const s = m.toFixed(2).replace(/0+$/, '').replace(/\.$/, '');
+            return s + 'm';
         },
 
         clearGroup() {
@@ -758,7 +903,9 @@ export default {
             const distance = maxDim * 1.7;
 
             const views = [
+                { label: 'Front Elevation', azimuth: 0.001, elevation: 0.06 },
                 { label: 'Front 3/4 View', azimuth: Math.PI * 0.22, elevation: 0.35 },
+                { label: 'Side View', azimuth: Math.PI / 2, elevation: 0.06 },
                 { label: 'Rear 3/4 View', azimuth: Math.PI * 1.22, elevation: 0.35 },
                 { label: 'Overhead Plan View', azimuth: 0.001, elevation: Math.PI / 2 - 0.3 },
             ];

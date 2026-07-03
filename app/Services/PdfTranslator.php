@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Services;
+
+/**
+ * Loads the same `shop.wall.pdf.*` strings the frontend's vue-i18n JSON
+ * files define (resources/lang/i18n/{locale}.json), so the wall calculator's
+ * PDF export can render in the user's own active locale (English or
+ * Georgian) instead of always English — reusing one source of translated
+ * strings rather than maintaining a second, Laravel-native copy that could
+ * drift out of sync with the site's own translations.
+ */
+class PdfTranslator
+{
+    protected array $strings;
+
+    public function __construct(string $locale = 'en')
+    {
+        $locale = in_array($locale, ['en', 'ka'], true) ? $locale : 'en';
+        $this->strings = $this->loadStrings($locale);
+
+        // English fills in anything the requested locale's own file is
+        // missing, so a partially-translated locale still gets a usable PDF
+        // instead of a raw untranslated key showing through.
+        if ($locale !== 'en') {
+            $this->strings = array_merge($this->loadStrings('en'), $this->strings);
+        }
+    }
+
+    protected function loadStrings(string $locale): array
+    {
+        $path = resource_path("lang/i18n/{$locale}.json");
+        if (!is_file($path)) return [];
+        $data = json_decode(file_get_contents($path), true);
+        return $data['shop']['wall']['pdf'] ?? [];
+    }
+
+    /**
+     * @param string $key Key directly under shop.wall.pdf (no dot-path — this
+     *   PDF only ever reads from that one nested object).
+     * @param array $replace :placeholder => value substitutions.
+     */
+    public function t(string $key, array $replace = []): string
+    {
+        $value = $this->strings[$key] ?? $key;
+        foreach ($replace as $find => $val) {
+            $value = str_replace(':' . $find, $val, $value);
+        }
+        return $value;
+    }
+
+    /**
+     * The small subset of translated strings WallDrawingService's own
+     * label() calls need — kept separate from the blade view's direct t()
+     * calls since the drawing service has no view context of its own.
+     */
+    public function drawingLabels(): array
+    {
+        return [
+            'support_truss' => $this->t('support_truss'),
+            'support_prop' => $this->t('support_prop'),
+            'foundation' => $this->t('foundation_label'),
+            'roof' => $this->t('roof_label'),
+            'overhang' => $this->t('overhang_label'),
+            'overhang_direction' => $this->t('overhang_direction'),
+            'side' => $this->t('side_label'),
+        ];
+    }
+}
