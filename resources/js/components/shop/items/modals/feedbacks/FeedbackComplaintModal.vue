@@ -1,10 +1,10 @@
 <template>
     <StackModal
                 v-model="is_user_feedback_complaint_model"
-                title="Please select a reason for deleting the feedback"
+                :title="$t('shop.product.feedback.complaint_modal_title')"
                 @close="close_modal"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+                :saveButton="{ visible: true, title: $t('shop.product.feedback.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: true, title: $t('shop.product.feedback.close'), btnClass: { 'btn btn-secondary': true } }"
             >
             <pre class="language-vue">
                 <div class="row justify-content-center" v-if="complaint_loader">
@@ -14,20 +14,20 @@
                 </div>
 
                 <span v-if="!complaint_loader">
-                    <h1>You can file a complaint for this feedback</h1>
-                    <p>Please select a reason for deleting the feedback!!!</p>
-                    
-                    <form v-on:submit.prevent="make_complaint" id="make_complaint" class="form">
-                        <input v-if="user.length == 0" type="email" name="complainter email" v-model="complainter_email" class="form-control textarea" placeholder="Your email">
+                    <h1>{{ $t('shop.product.feedback.complaint_heading') }}</h1>
+                    <p>{{ $t('shop.product.feedback.complaint_description') }}</p>
 
-                        <select class="form-control" v-model="selected_feedback_complaint" name="feedback delete cause" > 
-                            <option value="Hostile remarks">Hostile remarks</option>
-                            <option value="Does not match the theme of the site">Does not match the theme of the site</option>
-                            <option value="Spam">Spam</option>
-                            <option value="Sexual content">Sexual content</option>
-                            <option value="Expression of anger">Expression of anger</option>
-                            <option value="Conflict with other members of the site">Conflict with other members of the site</option>
-                            <option value="The language of the feedbacks does not match the requirements of the site">The language of the feedbacks does not match the requirements of the site</option>
+                    <form v-on:submit.prevent="make_complaint" id="make_complaint" class="form">
+                        <input v-if="user.length == 0" type="email" name="complainter email" v-model="complainter_email" class="form-control textarea" :placeholder="$t('shop.product.feedback.complainter_email')">
+
+                        <select class="form-control" v-model="selected_feedback_complaint" name="feedback delete cause" >
+                            <option value="Hostile remarks">{{ $t('shop.product.feedback.reasons.hostile') }}</option>
+                            <option value="Does not match the theme of the site">{{ $t('shop.product.feedback.reasons.off_topic') }}</option>
+                            <option value="Spam">{{ $t('shop.product.feedback.reasons.spam') }}</option>
+                            <option value="Sexual content">{{ $t('shop.product.feedback.reasons.sexual_content') }}</option>
+                            <option value="Expression of anger">{{ $t('shop.product.feedback.reasons.anger') }}</option>
+                            <option value="Conflict with other members of the site">{{ $t('shop.product.feedback.reasons.conflict') }}</option>
+                            <option value="The language of the feedbacks does not match the requirements of the site">{{ $t('shop.product.feedback.reasons.language') }}</option>
                         </select>
 
                         <!-- <vue-recaptcha 

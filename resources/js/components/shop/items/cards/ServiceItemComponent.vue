@@ -1,22 +1,24 @@
 <template>
     <div class="col-md-4 col-sm-6">
         <article class="service-box" role="article">
-            <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'" :aria-label="'Service image for ' + service_data.locale_data.title">
-                <div class="front-content">
-                    <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
+            <router-link :to="'../service/' + service_data.global_data.url_title" class="service-image-link" :aria-label="'View details for ' + service_data.locale_data.title">
+                <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'">
+                    <div class="front-content">
+                        <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
+                    </div>
                 </div>
-            </div>
 
-            <div v-else class="service-icon services-background-image" :aria-label="'Default service image for ' + service_data.locale_data.title">
-                <div class="front-content">
-                    <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
+                <div v-else class="service-icon services-background-image">
+                    <div class="front-content">
+                        <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
+                    </div>
                 </div>
-            </div>
+            </router-link>
 
             <div class="service-content">
-                <a class="cursor_pointer" @click="go_to_service('../service/' + service_data.global_data.url_title)" :aria-label="'View details for ' + service_data.locale_data.title">
+                <router-link :to="'../service/' + service_data.global_data.url_title" :aria-label="'View details for ' + service_data.locale_data.title">
                     <h3>{{ service_data.locale_data.title }}</h3>
-                </a>
+                </router-link>
                 <div class="service-description" v-html="service_data.locale_data.short_description"></div>
             </div>
         </article>
@@ -28,23 +30,6 @@
         props:[
             'service_data'
         ],
-        data: function () {
-            return {
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
-            };
-        },
-        components: {
-            
-        },
-        mounted() {
-
-        },
-        methods: {
-            go_to_service(service){
-                window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '/' + service)
-            },
-        }
     }
 </script>
 
@@ -62,6 +47,10 @@
     .service-box:hover {
         box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18);
         transform: translateY(-4px);
+    }
+
+    .service-image-link {
+        display: block;
     }
 
     /* Override global flip-card styles */

@@ -263,9 +263,10 @@ router.beforeEach((to, from, next) => {
     }
 
     localStorage.setItem('lang', locale);
-    
-    if (i18n.locale !== locale) {
-        i18n.locale = locale;
+
+    const i18nLocale = locale === 'us' ? 'en' : locale;
+    if (i18n.global.locale.value !== i18nLocale) {
+        i18n.global.locale.value = i18nLocale;
     }
 
     if (locale === 'ka' && !to.path.startsWith('/ka') && to.path !== '/') {

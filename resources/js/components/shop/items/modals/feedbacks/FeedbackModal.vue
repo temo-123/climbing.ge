@@ -1,12 +1,12 @@
 <template>
 <StackModal
             v-model="is_show_modal"
-            title="Product Feedback"
+            :title="$t('shop.product.feedback.modal_title')"
             size="lg"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
-                title: 'Close',
+                title: $t('shop.product.feedback.close'),
                 btnClass: { 'btn btn-primary': true },
             }"
             @close="close_modal()"
@@ -29,19 +29,19 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="form-label">Name</label>
-                                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" placeholder="Name" required><br>
+                                                    <label class="form-label">{{ $t('shop.product.feedback.name') }}</label>
+                                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" :placeholder="$t('shop.product.feedback.name')" required><br>
                                                     <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                                        Name is validation
+                                                        {{ $t('shop.product.feedback.name_required') }}
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-md-8">
                                                 <div class="form-group">
-                                                    <label class="form-label">Surname</label>
-                                                    <input type="text" name="surname" v-model="data.surname" class="form-control friendly-input" placeholder="Surname" required><br>
+                                                    <label class="form-label">{{ $t('shop.product.feedback.surname') }}</label>
+                                                    <input type="text" name="surname" v-model="data.surname" class="form-control friendly-input" :placeholder="$t('shop.product.feedback.surname')" required><br>
                                                     <div class="alert alert-danger" role="alert" v-if="errors.surname">
-                                                        Surname is validation
+                                                        {{ $t('shop.product.feedback.surname_required') }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -50,10 +50,10 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">Email</label>
-                                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" placeholder="E_mail" required><br>
+                                                    <label class="form-label">{{ $t('shop.product.feedback.email') }}</label>
+                                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" :placeholder="$t('shop.product.feedback.email')" required><br>
                                                     <div class="alert alert-danger" role="alert" v-if="errors.email">
-                                                        Email is validation
+                                                        {{ $t('shop.product.feedback.email_required') }}
                                                     </div>
                                                 </div>
                                             </div>
@@ -62,41 +62,41 @@
                                 </div>
                                 <div v-else>
                                     <div class="alert alert-danger" role="alert" v-if="errors.name">
-                                        Name is validation
+                                        {{ $t('shop.product.feedback.name_required') }}
                                     </div>
                                     <div class="alert alert-danger" role="alert" v-if="errors.surname">
-                                        Surname is validation
+                                        {{ $t('shop.product.feedback.surname_required') }}
                                     </div>
                                     <div class="alert alert-danger" role="alert" v-if="errors.email">
-                                        Email is validation
+                                        {{ $t('shop.product.feedback.email_required') }}
                                     </div>
                                     <div class="alert alert-danger" role="alert" v-if="errors.email || errors.surname || errors.name">
-                                        If you use automatically data pres reload page and try again!
+                                        {{ $t('shop.product.feedback.autofill_warning') }}
                                     </div>
                                 </div>
-                                
+
 
                                 <div class="modal-section">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Your Feedback</label>
-                                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" placeholder="Your feedback (Write feedbacks only in English, no more than 500 characters!)" class="form-control friendly-input" required></textarea>
+                                                <label class="form-label">{{ $t('shop.product.feedback.your_feedback') }}</label>
+                                                <textarea rows="6" name="text" v-model="data.text" id="text" maxlength="500" :placeholder="$t('shop.product.feedback.feedback_placeholder')" class="form-control friendly-input" required></textarea>
                                                 <div class="alert alert-danger" role="alert" v-if="errors.text">
-                                                    feedback text is validation
+                                                    {{ $t('shop.product.feedback.feedback_required') }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                            
+
                                 <div class="modal-section">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">Do you have this product?</label>
-                                                <input type="checkbox" v-model="data.have_product" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                                                <label class="form-label">{{ $t('shop.product.feedback.have_product') }}</label>
+                                                <input type="checkbox" v-model="data.have_product" name="scales">
                                             </div>
                                         </div>
                                     </div>
@@ -106,7 +106,7 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="form-group">
-                                                <label class="form-label">How did you like this product?</label>
+                                                <label class="form-label">{{ $t('shop.product.feedback.rate_product') }}</label>
                                                 <span v-if="data.stars > 0"></span>
 
                                                 <starReitingInsert @get_stars="update_stars"/>
@@ -134,10 +134,10 @@
             <div v-show="!is_loading" class="text-center pt-4 mt-4 border-t border-gray-200">
                 <div v-if="captcha_error" class="alert alert-warning mb-2">
                     <i class="fa fa-exclamation-triangle"></i>
-                    reCAPTCHA failed to load. Please reload the page and try again.
+                    {{ $t('shop.product.feedback.recaptcha_error') }}
                 </div>
-                <button v-if="captcha_error" class="btn btn-secondary" disabled>Add feedback</button>
-                <button v-else type="submit" form="feedback_form" class="btn btn-primary">Add feedback</button>
+                <button v-if="captcha_error" class="btn btn-secondary" disabled>{{ $t('shop.product.feedback.submit') }}</button>
+                <button v-else type="submit" form="feedback_form" class="btn btn-primary">{{ $t('shop.product.feedback.submit') }}</button>
             </div>
         </StackModal>
 </template>

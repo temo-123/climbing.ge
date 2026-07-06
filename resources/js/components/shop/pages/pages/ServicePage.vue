@@ -1,45 +1,53 @@
 <template>
     <div class="service-container container h-recent-work">
-        <div class="service-header">
-            <h1 class="service-title">{{ service.locale_data.title }}</h1>
-        </div>
-
-        <!-- <breadcrumb /> -->
-
-        <div class="service-image-section" v-if="service.service_images.length > 0">
-            <img class="service-image" :src="'../../images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
-        </div>
-
-        <div class="service-description-section">
-            <div class="service-description" v-html="service.locale_data.text"></div>
-        </div>
-
-        <div class="gallery-section">
-            <gallery
-                :images_prop="service.service_images"
-                :folder_path_prop="'/public/images/service_img/'"
-            />
-        </div>
-
-        <div class="similar-services-section" v-if="this.services.length > 0">
-            <hr class="section-divider" />
-
-            <h2 class="section-title">{{ $t('shop.title.similar.services') }}</h2>
-
-            <div class="services-list">
-                <ServiceItem
-                    v-for="service in services"
-                    :key='service.global_data.id'
-                    :service_data="service">
-                </ServiceItem>
+        <div class="row" v-if="is_loading">
+            <div class="col-md-4">
+                <img :src="'/images/site_img/loading.gif'" alt="loading" class="article_loader">
             </div>
         </div>
 
-        <metaData
-            :title="service.locale_data.title"
-            :description="service.locale_data.short_description"
-            :image="'/images/service_img/'+service.service_images[0].image"
-        />
+        <template v-else>
+            <div class="service-header">
+                <h1 class="service-title">{{ service.locale_data.title }}</h1>
+            </div>
+
+            <!-- <breadcrumb /> -->
+
+            <div class="service-image-section" v-if="service.service_images.length > 0">
+                <img class="service-image" :src="'/public/images/service_img/'+service.service_images[0].image" :alt="service.locale_data.title" />
+            </div>
+
+            <div class="service-description-section">
+                <div class="service-description" v-html="service.locale_data.text"></div>
+            </div>
+
+            <div class="gallery-section">
+                <gallery
+                    :images_prop="service.service_images"
+                    :folder_path_prop="'/public/images/service_img/'"
+                />
+            </div>
+
+            <div class="similar-services-section" v-if="this.services.length > 0">
+                <hr class="section-divider" />
+
+                <h2 class="section-title">{{ $t('shop.title.similar.services') }}</h2>
+
+                <div class="services-list">
+                    <ServiceItem
+                        v-for="service in services"
+                        :key='service.global_data.id'
+                        :service_data="service">
+                    </ServiceItem>
+                </div>
+            </div>
+
+            <metaData
+                :title="service.locale_data.title"
+                :description="service.locale_data.short_description"
+                :image="service.service_images.length > 0 ? '/public/images/service_img/'+service.service_images[0].image : '/public/images/meta_img/services.jpg'"
+            />
+        </template>
     </div>
 </template>
 
@@ -61,13 +69,17 @@
         ],
         data: function () {
             return {
+                is_loading: false,
                 services: [],
-                service: [],
+                service: {
+                    locale_data: {},
+                    global_data: {},
+                    service_images: [],
+                },
             };
         },
         watch: {
             '$route' (to, from) {
-                // this.get_services()
                 this.get_service()
                 window.scrollTo(0,0);
             }
@@ -86,6 +98,7 @@
                 })
             },
             get_service(){
+                this.is_loading = true
                 axios
                 .get('/get_service/get_local_service_in_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
@@ -94,6 +107,7 @@
                 })
                 .catch(error =>{
                 })
+                .finally(() => this.is_loading = false)
             }
         }
     }

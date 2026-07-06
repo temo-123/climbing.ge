@@ -5,9 +5,9 @@
             <div class="row">
                 <div class="col-xs-12 col-md-12 text-center">
                     <div class="wrap">
-                        <h2>Feedbacks</h2>
-                        <span v-if="reviews_count_prop > 0">Average rating: {{reviews_stars_prop}} / 5 ({{reviews_count_prop}} reviews)</span>
-                        <span v-else>No feedbacks yet</span>
+                        <h2>{{ $t('shop.product.feedback.title') }}</h2>
+                        <span v-if="reviews_count_prop > 0">{{ $t('shop.product.feedback.average_rating', { stars: reviews_stars_prop, count: reviews_count_prop }) }}</span>
+                        <span v-else>{{ $t('shop.product.feedback.no_feedbacks') }}</span>
                     </div>
                 </div>
             </div>
@@ -19,8 +19,8 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <button @click="show_feadbacks_action" v-if="show_feadbacks" class="btn btn-default btn-send main-btn">Close feedbacks list</button>
-                    <button @click="show_feadbacks_action" v-if="!show_feadbacks" class="btn btn-default btn-send main-btn">Show feedbacks list</button>
+                    <button @click="show_feadbacks_action" v-if="show_feadbacks" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.close_list') }}</button>
+                    <button @click="show_feadbacks_action" v-if="!show_feadbacks" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.show_list') }}</button>
                 </div>
             </div>
         </div>
@@ -28,11 +28,11 @@
         <div class="modal-section" v-if="show_feadbacks">
             <div class="row">
                 <div class="col-xs-6 col-md-6">
-                    <button @click="show_feedback_modal()" class="btn btn-default btn-send main-btn">Create feedbacks</button>
+                    <button @click="show_feedback_modal()" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.create') }}</button>
                 </div>
                 <div class="col-xs-6 col-md-6">
-                    <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
-                    <span class="badge badge-primary mb-1 pull-right" v-if="is_refresh">Updating...</span>
+                    <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">{{ $t('shop.product.feedback.refresh') }} ({{refresh_id}})</button>
+                    <span class="badge badge-primary mb-1 pull-right" v-if="is_refresh">{{ $t('shop.product.feedback.updating') }}</span>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                                         <button @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id"  class="btn btn btn-warning pull-right">
                                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                         </button>
-                                        <button @click="del_feedback(feedback.feedback.id)" v-else onclick="return confirm('Are you sure? Do you want to delete this feedback?')" class="btn btn-danger pull-right">
+                                        <button @click="confirm_delete_feedback(feedback.feedback.id)" v-else class="btn btn-danger pull-right">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </span>
@@ -170,7 +170,13 @@
                 if (feedback.user) {
                     this.$refs.user_modal.show_modal(feedback.user.id);
                 } else {
-                    alert('This user is not registered on our website');
+                    alert(this.$t('shop.product.feedback.user_not_registered'));
+                }
+            },
+
+            confirm_delete_feedback(id){
+                if (window.confirm(this.$t('shop.product.feedback.confirm_delete'))) {
+                    this.del_feedback(id)
                 }
             },
 

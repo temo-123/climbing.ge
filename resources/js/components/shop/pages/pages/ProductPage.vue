@@ -53,10 +53,10 @@
                                     <h1 class="product-page-title">{{ product.locale_product.title }}</h1>
                                 </div>
                                 <div class="action-icons">
-                                    <button class="icon-btn share-btn" @click="shareProduct" aria-label="Share product" title="Share product">
+                                    <button class="icon-btn share-btn" @click="shareProduct" :aria-label="$t('shop.product.share_product')" :title="$t('shop.product.share_product')">
                                         <i class="fa fa-share-alt" aria-hidden="true"></i>
                                     </button>
-                                    <button class="icon-btn favorite-btn" @click="add_to_faworite(product.global_product.id)" :class="{ disabled: addingToFavorite }" aria-label="Add to favorites" title="Add to favorites">
+                                    <button class="icon-btn favorite-btn" @click="add_to_faworite(product.global_product.id)" :class="{ disabled: addingToFavorite }" :aria-label="$t('shop.product.add_to_favorites')" :title="$t('shop.product.add_to_favorites')">
                                         <i v-if="addingToFavorite" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                         <i v-else class="fa fa-heart-o" aria-hidden="true"></i>
                                     </button>
@@ -94,10 +94,10 @@
 
                             <!-- Delivery badge -->
                             <div class="delivery-badge" v-if="product.global_product.sale_type === 'online_order'">
-                                <i class="fa fa-truck" aria-hidden="true"></i> Delivery: 2–4 business days
+                                <i class="fa fa-truck" aria-hidden="true"></i> {{ $t('shop.product.delivery_online_order') }}
                             </div>
                             <div class="delivery-badge delivery-badge--warning" v-if="product.global_product.sale_type === 'produced_by_order'">
-                                <i class="fa fa-clock-o" aria-hidden="true"></i> Made to order: 5–9 business days
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('shop.product.delivery_produced_by_order') }}
                             </div>
 
                             <div class="product-divider"></div>
@@ -111,32 +111,32 @@
                                 <div v-if="products_quantity >= select_product_max_quantyty && select_product_max_quantyty > 0 && showMaxProductsAlert" class="alert alert-warning alert-dismissible alert-with-icon" role="alert">
                                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                     {{ $t('shop.max products') }}
-                                    <button type="button" class="close" @click="hideAlert('maxProducts')" aria-label="Close alert"><span>&times;</span></button>
+                                    <button type="button" class="close" @click="hideAlert('maxProducts')" :aria-label="$t('shop.product.close_alert')"><span>&times;</span></button>
                                 </div>
                                 <div v-if="select_product_max_quantyty > 0 && select_product_max_quantyty <= 5 && product_modification_for_cart != 'All'" class="alert alert-warning alert-with-icon" role="alert">
                                     <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                                    Only {{ select_product_max_quantyty }} left in stock
+                                    {{ $t('shop.product.only_left', { quantity: select_product_max_quantyty }) }}
                                 </div>
                                 <div v-if="is_adding_in_cart_socsesful && showAddSuccessAlert" class="alert alert-success alert-dismissible alert-with-icon" role="alert">
                                     <i class="fa fa-check-circle" aria-hidden="true"></i>
                                     {{ $t('shop.add successful') }}
-                                    <button type="button" class="close" @click="hideAlert('addSuccess')" aria-label="Close alert"><span>&times;</span></button>
+                                    <button type="button" class="close" @click="hideAlert('addSuccess')" :aria-label="$t('shop.product.close_alert')"><span>&times;</span></button>
                                 </div>
 
                                 <div class="option-row">
                                     <div class="option-select-wrap">
-                                        <label class="option-label">{{ $t('shop.product.select_variant') || 'Choose variant' }}</label>
+                                        <label class="option-label">{{ $t('shop.product.select_variant') }}</label>
                                         <select class="form-control option-select" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
-                                            <option value="All" disabled>— Select variant —</option>
+                                            <option value="All" disabled>{{ $t('shop.product.select_variant_placeholder') }}</option>
                                             <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id">{{ option.option.name }}</option>
                                         </select>
                                     </div>
 
                                     <template v-if="product_modification_for_cart != 'All'">
                                         <div v-if="select_product_max_quantyty > 0" class="quantity-controls">
-                                            <button @click="decreaseQuantity" class="quantity-btn" :disabled="products_quantity <= 1" aria-label="Decrease quantity">−</button>
-                                            <input type="number" class="quantity-input" min="1" :max="select_product_max_quantyty" v-model="products_quantity" aria-label="Quantity" />
-                                            <button @click="increaseQuantity" class="quantity-btn" :disabled="products_quantity >= select_product_max_quantyty" aria-label="Increase quantity">+</button>
+                                            <button @click="decreaseQuantity" class="quantity-btn" :disabled="products_quantity <= 1" :aria-label="$t('shop.product.decrease_quantity')">−</button>
+                                            <input type="number" class="quantity-input" min="1" :max="select_product_max_quantyty" v-model="products_quantity" :aria-label="$t('shop.product.quantity')" />
+                                            <button @click="increaseQuantity" class="quantity-btn" :disabled="products_quantity >= select_product_max_quantyty" :aria-label="$t('shop.product.increase_quantity')">+</button>
                                         </div>
                                     </template>
                                 </div>
@@ -150,7 +150,7 @@
                                     <button @click="add_to_cart()" class="add-to-cart-btn-full" :class="{ disabled: addingToCart }">
                                         <i v-if="addingToCart" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                         <i v-else class="fa fa-cart-plus" aria-hidden="true"></i>
-                                        {{ addingToCart ? $t('shop.adding') || 'Adding…' : $t('shop.add_to_cart') || 'Add to Cart' }}
+                                        {{ addingToCart ? $t('shop.adding') : $t('shop.add to cart') }}
                                     </button>
                                 </div>
                             </div>
@@ -162,9 +162,9 @@
                                     <span>{{ $t('shop.product.castom_prodaction') }}</span>
                                 </div>
 
-                                <label class="option-label">{{ $t('shop.product.select_variant') || 'Choose variant' }}</label>
+                                <label class="option-label">{{ $t('shop.product.select_variant') }}</label>
                                 <select class="form-control option-select mb-3" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
-                                    <option value="All" disabled>— Select variant —</option>
+                                    <option value="All" disabled>{{ $t('shop.product.select_variant_placeholder') }}</option>
                                     <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id">{{ option.option.name }}</option>
                                 </select>
 
@@ -184,7 +184,7 @@
                             <!-- Login prompt -->
                             <div v-if="user.length == 0 && (product.global_product.sale_type == 'online_order' || product.global_product.sale_type == 'custom_production')" class="login-prompt" @click="open_login_modal">
                                 <i class="fa fa-sign-in" aria-hidden="true"></i>
-                                <span v-if="product.global_product.sale_type == 'custom_production'">{{ $t('shop.product.ples_castom_login') }}</span>
+                                <span v-if="product.global_product.sale_type == 'custom_production'">{{ $t('shop.product.castom_prodaction_login') }}</span>
                                 <span v-else>{{ $t('shop.product.online_order_login') }}</span>
                             </div>
 
