@@ -35,8 +35,11 @@ class GeneralInfoController extends Controller
             $request->action_type ?: 'show_more_click'
         );
 
+        // Failure here means the click counter wasn't recorded (e.g. Redis is
+        // unreachable) — already logged in ActionTrackingService. It's not
+        // worth surfacing as a hard error to real visitors on every guide page.
         return response()->json([
             'status' => $success ? 'success' : 'error',
-        ], $success ? 200 : 500);
+        ]);
     }
 }

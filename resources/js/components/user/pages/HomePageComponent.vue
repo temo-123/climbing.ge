@@ -49,21 +49,21 @@
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
 
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
+    import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
 
     export default {
+        mixins: [go_to_service_mixin],
         components: {
             user_notifications_list,
             servicesListComponent
         },
         data(){
             return{
-                user: [],
-                MIX_SITE_URL: process.env.MIX_SITE_URL,
-                MIX_APP_SSH: process.env.MIX_APP_SSH,
+                user: {},
             }
         },
         mounted(){
-            // 
+            this.get_user_data();
         },
         methods: {
             get_user_data(){
@@ -71,22 +71,7 @@
                 .get('/auth_user')
                 .then((response)=>{
                     this.user = response.data
-                    this.get_user_queries(this.user.id)
                 })
-            },
-            go_to_service(service){
-                if(service == "shop"){
-                    window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + '')
-                }
-                else if(service == "guid"){
-                    window.open(this.MIX_APP_SSH  + this.MIX_SITE_URL + '/')
-                }
-                else if(service == "blog"){
-                    window.open(this.MIX_APP_SSH  + 'blog.' + this.MIX_SITE_URL + '/')
-                }
-                else if(service == "summit"){
-                    window.open(this.MIX_APP_SSH  + 'summit.' + this.MIX_SITE_URL + '/')
-                }
             },
         }
     }
