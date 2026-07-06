@@ -4,7 +4,9 @@
             :canvas-id="'canvas-one'"
             :action="action"
             :json-prop="json_prop"
+            :json-meta="json_meta"
             :related-jsons="related_jsons"
+            :related-jsons-meta="related_jsons_meta"
             :image="image"
             :stroke-color="strokeColor"
             :fill-color="fillColor"
@@ -39,7 +41,15 @@ export default {
             type: String,
             default: null
         },
+        json_meta: {
+            type: Object,
+            default: () => null
+        },
         related_jsons: {
+            type: Array,
+            default: () => []
+        },
+        related_jsons_meta: {
             type: Array,
             default: () => []
         },

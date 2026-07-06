@@ -108,7 +108,9 @@
                 <CanvasContainerComponent
                     :action="action"
                     :json_prop="json_prop"
+                    :json_meta="json_meta"
                     :related_jsons="related_jsons"
+                    :related_jsons_meta="related_jsons_meta"
                     :image="image"
                     ref="canvasContainer"
                     @canvas_data="handleCanvasData"
@@ -178,7 +180,15 @@ export default {
                 type: String,
                 default: null
             },
+            json_meta: {
+                type: Object,
+                default: () => null
+            },
             related_jsons: {
+                type: Array,
+                default: () => []
+            },
+            related_jsons_meta: {
                 type: Array,
                 default: () => []
             },

@@ -318,10 +318,24 @@
             console.log('Canvas data emission failed:', error);
           }
 
+          // The background photo's own position/size within the Paper.js view at save
+          // time — without this, a route's first-ever drawing (created here) would have
+          // no bg_* metadata, unlike one drawn later via the edit flow, and the editor
+          // couldn't rescale it correctly if reopened in a differently-sized container.
+          let drawingMeta = {};
+          try {
+            if (this.$refs.editorComponent && typeof this.$refs.editorComponent.getDrawingMeta === 'function') {
+              drawingMeta = this.$refs.editorComponent.getDrawingMeta();
+            }
+          } catch (error) {
+            console.log('Drawing meta capture failed:', error);
+          }
+
           // Include canvas JSON data in the route data (explicitly list fields to avoid including unrelated properties)
           const routeData = {
             ...this.data,
             route_json: this.data.route_json,
+            ...drawingMeta,
           };
 
           axios
@@ -394,7 +408,7 @@
           params: { sector_image_id: sectorImageId }
         })
         .then(response => {
-          this.related_jsons = response.data;
+          this.related_jsons = (response.data || []).map(item => item.json);
           console.log('Related routes JSONs loaded:', this.related_jsons);
         })
         .catch(

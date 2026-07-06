@@ -101,7 +101,9 @@
                     ref="editorRef"
                     :image_prop="getSectorImage()"
                     :json_prop="activeJsonProp"
+                    :json_meta="activeJsonMeta"
                     :related_jsons="related_jsons"
+                    :related_jsons_meta="related_jsons_meta"
                     :route_name="extra_drawing_mode ? 'extra info' : route_name_prop"
                     @canvas_data="handleCanvasData"
                   />
@@ -135,6 +137,7 @@ export default {
         sector_image_id_prop: { default: '' },
         route_id_prop: { default: null },
         route_name_prop: { default: '' },
+        json_meta_prop: { type: Object, default: () => null },
     },
     emits: ['update:route_json_prop', 'update:sector_image_id_prop'],
     data() {
@@ -143,6 +146,7 @@ export default {
             sector_images: [],
             images_tab_num: '',
             related_jsons: [],
+            related_jsons_meta: [],
             drawing_saving: false,
             drawing_deleting: false,
             drawing_save_status: null,
@@ -150,6 +154,7 @@ export default {
             // sector image (not this route) — see SectorImageExtraDrawing.
             extra_drawing_mode: false,
             extra_drawing_json: null,
+            extra_drawing_meta: null,
             extra_drawing_loading: false,
         }
     },
@@ -159,6 +164,9 @@ export default {
         // is toggled on.
         activeJsonProp() {
             return this.extra_drawing_mode ? this.extra_drawing_json : this.route_json_prop;
+        },
+        activeJsonMeta() {
+            return this.extra_drawing_mode ? this.extra_drawing_meta : this.json_meta_prop;
         },
     },
     watch: {
@@ -199,8 +207,14 @@ export default {
                     const response = await axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + this.images_tab_num);
                     const drawing = response.data && response.data.extra_drawing;
                     this.extra_drawing_json = drawing ? drawing.json : null;
+                    this.extra_drawing_meta = drawing ? {
+                        canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
+                        bg_left: drawing.bg_left, bg_top: drawing.bg_top,
+                        bg_width: drawing.bg_width, bg_height: drawing.bg_height,
+                    } : null;
                 } catch (e) {
                     this.extra_drawing_json = null;
+                    this.extra_drawing_meta = null;
                 } finally {
                     this.extra_drawing_loading = false;
                 }
@@ -235,12 +249,18 @@ export default {
             // image's annotations on the new background.
             if (this.extra_drawing_mode) {
                 this.extra_drawing_json = null;
+                this.extra_drawing_meta = null;
                 axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + this.images_tab_num)
                     .then(response => {
                         const drawing = response.data && response.data.extra_drawing;
                         this.extra_drawing_json = drawing ? drawing.json : null;
+                        this.extra_drawing_meta = drawing ? {
+                            canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
+                            bg_left: drawing.bg_left, bg_top: drawing.bg_top,
+                            bg_width: drawing.bg_width, bg_height: drawing.bg_height,
+                        } : null;
                     })
-                    .catch(() => { this.extra_drawing_json = null; });
+                    .catch(() => { this.extra_drawing_json = null; this.extra_drawing_meta = null; });
             }
         },
         get_sector_images(sectorId) {
@@ -261,13 +281,31 @@ export default {
             axios.get('/get_route/get_related_routes_jsons', {
                 params: { sector_image_id: sectorImageId, exclude_route_id: excludeRouteId }
             })
-                .then(response => { this.related_jsons = response.data; })
+                .then(response => {
+                    const items = response.data || [];
+                    this.related_jsons = items.map(i => i.json);
+                    this.related_jsons_meta = items;
+                })
                 .catch(() => {});
         },
         getAndEmitCanvasData() {
             if (this.$refs.editorRef && typeof this.$refs.editorRef.getAndEmitCanvasData === 'function') {
                 this.$refs.editorRef.getAndEmitCanvasData();
             }
+        },
+        // Exposes canvas_width/canvas_height/bg_* for the CURRENT drawing session so a
+        // parent that saves through its own endpoint (e.g. routeAddComponent creating a
+        // brand-new route via /set_route/add_route, instead of this component's own
+        // saveRouteDrawing) can persist the same metadata a route gets when drawn via
+        // the edit flow — without it, a route's FIRST drawing would have no bg_* at all.
+        getDrawingMeta() {
+            const canvasContainer = this.$refs.editorRef && this.$refs.editorRef.$refs.canvasContainer;
+            const scope = canvasContainer ? canvasContainer.getCanvasScope() : null;
+            return {
+                canvas_width:  scope && scope.view ? Math.round(scope.view.viewSize.width)  : null,
+                canvas_height: scope && scope.view ? Math.round(scope.view.viewSize.height) : null,
+                ...this.bgBoundsPayload(canvasContainer),
+            };
         },
         // The background photo's own actual position + size within the Paper.js
         // view — the editor fits it with a uniform cover-scale, centered, so it
@@ -516,28 +554,40 @@ export default {
         },
 
         // Composite: draw the background photo, then draw the drawing strokes (PNG) on top.
+        // Renders at the PHOTO's own native resolution, not the browser's current
+        // on-screen canvas size — otherwise every save silently downscales the sector
+        // image to whatever width the editor happened to be rendered at (e.g. a photo
+        // saved at its native 1000x1000 would get permanently shrunk to 780x780 just
+        // because the browser window was narrower on save).
         compositeImages(bgPath, drawingDataUrl, paperCanvas) {
             return new Promise((resolve) => {
-                const w = paperCanvas.width;
-                const h = paperCanvas.height;
-                const offscreen = document.createElement('canvas');
-                offscreen.width  = w;
-                offscreen.height = h;
-                const ctx = offscreen.getContext('2d');
-
-                const drawStrokes = () => {
-                    if (!drawingDataUrl) { resolve(offscreen.toDataURL('image/jpeg', 0.9)); return; }
+                const drawStrokesThenResolve = (ctx, w, h) => {
+                    if (!drawingDataUrl) { resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); return; }
                     const si = new Image();
-                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(offscreen.toDataURL('image/jpeg', 0.9)); };
-                    si.onerror = () => resolve(offscreen.toDataURL('image/jpeg', 0.9));
+                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); };
+                    si.onerror = () => resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
                     si.src = drawingDataUrl;
                 };
+                const fallback = () => {
+                    const w = paperCanvas.width, h = paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    drawStrokesThenResolve(offscreen.getContext('2d'), w, h);
+                };
 
-                if (!bgPath) { drawStrokes(); return; }
+                if (!bgPath) { fallback(); return; }
 
                 const bg = new Image();
-                bg.onload  = () => { ctx.drawImage(bg, 0, 0, w, h); drawStrokes(); };
-                bg.onerror = () => drawStrokes();
+                bg.onload = () => {
+                    const w = bg.naturalWidth  || paperCanvas.width;
+                    const h = bg.naturalHeight || paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    const ctx = offscreen.getContext('2d');
+                    ctx.drawImage(bg, 0, 0, w, h);
+                    drawStrokesThenResolve(ctx, w, h);
+                };
+                bg.onerror = fallback;
                 bg.src = bgPath;
             });
         },

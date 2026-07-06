@@ -25,7 +25,15 @@ export default {
             type: String,
             default: null
         },
+        jsonMeta: {
+            type: Object,
+            default: null
+        },
         relatedJsons: {
+            type: Array,
+            default: () => []
+        },
+        relatedJsonsMeta: {
             type: Array,
             default: () => []
         },
@@ -90,6 +98,15 @@ export default {
             handler: function(newVal, oldVal) {
                 // Only re-import after mount (scope exists) and when value actually changes
                 if (!this.scope || newVal === oldVal) return;
+                if (newVal && newVal === this._lastDrawingJson) {
+                    // Echo of what THIS canvas just exported (e.g. a parent's save flow
+                    // calling getCleanJson() and round-tripping it back down through a
+                    // v-model) — the artwork is already displayed exactly as-is.
+                    // Reimporting + rescaling it again would apply the scale-correction
+                    // a second time on top of already-correct coordinates, causing a
+                    // small drift to accumulate on every save.
+                    return;
+                }
                 if (newVal) {
                     this.importJsonData(newVal);
                 } else {
@@ -129,7 +146,13 @@ export default {
             }
         },
         image(newVal) {
-            this.loadBackgroundRaster(newVal);
+            // Re-fit the background AND re-import strokes/related overlays together
+            // once the NEW background is ready. Importing them separately (reacting
+            // to jsonProp/relatedJsons independently) could race against a prop update
+            // that arrives before the new background finishes loading — e.g. switching
+            // sector-image tabs changes both `image` and `related_jsons` together —
+            // rescaling strokes against the OLD raster's bounds instead of the new one.
+            this.loadBackgroundRaster(newVal, () => this._reimportStrokes());
         }
     },
     mounted() {
@@ -147,24 +170,27 @@ export default {
 
         this.scope.project.clear();
         this.updateView(this.zoomLevel, this.panOffset);
-        this.importRelatedJsons();
 
-        if (this.jsonProp) {
-            this.importJsonData(this.jsonProp);
+        // Import strokes only once the background raster has been fit to its final
+        // size — importJsonData/importRelatedJsons rescale saved strokes against the
+        // CURRENT background fit (see getBackgroundBounds), so they must run after
+        // loadBackgroundRaster resolves, not before it (view size isn't final yet).
+        const finishInitialLoad = () => {
+            this._reimportStrokes();
+
+            // Initialise the undo history with the current state but do NOT emit canvas_data —
+            // emitting here would overwrite the parent's route_json before the user has drawn anything.
+            this._initHistory();
+            this.$emit('layers_ready');
+        };
+
+        if (this.image) {
+            this.loadBackgroundRaster(this.image, finishInitialLoad);
         } else {
-            // No drawing data — create an empty main layer so the canvas is ready to draw
-            this._activateMainLayer();
+            finishInitialLoad();
         }
 
-        // Initialise the undo history with the current state but do NOT emit canvas_data —
-        // emitting here would overwrite the parent's route_json before the user has drawn anything.
-        this._initHistory();
-
         this.addMouseWheelListener();
-
-        if (this.image) this.loadBackgroundRaster(this.image);
-
-        this.$emit('layers_ready');
     },
 
     beforeUnmount() {
@@ -173,6 +199,20 @@ export default {
         }
     },
     methods: {
+        // Re-imports the main drawing + related overlays against whatever background
+        // fit is CURRENTLY in place. Always call this only after the background has
+        // finished loading (see mounted()/the `image` watcher) so getBackgroundBounds()
+        // is accurate for the rescale math in importJsonData/importRelatedJsons.
+        _reimportStrokes() {
+            this.importRelatedJsons();
+            if (this.jsonProp) {
+                this.importJsonData(this.jsonProp);
+            } else {
+                // No drawing data — create an empty main layer so the canvas is ready to draw
+                this._activateMainLayer();
+            }
+        },
+
         handleMouseDown(event) {
             this.mouseDown(event);
         },
@@ -189,7 +229,7 @@ export default {
         // Loads the background image as a Paper.js Raster.
         // First pre-loads the image to get its natural size, resizes the canvas
         // to match the image aspect ratio, then creates the Raster.
-        loadBackgroundRaster(url) {
+        loadBackgroundRaster(url, onReady) {
             if (!this.scope) return;
             this.scope.activate();
 
@@ -201,6 +241,7 @@ export default {
                 this.rasterBounds = null;
                 this.scope.view.update();
                 this._activateMainLayer();
+                if (onReady) onReady();
                 return;
             }
 
@@ -208,23 +249,26 @@ export default {
             const doLoad = (naturalW, naturalH) => {
                 const canvasEl = this.scope.view.element;
                 const containerW = Math.max(100, canvasEl.offsetWidth || 800);
-                const isPortrait  = naturalH > naturalW && naturalW > 0;
 
+                // Fit to the full container width first, then cap the height at 80% of
+                // the viewport so it never overflows the screen — this applies to ANY
+                // aspect ratio (portrait, square, or landscape), not just portrait: a
+                // square or wide-but-tall image in a wide container (e.g. a near-full-
+                // width modal) can just as easily end up taller than the viewport.
+                const maxH  = Math.floor(window.innerHeight * 0.8);
+                const fullH = naturalW > 0 ? Math.round(containerW * naturalH / naturalW) : 500;
                 let cW, cH;
-                if (isPortrait) {
-                    // Portrait: cap height at 80 % of viewport so it doesn't overflow the screen.
-                    const maxH = Math.floor(window.innerHeight * 0.8);
-                    const fullH = Math.round(containerW * naturalH / naturalW);
-                    cH = Math.min(fullH, maxH);
+                if (fullH > maxH) {
+                    cH = maxH;
                     cW = Math.round(cH * naturalW / naturalH);
                 } else {
-                    // Landscape / square: fill full container width (CSS handles it).
                     cW = containerW;
-                    cH = naturalW > 0 ? Math.round(cW * naturalH / naturalW) : 500;
+                    cH = fullH;
                 }
+                const isCapped = cW < containerW;
 
                 this.canvasHeight = cH;
-                this.canvasWidth  = isPortrait ? cW : 0;
+                this.canvasWidth  = isCapped ? cW : 0;
 
                 this.$nextTick(() => {
                     if (!this.scope) return;
@@ -268,7 +312,9 @@ export default {
 
                         this._activateMainLayer();
                         this.scope.view.update();
+                        if (onReady) onReady();
                     };
+                    raster.onError = () => { if (onReady) onReady(); };
 
                     raster.source = url;
                 });
@@ -341,6 +387,13 @@ export default {
                 if (drawingLayers.length > 0) bgLayer.insertBelow(drawingLayers[0]);
             }
             relatedLayers.forEach(l => this.scope.project.addLayer(l));
+
+            // Remember the last JSON we ourselves produced from the CURRENT canvas
+            // state — see the jsonProp watcher, which uses this to recognize an
+            // incoming prop update as an echo of what we just exported (e.g. a
+            // parent's save flow round-tripping getCleanJson() through a v-model)
+            // rather than a genuinely new/external drawing to load.
+            this._lastDrawingJson = json;
 
             return json;
         },

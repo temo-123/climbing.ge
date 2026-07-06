@@ -73,7 +73,9 @@
                         ref="editorRef"
                         :image_prop="getSectorImage()"
                         :json_prop="pitch_json_prop"
+                        :json_meta="pitch_json_meta_prop"
                         :related_jsons="related_jsons"
+                        :related_jsons_meta="related_jsons_meta"
                         :route_name="'Pitch ' + pitch_id_prop"
                         @canvas_data="handleCanvasData"
                     />
@@ -92,6 +94,7 @@ export default {
         pitch_id_prop:        { default: null },
         sector_id_prop:       { default: '' },
         pitch_json_prop:      { default: null },
+        pitch_json_meta_prop: { type: Object, default: () => null },
         sector_image_id_prop: { default: '' },
     },
     emits: ['update:pitch_json_prop', 'update:sector_image_id_prop'],
@@ -101,6 +104,7 @@ export default {
             sector_images: [],
             images_tab_num: '',
             related_jsons: [],
+            related_jsons_meta: [],
             drawing_saving: false,
             drawing_deleting: false,
             drawing_save_status: null,
@@ -153,8 +157,28 @@ export default {
             axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', {
                 params: { sector_image_id: sectorImageId, exclude_pitch_id: this.pitch_id_prop }
             })
-                .then(response => { this.related_jsons = response.data; })
+                .then(response => {
+                    const items = response.data || [];
+                    this.related_jsons = items.map(i => i.json);
+                    this.related_jsons_meta = items;
+                })
                 .catch(() => {});
+        },
+
+        // The background photo's own actual position + size within the Paper.js
+        // view — needed so the editor can rescale saved strokes onto the current
+        // background fit next time this pitch is reopened in a differently-sized
+        // container (mirrors CanvasRouteEditorComponent.vue's bgBoundsPayload).
+        bgBoundsPayload(canvasContainer) {
+            const bounds = canvasContainer && typeof canvasContainer.getBackgroundBounds === 'function'
+                ? canvasContainer.getBackgroundBounds()
+                : null;
+            return {
+                bg_left:   bounds ? bounds.left   : null,
+                bg_top:    bounds ? bounds.top    : null,
+                bg_width:  bounds ? bounds.width  : null,
+                bg_height: bounds ? bounds.height : null,
+            };
         },
 
         captureAllDrawingStrokes(canvasContainer) {
@@ -211,27 +235,37 @@ export default {
             return dataUrl;
         },
 
+        // Renders at the PHOTO's own native resolution, not the browser's current
+        // on-screen canvas size — otherwise every save silently downscales the sector
+        // image to whatever width the editor happened to be rendered at.
         compositeImages(bgPath, drawingDataUrl, paperCanvas) {
             return new Promise((resolve) => {
-                const w = paperCanvas.width;
-                const h = paperCanvas.height;
-                const offscreen = document.createElement('canvas');
-                offscreen.width  = w;
-                offscreen.height = h;
-                const ctx = offscreen.getContext('2d');
-
-                const drawStrokes = () => {
-                    if (!drawingDataUrl) { resolve(offscreen.toDataURL('image/jpeg', 0.9)); return; }
+                const drawStrokesThenResolve = (ctx, w, h) => {
+                    if (!drawingDataUrl) { resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); return; }
                     const si = new Image();
-                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(offscreen.toDataURL('image/jpeg', 0.9)); };
-                    si.onerror = () => resolve(offscreen.toDataURL('image/jpeg', 0.9));
+                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); };
+                    si.onerror = () => resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
                     si.src = drawingDataUrl;
                 };
+                const fallback = () => {
+                    const w = paperCanvas.width, h = paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    drawStrokesThenResolve(offscreen.getContext('2d'), w, h);
+                };
 
-                if (!bgPath) { drawStrokes(); return; }
+                if (!bgPath) { fallback(); return; }
                 const bg = new Image();
-                bg.onload  = () => { ctx.drawImage(bg, 0, 0, w, h); drawStrokes(); };
-                bg.onerror = () => drawStrokes();
+                bg.onload = () => {
+                    const w = bg.naturalWidth  || paperCanvas.width;
+                    const h = bg.naturalHeight || paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    const ctx = offscreen.getContext('2d');
+                    ctx.drawImage(bg, 0, 0, w, h);
+                    drawStrokesThenResolve(ctx, w, h);
+                };
+                bg.onerror = fallback;
                 bg.src = bgPath;
             });
         },
@@ -262,11 +296,18 @@ export default {
                 const editedImageData = await this.compositeImages(bgPath, drawingDataUrl,
                     canvasContainer.$refs.canvasManager.$el);
 
+                const scope = canvasContainer.getCanvasScope();
+                const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
+                const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
+
                 const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
                     pitch_id:        this.pitch_id_prop,
                     sector_image_id: this.images_tab_num,
                     json,
                     edited_image:    editedImageData,
+                    canvas_width:    canvasWidth,
+                    canvas_height:   canvasHeight,
+                    ...this.bgBoundsPayload(canvasContainer),
                 });
 
                 if (response.data.success) {

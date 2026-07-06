@@ -9,12 +9,12 @@
               <img :src="'/images/site_img/loading.gif'" alt="loading">
           </div>
       </div>
-      <div class="social-btns mt-3 px-3" v-show="!is_loading">
+      <div class="social-btns mt-3 px-3" v-show="!is_loading && (social_available.google || social_available.facebook)">
         <div class="d-flex gap-2 justify-content-center">
-          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')">
+          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')" v-if="social_available.google">
             <i class="fa fa-google" aria-hidden="true"></i> Google
           </button>
-          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')">
+          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')" v-if="social_available.facebook">
             <i class="fa fa-facebook" aria-hidden="true"></i> Facebook
           </button>
         </div>
@@ -149,6 +149,11 @@ export default {
         captcha_error: false,
         JSEncryptLoaded: false,
 
+        social_available: {
+          google: false,
+          facebook: false,
+        },
+
         MIX_USER_PAGE_URL: process.env.MIX_USER_PAGE_URL,
         MIX_APP_SSH: process.env.MIX_APP_SSH,
         MIX_BASE_URL_SSH: process.env.MIX_BASE_URL_SSH,
@@ -176,6 +181,12 @@ export default {
       } catch (e) {}
 
       document.body.classList.remove('sidebar-open');
+
+      axios.get('login/status')
+        .then(response => {
+          this.social_available = response.data
+        })
+        .catch(() => {});
 
       if (!window.grecaptcha) {
           const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY

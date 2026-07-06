@@ -64,15 +64,31 @@
             <!-- Save / delete + status -->
             <div class="row mb-2" v-if="selectedRouteId">
                 <div class="col-12 d-flex align-items-center gap-2">
-                    <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : 'Save Drawing' }}
+                    <button
+                        v-if="selectedImageId"
+                        type="button"
+                        class="btn"
+                        :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
+                        :disabled="extra_drawing_loading"
+                        @click="toggleExtraDrawingMode"
+                    >
+                        <i class="fa fa-map-marker"></i>
+                        {{ extra_drawing_loading ? 'Loading…' : (extra_drawing_mode ? 'Extra Drawing Mode: ON' : 'Add Extra Drawing') }}
                     </button>
-                    <button class="btn btn-danger" :disabled="deleting || !drawingsByRoute[selectedRouteId]" @click="deleteDrawing">
-                        <i class="fa fa-trash"></i> {{ deleting ? 'Deleting…' : 'Delete Drawing' }}
+                    <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
+                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : (extra_drawing_mode ? 'Save Extra Drawing' : 'Save Drawing') }}
+                    </button>
+                    <button class="btn btn-danger" :disabled="deleting || !canDeleteCurrent" @click="deleteDrawing">
+                        <i class="fa fa-trash"></i> {{ deleting ? 'Deleting…' : (extra_drawing_mode ? 'Delete Extra Drawing' : 'Delete Drawing') }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'error' ? 'text-danger' : 'text-success'">
                         {{ saveStatus === 'ok' ? '✓ Saved' : saveStatus === 'deleted' ? '✓ Deleted' : '✗ Error' }}
                     </span>
+                </div>
+                <div class="col-12" v-if="extra_drawing_mode">
+                    <p class="text-muted mt-1 mb-0" style="font-size:12px;">
+                        Extra drawing mode: this layer isn't tied to a route — use it for general info (approach notes, hazards, landmarks) on this image. Click the button again to go back to editing this route's own drawing.
+                    </p>
                 </div>
             </div>
 
@@ -83,9 +99,11 @@
                         v-if="imageUrl"
                         ref="editorComponent"
                         :image_prop="imageUrl"
-                        :json_prop="canvasData"
+                        :json_prop="activeJsonProp"
+                        :json_meta="activeJsonMeta"
                         :related_jsons="relatedJsons"
-                        :route_name="selectedRouteName"
+                        :related_jsons_meta="relatedJsonsMeta"
+                        :route_name="extra_drawing_mode ? 'extra info' : selectedRouteName"
                         @canvas_data="handleCanvasData"
                     />
                     <div v-else class="text-muted p-4 text-center border rounded">Select a background image to start drawing.</div>
@@ -111,7 +129,16 @@ export default {
             selectedRouteId: null,
             selectedImageId: null,
             canvasData: null,
+            canvasJsonMeta: null,
             relatedJsons: [],
+            relatedJsonsMeta: [],
+
+            // "Extra drawing" mode: a general annotation layer tied only to the
+            // sector image (not this route) — mirrors CanvasRouteEditorComponent.
+            extra_drawing_mode: false,
+            extra_drawing_json: null,
+            extra_drawing_meta: null,
+            extra_drawing_loading: false,
 
             saving: false,
             deleting: false,
@@ -122,6 +149,17 @@ export default {
         selectedRouteName() {
             const r = this.routes.find(r => r.id === this.selectedRouteId);
             return r ? r.name : '';
+        },
+        // What the Editor actually shows/edits — the route's own drawing normally,
+        // or the image's general extra-info layer while that mode is toggled on.
+        activeJsonProp() {
+            return this.extra_drawing_mode ? this.extra_drawing_json : this.canvasData;
+        },
+        activeJsonMeta() {
+            return this.extra_drawing_mode ? this.extra_drawing_meta : this.canvasJsonMeta;
+        },
+        canDeleteCurrent() {
+            return this.extra_drawing_mode ? !!this.extra_drawing_json : !!this.drawingsByRoute[this.selectedRouteId];
         },
         selectedImage() {
             return this.sectorImages.find(i => i.id === this.selectedImageId) || null;
@@ -144,7 +182,9 @@ export default {
         // and get saved (duplicated) into the newly selected route.
         selectedRouteId(routeId) {
             this.canvasData = null;
+            this.canvasJsonMeta = null;
             this.relatedJsons = [];
+            this.relatedJsonsMeta = [];
             this.selectedImageId = null;
             this.saveStatus = null;
 
@@ -154,8 +194,12 @@ export default {
             if (existingImageId) this.loadRouteJson(routeId);
         },
         // Manual image pick (route has no drawing yet) — loads the other routes already
-        // drawn on that image as a locked reference layer.
+        // drawn on that image as a locked reference layer. Also resets extra-drawing
+        // state since it's tied to a specific image.
         selectedImageId(imageId) {
+            this.extra_drawing_mode = false;
+            this.extra_drawing_json = null;
+            this.extra_drawing_meta = null;
             if (imageId && !this.drawingsByRoute[this.selectedRouteId]) {
                 this.fetchRelatedJsons(imageId, this.selectedRouteId);
             }
@@ -193,6 +237,13 @@ export default {
                     if (this.selectedRouteId !== routeId) return; // user already switched again
                     const d = response.data || {};
                     this.canvasData = d.json || null;
+                    // The background photo's own position/size within the Paper.js view at
+                    // save time — needed to rescale saved strokes onto the current fit.
+                    this.canvasJsonMeta = {
+                        canvas_width: d.canvas_width, canvas_height: d.canvas_height,
+                        bg_left: d.bg_left, bg_top: d.bg_top,
+                        bg_width: d.bg_width, bg_height: d.bg_height,
+                    };
                     const imageId = d.sector_image_id || null;
                     this.selectedImageId = imageId;
                     if (imageId) this.fetchRelatedJsons(imageId, routeId);
@@ -204,15 +255,70 @@ export default {
             axios.get('/get_route/get_related_routes_jsons', {
                 params: { sector_image_id: sectorImageId, exclude_route_id: excludeRouteId }
             })
-                .then(response => { this.relatedJsons = response.data || []; })
+                .then(response => {
+                    const items = response.data || [];
+                    this.relatedJsons = items.map(i => i.json);
+                    this.relatedJsonsMeta = items;
+                })
                 .catch(() => {});
         },
 
+        // Switches the editor between "this route's drawing" and the image's general
+        // extra-info layer — fetches the extra drawing once per image, lazily.
+        async toggleExtraDrawingMode() {
+            if (!this.extra_drawing_mode && !this.selectedImageId) {
+                alert('Please select a sector image first');
+                return;
+            }
+            if (!this.extra_drawing_mode) {
+                this.extra_drawing_loading = true;
+                try {
+                    const response = await axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + this.selectedImageId);
+                    const drawing = response.data && response.data.extra_drawing;
+                    this.extra_drawing_json = drawing ? drawing.json : null;
+                    this.extra_drawing_meta = drawing ? {
+                        canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
+                        bg_left: drawing.bg_left, bg_top: drawing.bg_top,
+                        bg_width: drawing.bg_width, bg_height: drawing.bg_height,
+                    } : null;
+                } catch (e) {
+                    this.extra_drawing_json = null;
+                    this.extra_drawing_meta = null;
+                } finally {
+                    this.extra_drawing_loading = false;
+                }
+            }
+            this.extra_drawing_mode = !this.extra_drawing_mode;
+        },
+
         handleCanvasData(data) {
-            this.canvasData = data;
+            if (this.extra_drawing_mode) {
+                this.extra_drawing_json = data;
+            } else {
+                this.canvasData = data;
+            }
+        },
+
+        // The background photo's own actual position + size within the Paper.js
+        // view — the editor fits it with a uniform cover-scale, centered, so it
+        // doesn't necessarily start at (0,0) or fill the view exactly. Without
+        // this, every viewer had to assume zero offset, which is exactly what
+        // let saved strokes land in the wrong place once redrawn elsewhere.
+        bgBoundsPayload(canvasContainer) {
+            const bounds = canvasContainer && typeof canvasContainer.getBackgroundBounds === 'function'
+                ? canvasContainer.getBackgroundBounds()
+                : null;
+            return {
+                bg_left:   bounds ? bounds.left   : null,
+                bg_top:    bounds ? bounds.top    : null,
+                bg_width:  bounds ? bounds.width  : null,
+                bg_height: bounds ? bounds.height : null,
+            };
         },
 
         async saveChanges() {
+            if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
+
             if (!this.selectedRouteId) { alert('Select a route first.'); return; }
             if (!this.selectedImageId) { alert('Select a background image first.'); return; }
             if (!this.$refs.editorComponent) { alert('Editor is not ready.'); return; }
@@ -254,6 +360,7 @@ export default {
                     edited_image: editedImageData,
                     canvas_width: canvasWidth,
                     canvas_height: canvasHeight,
+                    ...this.bgBoundsPayload(canvasContainer),
                 });
 
                 if (response.data.success) {
@@ -273,7 +380,87 @@ export default {
             }
         },
 
+        // Extra-drawing-mode counterparts of saveChanges/deleteDrawing above — same
+        // composite-image approach, but targets SectorImageExtraDrawing (keyed only
+        // by sector_image_id) instead of ClimbingRoutesJson (keyed by route_id).
+        async saveExtraDrawing() {
+            if (!this.selectedImageId) { alert('Please select a sector image first'); return; }
+            if (!this.$refs.editorComponent) { alert('Editor is not ready.'); return; }
+
+            this.saving = true;
+            this.saveStatus = null;
+
+            try {
+                const canvasContainer = this.$refs.editorComponent.$refs.canvasContainer;
+
+                let json = this.extra_drawing_json;
+                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
+                    const cleanJson = canvasContainer.getCleanJson();
+                    if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
+                }
+                if (!json) { alert('Draw something on the canvas first.'); this.saving = false; return; }
+
+                const selectedImage = this.selectedImage;
+                const bgPath = selectedImage && selectedImage.has_original
+                    ? '/public/images/sector_img/origin_img/' + selectedImage.image
+                    : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+
+                const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
+                const editedImageData = await this.compositeImages(
+                    bgPath, drawingDataUrl, canvasContainer.$refs.canvasManager.$el
+                );
+
+                const scope = canvasContainer.getCanvasScope();
+                const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
+                const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
+
+                const response = await axios.post('/set_sector/set_sector_image_extra_drawing/save/' + this.selectedImageId, {
+                    json,
+                    edited_image: editedImageData,
+                    canvas_width: canvasWidth,
+                    canvas_height: canvasHeight,
+                    ...this.bgBoundsPayload(canvasContainer),
+                });
+
+                if (response.data.success) {
+                    this.saveStatus = 'ok';
+                    if (selectedImage) selectedImage.has_original = true;
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
+                    setTimeout(() => { this.saveStatus = null; }, 3000);
+                } else {
+                    this.saveStatus = 'error';
+                }
+            } catch (e) {
+                console.error(e);
+                this.saveStatus = 'error';
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        async deleteExtraDrawing() {
+            if (!this.selectedImageId) { alert('No sector image selected'); return; }
+            if (!confirm('Delete the extra drawing for this image? The JSON data will be removed.')) return;
+
+            this.deleting = true;
+            this.saveStatus = null;
+            try {
+                await axios.delete('/set_sector/set_sector_image_extra_drawing/delete/' + this.selectedImageId);
+                this.extra_drawing_json = null;
+                this.extra_drawing_meta = null;
+                this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
+                this.saveStatus = 'deleted';
+                setTimeout(() => { this.saveStatus = null; }, 3000);
+            } catch (e) {
+                console.error(e);
+                this.saveStatus = 'error';
+            } finally {
+                this.deleting = false;
+            }
+        },
+
         async deleteDrawing() {
+            if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
             if (!this.selectedRouteId) return;
             if (!confirm('Delete the drawing for this route? The JSON data will be removed.')) return;
 
@@ -357,28 +544,38 @@ export default {
             return dataUrl;
         },
 
+        // Renders at the PHOTO's own native resolution, not the browser's current
+        // on-screen canvas size — otherwise every save silently downscales the sector
+        // image to whatever width the editor happened to be rendered at.
         compositeImages(bgPath, drawingDataUrl, paperCanvas) {
             return new Promise((resolve) => {
-                const w = paperCanvas.width;
-                const h = paperCanvas.height;
-                const offscreen = document.createElement('canvas');
-                offscreen.width  = w;
-                offscreen.height = h;
-                const ctx = offscreen.getContext('2d');
-
-                const drawStrokes = () => {
-                    if (!drawingDataUrl) { resolve(offscreen.toDataURL('image/jpeg', 0.9)); return; }
+                const drawStrokesThenResolve = (ctx, w, h) => {
+                    if (!drawingDataUrl) { resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); return; }
                     const si = new Image();
-                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(offscreen.toDataURL('image/jpeg', 0.9)); };
-                    si.onerror = () => resolve(offscreen.toDataURL('image/jpeg', 0.9));
+                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); };
+                    si.onerror = () => resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
                     si.src = drawingDataUrl;
                 };
+                const fallback = () => {
+                    const w = paperCanvas.width, h = paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    drawStrokesThenResolve(offscreen.getContext('2d'), w, h);
+                };
 
-                if (!bgPath) { drawStrokes(); return; }
+                if (!bgPath) { fallback(); return; }
 
                 const bg = new Image();
-                bg.onload  = () => { ctx.drawImage(bg, 0, 0, w, h); drawStrokes(); };
-                bg.onerror = () => drawStrokes();
+                bg.onload = () => {
+                    const w = bg.naturalWidth  || paperCanvas.width;
+                    const h = bg.naturalHeight || paperCanvas.height;
+                    const offscreen = document.createElement('canvas');
+                    offscreen.width = w; offscreen.height = h;
+                    const ctx = offscreen.getContext('2d');
+                    ctx.drawImage(bg, 0, 0, w, h);
+                    drawStrokesThenResolve(ctx, w, h);
+                };
+                bg.onerror = fallback;
                 bg.src = bgPath;
             });
         },

@@ -49,6 +49,7 @@
                 :pitch_id_prop="editing_pitch_id"
                 :sector_id_prop="data.sector_id || mtp_sector_id"
                 :pitch_json_prop="data.json ? data.json.json : null"
+                :pitch_json_meta_prop="pitchJsonMeta"
                 :sector_image_id_prop="data.json ? data.json.sector_image_id : null"
                 class="mt-4"
             />
@@ -105,6 +106,20 @@
             }
         },
 
+        computed: {
+            // The background photo's own position/size within the Paper.js view at
+            // save time — needed by the editor to rescale saved strokes onto the
+            // current background fit.
+            pitchJsonMeta() {
+                const j = this.data.json;
+                if (!j) return null;
+                return {
+                    canvas_width: j.canvas_width, canvas_height: j.canvas_height,
+                    bg_left: j.bg_left, bg_top: j.bg_top,
+                    bg_width: j.bg_width, bg_height: j.bg_height,
+                };
+            },
+        },
         methods: {
             show_modal(id) {
                 this.editing_pitch_id = id;

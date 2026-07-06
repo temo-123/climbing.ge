@@ -113,19 +113,31 @@ class RouteController extends Controller
                 $new_route_num = $sector_route_count+1;
             }
 
-            // Save route data (without JSON)
+            // Save route data (without JSON / drawing metadata)
             $routeData = $request->data;
             unset($routeData['route_json']); // Remove JSON from route data
             unset($routeData['sector_image_id']); // Remove sector_image_id from route data
+            unset($routeData['canvas_width'], $routeData['canvas_height'],
+                  $routeData['bg_left'], $routeData['bg_top'], $routeData['bg_width'], $routeData['bg_height']);
 
             $saved = Route::insertGetId($routeData);
 
             // Save JSON data separately if provided
             if(isset($request->data['route_json']) && !empty($request->data['route_json'])) {
+                // canvas_width/canvas_height/bg_* — the background photo's own position/size
+                // within the Paper.js view at save time — mirrors save_route_drawing, so a
+                // route drawn during initial creation rescales correctly later too, same as
+                // one drawn/edited afterward.
                 $jsonData = [
                     'route_id' => $saved,
                     'json' => $request->data['route_json'],
-                    'sector_image_id' => $request->data['sector_image_id']
+                    'sector_image_id' => $request->data['sector_image_id'],
+                    'canvas_width' => $request->data['canvas_width'] ?? null,
+                    'canvas_height' => $request->data['canvas_height'] ?? null,
+                    'bg_left' => $request->data['bg_left'] ?? null,
+                    'bg_top' => $request->data['bg_top'] ?? null,
+                    'bg_width' => $request->data['bg_width'] ?? null,
+                    'bg_height' => $request->data['bg_height'] ?? null,
                 ];
                 RouteJsonController::add_route_json($jsonData);
             }
@@ -213,6 +225,13 @@ class RouteController extends Controller
         $route->sector_image_id = $routeJson ? $routeJson->sector_image_id : null;
         $route->canvas_width = $routeJson ? $routeJson->canvas_width : null;
         $route->canvas_height = $routeJson ? $routeJson->canvas_height : null;
+        // The background photo's own actual position + size within the Paper.js view
+        // at save time — needed by the editor to rescale saved strokes onto whatever
+        // container width the canvas happens to be fit to on this load.
+        $route->bg_left = $routeJson ? $routeJson->bg_left : null;
+        $route->bg_top = $routeJson ? $routeJson->bg_top : null;
+        $route->bg_width = $routeJson ? $routeJson->bg_width : null;
+        $route->bg_height = $routeJson ? $routeJson->bg_height : null;
 
         return $route;
     }
@@ -365,8 +384,18 @@ class RouteController extends Controller
 
         $relatedJsons = $query->with('route')->get();
 
-        // Return only the JSON data
-        return $relatedJsons->pluck('json');
+        return $relatedJsons->map(function($item) {
+            return [
+                'route_id' => $item->route_id,
+                'json' => $item->json,
+                'canvas_width' => $item->canvas_width,
+                'canvas_height' => $item->canvas_height,
+                'bg_left' => $item->bg_left,
+                'bg_top' => $item->bg_top,
+                'bg_width' => $item->bg_width,
+                'bg_height' => $item->bg_height,
+            ];
+        });
     }
 
     public function get_route_jsons_for_sector_image(Request $request)

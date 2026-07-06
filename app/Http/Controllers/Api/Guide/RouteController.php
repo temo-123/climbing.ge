@@ -267,8 +267,21 @@ class RouteController extends Controller
 
         $relatedJsons = $query->with('route')->get();
 
-        // Return only the JSON data
-        return $relatedJsons->pluck('json');
+        // Include canvas_width/canvas_height/bg_* alongside the json so the editor can
+        // rescale each related route's strokes onto the current background fit — the
+        // container width the drawing was made at may differ from the current one.
+        return $relatedJsons->map(function($item) {
+            return [
+                'route_id' => $item->route_id,
+                'json' => $item->json,
+                'canvas_width' => $item->canvas_width,
+                'canvas_height' => $item->canvas_height,
+                'bg_left' => $item->bg_left,
+                'bg_top' => $item->bg_top,
+                'bg_width' => $item->bg_width,
+                'bg_height' => $item->bg_height,
+            ];
+        });
     }
 
     public function get_most_popular_routes($route_type)

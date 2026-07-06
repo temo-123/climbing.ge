@@ -53,6 +53,7 @@
             :sector_image_id_prop="data.sector_image_id"
             :route_id_prop="$route.params.id"
             :route_name_prop="data.name"
+            :json_meta_prop="routeJsonMeta"
             @update:route_json_prop="data.route_json = $event"
             @update:sector_image_id_prop="data.sector_image_id = $event"
         />
@@ -248,6 +249,18 @@
           return 'ice';
         }
         return 'outdoor'; // Default to outdoor
+      },
+      // The background photo's own position/size within the Paper.js view at save
+      // time — needed by the editor to rescale saved strokes onto the current fit.
+      routeJsonMeta() {
+        return {
+          canvas_width: this.data.canvas_width,
+          canvas_height: this.data.canvas_height,
+          bg_left: this.data.bg_left,
+          bg_top: this.data.bg_top,
+          bg_width: this.data.bg_width,
+          bg_height: this.data.bg_height,
+        };
       }
     },
 

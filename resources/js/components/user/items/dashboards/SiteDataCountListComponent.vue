@@ -1,54 +1,43 @@
 <template>
-    <div class="col-md-12" >
+    <div class="site-data-dashboard">
 
-        <h2>Articles</h2>
+        <div class="dashboard-toolbar">
+            <div>
+                <h1 class="dashboard-toolbar__title">Guide overview</h1>
+                <small v-if="last_updated" class="text-muted">Updated {{ last_updated }}</small>
+            </div>
+            <button class="btn btn-outline-primary btn-sm" @click="get_site_counts" :disabled="loading">
+                <i class="fa fa-refresh" :class="{ 'fa-spin': loading }"></i> Refresh
+            </button>
+        </div>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
+        <div v-if="loading && !loaded_once">
+            <skeleton-loader v-for="n in 5" :key="n" />
+        </div>
 
-                    <div class="col-md-6 offset-md-3">
-                        <div class="card-counter card-counter-info primary">
-                            <i class="fa fa-window-maximize" aria-hidden="true"></i>
-                            <span class="count-numbers">{{this.counts['global_articles_count']}}</span>
-                            <span class="count-name">Articles</span>
-                        </div>
+        <template v-else>
+
+            <dashboard_section title="Articles" icon="fa-window-maximize">
+                <div class="row row-cols-1 row-cols-sm-3 g-3 mb-3">
+                    <div class="col">
+                        <stat_card icon="fa-window-maximize" color="primary"
+                            :value="counts['global_articles_count']" label="Total articles" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-language" color="primary"
+                            :value="counts['us_articles_count']" label="English articles" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-language" color="primary"
+                            :value="counts['ka_articles_count']" label="Georgian articles" :loading="loading" />
                     </div>
                 </div>
 
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <div class="card-counter card-counter-info primary">
-                            <i class="fa fa-language" aria-hidden="true"></i>
-                            <span class="count-numbers">{{this.counts['us_articles_count']}}</span>
-                            <span class="count-name">English articles</span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-counter card-counter-info primary">
-                            <i class="fa fa-language" aria-hidden="true"></i>
-                            <span class="count-numbers">{{this.counts['ru_articles_count']}}</span>
-                            <span class="count-name">Russian articles</span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-counter card-counter-info primary">
-                            <i class="fa fa-language" aria-hidden="true"></i>
-                            <span class="count-numbers">{{this.counts['ka_articles_count']}}</span>
-                            <span class="count-name">Georgian articles</span>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="this.counts['us_article_errors']">
+                <div class="alert alert-danger" role="alert" v-if="counts['us_article_errors']">
                     <i class="fa fa-bug" aria-hidden="true"></i>
-                    EN article errors — {{ this.counts['us_article_errors'] }}
-                    <div class="float-right">
-                        <button class="btn btn-warning btn-sm mr-1" @click="show_errors('us')">
+                    EN article errors — {{ counts['us_article_errors'] }}
+                    <div class="float-end">
+                        <button class="btn btn-warning btn-sm me-1" @click="show_errors('us')">
                             <i class="fa fa-eye"></i> View
                         </button>
                         <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
@@ -57,11 +46,11 @@
                     </div>
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="this.counts['ka_article_errors']">
+                <div class="alert alert-danger" role="alert" v-if="counts['ka_article_errors']">
                     <i class="fa fa-bug" aria-hidden="true"></i>
-                    KA article errors — {{ this.counts['ka_article_errors'] }}
-                    <div class="float-right">
-                        <button class="btn btn-warning btn-sm mr-1" @click="show_errors('ka')">
+                    KA article errors — {{ counts['ka_article_errors'] }}
+                    <div class="float-end">
+                        <button class="btn btn-warning btn-sm me-1" @click="show_errors('ka')">
                             <i class="fa fa-eye"></i> View
                         </button>
                         <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
@@ -75,7 +64,7 @@
                     <div class="error-modal">
                         <div class="error-modal-header">
                             <strong>Orphaned {{ error_modal_locale.toUpperCase() }} articles ({{ error_articles.length }})</strong>
-                            <button class="btn btn-xs btn-default" @click="error_modal_open = false"><i class="fa fa-times"></i></button>
+                            <button class="btn btn-sm btn-light" @click="error_modal_open = false"><i class="fa fa-times"></i></button>
                         </div>
                         <div class="error-modal-body">
                             <div v-if="error_modal_loading" class="text-center py-3">
@@ -93,580 +82,262 @@
                                     <tr v-for="a in error_articles" :key="a.id">
                                         <td class="text-muted small">{{ a.id }}</td>
                                         <td>{{ a.title }}</td>
-                                        <td><span class="label label-default">{{ a.locale }}</span></td>
+                                        <td><span class="badge bg-secondary">{{ a.locale }}</span></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'indoor' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-building" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['indoor_gyms']}}</span>
-                                <span class="count-name">Indoor gyms</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Content categories" icon="fa-th-large">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 mb-3">
+                    <div class="col">
+                        <stat_card icon="fa-building" color="primary" :to="{ name: 'articlelist', params: { article_category: 'indoor' } }"
+                            :value="counts['indoor_gyms']" label="Indoor gyms" :loading="loading" />
                     </div>
-
-                    <div class="col-md-4">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'ice' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-snowflake-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['ice_climbing']}}</span>
-                                <span class="count-name">Ice climbing</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-snowflake-o" color="primary" :to="{ name: 'articlelist', params: { article_category: 'ice' } }"
+                            :value="counts['ice_climbing']" label="Ice climbing" :loading="loading" />
                     </div>
-
-                    <div class="col-md-4">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'other' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-bicycle" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['other_antyvity']}}</span>
-                            <span class="count-name">Other activities</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'news' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-newspaper-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['news']}}</span>
-                                <span class="count-name">News</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'tech_tip' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-shield" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['techtip']}}</span>
-                                <span class="count-name">Techtip</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>Shop / Products</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'productsList'}">
-                            <div class="card-counter light">
-                                <i class="fa fa-shopping-bag" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['products']}}</span>
-                                <span class="count-name">Products</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'productsList'}">
-                            <div class="card-counter light">
-                                <i class="fa fa-shopping-basket" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['product_categories']}}</span>
-                                <span class="count-name">Product categories</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>Outdoor climbing</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-window-maximize" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['outdoor_climbing']}}</span>
-                                <span class="count-name">Outdoor climbing</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-map-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['region']}}</span>
-                                <span class="count-name">Spots regions</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>Mountaineering</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-area-chart" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['mountaineering_route']}}</span>
-                                <span class="count-name">Mountaineering climbing routes</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }">
-                            <div class="card-counter primary">
-                                <i class="fa fa-area-chart" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['mount_masives']}}</span>
-                            <span class="count-name">Mount massif</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>Events</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'eventList' }">
-                            <div class="card-counter success">
-                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['active_events_count'] }}</span>
-                                <span class="count-name">Active events</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'eventList' }">
-                            <div class="card-counter success">
-                                <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['completed_events_count'] }}</span>
-                                <span class="count-name">Completed events</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'eventList' }">
-                            <div class="card-counter success">
-                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['active_comprtitions_count'] }}</span>
-                                <span class="count-name">Active competitions</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{ name: 'eventList' }">
-                            <div class="card-counter success">
-                                <i class="fa fa-calendar-minus-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['completed_comprtitions_count'] }}</span>
-                                <span class="count-name">Completed competitions</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <hr>
-        <h2>Climbing spots</h2>
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['sectors_count']}}</span>
-                                <span class="count-name">Sectors</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['routes_count']}}</span>
-                                <span class="count-name">Routes</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['mtp_count']}}</span>
-                            <span class="count-name">Multi-pitch</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['mtp_pitch_count']}}</span>
-                            <span class="count-name">Multi-pitch pitches</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-4">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['sport_climbing_routes_count']}}</span>
-                                <span class="count-name">Sport climbing routes</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-4">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['top_rope_routes_count']}}</span>
-                                <span class="count-name">Top rope routes</span>
-                            </div>
-                        </router-link>
-                    </div>
-
-                    <div class="col-md-4">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['bouldering_routes_count']}}</span>
-                                <span class="count-name">Boulder</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-bicycle" color="primary" :to="{ name: 'articlelist', params: { article_category: 'other' } }"
+                            :value="counts['other_antyvity']" label="Other activities" :loading="loading" />
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['tred_routes_count']}}</span>
-                            <span class="count-name">Trad climbing</span>
-                            </div>
-                        </router-link>
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-newspaper-o" color="primary" :to="{ name: 'articlelist', params: { article_category: 'news' } }"
+                            :value="counts['news']" label="News" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'routeAndSectorList'}">
-                            <div class="card-counter sectors">
-                                <i class="fa fa-heartbeat" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['aid_routes_count']}}</span>
-                                <span class="count-name">Aid</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-shield" color="primary" :to="{ name: 'articlelist', params: { article_category: 'tech_tip' } }"
+                            :value="counts['techtip']" label="Techtip" :loading="loading" />
                     </div>
-
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <hr>
-
-        <h2>Gallery & images</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'multimedia'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['gallery_images']}}</span>
-                            <span class="count-name">Gallery images</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Shop / Products" icon="fa-shopping-bag">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-shopping-bag" color="light" :to="{ name: 'productsList' }"
+                            :value="counts['products']" label="Products" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'multimedia'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-picture-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['index_header_images']}}</span>
-                                <span class="count-name">Index header slider images</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-shopping-basket" color="light" :to="{ name: 'productsList' }"
+                            :value="counts['product_categories']" label="Product categories" :loading="loading" />
                     </div>
-
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-
-
-        <h2>Conflicts (Comments complaints)</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'commentsAndReviewsList'}">
-                            <div class="card-counter danger">
-                                <i class="fa fa-gavel" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['article_comment_complaint_count'] }}</span>
-                                <span class="count-name">Active complaints</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Outdoor climbing" icon="fa-tree">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-window-maximize" color="primary" :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }"
+                            :value="counts['outdoor_climbing']" label="Outdoor climbing" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'commentsAndReviewsList'}">
-                            <div class="card-counter danger">
-                                <i class="fa fa-gavel" aria-hidden="true"></i>
-                                <span class="count-numbers">XXX</span>
-                                <span class="count-name">Completed complaints</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-map-o" color="primary" :to="{ name: 'articlelist', params: { article_category: 'outdoor' } }"
+                            :value="counts['region']" label="Spot regions" :loading="loading" />
                     </div>
-
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <hr>
-
-        <h2>Comments</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'commentsAndReviewsList'}">
-                            <div class="card-counter dark">
-                                <i class="fa fa-comment-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['article_comments_count'] }}</span>
-                                <span class="count-name">Article comments</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Mountaineering" icon="fa-area-chart">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-area-chart" color="primary" :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }"
+                            :value="counts['mountaineering_route']" label="Mountaineering climbing routes" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'commentsAndReviewsList'}">
-                            <div class="card-counter dark">
-                                <i class="fa fa-comment-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['product_comments_count'] }}</span>
-                                <span class="count-name">Product comments</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-area-chart" color="primary" :to="{ name: 'articlelist', params: { article_category: 'mount_route' } }"
+                            :value="counts['mount_masives']" label="Mount massifs" :loading="loading" />
                     </div>
-
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <hr>
-
-        <h2>Users</h2>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6 offset-md-3">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['users']}}</span>
-                            <span class="count-name">Users</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Events & competitions" icon="fa-calendar">
+                <div class="row row-cols-2 row-cols-lg-4 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-calendar-check-o" color="success" :to="{ name: 'eventList' }"
+                            :value="counts['active_events_count']" label="Active events" :loading="loading" />
                     </div>
-
+                    <div class="col">
+                        <stat_card icon="fa-calendar-minus-o" color="success" :to="{ name: 'eventList' }"
+                            :value="counts['completed_events_count']" label="Completed events" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-calendar-check-o" color="success" :to="{ name: 'eventList' }"
+                            :value="counts['active_comprtitions_count']" label="Active competitions" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-calendar-minus-o" color="success" :to="{ name: 'eventList' }"
+                            :value="counts['completed_comprtitions_count']" label="Completed competitions" :loading="loading" />
+                    </div>
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <h2>Social accounts</h2> 
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-facebook" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['google_accounts_count'] }}</span>
-                                <span class="count-name">Google</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Climbing spots" icon="fa-map-marker">
+                <div class="row row-cols-2 row-cols-lg-4 g-3 mb-3">
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['sectors_count']" label="Sectors" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-google" aria-hidden="true"></i>
-                                <span class="count-numbers">{{ this.counts['facebook_accounts_count'] }}</span>
-                                <span class="count-name">Facebook</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['routes_count']" label="Routes" :loading="loading" />
                     </div>
-
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['mtp_count']" label="Multi-pitch" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['mtp_pitch_count']" label="Multi-pitch pitches" :loading="loading" />
+                    </div>
                 </div>
-            </div>
-        </div>
-
-        <h2>Service followers</h2> 
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['guid_follovers']}}</span>
-                            <span class="count-name">Guide followers</span>
-                            </div>
-                        </router-link>
+                <div class="row row-cols-2 row-cols-lg-5 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['sport_climbing_routes_count']" label="Sport climbing" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-user-circle-o" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['shop_follovers']}}</span>
-                            <span class="count-name">Shop followers</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['top_rope_routes_count']" label="Top rope" :loading="loading" />
                     </div>
-
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['bouldering_routes_count']" label="Boulder" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['tred_routes_count']" label="Trad climbing" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-heartbeat" color="sectors" :to="{ name: 'routeAndSectorList' }"
+                            :value="counts['aid_routes_count']" label="Aid" :loading="loading" />
+                    </div>
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
-        <h2>Roles / permissions</h2> 
-
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-key" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['roles']}}</span>
-                            <span class="count-name">Roles</span>
-                            </div>
-                        </router-link>
+            <dashboard_section title="Gallery & images" icon="fa-picture-o">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-picture-o" color="success" :to="{ name: 'multimedia' }"
+                            :value="counts['gallery_images']" label="Gallery images" :loading="loading" />
                     </div>
-
-                    <div class="col-md-6">
-                        <router-link :to="{name: 'usersList'}">
-                            <div class="card-counter success">
-                                <i class="fa fa-key" aria-hidden="true"></i>
-                                <span class="count-numbers">{{this.counts['permissions']}}</span>
-                                <span class="count-name">Permissions</span>
-                            </div>
-                        </router-link>
+                    <div class="col">
+                        <stat_card icon="fa-picture-o" color="success" :to="{ name: 'multimedia' }"
+                            :value="counts['index_header_images']" label="Index header slider images" :loading="loading" />
                     </div>
-
                 </div>
-            </div>
-        </div>
+            </dashboard_section>
 
+            <dashboard_section title="Comments & complaints" icon="fa-comment-o">
+                <div class="row row-cols-1 row-cols-sm-3 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-gavel" color="danger" :to="{ name: 'commentsAndReviewsList' }"
+                            :value="counts['article_comment_complaint_count']" label="Comment complaints" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-comment-o" color="dark" :to="{ name: 'commentsAndReviewsList' }"
+                            :value="counts['article_comments_count']" label="Article comments" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-comment-o" color="dark" :to="{ name: 'commentsAndReviewsList' }"
+                            :value="counts['product_comments_count']" label="Product comments" :loading="loading" />
+                    </div>
+                </div>
+            </dashboard_section>
+
+            <dashboard_section title="Users & access" icon="fa-users">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 mb-3">
+                    <div class="col">
+                        <stat_card icon="fa-user-circle-o" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['users']" label="Users" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-user-plus" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['following_users']" label="Following relationships" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-key" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['roles']" label="Roles" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-key" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['permissions']" label="Permissions" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-google" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['google_accounts_count']" label="Google accounts" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-facebook" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['facebook_accounts_count']" label="Facebook accounts" :loading="loading" />
+                    </div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-user-circle-o" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['guid_follovers']" label="Guide followers" :loading="loading" />
+                    </div>
+                    <div class="col">
+                        <stat_card icon="fa-user-circle-o" color="success" :to="{ name: 'usersList' }"
+                            :value="counts['shop_follovers']" label="Shop followers" :loading="loading" />
+                    </div>
+                </div>
+            </dashboard_section>
+
+        </template>
     </div>
 </template>
 
 <script>
+import dashboard_section from './DashboardSectionComponent.vue'
+import stat_card from './StatCardComponent.vue'
+
 export default {
-    data(){
-        return{
-            counts: [],
+    components: { dashboard_section, stat_card },
+    data() {
+        return {
+            counts: {},
+            loading: false,
+            loaded_once: false,
+            last_updated: '',
             error_modal_open: false,
             error_modal_locale: '',
             error_modal_loading: false,
             error_articles: [],
         }
     },
-    mounted(){
+    mounted() {
         this.get_site_counts()
     },
     methods: {
-        get_site_counts(){
+        get_site_counts() {
+            this.loading = true
             axios
-            .get('set_site_data/site_data_counts')
-            .then(response => {
-                this.counts = response.data
-            })
-            .catch(
-                error => console.log(error)
-            );
+                .get('set_site_data/site_data_counts')
+                .then(response => {
+                    this.counts = response.data
+                    this.last_updated = new Date().toLocaleTimeString()
+                })
+                .catch(() => {
+                    this.$bus.$emit('toast', {
+                        type: 'danger',
+                        title: 'Dashboard',
+                        message: 'Failed to load dashboard data.',
+                    })
+                })
+                .finally(() => {
+                    this.loading = false
+                    this.loaded_once = true
+                })
         },
 
-        show_errors(locale){
+        show_errors(locale) {
             this.error_modal_locale = locale
             this.error_modal_open = true
             this.error_modal_loading = true
@@ -677,24 +348,47 @@ export default {
                 .finally(() => { this.error_modal_loading = false })
         },
 
-        fix_article_bug(){
+        fix_article_bug() {
             if (window.confirm('This action will delete all conflicting items! Are you sure?')) {
                 axios
-                .get('set_site_data/fix_article_bugs')
-                .then(response => {
-                    // this.counts = response.data
-                    this.get_site_counts()
-                })
-                .catch(
-                    error => console.log(error)
-                );
+                    .get('set_site_data/fix_article_bugs')
+                    .then(response => {
+                        this.$bus.$emit('toast', {
+                            type: 'success',
+                            title: 'Article bugs fixed',
+                            message: `Deleted ${response.data.us_deleted} EN and ${response.data.ka_deleted} KA orphaned articles.`,
+                        })
+                        this.get_site_counts()
+                    })
+                    .catch(() => {
+                        this.$bus.$emit('toast', {
+                            type: 'danger',
+                            title: 'Dashboard',
+                            message: 'Failed to fix article bugs.',
+                        })
+                    })
             }
         }
     }
 }
 </script>
 
-<style>
+<style scoped>
+.dashboard-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-bottom: 1.25rem;
+}
+
+.dashboard-toolbar__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0;
+}
+
 .error-modal-backdrop {
     position: fixed;
     inset: 0;
@@ -725,95 +419,4 @@ export default {
     overflow-y: auto;
     padding: 0;
 }
-
-.card-counter{
-    position: relative;
-    box-shadow: 2px 2px 10px #DADADA;
-    margin: 5px;
-    padding: 20px 10px;
-    background-color: #fff;
-    height: 100px;
-    border-radius: 5px;
-    transition: .3s linear all;
-    cursor: pointer;
-  }
-
-  .card-counter:hover{
-    box-shadow: 4px 4px 20px #DADADA;
-    transition: .3s linear all;
-  }
-
-  .card-counter.card-counter-info{
-    cursor: default;
-    opacity: 0.85;
-  }
-
-  .card-counter.card-counter-info:hover{
-    box-shadow: 2px 2px 10px #DADADA;
-  }
-
-  .card-counter.primary{
-    background-color: #007bff;
-    color: #FFF;
-  }
-  .card-counter.secondary{
-    background-color: #6c757d;
-    color: #FFF;
-  } 
-  
-  .card-counter.light{
-    background-color: #a0a1a1;
-    color: #FFF;
-  }  
-  .card-counter.danger{
-    background-color: #ef5350;
-    color: #FFF;
-  }  
-
-  .card-counter.success{
-    background-color: #66bb6a;
-    color: #FFF;
-  }  
-  .card-counter.sectors{
-    background-color: #279fbb;
-    color: #FFF;
-  } 
-  .card-counter.warning{
-    background-color: #ffc107;
-    color: #FFF;
-  }  
-
-  .card-counter.info{
-    background-color: #26c6da;
-    color: #FFF;
-  }  
-
-  .card-counter.dark{
-    background-color: #343a40;
-    color: #FFF;
-  } 
-
-  .card-counter i{
-    font-size: 5em;
-    opacity: 0.2;
-  }
-
-  .card-counter .count-numbers{
-    position: absolute;
-    right: 35px;
-    top: 20px;
-    font-size: 32px;
-    display: block;
-  }
-
-  .card-counter .count-name{
-    position: absolute;
-    right: 35px;
-    top: 65px;
-    font-style: italic;
-    text-transform: capitalize;
-    opacity: 0.5;
-    display: block;
-    font-size: 18px;
-  }
 </style>

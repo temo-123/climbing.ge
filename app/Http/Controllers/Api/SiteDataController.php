@@ -33,6 +33,8 @@ use App\Models\User\Permission;
 use App\Models\Shop\Product;
 use App\Models\Shop\Product_category;
 
+use App\Models\Social_account;
+
 use App\Models\User\Service_follower;
 use App\Models\Guide\Article_comment_complaint;
 
@@ -63,10 +65,10 @@ class SiteDataController extends Controller
         $counts['news'] = Article::where("category", "=", 'news')->count();
         $counts['techtip'] = Article::where("category", "=", 'techtip')->count();
 
-        $counts['active_events_count'] = Event::where("category", "=", 'event')->count();
-        $counts['completed_events_count'] = Event::where("category", "=", 'event')->count();
-        $counts['active_comprtitions_count'] = Event::where("category", "=", "competition")->count();
-        $counts['completed_comprtitions_count'] = Event::where("category", "=", "competition")->count();
+        $counts['active_events_count'] = Event::where("category", "=", 'event')->where('end_data', '>=', now())->count();
+        $counts['completed_events_count'] = Event::where("category", "=", 'event')->where('end_data', '<', now())->count();
+        $counts['active_comprtitions_count'] = Event::where("category", "=", "competition")->where('end_data', '>=', now())->count();
+        $counts['completed_comprtitions_count'] = Event::where("category", "=", "competition")->where('end_data', '<', now())->count();
 
         $counts['region'] = Region::count();
 
@@ -74,10 +76,6 @@ class SiteDataController extends Controller
         $counts['ka_articles_count'] = Locale_article::where("locale", "=", 'ka')->count();
         // $counts['ru_articles_count'] = Locale_article::where("locale", "=", 'ru')->count();
         $counts['us_articles_count'] = Locale_article::where("locale", "=", 'us')->count();
-
-        $counts['us_articles_errors_count'] = 1;
-        $counts['ka_articles_errors_count'] = 0;
-        // $counts['ru_articles_errors_count'] = 0;
 
         $counts['bouldering_routes_count'] = Route::where("category", "=", 'bouldering')->count();
         $counts['sport_climbing_routes_count'] = Route::where("category", "=", 'sport')->count();
@@ -102,8 +100,8 @@ class SiteDataController extends Controller
         $counts['guid_follovers'] = Service_follower::where("service", "=", 'guide')->count();
         $counts['shop_follovers'] = Service_follower::where("service", "=", 'shop')->count();
         
-        $counts['google_accounts_count'] = 0;
-        $counts['facebook_accounts_count'] = 0;
+        $counts['google_accounts_count'] = Social_account::where('provider', 'google')->count();
+        $counts['facebook_accounts_count'] = Social_account::where('provider', 'facebook')->count();
 
         $counts['roles'] = Role::count();
         $counts['permissions'] = Permission::count();
@@ -111,58 +109,39 @@ class SiteDataController extends Controller
         $counts['products'] = Product::count();
         $counts['product_categories'] = Product_category::count();
 
-        $conflict_us_articles = array();
-        $conflict_ka_articles = array();
-        // $conflict_ru_articles = array();
+        $counts['us_article_errors'] = $this->getOrphanedLocaleArticles('us')->count();
+        $counts['ka_article_errors'] = $this->getOrphanedLocaleArticles('ka')->count();
 
-        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_us;
-
-            if (!$active_global_article) {
-                array_push($conflict_us_articles, $active_global_article);
-            }
-        }
-        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ka;
-
-            if (!$active_global_article) {
-                array_push($conflict_ka_articles, $active_global_article);
-            }
-        }
-        // foreach (Locale_article::where("locale", "=", 'ru')->get() as $local_article) {
-        //     $active_global_article = $local_article->global_article_ru;
-
-        //     if (!$active_global_article) {
-        //         array_push($conflict_ru_articles, $active_global_article);
-        //     }
-        // }
-
-        $counts['us_article_errors'] = count($conflict_us_articles);
-        $counts['ka_article_errors'] = count($conflict_ka_articles);
-        // $counts['ru_article_errors'] = count($conflict_ru_articles);
-        
-        // dd(count($post_data),$conflict_ru_articles->count(), $conflict_ru_articles->count(), $conflict_ru_articles->count());
-        
         return $counts;
+    }
+
+    /**
+     * Locale articles ('us'/'ka') whose linked global article is missing.
+     */
+    private function getOrphanedLocaleArticles(string $locale)
+    {
+        $relation = $locale === 'ka' ? 'global_article_ka' : 'global_article_us';
+
+        return Locale_article::where('locale', $locale)
+            ->with($relation)
+            ->get()
+            ->reject(fn ($local_article) => $local_article->{$relation})
+            ->values();
     }
 
     public function fix_article_bugs(Request $request)
     {
-        foreach (Locale_article::where("locale", "=", 'us')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_us;
+        $orphaned_us = $this->getOrphanedLocaleArticles('us');
+        $orphaned_ka = $this->getOrphanedLocaleArticles('ka');
 
-            if (!$active_global_article) {
-                // dd($local_article->global_article_us);
-                $local_article -> delete();
-            }
-        }
-        foreach (Locale_article::where("locale", "=", 'ka')->get() as $local_article) {
-            $active_global_article = $local_article->global_article_ka;
+        Locale_article::destroy($orphaned_us->pluck('id'));
+        Locale_article::destroy($orphaned_ka->pluck('id'));
 
-            if (!$active_global_article) {
-                $local_article -> delete();
-            }
-        }
+        return response()->json([
+            'message' => 'Article bugs fixed successfully',
+            'us_deleted' => $orphaned_us->count(),
+            'ka_deleted' => $orphaned_ka->count(),
+        ]);
     }
 
     public function get_article_errors(Request $request, $locale)
@@ -172,20 +151,11 @@ class SiteDataController extends Controller
             return response()->json([], 400);
         }
 
-        $errors = [];
-        foreach (Locale_article::where('locale', $locale)->get() as $local_article) {
-            $global = $locale === 'us'
-                ? $local_article->global_article_us
-                : $local_article->global_article_ka;
-
-            if (!$global) {
-                $errors[] = [
-                    'id'    => $local_article->id,
-                    'title' => $local_article->title ?: '(no title)',
-                    'locale' => $locale,
-                ];
-            }
-        }
+        $errors = $this->getOrphanedLocaleArticles($locale)->map(fn ($local_article) => [
+            'id'    => $local_article->id,
+            'title' => $local_article->title ?: '(no title)',
+            'locale' => $locale,
+        ]);
 
         return response()->json($errors);
     }
@@ -194,45 +164,11 @@ class SiteDataController extends Controller
         return SiteDataService::getSiteData()['global_data'] ?? null;
     }
 
-    public function edit_site_data(Request $request)
-    {
-        $data = [];
-
-        if ($request->has('site_global_info')) {
-            $data['global_data'] = $request->site_global_info;
-        }
-
-        $locales = ['ka', 'us'];
-        foreach ($locales as $locale) {
-            if ($request->has('site_' . $locale . '_info')) {
-                $data['locale_data'] = $request->get('site_' . $locale . '_info');
-                SiteDataService::updateSiteData($data, $locale);
-            }
-        }
-
-        return response()->json(['message' => 'Site data updated successfully']);
-    }
-
     public function edit_site_global_data(Request $request){
         $data = ['global_data' => $request->site_global_info];
-        dd($data);
-        SiteDataService::updateSiteData($data);
-        // return response()->json(['message' => 'Global site data updated successfully']);
-    }
-    public function edit_site_ka_data(Request $request){
-        $data = ['locale_data' => $request->get('site_ka_info')];
-        SiteDataService::updateSiteData($data, 'ka');
-        // return response()->json(['message' => 'KA site data updated successfully']);
-    }
-    // public function edit_site_ru_data(Request $request){
-    //     $data = ['locale_data' => $request->get('site_ru_info')];
-    //     SiteDataService::updateSiteData($data, 'ru');
-    //     return response()->json(['message' => 'RU site data updated successfully']);
-    // }
-    public function edit_site_us_data(Request $request){
-        $data = ['locale_data' => $request->get('site_us_info')];
-        SiteDataService::updateSiteData($data, 'us');
-        // return response()->json(['message' => 'US site data updated successfully']);
+        SiteDataService::updateSiteGlobalData($data);
+
+        return response()->json(['message' => 'Global site data updated successfully']);
     }
 
     function get_site_locale_data_for_site(Request $request, $lang) {
@@ -271,90 +207,10 @@ class SiteDataController extends Controller
         ];
 
         // Get the actual column name, default to 'us_data' for unknown locales
-        $columnName = $localeMap[$lang] ?? ($lang . '_data');
-
-        // Check if the column exists to avoid SQL errors
-        $schema = \Illuminate\Support\Facades\Schema::getColumnListing('locale_sites');
-        if (!in_array($columnName, $schema)) {
-            $columnName = 'us_data'; // Fallback to us_data
-        }
+        // (locale_sites only ever has ka_data/us_data columns, so no schema lookup is needed)
+        $columnName = $localeMap[$lang] ?? 'us_data';
 
         return Locale_site::select('id', 'slug', $columnName)->get();
-    }
-
-    private function edit_locale_data_by_locale($request, $locale)
-    {
-        $localeData = $request->get('site_' . $locale . '_info');
-
-        if ($localeData) {
-            foreach ($localeData as $slug => $value) {
-                $record = Locale_site::where('slug', $slug)->first();
-                if ($record) {
-                    $record->{$locale . '_data'} = $value;
-                    $record->save();
-                }
-            }
-        }
-    }
-
-    public function edit_locale_data($request)
-    {
-        $locales = ['ka', 'us'];
-
-        foreach ($locales as $locale) {
-            $localeData = $request->get('site_' . $locale . '_info');
-
-            if ($localeData) {
-                $localeRecord = Locale_site::where('slug', 'guid_title')->first(); // Assuming all slugs exist, use one to update
-
-                // Update each slug with the corresponding locale data
-                foreach ($localeData as $slug => $value) {
-                    $record = Locale_site::where('slug', $slug)->first();
-                    if ($record) {
-                        $record->{$locale . '_data'} = $value;
-                        $record->save();
-                    }
-                }
-            }
-        }
-    }
-
-    public function edit_global_data($request, $model)
-    {
-        $model['map'] = $request->site_global_info["map"];
-        $model['email'] = $request->site_global_info["email"];
-        $model['ad'] = $request->site_global_info["ad"];
-        $model['number'] = $request->site_global_info["number"];
-
-        $model->save();
-    }
-
-    private function validation_local_data()
-    {
-        $validator = Validator::make($data, [
-            'guid_title' => 'max:70',
-            'films_title' => 'max:70',
-            'forum_title' => 'max:70',
-            'shop_title' => 'max:70',
-
-            'guid_short_description' => 'max:190',
-            'films_short_description' => 'max:190',
-            'forum_short_description' => 'max:190',
-            'shop_short_description' => 'max:190',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
-    }
-
-    private function validation_global_data()
-    {
-        $validator = Validator::make($data, [
-            'email' => 'required | string | email',
-        ]);
-        if ($validator->fails()) {
-            return $validator->messages();
-        }
     }
 
     /**

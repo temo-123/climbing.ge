@@ -15,11 +15,11 @@
       </div>
 
       <div v-else>
-        <div class="social-row mb-3 d-flex gap-2 justify-content-center">
-          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')">
+        <div class="social-row mb-3 d-flex gap-2 justify-content-center" v-if="social_available.google || social_available.facebook">
+          <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')" v-if="social_available.google">
             <i class="fa fa-google" aria-hidden="true"></i> Google
           </button>
-          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')">
+          <button type="button" class="btn btn-social btn-facebook-outline" @click="social_login('facebook')" v-if="social_available.facebook">
             <i class="fa fa-facebook" aria-hidden="true"></i> Facebook
           </button>
         </div>
@@ -114,10 +114,20 @@ export default {
             showPassword: false,
             auth_error: '',
             after_login_callback: null,
+
+            social_available: {
+                google: false,
+                facebook: false,
+            },
         };
     },
     async created() {
         try { await loadJSEncrypt(); } catch (e) {}
+        axios.get('login/status')
+            .then(response => {
+                this.social_available = response.data
+            })
+            .catch(() => {});
         this.$bus.$on('open-login-modal', (callback) => {
             this.show_modal(callback || null)
         })

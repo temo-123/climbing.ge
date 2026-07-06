@@ -160,6 +160,16 @@ class MTPPitchController extends Controller
         $sectorImageId = $request->sector_image_id;
         $json          = $request->json;
         $editedImageData = $request->edited_image;
+        // Paper.js view size + the background photo's own position/size within that
+        // view at save time — needed so the editor can rescale saved strokes onto
+        // the current background fit next time this pitch is reopened (mirrors
+        // RouteController::save_route_drawing).
+        $canvasWidth  = $request->canvas_width;
+        $canvasHeight = $request->canvas_height;
+        $bgLeft   = $request->bg_left;
+        $bgTop    = $request->bg_top;
+        $bgWidth  = $request->bg_width;
+        $bgHeight = $request->bg_height;
 
         if (!$pitchId || !$sectorImageId || !$json) {
             return response()->json(['error' => 'pitch_id, sector_image_id and json are required'], 422);
@@ -188,15 +198,22 @@ class MTPPitchController extends Controller
             file_put_contents($editedPath, base64_decode($imageData));
         }
 
+        $attrs = [
+            'json' => $json,
+            'sector_image_id' => $sectorImageId,
+            'canvas_width' => $canvasWidth,
+            'canvas_height' => $canvasHeight,
+            'bg_left' => $bgLeft,
+            'bg_top' => $bgTop,
+            'bg_width' => $bgWidth,
+            'bg_height' => $bgHeight,
+        ];
+
         $existing = MtpPitchJson::where('mtp_pitch_id', $pitchId)->first();
         if ($existing) {
-            $existing->update(['json' => $json, 'sector_image_id' => $sectorImageId]);
+            $existing->update($attrs);
         } else {
-            MtpPitchJson::create([
-                'mtp_pitch_id'   => $pitchId,
-                'sector_image_id' => $sectorImageId,
-                'json'            => $json,
-            ]);
+            MtpPitchJson::create(array_merge(['mtp_pitch_id' => $pitchId], $attrs));
         }
 
         return response()->json(['success' => true, 'filename' => $filename]);
@@ -225,7 +242,20 @@ class MTPPitchController extends Controller
             $query->where('mtp_pitch_id', '!=', $excludePitchId);
         }
 
-        return $query->with('pitch')->get()->pluck('json');
+        // Include canvas_width/canvas_height/bg_* alongside the json so the editor can
+        // rescale each related pitch's strokes onto the current background fit.
+        return $query->with('pitch')->get()->map(function($item) {
+            return [
+                'mtp_pitch_id' => $item->mtp_pitch_id,
+                'json' => $item->json,
+                'canvas_width' => $item->canvas_width,
+                'canvas_height' => $item->canvas_height,
+                'bg_left' => $item->bg_left,
+                'bg_top' => $item->bg_top,
+                'bg_width' => $item->bg_width,
+                'bg_height' => $item->bg_height,
+            ];
+        });
     }
 
     public function pitch_validate($request)

@@ -16,6 +16,27 @@ use App\Models\User;
 
 class SocialController extends Controller
 {
+    public function status()
+    {
+        return response()->json([
+            'google' => $this->isProviderConfigured('google'),
+            'facebook' => $this->isProviderConfigured('facebook'),
+        ]);
+    }
+
+    private function isProviderConfigured(string $provider): bool
+    {
+        foreach (['client_id', 'client_secret', 'redirect'] as $key) {
+            $value = trim((string) config("services.$provider.$key"));
+
+            if ($value === '' || $value === '...') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function redirect($provider)
     {
         try {

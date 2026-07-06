@@ -748,8 +748,54 @@ export default {
                 .forEach(l => l.insertBelow(mainLayer));
         },
 
+        // Rescales/translates freshly-imported Paper.js layers from the coordinate
+        // space they were saved in (meta.bg_*) into the CURRENT background raster's
+        // fit (see loadBackgroundRaster/getBackgroundBounds). Without this, strokes
+        // saved while the canvas container was one width render mis-scaled/offset
+        // once the background is re-fit to a different width (e.g. editing inside a
+        // modal vs. the dedicated full-width drawing page).
+        _rescaleToCurrentBackground(layers, meta) {
+            if (!meta || !layers || !layers.length) return;
+            const current = this.getBackgroundBounds ? this.getBackgroundBounds() : null;
+            if (!current) return;
+
+            let oldW = meta.bg_width, oldH = meta.bg_height;
+            let oldL = meta.bg_left,  oldT = meta.bg_top;
+            if (!oldW || !oldH || oldL == null || oldT == null) {
+                // Legacy rows saved before bg_* tracking existed only recorded the raw
+                // view size — fall back to it, assuming zero offset. This matches every
+                // row that DOES have bg_* recorded (bg_left/bg_top are always 0 there),
+                // since loadBackgroundRaster locks the view's aspect ratio to the image's,
+                // so the background always ends up filling the view edge-to-edge in
+                // practice. Same fallback tier CanvasJsonDataShowComponent already uses.
+                if (meta.canvas_width && meta.canvas_height) {
+                    oldW = meta.canvas_width;
+                    oldH = meta.canvas_height;
+                    oldL = 0;
+                    oldT = 0;
+                } else {
+                    return;
+                }
+            }
+
+            const sx = current.width  / oldW;
+            const sy = current.height / oldH;
+            if (!isFinite(sx) || !isFinite(sy) || sx <= 0 || sy <= 0) return;
+
+            // Already fit the same way at save and load time — skip to avoid float drift.
+            if (Math.abs(sx - 1) < 0.001 && Math.abs(sy - 1) < 0.001 &&
+                Math.abs(current.left - oldL) < 0.5 && Math.abs(current.top - oldT) < 0.5) {
+                return;
+            }
+
+            const tx = current.left - oldL * sx;
+            const ty = current.top  - oldT * sy;
+            const matrix = new paper.Matrix(sx, 0, 0, sy, tx, ty);
+            layers.forEach(l => { if (l.name !== 'background') l.transform(matrix); });
+        },
+
         // ── JSON import ───────────────────────────────────────────────────────
-        importJsonData(jsonData) {
+        importJsonData(jsonData, meta) {
             if (!jsonData || !this.scope) return;
             try {
                 let parsedData = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
@@ -761,7 +807,10 @@ export default {
                 const related = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
                 related.forEach(l => l.remove());
 
+                const beforeCount = this.scope.project.layers.length;
                 this.scope.project.importJSON(parsedData);
+                const importedLayers = this.scope.project.layers.slice(beforeCount);
+                this._rescaleToCurrentBackground(importedLayers, meta !== undefined ? meta : this.jsonMeta);
 
                 this.scope.project.layers
                     .filter(l => !l.name || (!l.name.startsWith('related-') && l.name !== 'background'))
@@ -794,6 +843,8 @@ export default {
                     const before = this.scope.project.layers.length;
                     this.scope.project.importJSON(parsedData);
                     const newLayers = this.scope.project.layers.slice(before);
+                    const meta = (this.relatedJsonsMeta && this.relatedJsonsMeta[index]) || null;
+                    this._rescaleToCurrentBackground(newLayers, meta);
                     const color = colors[index % colors.length];
 
                     newLayers.forEach(layer => {
