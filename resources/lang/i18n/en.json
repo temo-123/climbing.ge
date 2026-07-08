@@ -975,7 +975,7 @@
             "lng_placeholder": "e.g. 44.0942",
             "getting_location": "Getting your location...",
             "location_detected_prefix": "Location detected:",
-            "altitude_not_available_hint": "Altitude not available from your device — you can enter it manually.",
+            "altitude_not_available_hint": "Altitude not available from your device — leave blank to estimate it automatically, or enter it manually.",
             "click_use_my_location_hint": "Click \"Use My Location\" tab to detect your current position.",
             "save_coordinates_btn": "Save Coordinates",
             "geolocation_not_supported": "Geolocation is not supported by your browser.",

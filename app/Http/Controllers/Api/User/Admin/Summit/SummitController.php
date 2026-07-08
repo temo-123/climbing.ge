@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User\Admin\Summit;
 
 use App\Http\Controllers\Controller;
+use App\Services\ElevationService;
 use App\Services\PermissionService;
 use App\Services\URLTitleService;
 use Illuminate\Http\Request;
@@ -166,6 +167,10 @@ class SummitController extends Controller
         ];
         if ($request->filled('height')) {
             $data['height'] = $request->height;
+        } else {
+            // Device GPS often can't resolve altitude (no vertical fix, WiFi-based
+            // positioning, etc). Fall back to a DEM lookup by coordinates instead.
+            $data['height'] = (new ElevationService())->lookup($request->latitude, $request->longitude) ?? $summit->height;
         }
         $summit->update($data);
 

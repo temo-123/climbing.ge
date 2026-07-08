@@ -393,21 +393,46 @@ export default {
             }
             this.gps_locating = true
             this.gps_location_error = null
-            navigator.geolocation.getCurrentPosition(
+
+            // A single getCurrentPosition() shot frequently returns before the
+            // device's vertical (altitude) fix has stabilized, even outdoors with
+            // a clear sky. Watch for a few seconds instead and keep the best
+            // reading, preferring one that actually includes altitude.
+            let best_pos = null
+            const watch_id = navigator.geolocation.watchPosition(
                 (pos) => {
-                    this.gps_form.latitude  = parseFloat(pos.coords.latitude.toFixed(6))
-                    this.gps_form.longitude = parseFloat(pos.coords.longitude.toFixed(6))
-                    if (pos.coords.altitude !== null && pos.coords.altitude !== undefined) {
-                        this.gps_form.height = Math.round(pos.coords.altitude)
+                    const has_altitude = pos.coords.altitude !== null && pos.coords.altitude !== undefined
+                    if (!best_pos || (has_altitude && (best_pos.coords.altitude === null || best_pos.coords.altitude === undefined))) {
+                        best_pos = pos
                     }
-                    this.gps_locating = false
+                    if (has_altitude) {
+                        finish()
+                    }
                 },
                 (err) => {
-                    this.gps_location_error = this.$t('admin.summits.could_not_get_location_prefix') + ' ' + err.message
-                    this.gps_locating = false
+                    if (!best_pos) {
+                        this.gps_location_error = this.$t('admin.summits.could_not_get_location_prefix') + ' ' + err.message
+                        this.gps_locating = false
+                        navigator.geolocation.clearWatch(watch_id)
+                    }
                 },
-                { enableHighAccuracy: true, timeout: 10000 }
+                { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             )
+
+            const timeout_id = setTimeout(finish, 7000)
+
+            const finish = () => {
+                clearTimeout(timeout_id)
+                navigator.geolocation.clearWatch(watch_id)
+                if (best_pos) {
+                    this.gps_form.latitude  = parseFloat(best_pos.coords.latitude.toFixed(6))
+                    this.gps_form.longitude = parseFloat(best_pos.coords.longitude.toFixed(6))
+                    if (best_pos.coords.altitude !== null && best_pos.coords.altitude !== undefined) {
+                        this.gps_form.height = Math.round(best_pos.coords.altitude)
+                    }
+                }
+                this.gps_locating = false
+            }
         },
 
         save_coordinates() {
