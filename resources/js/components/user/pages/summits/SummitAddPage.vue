@@ -82,10 +82,10 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="publishedSwitch" v-model="form.published" />
-                        <label class="custom-control-label" for="publishedSwitch">{{ $t('admin.common.published') }}</label>
-                    </div>
+                    <published_item
+                        :published_prop="form.published"
+                        @item_data="form.published = $event"
+                    />
                 </div>
 
             </div>
@@ -127,10 +127,11 @@
 <script>
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
+import published_item from '../../items/form/parts/PublishedValueComponent.vue'
 
 export default {
     name: 'SummitAddPage',
-    components: { breadcrumb, single_image_add },
+    components: { breadcrumb, single_image_add, published_item },
     data() {
         return {
             tab_num: 1,
@@ -144,7 +145,7 @@ export default {
                 latitude: null,
                 longitude: null,
                 mount_id: null,
-                published: false,
+                published: 0,
                 image: null,
             },
             mounts: [],
@@ -175,7 +176,7 @@ export default {
             formData.append('latitude', this.form.latitude ?? '')
             formData.append('longitude', this.form.longitude ?? '')
             formData.append('mount_id', this.form.mount_id ?? '')
-            formData.append('published', this.form.published ? 1 : 0)
+            formData.append('published', this.form.published)
             if (this.form.image) formData.append('image', this.form.image)
 
             axios.post('set_summit/store', formData, { headers: { 'Content-Type': 'multipart/form-data' } })

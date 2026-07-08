@@ -24,7 +24,7 @@ class Summit extends Model
     ];
 
     protected $casts = [
-        'published'  => 'boolean',
+        'published'  => 'integer',
         'latitude'   => 'float',
         'longitude'  => 'float',
         'height'     => 'integer',

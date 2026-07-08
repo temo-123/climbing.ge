@@ -87,10 +87,10 @@
                 </div>
 
                 <div class="form-group">
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="publishedSwitch" v-model="form.published" />
-                        <label class="custom-control-label" for="publishedSwitch">{{ $t('admin.common.published') }}</label>
-                    </div>
+                    <published_item
+                        :published_prop="form.published"
+                        @item_data="form.published = $event"
+                    />
                 </div>
 
             </div>
@@ -167,10 +167,11 @@
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import SummitRoutesRelationTab from './SummitRoutesRelationTab.vue'
 import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
+import published_item from '../../items/form/parts/PublishedValueComponent.vue'
 
 export default {
     name: 'SummitEditPage',
-    components: { breadcrumb, SummitRoutesRelationTab, single_image_edit },
+    components: { breadcrumb, SummitRoutesRelationTab, single_image_edit, published_item },
     data() {
         return {
             tab_num: 1,
@@ -185,7 +186,7 @@ export default {
                 latitude: null,
                 longitude: null,
                 mount_id: null,
-                published: false,
+                published: 0,
                 image: null,
                 url_title: '',
             },
@@ -233,7 +234,7 @@ export default {
                         this.form.latitude       = summit.latitude       || null
                         this.form.longitude      = summit.longitude      || null
                         this.form.mount_id       = summit.mount_id       || null
-                        this.form.published      = !!summit.published
+                        this.form.published      = summit.published ?? 0
                         this.form.url_title      = summit.url_title      || ''
                         this.currentImage        = summit.image          || null
                     }
@@ -254,7 +255,7 @@ export default {
             formData.append('latitude', this.form.latitude ?? '')
             formData.append('longitude', this.form.longitude ?? '')
             formData.append('mount_id', this.form.mount_id ?? '')
-            formData.append('published', this.form.published ? 1 : 0)
+            formData.append('published', this.form.published)
             if (this.form.image) formData.append('image', this.form.image)
             if (this.is_change_url_title) {
                 formData.append('is_change_url_title', 1)

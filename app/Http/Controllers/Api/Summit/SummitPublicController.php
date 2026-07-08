@@ -17,9 +17,7 @@ class SummitPublicController extends Controller
 {
     public function index()
     {
-        $summits = Summit::where('published', true)
-            ->whereNotNull('latitude')
-            ->whereNotNull('longitude')
+        $summits = Summit::where('published', 1)
             ->orderBy('title')
             ->get()
             ->map(function ($summit) {
@@ -40,7 +38,7 @@ class SummitPublicController extends Controller
     public function show($url_title)
     {
         $summit = Summit::where('url_title', $url_title)
-            ->where('published', true)
+            ->whereIn('published', [1, 2])
             ->firstOrFail();
 
         return response()->json([
@@ -184,7 +182,7 @@ class SummitPublicController extends Controller
 
     public function get_ascents($url_title)
     {
-        $summit = Summit::where('url_title', $url_title)->where('published', true)->firstOrFail();
+        $summit = Summit::where('url_title', $url_title)->whereIn('published', [1, 2])->firstOrFail();
 
         $ascents = $summit->ascents()
             ->with([

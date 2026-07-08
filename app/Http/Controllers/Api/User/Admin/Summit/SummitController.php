@@ -79,7 +79,7 @@ class SummitController extends Controller
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
             'mount_id'       => 'nullable|integer|exists:mounts,id',
-            'published'      => 'nullable|boolean',
+            'published'      => 'nullable|integer|in:0,1,2',
         ]);
 
         $summit = Summit::create([
@@ -92,7 +92,7 @@ class SummitController extends Controller
             'latitude'       => $request->latitude,
             'longitude'      => $request->longitude,
             'mount_id'       => $request->mount_id,
-            'published'      => $request->published ?? false,
+            'published'      => $request->published ?? 0,
         ]);
 
         if ($request->hasFile('image')) {
@@ -117,7 +117,7 @@ class SummitController extends Controller
             'latitude'            => 'nullable|numeric|between:-90,90',
             'longitude'           => 'nullable|numeric|between:-180,180',
             'mount_id'            => 'nullable|integer|exists:mounts,id',
-            'published'           => 'nullable|boolean',
+            'published'           => 'nullable|integer|in:0,1,2',
             'url_title'           => 'nullable|string|max:255|unique:summits,url_title,' . $id,
         ]);
 

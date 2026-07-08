@@ -15,7 +15,7 @@
 
             <div v-else>
                 <p class="text-muted mb-2 small">
-                    {{ summits.length }} {{ $t('summit.map.summits_on_map') }}
+                    {{ geoSummits.length }} {{ $t('summit.map.summits_on_map') }}
                 </p>
 
                 <l-map
@@ -31,7 +31,7 @@
                     />
 
                     <l-marker
-                        v-for="summit in summits"
+                        v-for="summit in geoSummits"
                         :key="summit.id"
                         :lat-lng="[summit.latitude, summit.longitude]"
                     >
@@ -74,17 +74,20 @@
             }
         },
         computed: {
+            geoSummits() {
+                return this.summits.filter(s => s.latitude != null && s.longitude != null)
+            },
             mapCenter() {
-                if (this.summits.length === 0) return GEORGIA_CENTER
-                const lats = this.summits.map(s => s.latitude)
-                const lngs = this.summits.map(s => s.longitude)
+                if (this.geoSummits.length === 0) return GEORGIA_CENTER
+                const lats = this.geoSummits.map(s => s.latitude)
+                const lngs = this.geoSummits.map(s => s.longitude)
                 return [
                     (Math.min(...lats) + Math.max(...lats)) / 2,
                     (Math.min(...lngs) + Math.max(...lngs)) / 2,
                 ]
             },
             mapZoom() {
-                return this.summits.length > 0 ? 8 : 7
+                return this.geoSummits.length > 0 ? 8 : 7
             }
         },
         mounted() {
