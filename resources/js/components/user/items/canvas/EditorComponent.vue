@@ -43,8 +43,8 @@
         <div class="d-flex flex-wrap align-items-center gap-2 mb-2 px-2 py-1 bg-white border border-top-0 rounded-bottom" style="border-top: 1px solid #dee2e6 !important; border-radius: 0 0 4px 4px !important;">
 
             <!-- Stroke color -->
-            <div class="d-flex align-items-center gap-1" title="Stroke / line color">
-                <span class="small text-muted">Stroke</span>
+            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.stroke_color_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.stroke_label') }}</span>
                 <input type="color" :value="currentStrokeColor"
                        @input="handleColorChange('stroke', $event.target.value)"
                        class="color-swatch-input"
@@ -55,14 +55,14 @@
             <div class="vr"></div>
 
             <!-- Fill color with on/off toggle -->
-            <div class="d-flex align-items-center gap-1" :title="fillEnabled ? 'Fill color (click to disable fill)' : 'Fill disabled (click to enable)'">
-                <span class="small text-muted">Fill</span>
+            <div class="d-flex align-items-center gap-1" :title="fillEnabled ? $t('admin.articles.canvas_editor.fill_color_enabled_tooltip') : $t('admin.articles.canvas_editor.fill_color_disabled_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.fill_label') }}</span>
                 <button type="button"
                         class="btn btn-sm py-0 px-1"
                         :class="fillEnabled ? 'btn-primary' : 'btn-outline-secondary'"
                         style="font-size:10px; line-height:1.6;"
                         @click="toggleFill"
-                        :title="fillEnabled ? 'Disable fill' : 'Enable fill'">
+                        :title="fillEnabled ? $t('admin.articles.canvas_editor.disable_fill_tooltip') : $t('admin.articles.canvas_editor.enable_fill_tooltip')">
                     <i :class="fillEnabled ? 'fa fa-tint' : 'fa fa-tint'" style="opacity: fillEnabled ? 1 : 0.4;"></i>
                 </button>
                 <input type="color" :value="fillColor || '#ffffff'"
@@ -71,14 +71,14 @@
                        class="color-swatch-input"
                        :style="{ width: '28px', height: '24px', opacity: fillEnabled ? 1 : 0.3, cursor: fillEnabled ? 'pointer' : 'default' }">
                 <code v-if="fillEnabled" class="small" style="font-size:10px; color:#555;">{{ fillColor || '#fff' }}</code>
-                <span v-else class="small text-muted" style="font-size:10px; font-style:italic;">off</span>
+                <span v-else class="small text-muted" style="font-size:10px; font-style:italic;">{{ $t('admin.articles.canvas_editor.fill_off_label') }}</span>
             </div>
 
             <div class="vr"></div>
 
             <!-- Stroke width -->
-            <div class="d-flex align-items-center gap-1" title="Stroke / line width in pixels">
-                <span class="small text-muted">Width</span>
+            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.stroke_width_pixels_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.width_label') }}</span>
                 <input type="range" min="1" max="20" :value="strokeWidth"
                        @input="handleStrokeWidthChange(parseInt($event.target.value))"
                        class="form-range" style="width:70px;">
@@ -90,12 +90,12 @@
 
             <!-- Zoom -->
             <div class="d-flex align-items-center gap-1">
-                <span class="small text-muted">Zoom</span>
-                <span class="badge bg-secondary" style="min-width:44px; font-size:11px; cursor:pointer;" @click="handleZoomReset" title="Click to reset zoom">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.zoom_label') }}</span>
+                <span class="badge bg-secondary" style="min-width:44px; font-size:11px; cursor:pointer;" @click="handleZoomReset" :title="$t('admin.articles.canvas_editor.click_to_reset_zoom_tooltip')">
                     {{ Math.round(currentZoom * 100) }}%
                 </span>
                 <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size:10px; line-height:1.6;"
-                        @click="handleZoomReset" title="Reset zoom to fit canvas">
+                        @click="handleZoomReset" :title="$t('admin.articles.canvas_editor.reset_zoom_to_fit_canvas_tooltip')">
                     <i class="fa fa-search"></i>
                 </button>
             </div>
@@ -286,7 +286,7 @@ export default {
         methods: {
             // Toolbar event handlers
             handleReset() {
-                if (confirm('Do you want clear area?')) {
+                if (confirm(this.$t('admin.articles.canvas_editor.confirm_clear_area'))) {
                     this.$refs.canvasContainer.reset();
                 }
             },
@@ -682,8 +682,8 @@ export default {
             },
 
             deleteLayerItem(layer) {
-                const itemType = layer.isGroup ? 'group' : 'item';
-                if (!confirm(`Are you sure you want to delete the ${itemType} "${layer.displayName}"?`)) return;
+                const confirmKey = layer.isGroup ? 'admin.articles.canvas_editor.confirm_delete_group_named' : 'admin.articles.canvas_editor.confirm_delete_item_named';
+                if (!confirm(this.$t(confirmKey, { name: layer.displayName }))) return;
                 const item = this._itemById(layer.id);
                 if (!item) return;
                 // Remove associated text label if this is a rectangle
@@ -718,7 +718,7 @@ export default {
             },
 
             deleteChildItem(layer, child) {
-                if (!confirm(`Are you sure you want to delete "${child.displayName}" from group "${layer.displayName}"?`)) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_delete_child_from_group', { child: child.displayName, group: layer.displayName }))) return;
                 const item = this._itemById(child.id);
                 if (!item) return;
                 if (item.data && item.data.textLabel) item.data.textLabel.remove();
@@ -791,7 +791,7 @@ export default {
             },
 
             createGroupFromLayer(layer) {
-                if (!confirm(`Create a new group containing "${layer.displayName}"?`)) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_create_group', { name: layer.displayName }))) return;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
                 const foundItem = this._itemById(layer.id);
@@ -809,7 +809,7 @@ export default {
             },
 
             ungroupLayer(layer) {
-                if (!confirm(`Ungroup "${layer.displayName}"? All items will become individual layers.`)) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_ungroup', { name: layer.displayName }))) return;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
                 const foundGroup = this._itemById(layer.id);
@@ -849,7 +849,7 @@ export default {
             },
 
             moveChildOutOfGroup(layer, child) {
-                if (!confirm(`Move "${child.displayName}" out of group "${layer.displayName}"?`)) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_move_child_out_of_group', { child: child.displayName, group: layer.displayName }))) return;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
                 const foundChild = this._itemById(child.id);
@@ -862,7 +862,7 @@ export default {
             },
 
             deleteAllLayers() {
-                if (!confirm('Are you sure you want to delete ALL layers? This action cannot be undone.')) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_delete_all_layers'))) return;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
                 scope.project.layers.forEach(layer => {

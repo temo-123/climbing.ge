@@ -1,23 +1,23 @@
 <template>
     <StackModal
         v-model="is_order_status_edit_model"
-        title="Edit order status"
+        :title="$t('admin.orders.edit_order_status_title')"
         @close="is_order_status_edit_model=false"
         @save="edit_order_status"
-        :saveButton="{ visible: true, title: 'Edit status', btnClass: { 'btn btn-primary': true }, onClick: edit_order_status }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :saveButton="{ visible: true, title: $t('admin.orders.edit_status_btn'), btnClass: { 'btn btn-primary': true }, onClick: edit_order_status }"
+        :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
     >
         <div>
-            <h4>Active order status</h4>
+            <h4>{{ $t('admin.orders.active_order_status_title') }}</h4>
 
             <div v-if="!order_status_updating_loader">
                 <div class="p-4">
                     <table class="table table-bordered track_tbl">
                         <thead>
                             <tr>
-                                <th>Status</th>
+                                <th>{{ $t('admin.orders.status_label') }}</th>
                                 <th>|</th>
-                                <th>Updating Date</th>
+                                <th>{{ $t('admin.orders.updating_date_col') }}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -30,20 +30,20 @@
                     </table>
                 </div>
 
-                <h4>Edit order status</h4>
+                <h4>{{ $t('admin.orders.edit_order_status_title') }}</h4>
 
                 <select class="form-control" v-model="selected_order_status">
-                    <option value="Treatment" disabled>Treatment</option>
-                    <option value="Preparation for shipment">Preparation for shipment</option>
-                    <option value="Ready to ship">Ready to ship</option>
-                    <option value="Order has been sent">Order has been sent</option>
-                    <option value="Transferred to the delivery service">Transferred to the delivery service</option>
-                    <option value="Delivered">Delivered</option>
+                    <option value="Treatment" disabled>{{ $t('admin.orders.status_option_treatment') }}</option>
+                    <option value="Preparation for shipment">{{ $t('admin.orders.status_option_preparation_for_shipment') }}</option>
+                    <option value="Ready to ship">{{ $t('admin.orders.status_option_ready_to_ship') }}</option>
+                    <option value="Order has been sent">{{ $t('admin.orders.status_option_order_has_been_sent') }}</option>
+                    <option value="Transferred to the delivery service">{{ $t('admin.orders.status_option_transferred_to_delivery') }}</option>
+                    <option value="Delivered">{{ $t('admin.orders.status_option_delivered') }}</option>
                 </select>
             </div>
             <div v-if="order_status_updating_loader" class="d-flex justify-content-center p-4">
                 <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                    <span class="visually-hidden">{{ $t('admin.export.loading_ellipsis') }}</span>
                 </div>
             </div>
         </div>
@@ -134,7 +134,7 @@ export default {
                     .finally(() => this.order_status_updating_loader = false);
                 }
                 else{
-                    alert('Plees select order status')
+                    alert(this.$t('admin.orders.please_select_order_status'))
                 }
             },
     }

@@ -2,7 +2,7 @@
   <div class="food col-md-4">
         <div class="portfolio-img view view-first">
             <div class="product-image" v-if="mount.global_data.new_flag">
-                <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+                <div class="discount-percent-badge discount-badge-fourty">{{ $t('guide.new_flag_badge') }}</div>
             </div>
                                 
             <site-img v-if="mount.global_data.image != null" :src="'/images/mount_route_img/'+mount.global_data.image" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>

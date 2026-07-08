@@ -2,7 +2,7 @@
     <div class="article_card col-md-4">
         <div class="portfolio-img view view-first">
             <div class="product-image" v-if="article.area.global_data.new_flag">
-                <div class="discount-percent-badge discount-badge-fourty">NEW</div>
+                <div class="discount-percent-badge discount-badge-fourty">{{ $t('guide.new_flag_badge') }}</div>
             </div>
 
             <site-img v-if="article.area.global_data.image" :src=" '/public/' + image_dir+article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>

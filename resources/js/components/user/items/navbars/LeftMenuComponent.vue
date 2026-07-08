@@ -4,7 +4,7 @@
         <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check" class="menu-checkbox">
         
         <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }" style="padding-bottom: 15%;">
-            <header>Menu</header>
+            <header>{{ $t('user.nav.menu_header') }}</header>
 
             <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px; /*padding-bottom: 35%;*/" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
@@ -28,7 +28,7 @@
                 </li>
             </ul>
 
-            <div v-else class="menu-loading">Loading menu...</div>
+            <div v-else class="menu-loading">{{ $t('user.nav.loading_menu') }}</div>
 
         </div>
     </span>

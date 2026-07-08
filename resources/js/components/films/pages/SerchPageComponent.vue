@@ -2,11 +2,11 @@
     <div>
         <div class="container">
 
-            <h1  class='serch_title'>Search films</h1>
+            <h1  class='serch_title'>{{ $t('films.search_films_title') }}</h1>
 
             <div class="row">
                 <div class="col-md-12">
-                    <h2 class="text-center"> The your search query is:"<b> {{ this.$route.query.query }} </b>". Please use only english text for your query!!!</h2>
+                    <h2 class="text-center">{{ $t('films.search_query_notice', { query: this.$route.query.query }) }}</h2>
                     <div v-if="film_search_loading">
                         <skeleton-loader
                             viewBox="0 0"
@@ -18,7 +18,7 @@
                         <hr>
                         <span v-if="films.length == 0">
                             <div class="alert alert-danger" role="alert">
-                                Nothing found! Try again! :)
+                                {{ $t('guide.search_no_result_faild') }}
                             </div>
                         </span>
 
@@ -44,9 +44,9 @@
             </div>
         </div>
 
-        <metaData 
-            :title = "'Climbing films - ' + this.$route.query.query"
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+        <metaData
+            :title = "$t('films.meta_title') + ' - ' + this.$route.query.query"
+            :description = "$t('films.meta_description')"
             :image = "'../../../../public/images/meta_img/films.jpg'"
         />
     </div>

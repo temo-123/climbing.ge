@@ -1,18 +1,18 @@
 <template>
     <StackModal
             v-model="is_show_modal"
-            title="Edit review"
+            :title="$t('admin.comments.edit_review_title')"
             @close="close_modal(route_id)"
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             @save="edit_route_review"
             :cancelButton="{
-                title: 'Close',
+                title: $t('common.close'),
                 btnClass: { 'btn btn-primary': true },
             }"
         >
             <div class="model-body">
-                <div class="container">  
+                <div class="container">
                     <div class="row justify-content-center" v-show="is_loading">
                         <div class="col-md-4">
                             <img :src="'/images/site_img/loading.gif'" alt="loading">
@@ -21,24 +21,24 @@
 
                     <div class="row">
                         <form method="POST" id="route_review_form" v-on:submit.prevent="edit_route_review" v-show="!is_loading" style="width: 100%;">
-                            Did you climb this route?
-                            <input type="checkbox" v-model="data.climbed" name="scales" placeholder="Did you climb this route?" title="Did you climb this route?">
+                            {{ $t('admin.comments.did_you_climb_route_label') }}
+                            <input type="checkbox" v-model="data.climbed" name="scales" :placeholder="$t('admin.comments.did_you_climb_route_label')" :title="$t('admin.comments.did_you_climb_route_label')">
 
                             <div>
-                                <span v-if="data.climbed">Insert climb data</span>
-                                <input type="datetime-local" class="form-control" v-model="data.climbed_data" name="climbed_data" placeholder="Climbed data" title="Climbed data" v-if="data.climbed">
+                                <span v-if="data.climbed">{{ $t('admin.comments.insert_climb_date_label') }}</span>
+                                <input type="datetime-local" class="form-control" v-model="data.climbed_data" name="climbed_data" :placeholder="$t('admin.comments.climbed_date_placeholder')" :title="$t('admin.comments.climbed_date_placeholder')" v-if="data.climbed">
                             </div>
 
                             <div>
-                                <span>How did you like this route?</span>
+                                <span>{{ $t('admin.comments.how_did_you_like_route_label') }}</span>
                                 <span v-if="data.stars > 0"></span>
 
                                 <starReitingInsert :actyve_stars_prop=data.stars @get_stars="update_stars"/>
                             </div>
 
                             <div>
-                                <span>What do you think about this route?</span>
-                                <textarea id="feadback" name="feadback" class="form-control" placeholder="Make feadback" v-model="data.text" rows="4"></textarea>
+                                <span>{{ $t('admin.comments.what_do_you_think_route_label') }}</span>
+                                <textarea id="feadback" name="feadback" class="form-control" :placeholder="$t('admin.comments.make_feedback_placeholder')" v-model="data.text" rows="4"></textarea>
                             </div>
 
                         </form>

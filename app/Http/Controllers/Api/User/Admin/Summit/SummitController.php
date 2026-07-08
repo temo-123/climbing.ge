@@ -12,6 +12,7 @@ use App\Models\Summit\SummitAscent;
 use App\Models\Summit\SummitMountRoute;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
+use App\Models\Guide\Mount;
 use App\Services\Abstract\ImageControllService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Endroid\QrCode\Builder\Builder;
@@ -23,7 +24,12 @@ class SummitController extends Controller
     {
         if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
 
-        $summits = Summit::with(['mountRoutes.article.global_article_us', 'mountRoutes.article.global_article_ka'])
+        $summits = Summit::with([
+                'mountRoutes.article.global_article_us',
+                'mountRoutes.article.global_article_ka',
+                'mount.us_mount',
+                'mount.ka_mount',
+            ])
             ->orderBy('id', 'desc')
             ->get()
             ->map(function ($summit) {
@@ -45,6 +51,8 @@ class SummitController extends Controller
                     'height'           => $summit->height,
                     'latitude'         => $summit->latitude,
                     'longitude'        => $summit->longitude,
+                    'mount_id'         => $summit->mount_id,
+                    'mount_name'       => $summit->mount?->us_mount?->title ?? $summit->mount?->ka_mount?->title,
                     'mount_route_ids'       => $routes->pluck('id'),
                     'mount_route_names'     => $routes->pluck('name'),
                     'mount_routes_display'  => $routes->pluck('name')->implode(', '),
@@ -69,6 +77,7 @@ class SummitController extends Controller
             'height'         => 'nullable|integer|min:0',
             'latitude'       => 'nullable|numeric|between:-90,90',
             'longitude'      => 'nullable|numeric|between:-180,180',
+            'mount_id'       => 'nullable|integer|exists:mounts,id',
             'published'      => 'nullable|boolean',
         ]);
 
@@ -81,6 +90,7 @@ class SummitController extends Controller
             'height'         => $request->height,
             'latitude'       => $request->latitude,
             'longitude'      => $request->longitude,
+            'mount_id'       => $request->mount_id,
             'published'      => $request->published ?? false,
         ]);
 
@@ -105,13 +115,14 @@ class SummitController extends Controller
             'height'              => 'nullable|integer|min:0',
             'latitude'            => 'nullable|numeric|between:-90,90',
             'longitude'           => 'nullable|numeric|between:-180,180',
+            'mount_id'            => 'nullable|integer|exists:mounts,id',
             'published'           => 'nullable|boolean',
             'url_title'           => 'nullable|string|max:255|unique:summits,url_title,' . $id,
         ]);
 
         $data = $request->only([
             'title', 'ka_title', 'description', 'ka_description',
-            'height', 'latitude', 'longitude', 'published'
+            'height', 'latitude', 'longitude', 'mount_id', 'published'
         ]);
 
         if ($request->boolean('is_change_url_title')) {
@@ -144,18 +155,25 @@ class SummitController extends Controller
         $request->validate([
             'latitude'  => 'required|numeric|between:-90,90',
             'longitude' => 'required|numeric|between:-180,180',
+            'height'    => 'nullable|integer|min:0',
         ]);
 
         $summit = Summit::findOrFail($id);
-        $summit->update([
+
+        $data = [
             'latitude'  => $request->latitude,
             'longitude' => $request->longitude,
-        ]);
+        ];
+        if ($request->filled('height')) {
+            $data['height'] = $request->height;
+        }
+        $summit->update($data);
 
         return response()->json([
             'message'   => 'Coordinates updated',
             'latitude'  => $summit->latitude,
             'longitude' => $summit->longitude,
+            'height'    => $summit->height,
         ]);
     }
 
@@ -310,6 +328,22 @@ class SummitController extends Controller
             SummitMountRoute::where('article_id', $articleId)->delete();
             SummitMountRoute::create(['summit_id' => $summitId, 'article_id' => $articleId]);
         }
+    }
+
+    public function get_mounts_list()
+    {
+        if ($auth = PermissionService::authorize('summit', 'show')) return $auth;
+
+        $mounts = Mount::with(['us_mount', 'ka_mount'])
+            ->get()
+            ->map(fn($mount) => [
+                'id'   => $mount->id,
+                'name' => $mount->us_mount?->title ?? $mount->ka_mount?->title ?? ('#' . $mount->id),
+            ])
+            ->sortBy('name')
+            ->values();
+
+        return response()->json($mounts);
     }
 
     public function get_summits_list()

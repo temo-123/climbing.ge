@@ -19,9 +19,9 @@
                         <!-- Suggested results banner -->
                         <div v-if="suggested" class="alert alert-warning">
                             <i class="fa fa-lightbulb-o"></i>
-                            {{ $t('guide.search.did_you_mean') }}
+                            {{ $t('common.search.did_you_mean') }}
                             <strong>"{{ best_match }}"</strong>?
-                            {{ $t('guide.search.you_searched') }}
+                            {{ $t('common.search.you_searched') }}
                             <strong>"{{ original_query }}"</strong>.
                         </div>
 
@@ -54,7 +54,7 @@
 
                         <!-- Sectors -->
                         <div v-if="sectors.length > 0" style="margin-top: 30px;">
-                            <h3>{{ $t('guide.search.sectors_title') }}</h3>
+                            <h3>{{ $t('common.sectors') }}</h3>
                             <hr>
                             <div class="row">
                                 <div v-for="sector in sectors" :key="sector.id" class="col-md-4 search-result-card">

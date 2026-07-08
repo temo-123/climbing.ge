@@ -1,24 +1,24 @@
 <template>
     <stack-modal
             :show="is_show_sector_local_image_modal"
-            title="Sector local image info"
+            :title="$t('admin.users.sector_local_image_info_title')"
             @close="close_modal()"
             :modal-class="{ [MTPModalClass]: true }"
             :saveButton="{ visible: true }"
-            :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+            :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }">
             <div>
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
-                            <img :src="'/public/images/sector_local_img/'+sector_sector_local_image_pitchs_for_modal.image.image" alt="Locale sectors image">
+                            <img :src="'/public/images/sector_local_img/'+sector_sector_local_image_pitchs_for_modal.image.image" :alt="$t('admin.users.locale_sectors_image_alt')">
                             <!-- <div class="row"> -->
                                 <div class="col-md-12">
                                     <table class="table table-hover" id="dev-table">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                <th>{{ $t('common.id') }}</th>
                                                 <th>|</th>
-                                                <th>Sector name</th>
+                                                <th>{{ $t('admin.users.sector_name_col') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>

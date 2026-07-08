@@ -18,9 +18,9 @@
         
         <messageComponent />
 
-        <metaData 
-            :title = "'Climbing films'"
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+        <metaData
+            :title = "$t('films.meta_title')"
+            :description = "$t('films.meta_description')"
             :image = "'../../../../public/images/meta_img/films.jpg'"
         />
     </div>

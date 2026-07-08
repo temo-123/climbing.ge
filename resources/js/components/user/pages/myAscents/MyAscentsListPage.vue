@@ -48,17 +48,17 @@
                         this.ascents = response.data
                         this.data_for_tab = [{
                             id: 1,
-                            table_name: 'My Ascents',
+                            table_name: this.$t('user.ascents.table_name'),
                             tab_data: {
                                 data: response.data,
                                 tab: {
                                     head: [
-                                        'Summit',
-                                        'Date',
-                                        'Route',
-                                        'GPS',
-                                        'Details',
-                                        'Delete',
+                                        this.$t('common.summit'),
+                                        this.$t('common.date'),
+                                        this.$t('common.route'),
+                                        this.$t('user.ascents.col_gps'),
+                                        this.$t('user.ascents.col_details'),
+                                        this.$t('common.delete'),
                                     ],
                                     body: [
                                         ['data', ['summit', 'title']],
@@ -84,7 +84,7 @@
             },
 
             del_ascent(id) {
-                if (!confirm('Delete this ascent?')) return
+                if (!confirm(this.$t('user.ascents.confirm_delete'))) return
                 axios.delete('/get_user_ascents/del_ascent/' + id)
                     .then(() => this.load_ascents())
                     .catch(error => console.log(error))

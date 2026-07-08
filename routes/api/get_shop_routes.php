@@ -14,6 +14,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         
         Route::get('/get_local_products/{lang}', 'get_local_products');
         Route::get('/get_donation_products/{lang}', 'get_donation_products');
+        Route::get('/get_outlet_products/{lang}', 'get_outlet_products');
         Route::get('/get_local_product_in_page/{lang}/{url_title}', 'get_local_product_in_page');
         Route::get('/get_similar_product/{lang}/{product_id}', 'get_similar_product');
         Route::get('/get_product_price_interval', 'get_product_price_interval');

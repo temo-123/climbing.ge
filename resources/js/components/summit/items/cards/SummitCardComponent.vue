@@ -52,10 +52,10 @@
 
             <div class="smt-card__actions">
                 <router-link :to="'/summit/' + summit.url_title" class="btn btn-default btn-sm btn-send main-btn">
-                    <i class="fa fa-info-circle"></i> Details
+                    <i class="fa fa-info-circle"></i> {{ $t('summit.summit_page.details_btn') }}
                 </router-link>
                 <router-link :to="'/make_ascent/' + summit.id" class="btn btn-success btn-sm">
-                    <i class="fa fa-flag-checkered"></i> Ascent
+                    <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.ascent_btn') }}
                 </router-link>
             </div>
         </div>

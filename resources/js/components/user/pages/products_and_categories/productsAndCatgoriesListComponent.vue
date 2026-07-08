@@ -150,11 +150,11 @@
                 
                 this.data_for_tab.push({
                     'id': 1,
-                    'table_name': 'Products', 
+                    'table_name': this.$t('admin.shop.products_table'),
                     'list_page': process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/products',
                     'add_action': {
                         'action': 'route',
-                        'link': 'productAdd', 
+                        'link': 'productAdd',
                         'class': 'btn btn-primary'
                     },
                     'filter_data': filter_data,
@@ -162,25 +162,25 @@
                         'data': this.apply_filters(this.original_products_data).map(item => ({ ...item, id: item.product?.id })),
                         'tab': {
                             'head': [
-                                'ID',
-                                'Title',
-                                'Public',
-                                'Georgia',
-                                'Donation',
-                                'Options',
-                                'User',
-                                'View',
-                                'Edit user',
-                                'Edit Options',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.title'),
+                                this.$t('admin.common.public'),
+                                this.$t('admin.shop.col_made_in_georgia'),
+                                this.$t('admin.shop.sale_type_label'),
+                                this.$t('admin.shop.col_options'),
+                                this.$t('admin.shop.col_user'),
+                                this.$t('admin.shop.col_view'),
+                                this.$t('admin.shop.col_edit_user'),
+                                this.$t('admin.shop.col_edit_options'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['product', 'id']],
                                 ['data', ['product', 'url_title']],
                                 ['data', ['product', 'published'], 'bool'],
                                 ['data', ['product', 'made_in_georgia'], 'bool'],
-                                ['data', ['product', 'is_donation_product'], 'bool'],
+                                ['data', ['product', 'sale_type']],
                                 ['data', ['options']],
                                 ['data', [['user', 'name'], ['user', 'surname']]],
                                 ['action_fun_id', 'show_product_quick_view', 'btn btn-info', '<i class="fa fa-eye" aria-hidden="true"></i>', ['product', 'id']],
@@ -212,20 +212,20 @@
             buildCategoriesTab() {
                 this.data_for_tab.push({
                     'id': 2,
-                    'table_name': 'Product Categories', 
+                    'table_name': this.$t('admin.shop.categories_table'),
                     'add_action': {
                         'action': 'route',
-                        'link': 'productCategoryAdd', 
+                        'link': 'productCategoryAdd',
                         'class': 'btn btn-primary'
                     },
                     'tab_data': {
-                        'data': this.categories_data, 
+                        'data': this.categories_data,
                         'tab': {
                             'head': [
-                                'ID',
-                                'Name',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['id']],
@@ -248,20 +248,20 @@
             buildBrandsTab() {
                 this.data_for_tab.push({
                     'id': 3,
-                    'table_name': 'Brands', 
+                    'table_name': this.$t('admin.shop.brands_table'),
                     'add_action': {
                         'action': 'fun',
-                        'link': 'show_product_brand_add_modal', 
+                        'link': 'show_product_brand_add_modal',
                         'class': 'btn btn-primary'
                     },
                     'tab_data': {
                         'data': this.brands_data.map(item => ({ ...item, id: item.global_brand?.id })),
                         'tab': {
                             'head': [
-                                'ID',
-                                'Name',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['global_brand', 'id']],
@@ -285,24 +285,24 @@
                 return [
                     {
                         'id': 'brand_filter',
-                        'title': 'Brand',
+                        'title': this.$t('admin.shop.filter_brand'),
                         'data': this.brands_data,
                         'action_fun_id': 'filter_by_brand_with_multi_id',
                         'array_key': 'us_brand.title'
                     },
                     {
                         'id': 'sale_type_filter',
-                        'title': 'Sale Type',
+                        'title': this.$t('admin.shop.filter_sale_type'),
                         'data': [
-                            { id: 1, name: 'Regular Products' },
-                            { id: 2, name: 'Sale Products' }
+                            { id: 1, name: this.$t('admin.shop.regular_products') },
+                            { id: 2, name: this.$t('admin.shop.sale_products') }
                         ],
                         'action_fun_id': 'filter_by_sale_type_with_multi_id',
                         'array_key': 'name'
                     },
                     {
                         'id': 'subcategory_filter',
-                        'title': 'Subcategory',
+                        'title': this.$t('admin.shop.filter_subcategory'),
                         'data': this.categories_data,
                         'action_fun_id': 'filter_by_subcategory_with_multi_id',
                         'array_key': 'us_name'
@@ -375,23 +375,23 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 4,
-                                            'table_name': 'Sale codes', 
+                                            'table_name': this.$t('admin.shop.sale_codes_table'),
                                             'add_action': {
                                                 'action': 'fun',
-                                                'link': 'show_sale_code_add_modal', 
+                                                'link': 'show_sale_code_add_modal',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Code',
-                                                        'Discount',
-                                                        'one_time_code',
-                                                        'action_data',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('admin.shop.code_label'),
+                                                        this.$t('admin.shop.discount_label'),
+                                                        this.$t('admin.shop.one_time_code'),
+                                                        this.$t('admin.shop.action_data'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -422,7 +422,7 @@
             },
 
             del_sale_code(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_product/set_sale_code/del_sale_code/'+id, {
                         _method: 'DELETE'
@@ -441,7 +441,7 @@
             },
 
             del_product_brand(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_product/set_brand/del_brand/'+id, {
                         _method: 'DELETE'
@@ -461,7 +461,7 @@
 
 
             del_product_category(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_product/set_product_category/del_product_category/' + id, {
                         _method: 'DELETE'
@@ -474,7 +474,7 @@
             },
 
             del_product(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_product/del_product/'+id, {
                         _method: 'DELETE'

@@ -27,8 +27,8 @@
                     <breadcrumb />
                 </div>
                 <div class="row" v-if=" film.local_film.coutry || film.local_film.issue_year">
-                    <p v-if=" film.local_film.coutry">Coutry - {{ film.local_film.coutry }}</p>
-                    <p v-if="film.local_film.issue_year">Year of issue - {{ film.local_film.issue_year }}</p>
+                    <p v-if=" film.local_film.coutry">{{ $t('films.country_prefix') }} {{ film.local_film.coutry }}</p>
+                    <p v-if="film.local_film.issue_year">{{ $t('films.year_of_issue_prefix') }} {{ film.local_film.issue_year }}</p>
                 </div>
                 <div class="row">
                     {{ film.local_film.text }}
@@ -40,14 +40,14 @@
 
                 <div class="mountain_masive_description" v-for="file in film.files" :key="file.key">
 
-                    <p style="float: right;" v-show="masiv_desc" @click="masiv_desc = !masiv_desc">Close</p>
-                    <p style="float: right;" v-show="!masiv_desc" @click="masiv_desc = !masiv_desc">Open</p>
-                    
+                    <p style="float: right;" v-show="masiv_desc" @click="masiv_desc = !masiv_desc">{{ $t('common.close') }}</p>
+                    <p style="float: right;" v-show="!masiv_desc" @click="masiv_desc = !masiv_desc">{{ $t('films.open_btn') }}</p>
+
                     <h2 @click="masiv_desc = !masiv_desc"> {{ file.us_name }}</h2>
 
                     <span v-show="masiv_desc">
                         {{ file.us_description }}
-                        <a :href="'/torrent/'+file.file" class="float-right" download>Download torrent file</a>
+                        <a :href="'/torrent/'+file.file" class="float-right" download>{{ $t('films.download_torrent_file') }}</a>
                     </span>
                 </div> 
 
@@ -56,7 +56,7 @@
         
         <div class="row" v-if="same_films.length">
 
-            <h2 class="text-center">you might also like</h2>
+            <h2 class="text-center">{{ $t('films.you_might_also_like') }}</h2>
 
             <div v-if="films_loader">
                 <skeleton-loader
@@ -71,10 +71,10 @@
         </div>            
 
         <div class="row text-center">
-            <li><router-link :to="{name: 'studia'}" exact> All films</router-link></li>
+            <li><router-link :to="{name: 'studia'}" exact> {{ $t('films.all_films_link') }}</router-link></li>
         </div>
 
-        <metaData 
+        <metaData
             :title = "film.local_film.name"
             :description = "film.local_film.text"
             :image = "'../../../public/images/film_img/' + film.global_film.image"

@@ -8,12 +8,12 @@
 
         <div class="row" v-if="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row" v-if="!is_loading">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_event()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="add_event()" >{{ $t('common.save') }}</button>
             </div>
         </div>
         <div class="row" v-if="error.length != 0">
@@ -27,17 +27,17 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>
@@ -46,19 +46,19 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Event global information</span></h2>
-                                <p class="lead">Event global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.events.event_global_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.events.event_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Publish </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.common.publish') }} </label>
                             <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_data.published" name="published" > 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
+                                <select class="form-control" v-model="data.global_data.published" name="published" >
+                                    <option value="0">{{ $t('admin.common.not_public') }}</option>
+                                    <option value="1">{{ $t('admin.common.public') }}</option>
+                                </select>
                                 <!-- <div class="alert alert-danger" role="alert" v-if="global_article_error.published">
                                     {{ global_article_error.published[0] }}
                                 </div> -->
@@ -74,61 +74,61 @@
                             </div>
                         </div> -->
                         <!-- <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.events.event_location_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
+                            <label for="start_datatle" class='col-xs-2 control-label'> {{ $t('admin.events.start_end_data_label') }} </label>
                             <div class="col-xs-8">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
+                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" :placeholder="$t('admin.events.start_data_placeholder')"> 
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
+                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" :placeholder="$t('admin.events.end_data_placeholder')"> 
                                     </div>
                                 </div>
                             </div>
                         </div> -->
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Event location </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.events.event_location_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
                             </div>
                         </div>
     
                         <div class="form-group clearfix row">
-                            <label for="name" class='col-md-4 control-label'>This event does`not have concrete day (Insert data without day)</label>
+                            <label for="name" class='col-md-4 control-label'>{{ $t('admin.events.no_concrete_day_label') }}</label>
                             <div class="col-md-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="is_event_whithout_day_button" @click="event_whithout_day()">
                             </div>
                         </div>
 
                         <div class="form-group clearfix" v-if="is_event_whithout_day">
-                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
+                            <label for="start_datatle" class='col-xs-2 control-label'> {{ $t('admin.events.start_end_data_label') }} </label>
                             <div class="col-xs-8">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input type="month" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
+                                        <input type="month" name="start_datatle" class="form-control" v-model="data.global_data.start_data" :placeholder="$t('admin.events.start_data_placeholder')"> 
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="month" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
+                                        <input type="month" name="end_data" class="form-control" v-model="data.global_data.end_data" :placeholder="$t('admin.events.end_data_placeholder')"> 
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group clearfix" v-if="!is_event_whithout_day">
-                            <label for="start_datatle" class='col-xs-2 control-label'> Start and end data </label>
+                            <label for="start_datatle" class='col-xs-2 control-label'> {{ $t('admin.events.start_end_data_label') }} </label>
                             <div class="col-xs-8">
                                 <div class="row">
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" placeholder="Start data/time"> 
+                                        <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" :placeholder="$t('admin.events.start_data_placeholder')"> 
                                     </div>
                                     <div class="col-md-6">
-                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" placeholder="End data/time"> 
+                                        <input type="datetime-local" name="end_data" class="form-control" v-model="data.global_data.end_data" :placeholder="$t('admin.events.end_data_placeholder')"> 
                                     </div>
                                 </div>
                             </div>
@@ -136,7 +136,7 @@
 
                         <div class="form-group clearfix">
                             <single_image_add
-                                title_prop="Event image"
+                                :title_prop="$t('admin.events.event_image_title')"
                                 :crop_ratio_prop="{ width: 16, height: 9 }"
                                 @update_single_image="image = $event"
                             />
@@ -147,34 +147,34 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event english version</h2>
-                            <p class="lead">Event english version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.events.event_en_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.events.event_en_version_subtitle') }}</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_data.title"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.us_data.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.us_data.text" />
                             </div>
                         </div>
 
-                        <GlobalInfoFormBlock 
-                            :title_prop="'Contact info'" 
+                        <GlobalInfoFormBlock
+                            :title_prop="$t('admin.articles.locale_form.contact_info')"
                             :form_data_prop=data.us_data.info 
                             :locale_prop="'us'"
                             :block_action_prop="global_blocks.info_block"
@@ -190,21 +190,21 @@
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Event georgian version</h2>
-                            <p class="lead">Event georgian version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.events.event_ka_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.events.event_ka_version_subtitle') }}</p>
                         </div>
                     </div>
-    
+
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.short_description" />
@@ -212,14 +212,14 @@
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.ka_data.text" />
                             </div>
                         </div>
 
-                        <GlobalInfoFormBlock 
-                            :title_prop="'Contact info'" 
+                        <GlobalInfoFormBlock
+                            :title_prop="$t('admin.articles.locale_form.contact_info')"
                             :form_data_prop=data.ka_data.info 
                             :locale_prop="'ka'"
                             :block_action_prop="global_blocks.info_block"
@@ -421,7 +421,7 @@
 
             go_back: function(back_action = false) {
                 if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
+                    if(confirm(this.$t('admin.events.confirm_go_back'))){
                         this.$router.go(-1)
                     }
                 }

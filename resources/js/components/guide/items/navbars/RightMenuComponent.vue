@@ -8,7 +8,7 @@
 
                 <li>
                     <a @click.prevent="scrollToSection('description')">
-                        <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.description') }}</span>
+                        <span class="text-primary cursor_pointer">{{ $t('common.description') }}</span>
                     </a>
                 </li>
 

@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="is_modal"
-        title="Update my task status"
+        :title="$t('admin.task.update_my_task_status_title')"
         @close="close_modal()"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
@@ -9,7 +9,7 @@
         <div class="container">
             <div class="text-center py-4" v-if="is_loading">
                 <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Please wait...</p>
+                <p class="mt-2">{{ $t('admin.task.please_wait') }}</p>
             </div>
 
             <div v-else>
@@ -17,22 +17,22 @@
 
                 <form id="edit_task_status" v-on:submit.prevent="edit_task_status">
                     <div class="form-group">
-                        <label>Status *</label>
+                        <label>{{ $t('admin.task.status_required_label') }}</label>
                         <select class="form-control" v-model="data.status" required>
-                            <option value="" disabled>Select status</option>
-                            <option value="in_process">In the process</option>
-                            <option value="problem">A problem has occurred</option>
-                            <option value="finished">Finished</option>
+                            <option value="" disabled>{{ $t('admin.task.select_status_placeholder') }}</option>
+                            <option value="in_process">{{ $t('admin.task.in_the_process_option') }}</option>
+                            <option value="problem">{{ $t('admin.task.problem_occurred_option') }}</option>
+                            <option value="finished">{{ $t('admin.task.status_finished') }}</option>
                         </select>
                     </div>
 
                     <div class="form-group mt-2" v-if="data.status === 'problem'">
-                        <label>Problem description *</label>
-                        <textarea rows="4" v-model="data.worker_comment" maxlength="500" placeholder="Describe the problem" class="form-control" required></textarea>
+                        <label>{{ $t('admin.task.problem_description_label') }}</label>
+                        <textarea rows="4" v-model="data.worker_comment" maxlength="500" :placeholder="$t('admin.task.describe_problem_placeholder')" class="form-control" required></textarea>
                     </div>
                     <div class="form-group mt-2" v-else>
-                        <label>Comment</label>
-                        <textarea rows="4" v-model="data.worker_comment" maxlength="500" placeholder="Optional comment" class="form-control"></textarea>
+                        <label>{{ $t('admin.task.comment_label') }}</label>
+                        <textarea rows="4" v-model="data.worker_comment" maxlength="500" :placeholder="$t('admin.task.optional_comment_placeholder')" class="form-control"></textarea>
                     </div>
                 </form>
             </div>
@@ -40,8 +40,8 @@
 
         <template #footer>
             <div class="modal-footer">
-                <button type="submit" form="edit_task_status" class="btn btn-primary" :disabled="is_loading">Update</button>
-                <button type="button" class="btn btn-secondary" @click="close_modal()">Cancel</button>
+                <button type="submit" form="edit_task_status" class="btn btn-primary" :disabled="is_loading">{{ $t('admin.task.update_btn') }}</button>
+                <button type="button" class="btn btn-secondary" @click="close_modal()">{{ $t('admin.comments.cancel_btn') }}</button>
             </div>
         </template>
     </stack-modal>

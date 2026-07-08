@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-md-12 text-center py-4" v-if="event_loading">
                     <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Loading...</span>
+                        <span class="visually-hidden">{{ $t('admin.events.loading_ellipsis') }}</span>
                     </div>
                 </div>
                 <div class="col-sm-12" v-else>
@@ -68,27 +68,27 @@
                     });
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Events',
+                                            'table_name': this.$t('admin.events.events_table'),
                                             'list_page': process.env.MIX_APP_SSH
                                                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
                                                 : window.location.origin + '/events',
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'eventAdd', 
+                                                'link': 'eventAdd',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Start Date',
-                                                        'End Date',
-                                                        'Public',
-                                                        'Completed',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.title'),
+                                                        this.$t('admin.events.start_date_col'),
+                                                        this.$t('admin.events.end_date_col'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('admin.events.completed_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -97,8 +97,8 @@
                                                         ['data', ['end_data']],
                                                         ['data', ['published'], 'bool'],
                                                         ['data', ['completed'], 'bool'],
-                                                        ['action_router', 'eventEdit', 'btn btn-primary', 'Edit'],
-                                                        ['action_fun_id', 'del_event', 'btn btn-danger', 'Del'],
+                                                        ['action_router', 'eventEdit', 'btn btn-primary', this.$t('common.edit')],
+                                                        ['action_fun_id', 'del_event', 'btn btn-danger', this.$t('common.delete')],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -129,27 +129,27 @@
                     });
                     this.data_for_tab.push({
                                             'id': 2,
-                                            'table_name': 'Competitions',
+                                            'table_name': this.$t('admin.events.competitions_table'),
                                             'list_page': process.env.MIX_APP_SSH
                                                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
                                                 : window.location.origin + '/events',
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'competitionAdd', 
+                                                'link': 'competitionAdd',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
                                                 'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Start Date',
-                                                        'End Date',
-                                                        'Public',
-                                                        'Completed',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.title'),
+                                                        this.$t('admin.events.start_date_col'),
+                                                        this.$t('admin.events.end_date_col'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('admin.events.completed_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -158,8 +158,8 @@
                                                         ['data', ['end_data']],
                                                         ['data', ['published'], 'bool'],
                                                         ['data', ['completed'], 'bool'],
-                                                        ['action_router', 'competitionEdit', 'btn btn-primary', 'Edit'],
-                                                        ['action_fun_id', 'del_event', 'btn btn-danger', 'Del'],
+                                                        ['action_router', 'competitionEdit', 'btn btn-primary', this.$t('common.edit')],
+                                                        ['action_fun_id', 'del_event', 'btn btn-danger', this.$t('common.delete')],
                                                     ],
                                                     'perm': [
                                                         ['no'],
@@ -182,7 +182,7 @@
             },
 
             del_event(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_event/del_event/'+id, {
                         _method: 'DELETE'

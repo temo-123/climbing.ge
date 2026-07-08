@@ -58,11 +58,19 @@ export default {
             axios.get('/get_route/get_route_review/get_user_review').then(response => {
                 this.data_for_tab.push({
                     id: 1,
-                    table_name: 'My climbing route reviews',
+                    table_name: this.$t('user.my_comments.tab_route_reviews'),
                     tab_data: {
                         data: (response.data || []).map(item => ({ ...item, id: item.review?.id, _row_class: item.review?.admin_hidden ? 'table-danger' : (item.review?.published == 0 ? 'table-warning' : '') })),
                         tab: {
-                            head: ['ID', 'Climbing route', 'Stars', 'Read more', 'Hide', 'Edit', 'Delete'],
+                            head: [
+                                this.$t('common.id'),
+                                this.$t('user.my_comments.col_climbing_route'),
+                                this.$t('user.my_comments.col_stars'),
+                                this.$t('user.my_comments.col_read_more'),
+                                this.$t('user.my_comments.col_hide'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
+                            ],
                             body: [
                                 ['data', ['review', 'id']],
                                 ['data', ['route', 'name']],
@@ -82,11 +90,19 @@ export default {
             axios.get('/get_mtp_review/get_user_mtp_reviews').then(response => {
                 this.data_for_tab.push({
                     id: 2,
-                    table_name: 'My Multi-Pitch reviews',
+                    table_name: this.$t('user.my_comments.tab_mtp_reviews'),
                     tab_data: {
                         data: (response.data || []).map(item => ({ ...item, id: item.review?.id, _row_class: item.review?.admin_hidden ? 'table-danger' : (item.review?.published == 0 ? 'table-warning' : '') })),
                         tab: {
-                            head: ['ID', 'Multi-Pitch', 'Stars', 'Read more', 'Hide', 'Edit', 'Delete'],
+                            head: [
+                                this.$t('common.id'),
+                                this.$t('user.my_comments.col_multipitch'),
+                                this.$t('user.my_comments.col_stars'),
+                                this.$t('user.my_comments.col_read_more'),
+                                this.$t('user.my_comments.col_hide'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
+                            ],
                             body: [
                                 ['data', ['review', 'id']],
                                 ['data', ['mtp', 'name']],
@@ -112,14 +128,14 @@ export default {
             if (!row || !row.review) return;
             const r = row.review;
             if (r.published == 1) {
-                if (confirm('Hide this review?')) {
+                if (confirm(this.$t('user.my_comments.confirm_hide_review'))) {
                     axios.post('/set_route/set_route_review/user_hide_review/' + id)
                         .then(() => this.load_data()).catch(e => console.log(e));
                 }
             } else if (r.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Cannot show', message: 'This review was hidden by an admin.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.cannot_show_title'), message: this.$t('user.my_comments.review_hidden_by_admin') });
             } else {
-                if (confirm('Make this review visible again?')) {
+                if (confirm(this.$t('user.my_comments.confirm_show_review'))) {
                     axios.post('/set_route/set_route_review/user_show_review/' + id)
                         .then(() => this.load_data()).catch(e => console.log(e));
                 }
@@ -130,14 +146,14 @@ export default {
             if (!row || !row.review) return;
             const r = row.review;
             if (r.published == 1) {
-                if (confirm('Hide this review?')) {
+                if (confirm(this.$t('user.my_comments.confirm_hide_review'))) {
                     axios.post('/set_mtp_review/user_hide_mtp_review/' + id)
                         .then(() => this.load_data()).catch(e => console.log(e));
                 }
             } else if (r.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Cannot show', message: 'This review was hidden by an admin.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.cannot_show_title'), message: this.$t('user.my_comments.review_hidden_by_admin') });
             } else {
-                if (confirm('Make this review visible again?')) {
+                if (confirm(this.$t('user.my_comments.confirm_show_review'))) {
                     axios.post('/set_mtp_review/user_show_mtp_review/' + id)
                         .then(() => this.load_data()).catch(e => console.log(e));
                 }
@@ -146,10 +162,10 @@ export default {
         del_review(id) {
             const row = this.find_row(id, 1);
             if (row?.review?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
-            if (confirm('Are you sure you want to delete this review?')) {
+            if (confirm(this.$t('user.my_comments.confirm_delete_review'))) {
                 axios.delete('/set_route/set_route_review/del_route_review/' + id)
                     .then(() => this.load_data()).catch(e => console.log(e));
             }
@@ -157,10 +173,10 @@ export default {
         del_mtp_review(id) {
             const row = this.find_row(id, 2);
             if (row?.review?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
-            if (confirm('Are you sure you want to delete this review?')) {
+            if (confirm(this.$t('user.my_comments.confirm_delete_review'))) {
                 axios.delete('/set_mtp_review/del_mtp_review/' + id)
                     .then(() => this.load_data()).catch(e => console.log(e));
             }
@@ -168,7 +184,7 @@ export default {
         edit_review_modal(id) {
             const row = this.find_row(id, 1);
             if (row?.review?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
             this.$refs.review_edit_modal.show_modal(id);
@@ -184,7 +200,7 @@ export default {
         edit_mtp_review_modal_fn(id) {
             const row = this.find_row(id, 2);
             if (row?.review?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
             this.$refs.mtp_review_edit_modal.show_modal(id);

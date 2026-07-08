@@ -106,20 +106,20 @@ export default {
             const setting = getGradeSetting();
             if (setting === "yds") return LEAD_FR_TO_YDS[grade_fr] ?? "?";
             if (setting === "uiaa") return LEAD_FR_TO_UIAA[grade_fr] ?? "?";
-            return "Error";
+            return this.$t('common.error');
         },
 
         boulder(grade_fr) {
             const setting = getGradeSetting();
             if (setting === "yds") return BOULDER_V_TO_YDS[grade_fr] ?? "?";
             if (setting === "uiaa") return BOULDER_V_TO_UIAA[grade_fr] ?? "?";
-            return "Error";
+            return this.$t('common.error');
         },
 
         alpine(grade_russ) {
             const setting = (localStorage.getItem("EU") || localStorage.getItem("grade") || "").toLowerCase();
             if (setting === "yds" || setting === "eu") return ALPINE_RUSS_TO_EU[grade_russ] ?? "?";
-            return "Error";
+            return this.$t('common.error');
         },
     }
 }

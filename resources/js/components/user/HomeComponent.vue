@@ -10,6 +10,7 @@
             </div>
         </div>
         <go_to_top />
+        <toast-notification />
     </div>
 </template>
 

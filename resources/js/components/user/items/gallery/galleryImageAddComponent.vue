@@ -1,27 +1,27 @@
 <template>
     <div class="gallery-manager">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="mb-0">{{ title_prop || 'Add Gallery Images' }}</h5>
+            <h5 class="mb-0">{{ title_prop || $t('admin.gallery_manager.add_gallery_images_title') }}</h5>
         </div>
 
         <!-- Toolbar -->
         <div class="d-flex flex-wrap gap-2 mb-3">
             <button class="btn btn-primary btn-sm" @click="triggerFileInput">
-                + Add Images
+                {{ $t('admin.gallery_manager.add_images_btn') }}
             </button>
             <template v-if="hasImageFiles">
                 <button class="btn btn-outline-secondary btn-sm" @click="sortImages('name')">
-                    Sort by Name
+                    {{ $t('admin.gallery_manager.sort_by_name_btn') }}
                 </button>
                 <button class="btn btn-outline-secondary btn-sm" @click="sortImages('size')">
-                    Sort by Size
+                    {{ $t('admin.gallery_manager.sort_by_size_btn') }}
                 </button>
             </template>
             <button v-if="selectedImages.length > 0" class="btn btn-danger btn-sm" @click="bulkDelete">
-                Delete Selected ({{ selectedImages.length }})
+                {{ $t('admin.gallery_manager.delete_selected_count_btn', { count: selectedImages.length }) }}
             </button>
             <span v-if="isCompressing" class="badge bg-warning align-self-center">
-                Compressing images...
+                {{ $t('admin.gallery_manager.compressing_images') }}
             </span>
         </div>
 
@@ -35,10 +35,9 @@
              @dragover.prevent="isExternalDragOver = true"
              @dragleave.self="isExternalDragOver = false">
             <div class="gallery-drop-icon">📁</div>
-            <div class="fw-medium">Drop images here</div>
+            <div class="fw-medium">{{ $t('admin.gallery_manager.drop_images_here') }}</div>
             <div class="text-muted small mt-1">
-                or use "Add Images" button above •
-                Files over {{ max_size_mb }}MB are compressed automatically
+                {{ $t('admin.gallery_manager.drop_zone_hint', { size: max_size_mb }) }}
             </div>
         </div>
 
@@ -68,25 +67,25 @@
                                 #{{ index + 1 }}
                             </label>
                         </div>
-                        <span class="gallery-drag-handle text-muted" title="Drag to reorder">⠿⠿</span>
+                        <span class="gallery-drag-handle text-muted" :title="$t('admin.gallery_manager.drag_to_reorder_tooltip')">⠿⠿</span>
                     </div>
 
                     <!-- Image preview -->
                     <div class="gallery-card-img-wrap bg-light position-relative">
                         <div v-if="image.compressing" class="gallery-card-compressing d-flex flex-column align-items-center justify-content-center">
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
-                            <small class="text-muted">Compressing…</small>
+                            <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
                         <img v-else-if="image.preview" :src="image.preview" class="gallery-card-img">
                         <div v-else class="gallery-card-placeholder d-flex align-items-center justify-content-center text-muted small text-center p-2">
-                            No image selected
+                            {{ $t('admin.gallery_manager.no_image_selected') }}
                         </div>
 
                         <!-- Compression badge -->
                         <span v-if="image.compressed && !image.compressing"
                               class="badge bg-success position-absolute top-0 end-0 m-1"
-                              :title="'Compressed from ' + formatFileSize(image.originalSize)">
-                            ✓ Compressed
+                              :title="$t('admin.gallery_manager.compressed_from_tooltip', { size: formatFileSize(image.originalSize) })">
+                            {{ $t('admin.gallery_manager.compressed_badge') }}
                         </span>
                     </div>
 
@@ -101,13 +100,13 @@
                                 <span v-else>{{ formatFileSize(image.image.size) }}</span>
                             </div>
                         </div>
-                        <div v-else class="small text-muted">No file yet</div>
+                        <div v-else class="small text-muted">{{ $t('admin.gallery_manager.no_file_yet') }}</div>
                     </div>
 
                     <!-- Delete -->
                     <div class="card-footer p-1">
                         <button class="btn btn-danger btn-sm w-100" @click="del_image(image.id)">
-                            Delete
+                            {{ $t('common.delete') }}
                         </button>
                     </div>
                 </div>
@@ -115,7 +114,7 @@
         </div>
 
         <div v-else class="text-muted small text-center py-3">
-            No images added yet. Drop files above or click "Add Images".
+            {{ $t('admin.gallery_manager.no_images_added_yet') }}
         </div>
 
         <ImageCropperModal
@@ -259,7 +258,7 @@
             validateFileType(file) {
                 const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
                 if (!allowed.includes(file.type)) {
-                    this.$bus.$emit('toast', { type: 'warning', title: 'Invalid file', message: `${file.name}: only JPEG, PNG, GIF, WebP allowed.`, duration: 4000 });
+                    this.$bus.$emit('toast', { type: 'warning', title: this.$t('admin.gallery_manager.invalid_file_title'), message: this.$t('admin.gallery_manager.invalid_file_message', { name: file.name }), duration: 4000 });
                     return false;
                 }
                 return true;
@@ -298,7 +297,7 @@
             },
 
             bulkDelete() {
-                if (!confirm(`Delete ${this.selectedImages.length} selected images?`)) return;
+                if (!confirm(this.$t('admin.gallery_manager.confirm_delete_selected_images', { count: this.selectedImages.length }))) return;
                 const toRemove = new Set(this.selectedImages);
                 this.new_images = this.new_images.filter(img => {
                     if (toRemove.has(img.id)) {

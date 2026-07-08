@@ -1,6 +1,6 @@
 <template>
     <gallery_images_add
-        title_prop="Mount Route Images"
+        :title_prop="$t('admin.articles.locale_form.mount_route_images_title')"
         @update_gallery_images="$emit('mount_route_img', $event)"
     />
 </template>

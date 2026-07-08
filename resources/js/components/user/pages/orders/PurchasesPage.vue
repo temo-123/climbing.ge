@@ -46,11 +46,19 @@ export default {
                 this.data_for_tab = []
                 this.data_for_tab.push({
                     id: 1,
-                    table_name: 'My Purchases',
+                    table_name: this.$t('user.orders.my_purchases'),
                     tab_data: {
                         data: response.data,
                         tab: {
-                            head: ['ID', 'Status', 'Payment', 'Shipping', 'Delivery', 'Date', 'Details'],
+                            head: [
+                                this.$t('common.id'),
+                                this.$t('user.orders.col_status'),
+                                this.$t('common.payment'),
+                                this.$t('user.orders.col_shipping'),
+                                this.$t('user.orders.col_delivery'),
+                                this.$t('common.date'),
+                                this.$t('user.orders.col_details'),
+                            ],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['status']],

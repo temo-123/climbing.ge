@@ -21,6 +21,7 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
         Route::controller(SummitController::class)->group(function () {
             Route::get('/index', 'index');
             Route::get('/get_mount_routes', 'get_mount_routes');
+            Route::get('/get_mounts_list', 'get_mounts_list');
             Route::get('/get_summit_mount_routes/{summit_id}', 'get_summit_mount_routes');
             Route::get('/get_ascents/{id}', 'get_ascents');
             Route::get('/get_all_ascents', 'get_all_ascents');

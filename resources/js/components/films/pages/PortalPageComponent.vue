@@ -109,7 +109,7 @@
                     />
                 </div>
                 <div class="row" v-else>
-                    <h2 class="text-center">Most liked film</h2>
+                    <h2 class="text-center">{{ $t('films.most_liked_film_title') }}</h2>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                             <site-img
@@ -132,15 +132,15 @@
                                 </router-link>
                             </div>
                             <div class="row" v-if=" most_liked_film.local_film.coutry || most_liked_film.local_film.issue_year">
-                                <p v-if=" most_liked_film.local_film.coutry">Coutry - {{ most_liked_film.local_film.coutry }}</p>
-                                <p v-if="most_liked_film.local_film.issue_year">Year of issue - {{ most_liked_film.local_film.issue_year }}</p>
+                                <p v-if=" most_liked_film.local_film.coutry">{{ $t('films.country_prefix') }} {{ most_liked_film.local_film.coutry }}</p>
+                                <p v-if="most_liked_film.local_film.issue_year">{{ $t('films.year_of_issue_prefix') }} {{ most_liked_film.local_film.issue_year }}</p>
                             </div>
                             <div class="row">
                                 {{ most_liked_film.local_film.short_description }}
                             </div>
                             <div class="row">
                                 <router-link :to="'film/'+most_liked_film.global_film.url_title">
-                                    <button class="btn btn-primary">Open</button>
+                                    <button class="btn btn-primary">{{ $t('films.open_btn') }}</button>
                                 </router-link>
                             </div>
                         </div>
@@ -153,18 +153,18 @@
         <!-- Call to Action-->
         <div class="card text-white bg-secondary my-5 py-4 text-center">
             <div class="card-body">
-                <h2 class="text-white m-0">All films</h2>
+                <h2 class="text-white m-0">{{ $t('films.all_films_link') }}</h2>
             </div>
         </div>
 
         <div class="row">
             <div class="container articles_filter_bar">
                 <div class="col-md-6 col-sm-6">
-                    Select category and filtred films by category
+                    {{ $t('films.select_category_filter_hint') }}
                 </div>
                 <div class="col-md-6 col-sm-6">
                     <select class="form-control" v-model="filter_category" @click="sort_film_by_category()">
-                        <option>All</option>
+                        <option value="All">{{ $t('all') }}</option>
                         <option v-for="category in films_categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
                     </select>
                 </div>
@@ -187,9 +187,9 @@
             </div>
         </div>
 
-        <metaData 
-            :title = "'Climbing films'"
-            :description = "'Rock climbing, mountaineering and other outdoor actyvity films'"
+        <metaData
+            :title = "$t('films.meta_title')"
+            :description = "$t('films.meta_description')"
             :image = "'../../../../public/images/meta_img/films.jpg'"
         />
     </div>

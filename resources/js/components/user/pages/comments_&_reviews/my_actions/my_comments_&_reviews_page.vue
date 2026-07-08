@@ -67,11 +67,21 @@ export default {
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 1,
-                        table_name: "Guidebook comments",
+                        table_name: this.$t('user.my_comments.tab_guide_comments'),
                         tab_data: {
                             data: (response.data || []).map(item => ({ ...item, _row_class: item.comment?.admin_hidden ? 'table-danger' : (item.comment?.published == 0 ? 'table-warning' : '') })),
                             tab: {
-                                head: ["ID", "Name", "Email", "Published", "Article", "Read more", "Hide", "Edit", "Delete"],
+                                head: [
+                                    this.$t('common.id'),
+                                    this.$t('common.name'),
+                                    this.$t('common.email'),
+                                    this.$t('user.my_comments.col_published'),
+                                    this.$t('user.my_comments.col_article'),
+                                    this.$t('user.my_comments.col_read_more'),
+                                    this.$t('user.my_comments.col_hide'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
+                                ],
                                 body: [
                                     ["data", ["comment", "id"]],
                                     ["data", [["comment", "name"], ["comment", "surname"]]],
@@ -96,11 +106,22 @@ export default {
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 2,
-                        table_name: "Product reviews",
+                        table_name: this.$t('user.my_comments.tab_product_reviews'),
                         tab_data: {
                             data: (response.data || []).map(item => ({ ...item, id: item.feedback?.id, _row_class: item.feedback?.admin_hidden ? 'table-danger' : (item.feedback?.published == 0 ? 'table-warning' : '') })),
                             tab: {
-                                head: ["ID", "Published", "Product", "Stars", "Reviewer", "Email", "Read more", "Hide", "Edit", "Delete"],
+                                head: [
+                                    this.$t('common.id'),
+                                    this.$t('user.my_comments.col_published'),
+                                    this.$t('common.product'),
+                                    this.$t('user.my_comments.col_stars'),
+                                    this.$t('user.my_comments.col_reviewer'),
+                                    this.$t('common.email'),
+                                    this.$t('user.my_comments.col_read_more'),
+                                    this.$t('user.my_comments.col_hide'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
+                                ],
                                 body: [
                                     ["data", ["feedback", "id"]],
                                     ["data", ["feedback", "published"], "bool"],
@@ -138,14 +159,14 @@ export default {
             if (!row) return;
             const c = row.comment;
             if (c.published == 1) {
-                if (confirm('Hide this comment?')) {
+                if (confirm(this.$t('user.my_comments.confirm_hide_comment'))) {
                     axios.post('/set_article/set_guide_comment/user_hide_comment/' + id)
                         .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
                 }
             } else if (c.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Cannot show', message: 'This comment was hidden by an admin.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.cannot_show_title'), message: this.$t('user.my_comments.comment_hidden_by_admin') });
             } else {
-                if (confirm('Make this comment visible again?')) {
+                if (confirm(this.$t('user.my_comments.confirm_show_comment'))) {
                     axios.post('/set_article/set_guide_comment/user_show_comment/' + id)
                         .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
                 }
@@ -154,7 +175,7 @@ export default {
         on_edit_comment(id) {
             const row = this.find_comment_row(id);
             if (row?.comment?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This comment was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.comment_hidden_cannot_modify') });
                 return;
             }
             this.$refs.comment_edit_modal.show_modal(id);
@@ -162,10 +183,10 @@ export default {
         on_del_comment(id) {
             const row = this.find_comment_row(id);
             if (row?.comment?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This comment was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.comment_hidden_cannot_modify') });
                 return;
             }
-            if (confirm('Are you sure you want to delete this comment?')) {
+            if (confirm(this.$t('user.my_comments.confirm_delete_comment'))) {
                 axios.delete('/set_article/set_guide_comment/user_del_comment/' + id)
                     .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
             }
@@ -179,14 +200,14 @@ export default {
             if (!row || !row.feedback) return;
             const fb = row.feedback;
             if (fb.published == 1) {
-                if (confirm('Hide this feedback?')) {
+                if (confirm(this.$t('user.my_comments.confirm_hide_feedback'))) {
                     axios.post('/set_product/set_product_feedback/user_hide_feedback/' + id)
                         .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
                 }
             } else if (fb.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Cannot show', message: 'This feedback was hidden by an admin.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.cannot_show_title'), message: this.$t('user.my_comments.feedback_hidden_by_admin') });
             } else {
-                if (confirm('Make this feedback visible again?')) {
+                if (confirm(this.$t('user.my_comments.confirm_show_feedback'))) {
                     axios.post('/set_product/set_product_feedback/user_show_feedback/' + id)
                         .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
                 }
@@ -195,7 +216,7 @@ export default {
         on_edit_feedback_modal(id) {
             const row = this.find_feedback_row(id);
             if (row?.feedback?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
             this.$refs.feedback_edit_modal.show_modal(id);
@@ -203,10 +224,10 @@ export default {
         on_del_feedback(id) {
             const row = this.find_feedback_row(id);
             if (row?.feedback?.admin_hidden) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Action blocked', message: 'This review was hidden by an admin and cannot be modified.' });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('user.my_comments.action_blocked_title'), message: this.$t('user.my_comments.review_hidden_cannot_modify') });
                 return;
             }
-            if (confirm('Are you sure you want to delete this feedback?')) {
+            if (confirm(this.$t('user.my_comments.confirm_delete_feedback'))) {
                 axios.delete('/set_product/set_product_feedback/del_feedback/' + id)
                     .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
             }

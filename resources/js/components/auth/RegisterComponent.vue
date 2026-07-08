@@ -190,6 +190,7 @@ export default {
             city: this.city,
             password: this.password,
             password_confirmation: this.password_confirmation,
+            lang: localStorage.getItem('lang') || 'us',
             recaptcha_token,
           })
           .then(res => {

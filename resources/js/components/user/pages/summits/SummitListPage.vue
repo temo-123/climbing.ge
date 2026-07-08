@@ -11,7 +11,7 @@
             <div class="col-md-12" v-if="loading">
                 <div class="text-center py-4">
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
-                    <p>Loading summits...</p>
+                    <p>{{ $t('admin.summits.loading_summits') }}</p>
                 </div>
             </div>
             <div class="col-sm-12" v-else-if="data_for_tab.length">
@@ -24,72 +24,78 @@
                     @open_edit="open_edit_by_id"
                     @confirm_delete="confirm_delete_by_id"
                     @export_laser_plate="export_laser_plate_by_id"
+                    @filtr_summits_by_mount="filtr_summits_by_mount"
                 />
             </div>
             <div v-else class="col-sm-12 text-center py-4">
-                No data available.
+                {{ $t('admin.summits.no_data_available') }}
             </div>
         </div>
 
         <!-- QR Code modal -->
-        <stack-modal :show="qr_modal" title="Summit QR Code" @close="qr_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
+        <stack-modal :show="qr_modal" :title="$t('admin.summits.summit_qr_code_title')" @close="qr_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
             <div v-if="selected" class="text-center">
-                <p class="mb-2">QR code for <strong>{{ selected.title }}</strong></p>
+                <p class="mb-2">{{ $t('admin.summits.qr_code_for') }} <strong>{{ selected.title }}</strong></p>
                 <div class="d-flex justify-content-center mb-3">
                     <qrcode-vue :value="qr_value" :size="220" level="H" render-as="svg" />
                 </div>
                 <p class="text-muted small">{{ qr_value }}</p>
                 <div v-if="selected.qr_code" class="alert alert-success py-1 small">
-                    <i class="fa fa-check"></i> QR code already saved in database
+                    <i class="fa fa-check"></i> {{ $t('admin.summits.qr_already_saved') }}
                 </div>
                 <div v-else class="alert alert-warning py-1 small">
-                    <i class="fa fa-exclamation-triangle"></i> QR code not yet saved
+                    <i class="fa fa-exclamation-triangle"></i> {{ $t('admin.summits.qr_not_saved_yet') }}
                 </div>
             </div>
             <template #footer>
-                <button type="button" class="btn btn-secondary" @click="qr_modal = false">Close</button>
+                <button type="button" class="btn btn-secondary" @click="qr_modal = false">{{ $t('common.close') }}</button>
                 <button type="button" class="btn btn-primary" :disabled="saving_qr" @click="save_qr">
                     <span v-if="saving_qr"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else><i class="fa fa-save"></i> {{ selected && selected.qr_code ? 'Resave QR' : 'Save QR' }}</span>
+                    <span v-else><i class="fa fa-save"></i> {{ selected && selected.qr_code ? $t('admin.summits.resave_qr') : $t('admin.summits.save_qr') }}</span>
                 </button>
             </template>
         </stack-modal>
 
         <!-- Delete confirm modal -->
-        <stack-modal :show="del_modal" title="Confirm Delete" @close="del_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
-            <p>Delete summit <strong>{{ to_delete?.title }}</strong>?</p>
-            <p class="text-danger small">This cannot be undone.</p>
+        <stack-modal :show="del_modal" :title="$t('admin.summits.confirm_delete_title')" @close="del_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
+            <p>{{ $t('admin.summits.delete_summit_confirm') }} <strong>{{ to_delete?.title }}</strong>?</p>
+            <p class="text-danger small">{{ $t('admin.summits.cannot_be_undone') }}</p>
             <template #footer>
-                <button type="button" class="btn btn-secondary" @click="del_modal = false">Cancel</button>
+                <button type="button" class="btn btn-secondary" @click="del_modal = false">{{ $t('admin.comments.cancel_btn') }}</button>
                 <button type="button" class="btn btn-danger" :disabled="deleting" @click="delete_summit">
                     <span v-if="deleting"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else>Delete</span>
+                    <span v-else>{{ $t('common.delete') }}</span>
                 </button>
             </template>
         </stack-modal>
 
         <!-- GPS Coordinates modal -->
-        <stack-modal :show="gps_modal" title="Update GPS Coordinates" @close="close_gps_modal" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
+        <stack-modal :show="gps_modal" :title="$t('admin.summits.update_gps_title')" @close="close_gps_modal" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
             <div v-if="gps_selected">
-                <p class="mb-3">Set coordinates for <strong>{{ gps_selected.title }}</strong></p>
+                <p class="mb-3">{{ $t('admin.summits.set_coordinates_for') }} <strong>{{ gps_selected.title }}</strong></p>
 
                 <div v-if="gps_selected.latitude && gps_selected.longitude" class="alert alert-info py-2 small mb-3">
                     <i class="fa fa-map-marker"></i>
-                    Current: {{ gps_selected.latitude }}, {{ gps_selected.longitude }}
+                    {{ $t('admin.summits.current_coords_prefix') }} {{ gps_selected.latitude }}, {{ gps_selected.longitude }}
                 </div>
                 <div v-else class="alert alert-warning py-2 small mb-3">
-                    <i class="fa fa-exclamation-triangle"></i> No coordinates set yet — summit is hidden from public list.
+                    <i class="fa fa-exclamation-triangle"></i> {{ $t('admin.summits.no_coords_set_hint') }}
+                </div>
+
+                <div class="form-group">
+                    <label>{{ $t('admin.summits.height_meters_label') }}</label>
+                    <input type="number" v-model="gps_form.height" class="form-control" :placeholder="$t('admin.summits.height_placeholder')" min="0" />
                 </div>
 
                 <ul class="nav nav-tabs mb-3">
                     <li class="nav-item">
                         <a class="nav-link" :class="{ active: gps_tab === 'manual' }" href="#" @click.prevent="gps_tab = 'manual'">
-                            <i class="fa fa-keyboard-o"></i> Manual Input
+                            <i class="fa fa-keyboard-o"></i> {{ $t('admin.summits.manual_input_tab') }}
                         </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" :class="{ active: gps_tab === 'device' }" href="#" @click.prevent="gps_tab = 'device'; get_device_location()">
-                            <i class="fa fa-map-marker"></i> Use My Location
+                            <i class="fa fa-map-marker"></i> {{ $t('admin.summits.use_my_location_tab') }}
                         </a>
                     </li>
                 </ul>
@@ -98,12 +104,12 @@
                 <div v-show="gps_tab === 'manual'">
                     <div class="form-row">
                         <div class="form-group col-md-6">
-                            <label>Latitude <span class="text-danger">*</span></label>
-                            <input type="number" v-model="gps_form.latitude" class="form-control" step="any" placeholder="e.g. 42.6629" />
+                            <label>{{ $t('admin.summits.latitude_label') }} <span class="text-danger">*</span></label>
+                            <input type="number" v-model="gps_form.latitude" class="form-control" step="any" :placeholder="$t('admin.summits.lat_placeholder')" />
                         </div>
                         <div class="form-group col-md-6">
-                            <label>Longitude <span class="text-danger">*</span></label>
-                            <input type="number" v-model="gps_form.longitude" class="form-control" step="any" placeholder="e.g. 44.0942" />
+                            <label>{{ $t('admin.summits.longitude_label') }} <span class="text-danger">*</span></label>
+                            <input type="number" v-model="gps_form.longitude" class="form-control" step="any" :placeholder="$t('admin.summits.lng_placeholder')" />
                         </div>
                     </div>
                 </div>
@@ -112,17 +118,18 @@
                 <div v-show="gps_tab === 'device'">
                     <div v-if="gps_locating" class="text-center py-3">
                         <i class="fa fa-spinner fa-spin fa-2x text-primary"></i>
-                        <p class="mt-2 text-muted">Getting your location...</p>
+                        <p class="mt-2 text-muted">{{ $t('admin.summits.getting_location') }}</p>
                     </div>
                     <div v-else-if="gps_location_error" class="alert alert-danger py-2 small">
                         <i class="fa fa-times-circle"></i> {{ gps_location_error }}
                     </div>
                     <div v-else-if="gps_form.latitude && gps_form.longitude" class="alert alert-success py-2">
                         <i class="fa fa-check"></i>
-                        Location detected: <strong>{{ gps_form.latitude }}, {{ gps_form.longitude }}</strong>
+                        {{ $t('admin.summits.location_detected_prefix') }} <strong>{{ gps_form.latitude }}, {{ gps_form.longitude }}</strong>
+                        <div v-if="!gps_form.height" class="small text-muted mt-1">{{ $t('admin.summits.altitude_not_available_hint') }}</div>
                     </div>
                     <div v-else class="text-muted small text-center py-2">
-                        Click "Use My Location" tab to detect your current position.
+                        {{ $t('admin.summits.click_use_my_location_hint') }}
                     </div>
                 </div>
 
@@ -131,10 +138,10 @@
                 </div>
             </div>
             <template #footer>
-                <button type="button" class="btn btn-secondary" @click="close_gps_modal">Cancel</button>
+                <button type="button" class="btn btn-secondary" @click="close_gps_modal">{{ $t('admin.comments.cancel_btn') }}</button>
                 <button type="button" class="btn btn-success" :disabled="gps_saving || !gps_form.latitude || !gps_form.longitude" @click="save_coordinates">
                     <span v-if="gps_saving"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else><i class="fa fa-save"></i> Save Coordinates</span>
+                    <span v-else><i class="fa fa-save"></i> {{ $t('admin.summits.save_coordinates_btn') }}</span>
                 </button>
             </template>
         </stack-modal>
@@ -155,6 +162,9 @@ export default {
             ascents: [],
             loading: false,
 
+            mounts: [],
+            filter_mount_id: 0,
+
             qr_modal: false,
             selected: null,
             saving_qr: false,
@@ -166,7 +176,7 @@ export default {
             gps_modal: false,
             gps_selected: null,
             gps_tab: 'manual',
-            gps_form: { latitude: null, longitude: null },
+            gps_form: { latitude: null, longitude: null, height: null },
             gps_saving: false,
             gps_error: null,
             gps_locating: false,
@@ -183,27 +193,38 @@ export default {
         },
         data_for_tab() {
             if (this.loading) return []
+            const filteredSummits = this.filter_mount_id
+                ? this.summits.filter(s => s.mount_id === this.filter_mount_id)
+                : this.summits
             return [
                 {
                     id: 1,
-                    table_name: 'Summits',
+                    table_name: this.$t('admin.summits.summits_table'),
                     list_page: process.env.MIX_APP_SSH
                         ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '') + '/summits/list'
                         : window.location.origin + '/summits/list',
                     add_action: {
                         action: 'fun',
                         link: 'open_add',
-                        btn_title: 'Add Summit',
+                        btn_title: this.$t('admin.summits.add_summit_btn'),
                         class: 'btn btn-primary',
                     },
+                    filter_data: {
+                        title: this.$t('admin.articles.filter_by_mount_masive'),
+                        data: this.mounts,
+                        action_fun_id: 'filtr_summits_by_mount',
+                        array_key: 'name',
+                        id_key: 'id',
+                    },
                     tab_data: {
-                        data: this.summits,
+                        data: filteredSummits,
                         tab: {
-                            head: ['ID', 'Title', 'Height', 'Lat/Lng', 'QR Saved', 'Published', 'QR', 'GPS', 'Edit', 'Delete', 'Laser Plate'],
+                            head: [this.$t('common.id'), this.$t('common.title'), this.$t('common.height'), this.$t('admin.summits.mount_massive_label'), this.$t('admin.summits.col_lat_lng'), this.$t('admin.summits.col_qr_saved'), this.$t('admin.common.published'), 'QR', 'GPS', this.$t('common.edit'), this.$t('common.delete'), this.$t('admin.summits.col_laser_plate')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['title']],
                                 ['data', ['height']],
+                                ['data', ['mount_name']],
                                 ['data', ['coords_display']],
                                 ['data', ['qr_code'], 'bool'],
                                 ['data', ['published'], 'bool'],
@@ -214,7 +235,7 @@ export default {
                                 ['action_fun_id', 'export_laser_plate', 'btn btn-sm btn-dark', '<i class="fa fa-file-pdf-o"></i>'],
                             ],
                             perm: [
-                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                                 ['no'],
                                 ['summit', 'edit'],
                                 ['summit', 'edit'],
@@ -226,11 +247,11 @@ export default {
                 },
                 {
                     id: 2,
-                    table_name: 'Ascents',
+                    table_name: this.$t('admin.summits.ascents_table'),
                     tab_data: {
                         data: this.ascents,
                         tab: {
-                            head: ['ID', 'Name', 'Surname', 'Email', 'Summit', 'Date', 'Route', 'Grade', 'GPS', 'Comment'],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['name']],
@@ -255,6 +276,7 @@ export default {
     },
     mounted() {
         this.load_all()
+        this.load_mounts()
     },
     methods: {
         load_all() {
@@ -271,6 +293,16 @@ export default {
                 }))
                 this.ascents = a.data
             }).catch(() => {}).finally(() => { this.loading = false })
+        },
+
+        load_mounts() {
+            axios.get('get_summit_admin/get_mounts_list')
+                .then(response => { this.mounts = response.data })
+                .catch(() => {})
+        },
+
+        filtr_summits_by_mount(mount_id) {
+            this.filter_mount_id = mount_id
         },
 
         open_add() {
@@ -307,7 +339,7 @@ export default {
                     document.body.removeChild(link)
                     window.URL.revokeObjectURL(url)
                 })
-                .catch(() => { alert('Failed to export laser plate PDF.') })
+                .catch(() => { alert(this.$t('admin.summits.failed_export_laser_plate')) })
         },
 
         save_qr() {
@@ -319,7 +351,7 @@ export default {
                     if (idx !== -1) this.summits[idx].qr_code = this.qr_value
                     this.selected = { ...this.selected, qr_code: this.qr_value }
                 })
-                .catch(() => { alert('Failed to save QR code.') })
+                .catch(() => { alert(this.$t('admin.summits.failed_save_qr')) })
                 .finally(() => { this.saving_qr = false })
         },
 
@@ -332,7 +364,7 @@ export default {
                     this.del_modal = false
                     this.to_delete = null
                 })
-                .catch(() => { alert('Failed to delete.') })
+                .catch(() => { alert(this.$t('admin.summits.failed_delete_summit')) })
                 .finally(() => { this.deleting = false })
         },
 
@@ -340,7 +372,7 @@ export default {
             const s = this.summits.find(x => x.id === id)
             if (!s) return
             this.gps_selected = s
-            this.gps_form = { latitude: s.latitude || null, longitude: s.longitude || null }
+            this.gps_form = { latitude: s.latitude || null, longitude: s.longitude || null, height: s.height || null }
             this.gps_tab = 'manual'
             this.gps_error = null
             this.gps_location_error = null
@@ -356,7 +388,7 @@ export default {
 
         get_device_location() {
             if (!navigator.geolocation) {
-                this.gps_location_error = 'Geolocation is not supported by your browser.'
+                this.gps_location_error = this.$t('admin.summits.geolocation_not_supported')
                 return
             }
             this.gps_locating = true
@@ -365,10 +397,13 @@ export default {
                 (pos) => {
                     this.gps_form.latitude  = parseFloat(pos.coords.latitude.toFixed(6))
                     this.gps_form.longitude = parseFloat(pos.coords.longitude.toFixed(6))
+                    if (pos.coords.altitude !== null && pos.coords.altitude !== undefined) {
+                        this.gps_form.height = Math.round(pos.coords.altitude)
+                    }
                     this.gps_locating = false
                 },
                 (err) => {
-                    this.gps_location_error = 'Could not get location: ' + err.message
+                    this.gps_location_error = this.$t('admin.summits.could_not_get_location_prefix') + ' ' + err.message
                     this.gps_locating = false
                 },
                 { enableHighAccuracy: true, timeout: 10000 }
@@ -379,21 +414,26 @@ export default {
             if (!this.gps_selected || !this.gps_form.latitude || !this.gps_form.longitude) return
             this.gps_saving = true
             this.gps_error = null
-            axios.post(`set_summit/update_coordinates/${this.gps_selected.id}`, {
+            const payload = {
                 latitude:  this.gps_form.latitude,
                 longitude: this.gps_form.longitude,
-            })
+            }
+            if (this.gps_form.height !== null && this.gps_form.height !== '') {
+                payload.height = this.gps_form.height
+            }
+            axios.post(`set_summit/update_coordinates/${this.gps_selected.id}`, payload)
                 .then(response => {
                     const idx = this.summits.findIndex(s => s.id === this.gps_selected.id)
                     if (idx !== -1) {
                         this.summits[idx].latitude        = response.data.latitude
                         this.summits[idx].longitude       = response.data.longitude
+                        this.summits[idx].height           = response.data.height
                         this.summits[idx].coords_display  = `${response.data.latitude}, ${response.data.longitude}`
                     }
                     this.gps_modal = false
                     this.gps_selected = null
                 })
-                .catch(() => { this.gps_error = 'Failed to save coordinates. Please try again.' })
+                .catch(() => { this.gps_error = this.$t('admin.summits.failed_save_coordinates') })
                 .finally(() => { this.gps_saving = false })
         },
     }

@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_role_editing_modal"
-            title="Manage User Roles and Permissions"
+            :title="$t('admin.users.manage_user_roles_permissions_title')"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
+            :saveButton="{ visible: true, title: $t('admin.users.save_changes_btn'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('admin.comments.cancel_btn'), btnClass: { 'btn btn-secondary': true } }"
         >
         <div>
             <span v-show="is_loading">
@@ -13,10 +13,10 @@
                 </div>
             </span>
             <span v-show="!is_loading">
-                <h2>Select User Role</h2>
+                <h2>{{ $t('admin.users.select_user_role_title') }}</h2>
 
                 <select class="form-control" v-model="user_role" v-if="!role_loading">
-                    <option value="no_role" disabled>Choose a role for the user</option>
+                    <option value="no_role" disabled>{{ $t('admin.users.choose_role_placeholder') }}</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">{{ role.name }}</option>
                 </select>
 
@@ -26,15 +26,15 @@
                     </div>
                 </div>
 
-                <h2>Additional Permissions</h2>
+                <h2>{{ $t('admin.users.additional_permissions_title') }}</h2>
 
-                <h3 v-if="user_permissions.length != 0">Currently Assigned Permissions</h3>
+                <h3 v-if="user_permissions.length != 0">{{ $t('admin.users.currently_assigned_permissions_title') }}</h3>
                 <table v-if="user_permissions.length != 0" class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Permission</th>
+                            <th>{{ $t('admin.users.col_permission') }}</th>
                             <th></th>
-                            <th>Remove</th>
+                            <th>{{ $t('admin.users.col_remove') }}</th>
                         </tr>
                     </thead>
 
@@ -45,22 +45,22 @@
                             </td>
                             <td></td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_user_permission_from_db(permission.id)" title="Remove this permission"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger" @click="del_user_permission_from_db(permission.id)" :title="$t('admin.users.remove_permission_tooltip')"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                <h3>Add More Permissions</h3>
+                <h3>{{ $t('admin.users.add_more_permissions_title') }}</h3>
 
-                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add New Permission</button>
+                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">{{ $t('admin.users.add_new_permission_btn') }}</button>
 
                 <table class="table table-hover" id="dev-table" v-if="!perm_loading">
                     <thead>
                         <tr>
-                            <th>Permission</th>
+                            <th>{{ $t('admin.users.col_permission') }}</th>
                             <th></th>
-                            <th>Remove</th>
+                            <th>{{ $t('admin.users.col_remove') }}</th>
                         </tr>
                     </thead>
 
@@ -69,14 +69,14 @@
                             <td>
                                 <form ref="myForm">
                                     <select class="form-control" v-on:change="onFileChange($event, permission.id)">
-                                        <option disabled selected>Choose a permission to add</option>
+                                        <option disabled selected>{{ $t('admin.users.choose_permission_to_add_placeholder') }}</option>
                                         <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option>
                                     </select>
                                 </form>
                             </td>
                             <td></td>
                             <td>
-                                <button type="button" class="btn btn-danger" @click="del_permission_value(permission.id)" title="Remove this entry"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger" @click="del_permission_value(permission.id)" :title="$t('admin.users.remove_entry_tooltip')"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </td>
                         </tr>
                     </tbody>
@@ -90,10 +90,10 @@
         </div>
         <template #footer>
             <button type="button" class="btn btn-success" @click="show_team_member_modal()">
-                Edit Team Member
+                {{ $t('admin.users.edit_team_member_btn') }}
             </button>
             <button v-show="!is_loading" type="button" class="btn btn-primary" @click="edit_permissions(user_id)">
-                Save Permissions
+                {{ $t('admin.users.save_permissions_btn') }}
             </button>
         </template>
     </stack-modal>
@@ -186,7 +186,7 @@
             },
 
             del_user_permission_from_db(id){
-                if(confirm('Are you sure you want to remove this permission from the user?')){
+                if(confirm(this.$t('admin.users.confirm_remove_permission'))){
                     axios
                     .post('/set_role/del_user_pemisino/'+id+'/'+this.user_id, {
                         _method: 'DELETE'

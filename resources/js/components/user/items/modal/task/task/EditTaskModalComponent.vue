@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="is_modal"
-        title="Edit task"
+        :title="$t('admin.task.edit_task_title')"
         @close="close_modal()"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
@@ -10,40 +10,40 @@
             <div class="row justify-content-center" v-show="is_loading">
                 <div class="col-md-4 text-center py-4">
                     <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2">Please wait...</p>
+                    <p class="mt-2">{{ $t('admin.task.please_wait') }}</p>
                 </div>
             </div>
 
             <form id="update_task" v-on:submit.prevent="update_task" v-show="!is_loading">
                 <div class="form-group mt-2">
-                    <label>Task title *</label>
-                    <input type="text" v-model="data.title" class="form-control" placeholder="Task title" required>
+                    <label>{{ $t('admin.task.task_title_label') }}</label>
+                    <input type="text" v-model="data.title" class="form-control" :placeholder="$t('admin.task.task_title_placeholder')" required>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label>Description</label>
-                    <textarea rows="4" v-model="data.text" maxlength="500" placeholder="Task description" class="form-control"></textarea>
+                    <label>{{ $t('admin.task.description_label') }}</label>
+                    <textarea rows="4" v-model="data.text" maxlength="500" :placeholder="$t('admin.task.task_description_placeholder')" class="form-control"></textarea>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label>Deadline *</label>
+                    <label>{{ $t('admin.task.deadline_label') }}</label>
                     <input type="date" v-model="data.deadline" class="form-control" required>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label>Task type *</label>
+                    <label>{{ $t('admin.task.task_type_label') }}</label>
                     <select class="form-control" v-model="data.category" required>
-                        <option value="" disabled>Select type</option>
-                        <option value="production">Production</option>
-                        <option value="delivery">Delivery</option>
-                        <option value="other">Other</option>
+                        <option value="" disabled>{{ $t('admin.task.select_type_placeholder') }}</option>
+                        <option value="production">{{ $t('admin.task.production_option') }}</option>
+                        <option value="delivery">{{ $t('admin.orders.delivery_option') }}</option>
+                        <option value="other">{{ $t('admin.task.other_option') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group mt-2">
-                    <label>Assign to *</label>
+                    <label>{{ $t('admin.task.assign_to_label') }}</label>
                     <select class="form-control" v-model="data.for_user_id" required>
-                        <option :value="0" disabled>Select worker</option>
+                        <option :value="0" disabled>{{ $t('admin.task.select_worker_placeholder') }}</option>
                         <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
                     </select>
                 </div>
@@ -52,8 +52,8 @@
 
         <template #footer>
             <div class="modal-footer">
-                <button type="submit" form="update_task" class="btn btn-primary" :disabled="is_loading">Save</button>
-                <button type="button" class="btn btn-secondary" @click="close_modal()">Cancel</button>
+                <button type="submit" form="update_task" class="btn btn-primary" :disabled="is_loading">{{ $t('common.save') }}</button>
+                <button type="button" class="btn btn-secondary" @click="close_modal()">{{ $t('admin.comments.cancel_btn') }}</button>
             </div>
         </template>
     </stack-modal>

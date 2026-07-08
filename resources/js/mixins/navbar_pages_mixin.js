@@ -1,78 +1,78 @@
 export default {
     methods: {
         admin_all_menu(){
-            return [
+            const menu = [
                 {
                     id: 1,
-                    title: "Home",
+                    title: this.$t('user.nav.home'),
                     route: "/",
                 },
                 {
-                    title: "Favorites",
+                    title: this.$t('user.nav.favorites'),
                     name: "favorites",
                     routes: [
                         {
-                            name: "Favorite products",
+                            name: this.$t('user.nav.favorites_favorite_products'),
                             route: "/favorite_products"
                         },
                         {
-                            name: "Favorite outdoor area",
+                            name: this.$t('user.nav.favorites_favorite_outdoor_area'),
                             route: "/my_favorite_outdoor_area"
                         },
                         {
-                            name: "Interested events",
+                            name: this.$t('user.nav.favorites_interested_events'),
                             route: "/interested_events"
                         },
                     ],
                 },
                 {
-                    title: "Guide",
+                    title: this.$t('user.nav.guide'),
                     name: "guide",
                     routes: [
                         {
-                            name: "Indoor climbing",
+                            name: this.$t('user.nav.guide_indoor_climbing'),
                             route: "/article/indoor",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Outdoor climbing",
+                            name: this.$t('user.nav.guide_outdoor_climbing'),
                             route: "/article/outdoor",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Sectors & Routes",
+                            name: this.$t('user.nav.guide_sectors_and_routes'),
                             route: "/routes_and_sectors",
                             permissions: [
                                 ['show', 'route'],
                             ]
                         },
                         {
-                            name: "Ice & Mix",
+                            name: this.$t('user.nav.guide_ice_and_mix'),
                             route: "/article/ice",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Sectors local images",
+                            name: this.$t('user.nav.guide_sectors_local_images'),
                             route: "/sector_local_images",
                             permissions: [
                                 ['show', 'sector_local_image'],
                             ]
                         },
                         {
-                            name: "Spot projects",
+                            name: this.$t('user.nav.guide_spot_projects'),
                             route: "/article/spot_projects",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Mountaineering",
+                            name: this.$t('user.nav.guide_mountaineering'),
                             route: "/article/mount_route",
                             permissions: [
                                 ['show', 'article'],
@@ -80,63 +80,63 @@ export default {
                             ]
                         },
                         {
-                            name: "Other activity",
+                            name: this.$t('user.nav.guide_other_activity'),
                             route: "/article/other",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "News",
+                            name: this.$t('user.nav.guide_news'),
                             route: "/article/news",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Security (tech tip)",
+                            name: this.$t('user.nav.guide_security_tech_tip'),
                             route: "/article/tech_tip",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Partners",
+                            name: this.$t('user.nav.guide_partners'),
                             route: "/article/partners",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Special article",
+                            name: this.$t('user.nav.guide_special_article'),
                             route: "/article/special",
                             permissions: [
                                 ['show', 'article'],
                             ]
                         },
                         {
-                            name: "Live cameras",
+                            name: this.$t('user.nav.guide_live_cameras'),
                             route: "/live_cameras",
                             permissions: [
                                 ['show', 'live_camera'],
                             ]
                         },
                         {
-                            name: "Events & Competitions",
+                            name: this.$t('user.nav.guide_events_and_competitions'),
                             route: "/event",
                             permissions: [
                                 ['show', 'event'],
                             ]
                         },
                         {
-                            name: "Local bisnes",
+                            name: this.$t('user.nav.guide_local_business'),
                             route: "/local_bisnes",
                             permissions: [
                                 ['show', 'local_bisnes'],
                             ]
                         },
                         {
-                            name: "Export tips",
+                            name: this.$t('user.nav.guide_export_tips'),
                             route: "/export_tips",
                             permissions: [
                                 ['show', 'export']
@@ -145,25 +145,25 @@ export default {
                     ]
                 },
                 {
-                    title: "Guide Dashboard",
+                    title: this.$t('user.nav.guide_dashboard'),
                     name: "guide_tasks",
                     routes: [
                         {
-                            name: "Guide Dashboard",
+                            name: this.$t('user.nav.guide_dashboard_page'),
                             route: "/guide_dashboard_page",
                             permissions: [
                                 ['show', 'guide_task'],
                             ]
                         },
                         {
-                            name: "Guide task panel",
+                            name: this.$t('user.nav.guide_task_panel'),
                             route: "/guide_task_panel",
                             permissions: [
                                 ['show', 'guide_task'],
                             ]
                         },
                         {
-                            name: "My tasks for guide",
+                            name: this.$t('user.nav.guide_my_tasks'),
                             route: "/team_member_tasks_page",
                             permissions: [
                                 ['show', 'team'],
@@ -172,7 +172,7 @@ export default {
                     ]
                 },
                 {
-                    title: "Shop",
+                    title: this.$t('user.nav.shop'),
                     name: "shop",
                     routes: [
                         // {
@@ -180,7 +180,7 @@ export default {
                         //     route: "/purchases"
                         // },
                         {
-                            name: "All products & categories",
+                            name: this.$t('user.nav.shop_products_and_categories'),
                             route: "/products_and_categories",
                             permissions: [
                                 ['show', 'product'],
@@ -190,21 +190,21 @@ export default {
                             ]
                         },
                         {
-                            name: "Warehouses",
+                            name: this.$t('user.nav.shop_warehouses'),
                             route: "/warehouses",
                             permissions: [
                                 ['show', 'warehouse'],
                             ]
                         },
                         {
-                            name: "All orders",
+                            name: this.$t('user.nav.shop_all_orders'),
                             route: "/order/all_orders",
                             permissions: [
                                 ['show', 'order'],
                             ]
                         },
                         {
-                            name: "All tours",
+                            name: this.$t('user.nav.shop_all_tours'),
                             route: "/all_tours_list",
                             permissions: [
                                 ['show', 'tour'],
@@ -212,14 +212,14 @@ export default {
                             ]
                         },
                         {
-                            name: "All tours reservations",
+                            name: this.$t('user.nav.shop_all_tours_reservations'),
                             route: "/all_tours_reservations_list",
                             permissions: [
                                 ['show', 'tour_reservation'],
                             ]
                         },
                         {
-                            name: "Services",
+                            name: this.$t('user.nav.shop_services'),
                             route: "/services_list",
                             permissions: [
                                 ['show', 'services'],
@@ -228,25 +228,25 @@ export default {
                     ],
                 },
                 {
-                    title: "Shop Dashboard",
+                    title: this.$t('user.nav.shop_dashboard'),
                     name: "shop_tasks",
                     routes: [
                         {
-                            name: "Shop Dashboard",
+                            name: this.$t('user.nav.shop_dashboard_page'),
                             route: "/shop_dashboard_page",
                             permissions: [
                                 ['show', 'shop_task'],
                             ]
                         },
                         {
-                            name: "Shop task panel",
+                            name: this.$t('user.nav.shop_task_panel'),
                             route: "/shop_task_panel",
                             permissions: [
                                 ['show', 'shop_task'],
                             ]
                         },
                         {
-                            name: "My Tasks (Shop)",
+                            name: this.$t('user.nav.shop_my_tasks'),
                             route: "/shop_worker_tasks_page",
                             permissions: [
                                 ['show', 'shop_task'],
@@ -255,11 +255,11 @@ export default {
                     ],
                 },
                 {
-                    title: "Blog",
+                    title: this.$t('user.nav.blog'),
                     name: "blog",
                     routes: [
                         {
-                            name: "Posts",
+                            name: this.$t('user.nav.blog_posts'),
                             route: "/posts",
                             permissions: [
                                 ['show', 'post'],
@@ -268,11 +268,11 @@ export default {
                     ]
                 },
                 {
-                    title: "Summit",
+                    title: this.$t('common.summit'),
                     name: "summit",
                     routes: [
                         {
-                            name: "Summits",
+                            name: this.$t('user.nav.summit_summits'),
                             route: "/summits",
                             permissions: [
                                 ['show', 'summit'],
@@ -281,60 +281,60 @@ export default {
                     ]
                 },
                 {
-                    title: "Site options",
+                    title: this.$t('user.nav.site_options'),
                     name: "site_options",
                     routes: [
                         {
-                            name: "About us",
+                            name: this.$t('user.nav.site_options_about_us'),
                             route: "/site_info",
                             permissions: [
                                 ['show', 'site_data'],
                             ]
                         },
                         {
-                            name: "Head Sliders",
+                            name: this.$t('user.nav.site_options_head_sliders'),
                             route: "/head_sliders_images",
                             permissions: [
                                 ['show', 'head_slider'],
                             ]
                         },
                         {
-                            name: "Site followers",
+                            name: this.$t('user.nav.site_options_site_followers'),
                             route: "/site_folloers",
                             permissions: [
                                 ['show', 'site_folloers'],
                             ]
                         },
                         {
-                            name: "Users & Permissions",
+                            name: this.$t('user.nav.site_options_users_and_permissions'),
                             route: "/users_list",
                             permissions: [
                                 ['show', 'user'],
                             ]
                         },
                         {
-                            name: "Other commenters",
+                            name: this.$t('user.nav.site_options_other_commenters'),
                             route: "/non_registered_commenter_list",
                             permissions: [
                                 ['show', 'commenter'],
                             ]
                         },
                         {
-                            name: "Multimedia and Database",
+                            name: this.$t('user.nav.site_options_multimedia_and_database'),
                             route: "/multimedia",
                             permissions: [
                                 ['show', 'database'],
                             ]
                         },
                         {
-                            name: "All comments",
+                            name: this.$t('user.nav.site_options_all_comments'),
                             route: "/comments_and_reviews",
                             permissions: [
                                 ['show', 'comment'],
                             ]
                         },
                         {
-                            name: "All routes reviews",
+                            name: this.$t('user.nav.site_options_all_routes_reviews'),
                             route: "/all_routes_reviews",
                             permissions: [
                                 ['show', 'comment'],
@@ -343,6 +343,21 @@ export default {
                     ],
                 },
             ]
+
+            // All routes above are hardcoded absolute paths (e.g. "/favorite_products")
+            // with no locale prefix. Without this, following any of these links while
+            // browsing in Georgian silently drops back to English, since the app's
+            // locale is derived from the URL prefix on every navigation.
+            const prefix = this.$i18n && this.$i18n.locale === 'ka' ? '/ka' : ''
+            const applyPrefix = (items) => {
+                items.forEach(item => {
+                    if (item.route) item.route = prefix + item.route
+                    if (item.routes) applyPrefix(item.routes)
+                })
+            }
+            applyPrefix(menu)
+
+            return menu
         }
     }
 }

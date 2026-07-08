@@ -4,7 +4,7 @@
             <div class="col-md-12">
                 <div class="jumbotron width_100">
                     <div class="container">
-                        <h2 class="display-4"><span style="text-transform: capitalize">Blog</span> global information</h2>
+                        <h2 class="display-4">{{ $t('admin.posts.blog_global_info_title') }}</h2>
                         <!-- <p class="lead">Blog global information.</p> -->
                     </div>
                 </div>

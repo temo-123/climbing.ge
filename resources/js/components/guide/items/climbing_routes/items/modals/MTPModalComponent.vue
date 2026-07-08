@@ -20,8 +20,8 @@
                     <!-- MTP overview -->
                     <div class="modal-section overview">
                         <h2 class="section-title">{{ $t('guide.route.mtp_details') }}</h2>
-                        <p class="route-detail">{{ $t("guide.route.name") }} — {{ mtpName }}</p>
-                        <p class="route-detail" v-if="mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("guide.route.height") }} — {{ mtp_detals.mtp.height }}</p>
+                        <p class="route-detail">{{ $t("common.name") }} — {{ mtpName }}</p>
+                        <p class="route-detail" v-if="mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("common.height") }} — {{ mtp_detals.mtp.height }}</p>
                         <div v-if="mtpText" class="mtp-description mt-2" v-html="mtpText"></div>
                         <div class="mt-3" v-if="mtp_detals.reviews_count > 0">
                             <starsReiting
@@ -70,8 +70,8 @@
                                     <thead>
                                         <tr>
                                             <th>N</th>
-                                            <th>{{ $t("guide.route.name") }}</th>
-                                            <th>{{ $t("guide.route.height") }}</th>
+                                            <th>{{ $t("common.name") }}</th>
+                                            <th>{{ $t("common.height") }}</th>
                                             <th>{{ $t("guide.route.bolts") }}</th>
                                             <th>{{ $t("guide.route.grade fr") }}</th>
                                             <th class="display-none-720px">{{ $t("guide.route.grade yds") }}</th>

@@ -5,6 +5,7 @@
     {{-- <meta name='locale' content='{{app()->getLocale()}}' /> --}}
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="ga-tag-id" content="{{ config('services.analytics.films') }}">
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
     @include('partials.seo')
     @include('partials.adsense')

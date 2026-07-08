@@ -17,7 +17,7 @@
                                 @click="openExportModal"
                                 class="btn btn-primary btn-lg"
                             >
-                                Export Articles to PDF
+                                {{ $t('admin.export.export_articles_pdf_title') }}
                             </button>
                         </div>
                     </div>

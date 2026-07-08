@@ -18,17 +18,17 @@
                                 <div class="col">
                                     <input type="radio" :id="1" :value="1" v-model="tab_num">
                                     
-                                    <label :for="1" >My Private Info</label>
+                                    <label :for="1" >{{ $t('user.profile.tab_private_info') }}</label>
                                 </div>
                                 <div class="col">
                                     <input type="radio" :id="2" :value="2" v-model="tab_num">
-                                    
-                                    <label :for="2" >My Addresses</label>
+
+                                    <label :for="2" >{{ $t('user.profile.tab_addresses') }}</label>
                                 </div>
                                 <div class="col">
                                     <input type="radio" :id="3" :value="3" v-model="tab_num">
-                                    
-                                    <label :for="3" >Notifications</label>
+
+                                    <label :for="3" >{{ $t('user.profile.tab_notifications') }}</label>
                                 </div>
                             </div>
 

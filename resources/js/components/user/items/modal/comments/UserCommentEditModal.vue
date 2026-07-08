@@ -1,17 +1,17 @@
 <template>
     <StackModal
         v-model="is_show_modal"
-        title="Edit comment"
+        :title="$t('admin.comments.edit_comment_title')"
         @close="close_modal"
         :saveButton="{ visible: true }" @save="save"
-        :cancelButton="{ title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ title: $t('admin.comments.cancel_btn'), btnClass: { 'btn btn-secondary': true } }"
     >
         <div class="container">
             <div v-if="is_loading" class="text-center py-3">
                 <img :src="'/images/site_img/loading.gif'" alt="loading">
             </div>
             <div v-else>
-                <label class="form-label fw-semibold">Comment text</label>
+                <label class="form-label fw-semibold">{{ $t('admin.comments.comment_text_label') }}</label>
                 <textarea class="form-control" v-model="text" rows="5"></textarea>
             </div>
         </div>

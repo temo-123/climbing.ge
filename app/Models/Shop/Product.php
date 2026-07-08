@@ -32,7 +32,6 @@ class Product extends Model
       // 'material',
 
       'made_in_georgia',
-      'is_donation_product',
 
       'sale_type',
 

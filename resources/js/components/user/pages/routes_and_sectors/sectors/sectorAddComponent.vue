@@ -13,7 +13,7 @@
                     class="btn btn-primary"
                     v-on:click="go_back()"
                 >
-                    Beck
+                    {{ $t('common.back') }}
                 </button>
             </div>
         </div>
@@ -24,7 +24,7 @@
                     class="btn btn-primary"
                     form="sector_adding_form"
                 >
-                    Save
+                    {{ $t('common.save') }}
                 </button>
             </div>
         </div>
@@ -38,25 +38,25 @@
         >
 
             <div class="form-group clearfix row">
-                <label for="published" class='col-md-2 control-label '> Publish </label>
+                <label for="published" class='col-md-2 control-label '> {{ $t('admin.common.publish') }} </label>
                 <div class="col-md-10">
-                    <select class="form-control" v-model="data.published" name="published" required> 
-                        <option :value="0">Not public</option> 
-                        <option :value="1">Public</option> 
-                    </select> 
+                    <select class="form-control" v-model="data.published" name="published" required>
+                        <option :value="0">{{ $t('admin.common.not_public') }}</option>
+                        <option :value="1">{{ $t('admin.common.public') }}</option>
+                    </select>
                 </div>
             </div>
 
             <div class="form-group clearfix row">
                 <label for="name" class="col-md-2 control-label">
-                    Sector name
+                    {{ $t('admin.routes_sectors.sector_name') }}
                 </label>
                 <div class="col-md-10">
                     <input
                         type="text"
                         v-model="data.name"
                         name="name"
-                        placeholder="Name"
+                        :placeholder="$t('common.name')"
                         class="form-control textarea"
                         required
                     />
@@ -71,7 +71,7 @@
             </div>
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Region </label>
+                <label class="col-md-2 control-label"> {{ $t('admin.routes_sectors.region_label') }} </label>
                 <div class="col-md-10">
                     <select
                         class="form-control"
@@ -83,7 +83,7 @@
                             v-bind:value="''"
                             disabled
                         >
-                            Select outdoor area
+                            {{ $t('admin.routes_sectors.select_outdoor_area') }}
                         </option>
                         <option
                             v-for="region in regions"
@@ -119,14 +119,14 @@
 
             <div class="form-group clearfix row">
                 <label for="name" class="col-md-2 control-label">
-                    wolking_time
+                    {{ $t('admin.routes_sectors.walking_time') }}
                 </label>
                 <div class="col-md-10">
                     <input
                         type="text"
                         v-model="data.wolking_time"
                         wolking_time="wolking_time"
-                        placeholder="Wolking time"
+                        :placeholder="$t('admin.routes_sectors.walking_time')"
                         class="form-control textarea"
                     />
                     <div
@@ -142,18 +142,18 @@
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Shadow time: </label>
+                <label class="col-md-2 control-label"> {{ $t('admin.routes_sectors.shadow_time') }} </label>
                 <div class="col-md-10">
                     <div class="row">
                         <div class="col-md-4">
                             <label for="vehicle1" class="sector_checbox_title">
-                                all_day_in_shade</label
+                                {{ $t('admin.routes_sectors.all_day_shade') }}</label
                             ><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in the shade whole day.svg'"
-                                alt="In the shade whole day"
-                                title="In the shade whole day"
+                                :alt="$t('admin.routes_sectors.all_day_shade')"
+                                :title="$t('admin.routes_sectors.all_day_shade')"
                             />
                             <input
                                 type="checkbox"
@@ -164,12 +164,12 @@
                             />
                         </div>
                         <div class="col-md-4">
-                            <label for="vehicle1"> all_day_in_sun</label><br />
+                            <label for="vehicle1"> {{ $t('admin.routes_sectors.all_day_sun') }}</label><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in the sun the whole day.svg'"
-                                alt="In the sun the whole day"
-                                title="In the sun the whole day"
+                                :alt="$t('admin.routes_sectors.all_day_sun')"
+                                :title="$t('admin.routes_sectors.all_day_sun')"
                             />
                             <input
                                 type="checkbox"
@@ -180,13 +180,13 @@
                             />
                         </div>
                         <div class="col-md-4">
-                            <label for="vehicle1"> in_the_shade_afternoon</label
+                            <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_afternoon') }}</label
                             ><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade in the afternoon.svg'"
-                                alt="In shade in the afternoon"
-                                title="In shade in the afternoon"
+                                :alt="$t('admin.routes_sectors.shade_afternoon')"
+                                :title="$t('admin.routes_sectors.shade_afternoon')"
                             />
                             <input
                                 type="checkbox"
@@ -199,13 +199,13 @@
                     </div>
                     <div class="row">
                         <div class="col-md-4">
-                            <label for="vehicle1"> in_the_shade_befornoon</label
+                            <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_before_noon') }}</label
                             ><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade befor noon.svg'"
-                                alt="In shade befor noon"
-                                title="In shade befor noon"
+                                :alt="$t('admin.routes_sectors.shade_before_noon')"
+                                :title="$t('admin.routes_sectors.shade_before_noon')"
                             />
                             <input
                                 type="checkbox"
@@ -216,13 +216,13 @@
                             />
                         </div>
                         <div class="col-md-4">
-                            <label for="vehicle1"> in_shade_after_10</label
+                            <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_after_10') }}</label
                             ><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade after 10.00 am.svg'"
-                                alt="In shade after 10.00 am"
-                                title="In shade after 10.00 am"
+                                :alt="$t('admin.routes_sectors.shade_after_10')"
+                                :title="$t('admin.routes_sectors.shade_after_10')"
                             />
                             <input
                                 type="checkbox"
@@ -233,13 +233,13 @@
                             />
                         </div>
                         <div class="col-md-4">
-                            <label for="vehicle1"> in_shade_after_15</label
+                            <label for="vehicle1"> {{ $t('admin.routes_sectors.shade_after_15') }}</label
                             ><br />
                             <img
                                 class="sun_svg"
                                 :src="'../../images/svg/in shade after 15.00 pm.svg'"
-                                alt="In shade after 15.00 pm"
-                                title="In shade after 15.00 pm"
+                                :alt="$t('admin.routes_sectors.shade_after_15')"
+                                :title="$t('admin.routes_sectors.shade_after_15')"
                             />
                             <input
                                 type="checkbox"
@@ -256,15 +256,15 @@
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Sector relief: </label>
+                <label class="col-md-2 control-label"> {{ $t('admin.routes_sectors.sector_relief') }} </label>
                 <div class="col-md-10 row">
                     <div class="col-md-3">
-                        <label for="vehicle1"> slabby</label><br />
+                        <label for="vehicle1"> {{ $t('admin.routes_sectors.slabby') }}</label><br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/slabby.svg'"
-                            alt="Slabby"
-                            title="Slabby"
+                            :alt="$t('admin.routes_sectors.slabby')"
+                            :title="$t('admin.routes_sectors.slabby')"
                         />
                         <input
                             type="checkbox"
@@ -275,12 +275,12 @@
                         />
                     </div>
                     <div class="col-md-3">
-                        <label for="vehicle1"> vertical</label><br />
+                        <label for="vehicle1"> {{ $t('admin.routes_sectors.vertical') }}</label><br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/vertical.svg'"
-                            alt="Vertical"
-                            title="Vertical"
+                            :alt="$t('admin.routes_sectors.vertical')"
+                            :title="$t('admin.routes_sectors.vertical')"
                         />
                         <input
                             type="checkbox"
@@ -291,12 +291,12 @@
                         />
                     </div>
                     <div class="col-md-3">
-                        <label for="vehicle1"> overhang</label><br />
+                        <label for="vehicle1"> {{ $t('admin.routes_sectors.overhang') }}</label><br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/overhang.svg'"
-                            alt="Overhang"
-                            title="Overhang"
+                            :alt="$t('admin.routes_sectors.overhang')"
+                            :title="$t('admin.routes_sectors.overhang')"
                         />
                         <input
                             type="checkbox"
@@ -307,12 +307,12 @@
                         />
                     </div>
                     <div class="col-md-3">
-                        <label for="vehicle1"> roof</label><br />
+                        <label for="vehicle1"> {{ $t('admin.routes_sectors.roof') }}</label><br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/roof.svg'"
-                            alt="Overhang"
-                            title="Overhang"
+                            :alt="$t('admin.routes_sectors.roof')"
+                            :title="$t('admin.routes_sectors.roof')"
                         />
                         <input
                             type="checkbox"
@@ -328,19 +328,19 @@
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Kids </label>
+                <label class="col-md-2 control-label"> {{ $t('admin.routes_sectors.kids_label') }} </label>
                 <div class="col-md-10 row">
                     <div class="col-md-6">
                         <label for="vehicle1">
-                            Femily
-                            <strong v-if="!data.for_family">is not friendly</strong>
-                            <strong v-else>friendly</strong>
+                            {{ $t('admin.routes_sectors.family') }}
+                            <strong v-if="!data.for_family">{{ $t('admin.routes_sectors.not_friendly') }}</strong>
+                            <strong v-else>{{ $t('admin.routes_sectors.friendly') }}</strong>
                         </label>
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/for family.svg'"
-                            alt="Slabby"
-                            title="Slabby"
+                            :alt="$t('admin.routes_sectors.family')"
+                            :title="$t('admin.routes_sectors.family')"
                         />
                         <input
                             type="checkbox"
@@ -352,16 +352,16 @@
                     </div>
                     <div class="col-md-6">
                         <label for="vehicle1">
-                            Kids climbing
-                            <strong v-if="!data.for_kids">is not friendly</strong>
-                            <strong v-else>friendly</strong>
+                            {{ $t('admin.routes_sectors.kids_climbing') }}
+                            <strong v-if="!data.for_kids">{{ $t('admin.routes_sectors.not_friendly') }}</strong>
+                            <strong v-else>{{ $t('admin.routes_sectors.friendly') }}</strong>
                         </label>
                         <br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/for kids.svg'"
-                            alt="Vertical"
-                            title="Vertical"
+                            :alt="$t('admin.routes_sectors.kids_climbing')"
+                            :title="$t('admin.routes_sectors.kids_climbing')"
                         />
                         <input
                             type="checkbox"
@@ -370,22 +370,22 @@
                             value="1"
                             class="largerCheckbox"
                         />
-                    </div>                    
+                    </div>
                 </div>
             </div>
 
             <hr />
 
             <div class="form-group clearfix row">
-                <label class="col-md-2 control-label"> Helmet required: </label>
+                <label class="col-md-2 control-label"> {{ $t('admin.routes_sectors.helmet_required_label') }} </label>
                 <div class="col-md-10 row">
                     <div class="col-md-6">
-                        <label for="vehicle1"> Is helmet required</label><br />
+                        <label for="vehicle1"> {{ $t('admin.routes_sectors.is_helmet_required') }}</label><br />
                         <img
                             class="sun_svg"
                             :src="'../../images/svg/climbing-helmet.jpg'"
-                            alt="Vertical"
-                            title="Vertical"
+                            :alt="$t('admin.routes_sectors.is_helmet_required')"
+                            :title="$t('admin.routes_sectors.is_helmet_required')"
                         />
                         <input
                             type="checkbox"
@@ -394,16 +394,16 @@
                             value="1"
                             class="largerCheckbox"
                         />
-                    </div>                    
+                    </div>
                 </div>
             </div>
 
             <hr />
-            
+
         </form>
-        
+
         <gallery_images_add
-            title_prop="Sector Images"
+            :title_prop="$t('admin.routes_sectors.sector_images')"
             @update_gallery_images="sector_images = $event"
         />
     </div>
@@ -483,7 +483,7 @@
         },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action_query == true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.is_back_action_query = false;
                     next()
                 } else {

@@ -15,12 +15,12 @@
             <div class="row font-italic">
                 <div class="col-md-6">
                     <h3 class="mt-3 pb-3 mb-4 ">
-                        Faworite products
+                        {{ $t('user.favorites.products.title') }}
                     </h3>
                 </div>
                 <div class="col-md-6">
                     <button class="btn btn-primary float-right" @click="go_to_product_page('/')">
-                        Go to product list
+                        {{ $t('user.favorites.products.go_to_list') }}
                     </button>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                         class="btn btn-success float-right"
                         @click="get_products()"
                     >
-                        refresh
+                        {{ $t('common.refresh') }}
                     </button>
                 </div>
             </div>
@@ -58,7 +58,7 @@
             </div>
 
             <div class="row" v-else>
-                <h2>You dont have faworite products</h2>
+                <h2>{{ $t('user.favorites.products.empty') }}</h2>
             </div>
 
             <!-- <tabsComponent
@@ -180,15 +180,14 @@ import tabsComponent from "../../items/data_table/TabsComponent.vue";
                 window.open(this.MIX_APP_SSH + 'shop.' + this.MIX_SITE_URL + page)
             },
             del_from_faworites(product_id){
-                if(confirm('Are you sure, you want delite this product from your faworites list?')){
+                if(confirm(this.$t('user.favorites.products.confirm_delete'))){
                     axios
                     .post('/set_product/del_from_favorite/'+ product_id)
                     .then(response => {
-                        // alert("Product delited from your favorite list!");
                         this.get_products()
                     })
                     .catch(error =>{
-                        alert("Error");
+                        alert(this.$t('user.favorites.error'))
                     })
                 }
             },

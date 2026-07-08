@@ -1,35 +1,35 @@
 <template>
     <StackModal
             :show="is_show_add_modal"
-            :title="'Add Pitch'"
+            :title="$t('admin.routes_sectors.add_pitch_title')"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <form id="mtp_add_form" @submit.prevent="save()">
                 <select class="form-control"  v-model="data.category" required>
-                    <option value="" disabled>Please select mtp type</option>
-                    <option value="sport climbing">Sport climbing</option>
-                    <option value="tred">Tred Climbing</option>
+                    <option value="" disabled>{{ $t('admin.routes_sectors.please_select_mtp_type') }}</option>
+                    <option value="sport climbing">{{ $t('admin.routes_sectors.sport_climbing') }}</option>
+                    <option value="tred">{{ $t('admin.routes_sectors.tred_climbing') }}</option>
                 </select>
                 <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.grade" required>
-                    <option value=""> No grade </option>
-                    <option value="Project">Project</option>
+                    <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                    <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                     <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
                 <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.or_grade">
-                    <option value=""> No grade </option>
-                    <option value="Project">Project</option>
+                    <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                    <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                     <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
 
-                <input type="text" name="name" v-model="data.name" class="form-control" placeholder="name"> 
-                <input type="number" name="bolts" v-model="data.bolts" class="form-control" placeholder="Bolts"> 
-                <input type="number" name="height" class="form-control" v-model="data.height" placeholder="Height"> 
-                <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter"> 
-                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
-                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+                <input type="text" name="name" v-model="data.name" class="form-control" :placeholder="$t('common.name')">
+                <input type="number" name="bolts" v-model="data.bolts" class="form-control" :placeholder="$t('admin.common.bolts')">
+                <input type="number" name="height" class="form-control" v-model="data.height" :placeholder="$t('common.height')">
+                <input type="text" name="auther" class="form-control" v-model="data.author" :placeholder="$t('admin.routes_sectors.bolter_placeholder')">
+                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" :placeholder="$t('admin.routes_sectors.bolting_date_placeholder')">
+                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
 
                 <text_block_localization
                     v-model:en_value="data.text_us"
@@ -44,7 +44,7 @@
                     form='mtp_add_form'
                     :class="{'btn btn-primary': true}"
                 >
-                    Save
+                    {{ $t('common.save') }}
                 </button>
             </div>
         </div>
@@ -105,7 +105,7 @@
         },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action_query == true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.is_back_action_query = false;
                     next()
                 } else {

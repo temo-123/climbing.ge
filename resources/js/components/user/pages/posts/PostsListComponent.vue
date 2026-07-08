@@ -70,7 +70,7 @@
     
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Posts', 
+                                            'table_name': this.$t('admin.posts.posts_table'),
                                             // 'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
                                             'add_action': {
                                                 'action': 'route',
@@ -81,11 +81,11 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Public',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.title'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -110,7 +110,7 @@
                 });
             },
             del_post(id){
-                if (confirm("Are you sure you want to delete this article?")) {
+                if (confirm(this.$t('admin.common.confirm_delete'))) {
                     axios
                     .delete("/set_post/del_post/" + id)
                     .then(response => {

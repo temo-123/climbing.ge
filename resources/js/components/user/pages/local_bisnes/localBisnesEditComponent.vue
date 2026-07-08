@@ -2,12 +2,12 @@
     <div class="tabs">
         <div class="row">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >Save update</button>
+                <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >{{ $t('admin.local_business.save_update_btn') }}</button>
             </div>
         </div>
         <div class="row" v-show="validation_errors.length != 0">
@@ -21,17 +21,17 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="4" :value="4" v-model="tab_num">
                         
-                        <label for="4" >Georgian text</label>
+                        <label for="4" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>
@@ -40,29 +40,29 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Service global information</span></h2>
-                                <p class="lead">Service global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.local_business.service_global_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.local_business.service_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix row">
-                            <label for="name" class='col-md-2 control-label'> Publish </label>
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.common.publish') }} </label>
                             <div class="col-md-10">
-                                <select class="form-control" name="published" v-model="data.global_bisnes.published"> 
-                                    <option value="0">Not public</option> 
-                                    <option value="1">Public</option> 
-                                </select> 
+                                <select class="form-control" name="published" v-model="data.global_bisnes.published">
+                                    <option value="0">{{ $t('admin.common.not_public') }}</option>
+                                    <option value="1">{{ $t('admin.common.public') }}</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
-                            <label for="name" class='col-xs-2 control-label'> Published befor (After this data it`s whil by not public`) </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.local_business.published_before_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_data" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Totaly public </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.local_business.totaly_public_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_bisnes.public_totaly" >
                             </div>
@@ -91,34 +91,34 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Service english version</h2>
-                            <p class="lead">Service english version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.local_business.service_en_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.local_business.service_en_version_subtitle') }}</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_bisnes.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_bisnes.title"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Change URL title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
                             <div class="col-xs-8">
                                 <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_bisnes()">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <small_editor v-model="data.us_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.us_bisnes.text" />
                             </div>
@@ -128,28 +128,28 @@
                 <div class="row" v-show="tab_num == 4">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Service georgian version</h2>
-                            <p class="lead">Service georgian version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.local_business.service_ka_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.local_business.service_ka_version_subtitle') }}</p>
                         </div>
                     </div>
-    
+
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_bisnes.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_bisnes.title" class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <small_editor v-model="data.ka_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.ka_bisnes.text" />
                             </div>
@@ -259,7 +259,7 @@
 
             change_url_title_in_global_bisnes(){
                 if(!this.change_url_title){
-                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                    if(confirm(this.$t('admin.articles.locale_form.confirm_change_url_title'))){
                         this.change_url_title = true
                     }
                 }
@@ -334,7 +334,7 @@
 
             go_back: function(back_action = false) {
                 if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
+                    if(confirm(this.$t('admin.shop.confirm_go_back'))){
                         this.$router.go(-1)
                     }
                 }
@@ -348,7 +348,7 @@
                 if (error.response.status == 422) {
                     this.validation_errors = error.response.data.validation;
                 } else {
-                    alert('Validation error: ' + error);
+                    alert(this.$t('admin.local_business.validation_error_prefix') + ' ' + error);
                 }
             },
 
@@ -373,7 +373,7 @@
                             this.go_back(true);
                         } else {
                             console.log('Save response indicates failure:', response.data);
-                            alert('Save completed but with issues: ' + JSON.stringify(response.data));
+                            alert(this.$t('admin.local_business.save_completed_with_issues') + ' ' + JSON.stringify(response.data));
                         }
                     })
                     .catch(error => {
@@ -386,10 +386,10 @@
                             if (error.response.status == 422) {
                                 this.validation_errors = error.response.data.validation;
                             } else {
-                                alert('Save error: ' + JSON.stringify(error.response.data));
+                                alert(this.$t('admin.local_business.save_error_prefix') + ' ' + JSON.stringify(error.response.data));
                             }
                         } else {
-                            alert('Network error: ' + error.message);
+                            alert(this.$t('admin.local_business.network_error_prefix') + ' ' + error.message);
                         }
                     });
             },

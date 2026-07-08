@@ -3,16 +3,16 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb user_breadcrumb">
                 <li class="breadcrumb-item">
-                    Cart
+                    {{ $t('user.checkout.breadcrumb_cart') }}
                 </li>
                 <li class="breadcrumb-item" v-if="props_page == 'confirm_order' || props_page == 'product_list' || props_page == 'payment'">
-                    Paymant
+                    {{ $t('user.checkout.breadcrumb_payment') }}
                 </li>
                 <li class="breadcrumb-item" v-if="props_page == 'confirm_order' || props_page == 'product_list'">
-                    Product list
+                    {{ $t('user.checkout.breadcrumb_product_list') }}
                 </li>
                 <li class="breadcrumb-item" v-if="props_page == 'confirm_order'">
-                    Confirm order
+                    {{ $t('user.checkout.breadcrumb_confirm_order') }}
                 </li>
             </ol>
         </nav>

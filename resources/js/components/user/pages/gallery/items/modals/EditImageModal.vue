@@ -4,7 +4,7 @@
         :title="$t('head_slider.edit_image')"
         @close="close_modal()"
         @save="$refs.edit_form.requestSubmit()"
-        :saveButton="{ visible: true, title: $t('head_slider.save') }"
+        :saveButton="{ visible: true, title: $t('common.save') }"
         :cancelButton="{ visible: false }"
     >
         <div>
@@ -32,12 +32,12 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{ $t('head_slider.title') }} *</label>
+                        <label class="col-md-3 col-form-label">{{ $t('common.title') }} *</label>
                         <div class="col-md-9">
                             <input
                                 type="text"
                                 class="form-control"
-                                :placeholder="$t('head_slider.title')"
+                                :placeholder="$t('common.title')"
                                 v-model="editing_data.title"
                                 required
                             >
@@ -91,14 +91,14 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Replace image</label>
+                        <label class="col-md-3 col-form-label">{{ $t('admin.gallery.replace_image_label') }}</label>
                         <div class="col-md-9">
                             <input
                                 type="file"
                                 accept="image/*,.webp"
                                 @change="on_image_change"
                             >
-                            <small class="text-muted">jpg, png, gif, webp — max 2 MB. Leave blank to keep current image.</small>
+                            <small class="text-muted">{{ $t('admin.gallery.replace_image_hint') }}</small>
                         </div>
                     </div>
 
@@ -139,7 +139,7 @@ export default {
             this.is_loading = true
             axios.get('set_head_slider/get_editing_slide/' + id)
                 .then(response => { this.editing_data = response.data })
-                .catch(() => { this.errors = ['Failed to load slide data.'] })
+                .catch(() => { this.errors = [this.$t('admin.gallery.failed_load_slide')] })
                 .finally(() => { this.is_loading = false })
         },
         on_image_change(e) {
@@ -164,7 +164,7 @@ export default {
                     if (error.response && error.response.status === 422) {
                         this.errors = this.extract_errors(error.response.data)
                     } else {
-                        this.errors = ['An error occurred. Please try again.']
+                        this.errors = [this.$t('guide.donation.error')]
                     }
                 })
                 .finally(() => { this.is_loading = false })

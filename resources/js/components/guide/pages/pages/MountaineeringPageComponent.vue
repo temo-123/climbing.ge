@@ -73,7 +73,7 @@
 
                     <!-- route -->
                     <div v-if="this.mount_route.locale_data.route">
-                        <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
+                        <h2 id="routes">{{ $t('common.routes')}}</h2>
                     
                         <MountaineeringRouteImages 
                             :article_id_prop="this.mount_route.global_data.id" 

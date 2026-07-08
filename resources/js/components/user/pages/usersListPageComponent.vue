@@ -12,7 +12,7 @@
             <div class="row mb-2">
                 <div class="col-sm-12">
                     <button v-if="$can('edit', 'role')" class="btn btn-warning btn-sm" @click="sync_admin_permissions">
-                        <i class="fa fa-refresh"></i> Sync Admin Permissions
+                        <i class="fa fa-refresh"></i> {{ $t('admin.users.sync_admin_permissions_btn') }}
                     </button>
                 </div>
             </div>
@@ -115,21 +115,21 @@
                     const existing = this.data_for_tab.findIndex(t => t.id === 1)
                     const tab = {
                         'id': 1,
-                        'table_name': 'Users',
+                        'table_name': this.$t('admin.users.users_table'),
                         'tab_data': {
                             'data': response.data,
                             'tab': {
                                 'head': [
-                                    'ID',
-                                    'Name',
-                                    'Email',
-                                    'Team',
-                                    'Verifay',
-                                    'Banned',
-                                    'Role',
-                                    'Ban',
-                                    'Reset',
-                                    'Delite',
+                                    this.$t('common.id'),
+                                    this.$t('common.name'),
+                                    this.$t('common.email'),
+                                    this.$t('admin.users.col_team'),
+                                    this.$t('admin.users.col_verified'),
+                                    this.$t('admin.users.col_banned'),
+                                    this.$t('admin.users.col_role'),
+                                    this.$t('admin.users.col_ban'),
+                                    this.$t('admin.users.col_reset'),
+                                    this.$t('common.delete'),
                                 ],
                                 'body': [
                                     ['data', ['id']],
@@ -138,7 +138,7 @@
                                     ['data', ['is_team_member'],'bool'],
                                     ['data', ['email_verified_at'],'bool_2'],
                                     ['data', ['is_banned'],'bool'],
-                                    ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', 'Edit Role'],
+                                    ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
                                     ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
@@ -167,7 +167,7 @@
                 .catch(error => {
                     console.log(error)
                     if (this.data_for_tab.findIndex(t => t.id === 1) === -1) {
-                        this.data_for_tab.push({ 'id': 1, 'table_name': 'Users', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                        this.data_for_tab.push({ 'id': 1, 'table_name': this.$t('admin.users.users_table'), 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
                     }
                 });
             },
@@ -178,16 +178,16 @@
                     const existing = this.data_for_tab.findIndex(t => t.id === 3)
                     const tab = {
                         'id': 3,
-                        'table_name': 'Roles',
+                        'table_name': this.$t('admin.users.roles_table'),
                         'tab_data': {
                             'data': response.data,
                             'tab': {
                                 'head': [
-                                    'ID',
-                                    'Name',
-                                    'Slug',
-                                    'Edit',
-                                    'Delite',
+                                    this.$t('common.id'),
+                                    this.$t('common.name'),
+                                    this.$t('admin.users.col_slug'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
                                 ],
                                 'body': [
                                     ['data', ['id']],
@@ -215,7 +215,7 @@
                 .catch(error => {
                     console.log(error)
                     if (this.data_for_tab.findIndex(t => t.id === 3) === -1) {
-                        this.data_for_tab.push({ 'id': 3, 'table_name': 'Roles', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                        this.data_for_tab.push({ 'id': 3, 'table_name': this.$t('admin.users.roles_table'), 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
                     }
                 });
             },
@@ -226,17 +226,17 @@
                     const existing = this.data_for_tab.findIndex(t => t.id === 2)
                     const tab = {
                         'id': 2,
-                        'table_name': 'Permissions',
+                        'table_name': this.$t('admin.users.permissions_table'),
                         'add_action': {
                             'action': 'fun',
                             'link': 'add_permission',
                             'class': 'btn btn-primary',
-                            'btn_title': 'Add Permission'
+                            'btn_title': this.$t('admin.users.add_permission_btn')
                         },
                         'tab_data': {
                             'data': response.data,
                             'tab': {
-                                'head': ['ID', 'Subject', 'Action', 'Delete'],
+                                'head': [this.$t('common.id'), this.$t('admin.users.col_subject'), this.$t('admin.users.col_action'), this.$t('common.delete')],
                                 'body': [
                                     ['data', ['id']],
                                     ['data', ['subject']],
@@ -261,7 +261,7 @@
                 .catch(error => {
                     console.log(error)
                     if (this.data_for_tab.findIndex(t => t.id === 2) === -1) {
-                        this.data_for_tab.push({ 'id': 2, 'table_name': 'Permissions', 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
+                        this.data_for_tab.push({ 'id': 2, 'table_name': this.$t('admin.users.permissions_table'), 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
                     }
                 });
             },
@@ -283,7 +283,7 @@
             },
 
             del_user(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_user/del_user/'+id, {
                         _method: 'DELETE'
@@ -295,7 +295,7 @@
                             this.get_users()
                         }
                         else if(Response.data == 'You don`t can delete yourself! :)'){
-                            alert(Response.data);
+                            alert(this.$t('admin.users.cannot_delete_self_msg'));
                         }
                     })
                     .catch(error => console.log(error))
@@ -303,7 +303,7 @@
             },
 
             del_user_pemisino_from_db(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_role/del_user_pemisino/'+id+'/'+this.action_user, {
                         _method: 'DELETE'
@@ -317,7 +317,7 @@
             },
 
             del_role(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_role/del_role/'+id, {
                         _method: 'DELETE'
@@ -338,17 +338,17 @@
             },
 
             del_permission(id){
-                if(!confirm('Delete this permission? It will be removed from all roles and users.')) return
+                if(!confirm(this.$t('admin.users.confirm_delete_permission'))) return
                 axios.post('/set_permission/destroy/'+id, { _method: 'DELETE' })
                     .then(() => this.get_parmisions())
                     .catch(error => console.log(error))
             },
 
             sync_admin_permissions(){
-                if(!confirm('This will add all missing permissions to the Admin role. Continue?')) return
+                if(!confirm(this.$t('admin.users.confirm_sync_admin_permissions'))) return
                 axios.post('/set_role/sync_admin_permissions')
                     .then(res => {
-                        alert(`Done. Added ${res.data.added} missing permission(s) to Admin role.`)
+                        alert(this.$t('admin.users.sync_admin_permissions_done_msg', { count: res.data.added }))
                         this.get_users()
                     })
                     .catch(error => console.log(error))

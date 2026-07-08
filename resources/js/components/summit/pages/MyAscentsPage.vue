@@ -34,9 +34,9 @@
                             <tr>
                                 <th>#</th>
                                 <th>{{ $t('summit.my_ascents.summit') }}</th>
-                                <th>{{ $t('summit.my_ascents.date') }}</th>
-                                <th>{{ $t('summit.my_ascents.route') }}</th>
-                                <th>{{ $t('summit.my_ascents.grade') }}</th>
+                                <th>{{ $t('common.date') }}</th>
+                                <th>{{ $t('common.route') }}</th>
+                                <th>{{ $t('common.grade') }}</th>
                                 <th>{{ $t('summit.my_ascents.gps') }}</th>
                                 <th>{{ $t('summit.my_ascents.comment') }}</th>
                             </tr>

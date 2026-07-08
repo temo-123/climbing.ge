@@ -49,7 +49,7 @@
                 .then(response => {
                     this.data_for_tab.push({
                         'id': 1,
-                        'table_name': 'My Tours', 
+                        'table_name': this.$t('admin.tour.my_tours_table'),
                         list_page: process.env.MIX_APP_SSH
                             ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/tours'
                             : window.location.origin + '/tours',
@@ -62,11 +62,11 @@
                             'data': response.data, 
                             'tab': {
                                 'head': [
-                                    'ID',
-                                    'URL Title',
-                                    'Public',
-                                    'Edit',
-                                    'Delite',
+                                    this.$t('common.id'),
+                                    this.$t('admin.tour.url_title_col'),
+                                    this.$t('admin.common.public'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
                                 ],
                                 'body': [
                                     ['data', ['id']],
@@ -91,7 +91,7 @@
                 );
             },
             del_tour(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_tour/del_tour/'+id, {
                         _method: 'DELETE'

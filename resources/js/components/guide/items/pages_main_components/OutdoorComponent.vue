@@ -27,7 +27,7 @@
 
                 <!-- routes -->
                 <div v-if="this.article_prop.locale_data.route || this.article_prop.general_info.routes_info != []">
-                    <h2 id="routes">{{ $t('guide.article.title.route')}}</h2>
+                    <h2 id="routes">{{ $t('common.routes')}}</h2>
 
                     <routeQuanDiogram 
                         :outdoor_region_article_id="this.article_prop.global_data.id"

@@ -6,7 +6,7 @@
             size="md"
             :cancelButton="{
                 visible: true,
-                title: $t('guide.close'),
+                title: $t('common.close'),
                 btnClass: { 'btn btn-secondary px-4 py-2': true },
             }"
             :saveButton="{ visible: false, title: 'Save' }"

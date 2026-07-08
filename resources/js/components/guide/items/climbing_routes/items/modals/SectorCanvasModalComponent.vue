@@ -68,8 +68,8 @@
           <thead>
             <tr>
               <th>N</th>
-              <th>{{ $t('guide.route.name') }}</th>
-              <th>{{ $t('guide.route.height') }}</th>
+              <th>{{ $t('common.name') }}</th>
+              <th>{{ $t('common.height') }}</th>
               <th>{{ $t('guide.route.bolts') }}</th>
               <th>{{ $t('guide.route.grade fr') }}</th>
               <th>{{ $t('guide.route.grade yds') }}</th>
@@ -113,8 +113,8 @@
           <thead>
             <tr>
               <th>N</th>
-              <th>{{ $t('guide.route.name') }}</th>
-              <th>{{ $t('guide.route.height') }}</th>
+              <th>{{ $t('common.name') }}</th>
+              <th>{{ $t('common.height') }}</th>
               <th>{{ $t('guide.route.grade fr') }}</th>
               <th>{{ $t('guide.route.grade yds') }}</th>
               <th class="col-info">Info</th>

@@ -6,18 +6,18 @@
       class="btn btn-secondary mb-2"
       :class="{ 'btn-success': showSource }"
     >
-      {{ showSource ? 'Hide Source' : 'Check Source' }}
+      {{ showSource ? t('admin.editor.hide_source_btn') : t('admin.editor.check_source_btn') }}
     </button>
 
     <div v-if="showSource" class="source-container mb-3">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <h6 class="mb-0">HTML Source Code</h6>
+        <h6 class="mb-0">{{ t('admin.editor.html_source_code_title') }}</h6>
         <button
           type="button"
           @click="copySource"
           class="btn btn-secondary btn-sm"
         >
-          Copy to Clipboard
+          {{ t('admin.editor.copy_to_clipboard_btn') }}
         </button>
       </div>
       <div style="max-height: 400px; overflow-y: auto;">
@@ -25,7 +25,7 @@
           v-model="content"
           class="form-control source-textarea"
           style="height: 400px; font-family: 'Courier New', monospace; font-size: 12px; line-height: 1.4;"
-          placeholder="Edit raw HTML source here..."
+          :placeholder="t('admin.editor.edit_raw_html_placeholder')"
         ></textarea>
       </div>
     </div>
@@ -43,12 +43,14 @@
 
 <script setup>
 import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css'
 
 // Props & Emits
 const props = defineProps(['modelValue'])
 const emit = defineEmits(['update:modelValue'])
+const { t } = useI18n()
 
 // State
 const content = ref(props.modelValue || '')
@@ -100,7 +102,7 @@ function imageUploadHandler() {
       const img = `<img src="${data.url}" />`
       document.execCommand('insertHTML', false, img)
     } catch {
-      alert('Image upload failed')
+      alert(t('admin.editor.image_upload_failed'))
     }
   }
 }
@@ -108,7 +110,7 @@ function imageUploadHandler() {
 // Methods
 const copySource = () => {
   navigator.clipboard.writeText(content.value).then(() => {
-    alert('Source code copied to clipboard!')
+    alert(t('admin.editor.source_copied_to_clipboard'))
   }).catch(err => {
     console.error('Failed to copy: ', err)
   })

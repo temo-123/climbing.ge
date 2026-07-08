@@ -1,18 +1,18 @@
 <template>
     <stack-modal
             :show="is_warehouse_edit_model"
-            title="edit order warehouse"
+            :title="$t('admin.warehouses.edit_order_warehouse_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <form v-on:submit.prevent="edit_warehouse" id="edit_warehouse">
-                <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
+                <input type="text" class="form-control" v-model="data.name" name="Name" :placeholder="$t('admin.warehouses.name_placeholder')" :title="$t('admin.warehouses.name_placeholder')" required>
 
                 <div class="form-group">
                     <input type="checkbox" id="general" name="general" v-model="data.general">
-                    <label for="general">Is this warehouse is general?</label>
+                    <label for="general">{{ $t('admin.warehouses.is_general_warehouse_question') }}</label>
                 </div>
             </form>
         </div>
@@ -23,7 +23,7 @@
                     form="edit_warehouse"
                     :class="{'btn btn-primary': true}"
                 >
-                Save Warehouse
+                {{ $t('admin.warehouses.save_warehouse_btn') }}
                 </button>
             </div>
         </div>
@@ -93,7 +93,7 @@
                 this.get_warehouse_data()
             },
             close_modal(){
-                if(confirm('Are you sure, you want close form? All data whil deleted!')){
+                if(confirm(this.$t('admin.live_camera.confirm_close_form_discard'))){
                     this.is_warehouse_edit_model = false
                     this.clear_form()
                 }

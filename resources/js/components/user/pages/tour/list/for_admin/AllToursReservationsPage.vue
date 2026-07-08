@@ -75,7 +75,7 @@
             get_reservations: function(){
                 this.data_for_tab = []
 
-                const tabHead = ['ID', 'Persons', 'Check In', 'Name', 'Email', 'Verified', 'Details', 'Delete'];
+                const tabHead = [this.$t('common.id'), this.$t('admin.tour.persons_col'), this.$t('admin.tour.check_in_col'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.tour.verified_col'), this.$t('admin.tour.details_col'), this.$t('common.delete')];
                 const tabBody = [
                     ['data', ['id']],
                     ['data', ['persons']],
@@ -97,7 +97,7 @@
                 ]).then(([allResponse, declResponse]) => {
                     this.data_for_tab.push({
                         'id': 1,
-                        'table_name': 'All Reservations',
+                        'table_name': this.$t('admin.tour.all_reservations_table'),
                         'add_action': {
                             'action': 'fun',
                             'link': 'show_reservation_calendar_modal',
@@ -110,7 +110,7 @@
                     });
                     this.data_for_tab.push({
                         'id': 2,
-                        'table_name': 'Declarations',
+                        'table_name': this.$t('admin.tour.declarations_table'),
                         'tab_data': {
                             'data': declResponse.data,
                             'tab': { 'head': tabHead, 'body': tabBody, 'perm': tabPerm }
@@ -135,7 +135,7 @@
                 this.$refs.google_calendar_sync_modal.open_google_calendar_sync_modal();
             },
             del_tour_reservation(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_tour/set_reservation/del_reservation/'+id, {
                         _method: 'DELETE'

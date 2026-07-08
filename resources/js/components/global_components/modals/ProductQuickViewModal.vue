@@ -21,7 +21,7 @@
         <div class="product-image-section">
           <div class="image-slider-container">
             <div v-if="q_product.product_images && q_product.product_images.length > 1" class="image-nav prev-image" @click="prevImage">
-              <button aria-label="Previous image" class="nav-btn">‹</button>
+              <button :aria-label="$t('shop.product.previous_image_aria')" class="nav-btn">‹</button>
             </div>
             <site-img
               v-if="q_product.product_images && q_product.product_images.length > 0"
@@ -36,7 +36,7 @@
               class="product-image"
             />
             <div v-if="q_product.product_images && q_product.product_images.length > 1" class="image-nav next-image" @click="nextImage">
-              <button aria-label="Next image" class="nav-btn">›</button>
+              <button :aria-label="$t('shop.product.next_image_aria')" class="nav-btn">›</button>
             </div>
           </div>
           <div v-if="q_product.product_images && q_product.product_images.length > 1" class="image-dots">
@@ -46,7 +46,7 @@
               :class="{ active: index === current_image_index }"
               @click="goToImage(index)"
               class="dot"
-              :aria-label="'Go to image ' + (index + 1)"
+              :aria-label="$t('shop.product.go_to_image_aria', { n: index + 1 })"
             ></button>
           </div>
         </div>

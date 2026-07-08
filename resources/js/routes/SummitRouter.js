@@ -24,21 +24,21 @@ const routes = [
         },
         children: [
             { path: '', name: 'index', component: load('IndexPage'), meta: { title: 'Site Index' } },
-          { path: 'about_us', name: 'about_us', component: load('AboutUsPage'), meta: { title: 'About Us' } },
-          { path: 'terms_of_use', name: 'summit_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
-          { path: 'make_ascent/:id', name: 'make_ascent', component: load('MakeSummitAscentPage'), meta: { title: 'Add Summit' } },
+            { path: 'about_us', name: 'about_us', component: load('AboutUsPage'), meta: { title: 'About Us' } },
+            { path: 'terms_of_use', name: 'summit_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
+            { path: 'make_ascent/:id', name: 'make_ascent', component: load('MakeSummitAscentPage'), meta: { title: 'Add Summit' } },
 
-          { path: 'summit/:url_title', name: 'summit', component: load('pages/SummitPage'), meta: { title: 'Summit Detail' } },
+            { path: 'summit/:url_title', name: 'summit', component: load('pages/SummitPage'), meta: { title: 'Summit Detail' } },
 
-          { path: 'summits/list', name: 'summit_list', component: load('lists/SummitListPage'), meta: { title: 'Summit List' } },
+            { path: 'summits/list', name: 'summit_list', component: load('lists/SummitListPage'), meta: { title: 'Summit List' } },
 
-          { path: 'summits/map', name: 'summit_map', component: load('SummitMapPage'), meta: { title: 'Summit Map' } },
+            { path: 'summits/map', name: 'summit_map', component: load('SummitMapPage'), meta: { title: 'Summit Map' } },
 
-          { path: 'search', name: 'search_summits', component: load('SearchPageComponent'), meta: { title: 'Search Summits' } },
+            { path: 'search', name: 'search_summits', component: load('SearchPageComponent'), meta: { title: 'Search Summits' } },
 
-          { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
-          { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
-          { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
+            { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
+            { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },
+            { path: "500",    name: "server-error", component: NotFound, meta: { title: 'Server Error' } },
         ]
       },
     { path: '/:pathMatch(.*)*', component: NotFound, beforeEnter: () => { window.location.replace('/404'); return false; } },

@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-groupe">
-                    <button @click="refresh()" class="btn btn-success float-right" v-if="!is_admin_panel_refresh">Refresh notifications ({{admin_refresh_id}})</button>
-                    <span class="badge badge-primare mb-1 float-right" v-if="is_admin_panel_refresh">Updating...</span>
+                    <button @click="refresh()" class="btn btn-success float-right" v-if="!is_admin_panel_refresh">{{ $t('admin.notifications.admin_panel.refresh_notifications_btn', { id: admin_refresh_id }) }}</button>
+                    <span class="badge badge-primare mb-1 float-right" v-if="is_admin_panel_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                 </div>
             </div>
         <!-- </div>
@@ -16,25 +16,25 @@
                             $can('del_comment', 'comments') 
                         " >
                     <div class="alert alert-warning" role="alert" v-for="com_complaint in comment_complaints" :key="com_complaint.id" >
-                        <strong>Warning!</strong> One <i class="fa fa-book" aria-hidden="true"></i> articl comment are a complainted. Please check it and make decision!
+                        <strong>{{ $t('admin.notifications.admin_panel.warning_label') }}</strong> <i class="fa fa-book" aria-hidden="true"></i> {{ $t('admin.notifications.admin_panel.comment_complaint_msg') }}
 
                         <div class="row">
                             <div class="col-md-6">
-                                <button class="btn btn-primary " @click="show_desidion_model(com_complaint.comment_id, com_complaint.id)">Check comment</button>.
+                                <button class="btn btn-primary " @click="show_desidion_model(com_complaint.comment_id, com_complaint.id)">{{ $t('admin.notifications.admin_panel.check_comment_btn') }}</button>.
                             </div>
                         </div>
                     </div>
                 </span>
                 <span v-if="
                             $can('show', 'comments') ||
-                            $can('del_comment', 'comments') 
+                            $can('del_comment', 'comments')
                         " >
                     <div class="alert alert-warning" role="alert" v-for="feed_complaint in feedback_complaints" :key="feed_complaint.id" >
-                        <strong>Warning!</strong> One <i class="fa fa-shopping-bag" aria-hidden="true"></i> product feedback are a complainted. Please check it and make decision!
+                        <strong>{{ $t('admin.notifications.admin_panel.warning_label') }}</strong> <i class="fa fa-shopping-bag" aria-hidden="true"></i> {{ $t('admin.notifications.admin_panel.product_feedback_complaint_msg') }}
 
                         <div class="row">
                             <div class="col-md-6">
-                                <button class="btn btn-primary " @click="show_desidion_model(feed_complaint.comment_id, feed_complaint.id)">Check comment</button>.
+                                <button class="btn btn-primary " @click="show_desidion_model(feed_complaint.comment_id, feed_complaint.id)">{{ $t('admin.notifications.admin_panel.check_comment_btn') }}</button>.
                             </div>
                         </div>
                     </div>
@@ -49,12 +49,12 @@
                             !$siteData.data.data['short_description_ka'] ||
                             !$siteData.data.data['short_description']
                         )">
-                        <strong>Danger!</strong> 
-                        Web-site information is not fool. check page "
-                        <router-link :to="{name: 'siteInfo'}" exact> 
-                            About us
+                        <strong>{{ $t('admin.notifications.admin_panel.danger_label') }}</strong>
+                        {{ $t('admin.notifications.admin_panel.site_info_incomplete_prefix') }}
+                        <router-link :to="{name: 'siteInfo'}" exact>
+                            {{ $t('admin.notifications.admin_panel.about_us_link_label') }}
                         </router-link>
-                        ", and add missing information.
+                        {{ $t('admin.notifications.admin_panel.site_info_incomplete_suffix') }}
                     </div>
                 </span>
                             
@@ -63,10 +63,10 @@
 
         <stack-modal
                 :show="is_desidion_model"
-                title="Show coment"
+                :title="$t('admin.notifications.admin_panel.show_comment_title')"
                 @close="clouse_model()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
                 <div class="row justify-content-center" v-if="decision_loader">
@@ -76,27 +76,27 @@
                 </div>
 
                 <span v-if="!decision_loader">
-                    <h1>Show Comment</h1>
+                    <h1>{{ $t('admin.notifications.admin_panel.show_comment_heading') }}</h1>
 
-                    Comentator - {{ actyve_comment.name }} {{ actyve_comment.suenmae }}
-                    Email - {{ actyve_comment.email }}
-                    Data to comment - {{ actyve_comment.created_at }}
+                    {{ $t('admin.notifications.admin_panel.commentator_label') }} {{ actyve_comment.name }} {{ actyve_comment.suenmae }}
+                    {{ $t('admin.notifications.admin_panel.email_label') }} {{ actyve_comment.email }}
+                    {{ $t('admin.notifications.admin_panel.date_to_comment_label') }} {{ actyve_comment.created_at }}
 
                     {{ actyve_comment.text }}
 
-                    <h1>Comment complaint</h1>
-                    Email - {{ actyve_comment.email }}
-                    Complaint status - {{ actyve_comment.complaint }}
+                    <h1>{{ $t('admin.notifications.admin_panel.comment_complaint_heading') }}</h1>
+                    {{ $t('admin.notifications.admin_panel.email_label') }} {{ actyve_comment.email }}
+                    {{ $t('admin.notifications.admin_panel.complaint_status_label') }} {{ actyve_comment.complaint }}
 
-                    <h1>Make decision</h1>
-                    
+                    <h1>{{ $t('admin.notifications.admin_panel.make_decision_heading') }}</h1>
+
                     <form v-on:submit.prevent="make_decision" id="make_decision" class="form">
-                        <select class="form-control" v-model="comment_decision" name="comment delete cause" > 
-                            <option value="select_decision" disabled>Select decision</option>
-                            <option value="approve_request">Approve the request</option>
-                            <option value="reject_request">Reject the request</option>
-                        </select> 
-                        <div class="alert alert-danger" role="alert" v-if="is_comment_decision_selected">Please select decision!!!</div>
+                        <select class="form-control" v-model="comment_decision" name="comment delete cause" >
+                            <option value="select_decision" disabled>{{ $t('admin.notifications.admin_panel.select_decision_placeholder') }}</option>
+                            <option value="approve_request">{{ $t('admin.notifications.admin_panel.approve_request_option') }}</option>
+                            <option value="reject_request">{{ $t('admin.notifications.admin_panel.reject_request_option') }}</option>
+                        </select>
+                        <div class="alert alert-danger" role="alert" v-if="is_comment_decision_selected">{{ $t('admin.notifications.admin_panel.please_select_decision') }}</div>
                     </form>
                 </span>
             </div>
@@ -107,7 +107,7 @@
                         :class="{'btn btn-primary': true}"
                         form="make_decision"
                     >
-                    Make a decision
+                    {{ $t('admin.notifications.admin_panel.make_decision_btn') }}
                     </button>
                 </div>
             </div>

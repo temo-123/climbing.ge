@@ -9,10 +9,10 @@
         <div v-else>
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <button class="btn btn-primary" @click="open_add_modal">Add Combinate Product Option</button>
+                    <button class="btn btn-primary" @click="open_add_modal">{{ $t('admin.shop.add_combination_btn') }}</button>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-success float-right" @click="load_combinations">Refresh</button>
+                    <button class="btn btn-success float-right" @click="load_combinations">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
 
@@ -107,7 +107,7 @@ export default {
         },
 
         del_combination(id) {
-            if (confirm('Delete this combinate product option?')) this.delete_combination(id)
+            if (confirm(this.$t('admin.shop.confirm_delete_combination'))) this.delete_combination(id)
         },
         del_combination_image(image_id) {
             this.delete_combination_image(image_id)
@@ -120,7 +120,7 @@ export default {
                 this.combinations = res.data.combinations || []
             } catch (e) {
                 console.error(e)
-                alert('Failed to load combinate product options')
+                alert(this.$t('admin.shop.failed_load_combinations'))
             }
         },
 
@@ -135,7 +135,7 @@ export default {
                 this.is_edit_modal = true
             } catch (e) {
                 console.error(e)
-                alert('Failed to load combinate product option data')
+                alert(this.$t('admin.shop.failed_load_combination_data'))
             } finally {
                 this.is_loading_editing_modal = false
             }
@@ -159,10 +159,10 @@ export default {
                 })
                 this.close_add_modal()
                 await this.load_combinations()
-                alert('Combinate product option added')
+                alert(this.$t('admin.shop.combination_added'))
             } catch (e) {
                 console.error(e)
-                alert('Failed to add combinate product option')
+                alert(this.$t('admin.shop.failed_add_combination'))
             } finally {
                 this.is_loading = false
             }
@@ -185,10 +185,10 @@ export default {
                 })
                 this.close_edit_modal()
                 await this.load_combinations()
-                alert('Combinate product option updated')
+                alert(this.$t('admin.shop.combination_updated'))
             } catch (e) {
                 console.error(e)
-                alert('Failed to update combinate product option')
+                alert(this.$t('admin.shop.failed_update_combination'))
             } finally {
                 this.is_loading = false
             }
@@ -198,10 +198,10 @@ export default {
             try {
                 await axios.delete('/set_product/set_product_combination/del_combination/' + id)
                 await this.load_combinations()
-                alert('Combinate product option deleted')
+                alert(this.$t('admin.shop.combination_deleted'))
             } catch (e) {
                 console.error(e)
-                alert('Failed to delete')
+                alert(this.$t('admin.shop.failed_delete_generic'))
             }
         },
 
@@ -213,7 +213,7 @@ export default {
                 }
             } catch (e) {
                 console.error(e)
-                alert('Failed to delete image')
+                alert(this.$t('admin.shop.failed_delete_image'))
             }
         }
     }

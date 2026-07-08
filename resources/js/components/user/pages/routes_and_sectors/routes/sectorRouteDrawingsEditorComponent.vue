@@ -3,15 +3,15 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center gap-3">
-                    <button class="btn btn-secondary btn-sm" @click="goBack">← Go Back</button>
-                    <h1 class="mb-0 h4">Routes Drawing Editor <small v-if="sector" class="text-muted">— {{ sector.name }}</small></h1>
+                    <button class="btn btn-secondary btn-sm" @click="goBack">{{ $t('admin.routes_sectors.go_back') }}</button>
+                    <h1 class="mb-0 h4">{{ $t('admin.routes_sectors.routes_drawing_editor_title') }} <small v-if="sector" class="text-muted">— {{ sector.name }}</small></h1>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <!-- Left: routes list -->
                 <div class="col-md-4">
-                    <h5>Routes <small class="text-muted">(1 drawing per route)</small></h5>
+                    <h5>{{ $t('common.routes') }} <small class="text-muted">{{ $t('admin.routes_sectors.one_drawing_per_route') }}</small></h5>
                     <div class="route-list mb-2" style="max-height:320px; overflow-y:auto;">
                         <div
                             v-for="route in routes"
@@ -26,16 +26,16 @@
                                 {{ route.name }}
                                 <small class="text-muted">{{ route.grade }}</small>
                             </span>
-                            <span v-if="drawingsByRoute[route.id]" class="badge bg-success ms-1" style="font-size:10px;">has drawing</span>
+                            <span v-if="drawingsByRoute[route.id]" class="badge bg-success ms-1" style="font-size:10px;">{{ $t('admin.routes_sectors.has_drawing') }}</span>
                         </div>
-                        <div v-if="routes.length === 0" class="text-muted small p-2">No routes in this sector.</div>
+                        <div v-if="routes.length === 0" class="text-muted small p-2">{{ $t('admin.routes_sectors.no_routes_in_sector') }}</div>
                     </div>
                 </div>
 
                 <!-- Right: sector image selector -->
                 <div class="col-md-8">
-                    <h5>Select background image</h5>
-                    <p v-if="!selectedRouteId" class="text-muted small mb-2">Select a route first.</p>
+                    <h5>{{ $t('admin.routes_sectors.select_background_image') }}</h5>
+                    <p v-if="!selectedRouteId" class="text-muted small mb-2">{{ $t('admin.routes_sectors.select_route_first_hint') }}</p>
                     <template v-else>
                         <div style="max-height:220px; overflow-y:auto; border:1px solid #dee2e6; border-radius:4px; padding:8px;">
                             <div v-for="image in sectorImages" :key="image.id" class="form-check mb-1 d-flex align-items-center gap-2">
@@ -49,13 +49,13 @@
                                 >
                                 <label class="form-check-label d-flex align-items-center gap-2" :for="'img-' + image.id">
                                     <img :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
-                                    Image #{{ image.id }}
+                                    {{ $t('admin.routes_sectors.image_hash_label') }}{{ image.id }}
                                 </label>
                             </div>
-                            <div v-if="sectorImages.length === 0" class="text-muted small">No images for this sector.</div>
+                            <div v-if="sectorImages.length === 0" class="text-muted small">{{ $t('admin.routes_sectors.no_images_for_sector') }}</div>
                         </div>
                         <p v-if="lockImageChoice" class="text-muted small mt-1">
-                            This route already has a drawing on this image. Delete the drawing to pick a different image.
+                            {{ $t('admin.routes_sectors.route_has_drawing_hint') }}
                         </p>
                     </template>
                 </div>
@@ -73,21 +73,21 @@
                         @click="toggleExtraDrawingMode"
                     >
                         <i class="fa fa-map-marker"></i>
-                        {{ extra_drawing_loading ? 'Loading…' : (extra_drawing_mode ? 'Extra Drawing Mode: ON' : 'Add Extra Drawing') }}
+                        {{ extra_drawing_loading ? $t('admin.routes_sectors.loading_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.extra_drawing_mode_on') : $t('admin.routes_sectors.add_extra_drawing')) }}
                     </button>
                     <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : (extra_drawing_mode ? 'Save Extra Drawing' : 'Save Drawing') }}
+                        <i class="fa fa-save"></i> {{ saving ? $t('admin.routes_sectors.saving_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : $t('admin.routes_sectors.save_drawing')) }}
                     </button>
                     <button class="btn btn-danger" :disabled="deleting || !canDeleteCurrent" @click="deleteDrawing">
-                        <i class="fa fa-trash"></i> {{ deleting ? 'Deleting…' : (extra_drawing_mode ? 'Delete Extra Drawing' : 'Delete Drawing') }}
+                        <i class="fa fa-trash"></i> {{ deleting ? $t('admin.routes_sectors.deleting_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : $t('admin.routes_sectors.delete_drawing')) }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'error' ? 'text-danger' : 'text-success'">
-                        {{ saveStatus === 'ok' ? '✓ Saved' : saveStatus === 'deleted' ? '✓ Deleted' : '✗ Error' }}
+                        {{ saveStatus === 'ok' ? '✓ ' + $t('admin.routes_sectors.status_saved') : saveStatus === 'deleted' ? '✓ ' + $t('admin.routes_sectors.status_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
                     </span>
                 </div>
                 <div class="col-12" v-if="extra_drawing_mode">
                     <p class="text-muted mt-1 mb-0" style="font-size:12px;">
-                        Extra drawing mode: this layer isn't tied to a route — use it for general info (approach notes, hazards, landmarks) on this image. Click the button again to go back to editing this route's own drawing.
+                        {{ $t('admin.routes_sectors.extra_drawing_mode_hint') }}
                     </p>
                 </div>
             </div>
@@ -106,7 +106,7 @@
                         :route_name="extra_drawing_mode ? 'extra info' : selectedRouteName"
                         @canvas_data="handleCanvasData"
                     />
-                    <div v-else class="text-muted p-4 text-center border rounded">Select a background image to start drawing.</div>
+                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.routes_sectors.select_background_to_draw') }}</div>
                 </div>
             </div>
         </div>
@@ -267,7 +267,7 @@ export default {
         // extra-info layer — fetches the extra drawing once per image, lazily.
         async toggleExtraDrawingMode() {
             if (!this.extra_drawing_mode && !this.selectedImageId) {
-                alert('Please select a sector image first');
+                alert(this.$t('admin.routes_sectors.select_sector_image_first'));
                 return;
             }
             if (!this.extra_drawing_mode) {
@@ -319,9 +319,9 @@ export default {
         async saveChanges() {
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
 
-            if (!this.selectedRouteId) { alert('Select a route first.'); return; }
-            if (!this.selectedImageId) { alert('Select a background image first.'); return; }
-            if (!this.$refs.editorComponent) { alert('Editor is not ready.'); return; }
+            if (!this.selectedRouteId) { alert(this.$t('admin.routes_sectors.select_route_first_alert')); return; }
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
 
             this.saving = true;
             this.saveStatus = null;
@@ -334,7 +334,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.canvasData = json; }
                 }
-                if (!json) { alert('Draw something on the canvas first.'); this.saving = false; return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
 
                 const selectedImage = this.selectedImage;
                 const bgPath = selectedImage && selectedImage.has_original
@@ -384,8 +384,8 @@ export default {
         // composite-image approach, but targets SectorImageExtraDrawing (keyed only
         // by sector_image_id) instead of ClimbingRoutesJson (keyed by route_id).
         async saveExtraDrawing() {
-            if (!this.selectedImageId) { alert('Please select a sector image first'); return; }
-            if (!this.$refs.editorComponent) { alert('Editor is not ready.'); return; }
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_sector_image_first')); return; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
 
             this.saving = true;
             this.saveStatus = null;
@@ -398,7 +398,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
                 }
-                if (!json) { alert('Draw something on the canvas first.'); this.saving = false; return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
 
                 const selectedImage = this.selectedImage;
                 const bgPath = selectedImage && selectedImage.has_original
@@ -439,8 +439,8 @@ export default {
         },
 
         async deleteExtraDrawing() {
-            if (!this.selectedImageId) { alert('No sector image selected'); return; }
-            if (!confirm('Delete the extra drawing for this image? The JSON data will be removed.')) return;
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.no_sector_image_selected')); return; }
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_extra_drawing'))) return;
 
             this.deleting = true;
             this.saveStatus = null;
@@ -462,7 +462,7 @@ export default {
         async deleteDrawing() {
             if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
             if (!this.selectedRouteId) return;
-            if (!confirm('Delete the drawing for this route? The JSON data will be removed.')) return;
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_route_drawing'))) return;
 
             this.deleting = true;
             this.saveStatus = null;

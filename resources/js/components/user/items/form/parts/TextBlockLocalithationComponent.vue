@@ -4,23 +4,23 @@
             <div class="row">
                 <div class="col">
                     <input type="radio" :id="uid + '_tab_1'" :value="1" v-model="tab_num">
-                    <label :for="uid + '_tab_1'">English text</label>
+                    <label :for="uid + '_tab_1'">{{ $t('common.english_text') }}</label>
                 </div>
                 <div class="col">
                     <input type="radio" :id="uid + '_tab_2'" :value="2" v-model="tab_num">
-                    <label :for="uid + '_tab_2'">Georgian text</label>
+                    <label :for="uid + '_tab_2'">{{ $t('common.georgian_text') }}</label>
                 </div>
             </div>
         </div>
         <div class="col-md-12">
             <div class="form-group clearfix row" v-show="tab_num == 1">
-                <label :for="uid + '_tab_1'" class='col-md-2 control-label'>English description</label>
+                <label :for="uid + '_tab_1'" class='col-md-2 control-label'>{{ $t('admin.mount_routes.english_description_label') }}</label>
                 <div class="col-md-10">
                     <big_editor v-model="local_en" />
                 </div>
             </div>
             <div class="form-group clearfix row" v-show="tab_num == 2">
-                <label :for="uid + '_tab_2'" class='col-md-2 control-label'>Georgian description</label>
+                <label :for="uid + '_tab_2'" class='col-md-2 control-label'>{{ $t('admin.mount_routes.georgian_description_label') }}</label>
                 <div class="col-md-10">
                     <big_editor v-model="local_ka" />
                 </div>

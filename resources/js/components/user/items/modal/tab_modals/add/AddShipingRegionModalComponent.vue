@@ -1,18 +1,18 @@
 <template>
     <stack-modal
             :show="is_order_region_add_model"
-            title="Add order region"
+            :title="$t('admin.shop.add_shipping_region_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
-            <h1>Add shiped region</h1>
+            <h1>{{ $t('admin.shop.add_shipping_region_title') }}</h1>
             <form id="add_region" v-on:submit.prevent="add_region" >
-                <input type="text" class="form-control" v-model="adding_data.region" name="region name" placeholder="region" title="region" required>
-                <input type="number" class="form-control" v-model="adding_data.shiping_price" name="shiping price" placeholder="Shiping price" title="Shiping price" required>
+                <input type="text" class="form-control" v-model="adding_data.region" name="region name" :placeholder="$t('admin.shop.region_placeholder')" :title="$t('admin.shop.region_placeholder')" required>
+                <input type="number" class="form-control" v-model="adding_data.shiping_price" name="shiping price" :placeholder="$t('admin.shop.shipping_price_label')" :title="$t('admin.shop.shipping_price_label')" required>
 
-                <input type="number" class="form-control" v-model="adding_data.free_shiping_price_after" name="free shiping price after" placeholder="Free shiping price after" title="Free shiping price after">
+                <input type="number" class="form-control" v-model="adding_data.free_shiping_price_after" name="free shiping price after" :placeholder="$t('admin.shop.free_shipping_price_after_label')" :title="$t('admin.shop.free_shipping_price_after_label')">
             </form>
         </div>
         <div slot="modal-footer">
@@ -22,7 +22,7 @@
                     form="add_region"
                     :class="{'btn btn-primary': true}"
                 >
-                Add region
+                {{ $t('admin.shop.add_region_btn') }}
                 </button>
             </div>
         </div>
@@ -73,7 +73,7 @@
                 this.is_order_region_add_model = true
             },
             close_modal(){
-                if(confirm('Are you sure, you want close form? All data whil deleted!')){
+                if(confirm(this.$t('admin.live_camera.confirm_close_form_discard'))){
                     this.is_order_region_add_model = false
 
                     this.adding_data = {

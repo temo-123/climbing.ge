@@ -1,7 +1,7 @@
 <template>
     <nav :key="menuKey" class="navbar navbar-expand-lg navbar-dark bg-dark bg-perple fixed-top admin_page_header_navbar" :class="{ animate: animate_enabled }">
         <div class="mx-auto order-0 mobile_title">
-            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>{{ $t('user.nav.welcome_brand') }}</router-link>
         </div>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" v-if="user.length != 0">
@@ -29,6 +29,7 @@
                     </li>
                 </template>
 
+                <localeSwitcher />
                 <nav-badges />
 
                 <!-- <li class="nav-item dropdown">
@@ -80,11 +81,12 @@
         </div>
 
         <div class="mx-auto order-0 desktop_title">
-            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>Welcome to climbing.ge user page</router-link>
+            <router-link :to="{name: 'home'}" class="navbar-brand mx-auto" exact>{{ $t('user.nav.welcome_brand') }}</router-link>
         </div>
 
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
+                <localeSwitcher />
                 <nav-badges />
             </ul>
         </div>
@@ -93,9 +95,13 @@
 
 <script>
     import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
-    
+    import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
+
     export default {
         mixins: [navbar_pages_mixin],
+        components: {
+            localeSwitcher,
+        },
         computed: {
             menu_items() {
                 return this.admin_all_menu() || [];

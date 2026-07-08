@@ -1,27 +1,27 @@
 <template>
     <stack-modal
         :show="showAddOptionModal"
-        title="Add Product Option"
+        :title="$t('admin.warehouses.add_product_option_btn')"
         @close="closeAddModal()"
         :modal-class="{ ['']: true }"
         :saveButton="{ visible: true }"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
-            <p class="text-muted mb-3">Select a product and its option to add to this warehouse with the desired quantity.</p>
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }">
+            <p class="text-muted mb-3">{{ $t('admin.warehouses.add_option_hint') }}</p>
 
             <div v-if="availableProducts.length === 0" class="alert alert-warning">
-                No products available. Please add products first.
+                {{ $t('admin.warehouses.no_products_available') }}
             </div>
             <div v-else-if="availableOptions.length === 0 && newOption.product_id && !loadingOptions" class="alert alert-warning">
-                No options available for the selected product.
+                {{ $t('admin.warehouses.no_options_available_for_product') }}
             </div>
             <div v-if="errors.general" class="alert alert-danger">
                 {{ errors.general }}
             </div>
             <form v-else @submit.prevent="addProductOption" id="addOptionForm">
                 <div class="form-group">
-                    <label for="product_id">Select Product</label>
+                    <label for="product_id">{{ $t('admin.warehouses.select_product_label') }}</label>
                     <select v-model="newOption.product_id" @change="getAvailableOptions()" class="form-control" :class="{ 'is-invalid': errors.product }" required>
-                        <option value="">Choose a product...</option>
+                        <option value="">{{ $t('admin.warehouses.choose_a_product_placeholder') }}</option>
                         <option v-for="product in availableProducts" :key="product.id" :value="product.id">
                             {{ product.title }}
                         </option>
@@ -29,28 +29,28 @@
                     <div v-if="errors.product" class="invalid-feedback">{{ errors.product }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="option_id">Select Product Option</label>
+                    <label for="option_id">{{ $t('admin.warehouses.select_product_option_label') }}</label>
                     <select v-model="newOption.product_option_id" class="form-control" :class="{ 'is-invalid': errors.option }" required :disabled="loadingOptions">
-                        <option value="">Choose an option...</option>
+                        <option value="">{{ $t('admin.warehouses.choose_an_option_placeholder') }}</option>
                         <option v-for="option in availableOptions" :key="option.id" :value="option.id">
                             {{ option.name }} - {{ option.price }} {{ option.currency }}
                         </option>
                     </select>
-                    <div v-if="loadingOptions" class="text-muted">Loading options...</div>
+                    <div v-if="loadingOptions" class="text-muted">{{ $t('admin.warehouses.loading_options') }}</div>
                     <div v-if="errors.option" class="invalid-feedback">{{ errors.option }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="quantity">Quantity</label>
+                    <label for="quantity">{{ $t('admin.warehouses.col_quantity') }}</label>
                     <input type="number" v-model="newOption.quantity" class="form-control" :class="{ 'is-invalid': errors.quantity }" min="0" required>
                     <div v-if="errors.quantity" class="invalid-feedback">{{ errors.quantity }}</div>
                 </div>
             </form>
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeAddModal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" @click="closeAddModal">{{ $t('admin.comments.cancel_btn') }}</button>
                     <button type="submit" class="btn btn-primary" form="addOptionForm" :disabled="availableProducts.length === 0 || (newOption.product_id && availableOptions.length === 0) || submitting">
                         <span v-if="submitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ submitting ? 'Adding...' : 'Add Option' }}
+                        {{ submitting ? $t('admin.warehouses.adding_ellipsis') : $t('admin.warehouses.add_option_btn') }}
                     </button>
                 </div>
             </div>
@@ -135,15 +135,15 @@
             addProductOption() {
                 this.errors = {};
                 if (!this.newOption.product_id) {
-                    this.errors.product = 'Please select a product.';
+                    this.errors.product = this.$t('admin.warehouses.please_select_product');
                     return;
                 }
                 if (!this.newOption.product_option_id) {
-                    this.errors.option = 'Please select a product option.';
+                    this.errors.option = this.$t('admin.warehouses.please_select_product_option');
                     return;
                 }
                 if (this.newOption.quantity < 0) {
-                    this.errors.quantity = 'Quantity cannot be negative.';
+                    this.errors.quantity = this.$t('admin.warehouses.quantity_cannot_be_negative');
                     return;
                 }
 
@@ -158,7 +158,7 @@
                 })
                 .catch(error => {
                     console.log(error);
-                    this.errors.general = error.response?.data?.error || 'An error occurred while adding the option.';
+                    this.errors.general = error.response?.data?.error || this.$t('admin.warehouses.error_adding_option');
                 })
                 .finally(() => {
                     this.submitting = false;

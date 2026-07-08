@@ -1,7 +1,7 @@
 <template>
   <stack-modal
     :show="is_show_modal"
-    :title="$t('global.login') || 'Login'"
+    :title="$t('common.login') || 'Login'"
     @close="close_modal"
     :saveButton="{ visible: false }"
     :cancelButton="{ visible: false }"
@@ -65,7 +65,7 @@
           </div>
 
           <button type="submit" class="btn btn-primary btn-block mt-3">
-            <i class="fa fa-sign-in" aria-hidden="true"></i> {{ $t('global.login') || 'Login' }}
+            <i class="fa fa-sign-in" aria-hidden="true"></i> {{ $t('common.login') || 'Login' }}
           </button>
         </form>
       </div>

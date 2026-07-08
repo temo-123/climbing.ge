@@ -51,7 +51,7 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Services', 
+                                            'table_name': this.$t('admin.services.services_table'),
                                             'list_page': (process.env.MIX_APP_SSH || 'http://') + (process.env.MIX_SHOP_URL || '') + '/services',
                                             'add_action': {
                                                 'action': 'route',
@@ -62,11 +62,11 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Public',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.name'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -91,7 +91,7 @@
                 );
             },
             del_service(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_service/del_service/'+id, {
                         _method: 'DELETE'

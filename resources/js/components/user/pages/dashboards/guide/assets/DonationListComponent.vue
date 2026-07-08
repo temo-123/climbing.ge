@@ -2,16 +2,16 @@
     <div class="donation-block">
 
         <div class="donation-controls mb-3 d-flex align-items-center gap-2 flex-wrap">
-            <label class="mb-0 font-weight-bold">Period:</label>
+            <label class="mb-0 font-weight-bold">{{ $t('admin.dashboards.period_label') }}</label>
             <select class="form-control d-inline-block w-auto" v-model="selectedPeriod" @change="applyPeriod">
-                <option value="30days">Last 30 Days</option>
-                <option value="3months">Last 3 Months</option>
-                <option value="6months">Last 6 Months</option>
-                <option value="1year">Last Year</option>
-                <option value="all">All Time</option>
+                <option value="30days">{{ $t('admin.dashboards.period_last_30_days') }}</option>
+                <option value="3months">{{ $t('admin.dashboards.period_last_3_months') }}</option>
+                <option value="6months">{{ $t('admin.dashboards.period_last_6_months') }}</option>
+                <option value="1year">{{ $t('admin.dashboards.period_last_year') }}</option>
+                <option value="all">{{ $t('admin.dashboards.period_all_time') }}</option>
             </select>
             <button class="btn btn-sm btn-outline-secondary" @click="load">
-                <i class="fa fa-refresh"></i> Refresh
+                <i class="fa fa-refresh"></i> {{ $t('common.refresh') }}
             </button>
         </div>
 
@@ -19,7 +19,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body p-2">
-                        <h6 class="card-title text-center">Donations Count by Month</h6>
+                        <h6 class="card-title text-center">{{ $t('admin.dashboards.donation_list.donations_count_by_month_title') }}</h6>
                         <GChart type="ColumnChart" :data="count_chart_data" :options="count_chart_options" style="width:100%;height:220px;" />
                     </div>
                 </div>
@@ -27,7 +27,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-body p-2">
-                        <h6 class="card-title text-center">Donations Amount by Month (GEL)</h6>
+                        <h6 class="card-title text-center">{{ $t('admin.dashboards.donation_list.donations_amount_by_month_title') }}</h6>
                         <GChart type="ColumnChart" :data="amount_chart_data" :options="amount_chart_options" style="width:100%;height:220px;" />
                     </div>
                 </div>
@@ -46,23 +46,23 @@
         <div v-else>
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="text-muted small">
-                    Showing {{ filtered_donations.length }} donation(s) — Total: <strong>{{ total_amount }}</strong>
+                    {{ $t('admin.dashboards.donation_list.showing_donations_label', { count: filtered_donations.length }) }} <strong>{{ total_amount }}</strong>
                 </div>
             </div>
 
-            <div v-if="filtered_donations.length === 0" class="text-center text-muted py-4">No donations found.</div>
+            <div v-if="filtered_donations.length === 0" class="text-center text-muted py-4">{{ $t('admin.dashboards.donation_list.no_donations_found') }}</div>
 
             <div v-else class="table-responsive">
                 <table class="table table-hover table-sm">
                     <thead>
                         <tr>
                             <th>#</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Amount</th>
-                            <th>Status</th>
-                            <th>User</th>
-                            <th>Date</th>
+                            <th>{{ $t('common.name') }}</th>
+                            <th>{{ $t('common.email') }}</th>
+                            <th>{{ $t('admin.dashboards.donation_list.col_amount') }}</th>
+                            <th>{{ $t('admin.orders.status_label') }}</th>
+                            <th>{{ $t('admin.dashboards.donation_list.col_user') }}</th>
+                            <th>{{ $t('common.date') }}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -78,10 +78,10 @@
                             <td>{{ d.user ? d.user.name : '—' }}</td>
                             <td>{{ d.created_at ? d.created_at.substring(0, 10) : '—' }}</td>
                             <td class="text-nowrap">
-                                <button v-if="$can('edit', 'donation')" class="btn btn-xs btn-outline-primary mr-1" @click="show_status_modal(d)" title="Update status">
+                                <button v-if="$can('edit', 'donation')" class="btn btn-xs btn-outline-primary mr-1" @click="show_status_modal(d)" :title="$t('admin.task.update_status_tooltip')">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button v-if="$can('del', 'donation')" class="btn btn-xs btn-outline-danger" @click="del_donation(d.id)" title="Delete">
+                                <button v-if="$can('del', 'donation')" class="btn btn-xs btn-outline-danger" @click="del_donation(d.id)" :title="$t('common.delete')">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>
@@ -93,22 +93,22 @@
 
         <StackModal
             v-model="is_status_modal"
-            title="Update donation status"
+            :title="$t('admin.dashboards.donation_list.update_donation_status_title')"
             @close="is_status_modal = false"
             @save="save_status"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
         >
             <div v-if="editing_donation">
                 <p><strong>#{{ editing_donation.id }}</strong> — {{ editing_donation.name }} {{ editing_donation.surname }}</p>
-                <p>Amount: <strong>{{ editing_donation.amount }} {{ editing_donation.currency }}</strong></p>
+                <p>{{ $t('admin.dashboards.donation_list.amount_prefix') }} <strong>{{ editing_donation.amount }} {{ editing_donation.currency }}</strong></p>
                 <select class="form-control" v-model="new_status">
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="paid">Paid</option>
-                    <option value="failed">Failed</option>
-                    <option value="declined">Declined</option>
-                    <option value="expired">Expired</option>
+                    <option value="pending">{{ $t('admin.dashboards.donation_list.status_pending') }}</option>
+                    <option value="processing">{{ $t('admin.dashboards.donation_list.status_processing') }}</option>
+                    <option value="paid">{{ $t('admin.dashboards.donation_list.status_paid') }}</option>
+                    <option value="failed">{{ $t('admin.dashboards.donation_list.status_failed') }}</option>
+                    <option value="declined">{{ $t('admin.dashboards.donation_list.status_declined') }}</option>
+                    <option value="expired">{{ $t('admin.dashboards.donation_list.status_expired') }}</option>
                 </select>
             </div>
         </StackModal>
@@ -225,7 +225,7 @@
                     .catch(e => console.error(e))
             },
             del_donation(id) {
-                if (!confirm('Delete this donation?')) return
+                if (!confirm(this.$t('admin.dashboards.donation_list.confirm_delete_donation'))) return
                 axios.delete(`set_donation_admin/del_donation/${id}`)
                     .then(() => this.load())
                     .catch(e => console.error(e))

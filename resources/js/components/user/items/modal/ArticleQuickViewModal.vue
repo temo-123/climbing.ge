@@ -3,8 +3,8 @@
         v-model="is_show_modal"
         :title="modalTitle"
         :modal-class="{ 'modal-lg': true }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
-        :saveButton="{ visible: !!articleUrl, title: 'Go to Article', btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
+        :saveButton="{ visible: !!articleUrl, title: $t('admin.articles.quick_view.go_to_article_btn'), btnClass: { 'btn btn-primary': true } }"
         @save="goToArticle"
         @close="close_modal"
     >
@@ -23,10 +23,10 @@
             <!-- Meta badges -->
             <div class="qv-badges">
                 <span :class="article.published ? 'badge-published' : 'badge-draft'">
-                    {{ article.published ? 'Published' : 'Draft' }}
+                    {{ article.published ? $t('admin.articles.quick_view.published_label') : $t('admin.articles.quick_view.draft_label') }}
                 </span>
                 <span class="badge-category">{{ article.category }}</span>
-                <span class="badge-id">ID: {{ article.id }}</span>
+                <span class="badge-id">{{ $t('admin.articles.quick_view.id_prefix') }} {{ article.id }}</span>
             </div>
 
             <!-- Title -->
@@ -40,7 +40,7 @@
 
             <!-- Short description -->
             <div v-if="localeShortDesc" class="qv-description">
-                <strong>Description:</strong>
+                <strong>{{ $t('admin.articles.quick_view.description_prefix') }}</strong>
                 <p>{{ localeShortDesc }}</p>
             </div>
 
@@ -48,7 +48,7 @@
             <div class="qv-meta-grid">
                 <div v-if="article.price_from" class="qv-meta-item">
                     <i class="fa fa-tag"></i>
-                    <span>Price from: <strong>{{ article.price_from }}</strong></span>
+                    <span>{{ $t('admin.articles.quick_view.price_from_prefix') }} <strong>{{ article.price_from }}</strong></span>
                 </div>
                 <div v-if="article.open_timen || article.closed_time" class="qv-meta-item">
                     <i class="fa fa-clock-o"></i>
@@ -66,7 +66,7 @@
 
         <div v-else class="qv-empty">
             <i class="fa fa-exclamation-circle"></i>
-            No article data available.
+            {{ $t('admin.articles.quick_view.no_article_data') }}
         </div>
     </StackModal>
 </template>
@@ -86,7 +86,7 @@ export default {
             return this.article?.global_article_us?.title
                 || this.article?.locale_data?.title
                 || this.article?.url_title
-                || 'No Title'
+                || this.$t('admin.export.no_title_fallback')
         },
         localeShortDesc() {
             return this.article?.global_article_us?.short_description

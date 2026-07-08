@@ -112,6 +112,7 @@ class RegisterController extends Controller
                 'unique:users',
             ],
             'password'     => ['required', 'string', 'min:8', 'confirmed'],
+            'lang'         => ['nullable', 'string', 'in:us,ka'],
         ]);
     }
 
@@ -131,6 +132,7 @@ class RegisterController extends Controller
             'phone_number' => $data['phone_number'],
             'email'        => $data['email'],
             'password'     => bcrypt($data['password']),
+            'lang'         => $data['lang'] ?? 'us',
         ]);
 
         if (user_notification::where('user_id', $user->id)->count() === 0) {

@@ -1,11 +1,11 @@
 <template>
     <stack-modal
             :show="is_user_add_modal"
-            title="Create new user"
+            :title="$t('admin.users.create_new_user_title')"
             @close="close_user_add_modal()"
             :modal-class="{ [modalClass]: true }"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <form v-on:submit.prevent="add_user" id="add_user_form">
@@ -17,7 +17,7 @@
                     :class="{ 'is-invalid': errors.name }"
                     id="name"
                     v-model="data.name"
-                    placeholder="Enter name"
+                    :placeholder="$t('admin.users.enter_name_placeholder')"
                     required
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.name">
@@ -32,7 +32,7 @@
                     :class="{ 'is-invalid': errors.surname }"
                     id="surname"
                     v-model="data.surname"
-                    placeholder="Enter surname"
+                    :placeholder="$t('admin.users.enter_surname_placeholder')"
                     required
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.surname">
@@ -47,7 +47,7 @@
                     :class="{ 'is-invalid': errors.email }"
                     id="email"
                     v-model="data.email"
-                    placeholder="Enter email"
+                    :placeholder="$t('admin.users.enter_email_placeholder')"
                     required
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.email">
@@ -62,7 +62,7 @@
                     :class="{ 'is-invalid': errors.country }"
                     id="country"
                     v-model="data.country"
-                    placeholder="Enter country"
+                    :placeholder="$t('admin.users.enter_country_placeholder')"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.country">
                     {{ errors.country[0] }}
@@ -76,7 +76,7 @@
                     :class="{ 'is-invalid': errors.city }"
                     id="city"
                     v-model="data.city"
-                    placeholder="Enter city"
+                    :placeholder="$t('admin.users.enter_city_placeholder')"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.city">
                     {{ errors.city[0] }}
@@ -90,7 +90,7 @@
                     :class="{ 'is-invalid': errors.phone_number }"
                     id="phone_number"
                     v-model="data.phone_number"
-                    placeholder="Enter phone_number"
+                    :placeholder="$t('admin.users.enter_phone_number_placeholder')"
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.phone_number">
                     {{ errors.phone_number[0] }}
@@ -104,7 +104,7 @@
                     :class="{ 'is-invalid': errors.password }"
                     id="password"
                     v-model="data.password"
-                    placeholder="Password"
+                    :placeholder="$t('admin.users.password_placeholder')"
                     required
                     />
                     <!-- <div class="invalid-feedback" v-if="errors.password">
@@ -115,7 +115,7 @@
                     <!-- <label for="password_confirmation">Confirm password</label> -->
 
                     <div class="alert alert-danger" role="alert" v-if="is_pass_confirm_error">
-                        Confirmed password is incorrect!
+                        {{ $t('admin.users.confirmed_password_incorrect') }}
                     </div>
 
                     <input
@@ -123,7 +123,7 @@
                     class="form-control"
                     id="password_confirmation"
                     v-model="data.password_confirmation"
-                    placeholder="Confirm password"
+                    :placeholder="$t('admin.users.confirm_password_placeholder')"
                     required
                     />
                 <!-- </div> -->
@@ -136,7 +136,7 @@
                         :class="{'btn btn-primary': true}"
                         form="add_user_form"
                     >
-                Create user
+                {{ $t('admin.users.create_user_btn') }}
                 </button>
             </div>
         </div>

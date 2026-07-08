@@ -26,7 +26,7 @@
             <div v-if="!is_show_more_data" class="center-overlay">
                 <button class="show-more-btn" @click="show_more_data">
                     <i class="fa fa-eye"></i>
-                    {{ locale_data_prop && locale_data_prop.show_more ? locale_data_prop.show_more : 'Show more' }}
+                    {{ locale_data_prop && locale_data_prop.show_more ? locale_data_prop.show_more : $t('guide.show_more') }}
                 </button>
             </div>
         </div>

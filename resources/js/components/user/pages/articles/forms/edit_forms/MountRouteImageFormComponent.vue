@@ -1,6 +1,6 @@
 <template>
     <gallery_images_edit
-        title_prop="Mount Route Images"
+        :title_prop="$t('admin.articles.locale_form.mount_route_images_title')"
         image_path_prop="images/mount_route_img/"
         get_images_route_prop="/get_mount_route/get_mount_routes_images/"
         image_del_route_prop="/get_mount_route/del_mount_route_image/"

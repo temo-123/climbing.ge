@@ -3,20 +3,20 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="error-template">
-                    <h1> Confirm reservation </h1>
+                    <h1> {{ $t('shop.tour.verification.confirm_reservation_title') }} </h1>
 
                     <div class="row" v-if="is_loading">
                         <div class="col-md-4 text-center loader_margin">
                             <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
-                            <p>Pless wait!</p>
+                            <p>{{ $t('user.notifications.please_wait') }}</p>
                         </div>
                     </div>
 
                     <div class="row" v-else>
-                        <p>Your email - {{$route.params.email}}</p>
+                        <p>{{ $t('shop.tour.verification.your_email_prefix') }} {{$route.params.email}}</p>
 
-                        <!-- <vue-recaptcha 
-                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                        <!-- <vue-recaptcha
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
                             :loadRecaptchaScript="true"
                             ref="recaptcha"
                             type="invisible"
@@ -24,8 +24,8 @@
                             @expired="onCaptchaExpired"
                         >
                         </vue-recaptcha> -->
-                        <button v-if="is_verify_isset == false" class="btn btn-primary btn-lg" disabled>Confirm</button>
-                        <button v-else  @click="confirm_email()" class="btn btn-primary btn-lg">Confirm</button>
+                        <button v-if="is_verify_isset == false" class="btn btn-primary btn-lg" disabled>{{ $t('shop.tour.verification.confirm_btn') }}</button>
+                        <button v-else  @click="confirm_email()" class="btn btn-primary btn-lg">{{ $t('shop.tour.verification.confirm_btn') }}</button>
                     </div>
 
                     <div class="row">
@@ -75,7 +75,7 @@
                 axios
                 .post('/set_tour/reservation/verifiation_reservation/'+this.$route.params.reservation_id)
                 .then(response => {
-                    alert('Your reservation is confirmed! This page will be closed!')
+                    alert(this.$t('shop.tour.verification.confirm_reservation_success'))
                     window.close();
                 })
                 .catch(error =>{

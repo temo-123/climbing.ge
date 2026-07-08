@@ -87,7 +87,7 @@
     
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Live Cameras', 
+                                            'table_name': this.$t('admin.live_camera.live_cameras_table'),
                                             // 'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
                                             'add_action': {
                                                 'action': 'function',
@@ -98,12 +98,12 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Articlre ID',
-                                                        'Public',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.name'),
+                                                        this.$t('admin.live_camera.article_id_col'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -134,7 +134,7 @@
             },
 
             del_live_camera(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_live_camera/del_live_camera/' + id, {
                         _method: 'DELETE'

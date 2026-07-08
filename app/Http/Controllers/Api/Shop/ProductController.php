@@ -80,7 +80,14 @@ class ProductController extends Controller
 
     public function get_local_products(Request $request)
     {
-        $global_products = Product::latest('id')->where('published', '=', 1)->get();
+        // Outlet products are exclusive to the dedicated outlet page — kept
+        // out of the main catalog (see get_outlet_products below).
+        $global_products = Product::latest('id')
+            ->where('published', '=', 1)
+            ->where(function ($query) {
+                $query->where('sale_type', '!=', 'outlet')->orWhereNull('sale_type');
+            })
+            ->get();
         $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
 
         return $products;
@@ -88,7 +95,15 @@ class ProductController extends Controller
 
     public function get_donation_products(Request $request)
     {
-        $global_products = Product::latest('id')->where('published', '=', 1)->where('is_donation_product', '=', 1)->get();
+        $global_products = Product::latest('id')->where('published', '=', 1)->where('sale_type', '=', 'donation')->get();
+        $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+
+        return $products;
+    }
+
+    public function get_outlet_products(Request $request)
+    {
+        $global_products = Product::latest('id')->where('published', '=', 1)->where('sale_type', '=', 'outlet')->get();
         $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
 
         return $products;

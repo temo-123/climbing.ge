@@ -6,7 +6,7 @@
                 :key="spot_image && spot_image.id ? spot_image.id : 'img-' + spot_image.image"
                 :class="'sector_images sector_images_' + sectors_and_images.local_images.length"
             >
-                <h3>{{ spot_image && spot_image.title ? spot_image.title : 'Untitled Image' }}</h3>
+                <h3>{{ spot_image && spot_image.title ? spot_image.title : $t('guide.untitled_image') }}</h3>
 
                 <SectorLocalImageCanvas
                     v-if="spot_image && spot_image.image"

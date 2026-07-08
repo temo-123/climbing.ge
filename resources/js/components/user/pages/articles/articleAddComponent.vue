@@ -8,12 +8,12 @@
 
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="save()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="save()" >{{ $t('common.save') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading">
@@ -27,17 +27,17 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
 
                 <div class="col-md-12">
                     <single_image_add
-                        title_prop="Article image"
+                        :title_prop="$t('common.article_image')"
                         :crop_ratio_prop="{ width: 16, height: 9 }"
                         @update_single_image="upload_adticle_image"
                     />
@@ -170,7 +170,7 @@
         },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action_query == true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.is_back_action_query = false;
                     next()
                 } else {

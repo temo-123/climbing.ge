@@ -11,19 +11,19 @@
 
             <div class="col-md-12 confirm_page_text" v-else-if="error_status != ''">
                 <h1>{{ error_status }}</h1>
-                <router-link :to="{name: 'userOrders'}" exact  v-if="error_status == 'Order olredy confirm!'"> 
-                    <button class="btn btn-primary " >My orders</button>
+                <router-link :to="{name: 'userOrders'}" exact  v-if="is_already_confirmed">
+                    <button class="btn btn-primary " >{{ $t('user.checkout.my_orders') }}</button>
                 </router-link>
             </div>
 
             <div class="col-md-12" v-else-if="!create_order_loading && error_status == ''">
                 <div class="confirm_page_text">
-                    <h1>Order is completed! </h1>
+                    <h1>{{ $t('user.checkout.order_completed') }}</h1>
                 </div>
 
                 <div class="confirm_page_text">
-                    <router-link :to="{name: 'userOrders'}" exact> 
-                        <button class="btn btn-primary " >My orders</button>
+                    <router-link :to="{name: 'userOrders'}" exact>
+                        <button class="btn btn-primary " >{{ $t('user.checkout.my_orders') }}</button>
                     </router-link>
                 </div>
             </div>
@@ -48,6 +48,7 @@ export default {
         return{
             create_order_loading: true,
             error_status: '',
+            is_already_confirmed: false,
             order_id: this.$route.params.order_id,
             token: this.$route.params.token,
         }
@@ -61,7 +62,7 @@ export default {
                 //
             })
             .catch(error => {
-                this.error_status = error.response?.data?.error || 'Undefined error!'
+                this.error_status = error.response?.data?.error || this.$t('user.checkout.undefined_error')
             })
             .finally(() => this.create_order_loading = false);
         },
@@ -74,12 +75,13 @@ export default {
                 }
                 else {
                     this.create_order_loading = false
-                    this.error_status = 'Order already confirmed!'
+                    this.is_already_confirmed = true
+                    this.error_status = this.$t('user.checkout.order_already_confirmed')
                 }
             })
             .catch(error => {
                 this.create_order_loading = false
-                this.error_status = 'Undefined order error!'
+                this.error_status = this.$t('user.checkout.undefined_order_error')
             })
         },
         check_user_authing() {
@@ -90,7 +92,7 @@ export default {
             })
             .catch(error => {
                 this.create_order_loading = false
-                this.error_status = 'Please login to confirm your order!'
+                this.error_status = this.$t('user.checkout.please_login_confirm')
             })
         },
     }

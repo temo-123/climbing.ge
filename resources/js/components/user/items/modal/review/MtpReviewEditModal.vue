@@ -1,10 +1,10 @@
 <template>
     <StackModal
         v-model="is_show"
-        title="Edit MTP review"
+        :title="$t('admin.comments.edit_mtp_review_title')"
         @close="close_modal()"
         :saveButton="{ visible: true }" @save="save_review"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }"
     >
         <div class="model-body">
             <div class="container">
@@ -17,17 +17,17 @@
                 <div class="row" v-show="!is_loading">
                     <form method="POST" id="mtp_review_form" v-on:submit.prevent="save_review" style="width: 100%;">
                         <div class="mb-3">
-                            <span>How did you like this route?</span>
+                            <span>{{ $t('admin.comments.how_did_you_like_route_label') }}</span>
                             <starReitingInsert :actyve_stars_prop="data.stars" @get_stars="val => data.stars = val" />
                         </div>
 
                         <div class="mb-3">
-                            <span>What do you think about this route?</span>
+                            <span>{{ $t('admin.comments.what_do_you_think_route_label') }}</span>
                             <textarea
                                 id="mtp_feedback"
                                 name="mtp_feedback"
                                 class="form-control"
-                                placeholder="Make feedback"
+                                :placeholder="$t('admin.comments.make_feedback_placeholder')"
                                 v-model="data.text"
                                 rows="4"
                             ></textarea>

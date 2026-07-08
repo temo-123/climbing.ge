@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-groupe float-right">
-                    <button class="btn btn-success" @click="update_data()">{{ $t('head_slider.refresh') }}</button>
+                    <button class="btn btn-success" @click="update_data()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 this.$refs.show_edit_image_modal.show_modal(id)
             },
             del_image(slide_id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .delete('/set_head_slider/del_slide/'+slide_id)
                     .then(Response => {

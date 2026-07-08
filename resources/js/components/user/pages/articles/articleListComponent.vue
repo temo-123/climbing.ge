@@ -11,7 +11,7 @@
                 <div class="col-md-12" v-if="article_loading">
                     <div class="text-center py-4">
                         <i class="fa fa-spinner fa-spin fa-3x"></i>
-                        <p>Loading articles...</p>
+                        <p>{{ $t('admin.articles.loading') }}</p>
                     </div>
                 </div>
                 <div class="col-sm-12" v-else-if="data_for_tab.length">
@@ -30,7 +30,7 @@
                     />
                 </div>
                 <div v-else class="col-sm-12 text-center py-4">
-                    No data available.
+                    {{ $t('admin.articles.no_data') }}
                 </div>
             </div>
         </div>
@@ -133,21 +133,21 @@ export default {
                     const validData = this.validateData(response.data)
                     this.data_for_tab.push({
                         id: 2,
-                        table_name: 'Regions', 
+                        table_name: this.$t('admin.articles.regions_table'),
                         add_action: {
                             action: 'route',
-                            link: 'region_add', 
+                            link: 'region_add',
                             class: 'btn btn-primary'
                         },
                         tab_data: {
-                            data: validData, 
+                            data: validData,
                             tab: {
-                                head: ['ID','Name','Edit','Delite'],
+                                head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.edit'), this.$t('common.delete')],
                                 body: [
                                     ['data', ['id']],
                                     ['data', ['us_name']],
-                                    ['action_router', 'region_edit', 'btn btn-primary', 'Edit'],
-                                    ['action_fun_id', 'del_region', 'btn btn-danger', 'Del'],
+                                    ['action_router', 'region_edit', 'btn btn-primary', this.$t('common.edit')],
+                                    ['action_fun_id', 'del_region', 'btn btn-danger', this.$t('common.delete')],
                                 ],
                                 perm: [
                                     ['no'],
@@ -160,7 +160,7 @@ export default {
                     })
                     if (this.data_for_tab[0] && Array.isArray(this.data_for_tab)) {
                         this.data_for_tab[0].filter_data = {
-                            title: 'Filter by regions',
+                            title: this.$t('admin.articles.filter_by_regions'),
                             data: validData,
                             action_fun_id: 'filtr_outdoors',
                             array_key: 'us_name'
@@ -175,16 +175,23 @@ export default {
                     const validData = this.validateData(response.data)
                     this.data_for_tab.push({
                         id: 2,
-                        table_name: 'Ice sectors', 
+                        table_name: this.$t('admin.articles.ice_sectors_table'),
                         add_action: {
                             action: 'url',
                             link: '../sector/add/ice',
                             class: 'btn btn-primary'
                         },
                         tab_data: {
-                            data: validData, 
+                            data: validData,
                             tab: {
-                                head: ['ID','Name','Public','Edit routes','Edit','Delite'],
+                                head: [
+                                    this.$t('common.id'),
+                                    this.$t('common.name'),
+                                    this.$t('admin.common.public'),
+                                    this.$t('admin.articles.col_edit_routes'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
+                                ],
                                 body: [
                                     ['data', ['id']],
                                     ['data', ['name']],
@@ -214,16 +221,25 @@ export default {
                     const validData = this.validateData(response.data)
                     this.data_for_tab.push({
                         id: 3,
-                        table_name: 'Ice routes', 
+                        table_name: this.$t('admin.articles.ice_routes_table'),
                         add_action: {
                             action: 'url',
-                            link: '../route/add/ice', 
+                            link: '../route/add/ice',
                             class: 'btn btn-primary'
                         },
                         tab_data: {
-                            data: validData, 
+                            data: validData,
                             tab: {
-                                head: ['ID','Name','Category','Grade','Height','Bolts','Edit','Delite'],
+                                head: [
+                                    this.$t('common.id'),
+                                    this.$t('common.name'),
+                                    this.$t('common.category'),
+                                    this.$t('common.grade'),
+                                    this.$t('common.height'),
+                                    this.$t('admin.common.bolts'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
+                                ],
                                 body: [
                                     ['data', ['id']],
                                     ['data', ['name']],
@@ -305,7 +321,13 @@ export default {
                         tab_data: {
                             data: validData,
                             tab: {
-                                head: ['ID','Title','Public','Edit','Delite'],
+                                head: [
+                                    this.$t('common.id'),
+                                    this.$t('common.title'),
+                                    this.$t('admin.common.public'),
+                                    this.$t('common.edit'),
+                                    this.$t('common.delete'),
+                                ],
                                 body: [
                                     ['data', ['id']],
                                     ['data_action_id', ['url_title'], 'quick_wiev_action'],
@@ -326,7 +348,7 @@ export default {
                     if(this.$route.params.article_category == 'outdoor'){
                         this.get_regions(this.$route.params.article_category)
                         if (this.data_for_tab[0] && this.data_for_tab[0].tab_data?.data?.length > 0) {
-                            this.data_for_tab[0].tab_data.tab.head.splice(3, 0, 'Sectors')
+                            this.data_for_tab[0].tab_data.tab.head.splice(3, 0, this.$t('common.sectors'))
                             this.data_for_tab[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_sectors_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'])
                             this.data_for_tab[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
                         }
@@ -349,7 +371,7 @@ export default {
                 const validData = this.validateData(response.data)
                 this.data_for_tab.push({
                     id: 2,
-                    table_name: 'Mount Masives',
+                    table_name: this.$t('admin.articles.mount_masives_table'),
                     add_action: {
                         action: 'route',
                         link: 'mount_massive_add',
@@ -358,12 +380,12 @@ export default {
                     tab_data: {
                         data: validData,
                         tab: {
-                            head: ['ID','Name','Edit','Delite'],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.edit'), this.$t('common.delete')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['locale_data', 'title']],
-                                ['action_router', 'mount_massive_edit', 'btn btn-primary', 'Edit', ['id']],
-                                ['action_fun_id', 'del_mount_massive', 'btn btn-danger', 'Del', ['id']],
+                                ['action_router', 'mount_massive_edit', 'btn btn-primary', this.$t('common.edit'), ['id']],
+                                ['action_fun_id', 'del_mount_massive', 'btn btn-danger', this.$t('common.delete'), ['id']],
                             ],
                             perm: [
                                 ['no'],
@@ -376,7 +398,7 @@ export default {
                 })
                 if (this.data_for_tab[0] && Array.isArray(this.data_for_tab)) {
                     this.data_for_tab[0].filter_data = {
-                        title: 'Filter by Mount Masive',
+                        title: this.$t('admin.articles.filter_by_mount_masive'),
                         data: validData,
                         action_fun_id: 'filtr_outdoors',
                         array_key: 'locale_data.title',
@@ -389,27 +411,27 @@ export default {
             this.$refs.sector_modal.show_sector_modal(sector_id)
         },
         del_article(id){
-            if(confirm('Are you sure you want to delete it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_article/del_article/'+id, {_method: 'DELETE'}).then(() => this.get_articles()).catch(error => console.error('Delete article error:', error))
             }
         },
         del_mount_massive(id){
-            if(confirm('Are you sure you want to delete it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_mount/del_mount_massive/'+id, {_method: 'DELETE'}).then(() => this.get_articles()).catch(error => console.log(error))
             }
         },
         del_region(id){
-            if(confirm('Are you sure you want to delete it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_region/del_region/'+id, {id, _method: 'delete'}).then(() => this.get_articles()).catch(error => console.log(error))
             }
         },
         del_route(id){
-            if(confirm('Are you sure you want to delete it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_route/del_route/'+id, {id, _method: 'DELETE'}).then(() => this.get_articles()).catch(error => console.log(error))
             }
         },
         del_sector(id){
-            if(confirm('Are you sure you want to delete it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_sector/del_sector/'+id, {_method: 'DELETE'}).then(() => this.get_articles()).catch(error => console.log(error))
             }
         },

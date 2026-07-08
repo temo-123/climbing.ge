@@ -183,8 +183,8 @@
                                         <thead>
                                             <tr>
                                                 <th>{{ $t('summit.summit_page.climber') }}</th>
-                                                <th>{{ $t('summit.summit_page.date') }}</th>
-                                                <th>{{ $t('summit.summit_page.route') }}</th>
+                                                <th>{{ $t('common.date') }}</th>
+                                                <th>{{ $t('common.route') }}</th>
                                                 <th>GPS</th>
                                                 <th></th>
                                             </tr>

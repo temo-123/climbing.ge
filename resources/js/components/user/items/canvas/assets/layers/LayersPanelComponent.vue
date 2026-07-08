@@ -3,20 +3,20 @@
         <!-- Header -->
         <div class="d-flex align-items-center justify-content-between px-2 py-1 bg-light border rounded-top border-bottom-0">
             <span class="small fw-semibold text-secondary">
-                <i class="fa fa-list me-1"></i> Layers
+                <i class="fa fa-list me-1"></i> {{ $t('admin.articles.canvas_editor.layers_label') }}
                 <span class="badge bg-secondary ms-1">{{ layers.filter(l => !l.isRelated).length }}</span>
                 <span v-if="layers.some(l => l.isRelated)" class="badge bg-light text-secondary border ms-1" style="font-size:9px;">
                     +{{ layers.filter(l => l.isRelated).length }} ref
                 </span>
             </span>
             <div class="d-flex gap-1">
-                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" title="Refresh">
+                <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" :title="$t('common.refresh')">
                     <i class="fa fa-refresh"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-primary" @click="$emit('toggle-all-visibility')" title="Toggle all visibility">
+                <button type="button" class="btn btn-sm btn-primary" @click="$emit('toggle-all-visibility')" :title="$t('admin.articles.canvas_editor.toggle_all_visibility_tooltip')">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button type="button" class="btn btn-sm btn-danger" :disabled="layers.length === 0" @click="$emit('delete-all-layers')" title="Delete all">
+                <button type="button" class="btn btn-sm btn-danger" :disabled="layers.length === 0" @click="$emit('delete-all-layers')" :title="$t('admin.articles.canvas_editor.delete_all_tooltip')">
                     <i class="fa fa-trash"></i>
                 </button>
             </div>
@@ -27,7 +27,7 @@
 
             <div v-if="layers.length === 0" class="text-center text-muted py-4 small">
                 <i class="fa fa-paint-brush d-block mb-1" style="font-size:20px;"></i>
-                No items yet
+                {{ $t('admin.articles.canvas_editor.no_items_yet') }}
             </div>
 
             <div v-for="(layer, index) in layers" :key="layer.id || layer.name + index">
@@ -70,7 +70,7 @@
                         <template v-else-if="!layer.isText">
                             <span v-if="!layer.isEditing"
                                   @click="startEditingLayerName(layer)"
-                                  class="editable-name" :title="'Click to rename: ' + (layer.displayName || layer.name)">
+                                  class="editable-name" :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (layer.displayName || layer.name)">
                                 {{ layer.displayName || layer.name }}
                             </span>
                             <input v-else v-model="layer.editName"
@@ -85,8 +85,8 @@
                             <span v-if="!layer.isEditing"
                                   @click="startEditingText(layer)"
                                   class="text-truncate d-block editable-name layer-text-preview"
-                                  :title="'Click to edit: ' + (layer.textContent || 'Empty')">
-                                "{{ layer.textContent || 'Empty' }}"
+                                  :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                                "{{ layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder') }}"
                             </span>
                             <input v-else v-model="layer.editText"
                                    class="form-control form-control-sm py-0"
@@ -102,7 +102,7 @@
                            @change="!layer.isRelated && $emit('change-layer-color', layer, $event.target.value)"
                            :disabled="layer.isRelated"
                            class="layer-color-swatch me-1"
-                           :title="layer.isRelated ? 'Reference route color' : 'Color'" />
+                           :title="layer.isRelated ? $t('admin.articles.canvas_editor.reference_route_color_tooltip') : $t('admin.articles.canvas_editor.color_tooltip')" />
 
                     <template v-if="!layer.isRelated">
                         <input type="number"
@@ -111,8 +111,7 @@
                                :max="layer.isText ? 120 : 20"
                                @change="$emit('change-layer-size', layer, $event.target.value)"
                                class="layer-size-input me-1"
-                               :title="layer.isText ? 'Font size (pt)' : 'Stroke width (px)'" />
-                    </template>
+                               :title="layer.isText ? $t('admin.articles.canvas_editor.font_size_pt_tooltip') : $t('admin.articles.canvas_editor.stroke_width_px_tooltip')" /></template>
 
                     <!-- Push buttons to far right -->
                     <div class="flex-grow-1"></div>
@@ -122,39 +121,39 @@
                         <!-- Group actions -->
                         <template v-if="!layer.isRelated && !layer.isGroup">
                             <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('create-group-from-layer', layer)" title="Create group">
+                                    @click="$emit('create-group-from-layer', layer)" :title="$t('admin.articles.canvas_editor.create_group_tooltip')">
                                 <i class="fa fa-object-group"></i>
                             </button>
                             <button v-if="availableGroups.length > 0"
                                     type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('show-move-to-group-modal', layer)" title="Move into group">
+                                    @click="$emit('show-move-to-group-modal', layer)" :title="$t('admin.articles.canvas_editor.move_into_group_tooltip')">
                                 <i class="fa fa-arrow-right"></i>
                             </button>
                         </template>
                         <button v-if="!layer.isRelated && layer.isGroup"
                                 type="button" class="btn btn-sm btn-warning layer-action-btn"
-                                @click="$emit('ungroup-layer', layer)" title="Ungroup">
+                                @click="$emit('ungroup-layer', layer)" :title="$t('admin.articles.canvas_editor.ungroup_tooltip')">
                             <i class="fa fa-object-ungroup"></i>
                         </button>
 
                         <!-- Visibility -->
                         <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
                                 @click="$emit('toggle-layer-visibility', layer)"
-                                :title="layer.visible ? 'Hide' : 'Show'">
+                                :title="layer.visible ? $t('admin.articles.canvas_editor.hide_tooltip') : $t('admin.articles.canvas_editor.show_tooltip')">
                             <i :class="layer.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                         </button>
 
                         <!-- Lock -->
                         <button type="button" class="btn btn-sm btn-warning layer-action-btn"
                                 @click="$emit('toggle-layer-lock', layer)"
-                                :title="layer.locked ? 'Unlock item' : 'Lock item'">
+                                :title="layer.locked ? $t('admin.articles.canvas_editor.unlock_item_tooltip') : $t('admin.articles.canvas_editor.lock_item_tooltip')">
                             <i :class="layer.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
                         </button>
 
                         <!-- Delete -->
                         <button v-if="!layer.isRelated"
                                 type="button" class="btn btn-sm btn-danger layer-action-btn"
-                                @click="$emit('delete-layer-item', layer)" title="Delete">
+                                @click="$emit('delete-layer-item', layer)" :title="$t('common.delete')">
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
@@ -174,7 +173,7 @@
                             <template v-if="!child.isText">
                                 <span v-if="!child.isEditing"
                                       @click="startEditingChildName(layer, child)"
-                                      class="editable-name" :title="'Click to rename: ' + (child.displayName || child.name)">
+                                      class="editable-name" :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (child.displayName || child.name)">
                                     {{ child.displayName || child.name }}
                                 </span>
                                 <input v-else v-model="child.editName"
@@ -188,8 +187,8 @@
                                 <span v-if="!child.isEditing"
                                       @click="startEditingChildText(layer, child)"
                                       class="text-truncate d-block editable-name layer-text-preview"
-                                      :title="'Click to edit: ' + (child.textContent || 'Empty')">
-                                    "{{ child.textContent || 'Empty' }}"
+                                      :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (child.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                                    "{{ child.textContent || $t('admin.articles.canvas_editor.empty_placeholder') }}"
                                 </span>
                                 <input v-else v-model="child.editText"
                                        class="form-control form-control-sm py-0"
@@ -202,7 +201,7 @@
 
                         <input type="color" :value="child.color || '#999999'"
                                @change="$emit('change-child-color', layer, child, $event.target.value)"
-                               class="layer-color-swatch me-1" title="Color" />
+                               class="layer-color-swatch me-1" :title="$t('admin.articles.canvas_editor.color_tooltip')" />
 
                         <input type="number"
                                :value="child.strokeWidth || (child.isText ? 16 : 3)"
@@ -210,27 +209,27 @@
                                :max="child.isText ? 120 : 20"
                                @change="$emit('change-child-size', layer, child, $event.target.value)"
                                class="layer-size-input me-1"
-                               :title="child.isText ? 'Font size (pt)' : 'Stroke width (px)'" />
+                               :title="child.isText ? $t('admin.articles.canvas_editor.font_size_pt_tooltip') : $t('admin.articles.canvas_editor.stroke_width_px_tooltip')" />
 
                         <div class="flex-grow-1"></div>
 
                         <div class="d-flex gap-1" style="flex-shrink:0;">
                             <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('move-child-out-of-group', layer, child)" title="Move out of group">
+                                    @click="$emit('move-child-out-of-group', layer, child)" :title="$t('admin.articles.canvas_editor.move_out_of_group_tooltip')">
                                 <i class="fa fa-arrow-left"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
                                     @click="$emit('toggle-child-visibility', layer, child)"
-                                    :title="child.visible ? 'Hide' : 'Show'">
+                                    :title="child.visible ? $t('admin.articles.canvas_editor.hide_tooltip') : $t('admin.articles.canvas_editor.show_tooltip')">
                                 <i :class="child.visible ? 'fa fa-eye' : 'fa fa-eye-slash'"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-warning layer-action-btn"
                                     @click="$emit('toggle-child-lock', layer, child)"
-                                    :title="child.locked ? 'Unlock' : 'Lock'">
+                                    :title="child.locked ? $t('admin.articles.canvas_editor.unlock_tooltip') : $t('admin.articles.canvas_editor.lock_tooltip')">
                                 <i :class="child.locked ? 'fa fa-lock' : 'fa fa-unlock'"></i>
                             </button>
                             <button type="button" class="btn btn-sm btn-danger layer-action-btn"
-                                    @click="$emit('delete-child-item', layer, child)" title="Delete">
+                                    @click="$emit('delete-child-item', layer, child)" :title="$t('common.delete')">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>

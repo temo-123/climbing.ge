@@ -1,20 +1,20 @@
 <template>
     <div class="col-md-4 col-sm-6">
         <article class="service-box" role="article">
-            <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'" :aria-label="'Service image for ' + service_data.locale_data.title">
+            <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'" :aria-label="$t('guide.service_image_for_prefix') + ' ' + service_data.locale_data.title">
                 <div class="front-content">
                     <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
                 </div>
             </div>
 
-            <div v-else class="service-icon services-background-image" :aria-label="'Default service image for ' + service_data.locale_data.title">
+            <div v-else class="service-icon services-background-image" :aria-label="$t('guide.default_service_image_for_prefix') + ' ' + service_data.locale_data.title">
                 <div class="front-content">
                     <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
                 </div>
             </div>
 
             <div class="service-content">
-                <a class="cursor_pointer" @click="go_to_service('../service/' + service_data.global_data.url_title)" :aria-label="'View details for ' + service_data.locale_data.title">
+                <a class="cursor_pointer" @click="go_to_service('../service/' + service_data.global_data.url_title)" :aria-label="$t('guide.view_details_for_prefix') + ' ' + service_data.locale_data.title">
                     <h3>{{ service_data.locale_data.title }}</h3>
                 </a>
                 <div class="service-description" v-html="service_data.locale_data.short_description"></div>

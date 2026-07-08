@@ -18,13 +18,13 @@
 
                 <p class="mb-3" style="font-size: 15px">
                     <strong v-if="unseen > 0">
-                        You have <span class="text-primary">{{ unseen }}</span> unread email{{ unseen !== 1 ? 's' : '' }}
+                        {{ $t('admin.dashboards.you_have_prefix') }} <span class="text-primary">{{ unseen }}</span> {{ unseen !== 1 ? $t('admin.dashboards.unread_email_plural') : $t('admin.dashboards.unread_email_singular') }}
                     </strong>
-                    <span v-else class="text-muted">No new emails</span>
+                    <span v-else class="text-muted">{{ $t('admin.dashboards.no_new_emails') }}</span>
                 </p>
 
                 <a v-if="webmailUrl" :href="webmailUrl" target="_blank" rel="noopener" class="btn btn-primary btn-sm">
-                    <i class="fa fa-external-link"></i> Open Webmail
+                    <i class="fa fa-external-link"></i> {{ $t('admin.dashboards.open_webmail_btn') }}
                 </a>
             </div>
         </div>
@@ -57,7 +57,7 @@ export default {
                 .catch(e => {
                     const msg = e.response && e.response.data && e.response.data.error
                         ? e.response.data.error
-                        : 'Could not reach mail server'
+                        : this.$t('admin.dashboards.could_not_reach_mail_server')
                     this.error = msg
                 })
                 .finally(() => { this.loading = false })

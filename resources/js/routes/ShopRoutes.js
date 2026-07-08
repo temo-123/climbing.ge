@@ -35,6 +35,7 @@ const routes = [
 
             { path: 'products', name: 'catalog', component: load('lists/ProductsCatalog'), meta: { title: 'Products Catalog' } },
             { path: 'sale_products', name: 'sale_products', component: load('lists/SaleProductsPage'), meta: { title: 'Sale Products' } },
+            { path: 'outlet_products', name: 'outlet_products', component: load('lists/OutletProductsPage'), meta: { title: 'Outlet Products' } },
             { path: 'product/:url_title', name: 'product', component: load('pages/ProductPage'), meta: { title: 'Product' },},
                         
             { path: 'services', name: 'services', component: load('lists/ServicesCatalog'), meta: { title: 'Services' }, },

@@ -5,6 +5,7 @@ namespace App\Models\Summit;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Guide\Article;
+use App\Models\Guide\Mount;
 
 class Summit extends Model
 {
@@ -17,6 +18,7 @@ class Summit extends Model
         'image',
         'height',
         'latitude', 'longitude',
+        'mount_id',
         'qr_code',
         'published',
     ];
@@ -27,6 +29,11 @@ class Summit extends Model
         'longitude'  => 'float',
         'height'     => 'integer',
     ];
+
+    public function mount()
+    {
+        return $this->belongsTo(Mount::class, 'mount_id');
+    }
 
     public function mountRoutes()
     {

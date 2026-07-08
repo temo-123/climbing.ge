@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="is_modal_show"
-        title="Tour Guides"
+        :title="$t('admin.tour.tour_guides_title')"
         size="md"
         @close="close_modal"
         :saveButton="{ visible: false }"
@@ -11,25 +11,25 @@
             <!-- Current guides table -->
             <div class="mb-3">
                 <h6 class="text-muted mb-2">
-                    Current guides
+                    {{ $t('admin.tour.current_guides_label') }}
                     <span class="badge" :class="current_guides.length >= 4 ? 'badge-danger' : 'badge-secondary'">
                         {{ current_guides.length }} / 4
                     </span>
                 </h6>
 
                 <div v-if="loading" class="text-center py-3">
-                    <i class="fa fa-spinner fa-spin"></i> Loading...
+                    <i class="fa fa-spinner fa-spin"></i> {{ $t('admin.export.loading_ellipsis') }}
                 </div>
 
                 <div v-else-if="current_guides.length === 0" class="alert alert-info py-2 mb-0">
-                    No guides assigned to this tour yet.
+                    {{ $t('admin.tour.no_guides_assigned_msg') }}
                 </div>
 
                 <table v-else class="table table-sm table-bordered mb-0">
                     <thead class="thead-light">
                         <tr>
                             <th style="width:44px"></th>
-                            <th>Name</th>
+                            <th>{{ $t('common.name') }}</th>
                             <th style="width:80px"></th>
                         </tr>
                     </thead>
@@ -63,13 +63,13 @@
 
             <!-- Add guide -->
             <div class="border-top pt-3">
-                <h6 class="text-muted mb-2">Add guide</h6>
+                <h6 class="text-muted mb-2">{{ $t('admin.tour.add_guide_title') }}</h6>
                 <div v-if="current_guides.length >= 4" class="alert alert-warning py-2">
-                    <i class="fa fa-exclamation-triangle"></i> Maximum 4 guides reached.
+                    <i class="fa fa-exclamation-triangle"></i> {{ $t('admin.tour.max_guides_reached_msg') }}
                 </div>
                 <div v-else class="input-group">
                     <select class="form-control" v-model="selected_user_id">
-                        <option value="">— Select user —</option>
+                        <option value="">{{ $t('admin.tour.select_user_em_dash_placeholder') }}</option>
                         <option
                             v-for="user in available_users"
                             :key="user.id"
@@ -85,7 +85,7 @@
                             :disabled="!selected_user_id || adding"
                         >
                             <span v-if="adding"><i class="fa fa-spinner fa-spin"></i></span>
-                            <span v-else><i class="fa fa-plus"></i> Add</span>
+                            <span v-else><i class="fa fa-plus"></i> {{ $t('admin.orders.add_btn') }}</span>
                         </button>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
         <template #footer>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" @click="close_modal">
-                    Close
+                    {{ $t('common.close') }}
                 </button>
             </div>
         </template>
@@ -155,7 +155,7 @@ export default {
                     this.all_users = usersRes.data
                 })
                 .catch(() => {
-                    this.error_msg = 'Failed to load data.'
+                    this.error_msg = this.$t('admin.tour.failed_load_data')
                 })
                 .finally(() => { this.loading = false })
         },
@@ -170,7 +170,7 @@ export default {
                     this.$emit('updated')
                 })
                 .catch(err => {
-                    this.error_msg = err.response?.data?.error || 'Failed to add guide.'
+                    this.error_msg = err.response?.data?.error || this.$t('admin.tour.failed_add_guide')
                 })
                 .finally(() => { this.adding = false })
         },
@@ -182,7 +182,7 @@ export default {
                     this.current_guides = this.current_guides.filter(r => r.user.id !== user_id)
                     this.$emit('updated')
                 })
-                .catch(() => { this.error_msg = 'Failed to remove guide.' })
+                .catch(() => { this.error_msg = this.$t('admin.tour.failed_remove_guide') })
                 .finally(() => { this.removing = null })
         },
     }

@@ -15,15 +15,15 @@
                                 <div class="row">
                                     <div class="col">
                                         <input type="radio" id="sp_tab_1" :value="1" v-model="tab_num">
-                                        <label for="sp_tab_1">Production Tasks</label>
+                                        <label for="sp_tab_1">{{ $t('admin.task.production_tasks_tab') }}</label>
                                     </div>
                                     <div class="col">
                                         <input type="radio" id="sp_tab_2" :value="2" v-model="tab_num">
-                                        <label for="sp_tab_2">Delivery Tasks</label>
+                                        <label for="sp_tab_2">{{ $t('admin.task.delivery_tasks_tab') }}</label>
                                     </div>
                                     <div class="col">
                                         <input type="radio" id="sp_tab_3" :value="3" v-model="tab_num">
-                                        <label for="sp_tab_3">All Shop Tasks</label>
+                                        <label for="sp_tab_3">{{ $t('admin.task.all_shop_tasks_tab') }}</label>
                                     </div>
                                 </div>
                             </div>

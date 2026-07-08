@@ -11,7 +11,7 @@
                 <div class="col-md-12">
                     <div class="text-center py-4">
                         <i class="fa fa-spinner fa-spin fa-3x"></i>
-                        <p>Loading...</p>
+                        <p>{{ $t('admin.table.loading') }}</p>
                     </div>
                 </div>
             </div>
@@ -109,23 +109,23 @@ export default {
                 const validSectors = Array.isArray(response.data) ? response.data.filter(item => item && item.id !== undefined) : [];
                 this.data_for_tab.push({
                     'id': 1,
-                    'table_name': 'Sectors', 
+                    'table_name': this.$t('admin.routes_sectors.sectors_table'),
                     'add_action': {
                         'action': 'url',
-                        'link': 'sector/add/outdoor', 
+                        'link': 'sector/add/outdoor',
                         'class': 'btn btn-primary'
                     },
                     'tab_data': {
-                        'data': validSectors, 
+                        'data': validSectors,
                         'tab': {
                             'head': [
-                                'ID',
-                                'Name',
-                                'Public',
-                                'Edit routes',
-                                'Routes Drawing',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('admin.common.public'),
+                                this.$t('admin.articles.col_edit_routes'),
+                                this.$t('admin.routes_sectors.col_routes_drawing'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['id']],
@@ -148,7 +148,7 @@ export default {
                         }
                     },
                     'filter_data': {
-                        'title': 'Filter by Article',
+                        'title': this.$t('admin.routes_sectors.filter_by_article'),
                         'data': this.outdoor_articles,
                         'action_fun_id': 'filtr_sector',
                         'array_key': 'url_title'
@@ -169,25 +169,25 @@ export default {
                 const validRoutes = Array.isArray(response.data) ? response.data.filter(item => item && item.id !== undefined) : [];
                 this.data_for_tab.push({
                     'id': 2,
-                    'table_name': 'Routes', 
+                    'table_name': this.$t('common.routes'),
                     'add_action': {
                         'action': 'url',
-                        'link': '/route/add/outdoor', 
+                        'link': '/route/add/outdoor',
                         'class': 'btn btn-primary',
                         'name': 'Add Route'
                     },
                     'tab_data': {
-                        'data': validRoutes, 
+                        'data': validRoutes,
                         'tab': {
                             'head': [
-                                'ID',
-                                'Name',
-                                'Category',
-                                'Grade',
-                                'Height',
-                                'Bolts',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('common.category'),
+                                this.$t('common.grade'),
+                                this.$t('common.height'),
+                                this.$t('admin.common.bolts'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['id']],
@@ -212,7 +212,7 @@ export default {
                         }
                     },
                     'filter_data': {
-                        'title': 'Filter by Sector',
+                        'title': this.$t('admin.routes_sectors.filter_by_sector'),
                         'data': this.sectors,
                         'action_fun_id': 'filtr_route',
                         'array_key': 'name'
@@ -233,23 +233,23 @@ export default {
                 const validMtp = Array.isArray(response.data) ? response.data.filter(item => item && item.id !== undefined) : [];
                 this.data_for_tab.push({
                     'id': 3,
-                    'table_name': 'Multi-pitchs', 
+                    'table_name': this.$t('admin.routes_sectors.mtp_table'),
                     'add_action': {
                         'action': 'route',
-                        'link': 'MTPAdd', 
+                        'link': 'MTPAdd',
                         'class': 'btn btn-primary',
                         'name': 'Add Route'
                     },
                     'tab_data': {
-                        'data': validMtp, 
+                        'data': validMtp,
                         'tab': {
                             'head': [
-                                'ID',
-                                'Name',
-                                'Height',
-                                'Edit pitchs',
-                                'Edit',
-                                'Delite',
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('common.height'),
+                                this.$t('admin.routes_sectors.col_edit_pitchs'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
                             ],
                             'body': [
                                 ['data', ['id']],
@@ -270,7 +270,7 @@ export default {
                         }
                     },
                     'filter_data': {
-                        'title': 'Filter by Sector',
+                        'title': this.$t('admin.routes_sectors.filter_by_sector'),
                         'data': this.sectors,
                         'action_fun_id': 'filtr_mtp',
                         'array_key': 'name'
@@ -317,7 +317,7 @@ export default {
             }
         },
         del_sector(id){
-            if(confirm('Are you sure, you want delite it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios
                 .post('/set_sector/del_sector/'+id, {
                     _method: 'DELETE'
@@ -334,7 +334,7 @@ export default {
             this.$refs.sector_modal.show_sector_modal(sector_id)
         },
         del_route(id){
-            if(confirm('Are you sure, you want delite it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios
                 .post('/set_route/del_route/'+id, {
                     id: id,
@@ -349,7 +349,7 @@ export default {
             }
         },
         del_multi_pitch(id){
-            if(confirm('Are you sure, you want delite it?')){
+            if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios
                 .post('/set_mtp/del_mtp/'+id, {
                     _method: 'DELETE'

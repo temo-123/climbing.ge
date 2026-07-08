@@ -1,19 +1,19 @@
 <template>
     <StackModal
         v-model="is_order_status_model"
-        title="Show order status"
+        :title="$t('admin.orders.show_order_status_title')"
         @close="is_order_status_model=false"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
     >
         <div class="p-4">
-            <h3>Order Tracking</h3>
+            <h3>{{ $t('admin.orders.order_tracking_title') }}</h3>
             <table class="table table-bordered track_tbl">
                 <thead>
                     <tr>
-                        <th>Status</th>
+                        <th>{{ $t('admin.orders.status_label') }}</th>
                         <th>|</th>
-                        <th>Updating Date</th>
+                        <th>{{ $t('admin.orders.updating_date_col') }}</th>
                     </tr>
                 </thead>
                 <tbody>

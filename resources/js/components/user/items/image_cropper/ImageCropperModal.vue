@@ -2,8 +2,8 @@
     <div v-if="show" class="image-cropper-backdrop" @mousedown.self="cancel">
         <div class="image-cropper-modal">
             <div class="image-cropper-header">
-                <h6 class="mb-0">Crop image to {{ ratio_prop.width }}:{{ ratio_prop.height }}</h6>
-                <p class="text-muted small mb-0">Drag to reposition, use the slider to zoom.</p>
+                <h6 class="mb-0">{{ $t('admin.image_cropper.crop_image_title', { width: ratio_prop.width, height: ratio_prop.height }) }}</h6>
+                <p class="text-muted small mb-0">{{ $t('admin.image_cropper.drag_reposition_hint') }}</p>
             </div>
 
             <div class="image-cropper-viewport"
@@ -23,15 +23,15 @@
             </div>
 
             <div class="image-cropper-controls">
-                <label class="small text-muted mb-1">Zoom</label>
+                <label class="small text-muted mb-1">{{ $t('admin.image_cropper.zoom_label') }}</label>
                 <input type="range" min="1" max="3" step="0.01" class="form-control-range"
                        v-model.number="zoom" @input="onZoomChange">
             </div>
 
             <div class="image-cropper-actions">
-                <button type="button" class="btn btn-secondary btn-sm" @click="cancel">Cancel</button>
+                <button type="button" class="btn btn-secondary btn-sm" @click="cancel">{{ $t('admin.comments.cancel_btn') }}</button>
                 <button type="button" class="btn btn-primary btn-sm" :disabled="!imageLoaded" @click="confirm">
-                    Crop & Use
+                    {{ $t('admin.image_cropper.crop_use_btn') }}
                 </button>
             </div>
         </div>

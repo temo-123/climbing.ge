@@ -1,7 +1,7 @@
 export const going = {
     back(then, back_action = false){
         if(back_action == false){
-            if(confirm('Are you sure, you want go back?')){
+            if(confirm(then.$t('global.confirm_go_back'))){
                 then.$router.go(-1)
             }
         }

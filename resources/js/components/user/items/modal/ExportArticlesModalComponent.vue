@@ -1,25 +1,25 @@
 <template>
     <StackModal
         :show="is_show_modal"
-        title="Export Articles to PDF"
+        :title="$t('admin.export.export_articles_pdf_title')"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
         @close="close_modal"
     >
         <div class="container">
             <div v-if="loading" class="text-center">
-                <p>Loading...</p>
+                <p>{{ $t('admin.export.loading_ellipsis') }}</p>
             </div>
             <div v-else>
                 <div class="mb-3">
-                    <label for="categorySelect" class="form-label">Select Category</label>
+                    <label for="categorySelect" class="form-label">{{ $t('admin.export.select_category_label') }}</label>
                     <select
                         id="categorySelect"
                         class="form-select"
                         v-model="selectedCategory"
                         @change="loadArticlesByCategory"
                     >
-                        <option value="">All Categories</option>
+                        <option value="">{{ $t('admin.export.all_categories_option') }}</option>
                         <option v-for="category in categories" :key="category" :value="category">
                             {{ category }}
                         </option>
@@ -35,34 +35,34 @@
                             v-model="exportSectors"
                         />
                         <label class="form-check-label" for="exportSectors">
-                            Export Sectors and Routes (with images and MTPs)
+                            {{ $t('admin.export.export_sectors_routes_label') }}
                         </label>
                         <small class="form-text text-muted">
-                            Includes sector information, routes table, and MTPs if available
+                            {{ $t('admin.export.export_sectors_hint') }}
                         </small>
                     </div>
                 </div>
                 <div v-else-if="selectedCategory && selectedCategory !== 'outdoor' && selectedCategory !== 'ice'" class="mb-3">
                     <small class="text-muted">
-                        Sectors export is only available for outdoor and ice categories
+                        {{ $t('admin.export.sectors_export_unavailable_hint') }}
                     </small>
                 </div>
                 <div class="mb-3">
-                    <label for="localeSelect" class="form-label">Select Language</label>
+                    <label for="localeSelect" class="form-label">{{ $t('admin.export.select_language_label') }}</label>
                     <select
                         id="localeSelect"
                         class="form-select"
                         v-model="selectedLocale"
                     >
-                        <option value="">Select export language</option>
-                        <option value="ka">Georgian (ქართული)</option>
-                        <option value="us">English</option>
+                        <option value="">{{ $t('admin.export.select_export_language_placeholder') }}</option>
+                        <option value="ka">{{ $t('admin.export.georgian_option') }}</option>
+                        <option value="us">{{ $t('admin.export.english_option') }}</option>
                         <!-- <option value="ru">Русский</option> -->
-                        <option value="all">All Languages</option>
+                        <option value="all">{{ $t('admin.export.all_languages_option') }}</option>
                     </select>
                 </div>
                 <div v-if="articles.length === 0" class="text-center">
-                    <p>No articles available for export.</p>
+                    <p>{{ $t('admin.export.no_articles_available') }}</p>
                 </div>
                 <div v-else>
                     <div class="mb-3">
@@ -75,7 +75,7 @@
                                 v-model="selectAll"
                             />
                             <label class="form-check-label" for="selectAll">
-                                Select All Articles
+                                {{ $t('admin.export.select_all_articles') }}
                             </label>
                         </div>
                     </div>
@@ -90,11 +90,11 @@
                                     :value="article.id"
                                 />
                                 <label class="form-check-label" :for="'article-' + article.id">
-                                    URL Title: <strong>{{ article.url_title || 'No Title' }}</strong>
+                                    {{ $t('admin.export.url_title_prefix') }} <strong>{{ article.url_title || $t('admin.export.no_title_fallback') }}</strong>
                                     <br>
                                     <small class="text-muted">
-                                        Category: {{ article.category || 'N/A' }} |
-                                        Published: {{ article.published ? 'Yes' : 'No' }}
+                                        {{ $t('admin.export.category_prefix') }} {{ article.category || $t('admin.export.na_fallback') }} |
+                                        {{ $t('admin.export.published_prefix') }} {{ article.published ? $t('admin.export.yes_label') : $t('admin.site_info.no_label') }}
                                     </small>
                                 </label>
                             </div>
@@ -111,7 +111,7 @@
                     class="btn btn-secondary"
                     @click="close_modal"
                 >
-                    Cancel
+                    {{ $t('admin.comments.cancel_btn') }}
                 </button>
                 <button
                     type="button"
@@ -119,7 +119,7 @@
                     :disabled="selectedArticles.length === 0 || !selectedLocale"
                     @click="exportSelectedArticles"
                 >
-                    Export Selected Articles ({{ selectedArticles.length }})
+                    {{ $t('admin.export.export_selected_articles_btn', { count: selectedArticles.length }) }}
                 </button>
             </div>
         </template>
@@ -210,15 +210,15 @@ export default {
         },
         exportSelectedArticles() {
             if (!this.selectedCategory) {
-                alert('Please select a category.')
+                alert(this.$t('admin.export.please_select_category'))
                 return
             }
             if (!this.selectedLocale) {
-                alert('Please select a language.')
+                alert(this.$t('admin.export.please_select_language'))
                 return
             }
             if (this.selectedArticles.length === 0) {
-                alert('Please select at least one article to export.')
+                alert(this.$t('admin.export.please_select_article'))
                 return
             }
 
@@ -248,7 +248,7 @@ export default {
                 })
                 .catch(error => {
                     console.log(error)
-                    alert('An error occurred while exporting the articles.')
+                    alert(this.$t('admin.export.export_error'))
                 })
                 .finally(() => {
                     this.loading = false

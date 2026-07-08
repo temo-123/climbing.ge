@@ -9,37 +9,37 @@
 
     <div class="row" v-if="!is_loading">
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+            <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
         </div>
     </div>
 
     <div class="row" v-if="!is_loading">
         <div class="form-group">  
-            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = true" >Save and go back</button>
-            <p>Save and go to route tab page</p>
+            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = true" >{{ $t('admin.routes_sectors.save_and_go_back') }}</button>
+            <p>{{ $t('admin.routes_sectors.save_and_go_back') }}</p>
         </div>
     </div>
 
     <div class="row" v-if="!is_loading">
-        <div class="form-group">  
-            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = false" >Save and add more reoute</button>
-            <p>Save and add more route</p>
+        <div class="form-group">
+            <button form='route_add_form' type="submit" class="btn btn-primary" @click="go_back_action = false" >{{ $t('admin.routes_sectors.save_and_add_more_route') }}</button>
+            <p>{{ $t('admin.routes_sectors.save_and_add_more_route') }}</p>
         </div>
     </div>
 
     <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_add_form" @submit.prevent="add_mtp()">
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Region </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.region_label') }} </label>
           <div class="col-md-5">
             <select class="form-control" v-model="data.article_id" @click="filter_sectors()" required>
-              <option value="" disabled>Select outdoor article</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.select_outdoor_article') }}</option>
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-md-5">
             <select class="form-control" v-if="data.article_id != ''" v-model="data.sector_id" required>
-              <option value="" disabled>Select sector</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.select_sector') }}</option>
               <option v-for="sector in sectors" :key="sector.id" v-bind:value="sector.id">{{ sector.name }}</option>
             </select>
           </div>
@@ -54,9 +54,9 @@
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Multy pitch name </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.multi_pitch_name') }} </label>
           <div class="col-md-10">
-            <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Name" required> 
+            <input type="text" name="name" v-model="data.name" class="form-control" :placeholder="$t('common.name')" required>
               <div class="alert alert-danger" role="alert" v-if="errors.name">
                 {{ errors.name[0] }}
               </div>
@@ -69,20 +69,20 @@
         />
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Height </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('common.height') }} </label>
           <div class="col-md-9">
-            <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
+            <input type="number" name="title" class="form-control" v-model="data.height" :placeholder="$t('common.height')">
           </div>
-          <label for="name" class='col-md-1 control-label'> M </label>
+          <label for="name" class='col-md-1 control-label'> {{ $t('admin.routes_sectors.meter_unit') }} </label>
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'>First ascent / Auther</label>
+          <label for="name" class='col-md-2 control-label'>{{ $t('admin.routes_sectors.first_ascent_author_label') }}</label>
           <div class="col-md-5">
-            <input type="text" name="first_ascent" v-model="data.first_ascent" class="form-control" placeholder="First ascent"> 
+            <input type="text" name="first_ascent" v-model="data.first_ascent" class="form-control" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
           </div>
           <div class="col-md-5">
-            <input type="text" name="author" v-model="data.author" class="form-control" placeholder="Auther"> 
+            <input type="text" name="author" v-model="data.author" class="form-control" :placeholder="$t('admin.routes_sectors.author_placeholder')">
           </div>
         </div>
 
@@ -135,7 +135,7 @@
 
     beforeRouteLeave (to, from, next) {
         if(this.is_back_action_query == true){
-            if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+            if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                 this.is_back_action_query = false;
                 next()
             } else {
@@ -184,7 +184,7 @@
         })
         .then(response => {
           if(!this.go_back_action){
-            alert('Saving completed')
+            alert(this.$t('admin.routes_sectors.saving_completed'))
             this.clear_form()
           }
           else{

@@ -1,13 +1,13 @@
 <template>
     <stack-modal
             :show="is_show_edit_modal"
-            :title="'Edit product brand'"
+            :title="$t('admin.shop.edit_product_brand_title')"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
-            <h1>Edit product brand'</h1>
+            <h1>{{ $t('admin.shop.edit_product_brand_title') }}</h1>
 
             <div class="row justify-content-center" v-show="is_loading">
                 <div class="col-md-4">
@@ -16,29 +16,29 @@
             </div>
 
             <div class="roe" v-show="!is_loading">
-                <div class="tabs"> 
+                <div class="tabs">
 
                     <div class="container">
                         <div class="row">
                             <div class="col">
                                 <input type="radio" id="M1" :value="1" v-model="modal_tab_num">
-                                
-                                <label for="M1" >English</label>
+
+                                <label for="M1" >{{ $t('admin.shop.english_tab_label') }}</label>
                             </div>
                             <div class="col">
                                 <input type="radio" id="M2" :value="2" v-model="modal_tab_num">
-                                
-                                <label for="M2" >Georgian</label>
+
+                                <label for="M2" >{{ $t('admin.shop.georgian_tab_label') }}</label>
                             </div>
                         </div>
 
                         <div class="row" v-if="modal_tab_num == 1">
-                            <input type="text" class="form-control" v-model="data.us_brand.title" name="English name" id="English name" placeholder="Enter English name" title="Enter English name">
+                            <input type="text" class="form-control" v-model="data.us_brand.title" name="English name" id="English name" :placeholder="$t('admin.shop.enter_english_name_placeholder')" :title="$t('admin.shop.enter_english_name_placeholder')">
                             <textarea name='text' class="form-control mt-1 textarea" v-model="data.us_brand.short_description"></textarea>
                         </div>
 
                         <div class="row" v-if="modal_tab_num == 2">
-                            <input type="text" class="form-control" v-model="data.ka_brand.title" name="Georgian name" id="Georgian name" placeholder="Enter Georgian name" title="Enter English name">
+                            <input type="text" class="form-control" v-model="data.ka_brand.title" name="Georgian name" id="Georgian name" :placeholder="$t('admin.shop.enter_georgian_name_placeholder')" :title="$t('admin.shop.enter_georgian_name_placeholder')">
                             <textarea name='text' class="form-control mt-1 textarea" v-model="data.ka_brand.short_description"></textarea>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                     :class="{'btn btn-primary': true}"
                     @click="edit_product_brand()"
                 >
-                Save change
+                {{ $t('admin.shop.save_change_btn') }}
                 </button>
             </div>
         </div>
@@ -104,7 +104,7 @@
         methods: {
             close_modal(is_back_action_query = false){
                 if(is_back_action_query){
-                    if (window.confirm('edited information will be deleted!!! Are you sure, you want go back?')) {
+                    if (window.confirm(this.$t('admin.shop.confirm_close_edited_info'))) {
                         this.is_back_action_query = false;
                         this.clear_form_data()
                     }
@@ -165,7 +165,7 @@
                     _method: 'Post'
                 })
                 .then(response => {
-                    alert('Edited successfully')
+                    alert(this.$t('admin.shop.edited_successfully'))
                     this.update()
                     this.close_modal()
                 })

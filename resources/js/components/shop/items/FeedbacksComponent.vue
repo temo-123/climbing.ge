@@ -31,8 +31,8 @@
                     <button @click="show_feedback_modal()" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.create') }}</button>
                 </div>
                 <div class="col-xs-6 col-md-6">
-                    <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">{{ $t('shop.product.feedback.refresh') }} ({{refresh_id}})</button>
-                    <span class="badge badge-primary mb-1 pull-right" v-if="is_refresh">{{ $t('shop.product.feedback.updating') }}</span>
+                    <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">{{ $t('common.refresh') }} ({{refresh_id}})</button>
+                    <span class="badge badge-primary mb-1 pull-right" v-if="is_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>

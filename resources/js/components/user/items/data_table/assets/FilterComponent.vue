@@ -15,7 +15,7 @@
                     @change="send_filter_to_tab(action_data.filter_data.action_fun)"
                     class="form-control"
                 >
-                    <option :value="0">All</option>
+                    <option :value="0">{{ $t("all") }}</option>
                     <option
                         v-for="(filter_data, key) in action_data.filter_data.data"
                         :key="key"
@@ -30,7 +30,7 @@
                     @change="send_filter_to_tab_with_id(action_data.filter_data.action_fun_id)"
                     class="form-control"
                 >
-                    <option :value="0">All</option>
+                    <option :value="0">{{ $t("all") }}</option>
                     <option
                         v-for="(filter_data, key) in action_data.filter_data.data"
                         :key="key"
@@ -62,7 +62,7 @@
                             @change="send_filter_to_tab_with_multi_id(filter.action_fun, index)"
                             class="form-control"
                         >
-                            <option :value="0">All</option>
+                            <option :value="0">{{ $t("all") }}</option>
                             <option
                                 v-for="(filter_data, key) in filter.data"
                                 :key="key"
@@ -77,7 +77,7 @@
                             @change="send_filter_to_tab_with_multi_id(filter.action_fun_id, index)"
                             class="form-control"
                         >
-                            <option :value="0">All</option>
+                            <option :value="0">{{ $t("all") }}</option>
                             <option
                                 v-for="(filter_data, key) in filter.data"
                                 :key="key"

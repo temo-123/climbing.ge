@@ -7,12 +7,12 @@
         </div>
         <div class="row" v-if="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row" v-if="!is_loading">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="edit_mount()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="edit_mount()" >{{ $t('common.save') }}</button>
             </div>
         </div>
         <div class="row"  v-if="error.length != 0">
@@ -26,17 +26,17 @@
                     <div class="col-md-3" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col-md-3" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col-md-3" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 <!-- </div> -->
             </div>
@@ -45,33 +45,33 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-xs-12">
-                                <h2 class="display-4"><span>Mount masive global information</span></h2>
-                                <p class="lead">Mount masive global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.mount_routes.mount_massive_global_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.mount_routes.mount_massive_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100">
                         <div class="form-group clearfix" >
-                            <label for="name" class='col-xs-2 control-label'> Demo name </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.demo_name_label') }} </label>
                             <div class="col-xs-10">
-                                <input type="text" v-model="data.global_data.name" name="demo name" class="form-control"> 
+                                <input type="text" v-model="data.global_data.name" name="demo name" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Map </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.regions.map_label') }} </label>
                             <div class="col-xs-10">
-                                <input type="text" v-model="data.global_data.map" name="map" class="form-control"> 
+                                <input type="text" v-model="data.global_data.map" name="map" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.map">
                                     {{ errors.map[0] }}
                                 </div> -->
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix" >
-                            <label for="name" class='col-xs-2 control-label'> Weather </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.weather_label') }} </label>
                             <div class="col-xs-10">
-                                <input type="text" v-model="data.global_data.weather" name="weather" class="form-control"> 
+                                <input type="text" v-model="data.global_data.weather" name="weather" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.weather">
                                     {{ errors.weather[0] }}
                                 </div> -->
@@ -83,14 +83,14 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="jumbotron width_100">
                         <div class="container">
-                            <h2 class="display-4"><span>Mount masive English information</span></h2>
-                            <p class="lead">Mount masive English information.</p>
+                            <h2 class="display-4"><span>{{ $t('admin.mount_routes.mount_massive_en_info_title') }}</span></h2>
+                            <p class="lead">{{ $t('admin.mount_routes.mount_massive_en_info_subtitle') }}</p>
                         </div>
                     </div>
                     <form  class="width_100">
-                        
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title english </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.title_english_label') }} </label>
                             <div class="col-xs-10">
                                 <input type="text" name="name" v-model="data.us_data.title" class="form-control">
                                 <!-- <div class="alert alert-danger" role="alert" v-if="errors.name">
@@ -100,28 +100,28 @@
                         </div>
                         <hr>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> English text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_text_label') }} </label>
                             <div class="col-xs-10">
                                     <!-- <textarea type="text"  name="text" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.text" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> English description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_description_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.us_data.short_description" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> English how get hear </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_how_get_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.how_get" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> English best time </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.english_best_time_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text" name="best_time" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.us_data.best_time" />
@@ -132,41 +132,41 @@
                 <div class="row" v-show="tab_num == 3">
                     <div class="jumbotron width_100">
                         <div class="container">
-                            <h2 class="display-4"><span>Mount masive Georgian information</span></h2>
-                            <p class="lead">Mount masive Georgian information.</p>
+                            <h2 class="display-4"><span>{{ $t('admin.mount_routes.mount_massive_ka_info_title') }}</span></h2>
+                            <p class="lead">{{ $t('admin.mount_routes.mount_massive_ka_info_subtitle') }}</p>
                         </div>
                     </div>
                     <form  class="width_100">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title Georgia </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.title_georgian_label') }} </label>
                             <div class="col-xs-10">
                                 <input type="text" name="name_ru" v-model="data.ka_data.title" class="form-control">
                             </div>
                         </div>
                         <hr>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Georgia text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_text_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="text_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.text" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Georgia description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_description_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="description" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_data.short_description" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Georgia how get hear </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_how_get_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="how_get" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.how_get" />
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Georgia best time </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.mount_routes.georgian_best_time_label') }} </label>
                             <div class="col-xs-10">
                                 <!-- <textarea type="text"  name="best_time_ru" rows="15" class="form-cotrol xs-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.best_time" />
@@ -254,7 +254,7 @@
         },
         beforeRouteLeave (to, from, next) {
             if(this.is_back_action == true){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.is_back_action = false;
                     next()
                 } else {

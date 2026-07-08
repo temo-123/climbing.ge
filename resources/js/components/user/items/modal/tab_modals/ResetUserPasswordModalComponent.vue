@@ -3,26 +3,26 @@
         v-model="is_open"
         :title="modalTitle"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
         @close="close()"
     >
         <div class="form-group">
-            <label>New Password</label>
+            <label>{{ $t('admin.users.new_password_label') }}</label>
             <input
                 type="password"
                 class="form-control"
                 v-model="password"
-                placeholder="Enter new password"
+                :placeholder="$t('admin.users.enter_new_password_placeholder')"
                 autocomplete="new-password"
             />
         </div>
         <div class="form-group mt-2">
-            <label>Confirm Password</label>
+            <label>{{ $t('admin.users.confirm_password_label') }}</label>
             <input
                 type="password"
                 class="form-control"
                 v-model="password_confirm"
-                placeholder="Confirm new password"
+                :placeholder="$t('admin.users.confirm_new_password_placeholder')"
                 autocomplete="new-password"
             />
         </div>
@@ -33,7 +33,7 @@
                 :disabled="saving"
                 @click="save()"
             >
-                {{ saving ? 'Saving...' : 'Set Password' }}
+                {{ saving ? $t('admin.users.saving_ellipsis') : $t('admin.users.set_password_btn') }}
             </button>
         </div>
     </StackModal>
@@ -55,7 +55,7 @@ export default {
     },
     computed: {
         modalTitle() {
-            return this.user_name ? `Reset Password: ${this.user_name}` : 'Reset Password';
+            return this.user_name ? this.$t('admin.users.reset_password_prefix', { name: this.user_name }) : this.$t('admin.users.reset_password_title');
         }
     },
     methods: {
@@ -73,15 +73,15 @@ export default {
         save() {
             this.error = '';
             if (!this.password) {
-                this.error = 'Password is required.';
+                this.error = this.$t('admin.users.password_required');
                 return;
             }
             if (this.password.length < 6) {
-                this.error = 'Password must be at least 6 characters.';
+                this.error = this.$t('admin.users.password_min_length');
                 return;
             }
             if (this.password !== this.password_confirm) {
-                this.error = 'Passwords do not match.';
+                this.error = this.$t('admin.users.passwords_do_not_match');
                 return;
             }
             this.saving = true;
@@ -91,7 +91,7 @@ export default {
                     this.close();
                 })
                 .catch(error => {
-                    this.error = error.response?.data?.message || error.response?.data?.error || 'Error resetting password.';
+                    this.error = error.response?.data?.message || error.response?.data?.error || this.$t('admin.users.error_resetting_password');
                 })
                 .finally(() => this.saving = false);
         }

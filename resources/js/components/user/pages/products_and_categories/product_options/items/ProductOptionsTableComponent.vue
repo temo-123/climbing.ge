@@ -3,14 +3,14 @@
     <table class="table table-hover" id="dev-table">
         <thead>
             <tr>
-                <th>Option id</th>
-                <th>image</th>
-                <th>Option name</th>
-                <th>Price</th>
-                <th>Discount</th>
-                <th>Barcode</th>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>{{ $t('admin.shop.option_id') }}</th>
+                <th>{{ $t('admin.shop.image_label') }}</th>
+                <th>{{ $t('admin.shop.option_name') }}</th>
+                <th>{{ $t('admin.shop.price_label') }}</th>
+                <th>{{ $t('admin.shop.discount_col') }}</th>
+                <th>{{ $t('admin.shop.barcode_label') }}</th>
+                <th>{{ $t('common.edit') }}</th>
+                <th>{{ $t('common.delete') }}</th>
             </tr>
         </thead>
 
@@ -24,7 +24,7 @@
                             :alt="option.name"
                             style="height: 8em; object-fit: cover; cursor: pointer;"
                             @click="open_image(option.images, 0)">
-                    <span v-else>No image</span>
+                    <span v-else>{{ $t('admin.shop.no_image') }}</span>
                 </td>
                 <td>{{ option.name }} </td>
                 <td>{{ option.price }} </td>
@@ -38,17 +38,17 @@
                 </td>
 
                 <td>
-                    <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="$emit('edit_option_modal', option.id)">Edit</button>
+                    <button v-if="!is_loading_editing_modal" type="submit" class="btn btn-primary" @click="$emit('edit_option_modal', option.id)">{{ $t('common.edit') }}</button>
                     <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                 </td>
                 <td>
-                    <button type="submit" class="btn btn-danger" @click="$emit('del_option', option.id)">Delete</button>
+                    <button type="submit" class="btn btn-danger" @click="$emit('del_option', option.id)">{{ $t('common.delete') }}</button>
                 </td>
             </tr>
         </tbody>
         <tbody v-else>
             <tr>
-                <td colspan="8" class="text-center">No options available</td>
+                <td colspan="8" class="text-center">{{ $t('admin.shop.no_options_available') }}</td>
             </tr>
         </tbody>
     </table>

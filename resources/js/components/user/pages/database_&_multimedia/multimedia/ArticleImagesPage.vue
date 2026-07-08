@@ -7,73 +7,73 @@
                 <div class="header-section">
                     <h1 class="page-title">
                         <i class="fa fa-images"></i>
-                        Media Files Manager
+                        {{ $t('admin.multimedia.page_title') }}
                     </h1>
-                    
+
                     <!-- Search and Filter Bar -->
                     <div class="toolbar">
                         <div class="search-bar">
-                            <input 
-                                v-model="searchQuery" 
-                                type="text" 
-                                placeholder="Search images and folders..."
+                            <input
+                                v-model="searchQuery"
+                                type="text"
+                                :placeholder="$t('admin.multimedia.search_placeholder')"
                                 class="search-input"
                                 @input="filterItems"
                             />
                             <i class="fa fa-search search-icon"></i>
                         </div>
-                        
+
                         <div class="filter-controls">
                             <select v-model="sortBy" @change="sortItems" class="sort-select">
-                                <option value="name">Sort by Name</option>
-                                <option value="date">Sort by Date</option>
-                                <option value="size">Sort by Size</option>
-                                <option value="type">Sort by Type</option>
+                                <option value="name">{{ $t('admin.multimedia.sort_by_name') }}</option>
+                                <option value="date">{{ $t('admin.multimedia.sort_by_date') }}</option>
+                                <option value="size">{{ $t('admin.multimedia.sort_by_size') }}</option>
+                                <option value="type">{{ $t('admin.multimedia.sort_by_type') }}</option>
                             </select>
-                            
+
                             <select v-model="filterType" @change="filterItems" class="filter-select">
-                                <option value="">All Files</option>
-                                <option value="jpg">Images</option>
-                                <option value="png">PNG Files</option>
-                                <option value="gif">GIF Files</option>
-                                <option value="svg">SVG Files</option>
+                                <option value="">{{ $t('admin.multimedia.all_files') }}</option>
+                                <option value="jpg">{{ $t('admin.multimedia.filter_images') }}</option>
+                                <option value="png">{{ $t('admin.multimedia.filter_png') }}</option>
+                                <option value="gif">{{ $t('admin.multimedia.filter_gif') }}</option>
+                                <option value="svg">{{ $t('admin.multimedia.filter_svg') }}</option>
                             </select>
                         </div>
                     </div>
-                    
+
                     <!-- Breadcrumbs -->
                     <div class="breadcrumbs">
-                        <span @click="setCurrentFolder(null)" class="breadcrumb-item">Root</span>
+                        <span @click="setCurrentFolder(null)" class="breadcrumb-item">{{ $t('admin.multimedia.root_label') }}</span>
                         <span v-if="currentFolder" class="breadcrumb-separator"> / </span>
                         <span v-if="currentFolder" class="breadcrumb-item active">{{ currentFolder.name }}</span>
                     </div>
 
                     <!-- Bulk Actions Toolbar -->
                     <div v-if="selectedItems.length > 0" class="bulk-actions">
-                        <span class="selected-count">{{ selectedItems.length }} item(s) selected</span>
+                        <span class="selected-count">{{ selectedItems.length }} {{ $t('admin.multimedia.items_selected_suffix') }}</span>
                         <button @click="bulkDownload" class="btn btn-primary">
-                            <i class="fa fa-download"></i> Download Selected
+                            <i class="fa fa-download"></i> {{ $t('admin.multimedia.download_selected') }}
                         </button>
                         <button @click="bulkDelete" class="btn btn-danger">
-                            <i class="fa fa-trash"></i> Delete Selected
+                            <i class="fa fa-trash"></i> {{ $t('admin.multimedia.delete_selected_btn') }}
                         </button>
                         <button @click="clearSelection" class="btn btn-secondary">
-                            <i class="fa fa-times"></i> Clear Selection
+                            <i class="fa fa-times"></i> {{ $t('admin.multimedia.clear_selection') }}
                         </button>
                     </div>
                 </div>
-                
+
                 <!-- Loading State -->
                 <div v-if="loading" class="loading-state">
                     <div class="spinner"></div>
-                    <p>Loading media files...</p>
+                    <p>{{ $t('admin.multimedia.loading_media_files') }}</p>
                 </div>
-                
+
                 <!-- Error State -->
                 <div v-else-if="error" class="error-state">
                     <i class="fa fa-exclamation-triangle"></i>
                     <p>{{ error }}</p>
-                    <button @click="fetchImages" class="btn btn-primary">Retry</button>
+                    <button @click="fetchImages" class="btn btn-primary">{{ $t('admin.database.retry_btn') }}</button>
                 </div>
                 
                 <!-- Content Area -->
@@ -83,10 +83,10 @@
                         <div class="section-title-row">
                             <h3 class="section-title">
                                 <i class="fa fa-folder-open"></i>
-                                Folders
+                                {{ $t('admin.multimedia.folders_title') }}
                             </h3>
                             <button @click="showCreateFolder = !showCreateFolder" class="btn btn-sm btn-outline-secondary">
-                                <i class="fa fa-folder"></i> New Folder
+                                <i class="fa fa-folder"></i> {{ $t('admin.multimedia.new_folder_btn') }}
                             </button>
                         </div>
                         <div v-if="showCreateFolder" class="create-folder-form">
@@ -94,12 +94,12 @@
                                 v-model="newFolderName"
                                 type="text"
                                 class="form-control form-control-sm"
-                                placeholder="Folder name"
+                                :placeholder="$t('admin.multimedia.folder_name_placeholder')"
                                 @keyup.enter="createFolder"
                                 @keyup.esc="showCreateFolder = false"
                             />
-                            <button @click="createFolder" class="btn btn-sm btn-primary">Create</button>
-                            <button @click="showCreateFolder = false; newFolderName = ''" class="btn btn-sm btn-secondary">Cancel</button>
+                            <button @click="createFolder" class="btn btn-sm btn-primary">{{ $t('admin.multimedia.create_btn') }}</button>
+                            <button @click="showCreateFolder = false; newFolderName = ''" class="btn btn-sm btn-secondary">{{ $t('admin.comments.cancel_btn') }}</button>
                         </div>
                         <div class="folder-tree">
                             <div class="all-folders-tree">
@@ -128,7 +128,7 @@
                                             <button 
                                                 @click.stop="deleteItem(folder)"
                                                 class="delete-btn"
-                                                title="Delete folder"
+                                                :title="$t('admin.multimedia.delete_folder_tooltip')"
                                             >
                                                 <i class="fa fa-trash"></i>
                                             </button>
@@ -153,10 +153,10 @@
                         <div class="section-title-row">
                             <h3 class="section-title">
                                 <i class="fa fa-images"></i>
-                                Images{{ currentFolder ? ` — ${currentFolder.name}` : '' }}
+                                {{ $t('admin.multimedia.images_title') }}{{ currentFolder ? ` — ${currentFolder.name}` : '' }}
                             </h3>
                             <label class="btn btn-sm btn-primary" style="cursor:pointer; margin-bottom:0;">
-                                <i class="fa fa-upload"></i> Upload
+                                <i class="fa fa-upload"></i> {{ $t('admin.multimedia.upload_btn') }}
                                 <input type="file" multiple accept="image/*" style="display:none" @change="handleFileSelect">
                             </label>
                         </div>
@@ -192,7 +192,7 @@
                                     <div class="image-details">
                                         <h4 class="image-name">{{ image.name }}</h4>
                                         <p class="image-meta">{{ formatFileSize(image.size) }} • {{ image.extension }}</p>
-                                        <span v-if="image.used === false" class="badge-unused">unused</span>
+                                        <span v-if="image.used === false" class="badge-unused">{{ $t('admin.multimedia.unused_badge') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -202,10 +202,10 @@
                     <!-- Empty State -->
                     <div v-if="!loading && filteredImages.length === 0 && filteredFolders.length === 0" class="empty-state">
                         <i class="fa fa-folder-open"></i>
-                        <h3>No files found</h3>
-                        <p>{{ searchQuery ? 'Try adjusting your search or filters' : 'Upload some images to get started' }}</p>
+                        <h3>{{ $t('admin.multimedia.no_files_found') }}</h3>
+                        <p>{{ searchQuery ? $t('admin.multimedia.try_adjusting_search') : $t('admin.multimedia.upload_images_to_start') }}</p>
                         <button v-if="!searchQuery" @click="showUploadModal = true" class="btn btn-primary">
-                            <i class="fa fa-upload"></i> Upload Images
+                            <i class="fa fa-upload"></i> {{ $t('admin.multimedia.upload_images_btn') }}
                         </button>
                     </div>
                 </div>
@@ -295,7 +295,7 @@
                     
                 } catch (error) {
                     console.error('Error fetching images:', error);
-                    this.error = 'Failed to load media files. Please try again.';
+                    this.error = this.$t('admin.multimedia.failed_load_media');
                 } finally {
                     this.loading = false;
                 }
@@ -496,10 +496,10 @@
             
             // Individual delete operations with confirmation
             async deleteItem(item) {
-                const itemType = item.type === 'directory' ? 'folder' : 'file';
+                const itemType = item.type === 'directory' ? this.$t('admin.multimedia.folder_type') : this.$t('admin.multimedia.file_type');
                 const msg = item.type === 'directory'
-                    ? `Delete folder "${item.name}" and all its contents?`
-                    : `Delete file "${item.name}"?`;
+                    ? this.$t('admin.multimedia.confirm_delete_folder', { name: item.name })
+                    : this.$t('admin.multimedia.confirm_delete_file', { name: item.name });
 
                 if (!confirm(msg)) return;
 
@@ -513,7 +513,7 @@
                     }
                 } catch (error) {
                     console.error(`Error deleting ${itemType}:`, error);
-                    alert(error.response?.data?.message || `Failed to delete ${itemType}.`);
+                    alert(error.response?.data?.message || this.$t('admin.multimedia.failed_delete_type', { type: itemType }));
                 }
             },
             
@@ -540,7 +540,7 @@
             },
             
             async bulkDelete() {
-                if (!confirm(`Delete ${this.selectedItems.length} selected item(s)? This cannot be undone.`)) return;
+                if (!confirm(this.$t('admin.multimedia.confirm_bulk_delete', { count: this.selectedItems.length }))) return;
 
                 try {
                     await axios.delete('/set_multimedia/delete_items', { data: { paths: [...this.selectedItems] } });
@@ -548,7 +548,7 @@
                     await this.fetchImages();
                 } catch (error) {
                     console.error('Error deleting files:', error);
-                    alert(error.response?.data?.message || 'Failed to delete items.');
+                    alert(error.response?.data?.message || this.$t('admin.multimedia.failed_delete_items'));
                 }
             },
 
@@ -563,7 +563,7 @@
                     this.showCreateFolder = false;
                     await this.fetchImages();
                 } catch (error) {
-                    alert(error.response?.data?.message || 'Failed to create folder.');
+                    alert(error.response?.data?.message || this.$t('admin.multimedia.failed_create_folder'));
                 }
             },
             
@@ -601,13 +601,13 @@
                     
                 } catch (error) {
                     console.error('Error uploading files:', error);
-                    alert('Failed to upload files. Please try again.');
+                    alert(this.$t('admin.multimedia.failed_upload_files'));
                 }
             },
             
             // Utility functions
             formatFileSize(bytes) {
-                if (!bytes) return 'Unknown size';
+                if (!bytes) return this.$t('admin.multimedia.unknown_size');
                 const sizes = ['Bytes', 'KB', 'MB', 'GB'];
                 const i = Math.floor(Math.log(bytes) / Math.log(1024));
                 return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];

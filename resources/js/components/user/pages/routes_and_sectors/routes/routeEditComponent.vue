@@ -9,13 +9,13 @@
 
     <div class="row"  v-if="!is_loading">
         <div class="form-group">
-            <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+            <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
         </div>
     </div>
 
     <div class="row" v-if="!is_loading">
         <div class="form-group">  
-            <button form='route_edit_form' type="submit" class="btn btn-primary" @click="is_back_action_query = true" >Save and go back</button>
+            <button form='route_edit_form' type="submit" class="btn btn-primary" @click="is_back_action_query = true" >{{ $t('admin.routes_sectors.save_and_go_back') }}</button>
             <!-- <p>Save and go to route tab page</p> -->
         </div>
     </div>
@@ -29,16 +29,16 @@
     <div class="wrapper container-fluid container" v-if="!is_loading">
       <form id="route_edit_form" @submit.prevent="save_route()">
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Region </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.region_label') }} </label>
           <div class="col-md-5">
             <select class="form-control" v-model="article_id" @click="filter_sectors()" required>
-              <option value="" disabled>Select outdoor article</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.select_outdoor_article') }}</option>
               <option v-for="region in regions" :key="region.id" v-bind:value="region.id">{{ region.url_title  }}</option>
             </select>
           </div>
           <div class="col-md-5">
             <select class="form-control" v-if="article_id != ''" v-model="data.sector_id" required>
-              <option value="" disabled>Select sector</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.select_sector') }}</option>
               <option v-for="sector in sectors" :key="sector.id" v-bind:value="sector.id">{{ sector.name }}</option>
             </select>
           </div>
@@ -84,9 +84,9 @@
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Route name </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.route_name') }} </label>
           <div class="col-md-10">
-            <input type="text" name="name" v-model="data.name" class="form-control" placeholder="Route name.." required> 
+            <input type="text" name="name" v-model="data.name" class="form-control" :placeholder="$t('admin.routes_sectors.route_name_placeholder')" required>
               <div class="alert alert-danger" role="alert" v-if="errors.name">
                 {{ errors.name[0] }}
               </div>
@@ -99,71 +99,74 @@
         />
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Bolts & height </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.bolts_and_height') }} </label>
 
           <div class="col-md-2" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
-            <label for="name" class='col-md-12 control-label'> Bolts: </label>
+            <label for="name" class='col-md-12 control-label'> {{ $t('admin.routes_sectors.bolts_colon') }} </label>
           </div>
           <div class="col-md-3" v-if="data.category != '' && ['sport climbing', 'dry tooling', 'mix climbing'].includes(data.category)">
-              <input type="number" name="title" v-model="data.bolts" class="form-control" placeholder="Bolts">
+              <input type="number" name="title" v-model="data.bolts" class="form-control" :placeholder="$t('admin.common.bolts')">
           </div>
 
           <div class="col-md-2">
-            <label for="name" class='col-md-12 control-label'> Metrs: </label>
+            <label for="name" class='col-md-12 control-label'> {{ $t('admin.routes_sectors.meters_colon') }} </label>
           </div>
           <div class="col-md-3">
-            <input type="number" name="title" class="form-control" v-model="data.height" placeholder="Height"> 
+            <input type="number" name="title" class="form-control" v-model="data.height" :placeholder="$t('common.height')">
           </div>
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Ancher and bolt type: </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.anchor_and_bolt_type') }} </label>
 
           <div class="col-md-2" v-if="data.category != '' && data.category != 'bouldering'">
-            <label for="name" class='col-md-12 control-label'> Anchor type: </label>
+            <label for="name" class='col-md-12 control-label'> {{ $t('admin.routes_sectors.anchor_type_colon') }} </label>
           </div>
 
           <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.anchor_type">
-              <option value="">Anchor type</option>
+              <option value="">{{ $t('admin.routes_sectors.anchor_type_placeholder') }}</option>
               <option :value=null>?</option>
-              <option value="Chain">Chain</option>
-              <option value="Chain with carabiner">Chain with carabiner</option>
-              <option value="Chain with ring">Chain with ring</option>
-              <option value="2 independent chains">2 independent chains</option>
-              <option value="2 bolts with carabiner">2 bolts with carabiner</option>
-              <option value="2 bolts only">2 bolts only</option>
+              <option value="Chain">{{ $t('admin.routes_sectors.anchor_chain') }}</option>
+              <option value="Chain with carabiner">{{ $t('admin.routes_sectors.anchor_chain_carabiner') }}</option>
+              <option value="Chain with ring">{{ $t('admin.routes_sectors.anchor_chain_ring') }}</option>
+              <option value="2 independent chains">{{ $t('admin.routes_sectors.anchor_2_independent_chains') }}</option>
+              <option value="2 bolts with carabiner">{{ $t('admin.routes_sectors.anchor_2_bolts_carabiner') }}</option>
+              <option value="2 bolts only">{{ $t('admin.routes_sectors.anchor_2_bolts_only') }}</option>
             </select>
           </div>
 
           <div class="col-md-2" v-if="data.category != '' && data.category != 'bouldering'">
-            <label for="name" class='col-md-12 control-label'> Bolts type: </label>
+            <label for="name" class='col-md-12 control-label'> {{ $t('admin.routes_sectors.bolts_type_colon') }} </label>
           </div>
 
           <div class="col-md-3" v-if="data.category != '' && data.category != 'bouldering'">
             <select class="form-control" v-model="data.bolts_type">
-              <option value="">Bolts type</option>
+              <option value="">{{ $t('admin.routes_sectors.bolts_type_placeholder') }}</option>
               <option :value=null>?</option>
-              <option value="glued">Glued-in bolts</option>
-              <option value="hangerr">Hangerr bolts</option>
+              <option value="glued">{{ $t('admin.routes_sectors.bolts_type_glued') }}</option>
+              <option value="hangerr">{{ $t('admin.routes_sectors.bolts_type_hanger') }}</option>
             </select>
           </div>
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Author & Creation date </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.author_and_creation_date') }} </label>
           <div class="col-md-5">
-            <input type="text" name="auther" class="form-control" v-model="data.author" placeholder="Bolter"> 
+            <input type="text" name="auther" class="form-control" v-model="data.author" :placeholder="$t('admin.routes_sectors.bolter_placeholder')">
           </div>
           <div class="col-md-5">
-            <input type="date" name="creating_data" class="form-control" v-model="data.creation_data" placeholder="Bolting Data"> 
+            <input type="date" name="creating_data" class="form-control" v-model="data.creation_data" :placeholder="$t('admin.routes_sectors.bolting_date_placeholder')">
           </div>
         </div>
 
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'>Firs Ascent </label>
+          <label for="name" class='col-md-2 control-label'>{{ $t('admin.routes_sectors.first_ascent_label') }} </label>
           <div class="col-md-5">
-            <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" placeholder="First ascent"> 
+            <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
+          </div>
+          <div class="col-md-5">
+            <input type="date" name="first_ascent_date" class="form-control" v-model="data.first_ascent_date" :placeholder="$t('admin.routes_sectors.first_ascent_date_placeholder')">
           </div>
         </div>
 
@@ -221,6 +224,7 @@
           author: "",
           creation_data: "",
           first_ascent: "",
+          first_ascent_date: "",
 
           anchor_type: "",
           bolts_type: "",
@@ -279,7 +283,7 @@
 
     beforeRouteLeave (to, from, next) {
         if(this.is_back_action_query == true){
-            if (window.confirm('edited information will be deleted!!! Are you sure, you want go back?')) {
+            if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                 this.is_back_action_query = false;
                 next()
             } else {
@@ -396,7 +400,7 @@
           })
           .then(response => {
             if(!this.is_back_action_query){
-              alert('Saving completed')
+              alert(this.$t('admin.routes_sectors.saving_completed'))
               // Refresh data instead of clearing
               this.get_route_editing_data()
             }
@@ -406,7 +410,7 @@
           })
           .catch(error =>{
               this.status = "error"
-              alert('Error saving route: ' + (error.response && error.response.data && error.response.data.error ? error.response.data.error : 'Unknown error'));
+              alert(this.$t('admin.routes_sectors.error_saving_route') + ' ' + (error.response && error.response.data && error.response.data.error ? error.response.data.error : this.$t('admin.routes_sectors.unknown_error')));
           })
           .finally(() => this.is_loading = false);
         });
@@ -430,6 +434,7 @@
           author: "",
           creation_data: "",
           first_ascent: "",
+          first_ascent_date: "",
 
           anchor_type: "",
           bolts_type: "",

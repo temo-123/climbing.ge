@@ -4,8 +4,8 @@
             <div class="col-md-12" >
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">
-                        <h2 class="display-4">Edit post global information</h2>
-                        <p class="lead">Edit post global information.</p>
+                        <h2 class="display-4">{{ $t('admin.posts.edit_post_global_info_title') }}</h2>
+                        <p class="lead">{{ $t('admin.posts.edit_post_global_info_subtitle') }}</p>
                     </div>
                 </div>
                 <form style="margin-top: 5%;">

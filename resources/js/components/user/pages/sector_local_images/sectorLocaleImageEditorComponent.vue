@@ -3,15 +3,15 @@
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center gap-3">
-                    <button class="btn btn-secondary btn-sm" @click="goBack">← Go Back</button>
-                    <h1 class="mb-0 h4">Sector Local Image — Canvas Editor</h1>
+                    <button class="btn btn-secondary btn-sm" @click="goBack">← {{ $t('common.back') }}</button>
+                    <h1 class="mb-0 h4">{{ $t('admin.articles.sector_local_image_editor.title') }}</h1>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <!-- Left: layouts list -->
                 <div class="col-md-4">
-                    <h5>Layouts <small class="text-muted">(1 per sector)</small></h5>
+                    <h5>{{ $t('admin.articles.sector_local_image_editor.layouts_title') }} <small class="text-muted">{{ $t('admin.articles.sector_local_image_editor.per_sector_hint') }}</small></h5>
                     <div class="layout-list mb-2">
                         <div
                             v-for="(layout, index) in layouts"
@@ -22,31 +22,31 @@
                             @click="selectLayout(layout.id)"
                         >
                             <span style="font-size:0.95rem; flex:1;">
-                                {{ layout.sector ? layout.sector.name : ('Layout #' + layout.id) }}
+                                {{ layout.sector ? layout.sector.name : $t('admin.articles.sector_local_image_editor.layout_number_prefix', { id: layout.id }) }}
                             </span>
                             <div class="d-flex gap-1 ms-1" @click.stop>
                                 <button class="btn btn-outline-secondary btn-sm p-0"
                                     style="width:22px;height:22px;line-height:1;"
                                     :disabled="index === 0"
-                                    @click="moveLayoutUp(index)" title="Move up">↑</button>
+                                    @click="moveLayoutUp(index)" :title="$t('admin.articles.sector_local_image_editor.move_up_tooltip')">↑</button>
                                 <button class="btn btn-outline-secondary btn-sm p-0"
                                     style="width:22px;height:22px;line-height:1;"
                                     :disabled="index >= layouts.length - 1"
-                                    @click="moveLayoutDown(index)" title="Move down">↓</button>
+                                    @click="moveLayoutDown(index)" :title="$t('admin.articles.sector_local_image_editor.move_down_tooltip')">↓</button>
                                 <button class="btn btn-danger btn-sm p-0"
                                     style="width:22px;height:22px;line-height:1;"
                                     @click="deleteLayout(layout.id)">✕</button>
                             </div>
                         </div>
-                        <div v-if="layouts.length === 0" class="text-muted small p-2">No layouts yet.</div>
+                        <div v-if="layouts.length === 0" class="text-muted small p-2">{{ $t('admin.articles.sector_local_image_editor.no_layouts_yet') }}</div>
                     </div>
-                    <button class="btn btn-outline-primary btn-sm" @click="newLayout">+ New Layout</button>
+                    <button class="btn btn-outline-primary btn-sm" @click="newLayout">{{ $t('admin.articles.sector_local_image_editor.new_layout_btn') }}</button>
                 </div>
 
                 <!-- Right: sector selector (radio — one sector per layout) -->
                 <div class="col-md-8">
-                    <h5>Select sector for this drawing</h5>
-                    <p class="text-muted small mb-2">Each layout represents ONE sector's area on the image.</p>
+                    <h5>{{ $t('admin.articles.sector_local_image_editor.select_sector_title') }}</h5>
+                    <p class="text-muted small mb-2">{{ $t('admin.articles.sector_local_image_editor.select_sector_hint') }}</p>
                     <div style="max-height:220px; overflow-y:auto; border:1px solid #dee2e6; border-radius:4px; padding:8px;">
                         <div v-for="sector in availableSectors" :key="sector.id" class="form-check mb-1">
                             <input
@@ -58,10 +58,10 @@
                             >
                             <label class="form-check-label" :for="'sec-' + sector.id">
                                 {{ sector.name }} <small class="text-muted">(#{{ sector.id }})</small>
-                                <span v-if="layoutBySector(sector.id)" class="badge bg-success ms-1" style="font-size:10px;">has drawing</span>
+                                <span v-if="layoutBySector(sector.id)" class="badge bg-success ms-1" style="font-size:10px;">{{ $t('admin.articles.sector_local_image_editor.has_drawing_badge') }}</span>
                             </label>
                         </div>
-                        <div v-if="availableSectors.length === 0" class="text-muted small">No sectors linked to this image.</div>
+                        <div v-if="availableSectors.length === 0" class="text-muted small">{{ $t('admin.articles.sector_local_image_editor.no_sectors_linked') }}</div>
                     </div>
                 </div>
             </div>
@@ -76,22 +76,22 @@
                         @click="toggleExtraDrawingMode"
                     >
                         <i class="fa fa-map-marker"></i>
-                        {{ extra_drawing_loading ? 'Loading…' : (extra_drawing_mode ? 'Extra Drawing Mode: ON' : 'Add Extra Drawing') }}
+                        {{ extra_drawing_loading ? $t('admin.export.loading_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.extra_drawing_mode_on') : $t('admin.articles.sector_local_image_editor.add_extra_drawing_btn')) }}
                     </button>
                     <button class="btn btn-success" :disabled="saving" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? 'Saving…' : (extra_drawing_mode ? 'Save Extra Drawing' : 'Save Layout') }}
+                        <i class="fa fa-save"></i> {{ saving ? $t('admin.articles.sector_local_image_editor.saving_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.save_extra_drawing_btn') : $t('admin.articles.sector_local_image_editor.save_layout_btn')) }}
                     </button>
                     <button v-if="extra_drawing_mode" class="btn btn-danger" :disabled="deletingExtraDrawing" @click="deleteExtraDrawing">
-                        <i class="fa fa-trash"></i> {{ deletingExtraDrawing ? 'Deleting…' : 'Delete Extra Drawing' }}
+                        <i class="fa fa-trash"></i> {{ deletingExtraDrawing ? $t('admin.users.deleting_ellipsis') : $t('admin.articles.sector_local_image_editor.delete_extra_drawing_btn') }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'ok' ? 'text-success' : 'text-danger'">
-                        {{ saveStatus === 'ok' ? '✓ Saved' : '✗ Error' }}
+                        {{ saveStatus === 'ok' ? $t('admin.articles.sector_local_image_editor.saved_badge') : $t('admin.articles.sector_local_image_editor.error_badge') }}
                     </span>
-                    <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">original saved</span>
+                    <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">{{ $t('admin.articles.sector_local_image_editor.original_saved_badge') }}</span>
                 </div>
                 <div class="col-12" v-if="extra_drawing_mode">
                     <p class="text-muted mb-0" style="font-size:12px;">
-                        Extra drawing mode: this layer isn't tied to any one sector — it's shared by every sector that uses this image. Use it for general info (approach notes, hazards, landmarks). Click the button again to go back to editing the selected sector's own layout.
+                        {{ $t('admin.articles.sector_local_image_editor.extra_drawing_mode_hint') }}
                     </p>
                 </div>
             </div>
@@ -109,7 +109,7 @@
                         :related_jsons_meta="relatedJsonsMeta"
                         @canvas_data="handleCanvasData"
                     />
-                    <div v-else class="text-muted p-4 text-center border rounded">Loading image…</div>
+                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.loading_image_ellipsis') }}</div>
                 </div>
             </div>
         </div>
@@ -308,7 +308,7 @@ export default {
         },
 
         async saveExtraDrawing() {
-            if (!this.$route.params.id) { alert('No image selected'); return; }
+            if (!this.$route.params.id) { alert(this.$t('admin.articles.sector_local_image_editor.no_image_selected_alert')); return; }
 
             this.saving    = true;
             this.saveStatus = null;
@@ -321,7 +321,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
                 }
-                if (!json) { alert('No drawing data found. Draw something first.'); return; }
+                if (!json) { alert(this.$t('admin.articles.sector_local_image_editor.no_drawing_data_alert')); return; }
 
                 let editedImageData = null;
                 let canvasWidth = 0;
@@ -363,7 +363,7 @@ export default {
         },
 
         async deleteExtraDrawing() {
-            if (!confirm('Delete the extra drawing for this image? The JSON data will be removed.')) return;
+            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_extra_drawing'))) return;
 
             this.deletingExtraDrawing = true;
             try {
@@ -381,8 +381,8 @@ export default {
         async saveChanges() {
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
 
-            if (!this.canvasData)       { alert('Draw something on the canvas first.'); return; }
-            if (!this.selectedSectorId) { alert('Select a sector first.'); return; }
+            if (!this.canvasData)       { alert(this.$t('admin.articles.sector_local_image_editor.draw_something_alert')); return; }
+            if (!this.selectedSectorId) { alert(this.$t('admin.articles.sector_local_image_editor.select_sector_first_alert')); return; }
 
             this.saving    = true;
             this.saveStatus = null;
@@ -540,7 +540,7 @@ export default {
         },
 
         deleteLayout(layoutId) {
-            if (!confirm('Delete this layout?')) return;
+            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_layout'))) return;
             axios.delete('/set_sector/set_sector_local_images/del_layout/' + layoutId)
                 .then(() => {
                     if (this.activeLayoutId === layoutId) this.newLayout();

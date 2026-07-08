@@ -1,6 +1,6 @@
 <template>
     <gallery_images_edit
-        title_prop="Sector Images"
+        :title_prop="$t('admin.articles.locale_form.sector_images_title')"
         image_path_prop="images/spot_rocks_img/"
         get_images_route_prop="/get_sector/get_spot_rock_images/get_spot_rock_images/"
         image_del_route_prop="/set_sector/set_spot_rock_images/del_spot_rock_image/"

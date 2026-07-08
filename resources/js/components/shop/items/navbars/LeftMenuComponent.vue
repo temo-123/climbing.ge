@@ -3,26 +3,26 @@
         <div class="navbar_ampty_space" @click="open_menu()"></div>
         <div class="sidebar left_sidebar">
             <header>
-                <i class="fa fa-filter"></i> Filters
+                <i class="fa fa-filter"></i> {{ $t('shop.filters.filters_title') }}
                 <button @click="open_menu()" class="close-btn"><i class="fa fa-times"></i></button>
             </header>
 
             <ul style="padding-left: 0px;">
                 <li>
                     <a href="#" @click.prevent="toggleMenu('category')" class="dropdown-toggle">
-                        <i class="fa fa-list"></i> Categories <i class="fa fa-chevron-down toggle-icon"></i>
+                        <i class="fa fa-list"></i> {{ $t('shop.filters.categories_label') }} <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                     <ul :class="'category'" :style="menus.category ? '' : 'display: none;'" style="background-color: #04354b; transition: .4s;">
                         <span>
                             <li class="menu_item" style="height: 104px; padding-top: 35px;" @click.stop>
                                 <select class="form-control" v-model="filter_category" @change="get_category_subcategories()" name="sort_by_categories">
-                                    <option :value="0">All</option>
+                                    <option :value="0">{{ $t('all') }}</option>
                                     <option v-for="category in categories" :key='category.id' :value="category.id">{{ category.us_name }}</option>
                                 </select>
                             </li>
                             <li class="menu_item" style="height: 60px; padding-top: 15px;" @click.stop>
                                 <select class="form-control" v-model="selected_subcategory" name="sort_by_subcategory">
-                                    <option :value="0">All Subcategories</option>
+                                    <option :value="0">{{ $t('shop.filters.all_subcategories_option') }}</option>
                                     <option v-for="subcat in subcategories" :key="subcat.id" :value="subcat.id">{{ subcat.us_name }}</option>
                                 </select>
                             </li>
@@ -32,12 +32,12 @@
 
                 <li>
                     <a href="#" @click.prevent="toggleMenu('brand')" class="dropdown-toggle">
-                        <i class="fa fa-tag"></i> Filter by brand <i class="fa fa-chevron-down toggle-icon"></i>
+                        <i class="fa fa-tag"></i> {{ $t('shop.filters.filter_by_brand_label') }} <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                     <ul :class="'brand menu_opening_height_list'" :style="menus.brand ? '' : 'display: none;'">
                         <li class="menu_item" @click.stop>
                             <select class="form-control" v-model="filter_brand" name="sort_by_brand">
-                                <option :value="0">All</option>
+                                <option :value="0">{{ $t('all') }}</option>
                                 <option v-for="brand in brands" :key="brand.id" :value="brand.id">{{ brand.us_brand.title }}</option>
                             </select>
                         </li>
@@ -46,15 +46,15 @@
 
                 <li>
                     <a href="#" @click.prevent="toggleMenu('sale_type')" class="dropdown-toggle">
-                        <i class="fa fa-shopping-cart"></i> Filter by sale type <i class="fa fa-chevron-down toggle-icon"></i>
+                        <i class="fa fa-shopping-cart"></i> {{ $t('shop.filters.filter_by_sale_type_label') }} <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                     <ul :class="'sale_type menu_opening_height_list'" :style="menus.sale_type ? '' : 'display: none;'">
                         <li class="menu_item" @click.stop>
                             <select class="form-control" v-model="sale_type" name="sort_by_sale_type">
-                                <option :value="0">All</option>
-                                <option value="online_order">Online sale</option>
-                                <option value="produced_by_order">Produced by order</option>
-                                <option value="custom_production">Custom production</option>
+                                <option :value="0">{{ $t('all') }}</option>
+                                <option value="online_order">{{ $t('shop.filters.online_sale_option') }}</option>
+                                <option value="produced_by_order">{{ $t('shop.filters.produced_by_order_option') }}</option>
+                                <option value="custom_production">{{ $t('shop.filters.custom_production_option') }}</option>
                             </select>
                         </li>
                     </ul>
@@ -62,19 +62,19 @@
 
                 <li>
                     <a href="#" @click.prevent="toggleMenu('price')" class="dropdown-toggle">
-                        <i class="fa fa-dollar"></i> Filter by price <i class="fa fa-chevron-down toggle-icon"></i>
+                        <i class="fa fa-dollar"></i> {{ $t('shop.filters.filter_by_price_label') }} <i class="fa fa-chevron-down toggle-icon"></i>
                     </a>
                     <ul :class="'price menu_opening_height_list'" :style="menus.price ? '' : 'display: none;'">
                         <li class="menu_item price-filter-item" @click.stop>
                             <div class="price-filter-container">
                                 <div class="price-inputs-inline">
                                     <div class="price-input-group">
-                                        <label>Min</label>
+                                        <label>{{ $t('shop.filters.min_label') }}</label>
                                         <input type="number" v-model.number="min_price" min="0" class="form-control price-input">
                                     </div>
                                     <span class="price-separator">-</span>
                                     <div class="price-input-group">
-                                        <label>Max</label>
+                                        <label>{{ $t('shop.filters.max_label') }}</label>
                                         <input type="number" v-model.number="max_price" min="0" class="form-control price-input">
                                     </div>
                                 </div>
@@ -93,8 +93,8 @@
             </ul>
 
             <div class="filter-actions">
-                <button @click="applyFilters()" class="btn btn-primary apply-btn">Apply Filters</button>
-                <button @click="resetFilters()" class="btn btn-secondary reset-btn">Reset</button>
+                <button @click="applyFilters()" class="btn btn-primary apply-btn">{{ $t('shop.filters.apply_filters_btn') }}</button>
+                <button @click="resetFilters()" class="btn btn-secondary reset-btn">{{ $t('shop.filters.reset_btn') }}</button>
             </div>
         </div>
     </div>

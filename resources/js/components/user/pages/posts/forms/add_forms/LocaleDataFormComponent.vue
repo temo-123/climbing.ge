@@ -9,9 +9,9 @@
 
         <form method="POST" @submit.prevent="add_article">
             <div class="form-group clearfix row">
-                <label for="name" class='col-md-2 control-label'> Title </label>
+                <label for="name" class='col-md-2 control-label'> {{ $t('common.title') }} </label>
                 <div class="col-md-10">
-                    <input type="text" name="name" v-model="data.title"  class="form-control"> 
+                    <input type="text" name="name" v-model="data.title"  class="form-control">
                     <div class="alert alert-danger" role="alert" v-if="errors.title">
                         {{ errors.title[0] }}
                     </div>
@@ -19,7 +19,7 @@
             </div>
 
             <div class="form-group clearfix row">
-                <label for="name" class='col-md-2 control-label'> Short description </label>
+                <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                 <div class="col-md-10">
                     <small_editor v-model="data.short_description" />
                     <div class="alert alert-danger" role="alert" v-if="errors.short_description">
@@ -29,7 +29,7 @@
             </div>
 
             <div class="form-group clearfix row">
-                <label for="name" class='col-md-2 control-label'> text </label>
+                <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                 <div class="col-md-10">
 
                     <big_editor v-model="data.text" />

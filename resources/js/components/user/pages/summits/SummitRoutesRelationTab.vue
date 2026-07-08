@@ -4,9 +4,9 @@
         <!-- Summit selector (hidden when presetSummitId is given) -->
         <div v-if="!presetSummitId" class="row mb-3">
             <div class="col-md-5">
-                <label class="font-weight-bold">Select Summit</label>
+                <label class="font-weight-bold">{{ $t('admin.summits.select_summit_label') }}</label>
                 <select class="form-control" v-model="selected_summit_id" @change="load_routes">
-                    <option :value="null">-- Choose a summit --</option>
+                    <option :value="null">{{ $t('admin.summits.choose_summit_placeholder') }}</option>
                     <option v-for="s in summits" :key="s.id" :value="s.id">
                         {{ s.title }}
                     </option>
@@ -19,21 +19,21 @@
             <!-- Current routes -->
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <strong>Linked Mount Routes</strong>
+                    <strong>{{ $t('admin.summits.linked_mount_routes_title') }}</strong>
                     <span class="badge badge-secondary">{{ linked_routes.length }}</span>
                 </div>
                 <div class="card-body p-0">
                     <div v-if="routes_loading" class="text-center py-3">
-                        <i class="fa fa-spinner fa-spin"></i> Loading...
+                        <i class="fa fa-spinner fa-spin"></i> {{ $t('admin.summits.loading_dots') }}
                     </div>
                     <div v-else-if="!linked_routes.length" class="text-muted text-center py-3">
-                        No mount routes linked to this summit yet.
+                        {{ $t('admin.summits.no_mount_routes_linked_yet') }}
                     </div>
                     <table v-else class="table table-sm table-hover mb-0">
                         <thead class="thead-light">
                             <tr>
                                 <th>#</th>
-                                <th>Route Name</th>
+                                <th>{{ $t('admin.summits.col_route_name') }}</th>
                                 <th style="width:80px"></th>
                             </tr>
                         </thead>
@@ -58,29 +58,29 @@
 
             <!-- Add route -->
             <div class="card">
-                <div class="card-header"><strong>Add Mount Route</strong></div>
+                <div class="card-header"><strong>{{ $t('admin.summits.add_mount_route_title') }}</strong></div>
                 <div class="card-body">
                     <div v-if="add_error" class="alert alert-danger py-2">{{ add_error }}</div>
                     <div class="form-row align-items-end">
                         <div class="col-md-7">
                             <!-- Mount massive filter -->
-                            <label>Filter by Mount Massive</label>
+                            <label>{{ $t('admin.articles.filter_by_mount_masive') }}</label>
                             <select class="form-control mb-2" v-model="filter_mount_id" @change="selected_article_id = null">
-                                <option :value="null">— All massives —</option>
+                                <option :value="null">{{ $t('admin.summits.all_massives_option') }}</option>
                                 <option v-for="m in available_massives" :key="m.id" :value="m.id">
                                     {{ m.name }}
                                 </option>
                             </select>
 
-                            <label>Search & Select Route</label>
+                            <label>{{ $t('admin.summits.search_select_route_label') }}</label>
                             <input
                                 type="text"
                                 class="form-control mb-1"
                                 v-model="search_query"
-                                placeholder="Filter available routes..."
+                                :placeholder="$t('admin.summits.filter_available_routes_placeholder')"
                             />
                             <select class="form-control" v-model="selected_article_id" size="6">
-                                <option :value="null" disabled>-- select route --</option>
+                                <option :value="null" disabled>{{ $t('admin.summits.select_route_placeholder') }}</option>
                                 <option
                                     v-for="r in filtered_available"
                                     :key="r.id"
@@ -88,8 +88,8 @@
                                     :class="{ 'text-warning': r.summit_id && r.summit_id !== selected_summit_id }"
                                 >
                                     {{ r.name }}
-                                    <span v-if="!r.published" class="text-muted"> (unpublished)</span>
-                                    <template v-if="r.summit_id && r.summit_id !== selected_summit_id"> (other summit)</template>
+                                    <span v-if="!r.published" class="text-muted"> {{ $t('admin.summits.unpublished_suffix') }}</span>
+                                    <template v-if="r.summit_id && r.summit_id !== selected_summit_id"> {{ $t('admin.summits.other_summit_suffix') }}</template>
                                 </option>
                             </select>
                         </div>
@@ -97,10 +97,10 @@
                             <div v-if="selected_route_info" class="alert alert-info py-2 small mb-2">
                                 <strong>{{ selected_route_info.name }}</strong><br>
                                 <span v-if="selected_route_info.summit_id && selected_route_info.summit_id !== selected_summit_id" class="text-warning">
-                                    Currently linked to another summit — will be reassigned.
+                                    {{ $t('admin.summits.currently_linked_other_summit') }}
                                 </span>
                                 <span v-else-if="is_already_linked" class="text-danger">
-                                    Already linked to this summit.
+                                    {{ $t('admin.summits.already_linked_summit') }}
                                 </span>
                             </div>
                             <button
@@ -109,8 +109,8 @@
                                 @click="add_route"
                             >
                                 <i class="fa fa-plus"></i>
-                                <span v-if="adding"> Adding...</span>
-                                <span v-else> Add Relation</span>
+                                <span v-if="adding"> {{ $t('admin.summits.adding_ellipsis') }}</span>
+                                <span v-else> {{ $t('admin.summits.add_relation_btn') }}</span>
                             </button>
                         </div>
                     </div>
@@ -150,7 +150,7 @@ export default {
             for (const r of this.all_routes) {
                 if (r.mount_id && !seen.has(r.mount_id)) {
                     seen.add(r.mount_id)
-                    massives.push({ id: r.mount_id, name: r.mount_name || `Massive #${r.mount_id}` })
+                    massives.push({ id: r.mount_id, name: r.mount_name || `${this.$t('admin.summits.massive_hash_prefix')}${r.mount_id}` })
                 }
             }
             return massives.sort((a, b) => a.name.localeCompare(b.name))
@@ -214,7 +214,7 @@ export default {
                     this.load_all_routes()
                 })
                 .catch(err => {
-                    this.add_error = err.response?.data?.message || 'Failed to add relation.'
+                    this.add_error = err.response?.data?.message || this.$t('admin.summits.failed_add_relation')
                 })
                 .finally(() => { this.adding = false })
         },

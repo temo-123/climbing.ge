@@ -2,30 +2,30 @@
     
     <stack-modal
                 :show="is_order_sale_code_add_model"
-                :title="'Edit sale code'"
+                :title="$t('admin.shop.edit_sale_code_title')"
                 @close="close_modal()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
-                <p>Discount</p>
-                <input type="number" class="form-control" v-model="form_data.discount" name="Discount" id="Discount" placeholder="Enter Discount" title="Enter Discount" min="1" max="50">
-                <p>Sale code</p>
-                <input type="text" class="form-control" v-model="form_data.sale_code" name="Sale code" id="Sale code" placeholder="Enter Sale code" title="Enter Sale code">
+                <p>{{ $t('admin.shop.discount_label') }}</p>
+                <input type="number" class="form-control" v-model="form_data.discount" name="Discount" id="Discount" :placeholder="$t('admin.shop.enter_discount_placeholder')" :title="$t('admin.shop.enter_discount_placeholder')" min="1" max="50">
+                <p>{{ $t('admin.shop.sale_code_label') }}</p>
+                <input type="text" class="form-control" v-model="form_data.sale_code" name="Sale code" id="Sale code" :placeholder="$t('admin.shop.enter_sale_code_placeholder')" :title="$t('admin.shop.enter_sale_code_placeholder')">
 
                 <button
                     type="botton"
                     :class="{'btn btn-primary': true}"
                     @click="generate_code()"
                 >
-                Generation Random code
+                {{ $t('admin.shop.generate_random_code_btn') }}
                 </button>
-                
-                <p>Code validity date</p>
-                <input type="datetime-local" class="form-control" v-model="form_data.validity_date" name="Validity date" value="2017-06-01T08:30" /> 
+
+                <p>{{ $t('admin.shop.code_validity_date_label') }}</p>
+                <input type="datetime-local" class="form-control" v-model="form_data.validity_date" name="Validity date" value="2017-06-01T08:30" />
 
                 <p>
-                    One time code
+                    {{ $t('admin.shop.one_time_code') }}
                     <input type="checkbox" v-model="form_data.one_time_code" name="One time code" value="One time code">
                 </p>
             </div>
@@ -36,7 +36,7 @@
                         :class="{'btn btn-primary': true}"
                         @click="edit_sale_code(form_data.id)"
                     >
-                    Update
+                    {{ $t('admin.task.update_btn') }}
                     </button>
                 </div>
             </div>

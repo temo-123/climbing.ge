@@ -10,6 +10,7 @@
 
     {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <meta name="ga-tag-id" content="{{ config('services.analytics.user') }}">
 
     <title>climbing.ge user</title>
 

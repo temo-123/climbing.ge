@@ -86,25 +86,25 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Orders',
+                                            'table_name': this.$t('admin.orders.orders_table'),
                                             'add_action': {
                                                 'action': 'function',
-                                                'link': 'add_costom_order', 
+                                                'link': 'add_costom_order',
                                                 'class': 'btn btn-primary',
-                                                'btn_title' : 'Add castom order'
+                                                'btn_title' : this.$t('admin.orders.add_custom_order_btn')
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Type',
-                                                        'Status',
-                                                        'Payment',
-                                                        'Shipping',
-                                                        'Date',
-                                                        'Edit status',
-                                                        'Show details',
+                                                        this.$t('common.id'),
+                                                        this.$t('admin.orders.type_col'),
+                                                        this.$t('admin.orders.status_label'),
+                                                        this.$t('admin.orders.payment_col'),
+                                                        this.$t('admin.orders.shipping_col'),
+                                                        this.$t('common.date'),
+                                                        this.$t('admin.orders.edit_status_col'),
+                                                        this.$t('admin.orders.show_details_col'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -141,22 +141,22 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 2,
-                                            'table_name': 'Shiped regions',
+                                            'table_name': this.$t('admin.orders.shipped_regions_table'),
                                             'add_action': {
                                                 'action': 'function',
-                                                'link': 'show_siped_region_add_modal', 
+                                                'link': 'show_siped_region_add_modal',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Deliver price',
-                                                        'Free after',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.title'),
+                                                        this.$t('admin.orders.deliver_price_col'),
+                                                        this.$t('admin.orders.free_after_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -183,7 +183,7 @@
                 );
             },
             del_region(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_shiped_region/del_region/'+id, {
                         id: id,

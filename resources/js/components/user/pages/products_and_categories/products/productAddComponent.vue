@@ -7,12 +7,12 @@
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="add_product()" >Save</button>
+                <button type="submit" class="btn btn-primary" v-on:click="add_product()" >{{ $t('common.save') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading" v-if="errors.length != 0">
@@ -26,17 +26,17 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>
@@ -45,69 +45,64 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Region global information</span></h2>
-                                <p class="lead">Region global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.shop.global_product_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.shop.global_product_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        
-                        <published_item 
+
+                        <published_item
                             :published_prop = data.global_product.published
-                            @item_data="data.global_product.published = $event" 
+                            @item_data="data.global_product.published = $event"
                         />
 
                         <div class="form-group clearfix">
-                            <label for="sale_type" class='col-xs-2 control-label'> Sale type </label>
+                            <label for="sale_type" class='col-xs-2 control-label'> {{ $t('admin.shop.sale_type_label') }} </label>
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.sale_type" name="sale_type" >
-                                    <option value="" disabled>Select order type</option>
-                                    <option value="online_order">Online order (2-4 days)</option>
-                                    <option value="produced_by_order">Produced by order (5-9 days)</option>
-                                    <option value="custom_production">Custom production</option>
+                                    <option value="" disabled>{{ $t('admin.shop.select_order_type') }}</option>
+                                    <option value="online_order">{{ $t('admin.shop.online_order') }}</option>
+                                    <option value="produced_by_order">{{ $t('admin.shop.produced_by_order') }}</option>
+                                    <option value="custom_production">{{ $t('admin.shop.custom_production') }}</option>
+                                    <option value="donation">{{ $t('admin.shop.donation_option') }}</option>
+                                    <option value="outlet">{{ $t('admin.shop.outlet_option') }}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Mead in Georgia </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.made_in_georgia_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_product.made_in_georgia" >
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Is donation product </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.brand_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="checkbox" id="is_donation_product" name="is_donation_product" v-model="data.global_product.is_donation_product" >
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Brand </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="data.global_product.brand_id" name="brand_id"> 
-                                    <option v-bind:value="''" disabled>Select brand</option> 
+                                <select class="form-control" v-model="data.global_product.brand_id" name="brand_id">
+                                    <option v-bind:value="''" disabled>{{ $t('admin.shop.select_brand') }}</option>
                                     <option v-for="brand in brands" :key="brand.global_brand.id" v-bind:value="brand.global_brand.id"> {{ brand.us_brand.title }}</option>
-                                </select> 
-                            </div>
-                        </div>
-    
-                        <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Category </label>
-                            <div class="col-xs-8">
-                                <select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
-                                    <option v-bind:value="0" disabled>Select category</option> 
-                                    <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
-                                </select> 
+                                </select>
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> Subcategory </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.category_label') }} </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="category_id" name="category_id"  @change="get_category_subcategories()">
+                                    <option v-bind:value="0" disabled>{{ $t('admin.shop.select_category') }}</option>
+                                    <option v-for="cat in categories" :key="cat.id" v-bind:value="cat.id"> {{ cat.us_name }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label' v-if="category_id != 0"> {{ $t('admin.shop.subcategory_label') }} </label>
                             <div class="col-xs-8" v-if="category_id != 0">
-                                <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" > 
-                                    <option v-bind:value="0" disabled>Select subcategory</option> 
+                                <select class="form-control" v-model="data.global_product.subcategory_id" name="category_id" >
+                                    <option v-bind:value="0" disabled>{{ $t('admin.shop.select_subcategory') }}</option>
                                     <option v-for="subcat in subcategories" :key="subcat.id" v-bind:value="subcat.id"> {{ subcat.us_name }}</option>
                                 </select>
                             </div>
@@ -118,36 +113,36 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Product english version</h2>
-                            <p class="lead">Article english version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.shop.product_en_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.shop.product_en_version_subtitle') }}</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_product.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_product.title"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <small_editor v-model="data.us_product.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.us_product.text" />
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> material</label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.material_label') }}</label>
                             <div class="col-xs-8">
-                                <input type="text" v-model="data.us_product.material" name="material" class="form-control"> 
+                                <input type="text" v-model="data.us_product.material" name="material" class="form-control">
                             </div>
                         </div>
                     </form>
@@ -155,21 +150,21 @@
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Product georgian version</h2>
-                            <p class="lead">Article georgian version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.shop.product_ka_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.shop.product_ka_version_subtitle') }}</p>
                         </div>
                     </div>
-    
+
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_product.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_product.title" class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_product.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_product.short_description" />
@@ -177,16 +172,16 @@
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.ka_product.text" />
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> material</label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.material_label') }}</label>
                             <div class="col-xs-8">
-                                <input type="text" v-model="data.ka_product.material" name="material" class="form-control"> 
+                                <input type="text" v-model="data.ka_product.material" name="material" class="form-control">
                             </div>
                         </div>
                     </form>
@@ -240,7 +235,6 @@
                         sale_type: "",
 
                         made_in_georgia: null,
-                        is_donation_product: null,
                     },
 
                     us_product: {
@@ -368,7 +362,7 @@
 
             go_back: function(back_action = false) {
                 if(back_action == false){
-                    if(confirm('Are you sure, you want go back?')){
+                    if(confirm(this.$t('admin.shop.confirm_go_back'))){
                         this.$router.go(-1)
                     }
                 }

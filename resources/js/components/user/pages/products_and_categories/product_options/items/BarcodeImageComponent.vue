@@ -1,11 +1,11 @@
 <template>
     <div class="barcode-image-wrapper">
-        <div class="barcode-label">EAN-13 Barcode</div>
+        <div class="barcode-label">{{ $t('admin.shop.ean13_barcode_label') }}</div>
         <div class="barcode-canvas-box">
             <canvas ref="barcodeCanvas" class="barcode-canvas"></canvas>
         </div>
         <button type="button" class="barcode-download-btn" @click="download">
-            <i class="fa fa-download"></i> Download PNG
+            <i class="fa fa-download"></i> {{ $t('admin.shop.download_png') }}
         </button>
     </div>
 </template>

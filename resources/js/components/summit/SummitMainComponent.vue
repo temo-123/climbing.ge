@@ -10,7 +10,8 @@
         <div class="footer__graphic" :style="'background-image: url(../images/svg/mountains.svg)'"></div>
         <footter />
         <loginModal />
-        <go_to_top />        
+        <go_to_top />
+        <toast-notification />
     </div>
 </template>
 

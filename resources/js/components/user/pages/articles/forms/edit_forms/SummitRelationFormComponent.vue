@@ -1,30 +1,30 @@
 <template>
     <div class="summit-relation-form">
         <h4 class="form-section-title">
-            <i class="fa fa-mountain"></i> Summit Relation
+            <i class="fa fa-mountain"></i> {{ $t('admin.articles.summit_relation.title') }}
         </h4>
 
         <div v-if="loading" class="text-center p-3">
-            <i class="fa fa-spinner fa-spin"></i> Loading...
+            <i class="fa fa-spinner fa-spin"></i> {{ $t('admin.export.loading_ellipsis') }}
         </div>
 
         <div v-else>
             <!-- Current relation -->
             <div v-if="current_relation" class="current-relation alert alert-info">
-                <strong>Linked summit:</strong> {{ current_relation.summit_title }}
+                <strong>{{ $t('admin.articles.summit_relation.linked_summit_prefix') }}</strong> {{ current_relation.summit_title }}
                 <button class="btn btn-xs btn-danger pull-right" @click="remove_relation">
-                    <i class="fa fa-times"></i> Remove
+                    <i class="fa fa-times"></i> {{ $t('admin.single_image.remove_btn') }}
                 </button>
             </div>
             <div v-else class="alert alert-warning">
-                No summit linked to this mount route.
+                {{ $t('admin.articles.summit_relation.no_summit_linked') }}
             </div>
 
             <!-- Select summit -->
             <div class="form-group">
-                <label>{{ current_relation ? 'Change summit' : 'Link to summit' }}</label>
+                <label>{{ current_relation ? $t('admin.articles.summit_relation.change_summit_label') : $t('admin.articles.summit_relation.link_to_summit_label') }}</label>
                 <select class="form-control" v-model="selected_summit_id">
-                    <option :value="null">-- Select summit --</option>
+                    <option :value="null">{{ $t('admin.articles.summit_relation.select_summit_placeholder') }}</option>
                     <option
                         v-for="summit in summits"
                         :key="summit.id"
@@ -41,7 +41,7 @@
                 @click="save_relation"
             >
                 <i class="fa fa-link"></i>
-                {{ saving ? 'Saving...' : (current_relation ? 'Update relation' : 'Link summit') }}
+                {{ saving ? $t('admin.articles.summit_relation.saving_ellipsis') : (current_relation ? $t('admin.articles.summit_relation.update_relation_btn') : $t('admin.articles.summit_relation.link_summit_btn')) }}
             </button>
         </div>
     </div>
@@ -99,10 +99,10 @@
                         summit_title: this.summits.find(s => s.id === this.selected_summit_id)?.title
                             || this.summits.find(s => s.id === this.selected_summit_id)?.ka_title,
                     }
-                    this.$bus.$emit('toast', { type: 'success', title: 'Saved', message: 'Summit relation updated.' })
+                    this.$bus.$emit('toast', { type: 'success', title: this.$t('admin.articles.summit_relation.saved_title'), message: this.$t('admin.articles.summit_relation.summit_relation_updated_msg') })
                 })
                 .catch(() => {
-                    this.$bus.$emit('toast', { type: 'danger', title: 'Error', message: 'Could not save relation.' })
+                    this.$bus.$emit('toast', { type: 'danger', title: this.$t('admin.articles.summit_relation.error_title'), message: this.$t('admin.articles.summit_relation.could_not_save_relation') })
                 })
                 .finally(() => this.saving = false)
             },
@@ -112,10 +112,10 @@
                     .then(() => {
                         this.current_relation = null
                         this.selected_summit_id = null
-                        this.$bus.$emit('toast', { type: 'success', title: 'Removed', message: 'Summit relation removed.' })
+                        this.$bus.$emit('toast', { type: 'success', title: this.$t('admin.articles.summit_relation.removed_title'), message: this.$t('admin.articles.summit_relation.summit_relation_removed_msg') })
                     })
                     .catch(() => {
-                        this.$bus.$emit('toast', { type: 'danger', title: 'Error', message: 'Could not remove relation.' })
+                        this.$bus.$emit('toast', { type: 'danger', title: this.$t('admin.articles.summit_relation.error_title'), message: this.$t('admin.articles.summit_relation.could_not_remove_relation') })
                     })
             }
         }

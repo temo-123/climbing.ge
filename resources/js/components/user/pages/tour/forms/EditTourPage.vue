@@ -8,13 +8,13 @@
 
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
 
         <div class="row" v-show="!is_loading">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="edit_tour()" >Save update</button>
+                <button type="submit" class="btn btn-primary" v-on:click="edit_tour()" >{{ $t('admin.local_business.save_update_btn') }}</button>
             </div>
         </div>
 
@@ -30,17 +30,17 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
                         
-                        <label for="2" >English text</label>
+                        <label for="2" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="3" :value="3" v-model="tab_num">
                         
-                        <label for="3" >Georgian text</label>
+                        <label for="3" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>
@@ -49,38 +49,38 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Tour global information</span></h2>
-                                <p class="lead">Tour global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.tour.tour_global_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.tour.tour_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        
-                        <published_item 
+
+                        <published_item
                             :published_prop = data.global_tour.published
-                            @item_data="data.global_tour.published = $event" 
+                            @item_data="data.global_tour.published = $event"
                         />
 
                         <div class="form-group clearfix">
-                            <label for="category" class='col-xs-2 control-label '> Category </label>
+                            <label for="category" class='col-xs-2 control-label '> {{ $t('common.category') }} </label>
                             <div class="col-xs-10">
-                                <select class="form-control" v-model="data.global_tour.category_id" name="category" > 
-                                    <option :value="''" disabled>Select category</option> 
+                                <select class="form-control" v-model="data.global_tour.category_id" name="category" >
+                                    <option :value="''" disabled>{{ $t('admin.shop.select_category') }}</option>
                                     <option  v-for="category in categories" :key="category.id" :value="category.id">{{ category.us_name }}</option>
-                                </select> 
+                                </select>
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Min price </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.min_price_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.global_tour.min_price"  class="form-control">
                             </div>
                         </div>
                     </form>
-                    
+
                     <div class="col-md-12">
                         <gallery_images_edit
-                            title_prop="Tour Images"
+                            :title_prop="$t('admin.tour.tour_images_title')"
                             image_path_prop="images/tour_img/"
                             get_images_route_prop="/get_tour/get_tour_images/"
                             image_del_route_prop="/set_tour/del_tour_image/"
@@ -93,85 +93,85 @@
                 <div class="row" v-show="tab_num == 2">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Tour english version</h2>
-                            <p class="lead">Tour english version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.tour.tour_en_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.tour.tour_en_version_subtitle') }}</p>
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_tour.title"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_tour.title"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Change URL title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
                             <div class="col-xs-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_tour()">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.location_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_tour.location"  class="form-control">
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.duration_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.us_tour.duration"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <small_editor v-model="data.us_tour.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.us_tour.text" />
                             </div>
                         </div>
                     </form>
                 </div>
-                
+
                 <div class="row" v-show="tab_num == 3">
                     <div class="width_100 jumbotron jumbotron-fluid">
                         <div class="container">
-                            <h2 class="display-4">Tour georgian version</h2>
-                            <p class="lead">Tour georgian version for site localisation.</p>
+                            <h2 class="display-4">{{ $t('admin.tour.tour_ka_version_title') }}</h2>
+                            <p class="lead">{{ $t('admin.tour.tour_ka_version_subtitle') }}</p>
                         </div>
                     </div>
-    
+
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Title </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control"> 
+                                <input type="text" name="value name"  v-model="data.ka_tour.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Location </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.location_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.ka_tour.location"  class="form-control">
                             </div>
                         </div>
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Duration </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.tour.duration_label') }} </label>
                             <div class="col-xs-8">
-                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control"> 
+                                <input type="text" name="name" v-model="data.ka_tour.duration"  class="form-control">
                             </div>
                         </div>
-    
+
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> Short description </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                             <div class="col-xs-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_tour.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_tour.short_description" />
@@ -179,7 +179,7 @@
                         </div>
 
                         <div class="form-group clearfix">
-                            <label for="name" class='col-xs-2 control-label'> text </label>
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                             <div class="col-xs-8">
                                 <big_editor v-model="data.ka_tour.text" />
                             </div>
@@ -289,7 +289,7 @@
             },
             change_url_title_in_global_tour(){
                 if(!this.is_change_url_title){
-                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                    if(confirm(this.$t('admin.articles.locale_form.confirm_change_url_title'))){
                         this.is_change_url_title = true
                     }
                     else{

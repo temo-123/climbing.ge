@@ -1,10 +1,10 @@
 <template>
     <StackModal
             :show="is_show_modal"
-            title="Add site social link"
+            :title="$t('admin.site_info.add_social_link_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <validator_alerts_component
@@ -12,8 +12,8 @@
             />
 
             <form method="POST" id="add_social_link_form" v-on:submit.prevent="add_social_link">
-                <input type="text" class="form-control" v-model="data.title" name="title" id="Title" placeholder="Title" title="Title">
-                <input type="url" class="form-control" v-model="data.url" name="url" id="url" pattern="https://.*|http://.*" placeholder="URL" required>
+                <input type="text" class="form-control" v-model="data.title" name="title" id="Title" :placeholder="$t('common.title')" title="Title">
+                <input type="url" class="form-control" v-model="data.url" name="url" id="url" pattern="https://.*|http://.*" :placeholder="$t('admin.site_info.url_placeholder')" required>
             </form>
         </div>
         <div slot="modal-footer">
@@ -23,7 +23,7 @@
                     :class="{'btn btn-primary': true}"
                     form="add_social_link_form"
                 >
-                Save
+                {{ $t('common.save') }}
                 </button>
             </div>
         </div>

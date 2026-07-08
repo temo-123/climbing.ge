@@ -9,7 +9,7 @@
             }"
             :cancelButton="{
                 visible: true,
-                title: 'Close',
+                title: $t('common.close'),
                 btnClass: { 'btn btn-danger float-right': true },
             }"
             @close="is_show_mtp_modal = false"
@@ -21,7 +21,7 @@
                 </div>
                 <div v-else class="max-w-2xl mx-auto">
                     <div class="flex flex-col items-center mb-6">
-                        <img v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="'Profile image of ' + localUser.name + ' ' + localUser.surname" />
+                        <img v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="$t('global.profile_image_of_prefix') + ' ' + localUser.name + ' ' + localUser.surname" />
                         <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800">{{ localUser.name }} {{ localUser.surname }}</h1>
                         <p class="text-lg text-gray-600 text-center">{{ localUser.city }}, {{ localUser.country }}</p>
                     </div>
@@ -54,7 +54,7 @@ export default {
     },
     computed: {
         modalTitle() {
-            return this.localUser.name + ' ' + this.localUser.surname || 'Loading...';
+            return this.localUser.name + ' ' + this.localUser.surname || this.$t('common.loading');
         }
     },
     data: function () {

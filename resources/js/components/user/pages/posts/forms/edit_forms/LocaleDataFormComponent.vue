@@ -9,25 +9,25 @@
         <div class="wrapper container-fluid container">
             <form method="POST" :headers="{'x-csrf-token': token}">
                 <div class="form-group clearfix row" >
-                    <label for="name" class='col-md-2 control-label'> Title </label>
+                    <label for="name" class='col-md-2 control-label'> {{ $t('common.title') }} </label>
                     <div class="col-md-10">
-                        <input type="text" name="name" v-model="data.title" class="form-control"> 
+                        <input type="text" name="name" v-model="data.title" class="form-control">
                     </div>
                 </div>
                 <div class="form-group clearfix row" v-if="locale_prop == 'us'">
-                    <label for="name" class='col-md-4 control-label'> Change URL title </label>
+                    <label for="name" class='col-md-4 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
                     <div class="col-md-8">
                         <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @change="change_url_title_in_post">
                     </div>
                 </div>
                 <div class="form-group clearfix row">
-                    <label for="name" class='col-md-2 control-label'> Short description </label>
+                    <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                     <div class="col-md-10">
                         <small_editor v-model="data.short_description" />
                     </div>
                 </div>
                 <div class="form-group clearfix row">
-                    <label for="name" class='col-md-2 control-label'> Text </label>
+                    <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                     <div class="col-md-10">
                         <big_editor v-model="data.text" />
                     </div>
@@ -81,7 +81,7 @@
             change_url_title_in_post(){
                 if(this.is_change_url_title){
                     // User checked the checkbox - confirm the change
-                    if(confirm('Are you sure, you want change URL title? It while be bad for SEO optimization')){
+                    if(confirm(this.$t('admin.articles.locale_form.confirm_change_url_title'))){
                         this.data.is_change_url_title = true;
                     }
                     else{

@@ -2,10 +2,10 @@
     <stack-modal
         :show="is_add_modal"
         size="xxl"
-        title="Add Combinate Product Option"
+        :title="$t('admin.shop.add_combination_title')"
         @close="close"
         @save="save"
-        :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
+        :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
         :cancelButton="{ visible: false }"
     >
         <div v-show="is_loading" class="row justify-content-center">
@@ -18,29 +18,29 @@
 
             <!-- Col 1: fields -->
             <div class="col-md-4">
-                <label class="form-label">Name</label>
-                <input type="text" v-model="local_data.name" class="form-control mb-3" placeholder="Name">
+                <label class="form-label">{{ $t('common.name') }}</label>
+                <input type="text" v-model="local_data.name" class="form-control mb-3" :placeholder="$t('common.name')">
 
-                <label class="form-label">Price</label>
-                <input type="number" v-model="local_data.price" class="form-control mb-3" placeholder="Price">
+                <label class="form-label">{{ $t('admin.shop.price_label') }}</label>
+                <input type="number" v-model="local_data.price" class="form-control mb-3" :placeholder="$t('admin.shop.price_label')">
 
-                <label class="form-label">Currency</label>
+                <label class="form-label">{{ $t('admin.shop.currency_label') }}</label>
                 <select class="form-control mb-3" v-model="local_data.currency">
                     <option value="₾">₾</option>
                     <option value="$" disabled>$</option>
                     <option value="€" disabled>€</option>
                 </select>
 
-                <label class="form-label">Discount (%)</label>
-                <input type="number" min="0" max="100" v-model="local_data.discount" class="form-control mb-3" placeholder="Discount">
+                <label class="form-label">{{ $t('admin.shop.discount_percent_label') }}</label>
+                <input type="number" min="0" max="100" v-model="local_data.discount" class="form-control mb-3" :placeholder="$t('admin.shop.discount_col')">
 
-                <label class="form-label">Barcode</label>
+                <label class="form-label">{{ $t('admin.shop.barcode_label') }}</label>
                 <div v-if="!local_data.barcode" class="mb-3">
                     <div class="d-flex gap-2">
                         <input type="text" v-model="barcode_input" class="form-control"
-                               placeholder="Scan or type..." @keydown.enter.prevent="set_barcode_from_input">
-                        <button type="button" class="btn btn-outline-secondary btn-sm" @click="set_barcode_from_input" :disabled="!barcode_input">Set</button>
-                        <button type="button" class="btn btn-outline-primary btn-sm" @click="generate_barcode">Gen</button>
+                               :placeholder="$t('admin.shop.scan_or_type_placeholder')" @keydown.enter.prevent="set_barcode_from_input">
+                        <button type="button" class="btn btn-outline-secondary btn-sm" @click="set_barcode_from_input" :disabled="!barcode_input">{{ $t('admin.shop.set_btn') }}</button>
+                        <button type="button" class="btn btn-outline-primary btn-sm" @click="generate_barcode">{{ $t('admin.shop.gen_btn') }}</button>
                     </div>
                 </div>
                 <div v-else class="mb-3">
@@ -52,7 +52,7 @@
 
                 <!-- Selected tags -->
                 <div v-if="local_data.selected_options.length > 0">
-                    <label class="form-label">Selected options ({{ local_data.selected_options.length }})</label>
+                    <label class="form-label">{{ $t('admin.shop.selected_options_count', { count: local_data.selected_options.length }) }}</label>
                     <div class="d-flex flex-wrap gap-1">
                         <span v-for="opt in local_data.selected_options" :key="opt.id" class="opt-tag">
                             {{ opt.name }}
@@ -64,10 +64,10 @@
 
             <!-- Col 2: product select + options -->
             <div class="col-md-4">
-                <label class="form-label">Select Product</label>
+                <label class="form-label">{{ $t('admin.shop.select_product_label') }}</label>
                 <select class="form-control mb-3" v-model="selected_product_id"
                         @change="on_product_change" :disabled="is_loading_products">
-                    <option value="">— Choose a product —</option>
+                    <option value="">{{ $t('admin.shop.choose_product_placeholder') }}</option>
                     <option v-for="p in products_list" :key="p.id" :value="p.id">{{ p.title }}</option>
                 </select>
 
@@ -75,7 +75,7 @@
                     <img :src="'/images/site_img/loading.gif'" style="width:28px;" alt="">
                 </div>
                 <div v-else-if="selected_product_id && product_options.length === 0" class="text-muted py-2">
-                    No options for this product
+                    {{ $t('admin.shop.no_options_for_product') }}
                 </div>
                 <div v-else-if="product_options.length > 0" class="options-list border rounded">
                     <div v-for="opt in product_options" :key="opt.id"
@@ -89,13 +89,13 @@
                         </div>
                     </div>
                 </div>
-                <small class="text-muted">Select a product then tick its options. Switch products to pick from multiple.</small>
+                <small class="text-muted">{{ $t('admin.shop.select_product_hint') }}</small>
             </div>
 
             <!-- Col 3: images -->
             <div class="col-md-4">
                 <gallery_images_add
-                    title_prop="Combination Images"
+                    :title_prop="$t('admin.shop.combination_images_title')"
                     @update_gallery_images="$emit('update_adding_images', $event)"
                 />
             </div>

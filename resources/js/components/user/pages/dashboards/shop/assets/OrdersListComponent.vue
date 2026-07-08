@@ -1,10 +1,10 @@
 <template>
     <div class="orders-list-block">
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="mb-0 font-weight-bold">Recent Orders</h6>
+            <h6 class="mb-0 font-weight-bold">{{ $t('admin.orders.recent_orders_title') }}</h6>
             <div>
                 <button v-if="$can('add', 'order')" class="btn btn-sm btn-primary mr-2" @click="add_custom_order">
-                    <i class="fa fa-plus"></i> Custom order
+                    <i class="fa fa-plus"></i> {{ $t('admin.orders.custom_order_btn') }}
                 </button>
                 <button class="btn btn-sm btn-outline-secondary" @click="load" :disabled="loading">
                     <i class="fa fa-refresh"></i>
@@ -13,20 +13,20 @@
         </div>
 
         <div v-if="loading" class="text-center py-4 text-muted">
-            <div class="spinner-border spinner-border-sm text-primary" role="status"></div> Loading…
+            <div class="spinner-border spinner-border-sm text-primary" role="status"></div> {{ $t('admin.export.loading_ellipsis') }}
         </div>
 
-        <div v-else-if="orders.length === 0" class="text-center text-muted py-4">No orders found.</div>
+        <div v-else-if="orders.length === 0" class="text-center text-muted py-4">{{ $t('admin.orders.no_orders_found') }}</div>
 
         <div v-else class="table-responsive">
             <table class="table table-hover table-sm">
                 <thead class="thead-light">
                     <tr>
                         <th>#</th>
-                        <th>Status</th>
-                        <th>Payment</th>
-                        <th>Shipping</th>
-                        <th>Date</th>
+                        <th>{{ $t('admin.orders.status_label') }}</th>
+                        <th>{{ $t('admin.orders.payment_col') }}</th>
+                        <th>{{ $t('admin.orders.shipping_col') }}</th>
+                        <th>{{ $t('common.date') }}</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -40,10 +40,10 @@
                         <td>{{ order.shiping }}</td>
                         <td>{{ order.created_at ? order.created_at.substring(0,10) : '—' }}</td>
                         <td class="text-nowrap">
-                            <button v-if="$can('edit_order_status', 'edit')" class="btn btn-xs btn-outline-primary mr-1" @click="show_edit_status(order.id)" title="Edit status">
+                            <button v-if="$can('edit_order_status', 'edit')" class="btn btn-xs btn-outline-primary mr-1" @click="show_edit_status(order.id)" :title="$t('admin.orders.edit_status_tooltip')">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button class="btn btn-xs btn-outline-info" @click="show_details(order.id)" title="Details">
+                            <button class="btn btn-xs btn-outline-info" @click="show_details(order.id)" :title="$t('admin.task.details_tooltip')">
                                 <i class="fa fa-eye"></i>
                             </button>
                         </td>

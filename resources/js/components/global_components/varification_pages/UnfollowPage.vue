@@ -47,7 +47,7 @@
         methods: {
             unfollow(){
                 this.loading = true
-                if(confirm('Are you sure, you want unfollow?')){
+                if(confirm(this.$t('unfollow.confirm_unfollow'))){
                     axios
                     .post('/follow/del_follower/'+this.$route.params.id, {
                         _method: 'DELETE'

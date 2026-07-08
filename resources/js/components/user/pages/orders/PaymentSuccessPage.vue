@@ -4,33 +4,33 @@
             <div class="col-md-6 text-center">
                 <div v-if="loading" class="py-5">
                     <i class="fa fa-spinner fa-spin fa-3x text-primary"></i>
-                    <p class="mt-3 text-muted">Verifying payment...</p>
+                    <p class="mt-3 text-muted">{{ $t('user.checkout.verifying_payment') }}</p>
                 </div>
 
                 <div v-else-if="paid" class="alert alert-success p-5">
                     <i class="fa fa-check-circle fa-4x text-success mb-3 d-block"></i>
-                    <h3>Payment Successful!</h3>
-                    <p class="text-muted">Order #{{ orderId }} has been paid and confirmed.</p>
+                    <h3>{{ $t('user.checkout.payment_successful') }}</h3>
+                    <p class="text-muted">{{ $t('user.checkout.order_paid_confirmed', { id: orderId }) }}</p>
                     <router-link :to="{ name: 'userPurchases' }" class="btn btn-success mt-3">
-                        View My Orders
+                        {{ $t('user.checkout.view_my_orders') }}
                     </router-link>
                 </div>
 
                 <div v-else-if="failed" class="alert alert-danger p-5">
                     <i class="fa fa-times-circle fa-4x text-danger mb-3 d-block"></i>
-                    <h3>Payment Failed</h3>
-                    <p class="text-muted">The payment for order #{{ orderId }} was not completed.</p>
+                    <h3>{{ $t('user.checkout.payment_failed') }}</h3>
+                    <p class="text-muted">{{ $t('user.checkout.payment_not_completed', { id: orderId }) }}</p>
                     <router-link :to="{ name: 'userPurchases' }" class="btn btn-outline-secondary mt-3">
-                        View My Orders
+                        {{ $t('user.checkout.view_my_orders') }}
                     </router-link>
                 </div>
 
                 <div v-else class="alert alert-warning p-5">
                     <i class="fa fa-clock-o fa-4x text-warning mb-3 d-block"></i>
-                    <h3>Payment Pending</h3>
-                    <p class="text-muted">Order #{{ orderId }} — payment is being processed.</p>
+                    <h3>{{ $t('user.checkout.payment_pending') }}</h3>
+                    <p class="text-muted">{{ $t('user.checkout.payment_processing', { id: orderId }) }}</p>
                     <router-link :to="{ name: 'userPurchases' }" class="btn btn-outline-secondary mt-3">
-                        View My Orders
+                        {{ $t('user.checkout.view_my_orders') }}
                     </router-link>
                 </div>
             </div>

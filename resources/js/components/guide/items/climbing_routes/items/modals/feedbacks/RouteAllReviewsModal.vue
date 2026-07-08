@@ -6,7 +6,7 @@
     :modal-class="{ [modalClass]: true }"
     :saveButton="{ visible: false }"
     :cancelButton="{
-        title: $t('guide.route.close_modal'),
+        title: $t('common.close'),
         btnClass: { 'btn btn-secondary': true },
     }"
 >

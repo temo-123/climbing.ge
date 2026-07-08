@@ -5,8 +5,8 @@
                 <div :class="'alert alert-danger cursor_pointer'" @click="goTo('/options')" role="alert">
                     <div class="row">
                         <div class="col-md-12">
-                            <strong>Warning</strong>
-                    <p>Your private information is not complete. Please enter full information!</p>
+                            <strong>{{ $t('common.warning') }}</strong>
+                    <p>{{ $t('user.profile.incomplete_info') }}</p>
                         </div>
                     </div>
                 </div>
@@ -15,32 +15,31 @@
                 <div class="col-md-6 col-sm-12 img">
                     <img v-if="this.user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
                     <img v-else :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
-                    <p class="user_image_update_bot" @click="open_edit_image_modal()">Edit image</p>
+                    <p class="user_image_update_bot" @click="open_edit_image_modal()">{{ $t('user.profile.edit_image') }}</p>
                 </div>
                 <div class="col-md-6 col-sm-12 details">
-                    <p>Name: {{this.user.name}}</p>
-                    <p>Surname: {{this.user.surname}}</p>
+                    <p>{{ $t('user.profile.label_name', { value: this.user.name }) }}</p>
+                    <p>{{ $t('user.profile.label_surname', { value: this.user.surname }) }}</p>
 
-                    <p>Email: {{this.user.email}}</p>
-                    <p>Phone: {{this.user.phone_number}}</p>
+                    <p>{{ $t('user.profile.label_email', { value: this.user.email }) }}</p>
+                    <p>{{ $t('user.profile.label_phone', { value: this.user.phone_number }) }}</p>
 
-                    <p>Country: {{this.user.country}}</p>
-                    <p>City: {{this.user.city}}</p>
-
-                    <!-- <p>Your Status = {{this.status}}</p> -->
+                    <p>{{ $t('user.profile.label_country', { value: this.user.country }) }}</p>
+                    <p>{{ $t('user.profile.label_city', { value: this.user.city }) }}</p>
+                    <p>{{ $t('user.profile.label_language', { value: this.user.lang === 'ka' ? $t('user.profile.lang_georgian') : $t('user.profile.lang_english') }) }}</p>
 
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-groupe">
-                                <button @click="open_edit_modal()" class="btn btn-primary float-right">Edit my data</button>
+                                <button @click="open_edit_modal()" class="btn btn-primary float-right">{{ $t('user.profile.edit_my_data') }}</button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-groupe">
-                                <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">Refresh ({{user_reset_id}})</button>
-                                <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">Updating...</span>
+                                <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
+                                <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
                             </div>
                         </div>
                     </div>
@@ -54,7 +53,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                            <button @click="edit_password_model()" class="btn btn-primary">Edit My Password</button>
+                            <button @click="edit_password_model()" class="btn btn-primary">{{ $t('user.profile.edit_password_btn') }}</button>
                     </div>
                 </div>
             </div>
@@ -68,13 +67,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button class="btn btn-primary" @click="new_user_site_add_model()" >Add new site</button>
+                        <button class="btn btn-primary" @click="new_user_site_add_model()" >{{ $t('user.profile.add_new_site') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button @click="get_user_sites" class="btn btn-success float-right" v-if="!is_user_site_refresh">Refresh ({{user_site_reset_id}})</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="is_user_site_refresh">Updating...</span>
+                        <button @click="get_user_sites" class="btn btn-success float-right" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
+                        <span class="badge badge-primare mb-1 float-right" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
                     </div>
                 </div>
             </div>
@@ -84,24 +83,24 @@
                     <table class="table table-hover" id="dev-table">
                         <thead>
                             <tr>
-                        <th>Site</th>
+                        <th>{{ $t('user.profile.col_site') }}</th>
                         <th></th>
-                        <th>Edit</th>
+                        <th>{{ $t('common.edit') }}</th>
                         <th></th>
-                        <th>Delete</th>
+                        <th>{{ $t('common.delete') }}</th>
                             </tr>
                         </thead>
-                        
+
                         <tbody>
                             <tr v-for="site in user_sites" :key="site.id">
                                 <td @click="go_to_user_site(site.url)"><p class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p></td>
                                 <td></td>
                                 <td>
-                                    <button class="btn btn-primary" @click="get_editing_user_site(site.id)">Edit</button>
+                                    <button class="btn btn-primary" @click="get_editing_user_site(site.id)">{{ $t('common.edit') }}</button>
                                 </td>
                                 <td></td>
                                 <td>
-                                    <button class="btn btn-danger" @click="del_user_site(site.id)">Delete</button>
+                                    <button class="btn btn-danger" @click="del_user_site(site.id)">{{ $t('common.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -112,68 +111,73 @@
 
         <StackModal
                 v-model="is_add_user_site"
-                title="Add your site"
+                :title="$t('user.profile.add_site_title')"
                 @close="is_add_user_site=false"
                 @save="$refs.add_user_site_form.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
                 <form ref="add_user_site_form" class="form" method="POST" id="sdd_site" v-on:submit.prevent="add_user_site">
-                    <label for="url">Enter an https:// URL:</label>
+                    <label for="url">{{ $t('user.profile.enter_url_label') }}</label>
 
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
+                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" :placeholder="$t('user.profile.enter_url_placeholder')" required>
                 </form>
             </div>
         </StackModal>
 
         <StackModal
                 v-model="is_edit_user_site"
-                title="Edit your site"
+                :title="$t('user.profile.edit_site_title')"
                 @close="close_edit_modal()"
                 @save="$refs.edit_site_form.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
 
             <div>
                 <form ref="edit_site_form" class="form" method="POST" id="edit_site" v-on:submit.prevent="edit_user_site">
-                    <label for="url">Enter an https:// URL:</label>
+                    <label for="url">{{ $t('user.profile.enter_url_label') }}</label>
 
-                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" placeholder="Enter your website URL" required>
+                    <input type="url" class="form-control" name="url" v-model="user_site_form_data.url" id="url" pattern="https://.*|http://.*" :placeholder="$t('user.profile.enter_url_placeholder')" required>
                 </form>
             </div>
         </StackModal>
 
         <StackModal
                 v-model="is_edit_data"
-                title="Edit user data"
+                :title="$t('user.profile.edit_data_title')"
                 @close="is_edit_data=false"
                 @save="$refs.registrationForm.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
 
             <div>
                 <form ref="registrationForm" class="form" method="POST" id="registrationForm" v-on:submit.prevent="user_data_update">
 
-                    <input type="text" class="form-control" v-model="edit_data.name" name="name" placeholder="Enter your name" title="Enter your name">
-                    <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" placeholder="Enter your last name" title="Enter your last name">
-                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" placeholder="Enter your phone number" title="Enter your phone number">
-                    <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" placeholder="Enter your email" title="Enter your email">
-                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" placeholder="Enter your country" title="Enter your country">
+                    <input type="text" class="form-control" v-model="edit_data.name" name="name" :placeholder="$t('user.profile.name_placeholder')" :title="$t('user.profile.name_placeholder')">
+                    <input type="text" class="form-control" v-model="edit_data.surname" name="surname" id="surname" :placeholder="$t('user.profile.surname_placeholder')" :title="$t('user.profile.surname_placeholder')">
+                    <input type="tel" class="form-control" v-model="edit_data.phone_number" name="phone_number" id="phone_number" :placeholder="$t('user.profile.phone_placeholder')" :title="$t('user.profile.phone_placeholder')">
+                    <input type="email" class="form-control" v-model="edit_data.email" name="email" id="email" :placeholder="$t('user.profile.email_placeholder')" :title="$t('user.profile.email_placeholder')">
+                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" :placeholder="$t('user.profile.city_placeholder')" :title="$t('user.profile.city_placeholder')">
+                    <input type="text" class="form-control" v-model="edit_data.country" name="country" id="country" :placeholder="$t('user.profile.country_placeholder')" :title="$t('user.profile.country_placeholder')">
+
+                    <select class="form-control" v-model="edit_data.lang" name="lang" id="lang" :title="$t('user.profile.select_language_title')">
+                        <option value="us">{{ $t('user.profile.lang_english') }}</option>
+                        <option value="ka">{{ $t('user.profile.lang_georgian') }}</option>
+                    </select>
                 </form>
             </div>
         </StackModal>
 
         <StackModal
                 :show="is_change_image"
-                title="Edit image"
+                :title="$t('user.profile.edit_image_title')"
                 @close="is_change_image=false"
                 @save="$refs.myForm.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
 
@@ -192,25 +196,25 @@
 
         <StackModal
                 :show="is_change_password"
-                title="Edit password"
+                :title="$t('user.profile.edit_password_title')"
                 @close="close_edit_password_model()"
                 @save="$refs.edit_password_form.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
                 <form ref="edit_password_form" class="form" method="POST" id="edit_password" v-on:submit.prevent="edit_password">
                     <div class="alert alert-danger" role="alert" v-if="is_old_pass_error">
-                        Your password is incorrect!
+                        {{ $t('user.profile.old_password_error') }}
                     </div>
-                    <input type="password" class="form-control" name="Old password" placeholder="Enter your old password" v-model="password_edit_data.old_pass" title="Enter your old password" required>
+                    <input type="password" class="form-control" name="Old password" :placeholder="$t('user.profile.old_password_placeholder')" v-model="password_edit_data.old_pass" :title="$t('user.profile.old_password_placeholder')" required>
                     <hr>
-                    <input type="password" class="form-control" name="New password" placeholder="Enter your new password" v-model="password_edit_data.new_pass" title="Enter your new password" required>
+                    <input type="password" class="form-control" name="New password" :placeholder="$t('user.profile.new_password_placeholder')" v-model="password_edit_data.new_pass" :title="$t('user.profile.new_password_placeholder')" required>
 
                     <div class="alert alert-danger" role="alert" v-if="is_password_cofirming_error">
-                        Password confirmation error
+                        {{ $t('user.profile.password_confirm_error') }}
                     </div>
-                    <input type="password" class="form-control" name="Repeat new password" placeholder="Repeat your new password" v-model="password_edit_data.confirm_new_pass" title="Repeat your new password" required>
+                    <input type="password" class="form-control" name="Repeat new password" :placeholder="$t('user.profile.repeat_password_placeholder')" v-model="password_edit_data.confirm_new_pass" :title="$t('user.profile.repeat_password_placeholder')" required>
                 </form>
             </div>
         </StackModal>
@@ -242,6 +246,7 @@
                     email: '',
                     city: '',
                     country: '',
+                    lang: 'us',
                 },
 
                 password_edit_data: {
@@ -303,6 +308,7 @@
                         email: '',
                         city: '',
                         country: '',
+                        lang: 'us',
                     }
 
                     this.is_edit_data = false
@@ -326,7 +332,7 @@
                 this.is_old_pass_error = false
 
                 if(this.password_edit_data.new_pass === this.password_edit_data.confirm_new_pass){
-                    if(confirm('Are you sure, you want edit your password?')){
+                    if(confirm(this.$t('user.profile.confirm_edit_password'))){
                         axios
                         .post("user/update_password",{
                             data: this.password_edit_data,
@@ -378,6 +384,7 @@
                     email: this.user.email,
                     city: this.user.city,
                     country: this.user.country,
+                    lang: this.user.lang || 'us',
                 }
 
                 this.is_edit_data = true
@@ -453,7 +460,7 @@
                 );
             },
             del_user_site(site_id){
-                if(confirm('Are you sure you want to delete this site? This action cannot be undone.')){
+                if(confirm(this.$t('user.profile.confirm_delete_site'))){
                     axios
                     .post('user_site/'+site_id, {
                         _method: 'DELETE'

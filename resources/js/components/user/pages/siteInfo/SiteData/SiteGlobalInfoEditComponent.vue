@@ -2,12 +2,12 @@
     <div class="tabs"> 
         <div class="row">
             <div class="form-group">
-                <button type="submit" class="btn btn-primary" @click="go_back()">Beck</button>
+                <button type="submit" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row">
             <div class="form-group">  
-                <button type="submit" class="btn btn-primary" v-on:click="update()" >Save updatid info</button>
+                <button type="submit" class="btn btn-primary" v-on:click="update()" >{{ $t('admin.site_info.save_updated_info_btn') }}</button>
             </div>
         </div>
         <div class="row">
@@ -16,7 +16,7 @@
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
                         
-                        <label for="1" >Global info</label>
+                        <label for="1" >{{ $t('common.global_info') }}</label>
                     </div>
                 </div>
             </div>
@@ -25,8 +25,8 @@
                     <div class="jumbotron width_100">
                         <div class="row">
                             <div class="col-md-12">
-                                <h2 class="display-4"><span>Site global information</span></h2>
-                                <p class="lead">Site global information.</p>
+                                <h2 class="display-4"><span>{{ $t('admin.site_info.site_global_info_title') }}</span></h2>
+                                <p class="lead">{{ $t('admin.site_info.site_global_info_subtitle') }}</p>
                             </div>
                         </div>
                     </div>
@@ -99,7 +99,7 @@ export default {
 
         go_back: function(back_action = false) {
             if(back_action == false){
-                if(confirm('Are you sure, you want go back?')){
+                if(confirm(this.$t('admin.shop.confirm_go_back'))){
                     this.$router.go(-1)
                 }
             }

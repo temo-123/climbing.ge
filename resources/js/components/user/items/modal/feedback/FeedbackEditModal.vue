@@ -1,10 +1,10 @@
 <template>
     <StackModal
         v-model="is_show"
-        title="Edit feedback"
+        :title="$t('admin.comments.edit_feedback_title')"
         @close="close_modal()"
         :saveButton="{ visible: true }" @save="save_feedback"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }"
     >
         <div class="model-body">
             <div class="container">
@@ -17,17 +17,17 @@
                 <div class="row" v-show="!is_loading">
                     <form method="POST" id="feedback_edit_form" v-on:submit.prevent="save_feedback" style="width: 100%;">
                         <div class="mb-3">
-                            <span>Rating</span>
+                            <span>{{ $t('admin.comments.rating_label') }}</span>
                             <starReitingInsert :actyve_stars_prop="data.stars" @get_stars="val => data.stars = val" />
                         </div>
 
                         <div class="mb-3">
-                            <span>Feedback text</span>
+                            <span>{{ $t('admin.comments.feedback_text_label') }}</span>
                             <textarea
                                 id="feedback_text"
                                 name="feedback_text"
                                 class="form-control"
-                                placeholder="Feedback text"
+                                :placeholder="$t('admin.comments.feedback_text_label')"
                                 v-model="data.text"
                                 rows="4"
                             ></textarea>

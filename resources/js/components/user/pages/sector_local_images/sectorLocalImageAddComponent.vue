@@ -10,12 +10,12 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button type='submit' form="myForm" class="btn btn-primary">Save</button>
+                        <button type='submit' form="myForm" class="btn btn-primary">{{ $t('common.save') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button class="btn btn-success float-right" @click="go_back()">Go back</button>
+                        <button class="btn btn-success float-right" @click="go_back()">{{ $t('common.back') }}</button>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
         <div class="col-md-12" v-show="!is_loading">
             <form ref="myForm" id="myForm" enctype="multipart/form-data" v-on:submit.prevent="save">
                 <div class="form-group clearfix row">
-                    <label for="name" class='col-md-2 control-label'> Title </label>
+                    <label for="name" class='col-md-2 control-label'> {{ $t('common.title') }} </label>
                     <div class="col-md-10">
                         <input type="text" name="name" v-model="data.title" class="form-control" required>
                     </div>
@@ -32,7 +32,7 @@
 
                 <div class="form-group clearfix row">
                     <single_image_add
-                        title_prop="Sector local image"
+                        :title_prop="$t('admin.articles.sector_local_image_title')"
                         @update_single_image="data.image = $event"
                     />
                 </div>
@@ -58,7 +58,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button class="btn btn-primary" @click="$refs.myChild.add_new_sector_model()">Add new sector</button>
+                        <button class="btn btn-primary" @click="$refs.myChild.add_new_sector_model()">{{ $t('admin.articles.add_new_sector_btn') }}</button>
                     </div>
                 </div>
                 <!-- <div class="col-md-6">
@@ -74,13 +74,13 @@
                     <table class="table table-hover" id="dev-table">
                         <thead>
                             <tr>
-                                <th>Sector id</th>
+                                <th>{{ $t('admin.articles.col_sector_id') }}</th>
                                 <th>|</th>
 
-                                <th>Sector name</th>
+                                <th>{{ $t('admin.users.sector_name_col') }}</th>
                                 <th>|</th>
 
-                                <th>Delite</th>
+                                <th>{{ $t('common.delete') }}</th>
                             </tr>
                         </thead>
 
@@ -93,7 +93,7 @@
                                 <td>{{ image_sector.name }} </td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-danger" @click="del_sector(image_sector.id)">Delete</button>
+                                    <button type="submit" class="btn btn-danger" @click="del_sector(image_sector.id)">{{ $t('common.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -186,7 +186,7 @@
                 .finally(()=>{this.is_loading = false});
             },
             go_back(){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.$router.go(-1)
                 }
             }

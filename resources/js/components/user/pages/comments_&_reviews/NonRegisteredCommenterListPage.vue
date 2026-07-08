@@ -49,7 +49,7 @@
         },
         methods: {
             del_xuser(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .delete("/set_non_registered_commenter/del_non_registered_commenter/"+id)
                     .then(response => {;
@@ -69,15 +69,15 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Non Registered Commenter List',
+                                            'table_name': this.$t('admin.comments.non_registered_commenters_table'),
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Email',
-                                                        'Confirmed',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.email'),
+                                                        this.$t('admin.comments.confirmed_col'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['comenter', 'id']],

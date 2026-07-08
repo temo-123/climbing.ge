@@ -2,19 +2,19 @@
     <div class="col-md-12">
         <div class="row edit_buttom">
             <div class="col-md-12">
-                <p class="text-center">Manage your email notifications. Select the notifications you want to receive via email.</p>
+                <p class="text-center">{{ $t('user.notification_settings.manage_notifications_hint') }}</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-primary" @click="activate_all_notifications">Enable All Notifications</button>
+                    <button class="btn btn-primary" @click="activate_all_notifications">{{ $t('user.notification_settings.enable_all_btn') }}</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-danger float-right" @click="cancel_all_notifications">Disable All Notifications</button>
+                    <button class="btn btn-danger float-right" @click="cancel_all_notifications">{{ $t('user.notification_settings.disable_all_btn') }}</button>
                 </div>
             </div>
         </div>
@@ -22,13 +22,13 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button class="btn btn-primary" @click="update_user_notification_data" >Save Preferences</button>
+                    <button class="btn btn-primary" @click="update_user_notification_data" >{{ $t('user.notification_settings.save_preferences_btn') }}</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button @click="get_user_notification_data" class="btn btn-success float-right" v-if="!notification_is_refresh">Refresh ({{notification_reset_id}})</button>
-                    <span class="badge badge-primare mb-1 float-right" v-if="notification_is_refresh">Updating...</span>
+                    <button @click="get_user_notification_data" class="btn btn-success float-right" v-if="!notification_is_refresh">{{ $t('user.notification_settings.refresh_btn', { id: notification_reset_id }) }}</button>
+                    <span class="badge badge-primare mb-1 float-right" v-if="notification_is_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                 </div>
             </div>
         </div>
@@ -37,36 +37,36 @@
             <table class="table table-hover" id="dev-table">
                 <thead>
                     <tr>
-                        <th>Notification Type</th>
+                        <th>{{ $t('user.notification_settings.col_notification_type') }}</th>
                         <th></th>
-                        <th>Enable</th>
+                        <th>{{ $t('user.notification_settings.col_enable') }}</th>
                     </tr>
                 </thead>
-                
+
                 <tbody >
                     <tr>
-                        <td>Favorite Outdoor Activity</td>
+                        <td>{{ $t('user.notification_settings.favorite_outdoor_activity') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_outdoor">
                         </td>
                     </tr>
                     <tr>
-                        <td>Favorite Product</td>
+                        <td>{{ $t('user.notification_settings.favorite_product') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_product">
                         </td>
                     </tr>
                     <tr>
-                        <td>Favorite Film</td>
+                        <td>{{ $t('user.notification_settings.favorite_film') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.favorite_film">
                         </td>
                     </tr>
                     <tr>
-                        <td>Interested Event</td>
+                        <td>{{ $t('user.notification_settings.interested_event') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.interested_event">
@@ -78,7 +78,7 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>New Sector Added</td>
+                        <td>{{ $t('user.notification_settings.new_sector_added') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_sector">
@@ -90,35 +90,35 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>News Updates</td>
+                        <td>{{ $t('user.notification_settings.news_updates') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.news">
                         </td>
                     </tr>
                     <tr>
-                        <td>New Outdoor Climbing Spot</td>
+                        <td>{{ $t('user.notification_settings.new_outdoor_climbing_spot') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_outdoor_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>New Ice Climbing Spot</td>
+                        <td>{{ $t('user.notification_settings.new_ice_climbing_spot') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_ice_spot">
                         </td>
                     </tr>
                     <tr>
-                        <td>New Tech Tip</td>
+                        <td>{{ $t('user.notification_settings.new_tech_tip') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_techtip">
                         </td>
                     </tr>
                     <tr>
-                        <td>New Gym Added</td>
+                        <td>{{ $t('user.notification_settings.new_gym_added') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_gym">
@@ -130,14 +130,14 @@
                         <td>--</td>
                     </tr>
                     <tr>
-                        <td>New Product Added</td>
+                        <td>{{ $t('user.notification_settings.new_product_added') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_product">
                         </td>
                     </tr>
                     <tr>
-                        <td>New Service Added</td>
+                        <td>{{ $t('user.notification_settings.new_service_added') }}</td>
                         <td></td>
                         <td>
                             <input type="checkbox" v-model="data.add_new_service">
@@ -232,7 +232,7 @@
             },
 
             activate_all_notifications(){
-                if (window.confirm('Are you sure you want to enable all notifications? This will send emails for all types of updates.')) {
+                if (window.confirm(this.$t('user.notification_settings.confirm_enable_all'))) {
                     this.data = {
                         add_new_gym: true,
                         news: true,
@@ -252,7 +252,7 @@
             },
 
             cancel_all_notifications(){
-                if (window.confirm('Are you sure you want to disable all notifications? You will no longer receive email updates.')) {
+                if (window.confirm(this.$t('user.notification_settings.confirm_disable_all'))) {
                     this.data = {
                         add_new_gym: false,
                         news: false,

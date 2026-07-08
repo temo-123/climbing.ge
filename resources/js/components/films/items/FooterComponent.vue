@@ -5,21 +5,21 @@
 
                 <div class="col-md-4 display-none-720px">
                     <div class="f-about" style='color: #fff;'>
-                        <h4 class="footer_title">{{ $t('about us')}}</h4>
-                        
+                        <h4 class="footer_title">{{ $t('global.footer.about us')}}</h4>
+
                         <div class="footer_description_block">
                             <span v-html="this.$siteData.data.shop_short_description"></span>
-                            <router-link :to="{name: 'about_films'}">More</router-link>
+                            <router-link :to="{name: 'about_films'}">{{ $t('global.footer.more') }}</router-link>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="f-links">
-                        <h4 class="footer_title">{{ $t("links") }}</h4>
+                        <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
                             <!-- <li><router-link :to="{name: 'services'}" exact> {{ $t('forum menu services') }} </router-link></li> -->
-                            <li><router-link :to="{name: 'about_films'}" exact> {{ $t('forum menu about us')}} </router-link></li>
+                            <li><router-link :to="{name: 'about_films'}" exact> {{ $t('global.footer.about us')}} </router-link></li>
                         </ul>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                 <div class="col-md-4">
                     <div class="row f-links container">
                         <div class="flick">
-                            <h4 class="footer_title">{{ $t("share") }}</h4>
+                            <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
                             <share />
                         </div>
                     </div>

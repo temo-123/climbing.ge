@@ -1,16 +1,16 @@
 <template>
     <stack-modal
                 :show="is_order_region_edit_model"
-                title="Edit order region"
+                :title="$t('admin.shop.edit_shipping_region_title')"
                 @close="close_modal"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <div>
-                <h1>Edit shiped region</h1>
-                <input type="text" class="form-control" v-model="editing_data.region" name="region name" placeholder="region" title="region">
-                <input type="number" class="form-control" v-model="editing_data.shiping_price" name="shiping price" placeholder="Shiping price" title="Shiping price">
-                <input type="number" class="form-control" v-model="editing_data.free_shiping_price_after" name="free shiping price after" placeholder="Free shiping price after" title="Free shiping price after">
+                <h1>{{ $t('admin.shop.edit_shipping_region_title') }}</h1>
+                <input type="text" class="form-control" v-model="editing_data.region" name="region name" :placeholder="$t('admin.shop.region_placeholder')" :title="$t('admin.shop.region_placeholder')">
+                <input type="number" class="form-control" v-model="editing_data.shiping_price" name="shiping price" :placeholder="$t('admin.shop.shipping_price_label')" :title="$t('admin.shop.shipping_price_label')">
+                <input type="number" class="form-control" v-model="editing_data.free_shiping_price_after" name="free shiping price after" :placeholder="$t('admin.shop.free_shipping_price_after_label')" :title="$t('admin.shop.free_shipping_price_after_label')">
             </div>
             <div slot="modal-footer">
                 <div class="modal-footer">
@@ -19,7 +19,7 @@
                         :class="{'btn btn-primary': true}"
                         @click="edit_region()"
                     >
-                    Edit region
+                    {{ $t('admin.shop.edit_region_btn') }}
                     </button>
                 </div>
             </div>

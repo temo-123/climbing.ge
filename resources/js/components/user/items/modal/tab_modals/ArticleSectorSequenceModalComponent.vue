@@ -1,23 +1,23 @@
 <template>
     <StackModal
         v-model="is_show_sector_modal"
-        title="Spot Sectors"
+        :title="$t('admin.users.spot_sectors_title')"
         @close="close_sector_model()"
         @save="save_sector_sequence"
         :modal-class="{ [SectorModalClass]: true }"
-        :saveButton="{ visible: true, title: 'Save sequence' }"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+        :saveButton="{ visible: true, title: $t('admin.users.save_sequence_btn') }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }">
         <div class="root">
             <div class="col-md-12">
                 <div class="row">
-                    <h2 v-if="sector_sequence.length > 0">Spot sectors</h2>
+                    <h2 v-if="sector_sequence.length > 0">{{ $t('admin.users.spot_sectors_title') }}</h2>
                     <table v-if="sector_sequence.length > 0" style="width: 100%">
                         <thead>
                             <tr>
                                 <td></td>
-                                <td>ID</td>
-                                <td>Num</td>
-                                <td>Name</td>
+                                <td>{{ $t('common.id') }}</td>
+                                <td>{{ $t('admin.users.col_num') }}</td>
+                                <td>{{ $t('common.name') }}</td>
                             </tr>
                         </thead>
                         <tbody>

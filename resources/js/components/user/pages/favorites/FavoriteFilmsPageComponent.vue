@@ -15,19 +15,19 @@
             <div class="row font-italic">
                 <div class="col-md-6">
                     <h3 class="mt-3 pb-3 mb-4 ">
-                        Faworite climbing film
+                        {{ $t('user.favorites.films.title') }}
                     </h3>
                 </div>
                 <div class="col-md-6">
                     <button class="btn btn-primary float-right" @click="go_to_film_list('/film')">
-                        Go to film list
+                        {{ $t('user.favorites.films.go_to_list') }}
                     </button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
                     <button class="btn btn-success float-right" @click="get_faworite_films()">
-                        Refresh
+                        {{ $t('common.refresh') }}
                     </button>
                 </div>
             </div>
@@ -56,7 +56,7 @@
 
             </div>
             <div class="row" v-else>
-                <h2>You dont have faworite filmds</h2>
+                <h2>{{ $t('user.favorites.films.empty') }}</h2>
             </div>
         </div>
     </div>
@@ -94,7 +94,7 @@
             },
 
             del_from_faworites(id){
-                if(confirm('Are you sure, you want delite this film from your faworites?')){
+                if(confirm(this.$t('user.favorites.films.confirm_delete'))){
                     axios
                     .post('/get_film/del_from_faworite/'+id, {
                         film_id: id,
@@ -102,10 +102,9 @@
                     })
                     .then(Response => {
                         this.get_faworite_films()
-                        // alert("Film delited from your favorite list!");
                     })
                     .catch(error => {
-                        alert("Error");
+                        alert(this.$t('user.favorites.error'))
                     })
                 }
             }

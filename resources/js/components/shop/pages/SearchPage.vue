@@ -19,15 +19,15 @@
                         <!-- Suggested results banner -->
                         <div v-if="suggested" class="alert alert-warning">
                             <i class="fa fa-lightbulb-o"></i>
-                            {{ $t('shop.search.did_you_mean') }}
+                            {{ $t('common.search.did_you_mean') }}
                             <strong>"{{ best_match }}"</strong>?
-                            {{ $t('shop.search.you_searched') }}
+                            {{ $t('common.search.you_searched') }}
                             <strong>"{{ original_query }}"</strong>.
                         </div>
 
                         <div v-if="products.length === 0 && tours.length === 0 && services.length === 0">
                             <div class="alert alert-danger" role="alert">
-                                {{ $t('shop.search.no_results') }}
+                                {{ $t('common.search.no_results') }}
                             </div>
                         </div>
 

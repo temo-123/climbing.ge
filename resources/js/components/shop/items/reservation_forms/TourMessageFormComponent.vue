@@ -68,7 +68,7 @@
                                     </div>
                                     <div class="col-xl-4 col-lg-4 col-md-12">
                                         <div class="form-group">
-                                            <label class="control-label" for="country">{{ $t('shop.tour.message.country') }}</label>
+                                            <label class="control-label" for="country">{{ $t('common.country') }}</label>
                                             <input v-model="form_data.country" id="country" type="text" placeholder="Your country" class="form-control" required>
                                         </div>
                                     </div>
@@ -113,8 +113,8 @@
                                             <i class="fa fa-exclamation-triangle"></i>
                                             reCAPTCHA failed to load. Please reload the page and try again.
                                         </div>
-                                        <button v-if="captcha_error" type="button" class="btn btn-secondary" disabled>{{ $t('shop.tour.message.send') }}</button>
-                                        <button v-else type="submit" class="btn btn-success">{{ $t('shop.tour.message.send') }}</button>
+                                        <button v-if="captcha_error" type="button" class="btn btn-secondary" disabled>{{ $t('common.send_email') }}</button>
+                                        <button v-else type="submit" class="btn btn-success">{{ $t('common.send_email') }}</button>
                                     </div>
                                 </div>
                             </div>

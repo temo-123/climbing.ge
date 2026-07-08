@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-xs-4 col-sm-4 col-md-3 gallery_images" v-for="image in db_images" :key="image.id" @click="open_image(image)">
                     <site-img v-if="image.title != null" :src="path + image.image" :alt="image.title" :img_class="'gallery_img'"/>
-                    <site-img v-else :src="path + image.image" :alt="'climbing.ge gallery image'" :img_class="'gallery_img'"/>
+                    <site-img v-else :src="path + image.image" :alt="$t('global.gallery_image_alt')" :img_class="'gallery_img'"/>
                 </div>
             </div>
         </div>
@@ -23,7 +23,7 @@
 
             <img  v-else
                   :src="path + active_img.image" 
-                  :alt="'climbing.ge gallery image'"  
+                  :alt="$t('global.gallery_image_alt')"  
                   :img_class="'gallery_big_img'" 
                   style="max-width: 96%; max-height: 80%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); "/>
 
@@ -41,14 +41,14 @@
                 <span v-if="active_img.article.category == 'mount_route'" >
                     <router-link :to="'mountaineering/' + active_img.article.url_title">
                         <span @click="close_image()">
-                            Open Article
+                            {{ $t('global.open_article_btn') }}
                         </span>
                     </router-link>
                 </span>
                 <span v-else>
                     <router-link :to="active_img.article.category + '/' + active_img.article.url_title">
                         <span @click="close_image()">
-                            Open Article
+                            {{ $t('global.open_article_btn') }}
                         </span>
                     </router-link>
                 </span>

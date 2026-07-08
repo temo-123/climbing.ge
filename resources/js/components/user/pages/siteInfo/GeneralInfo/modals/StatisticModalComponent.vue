@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="show_statistic_modal"
-        title="General Info Statistics"
+        :title="$t('admin.site_info.general_info_statistics_title')"
         size="xl"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
@@ -9,7 +9,7 @@
     >
         <div v-if="loading" class="text-center" style="padding: 40px 0;">
             <i class="fa fa-spinner fa-spin fa-2x"></i>
-            <p style="margin-top:10px; color:#888;">Loading statistics...</p>
+            <p style="margin-top:10px; color:#888;">{{ $t('admin.site_info.loading_statistics') }}</p>
         </div>
 
         <div v-else-if="error" class="alert alert-danger">{{ error }}</div>
@@ -19,32 +19,32 @@
             <div class="row" style="margin-bottom: 24px;">
                 <div class="col-xs-6 col-sm-3">
                     <div class="stat-tile">
-                        <div class="stat-tile-label">Today</div>
+                        <div class="stat-tile-label">{{ $t('admin.site_info.today_label') }}</div>
                         <div class="stat-tile-value">{{ stats.today }}</div>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#9b59b6;">
-                        <div class="stat-tile-label">This Week</div>
+                        <div class="stat-tile-label">{{ $t('admin.site_info.this_week_label') }}</div>
                         <div class="stat-tile-value" style="color:#9b59b6;">{{ stats.this_week }}</div>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#27ae60;">
-                        <div class="stat-tile-label">This Month</div>
+                        <div class="stat-tile-label">{{ $t('admin.site_info.this_month_label') }}</div>
                         <div class="stat-tile-value" style="color:#27ae60;">{{ stats.this_month }}</div>
                     </div>
                 </div>
                 <div class="col-xs-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#f39c12;">
-                        <div class="stat-tile-label">This Year</div>
+                        <div class="stat-tile-label">{{ $t('admin.site_info.this_year_label') }}</div>
                         <div class="stat-tile-value" style="color:#f39c12;">{{ stats.this_year }}</div>
                     </div>
                 </div>
             </div>
 
             <!-- Last 30 days chart -->
-            <h5 style="margin-bottom: 14px; font-weight: 600;">Last 30 days — daily clicks</h5>
+            <h5 style="margin-bottom: 14px; font-weight: 600;">{{ $t('admin.site_info.last_30_days_chart_title') }}</h5>
 
             <GChart
                 v-if="chart_data.length > 1"
@@ -53,7 +53,7 @@
                 :options="chart_options"
                 style="width:100%; height:340px;"
             />
-            <p v-else style="color:#aaa; text-align:center; padding: 30px 0;">No data yet.</p>
+            <p v-else style="color:#aaa; text-align:center; padding: 30px 0;">{{ $t('admin.site_info.no_data_yet') }}</p>
         </div>
     </stack-modal>
 </template>
@@ -134,7 +134,7 @@
                     params: { block_id: this.general_info_id, action_type: 'show_more_click' }
                 })
                 .then(res => { this.stats = res.data.data; })
-                .catch(() => { this.error = 'Failed to load statistics.'; })
+                .catch(() => { this.error = this.$t('admin.site_info.failed_load_statistics'); })
                 .finally(() => { this.loading = false; });
             },
         },

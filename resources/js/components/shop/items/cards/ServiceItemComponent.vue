@@ -1,7 +1,7 @@
 <template>
     <div class="col-md-4 col-sm-6">
         <article class="service-box" role="article">
-            <router-link :to="'../service/' + service_data.global_data.url_title" class="service-image-link" :aria-label="'View details for ' + service_data.locale_data.title">
+            <router-link :to="'../service/' + service_data.global_data.url_title" class="service-image-link" :aria-label="$t('guide.view_details_for_prefix') + ' ' + service_data.locale_data.title">
                 <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'">
                     <div class="front-content">
                         <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
@@ -16,7 +16,7 @@
             </router-link>
 
             <div class="service-content">
-                <router-link :to="'../service/' + service_data.global_data.url_title" :aria-label="'View details for ' + service_data.locale_data.title">
+                <router-link :to="'../service/' + service_data.global_data.url_title" :aria-label="$t('guide.view_details_for_prefix') + ' ' + service_data.locale_data.title">
                     <h3>{{ service_data.locale_data.title }}</h3>
                 </router-link>
                 <div class="service-description" v-html="service_data.locale_data.short_description"></div>

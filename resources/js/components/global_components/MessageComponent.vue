@@ -5,7 +5,7 @@
         <h3> <span v-html="safeMessage"></span> </h3>
         
         <div class="alert alert-danger" role="alert" v-if="fatal_error">
-            <h2 class="text-center">Fatal error! Please contact support!</h2>
+            <h2 class="text-center">{{ $t('global.message.fatal_error_contact_support') }}</h2>
         </div>
 
         <form method="POST" @submit.prevent id="js_form" v-if="!is_mail_sending && !fatal_error">
@@ -45,7 +45,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <input type="text" class="form-control" v-model="num"  name="num"  id="num" :placeholder="$t('global.message.form.number')">
+                                <input type="text" class="form-control" v-model="num"  name="num"  id="num" :placeholder="$t('common.phone_number')">
                                 <div class="alert alert-danger" role="alert" v-if="error.num">
                                     {{ error.num[0] }}
                                 </div>
@@ -82,10 +82,10 @@
                 <div class="col-md-12">
                     <div v-if="captcha_error" class="alert alert-warning mb-2">
                         <i class="fa fa-exclamation-triangle"></i>
-                        reCAPTCHA failed to load. Please reload the page and try again.
+                        {{ $t('shop.product.feedback.recaptcha_error') }}
                     </div>
                     <FormCapchaComponent
-                        :buttonTextProp="'Send message'"
+                        :buttonTextProp="$t('global.message.send_message_btn')"
                         @recaptcha-verified="send_message"
                         @expired="onCaptchaExpired"
                     />
@@ -96,7 +96,7 @@
         <div class="row" v-else-if="is_mail_sending && !fatal_error">
             <div class="text-center loader_margin">
                 <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
-                <p>Pless wait!</p>
+                <p>{{ $t('user.notifications.please_wait') }}</p>
             </div>
         </div>
     </div>
@@ -179,7 +179,7 @@
                     recaptcha_token: this.recaptcha_token,
                 })
                 .then(Response => {
-                    alert("Tenk you for your message " + this.name + ".")
+                    alert(this.$t('global.message.thank_you_for_message', { name: this.name }))
                     this.clear_form()
                 })
                 .catch(error =>{

@@ -1,15 +1,15 @@
 <template>
     <div class="form-group clearfix row">
         <div class="col-md-12">
-            <h4>Route Drawing Editor</h4>
-            <p class="text-muted">Use the editor to create or modify the drawing for this route. You can select an existing sector image or upload a new one to use as a background for your drawing.</p>
+            <h4>{{ $t('admin.routes_sectors.route_drawing_editor_title') }}</h4>
+            <p class="text-muted">{{ $t('admin.routes_sectors.route_drawing_editor_hint') }}</p>
         </div>
 
         <div class="form-group clearfix row" v-if="show_alert_prop">
           <div role="alert" class="alert alert-danger cursor_pointer">
             <div class="row">
               <div class="col-md-12">
-                <p>This route doesn't have a drawing yet. You can create one by adding a new route or editing an existing one with drawing tools.</p>
+                <p>{{ $t('admin.routes_sectors.no_drawing_yet_alert') }}</p>
               </div>
             </div>
           </div>
@@ -25,14 +25,14 @@
                         :class="show_editor ? 'btn-danger' : 'btn-primary'"
                         @click="toggleEditor"
                     >
-                        {{ show_editor ? 'Close Editor' : 'Open Editor' }}
+                        {{ show_editor ? $t('admin.routes_sectors.close_editor') : $t('admin.routes_sectors.open_editor') }}
                     </button>
                 </div>
             </div>
 
             <StackModal
                 :show="show_editor"
-                title="Editor"
+                :title="$t('admin.routes_sectors.editor_title')"
                 size="fullscreen"
                 :saveButton="{ visible: false }"
                 :cancelButton="{ visible: false }"
@@ -50,8 +50,8 @@
                           @change="updateSectorImageId"
                       />
                       <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'input-' + image.id">
-                          Image ID → {{ image.id }}
-                          <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">original saved</span>
+                          {{ $t('admin.routes_sectors.image_id_label') }} {{ image.id }}
+                          <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">{{ $t('admin.routes_sectors.original_saved') }}</span>
                           <img
                               :src="getSectorImageThumb(image)"
                               :alt="'Sector Image ' + image.id"
@@ -69,7 +69,7 @@
                           @click="toggleExtraDrawingMode"
                       >
                           <i class="fa fa-map-marker"></i>
-                          {{ extra_drawing_loading ? 'Loading…' : (extra_drawing_mode ? 'Extra Drawing Mode: ON' : 'Add Extra Drawing') }}
+                          {{ extra_drawing_loading ? $t('admin.routes_sectors.loading_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.extra_drawing_mode_on') : $t('admin.routes_sectors.add_extra_drawing')) }}
                       </button>
                       <button
                           type="button"
@@ -78,7 +78,7 @@
                           @click="saveRouteDrawing"
                       >
                           <i class="fa fa-save"></i>
-                          {{ drawing_saving ? 'Saving...' : (extra_drawing_mode ? 'Save Extra Drawing' : 'Save Drawing') }}
+                          {{ drawing_saving ? $t('admin.routes_sectors.saving_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : $t('admin.routes_sectors.save_drawing')) }}
                       </button>
                       <button
                           type="button"
@@ -87,13 +87,13 @@
                           @click="deleteRouteDrawing"
                       >
                           <i class="fa fa-trash"></i>
-                          {{ drawing_deleting ? 'Deleting...' : (extra_drawing_mode ? 'Delete Extra Drawing' : 'Delete Drawing') }}
+                          {{ drawing_deleting ? $t('admin.routes_sectors.deleting_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : $t('admin.routes_sectors.delete_drawing')) }}
                       </button>
                       <span v-if="drawing_save_status" class="ml-2" :class="drawing_save_status === 'ok' ? 'text-success' : 'text-danger'">
-                          {{ drawing_save_status === 'ok' ? '✓ Drawing saved' : drawing_save_status === 'deleted' ? '✓ Drawing deleted' : '✗ Error' }}
+                          {{ drawing_save_status === 'ok' ? '✓ ' + $t('admin.routes_sectors.drawing_saved') : drawing_save_status === 'deleted' ? '✓ ' + $t('admin.routes_sectors.drawing_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
                       </span>
                       <p v-if="extra_drawing_mode" class="text-muted mt-1 mb-0" style="font-size:12px;">
-                          Extra drawing mode: this layer isn't tied to a route — use it for general info (approach notes, hazards, landmarks) on this image. Click the button again to go back to editing this route's own drawing.
+                          {{ $t('admin.routes_sectors.extra_drawing_mode_hint') }}
                       </p>
                   </div>
 
@@ -112,12 +112,12 @@
 
             <div class="row" v-if="!show_editor">
                 <div class="col-md-12 text-center">
-                    <p>Click "Open Editor" to edit route drawing</p>
+                    <p>{{ $t('admin.routes_sectors.click_open_editor_hint') }}</p>
                 </div>
             </div>
             <div class="row" v-else>
                 <div class="col-md-12 text-center">
-                    <p>Loading sector image...</p>
+                    <p>{{ $t('admin.routes_sectors.loading_sector_image') }}</p>
                 </div>
             </div>
           </div>
@@ -198,7 +198,7 @@ export default {
         // sector image the first time it's needed, same as related_jsons does.
         async toggleExtraDrawingMode() {
             if (!this.extra_drawing_mode && !this.images_tab_num) {
-                alert('Please select a sector image first');
+                alert(this.$t('admin.routes_sectors.select_sector_image_first'));
                 return;
             }
             if (!this.extra_drawing_mode) {
@@ -326,8 +326,8 @@ export default {
         async saveRouteDrawing() {
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
 
-            if (!this.images_tab_num) { alert('Please select a sector image first'); return; }
-            if (!this.$refs.editorRef) { alert('Editor is not open'); return; }
+            if (!this.images_tab_num) { alert(this.$t('admin.routes_sectors.select_sector_image_first')); return; }
+            if (!this.$refs.editorRef) { alert(this.$t('admin.routes_sectors.editor_not_open')); return; }
 
             this.drawing_saving = true;
             this.drawing_save_status = null;
@@ -341,7 +341,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.$emit('update:route_json_prop', json); }
                 }
-                if (!json) { alert('No drawing data found. Draw something first.'); return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.no_drawing_data_found')); return; }
 
                 const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
                 // Background is always the original clean photo (origin_img/) if it exists,
@@ -393,8 +393,8 @@ export default {
         async deleteRouteDrawing() {
             if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
 
-            if (!this.route_id_prop) { alert('No route selected'); return; }
-            if (!confirm('Delete the drawing for this route? The JSON data will be removed.')) return;
+            if (!this.route_id_prop) { alert(this.$t('admin.routes_sectors.no_route_selected')); return; }
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_route_drawing'))) return;
 
             this.drawing_deleting = true;
             this.drawing_save_status = null;
@@ -419,8 +419,8 @@ export default {
         // SectorImageExtraDrawing (keyed only by sector_image_id) instead of
         // ClimbingRoutesJson (keyed by route_id).
         async saveExtraDrawing() {
-            if (!this.images_tab_num) { alert('Please select a sector image first'); return; }
-            if (!this.$refs.editorRef) { alert('Editor is not open'); return; }
+            if (!this.images_tab_num) { alert(this.$t('admin.routes_sectors.select_sector_image_first')); return; }
+            if (!this.$refs.editorRef) { alert(this.$t('admin.routes_sectors.editor_not_open')); return; }
 
             this.drawing_saving = true;
             this.drawing_save_status = null;
@@ -433,7 +433,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
                 }
-                if (!json) { alert('No drawing data found. Draw something first.'); return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.no_drawing_data_found')); return; }
 
                 const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
                 const bgPath = selectedImage && selectedImage.has_original
@@ -472,8 +472,8 @@ export default {
         },
 
         async deleteExtraDrawing() {
-            if (!this.images_tab_num) { alert('No sector image selected'); return; }
-            if (!confirm('Delete the extra drawing for this image? The JSON data will be removed.')) return;
+            if (!this.images_tab_num) { alert(this.$t('admin.routes_sectors.no_sector_image_selected')); return; }
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_extra_drawing'))) return;
 
             this.drawing_deleting = true;
             this.drawing_save_status = null;

@@ -1,6 +1,6 @@
 <template>
     <gallery_images_add
-        title_prop="Sector Images"
+        :title_prop="$t('admin.articles.locale_form.sector_images_title')"
         @update_gallery_images="$emit('upload_img', $event)"
     />
 </template>

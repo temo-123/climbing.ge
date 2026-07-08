@@ -10,21 +10,21 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button type='submit' form="myForm" class="btn btn-primary">Save</button>
+                        <button type='submit' form="myForm" class="btn btn-primary">{{ $t('common.save') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button class="btn btn-success float-right" @click="go_back()">Go back</button>
+                        <button class="btn btn-success float-right" @click="go_back()">{{ $t('common.back') }}</button>
                     </div>
                 </div>
             </div>
         </div>
-        
+
         <div class="col-md-12" v-show="!is_loading">
             <form ref="myForm" id="myForm" enctype="multipart/form-data" v-on:submit.prevent="update">
                 <div class="form-group clearfix row">
-                    <label for="name" class='col-md-2 control-label'> Title </label>
+                    <label for="name" class='col-md-2 control-label'> {{ $t('common.title') }} </label>
                     <div class="col-md-10">
                         <input type="text" name="name" v-model="data.title" class="form-control" required>
                     </div>
@@ -32,7 +32,7 @@
 
                 <div class="form-group clearfix row">
                     <single_image_edit
-                        title_prop="Sector local image"
+                        :title_prop="$t('admin.articles.sector_local_image_title')"
                         :existing_image_url_prop="data.image ? '/public/images/sector_local_img/'+data.image : ''"
                         @update_single_image="image = $event"
                     />
@@ -49,13 +49,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button class="btn btn-primary" @click="$refs.myChild.add_new_sector_model()">Add new sector</button>
+                        <button class="btn btn-primary" @click="$refs.myChild.add_new_sector_model()">{{ $t('admin.articles.add_new_sector_btn') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-groupe">
-                        <button @click="get_editing_sectors" class="btn btn-success float-right" v-if="!sectors_refresh">Refresh</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="sectors_refresh">Updating...</span>
+                        <button @click="get_editing_sectors" class="btn btn-success float-right" v-if="!sectors_refresh">{{ $t('common.refresh') }}</button>
+                        <span class="badge badge-primare mb-1 float-right" v-if="sectors_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                     </div>
                 </div>
             </div>
@@ -68,17 +68,17 @@
                                 <!-- <th>ID</th>
                                 <th>|</th> -->
 
-                                <th>Sector id</th>
+                                <th>{{ $t('admin.articles.col_sector_id') }}</th>
                                 <th>|</th>
 
-                                <th>Sector name</th>
+                                <th>{{ $t('admin.users.sector_name_col') }}</th>
                                 <th>|</th>
 
-                                <th>Delite</th>
+                                <th>{{ $t('common.delete') }}</th>
                             </tr>
                         </thead>
 
-                        <th v-if="old_image_sectors.length">Previously adde</th>
+                        <th v-if="old_image_sectors.length">{{ $t('admin.articles.previously_added_label') }}</th>
 
                         <tbody v-if="old_image_sectors != []">
                             <tr v-for="old_image_sector in old_image_sectors" :key="old_image_sector.id">
@@ -91,12 +91,12 @@
                                 <td>{{ old_image_sector.name }} </td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-danger" @click="del_image_sector_from_db(old_image_sector.id)">Delete</button>
+                                    <button type="submit" class="btn btn-danger" @click="del_image_sector_from_db(old_image_sector.id)">{{ $t('common.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
 
-                        <th v-if="new_image_sectors.length">Added naw</th>
+                        <th v-if="new_image_sectors.length">{{ $t('admin.articles.added_now_label') }}</th>
 
                         <tbody v-if="new_image_sectors != []">
                             <tr v-for="new_image_sector in new_image_sectors" :key="new_image_sector.id">
@@ -109,7 +109,7 @@
                                 <td>{{ new_image_sector.name }} </td>
                                 <td>|</td>
                                 <td>
-                                    <button type="submit" class="btn btn-danger" @click="del_sector(new_image_sector.id)">Delete</button>
+                                    <button type="submit" class="btn btn-danger" @click="del_sector(new_image_sector.id)">{{ $t('common.delete') }}</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -202,7 +202,7 @@
                 }
             },
             del_image_sector_from_db(sector_id){
-                if(confirm('Are you sure, you want delite itt?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_sector/set_sector_local_images/del_image_sector_from_db/' + this.$route.params.id + '/' + sector_id,{
                         _method: 'delete',
@@ -250,7 +250,7 @@
                 .finally(()=>{this.is_loading = false});
             },
             go_back(){
-                if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.$router.go(-1)
                 }
             }

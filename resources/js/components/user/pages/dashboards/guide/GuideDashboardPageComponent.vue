@@ -15,15 +15,15 @@
                                 <div class="row">
                                     <div class="col">
                                         <input type="radio" id="gd_tab_1" :value="1" v-model="tab_num">
-                                        <label for="gd_tab_1">Content</label>
+                                        <label for="gd_tab_1">{{ $t('admin.dashboards.content_tab') }}</label>
                                     </div>
                                     <div class="col">
                                         <input type="radio" id="gd_tab_2" :value="2" v-model="tab_num">
-                                        <label for="gd_tab_2">User mails</label>
+                                        <label for="gd_tab_2">{{ $t('admin.dashboards.user_mails_tab') }}</label>
                                     </div>
                                     <div class="col">
                                         <input type="radio" id="gd_tab_3" :value="3" v-model="tab_num">
-                                        <label for="gd_tab_3">Donations</label>
+                                        <label for="gd_tab_3">{{ $t('admin.dashboards.donations_tab') }}</label>
                                     </div>
                                 </div>
                             </div>
@@ -42,7 +42,7 @@
                             <div class="col-md-8">
                                 <div class="card">
                                     <div class="card-body">
-                                        <button class="btn btn-primary" @click="open_notify_modal()">Make mail notification for user</button>
+                                        <button class="btn btn-primary" @click="open_notify_modal()">{{ $t('admin.dashboards.make_mail_notification_btn') }}</button>
                                     </div>
                                 </div>
                             </div>

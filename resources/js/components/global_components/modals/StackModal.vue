@@ -20,9 +20,9 @@
           <div class="sticky top-0 z-20 flex-shrink-0 relative p-4 md:p-6 lg:p-8 pb-3 md:pb-4 lg:pb-6 bg-white border-b border-gray-200/50 rounded-2xl rounded-b-none shadow-sm">
             <button 
               @click="$emit('close')"
-              class="close absolute" 
+              class="close absolute"
               type="button"
-              aria-label="Close"
+              :aria-label="t('common.close')"
               style="font-size: 3.75rem; opacity: 0.5; line-height: 2; margin-right: 15px;"
             >
               <span aria-hidden="true">&times;</span>
@@ -47,7 +47,7 @@
                   class="btn btn-danger pull-left"
                   @click="$emit('close')"
                 >
-                  {{ cancelButton.title || 'Cancel' }}
+                  {{ cancelButton.title || t('common.cancel') }}
                 </button>
                 <button
                   v-if="saveButton?.visible"
@@ -55,7 +55,7 @@
                   class="btn btn-primary pull-right"
                   @click="$emit('save')"
                 >
-                  {{ saveButton.title || 'Save' }}
+                  {{ saveButton.title || t('common.save') }}
                 </button>
               </div>
             </slot>
@@ -68,8 +68,11 @@
 
 <script setup>
   import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch, useSlots } from 'vue'
+  import { useI18n } from 'vue-i18n'
 
   defineOptions({ inheritAttrs: false })
+
+  const { t } = useI18n()
 
   const props = defineProps({
     modelValue: Boolean,
@@ -90,11 +93,11 @@
     modalClass: [String, Object],
     saveButton: {
       type: [Object, Boolean],
-      default: () => ({ visible: true, title: 'Save' })
+      default: () => ({ visible: true })
     },
     cancelButton: {
       type: [Object, Boolean],
-      default: () => ({ visible: true, title: 'Cancel' })
+      default: () => ({ visible: true })
     }
   })
 

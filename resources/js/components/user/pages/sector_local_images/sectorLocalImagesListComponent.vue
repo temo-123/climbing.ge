@@ -62,7 +62,7 @@
 
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Sectors local images', 
+                                            'table_name': this.$t('admin.articles.sectors_local_images_table'),
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'sectorLocalImagesListAdd', 
@@ -72,11 +72,11 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'Options',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.name'),
+                                                        this.$t('admin.warehouses.options_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -101,7 +101,7 @@
                 );
             },
             del_sector_local_image(id){
-                if(confirm('Are you sure, you want delite itt?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .delete('/set_sector/set_sector_local_images/del_locale_image/'+id)
                     .then(Response => {

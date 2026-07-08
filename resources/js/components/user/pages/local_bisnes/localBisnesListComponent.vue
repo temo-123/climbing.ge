@@ -48,7 +48,7 @@
                 .get("/get_bisnes/get_local_bisneses")
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
-                                            'table_name': 'Local bisnes' ,
+                                            'table_name': this.$t('admin.local_business.local_business_table'),
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'localBisnesAdd', 
@@ -58,13 +58,13 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Title',
-                                                        'Public',
-                                                        'Public data',
-                                                        'Total public',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.title'),
+                                                        this.$t('admin.common.public'),
+                                                        this.$t('admin.local_business.public_data_col'),
+                                                        this.$t('admin.local_business.total_public_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -134,7 +134,7 @@
                     }
             },
             del_bisnes(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_bisnes/del_local_bisnes/'+id, {
                         _method: 'DELETE'

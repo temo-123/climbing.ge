@@ -48,17 +48,17 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'All Tours Reservations',
+                                            'table_name': this.$t('admin.tour.all_tours_reservations_table'),
                                             'tab_data': {
-                                                'data': response.data, 
+                                                'data': response.data,
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Persons',
-                                                        'Check In',
-                                                        'Reserver name',
-                                                        'Reserver Email',
-                                                        'Verificate',
+                                                        this.$t('common.id'),
+                                                        this.$t('admin.tour.persons_col'),
+                                                        this.$t('admin.tour.check_in_col'),
+                                                        this.$t('admin.tour.reserver_name_col'),
+                                                        this.$t('admin.tour.reserver_email_col'),
+                                                        this.$t('admin.tour.verified_col'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],

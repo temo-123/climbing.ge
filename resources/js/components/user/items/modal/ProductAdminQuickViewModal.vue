@@ -12,7 +12,7 @@
         </div>
 
         <div v-else-if="error" class="alert alert-danger">
-            Failed to load product.
+            {{ $t('admin.shop.quick_view.failed_load_product') }}
         </div>
 
         <div v-else-if="product" class="qv-layout">
@@ -31,7 +31,7 @@
                     v-else
                     src="/public/images/site_img/shop_demo.jpg"
                     class="qv-main-img"
-                    alt="No image"
+                    :alt="$t('admin.shop.quick_view.no_image_alt')"
                 />
                 <div v-if="product.product_images && product.product_images.length > 1" class="qv-dots">
                     <button
@@ -61,23 +61,27 @@
                 <table class="table table-sm table-bordered mt-2">
                     <tbody>
                         <tr>
-                            <th>Published</th>
+                            <th>{{ $t('admin.common.published') }}</th>
                             <td>
-                                <span v-if="product.global_product && product.global_product.published" class="badge badge-success">Yes</span>
-                                <span v-else class="badge badge-secondary">No</span>
+                                <span v-if="product.global_product && product.global_product.published" class="badge badge-success">{{ $t('admin.export.yes_label') }}</span>
+                                <span v-else class="badge badge-secondary">{{ $t('admin.site_info.no_label') }}</span>
                             </td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.made_in_georgia">
-                            <th>Made in Georgia</th>
-                            <td><span class="badge badge-info">Yes</span></td>
+                            <th>{{ $t('admin.shop.quick_view.made_in_georgia_label') }}</th>
+                            <td><span class="badge badge-info">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.is_sale_product">
-                            <th>Sale product</th>
-                            <td><span class="badge badge-warning">Yes</span></td>
+                            <th>{{ $t('admin.shop.quick_view.sale_product_label') }}</th>
+                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
-                        <tr v-if="product.global_product && product.global_product.is_donation_product">
-                            <th>Donation</th>
-                            <td><span class="badge badge-warning">Yes</span></td>
+                        <tr v-if="product.global_product && product.global_product.sale_type === 'donation'">
+                            <th>{{ $t('admin.shop.col_donation') }}</th>
+                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
+                        </tr>
+                        <tr v-if="product.global_product && product.global_product.sale_type === 'outlet'">
+                            <th>{{ $t('admin.shop.col_outlet') }}</th>
+                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -92,14 +96,14 @@
 
         <template #footer>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" @click="close_modal">Close</button>
+                <button type="button" class="btn btn-secondary" @click="close_modal">{{ $t('common.close') }}</button>
                 <a
                     v-if="product && product.global_product"
                     :href="shop_base + '/product/' + product.global_product.url_title"
                     target="_blank"
                     class="btn btn-primary"
                 >
-                    <i class="fa fa-external-link"></i> Show product page
+                    <i class="fa fa-external-link"></i> {{ $t('admin.shop.quick_view.show_product_page_btn') }}
                 </a>
             </div>
         </template>
@@ -122,7 +126,7 @@ export default {
         modal_title() {
             return this.product && this.product.locale_product
                 ? this.product.locale_product.title
-                : 'Product Quick View'
+                : this.$t('admin.shop.quick_view.product_quick_view_title')
         },
         shop_base() {
             const ssh = (process.env.MIX_APP_SSH || '').replace(/\/$/, '')

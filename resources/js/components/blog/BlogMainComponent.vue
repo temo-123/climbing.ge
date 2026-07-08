@@ -11,6 +11,7 @@
       <footter />
       <loginModal />
       <go_to_top />
+      <toast-notification />
   </div>
 </template>
 

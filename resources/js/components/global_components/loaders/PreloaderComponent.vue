@@ -5,7 +5,7 @@
           <div class="loader-wrapper">
             <div class="loader"></div>
           </div>
-          <p class="loading-text">Loading<span class="preloader_dot">.</span><span class="preloader_dot">.</span><span class="preloader_dot">.</span></p>
+          <p class="loading-text">{{ $t('global.loading') }}<span class="preloader_dot">.</span><span class="preloader_dot">.</span><span class="preloader_dot">.</span></p>
         </div>
     </div>
   </transition>

@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="visible"
-        title="Add Permission"
+        :title="$t('admin.users.add_permission_title')"
         @close="close"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
@@ -10,12 +10,12 @@
             <div v-if="error" class="alert alert-danger">{{ error }}</div>
 
             <div class="form-group">
-                <label>Subject</label>
+                <label>{{ $t('admin.users.subject_label') }}</label>
                 <input
                     list="subjects-list"
                     class="form-control"
                     v-model="form.subject"
-                    placeholder="e.g. product, article, user"
+                    :placeholder="$t('admin.users.subject_placeholder')"
                     autocomplete="off"
                 />
                 <datalist id="subjects-list">
@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group mt-3">
-                <label>Action</label>
+                <label>{{ $t('admin.users.action_label') }}</label>
                 <div class="d-flex gap-2 flex-wrap mb-2">
                     <button
                         v-for="a in common_actions"
@@ -38,16 +38,16 @@
                 <input
                     class="form-control"
                     v-model="form.action"
-                    placeholder="or type custom action"
+                    :placeholder="$t('admin.users.custom_action_placeholder')"
                 />
             </div>
         </div>
 
         <template #footer>
-            <button type="button" class="btn btn-secondary" @click="close">Cancel</button>
+            <button type="button" class="btn btn-secondary" @click="close">{{ $t('admin.comments.cancel_btn') }}</button>
             <button type="button" class="btn btn-primary" :disabled="saving" @click="save">
                 <span v-if="saving"><i class="fa fa-spinner fa-spin"></i></span>
-                <span v-else>Add Permission</span>
+                <span v-else>{{ $t('admin.users.add_permission_btn') }}</span>
             </button>
         </template>
     </stack-modal>
@@ -87,7 +87,7 @@ export default {
         save() {
             this.error = null
             if (!this.form.subject.trim() || !this.form.action.trim()) {
-                this.error = 'Subject and Action are required.'
+                this.error = this.$t('admin.users.subject_action_required')
                 return
             }
             this.saving = true
@@ -97,7 +97,7 @@ export default {
                     this.$emit('saved')
                 })
                 .catch(err => {
-                    this.error = err.response?.data?.message || 'Failed to save permission.'
+                    this.error = err.response?.data?.message || this.$t('admin.users.failed_save_permission')
                 })
                 .finally(() => { this.saving = false })
         },

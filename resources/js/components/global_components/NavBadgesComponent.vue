@@ -1,12 +1,12 @@
 <template>
     <li class="nav-badge-li">
-        <a class="nav-badge-btn" @click="goToCart" title="Cart">
+        <a class="nav-badge-btn" @click="goToCart" :title="$t('user.nav.cart')">
             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
             <span class="nav-badge" v-if="isLoggedIn && cartCount > 0">{{ cartCount > 99 ? '99+' : cartCount }}</span>
         </a>
     </li>
     <li class="nav-badge-li" ref="userLi">
-        <a class="nav-badge-btn" @click="handleUserClick" :title="isLoggedIn ? 'My account' : 'Login'">
+        <a class="nav-badge-btn" @click="handleUserClick" :title="isLoggedIn ? $t('user.nav.my_account') : $t('common.login')">
             <i class="fa fa-user-circle" aria-hidden="true"></i>
             <span class="nav-badge nav-badge-alert" v-if="isLoggedIn && notifCount > 0">{{ notifCount }}</span>
         </a>

@@ -26,11 +26,11 @@
             <td><strong>{{ ascent.name }} {{ ascent.surname }}</strong></td>
           </tr>
           <tr>
-            <td class="text-muted">{{ $t('summit.summit_page.date') }}</td>
+            <td class="text-muted">{{ $t('common.date') }}</td>
             <td>{{ formatDate(ascent.ascent_date) }}<span v-if="ascent.ascent_time" class="text-muted ml-2">{{ ascent.ascent_time }}</span></td>
           </tr>
           <tr>
-            <td class="text-muted">{{ $t('summit.summit_page.route') }}</td>
+            <td class="text-muted">{{ $t('common.route') }}</td>
             <td>
               <a v-if="ascent.route_name && ascent.route_article_url"
                  :href="guideRouteUrl(ascent.route_article_url)"

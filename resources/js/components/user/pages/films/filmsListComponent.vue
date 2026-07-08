@@ -46,7 +46,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'data': response.data, 
-                                            'table_name': 'Films', 
+                                            'table_name': this.$t('admin.films.films_table'),
                                             'table_category': this.$route.params.article_category, 
                                             'table_del_url': 'del_url', 
                                             'table_edit_url': 'edit_url'
@@ -66,7 +66,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 
-                                            'table_name': 'Film categories', 
+                                            'table_name': this.$t('admin.films.film_categories_table'),
                                             // 'table_category': this.$route.params.article_category, 
                                             // 'table_del_url': 'del_url', 
                                             // 'table_edit_url': 'edit_url'
@@ -84,7 +84,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 2,
                                             'data': response.data, 
-                                            'table_name': 'Films tags', 
+                                            'table_name': this.$t('admin.films.films_tags_table'),
                                             // 'table_category': this.$route.params.article_category, 
                                             // 'table_del_url': 'del_url', 
                                             // 'table_edit_url': 'edit_url'

@@ -15,12 +15,12 @@
 			<div class="row font-italic">
 				<div class="col-md-6">
 					<h3 class="mt-3 pb-3 mb-4 ">
-						Interestid ivents
+						{{ $t('user.favorites.events.title') }}
 					</h3>
 				</div>
 				<div class="col-md-6">
 					<button class="btn btn-success float-right" @click="get_interestid_events()">
-						Refresh
+						{{ $t('common.refresh') }}
 					</button>
 				</div>
 			</div>
@@ -61,7 +61,7 @@
 										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.us_event ? event.us_event.title : event.url_title }}</a>
 									</h2>
 									<span @click="del_interested_event(event.id)" class="float-right">X</span>
-									<p class="desc" v-if="row_action(event.end_data) == 'completed_event'">Finished</p>
+									<p class="desc" v-if="row_action(event.end_data) == 'completed_event'">{{ $t('user.favorites.events.finished') }}</p>
 								</div>
 							</li>
 
@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<div class="row" v-else>
-					<h2>You dont have interestid event</h2>
+					<h2>{{ $t('user.favorites.events.empty') }}</h2>
 				</div>
 			</div>
 		</div>
@@ -118,7 +118,7 @@
             },
 
             del_interested_event(id){
-                if(confirm('Are you sure, you want delite this event from your faworites?')){
+                if(confirm(this.$t('user.favorites.events.confirm_delete'))){
                     axios
                     .post('/set_faworite/del_interested_event/' + id, {
                         article_id: id,

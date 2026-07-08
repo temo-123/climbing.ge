@@ -67,9 +67,9 @@
                 .then(response => {
                     this.data_for_tab.push({
                                             'id': 1,
-                                            'table_name': 'Warehouses', 
+                                            'table_name': this.$t('admin.warehouses.warehouses_table'),
                                             'list_page': process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/products',
-                                            'list_page_title': 'Products List',
+                                            'list_page_title': this.$t('admin.warehouses.products_list_title'),
                                             'add_action': {
                                                 'action': 'function',
                                                 'link': 'show_warehouse_add_medal', 
@@ -79,12 +79,12 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Name',
-                                                        'General Warehouse',
-                                                        'Options',
-                                                        'Edit',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.name'),
+                                                        this.$t('admin.warehouses.general_warehouse_col'),
+                                                        this.$t('admin.warehouses.options_col'),
+                                                        this.$t('common.edit'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -120,7 +120,7 @@
             },
 
             del_warehouse(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_warehouse/del_warehouse/'+id, {
                         _method: 'DELETE'

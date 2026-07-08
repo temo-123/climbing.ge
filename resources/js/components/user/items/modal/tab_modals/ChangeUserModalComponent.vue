@@ -1,35 +1,35 @@
 <template>
     <stack-modal
             :show="is_modal_show"
-            title="Change user"
+            :title="$t('admin.users.change_user_title')"
             @close="close_modal"
             :modal-class="{ [modalClass]: true }"
-            :saveButton="{ visible: relation_status === 'single_relation', title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: relation_status === 'single_relation', title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <!-- Single user relation - Show active user info -->
             <div v-if='relation_status === "single_relation" && actyve_user && Object.keys(actyve_user).length > 0'>
                 <div class="alert alert-warning" role="alert">
-                    Active user - {{ actyve_user.name }} {{ actyve_user.surname }} (#{{ actyve_user.id }})
+                    {{ $t('admin.users.active_user_prefix') }} {{ actyve_user.name }} {{ actyve_user.surname }} (#{{ actyve_user.id }})
                 </div>
             </div>
-            
+
             <!-- No user relation - Show message -->
             <div v-if='relation_status === "no_relation"'>
                 <div class="alert alert-danger" role="alert">
-                    This product doesn`t have user relation
+                    {{ $t('admin.users.no_user_relation_msg') }}
                 </div>
             </div>
-            
+
             <!-- Multiple user relations - Show error with fix button -->
             <div v-if='relation_status === "multiple_relations"'>
                 <div class="alert alert-danger" role="alert">
-                    <strong>Error:</strong> This product has multiple user relations ({{ duplicate_users.length }} users found).<br>
-                    Please fix this to continue.
+                    <strong>{{ $t('admin.users.error_prefix') }}</strong> {{ $t('admin.users.multiple_relations_error_msg', { count: duplicate_users.length }) }}<br>
+                    {{ $t('admin.users.please_fix_to_continue') }}
                 </div>
                 <div class="alert alert-info" role="alert">
-                    <strong>Users with relations:</strong>
+                    <strong>{{ $t('admin.users.users_with_relations_prefix') }}</strong>
                     <ul>
                         <li v-for="(user, index) in duplicate_users" :key="user.id">
                             {{ user.name }} {{ user.surname }} (#{{ user.id }})
@@ -37,10 +37,10 @@
                     </ul>
                 </div>
             </div>
-            
+
             <form v-on:submit.prevent="update_relation" id="change_user_form" class="form">
-                <select class="form-control" v-model="selected_user_id" name="comment delete cause" required> 
-                    <option value="" disabled>Select user</option>
+                <select class="form-control" v-model="selected_user_id" name="comment delete cause" required>
+                    <option value="" disabled>{{ $t('admin.users.select_user_placeholder') }}</option>
                     <option v-for="user in users" :key="user.id" :value="user.id">{{ user.name }} {{ user.surname }}</option>
                 </select>
             </form>
@@ -54,7 +54,7 @@
                     @click="fix_user_relation"
                     class="btn btn-warning"
                 >
-                    <i class="fa fa-wrench" aria-hidden="true"></i> Fix it
+                    <i class="fa fa-wrench" aria-hidden="true"></i> {{ $t('admin.users.fix_it_btn') }}
                 </button>
                 <!-- Save button for single relation -->
                 <button
@@ -63,7 +63,7 @@
                     form="change_user_form"
                     :class="{'btn btn-primary': true}"
                 >
-                    Save
+                    {{ $t('common.save') }}
                 </button>
                 <!-- Close button -->
                 <button
@@ -71,7 +71,7 @@
                     @click="close_modal"
                     :class="{'btn btn-secondary': true}"
                 >
-                    Close
+                    {{ $t('common.close') }}
                 </button>
             </div>
         </div>
@@ -154,13 +154,13 @@
              * Fix duplicate user relations by keeping only the first one
              */
             fix_user_relation(){
-                if(confirm('Are you sure you want to fix the duplicate user relations? This will keep only the first user and remove the others.')){
+                if(confirm(this.$t('admin.users.confirm_fix_user_relations'))){
                     axios
                     .post('/set_product/fix_product_user_relation/' + this.actyve_product_id)
                     .then(response => {
                         const data = response.data;
                         if(data.status === 'success'){
-                            alert('User relations fixed successfully!');
+                            alert(this.$t('admin.users.user_relations_fixed_success'));
                             // Refresh the relation data
                             this.get_product_user_relation(this.actyve_product_id);
                             // Emit update event to refresh parent component
@@ -198,7 +198,7 @@
             },
 
             update_relation(){
-                if(confirm('Are you sure, you want change user?')){
+                if(confirm(this.$t('admin.users.confirm_change_user'))){
                     let data;
                     if(this.actyve_user && Object.keys(this.actyve_user).length > 0){
                         data = {

@@ -4,7 +4,7 @@
         :title="$t('head_slider.add_image')"
         @close="close_modal()"
         @save="$refs.add_form.requestSubmit()"
-        :saveButton="{ visible: true, title: $t('head_slider.save') }"
+        :saveButton="{ visible: true, title: $t('common.save') }"
         :cancelButton="{ visible: false }"
     >
         <div>
@@ -21,12 +21,12 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">{{ $t('head_slider.title') }} *</label>
+                        <label class="col-md-3 col-form-label">{{ $t('common.title') }} *</label>
                         <div class="col-md-9">
                             <input
                                 type="text"
                                 class="form-control"
-                                :placeholder="$t('head_slider.title')"
+                                :placeholder="$t('common.title')"
                                 v-model="form_data.title"
                                 required
                             >
@@ -80,7 +80,7 @@
                     </div>
 
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label">Image *</label>
+                        <label class="col-md-3 col-form-label">{{ $t('admin.gallery.image_required_label') }}</label>
                         <div class="col-md-9">
                             <input
                                 type="file"
@@ -145,7 +145,7 @@ export default {
             this.errors = []
 
             if (!this.image_file) {
-                this.errors = ['Please select an image.']
+                this.errors = [this.$t('admin.gallery.please_select_image')]
                 return
             }
 
@@ -164,7 +164,7 @@ export default {
                     if (error.response && error.response.status === 422) {
                         this.errors = this.extract_errors(error.response.data)
                     } else {
-                        this.errors = ['An error occurred. Please try again.']
+                        this.errors = [this.$t('guide.donation.error')]
                     }
                 })
                 .finally(() => { this.is_loading = false })

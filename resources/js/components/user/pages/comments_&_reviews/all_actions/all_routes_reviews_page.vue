@@ -52,11 +52,11 @@ export default {
             axios.get('/get_route/get_route_review/get_all_review').then(response => {
                 this.data_for_tab.push({
                     id: 1,
-                    table_name: 'All climbing route reviews',
+                    table_name: this.$t('admin.comments.all_route_reviews_table'),
                     tab_data: {
                         data: (response.data || []).map(item => ({ ...item, id: item.review?.id, _row_class: item.review?.admin_hidden ? 'table-danger' : (item.review?.published == 0 ? 'table-warning' : '') })),
                         tab: {
-                            head: ['ID', 'Name', 'Email', 'Stars', 'Climbing route', 'Read more', 'Hide'],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.comments.col_stars'), this.$t('admin.comments.col_climbing_route'), this.$t('admin.comments.col_read_more'), this.$t('admin.comments.col_hide')],
                             body: [
                                 ['data', ['review', 'id']],
                                 ['data', [['user', 'name'], ['user', 'surname']]],
@@ -76,11 +76,11 @@ export default {
             axios.get('/set_mtp_review/get_all_mtp_reviews_admin').then(response => {
                 this.data_for_tab.push({
                     id: 2,
-                    table_name: 'All Multi-Pitch reviews',
+                    table_name: this.$t('admin.comments.all_mtp_reviews_table'),
                     tab_data: {
                         data: (response.data || []).map(item => ({ ...item, id: item.review?.id, _row_class: item.review?.admin_hidden ? 'table-danger' : (item.review?.published == 0 ? 'table-warning' : '') })),
                         tab: {
-                            head: ['ID', 'Name', 'Email', 'Multi-Pitch', 'Stars', 'Read more', 'Hide'],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.comments.col_multi_pitch'), this.$t('admin.comments.col_stars'), this.$t('admin.comments.col_read_more'), this.$t('admin.comments.col_hide')],
                             body: [
                                 ['data', ['review', 'id']],
                                 ['data', [['user', 'name'], ['user', 'surname']]],

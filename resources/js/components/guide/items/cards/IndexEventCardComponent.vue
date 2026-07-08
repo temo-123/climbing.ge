@@ -2,8 +2,8 @@
     <div class="col-sm-4 eav">
         <div class="panel-primary event-primary">
             <div class="panel-heading">
-                <span class="index_event_category_flag" v-if="event.global_event.category == 'event'">Event / Festival</span>
-                <span class="index_event_category_flag" v-else-if="event.global_event.category == 'competition'">Competition</span>
+                <span class="index_event_category_flag" v-if="event.global_event.category == 'event'">{{ $t('guide.events.event_festival_flag') }}</span>
+                <span class="index_event_category_flag" v-else-if="event.global_event.category == 'competition'">{{ $t('guide.events.competition_flag') }}</span>
                 <h2 style="font-size: 1.8em">
                     <router-link :to="'event/'+event.global_event.url_title">
                         {{ event.locale_event.title }}
@@ -32,8 +32,8 @@
                         <div class="col-sm-12 col-xs-12 nopadding" >
                             <time class="end orange_red">
                                 <i class="fa fa-play-circle"></i>
-                                <span class="day underway_now">Underway now</span>
-                                <span class="month">Finish at - {{this.end_day}} {{this.end_month}} {{this.end_time}}</span>
+                                <span class="day underway_now">{{ $t('guide.events.underway_now') }}</span>
+                                <span class="month">{{ $t('guide.events.finish_at_prefix') }} {{this.end_day}} {{this.end_month}} {{this.end_time}}</span>
                                 <span class="month"></span>
                                 <span class="month"></span>
                             </time>
@@ -49,7 +49,7 @@
                         <div class="col-sm-12 col-xs-12 nopadding" >
                             <time class="end orange_red">
                                 <i class="fa fa-check-circle"></i>
-                                <span class="day underway_now">Finished</span>
+                                <span class="day underway_now">{{ $t('guide.events.finished_label') }}</span>
                             </time>
                         </div>
                     </div>
@@ -58,7 +58,7 @@
                         <div class="col-sm-6 col-xs-6 nopadding">
                             <time class="end green">
                                 <i class="fa fa-calendar-plus"></i>
-                                Start 
+                                {{ $t('guide.events.start_label') }}
                                 <span class="day">{{this.start_day}}</span>
                                 <span class="month">{{this.start_month}}</span>
                                 <span class="month" v-if="new Date().getFullYear() != this.start_year">{{this.start_year}}</span>
@@ -68,7 +68,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
                             <time class="end rad_blue">
                                 <i class="fa fa-calendar-times"></i>
-                                End 
+                                {{ $t('guide.events.end_label') }}
                                 <span class="day">{{this.end_day}}</span>
                                 <span class="month">{{this.end_month}}</span>
                                 <span class="month" v-if="new Date().getFullYear() != this.end_year">{{this.end_year}}</span>
@@ -83,7 +83,7 @@
                         <div class="col-sm-12 col-xs-12 nopadding">
                             <time class="end green">
                                 <i class="fa fa-calendar-plus"></i>
-                                Start 
+                                {{ $t('guide.events.start_label') }}
                                 <!-- <span class="day">{{this.start_day}}</span> -->
                                 <span class="day">{{this.start_month}}</span>
                                 <span class="month">{{this.start_year}}</span>

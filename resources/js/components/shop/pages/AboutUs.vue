@@ -13,7 +13,7 @@
 
                             <h3>{{ $t('shop.seller.seller_contact') }}</h3>
                             <p v-if="this.$globalSiteData.data.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.data.email }}</p>
-                            <p v-if="this.$globalSiteData.data.number">{{ $t('shop.seller.phone') }} - {{ this.$globalSiteData.data.number }}</p>
+                            <p v-if="this.$globalSiteData.data.number">{{ $t('common.phone_number') }} - {{ this.$globalSiteData.data.number }}</p>
                             
                         </div>
                     </div>

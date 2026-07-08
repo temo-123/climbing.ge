@@ -2,7 +2,7 @@
     <div class="filters-bar">
         <div class="filters-left">
             <button type="button" class="btn btn-primary filter-btn" @click="open_menu()">
-                <i class="fa fa-filter"></i> Filter products
+                <i class="fa fa-filter"></i> {{ $t('shop.filters.filter_products_btn') }}
                 <span v-if="activeFilterCount > 0" class="filter-badge">{{ activeFilterCount }}</span>
             </button>
 
@@ -18,14 +18,14 @@
                     <i class="fa fa-times remove-icon"></i>
                 </span>
                 <button class="btn btn-xs btn-outline-danger clear-all" @click="$emit('clear-filters')">
-                    Clear all
+                    {{ $t('shop.filters.clear_all_btn') }}
                 </button>
             </div>
         </div>
 
         <!-- View Mode Toggle -->
         <div class="filters-right">
-            <div class="btn-group" role="group" aria-label="View Mode">
+            <div class="btn-group" role="group" :aria-label="$t('shop.filters.view_mode_aria')">
                 <button
                     type="button"
                     class="btn"
@@ -108,11 +108,11 @@
             },
             formatFilterLabel(key) {
                 const labels = {
-                    sale_type: 'Sale Type',
-                    brand_id: 'Brand',
-                    subcategory_id: 'Category',
-                    price_min: 'Min Price',
-                    price_max: 'Max Price'
+                    sale_type: this.$t('shop.filters.sale_type_label'),
+                    brand_id: this.$t('shop.product.brand'),
+                    subcategory_id: this.$t('common.category'),
+                    price_min: this.$t('shop.filters.min_price_label'),
+                    price_max: this.$t('shop.filters.max_price_label')
                 }
                 return labels[key] || key
             },
@@ -130,9 +130,9 @@
                 }
                 if (key === 'sale_type') {
                     const types = {
-                        online_order: 'Online sale',
-                        produced_by_order: 'Produced by order',
-                        custom_production: 'Custom production'
+                        online_order: this.$t('shop.filters.online_sale_option'),
+                        produced_by_order: this.$t('shop.filters.produced_by_order_option'),
+                        custom_production: this.$t('shop.filters.custom_production_option')
                     }
                     return types[value] || value
                 }

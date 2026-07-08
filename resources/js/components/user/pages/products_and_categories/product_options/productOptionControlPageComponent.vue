@@ -3,22 +3,22 @@
         <div class="col-md-12">
 
             <div class="form-groupe float-right mb-2">
-                <button class="btn btn-success" @click="go_back()">Go back</button>
+                <button class="btn btn-success" @click="go_back()">{{ $t('admin.shop.go_back') }}</button>
             </div>
 
             <div class="tabs">
                 <div class="row">
                     <div class="col">
                         <input type="radio" id="tab-options" value="options" v-model="activeTab">
-                        <label for="tab-options">Options</label>
+                        <label for="tab-options">{{ $t('admin.shop.options_tab') }}</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="tab-images" value="images" v-model="activeTab">
-                        <label for="tab-images">Gallery Images</label>
+                        <label for="tab-images">{{ $t('admin.shop.gallery_images_tab') }}</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="tab-combinations" value="combinations" v-model="activeTab">
-                        <label for="tab-combinations">Combinate Product Options</label>
+                        <label for="tab-combinations">{{ $t('admin.shop.combine_product_options_tab') }}</label>
                     </div>
                 </div>
 

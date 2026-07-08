@@ -11,7 +11,7 @@
         v-for="(slide, index) in slides"
         :key="slide.id"
         class="head_slider"
-        :aria-label="'Slide ' + (index + 1) + ' of ' + slides.length"
+        :aria-label="$t('global.slider.slide_of', { current: index + 1, total: slides.length })"
       >
         <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
 
@@ -20,16 +20,16 @@
         <div class="slide_content" :class="'pos-' + (slide.text_position || 'center')">
           <div class="slide_title" v-if="slide.title">{{ slide.title }}</div>
           <div class="slide_description" v-if="slide.text">{{ slide.text }}</div>
-          <a v-if="slide.link" :href="slide.link" class="slide_read_more_btn">Read more</a>
+          <a v-if="slide.link" :href="slide.link" class="slide_read_more_btn">{{ $t('shop.tour.more') }}</a>
         </div>
       </div>
     </div>
 
-    <button class="nav_btn prev_btn" @click="prev_slide" aria-label="Previous slide" v-if="slides.length > 1">
+    <button class="nav_btn prev_btn" @click="prev_slide" :aria-label="$t('global.slider.previous_slide')" v-if="slides.length > 1">
       <i class="fa fa-chevron-left"></i>
     </button>
 
-    <button class="nav_btn next_btn" @click="next_slide" aria-label="Next slide" v-if="slides.length > 1">
+    <button class="nav_btn next_btn" @click="next_slide" :aria-label="$t('global.slider.next_slide')" v-if="slides.length > 1">
       <i class="fa fa-chevron-right"></i>
     </button>
 
@@ -39,7 +39,7 @@
         :key="'dot-' + index"
         :class="['dot', { active: index === current_slider_index }]"
         @click="goToSlide(index)"
-        :aria-label="'Go to slide ' + (index + 1)"
+        :aria-label="$t('global.slider.go_to_slide', { n: index + 1 })"
       ></span>
     </div>
   </div>

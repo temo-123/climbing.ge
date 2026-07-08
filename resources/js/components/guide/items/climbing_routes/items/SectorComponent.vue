@@ -81,8 +81,8 @@
             <thead>
                 <tr>
                     <th>N</th>
-                    <th>{{ $t("guide.route.name") }}</th>
-                    <th>{{ $t("guide.route.height") }}</th>
+                    <th>{{ $t("common.name") }}</th>
+                    <th>{{ $t("common.height") }}</th>
                     <th>{{ $t("guide.route.bolts") }}</th>
                     <th>{{ $t("guide.route.grade fr") }}</th>
                     <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
@@ -137,8 +137,8 @@
             <thead>
                 <tr>
                     <th>N</th>
-                    <th>{{ $t("guide.route.name") }}</th>
-                    <th>{{ $t("guide.route.height") }}</th>
+                    <th>{{ $t("common.name") }}</th>
+                    <th>{{ $t("common.height") }}</th>
                     <th>{{ $t("guide.route.grade fr") }}</th>
                     <th class="display-none-720px">{{ $t("guide.route.grade yds") }}</th>
                     <th class="col-info">Info</th>
@@ -214,8 +214,8 @@
                 <thead>
                     <tr>
                         <th>N</th>
-                        <th>{{ $t("guide.route.name") }}</th>
-                        <th>{{ $t("guide.route.height") }}</th>
+                        <th>{{ $t("common.name") }}</th>
+                        <th>{{ $t("common.height") }}</th>
                         <th>{{ $t("guide.route.bolts") }}</th>
                         <th>{{ $t("guide.route.grade fr") }}</th>
                         <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>

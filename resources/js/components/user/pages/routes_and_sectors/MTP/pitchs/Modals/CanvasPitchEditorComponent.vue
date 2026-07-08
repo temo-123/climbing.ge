@@ -1,8 +1,8 @@
 <template>
     <div class="form-group clearfix row">
         <div class="col-md-12">
-            <h5>Pitch Drawing Editor</h5>
-            <p class="text-muted small">Draw the pitch line on the sector image. Select a sector image, draw, then save.</p>
+            <h5>{{ $t('admin.routes_sectors.pitch_drawing_editor_title') }}</h5>
+            <p class="text-muted small">{{ $t('admin.routes_sectors.pitch_drawing_editor_hint') }}</p>
         </div>
 
         <div class="col-md-12" v-if="sector_id_prop">
@@ -12,12 +12,12 @@
                 :class="show_editor ? 'btn-danger' : 'btn-primary'"
                 @click="toggleEditor"
             >
-                {{ show_editor ? 'Close Pitch Editor' : 'Open Pitch Editor' }}
+                {{ show_editor ? $t('admin.routes_sectors.close_pitch_editor') : $t('admin.routes_sectors.open_pitch_editor') }}
             </button>
 
             <StackModal
                 :show="show_editor"
-                title="Pitch Drawing Editor"
+                :title="$t('admin.routes_sectors.pitch_drawing_editor_title')"
                 size="fullscreen"
                 :saveButton="{ visible: false }"
                 :cancelButton="{ visible: false }"
@@ -35,8 +35,8 @@
                             @change="updateSectorImageId"
                         />
                         <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'pitch-input-' + image.id">
-                            Image ID → {{ image.id }}
-                            <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">original saved</span>
+                            {{ $t('admin.routes_sectors.image_id_label') }} {{ image.id }}
+                            <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">{{ $t('admin.routes_sectors.original_saved') }}</span>
                             <img
                                 :src="'/public/images/sector_img/' + image.image"
                                 :alt="'Sector Image ' + image.id"
@@ -53,7 +53,7 @@
                             @click="savePitchDrawing"
                         >
                             <i class="fa fa-save"></i>
-                            {{ drawing_saving ? 'Saving...' : 'Save Drawing' }}
+                            {{ drawing_saving ? $t('admin.routes_sectors.saving_ellipsis') : $t('admin.routes_sectors.save_drawing') }}
                         </button>
                         <button
                             type="button"
@@ -62,10 +62,10 @@
                             @click="deletePitchDrawing"
                         >
                             <i class="fa fa-trash"></i>
-                            {{ drawing_deleting ? 'Deleting...' : 'Delete Drawing' }}
+                            {{ drawing_deleting ? $t('admin.routes_sectors.deleting_ellipsis') : $t('admin.routes_sectors.delete_drawing') }}
                         </button>
                         <span v-if="drawing_save_status" class="ml-2" :class="drawing_save_status === 'ok' ? 'text-success' : 'text-danger'">
-                            {{ drawing_save_status === 'ok' ? '✓ Drawing saved' : drawing_save_status === 'deleted' ? '✓ Drawing deleted' : '✗ Error' }}
+                            {{ drawing_save_status === 'ok' ? '✓ ' + $t('admin.routes_sectors.drawing_saved') : drawing_save_status === 'deleted' ? '✓ ' + $t('admin.routes_sectors.drawing_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
                         </span>
                     </div>
 
@@ -271,8 +271,8 @@ export default {
         },
 
         async savePitchDrawing() {
-            if (!this.images_tab_num) { alert('Please select a sector image first'); return; }
-            if (!this.$refs.editorRef) { alert('Editor is not open'); return; }
+            if (!this.images_tab_num) { alert(this.$t('admin.routes_sectors.select_sector_image_first')); return; }
+            if (!this.$refs.editorRef) { alert(this.$t('admin.routes_sectors.editor_not_open')); return; }
 
             this.drawing_saving = true;
             this.drawing_save_status = null;
@@ -285,7 +285,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.$emit('update:pitch_json_prop', json); }
                 }
-                if (!json) { alert('No drawing data found. Draw something first.'); return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.no_drawing_data_found')); return; }
 
                 const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
                 const bgPath = selectedImage && selectedImage.has_original
@@ -326,7 +326,7 @@ export default {
 
         async deletePitchDrawing() {
             if (!this.pitch_id_prop) return;
-            if (!confirm('Delete the drawing for this pitch?')) return;
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_pitch_drawing'))) return;
 
             this.drawing_deleting = true;
             this.drawing_save_status = null;

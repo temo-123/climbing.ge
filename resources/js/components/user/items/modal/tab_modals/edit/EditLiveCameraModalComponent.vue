@@ -1,20 +1,20 @@
 <template>
     <stack-modal
             :show="is_live_camera_edit_model"
-            title="Edit order live_camera"
+            :title="$t('admin.live_camera.edit_live_camera_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <form v-on:submit.prevent="edit_live_camera" id="edit_live_camera">
-                <input type="text" class="form-control" v-model="data.name" name="Name" placeholder="Name" title="Name" required>
-                <input type="link" class="form-control" v-model="data.link" name="link" placeholder="link" title="link" required>
+                <input type="text" class="form-control" v-model="data.name" name="Name" :placeholder="$t('common.name')" title="Name" required>
+                <input type="link" class="form-control" v-model="data.link" name="link" :placeholder="$t('admin.live_camera.link_placeholder')" title="link" required>
 
-                <select class="form-control" v-model="data.published" name="published" required> 
-                    <option :value="0">Not public</option> 
-                    <option :value="1">Public</option> 
-                </select> 
+                <select class="form-control" v-model="data.published" name="published" required>
+                    <option :value="0">{{ $t('admin.common.not_public') }}</option>
+                    <option :value="1">{{ $t('admin.common.public') }}</option>
+                </select>
 
                 <select
                     class="form-control"
@@ -26,7 +26,7 @@
                         v-bind:value="0"
                         disabled
                     >
-                        Select outdoor area
+                        {{ $t('admin.routes_sectors.select_outdoor_area') }}
                     </option>
                     <option
                         v-for="region in regions"
@@ -45,7 +45,7 @@
                     form="edit_live_camera"
                     :class="{'btn btn-primary': true}"
                 >
-                edit live_camera
+                {{ $t('admin.live_camera.edit_live_camera_title') }}
                 </button>
             </div>
         </div>
@@ -109,7 +109,7 @@
                     })
                     
                     .then(Response => {
-                        alert('Edited successfully')
+                        alert(this.$t('admin.live_camera.updated_successfully'))
                         this.$emit('update')
                         this.is_live_camera_edit_model = false
                         this.clear_form()
@@ -133,7 +133,7 @@
                 this.get_editing_region_data()
             },
             close_modal(){
-                if(confirm('Are you sure, you want close form? All data whil deleted!')){
+                if(confirm(this.$t('admin.live_camera.confirm_close_form_discard'))){
                     this.is_live_camera_edit_model = false
                     this.clear_form()
                 }

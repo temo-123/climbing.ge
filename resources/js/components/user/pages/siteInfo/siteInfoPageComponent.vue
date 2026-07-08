@@ -20,23 +20,23 @@
                                         <div class="col-md-3">
                                             <input type="radio" :id="1" :value="1" v-model="action_tab" />
 
-                                            <label :for="1">Global data</label>
+                                            <label :for="1">{{ $t('admin.site_info.global_data_tab') }}</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input type="radio" :id="3" :value="3" v-model="action_tab" />
 
-                                            <label :for="3">Georgian data</label>
+                                            <label :for="3">{{ $t('admin.site_info.georgian_data_tab') }}</label>
                                         </div>
                                         <div class="col-md-3">
                                             <input type="radio" :id="2" :value="2" v-model="action_tab" />
 
-                                            <label :for="2">English data</label>
+                                            <label :for="2">{{ $t('admin.site_info.english_data_tab') }}</label>
                                         </div>
                                         <div class="col-md-3">
                                             <!-- <div class="col"> -->
                                             <input type="radio" :id="5" :value="5" v-model="action_tab" />
 
-                                            <label :for="5">General info</label>
+                                            <label :for="5">{{ $t('admin.site_info.general_info_tab') }}</label>
                                             <!-- </div> -->
                                         </div>
                                     <!-- </div> -->
@@ -49,34 +49,34 @@
                         <span v-if="action_tab == 1">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">Edit Global data</router-link>
+                                    <router-link class="btn btn-primary" :to="{ name: 'siteGlobalDataEdit' }">{{ $t('admin.site_info.edit_global_data') }}</router-link>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
+                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
                             <table class="table table-hover" id="dev-table" >
                                 <thead>
                                     <tr>
-                                        <th>Value name</th>
+                                        <th>{{ $t('admin.site_info.value_name_col') }}</th>
                                         <th>#</th>
-                                        <th>Data</th>
+                                        <th>{{ $t('admin.site_info.data_col') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>Email</td>
+                                        <td>{{ $t('common.email') }}</td>
                                         <td>|</td>
                                         <td>{{ site_info && site_info.email ? site_info.email : '' }}</td>
                                     </tr>
                                     <tr>
-                                        <td>Phone</td>
+                                        <td>{{ $t('admin.site_info.phone_row') }}</td>
                                         <td>|</td>
                                         <td>{{ site_info && site_info.number ? site_info.number : '' }}</td>
                                     </tr>
 
                                     <tr>
-                                        <td>Map</td>
+                                        <td>{{ $t('admin.site_info.map_row') }}</td>
                                         <td>|</td>
                                         <td>
                                             <span v-html="site_info && site_info.map ? site_info.map : ''"></span>
@@ -84,7 +84,7 @@
                                     </tr>
 
                                     <tr>
-                                        <td>AD block</td>
+                                        <td>{{ $t('admin.site_info.ad_block_row') }}</td>
                                         <td>|</td>
                                         <td>
                                             <span v-html="site_info && site_info.ad ? site_info.ad : ''"></span>
@@ -93,16 +93,16 @@
                                 </tbody>
                             </table>
 
-                            <p>Social networks</p>
+                            <p>{{ $t('admin.site_info.social_networks_title') }}</p>
 
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <a class="btn btn-primary pull-left" @click="open_add_link_modal()">Add Social link</a>
+                                    <a class="btn btn-primary pull-left" @click="open_add_link_modal()">{{ $t('admin.site_info.add_social_link') }}</a>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-groupe">
-                                        <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">Refresh</button>
-                                        <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">Updating...</span>
+                                        <button @click="get_social_links()" class="btn btn-success float-right" v-if="!is_social_links_refresh">{{ $t('common.refresh') }}</button>
+                                        <span class="badge badge-primare mb-1 float-right" v-if="is_social_links_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -110,9 +110,9 @@
                             <table class="table table-hover" id="dev-table">
                                 <thead>
                                     <tr>
-                                        <th>Link</th>
+                                        <th>{{ $t('admin.site_info.link_col') }}</th>
                                         <th>#</th>
-                                        <th>Delete</th>
+                                        <th>{{ $t('common.delete') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -121,7 +121,7 @@
                                         <td v-else><a :href="link && link.url ? link.url : '#'" target="_blank">{{ from_user_site_url_get_domen(link && link.url ? link.url : '') }}</a></td>
                                         <td>|</td>
                                         <td>
-                                        <button class="btn btn-danger" @click="del_social_link(link.id)">Delete</button></td>
+                                        <button class="btn btn-danger" @click="del_social_link(link.id)">{{ $t('common.delete') }}</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -132,26 +132,26 @@
                         <span v-else-if="action_tab == 2">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">Add new slag item</button>
+                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">{{ $t('admin.site_info.add_new_slug_item') }}</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
+                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
 
                             <table class="table table-hover" id="dev-table" >
                                 <thead>
                                     <tr>
-                                        <th>Value name</th>
-                                        <th>Data</th>
-                                        <th>Edit</th>
+                                        <th>{{ $t('admin.site_info.value_name_col') }}</th>
+                                        <th>{{ $t('admin.site_info.data_col') }}</th>
+                                        <th>{{ $t('common.edit') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="info in site_us_info" :key="info.id || info.slug">
                                         <td>{{ info && info.slug ? info.slug : '' }}</td>
                                         <td v-html="info && info.us_data ? info.us_data : ''"></td>
-                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">Edit</button></td>
+                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -160,26 +160,26 @@
                         <span v-else-if="action_tab == 3">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">Add new slag item</button>
+                                    <button class="btn btn-primary" @click="open_add_site_local_data_modal()">{{ $t('admin.site_info.add_new_slug_item') }}</button>
                                 </div>
                                 <div class="col-md-6">
-                                    <button class="btn btn-success float-right" @click="get_site_data" >Update</button>
+                                    <button class="btn btn-success float-right" @click="get_site_data" >{{ $t('admin.site_info.update_btn') }}</button>
                                 </div>
                             </div>
 
                             <table class="table table-hover" id="dev-table" >
                                 <thead>
                                     <tr>
-                                        <th>Value name</th>
-                                        <th>Data</th>
-                                        <th>Edit</th>
+                                        <th>{{ $t('admin.site_info.value_name_col') }}</th>
+                                        <th>{{ $t('admin.site_info.data_col') }}</th>
+                                        <th>{{ $t('common.edit') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="info in site_ka_info" :key="info.id || info.slug">
                                         <td>{{ info && info.slug ? info.slug : '' }}</td>
                                         <td v-html="info && info.ka_data ? info.ka_data : ''"></td>
-                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">Edit</button></td>
+                                        <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -188,12 +188,12 @@
                         <span v-else-if="action_tab == 5">
                             <div class="row edit_buttom">
                                 <div class="col-md-6">
-                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">Add General info</router-link>
+                                    <router-link class="btn btn-primary pull-left" :to="{ name: 'GlobalInfoAdd' }">{{ $t('admin.site_info.add_general_info') }}</router-link>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-groupe">
-                                        <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">Refresh ({{general_info_reset_id}})</button>
-                                        <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">Updating...</span>
+                                        <button @click="get_general_info()" class="btn btn-success float-right" v-if="!is_general_info_refresh">{{ $t('admin.site_info.refresh_with_count', { count: general_info_reset_id }) }}</button>
+                                        <span class="badge badge-primare mb-1 float-right" v-if="is_general_info_refresh">{{ $t('admin.site_info.updating_ellipsis') }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -202,11 +202,11 @@
 <table class="table table-hover" id="dev-table" >
                                         <thead>
                                             <tr>
-                                                <th>Id</th>
-                                                <th>Demo title</th>
-                                                <th>Is Show</th>
-                                                <th>Edit</th>
-                                                <th>Del</th>
+                                                <th>{{ $t('common.id') }}</th>
+                                                <th>{{ $t('admin.site_info.demo_title_col') }}</th>
+                                                <th>{{ $t('admin.site_info.is_show_col') }}</th>
+                                                <th>{{ $t('common.edit') }}</th>
+                                                <th>{{ $t('common.delete') }}</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -215,16 +215,16 @@
                                                 <td>{{general_info && general_info.title ? general_info.title : ''}}</td>
 
 <td>
-                                                    <button v-if="general_info && general_info.is_show" type="button" class="btn btn-danger" @click="open_statistic_modal(general_info.id)">Statistic</button>
-                                                    <span v-else>No</span>
+                                                    <button v-if="general_info && general_info.is_show" type="button" class="btn btn-danger" @click="open_statistic_modal(general_info.id)">{{ $t('admin.site_info.statistic_btn') }}</button>
+                                                    <span v-else>{{ $t('admin.site_info.no_label') }}</span>
                                                 </td>
 
                                                 <td>
-                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >Edit</router-link>
+                                                    <router-link class="btn btn-primary" :to="{ name: 'GlobalInfoEdit', params: { id: general_info && general_info.id ? general_info.id : 0 } }" >{{ $t('common.edit') }}</router-link>
                                                 </td>
-                                                
+
                                                 <td>
-                                                    <button type="buttom" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">Delete</button>
+                                                    <button type="buttom" class="btn btn-danger" @click="del_general_info(general_info && general_info.id ? general_info.id : 0)">{{ $t('common.delete') }}</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -376,7 +376,7 @@ components: {
                 );
             },
             del_social_link(link_id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_site_social_links/del_site_social_links/'+link_id, {
                         _method: 'DELETE'
@@ -400,7 +400,7 @@ components: {
                 );
             },
             del_general_info(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_general_info/del_general_info/'+id, {
                         _method: 'DELETE'

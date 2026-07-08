@@ -1,9 +1,9 @@
 <template>
     <StackModal
             :show="is_show_modal"
-            title="Edit locale data"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :title="$t('admin.site_info.edit_locale_data_title')"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             @save="$refs.edit_site_locale_data_form.requestSubmit()"
             @close="close_model"
         >
@@ -12,13 +12,13 @@
         />
 
         <form ref="edit_site_locale_data_form" id="edit_site_locale_data_form" v-on:submit.prevent="edit_site_local_data">
-            <p><strong>Slug:</strong> {{ current_item && current_item.slug ? current_item.slug : '' }}</p>
+            <p><strong>{{ $t('admin.site_info.slug_label') }}</strong> {{ current_item && current_item.slug ? current_item.slug : '' }}</p>
             <div v-if="current_language === 'ka'">
-                <label>Georgian Data:</label>
+                <label>{{ $t('admin.site_info.georgian_data_label') }}</label>
                 <big_editor v-model="data.ka_data" />
             </div>
             <div v-else-if="current_language === 'us'">
-                <label>English Data:</label>
+                <label>{{ $t('admin.site_info.english_data_label') }}</label>
                 <big_editor v-model="data.us_data" />
             </div>
         </form>

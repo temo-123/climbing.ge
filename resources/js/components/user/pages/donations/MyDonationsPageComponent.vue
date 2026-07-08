@@ -33,9 +33,9 @@
                 <div class="col-sm-12" v-else>
                     <div class="text-center py-5">
                         <i class="fa fa-heart fa-3x text-muted mb-3 d-block"></i>
-                        <h5 class="text-muted mb-3">You have not made any donations yet</h5>
+                        <h5 class="text-muted mb-3">{{ $t('admin.donations.no_donations_yet') }}</h5>
                         <button class="btn btn-success" @click="openDonationModal">
-                            <i class="fa fa-heart mr-1"></i> Make a Donation
+                            <i class="fa fa-heart mr-1"></i> {{ $t('admin.donations.make_a_donation') }}
                         </button>
                     </div>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="row mt-3" v-if="!loading && donations.length > 0">
                     <div class="col-md-12">
                         <button class="btn btn-success" @click="openDonationModal">
-                            <i class="fa fa-heart mr-1"></i> Make Another Donation
+                            <i class="fa fa-heart mr-1"></i> {{ $t('admin.donations.make_another_donation') }}
                         </button>
                     </div>
                 </div>
@@ -89,17 +89,17 @@
                         this.donations = response.data
                         this.data_for_tab = [{
                             id: 1,
-                            table_name: 'My Donations',
+                            table_name: this.$t('admin.donations.my_donations_table'),
                             add_action: {
                                 action: 'fun',
                                 link: 'open_donation_modal',
                                 class: 'btn btn-success',
-                                btn_title: 'Make Donation',
+                                btn_title: this.$t('admin.donations.make_donation_btn'),
                             },
                             tab_data: {
                                 data: response.data,
                                 tab: {
-                                    head: ['#', 'Amount', 'Currency', 'Status', 'Comment', 'Date'],
+                                    head: ['#', this.$t('admin.donations.amount_col'), this.$t('admin.donations.currency_col'), this.$t('admin.donations.status_col'), this.$t('admin.donations.comment_col'), this.$t('common.date')],
                                     body: [
                                         ['data', ['id']],
                                         ['data', ['amount']],

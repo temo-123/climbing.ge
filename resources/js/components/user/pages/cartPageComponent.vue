@@ -14,19 +14,19 @@
                     <div class="card shopping-cart">
                         <div class="card-header bg-dark text-light">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                            Shopping Cart
-                            <button class="btn btn-primary float-right" @click="goToShop()">Go to shop</button>
+                            {{ $t('user.cart.shopping_cart_title') }}
+                            <button class="btn btn-primary float-right" @click="goToShop()">{{ $t('user.cart.go_to_shop_btn') }}</button>
                         </div>
                         <div class="card-body">
                             <div v-if="!cart_items.length" class="text-center text-muted py-4">
                                 <i class="fa fa-shopping-cart fa-2x" aria-hidden="true"></i>
-                                <p class="mt-2">Your cart is empty.</p>
-                                <button class="btn btn-primary" @click="goToShop()">Browse products</button>
+                                <p class="mt-2">{{ $t('user.cart.cart_is_empty') }}</p>
+                                <button class="btn btn-primary" @click="goToShop()">{{ $t('user.cart.browse_products_btn') }}</button>
                             </div>
 
                             <div v-if="has_unavailable_items" class="alert alert-warning">
                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                                Some items in your cart are out of stock. Remove them to proceed to checkout.
+                                {{ $t('user.cart.out_of_stock_warning') }}
                             </div>
 
                             <div v-for="product in cart_items" :key="product.id" class="cart-item" :class="{ 'cart-item-unavailable': product.is_out_of_stock }">
@@ -55,28 +55,28 @@
                                         >
                                             {{ product.product.url_title }}
                                         </a>
-                                        <span v-else class="cart-product-name text-muted">Unknown product</span>
+                                        <span v-else class="cart-product-name text-muted">{{ $t('user.cart.unknown_product') }}</span>
 
                                         <div class="cart-option-name text-muted" v-if="product.option && product.option.name">
                                             <small><i class="fa fa-tag" aria-hidden="true"></i> {{ product.option.name }}</small>
                                         </div>
 
                                         <div v-if="product.is_out_of_stock" class="text-danger mt-1">
-                                            <small><i class="fa fa-times-circle" aria-hidden="true"></i> Out of stock — please remove this item</small>
+                                            <small><i class="fa fa-times-circle" aria-hidden="true"></i> {{ $t('user.cart.out_of_stock_label') }}</small>
                                         </div>
                                         <div v-else-if="product.stock_quantity > 0 && product.stock_quantity <= 5" class="text-warning mt-1">
-                                            <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Only {{ product.stock_quantity }} left in stock</small>
+                                            <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('user.cart.only_left_in_stock', { count: product.stock_quantity }) }}</small>
                                         </div>
                                     </div>
 
                                     <div class="col-sm-12 col-md-4">
                                         <div class="d-flex align-items-center justify-content-md-end">
                                             <div class="cart-price mr-3" v-if="!product.is_out_of_stock">
-                                                <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ each</small></div>
+                                                <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ {{ $t('user.cart.price_each_suffix') }}</small></div>
                                                 <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
                                             </div>
                                             <div class="quantity-wrap" v-if="!product.is_out_of_stock">
-                                                <span v-if="is_quantity_updating" class="text-muted">Updating...</span>
+                                                <span v-if="is_quantity_updating" class="text-muted">{{ $t('admin.articles.updating_ellipsis') }}</span>
                                                 <div v-else class="d-flex align-items-center">
                                                     <button class="qty-btn" @click="changeQty(product, -1)" :disabled="product.quantity <= 1">−</button>
                                                     <input
@@ -104,24 +104,24 @@
 
                             <div class="text-right mt-2" v-if="cart_items.length">
                                 <button type="button" @click="get_products_cart" class="btn btn-secondary btn-sm" v-if="!is_products_refresh">
-                                    <i class="fa fa-refresh" aria-hidden="true"></i> Refresh ({{ products_reset_id }})
+                                    <i class="fa fa-refresh" aria-hidden="true"></i> {{ $t('user.cart.refresh_count_btn', { id: products_reset_id }) }}
                                 </button>
-                                <span class="badge badge-secondary" v-if="is_products_refresh">Updating...</span>
+                                <span class="badge badge-secondary" v-if="is_products_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                             </div>
                         </div>
 
                         <div class="card-footer" v-if="cart_items.length">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="total-price">
-                                    Total: <strong>{{ total_price }} ₾</strong>
+                                    {{ $t('user.cart.total_prefix') }} <strong>{{ total_price }} ₾</strong>
                                 </div>
                                 <router-link :to="{name: 'orderPayment'}" v-if="!has_unavailable_items">
                                     <button type="button" class="btn btn-success">
-                                        <i class="fa fa-credit-card" aria-hidden="true"></i> Checkout
+                                        <i class="fa fa-credit-card" aria-hidden="true"></i> {{ $t('user.cart.checkout_btn') }}
                                     </button>
                                 </router-link>
-                                <button v-else type="button" class="btn btn-secondary" disabled title="Remove out-of-stock items to checkout">
-                                    <i class="fa fa-credit-card" aria-hidden="true"></i> Checkout
+                                <button v-else type="button" class="btn btn-secondary" disabled :title="$t('user.cart.remove_out_of_stock_tooltip')">
+                                    <i class="fa fa-credit-card" aria-hidden="true"></i> {{ $t('user.cart.checkout_btn') }}
                                 </button>
                             </div>
                         </div>
@@ -207,7 +207,7 @@
                     .finally(() => this.is_quantity_updating = false)
             },
             del_from_cart(item_id) {
-                if (confirm('Remove this item from cart?')) {
+                if (confirm(this.$t('user.cart.confirm_remove_from_cart'))) {
                     axios.delete("cart/" + item_id)
                         .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
                         .catch(error => console.log(error))

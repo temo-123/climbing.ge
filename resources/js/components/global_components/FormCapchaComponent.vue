@@ -6,14 +6,14 @@
 
         <div v-if="captcha_error" class="alert alert-warning mb-2">
             <i class="fa fa-exclamation-triangle"></i>
-            reCAPTCHA failed to load. Please reload the page and try again.
+            {{ $t('shop.product.feedback.recaptcha_error') }}
         </div>
 
         <div v-if="loading == false" class="form-group">
-            <button class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp }}</button>
+            <button class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp || $t('global.verify_btn') }}</button>
         </div>
         <div v-if="loading == true">
-            <h4 class="footer_title">Loading</h4>
+            <h4 class="footer_title">{{ $t('global.loading') }}</h4>
         </div>
     </span>
 </template>
@@ -23,7 +23,7 @@ export default {
     props: {
         buttonTextProp: {
             type: String,
-            default: 'Verify'
+            default: null
         }
     },
     data() {

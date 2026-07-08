@@ -34,22 +34,22 @@
 
         <StackModal
             v-model="is_status_modal"
-            title="Update donation status"
+            :title="$t('admin.donations.update_status_title')"
             @close="is_status_modal = false"
             @save="save_status"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
         >
             <div v-if="editing_donation">
                 <p><strong>#{{ editing_donation.id }}</strong> — {{ editing_donation.name }} {{ editing_donation.surname }}</p>
-                <p>Amount: <strong>{{ editing_donation.amount }} {{ editing_donation.currency }}</strong></p>
+                <p>{{ $t('admin.donations.amount_prefix') }} <strong>{{ editing_donation.amount }} {{ editing_donation.currency }}</strong></p>
                 <select class="form-control" v-model="new_status">
-                    <option value="pending">Pending</option>
-                    <option value="processing">Processing</option>
-                    <option value="paid">Paid</option>
-                    <option value="failed">Failed</option>
-                    <option value="declined">Declined</option>
-                    <option value="expired">Expired</option>
+                    <option value="pending">{{ $t('admin.donations.status_pending') }}</option>
+                    <option value="processing">{{ $t('admin.donations.status_processing') }}</option>
+                    <option value="paid">{{ $t('admin.donations.status_paid') }}</option>
+                    <option value="failed">{{ $t('admin.donations.status_failed') }}</option>
+                    <option value="declined">{{ $t('admin.donations.status_declined') }}</option>
+                    <option value="expired">{{ $t('admin.donations.status_expired') }}</option>
                 </select>
             </div>
         </StackModal>
@@ -84,12 +84,12 @@
                     .then(response => {
                         this.data_for_tab = [{
                             id: 1,
-                            table_name: 'Donations',
+                            table_name: this.$t('admin.donations.donations_table'),
                             add_action: null,
                             tab_data: {
                                 data: response.data,
                                 tab: {
-                                    head: ['ID', 'Name', 'Email', 'Amount', 'Status', 'User', 'Date', 'Status', 'Delete'],
+                                    head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.donations.amount_col'), this.$t('admin.donations.status_col'), this.$t('admin.donations.user_col'), this.$t('common.date'), this.$t('admin.donations.status_col'), this.$t('common.delete')],
                                     body: [
                                         ['data', ['id']],
                                         ['data', ['name']],
@@ -115,7 +115,7 @@
             },
 
             del_donation(id) {
-                if (confirm('Delete this donation?')) {
+                if (confirm(this.$t('admin.donations.confirm_delete_donation'))) {
                     axios.delete(`set_donation_admin/del_donation/${id}`)
                         .then(() => this.load())
                         .catch(e => console.error(e));

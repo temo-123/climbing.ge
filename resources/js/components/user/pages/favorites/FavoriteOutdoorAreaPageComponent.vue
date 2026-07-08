@@ -17,12 +17,12 @@
                     <div class="col-md-6">
                         <input type="radio" id="1" :value="1" v-model="tab_num" />
 
-                        <label for="1">Faworite outdoor areas</label>
+                        <label for="1">{{ $t('user.favorites.outdoor.tab_areas') }}</label>
                     </div>
                     <div class="col-md-6">
                         <input type="radio" id="2" :value="2" v-model="tab_num" />
 
-                        <label for="2">Sport climbing routes reviews</label>
+                        <label for="2">{{ $t('user.favorites.outdoor.tab_reviews') }}</label>
                     </div>
                 </div>
 
@@ -31,19 +31,19 @@
                         <div class="row font-italic">
                             <div class="col-md-6">
                                 <h3 class="mt-3 pb-3 mb-4 ">
-                                    Faworite climbing spots
+                                    {{ $t('user.favorites.outdoor.title') }}
                                 </h3>
                             </div>
                             <div class="col-md-6">
                                 <button class="btn btn-primary float-right" @click="go_to_spots_list('/outdoor')">
-                                    Go to outdoor spot list
+                                    {{ $t('user.favorites.outdoor.go_to_list') }}
                                 </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <button class="btn btn-success float-right" @click="get_faworite_outdoor_region()">
-                                    Refresh
+                                    {{ $t('common.refresh') }}
                                 </button>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             </div>
                         </div>
                         <div class="row" v-else>
-                            <h2>You dont have faworite climbing spots</h2>
+                            <h2>{{ $t('user.favorites.outdoor.empty') }}</h2>
                         </div>
                     </div>
                 </div>
@@ -81,20 +81,20 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h3>
-                                    Your sport climbing routes reviews list
+                                    {{ $t('user.favorites.outdoor.reviews_title') }}
                                 </h3>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <button class="btn btn-success float-right" @click="get_user_sport_routes_review()">
-                                    Refresh
+                                    {{ $t('common.refresh') }}
                                 </button>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
-                                <table class="table table-hover" v-if="reviews.length"> 
+                                <table class="table table-hover" v-if="reviews.length">
                                     <thead>
                                         <tr>
                                             <th style="text-align: center">
@@ -102,16 +102,16 @@
                                             </th>
                                             <th>|</th>
 
-                                            <th>ID</th>
+                                            <th>{{ $t('common.id') }}</th>
                                             <th>|</th>
 
-                                            <th>Route name</th>
+                                            <th>{{ $t('user.favorites.outdoor.col_route') }}</th>
                                             <th>|</th>
 
-                                            <th>Reiting</th>
+                                            <th>{{ $t('user.favorites.outdoor.col_rating') }}</th>
                                             <th>|</th>
 
-                                            <th>Delite</th>
+                                            <th>{{ $t('common.delete') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -138,7 +138,7 @@
                                 </table>
 
                                 <div v-else>
-                                    <h2>You dont have reviews</h2>
+                                    <h2>{{ $t('user.favorites.outdoor.reviews_empty') }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -194,7 +194,7 @@
             },
 
             del_from_faworites(id){
-                if(confirm('Are you sure, you want delite this area from your faworites?')){
+                if(confirm(this.$t('user.favorites.outdoor.confirm_delete'))){
                     axios
                     .post('/set_faworite/del_favorite_outdoor_area/'+id, {
                         article_id: id,
@@ -202,16 +202,15 @@
                     })
                     .then(Response => {
                         this.get_faworite_outdoor_region()
-                        // alert("Area delited from your favorite list!");
                     })
                     .catch(error => {
-                        alert("Error");
+                        alert(this.$t('user.favorites.error'))
                     })
                 }
             },
 
             del_route_review(id){
-                if(confirm('Are you sure, you want delite your reiting?')){
+                if(confirm(this.$t('user.favorites.outdoor.confirm_delete_review'))){
                     axios
                     .post('/set_route/set_route_review/del_route_review/'+id, {
                         review_id: id,
@@ -221,7 +220,7 @@
                         this.get_user_sport_routes_review()
                     })
                     .catch(error => {
-                        alert("Error");
+                        alert(this.$t('user.favorites.error'))
                     })
                 }
             }

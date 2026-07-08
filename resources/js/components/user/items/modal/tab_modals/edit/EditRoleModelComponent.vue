@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_role_edit_modal"
-            title="Edit role permissions"
+            :title="$t('admin.users.edit_role_permissions_title')"
             @close="close_role_edit_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <span v-show="is_loading">
@@ -19,16 +19,16 @@
                         class="form-control"
                         id="name"
                         v-model="role_data.name"
-                        placeholder="Enter demo name"
+                        :placeholder="$t('admin.users.enter_role_name_placeholder')"
                         required
                     />
-                    
+
                     <input
                         type="text"
                         class="form-control"
                         id="short description"
                         v-model="role_data.description"
-                        placeholder="Enter short description"
+                        :placeholder="$t('admin.users.enter_short_description_placeholder')"
                         required
                     />
                 </form>
@@ -36,11 +36,11 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Subject</th>
+                            <th>{{ $t('admin.users.col_subject') }}</th>
                             <th>|</th>
-                            <th>Action</th>
+                            <th>{{ $t('admin.users.col_action') }}</th>
                             <th>|</th>
-                            <th>Delite</th>
+                            <th>{{ $t('common.delete') }}</th>
                         </tr>
                     </thead>
 
@@ -61,14 +61,14 @@
                     </tbody>
                 </table>
 
-                <button type="button" class="btn btn-primary float-left" @click="edit_permission_value()">Add new permission</button>
+                <button type="button" class="btn btn-primary float-left" @click="edit_permission_value()">{{ $t('admin.users.add_new_permission_btn') }}</button>
 
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Image</th>
+                            <th>{{ $t('admin.warehouses.col_image') }}</th>
                             <th>|</th>
-                            <th>Delite</th>
+                            <th>{{ $t('common.delete') }}</th>
                         </tr>
                     </thead>
 
@@ -76,11 +76,11 @@
                         <tr v-for="permission in permissions_array" :key="permission.id">
                             <td>
                                 <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                        <option disabled selected>Select permission</option> 
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option> 
+                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">>
+                                        <option disabled selected>{{ $t('admin.users.select_permission_placeholder') }}</option>
+                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option>
                                     </select>
-                                </form> 
+                                </form>
                             </td>
                             <td>|</td>
                             <td>
@@ -97,7 +97,7 @@
                 class="btn btn-primary"
                 @click="edit_role()"
             >
-                Save updated role
+                {{ $t('admin.users.save_updated_role_btn') }}
             </button>
         </template>
     </stack-modal>
@@ -226,7 +226,7 @@
             },
 
             del_role_permission_from_db(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_role/del_role_permission/' + this.action_role + '/' + id, {
                         _method: 'DELETE'

@@ -14,11 +14,11 @@
             </div>
             <div class="col text-center similar_article_routes_quantity">
                 <div class="row">
-                    {{ article.route_quantyty.sectors }} Sectors
-                    {{ article.route_quantyty.routes }} Routes
+                    {{ article.route_quantyty.sectors }} {{ $t('common.sectors') }}
+                    {{ article.route_quantyty.routes }} {{ $t('common.routes') }}
                 </div>
                 <div class="row" v-if="article.route_quantyty.mtps > 0">
-                    {{ article.route_quantyty.mtps }} Multy pitch
+                    {{ article.route_quantyty.mtps }} {{ $t('guide.route.mtp') }}
                 </div>
             </div>
         </div>

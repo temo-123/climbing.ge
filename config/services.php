@@ -46,6 +46,16 @@ return [
         'redirect' => env('GOOGLE_URL'),
     ],
 
+    'analytics' => [
+        'site'   => env('MIX_CLIMBING_GUIDBOOK_ANALITICS_ID'),
+        'shop'   => env('MIX_SHOP_ANALITICS_ID'),
+        'summit' => env('MIX_SUMMIT_ANALITICS_ID'),
+        'films'  => env('MIX_FILMS_ANALITICS_ID'),
+        'blog'   => env('MIX_BLOG_ANALITICS_ID'),
+        'user'   => env('MIX_USER_ANALITICS_ID'),
+        'error'  => env('MIX_ERROR_PAGE_ANALITICS_ID'),
+    ],
+
     'tbc_pay' => [
         'base_url' => env('TBC_PAY_BASE_URL', 'https://api.tbcbank.ge/v1/tpay'),
         'shop' => [

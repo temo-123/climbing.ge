@@ -27,6 +27,7 @@ class Route extends Model
         "creation_data",
 
         "first_ascent",
+        "first_ascent_date",
     ];
 
 

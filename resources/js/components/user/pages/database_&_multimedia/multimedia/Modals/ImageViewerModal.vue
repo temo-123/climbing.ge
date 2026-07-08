@@ -1,7 +1,7 @@
 <template>
     <stack-modal
         :show="showModal"
-        title="Image Viewer"
+        :title="$t('admin.multimedia.image_viewer_title')"
         @close="closeModal"
         :modal-class="{ 'image-viewer-modal': true }"
         :saveButton="{ visible: false }"
@@ -70,27 +70,27 @@
                 <!-- Error overlay -->
                 <div v-if="imageError" class="error-overlay">
                     <i class="fa fa-exclamation-triangle"></i>
-                    <p>Failed to load image</p>
+                    <p>{{ $t('admin.multimedia.failed_load_image') }}</p>
                 </div>
             </div>
-            
+
             <!-- Navigation hint -->
             <div class="navigation-hint">
                 <div class="hint-item">
                     <i class="fa fa-mouse-pointer"></i>
-                    <span>Click and drag to pan</span>
+                    <span>{{ $t('admin.multimedia.click_drag_to_pan') }}</span>
                 </div>
                 <div class="hint-item">
                     <i class="fa fa-arrows-v"></i>
-                    <span>Scroll to zoom</span>
+                    <span>{{ $t('admin.multimedia.scroll_to_zoom') }}</span>
                 </div>
                 <div class="hint-item">
                     <i class="fa fa-keyboard-o"></i>
-                    <span>Use ← → arrows to navigate</span>
+                    <span>{{ $t('admin.multimedia.use_arrows_navigate') }}</span>
                 </div>
                 <div class="hint-item">
                     <i class="fa fa-times"></i>
-                    <span>Press ESC to close</span>
+                    <span>{{ $t('admin.multimedia.press_esc_close') }}</span>
                 </div>
             </div>
         </div>

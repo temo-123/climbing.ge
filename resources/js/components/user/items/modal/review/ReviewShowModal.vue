@@ -1,27 +1,27 @@
 <template>
     <StackModal
         v-model="is_show"
-        title="Review details"
+        :title="$t('admin.comments.review_details_title')"
         @close="close_modal()"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }"
     >
         <div v-if="row_data">
             <table class="table table-bordered">
                 <tbody>
                     <tr>
-                        <th>Climbing route</th>
+                        <th>{{ $t('admin.comments.col_climbing_route') }}</th>
                         <td>{{ row_data.route && row_data.route.name }}</td>
                     </tr>
                     <tr>
-                        <th>Reviewer</th>
+                        <th>{{ $t('admin.comments.reviewer_label') }}</th>
                         <td>{{ row_data.user && row_data.user.name }} {{ row_data.user && row_data.user.surname }}</td>
                     </tr>
                     <tr>
-                        <th>Email</th>
+                        <th>{{ $t('common.email') }}</th>
                         <td>{{ row_data.user && row_data.user.email }}</td>
                     </tr>
                     <tr>
-                        <th>Stars</th>
+                        <th>{{ $t('admin.comments.col_stars') }}</th>
                         <td>
                             <i
                                 v-for="n in 5"
@@ -31,11 +31,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <th>Review text</th>
+                        <th>{{ $t('admin.comments.review_text_label') }}</th>
                         <td>{{ row_data.review && row_data.review.text }}</td>
                     </tr>
                     <tr v-if="row_data.review && row_data.review.climbed">
-                        <th>Climbed date</th>
+                        <th>{{ $t('admin.comments.climbed_date_label') }}</th>
                         <td>{{ row_data.review.climbed_data }}</td>
                     </tr>
                 </tbody>
@@ -43,10 +43,10 @@
             <div v-if="row_data.review && row_data.review.published == 0"
                  class="alert mt-3"
                  :class="row_data.review.admin_hidden ? 'alert-danger' : 'alert-warning'">
-                <strong v-if="row_data.review.admin_hidden"><i class="fa fa-ban"></i> Hidden by admin</strong>
-                <strong v-else><i class="fa fa-eye-slash"></i> Hidden by user</strong>
+                <strong v-if="row_data.review.admin_hidden"><i class="fa fa-ban"></i> {{ $t('admin.comments.hidden_by_admin') }}</strong>
+                <strong v-else><i class="fa fa-eye-slash"></i> {{ $t('admin.comments.hidden_by_user') }}</strong>
                 <div v-if="row_data.review.admin_hidden && row_data.review.hidden_reason" class="mt-1">
-                    Reason: <strong>{{ reasonLabel(row_data.review.hidden_reason) }}</strong>
+                    {{ $t('admin.comments.reason_prefix') }} <strong>{{ reasonLabel(row_data.review.hidden_reason) }}</strong>
                     <div v-if="row_data.review.hidden_reason_text" class="text-muted mt-1">{{ row_data.review.hidden_reason_text }}</div>
                 </div>
             </div>
@@ -72,7 +72,12 @@ export default {
             this.row_data = null;
         },
         reasonLabel(r) {
-            return { spam: 'Spam', aggressive_remark: 'Aggressive remark', offensive: 'Offensive content', other: 'Other' }[r] || r;
+            return {
+                spam: this.$t('admin.comments.reason_spam'),
+                aggressive_remark: this.$t('admin.comments.reason_aggressive_remark'),
+                offensive: this.$t('admin.comments.reason_offensive'),
+                other: this.$t('admin.comments.reason_other'),
+            }[r] || r;
         },
     },
 };

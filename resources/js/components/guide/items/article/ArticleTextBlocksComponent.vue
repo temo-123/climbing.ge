@@ -52,7 +52,7 @@
 
         <!-- price -->
         <div v-if="this.article_prop.locale_data.prices_text != null">
-            <h2 id="how_to_get_there">{{ $t('guide.article.title.price')}}</h2>
+            <h2 id="how_to_get_there">{{ $t('common.price')}}</h2>
             <span v-html="this.article_prop.locale_data.prices_text"></span>
         </div>
 

@@ -1,20 +1,20 @@
 <template>
         <div class="form-group clearfix row">
-          <label for="name" class='col-md-2 control-label'> Grade </label>
+          <label for="name" class='col-md-2 control-label'> {{ $t('admin.routes_sectors.grade_label') }} </label>
           <div class="col-md-5">
             <select class="form-control"  v-model="data.category" required v-if="category_type == 'outdoor'">
-              <option value="" disabled>Please select route type</option>
-              <option value="sport climbing">Sport Climbing</option>
-              <option value="bouldering">Bouldering</option>
-              <option value="tred">Tred Climbing</option>
-              <option value="top">Top Rope</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.please_select_route_type') }}</option>
+              <option value="sport climbing">{{ $t('admin.routes_sectors.sport_climbing') }}</option>
+              <option value="bouldering">{{ $t('admin.routes_sectors.bouldering') }}</option>
+              <option value="tred">{{ $t('admin.routes_sectors.tred_climbing') }}</option>
+              <option value="top">{{ $t('admin.routes_sectors.top_rope') }}</option>
             </select>
 
             <select class="form-control"  v-model="data.category" required v-else-if="category_type == 'ice'">
-              <option value="" disabled>Please select route type</option>
-              <option value="ice climbing">Ice Climbing</option>
-              <option value="dry tooling">Dry Tooling</option> 
-              <option value="mix climbing">Mix Climbing</option>
+              <option value="" disabled>{{ $t('admin.routes_sectors.please_select_route_type') }}</option>
+              <option value="ice climbing">{{ $t('admin.routes_sectors.ice_climbing') }}</option>
+              <option value="dry tooling">{{ $t('admin.routes_sectors.dry_tooling') }}</option> 
+              <option value="mix climbing">{{ $t('admin.routes_sectors.mix_climbing') }}</option>
             </select>
           </div>
 
@@ -22,15 +22,15 @@
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'sport climbing' || data.category == 'top'|| data.category == 'tred'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="sport in sport_route_grade" :key="sport" v-bind:value="sport" :selected="true" >{{ sport }}</option>
                 </select>
               </div>
@@ -41,15 +41,15 @@
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'bouldering'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'bouldering'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="boulder in boulder_route_grade" :key="boulder" v-bind:value="boulder" :selected="true" >{{ boulder }}</option>
                 </select>
               </div>
@@ -60,15 +60,15 @@
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'mix climbing'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="ice_climbing in ice_climbing_route_grade" :key="ice_climbing" v-bind:value="ice_climbing" :selected="true" >{{ ice_climbing }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'mix climbing'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="ice_climbing in ice_climbing_route_grade" :key="ice_climbing" v-bind:value="ice_climbing" :selected="true" >{{ ice_climbing }}</option>
                 </select>
               </div>
@@ -79,15 +79,15 @@
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'ice climbing'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="ice_climbing in ice_climbing_route_grade" :key="ice_climbing" v-bind:value="ice_climbing" :selected="true" >{{ ice_climbing }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'ice climbing'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="ice_climbing in ice_climbing_route_grade" :key="ice_climbing" v-bind:value="ice_climbing" :selected="true" >{{ ice_climbing }}</option>
                 </select>
               </div>
@@ -98,15 +98,15 @@
             <div class="row">
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'dry tooling'" v-model="data.grade" required>
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="dry_toolung in dry_tooling_route_grade" :key="dry_toolung" v-bind:value="dry_toolung" :selected="true" >{{ dry_toolung }}</option>
                 </select>
               </div>
               <div class="col-md-6">
                 <select class="form-control" v-if="data.category != '' && data.category == 'dry tooling'" v-model="data.or_grade">
-                  <option value=""> No grade </option>
-                  <option value="Project">Project</option>
+                  <option value=""> {{ $t('admin.routes_sectors.no_grade_option') }} </option>
+                  <option value="Project">{{ $t('admin.routes_sectors.project_option') }}</option>
                   <option v-for="dry_toolung in dry_tooling_route_grade" :key="dry_toolung" v-bind:value="dry_toolung" :selected="true" >{{ dry_toolung }}</option>
                 </select>
               </div>

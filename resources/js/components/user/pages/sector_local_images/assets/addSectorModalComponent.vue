@@ -2,21 +2,21 @@
     <!-- <div> -->
 <StackModal
             :show="add_sector_modal"
-            :title="'Add sector'"
+            :title="$t('admin.articles.add_sector_title')"
             @close="close_add_sector_modal"
             @save="add_sector_from_modal"
-            :saveButton="{ visible: true, title: 'Add sector' }"
-            :cancelButton="{ visible: true, title: 'Close' }"
+            :saveButton="{ visible: true, title: $t('admin.articles.add_sector_title') }"
+            :cancelButton="{ visible: true, title: $t('common.close') }"
         >
         <div>
             <select class="form-control" v-model="selected_outdoor_area" name="comment delete cause" @click="get_region_sectors()">
-                <option value="Select outdoor area" disabled>Select outdoor area</option>
-                <option value="All sectors">Show all sectors</option>
+                <option value="Select outdoor area" disabled>{{ $t('admin.articles.select_outdoor_area_placeholder') }}</option>
+                <option value="All sectors">{{ $t('admin.articles.show_all_sectors_option') }}</option>
                 <option v-for="outdoor_area in outdoor_areas" :key="outdoor_area.id" :value="outdoor_area.id">{{ outdoor_area.url_title }}</option>
             </select>
 
             <select class="form-control" v-model="selected_sector" name="comment delete cause" v-if="!sectors_loading && sectors.length != 0">
-                <option value="Select sector" disabled>Select sector</option>
+                <option value="Select sector" disabled>{{ $t('admin.articles.select_sector_placeholder') }}</option>
                 <option v-for="sector in filtred_sectors" :key="sector.id" :value="{'id': sector.id, 'name': sector.name}">{{ sector.name }}</option>
             </select>
 

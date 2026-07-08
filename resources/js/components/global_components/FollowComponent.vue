@@ -11,21 +11,21 @@
 
             <div class="col-md-10" v-if="!loading">
                 <form name="contact-form" method="POST" id="global_form" ref="myForm" @submit.prevent enctyp="multipart/form-data">
-                    <input type="text" v-model="email" name="email" class="form-control footer_input"> 
+                    <input type="text" v-model="email" name="email" class="form-control footer_input" :placeholder="$t('shop.product.feedback.complainter_email')">
 
                     <div class="footer_re_capcha">
                         <div v-if="captcha_error" class="alert alert-warning mb-2">
                             <i class="fa fa-exclamation-triangle"></i>
-                            reCAPTCHA failed to load. Please reload the page and try again.
+                            {{ $t('shop.product.feedback.recaptcha_error') }}
                         </div>
                         <FormCapchaComponent
-                            :buttonTextProp="'Follow'"
+                            :buttonTextProp="$t('global.footer.follow_btn')"
                             @recaptcha-verified="follow"
                             @expired="onCaptchaExpired"
                         />
                     </div>
                     <div v-if="loading == true">
-                        <h4  class="footer_title">Loading</h4>
+                        <h4  class="footer_title">{{ $t('global.loading') }}</h4>
                     </div>
                 </form>
             </div>
@@ -101,7 +101,7 @@
                         this.loading = false
                     }
                     else if (error.response?.status === 419){
-                        alert("CSRF token mismatch. Ples reload page and try again!")
+                        alert(this.$t('global.footer.csrf_mismatch_error'))
                     }
                 })
                 .finally(() => (this.loading = false));

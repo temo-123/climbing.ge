@@ -71,7 +71,7 @@
                                         // })
                                         ({  
                                             'id': 1,
-                                            'table_name': 'Site Followers', 
+                                            'table_name': this.$t('admin.users.site_followers_table'),
                                             // 'add_action': {
                                             //     'action': 'route',
                                             //     'link': 'articleAdd', 
@@ -81,10 +81,10 @@
                                                 'data': response.data, 
                                                 'tab': {
                                                     'head': [
-                                                        'ID',
-                                                        'Email',
-                                                        'Service',
-                                                        'Delite',
+                                                        this.$t('common.id'),
+                                                        this.$t('common.email'),
+                                                        this.$t('admin.users.col_service'),
+                                                        this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
@@ -108,7 +108,7 @@
             },
 
             del_site_followers(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_follow/del_follower/'+id, {
                         _method: 'DELETE'

@@ -1,21 +1,21 @@
 <template>
     <div class="row">
         <div class="col-md-12">
-            <h1>Warehouse: {{ warehouse.name || 'Loading...' }}</h1>
-            <h2 v-if="warehouse.general">This warehouse is general!</h2>
+            <h1>{{ $t('admin.warehouses.warehouse_prefix') }} {{ warehouse.name || $t('admin.export.loading_ellipsis') }}</h1>
+            <h2 v-if="warehouse.general">{{ $t('admin.warehouses.this_warehouse_is_general') }}</h2>
         </div>
         <div class="col-md-12 mb-3">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-2">
                 <div class="d-flex align-items-center mb-2 mb-md-0">
-                    <button class="btn btn-success mr-2" @click="go_back()">Go back</button>
+                    <button class="btn btn-success mr-2" @click="go_back()">{{ $t('common.back') }}</button>
                 </div>
                 <div class="d-flex align-items-center flex-column flex-md-row">
-                    <button class="btn btn-success mb-2 mb-md-0 mr-md-3" @click="get_data()">Refresh</button>
+                    <button class="btn btn-success mb-2 mb-md-0 mr-md-3" @click="get_data()">{{ $t('common.refresh') }}</button>
                     <button class="btn btn-warning mb-2 mb-md-0 mr-md-3" @click="toggleScanMode()">
-                        {{ scanMode ? 'Close Scanner' : 'Scan Barcode' }}
+                        {{ scanMode ? $t('admin.warehouses.close_scanner_btn') : $t('admin.warehouses.scan_barcode_btn') }}
                     </button>
                     <button class="btn btn-primary" @click="showAddOptionModal()">
-                        Add Product Option
+                        {{ $t('admin.warehouses.add_product_option_btn') }}
                     </button>
                 </div>
             </div>
@@ -23,8 +23,8 @@
             <!-- Barcode scan panel -->
             <div v-if="scanMode" class="card border-warning mb-3">
                 <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-                    <strong>Barcode Scanner</strong>
-                    <button type="button" class="btn btn-sm btn-secondary" @click="toggleScanMode()">Close</button>
+                    <strong>{{ $t('admin.warehouses.barcode_scanner_title') }}</strong>
+                    <button type="button" class="btn btn-sm btn-secondary" @click="toggleScanMode()">{{ $t('common.close') }}</button>
                 </div>
                 <div class="card-body">
                     <div class="d-flex align-items-center" style="gap: 10px;">
@@ -34,7 +34,7 @@
                             v-model="scanBarcode"
                             @keydown.enter.prevent="submitScan()"
                             class="form-control"
-                            placeholder="Scan barcode or type and press Enter..."
+                            :placeholder="$t('admin.warehouses.scan_barcode_placeholder')"
                             autocomplete="off"
                             style="max-width: 400px;"
                         />
@@ -44,11 +44,11 @@
                             class="form-control"
                             min="1"
                             style="width: 90px;"
-                            placeholder="Qty"
+                            :placeholder="$t('admin.warehouses.qty_placeholder')"
                         />
                         <button class="btn btn-primary" @click="submitScan()" :disabled="scanLoading || !scanBarcode.trim()">
                             <span v-if="scanLoading" class="spinner-border spinner-border-sm" role="status"></span>
-                            {{ scanLoading ? '...' : 'Add' }}
+                            {{ scanLoading ? '...' : $t('admin.warehouses.add_btn') }}
                         </button>
                     </div>
                     <div v-if="scanResult" class="mt-2 alert" :class="scanResult.success ? 'alert-success' : 'alert-danger'">
@@ -58,28 +58,28 @@
             </div>
             <div class="d-flex align-items-center">
                 <div class="btn-group">
-                    <button 
-                        class="btn" 
+                    <button
+                        class="btn"
                         :class="viewMode === 'flat' ? 'btn-primary' : 'btn-secondary'"
                         @click="viewMode = 'flat'"
                     >
-                        Flat View
+                        {{ $t('admin.warehouses.flat_view_btn') }}
                     </button>
-                    <button 
-                        class="btn" 
+                    <button
+                        class="btn"
                         :class="viewMode === 'grouped' ? 'btn-primary' : 'btn-secondary'"
                         @click="viewMode = 'grouped'"
                     >
-                        Grouped by Product
+                        {{ $t('admin.warehouses.grouped_by_product_btn') }}
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="col-md-12 d-flex justify-content-between align-items-center">
-            <h3>Warehouse Product Options</h3>
+            <h3>{{ $t('admin.warehouses.warehouse_product_options_title') }}</h3>
             <div class="alert alert-info mb-0 py-2 px-3">
-                <strong>Total Stock Value: {{ totalWarehousePrice }} ₾</strong>
+                <strong>{{ $t('admin.warehouses.total_stock_value_prefix') }} {{ totalWarehousePrice }} ₾</strong>
             </div>
         </div>
 
@@ -88,7 +88,7 @@
             <div class="d-flex flex-wrap align-items-center" style="gap: 10px;">
                 <div style="min-width: 180px;">
                     <select class="form-control" v-model="filterBrand">
-                        <option value="">All Brands</option>
+                        <option value="">{{ $t('admin.warehouses.all_brands_option') }}</option>
                         <option v-for="brand in availableBrands" :key="brand.id" :value="brand.id">
                             {{ brand.name }}
                         </option>
@@ -96,14 +96,14 @@
                 </div>
                 <div style="min-width: 180px;">
                     <select class="form-control" v-model="filterCategory">
-                        <option value="">All Categories</option>
+                        <option value="">{{ $t('admin.export.all_categories_option') }}</option>
                         <option v-for="cat in availableCategories" :key="cat.id" :value="cat.id">
                             {{ cat.name }}
                         </option>
                     </select>
                 </div>
                 <button v-if="filterBrand || filterCategory" class="btn btn-secondary btn-sm" @click="filterBrand = ''; filterCategory = ''">
-                    Clear Filters
+                    {{ $t('admin.warehouses.clear_filters_btn') }}
                 </button>
             </div>
         </div>
@@ -112,7 +112,7 @@
             <!-- Loading state -->
             <div v-if="loading" class="text-center">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="sr-only">{{ $t('admin.export.loading_ellipsis') }}</span>
                 </div>
             </div>
 
@@ -121,9 +121,9 @@
                 <div v-for="productGroup in filtered_grouped_options" :key="productGroup.product_id" class="card mb-3">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">
-                            <span class="badge badge-info mr-2">Product</span>
+                            <span class="badge badge-info mr-2">{{ $t('admin.warehouses.product_badge') }}</span>
                             {{ productGroup.product_name }}
-                            <span class="badge badge-secondary ml-2">{{ productGroup.options.length }} options</span>
+                            <span class="badge badge-secondary ml-2">{{ productGroup.options.length }} {{ $t('admin.warehouses.options_suffix') }}</span>
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -131,14 +131,14 @@
                             <table class="table table-striped mb-0">
                                 <thead>
                                     <tr>
-                                        <th>Image</th>
-                                        <th>ID</th>
-                                        <th>Option Name</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th v-if="warehouse.general">Task</th>
-                                        <th>Migration</th>
-                                        <th>Delete</th>
+                                        <th>{{ $t('admin.warehouses.col_image') }}</th>
+                                        <th>{{ $t('common.id') }}</th>
+                                        <th>{{ $t('admin.warehouses.col_option_name') }}</th>
+                                        <th>{{ $t('common.price') }}</th>
+                                        <th>{{ $t('admin.warehouses.col_quantity') }}</th>
+                                        <th v-if="warehouse.general">{{ $t('admin.warehouses.col_task') }}</th>
+                                        <th>{{ $t('admin.warehouses.col_migration') }}</th>
+                                        <th>{{ $t('common.delete') }}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -156,7 +156,7 @@
                                                     class="btn btn-sm btn-danger"
                                                     @click="decrementQuantity(option)"
                                                     :disabled="option.pivot.quantity <= 0"
-                                                    title="Decrease quantity"
+                                                    :title="$t('admin.warehouses.decrease_quantity_tooltip')"
                                                 >
                                                     -
                                                 </button>
@@ -174,7 +174,7 @@
                                                     type="button"
                                                     class="btn btn-sm btn-info"
                                                     @click="incrementQuantity(option)"
-                                                    title="Increase quantity"
+                                                    :title="$t('admin.warehouses.increase_quantity_tooltip')"
                                                 >
                                                     +
                                                 </button>
@@ -182,17 +182,17 @@
                                         </td>
                                         <td v-if="warehouse.general">
                                             <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
-                                                Make task
+                                                {{ $t('admin.warehouses.make_task_btn') }}
                                             </button>
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
-                                                Migrate
+                                                {{ $t('admin.warehouses.migrate_btn') }}
                                             </button>
                                         </td>
                                         <td>
                                             <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
-                                                Delete
+                                                {{ $t('common.delete') }}
                                             </button>
                                         </td>
                                     </tr>
@@ -208,15 +208,15 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Image</th>
-                            <th>ID</th>
-                            <th>Product Name</th>
-                            <th>Option Name</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th v-if="warehouse.general">Task</th>
-                            <th>Migration</th>
-                            <th>Delete</th>
+                            <th>{{ $t('admin.warehouses.col_image') }}</th>
+                            <th>{{ $t('common.id') }}</th>
+                            <th>{{ $t('admin.warehouses.col_product_name') }}</th>
+                            <th>{{ $t('admin.warehouses.col_option_name') }}</th>
+                            <th>{{ $t('common.price') }}</th>
+                            <th>{{ $t('admin.warehouses.col_quantity') }}</th>
+                            <th v-if="warehouse.general">{{ $t('admin.warehouses.col_task') }}</th>
+                            <th>{{ $t('admin.warehouses.col_migration') }}</th>
+                            <th>{{ $t('common.delete') }}</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -235,7 +235,7 @@
                                         class="btn btn-sm btn-danger"
                                         @click="decrementQuantity(option)"
                                         :disabled="option.pivot.quantity <= 0"
-                                        title="Decrease quantity"
+                                        :title="$t('admin.warehouses.decrease_quantity_tooltip')"
                                     >
                                         -
                                     </button>
@@ -253,7 +253,7 @@
                                         type="button"
                                         class="btn btn-sm btn-info"
                                         @click="incrementQuantity(option)"
-                                        title="Increase quantity"
+                                        :title="$t('admin.warehouses.increase_quantity_tooltip')"
                                     >
                                         +
                                     </button>
@@ -261,17 +261,17 @@
                             </td>
                             <td v-if="warehouse.general">
                                 <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
-                                    Make task
+                                    {{ $t('admin.warehouses.make_task_btn') }}
                                 </button>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
-                                    Migrate
+                                    {{ $t('admin.warehouses.migrate_btn') }}
                                 </button>
                             </td>
                             <td>
                                 <button class="btn btn-sm btn-danger" @click="deleteOption(option)">
-                                    Delete
+                                    {{ $t('common.delete') }}
                                 </button>
                             </td>
                         </tr>
@@ -281,10 +281,10 @@
 
             <!-- Empty state -->
             <div v-else class="text-center">
-                <p v-if="filterBrand || filterCategory">No products match the selected filters.</p>
-                <p v-else>No product options found in this warehouse.</p>
+                <p v-if="filterBrand || filterCategory">{{ $t('admin.warehouses.no_products_match_filters') }}</p>
+                <p v-else>{{ $t('admin.warehouses.no_product_options_found') }}</p>
                 <button v-if="!filterBrand && !filterCategory" class="btn btn-primary" @click="showAddOptionModal()">
-                    Add First Product Option
+                    {{ $t('admin.warehouses.add_first_product_option_btn') }}
                 </button>
             </div>
         </div>
@@ -394,7 +394,7 @@
 
         methods: {
             go_back(){
-                // if (window.confirm('Added information will be deleted!!! Are you sure, you want go back?')) {
+                // if (window.confirm(this.$t('common.confirm_leave_unsaved'))) {
                     this.$router.go(-1)
                 // }
             },
@@ -423,7 +423,7 @@
                 .then(response => {
                     const opt = response.data.product_option;
                     const name = opt ? `${opt.product?.url_title || ''} — ${opt.name}` : '';
-                    this.scanResult = { success: true, message: `Added: ${name}` };
+                    this.scanResult = { success: true, message: `${this.$t('admin.warehouses.added_prefix')} ${name}` };
                     this.scanBarcode = '';
                     this.get_data();
                     this.$nextTick(() => {
@@ -431,7 +431,7 @@
                     });
                 })
                 .catch(error => {
-                    const msg = error.response?.data?.error || 'Scan failed';
+                    const msg = error.response?.data?.error || this.$t('admin.warehouses.scan_failed');
                     this.scanResult = { success: false, message: msg };
                     this.scanBarcode = '';
                     this.$nextTick(() => {
@@ -444,7 +444,7 @@
             },
 
             make_prodaction_task(){
-                alert('This feature is coming soon!')
+                alert(this.$t('admin.warehouses.coming_soon_feature'))
             },
 
             get_data(){
@@ -530,7 +530,7 @@
             },
 
             deleteOption(option) {
-                if (confirm(`Are you sure you want to delete "${option.name}" from this warehouse?`)) {
+                if (confirm(this.$t('admin.warehouses.confirm_delete_option', { name: option.name }))) {
                     axios.delete(`/set_warehouse/delete_product_option_from_warehouse/${this.$route.params.id}/${option.id}`)
                     .then(response => {
                         this.getWarehouseProductOptions();

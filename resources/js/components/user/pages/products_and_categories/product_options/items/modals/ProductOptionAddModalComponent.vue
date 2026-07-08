@@ -2,11 +2,11 @@
     <stack-modal
             :show="is_add_option_modal"
             size="xxl"
-            :title="'Add option'"
+            :title="$t('admin.shop.add_option_title')"
             @close="close_option_add_model"
             @save="add_option"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
             <div>
                 <div class="row justify-content-center" v-show="is_loading">
@@ -19,34 +19,34 @@
                     <!-- Left: form fields -->
                     <div class="col-md-5">
                         <form v-on:submit.prevent="add_option" id="add_new_option">
-                            <label class="form-label">Name</label>
-                            <input type="text" v-model="local_adding_data.name" class="form-control mb-3" placeholder="Name" required>
+                            <label class="form-label">{{ $t('common.name') }}</label>
+                            <input type="text" v-model="local_adding_data.name" class="form-control mb-3" :placeholder="$t('common.name')" required>
 
-                            <label class="form-label">Price</label>
-                            <input type="number" v-model="local_adding_data.price" class="form-control mb-3" placeholder="Price" required>
+                            <label class="form-label">{{ $t('admin.shop.price_label') }}</label>
+                            <input type="number" v-model="local_adding_data.price" class="form-control mb-3" :placeholder="$t('admin.shop.price_label')" required>
 
-                            <label class="form-label">Currency</label>
+                            <label class="form-label">{{ $t('admin.shop.currency_label') }}</label>
                             <select class="form-control mb-3" v-model="local_adding_data.currency">
                                 <option value="₾">₾</option>
                                 <option value="$" disabled>$</option>
                                 <option value="€" disabled>€</option>
                             </select>
 
-                            <label class="form-label">Discount (%)</label>
-                            <input type="number" max="100" min="0" v-model="local_adding_data.discount" class="form-control mb-3" placeholder="Discount">
+                            <label class="form-label">{{ $t('admin.shop.discount_percent_label') }}</label>
+                            <input type="number" max="100" min="0" v-model="local_adding_data.discount" class="form-control mb-3" :placeholder="$t('admin.shop.discount_col')">
 
-                            <label class="form-label">Barcode</label>
+                            <label class="form-label">{{ $t('admin.shop.barcode_label') }}</label>
                             <div v-if="!local_adding_data.barcode" class="mb-3">
                                 <div class="d-flex gap-2">
-                                    <input type="text" v-model="barcode_input" class="form-control" placeholder="Scan barcode here..." @keydown.enter.prevent="set_barcode_from_input">
-                                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="set_barcode_from_input" :disabled="!barcode_input">Set</button>
-                                    <button type="button" class="btn btn-outline-primary btn-sm" @click="generate_barcode">Generate</button>
+                                    <input type="text" v-model="barcode_input" class="form-control" :placeholder="$t('admin.shop.scan_barcode_placeholder')" @keydown.enter.prevent="set_barcode_from_input">
+                                    <button type="button" class="btn btn-outline-secondary btn-sm" @click="set_barcode_from_input" :disabled="!barcode_input">{{ $t('admin.shop.set_btn') }}</button>
+                                    <button type="button" class="btn btn-outline-primary btn-sm" @click="generate_barcode">{{ $t('admin.shop.generate_btn') }}</button>
                                 </div>
                             </div>
                             <div v-else class="mb-3">
                                 <div class="d-flex align-items-center gap-2 bg-light border rounded p-2">
                                     <code class="flex-grow-1 fw-bold text-primary">{{ local_adding_data.barcode }}</code>
-                                    <button type="button" class="btn btn-sm btn-outline-danger" @click="clear_barcode">✕ Clear</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" @click="clear_barcode">{{ $t('admin.shop.clear_btn') }}</button>
                                 </div>
                                 <barcode-image :code="local_adding_data.barcode" class="mt-2" />
                             </div>
@@ -56,7 +56,8 @@
                     <!-- Right: image gallery -->
                     <div class="col-md-7">
                         <gallery_images_add
-                            title_prop="Option Images"
+                            :title_prop="$t('admin.shop.option_images_title')"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_gallery_images="$emit('update_adding_images', $event)"
                         />
                     </div>

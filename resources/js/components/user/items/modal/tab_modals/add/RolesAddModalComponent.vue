@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_role_add_modal"
-            title="Add new role"
+            :title="$t('admin.users.add_new_role_title')"
             @close="close_role_add_modal()"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <form v-on:submit.prevent="add_role" id="add_role_form">
@@ -13,28 +13,28 @@
                     class="form-control"
                     id="name"
                     v-model="role_data.name"
-                    placeholder="Enter demo name"
+                    :placeholder="$t('admin.users.enter_role_name_placeholder')"
                     required
                 />
-                
+
                 <input
                     type="text"
                     class="form-control"
                     id="short description"
                     v-model="role_data.description"
-                    placeholder="Enter short description"
+                    :placeholder="$t('admin.users.enter_short_description_placeholder')"
                     required
                 />
             </form>
 
-            <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">Add new permission</button>
+            <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">{{ $t('admin.users.add_new_permission_btn') }}</button>
 
             <table class="table table-hover" id="dev-table">
                 <thead>
                     <tr>
-                        <th>Image</th>
+                        <th>{{ $t('admin.warehouses.col_image') }}</th>
                         <th>|</th>
-                        <th>Delite</th>
+                        <th>{{ $t('common.delete') }}</th>
                     </tr>
                 </thead>
 
@@ -42,15 +42,15 @@
                     <tr v-for="permission in permissions_array" :key="permission.id">
                         <td>
                             <form ref="myForm">
-                                <select class="form-control" v-on:change="onFileChange($event, permission.id)">> 
-                                    <option disabled selected>Select permission</option> 
-                                    <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option> 
+                                <select class="form-control" v-on:change="onFileChange($event, permission.id)">>
+                                    <option disabled selected>{{ $t('admin.users.select_permission_placeholder') }}</option>
+                                    <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.name }}</option>
                                 </select>
-                            </form> 
+                            </form>
                         </td>
                         <td>|</td>
                         <td>
-                            <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)">Delete</button>
+                            <button type="button" class="btn btn-danger" @click="del_bisnes_value(permission.id)">{{ $t('common.delete') }}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -63,7 +63,7 @@
                     :class="{'btn btn-primary': true}"
                     form="add_role_form"
                 >
-                Save role
+                {{ $t('admin.users.save_role_btn') }}
                 </button>
             </div>
         </div>

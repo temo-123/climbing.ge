@@ -94,7 +94,6 @@ import error_routes from "./routes/ErrorRoutes";
 
 var serviceRoutes = [];
 var homeComponent = [];
-let analytic_id = "";
 
 if (window.location.hostname == process.env.MIX_SITE_URL) {
     app.component("index-component", Index);
@@ -103,9 +102,7 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
     homeComponent = Index;
     serviceRoutes = site_routes.options ? site_routes.options.routes : site_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_CLIMBING_GUIDBOOK_ANALITICS_ID;
-} 
+}
 else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     app.component("main-wrapper-component", MainWrapper);
     app.component("shop-img", shop_img);
@@ -114,36 +111,28 @@ else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_SHOP_ANALITICS_ID;
-} 
+}
 else if (window.location.hostname == process.env.MIX_SUMMIT_URL) {
     app.component("summit-component", Summit);
 
     homeComponent = Summit;
     serviceRoutes = summit_routes.options ? summit_routes.options.routes : summit_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_SUMMIT_ANALITICS_ID;
-} 
+}
 else if (window.location.hostname == process.env.MIX_FILMS_URL) {
     app.component("studia-component", Films);
 
     homeComponent = Films;
     serviceRoutes = films_routes.options ? films_routes.options.routes : films_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_FILMS_ANALITICS_ID;
-} 
+}
 else if (window.location.hostname == process.env.MIX_BLOG_URL) {
     app.component("blog-component", Blog);
 
     homeComponent = Blog;
     serviceRoutes = blog_routes.options ? blog_routes.options.routes : blog_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_BLOG_ANALITICS_ID;
-} 
+}
 else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 
     app.component("left-menu", leftmenu);
@@ -156,17 +145,21 @@ else if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     homeComponent = Home;
     serviceRoutes = user_routes.options ? user_routes.options.routes : user_routes;
     axios.defaults.baseURL = window.location.origin + '/api';
-
-    analytic_id = process.env.MIX_USER_ANALITICS_ID;
-} 
+}
 else {
     homeComponent = Error;
     serviceRoutes = error_routes.options ? error_routes.options.routes : error_routes;
-    analytic_id = process.env.MIX_ERROR_PAGE_ANALITICS_ID;
 }
 
+// The GA tag ID is read from a server-rendered <meta> tag (set from config('services.analytics.*'),
+// itself backed by MIX_*_ANALITICS_ID in .env) rather than process.env.MIX_*_ANALITICS_ID directly.
+// Those MIX_ vars get baked into this bundle at `npm run build` time, so updating .env on the server
+// without rebuilding assets would otherwise never take effect — reading it from the DOM at runtime
+// means changing .env and reloading the page is enough, no rebuild/redeploy required.
+const analytic_id = document.querySelector('meta[name="ga-tag-id"]')?.content;
+
 import { createGtag } from "vue-gtag";
-if (analytic_id && analytic_id !== "...") {
+if (analytic_id) {
     app.use(createGtag({ tagId: analytic_id }));
 }
 

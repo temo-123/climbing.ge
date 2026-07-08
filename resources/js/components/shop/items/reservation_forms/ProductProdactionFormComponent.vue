@@ -28,7 +28,7 @@
                     <textarea v-model="form_data.text" class="form-control mb-3" rows="10" minlength="50" placeholder="Write Your Requirements" required></textarea>
 
                     <button type="submit" class="btn btn-primary">
-                        {{ $t('shop.product.message.send') }}
+                        {{ $t('common.send_email') }}
                     </button>
                 </form>
             </div>

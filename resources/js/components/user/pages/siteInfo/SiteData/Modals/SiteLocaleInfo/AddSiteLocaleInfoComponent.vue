@@ -1,10 +1,10 @@
 <template>
     <StackModal
             :show="is_show_modal"
-            title="Add locale data"
+            :title="$t('admin.site_info.add_locale_data_title')"
             @close="close_model"
             @save="$refs.add_site_locale_form.requestSubmit()"
-            :saveButton="{ visible: true, title: 'Save' }"
+            :saveButton="{ visible: true, title: $t('common.save') }"
             :cancelButton="{ visible: false }"
         >
         <div>
@@ -13,7 +13,7 @@
             />
 
             <form ref="add_site_locale_form" id="add_site_locale_data_form" v-on:submit.prevent="add_site_local_data">
-                <input type="text" class="form-control" v-model="data.slug" name="slug" id="Title" placeholder="Title" slug="Title">
+                <input type="text" class="form-control" v-model="data.slug" name="slug" id="Title" :placeholder="$t('common.title')" slug="Title">
 
                 <big_editor v-model="data.ka_data" />
                 <big_editor v-model="data.us_data" />

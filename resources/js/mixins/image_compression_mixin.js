@@ -53,7 +53,7 @@ export default {
         validateFileType(file) {
             const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!allowed.includes(file.type)) {
-                this.$bus.$emit('toast', { type: 'warning', title: 'Invalid file', message: `${file.name}: only JPEG, PNG, GIF, WebP allowed.`, duration: 4000 });
+                this.$bus.$emit('toast', { type: 'warning', title: this.$t('admin.gallery_manager.invalid_file_title'), message: this.$t('admin.gallery_manager.invalid_file_message', { name: file.name }), duration: 4000 });
                 return false;
             }
             return true;

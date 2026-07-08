@@ -2,20 +2,20 @@
     <div class="col-md-12">
         <div class="row edit_buttom">
             <div class="col-md-12">
-                <p class="text-center">These addresses are used for your order declarations. Manage them here to ensure accurate delivery.</p>
+                <p class="text-center">{{ $t('user.addresses.intro') }}</p>
             </div>
         </div>
 
         <div class="row">
             <div class="col-md-6">
                 <div class="form-groupe">
-                <button class="btn btn-primary" @click="open_add_modal()">Add New Address</button>
+                <button class="btn btn-primary" @click="open_add_modal()">{{ $t('user.addresses.add_new') }}</button>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="form-groupe">
-                    <button @click="get_adres" class="btn btn-success float-right" v-if="!is_adres_refresh">Refresh ({{adres_reset_id}})</button>
-                    <span class="badge badge-primare mb-1 float-right" v-if="is_adres_refresh">Updating...</span>
+                    <button @click="get_adres" class="btn btn-success float-right" v-if="!is_adres_refresh">{{ $t('common.refresh') }} ({{adres_reset_id}})</button>
+                    <span class="badge badge-primare mb-1 float-right" v-if="is_adres_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>
@@ -28,13 +28,13 @@
                             <input type="checkbox" class="all">
                         </th>
                         <th>|</th>
-                        <th>ID</th>
+                        <th>{{ $t('common.id') }}</th>
                         <th>|</th>
-                        <th>Address Name</th>
+                        <th>{{ $t('user.addresses.col_name') }}</th>
                         <th></th>
-                        <th>Edit</th>
+                        <th>{{ $t('common.edit') }}</th>
                         <th></th>
-                        <th>Delete</th>
+                        <th>{{ $t('common.delete') }}</th>
                     </tr>
                 </thead>
                 <tbody >
@@ -45,14 +45,14 @@
                         <td></td>
                         <td>{{ adres.id }}</td>
                         <td></td>
-                        <td @click="quick_viwe_adres(adres.id)" :style="'cursor: zoom-in'" title="Click to view details">{{ adres.name }}</td>
+                        <td @click="quick_viwe_adres(adres.id)" :style="'cursor: zoom-in'" :title="$t('user.addresses.click_to_view')">{{ adres.name }}</td>
                         <td></td>
                         <td>
-                            <a :href="'#'" class="btn btn-primary" type="submit" @click="open_edit_modal(adres.id)">Edit</a>
+                            <a :href="'#'" class="btn btn-primary" type="submit" @click="open_edit_modal(adres.id)">{{ $t('common.edit') }}</a>
                         </td>
                         <td></td>
                         <td>
-                            <button type="submit" class="btn btn-danger" @click="del_adres(adres.id)">Delete</button>
+                            <button type="submit" class="btn btn-danger" @click="del_adres(adres.id)">{{ $t('common.delete') }}</button>
                         </td>
                     </tr>
                 </tbody>
@@ -61,92 +61,92 @@
 
         <StackModal
                 v-model="is_add_adres"
-                title="Add New Address"
+                :title="$t('user.addresses.add_new')"
                 @close="is_add_adres=false"
                 @save="$refs.add_user_adres_form.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <form ref="add_user_adres_form" class="form" method="POST" id="add_user_adres_form" v-on:submit.prevent="add_new_adres">
-                    <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
-                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
+                    <input type="text" class="form-control" v-model="adding_data.demo_name" name="name" :placeholder="$t('user.addresses.name_placeholder')" :title="$t('user.addresses.name_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">{{ $t('user.addresses.error_name') }}</div>
 
-                    <select class="form-control" v-model="adding_data.region_id" name="Currency"> 
-                        <option :value="0" disabled>Country</option>
+                    <select class="form-control" v-model="adding_data.region_id" name="Currency">
+                        <option :value="0" disabled>{{ $t('common.country') }}</option>
                         <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.region }}</option>
-                    </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">Please select a country.</div>
+                    </select>
+                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">{{ $t('user.addresses.error_country') }}</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
+                    <input type="text" class="form-control" v-model="adding_data.city" name="city" id="city" :placeholder="$t('user.addresses.city_placeholder')" :title="$t('user.addresses.city_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.city">{{ $t('user.addresses.error_city') }}</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" placeholder="Enter your street" title="Enter your street">
-                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Please enter your street.</div>
+                    <input type="text" class="form-control" v-model="adding_data.strit" name="strit" id="strit" :placeholder="$t('user.addresses.street_placeholder')" :title="$t('user.addresses.street_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.strit">{{ $t('user.addresses.error_street') }}</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" placeholder="Enter your house number" title="Enter your house number">
-                    <div class="alert alert-danger" role="alert" v-if="errors.number">Please enter your house number.</div>
+                    <input type="text" class="form-control" v-model="adding_data.number" name="number" id="number" :placeholder="$t('user.addresses.house_number_placeholder')" :title="$t('user.addresses.house_number_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.number">{{ $t('user.addresses.error_house_number') }}</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" placeholder="Enter your floor (optional)" title="Enter your floor">
-                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Please enter your floor.</div>
+                    <input type="text" class="form-control" v-model="adding_data.floor" name="floor" id="floor" :placeholder="$t('user.addresses.floor_placeholder')" :title="$t('user.addresses.floor_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.floor">{{ $t('user.addresses.error_floor') }}</div>
 
-                    <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
-                    <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
-                    <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code">
+                    <input type="text" class="form-control" v-model="adding_data.flat" name="flat" id="flat" :placeholder="$t('user.addresses.flat_placeholder')" :title="$t('user.addresses.flat_placeholder')">
+                    <input type="text" class="form-control" v-model="adding_data.entrance" name="entrance" id="entrance" :placeholder="$t('user.addresses.entrance_placeholder')" :title="$t('user.addresses.entrance_placeholder')">
+                    <input type="text" class="form-control" v-model="adding_data.zip_code" name="zip code" id="zip code" :placeholder="$t('user.addresses.zip_placeholder')" :title="$t('user.addresses.zip_placeholder')">
             </form>
             </StackModal>
 
         <StackModal
                 v-model="is_edit_adres"
-                title="Edit Address"
+                :title="$t('user.addresses.edit_title')"
                 @close="is_edit_adres=false"
                 @save="$refs.edit_user_adres_form.requestSubmit()"
-                :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
             <form ref="edit_user_adres_form" class="form" method="POST" id="edit_user_adres_form" v-on:submit.prevent="edit_adres">
 
-                    <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" placeholder="Enter address name (e.g., Home, Work)" title="Enter address name">
-                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">Please enter an address name.</div>
+                    <input type="text" class="form-control" v-model="edit_data.demo_name" name="name" :placeholder="$t('user.addresses.name_placeholder')" :title="$t('user.addresses.name_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.demo_name">{{ $t('user.addresses.error_name') }}</div>
 
-                    <select class="form-control" v-model="edit_data.region_id" name="Currency"> 
-                        <option :value="0" disabled>Country</option>
+                    <select class="form-control" v-model="edit_data.region_id" name="Currency">
+                        <option :value="0" disabled>{{ $t('common.country') }}</option>
                         <option v-for="country in qounties" :key="country.id" :value="country.id" >{{ country.region }}</option>
-                    </select> 
-                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">Please select a country.</div>
+                    </select>
+                    <div class="alert alert-danger" role="alert" v-if="errors.region_id">{{ $t('user.addresses.error_country') }}</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" placeholder="Enter your city" title="Enter your city">
-                    <div class="alert alert-danger" role="alert" v-if="errors.city">Please enter your city.</div>
+                    <input type="text" class="form-control" v-model="edit_data.city" name="city" id="city" :placeholder="$t('user.addresses.city_placeholder')" :title="$t('user.addresses.city_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.city">{{ $t('user.addresses.error_city') }}</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.strit" name="strit" id="strit" placeholder="Enter your street" title="Enter your street">
-                    <div class="alert alert-danger" role="alert" v-if="errors.strit">Please enter your street.</div>
+                    <input type="text" class="form-control" v-model="edit_data.strit" name="strit" id="strit" :placeholder="$t('user.addresses.street_placeholder')" :title="$t('user.addresses.street_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.strit">{{ $t('user.addresses.error_street') }}</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.number" name="number" id="number" placeholder="Enter your house number" title="Enter your house number">
-                    <div class="alert alert-danger" role="alert" v-if="errors.number">Please enter your house number.</div>
+                    <input type="text" class="form-control" v-model="edit_data.number" name="number" id="number" :placeholder="$t('user.addresses.house_number_placeholder')" :title="$t('user.addresses.house_number_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.number">{{ $t('user.addresses.error_house_number') }}</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.floor" name="floor" id="floor" placeholder="Enter your floor (optional)" title="Enter your floor">
-                    <div class="alert alert-danger" role="alert" v-if="errors.floor">Please enter your floor.</div>
+                    <input type="text" class="form-control" v-model="edit_data.floor" name="floor" id="floor" :placeholder="$t('user.addresses.floor_placeholder')" :title="$t('user.addresses.floor_placeholder')">
+                    <div class="alert alert-danger" role="alert" v-if="errors.floor">{{ $t('user.addresses.error_floor') }}</div>
 
-                    <input type="text" class="form-control" v-model="edit_data.flat" name="flat" id="flat" placeholder="Enter your flat" title="Enter your flat">
-                    <input type="text" class="form-control" v-model="edit_data.entrance" name="entrance" id="entrance" placeholder="Enter your entrance" title="Enter your entrance">
-                    <input type="text" class="form-control" v-model="edit_data.zip_code" name="zip code" id="zip code" placeholder="Enter your zip code" title="Enter your zip code">
+                    <input type="text" class="form-control" v-model="edit_data.flat" name="flat" id="flat" :placeholder="$t('user.addresses.flat_placeholder')" :title="$t('user.addresses.flat_placeholder')">
+                    <input type="text" class="form-control" v-model="edit_data.entrance" name="entrance" id="entrance" :placeholder="$t('user.addresses.entrance_placeholder')" :title="$t('user.addresses.entrance_placeholder')">
+                    <input type="text" class="form-control" v-model="edit_data.zip_code" name="zip code" id="zip code" :placeholder="$t('user.addresses.zip_placeholder')" :title="$t('user.addresses.zip_placeholder')">
             </form>
             </StackModal>
 
         <StackModal
                 v-model="is_quick_viwe_adres_model"
-                :title="'Address Details: ' + quick_adres.name"
+                :title="$t('user.addresses.details_title', { name: quick_adres.name })"
                 @close="is_quick_viwe_adres_model=false"
                 :saveButton="{ visible: false }"
-                :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+                :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
             >
-                Country: {{ quick_adres.country }}
-                City: {{ quick_adres.city }}
-                Street: {{ quick_adres.strit }}
-                House Number: {{ quick_adres.number }}
-                Floor: {{ quick_adres.floor }}
-                Flat: {{ quick_adres.flat }}
-                Entrance: {{ quick_adres.entrance }}
-                Zip Code: {{ quick_adres.zip_code }}
+                {{ $t('user.addresses.detail_country', { value: quick_adres.country }) }}
+                {{ $t('user.addresses.detail_city', { value: quick_adres.city }) }}
+                {{ $t('user.addresses.detail_street', { value: quick_adres.strit }) }}
+                {{ $t('user.addresses.detail_house_number', { value: quick_adres.number }) }}
+                {{ $t('user.addresses.detail_floor', { value: quick_adres.floor }) }}
+                {{ $t('user.addresses.detail_flat', { value: quick_adres.flat }) }}
+                {{ $t('user.addresses.detail_entrance', { value: quick_adres.entrance }) }}
+                {{ $t('user.addresses.detail_zip', { value: quick_adres.zip_code }) }}
             </StackModal>
 
     </div>
@@ -395,7 +395,7 @@
             },
 
             del_adres(id) {
-                if(confirm('Are you sure you want to delete this address? This action cannot be undone.')){
+                if(confirm(this.$t('user.addresses.confirm_delete'))){
                     axios
                     .delete('/del_user_adreses/'+id)
                     .then(response => {

@@ -10,7 +10,7 @@
             </div>
         </div>
         <div class="col-md-12" v-if="rewiew_count_text_prop">
-            <h5 class="review-count">{{ reviews_count_prop }} Reviews ({{ reviews_stars_prop }} Stars)</h5>
+            <h5 class="review-count">{{ $t('global.reviews_stars_summary', { count: reviews_count_prop, stars: reviews_stars_prop }) }}</h5>
         </div>
     </div>
 </template>

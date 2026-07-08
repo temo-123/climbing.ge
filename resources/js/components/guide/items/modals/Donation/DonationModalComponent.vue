@@ -1,7 +1,7 @@
 <template>
   <StackModal
     v-model="is_show_donation_modal"
-    title="Support"
+    :title="$t('guide.donation.support')"
     size="lg"
     :cancelButton="{ visible: false }"
     :saveButton="{ visible: false }"
@@ -20,12 +20,12 @@
       <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
           <a class="nav-link" :class="{ active: activeTab === 'card' }" href="#" @click.prevent="activeTab = 'card'">
-            <i class="fa fa-credit-card mr-1"></i> Card
+            <i class="fa fa-credit-card mr-1"></i> {{ $t('guide.donation.card_tab') }}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" :class="{ active: activeTab === 'bank' }" href="#" @click.prevent="switchToBank">
-            <i class="fa fa-bank mr-1"></i> Bank Transfer
+            <i class="fa fa-bank mr-1"></i> {{ $t('guide.donation.bank_transfer_tab') }}
           </a>
         </li>
       </ul>
@@ -42,14 +42,14 @@
           <!-- Logged-in user: show read-only summary -->
           <div v-if="authUser" class="alert alert-info mb-0">
             <i class="fa fa-check-circle mr-2"></i>
-            Donating as <strong>{{ authUser.name }} {{ authUser.surname }}</strong> ({{ authUser.email }})
+            {{ $t('guide.donation.donating_as_prefix') }} <strong>{{ authUser.name }} {{ authUser.surname }}</strong> ({{ authUser.email }})
           </div>
 
           <!-- Guest: manual form -->
           <template v-else>
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label class="form-label">{{ $t('guide.donation.name') }}</label>
+                <label class="form-label">{{ $t('common.name') }}</label>
                 <input v-model="donator.name" type="text" class="form-control" :placeholder="$t('guide.donation.name_placeholder')">
               </div>
               <div class="col-md-6 mb-3">
@@ -64,14 +64,14 @@
                 <input v-model="donator.email" type="email" class="form-control" :placeholder="$t('guide.donation.email_placeholder')">
               </div>
               <div class="col-md-6 mb-3">
-                <label class="form-label">{{ $t('guide.donation.phone') }}</label>
+                <label class="form-label">{{ $t('common.phone_number') }}</label>
                 <input v-model="donator.phone_number" type="tel" class="form-control" :placeholder="$t('guide.donation.phone_placeholder')">
               </div>
             </div>
 
             <div class="row">
               <div class="col-md-6 mb-3">
-                <label class="form-label">{{ $t('guide.donation.country') }}</label>
+                <label class="form-label">{{ $t('common.country') }}</label>
                 <input v-model="donator.country" type="text" class="form-control" :placeholder="$t('guide.donation.country_placeholder')">
               </div>
               <div class="col-md-6 mb-3">
@@ -110,7 +110,7 @@
               v-model="customAmount"
               @input="onCustomAmountInput"
               class="form-control"
-              placeholder="Custom amount (GEL)"
+              :placeholder="$t('guide.donation.custom_amount_placeholder')"
               min="1"
             >
             <span class="input-group-text bg-success text-white font-weight-bold">GEL</span>
@@ -151,53 +151,53 @@
 
         <div v-if="bankLoading" class="text-center py-5">
           <span class="spinner-border text-success"></span>
-          <p class="mt-2 text-muted">Checking availability...</p>
+          <p class="mt-2 text-muted">{{ $t('guide.donation.checking_availability') }}</p>
         </div>
 
         <!-- Not allowed (outside Georgia) -->
         <div v-else-if="bankInfo && !bankInfo.allowed" class="text-center py-4">
           <i class="fa fa-map-marker fa-3x text-muted mb-3 d-block"></i>
-          <h5 class="text-muted">Bank transfer is only available in Georgia</h5>
-          <p class="text-muted">Please use card payment to donate from your country.</p>
+          <h5 class="text-muted">{{ $t('guide.donation.bank_only_georgia') }}</h5>
+          <p class="text-muted">{{ $t('guide.donation.use_card_payment_hint') }}</p>
         </div>
 
         <!-- Georgian user — show IBAN -->
         <div v-else-if="bankInfo && bankInfo.allowed">
           <div class="alert alert-info mb-4">
             <i class="fa fa-info-circle mr-2"></i>
-            Transfer any amount directly to our TBC Bank account. After the transfer, your donation will be confirmed.
+            {{ $t('guide.donation.bank_transfer_instructions') }}
           </div>
 
           <div class="bank-detail-card p-4 rounded mb-2">
             <div class="bank-detail-row">
-              <span class="bank-detail-label">Bank</span>
+              <span class="bank-detail-label">{{ $t('guide.donation.bank_label') }}</span>
               <span class="bank-detail-value">{{ bankInfo.bank_name }}</span>
             </div>
             <div class="bank-detail-row">
-              <span class="bank-detail-label">SWIFT / BIC</span>
+              <span class="bank-detail-label">{{ $t('guide.donation.swift_bic_label') }}</span>
               <span class="bank-detail-value">{{ bankInfo.bank_code }}</span>
             </div>
             <div class="bank-detail-row">
-              <span class="bank-detail-label">Account name</span>
+              <span class="bank-detail-label">{{ $t('guide.donation.account_name_label') }}</span>
               <span class="bank-detail-value">{{ bankInfo.account_name }}</span>
             </div>
             <div class="bank-detail-row iban-row">
-              <span class="bank-detail-label">IBAN</span>
+              <span class="bank-detail-label">{{ $t('guide.donation.iban_label') }}</span>
               <span class="bank-detail-value iban-value">{{ bankInfo.iban }}</span>
               <button class="btn btn-sm btn-outline-secondary ml-2 copy-btn" @click="copyIban" :class="{ 'btn-success text-white': ibanCopied }">
                 <i class="fa" :class="ibanCopied ? 'fa-check' : 'fa-copy'"></i>
-                {{ ibanCopied ? 'Copied!' : 'Copy' }}
+                {{ ibanCopied ? $t('guide.donation.copied_label') : $t('guide.donation.copy_label') }}
               </button>
             </div>
             <div class="bank-detail-row">
-              <span class="bank-detail-label">Currency</span>
-              <span class="bank-detail-value">GEL (Georgian Lari)</span>
+              <span class="bank-detail-label">{{ $t('guide.donation.currency_label') }}</span>
+              <span class="bank-detail-value">{{ $t('guide.donation.currency_value') }}</span>
             </div>
           </div>
 
           <div class="alert alert-warning mt-3 mb-0">
             <i class="fa fa-exclamation-triangle mr-2"></i>
-            Please use <strong>donation</strong> as the payment description.
+            {{ $t('guide.donation.payment_description_prefix') }} <strong>donation</strong> {{ $t('guide.donation.payment_description_suffix') }}
           </div>
         </div>
 
@@ -215,11 +215,6 @@
 export default {
     name: 'DonationModalComponent',
 
-    data: function() {
-        return {
-            is_show_donation_modal: false,
-        };
-    },
     data: function() {
         return {
             is_show_donation_modal: false,
@@ -312,7 +307,7 @@ export default {
             this.bankError = '';
             axios.get('get_donation/tbc_info')
                 .then(response => { this.bankInfo = response.data; })
-                .catch(() => { this.bankError = 'Could not load bank transfer details. Please try again later.'; })
+                .catch(() => { this.bankError = this.$t('guide.donation.bank_transfer_error'); })
                 .finally(() => { this.bankLoading = false; });
         },
 
@@ -326,7 +321,7 @@ export default {
 
         processDonation() {
             if (!this.isValidAmount) {
-                this.errorMessage = 'Please select or enter a valid amount.';
+                this.errorMessage = this.$t('guide.donation.invalid_amount');
                 return;
             }
             this.loading = true;
@@ -348,7 +343,7 @@ export default {
                     }
                 })
                 .catch(err => {
-                    this.errorMessage = err?.response?.data?.message || 'Something went wrong. Please try again.';
+                    this.errorMessage = err?.response?.data?.message || this.$t('guide.donation.error');
                 })
                 .finally(() => { this.loading = false; });
         },

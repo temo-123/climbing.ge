@@ -8,7 +8,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="alert alert-success" role="alert">
-                        <h1>Hi {{ this.user['name'] }}</h1>
+                        <h1>{{ $t('user.home.greeting', { name: this.user['name'] }) }}</h1>
                     </div>
                 </div>
             </div>
@@ -18,20 +18,20 @@
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header">Sites index pages</div>
+                        <div class="card-header">{{ $t('user.home.sites_index') }}</div>
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_guid" @click="go_to_service('guid')">Guidbook</button>
+                                    <button class="btn btn_service_guid" @click="go_to_service('guid')">{{ $t('user.home.guidebook') }}</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">Shop</button>
+                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">{{ $t('user.home.shop') }}</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">Blog</button>
+                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">{{ $t('user.home.blog') }}</button>
                                 </div>
                                 <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_summit" @click="go_to_service('summit')">Summits</button>
+                                    <button class="btn btn_service_summit" @click="go_to_service('summit')">{{ $t('user.home.summits') }}</button>
                                 </div>
                             </div>
                         </div>

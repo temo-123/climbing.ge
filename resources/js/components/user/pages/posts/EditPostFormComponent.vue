@@ -7,12 +7,12 @@
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="button" class="btn btn-primary" @click="go_back()">Back</button>
+                <button type="button" class="btn btn-primary" @click="go_back()">{{ $t('common.back') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading">
             <div class="form-group">  
-                <button type="button" class="btn btn-primary" @click="edit_post">Save</button>
+                <button type="button" class="btn btn-primary" @click="edit_post">{{ $t('common.save') }}</button>
             </div>
         </div>
         <div class="row" v-show="!is_loading" v-if="error.length != 0">
@@ -30,7 +30,7 @@
                     />
                     
                     <single_image_edit
-                        title_prop="Post image"
+                        :title_prop="$t('admin.posts.post_image_title')"
                         :existing_image_url_prop="post_old_image ? '/public/images/blog_img/'+post_old_image : ''"
                         :crop_ratio_prop="{ width: 16, height: 9 }"
                         @update_single_image="post_image = $event"
@@ -42,11 +42,11 @@
                 <div class="row">
                     <div class="col" >
                         <input type="radio" id="1" :value="1" v-model="tab_num">
-                        <label for="1" >English text</label>
+                        <label for="1" >{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col" >
                         <input type="radio" id="2" :value="2" v-model="tab_num">
-                        <label for="2" >Georgian text</label>
+                        <label for="2" >{{ $t('common.georgian_text') }}</label>
                     </div>
                 </div>
             </div>

@@ -5,8 +5,8 @@
                 <input
                     type="text"
                     class="form-control"
-                    placeholder="Search..."
-                    aria-label="Search"
+                    :placeholder="$t('admin.table.search_placeholder')"
+                    :aria-label="$t('admin.table.search')"
                     aria-describedby="basic-addon2"
                     v-model="search"
                     @input="onSearch"
@@ -18,7 +18,7 @@
                         type="button"
                         @click="onSearch"
                     >
-                        Search
+                        {{ $t('admin.table.search') }}
                     </button>
                 </div>
             </div>

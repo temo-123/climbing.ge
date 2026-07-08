@@ -5,7 +5,7 @@
         <div class="calc-hero">
             <div class="calc-hero-icon"><i class="fa fa-calculator"></i></div>
             <h1 class="calc-title">{{ $t('shop.wall.title') }}</h1>
-            <p class="calc-subtitle">Configure your climbing wall and get an instant price estimate</p>
+            <p class="calc-subtitle">{{ $t('shop.wall.subtitle') }}</p>
         </div>
 
         <!-- Step Progress Bar -->

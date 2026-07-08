@@ -71,7 +71,7 @@
                     .then(response => {
                         this.data_for_tab.push({
                             'id': 1,
-                            'table_name': 'Tours',
+                            'table_name': this.$t('admin.tour.tours_table'),
                             list_page: process.env.MIX_APP_SSH
                                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/tours'
                                 : window.location.origin + '/tours',
@@ -84,13 +84,13 @@
                                 'data': response.data,
                                 'tab': {
                                     'head': [
-                                        'ID',
-                                        'URL Title',
-                                        'Public',
-                                        'Guides',
-                                        'Edit Guides',
-                                        'Edit',
-                                        'Delete',
+                                        this.$t('common.id'),
+                                        this.$t('admin.tour.url_title_col'),
+                                        this.$t('admin.common.public'),
+                                        this.$t('admin.tour.guides_col'),
+                                        this.$t('admin.tour.edit_guides_col'),
+                                        this.$t('common.edit'),
+                                        this.$t('common.delete'),
                                     ],
                                     'body': [
                                         ['data', ['global_data', 'id']],
@@ -123,7 +123,7 @@
                     .then(response => {
                         this.data_for_tab.push({
                             'id': 2,
-                            'table_name': 'Tour categories',
+                            'table_name': this.$t('admin.tour.tour_categories_table'),
                             'add_action': {
                                 'action': 'fun',
                                 'link': 'show_add_category_modal',
@@ -132,7 +132,7 @@
                             'tab_data': {
                                 'data': response.data,
                                 'tab': {
-                                    'head': ['ID', 'Name', 'Edit', 'Delete'],
+                                    'head': [this.$t('common.id'), this.$t('common.name'), this.$t('common.edit'), this.$t('common.delete')],
                                     'body': [
                                         ['data', ['id']],
                                         ['data', ['us_name']],
@@ -159,14 +159,14 @@
                 this.$refs.tour_category_add_modal.open_modal()
             },
             del_category(id) {
-                if (confirm('Are you sure you want to delete this category?')) {
+                if (confirm(this.$t('admin.tour.confirm_delete_category'))) {
                     axios.delete('/set_tour/set_category/del_category/' + id)
                         .then(() => this.get_all_tours_data())
                         .catch(error => console.log(error))
                 }
             },
             del_tour(id) {
-                if (confirm('Are you sure you want to delete this tour?')) {
+                if (confirm(this.$t('admin.tour.confirm_delete_tour'))) {
                     axios.delete('/set_tour/del_tour/' + id)
                         .then(() => this.get_all_tours_data())
                         .catch(error => console.log(error))

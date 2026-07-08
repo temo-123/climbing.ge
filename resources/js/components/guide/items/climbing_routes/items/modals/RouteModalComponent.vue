@@ -21,13 +21,13 @@
                         <div class="modal-section basic-info">
                             <h2 class="section-title">{{ $t("guide.route.route_details") }}</h2>
 
-                            <p class="route-detail"><strong>{{ $t("guide.route.name") }}</strong> - {{ route.name || 'N/A' }}</p>
+                            <p class="route-detail"><strong>{{ $t("common.name") }}</strong> - {{ route.name || 'N/A' }}</p>
 
                             <p class="route-detail" v-if="route.height">
-                                <strong>{{ $t("guide.route.height") }}</strong> - {{ route.height }}
+                                <strong>{{ $t("common.height") }}</strong> - {{ route.height }}
                             </p>
 
-                            <p v-if="route.category"><strong>{{ $t("guide.route.category") }}</strong> - {{ getCategoryText(route.category) }}</p>
+                            <p v-if="route.category"><strong>{{ $t("common.category") }}</strong> - {{ getCategoryText(route.category) }}</p>
 
                             <p class="route-detail" v-if="route.bolts"><strong>{{ $t("guide.route.bolts") }}</strong> - {{ route.bolts }}</p>
 
@@ -104,7 +104,7 @@
                         </div>
 
                         <div class="modal-section description" v-if="routeDescription">
-                            <h3 class="section-title">{{ $t('guide.route.description') }}</h3>
+                            <h3 class="section-title">{{ $t('common.description') }}</h3>
                             <div class="description-content">
                                 <span v-html="routeDescription"></span>
                             </div>

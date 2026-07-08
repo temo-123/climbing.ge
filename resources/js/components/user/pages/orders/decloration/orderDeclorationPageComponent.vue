@@ -7,7 +7,7 @@
                     <div class="row mb-3">
                         <div class="col">
                             <button class="btn btn-outline-secondary" @click="go_back">
-                                <i class="fa fa-arrow-left" aria-hidden="true"></i> Back
+                                <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.checkout.back') }}
                             </button>
                         </div>
                         <div class="col text-right">
@@ -15,8 +15,8 @@
                                 <i v-if="!create_order_loading" :class="selected_payment === 'online payment' ? 'fa fa-credit-card' : 'fa fa-check'" aria-hidden="true"></i>
                                 <i v-else class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                 {{ create_order_loading
-                                    ? (selected_payment === 'online payment' ? 'Redirecting to payment...' : 'Placing order...')
-                                    : (selected_payment === 'online payment' ? 'Place order & Pay online' : 'Place order') }}
+                                    ? (selected_payment === 'online payment' ? $t('user.checkout.redirecting_to_payment') : $t('user.checkout.placing_order'))
+                                    : (selected_payment === 'online payment' ? $t('user.checkout.place_order_pay_online') : $t('user.checkout.place_order')) }}
                             </button>
                         </div>
                     </div>
@@ -30,8 +30,8 @@
                             <i class="fa fa-spinner fa-spin fa-2x" aria-hidden="true"></i>
                             <p class="mt-2">
                                 {{ selected_payment === 'online payment'
-                                    ? 'Creating order and redirecting to TBC Bank...'
-                                    : 'Placing your order...' }}
+                                    ? $t('user.checkout.creating_order_redirecting')
+                                    : $t('user.checkout.placing_your_order') }}
                             </p>
                         </div>
                     </div>
@@ -44,8 +44,8 @@
                         <div class="col-12">
                             <div class="alert alert-info">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
-                                <strong> Estimated delivery: {{ delivery_days }} business days</strong>
-                                <span v-if="has_produced_by_order" class="ml-2 text-muted">(includes made-to-order items)</span>
+                                <strong> {{ $t('user.checkout.estimated_delivery', { days: delivery_days }) }}</strong>
+                                <span v-if="has_produced_by_order" class="ml-2 text-muted">{{ $t('user.checkout.includes_made_to_order') }}</span>
                             </div>
                         </div>
                     </div>
@@ -53,17 +53,17 @@
                     <div v-if="!create_order_loading" class="row mb-3">
                         <div class="col-md-6">
                             <div class="alert alert-secondary">
-                                <h5><i class="fa fa-map-marker" aria-hidden="true"></i> Delivery address</h5>
+                                <h5><i class="fa fa-map-marker" aria-hidden="true"></i> {{ $t('user.checkout.delivery_address') }}</h5>
                                 <template v-if="activ_adres && activ_adres.name">
                                     <strong>{{ activ_adres.name }}</strong>
                                     <p class="mb-0 text-muted small">
                                         {{ activ_adres.city }}, {{ activ_adres.strit }} {{ activ_adres.number }}
-                                        <span v-if="activ_adres.floor">, Floor {{ activ_adres.floor }}</span>
-                                        <span v-if="activ_adres.flat">, Flat {{ activ_adres.flat }}</span>
+                                        <span v-if="activ_adres.floor">, {{ $t('user.checkout.floor', { value: activ_adres.floor }) }}</span>
+                                        <span v-if="activ_adres.flat">, {{ $t('user.checkout.flat', { value: activ_adres.flat }) }}</span>
                                     </p>
-                                    <p class="mb-0 text-muted small" v-if="activ_adres.zip_code">Zip: {{ activ_adres.zip_code }}</p>
+                                    <p class="mb-0 text-muted small" v-if="activ_adres.zip_code">{{ $t('user.checkout.zip', { value: activ_adres.zip_code }) }}</p>
                                 </template>
-                                <span v-else class="text-muted">Loading address...</span>
+                                <span v-else class="text-muted">{{ $t('user.checkout.loading_address') }}</span>
                             </div>
                         </div>
 
@@ -71,7 +71,7 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">
-                                        <i class="fa fa-credit-card mr-2"></i> Payment method
+                                        <i class="fa fa-credit-card mr-2"></i> {{ $t('user.checkout.payment_method') }}
                                     </h5>
 
                                     <div class="payment-options mb-3">
@@ -83,8 +83,8 @@
                                                 class="sr-only"
                                             />
                                             <i class="fa fa-truck mr-2 text-secondary"></i>
-                                            <span class="font-weight-bold">Pay on delivery</span>
-                                            <small class="d-block text-muted mt-1">Cash or card when you receive the order</small>
+                                            <span class="font-weight-bold">{{ $t('user.checkout.pay_on_delivery') }}</span>
+                                            <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_on_delivery_desc') }}</small>
                                         </label>
 
                                         <label class="payment-option" :class="{ active: selected_payment === 'online payment' }">
@@ -95,18 +95,18 @@
                                                 class="sr-only"
                                             />
                                             <span class="tbc-logo mr-2">TBC</span>
-                                            <span class="font-weight-bold">Pay online</span>
-                                            <small class="d-block text-muted mt-1">Secure card payment via TBC Bank</small>
+                                            <span class="font-weight-bold">{{ $t('user.checkout.pay_online') }}</span>
+                                            <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_online_desc') }}</small>
                                         </label>
                                     </div>
 
                                     <div v-if="selected_payment === 'online payment'" class="alert alert-info mb-0 py-2 small">
                                         <i class="fa fa-lock mr-1"></i>
-                                        You will be redirected to TBC Bank secure payment page after clicking <strong>Place order</strong>.
+                                        {{ $t('user.checkout.online_payment_notice') }}
                                     </div>
                                     <div v-else class="alert alert-warning mb-0 py-2 small">
                                         <i class="fa fa-info-circle mr-1"></i>
-                                        Pay the courier when you receive your order.
+                                        {{ $t('user.checkout.cod_notice') }}
                                     </div>
                                 </div>
                             </div>
@@ -119,12 +119,12 @@
                                 <table class="table table-hover">
                                     <thead class="thead-light">
                                         <tr>
-                                            <th>#</th>
-                                            <th>Product</th>
-                                            <th>Option</th>
-                                            <th class="text-center">Qty</th>
-                                            <th class="text-right">Price</th>
-                                            <th class="text-right">Total</th>
+                                            <th>{{ $t('user.checkout.col_number') }}</th>
+                                            <th>{{ $t('common.product') }}</th>
+                                            <th>{{ $t('user.checkout.col_option') }}</th>
+                                            <th class="text-center">{{ $t('user.checkout.col_qty') }}</th>
+                                            <th class="text-right">{{ $t('common.price') }}</th>
+                                            <th class="text-right">{{ $t('user.checkout.col_total') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -147,17 +147,17 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="5" class="text-right text-muted">Shipping:</td>
+                                            <td colspan="5" class="text-right text-muted">{{ $t('user.checkout.shipping') }}</td>
                                             <td class="text-right">{{ shiping }} ₾</td>
                                             <td></td>
                                         </tr>
                                         <tr v-if="$route.params.discount && $route.params.discount > 0">
-                                            <td colspan="5" class="text-right text-success">Discount ({{ $route.params.discount }}%):</td>
+                                            <td colspan="5" class="text-right text-success">{{ $t('user.checkout.discount', { percent: $route.params.discount }) }}</td>
                                             <td class="text-right text-success">−{{ discount_amount }} ₾</td>
                                             <td></td>
                                         </tr>
                                         <tr class="font-weight-bold">
-                                            <td colspan="5" class="text-right">Total:</td>
+                                            <td colspan="5" class="text-right">{{ $t('user.checkout.total') }}</td>
                                             <td class="text-right">{{ total_price }} ₾</td>
                                             <td></td>
                                         </tr>
@@ -168,7 +168,7 @@
                     </div>
 
                     <div v-if="!cart_items.length && !create_order_loading" class="alert alert-warning text-center">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Your cart is empty.
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> {{ $t('user.checkout.empty_cart') }}
                     </div>
 
                 </div>
@@ -251,7 +251,7 @@
                 return price ? (parseFloat(price) * quantity).toFixed(2) : 0
             },
             del_from_cart(item_id) {
-                if (confirm('Remove this item from the order?')) {
+                if (confirm(this.$t('user.checkout.confirm_remove_item'))) {
                     axios.delete("cart/" + item_id)
                         .then(() => this.get_products_cart())
                         .catch(error => console.log(error))
@@ -295,7 +295,7 @@
                 }).catch(error => {
                     this.order_error = error.response && error.response.data && error.response.data.error
                         ? error.response.data.error
-                        : 'Failed to place order. Please try again.'
+                        : this.$t('user.checkout.create_order_error')
                 }).finally(() => this.create_order_loading = false)
             },
         }

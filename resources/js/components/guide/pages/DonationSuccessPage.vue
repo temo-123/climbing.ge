@@ -4,29 +4,29 @@
             <div class="col-md-6 text-center">
                 <div v-if="loading" class="py-5">
                     <i class="fa fa-spinner fa-spin fa-3x text-success"></i>
-                    <p class="mt-3 text-muted">Verifying donation...</p>
+                    <p class="mt-3 text-muted">{{ $t('guide.donation.verifying_donation') }}</p>
                 </div>
 
                 <div v-else-if="paid" class="alert alert-success p-5">
                     <i class="fa fa-heart fa-4x text-danger mb-3 d-block"></i>
-                    <h3>Thank You!</h3>
-                    <p>Your donation of <strong>{{ amount }} GEL</strong> has been received.</p>
-                    <p class="text-muted">Your support helps keep Georgian climbing routes alive.</p>
-                    <a href="/" class="btn btn-success mt-3">Back to Guidebook</a>
+                    <h3>{{ $t('guide.donation.thank_you_title') }}</h3>
+                    <p>{{ $t('guide.donation.donation_of_prefix') }} <strong>{{ amount }} {{ $t('guide.donation.gel') }}</strong> {{ $t('guide.donation.has_been_received_suffix') }}</p>
+                    <p class="text-muted">{{ $t('guide.donation.support_helps_georgian_routes') }}</p>
+                    <a href="/" class="btn btn-success mt-3">{{ $t('guide.donation.back_to_guidebook_btn') }}</a>
                 </div>
 
                 <div v-else-if="failed" class="alert alert-danger p-5">
                     <i class="fa fa-times-circle fa-4x text-danger mb-3 d-block"></i>
-                    <h3>Donation Failed</h3>
-                    <p class="text-muted">The payment was not completed. Please try again.</p>
-                    <a href="/" class="btn btn-outline-secondary mt-3">Back to Guidebook</a>
+                    <h3>{{ $t('guide.donation.donation_failed_title') }}</h3>
+                    <p class="text-muted">{{ $t('guide.donation.payment_not_completed_try_again') }}</p>
+                    <a href="/" class="btn btn-outline-secondary mt-3">{{ $t('guide.donation.back_to_guidebook_btn') }}</a>
                 </div>
 
                 <div v-else class="alert alert-warning p-5">
                     <i class="fa fa-clock-o fa-4x text-warning mb-3 d-block"></i>
-                    <h3>Processing...</h3>
-                    <p class="text-muted">Your donation is being processed. Thank you!</p>
-                    <a href="/" class="btn btn-outline-secondary mt-3">Back to Guidebook</a>
+                    <h3>{{ $t('guide.donation.processing_ellipsis_title') }}</h3>
+                    <p class="text-muted">{{ $t('guide.donation.donation_being_processed_thanks') }}</p>
+                    <a href="/" class="btn btn-outline-secondary mt-3">{{ $t('guide.donation.back_to_guidebook_btn') }}</a>
                 </div>
             </div>
         </div>

@@ -1,27 +1,27 @@
 <template>
     <stack-modal
             :show="is_order_sale_code_add_model"
-            title="Add order sale_code"
+            :title="$t('admin.shop.add_sale_code_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
-            <h1>Add shiped sale_code</h1>
+            <h1>{{ $t('admin.shop.add_sale_code_title') }}</h1>
             <form v-on:submit.prevent="add_sale_code" id="add_sale_code">
-                <input type="text" class="form-control" v-model="data.code" name="sale code" placeholder="Code" title="Code" required>
+                <input type="text" class="form-control" v-model="data.code" name="sale code" :placeholder="$t('admin.shop.code_label')" :title="$t('admin.shop.code_label')" required>
 
                 <button
                     type="botton"
                     :class="{'btn btn-primary': true}"
                     @click="generate_code()"
                 >
-                Generation Random code
+                {{ $t('admin.shop.generate_random_code_btn') }}
                 </button>
 
-                <input type="number" max="100" min="1" class="form-control" v-model="data.discount" name="discount" placeholder="Discount" title="Discount" required> %
-                <input type="checkbox" id="scales" v-model="data.one_time_code" name="scales" placeholder="One time code" title="One time code"> One time cde
-                <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" placeholder="Action_data" title="Action_data" v-if="!data.one_time_code">
+                <input type="number" max="100" min="1" class="form-control" v-model="data.discount" name="discount" :placeholder="$t('admin.shop.discount_label')" :title="$t('admin.shop.discount_label')" required> %
+                <input type="checkbox" id="scales" v-model="data.one_time_code" name="scales" :placeholder="$t('admin.shop.one_time_code')" :title="$t('admin.shop.one_time_code')"> {{ $t('admin.shop.one_time_code') }}
+                <input type="datetime-local" class="form-control" v-model="data.action_data" name="action_data" :placeholder="$t('admin.shop.action_data')" :title="$t('admin.shop.action_data')" v-if="!data.one_time_code">
             </form>
         </div>
         <div slot="modal-footer">
@@ -31,7 +31,7 @@
                     form="add_sale_code"
                     :class="{'btn btn-primary': true}"
                 >
-                Add sale_code
+                {{ $t('admin.shop.add_sale_code_btn') }}
                 </button>
             </div>
         </div>
@@ -90,7 +90,7 @@
                         _method: 'Post'
                     })
                     .then(Response => {
-                        alert('Code added successfully')
+                        alert(this.$t('admin.shop.code_added_successfully'))
                         this.$emit('update')
                         this.is_order_sale_code_add_model = false
                         this.clear_form()
@@ -109,7 +109,7 @@
                 this.is_order_sale_code_add_model = true
             },
             close_modal(){
-                if(confirm('Are you sure, you want close form? All data whil deleted!')){
+                if(confirm(this.$t('admin.live_camera.confirm_close_form_discard'))){
                     this.is_order_sale_code_add_model = false
                     this.clear_form()
                 }

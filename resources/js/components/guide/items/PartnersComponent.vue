@@ -2,7 +2,7 @@
     <div class="partners" v-if="partners.length > 0">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('guide.title.partners') }}</h2>
+            <h2 class='index_h2'>{{ $t('guide.title.partner') }}</h2>
 
             <div class="bar"><i class="fa fa-handshake-o"></i></div>
 

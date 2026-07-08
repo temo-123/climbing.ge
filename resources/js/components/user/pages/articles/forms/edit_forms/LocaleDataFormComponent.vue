@@ -10,28 +10,28 @@
             <div class="wrapper container-fluid container">
                 <form method="POST"  :headers="{'x-csrf-token': token}">
                     <div class="form-group clearfix row" >
-                        <label for="name" class='col-md-2 control-label'> Title </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('common.title') }} </label>
                         <div class="col-md-10">
                             <input type="text" name="name" v-model="data.title"  class="form-control"> 
                         </div>
                     </div>
     
                     <div class="form-group clearfix row" v-if="locale_prop == 'us'">
-                        <label for="name" class='col-md-4 control-label'> Change URL title </label>
+                        <label for="name" class='col-md-4 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
                         <div class="col-md-8">
                             <input type="checkbox" id="scales" name="scales" v-model="is_change_url_title" @click="change_url_title_in_global_bisnes()">
                         </div>
                     </div>
 
                     <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> Short description </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
                         <div class="col-md-10">
                             <small_editor v-model="data.short_description" />
                         </div>
                     </div>
 
                     <div class="form-group clearfix row">
-                        <label for="name" class='col-md-2 control-label'> text </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                         <div class="col-md-10">
                             <big_editor v-model="data.text" />
                         </div>
@@ -40,7 +40,7 @@
                     <hr v-if="category == 'outdoor'">
 
                     <div class="form-group clearfix row" v-if="category != 'mount_route' && category != 'partners' && ( category == 'outdoor' || category == 'ice' || category == 'indoor' ) ">
-                        <label for="name" class='col-md-2 control-label'> How to get hear </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.how_to_get_here') }} </label>
                         <div class="col-md-10">
                             <big_editor v-model="data.how_get" />
                         </div>
@@ -50,7 +50,7 @@
 
                     <span v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice'">
                     <GlobalInfoFormBlock
-                        :title_prop="'Routes description'" 
+                        :title_prop="$t('admin.articles.locale_form.routes_description')"
                         :form_value_name_prop="'route'"
                         :form_data_prop=data.route 
                         :locale_prop="locale_prop"
@@ -68,7 +68,7 @@
                     </span>
                     <span v-if="category != 'partners' && category == 'outdoor' || category == 'ice'">
                     <GlobalInfoFormBlock
-                        :title_prop="'Best time for climbing'" 
+                        :title_prop="$t('admin.articles.locale_form.best_time_climbing')"
                         :form_value_name_prop="'best_time'"
                         :form_data_prop=data.best_time 
                         :locale_prop="locale_prop"
@@ -89,7 +89,7 @@
 
                     <span v-if="category != 'partners' && category == 'mount_route' || category == 'outdoor' || category == 'ice' || category == 'indoor'">
                     <GlobalInfoFormBlock
-                        :title_prop="'What you need'" 
+                        :title_prop="$t('admin.articles.locale_form.what_you_need')"
                         :form_value_name_prop="'what_need'"
                         :form_data_prop=data.what_need 
                         :locale_prop="locale_prop"
@@ -110,7 +110,7 @@
 
                     <span v-if="category != 'partners'">
                     <GlobalInfoFormBlock
-                        :title_prop="'Contact info'" 
+                        :title_prop="$t('admin.articles.locale_form.contact_info')"
                         :form_value_name_prop="'info'"
                         :form_data_prop=data.info 
                         :locale_prop="locale_prop"
@@ -128,7 +128,7 @@
                     </span>
                     <span v-else>
                         <div class="form-group clearfix row">
-                            <label for="name" class='col-md-2 control-label'> Info / contact </label>
+                            <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.info_contact') }} </label>
                             <div class="col-md-10">
                                 <div class="col-md-12" >
                                     <big_editor v-model="data.text" />
@@ -140,7 +140,7 @@
                     <hr>
 
                     <div class="form-group clearfix row" v-if="category == 'indoor'">
-                        <label for="name" class='col-md-2 control-label'> Price description </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.price_description') }} </label>
                         <div class="col-md-10">
                             <big_editor v-model="data.price_text" />
                         </div>
@@ -231,7 +231,7 @@
 
             change_url_title_in_global_bisnes(){
                 if(!this.is_change_url_title){
-                    if(confirm('Are you sure, you want change URL title? It vhile bad for SEO potimization')){
+                    if(confirm(this.$t('admin.articles.locale_form.confirm_change_url_title'))){
                         this.is_change_url_title = true
                     }
                     else{

@@ -41,7 +41,7 @@ class ProductController extends Controller
         $validator = Validator::make($data['global_product'], [
             'subcategory_id' => 'required',
             'brand_id' => 'required',
-            'sale_type' => 'required|in:custom_production,online_order',
+            'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
         ]);
         
         if ($validator->fails()) {
@@ -194,7 +194,7 @@ class ProductController extends Controller
 
             'subcategory_id' => 'required',
             'brand_id' => 'required',
-            'sale_type' => 'required|in:custom_production,online_order',
+            'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
         ]);
         
         if ($validator->fails()) {

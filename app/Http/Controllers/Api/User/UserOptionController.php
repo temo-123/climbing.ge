@@ -40,6 +40,10 @@ class UserOptionController extends Controller
                 $editing_item['phone_number'] = $request->data['phone_number'];
                 $editing_item['email'] = $request->data['email'];
 
+                if (in_array($request->data['lang'] ?? null, ['us', 'ka'])) {
+                    $editing_item['lang'] = $request->data['lang'];
+                }
+
                 $editing_item -> update();
             }
             else{

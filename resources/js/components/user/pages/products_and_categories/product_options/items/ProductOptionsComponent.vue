@@ -7,17 +7,17 @@
             </div>
 
             <div v-else>
-                <h1 v-if="product && product.title">Product title - <strong>{{ product.title }}</strong></h1>
-                <p v-if="product && product.material != null">Material - <strong>{{ product.material }}</strong></p>
-                <p v-if="product && product.discount != null">Discount - <strong>{{ product.discount }} %</strong></p>
-                <p v-if="product && product.mead_in_georgia != null">Mead in georgia - <strong>{{ product.mead_in_georgia }}</strong></p>
-                <p v-if="product && product.sale_type">Sale type - <strong>{{ product.sale_type }}</strong></p>
+                <h1 v-if="product && product.title">{{ $t('admin.shop.product_title_prefix') }} <strong>{{ product.title }}</strong></h1>
+                <p v-if="product && product.material != null">{{ $t('admin.shop.material_prefix') }} <strong>{{ product.material }}</strong></p>
+                <p v-if="product && product.discount != null">{{ $t('admin.shop.discount_prefix') }} <strong>{{ product.discount }} %</strong></p>
+                <p v-if="product && product.mead_in_georgia != null">{{ $t('admin.shop.made_in_georgia_prefix') }} <strong>{{ product.mead_in_georgia }}</strong></p>
+                <p v-if="product && product.sale_type">{{ $t('admin.shop.sale_type_prefix') }} <strong>{{ product.sale_type }}</strong></p>
                 <!-- <p>Category - <strong>{{ product.product_category.us_name }}</strong></p> -->
 
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-groupe">
-                            <router-link v-if="product && product.id" class="btn btn-primary" :to="{ name: 'productEdit', params: { id: product.id } }">Edit product</router-link>
+                            <router-link v-if="product && product.id" class="btn btn-primary" :to="{ name: 'productEdit', params: { id: product.id } }">{{ $t('admin.shop.edit_product_link') }}</router-link>
                         </div>
                     </div>
                 </div>
@@ -31,12 +31,12 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-groupe">
-                            <button class="btn btn-primary" @click="new_option_model()">Add new option</button>
+                            <button class="btn btn-primary" @click="new_option_model()">{{ $t('admin.shop.add_new_option') }}</button>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-groupe float-right">
-                            <button class="btn btn-success" @click="get_activ_product_options()">Refresh</button>
+                            <button class="btn btn-success" @click="get_activ_product_options()">{{ $t('common.refresh') }}</button>
                         </div>
                     </div>
                 </div>
@@ -151,7 +151,7 @@
                 this.update_option();
             },
             del_option(option_id) {
-                if (confirm('Are you sure you want to delete this option?')) {
+                if (confirm(this.$t('admin.shop.confirm_delete_option'))) {
                     this.delete_option(option_id);
                 }
             },
@@ -163,7 +163,7 @@
                     this.product = response.data.product;
                 } catch (error) {
                     console.error('Error fetching product:', error);
-                    alert('Failed to load product data');
+                    alert(this.$t('admin.shop.failed_load_product_data'));
                 } finally {
                     this.is_loading_product = false;
                 }
@@ -175,7 +175,7 @@
                     this.product_options = response.data.options;
                 } catch (error) {
                     console.error('Error fetching product options:', error);
-                    alert('Failed to load product options');
+                    alert(this.$t('admin.shop.failed_load_product_options'));
                 }
             },
             
@@ -186,7 +186,7 @@
                     this.is_edit_option_modal = true;
                 } catch (error) {
                     console.error('Error fetching option for edit:', error);
-                    alert('Failed to load option data');
+                    alert(this.$t('admin.shop.failed_load_option_data'));
                 } finally {
                     this.is_loading_editing_modal = false;
                 }
@@ -214,10 +214,10 @@
                     
                     this.close_option_add_model();
                     await this.get_activ_product_options();
-                    alert('Option added successfully');
+                    alert(this.$t('admin.shop.option_added_success'));
                 } catch (error) {
                     console.error('Error adding option:', error);
-                    alert('Failed to add option');
+                    alert(this.$t('admin.shop.failed_add_option'));
                 } finally {
                     this.is_loading = false;
                 }
@@ -244,10 +244,10 @@
                     
                     this.close_option_edit_model();
                     await this.get_activ_product_options();
-                    alert('Option updated successfully');
+                    alert(this.$t('admin.shop.option_updated_success'));
                 } catch (error) {
                     console.error('Error updating option:', error);
-                    alert('Failed to update option');
+                    alert(this.$t('admin.shop.failed_update_option'));
                 } finally {
                     this.is_loading = false;
                 }
@@ -257,10 +257,10 @@
                 try {
                     await axios.delete('/set_product/set_product_option/del_option/' + option_id);
                     await this.get_activ_product_options();
-                    alert('Option deleted successfully');
+                    alert(this.$t('admin.shop.option_deleted_success'));
                 } catch (error) {
                     console.error('Error deleting option:', error);
-                    alert('Failed to delete option');
+                    alert(this.$t('admin.shop.failed_delete_option'));
                 }
             }
         }

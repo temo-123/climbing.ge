@@ -4,7 +4,7 @@
     :title="$t('guide.route.create_feedback_title')"
     @close="close_modal"
     :modal-class="{ [modalClass]: true }"
-    :saveButton="(success_message || captcha_error) ? { visible: false } : { visible: true, title: $t('global.save') || 'Save' }"
+    :saveButton="(success_message || captcha_error) ? { visible: false } : { visible: true, title: $t('common.save') || 'Save' }"
     @save="submit_review"
     :cancelButton="{
         title: $t('guide.route.back_to_modal'),

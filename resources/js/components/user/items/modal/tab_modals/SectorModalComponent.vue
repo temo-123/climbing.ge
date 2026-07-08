@@ -1,12 +1,12 @@
 <template>
     <StackModal
         v-model="is_show_sector_modal"
-        title="Sector"
+        :title="$t('admin.users.sector_title')"
         @close="close_sector_model()"
         @save="save_routes_sequence"
         :modal-class="{ [SectorModalClass]: true }"
-        :saveButton="{ visible: true, title: 'Save sequence' }"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+        :saveButton="{ visible: true, title: $t('admin.users.save_sequence_btn') }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }">
 
         <div v-show="is_show_sector_modal" class="root">
             <div class="col-md-12">
@@ -17,21 +17,21 @@
                         class="btn btn-primary btn-sm"
                         :to="{ name: 'sectorEdit', params: { id: activ_sector_id }, query: { locale: 'en' } }"
                     >
-                        <i class="fa fa-pencil"></i> Edit Sector
+                        <i class="fa fa-pencil"></i> {{ $t('admin.users.edit_sector_btn') }}
                     </router-link>
                 </div>
 
                 <!-- Sector images -->
                 <div v-if="sector_images.length > 0" class="row mb-3">
-                    <h4>Images <small class="text-muted">(drag to reorder)</small></h4>
+                    <h4>{{ $t('admin.users.images_title') }} <small class="text-muted">{{ $t('admin.users.drag_to_reorder_hint') }}</small></h4>
                     <table class="table table-sm drag-table">
                         <thead>
                             <tr>
-                                <td>ID</td>
-                                <td>Num</td>
-                                <td>Canvas Drawing <small class="text-muted">(JSON data)</small></td>
-                                <td>Saved Image <small class="text-muted">(on disk)</small></td>
-                                <td>Actions</td>
+                                <td>{{ $t('common.id') }}</td>
+                                <td>{{ $t('admin.users.col_num') }}</td>
+                                <td>{{ $t('admin.users.canvas_drawing_col') }} <small class="text-muted">{{ $t('admin.users.json_data_hint') }}</small></td>
+                                <td>{{ $t('admin.users.saved_image_col') }} <small class="text-muted">{{ $t('admin.users.on_disk_hint') }}</small></td>
+                                <td>{{ $t('admin.users.actions_col') }}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -77,16 +77,16 @@
                                     <!-- Del Canvas: inline two-step confirmation -->
                                     <div class="mb-1">
                                         <template v-if="canvas_confirm_pending === image.id">
-                                            <span class="text-warning small me-1">Sure?</span>
+                                            <span class="text-warning small me-1">{{ $t('admin.users.sure_question') }}</span>
                                             <button
                                                 class="btn btn-danger btn-sm me-1"
                                                 :disabled="canvas_deleting === image.id"
                                                 @click.stop="do_del_sector_canvas(image.id)"
-                                            >Yes</button>
+                                            >{{ $t('admin.export.yes_label') }}</button>
                                             <button
                                                 class="btn btn-secondary btn-sm"
                                                 @click.stop="canvas_confirm_pending = null"
-                                            >No</button>
+                                            >{{ $t('admin.site_info.no_label') }}</button>
                                         </template>
                                         <template v-else>
                                             <button
@@ -95,7 +95,7 @@
                                                 @click.stop="canvas_confirm_pending = image.id"
                                             >
                                                 <i class="fa fa-eraser"></i>
-                                                {{ canvas_deleting === image.id ? 'Deleting...' : 'Del Canvas' }}
+                                                {{ canvas_deleting === image.id ? $t('admin.users.deleting_ellipsis') : $t('admin.users.del_canvas_btn') }}
                                             </button>
                                         </template>
 
@@ -104,13 +104,13 @@
                                             class="ms-1 small"
                                             :class="canvas_del_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
                                         >
-                                            {{ canvas_del_status[image.id] === 'ok' ? '✓ Cleared' : '✗ Error' }}
+                                            {{ canvas_del_status[image.id] === 'ok' ? $t('admin.users.cleared_status') : $t('admin.users.error_status') }}
                                         </span>
                                     </div>
 
                                     <!-- Upload new image (always visible) -->
                                     <div class="upload-wrap">
-                                        <label class="small text-muted mb-0">Replace image:</label>
+                                        <label class="small text-muted mb-0">{{ $t('admin.users.replace_image_colon_label') }}</label>
                                         <input
                                             type="file"
                                             accept="image/*"
@@ -123,9 +123,9 @@
                                             class="small"
                                             :class="img_upload_status[image.id] === 'ok' ? 'text-success' : 'text-danger'"
                                         >
-                                            {{ img_upload_status[image.id] === 'ok' ? '✓ Uploaded' : '✗ Upload failed' }}
+                                            {{ img_upload_status[image.id] === 'ok' ? $t('admin.users.uploaded_status') : $t('admin.users.upload_failed_status') }}
                                         </span>
-                                        <span v-if="img_uploading === image.id" class="small text-muted">Uploading...</span>
+                                        <span v-if="img_uploading === image.id" class="small text-muted">{{ $t('admin.users.uploading_ellipsis') }}</span>
                                     </div>
 
                                 </td>
@@ -136,9 +136,9 @@
 
                 <!-- Sport routes -->
                 <div v-if="sector_routes.length > 0" class="row mb-3">
-                    <h4>Sport climbing routes <small class="text-muted">(drag to reorder)</small></h4>
+                    <h4>{{ $t('admin.users.sport_climbing_routes_title') }} <small class="text-muted">{{ $t('admin.users.drag_to_reorder_hint') }}</small></h4>
                     <table class="table table-sm drag-table">
-                        <thead><tr><td>ID</td><td>Num</td><td>Name</td><td>Grade</td><td>Edit</td></tr></thead>
+                        <thead><tr><td>{{ $t('common.id') }}</td><td>{{ $t('admin.users.col_num') }}</td><td>{{ $t('common.name') }}</td><td>{{ $t('common.grade') }}</td><td>{{ $t('common.edit') }}</td></tr></thead>
                         <tbody>
                             <tr
                                 v-for="(route, index) in sector_routes"
@@ -155,7 +155,7 @@
                                 <td>{{ route.num }}</td>
                                 <td>{{ route.name }}</td>
                                 <td>{{ route.grade }}{{ route.or_grade ? ' / ' + route.or_grade : '' }}</td>
-                                <td><router-link class="btn btn-primary btn-sm" :to="{ name: 'routeEdit', params: { id: route.id } }">Edit</router-link></td>
+                                <td><router-link class="btn btn-primary btn-sm" :to="{ name: 'routeEdit', params: { id: route.id } }">{{ $t('common.edit') }}</router-link></td>
                             </tr>
                         </tbody>
                     </table>
@@ -163,9 +163,9 @@
 
                 <!-- Multi-pitches -->
                 <div v-if="sector_mtps.length > 0" class="row mb-3">
-                    <h4>Multi pitches <small class="text-muted">(drag to reorder)</small></h4>
+                    <h4>{{ $t('admin.users.multi_pitches_title') }} <small class="text-muted">{{ $t('admin.users.drag_to_reorder_hint') }}</small></h4>
                     <table class="table table-sm drag-table">
-                        <thead><tr><td>ID</td><td>Num</td><td>Name</td><td>Edit</td></tr></thead>
+                        <thead><tr><td>{{ $t('common.id') }}</td><td>{{ $t('admin.users.col_num') }}</td><td>{{ $t('common.name') }}</td><td>{{ $t('common.edit') }}</td></tr></thead>
                         <tbody>
                             <tr
                                 v-for="(mtp, index) in sector_mtps"
@@ -181,7 +181,7 @@
                                 <td>{{ mtp.id }}</td>
                                 <td>{{ mtp.num }}</td>
                                 <td>{{ mtp.name }}</td>
-                                <td><router-link class="btn btn-primary btn-sm" :to="{ name: 'MTPEdit', params: { id: mtp.id } }">Edit</router-link></td>
+                                <td><router-link class="btn btn-primary btn-sm" :to="{ name: 'MTPEdit', params: { id: mtp.id } }">{{ $t('common.edit') }}</router-link></td>
                             </tr>
                         </tbody>
                     </table>

@@ -1,39 +1,39 @@
 <template>
     <StackModal
         v-model="showModal"
-        title="Add Custom Order"
+        :title="$t('admin.orders.add_custom_order_title')"
         @close="closeModal"
         @shown="() => { if (!submitted) this.$nextTick(() => this.$el.querySelector('input').focus()); }"
     >
         <form @submit.prevent="submitOrder" v-if="!submitted">
 
             <!-- Buyer info -->
-            <h6 class="text-muted mb-2">Buyer Information</h6>
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.buyer_information_title') }}</h6>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Name <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="form.name" placeholder="First name" required>
+                        <label>{{ $t('admin.orders.name_label') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model="form.name" :placeholder="$t('admin.orders.first_name_placeholder')" required>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Surname <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control" v-model="form.surname" placeholder="Last name" required>
+                        <label>{{ $t('admin.orders.surname_label') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" v-model="form.surname" :placeholder="$t('admin.orders.last_name_placeholder')" required>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Email <small class="text-muted">(optional — used to link account)</small></label>
-                        <input type="email" class="form-control" v-model="form.email" placeholder="buyer@example.com">
+                        <label>{{ $t('common.email') }} <small class="text-muted">{{ $t('admin.orders.email_optional_hint') }}</small></label>
+                        <input type="email" class="form-control" v-model="form.email" :placeholder="$t('admin.orders.buyer_email_placeholder')">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Phone <small class="text-muted">(optional)</small></label>
-                        <input type="tel" class="form-control" v-model="form.phone" placeholder="+995 ...">
+                        <label>{{ $t('admin.orders.phone_label') }} <small class="text-muted">{{ $t('admin.orders.phone_optional_hint') }}</small></label>
+                        <input type="tel" class="form-control" v-model="form.phone" :placeholder="$t('admin.orders.phone_placeholder')">
                     </div>
                 </div>
             </div>
@@ -41,24 +41,24 @@
             <hr>
 
             <!-- Delivery & payment -->
-            <h6 class="text-muted mb-2">Order Details</h6>
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.order_details_title') }}</h6>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Shipping Method <span class="text-danger">*</span></label>
+                        <label>{{ $t('admin.orders.shipping_method_label') }} <span class="text-danger">*</span></label>
                         <select class="form-control" v-model="form.delivery_type">
-                            <option value="self_delivery">Self-delivery</option>
-                            <option value="delivery">Delivery</option>
+                            <option value="self_delivery">{{ $t('admin.orders.self_delivery_option') }}</option>
+                            <option value="delivery">{{ $t('admin.orders.delivery_option') }}</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Payment Method <span class="text-danger">*</span></label>
+                        <label>{{ $t('admin.orders.payment_method_label') }} <span class="text-danger">*</span></label>
                         <select class="form-control" v-model="form.payment_type" required>
-                            <option value="deliverd_payment">Payment on delivery</option>
-                            <option value="mony_transfer">Money transfer</option>
-                            <option value="online_payment" disabled>Online payment (coming soon)</option>
+                            <option value="deliverd_payment">{{ $t('admin.orders.payment_on_delivery_option') }}</option>
+                            <option value="mony_transfer">{{ $t('admin.orders.money_transfer_option') }}</option>
+                            <option value="online_payment" disabled>{{ $t('admin.orders.online_payment_coming_soon_option') }}</option>
                         </select>
                     </div>
                 </div>
@@ -67,14 +67,14 @@
             <div class="row" v-if="form.delivery_type === 'delivery'">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Address</label>
-                        <input type="text" class="form-control" v-model="form.address" placeholder="Street address">
+                        <label>{{ $t('admin.orders.address_label') }}</label>
+                        <input type="text" class="form-control" v-model="form.address" :placeholder="$t('admin.orders.street_address_placeholder')">
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>City</label>
-                        <input type="text" class="form-control" v-model="form.city" placeholder="City">
+                        <label>{{ $t('admin.orders.city_label') }}</label>
+                        <input type="text" class="form-control" v-model="form.city" :placeholder="$t('admin.orders.city_placeholder')">
                     </div>
                 </div>
             </div>
@@ -82,19 +82,19 @@
             <div class="form-group">
                 <label>
                     <input type="checkbox" v-model="create_production_task">
-                    Allow out-of-stock (create production task)
+                    {{ $t('admin.orders.allow_out_of_stock_label') }}
                 </label>
             </div>
 
             <hr>
 
             <!-- Products -->
-            <h6 class="text-muted mb-2">Products <span class="text-danger">*</span></h6>
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.products_title') }} <span class="text-danger">*</span></h6>
 
             <!-- Barcode scan panel -->
             <div class="mb-2">
                 <button type="button" class="btn btn-warning btn-sm mb-2" @click="toggleScan()">
-                    {{ scanOpen ? 'Close Scanner' : 'Scan Barcode' }}
+                    {{ scanOpen ? $t('admin.orders.close_scanner_btn') : $t('admin.orders.scan_barcode_btn') }}
                 </button>
                 <div v-if="scanOpen" class="card border-warning mb-2">
                     <div class="card-body py-2 px-3">
@@ -105,13 +105,13 @@
                                 v-model="scanBarcode"
                                 @keydown.enter.prevent="scanProduct()"
                                 class="form-control form-control-sm"
-                                placeholder="Scan barcode or type and press Enter..."
+                                :placeholder="$t('admin.orders.scan_barcode_placeholder')"
                                 autocomplete="off"
                                 style="max-width:320px;"
                             />
                             <button type="button" class="btn btn-primary btn-sm" @click="scanProduct()" :disabled="scanLoading || !scanBarcode.trim()">
                                 <span v-if="scanLoading" class="spinner-border spinner-border-sm"></span>
-                                {{ scanLoading ? '...' : 'Add' }}
+                                {{ scanLoading ? '...' : $t('admin.orders.add_btn') }}
                             </button>
                         </div>
                         <div v-if="scanError" class="text-danger mt-1 small">{{ scanError }}</div>
@@ -121,41 +121,41 @@
             </div>
 
             <div v-if="form.order_product_list.length === 0" class="text-center text-muted p-3 border mb-2">
-                No products added. Click "Add Product" or scan a barcode below.
+                {{ $t('admin.orders.no_products_added_msg') }}
             </div>
             <div v-for="(item, index) in form.order_product_list" :key="index" class="border rounded p-3 mb-2 bg-light">
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                    <strong>Product {{ index + 1 }}</strong>
+                    <strong>{{ $t('admin.orders.product_number_prefix') }} {{ index + 1 }}</strong>
                     <button type="button" class="btn btn-danger btn-sm" @click="removeProduct(index)">
                         <i class="fa fa-trash"></i>
                     </button>
                 </div>
                 <div class="row">
                     <div class="col-md-4">
-                        <label>Product</label>
+                        <label>{{ $t('admin.orders.product_label') }}</label>
                         <select class="form-control" v-model="item.product_id" @change="loadOptions(item)" required>
-                            <option value="">Select product</option>
+                            <option value="">{{ $t('admin.orders.select_product_placeholder') }}</option>
                             <option v-for="p in products" :key="p.id" :value="p.id">{{ p.title }}</option>
                         </select>
                     </div>
                     <div class="col-md-4" v-if="item.product_id">
-                        <label>Option</label>
+                        <label>{{ $t('admin.orders.option_label') }}</label>
                         <select class="form-control" v-model="item.product_option_id" @change="onOptionChange(item)" required>
-                            <option value="">Select option</option>
+                            <option value="">{{ $t('admin.orders.select_option_placeholder') }}</option>
                             <option
                                 v-for="opt in item.options"
                                 :key="opt.id"
                                 :value="opt.id"
                                 :disabled="!create_production_task && opt.quantity <= 0"
                             >
-                                {{ opt.name }} ({{ opt.price }} GEL) — Stock: {{ opt.quantity }}
+                                {{ opt.name }} ({{ opt.price }} GEL) — {{ $t('admin.orders.stock_suffix') }} {{ opt.quantity }}
                             </option>
                         </select>
                     </div>
                     <div class="col-md-2" v-if="item.product_option_id">
-                        <label>Qty</label>
+                        <label>{{ $t('admin.orders.qty_label') }}</label>
                         <input type="number" class="form-control" v-model.number="item.quantity" min="1" :max="item.max_quantity" required>
-                        <small class="text-muted">Max: {{ item.max_quantity }}</small>
+                        <small class="text-muted">{{ $t('admin.orders.max_prefix') }} {{ item.max_quantity }}</small>
                     </div>
                     <div class="col-md-2 d-flex align-items-center" v-if="item.option_image">
                         <img :src="'/public/images/product_option_img/' + item.option_image" class="img-thumbnail" style="max-width:70px;max-height:70px;">
@@ -163,11 +163,11 @@
                 </div>
             </div>
             <button type="button" class="btn btn-success btn-sm mb-3" @click="addProduct">
-                <i class="fa fa-plus"></i> Add Product
+                <i class="fa fa-plus"></i> {{ $t('admin.orders.add_product_btn') }}
             </button>
             <button type="button" class="btn btn-outline-secondary btn-sm mb-3 ml-2" @click="exportInvoice" :disabled="exportingInvoice || form.order_product_list.length === 0">
                 <span v-if="exportingInvoice" class="spinner-border spinner-border-sm"></span>
-                <i v-else class="fa fa-file-pdf-o"></i> Export Invoice
+                <i v-else class="fa fa-file-pdf-o"></i> {{ $t('admin.orders.export_invoice_btn') }}
             </button>
             <select class="form-control form-control-sm d-inline-block ml-2 mb-3" style="width:auto;" v-model="invoiceLocale">
                 <option value="ka">ქართული</option>
@@ -179,9 +179,9 @@
         <!-- Success state -->
         <div v-if="submitted" class="text-center p-4">
             <i class="fa fa-check-circle text-success" style="font-size:2.5em;"></i>
-            <h5 class="mt-2">Order #{{ createdOrderId }} created</h5>
+            <h5 class="mt-2">{{ $t('admin.orders.order_created_msg', { id: createdOrderId }) }}</h5>
             <div v-if="matchedUsers.length > 0" class="alert alert-info mt-3 text-left">
-                <strong>Linked to existing account{{ matchedUsers.length > 1 ? 's' : '' }}:</strong>
+                <strong>{{ $t('admin.orders.linked_to_existing_accounts_prefix', { plural: matchedUsers.length > 1 ? 's' : '' }) }}</strong>
                 <ul class="mb-0 mt-1">
                     <li v-for="u in matchedUsers" :key="u.id">
                         {{ u.name }} {{ u.surname }} — {{ u.email }}
@@ -189,7 +189,7 @@
                 </ul>
             </div>
             <div v-else class="alert alert-secondary mt-3">
-                No existing account matched by email or name.
+                {{ $t('admin.orders.no_existing_account_matched') }}
             </div>
         </div>
 
@@ -296,14 +296,14 @@ export default {
                             quantity: stock,
                         }],
                     });
-                    this.scanSuccess = `Added: ${product.title} — ${opt.name} (Stock: ${stock})`;
+                    this.scanSuccess = this.$t('admin.orders.added_product_stock_msg', { product: product.title, option: opt.name, stock: stock });
                     this.scanBarcode = '';
                     this.$nextTick(() => {
                         this.$refs.scanInput && this.$refs.scanInput.focus();
                     });
                 })
                 .catch(error => {
-                    this.scanError = error.response?.data?.error || 'Barcode not found';
+                    this.scanError = error.response?.data?.error || this.$t('admin.orders.barcode_not_found');
                     this.scanBarcode = '';
                     this.$nextTick(() => {
                         this.$refs.scanInput && this.$refs.scanInput.focus();
@@ -366,18 +366,18 @@ export default {
         },
         exportInvoice() {
             if (!this.form.name || !this.form.surname) {
-                alert('Name and surname are required.');
+                alert(this.$t('admin.orders.name_surname_required'));
                 return;
             }
             if (this.form.order_product_list.length === 0) {
-                alert('Please add at least one product.');
+                alert(this.$t('admin.orders.please_add_product'));
                 return;
             }
             const hasIncomplete = this.form.order_product_list.some(
                 i => !i.product_id || !i.product_option_id || !i.quantity
             );
             if (hasIncomplete) {
-                alert('Please complete all product selections.');
+                alert(this.$t('admin.orders.please_complete_product_selections'));
                 return;
             }
 
@@ -408,7 +408,7 @@ export default {
                 window.URL.revokeObjectURL(url);
             })
             .catch(() => {
-                this.exportError = 'Failed to export invoice PDF.';
+                this.exportError = this.$t('admin.orders.failed_export_invoice');
             })
             .finally(() => {
                 this.exportingInvoice = false;
@@ -416,18 +416,18 @@ export default {
         },
         submitOrder() {
             if (!this.form.name || !this.form.surname) {
-                alert('Name and surname are required.');
+                alert(this.$t('admin.orders.name_surname_required'));
                 return;
             }
             if (this.form.order_product_list.length === 0) {
-                alert('Please add at least one product.');
+                alert(this.$t('admin.orders.please_add_product'));
                 return;
             }
             const hasIncomplete = this.form.order_product_list.some(
                 i => !i.product_id || !i.product_option_id || !i.quantity
             );
             if (hasIncomplete) {
-                alert('Please complete all product selections.');
+                alert(this.$t('admin.orders.please_complete_product_selections'));
                 return;
             }
 
@@ -443,7 +443,7 @@ export default {
                 this.$emit('orderAdded');
             })
             .catch(error => {
-                const msg = error.response?.data?.error || error.response?.data?.message || 'Error creating order.';
+                const msg = error.response?.data?.error || error.response?.data?.message || this.$t('admin.orders.error_creating_order');
                 alert(msg);
             })
             .finally(() => {

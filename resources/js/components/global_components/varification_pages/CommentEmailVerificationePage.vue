@@ -13,20 +13,20 @@
                     <h2>Climbing.ge</h2> -->
 
 
-                    <h1> Confirm your email </h1>
+                    <h1> {{ $t('global.email_verification.confirm_your_email_title') }} </h1>
 
                     <div class="row" v-if="is_loading">
                         <div class="col-md-4 text-center loader_margin">
                             <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
-                            <p>Pless wait!</p>
+                            <p>{{ $t('user.notifications.please_wait') }}</p>
                         </div>
                     </div>
 
                     <div class="row" v-else>
-                        <p>Your email - {{$route.params.email}}</p>
+                        <p>{{ $t('global.email_verification.your_email_prefix') }} {{$route.params.email}}</p>
 
-                        <!-- <vue-recaptcha 
-                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY" 
+                        <!-- <vue-recaptcha
+                            :sitekey="MIX_GOOGLE_CAPTCHA_SITE_KEY"
                             :loadRecaptchaScript="true"
                             ref="recaptcha"
                             type="invisible"
@@ -34,8 +34,8 @@
                             @expired="onCaptchaExpired"
                         >
                         </vue-recaptcha> -->
-                        <button v-if="is_verify_isset == false" class="btn btn-primary btn-lg" disabled>Confirm</button>
-                        <button v-else  @click="confirm_email()" class="btn btn-primary btn-lg">Confirm</button>
+                        <button v-if="is_verify_isset == false" class="btn btn-primary btn-lg" disabled>{{ $t('global.email_verification.confirm_btn') }}</button>
+                        <button v-else  @click="confirm_email()" class="btn btn-primary btn-lg">{{ $t('global.email_verification.confirm_btn') }}</button>
                     </div>
 
                     <div class="row">
@@ -87,11 +87,11 @@
                     comment_id: this.$route.params.comment_id,
                 })
                 .then(response => {
-                    alert('Your email is confirmed! This page will be closed!')
+                    alert(this.$t('global.email_verification.email_confirmed_success'))
                     window.close();
                 })
                 .catch(error =>{
-                    alert('Confirmation failed. The link may have expired.')
+                    alert(this.$t('global.email_verification.confirmation_failed_expired'))
                 })
                 .finally(() => this.is_loading = false);
             },

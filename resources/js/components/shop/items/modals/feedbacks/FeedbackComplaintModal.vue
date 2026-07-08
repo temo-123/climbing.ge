@@ -3,8 +3,8 @@
                 v-model="is_user_feedback_complaint_model"
                 :title="$t('shop.product.feedback.complaint_modal_title')"
                 @close="close_modal"
-                :saveButton="{ visible: true, title: $t('shop.product.feedback.save'), btnClass: { 'btn btn-primary': true } }"
-                :cancelButton="{ visible: true, title: $t('shop.product.feedback.close'), btnClass: { 'btn btn-secondary': true } }"
+                :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+                :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
             >
             <pre class="language-vue">
                 <div class="row justify-content-center" v-if="complaint_loader">

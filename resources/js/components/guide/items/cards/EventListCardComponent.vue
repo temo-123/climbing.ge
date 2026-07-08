@@ -3,7 +3,7 @@
         <div class="direction-r" v-if="event.global_event.category == 'event'">
             <div class="flag-wrapper">
                 <span class="hexa"></span>
-                <span class="flag">Event / festival</span>
+                <span class="flag">{{ $t('guide.events.event_festival_flag') }}</span>
                 
                 <span v-if="!(!end_day) && start_time_h > 0">
                     <span class="time-wrapper"
@@ -19,8 +19,8 @@
                                 new Date().getMonth() == this.start_month_num-1
                             )
                         ">
-                        <span class="time naw_time">Now</span>
-                        <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
+                        <span class="time naw_time">{{ $t('guide.events.now_label') }}</span>
+                        <span class="time naw_time">{{ $t('guide.events.finish_at_prefix') }} {{this.end_day}} {{this.end_month}}</span>
                     </span>
                     <span class="time-wrapper"
                         v-else-if="
@@ -34,7 +34,7 @@
                                 new Date().getMonth() == this.start_month_num-1
                             )
                         ">
-                        <span class="time finished_time">Finished</span>
+                        <span class="time finished_time">{{ $t('guide.events.finished_label') }}</span>
                     </span>
                     <span class="time-wrapper" v-else>
                         <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>
@@ -69,7 +69,7 @@
         <div class="direction-l" v-else-if="event.global_event.category == 'competition'">
             <div class="flag-wrapper">
                 <span class="hexa"></span>
-                <span class="flag">Competition</span>
+                <span class="flag">{{ $t('guide.events.competition_flag') }}</span>
                 
                 <span v-if="!(!end_day) && start_time_h > 0">
                     <span class="time-wrapper"
@@ -85,8 +85,8 @@
                                 new Date().getMonth() == this.start_month_num-1
                             )
                         ">
-                        <span class="time naw_time">Now</span>
-                        <span class="time naw_time">Finish at - {{this.end_day}} {{this.end_month}}</span>
+                        <span class="time naw_time">{{ $t('guide.events.now_label') }}</span>
+                        <span class="time naw_time">{{ $t('guide.events.finish_at_prefix') }} {{this.end_day}} {{this.end_month}}</span>
                     </span>
                     <span class="time-wrapper"
                         v-else-if="
@@ -100,7 +100,7 @@
                                 new Date().getMonth() == this.start_month_num-1
                             )
                         ">
-                        <span class="time finished_time">Finished</span>
+                        <span class="time finished_time">{{ $t('guide.events.finished_label') }}</span>
                     </span>
                     <span class="time-wrapper" v-else>
                         <span class="time" v-if="new Date().getFullYear() != this.start_year">{{this.start_day}} {{this.start_month}} {{this.start_year}}</span>

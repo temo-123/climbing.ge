@@ -1,15 +1,15 @@
 <template>
     <div class="single-image-manager">
         <div class="d-flex align-items-center justify-content-between mb-3">
-            <h5 class="mb-0">{{ title_prop || 'Image' }}</h5>
+            <h5 class="mb-0">{{ title_prop || $t('admin.single_image.image_default_title') }}</h5>
         </div>
 
         <div class="d-flex flex-wrap gap-2 mb-3">
             <button type="button" class="btn btn-primary btn-sm" @click="triggerFileInput">
-                + Upload Image
+                {{ $t('admin.single_image.upload_image_btn') }}
             </button>
             <span v-if="isCompressing" class="badge bg-warning align-self-center">
-                Compressing image...
+                {{ $t('admin.single_image.compressing_image') }}
             </span>
         </div>
 
@@ -23,10 +23,9 @@
              @dragover.prevent="isExternalDragOver = true"
              @dragleave.self="isExternalDragOver = false">
             <div class="single-image-drop-icon">📁</div>
-            <div class="fw-medium">Drop image here</div>
+            <div class="fw-medium">{{ $t('admin.single_image.drop_image_here') }}</div>
             <div class="text-muted small mt-1">
-                or use "Upload Image" button above •
-                Files over {{ max_size_mb }}MB are compressed automatically
+                {{ $t('admin.single_image.drop_zone_hint', { size: max_size_mb }) }}
             </div>
         </div>
 
@@ -36,14 +35,14 @@
                     <div class="single-image-card-img-wrap bg-light position-relative">
                         <div v-if="compressing" class="single-image-card-compressing d-flex flex-column align-items-center justify-content-center">
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
-                            <small class="text-muted">Compressing…</small>
+                            <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
                         <img v-else-if="preview" :src="preview" class="single-image-card-img">
 
                         <span v-if="compressed && !compressing"
                               class="badge bg-success position-absolute top-0 end-0 m-1"
-                              :title="'Compressed from ' + formatFileSize(originalSize)">
-                            ✓ Compressed
+                              :title="$t('admin.gallery_manager.compressed_from_tooltip', { size: formatFileSize(originalSize) })">
+                            {{ $t('admin.gallery_manager.compressed_badge') }}
                         </span>
                     </div>
 
@@ -61,7 +60,7 @@
 
                     <div class="card-footer p-1">
                         <button type="button" class="btn btn-danger btn-sm w-100" @click="removeImage">
-                            Remove
+                            {{ $t('admin.single_image.remove_btn') }}
                         </button>
                     </div>
                 </div>

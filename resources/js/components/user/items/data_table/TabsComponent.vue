@@ -2,7 +2,7 @@
     <div class="tabs">
         <div v-if="loading" class="tabs-loading">
             <div class="tabs-loading-spinner"></div>
-            <span>Loading...</span>
+            <span>{{ $t('admin.table.loading') }}</span>
         </div>
         <div v-else>
         <div class="row">
@@ -28,7 +28,7 @@
                 </div>
                 <div v-else class="row">
                     <div class="col-md-12">
-                        <p>No tabs available.</p>
+                        <p>{{ $t('admin.table.no_tabs') }}</p>
                     </div>
                 </div>
             </div>
@@ -51,7 +51,7 @@
                             :href="currentTabData.list_page"
                             target="_blank"
                         >
-                            Go to {{ currentTabData.table_name }} list
+                            {{ $t('admin.table.go_to_list', { name: currentTabData.table_name }) }}
                         </a>
                     </div>
                 </div>
@@ -68,7 +68,7 @@
                                 :class="currentTabData.add_action.class"
                             >
                                 <span v-if="currentTabData.add_action.btn_title">{{ currentTabData.add_action.btn_title }}</span>
-                                <span v-else>Add New</span>
+                                <span v-else>{{ $t('admin.table.add_new') }}</span>
                             </router-link>
                             <a
                                 v-else-if="currentTabData.add_action.action == 'url' "
@@ -77,7 +77,7 @@
                                 @click="$emit(currentTabData.add_action.link)"
                             >
                                 <span v-if="currentTabData.add_action.btn_title">{{ currentTabData.add_action.btn_title }}</span>
-                                <span v-else>Add New</span>
+                                <span v-else>{{ $t('admin.table.add_new') }}</span>
                             </a>
                             <button
                                 v-else-if="currentTabData.add_action.action == 'fun' || currentTabData.add_action.action == 'function'"
@@ -85,7 +85,7 @@
                                 @click="$emit(currentTabData.add_action.link)"
                             >
                                 <span v-if="currentTabData.add_action.btn_title">{{ currentTabData.add_action.btn_title }}</span>
-                                <span v-else>Add New</span>
+                                <span v-else>{{ $t('admin.table.add_new') }}</span>
                             </button>
                         </div>
 
@@ -94,7 +94,7 @@
                                 class="btn btn-success"
                                 @click="update()"
                             >
-                                Refresh
+                                {{ $t('common.refresh') }}
                             </button>
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                     <div class="col-md-12">
                         <div class="form-groupe float-right">
                             <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="deleteSelected">
-                                Del selected items
+                                {{ $t('admin.table.delete_selected') }}
                             </button>
                         </div>
                     </div>
@@ -150,7 +150,7 @@
         <div class="row mb-2" v-if="currentTabData">
             <div class="col-md-12">
                 <div class="tab-item-count">
-                    Total items: {{ getTabFilteredCount(currentTabData) }}
+                    {{ $t('admin.table.total_items', { count: getTabFilteredCount(currentTabData) }) }}
                 </div>
             </div>
         </div>
@@ -182,7 +182,7 @@
 
         <div v-else class="row">
             <div class="col-md-12">
-                <p>No data to display.</p>
+                <p>{{ $t('admin.table.no_data') }}</p>
             </div>
         </div>
 

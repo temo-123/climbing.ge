@@ -2,7 +2,7 @@
     <div class="row">
         <stack-modal
             :show="show_google_calendar_sync_modal"
-            title="Google Calendar Sync Settings"
+            :title="$t('admin.tour.google_calendar_sync_title')"
             @close="close_google_calendar_sync_modal()"
             :modal-class="{ ['google-sync-modal-class']: true }"
             :saveButton="{ visible: false }"
@@ -13,46 +13,46 @@
                 <div v-if="connectedEmail" class="connected-account-section">
                     <div class="alert alert-success">
                         <i class="fa fa-check-circle"></i>
-                        <strong>Connected to Google Calendar</strong>
+                        <strong>{{ $t('admin.tour.connected_to_google_calendar') }}</strong>
                         <p class="mb-0">{{ connectedEmail }}</p>
                     </div>
                     <button @click="disconnectCalendar" class="btn btn-danger">
-                        <i class="fa fa-unlink"></i> Disconnect
+                        <i class="fa fa-unlink"></i> {{ $t('admin.tour.disconnect_btn') }}
                     </button>
                 </div>
 
                 <!-- Connection Form -->
                 <div v-else class="connection-form-section">
                     <div class="form-group">
-                        <label><strong>Connect Your Google Calendar</strong></label>
-                        <p class="text-muted">Enter your Google email to sync tour reservations with your Google Calendar.</p>
+                        <label><strong>{{ $t('admin.tour.connect_google_calendar_label') }}</strong></label>
+                        <p class="text-muted">{{ $t('admin.tour.connect_google_calendar_hint') }}</p>
                     </div>
 
                     <!-- Use Registered Email Option -->
                     <div class="form-group">
                         <div class="custom-control custom-checkbox">
-                            <input 
-                                type="checkbox" 
-                                class="custom-control-input" 
+                            <input
+                                type="checkbox"
+                                class="custom-control-input"
                                 id="useRegisteredEmail"
                                 v-model="useRegisteredEmail"
                                 @change="toggleEmailInput"
                             >
                             <label class="custom-control-label" for="useRegisteredEmail">
-                                Use my registered email account
+                                {{ $t('admin.tour.use_registered_email_label') }}
                             </label>
                         </div>
                     </div>
 
                     <!-- Email Input -->
                     <div class="form-group" v-if="!useRegisteredEmail">
-                        <label for="googleEmail">Google Email Address</label>
-                        <input 
-                            type="email" 
-                            class="form-control" 
+                        <label for="googleEmail">{{ $t('admin.tour.google_email_label') }}</label>
+                        <input
+                            type="email"
+                            class="form-control"
                             id="googleEmail"
                             v-model="googleEmail"
-                            placeholder="your.email@gmail.com"
+                            :placeholder="$t('admin.tour.google_email_placeholder')"
                             :class="{'is-invalid': emailError}"
                         >
                         <small v-if="emailError" class="text-danger">{{ emailError }}</small>
@@ -60,51 +60,51 @@
 
                     <!-- Show registered email if selected -->
                     <div class="form-group" v-if="useRegisteredEmail && userEmail">
-                        <label>Registered Email</label>
-                        <input 
-                            type="email" 
-                            class="form-control" 
-                            :value="userEmail" 
+                        <label>{{ $t('admin.tour.registered_email_label') }}</label>
+                        <input
+                            type="email"
+                            class="form-control"
+                            :value="userEmail"
                             disabled
                         >
-                        <small class="text-muted">This is your registered account email</small>
+                        <small class="text-muted">{{ $t('admin.tour.registered_email_hint') }}</small>
                     </div>
 
                     <!-- Google Sign-In Button -->
                     <div class="form-group mt-4">
-                        <button 
-                            @click="initiateGoogleAuth" 
+                        <button
+                            @click="initiateGoogleAuth"
                             class="btn btn-google btn-block"
                             :disabled="isLoading || (!useRegisteredEmail && !googleEmail)"
                         >
                             <i class="fa fa-google"></i>
-                            <span v-if="isLoading">Connecting...</span>
-                            <span v-else>Connect Google Calendar</span>
+                            <span v-if="isLoading">{{ $t('admin.tour.connecting_ellipsis') }}</span>
+                            <span v-else>{{ $t('admin.tour.connect_google_calendar_btn') }}</span>
                         </button>
                     </div>
 
                     <!-- Calendar ID Input (Alternative) -->
                     <div class="mt-4">
-                        <button 
-                            type="button" 
-                            class="btn btn-link p-0" 
+                        <button
+                            type="button"
+                            class="btn btn-link p-0"
                             @click="showAdvancedSettings = !showAdvancedSettings"
                         >
-                            {{ showAdvancedSettings ? 'Hide' : 'Show' }} Advanced Settings
+                            {{ showAdvancedSettings ? $t('admin.tour.hide_advanced_settings') : $t('admin.tour.show_advanced_settings') }}
                         </button>
-                        
+
                         <div v-if="showAdvancedSettings" class="advanced-settings mt-3">
                             <div class="form-group">
-                                <label for="calendarId">Google Calendar ID (Optional)</label>
-                                <input 
-                                    type="text" 
-                                    class="form-control" 
+                                <label for="calendarId">{{ $t('admin.tour.google_calendar_id_label') }}</label>
+                                <input
+                                    type="text"
+                                    class="form-control"
                                     id="calendarId"
                                     v-model="calendarId"
-                                    placeholder="primary or your.calendar.id@gmail.com"
+                                    :placeholder="$t('admin.tour.google_calendar_id_placeholder')"
                                 >
                                 <small class="text-muted">
-                                    Leave as "primary" for your main calendar, or enter a specific calendar ID
+                                    {{ $t('admin.tour.google_calendar_id_hint') }}
                                 </small>
                             </div>
                         </div>
@@ -113,37 +113,37 @@
 
                 <!-- Sync Status -->
                 <div class="sync-status-section mt-4">
-                    <h5>Sync Status</h5>
+                    <h5>{{ $t('admin.tour.sync_status_title') }}</h5>
                     <div class="sync-info">
                         <div class="d-flex justify-content-between">
-                            <span>Last synced:</span>
-                            <span>{{ lastSynced || 'Never' }}</span>
+                            <span>{{ $t('admin.tour.last_synced_label') }}</span>
+                            <span>{{ lastSynced || $t('admin.tour.never_label') }}</span>
                         </div>
                         <div class="d-flex justify-content-between">
-                            <span>Auto-sync:</span>
+                            <span>{{ $t('admin.tour.auto_sync_label') }}</span>
                             <span :class="autoSync ? 'text-success' : 'text-secondary'">
-                                {{ autoSync ? 'Enabled' : 'Disabled' }}
+                                {{ autoSync ? $t('admin.tour.enabled_label') : $t('admin.tour.disabled_label') }}
                             </span>
                         </div>
                     </div>
-                    <button 
-                        @click="syncNow" 
+                    <button
+                        @click="syncNow"
                         class="btn btn-outline-primary mt-3"
                         :disabled="!connectedEmail || isSyncing"
                     >
                         <i class="fa fa-sync" :class="{'fa-spin': isSyncing}"></i>
-                        {{ isSyncing ? 'Syncing...' : 'Sync Now' }}
+                        {{ isSyncing ? $t('admin.tour.syncing_ellipsis') : $t('admin.tour.sync_now_btn') }}
                     </button>
                 </div>
             </div>
-            
+
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    <button 
-                        @click="close_google_calendar_sync_modal()" 
+                    <button
+                        @click="close_google_calendar_sync_modal()"
                         class="btn btn-secondary"
                     >
-                        {{ $t('Close') }}
+                        {{ $t('common.close') }}
                     </button>
                 </div>
             </div>
@@ -197,7 +197,7 @@
 
             initiateGoogleAuth(){
                 if (!this.useRegisteredEmail && !this.googleEmail) {
-                    this.emailError = 'Please enter a Google email address';
+                    this.emailError = this.$t('admin.tour.please_enter_google_email');
                     return;
                 }
 
@@ -233,7 +233,7 @@
             },
 
             disconnectCalendar(){
-                if (confirm('Are you sure you want to disconnect your Google Calendar?')) {
+                if (confirm(this.$t('admin.tour.confirm_disconnect_calendar'))) {
                     axios.post('/set_tour/set_reservation/google-calendar/disconnect', {
                         email: this.connectedEmail
                     })
@@ -264,14 +264,14 @@
                 .then(response => {
                     this.lastSynced = new Date().toLocaleString();
                     this.autoSync = true;
-                    alert('Reservations synced to Google Calendar successfully!');
+                    alert(this.$t('admin.tour.sync_success_message'));
                 })
                 .catch(error => {
                     console.log(error);
                     // Simulate sync for demo
                     this.lastSynced = new Date().toLocaleString();
                     this.autoSync = true;
-                    alert('Reservations synced to Google Calendar successfully!');
+                    alert(this.$t('admin.tour.sync_success_message'));
                 })
                 .finally(() => {
                     this.isSyncing = false;

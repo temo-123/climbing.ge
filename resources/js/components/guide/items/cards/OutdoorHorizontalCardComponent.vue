@@ -40,10 +40,10 @@
                     <p class="horizontal-card-description" v-html="article.area.locale_data.short_description"></p>
                     <div class="horizontal-card-stats">
                         <span class="stat-badge">
-                            <i class="fa fa-th-large"></i> {{ article.route_quantyty.sectors }} {{ $t('guide.stats.sectors') || 'Sectors' }}
+                            <i class="fa fa-th-large"></i> {{ article.route_quantyty.sectors }} {{ $t('common.sectors') || 'Sectors' }}
                         </span>
                         <span class="stat-badge">
-                            <i class="fa fa-compass"></i> {{ article.route_quantyty.routes }} {{ $t('guide.stats.routes') || 'Routes' }}
+                            <i class="fa fa-compass"></i> {{ article.route_quantyty.routes }} {{ $t('common.routes') || 'Routes' }}
                         </span>
                         <span v-if="article.route_quantyty.mtps > 0" class="stat-badge">
                             <i class="fa fa-arrow-up"></i> {{ article.route_quantyty.mtps }} {{ $t('guide.stats.multipitch') || 'Multi-pitch' }}

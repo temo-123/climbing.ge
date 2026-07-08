@@ -4,15 +4,15 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <h2>Pitches</h2>
+                    <h2>{{ $t('admin.routes_sectors.pitches_title') }}</h2>
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <div class="form-group">
-                    <button class="btn btn-primary float-left" @click="add_pitch()">Add Pitch</button>
-                    <button class="btn btn-warning float-left ml-2" @click="change_sequence()">Change Sequence</button>
-                    <button class="btn btn-success float-right" @click="get_MTP_pitchs()">Refresh</button>
+                    <button class="btn btn-primary float-left" @click="add_pitch()">{{ $t('admin.routes_sectors.add_pitch') }}</button>
+                    <button class="btn btn-warning float-left ml-2" @click="change_sequence()">{{ $t('admin.routes_sectors.change_sequence') }}</button>
+                    <button class="btn btn-success float-right" @click="get_MTP_pitchs()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
         </div>
@@ -22,13 +22,13 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Grade</th>
-                            <th>Height</th>
-                            <th>Bolts</th>
-                            <th>Edit</th>
-                            <th>Del</th>
+                            <th>{{ $t('common.id') }}</th>
+                            <th>{{ $t('common.name') }}</th>
+                            <th>{{ $t('common.grade') }}</th>
+                            <th>{{ $t('common.height') }}</th>
+                            <th>{{ $t('admin.common.bolts') }}</th>
+                            <th>{{ $t('common.edit') }}</th>
+                            <th>{{ $t('common.delete') }}</th>
                         </tr>
                     </thead>
 
@@ -40,10 +40,10 @@
                             <td>{{ pitch.height }}</td>
                             <td>{{ pitch.bolts }}</td>
                             <td>
-                                <button class="btn btn-warning" @click="edit_pitch(pitch.id)">Edit</button>
+                                <button class="btn btn-warning" @click="edit_pitch(pitch.id)">{{ $t('common.edit') }}</button>
                             </td>
                             <td>
-                                <button class="btn btn-danger" @click="del_pitch(pitch.id)">Delete</button>
+                                <button class="btn btn-danger" @click="del_pitch(pitch.id)">{{ $t('common.delete') }}</button>
                             </td>
                         </tr>
                     </tbody>
@@ -115,7 +115,7 @@
                 this.$refs.edit_pitch_modal.show_modal(id)
             },
             del_pitch(pitch_id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .post('/set_mtp/set_mtp_pitch/del_pitch/'+pitch_id, {
                         _method: 'DELETE'

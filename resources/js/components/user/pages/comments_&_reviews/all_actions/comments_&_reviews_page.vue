@@ -61,11 +61,11 @@ export default {
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 1,
-                        table_name: "Guidebook comments",
+                        table_name: this.$t('admin.comments.guidebook_comments_table'),
                         tab_data: {
                             data: (response.data || []).map(item => ({ ...item, id: item.comment?.id, _row_class: item.comment?.admin_hidden ? 'table-danger' : (item.comment?.published == 0 ? 'table-warning' : '') })),
                             tab: {
-                                head: ["ID", "Name", "Email", "Published", "Article", "Read more", "Hide"],
+                                head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.email'), this.$t('admin.common.published'), this.$t('admin.comments.col_article'), this.$t('admin.comments.col_read_more'), this.$t('admin.comments.col_hide')],
                                 body: [
                                     ["data", ["comment", "id"]],
                                     ["data", [["comment", "name"], ["comment", "surname"]]],
@@ -89,11 +89,11 @@ export default {
                 .then((response) => {
                     this.data_for_tab.push({
                         id: 2,
-                        table_name: "Product feedbacks",
+                        table_name: this.$t('admin.comments.product_feedbacks_table'),
                         tab_data: {
                             data: (response.data || []).map(item => ({ ...item, id: item.feedback?.id, _row_class: item.feedback?.admin_hidden ? 'table-danger' : (item.feedback?.published == 0 ? 'table-warning' : '') })),
                             tab: {
-                                head: ["ID", "Published", "Product", "Stars", "Commenter", "Email", "Read more", "Hide"],
+                                head: [this.$t('common.id'), this.$t('admin.common.published'), this.$t('admin.comments.col_product'), this.$t('admin.comments.col_stars'), this.$t('admin.comments.col_commenter'), this.$t('common.email'), this.$t('admin.comments.col_read_more'), this.$t('admin.comments.col_hide')],
                                 body: [
                                     ["data", ["feedback", "id"]],
                                     ["data", ["feedback", "published"], "bool"],

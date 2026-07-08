@@ -12,7 +12,7 @@
                 <openImg
                     v-if="spot_image && spot_image.image"
                     :img="'/public/images/spot_rocks_img/' + spot_image.image"
-                    :img_alt="spot_image.title || 'Spot Rock Image'"
+                    :img_alt="spot_image.title || $t('guide.spot_rock_image_alt')"
                 />
             </div>
         </div>

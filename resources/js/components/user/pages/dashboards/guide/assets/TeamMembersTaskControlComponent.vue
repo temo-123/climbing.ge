@@ -3,26 +3,26 @@
         <div class="task-panel">
             <div class="task-panel-toolbar mb-3">
                 <button v-if="$can('add', 'task')" class="btn btn-primary btn-sm" @click="show_add_task_modal">
-                    <i class="fa fa-plus"></i> New Task
+                    <i class="fa fa-plus"></i> {{ $t('admin.task.new_task_btn') }}
                 </button>
                 <button class="btn btn-outline-secondary btn-sm ml-2" @click="get_all_tasks" :disabled="is_loading">
-                    <i class="fa fa-refresh"></i> Refresh
+                    <i class="fa fa-refresh"></i> {{ $t('common.refresh') }}
                 </button>
                 <div class="task-legend ml-auto">
-                    <span class="legend-dot dot-yellow"></span> Created
-                    <span class="legend-dot dot-green ml-2"></span> In Progress
-                    <span class="legend-dot dot-gray ml-2"></span> Finished
-                    <span class="legend-dot dot-red ml-2"></span> Problem
+                    <span class="legend-dot dot-yellow"></span> {{ $t('admin.task.status_created') }}
+                    <span class="legend-dot dot-green ml-2"></span> {{ $t('admin.task.status_in_progress') }}
+                    <span class="legend-dot dot-gray ml-2"></span> {{ $t('admin.task.status_finished') }}
+                    <span class="legend-dot dot-red ml-2"></span> {{ $t('admin.task.status_problem') }}
                 </div>
             </div>
 
             <div class="text-center py-4 text-muted" v-if="is_loading">
                 <div class="spinner-border text-primary" role="status"></div>
-                <p class="mt-2">Loading tasks...</p>
+                <p class="mt-2">{{ $t('admin.task.loading_tasks_ellipsis') }}</p>
             </div>
 
             <div v-else-if="tasks.length === 0" class="text-center text-muted p-4">
-                No guide tasks found.
+                {{ $t('admin.task.no_guide_tasks_found') }}
             </div>
 
             <div v-for="task in tasks" :key="task.id" class="task-card" :class="task_card_class(task.status)">
@@ -35,16 +35,16 @@
                             <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
                         </div>
                         <div class="task-card-actions">
-                            <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" title="Details">
+                            <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" :title="$t('admin.task.details_tooltip')">
                                 <i class="fa fa-eye"></i>
                             </button>
-                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" title="Edit">
+                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" :title="$t('admin.task.edit_tooltip')">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_task_status_model(task.id)" title="Update status">
+                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_task_status_model(task.id)" :title="$t('admin.task.update_status_tooltip')">
                                 <i class="fa fa-exchange"></i>
                             </button>
-                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" title="Delete">
+                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" :title="$t('common.delete')">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -56,12 +56,12 @@
                         </span>
                         <span class="text-muted ml-3" :class="is_overdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
                             <i class="fa fa-calendar"></i> {{ format_date(task.deadline) }}
-                            <span v-if="is_overdue(task.deadline)"> (overdue!)</span>
+                            <span v-if="is_overdue(task.deadline)"> {{ $t('admin.task.overdue_suffix') }}</span>
                         </span>
                     </div>
                     <div v-if="task.status === 'problem' && task.worker_comment" class="task-problem-note mt-1">
                         <i class="fa fa-exclamation-triangle text-danger"></i>
-                        <strong class="text-danger"> Problem:</strong> {{ task.worker_comment }}
+                        <strong class="text-danger"> {{ $t('admin.task.problem_prefix') }}</strong> {{ task.worker_comment }}
                     </div>
                     <div v-else-if="task.worker_comment" class="mt-1 text-muted" style="font-size:0.85em;">
                         <i class="fa fa-comment-o"></i> {{ task.worker_comment }}
@@ -108,7 +108,7 @@
                     .finally(() => { this.is_loading = false })
             },
             del_task(task_id) {
-                if (confirm('Are you sure you want to delete this task?')) {
+                if (confirm(this.$t('admin.task.confirm_delete_task'))) {
                     axios.delete('set_task/del_task/' + task_id)
                         .then(() => this.get_all_tasks())
                         .catch(() => {})
@@ -127,7 +127,13 @@
                 return map[status] || 'badge-secondary'
             },
             status_label(status) {
-                const map = { set_task: 'Created', in_process: 'In Progress', finished: 'Finished', confirmation_completion: 'Awaiting Confirm', problem: 'Problem' }
+                const map = {
+                    set_task: this.$t('admin.task.status_created'),
+                    in_process: this.$t('admin.task.status_in_progress'),
+                    finished: this.$t('admin.task.status_finished'),
+                    confirmation_completion: this.$t('admin.task.status_awaiting_confirmation'),
+                    problem: this.$t('admin.task.status_problem'),
+                }
                 return map[status] || status
             },
             is_overdue(deadline) { return deadline && new Date(deadline) < new Date() },

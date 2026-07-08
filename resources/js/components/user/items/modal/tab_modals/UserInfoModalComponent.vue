@@ -1,11 +1,11 @@
 <template>
     <stack-modal
             :show="user_modal"
-            title="User info"
+            :title="$t('admin.tour.user_info_title')"
             @close="user_modal=false"
             :modal-class="{ 'modal-lg': true }"
-            :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
             <h1>{{ user.name }} {{ user.surname }}</h1>
@@ -14,8 +14,8 @@
             <h4>{{ user.phone_number }}</h4>
             <h4>{{ user.email }}</h4>
 
-            <h4 v-if="user.email_verified_at != null" style="color:green;">Verification complited</h4>
-            <h4 v-if="user.email_verified_at == null" style="color:red;">Verification feild</h4>
+            <h4 v-if="user.email_verified_at != null" style="color:green;">{{ $t('admin.tour.verification_completed') }}</h4>
+            <h4 v-if="user.email_verified_at == null" style="color:red;">{{ $t('admin.tour.verification_failed') }}</h4>
 
             <img v-if="user.image != null" :src="'/public/images/user_profil_img/' + user.image" class="rounded mx-auto d-block"/>
         </div>

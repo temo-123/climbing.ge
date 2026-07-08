@@ -1,10 +1,10 @@
 <template>
     <stack-modal
             :show="is_member_editing_modal"
-            title="Manage Team Member Status"
+            :title="$t('admin.users.manage_team_member_status_title')"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: 'Save Changes', btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: 'Cancel', btnClass: { 'btn btn-secondary': true } }"
+            :saveButton="{ visible: true, title: $t('admin.users.save_changes_btn'), btnClass: { 'btn btn-primary': true } }"
+            :cancelButton="{ visible: false, title: $t('admin.comments.cancel_btn'), btnClass: { 'btn btn-secondary': true } }"
         >
         <div>
             <span v-show="is_loading">
@@ -15,14 +15,14 @@
             <form v-show="!is_loading">
                 <div class="form-group">
                     <input type="checkbox" id="is_team_member" name="is_team_member" v-model="data.is_team_member">
-                    <label for="is_team_member">Is this user a team member?</label>
-                    <small class="form-text text-muted">Check this box if the user is part of your team.</small>
+                    <label for="is_team_member">{{ $t('admin.users.is_team_member_label') }}</label>
+                    <small class="form-text text-muted">{{ $t('admin.users.is_team_member_hint') }}</small>
                 </div>
 
                 <div v-if="data.is_team_member" class="form-group">
-                    <label for="member_status">Member Status</label>
-                    <textarea v-model="data.member_status" class="form-control" placeholder="Describe the member's role or status (e.g., 'Active contributor', 'Lead developer')" id="member_status" rows="3"></textarea>
-                    <small class="form-text text-muted">Provide a brief description of the member's status or role within the team.</small>
+                    <label for="member_status">{{ $t('admin.users.member_status_label') }}</label>
+                    <textarea v-model="data.member_status" class="form-control" :placeholder="$t('admin.users.member_status_placeholder')" id="member_status" rows="3"></textarea>
+                    <small class="form-text text-muted">{{ $t('admin.users.member_status_hint') }}</small>
                 </div>
             </form>
         </div>
@@ -33,7 +33,7 @@
                     :class="'btn btn-primary'"
                     @click="edit_team_member()"
                 >
-                Save and Close
+                {{ $t('admin.users.save_and_close_btn') }}
                 </button>
                 <button
                     v-show="!is_loading"
@@ -41,7 +41,7 @@
                     :class="'btn btn-success'"
                     @click="edit_team_member(true)"
                 >
-                Save and Return to Permissions
+                {{ $t('admin.users.save_and_return_permissions_btn') }}
                 </button>
                 <button
                     v-show="!is_loading"
@@ -49,7 +49,7 @@
                     :class="'btn btn-secondary'"
                     @click="go_back()"
                 >
-                Back to Permissions
+                {{ $t('admin.users.back_to_permissions_btn') }}
                 </button>
             </div>
         </div>

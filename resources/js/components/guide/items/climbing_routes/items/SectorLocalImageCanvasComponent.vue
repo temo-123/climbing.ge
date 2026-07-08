@@ -15,6 +15,29 @@
         >
             {{ hoveredSector.sectorName }}
         </div>
+
+        <button
+            v-if="image_src"
+            type="button"
+            class="canvas-open-image-btn"
+            :title="$t('guide.open_image')"
+            :aria-label="$t('guide.open_image')"
+            @click.stop="open_image()"
+        >
+            <i class="fa fa-expand"></i>
+        </button>
+
+        <Teleport to="body">
+            <div class="open_img" v-if="open_img" @click="close_image()">
+                <div class="close_bottom cursor_zoom_out" @click.stop="close_image()">X</div>
+                <img
+                    :src="image_src"
+                    :alt="hoveredSector ? hoveredSector.sectorName : ''"
+                    class="big_img_position cursor_zoom_out zoom"
+                    style="max-width:96%;max-height:80%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"
+                />
+            </div>
+        </Teleport>
     </div>
 </template>
 
@@ -36,6 +59,8 @@ export default {
             hoveredIdx:     -1,
             tooltipX:       0,
             tooltipY:       0,
+
+            open_img:       false,
         };
     },
     watch: {
@@ -47,8 +72,50 @@ export default {
     mounted() {
         this.ctx = this.$refs.canvas.getContext('2d');
         if (this.image_src) this.loadImage();
+
+        this._closeHandler = () => {
+            if (this.open_img) {
+                this.open_img = false;
+                document.body.classList.remove('body_hiden');
+            }
+        };
+        window.addEventListener('imageclose', this._closeHandler);
+    },
+    beforeUnmount() {
+        window.removeEventListener('imageclose', this._closeHandler);
+        this._removePopstateHandler();
+        if (this.open_img) {
+            window.__imageOpen = false;
+            document.body.classList.remove('body_hiden');
+        }
     },
     methods: {
+        open_image() {
+            this.open_img = true;
+            window.__imageOpen = true;
+            document.body.classList.add('body_hiden');
+            this._savedUrl = location.href;
+            history.pushState({ imageOpen: true }, '', location.href);
+            this._popstateHandler = () => {
+                // Back button pressed while image is open — close image and stay on same URL
+                history.pushState(null, '', this._savedUrl);
+                this.close_image();
+            };
+            window.addEventListener('popstate', this._popstateHandler);
+        },
+        close_image() {
+            if (!this.open_img) return;
+            this.open_img = false;
+            window.__imageOpen = false;
+            document.body.classList.remove('body_hiden');
+            this._removePopstateHandler();
+        },
+        _removePopstateHandler() {
+            if (this._popstateHandler) {
+                window.removeEventListener('popstate', this._popstateHandler);
+                this._popstateHandler = null;
+            }
+        },
         loadImage() {
             const img = new Image();
             img.onload = () => {
@@ -72,7 +139,7 @@ export default {
                 ctx.fillStyle = '#adb5bd';
                 ctx.font = '20px sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillText('Image not available', 400, 200);
+                ctx.fillText(this.$t('guide.image_not_available'), 400, 200);
             };
             img.src = this.image_src;
         },
@@ -282,5 +349,63 @@ export default {
     pointer-events: none;
     white-space: nowrap;
     z-index: 10;
+}
+.canvas-open-image-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    width: 34px;
+    height: 34px;
+    cursor: zoom-in;
+    transition: background .15s linear;
+}
+.canvas-open-image-btn:hover {
+    background: rgba(0,0,0,0.8);
+}
+.cursor_zoom_out {
+    cursor: zoom-out;
+}
+.close_bottom {
+    float: right;
+    cursor: pointer;
+    color: #b3b2b2d9;
+    font-size: 2em;
+    margin-right: 0.4em;
+    margin-top: 0.4em;
+}
+@media (max-width: 756px) {
+    .close_bottom {
+        position: absolute;
+        left: 50%;
+        right: 0;
+        cursor: pointer;
+        color: #b3b2b2d9;
+        font-size: 2em;
+        margin-right: 0.4em;
+        margin-top: 0.4em;
+    }
+}
+.open_img {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1050;
+    background: #000000d9;
+    transition: opacity .15s linear;
+}
+.big_img_position {
+    max-width: 96%;
+    max-height: 80%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 </style>

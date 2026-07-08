@@ -4,16 +4,16 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row">
-                    <h2>Subcategorys</h2>
+                    <h2>{{ $t('admin.shop.subcategories_title') }}</h2>
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="openAddSubcategoryModal()">Add new subcategory</button>
+                    <button class="btn btn-primary float-left" @click="openAddSubcategoryModal()">{{ $t('admin.shop.add_new_subcategory') }}</button>
                 </div>
                 <div class="form-groupe">
-                    <button class="btn btn-success float-right" @click="get_subcategories_for_category()">Refresh</button>
+                    <button class="btn btn-success float-right" @click="get_subcategories_for_category()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
         </div>
@@ -23,11 +23,11 @@
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>{{ $t('common.name') }}</th>
                             <th>|</th>
-                            <th>Edit</th>
+                            <th>{{ $t('common.edit') }}</th>
                             <th>|</th>
-                            <th>Delite</th>
+                            <th>{{ $t('common.delete') }}</th>
                         </tr>
                     </thead>
 
@@ -38,15 +38,15 @@
                             </td>
                             <td>|</td>
                             <td>
-                                <button class="btn btn-primary" @click="openEditSubcategoryModal(subcategory.id)">Edit</button>
+                                <button class="btn btn-primary" @click="openEditSubcategoryModal(subcategory.id)">{{ $t('common.edit') }}</button>
                             </td>
                             <td>|</td>
                             <td>
-                                <button class="btn btn-danger" @click="delSubcategory(subcategory.id)">Delete</button>
+                                <button class="btn btn-danger" @click="delSubcategory(subcategory.id)">{{ $t('common.delete') }}</button>
                             </td>
                         </tr>
                     </tbody>
-                </table> 
+                </table>
             </div>
         </div>
         <addSubcategoryModal ref="addSubcategoryModal" @update_list="get_subcategories_for_category" :category_id_prop="category_id_prop"/>
@@ -101,7 +101,7 @@
                 );
             },
             delSubcategory(id){
-                if(confirm('Are you sure, you want delite it?')){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
                     .delete("/set_product/set_product_category/set_subcategory/del_subcategory/" + id)
                     .then(response => {

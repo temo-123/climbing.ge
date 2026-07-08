@@ -6,7 +6,7 @@
             :modal-class="{ [ModalClass]: true }"
             :saveButton="{ visible: true }"
             :cancelButton="{
-                title: $t('shop.product.feedback.close'),
+                title: $t('common.close'),
                 btnClass: { 'btn btn-primary': true },
             }"
             @close="close_modal()"
@@ -29,8 +29,8 @@
                                         <div class="row">
                                             <div class="col-md-4">
                                                 <div class="form-group">
-                                                    <label class="form-label">{{ $t('shop.product.feedback.name') }}</label>
-                                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" :placeholder="$t('shop.product.feedback.name')" required><br>
+                                                    <label class="form-label">{{ $t('common.name') }}</label>
+                                                    <input type="text" name="name" v-model="data.name" class="form-control friendly-input" :placeholder="$t('common.name')" required><br>
                                                     <div class="alert alert-danger" role="alert" v-if="errors.name">
                                                         {{ $t('shop.product.feedback.name_required') }}
                                                     </div>
@@ -50,8 +50,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <label class="form-label">{{ $t('shop.product.feedback.email') }}</label>
-                                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" :placeholder="$t('shop.product.feedback.email')" required><br>
+                                                    <label class="form-label">{{ $t('common.email') }}</label>
+                                                    <input type="email" name="email" v-model="data.email" class="form-control friendly-input" :placeholder="$t('common.email')" required><br>
                                                     <div class="alert alert-danger" role="alert" v-if="errors.email">
                                                         {{ $t('shop.product.feedback.email_required') }}
                                                     </div>

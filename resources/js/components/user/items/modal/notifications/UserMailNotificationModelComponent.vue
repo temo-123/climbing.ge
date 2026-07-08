@@ -1,10 +1,10 @@
 <template>
     <stack-modal
         :show="is_notifay_modal"
-        title="Send mail notification"
+        :title="$t('admin.notifications.send_mail_notification_title')"
         @close="close_modal()"
-        :saveButton="{ visible: true, title: 'Sand', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :saveButton="{ visible: true, title: $t('admin.notifications.send_btn'), btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
     >
         <div>
             <form id="sund_user_notification" v-on:submit.prevent="send_mail" >
@@ -13,86 +13,86 @@
                     <div class="form-group clearfix row">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_type" @change="selected_notification_action()" required>
-                                <option value="0" disabled>Select notification type</option> 
+                                <option value="0" disabled>{{ $t('admin.notifications.select_notification_type_placeholder') }}</option>
                                 <option value="favorite_film" disabled>favorite_film</option>
 
-                                <option value="news">Last news notification</option>
-                                <option value="favorite_outdoor">Favorite outdoor regions</option>
-                                <option value="favorite_product">Favorite products</option>
-                                <option value="interested_event">Interested events</option>
-                                <option value="special_articles">Special articles</option>
-                            </select> 
+                                <option value="news">{{ $t('admin.notifications.last_news_notification_option') }}</option>
+                                <option value="favorite_outdoor">{{ $t('admin.notifications.favorite_outdoor_regions_option') }}</option>
+                                <option value="favorite_product">{{ $t('admin.notifications.favorite_products_option') }}</option>
+                                <option value="interested_event">{{ $t('admin.notifications.interested_events_option') }}</option>
+                                <option value="special_articles">{{ $t('admin.notifications.special_articles_option') }}</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="alert alert-danger" role="alert" v-if="is_select_notification_type_error">
-                        Select notification type
+                        {{ $t('admin.notifications.select_notification_type_error') }}
                     </div>
 
                     <div class="form-group clearfix row" v-if="notification_type == 'interested_event' && events.length != 0">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="event_notification_type">
-                                <option value="0" disabled>Select notification type</option> 
-                                <option value="next">Next event</option> 
-                                <option value="select_event">Select event</option> 
-                            </select> 
+                                <option value="0" disabled>{{ $t('admin.notifications.select_notification_type_placeholder') }}</option>
+                                <option value="next">{{ $t('admin.notifications.next_event_option') }}</option>
+                                <option value="select_event">{{ $t('admin.notifications.select_event_option') }}</option>
+                            </select>
                         </div>
                     </div>
 
                     <div class="form-group clearfix row" v-if="notification_type == 'interested_event' && event_notification_type == 'select_event' && events.length != 0">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_id">
-                                <option value="0" disabled>Select event</option> 
+                                <option value="0" disabled>{{ $t('admin.notifications.select_event_placeholder') }}</option>
 
                                 <option v-for="event in events" :key="event.id" :value="event.id">{{ event.url_title }}</option>
-                            </select> 
+                            </select>
                         </div>
                     </div>
-                    
+
                     <div class="alert alert-danger" role="alert" v-if="notification_type == 'interested_event' && events.length == 0">
-                        No events for notification
+                        {{ $t('admin.notifications.no_events_for_notification') }}
                     </div>
 
                     <div class="form-group clearfix row" v-if="notification_type == 'favorite_product' && products.length != 0">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_id">
-                                <option value="0" disabled>Select product</option> 
+                                <option value="0" disabled>{{ $t('admin.orders.select_product_placeholder') }}</option>
 
                                 <option v-for="product in products" :key="product.id" :value="product.id">{{ product.url_title }}</option>
-                            </select> 
+                            </select>
                         </div>
                     </div>
-                    
+
                     <div class="alert alert-danger" role="alert" v-if="notification_type == 'favorite_product' && products.length == 0">
-                        No products for notification
+                        {{ $t('admin.notifications.no_products_for_notification') }}
                     </div>
 
                     <div class="form-group clearfix row" v-if="notification_type == 'favorite_film' && film.length != 0">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_id">
-                                <option value="0" disabled>Select films</option>
+                                <option value="0" disabled>{{ $t('admin.notifications.select_films_placeholder') }}</option>
 
                                 <option v-for="film in films" :key="film.id" :value="film.id">{{ film.url_title }}</option>
-                            </select> 
+                            </select>
                         </div>
                     </div>
-                    
+
                     <div class="alert alert-danger" role="alert" v-if="notification_type == 'favorite_film' && film.length == 0">
-                        No films for notification
+                        {{ $t('admin.notifications.no_films_for_notification') }}
                     </div>
 
                     <div class="form-group clearfix row" v-if="notification_type == 'favorite_outdoor' && outdoors.length != 0">
                         <div class="col-md-12 image_add_modal_form">
                             <select class="form-control" name="filter" v-model="notification_id">
-                                <option value="0" disabled>Select outdoor area</option> 
+                                <option value="0" disabled>{{ $t('admin.routes_sectors.select_outdoor_area') }}</option>
 
                                 <option v-for="outdoor in outdoors" :key="outdoor.id" :value="outdoor.id">{{ outdoor.url_title }}</option>
-                            </select> 
+                            </select>
                         </div>
                     </div>
-                    
+
                     <div class="alert alert-danger" role="alert" v-if="notification_type == 'favorite_outdoor' && outdoors.length == 0">
-                        No films for notification
+                        {{ $t('admin.notifications.no_films_for_notification') }}
                     </div>
 
                 </div>
@@ -105,7 +105,7 @@
                     form="sund_user_notification"
                     :class="{'btn btn-primary': true}"
                 >
-                Send
+                {{ $t('admin.notifications.send_btn') }}
                 </button>
             </div>
         </div>

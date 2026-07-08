@@ -26,7 +26,8 @@
                 <ul class="nav navbar-nav navbar-right">
                     
                     <li><router-link :to="{name: 'catalog',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.products') }}  </span> </router-link></li>
-                    <li><router-link :to="{name: 'sale_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.sale_products') }}  </span> </router-link></li>
+                    <li v-if="sale_products_count > 0"><router-link :to="{name: 'sale_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.sale_products') }}  </span> </router-link></li>
+                    <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.outlet_products') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'wall_price_colculator',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.climbing wall') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'services',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.services') }} </span> </router-link></li>
                     <li><router-link :to="{name: 'tours',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.tours') }} </span> </router-link></li>
@@ -86,7 +87,12 @@
                 navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
                 navbar_class: 'collapse navbar-collapse mobile_nav_menu',
                 navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
-                
+
+                // Hidden until confirmed non-empty, so the nav never shows a
+                // link to a page that would just render EmptyPageComponent.
+                sale_products_count: 0,
+                outlet_products_count: 0,
+
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
                 },
@@ -99,6 +105,7 @@
             localeSwitcher,
         },
         mounted() {
+            this.check_sale_and_outlet_products();
         },
         watch: {
             '$route' (to, from) {
@@ -106,6 +113,17 @@
             }
         },
         methods: {
+            check_sale_and_outlet_products(){
+                const lang = localStorage.getItem('lang') || 'us';
+                axios
+                .get('/get_product/get_local_saled_products/' + lang)
+                .then(response => { this.sale_products_count = (response.data || []).length; })
+                .catch(() => {});
+                axios
+                .get('/get_product/get_outlet_products/' + lang)
+                .then(response => { this.outlet_products_count = (response.data || []).length; })
+                .catch(() => {});
+            },
             open_navbar(){
                 if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
                     this.navbar_class = this.navbar_open_class

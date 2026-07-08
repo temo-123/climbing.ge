@@ -1,21 +1,21 @@
 <template>
     <stack-modal
         :show="showMigrateModal"
-        title="Migrate Product Option"
+        :title="$t('admin.warehouses.migrate_product_option_title')"
         @close="closeMigrateModal()"
         :modal-class="{ ['']: true }"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }">
-            <p class="text-muted mb-3">Move this product option to another warehouse with the specified quantity. If the option already exists in the target warehouse, the quantity will be updated.</p>
+            <p class="text-muted mb-3">{{ $t('admin.warehouses.migrate_hint') }}</p>
 
             <div v-if="errors.general" class="alert alert-danger">
                 {{ errors.general }}
             </div>
             <form @submit.prevent="confirmMigrate" id="migrateForm">
                 <div class="form-group">
-                    <label for="to_warehouse_id">Select Target Warehouse</label>
+                    <label for="to_warehouse_id">{{ $t('admin.warehouses.select_target_warehouse_label') }}</label>
                     <select v-model="migrateData.to_warehouse_id" class="form-control" :class="{ 'is-invalid': errors.warehouse }" required>
-                        <option value="">Choose a warehouse...</option>
+                        <option value="">{{ $t('admin.warehouses.choose_a_warehouse_placeholder') }}</option>
                         <option v-for="warehouse in warehouses" :key="warehouse.id" :value="warehouse.id">
                             {{ warehouse.name }}
                         </option>
@@ -23,17 +23,17 @@
                     <div v-if="errors.warehouse" class="invalid-feedback">{{ errors.warehouse }}</div>
                 </div>
                 <div class="form-group">
-                    <label for="quantity">Quantity (max: {{ maxQuantity }})</label>
+                    <label for="quantity">{{ $t('admin.warehouses.quantity_max_label', { max: maxQuantity }) }}</label>
                     <input type="number" v-model="migrateData.quantity" class="form-control" :class="{ 'is-invalid': errors.quantity }" min="0" :max="maxQuantity" required>
                     <div v-if="errors.quantity" class="invalid-feedback">{{ errors.quantity }}</div>
                 </div>
             </form>
             <div slot="modal-footer">
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" @click="closeMigrateModal">Cancel</button>
+                    <button type="button" class="btn btn-secondary" @click="closeMigrateModal">{{ $t('admin.comments.cancel_btn') }}</button>
                     <button type="submit" form="migrateForm" class="btn btn-primary" :disabled="submitting">
                         <span v-if="submitting" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        {{ submitting ? 'Migrating...' : 'Migrate' }}
+                        {{ submitting ? $t('admin.warehouses.migrating_ellipsis') : $t('admin.warehouses.migrate_btn') }}
                     </button>
                 </div>
             </div>
@@ -97,15 +97,15 @@
             confirmMigrate() {
                 this.errors = {};
                 if (!this.migrateData.to_warehouse_id) {
-                    this.errors.warehouse = 'Please select a target warehouse.';
+                    this.errors.warehouse = this.$t('admin.warehouses.please_select_target_warehouse');
                     return;
                 }
                 if (this.migrateData.quantity < 0) {
-                    this.errors.quantity = 'Quantity cannot be negative.';
+                    this.errors.quantity = this.$t('admin.warehouses.quantity_cannot_be_negative');
                     return;
                 }
                 if (this.migrateData.quantity > this.maxQuantity) {
-                    this.errors.quantity = 'Quantity cannot exceed the available amount.';
+                    this.errors.quantity = this.$t('admin.warehouses.quantity_cannot_exceed_available');
                     return;
                 }
 
@@ -119,7 +119,7 @@
                     this.$emit('update');
                 })
                 .catch(error => {
-                    this.errors.general = error.response?.data?.error || 'An error occurred while migrating the option.';
+                    this.errors.general = error.response?.data?.error || this.$t('admin.warehouses.error_migrating_option');
                 })
                 .finally(() => {
                     this.submitting = false;

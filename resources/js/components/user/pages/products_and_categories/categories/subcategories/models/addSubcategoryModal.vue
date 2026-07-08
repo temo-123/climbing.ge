@@ -1,10 +1,10 @@
 <template>
     <stack-modal
         :show="is_add_image_modal"
-        title="Add image"
+        :title="$t('admin.shop.add_subcategory_title')"
         @close="close_add_image_modal()"
-        :saveButton="{ visible: true, title: 'Save', btnClass: { 'btn btn-primary': true } }"
-        :cancelButton="{ visible: false, title: 'Close', btnClass: { 'btn btn-danger': true } }"
+        :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+        :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
     >
         <div>
             <span v-show="is_loading">
@@ -16,13 +16,13 @@
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="title" class="form-control" placeholder="us name"  v-model="data.us_name" required>
+                                <input type="text" name="title" class="form-control" :placeholder="$t('admin.shop.en_name_label')"  v-model="data.us_name" required>
                             </div>
                         </div>
 
                         <div class="form-group clearfix row">
                             <div class="col-md-12 image_add_modal_form">
-                                <input type="text" name="title" class="form-control" placeholder="ka name"  v-model="data.ka_name" required>
+                                <input type="text" name="title" class="form-control" :placeholder="$t('admin.shop.ka_name_label')"  v-model="data.ka_name" required>
                             </div>
                         </div>
 
@@ -37,7 +37,7 @@
                     :class="{'btn btn-primary': true}"
                     form="slider_image_add_form"
                 >
-                Save
+                {{ $t('common.save') }}
                 </button>
             </div>
         </div>
@@ -83,7 +83,7 @@
         methods: {
             close_add_image_modal(action = false){
                 if(!action){
-                    if (window.confirm('Added information will be deleted!!! Are you sure, you want close modal?')) {
+                    if (window.confirm(this.$t('common.confirm_leave_unsaved_modal'))) {
                         this.is_add_image_modal = false
                         this.clear_input_data()
                     }

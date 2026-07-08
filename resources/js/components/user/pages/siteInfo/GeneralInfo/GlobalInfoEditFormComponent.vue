@@ -3,41 +3,41 @@
         <div class="col_md_12">
             <div class="row">
                 <div class="form-group">  
-                    <button type="submit" class="btn btn-primary"  form="edit_genral_info_form" >Save</button>
-                    <button type="submit" class="btn btn-primary" v-on:click="go_back()" >Go back</button>
+                    <button type="submit" class="btn btn-primary"  form="edit_genral_info_form" >{{ $t('common.save') }}</button>
+                    <button type="submit" class="btn btn-primary" v-on:click="go_back()" >{{ $t('admin.shop.go_back') }}</button>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-12">
         
                     <input type="radio" name="tabs" id="1" checked="checked">
-                    <label for="1" >Global info</label>
+                    <label for="1" >{{ $t('common.global_info') }}</label>
                     <div class="tab" >
                         <div class="jumbotron jumbotron-fluid">
                             <div class="container">
-                                <h2 class="display-4">Add Global info</h2>
+                                <h2 class="display-4">{{ $t('admin.site_info.edit_global_info_title') }}</h2>
                                 <!-- <p class="lead">Add information for using this info in many articles.</p> -->
                             </div>
                         </div>
         
                         <form v-on:submit.prevent="edit_general_info" id="edit_genral_info_form" class="form">
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> Title </label>
+                                <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                                 <div class="col-xs-10">
-                                    <input type="text" v-model="data.title" name="us_name" class="form-control" required> 
+                                    <input type="text" v-model="data.title" name="us_name" class="form-control" required>
                                     <div class="alert alert-danger" role="alert" v-if="errors.title">
                                         {{ errors.title[0] }}
                                     </div>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> Is it shaw action </label>
+                                <label for="name" class='col-xs-2 control-label'> {{ $t('admin.site_info.is_show_action_label') }} </label>
                                 <div class="col-xs-10">
                                     <input type="checkbox" v-model="data.is_show" name="is_show" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> English name </label>
+                                <label for="name" class='col-xs-2 control-label'> {{ $t('common.english_text') }} </label>
                                 <div class="col-xs-10">
                                     <big_editor v-model="data.text_us" />
                                 </div>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> Georgian name </label>
+                                <label for="name" class='col-xs-2 control-label'> {{ $t('common.georgian_text') }} </label>
                                 <div class="col-xs-10">
                                     <big_editor v-model="data.text_ka" />
                                 </div>

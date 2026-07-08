@@ -1,28 +1,28 @@
 <template>
     <StackModal
         v-model="is_show_mtp_pitch_modal"
-        title="MTP Pitches Sequence"
+        :title="$t('admin.users.mtp_pitches_sequence_title')"
         @close="close_model()"
         @save="save_pitchs_sequence"
         :modal-class="{ [MTPPitchModalClass]: true }"
-        :saveButton="{ visible: true, title: 'Save sequence' }"
-        :cancelButton="{ title: 'Close', btnClass: { 'btn btn-primary': true } }">
+        :saveButton="{ visible: true, title: $t('admin.users.save_sequence_btn') }"
+        :cancelButton="{ title: $t('common.close'), btnClass: { 'btn btn-primary': true } }">
         <template #default>
             <div>
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
-                            <h2 v-if="mtp_pitchs.length > 0">MTP Pitches</h2>
+                            <h2 v-if="mtp_pitchs.length > 0">{{ $t('admin.users.mtp_pitches_title') }}</h2>
                             <table v-if="mtp_pitchs.length > 0" style="width: 100%">
                                 <thead>
                                     <tr>
                                         <td></td>
-                                        <td>ID</td>
-                                        <td>Num</td>
-                                        <td>Name</td>
-                                        <td>Grade</td>
-                                        <td>Height</td>
-                                        <td>Bolts</td>
+                                        <td>{{ $t('common.id') }}</td>
+                                        <td>{{ $t('admin.users.col_num') }}</td>
+                                        <td>{{ $t('common.name') }}</td>
+                                        <td>{{ $t('common.grade') }}</td>
+                                        <td>{{ $t('common.height') }}</td>
+                                        <td>{{ $t('admin.common.bolts') }}</td>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -49,7 +49,7 @@
                                 </tbody>
                             </table>
                             <div v-else class="col-md-12">
-                                <p>No pitches found for this MTP.</p>
+                                <p>{{ $t('admin.users.no_pitches_found') }}</p>
                             </div>
                         </div>
                     </div>

@@ -18,7 +18,8 @@
                     <button @click="next_product_image()" aria-label="Next image" class="nav-btn">></button>
                 </div>
                 <div class="badge discount-badge" v-if="hasDiscount">-{{ maxDiscount }}%</div>
-                <div class="badge donation-badge" v-if="product_data.global_product.is_donation_product">{{ $t('shop.product.donation') }}</div>
+                <div class="badge donation-badge" v-if="product_data.global_product.sale_type === 'donation'">{{ $t('shop.product.donation') }}</div>
+                <div class="badge donation-badge" v-if="product_data.global_product.sale_type === 'outlet'">{{ $t('shop.product.outlet') }}</div>
                 <div class="badge new-badge" v-if="product_data.global_product.new_flag">{{ $t('shop.product.new') }}</div>
             </div>
             <div class="image-dots" v-if="image_length > 1">

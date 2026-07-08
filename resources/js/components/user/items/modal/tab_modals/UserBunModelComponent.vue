@@ -3,29 +3,29 @@
         v-model="is_ban_modal"
         :title="modalTitle"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
         @close="close_modal()"
     >
         <div v-if="loading" class="text-center py-4">
-            <i class="fa fa-spinner fa-spin"></i> Loading...
+            <i class="fa fa-spinner fa-spin"></i> {{ $t('admin.export.loading_ellipsis') }}
         </div>
 
         <div v-else>
             <div class="alert alert-warning" v-if="is_banned">
-                This user is currently <strong>banned</strong>.
+                {{ $t('admin.tour.user_currently_prefix') }} <strong>{{ $t('admin.tour.banned_label') }}</strong>.
             </div>
             <div class="alert alert-success" v-else>
-                This user is currently <strong>active</strong>.
+                {{ $t('admin.tour.user_currently_prefix') }} <strong>{{ $t('admin.tour.active_label') }}</strong>.
             </div>
 
             <div v-if="!is_banned" class="form-group mt-3">
-                <label>Ban Duration</label>
+                <label>{{ $t('admin.tour.ban_duration_label') }}</label>
                 <select class="form-control" v-model="selected_duration">
-                    <option value="" disabled>Select duration</option>
-                    <option value="0.5 year">0.5 year</option>
-                    <option value="1 year">1 year</option>
-                    <option value="2 year">2 year</option>
-                    <option value="permanent">Permanent</option>
+                    <option value="" disabled>{{ $t('admin.tour.select_duration_placeholder') }}</option>
+                    <option value="0.5 year">{{ $t('admin.tour.half_year_option') }}</option>
+                    <option value="1 year">{{ $t('admin.tour.one_year_option') }}</option>
+                    <option value="2 year">{{ $t('admin.tour.two_year_option') }}</option>
+                    <option value="permanent">{{ $t('admin.tour.permanent_option') }}</option>
                 </select>
             </div>
 
@@ -36,7 +36,7 @@
                     :disabled="!selected_duration || saving"
                     @click="create_ban()"
                 >
-                    <i class="fa fa-ban"></i> {{ saving ? 'Banning...' : 'Ban User' }}
+                    <i class="fa fa-ban"></i> {{ saving ? $t('admin.tour.banning_ellipsis') : $t('admin.tour.ban_user_btn') }}
                 </button>
                 <button
                     v-else
@@ -44,7 +44,7 @@
                     :disabled="saving"
                     @click="remove_ban()"
                 >
-                    <i class="fa fa-check"></i> {{ saving ? 'Unbanning...' : 'Unban User' }}
+                    <i class="fa fa-check"></i> {{ saving ? $t('admin.tour.unbanning_ellipsis') : $t('admin.tour.unban_user_btn') }}
                 </button>
             </div>
         </div>
@@ -67,7 +67,7 @@ export default {
     },
     computed: {
         modalTitle() {
-            return this.user_name ? `Ban: ${this.user_name}` : 'User Ban';
+            return this.user_name ? this.$t('admin.tour.ban_prefix', { name: this.user_name }) : this.$t('admin.tour.user_ban_title');
         }
     },
     methods: {
@@ -89,7 +89,7 @@ export default {
                 .then(response => {
                     this.is_banned = response.data.is_banned;
                     if (!response.data.ban_role_exists) {
-                        alert('Warning: "ban" role does not exist in the database. Please create a role with slug "ban" first.');
+                        alert(this.$t('admin.tour.ban_role_missing_warning'));
                     }
                 })
                 .catch(() => {})

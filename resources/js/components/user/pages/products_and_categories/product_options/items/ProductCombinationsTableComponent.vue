@@ -3,15 +3,15 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Image</th>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Discount</th>
-                    <th>Linked Options</th>
-                    <th>Stock</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th>{{ $t('common.id') }}</th>
+                    <th>{{ $t('admin.shop.image_col') }}</th>
+                    <th>{{ $t('common.name') }}</th>
+                    <th>{{ $t('admin.shop.price_label') }}</th>
+                    <th>{{ $t('admin.shop.discount_col') }}</th>
+                    <th>{{ $t('admin.shop.linked_options_col') }}</th>
+                    <th>{{ $t('admin.shop.stock_col') }}</th>
+                    <th>{{ $t('common.edit') }}</th>
+                    <th>{{ $t('common.delete') }}</th>
                 </tr>
             </thead>
             <tbody v-if="combinations && combinations.length > 0">
@@ -37,22 +37,22 @@
                         <span v-else class="text-muted">—</span>
                     </td>
                     <td>
-                        <span v-if="item.is_out_of_stock" class="text-danger fw-bold">Out of stock</span>
+                        <span v-if="item.is_out_of_stock" class="text-danger fw-bold">{{ $t('admin.shop.out_of_stock') }}</span>
                         <span v-else class="text-success">{{ item.stock_quantity }}</span>
                     </td>
                     <td>
                         <button v-if="!is_loading_editing_modal" class="btn btn-primary btn-sm"
-                                @click="$emit('edit_combination_modal', item.combination.id)">Edit</button>
+                                @click="$emit('edit_combination_modal', item.combination.id)">{{ $t('common.edit') }}</button>
                         <img v-if="is_loading_editing_modal" :src="'/images/site_img/loading.gif'" alt="loading" style="width: 20%;">
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm"
-                                @click="$emit('del_combination', item.combination.id)">Delete</button>
+                                @click="$emit('del_combination', item.combination.id)">{{ $t('common.delete') }}</button>
                     </td>
                 </tr>
             </tbody>
             <tbody v-else>
-                <tr><td colspan="9" class="text-center text-muted">No combinations yet</td></tr>
+                <tr><td colspan="9" class="text-center text-muted">{{ $t('admin.shop.no_combinations_yet') }}</td></tr>
             </tbody>
         </table>
 

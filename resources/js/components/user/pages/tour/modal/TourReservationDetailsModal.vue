@@ -2,7 +2,7 @@
     <div class="row">
         <stack-modal
             :show="show_modal"
-            title="Reservation Details"
+            :title="$t('admin.tour.reservation_details_title')"
             @close="close_modal"
             :modal-class="{ ['my-custom-class']: true }"
             :saveButton="{ visible: false }"
@@ -21,7 +21,7 @@
                         </span>
                     </div>
                     <div class="header-id">
-                        <small>Reservation #{{ reservation.id }}</small>
+                        <small>{{ $t('admin.tour.reservation_number_prefix') }}{{ reservation.id }}</small>
                     </div>
                 </div>
 
@@ -29,18 +29,18 @@
                 <div class="details-body">
                     <!-- Tour Info Section -->
                     <div class="info-section" v-if="reservation.tour">
-                        <h5><i class="fa fa-map-signs"></i> Tour Information</h5>
+                        <h5><i class="fa fa-map-signs"></i> {{ $t('admin.tour.tour_information_title') }}</h5>
                         <div class="info-grid">
                             <div class="info-item">
-                                <span class="label">Tour:</span>
+                                <span class="label">{{ $t('admin.tour.tour_label') }}</span>
                                 <span class="value">{{ getTourTitle() }}</span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Location:</span>
+                                <span class="label">{{ $t('admin.tour.location_colon_label') }}</span>
                                 <span class="value">{{ getTourLocation() }}</span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Duration:</span>
+                                <span class="label">{{ $t('admin.tour.duration_colon_label') }}</span>
                                 <span class="value">{{ getTourDuration() }}</span>
                             </div>
                         </div>
@@ -48,24 +48,24 @@
 
                     <!-- Reservation Info Section -->
                     <div class="info-section">
-                        <h5><i class="fa fa-calendar"></i> Reservation Details</h5>
+                        <h5><i class="fa fa-calendar"></i> {{ $t('admin.tour.reservation_details_title') }}</h5>
                         <div class="info-grid">
                             <div class="info-item">
-                                <span class="label">Check In:</span>
+                                <span class="label">{{ $t('admin.tour.check_in_colon_label') }}</span>
                                 <span class="value">{{ formatDate(reservation.check_in) }}</span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Persons:</span>
+                                <span class="label">{{ $t('admin.tour.persons_colon_label') }}</span>
                                 <span class="value">
                                     <span class="badge badge-info">{{ reservation.persons }}</span>
                                 </span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Created:</span>
+                                <span class="label">{{ $t('admin.tour.created_colon_label') }}</span>
                                 <span class="value">{{ formatDateTime(reservation.created_at) }}</span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Last Updated:</span>
+                                <span class="label">{{ $t('admin.tour.last_updated_colon_label') }}</span>
                                 <span class="value">{{ formatDateTime(reservation.updated_at) }}</span>
                             </div>
                         </div>
@@ -73,26 +73,26 @@
 
                     <!-- Contact Info Section -->
                     <div class="info-section">
-                        <h5><i class="fa fa-user"></i> Contact Information</h5>
+                        <h5><i class="fa fa-user"></i> {{ $t('admin.tour.contact_information_title') }}</h5>
                         <div class="info-grid">
                             <div class="info-item full-width">
-                                <span class="label">Name:</span>
+                                <span class="label">{{ $t('admin.tour.name_colon_label') }}</span>
                                 <span class="value">{{ reservation.name }} {{ reservation.surname }}</span>
                             </div>
                             <div class="info-item">
-                                <span class="label">Email:</span>
+                                <span class="label">{{ $t('admin.tour.email_colon_label') }}</span>
                                 <span class="value">
                                     <a :href="'mailto:' + reservation.email">{{ reservation.email }}</a>
                                 </span>
                             </div>
                             <div class="info-item" v-if="reservation.phone">
-                                <span class="label">Phone:</span>
+                                <span class="label">{{ $t('admin.tour.phone_colon_label') }}</span>
                                 <span class="value">
                                     <a :href="'tel:' + reservation.phone">{{ reservation.phone }}</a>
                                 </span>
                             </div>
                             <div class="info-item" v-if="reservation.city || reservation.country">
-                                <span class="label">Location:</span>
+                                <span class="label">{{ $t('admin.tour.location_colon_label') }}</span>
                                 <span class="value">
                                     {{ reservation.city }}{{ reservation.city ? ', ' : '' }}{{ reservation.country }}
                                 </span>
@@ -102,7 +102,7 @@
 
                     <!-- Notes Section -->
                     <div class="info-section" v-if="reservation.text">
-                        <h5><i class="fa fa-sticky-note"></i> Notes</h5>
+                        <h5><i class="fa fa-sticky-note"></i> {{ $t('admin.tour.notes_title') }}</h5>
                         <div class="notes-content">
                             {{ reservation.text }}
                         </div>
@@ -110,7 +110,7 @@
 
                     <!-- Users Section -->
                     <div class="info-section" v-if="reservation.users && reservation.users.length > 0">
-                        <h5><i class="fa fa-users"></i> Associated Users</h5>
+                        <h5><i class="fa fa-users"></i> {{ $t('admin.tour.associated_users_title') }}</h5>
                         <div class="users-list">
                             <div 
                                 v-for="user in reservation.users" 
@@ -131,31 +131,31 @@
 
                 <!-- Actions Footer -->
                 <div class="details-actions">
-                    <button 
+                    <button
                         v-if="!isVerified()"
-                        @click="verifyReservation" 
+                        @click="verifyReservation"
                         class="btn btn-success"
                         :disabled="isLoading"
                     >
-                        <i class="fa fa-check"></i> Verify
+                        <i class="fa fa-check"></i> {{ $t('admin.tour.verify_btn') }}
                     </button>
-                    <button 
-                        @click="sendEmail" 
+                    <button
+                        @click="sendEmail"
                         class="btn btn-primary"
                     >
-                        <i class="fa fa-envelope"></i> Send Email
+                        <i class="fa fa-envelope"></i> {{ $t('admin.tour.send_email_btn') }}
                     </button>
-                    <button 
-                        @click="addToCalendar" 
+                    <button
+                        @click="addToCalendar"
                         class="btn btn-outline-primary"
                     >
-                        <i class="fa fa-calendar-plus"></i> Add to Calendar
+                        <i class="fa fa-calendar-plus"></i> {{ $t('admin.tour.add_to_calendar_btn') }}
                     </button>
-                    <button 
-                        @click="confirmDelete" 
+                    <button
+                        @click="confirmDelete"
                         class="btn btn-danger ml-auto"
                     >
-                        <i class="fa fa-trash"></i> Delete
+                        <i class="fa fa-trash"></i> {{ $t('common.delete') }}
                     </button>
                 </div>
             </div>
@@ -163,17 +163,17 @@
             <!-- Empty State -->
             <div v-else class="empty-state">
                 <i class="fa fa-exclamation-circle"></i>
-                <h4>No Reservation Data</h4>
-                <p>Unable to load reservation details.</p>
+                <h4>{{ $t('admin.tour.no_reservation_data_title') }}</h4>
+                <p>{{ $t('admin.tour.unable_to_load_reservation') }}</p>
             </div>
 
             <div slot="modal-footer">
-                <button 
-                    @click="close_modal" 
+                <button
+                    @click="close_modal"
                     class="btn btn-secondary"
                     data-dismiss="modal"
                 >
-                    {{ $t('Close') }}
+                    {{ $t('common.close') }}
                 </button>
             </div>
         </stack-modal>
@@ -184,25 +184,25 @@
             <div class="confirmation-dialog">
                 <div class="dialog-header">
                     <i class="fa fa-exclamation-triangle text-danger"></i>
-                    <h4>Confirm Delete</h4>
+                    <h4>{{ $t('admin.tour.confirm_delete_title') }}</h4>
                 </div>
                 <div class="dialog-body">
-                    <p>Are you sure you want to delete this reservation?</p>
-                    <p class="text-muted">This action cannot be undone.</p>
+                    <p>{{ $t('admin.tour.confirm_delete_reservation_msg') }}</p>
+                    <p class="text-muted">{{ $t('admin.tour.action_cannot_be_undone') }}</p>
                 </div>
                 <div class="dialog-actions">
-                    <button 
-                        @click="showDeleteConfirm = false" 
+                    <button
+                        @click="showDeleteConfirm = false"
                         class="btn btn-secondary"
                     >
-                        Cancel
+                        {{ $t('admin.comments.cancel_btn') }}
                     </button>
-                    <button 
-                        @click="deleteReservation" 
+                    <button
+                        @click="deleteReservation"
                         class="btn btn-danger"
                         :disabled="isLoading"
                     >
-                        <i class="fa fa-trash"></i> Delete
+                        <i class="fa fa-trash"></i> {{ $t('common.delete') }}
                     </button>
                 </div>
             </div>
@@ -279,39 +279,39 @@
             },
 
             getStatusLabel(){
-                if (!this.reservation) return 'Unknown';
-                
+                if (!this.reservation) return this.$t('admin.tour.unknown_label');
+
                 const today = new Date();
                 today.setHours(0, 0, 0, 0);
                 const checkIn = new Date(this.reservation.check_in);
-                
+
                 if (checkIn < today) {
-                    return 'Old';
+                    return this.$t('admin.tour.old_status_label');
                 } else if (this.isVerified()) {
-                    return 'Verified';
+                    return this.$t('admin.tour.verified_filter_btn');
                 } else {
-                    return 'Pending Verification';
+                    return this.$t('admin.tour.pending_verification_label');
                 }
             },
 
             getTourTitle(){
-                if (!this.reservation || !this.reservation.tour) return 'N/A';
-                
+                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
+
                 const locale = this.$i18n.locale || 'en';
                 const localeField = locale + '_tour';
-                
+
                 if (this.reservation.tour[localeField]) {
-                    return this.reservation.tour[localeField].title || 'Tour #' + this.reservation.tour_id;
+                    return this.reservation.tour[localeField].title || this.$t('admin.tour.tour_hash_prefix') + this.reservation.tour_id;
                 }
-                return 'Tour #' + this.reservation.tour_id;
+                return this.$t('admin.tour.tour_hash_prefix') + this.reservation.tour_id;
             },
 
             getTourLocation(){
-                if (!this.reservation || !this.reservation.tour) return 'N/A';
-                
+                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
+
                 const locale = this.$i18n.locale || 'en';
                 const localeField = locale + '_tour';
-                
+
                 if (this.reservation.tour[localeField]) {
                     return this.reservation.tour[localeField].location || '';
                 }
@@ -319,11 +319,11 @@
             },
 
             getTourDuration(){
-                if (!this.reservation || !this.reservation.tour) return 'N/A';
-                
+                if (!this.reservation || !this.reservation.tour) return this.$t('admin.tour.na_label');
+
                 const locale = this.$i18n.locale || 'en';
                 const localeField = locale + '_tour';
-                
+
                 if (this.reservation.tour[localeField]) {
                     return this.reservation.tour[localeField].duration || '';
                 }
@@ -331,7 +331,7 @@
             },
 
             formatDate(dateString){
-                if (!dateString) return 'N/A';
+                if (!dateString) return this.$t('admin.tour.na_label');
                 const date = new Date(dateString);
                 return date.toLocaleDateString('default', { 
                     weekday: 'short',
@@ -342,7 +342,7 @@
             },
 
             formatDateTime(dateString){
-                if (!dateString) return 'N/A';
+                if (!dateString) return this.$t('admin.tour.na_label');
                 const date = new Date(dateString);
                 return date.toLocaleDateString('default', { 
                     year: 'numeric', 
@@ -363,14 +363,14 @@
                     this.reservation.verificate = 1;
                     this.$notify({
                         type: 'success',
-                        text: 'Reservation verified successfully!'
+                        text: this.$t('admin.tour.reservation_verified_success')
                     });
                 })
                 .catch(error => {
                     console.log(error);
                     this.$notify({
                         type: 'error',
-                        text: 'Failed to verify reservation'
+                        text: this.$t('admin.tour.failed_verify_reservation')
                     });
                 })
                 .finally(() => {
@@ -387,14 +387,14 @@
             addToCalendar(){
                 if (!this.reservation) return;
                 
-                const title = encodeURIComponent('Tour Reservation: ' + this.reservation.name);
+                const title = encodeURIComponent(this.$t('admin.tour.tour_reservation_calendar_title_prefix') + ' ' + this.reservation.name);
                 const description = encodeURIComponent(
-                    `Reservation Details:\n` +
-                    `Name: ${this.reservation.name}\n` +
-                    `Email: ${this.reservation.email}\n` +
-                    `Phone: ${this.reservation.phone || 'N/A'}\n` +
-                    `Persons: ${this.reservation.persons}\n` +
-                    `Tour: ${this.getTourTitle()}`
+                    `${this.$t('admin.tour.calendar_reservation_details_prefix')}\n` +
+                    `${this.$t('admin.tour.name_colon_label')} ${this.reservation.name}\n` +
+                    `${this.$t('admin.tour.email_colon_label')} ${this.reservation.email}\n` +
+                    `${this.$t('admin.tour.phone_colon_label')} ${this.reservation.phone || this.$t('admin.tour.na_label')}\n` +
+                    `${this.$t('admin.tour.persons_colon_label')} ${this.reservation.persons}\n` +
+                    `${this.$t('admin.tour.tour_label')} ${this.getTourTitle()}`
                 );
                 const dates = encodeURIComponent(
                     this.reservation.check_in + 'T09:00:00/' + 
@@ -420,7 +420,7 @@
                 .then(response => {
                     this.$notify({
                         type: 'success',
-                        text: 'Reservation deleted successfully!'
+                        text: this.$t('admin.tour.reservation_deleted_success')
                     });
                     this.showDeleteConfirm = false;
                     this.close_modal();
@@ -430,7 +430,7 @@
                     console.log(error);
                     this.$notify({
                         type: 'error',
-                        text: 'Failed to delete reservation'
+                        text: this.$t('admin.tour.failed_delete_reservation')
                     });
                 })
                 .finally(() => {

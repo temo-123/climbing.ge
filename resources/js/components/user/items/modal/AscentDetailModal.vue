@@ -1,35 +1,35 @@
 <template>
     <StackModal
         v-model="is_open"
-        title="Ascent Details"
+        :title="$t('user.ascents.detail_modal_title')"
         @close="is_open = false"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
     >
         <div v-if="ascent" class="ascent-detail">
 
             <div class="detail-section">
                 <div class="detail-row">
-                    <span class="detail-label">Summit</span>
+                    <span class="detail-label">{{ $t('common.summit') }}</span>
                     <span class="detail-value font-weight-bold">
                         {{ ascent.summit ? ascent.summit.title : '—' }}
                     </span>
                 </div>
                 <div class="detail-row">
-                    <span class="detail-label">Date</span>
+                    <span class="detail-label">{{ $t('common.date') }}</span>
                     <span class="detail-value">
                         {{ ascent.ascent_date ? formatDate(ascent.ascent_date) : '—' }}
                     </span>
                 </div>
                 <div class="detail-row" v-if="ascent.ascent_time">
-                    <span class="detail-label">Time</span>
+                    <span class="detail-label">{{ $t('user.ascents.time') }}</span>
                     <span class="detail-value">{{ ascent.ascent_time }}</span>
                 </div>
             </div>
 
             <div class="detail-section">
                 <div class="detail-row">
-                    <span class="detail-label">Route</span>
+                    <span class="detail-label">{{ $t('common.route') }}</span>
                     <span class="detail-value">
                         <span v-if="ascent.route">{{ ascent.route.name }}</span>
                         <span v-else-if="ascent.other_route">{{ ascent.other_route }}</span>
@@ -37,7 +37,7 @@
                     </span>
                 </div>
                 <div class="detail-row" v-if="ascent.route && ascent.route.grade">
-                    <span class="detail-label">Grade</span>
+                    <span class="detail-label">{{ $t('common.grade') }}</span>
                     <span class="detail-value">
                         <span class="badge badge-secondary">{{ ascent.route.grade }}</span>
                     </span>
@@ -46,27 +46,27 @@
 
             <div class="detail-section">
                 <div class="detail-row">
-                    <span class="detail-label">Climber</span>
+                    <span class="detail-label">{{ $t('user.ascents.climber') }}</span>
                     <span class="detail-value">{{ ascent.name }} {{ ascent.surname }}</span>
                 </div>
                 <div class="detail-row" v-if="ascent.email">
-                    <span class="detail-label">Email</span>
+                    <span class="detail-label">{{ $t('common.email') }}</span>
                     <span class="detail-value text-muted">{{ ascent.email }}</span>
                 </div>
             </div>
 
             <div class="detail-section">
                 <div class="detail-row">
-                    <span class="detail-label">GPS Verified</span>
+                    <span class="detail-label">{{ $t('user.ascents.gps_verified') }}</span>
                     <span class="detail-value">
                         <span v-if="ascent.is_gps_validated" class="badge badge-success">
-                            <i class="fa fa-check"></i> Verified
+                            <i class="fa fa-check"></i> {{ $t('user.ascents.verified') }}
                         </span>
-                        <span v-else class="badge badge-light text-muted">Not verified</span>
+                        <span v-else class="badge badge-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
                     </span>
                 </div>
                 <div class="detail-row" v-if="ascent.user_latitude && ascent.user_longitude">
-                    <span class="detail-label">Coordinates</span>
+                    <span class="detail-label">{{ $t('user.ascents.coordinates') }}</span>
                     <span class="detail-value text-muted small">
                         {{ ascent.user_latitude }}, {{ ascent.user_longitude }}
                     </span>
@@ -74,16 +74,16 @@
             </div>
 
             <div class="detail-section" v-if="ascent.comment">
-                <div class="detail-label mb-1">Comment</div>
+                <div class="detail-label mb-1">{{ $t('user.ascents.comment') }}</div>
                 <div class="detail-comment">{{ ascent.comment }}</div>
             </div>
 
             <div class="detail-section" v-if="ascent.photo">
-                <div class="detail-label mb-2">Photo</div>
+                <div class="detail-label mb-2">{{ $t('user.ascents.photo') }}</div>
                 <img
                     :src="'/public/images/ascent_img/' + ascent.photo"
                     class="img-fluid rounded ascent-photo"
-                    alt="Ascent photo"
+                    :alt="$t('user.ascents.photo_alt')"
                 />
             </div>
 

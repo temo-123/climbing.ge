@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="form-groupe">
-                    <button @click="refresh()" class="btn btn-success float-right" v-if="!is_admin_panel_refresh">Refresh notifications ({{admin_refresh_id}})</button>
-                    <span class="badge badge-primare mb-1 float-right" v-if="is_admin_panel_refresh">Updating...</span>
+                    <button @click="refresh()" class="btn btn-success float-right" v-if="!is_admin_panel_refresh">{{ $t('user.notifications.refresh') }} ({{admin_refresh_id}})</button>
+                    <span class="badge badge-primare mb-1 float-right" v-if="is_admin_panel_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>
@@ -13,19 +13,19 @@
             <div class="col-md-12">
                 <span v-if="!this.user['name'] || !this.user['surname'] || !this.user['country'] || !this.user['city'] || !this.user['email']">
                     <div class="alert alert-danger" role="alert">
-                        <strong>Danger!</strong> Your personal data is missing, this can lead to rolling problems. check page "option", and add missing information.
+                        <strong>{{ $t('user.notifications.danger') }}</strong> {{ $t('user.notifications.missing_data') }}
                     </div>
                 </span>
                 <span v-if="!this.user['email_verified_at']">
                     <div class="alert alert-danger" role="alert">
                         <span v-if="!is_email_sending_loader" class="cursor_pointer" @click="send_mail_confirm_notificatione()">
-                            <strong>Danger!</strong> We sent you an email for verification, please check your email and confirm it. If you don't got this email you can demand new message. For new message -> <span class="cursor_pointer" @click="send_mail_confirm_notificatione()">Click here</span>.
+                            <strong>{{ $t('user.notifications.danger') }}</strong> {{ $t('user.notifications.email_not_verified') }} <span class="cursor_pointer" @click="send_mail_confirm_notificatione()">{{ $t('user.notifications.click_here') }}</span>.
                         </span>
                         <span v-else-if="is_email_sending_loader">
                             <div class="row justify-content-center" >
                                 <div class="col-md-3">
                                     <img :src="'/images/site_img/loading.gif'" alt="loading">
-                                    <p class="text-center">Pless wait!</p>
+                                    <p class="text-center">{{ $t('user.notifications.please_wait') }}</p>
                                 </div>
                             </div>
                         </span>
@@ -34,9 +34,9 @@
 
                 <span v-if="!this.user['image']">
                     <div class="alert alert-warning" role="alert">
-                        <strong>Warning!</strong> Add your profil image and piple faind you isier
+                        <strong>{{ $t('user.notifications.warning') }}</strong> {{ $t('user.notifications.missing_image') }}
                     </div>
-                </span>    
+                </span>
             </div>
         </div>
     </span>
@@ -79,14 +79,14 @@
                 axios
                 .get('/email/resend')
                 .then((response)=>{
-                    alert('New verification message is sended. Please check your email for verification!')
+                    alert(this.$t('user.notifications.resend_success'))
                 })
                 .catch((error) => {
                     if(error.response.status === 429) {
                         // alert('The page has expired or you clicked this button too many times! Please try again later or contact support!')
                     }
                     else{
-                        alert('Something went wrong! Please try again later, if you encounter this problem again, contact support!')
+                        alert(this.$t('user.notifications.resend_error'))
                     }
                 })
                 .finally(() => this.is_email_sending_loader = false);

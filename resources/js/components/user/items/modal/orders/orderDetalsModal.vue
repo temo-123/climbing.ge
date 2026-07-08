@@ -1,36 +1,36 @@
 <template>
     <StackModal
         v-model="is_order_detals_model"
-        title="Order Details"
+        :title="$t('admin.orders.order_details_modal_title')"
         @close="is_order_detals_model=false"
         :saveButton="{ visible: false }"
-        :cancelButton="{ visible: true, title: 'Close', btnClass: { 'btn btn-secondary': true } }"
+        :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
     >
         <div v-if="order">
 
             <!-- Order type badge -->
             <div class="mb-3">
-                <span v-if="order.is_custom" class="badge badge-warning mr-2">Custom Order</span>
-                <span v-else class="badge badge-primary mr-2">Cart Order</span>
+                <span v-if="order.is_custom" class="badge badge-warning mr-2">{{ $t('admin.orders.custom_order_badge') }}</span>
+                <span v-else class="badge badge-primary mr-2">{{ $t('admin.orders.cart_order_badge') }}</span>
                 <span class="badge badge-info">
-                    <i class="fa fa-clock-o"></i> Delivery: {{ delivery_days }} business days
+                    <i class="fa fa-clock-o"></i> {{ $t('admin.orders.delivery_days_prefix', { days: delivery_days }) }}
                 </span>
             </div>
 
             <!-- Delivery address (regular orders) -->
             <template v-if="!order.is_custom && buyer_address">
-                <h6 class="text-muted mb-2">Delivery Address</h6>
+                <h6 class="text-muted mb-2">{{ $t('user.orders.delivery_address') }}</h6>
                 <div class="alert alert-secondary py-2 mb-3">
                     <strong>{{ buyer_address.name }}</strong>
                     <p class="mb-0 small">
                         {{ buyer_address.city }}<span v-if="buyer_address.strit">, {{ buyer_address.strit }} {{ buyer_address.number }}</span>
-                        <span v-if="buyer_address.floor">, Floor {{ buyer_address.floor }}</span>
-                        <span v-if="buyer_address.flat">, Flat {{ buyer_address.flat }}</span>
+                        <span v-if="buyer_address.floor">, {{ $t('user.orders.floor', { floor: buyer_address.floor }) }}</span>
+                        <span v-if="buyer_address.flat">, {{ $t('user.orders.flat', { flat: buyer_address.flat }) }}</span>
                     </p>
-                    <p class="mb-0 small" v-if="buyer_address.zip_code">Zip: {{ buyer_address.zip_code }}</p>
+                    <p class="mb-0 small" v-if="buyer_address.zip_code">{{ $t('user.orders.zip', { zip: buyer_address.zip_code }) }}</p>
                     <p class="mb-0 small" v-if="buyer_address.map">
                         <a :href="buyer_address.map" target="_blank" rel="noopener">
-                            <i class="fa fa-map-o"></i> View on map
+                            <i class="fa fa-map-o"></i> {{ $t('user.orders.view_on_map') }}
                         </a>
                     </p>
                 </div>
@@ -39,17 +39,17 @@
 
             <!-- Buyer info (custom orders only) -->
             <template v-if="order.is_custom && buyer_address">
-                <h6 class="text-muted mb-2">Buyer Information</h6>
+                <h6 class="text-muted mb-2">{{ $t('admin.orders.buyer_information_title') }}</h6>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Name</label>
+                            <label>{{ $t('admin.orders.name_label') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.name" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Surname</label>
+                            <label>{{ $t('admin.orders.surname_label') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.surname" readonly>
                         </div>
                     </div>
@@ -57,13 +57,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Email</label>
+                            <label>{{ $t('common.email') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.email || '—'" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Phone</label>
+                            <label>{{ $t('admin.orders.phone_label') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.phone || '—'" readonly>
                         </div>
                     </div>
@@ -71,33 +71,33 @@
 
                 <!-- Linked users from DB -->
                 <template v-if="related_users && related_users.length">
-                    <h6 class="text-muted mb-2">Linked User Accounts</h6>
+                    <h6 class="text-muted mb-2">{{ $t('admin.orders.linked_user_accounts_title') }}</h6>
                     <div v-for="u in related_users" :key="u.id" class="alert alert-success py-2">
                         <i class="fa fa-user"></i>
                         <strong>{{ u.name }} {{ u.surname }}</strong>
                         <span class="text-muted ml-2">{{ u.email }}</span>
-                        <span class="badge badge-secondary ml-2">ID #{{ u.id }}</span>
+                        <span class="badge badge-secondary ml-2">{{ $t('admin.orders.id_hash_prefix') }}{{ u.id }}</span>
                     </div>
                 </template>
                 <div v-else-if="order.is_custom" class="alert alert-secondary py-2">
-                    <i class="fa fa-user-times"></i> No registered user found for this email
+                    <i class="fa fa-user-times"></i> {{ $t('admin.orders.no_registered_user_found') }}
                 </div>
 
                 <hr>
             </template>
 
             <!-- Order Details -->
-            <h6 class="text-muted mb-2">Order Details</h6>
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.order_details_title') }}</h6>
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Shipping Method</label>
+                        <label>{{ $t('admin.orders.shipping_method_label') }}</label>
                         <input type="text" class="form-control" :value="shippingLabel" readonly>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Payment Method</label>
+                        <label>{{ $t('admin.orders.payment_method_label') }}</label>
                         <input type="text" class="form-control" :value="paymentLabel" readonly>
                     </div>
                 </div>
@@ -107,13 +107,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>Address</label>
+                            <label>{{ $t('admin.orders.address_label') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.address || '—'" readonly>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label>City</label>
+                            <label>{{ $t('admin.orders.city_label') }}</label>
                             <input type="text" class="form-control" :value="buyer_address.city || '—'" readonly>
                         </div>
                     </div>
@@ -123,13 +123,13 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Status</label>
+                        <label>{{ $t('admin.orders.status_label') }}</label>
                         <input type="text" class="form-control" :value="order.status" readonly>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="form-group">
-                        <label>Status Updated</label>
+                        <label>{{ $t('admin.orders.status_updated_label') }}</label>
                         <input type="text" class="form-control" :value="order.status_updating_data || '—'" readonly>
                     </div>
                 </div>
@@ -138,30 +138,30 @@
             <hr>
 
             <!-- Products -->
-            <h6 class="text-muted mb-2">Products</h6>
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.products_title') }}</h6>
             <div v-for="(item, index) in order_product_items" :key="item.id" class="border rounded p-3 mb-2 bg-light">
                 <div class="row align-items-center">
                     <div class="col-md-5">
-                        <label class="text-muted d-block mb-1" v-if="index === 0">Product</label>
+                        <label class="text-muted d-block mb-1" v-if="index === 0">{{ $t('admin.orders.product_label') }}</label>
                         <input type="text" class="form-control" :value="item.product.url_title" readonly>
                     </div>
                     <div class="col-md-3">
-                        <label class="text-muted d-block mb-1" v-if="index === 0">Option</label>
+                        <label class="text-muted d-block mb-1" v-if="index === 0">{{ $t('admin.orders.option_label') }}</label>
                         <input type="text" class="form-control" :value="item.option ? item.option.name : '—'" readonly>
                     </div>
                     <div class="col-md-2">
-                        <label class="text-muted d-block mb-1" v-if="index === 0">Qty</label>
+                        <label class="text-muted d-block mb-1" v-if="index === 0">{{ $t('admin.orders.qty_label') }}</label>
                         <input type="number" class="form-control" :value="item.quantity" readonly>
                     </div>
                     <div class="col-md-2">
-                        <label class="text-muted d-block mb-1" v-if="index === 0">Price</label>
+                        <label class="text-muted d-block mb-1" v-if="index === 0">{{ $t('common.price') }}</label>
                         <input type="text" class="form-control" :value="(item.option ? item.option.price * item.quantity : 0) + ' ₾'" readonly>
                     </div>
                 </div>
             </div>
 
             <div class="d-flex justify-content-end mt-2">
-                <strong>Total: {{ total_price }} ₾</strong>
+                <strong>{{ $t('admin.orders.total_prefix') }} {{ total_price }} ₾</strong>
             </div>
         </div>
     </StackModal>
@@ -181,14 +181,14 @@ export default {
     },
     computed: {
         shippingLabel() {
-            const map = { self_delivery: 'Self-delivery', delivery: 'Delivery' }
+            const map = { self_delivery: this.$t('admin.orders.self_delivery_label'), delivery: this.$t('admin.orders.delivery_option') }
             return map[this.order?.shiping] || this.order?.shiping || '—'
         },
         paymentLabel() {
             const map = {
-                deliverd_payment: 'Payment on delivery',
-                mony_transfer: 'Money transfer',
-                online_payment: 'Online payment',
+                deliverd_payment: this.$t('admin.orders.payment_on_delivery_option'),
+                mony_transfer: this.$t('admin.orders.money_transfer_option'),
+                online_payment: this.$t('admin.orders.online_payment_label'),
             }
             return map[this.order?.payment] || this.order?.payment || '—'
         },

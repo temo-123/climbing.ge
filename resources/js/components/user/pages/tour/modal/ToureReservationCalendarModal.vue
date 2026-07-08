@@ -2,7 +2,7 @@
     <div class="row">
         <stack-modal
             :show="show_reservation_calendar_modal"
-            title="Tour Reservations Calendar"
+            :title="$t('admin.tour.reservations_calendar_title')"
             @close="close_reservation_calendar_modal()"
             :modal-class="{ ['my-custom-class']: true }"
             :saveButton="{ visible: false }"
@@ -12,42 +12,42 @@
                 <!-- Google Calendar Sync Button (Top Right) -->
                 <div class="calendar-sync-toolbar">
                     <div class="filter-section">
-                        <button 
+                        <button
                             @click="verificationFilter = 'all'"
                             :class="['filter-btn', verificationFilter === 'all' ? 'active' : '']"
                         >
-                            All <span class="badge-count">{{ reservations.length }}</span>
+                            {{ $t('admin.tour.all_filter_btn') }} <span class="badge-count">{{ reservations.length }}</span>
                         </button>
-                        <button 
+                        <button
                             @click="verificationFilter = 'verified'"
                             :class="['filter-btn', 'verified', verificationFilter === 'verified' ? 'active' : '']"
                         >
-                            <i class="fa fa-check-circle"></i> Verified <span class="badge-count">{{ verifiedCount }}</span>
+                            <i class="fa fa-check-circle"></i> {{ $t('admin.tour.verified_filter_btn') }} <span class="badge-count">{{ verifiedCount }}</span>
                         </button>
-                        <button 
+                        <button
                             @click="verificationFilter = 'not_verified'"
                             :class="['filter-btn', 'not-verified', verificationFilter === 'not_verified' ? 'active' : '']"
                         >
-                            <i class="fa fa-exclamation-circle"></i> Not Verified <span class="badge-count">{{ notVerifiedCount }}</span>
+                            <i class="fa fa-exclamation-circle"></i> {{ $t('admin.tour.not_verified_filter_btn') }} <span class="badge-count">{{ notVerifiedCount }}</span>
                         </button>
-                        <button 
+                        <button
                             @click="verificationFilter = 'old'"
                             :class="['filter-btn', 'old', verificationFilter === 'old' ? 'active' : '']"
                         >
-                            <i class="fa fa-history"></i> Old <span class="badge-count">{{ oldCount }}</span>
+                            <i class="fa fa-history"></i> {{ $t('admin.tour.old_filter_btn') }} <span class="badge-count">{{ oldCount }}</span>
                         </button>
                     </div>
                     <div class="sync-status" v-if="connectedEmail">
                         <i class="fa fa-check-circle text-success"></i>
                         <span>{{ connectedEmail }}</span>
                     </div>
-                    <button 
-                        @click="openGoogleCalendarSync" 
+                    <button
+                        @click="openGoogleCalendarSync"
                         class="btn btn-google-calendar"
                         :class="connectedEmail ? 'btn-outline-primary' : 'btn-primary'"
                     >
                         <i class="fa fa-sync"></i>
-                        {{ connectedEmail ? 'Sync Settings' : 'Connect Google Calendar' }}
+                        {{ connectedEmail ? $t('admin.tour.sync_settings_btn') : $t('admin.tour.connect_google_calendar_btn') }}
                     </button>
                 </div>
 
@@ -62,14 +62,14 @@
                         <button @click="nextMonth" class="btn btn-sm btn-outline-secondary">
                             <i class="fa fa-chevron-right"></i>
                         </button>
-                        <button @click="goToToday" class="btn btn-sm btn-outline-info ml-2">Today</button>
+                        <button @click="goToToday" class="btn btn-sm btn-outline-info ml-2">{{ $t('admin.tour.today_btn') }}</button>
                     </div>
 
                     <!-- Calendar Grid -->
                     <div class="calendar-grid">
                         <!-- Weekday Headers -->
                         <div class="calendar-header">
-                            <div v-for="day in weekDays" :key="day" class="weekday">{{ day }}</div>
+                            <div v-for="day in weekDaysLocalized" :key="day" class="weekday">{{ day }}</div>
                         </div>
                         
                         <!-- Calendar Days -->
@@ -99,11 +99,11 @@
                                         <span class="reservation-name">{{ reservation.name }}</span>
                                         <span class="reservation-persons">({{ reservation.persons }})</span>
                                     </div>
-                                    <div 
-                                        v-if="day.reservations.length > 3" 
+                                    <div
+                                        v-if="day.reservations.length > 3"
                                         class="more-reservations"
                                     >
-                                        +{{ day.reservations.length - 3 }} more
+                                        +{{ day.reservations.length - 3 }} {{ $t('admin.tour.more_suffix') }}
                                     </div>
                                 </div>
                             </div>
@@ -116,8 +116,8 @@
                     <div class="panel-header">
                         <h5>
                             <i class="fa fa-calendar-check"></i>
-                            {{ formatSelectedDayDate }} 
-                            <span class="badge badge-primary">{{ selectedDay.reservations.length }} reservations</span>
+                            {{ formatSelectedDayDate }}
+                            <span class="badge badge-primary">{{ selectedDay.reservations.length }} {{ $t('admin.tour.reservations_count_suffix') }}</span>
                         </h5>
                         <button @click="selectedDay = null" class="btn btn-sm btn-link">
                             <i class="fa fa-times"></i>
@@ -133,7 +133,7 @@
                             <div class="reservation-card-header">
                                 <strong>{{ reservation.name }} {{ reservation.surname }}</strong>
                                 <span :class="['badge', reservation.verificate ? 'badge-success' : 'badge-warning']">
-                                    {{ reservation.verificate ? 'Verified' : 'Pending' }}
+                                    {{ reservation.verificate ? $t('admin.tour.verified_filter_btn') : $t('admin.tour.pending_label') }}
                                 </span>
                             </div>
                             <div class="reservation-card-body">
@@ -147,7 +147,7 @@
                                 </div>
                                 <div class="detail-item">
                                     <i class="fa fa-users"></i>
-                                    {{ reservation.persons }} person(s)
+                                    {{ reservation.persons }} {{ $t('admin.tour.person_suffix') }}
                                 </div>
                                 <div class="detail-item" v-if="reservation.country || reservation.city">
                                     <i class="fa fa-map-marker"></i>
@@ -161,22 +161,22 @@
                 <!-- Local Reservations List (Below Calendar) -->
                 <div v-if="filteredReservations.length > 0" class="reservations-list-panel">
                     <h4>
-                        <i class="fa fa-list"></i> 
-                        <span v-if="verificationFilter === 'all'">All Upcoming Reservations</span>
-                        <span v-else-if="verificationFilter === 'verified'">Verified Reservations</span>
-                        <span v-else-if="verificationFilter === 'not_verified'">Not Verified Reservations</span>
-                        <span v-else>Old Reservations</span>
+                        <i class="fa fa-list"></i>
+                        <span v-if="verificationFilter === 'all'">{{ $t('admin.tour.all_upcoming_reservations_title') }}</span>
+                        <span v-else-if="verificationFilter === 'verified'">{{ $t('admin.tour.verified_reservations_title') }}</span>
+                        <span v-else-if="verificationFilter === 'not_verified'">{{ $t('admin.tour.not_verified_reservations_title') }}</span>
+                        <span v-else>{{ $t('admin.tour.old_reservations_title') }}</span>
                         <span class="badge badge-primary">{{ filteredReservations.length }}</span>
                     </h4>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
-                                    <th>Check In</th>
-                                    <th>Name</th>
-                                    <th>Persons</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
+                                    <th>{{ $t('admin.tour.check_in_col') }}</th>
+                                    <th>{{ $t('common.name') }}</th>
+                                    <th>{{ $t('admin.tour.persons_col') }}</th>
+                                    <th>{{ $t('common.email') }}</th>
+                                    <th>{{ $t('admin.tour.status_col') }}</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -206,38 +206,38 @@
                 <!-- Empty State -->
                 <div v-else-if="show_reservation_calendar_modal" class="empty-state">
                     <i class="fa fa-calendar-times"></i>
-                    <h4>No Reservations Found</h4>
-                    <p v-if="verificationFilter === 'all'">There are no tour reservations to display.</p>
-                    <p v-else-if="verificationFilter === 'verified'">There are no verified reservations to display.</p>
-                    <p v-else-if="verificationFilter === 'not_verified'">There are no pending (not verified) reservations to display.</p>
-                    <p v-else>There are no old reservations to display.</p>
+                    <h4>{{ $t('admin.tour.no_reservations_found_title') }}</h4>
+                    <p v-if="verificationFilter === 'all'">{{ $t('admin.tour.no_tour_reservations_msg') }}</p>
+                    <p v-else-if="verificationFilter === 'verified'">{{ $t('admin.tour.no_verified_reservations_msg') }}</p>
+                    <p v-else-if="verificationFilter === 'not_verified'">{{ $t('admin.tour.no_pending_reservations_msg') }}</p>
+                    <p v-else>{{ $t('admin.tour.no_old_reservations_msg') }}</p>
                 </div>
             </div>
-            
+
             <div slot="modal-footer">
                 <div class="modal-footer w-100">
                     <div class="d-flex justify-content-between align-items-center w-100">
                         <div class="sync-info" v-if="lastSynced">
                             <small class="text-muted">
-                                <i class="fa fa-clock"></i> Last synced: {{ lastSynced }}
+                                <i class="fa fa-clock"></i> {{ $t('admin.tour.last_synced_label') }} {{ lastSynced }}
                             </small>
                         </div>
                         <div>
-                            <button 
+                            <button
                                 v-if="connectedEmail"
-                                @click="syncNow" 
+                                @click="syncNow"
                                 class="btn btn-outline-primary mr-2"
                                 :disabled="isSyncing"
                             >
                                 <i class="fa fa-sync" :class="{'fa-spin': isSyncing}"></i>
-                                {{ isSyncing ? 'Syncing...' : 'Sync to Google' }}
+                                {{ isSyncing ? $t('admin.tour.syncing_ellipsis') : $t('admin.tour.sync_to_google_btn') }}
                             </button>
-                            <button 
-                                @click="close_reservation_calendar_modal()" 
-                                class="btn btn-danger" 
+                            <button
+                                @click="close_reservation_calendar_modal()"
+                                class="btn btn-danger"
                                 data-dismiss="modal"
                             >
-                                {{ $t('Close') }}
+                                {{ $t('common.close') }}
                             </button>
                         </div>
                     </div>
@@ -268,14 +268,24 @@
                 // Calendar state
                 currentDate: new Date(),
                 selectedDay: null,
-                weekDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
-                
+
                 // Verification filter state
                 verificationFilter: 'all',
             }
         },
 
         computed: {
+            weekDaysLocalized(){
+                return [
+                    this.$t('admin.tour.weekday_sun'),
+                    this.$t('admin.tour.weekday_mon'),
+                    this.$t('admin.tour.weekday_tue'),
+                    this.$t('admin.tour.weekday_wed'),
+                    this.$t('admin.tour.weekday_thu'),
+                    this.$t('admin.tour.weekday_fri'),
+                    this.$t('admin.tour.weekday_sat'),
+                ];
+            },
             currentMonthYear(){
                 return this.currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
             },
@@ -483,11 +493,11 @@
                 const checkIn = new Date(reservation.check_in);
                 
                 if (checkIn < today) {
-                    return 'Old';
+                    return this.$t('admin.tour.old_status_label');
                 } else if (reservation.verificate === true || reservation.verificate === 1 || reservation.verificate === '1') {
-                    return 'Verified';
+                    return this.$t('admin.tour.verified_filter_btn');
                 } else {
-                    return 'Pending';
+                    return this.$t('admin.tour.pending_label');
                 }
             },
 
@@ -525,12 +535,12 @@
                         calendar_id: this.calendarId,
                         last_synced: this.lastSynced
                     }));
-                    alert('Reservations synced to Google Calendar successfully!');
+                    alert(this.$t('admin.tour.sync_success_message'));
                 })
                 .catch(error => {
                     console.log(error);
                     this.lastSynced = new Date().toLocaleString();
-                    alert('Reservations synced to Google Calendar successfully!');
+                    alert(this.$t('admin.tour.sync_success_message'));
                 })
                 .finally(() => {
                     this.isSyncing = false;

@@ -1,7 +1,7 @@
 <template>
     <StackModal
         v-model="visible"
-        title="Order Details"
+        :title="$t('user.orders.detail_modal_title')"
         @close="visible = false">
         <div v-if="loading" class="text-center py-4">
             <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -11,10 +11,10 @@
 
             <!-- Status badge -->
             <div class="mb-3 d-flex align-items-center flex-wrap" style="gap:6px">
-                <span class="badge badge-secondary">Order #{{ order.id }}</span>
+                <span class="badge badge-secondary">{{ $t('user.orders.order_number', { id: order.id }) }}</span>
                 <span :class="statusBadgeClass">{{ statusLabel }}</span>
                 <span class="badge badge-info">
-                    <i class="fa fa-clock-o"></i> Delivery: {{ delivery_days }} business days
+                    <i class="fa fa-clock-o"></i> {{ $t('user.orders.delivery_days', { days: delivery_days }) }}
                 </span>
             </div>
 
@@ -30,38 +30,38 @@
                     </span>
                 </div>
                 <small class="text-muted" v-if="order.status_updating_data">
-                    Last updated: {{ order.status_updating_data }}
+                    {{ $t('user.orders.last_updated', { date: order.status_updating_data }) }}
                 </small>
             </div>
 
             <hr>
 
             <!-- Delivery address -->
-            <h6 class="text-muted mb-2"><i class="fa fa-map-marker"></i> Delivery Address</h6>
+            <h6 class="text-muted mb-2"><i class="fa fa-map-marker"></i> {{ $t('user.orders.delivery_address') }}</h6>
             <div v-if="buyer_address" class="alert alert-secondary py-2 mb-3">
                 <strong>{{ buyer_address.name }}</strong>
                 <p class="mb-0 small">
                     {{ buyer_address.city }}<span v-if="buyer_address.strit">, {{ buyer_address.strit }} {{ buyer_address.number }}</span>
-                    <span v-if="buyer_address.floor">, Floor {{ buyer_address.floor }}</span>
-                    <span v-if="buyer_address.flat">, Flat {{ buyer_address.flat }}</span>
+                    <span v-if="buyer_address.floor">, {{ $t('user.orders.floor', { floor: buyer_address.floor }) }}</span>
+                    <span v-if="buyer_address.flat">, {{ $t('user.orders.flat', { flat: buyer_address.flat }) }}</span>
                 </p>
-                <p class="mb-0 small" v-if="buyer_address.zip_code">Zip: {{ buyer_address.zip_code }}</p>
+                <p class="mb-0 small" v-if="buyer_address.zip_code">{{ $t('user.orders.zip', { zip: buyer_address.zip_code }) }}</p>
                 <p class="mb-0 small" v-if="buyer_address.map">
                     <a :href="buyer_address.map" target="_blank" rel="noopener">
-                        <i class="fa fa-map-o"></i> View on map
+                        <i class="fa fa-map-o"></i> {{ $t('user.orders.view_on_map') }}
                     </a>
                 </p>
             </div>
-            <div v-else class="alert alert-warning py-2 mb-3">No delivery address recorded.</div>
+            <div v-else class="alert alert-warning py-2 mb-3">{{ $t('user.orders.no_address') }}</div>
 
             <!-- Payment & shipping -->
             <div class="row mb-3">
                 <div class="col-6">
-                    <small class="text-muted d-block">Payment</small>
+                    <small class="text-muted d-block">{{ $t('common.payment') }}</small>
                     <strong>{{ paymentLabel }}</strong>
                 </div>
                 <div class="col-6">
-                    <small class="text-muted d-block">Shipping cost</small>
+                    <small class="text-muted d-block">{{ $t('user.orders.shipping_cost') }}</small>
                     <strong>{{ order.shiping || 0 }} ₾</strong>
                 </div>
             </div>
@@ -69,24 +69,24 @@
             <hr>
 
             <!-- Products -->
-            <h6 class="text-muted mb-2"><i class="fa fa-shopping-bag"></i> Products</h6>
+            <h6 class="text-muted mb-2"><i class="fa fa-shopping-bag"></i> {{ $t('user.orders.products') }}</h6>
             <div v-for="item in order_products" :key="item.option && item.option.id"
                 class="border rounded p-2 mb-2 bg-light">
                 <div class="row align-items-center">
                     <div class="col-5">
-                        <small class="text-muted d-block">Product</small>
+                        <small class="text-muted d-block">{{ $t('common.product') }}</small>
                         <span>{{ item.product && item.product.url_title || '—' }}</span>
                     </div>
                     <div class="col-3">
-                        <small class="text-muted d-block">Option</small>
+                        <small class="text-muted d-block">{{ $t('user.orders.option') }}</small>
                         <span>{{ item.option && item.option.name || '—' }}</span>
                     </div>
                     <div class="col-2">
-                        <small class="text-muted d-block">Qty</small>
+                        <small class="text-muted d-block">{{ $t('user.orders.qty') }}</small>
                         <span>{{ item.quantity }}</span>
                     </div>
                     <div class="col-2 text-right">
-                        <small class="text-muted d-block">Total</small>
+                        <small class="text-muted d-block">{{ $t('user.orders.total') }}</small>
                         <strong>{{ item_total(item) }} ₾</strong>
                     </div>
                 </div>
@@ -94,25 +94,25 @@
 
             <div class="d-flex justify-content-end mt-2 flex-column align-items-end">
                 <div v-if="order.discount && order.discount > 0" class="text-success">
-                    Discount ({{ order.discount }}%): −{{ discount_amount }} ₾
+                    {{ $t('user.orders.discount', { percent: order.discount, amount: discount_amount }) }}
                 </div>
                 <div>
-                    <strong>Subtotal: {{ subtotal }} ₾</strong>
+                    <strong>{{ $t('user.orders.subtotal', { amount: subtotal }) }}</strong>
                 </div>
                 <div>
-                    Shipping: {{ order.shiping || 0 }} ₾
+                    {{ $t('user.orders.shipping', { amount: order.shiping || 0 }) }}
                 </div>
                 <div class="mt-1" style="font-size:1.1em">
-                    <strong>Total: {{ total_price }} ₾</strong>
+                    <strong>{{ $t('user.orders.grand_total', { amount: total_price }) }}</strong>
                 </div>
             </div>
 
             <div class="mt-3 text-muted small">
-                Ordered on: {{ order.created_at ? order.created_at.slice(0, 10) : '—' }}
+                {{ $t('user.orders.ordered_on', { date: order.created_at ? order.created_at.slice(0, 10) : '—' }) }}
             </div>
         </div>
 
-        <div v-else class="text-center text-muted py-4">Could not load order details.</div>
+        <div v-else class="text-center text-muted py-4">{{ $t('user.orders.load_error') }}</div>
     </StackModal>
 </template>
 
@@ -130,10 +130,10 @@ export default {
     computed: {
         statusSteps() {
             return [
-                { key: 'pending',    label: 'Pending',    badge: 'badge-warning' },
-                { key: 'treatment',  label: 'Processing', badge: 'badge-info' },
-                { key: 'shipped',    label: 'Shipped',    badge: 'badge-primary' },
-                { key: 'delivered',  label: 'Delivered',  badge: 'badge-success' },
+                { key: 'pending',    label: this.$t('user.orders.status.pending'),   badge: 'badge-warning' },
+                { key: 'treatment',  label: this.$t('user.orders.status.treatment'), badge: 'badge-info' },
+                { key: 'shipped',    label: this.$t('user.orders.status.shipped'),   badge: 'badge-primary' },
+                { key: 'delivered',  label: this.$t('user.orders.status.delivered'), badge: 'badge-success' },
             ]
         },
         statusIndex() {
@@ -149,10 +149,10 @@ export default {
         },
         paymentLabel() {
             const map = {
-                'deliverd payment': 'Payment on delivery',
-                'deliverd_payment': 'Payment on delivery',
-                'online payment': 'Online payment',
-                'mony_transfer': 'Money transfer',
+                'deliverd payment': this.$t('user.orders.payment_on_delivery'),
+                'deliverd_payment': this.$t('user.orders.payment_on_delivery'),
+                'online payment': this.$t('user.orders.online_payment'),
+                'mony_transfer': this.$t('user.orders.money_transfer'),
             }
             return map[this.order?.payment] || this.order?.payment || '—'
         },

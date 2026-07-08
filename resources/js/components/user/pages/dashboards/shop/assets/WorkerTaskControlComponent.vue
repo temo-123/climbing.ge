@@ -3,21 +3,21 @@
         <div class="task-panel">
             <div class="task-panel-toolbar mb-3">
                 <button v-if="$can('add', 'task')" class="btn btn-primary btn-sm" @click="show_add_task_modal">
-                    <i class="fa fa-plus"></i> New Task
+                    <i class="fa fa-plus"></i> {{ $t('admin.task.new_task_btn') }}
                 </button>
                 <button class="btn btn-outline-secondary btn-sm ml-2" @click="load_tasks">
-                    <i class="fa fa-refresh"></i> Refresh
+                    <i class="fa fa-refresh"></i> {{ $t('common.refresh') }}
                 </button>
                 <div class="task-legend ml-auto">
-                    <span class="legend-dot dot-yellow"></span> Created
-                    <span class="legend-dot dot-green ml-2"></span> In Progress
-                    <span class="legend-dot dot-gray ml-2"></span> Finished
-                    <span class="legend-dot dot-red ml-2"></span> Problem
+                    <span class="legend-dot dot-yellow"></span> {{ $t('admin.task.status_created') }}
+                    <span class="legend-dot dot-green ml-2"></span> {{ $t('admin.task.status_in_progress') }}
+                    <span class="legend-dot dot-gray ml-2"></span> {{ $t('admin.task.status_finished') }}
+                    <span class="legend-dot dot-red ml-2"></span> {{ $t('admin.task.status_problem') }}
                 </div>
             </div>
 
             <div v-if="tasks.length === 0" class="text-center text-muted p-4">
-                No tasks found.
+                {{ $t('admin.task.no_tasks_found') }}
             </div>
 
             <div v-for="task in tasks" :key="task.id" class="task-card" :class="task_card_class(task.status)">
@@ -30,16 +30,16 @@
                             <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
                         </div>
                         <div class="task-card-actions">
-                            <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" title="Details">
+                            <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" :title="$t('admin.task.details_tooltip')">
                                 <i class="fa fa-eye"></i>
                             </button>
-                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" title="Edit">
+                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" :title="$t('admin.task.edit_tooltip')">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_status_modal(task.id)" title="Update status">
+                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_status_modal(task.id)" :title="$t('admin.task.update_status_tooltip')">
                                 <i class="fa fa-exchange"></i>
                             </button>
-                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" title="Delete">
+                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" :title="$t('common.delete')">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -102,7 +102,7 @@
             show_task_modal(id) { this.$refs.show_task_modal.show_modal(id) },
             show_status_modal(id) { this.$refs.status_modal.show_modal(id) },
             del_task(id) {
-                if (!confirm('Delete this task?')) return
+                if (!confirm(this.$t('admin.task.confirm_delete_task_short'))) return
                 axios.post('/set_task/del_task/' + id, { _method: 'DELETE' })
                     .then(() => this.load_tasks())
                     .catch(() => {})
@@ -130,8 +130,11 @@
             },
             status_label(status) {
                 const map = {
-                    set_task: 'Created', in_process: 'In Progress',
-                    finished: 'Finished', confirmation_completion: 'Awaiting Confirm', problem: 'Problem'
+                    set_task: this.$t('admin.task.status_created'),
+                    in_process: this.$t('admin.task.status_in_progress'),
+                    finished: this.$t('admin.task.status_finished'),
+                    confirmation_completion: this.$t('admin.task.status_awaiting_confirmation'),
+                    problem: this.$t('admin.task.status_problem'),
                 }
                 return map[status] || status
             },

@@ -9,13 +9,13 @@
 
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="button" class="btn btn-primary" @click="$router.push('/summits')">Back</button>
+                <button type="button" class="btn btn-primary" @click="$router.push('/summits')">{{ $t('common.back') }}</button>
             </div>
         </div>
 
         <div class="row" v-show="!is_loading">
             <div class="form-group">
-                <button type="button" class="btn btn-primary" @click="save()">Save</button>
+                <button type="button" class="btn btn-primary" @click="save()">{{ $t('common.save') }}</button>
             </div>
         </div>
 
@@ -34,19 +34,19 @@
                 <div class="row">
                     <div class="col">
                         <input type="radio" id="tab1" :value="1" v-model="tab_num">
-                        <label for="tab1">Global info</label>
+                        <label for="tab1">{{ $t('common.global_info') }}</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="tab2" :value="2" v-model="tab_num">
-                        <label for="tab2">English text</label>
+                        <label for="tab2">{{ $t('common.english_text') }}</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="tab3" :value="3" v-model="tab_num">
-                        <label for="tab3">Georgian text</label>
+                        <label for="tab3">{{ $t('common.georgian_text') }}</label>
                     </div>
                     <div class="col">
                         <input type="radio" id="tab4" :value="4" v-model="tab_num">
-                        <label for="tab4">Relations</label>
+                        <label for="tab4">{{ $t('admin.summits.relations_tab') }}</label>
                     </div>
                 </div>
             </div>
@@ -55,24 +55,32 @@
             <div class="col-md-12" v-show="tab_num == 1">
 
                 <div class="form-group">
-                    <label>Height (meters)</label>
-                    <input type="number" v-model="form.height" class="form-control" placeholder="e.g. 5047" min="0" />
+                    <label>{{ $t('admin.summits.height_meters_label') }}</label>
+                    <input type="number" v-model="form.height" class="form-control" :placeholder="$t('admin.summits.height_placeholder')" min="0" />
+                </div>
+
+                <div class="form-group">
+                    <label>{{ $t('admin.summits.mount_massive_label') }}</label>
+                    <select v-model="form.mount_id" class="form-control">
+                        <option :value="null">{{ $t('admin.summits.no_mount_massive_option') }}</option>
+                        <option v-for="mount in mounts" :key="mount.id" :value="mount.id">{{ mount.name }}</option>
+                    </select>
                 </div>
 
                 <div class="form-row">
                     <div class="form-group col-md-6">
-                        <label>Latitude</label>
-                        <input type="number" v-model="form.latitude" class="form-control" step="any" placeholder="e.g. 42.6629" />
+                        <label>{{ $t('admin.summits.latitude_label') }}</label>
+                        <input type="number" v-model="form.latitude" class="form-control" step="any" :placeholder="$t('admin.summits.lat_placeholder')" />
                     </div>
                     <div class="form-group col-md-6">
-                        <label>Longitude</label>
-                        <input type="number" v-model="form.longitude" class="form-control" step="any" placeholder="e.g. 44.0942" />
+                        <label>{{ $t('admin.summits.longitude_label') }}</label>
+                        <input type="number" v-model="form.longitude" class="form-control" step="any" :placeholder="$t('admin.summits.lng_placeholder')" />
                     </div>
                 </div>
 
                 <div class="form-group">
                     <single_image_edit
-                        title_prop="Summit image"
+                        :title_prop="$t('admin.summits.summit_image_title')"
                         :existing_image_url_prop="currentImage ? '/public/images/summit_img/'+currentImage : ''"
                         @update_single_image="form.image = $event"
                     />
@@ -81,7 +89,7 @@
                 <div class="form-group">
                     <div class="custom-control custom-switch">
                         <input type="checkbox" class="custom-control-input" id="publishedSwitch" v-model="form.published" />
-                        <label class="custom-control-label" for="publishedSwitch">Published</label>
+                        <label class="custom-control-label" for="publishedSwitch">{{ $t('admin.common.published') }}</label>
                     </div>
                 </div>
 
@@ -91,12 +99,12 @@
             <div class="col-md-12" v-show="tab_num == 2">
 
                 <div class="form-group">
-                    <label>Title <span class="text-danger">*</span></label>
-                    <input type="text" v-model="form.title" class="form-control" placeholder="Summit title (English)" />
+                    <label>{{ $t('common.title') }} <span class="text-danger">*</span></label>
+                    <input type="text" v-model="form.title" class="form-control" :placeholder="$t('admin.summits.summit_title_placeholder')" />
                 </div>
 
                 <div class="form-group">
-                    <label>URL Title</label>
+                    <label>{{ $t('admin.summits.url_title_label') }}</label>
                     <div class="input-group">
                         <input
                             type="text"
@@ -113,19 +121,19 @@
                                 @click="is_change_url_title = !is_change_url_title"
                             >
                                 <i :class="is_change_url_title ? 'fa fa-lock' : 'fa fa-pencil'"></i>
-                                {{ is_change_url_title ? 'Lock' : 'Change URL' }}
+                                {{ is_change_url_title ? $t('admin.summits.lock_btn') : $t('admin.summits.change_url_btn') }}
                             </button>
                         </div>
                     </div>
                     <small v-if="is_change_url_title" class="text-warning">
                         <i class="fa fa-exclamation-triangle"></i>
-                        Changing the URL will break existing links. Use only letters, numbers and underscores.
+                        {{ $t('admin.summits.change_url_warning') }}
                     </small>
                 </div>
 
                 <div class="form-group">
-                    <label>Description</label>
-                    <textarea v-model="form.description" class="form-control" rows="4" placeholder="Description (optional)"></textarea>
+                    <label>{{ $t('common.description') }}</label>
+                    <textarea v-model="form.description" class="form-control" rows="4" :placeholder="$t('admin.summits.description_optional_placeholder')"></textarea>
                 </div>
 
             </div>
@@ -134,13 +142,13 @@
             <div class="col-md-12" v-show="tab_num == 3">
 
                 <div class="form-group">
-                    <label>სახელი (KA)</label>
-                    <input type="text" v-model="form.ka_title" class="form-control" placeholder="მწვერვალის სახელი (ქართულად)" />
+                    <label>{{ $t('common.title') }} (KA)</label>
+                    <input type="text" v-model="form.ka_title" class="form-control" :placeholder="$t('admin.summits.ka_title_placeholder')" />
                 </div>
 
                 <div class="form-group">
-                    <label>აღწერა (KA)</label>
-                    <textarea v-model="form.ka_description" class="form-control" rows="4" placeholder="აღწერა (არასავალდებულო)"></textarea>
+                    <label>{{ $t('common.description') }} (KA)</label>
+                    <textarea v-model="form.ka_description" class="form-control" rows="4" :placeholder="$t('admin.summits.ka_description_placeholder')"></textarea>
                 </div>
 
             </div>
@@ -176,10 +184,12 @@ export default {
                 height: null,
                 latitude: null,
                 longitude: null,
+                mount_id: null,
                 published: false,
                 image: null,
                 url_title: '',
             },
+            mounts: [],
             is_change_url_title: false,
             currentImage: null,
             errors: {},
@@ -195,9 +205,15 @@ export default {
     mounted() {
         document.querySelector('body').style.marginLeft = '0'
         document.querySelector('.admin_page_header_navbar').style.marginLeft = '0'
+        this.load_mounts()
         this.loadSummit()
     },
     methods: {
+        load_mounts() {
+            axios.get('get_summit_admin/get_mounts_list')
+                .then(response => { this.mounts = response.data })
+                .catch(() => {})
+        },
         makeUrlTitle(title) {
             return title.toLowerCase()
                 .replace(/[\s-]+/g, '_')
@@ -216,6 +232,7 @@ export default {
                         this.form.height         = summit.height         || null
                         this.form.latitude       = summit.latitude       || null
                         this.form.longitude      = summit.longitude      || null
+                        this.form.mount_id       = summit.mount_id       || null
                         this.form.published      = !!summit.published
                         this.form.url_title      = summit.url_title      || ''
                         this.currentImage        = summit.image          || null
@@ -236,6 +253,7 @@ export default {
             if (this.form.height   !== null && this.form.height   !== '') formData.append('height',    this.form.height)
             if (this.form.latitude !== null && this.form.latitude !== '') formData.append('latitude',  this.form.latitude)
             if (this.form.longitude !== null && this.form.longitude !== '') formData.append('longitude', this.form.longitude)
+            if (this.form.mount_id !== null && this.form.mount_id !== '') formData.append('mount_id', this.form.mount_id)
             formData.append('published', this.form.published ? 1 : 0)
             if (this.form.image) formData.append('image', this.form.image)
             if (this.is_change_url_title) {

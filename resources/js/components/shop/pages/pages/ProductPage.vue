@@ -11,36 +11,11 @@
                     <div class="cols">
                         <div class="col-md-6">
                             <div class="big">
-                                <div class="custom-image-gallery" v-if="items.length">
-                                    <div class="main-image-container">
-                                        <img
-                                            :src="currentImage.src"
-                                            :alt="currentImage.caption || product.locale_product.title"
-                                            class="main-gallery-image"
-                                            :class="{ 'zoomed': isZoomed }"
-                                            @click="toggleZoom"
-                                        />
-                                        <div v-if="items.length > 1 && !isZoomed" class="gallery-nav prev">
-                                            <button class="nav-btn" @click="prevImage">‹</button>
-                                        </div>
-                                        <div v-if="items.length > 1 && !isZoomed" class="gallery-nav next">
-                                            <button class="nav-btn" @click="nextImage">›</button>
-                                        </div>
-                                    </div>
-                                    <div v-if="items.length > 1" class="gallery-thumbnails">
-                                        <div class="thumbnails-wrapper">
-                                            <img
-                                                v-for="(item, index) in items"
-                                                :key="index"
-                                                :src="item.thumbnail"
-                                                :alt="item.caption || 'Product image ' + (index + 1)"
-                                                class="thumbnail-image"
-                                                :class="{ active: index === currentImageIndex }"
-                                                @click="setCurrentImage(index)"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
+                                <ProductImageZoom
+                                    v-if="items.length"
+                                    :items="items"
+                                    :alt-base="product.locale_product.title"
+                                />
                                 <div class="container" v-else>
                                     <shop-img :src="'/public/images/site_img/demo_imgs/shop_demo.jpg'" :alt="product.locale_product.title" />
                                 </div>
@@ -93,7 +68,7 @@
                             </div>
 
                             <!-- Delivery badge -->
-                            <div class="delivery-badge" v-if="product.global_product.sale_type === 'online_order'">
+                            <div class="delivery-badge" v-if="isOnlineOrderCartFlow">
                                 <i class="fa fa-truck" aria-hidden="true"></i> {{ $t('shop.product.delivery_online_order') }}
                             </div>
                             <div class="delivery-badge delivery-badge--warning" v-if="product.global_product.sale_type === 'produced_by_order'">
@@ -102,8 +77,8 @@
 
                             <div class="product-divider"></div>
 
-                            <!-- online_order controls -->
-                            <div v-if="product.global_product.sale_type == 'online_order'">
+                            <!-- online_order / donation / outlet controls -->
+                            <div v-if="isOnlineOrderCartFlow">
                                 <div v-if="isOutOfStock" class="alert alert-danger alert-with-icon" role="alert">
                                     <i class="fa fa-times-circle" aria-hidden="true"></i>
                                     {{ $t('shop.product.out_of_stock') }}
@@ -172,7 +147,7 @@
                                     <div class="alert alert-warning alert-with-icon cursor-pointer" @click="goTo('/options')" role="alert">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         <div>
-                                            <strong>{{ $t('shop.product.warning') }}</strong>
+                                            <strong>{{ $t('common.warning') }}</strong>
                                             <p class="mb-0">{{ $t('shop.product.enter_full_information') }}</p>
                                         </div>
                                     </div>
@@ -182,7 +157,7 @@
                             </div>
 
                             <!-- Login prompt -->
-                            <div v-if="user.length == 0 && (product.global_product.sale_type == 'online_order' || product.global_product.sale_type == 'custom_production')" class="login-prompt" @click="open_login_modal">
+                            <div v-if="user.length == 0 && (isOnlineOrderCartFlow || product.global_product.sale_type == 'custom_production')" class="login-prompt" @click="open_login_modal">
                                 <i class="fa fa-sign-in" aria-hidden="true"></i>
                                 <span v-if="product.global_product.sale_type == 'custom_production'">{{ $t('shop.product.castom_prodaction_login') }}</span>
                                 <span v-else>{{ $t('shop.product.online_order_login') }}</span>
@@ -198,7 +173,7 @@
         <div class="container product-description-section" v-if="product.locale_product && !is_loading">
             <div class="row" v-if="product.locale_product.text">
                 <div class="col-md-12">
-                    <h2 class="section-title">{{ $t('shop.product description') }}</h2>
+                    <h2 class="section-title">{{ $t('common.description') }}</h2>
                     <div class="description-content" v-html="product.locale_product.text"></div>
                 </div>
             </div>
@@ -264,10 +239,12 @@
     import feedbackForm from '../../items/FeedbacksComponent.vue'
     import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
     import GalleryComponent from '../../items/GalleryComponent.vue'
+    import ProductImageZoom from '../../items/ProductImageZoomComponent.vue'
     export default {
         components: {
             metaData,
             breadcrumb,
+            ProductImageZoom,
             similarProduct,
             feedbackForm,
             ProductProdaction,
@@ -287,8 +264,6 @@
                 products_quantity: 1,
                 add_to_cart_message: '',
                 items: [],
-                currentImageIndex: 0,
-                isZoomed: false,
                 actyve_price: {
                     price: '',
                     new_price: ''
@@ -317,12 +292,6 @@
                 this.get_user_info()
                 window.scrollTo(0,0)
             },
-            items: {
-                handler() {
-                    this.currentImageIndex = 0;
-                },
-                deep: true
-            },
             products_quantity(val) {
                 if (this.select_product_max_quantyty > 0 && val > this.select_product_max_quantyty) {
                     this.products_quantity = this.select_product_max_quantyty;
@@ -338,6 +307,12 @@
             this.$bus.$on('logged-in', () => this.get_user_info())
         },
         computed: {
+            // Donation and outlet products are sold the same way as regular
+            // online-order products (same 2-4 day delivery, same cart flow)
+            // — they only differ in what shelf they're listed on.
+            isOnlineOrderCartFlow() {
+                return ['online_order', 'donation', 'outlet'].includes(this.product.global_product.sale_type);
+            },
             isOutOfStock() {
                 // If product data is not loaded yet, return false
                 if (!this.product || !this.product.global_product) {
@@ -371,9 +346,6 @@
                 );
                 return selectedOption && selectedOption.option.discount > 0;
             },
-            currentImage() {
-                return this.items[this.currentImageIndex] || {};
-            }
         },
         methods: {
             get_user_info() {
@@ -566,29 +538,8 @@
                     });
                 }
             },
-            prevImage() {
-                if (this.items.length > 1) {
-                    this.currentImageIndex = this.currentImageIndex > 0
-                        ? this.currentImageIndex - 1
-                        : this.items.length - 1;
-                }
-            },
-            nextImage() {
-                if (this.items.length > 1) {
-                    this.currentImageIndex = this.currentImageIndex < this.items.length - 1
-                        ? this.currentImageIndex + 1
-                        : 0;
-                }
-            },
-            setCurrentImage(index) {
-                this.currentImageIndex = index;
-                this.isZoomed = false; // Reset zoom when switching images
-            },
-            toggleZoom() {
-                this.isZoomed = !this.isZoomed;
-            },
             open_login_modal() {
-                const callback = this.product.global_product.sale_type === 'online_order' && this.product_modification_for_cart !== 'All'
+                const callback = this.isOnlineOrderCartFlow && this.product_modification_for_cart !== 'All'
                     ? () => this.add_to_cart()
                     : null
                 this.$bus.$emit('open-login-modal', callback)
@@ -598,76 +549,6 @@
 </script>
 
 <style>
-    /* ── Gallery ── */
-    .custom-image-gallery { position: relative; }
-
-    .main-image-container {
-        position: relative;
-        width: 100%;
-        height: 420px;
-        overflow: hidden;
-        border-radius: 10px;
-        box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-        background: #f5f5f5;
-    }
-
-    .main-gallery-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        cursor: zoom-in;
-        transition: transform 0.35s ease;
-    }
-    .main-gallery-image.zoomed { cursor: zoom-out; transform: scale(1.5); }
-    .main-gallery-image:hover:not(.zoomed) { transform: scale(1.03); }
-
-    .gallery-nav {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        z-index: 5;
-        pointer-events: none;
-    }
-    .gallery-nav button { pointer-events: auto; }
-    .gallery-nav.prev { left: 12px; }
-    .gallery-nav.next { right: 12px; }
-
-    .nav-btn {
-        background: rgba(0,0,0,0.45);
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 42px;
-        height: 42px;
-        font-size: 20px;
-        cursor: pointer;
-        transition: background 0.25s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .nav-btn:hover { background: rgba(0,0,0,0.75); }
-
-    .gallery-thumbnails { margin-top: 12px; }
-    .thumbnails-wrapper {
-        display: flex;
-        gap: 8px;
-        justify-content: center;
-        flex-wrap: wrap;
-    }
-    .thumbnail-image {
-        width: 72px;
-        height: 72px;
-        object-fit: cover;
-        cursor: pointer;
-        border: 2px solid transparent;
-        border-radius: 6px;
-        transition: border-color 0.2s, opacity 0.2s;
-        opacity: 0.75;
-    }
-    .thumbnail-image.active { border-color: #27bb7d; opacity: 1; }
-    .thumbnail-image:hover { border-color: #1a9460; opacity: 1; }
-
     /* ── Info panel ── */
     .product-info-panel { padding: 0 0 0 20px; }
 
@@ -957,7 +838,6 @@
         .reviews-section,
         .similar-products-section { padding: 20px 0; }
 
-        .main-image-container { height: 270px; }
         .quantity-input { font-size: 16px; }
         .quantity-btn { min-width: 42px; min-height: 42px; }
     }

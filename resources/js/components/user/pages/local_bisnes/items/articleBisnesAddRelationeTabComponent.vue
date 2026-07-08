@@ -2,17 +2,17 @@
     <div class="width_100" style="margin-bottom: 20px; padding: 20px; border: 1px solid #007bff; border-radius: 5px; background-color: #f8f9fa;" >
         <div class="col-md-12">
             <div class="row">
-                <h2>Article Relations</h2>
-                <p class="text-muted">Select a category to automatically relate this business with all articles in that category, or manually select specific articles below.</p>
+                <h2>{{ $t('admin.local_business.article_relations_title') }}</h2>
+                <p class="text-muted">{{ $t('admin.local_business.article_relations_hint') }}</p>
             </div>
 
             <div class="form-group clearfix">
-                <label for="selected_category" class="col-xs-2 control-label">Select option</label>
+                <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
                 <div class="col-xs-8">
                     <select class="form-control" v-model="article_options" @change="onCategoryChange()">
-                        <option disable value="">Select option</option>
-                        <option value="individual">Inndividual article</option>
-                        <option value="categoriable">All For Options</option>
+                        <option disable value="">{{ $t('admin.local_business.select_option_label') }}</option>
+                        <option value="individual">{{ $t('admin.local_business.individual_article_option') }}</option>
+                        <option value="categoriable">{{ $t('admin.local_business.all_for_options_option') }}</option>
                     </select>
                 </div>
             </div>
@@ -20,20 +20,20 @@
 
         <!-- Category Selection Section -->
         <div class="col-md-12" v-if="article_options === 'categoriable'">
-            <h4>Automatic Category-Based Relations</h4>
+            <h4>{{ $t('admin.local_business.auto_category_relations_title') }}</h4>
             <div class="form-group clearfix">
-                <label for="selected_category" class="col-xs-2 control-label">Select Category</label>
+                <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.export.select_category_label') }}</label>
                 <div class="col-xs-8">
 
                     <select class="form-control" v-model="selected_category" @change="onCategoryChange()">
-                        <option value="">Select a category</option>
+                        <option value="">{{ $t('admin.local_business.select_a_category_placeholder') }}</option>
                         <option v-for="category in article_categories" :key="category.id" :value="category.id">{{ category.name }}</option>
                     </select>
                 </div>
             </div>
             <div v-if="selected_category" class="alert alert-info">
-                <strong>Auto-relation enabled:</strong> This business will be related to all articles with category "{{ selected_category }}".
-                <button type="button" class="btn btn-danger" @click="clearCategorySelection()" style="margin-left: 10px;">Clear</button>
+                <strong>{{ $t('admin.local_business.auto_relation_enabled_prefix') }}</strong> {{ $t('admin.local_business.auto_relation_enabled_text', { category: selected_category }) }}
+                <button type="button" class="btn btn-danger" @click="clearCategorySelection()" style="margin-left: 10px;">{{ $t('admin.local_business.clear_btn') }}</button>
             </div>
         </div>
 
@@ -42,24 +42,24 @@
 
             <div class="col-md-12">
                 <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="add_new_article_value()">Add new article</button>
+                    <button class="btn btn-primary float-left" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
                 </div>
             </div>
-            
+
             <div class="col-md-12">
                 <table class="table table-hover" id="dev-table">
                     <thead>
                         <tr>
-                            <th>Article</th>
-                            <th>Category</th>
-                            <th>Delete item</th>
+                            <th>{{ $t('admin.comments.col_article') }}</th>
+                            <th>{{ $t('common.category') }}</th>
+                            <th>{{ $t('admin.local_business.col_delete_item') }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="(article, index) in new_article_relationes" :key="article.id">
                             <td>
                                 <select class="form-control" v-model="article.article_id" @change="article_select(index, $event)">
-                                    <option disabled value="">Select article</option>
+                                    <option disabled value="">{{ $t('admin.local_business.select_article_placeholder') }}</option>
                                     <option v-for="region in get_filtered_regions()" :key="region.id" :value="region.id">
                                         {{ region.url_title }}
                                     </option>
@@ -67,7 +67,7 @@
                             </td>
                             <td>{{ get_article_category(article.article_id) }}</td>
                             <td>
-                                <button class="btn btn-danger" @click="del_article(index)">Delete</button>
+                                <button class="btn btn-danger" @click="del_article(index)">{{ $t('common.delete') }}</button>
                             </td>
                         </tr>
                     </tbody>
@@ -76,7 +76,7 @@
 
             <div class="col-md-12">
                 <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="add_new_article_value()">Add new article</button>
+                    <button class="btn btn-primary float-left" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
                 </div>
             </div>
         </div>
@@ -86,24 +86,23 @@
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <i class="fa fa-exclamation-triangle"></i>
-                                Article Relation Conflicts Found
+                                {{ $t('admin.local_business.conflicts_found_title') }}
                             </h3>
                         </div>
                         <div class="panel-body">
                             <div class="alert alert-warning">
-                                <strong>Warning:</strong> The following articles already have business relations. 
-                                Each article can only be related to one business.
+                                {{ $t('admin.local_business.conflicts_warning') }}
                             </div>
-                            
+
                             <div class="table-responsive">
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th>Article</th>
-                                            <th>Category</th>
-                                            <th>Currently Related To</th>
-                                            <th>Proposed For</th>
-                                            <th>Action</th>
+                                            <th>{{ $t('admin.comments.col_article') }}</th>
+                                            <th>{{ $t('common.category') }}</th>
+                                            <th>{{ $t('admin.local_business.col_currently_related_to') }}</th>
+                                            <th>{{ $t('admin.local_business.col_proposed_for') }}</th>
+                                            <th>{{ $t('admin.local_business.col_action') }}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -114,7 +113,7 @@
                                                 <small class="text-muted">ID: {{ conflict.article_id }}</small>
                                             </td>
                                             <td>
-                                                <span class="label label-info">{{ conflict.article_category || 'No Category' }}</span>
+                                                <span class="label label-info">{{ conflict.article_category || $t('admin.local_business.no_category_fallback') }}</span>
                                             </td>
                                             <td>
                                                 <span class="label label-default">{{ conflict.current_business }}</span>
@@ -124,21 +123,21 @@
                                             </td>
                                             <td>
                                                 <div class="btn-group">
-                                                    <button 
-                                                        type="button" 
+                                                    <button
+                                                        type="button"
                                                         class="btn btn-sm btn-danger"
                                                         :class="{'active': validationUserChoices[conflict.article_id] === 'skip'}"
                                                         @click="setValidationChoice(conflict.article_id, 'skip')"
                                                     >
-                                                        Skip Article
+                                                        {{ $t('admin.local_business.skip_article_btn') }}
                                                     </button>
-                                                    <button 
-                                                        type="button" 
+                                                    <button
+                                                        type="button"
                                                         class="btn btn-sm btn-success"
                                                         :class="{'active': validationUserChoices[conflict.article_id] === 'add'}"
                                                         @click="setValidationChoice(conflict.article_id, 'add')"
                                                     >
-                                                        Add Anyway
+                                                        {{ $t('admin.local_business.add_anyway_btn') }}
                                                     </button>
                                                 </div>
                                             </td>
@@ -146,29 +145,29 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             <div v-if="hasUndecidedValidationArticles" class="alert alert-info">
-                                <strong>Note:</strong> Please choose an action for all conflicting articles before proceeding.
+                                {{ $t('admin.local_business.choose_action_note') }}
                             </div>
-                            
+
                             <div class="text-center">
                                 <div class="btn-group">
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         class="btn btn-primary btn-lg"
                                         :disabled="hasUndecidedValidationArticles"
                                         @click="proceedWithValidationSelections"
                                     >
-                                        <i class="fa fa-check"></i> 
-                                        Continue with Selected Articles ({{ decidedValidationArticlesCount }} articles)
+                                        <i class="fa fa-check"></i>
+                                        {{ $t('admin.local_business.continue_selected_articles_btn', { count: decidedValidationArticlesCount }) }}
                                     </button>
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         class="btn btn-default btn-lg"
                                         @click="cancelValidation"
                                     >
-                                        <i class="fa fa-times"></i> 
-                                        Cancel & Review
+                                        <i class="fa fa-times"></i>
+                                        {{ $t('admin.local_business.cancel_review_btn') }}
                                     </button>
                                 </div>
                             </div>
@@ -290,10 +289,10 @@
 
 
             get_article_category(article_id) {
-                if (!article_id) return 'No article selected';
-                
+                if (!article_id) return this.$t('admin.local_business.no_article_selected');
+
                 const article = this.regions.find(region => region.id == article_id);
-                return article ? (article.category || 'No category') : 'Article not found';
+                return article ? (article.category || this.$t('admin.local_business.no_category_fallback')) : this.$t('admin.local_business.article_not_found');
             },
 
             article_select(index, event) {

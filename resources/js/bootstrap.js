@@ -10,6 +10,8 @@ window._ = _;
 import axios from 'axios';
 window.axios = axios;
 
+import i18n from './services/localization/i18n';
+
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 axios.defaults.withCredentials = true;
 
@@ -111,7 +113,7 @@ axios.interceptors.response.use(response => response, async err => {
             else {
                 window.$bus?.$emit('toast', {
                     type: 'warning',
-                    message: "You don't have permission to perform this action.",
+                    message: i18n.global.t('global.errors.no_permission'),
                 });
                 return Promise.reject(err);
             }
@@ -120,7 +122,7 @@ axios.interceptors.response.use(response => response, async err => {
             // Covers 500, 429, and every other unhandled status code.
             window.$bus?.$emit('toast', {
                 type: 'danger',
-                message: "Error " + err.response.status + ': ' + err.response.statusText,
+                message: i18n.global.t('global.errors.generic_status', { status: err.response.status, statusText: err.response.statusText }),
             });
             return Promise.reject(err);
         }
