@@ -150,7 +150,7 @@
 
           <div class="form-group">
             <label>{{ $t('summit.ascent_page.route_label') }}</label>
-            <select v-model="form.article_id" class="form-control" @change="onRouteChange">
+            <select v-model="selectedRoute" class="form-control" @change="onRouteChange">
               <option :value="null">-- Select route (optional) --</option>
               <option v-for="route in routes" :key="route.id" :value="route.id">
                 {{ route.name }}<span v-if="route.grade"> ({{ route.grade }})</span>
@@ -240,6 +240,7 @@ export default {
       userLatitude: null,
       userLongitude: null,
       routes: [],
+      selectedRoute: null,
       form: {
         name: '',
         surname: '',
@@ -314,6 +315,7 @@ export default {
       this.userLatitude = null
       this.userLongitude = null
       this.routes = []
+      this.selectedRoute = null
       this.form = { name: '', surname: '', email: '', article_id: null, other_route: '', comment: '', photo: null }
       this.showOtherRoute = false
       this.photoPreview = null
@@ -413,8 +415,9 @@ export default {
       this.checkLocation()
     },
     onRouteChange() {
-      this.showOtherRoute = this.form.article_id === 'other'
-      if (this.showOtherRoute) this.form.article_id = null
+      this.showOtherRoute = this.selectedRoute === 'other'
+      this.form.article_id = this.showOtherRoute ? null : this.selectedRoute
+      if (!this.showOtherRoute) this.form.other_route = ''
     },
     handlePhoto(event) {
       const file = event.target.files[0]
