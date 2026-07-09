@@ -188,6 +188,7 @@
     justify-content: center;
     width: 100vw;
     height: 100vh;
+    height: 100svh;
     padding: 3vh 0;
     box-sizing: border-box;
     background-color: #000000d9;
@@ -199,6 +200,7 @@
     align-self: center;
     height: auto;
     max-height: 94vh;
+    max-height: 94svh;
     min-height: 100px;
     width: clamp(320px, 90vw, 1400px);
     max-width: var(--modal-max-width, 720px);
@@ -259,7 +261,9 @@
   .stack-modal.modal-full {
     width: calc(100vw - 10px) !important;
     height: calc(100vh - 10px) !important;
+    height: calc(100svh - 10px) !important;
     max-height: calc(100vh - 10px) !important;
+    max-height: calc(100svh - 10px) !important;
     border-radius: 8px !important;
     margin: 5px !important;
     max-width: none !important;
@@ -272,7 +276,9 @@
   .stack-modal.modal-fullscreen {
     width: 100vw !important;
     height: 100vh !important;
+    height: 100svh !important;
     max-height: 100vh !important;
+    max-height: 100svh !important;
     border-radius: 0 !important;
     margin: 0 !important;
     max-width: none !important;
@@ -282,7 +288,26 @@
   }
 
   @media (max-width: 640px) {
-    .stack-modal { width: 100vw !important; border-radius: 0 0 1rem 1rem !important; }
+    /* Mobile browsers report 100vh as the layout viewport (as if their own
+       address/nav bar were hidden), taller than what's actually visible, which
+       pushed the sticky footer/buttons below the real visible area on tall
+       modals. svh (small viewport height) always assumes that browser chrome
+       IS showing, so sizing against it guarantees the footer/buttons stay
+       above the browser's own bottom bar instead of hiding behind it -
+       dvh would still leave them tucked behind the bar whenever it's visible.
+       Safe-area insets additionally clear the OS home-indicator/notch area. */
+    .stack-modal-overlay {
+      padding: max(8px, env(safe-area-inset-top)) 0 max(8px, env(safe-area-inset-bottom));
+    }
+    .stack-modal {
+      width: 100vw !important;
+      max-height: calc(100vh - 16px) !important;
+      max-height: calc(100svh - 16px) !important;
+      border-radius: 0 0 1rem 1rem !important;
+    }
+    .modal-footer {
+      padding-bottom: calc(1rem + env(safe-area-inset-bottom)) !important;
+    }
   }
   @media (min-width: 768px) {
     .stack-modal { width: min(90vw, var(--modal-max-width, 720px)); }
