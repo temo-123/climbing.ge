@@ -12,6 +12,7 @@ use App\Models\Summit\SummitAscentRoute;
 use App\Models\Guide\Route;
 use App\Models\User;
 use App\Services\ReCaptchaV3Service;
+use App\Services\Abstract\ImageControllService;
 
 class SummitPublicController extends Controller
 {
@@ -119,10 +120,7 @@ class SummitPublicController extends Controller
         }
 
         // Handle photo upload
-        $photoPath = null;
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('ascents', 'public');
-        }
+        $photoPath = ImageControllService::image_upload('images/sommit_ascents_img/', $request, 'photo');
 
         // Create ascent record
         $ascent = SummitAscent::create([

@@ -194,7 +194,7 @@
                                                 style="cursor:pointer"
                                                 @click="openAscentDetail(a)">
                                                 <td>
-                                                    <img v-if="a.photo" :src="'/storage/' + a.photo" class="summit-climber-avatar" />
+                                                    <img v-if="a.photo" :src="'/public/images/sommit_ascents_img/' + a.photo" class="summit-climber-avatar" />
                                                     <i v-else class="fa fa-user-circle summit-climber-avatar-placeholder"></i>
                                                     <strong>{{ a.name }} {{ a.surname }}</strong>
                                                 </td>
@@ -267,7 +267,7 @@
                     </h2>
                     <div class="summit-photo-grid" style="margin-top:20px">
                         <div v-for="p in ascentPhotos" :key="p.id" class="summit-photo-item">
-                            <img :src="'/storage/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
+                            <img :src="'/public/images/sommit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
                             <div class="summit-photo-caption">{{ p.name }} · {{ formatDate(p.ascent_date) }}</div>
                         </div>
                     </div>
@@ -297,7 +297,7 @@
         <!-- Lightbox -->
         <div v-if="lightboxPhoto" class="summit-lightbox" @click="lightboxPhoto = null">
             <div class="summit-lightbox-inner" @click.stop>
-                <img :src="'/storage/' + lightboxPhoto.photo" />
+                <img :src="'/public/images/sommit_ascents_img/' + lightboxPhoto.photo" />
                 <div class="summit-lightbox-caption">
                     {{ lightboxPhoto.name }} {{ lightboxPhoto.surname }} · {{ formatDate(lightboxPhoto.ascent_date) }}
                 </div>

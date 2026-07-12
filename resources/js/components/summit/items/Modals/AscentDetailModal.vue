@@ -12,7 +12,7 @@
       <!-- Photo -->
       <div v-if="ascent.photo" class="text-center mb-4">
         <img
-          :src="'/storage/' + ascent.photo"
+          :src="'/public/images/sommit_ascents_img/' + ascent.photo"
           class="img-fluid rounded"
           style="max-height: 260px; object-fit: cover; width: 100%;"
           alt="Ascent photo"
