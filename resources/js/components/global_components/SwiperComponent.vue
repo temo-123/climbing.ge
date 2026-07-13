@@ -11,6 +11,7 @@
         v-for="(slide, index) in slides"
         :key="slide.id"
         class="head_slider"
+        :class="{ active: index === current_slider_index }"
         :aria-label="$t('global.slider.slide_of', { current: index + 1, total: slides.length })"
       >
         <site-img :src="'/public'+image_path_prop+slide.image" :alt="slide.title" :img_class="'slider_img'" />
@@ -136,11 +137,30 @@
   position: relative;
 }
 
-.slider_img {
+.head_slider :deep(#image) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.head_slider :deep(.slider_img) {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  transform: scale(1);
+}
+
+.head_slider.active :deep(.slider_img) {
+  animation: slide_ken_burns 10s ease-in-out forwards;
+}
+
+@keyframes slide_ken_burns {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
 }
 
 .slide_overlay {
@@ -270,6 +290,8 @@
 
 @media (max-width: 768px) {
   .swiper {
+    width: 100%;
+    aspect-ratio: 3 / 4;
     max-height: none;
   }
 
