@@ -139,7 +139,7 @@
                                     <div class="col-md-12 col-xs-12">
                                         <select class="form-control" v-model="selected_payment_type" name="currency" >
                                             <option value="deliverd payment">{{ $t('user.checkout.payment_on_delivery_option') }}</option>
-                                            <option value="online payment">{{ $t('user.checkout.online_payment_option') }}</option>
+                                            <option v-if="shop_payment_enabled" value="online payment">{{ $t('user.checkout.online_payment_option') }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -239,6 +239,7 @@ export default {
         return {
             selected_payment_type: 'deliverd payment',
             selected_adreses_id: 'your adres',
+            shop_payment_enabled: false,
 
             payment_error: false,
             adreses_error: false,
@@ -277,7 +278,16 @@ export default {
 
     mounted() {
         this.get_adres()
-        
+
+        axios.get('payment/status')
+            .then(r => {
+                this.shop_payment_enabled = !!r.data.shop_enabled
+                if (!this.shop_payment_enabled && this.selected_payment_type === 'online payment') {
+                    this.selected_payment_type = 'deliverd payment'
+                }
+            })
+            .catch(() => { this.shop_payment_enabled = false })
+
         document.querySelector('body').style.marginLeft = '0';
         document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
     },

@@ -14,6 +14,8 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::post('/update_coordinates/{id}', 'update_coordinates');
             Route::post('/add_mount_route_relation', 'add_mount_route_relation');
             Route::delete('/remove_mount_route_relation/{id}', 'remove_mount_route_relation');
+            Route::post('/update_ascent/{id}', 'update_ascent');
+            Route::delete('/delete_ascent/{id}', 'delete_ascent');
         });
     });
 

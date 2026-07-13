@@ -31,15 +31,14 @@
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.route') }}</span>
                     <span class="detail-value">
-                        <span v-if="ascent.route">{{ ascent.route.name }}</span>
-                        <span v-else-if="ascent.other_route">{{ ascent.other_route }}</span>
+                        <span v-if="ascent.route_name">{{ ascent.route_name }}</span>
                         <span v-else class="text-muted">—</span>
                     </span>
                 </div>
-                <div class="detail-row" v-if="ascent.route && ascent.route.grade">
+                <div class="detail-row" v-if="ascent.route_grade">
                     <span class="detail-label">{{ $t('common.grade') }}</span>
                     <span class="detail-value">
-                        <span class="badge badge-secondary">{{ ascent.route.grade }}</span>
+                        <span class="badge badge-secondary">{{ ascent.route_grade }}</span>
                     </span>
                 </div>
             </div>
@@ -81,7 +80,7 @@
             <div class="detail-section" v-if="ascent.photo">
                 <div class="detail-label mb-2">{{ $t('user.ascents.photo') }}</div>
                 <img
-                    :src="'/public/images/sommit_ascents_img/' + ascent.photo"
+                    :src="'/public/images/summit_ascents_img/' + ascent.photo"
                     class="img-fluid rounded ascent-photo"
                     :alt="$t('user.ascents.photo_alt')"
                 />

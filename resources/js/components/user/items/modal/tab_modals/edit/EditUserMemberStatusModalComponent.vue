@@ -92,7 +92,7 @@ export default {
         get_team_member_status(){
             this.is_loading = true
             axios
-            .get("/get_user/team/get_member_status/" + this.user_id)
+            .get("/get_user/get_team/get_member_status/" + this.user_id)
             .then(response => {
                 this.is_member_editing_modal = true
 

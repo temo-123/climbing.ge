@@ -23,6 +23,10 @@ class OrderPaymentController extends Controller
     // POST /api/payment/shop/initiate/{order_id}
     public function initiate(int $order_id)
     {
+        if (!$this->tbc->isConfigured()) {
+            return response()->json(['error' => 'Online payment is currently unavailable.'], 503);
+        }
+
         $user = Auth::user();
         if (!$user) return response()->json(['error' => 'Unauthenticated'], 401);
 

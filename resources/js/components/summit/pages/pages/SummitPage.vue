@@ -194,7 +194,7 @@
                                                 style="cursor:pointer"
                                                 @click="openAscentDetail(a)">
                                                 <td>
-                                                    <img v-if="a.photo" :src="'/public/images/sommit_ascents_img/' + a.photo" class="summit-climber-avatar" />
+                                                    <img v-if="a.photo" :src="'/public/images/summit_ascents_img/' + a.photo" class="summit-climber-avatar" />
                                                     <i v-else class="fa fa-user-circle summit-climber-avatar-placeholder"></i>
                                                     <strong>{{ a.name }} {{ a.surname }}</strong>
                                                 </td>
@@ -267,7 +267,7 @@
                     </h2>
                     <div class="summit-photo-grid" style="margin-top:20px">
                         <div v-for="p in ascentPhotos" :key="p.id" class="summit-photo-item">
-                            <img :src="'/public/images/sommit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
+                            <img :src="'/public/images/summit_ascents_img/' + p.photo" :alt="p.name + ' ' + p.surname" @click="openPhotoLightbox(p)" />
                             <div class="summit-photo-caption">{{ p.name }} · {{ formatDate(p.ascent_date) }}</div>
                         </div>
                     </div>
@@ -302,7 +302,7 @@
                 @touchstart="handleLightboxTouchStart"
                 @touchend="handleLightboxTouchEnd"
             >
-                <img :src="'/public/images/sommit_ascents_img/' + lightboxPhoto.photo" />
+                <img :src="'/public/images/summit_ascents_img/' + lightboxPhoto.photo" />
                 <div class="summit-lightbox-caption">
                     {{ lightboxPhoto.name }} {{ lightboxPhoto.surname }} · {{ formatDate(lightboxPhoto.ascent_date) }}
                     <span v-if="ascentPhotos.length > 1" class="summit-lightbox-counter">{{ lightboxIndex + 1 }} / {{ ascentPhotos.length }}</span>
@@ -729,32 +729,33 @@ export default {
 .summit-top-climber-name { flex: 1; }
 .summit-top-climber-count { color: #888; font-size: 12px; }
 
-/* ── Photo grid ── */
+/* ── Photo grid ──
+   Flexbox "justified row" gallery: each photo keeps its natural aspect
+   ratio at a shared row height and rows fill left-to-right, top-to-bottom
+   — so photos stay in the order the data is in (newest ascent first),
+   unlike a CSS-column masonry which reads column-by-column instead. */
 .summit-photo-grid {
-    column-count: 4;
-    column-gap: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
 }
-@media (max-width: 992px) { .summit-photo-grid { column-count: 3; } }
-@media (max-width: 700px) { .summit-photo-grid { column-count: 2; } }
-@media (max-width: 460px) { .summit-photo-grid { column-count: 1; } }
 .summit-photo-item {
     border-radius: 6px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
-    display: inline-block;
-    width: 100%;
-    break-inside: avoid;
-    margin-bottom: 10px;
+    flex-grow: 1;
 }
 .summit-photo-item img {
-    width: 100%;
-    height: auto;
-    max-height: 480px;
-    object-fit: cover;
     display: block;
+    height: 220px;
+    width: auto;
+    max-width: 100%;
+    object-fit: cover;
     transition: transform 0.2s;
 }
+@media (max-width: 700px) { .summit-photo-item img { height: 160px; } }
+@media (max-width: 460px) { .summit-photo-item img { height: 120px; } }
 .summit-photo-item:hover img { transform: scale(1.04); }
 .summit-photo-caption {
     position: absolute;

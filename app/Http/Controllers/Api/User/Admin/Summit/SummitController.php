@@ -466,6 +466,29 @@ class SummitController extends Controller
         return response()->json($ascents);
     }
 
+    public function update_ascent(Request $request, $id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        $request->validate([
+            'is_gps_validated' => 'required|boolean',
+        ]);
+
+        $ascent = SummitAscent::findOrFail($id);
+        $ascent->update(['is_gps_validated' => $request->boolean('is_gps_validated')]);
+
+        return response()->json(['message' => 'Ascent updated', 'is_gps_validated' => $ascent->is_gps_validated]);
+    }
+
+    public function delete_ascent($id)
+    {
+        if ($auth = PermissionService::authorize('summit', 'del')) return $auth;
+
+        SummitAscent::findOrFail($id)->delete();
+
+        return response()->json(['message' => 'Deleted']);
+    }
+
     private function generateUniqueUrlTitle(string $title, int $excludeId = null): string
     {
         $base  = URLTitleService::get_url_title($title);

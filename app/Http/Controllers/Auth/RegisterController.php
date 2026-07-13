@@ -57,7 +57,7 @@ class RegisterController extends Controller
         $captcha = new ReCaptchaV3Service();
         if ($captcha->isConfigured()) {
             $token = $request->input('recaptcha_token');
-            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+            if (!$token || !$captcha->verifySmart($token, $request->ip())) {
                 return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
             }
         }

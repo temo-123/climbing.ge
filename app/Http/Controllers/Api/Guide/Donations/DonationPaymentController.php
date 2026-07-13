@@ -21,6 +21,10 @@ class DonationPaymentController extends Controller
     // POST /api/set_donation/process
     public function processDonation(Request $request)
     {
+        if (!$this->tbc->isConfigured()) {
+            return response()->json(['message' => 'Online donations are currently unavailable.'], 503);
+        }
+
         $request->validate(['amount' => 'required|numeric|min:1']);
 
         $authUser = \Auth::user();

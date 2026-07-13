@@ -87,7 +87,7 @@
                                             <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_on_delivery_desc') }}</small>
                                         </label>
 
-                                        <label class="payment-option" :class="{ active: selected_payment === 'online payment' }">
+                                        <label v-if="shop_payment_enabled" class="payment-option" :class="{ active: selected_payment === 'online payment' }">
                                             <input
                                                 type="radio"
                                                 value="online payment"
@@ -193,6 +193,7 @@
                 create_order_loading: false,
                 order_error: null,
                 selected_payment: 'deliverd payment',
+                shop_payment_enabled: false,
             }
         },
         computed: {
@@ -212,6 +213,14 @@
                 this.selected_payment = this.$route.params.payment
             }
             this.get_products_cart()
+            axios.get('payment/status')
+                .then(r => {
+                    this.shop_payment_enabled = !!r.data.shop_enabled
+                    if (!this.shop_payment_enabled && this.selected_payment === 'online payment') {
+                        this.selected_payment = 'deliverd payment'
+                    }
+                })
+                .catch(() => { this.shop_payment_enabled = false })
         },
         methods: {
             go_back() {

@@ -90,6 +90,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
 Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']], function() {
     Route::controller(SummitController::class)->prefix('get_user_ascents')->group(function() {
         Route::get('/get_all_my_ascents', 'get_all_my_ascents');
+        Route::post('/update_ascent/{id}', 'update_ascent');
         Route::delete('/del_ascent/{id}', 'del_ascent');
     });
 

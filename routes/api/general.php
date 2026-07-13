@@ -31,6 +31,9 @@ Route::post('/summit/search', 'Api\SearchController@summitSearch');
 // Canvas image save route
 Route::post('/save-canvas-image', 'Api\CanvasController@saveImage');
 
+// Payment gateway availability (whether TBC credentials are set in .env)
+Route::get('/payment/status', 'Api\PaymentStatusController@status');
+
 // Public routes - no authentication required for viewing content
 Route::group(['namespace'=>'Api'], function() {
 

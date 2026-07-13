@@ -31,6 +31,12 @@ class TbcPaymentService
         return config("services.tbc_pay.{$this->channel}.client_secret", '');
     }
 
+    // True only when both TBC_PAY_{CHANNEL}_CLIENT_ID and _CLIENT_SECRET are set in .env
+    public function isConfigured(): bool
+    {
+        return $this->clientId() !== '' && $this->clientSecret() !== '';
+    }
+
     // Cache token per channel; TBC tokens typically last 5 min, we refresh at 4.5 min
     private function getAccessToken(): string
     {

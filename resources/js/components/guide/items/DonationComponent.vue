@@ -1,12 +1,12 @@
 <template>
-    <div :class="['donation-section', 'my-4', 'donation-' + position]">
+    <div v-if="donationEnabled" :class="['donation-section', 'my-4', 'donation-' + position]">
 
         <!-- <h4 class="modal-title">
             <i class="fa fa-heart text-danger mr-2"></i>
             {{ $t('guide.donation.support_title') }}
         </h4> -->
 
-        <button 
+        <button
             @click="showDonationModal"
             class="btn btn-success donation-float-btn"
             :title="$t('guide.donation.support')"
@@ -20,7 +20,7 @@
         </p> -->
 
         <!-- <div class="donation-modal-overlay"> -->
-            <donationWarningModal 
+            <donationWarningModal
                 ref="donation_warning_modal"
             />
         <!-- </div> -->
@@ -32,11 +32,11 @@
 
     export default {
         name: 'DonationComponent',
-        
+
         components: {
             donationWarningModal
         },
-        
+
         props: {
             position: {
                 type: String,
@@ -46,18 +46,24 @@
                 }
             },
         },
-        
+
         data: function () {
             return {
-                // ..
+                donationEnabled: false,
             }
         },
-        
+
+        mounted() {
+            axios.get('payment/status')
+                .then(r => { this.donationEnabled = !!r.data.donation_enabled })
+                .catch(() => { this.donationEnabled = false })
+        },
+
         methods: {
             showDonationModal() {
                 this.$refs.donation_warning_modal.show();
             },
-            
+
             // closeDonationModal() {
             //     this.is_donation_modal_open = false;
             // },

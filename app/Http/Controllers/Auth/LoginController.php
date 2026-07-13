@@ -31,15 +31,6 @@ class LoginController extends Controller
      */
     protected $redirectTo = RouteServiceProvider::HOME;
 
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest')->except('logout');
-    }
 
     /**
      * Handle encrypted password login for API
@@ -67,7 +58,7 @@ class LoginController extends Controller
         $captcha = new ReCaptchaV3Service();
         if ($captcha->isConfigured()) {
             $token = $request->input('recaptcha_token');
-            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+            if (!$token || !$captcha->verifySmart($token, $request->ip())) {
                 return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
             }
         }

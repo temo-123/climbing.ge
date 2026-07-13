@@ -95,7 +95,7 @@ class SummitPublicController extends Controller
         $captcha = new ReCaptchaV3Service();
         if ($captcha->isConfigured()) {
             $token = $request->input('recaptcha_token');
-            if (!$token || !$captcha->verify($token, $request->ip(), 0.5)) {
+            if (!$token || !$captcha->verifySmart($token, $request->ip())) {
                 return response()->json(['message' => 'reCAPTCHA verification failed. Please try again.'], 422);
             }
         }
@@ -134,7 +134,7 @@ class SummitPublicController extends Controller
         }
 
         // Handle photo upload
-        $photoPath = ImageControllService::image_upload('images/sommit_ascents_img/', $request, 'photo', 2);
+        $photoPath = ImageControllService::image_upload('images/summit_ascents_img/', $request, 'photo', 2);
 
         // Create ascent record
         $ascent = SummitAscent::create([

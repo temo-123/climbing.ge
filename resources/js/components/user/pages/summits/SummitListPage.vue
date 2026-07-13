@@ -25,6 +25,8 @@
                     @confirm_delete="confirm_delete_by_id"
                     @export_laser_plate="export_laser_plate_by_id"
                     @filtr_summits_by_mount="filtr_summits_by_mount"
+                    @open_edit_ascent="open_edit_ascent"
+                    @confirm_delete_ascent="confirm_delete_ascent"
                 />
             </div>
             <div v-else class="col-sm-12 text-center py-4">
@@ -145,6 +147,33 @@
                 </button>
             </template>
         </stack-modal>
+
+        <!-- Edit ascent GPS verification modal -->
+        <stack-modal :show="edit_ascent_modal" :title="$t('admin.summits.edit_ascent_verification_title')" @close="edit_ascent_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
+            <div v-if="ascent_to_edit" class="form-group form-check">
+                <input type="checkbox" class="form-check-input" id="ascent_verified_checkbox" v-model="ascent_verified_checkbox" />
+                <label class="form-check-label" for="ascent_verified_checkbox">{{ $t('admin.summits.verified_checkbox_label') }}</label>
+            </div>
+            <template #footer>
+                <button type="button" class="btn btn-secondary" @click="edit_ascent_modal = false">{{ $t('admin.comments.cancel_btn') }}</button>
+                <button type="button" class="btn btn-primary" :disabled="saving_ascent" @click="save_ascent_verification">
+                    <span v-if="saving_ascent"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span v-else><i class="fa fa-save"></i> {{ $t('common.save') }}</span>
+                </button>
+            </template>
+        </stack-modal>
+
+        <!-- Delete ascent confirm modal -->
+        <stack-modal :show="del_ascent_modal" :title="$t('admin.summits.confirm_delete_ascent_title')" @close="del_ascent_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
+            <p>{{ $t('admin.summits.delete_ascent_confirm') }}</p>
+            <template #footer>
+                <button type="button" class="btn btn-secondary" @click="del_ascent_modal = false">{{ $t('admin.comments.cancel_btn') }}</button>
+                <button type="button" class="btn btn-danger" :disabled="deleting_ascent" @click="delete_ascent">
+                    <span v-if="deleting_ascent"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span v-else>{{ $t('common.delete') }}</span>
+                </button>
+            </template>
+        </stack-modal>
     </div>
 </template>
 
@@ -181,6 +210,15 @@ export default {
             gps_error: null,
             gps_locating: false,
             gps_location_error: null,
+
+            edit_ascent_modal: false,
+            ascent_to_edit: null,
+            ascent_verified_checkbox: false,
+            saving_ascent: false,
+
+            del_ascent_modal: false,
+            ascent_to_delete: null,
+            deleting_ascent: false,
         }
     },
     computed: {
@@ -251,7 +289,7 @@ export default {
                     tab_data: {
                         data: this.ascents,
                         tab: {
-                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment')],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment'), this.$t('admin.summits.col_edit'), this.$t('admin.summits.col_delete_ascent')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['name']],
@@ -263,10 +301,14 @@ export default {
                                 ['data', ['route_grade']],
                                 ['data', ['is_gps_validated'], 'bool'],
                                 ['data', ['comment']],
+                                ['action_fun_id', 'open_edit_ascent',    'btn btn-sm btn-warning', '<i class="fa fa-pencil"></i>'],
+                                ['action_fun_id', 'confirm_delete_ascent', 'btn btn-sm btn-danger', '<i class="fa fa-trash"></i>'],
                             ],
                             perm: [
                                 ['no'], ['no'], ['no'], ['no'], ['no'],
                                 ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['summit', 'edit'],
+                                ['summit', 'del'],
                             ]
                         }
                     }
@@ -366,6 +408,46 @@ export default {
                 })
                 .catch(() => { alert(this.$t('admin.summits.failed_delete_summit')) })
                 .finally(() => { this.deleting = false })
+        },
+
+        open_edit_ascent(id) {
+            const a = this.ascents.find(x => x.id === id)
+            if (!a) return
+            this.ascent_to_edit = a
+            this.ascent_verified_checkbox = !!a.is_gps_validated
+            this.edit_ascent_modal = true
+        },
+
+        save_ascent_verification() {
+            if (!this.ascent_to_edit) return
+            this.saving_ascent = true
+            axios.post(`set_summit/update_ascent/${this.ascent_to_edit.id}`, { is_gps_validated: this.ascent_verified_checkbox ? 1 : 0 })
+                .then(() => {
+                    const idx = this.ascents.findIndex(a => a.id === this.ascent_to_edit.id)
+                    if (idx !== -1) this.ascents[idx].is_gps_validated = this.ascent_verified_checkbox
+                    this.edit_ascent_modal = false
+                    this.ascent_to_edit = null
+                })
+                .catch(() => { alert(this.$t('admin.summits.failed_update_ascent')) })
+                .finally(() => { this.saving_ascent = false })
+        },
+
+        confirm_delete_ascent(id) {
+            const a = this.ascents.find(x => x.id === id)
+            if (a) { this.ascent_to_delete = a; this.del_ascent_modal = true }
+        },
+
+        delete_ascent() {
+            if (!this.ascent_to_delete) return
+            this.deleting_ascent = true
+            axios.delete(`set_summit/delete_ascent/${this.ascent_to_delete.id}`)
+                .then(() => {
+                    this.ascents = this.ascents.filter(a => a.id !== this.ascent_to_delete.id)
+                    this.del_ascent_modal = false
+                    this.ascent_to_delete = null
+                })
+                .catch(() => { alert(this.$t('admin.summits.failed_delete_ascent')) })
+                .finally(() => { this.deleting_ascent = false })
         },
 
         open_gps_by_id(id) {
