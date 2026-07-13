@@ -23,12 +23,12 @@ class TbcPaymentService
 
     private function clientId(): string
     {
-        return config("services.tbc_pay.{$this->channel}.client_id", '');
+        return config("services.tbc_pay.{$this->channel}.client_id") ?? '';
     }
 
     private function clientSecret(): string
     {
-        return config("services.tbc_pay.{$this->channel}.client_secret", '');
+        return config("services.tbc_pay.{$this->channel}.client_secret") ?? '';
     }
 
     // True only when both TBC_PAY_{CHANNEL}_CLIENT_ID and _CLIENT_SECRET are set in .env
