@@ -163,17 +163,6 @@
             </template>
         </stack-modal>
 
-        <!-- Delete ascent confirm modal -->
-        <stack-modal :show="del_ascent_modal" :title="$t('admin.summits.confirm_delete_ascent_title')" @close="del_ascent_modal = false" :saveButton="{ visible: false }" :cancelButton="{ visible: false }">
-            <p>{{ $t('admin.summits.delete_ascent_confirm') }}</p>
-            <template #footer>
-                <button type="button" class="btn btn-secondary" @click="del_ascent_modal = false">{{ $t('admin.comments.cancel_btn') }}</button>
-                <button type="button" class="btn btn-danger" :disabled="deleting_ascent" @click="delete_ascent">
-                    <span v-if="deleting_ascent"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else>{{ $t('common.delete') }}</span>
-                </button>
-            </template>
-        </stack-modal>
     </div>
 </template>
 
@@ -216,8 +205,6 @@ export default {
             ascent_verified_checkbox: false,
             saving_ascent: false,
 
-            del_ascent_modal: false,
-            ascent_to_delete: null,
             deleting_ascent: false,
         }
     },
@@ -433,18 +420,15 @@ export default {
         },
 
         confirm_delete_ascent(id) {
-            const a = this.ascents.find(x => x.id === id)
-            if (a) { this.ascent_to_delete = a; this.del_ascent_modal = true }
+            if (!confirm(this.$t('admin.summits.delete_ascent_confirm'))) return
+            this.delete_ascent(id)
         },
 
-        delete_ascent() {
-            if (!this.ascent_to_delete) return
+        delete_ascent(id) {
             this.deleting_ascent = true
-            axios.delete(`set_summit/delete_ascent/${this.ascent_to_delete.id}`)
+            axios.delete(`set_summit/delete_ascent/${id}`)
                 .then(() => {
-                    this.ascents = this.ascents.filter(a => a.id !== this.ascent_to_delete.id)
-                    this.del_ascent_modal = false
-                    this.ascent_to_delete = null
+                    this.ascents = this.ascents.filter(a => a.id !== id)
                 })
                 .catch(() => { alert(this.$t('admin.summits.failed_delete_ascent')) })
                 .finally(() => { this.deleting_ascent = false })

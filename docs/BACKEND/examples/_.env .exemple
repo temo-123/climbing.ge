@@ -208,6 +208,13 @@ MIX_ERROR_PAGE_ANALITICS_ID="..."
 GOOGLE_CAPTCHA_V3_SITE_KEY=
 GOOGLE_CAPTCHA_V3_SECRET_KEY=
 
+# Site key + secret for a separate reCAPTCHA v3 site registered for the mobile
+# app's WebView challenge page (served at /recaptcha-mobile.html). Leave both
+# empty until that site key exists — the mobile-threshold fallback in
+# ReCaptchaV3Service::verifySmart() is a no-op until then.
+GOOGLE_CAPTCHA_V3_MOBILE_SITE_KEY=
+GOOGLE_CAPTCHA_V3_MOBILE_SECRET_KEY=
+
 MIX_GOOGLE_CAPTCHA_V3_SITE_KEY="${GOOGLE_CAPTCHA_V3_SITE_KEY}"
 
 

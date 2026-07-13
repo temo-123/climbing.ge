@@ -17,6 +17,13 @@ if (!function_exists('spaError')) {
         Route::get('/500',    fn() => spaError('site.index', 500));
         Route::get('/banned', fn() => spaError('site.index', 403));
 
+        // Static challenge page the mobile app's WebView loads to mint a v3
+        // reCAPTCHA token against a real registered domain (v3 site keys are
+        // domain-bound; a data:/inline HTML WebView source won't validate).
+        Route::get('/recaptcha-mobile.html', fn() => response()->view('site.recaptcha-mobile', [
+            'siteKey' => env('GOOGLE_CAPTCHA_V3_MOBILE_SITE_KEY', ''),
+        ]))->name('recaptcha_mobile');
+
         Route::group(['namespace'=>'Site'], function() {
             Route::get('/{any}', 'IndexController@index')->where('any', '(.*)')->name('index');
         });
