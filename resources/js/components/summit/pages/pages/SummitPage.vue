@@ -296,13 +296,35 @@
 
         <!-- Lightbox -->
         <div v-if="lightboxPhoto" class="summit-lightbox" @click="lightboxPhoto = null">
-            <div class="summit-lightbox-inner" @click.stop>
+            <div
+                class="summit-lightbox-inner"
+                @click.stop
+                @touchstart="handleLightboxTouchStart"
+                @touchend="handleLightboxTouchEnd"
+            >
                 <img :src="'/public/images/sommit_ascents_img/' + lightboxPhoto.photo" />
                 <div class="summit-lightbox-caption">
                     {{ lightboxPhoto.name }} {{ lightboxPhoto.surname }} · {{ formatDate(lightboxPhoto.ascent_date) }}
+                    <span v-if="ascentPhotos.length > 1" class="summit-lightbox-counter">{{ lightboxIndex + 1 }} / {{ ascentPhotos.length }}</span>
                 </div>
                 <button class="summit-lightbox-close" @click="lightboxPhoto = null">
                     <i class="fa fa-times"></i>
+                </button>
+                <button
+                    v-if="ascentPhotos.length > 1"
+                    class="summit-lightbox-nav summit-lightbox-prev"
+                    @click.stop="prevLightboxPhoto"
+                    :aria-label="$t('global.slider.previous_slide')"
+                >
+                    <i class="fa fa-chevron-left"></i>
+                </button>
+                <button
+                    v-if="ascentPhotos.length > 1"
+                    class="summit-lightbox-nav summit-lightbox-next"
+                    @click.stop="nextLightboxPhoto"
+                    :aria-label="$t('global.slider.next_slide')"
+                >
+                    <i class="fa fa-chevron-right"></i>
                 </button>
             </div>
         </div>
@@ -333,6 +355,9 @@ export default {
             filterYear: null,
             filterMonth: null,
             lightboxPhoto: null,
+            lightboxIndex: 0,
+            touchStartX: 0,
+            touchEndX: 0,
         }
     },
     computed: {
@@ -441,6 +466,10 @@ export default {
     },
     mounted() {
         this.fetchSummit()
+        window.addEventListener('keydown', this.handleLightboxKeydown)
+    },
+    beforeUnmount() {
+        window.removeEventListener('keydown', this.handleLightboxKeydown)
     },
     methods: {
         fetchSummit() {
@@ -475,6 +504,33 @@ export default {
         },
         openPhotoLightbox(photo) {
             this.lightboxPhoto = photo
+            this.lightboxIndex = this.ascentPhotos.findIndex(p => p.id === photo.id)
+        },
+        nextLightboxPhoto() {
+            if (!this.ascentPhotos.length) return
+            this.lightboxIndex = (this.lightboxIndex + 1) % this.ascentPhotos.length
+            this.lightboxPhoto = this.ascentPhotos[this.lightboxIndex]
+        },
+        prevLightboxPhoto() {
+            if (!this.ascentPhotos.length) return
+            this.lightboxIndex = (this.lightboxIndex - 1 + this.ascentPhotos.length) % this.ascentPhotos.length
+            this.lightboxPhoto = this.ascentPhotos[this.lightboxIndex]
+        },
+        handleLightboxKeydown(e) {
+            if (!this.lightboxPhoto) return
+            if (e.key === 'ArrowRight') this.nextLightboxPhoto()
+            else if (e.key === 'ArrowLeft') this.prevLightboxPhoto()
+            else if (e.key === 'Escape') this.lightboxPhoto = null
+        },
+        handleLightboxTouchStart(e) {
+            this.touchStartX = e.changedTouches[0].screenX
+        },
+        handleLightboxTouchEnd(e) {
+            this.touchEndX = e.changedTouches[0].screenX
+            const diff = this.touchStartX - this.touchEndX
+            if (Math.abs(diff) > 40) {
+                diff > 0 ? this.nextLightboxPhoto() : this.prevLightboxPhoto()
+            }
         },
         fetchAscents() {
             if (!this.summit) return
@@ -675,19 +731,26 @@ export default {
 
 /* ── Photo grid ── */
 .summit-photo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-    gap: 10px;
+    column-count: 4;
+    column-gap: 10px;
 }
+@media (max-width: 992px) { .summit-photo-grid { column-count: 3; } }
+@media (max-width: 700px) { .summit-photo-grid { column-count: 2; } }
+@media (max-width: 460px) { .summit-photo-grid { column-count: 1; } }
 .summit-photo-item {
     border-radius: 6px;
     overflow: hidden;
     position: relative;
     cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    break-inside: avoid;
+    margin-bottom: 10px;
 }
 .summit-photo-item img {
     width: 100%;
-    height: 140px;
+    height: auto;
+    max-height: 480px;
     object-fit: cover;
     display: block;
     transition: transform 0.2s;
@@ -730,6 +793,10 @@ export default {
     font-size: 13px;
     margin-top: 10px;
 }
+.summit-lightbox-counter {
+    margin-left: 8px;
+    color: rgba(255,255,255,0.6);
+}
 .summit-lightbox-close {
     position: absolute;
     top: -12px;
@@ -743,5 +810,39 @@ export default {
     font-size: 14px;
     line-height: 28px;
     padding: 0;
+}
+.summit-lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.5);
+    color: #fff;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, border-color 0.2s;
+    backdrop-filter: blur(4px);
+    z-index: 10;
+}
+.summit-lightbox-nav:hover {
+    background: rgba(255,255,255,0.35);
+    border-color: #fff;
+}
+.summit-lightbox-prev { left: -60px; }
+.summit-lightbox-next { right: -60px; }
+@media (max-width: 768px) {
+    .summit-lightbox-nav {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+    .summit-lightbox-prev { left: 6px; }
+    .summit-lightbox-next { right: 6px; }
 }
 </style>

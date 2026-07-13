@@ -84,11 +84,11 @@ export default {
       if (!d) return '—'
       return new Date(d).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })
     },
-    guideRouteUrl(articleUrl) {
+    guideRouteUrl(articlePath) {
       const base = process.env.MIX_APP_SSH
         ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SITE_URL || '').replace(/^\/|\/$/g, '')
         : window.location.origin
-      return `${base}/outdoor/${articleUrl}`
+      return `${base}/${articlePath}`
     },
   },
 }

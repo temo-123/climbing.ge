@@ -17,9 +17,8 @@ class ImageControllService
      * @param string $image_dir: image derectory from '/public/'
      * @param int $request:  HTTP request
      * @param int $form_value_id:  image value name in your form
-     * @param int $resize:  Image resize action (defolt it null)
-     * @param int $save_origin_image:  Save orifinal image in ./origin_img/ folder (defolt it true)
-     * 
+     * @param int $resize:  Image resize action (defolt it null). 0 = no resize, 1 = resize + crop to 1920x1080, 2 = resize to fit inside 1920x1080 keeping original aspect ratio (no crop)
+     *
      * This function deliting old image and upload new
      */
     public static function image_upload($image_dir, $request, $form_value_id, $resize = 1)
@@ -34,7 +33,7 @@ class ImageControllService
             $file_temp_path = $request->file($form_value_id)->getPathName();
 
             ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
-            
+
             return $file_new_name;
         }
     }
@@ -163,7 +162,9 @@ class ImageControllService
         }
 
         if ($resize == 1) {
-            ImageControllService::resize_image($image, $outputFile, $quality);
+            ImageControllService::resize_image($image, $outputFile, $quality, 1920, 1080, true);
+        } elseif ($resize == 2) {
+            ImageControllService::resize_image($image, $outputFile, $quality, 1920, 1080, false);
         } else {
             imagewebp($image, $outputFile, $quality);
         }
@@ -186,11 +187,20 @@ class ImageControllService
         $current_width = imagesx($image);
         $current_height = imagesy($image);
         $rate = $current_width / $current_height;
+
+        $src_x = 0;
+        $src_y = 0;
+        $src_width = $current_width;
+        $src_height = $current_height;
+
         if ($crop) {
-            if ($current_width > $current_height) {
-                $current_width = ceil($current_width-($current_width*abs($rate-$width/$height)));
+            // Crop a centered rectangle matching the target aspect ratio, then scale it to fit.
+            if ($rate > $width / $height) {
+                $src_width = ceil($current_height * ($width / $height));
+                $src_x = (int) (($current_width - $src_width) / 2);
             } else {
-                $current_height = ceil($current_height-($current_height*abs($rate-$width/$height)));
+                $src_height = ceil($current_width * ($height / $width));
+                $src_y = (int) (($current_height - $src_height) / 2);
             }
             $newwidth = $width;
             $newheight = $height;
@@ -207,7 +217,7 @@ class ImageControllService
         $dst_file = imagecreatetruecolor($newwidth, $newheight);
         imagealphablending($dst_file, false);
         imagesavealpha($dst_file, true);
-        imagecopyresampled($dst_file, $src_file, 0, 0, 0, 0, $newwidth, $newheight, $current_width, $current_height);
+        imagecopyresampled($dst_file, $src_file, 0, 0, $src_x, $src_y, $newwidth, $newheight, $src_width, $src_height);
 
         imagewebp($dst_file, $destination_file, $quality);
         imagedestroy($dst_file);

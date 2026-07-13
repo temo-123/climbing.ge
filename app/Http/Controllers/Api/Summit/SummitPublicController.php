@@ -16,6 +16,20 @@ use App\Services\Abstract\ImageControllService;
 
 class SummitPublicController extends Controller
 {
+    // Maps articles.category to the guide subdomain's URL path segment (see resources/js/routes/SiteRoutes.js)
+    private const ARTICLE_CATEGORY_PATHS = [
+        'outdoor'       => 'outdoor',
+        'indoor'        => 'indoor',
+        'ice'           => 'ice',
+        'other'         => 'other',
+        'mount_route'   => 'mountaineering',
+        'news'          => 'news',
+        'tech_tip'      => 'tech_tip',
+        'partners'      => 'partner',
+        'special'       => 'special_article',
+        'spot_projects' => 'spot_project',
+    ];
+
     public function index()
     {
         $summits = Summit::where('published', 1)
@@ -120,7 +134,7 @@ class SummitPublicController extends Controller
         }
 
         // Handle photo upload
-        $photoPath = ImageControllService::image_upload('images/sommit_ascents_img/', $request, 'photo');
+        $photoPath = ImageControllService::image_upload('images/sommit_ascents_img/', $request, 'photo', 2);
 
         // Create ascent record
         $ascent = SummitAscent::create([
@@ -193,32 +207,38 @@ class SummitPublicController extends Controller
                 $routeName  = null;
                 $routeGrade = null;
                 $routeArticleUrl = null;
+                $routeArticlePath = null;
 
                 if ($ascent->ascentRoutes->isNotEmpty()) {
                     $ar = $ascent->ascentRoutes->first();
                     if ($ar->article) {
-                        $routeName       = $ar->article->global_article_us?->title
+                        $routeName  = $ar->article->global_article_us?->title
                             ?? $ar->article->global_article_ka?->title
                             ?? $ar->article->url_title;
-                        $routeGrade      = $ar->article->mount_grade ?: null;
-                        $routeArticleUrl = $ar->article->url_title;
+                        $routeGrade = $ar->article->mount_grade ?: null;
+
+                        // Only link to the article if it's actually public (published 0 = not public).
+                        if (in_array($ar->article->published, [1, 2])) {
+                            $routeArticleUrl  = $ar->article->url_title;
+                            $routeArticlePath = self::ARTICLE_CATEGORY_PATHS[$ar->article->category] ?? null;
+                        }
                     } elseif ($ar->other_route_name) {
                         $routeName = $ar->other_route_name;
                     }
                 }
 
                 return [
-                    'id'               => $ascent->id,
-                    'name'             => $ascent->name,
-                    'surname'          => $ascent->surname,
-                    'comment'          => $ascent->comment,
-                    'photo'            => $ascent->photo,
-                    'is_gps_validated' => $ascent->is_gps_validated,
-                    'ascent_date'      => $ascent->ascent_date,
-                    'ascent_time'      => $ascent->ascent_time,
-                    'route_name'       => $routeName,
-                    'route_grade'      => $routeGrade,
-                    'route_article_url'=> $routeArticleUrl,
+                    'id'                => $ascent->id,
+                    'name'              => $ascent->name,
+                    'surname'           => $ascent->surname,
+                    'comment'           => $ascent->comment,
+                    'photo'             => $ascent->photo,
+                    'is_gps_validated'  => $ascent->is_gps_validated,
+                    'ascent_date'       => $ascent->ascent_date,
+                    'ascent_time'       => $ascent->ascent_time,
+                    'route_name'        => $routeName,
+                    'route_grade'       => $routeGrade,
+                    'route_article_url' => ($routeArticleUrl && $routeArticlePath) ? $routeArticlePath . '/' . $routeArticleUrl : null,
                 ];
             });
 
