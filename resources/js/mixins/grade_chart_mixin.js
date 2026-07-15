@@ -89,12 +89,60 @@ const BOULDER_V_TO_UIAA = {
     "Close Project": "Close Project",
 };
 
+export const FRENCH_ALPINE_GRADES = [
+    'F', 'PD-', 'PD', 'PD+', 'AD-', 'AD', 'AD+',
+    'D-', 'D', 'D+', 'TD-', 'TD', 'TD+',
+    'ED1', 'ED2', 'ED3', 'ED4', 'ABO',
+];
+
+export const RUSSIAN_ALPINE_GRADES = [
+    '1А', '1Б', '2А', '2Б', '3А', '3Б',
+    '4А', '4Б', '5А', '5Б', '6А', '6Б',
+];
+
 const ALPINE_RUSS_TO_EU = {
-    "1A": "F",   "1B": "F+",  "2A": "PD",    "2B": "PD+",
-    "3A": "AD",  "3B": "AD+", "4A": "D",     "4B": "D+",
-    "5A": "TD",  "5B": "TD+/ED1", "6A": "ED2", "6B": "ED2+",
-    "7A": "ED3",
+    '1А': 'F',   '1Б': 'F',
+    '2А': 'PD-', '2Б': 'PD+',
+    '3А': 'AD-', '3Б': 'AD+',
+    '4А': 'D-',  '4Б': 'D+',
+    '5А': 'TD-', '5Б': 'TD+',
+    '6А': 'ED1', '6Б': 'ED3',
 };
+
+const ALPINE_EU_TO_RUSS = {
+    'F': '1Б',
+    'PD-': '2А', 'PD': '2А', 'PD+': '2Б',
+    'AD-': '3А', 'AD': '3А', 'AD+': '3Б',
+    'D-': '4А',  'D': '4А',  'D+': '4Б',
+    'TD-': '5А', 'TD': '5А', 'TD+': '5Б',
+    'ED1': '6А', 'ED2': '6А',
+    'ED3': '6Б', 'ED4': '6Б', 'ABO': '6Б',
+};
+
+export function getBothMountGrades(grade) {
+    if (RUSSIAN_ALPINE_GRADES.includes(grade)) {
+        return { russian: grade, french: ALPINE_RUSS_TO_EU[grade] ?? null };
+    }
+    if (FRENCH_ALPINE_GRADES.includes(grade)) {
+        return { french: grade, russian: ALPINE_EU_TO_RUSS[grade] ?? null };
+    }
+    return { french: null, russian: null };
+}
+
+export function formatMountGrade(grade) {
+    if (!grade) return null;
+    const both = getBothMountGrades(grade);
+    const other = RUSSIAN_ALPINE_GRADES.includes(grade) ? both.french : both.russian;
+    return other ? `${grade} (${other})` : grade;
+}
+
+// Ascent-context format: "AD- / 3А" — both grades side by side, no primary/secondary.
+export function formatMountGradeSlash(grade) {
+    if (!grade) return null;
+    const both = getBothMountGrades(grade);
+    if (both.french && both.russian) return `${both.french} / ${both.russian}`;
+    return grade;
+}
 
 function getGradeSetting() {
     return (localStorage.getItem("grade") || "").toLowerCase();

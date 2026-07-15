@@ -3,7 +3,7 @@
 
         <div class="mgb-top">
             <span class="mgb-title">{{ $t('guide.article.mount_route.grade') }}</span>
-            <span class="mgb-badge" :style="{ background: markerColor }">{{ grade }}</span>
+            <span class="mgb-badge" :style="{ background: markerColor }">{{ formattedGrade }}</span>
         </div>
 
         <div class="mgb-bar-wrap">
@@ -21,16 +21,7 @@
 </template>
 
 <script>
-const FRENCH = [
-    'F', 'PD-', 'PD', 'PD+', 'AD-', 'AD', 'AD+',
-    'D-', 'D', 'D+', 'TD-', 'TD', 'TD+',
-    'ED1', 'ED2', 'ED3', 'ED4', 'ABO',
-]
-
-const RUSSIAN = [
-    '1А', '1Б', '2А', '2Б', '3А', '3Б',
-    '4А', '4Б', '5А', '5Б', '6А', '6Б',
-]
+import { FRENCH_ALPINE_GRADES, RUSSIAN_ALPINE_GRADES, formatMountGrade } from '../../../mixins/grade_chart_mixin.js'
 
 export default {
     name: 'MountGradeBarComponent',
@@ -38,10 +29,13 @@ export default {
         grade: { type: String, default: null },
     },
     computed: {
+        formattedGrade() {
+            return formatMountGrade(this.grade)
+        },
         displayGrades() {
-            if (FRENCH.includes(this.grade)) return FRENCH
-            if (RUSSIAN.includes(this.grade)) return RUSSIAN
-            return FRENCH
+            if (FRENCH_ALPINE_GRADES.includes(this.grade)) return FRENCH_ALPINE_GRADES
+            if (RUSSIAN_ALPINE_GRADES.includes(this.grade)) return RUSSIAN_ALPINE_GRADES
+            return FRENCH_ALPINE_GRADES
         },
         gradeIndex() {
             return this.displayGrades.indexOf(this.grade)

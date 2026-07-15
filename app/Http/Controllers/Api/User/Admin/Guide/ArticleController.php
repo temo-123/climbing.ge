@@ -51,13 +51,36 @@ use Validator;
 
 class ArticleController extends Controller
 {
+    // Mount routes can be graded in either scale; whichever the admin picks in the
+    // form, we always persist the French alpine grade so every display location has
+    // one canonical value to convert from.
+    private const RUSSIAN_TO_FRENCH_GRADE = [
+        '1А' => 'F',   '1Б' => 'F',
+        '2А' => 'PD-', '2Б' => 'PD+',
+        '3А' => 'AD-', '3Б' => 'AD+',
+        '4А' => 'D-',  '4Б' => 'D+',
+        '5А' => 'TD-', '5Б' => 'TD+',
+        '6А' => 'ED1', '6Б' => 'ED3',
+    ];
+
+    private function normalize_mount_grade(array $data): array
+    {
+        if (($data['global_article']['category'] ?? null) === 'mount_route' && !empty($data['global_article']['mount_grade'])) {
+            $grade = $data['global_article']['mount_grade'];
+            $data['global_article']['mount_grade'] = self::RUSSIAN_TO_FRENCH_GRADE[$grade] ?? $grade;
+        }
+
+        return $data;
+    }
+
     public function add_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'add');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
+        $data = $this->normalize_mount_grade($data);
         $global_blocks = json_decode($request->global_blocks, true );
-        
+
         $image_path = 'images/'.$data['global_article']['category'].'_img/';
 
         $article_adding = ArticlesService::add_content($data, Article::class, Locale_article::class, '_article', $request, $image_path);
@@ -91,6 +114,7 @@ class ArticleController extends Controller
         $auth = PermissionService::authorize('article', 'edit');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
+        $data = $this->normalize_mount_grade($data);
         $global_blocks = json_decode($request->global_blocks, true );
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';

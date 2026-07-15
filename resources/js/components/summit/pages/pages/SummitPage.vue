@@ -112,7 +112,7 @@
                         <div v-for="r in routes" :key="r.id" class="col-md-4 col-sm-6" style="margin-bottom:16px">
                             <div class="summit-route-card">
                                 <span class="summit-route-name">{{ r.name }}</span>
-                                <span v-if="r.grade" class="label label-success ml-1">{{ r.grade }}</span>
+                                <span v-if="r.grade" class="label label-success ml-1">{{ formatMountGrade(r.grade) }}</span>
                                 <a v-if="r.url_title" :href="guideRouteUrl(r.url_title)" target="_blank" class="summit-route-link">
                                     <i class="fa fa-external-link"></i>
                                 </a>
@@ -336,6 +336,7 @@ import metaData from '../../items/MetaDataComponent.vue'
 import QrcodeVue from 'qrcode.vue'
 import MakeAscentModal from '../../items/Modals/MakeAscentModal.vue'
 import AscentDetailModal from '../../items/Modals/AscentDetailModal.vue'
+import { formatMountGrade } from '../../../../mixins/grade_chart_mixin.js'
 
 const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
 
@@ -472,6 +473,7 @@ export default {
         window.removeEventListener('keydown', this.handleLightboxKeydown)
     },
     methods: {
+        formatMountGrade,
         fetchSummit() {
             this.loading = true
             axios.get(`summit/show/${this.$route.params.url_title}`)

@@ -37,12 +37,12 @@
                  target="_blank"
                  class="text-success">
                 {{ ascent.route_name }}
-                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ ascent.route_grade }}</span>
+                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
                 <i class="fa fa-external-link fa-xs ml-1"></i>
               </a>
               <span v-else-if="ascent.route_name">
                 {{ ascent.route_name }}
-                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ ascent.route_grade }}</span>
+                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
               </span>
               <span v-else class="text-muted">—</span>
             </td>
@@ -72,6 +72,8 @@
 </template>
 
 <script>
+import { formatMountGradeSlash } from '../../../../mixins/grade_chart_mixin.js'
+
 export default {
   name: 'AscentDetailModal',
   props: {
@@ -80,6 +82,7 @@ export default {
   },
   emits: ['update:modelValue'],
   methods: {
+    formatMountGradeSlash,
     formatDate(d) {
       if (!d) return '—'
       return new Date(d).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })

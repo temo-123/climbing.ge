@@ -153,7 +153,7 @@
             <select v-model="selectedRoute" class="form-control" @change="onRouteChange">
               <option :value="null">-- Select route (optional) --</option>
               <option v-for="route in routes" :key="route.id" :value="route.id">
-                {{ route.name }}<span v-if="route.grade"> ({{ route.grade }})</span>
+                {{ route.name }}<span v-if="route.grade"> ({{ formatMountGradeSlash(route.grade) }})</span>
               </option>
               <option value="other">Other route...</option>
             </select>
@@ -207,6 +207,7 @@
 <script>
 import { useAuthStore } from '../../../../store/auth.js'
 import { compressImage } from '../../../../services/image/compressImage.js'
+import { formatMountGradeSlash } from '../../../../mixins/grade_chart_mixin.js'
 
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371000
@@ -295,6 +296,7 @@ export default {
     this.$bus.$off('login-modal-closed', this.onLoginModalClosed)
   },
   methods: {
+    formatMountGradeSlash,
     onOpen() {
       this.resetForm()
       useAuthStore().fetchUser().finally(() => {

@@ -118,6 +118,7 @@
     // import StackModal from '@innologica/vue-stackable-modal'  //https://innologica.github.io/vue-stackable-modal/#sample-css
 
     import published_item from '../../../../items/form/parts/PublishedValueComponent.vue'
+    import { FRENCH_ALPINE_GRADES, RUSSIAN_ALPINE_GRADES } from '../../../../../../mixins/grade_chart_mixin.js'
     export default {
         components: {
             // StackModal,
@@ -143,8 +144,8 @@
                 regions: [],
                 mount_masive: [],
 
-                french_grades: ['F', 'PD-', 'PD', 'PD+', 'AD-', 'AD', 'AD+', 'D-', 'D', 'D+', 'TD-', 'TD', 'TD+', 'ED1', 'ED2', 'ED3', 'ED4', 'ABO'],
-                russian_grades: ['1А', '1Б', '2А', '2Б', '3А', '3Б', '4А', '4Б', '5А', '5Б', '6А', '6Б'],
+                french_grades: FRENCH_ALPINE_GRADES,
+                russian_grades: RUSSIAN_ALPINE_GRADES,
 
                 data: {
                     category: this.$route.params.article_category,

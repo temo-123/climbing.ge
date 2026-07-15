@@ -291,7 +291,7 @@ class SummitPublicController extends Controller
         $userId = auth('sanctum')->id();
 
         $ascents = SummitAscentUser::where('user_id', $userId)
-            ->with(['ascent.summit', 'ascent.ascentRoutes.route'])
+            ->with(['ascent.summit', 'ascent.ascentRoutes.article.global_article_us', 'ascent.ascentRoutes.article.global_article_ka'])
             ->get()
             ->map(function ($au) {
                 $ascent = $au->ascent;
@@ -302,9 +302,11 @@ class SummitPublicController extends Controller
 
                 if ($ascent->ascentRoutes->isNotEmpty()) {
                     $ar = $ascent->ascentRoutes->first();
-                    if ($ar->route) {
-                        $routeName  = $ar->route->name;
-                        $routeGrade = $ar->route->grade;
+                    if ($ar->article) {
+                        $routeName  = $ar->article->global_article_us?->title
+                            ?? $ar->article->global_article_ka?->title
+                            ?? $ar->article->url_title;
+                        $routeGrade = $ar->article->mount_grade ?: null;
                     } elseif ($ar->other_route_name) {
                         $routeName = $ar->other_route_name;
                     }

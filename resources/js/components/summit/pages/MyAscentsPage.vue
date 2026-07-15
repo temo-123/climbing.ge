@@ -59,7 +59,7 @@
                                     <span v-else class="text-muted">—</span>
                                 </td>
                                 <td>
-                                    <span v-if="ascent.route_grade" class="badge badge-secondary">{{ ascent.route_grade }}</span>
+                                    <span v-if="ascent.route_grade" class="badge badge-secondary">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
                                     <span v-else class="text-muted">—</span>
                                 </td>
                                 <td>
@@ -97,6 +97,7 @@
 
 <script>
 import metaData from '../items/MetaDataComponent.vue'
+import { formatMountGradeSlash } from '../../../mixins/grade_chart_mixin.js'
 
 export default {
     components: { metaData },
@@ -119,6 +120,7 @@ export default {
         this.load_ascents()
     },
     methods: {
+        formatMountGradeSlash,
         load_ascents() {
             axios.get('summit/my_ascents')
                 .then(response => { this.ascents = response.data })
