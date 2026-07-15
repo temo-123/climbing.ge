@@ -125,15 +125,15 @@ class UsersController extends Controller
             $user = user::where('id', '=', $request->user_id)->first();
             if($user->image != null){
                 if($request->hasFile('image')){
-                    $file_new_name = ImageControllService::image_update('images/user_profil_img/', $user, $request, 'image', 'image');
+                    $file_new_name = ImageControllService::image_update('images/user_profil_img/', $user, $request, 'image', 'image', 3);
                     $user['image'] = $file_new_name;
                 }
-        
+
                 $user -> save();
             }
             else{
                 if($request->hasFile('image')){
-                    $file_new_name = ImageControllService::image_upload('images/user_profil_img/', $request, 'image');
+                    $file_new_name = ImageControllService::image_upload('images/user_profil_img/', $request, 'image', 3);
                     $user['image'] = $file_new_name;
                 }
         

@@ -7,19 +7,29 @@
             </div>
 
             <div class="form-group clearfix">
-                <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
+                <label class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
                 <div class="col-xs-8">
-                    <select class="form-control" v-model="article_options" @change="onCategoryChange()">
-                        <option disabled value="">{{ $t('admin.local_business.select_option_label') }}</option>
-                        <option value="individual">{{ $t('admin.local_business.individual_article_option') }}</option>
-                        <option value="categoriable">{{ $t('admin.local_business.all_for_options_option') }}</option>
-                    </select>
+                    <div class="btn-group" role="group">
+                        <button
+                            type="button"
+                            class="btn"
+                            :class="use_category ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="toggleCategoryMode()"
+                        >{{ $t('admin.local_business.all_for_options_option') }}</button>
+                        <button
+                            type="button"
+                            class="btn"
+                            :class="use_individual ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="toggleIndividualMode()"
+                        >{{ $t('admin.local_business.individual_article_option') }}</button>
+                    </div>
+                    <p class="text-muted small" style="margin-top: 6px;">{{ $t('admin.local_business.combine_modes_hint') }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Category Selection Section -->
-        <div class="col-md-12" v-if="article_options === 'categoriable'">
+        <div class="col-md-12" v-if="use_category">
             <h4>{{ $t('admin.local_business.auto_category_relations_title') }}</h4>
             <div class="form-group clearfix">
                 <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.export.select_category_label') }}</label>
@@ -35,10 +45,42 @@
                 <strong>{{ $t('admin.local_business.auto_relation_enabled_prefix') }}</strong> {{ $t('admin.local_business.auto_relation_enabled_text', { category: selected_category }) }}
                 <button type="button" class="btn btn-danger" @click="clearCategorySelection()" style="margin-left: 10px;">{{ $t('admin.local_business.clear_btn') }}</button>
             </div>
+
+            <div v-if="selected_category && categoryArticlesOverview.length > 0" class="table-responsive" style="margin-top: 15px;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ $t('admin.comments.col_article') }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="article in categoryArticlesOverview" :key="article.article_id">
+                            <td>{{ article.article_title }}</td>
+                            <td v-for="slot in [0, 1]" :key="slot">
+                                <span
+                                    v-if="relationAt(article.related_businesses, slot)"
+                                    class="label"
+                                    :class="relationAt(article.related_businesses, slot).bisnes_id == bisnes_id_prop ? 'label-success' : 'label-default'"
+                                >
+                                    {{ relationAt(article.related_businesses, slot).bisnes_title }}{{ relationAt(article.related_businesses, slot).bisnes_id == bisnes_id_prop ? ' (' + $t('admin.local_business.this_business_suffix') + ')' : '' }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(article.related_businesses, slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
+                                </span>
+                                <span v-else class="text-muted">&mdash;</span>
+                                <div v-if="slot === 1 && article.related_businesses.length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                    {{ $t('admin.local_business.extra_relations_note', { count: article.related_businesses.length - maxRelations }) }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(article.related_businesses).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 
-        <div class="row" v-if="article_options === 'individual'">
+        <div class="row" v-if="use_individual">
 
             <div class="col-md-12">
                 <div class="form-groupe">
@@ -52,6 +94,8 @@
                         <tr>
                             <th>{{ $t('admin.comments.col_article') }}</th>
                             <th>{{ $t('common.category') }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
                             <th>{{ $t('admin.local_business.col_delete_item') }}</th>
                         </tr>
                     </thead>
@@ -66,6 +110,21 @@
                                 </select>
                             </td>
                             <td>{{ get_article_category(article.article_id) }}</td>
+                            <td v-for="slot in [0, 1]" :key="slot">
+                                <span
+                                    v-if="article.article_id && relationAt(getRelatedBusinesses(article.article_id), slot)"
+                                    class="label"
+                                    :class="relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_id == bisnes_id_prop ? 'label-success' : 'label-default'"
+                                >
+                                    {{ relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_title }}{{ relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_id == bisnes_id_prop ? ' (' + $t('admin.local_business.this_business_suffix') + ')' : '' }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
+                                </span>
+                                <span v-else class="text-muted">&mdash;</span>
+                                <div v-if="slot === 1 && article.article_id && getRelatedBusinesses(article.article_id).length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                    {{ $t('admin.local_business.extra_relations_note', { count: getRelatedBusinesses(article.article_id).length - maxRelations }) }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(getRelatedBusinesses(article.article_id)).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
+                                </div>
+                            </td>
                             <td>
                                 <button class="btn btn-danger" @click="del_article(index)">{{ $t('common.delete') }}</button>
                             </td>
@@ -81,17 +140,17 @@
             </div>
         </div>
 
-        <!-- Validation Conflicts Report -->
+        <!-- Max Relations Conflicts Report -->
         <div v-if="showValidationConflicts" class="panel panel-warning" style="margin-top: 20px;">
             <div class="panel-heading">
                 <h3 class="panel-title">
                     <i class="fa fa-exclamation-triangle"></i>
-                    {{ $t('admin.local_business.conflicts_found_title') }}
+                    {{ $t('admin.local_business.max_relations_conflicts_title') }}
                 </h3>
             </div>
             <div class="panel-body">
                 <div class="alert alert-warning">
-                    {{ $t('admin.local_business.conflicts_warning') }}
+                    {{ $t('admin.local_business.max_relations_warning', { max: maxRelations }) }}
                 </div>
 
                 <div class="table-responsive">
@@ -100,8 +159,7 @@
                             <tr>
                                 <th>{{ $t('admin.comments.col_article') }}</th>
                                 <th>{{ $t('common.category') }}</th>
-                                <th>{{ $t('admin.local_business.col_currently_related_to') }}</th>
-                                <th>{{ $t('admin.local_business.col_proposed_for') }}</th>
+                                <th>{{ $t('admin.local_business.existing_relations_label') }}</th>
                                 <th>{{ $t('admin.local_business.col_action') }}</th>
                             </tr>
                         </thead>
@@ -116,10 +174,12 @@
                                     <span class="label label-info">{{ conflict.article_category || $t('admin.local_business.no_category_fallback') }}</span>
                                 </td>
                                 <td>
-                                    <span class="label label-default">{{ conflict.current_business }}</span>
-                                </td>
-                                <td>
-                                    <span class="label label-warning">{{ conflict.proposed_business }}</span>
+                                    <div v-for="rel in conflict.existing_relations" :key="rel.bisnes_id">
+                                        <span class="label label-default">{{ rel.bisnes_title }}</span>
+                                    </div>
+                                    <div class="text-muted small mt-1" v-if="conflict.oldest_relation">
+                                        {{ $t('admin.local_business.oldest_relation_note', { business: conflict.oldest_relation.bisnes_title }) }}
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="btn-group">
@@ -134,10 +194,10 @@
                                         <button
                                             type="button"
                                             class="btn btn-sm btn-success"
-                                            :class="{'active': validationUserChoices[conflict.article_id] === 'add'}"
-                                            @click="setValidationChoice(conflict.article_id, 'add')"
+                                            :class="{'active': validationUserChoices[conflict.article_id] === 'rewrite'}"
+                                            @click="setValidationChoice(conflict.article_id, 'rewrite')"
                                         >
-                                            {{ $t('admin.local_business.add_anyway_btn') }}
+                                            {{ $t('admin.local_business.rewrite_article_btn') }}
                                         </button>
                                     </div>
                                 </td>
@@ -191,17 +251,24 @@
                 regions: [],
                 filtered_regions: [],
 
-                article_options: '',
+                use_category: false,
+                use_individual: false,
                 bisnes_id: null,
-                
+
                 // Required for validation
                 article_categories: [],
+
+                // Relation overview (shows ALL current relations for the relevant articles,
+                // not just conflicts)
+                categoryArticlesOverview: [],
+                individualArticlesOverview: {},
 
                 // Validation related properties
                 showValidationConflicts: false,
                 validationConflicts: [],
                 validationUserChoices: {},
                 pendingFormData: null,
+                maxRelations: 2,
                 parentComponent: null,
 
             }
@@ -212,26 +279,13 @@
                 return this.validationConflicts.some(conflict => !this.validationUserChoices[conflict.article_id]);
             },
             decidedValidationArticlesCount() {
-                return Object.keys(this.validationUserChoices).filter(id => this.validationUserChoices[id] === 'add').length;
+                return Object.keys(this.validationUserChoices).filter(id => this.validationUserChoices[id] === 'rewrite').length;
             }
         },
 
         mounted() {
             this.get_region_data()
             this.get_article_categories()
-
-            // Set initial state based on prop
-            // if (this.initial_selected_category_prop) {
-            //     this.article_options = 'categoriable'
-                this.selected_category = this.initial_selected_category_prop
-            // } else {
-            //     this.article_options = ''
-            // }
-
-            // If this is edit mode, load existing data
-            if (this.bisnes_id_prop) {
-                this.load_existing_relations()
-            }
         },
 
         watch: {
@@ -242,30 +296,48 @@
                 },
                 immediate: true
             },
-            initial_selected_category_prop: function(){
-                this.selected_category = this.initial_selected_category_prop
-// alert(this.selected_category)
-                if (this.initial_selected_category_prop) {
-                    this.article_options = 'categoriable'
-                    this.selected_category = this.initial_selected_category_prop
-                } else {
-                    this.article_options = ''
+            // initial_selected_category_prop arrives asynchronously (parent fetches the
+            // business, then passes for_article_category down) - drive the initial
+            // "Select option"/"Select category" state off its actual value arriving,
+            // rather than a one-shot mounted() check that can run before the prop is set.
+            // Category and individual relations are combinable: a business can have a
+            // bulk category relation AND extra hand-picked articles on top of it.
+            initial_selected_category_prop: {
+                handler(newCategory) {
+                    if (newCategory) {
+                        this.use_category = true
+                        this.selected_category = newCategory
+                    }
+                    if (this.bisnes_id_prop) {
+                        this.load_existing_relations()
+                    }
+                },
+                immediate: true
+            },
+            selected_category: {
+                handler(newCategory) {
+                    this.fetchCategoryOverview(newCategory)
+                },
+                immediate: true
+            },
+            new_article_relationes: {
+                handler() {
+                    this.fetchIndividualOverview()
+                },
+                deep: true
+            },
+            use_category(enabled) {
+                if (!enabled) {
+                    this.selected_category = null
+                    this.update_perent_component_category()
                 }
             },
-            // article_options: {
-            //     handler(newOption) {
-            //         // Clear data when switching between modes
-            //         if (newOption === 'categoriable') {
-            //             this.new_article_relationes = []
-            //             this.update_perent_component_data()
-            //             this.selected_category = null
-            //             this.update_perent_component_category()
-            //         } else if (newOption === 'individual') {
-            //             this.selected_category = null
-            //             this.update_perent_component_category()
-            //         }
-            //     }
-            // },
+            use_individual(enabled) {
+                if (!enabled) {
+                    this.new_article_relationes = []
+                    this.update_perent_component_data()
+                }
+            },
         },
         methods: {
             get_region_data: function () {
@@ -287,12 +359,76 @@
                     .catch((error) => console.log(error));
             },
 
-            onCategoryChange() {
-                // Clear manual selections when category is selected
-                if (this.selected_category) {
-                    this.new_article_relationes = []
-                    this.update_perent_component_data()
+            // Every article in the selected category, with ALL of its current relations
+            // (not just conflicts) - so the admin can see the full picture before saving.
+            fetchCategoryOverview(category) {
+                if (!category) {
+                    this.categoryArticlesOverview = [];
+                    return;
                 }
+                axios
+                    .post('/set_bisnes/get_article_relations_overview', { category })
+                    .then(response => {
+                        this.categoryArticlesOverview = response.data.articles;
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            // Current relations for every article picked in individual mode.
+            fetchIndividualOverview() {
+                const articleIds = this.new_article_relationes
+                    .map(relation => relation.article_id)
+                    .filter(id => id);
+
+                if (articleIds.length === 0) {
+                    this.individualArticlesOverview = {};
+                    return;
+                }
+
+                axios
+                    .post('/set_bisnes/get_article_relations_overview', { article_ids: articleIds })
+                    .then(response => {
+                        const overview = {};
+                        response.data.articles.forEach(article => {
+                            overview[article.article_id] = article.related_businesses;
+                        });
+                        this.individualArticlesOverview = overview;
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            getRelatedBusinesses(articleId) {
+                return this.individualArticlesOverview[articleId] || [];
+            },
+
+            relationAt(relations, index) {
+                return (relations && relations[index]) || null;
+            },
+
+            lastRelation(relations) {
+                return relations[relations.length - 1];
+            },
+
+            deleteRelation(articleId, bisnesId) {
+                if (!confirm(this.$t('admin.common.confirm_delete'))) return;
+                axios
+                    .delete(`/set_bisnes/del_bisnes_article_relation/${articleId}/${bisnesId}`)
+                    .then(() => {
+                        this.fetchCategoryOverview(this.selected_category);
+                        this.fetchIndividualOverview();
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            toggleCategoryMode() {
+                this.use_category = !this.use_category
+            },
+
+            toggleIndividualMode() {
+                this.use_individual = !this.use_individual
+            },
+
+            onCategoryChange() {
                 this.update_perent_component_category()
             },
 
@@ -361,75 +497,58 @@
             load_existing_relations() {
                 if (this.bisnes_id_prop) {
                     this.bisnes_id = this.bisnes_id_prop;
-                    // Load existing article relations for this business
+                    // Populate the individual article table with this business's current
+                    // relations, excluding any already covered by the bulk category
+                    // relation - those are implicit and don't need their own row. Whatever
+                    // is left are "extra" individually-added articles on top of the category.
                     axios
                         .get(`/set_bisnes/get_bisnes_article_relations/${this.bisnes_id}`)
                         .then(response => {
-                            const existingRelations = response.data;
-                            if (existingRelations && existingRelations.length > 0) {
-                                // Check if this is category-based relations or individual relations
-                                const hasCategoryRelation = existingRelations.some(relation => relation.category_based === true);
-
-                                if (hasCategoryRelation) {
-                                    // This is a category-based relation
-                                    const categoryRelation = existingRelations.find(relation => relation.category_based === true);
-                                    this.selected_category = categoryRelation.category_id;
-                                    if (!this.initial_selected_category_prop) {
-                                        this.article_options = 'categoriable';
-                                    }
-                                    this.update_perent_component_category();
-                                } else {
-                                    // These are individual article relations
-                                    existingRelations.forEach((relation, index) => {
-                                        this.new_article_relationes.push({
-                                            id: index + 1,
-                                            article_id: relation.article_id
-                                        });
+                            const existingRelations = (response.data || []).filter(relation => {
+                                return !(this.selected_category && relation.article_category === this.selected_category);
+                            });
+                            if (existingRelations.length > 0) {
+                                existingRelations.forEach((relation, index) => {
+                                    this.new_article_relationes.push({
+                                        id: index + 1,
+                                        article_id: relation.article_id
                                     });
-                                    if (!this.initial_selected_category_prop) {
-                                        this.article_options = 'individual';
-                                    }
-                                    this.update_perent_component_data();
-                                }
+                                });
+                                this.use_individual = true;
+                                this.update_perent_component_data();
                             }
                         })
                         .catch(error => console.log(error));
                 }
             },
 
-            // Validation methods
+            // Dry-run check: would this push any article over the max-relations cap?
+            // Read-only - does not touch the business, unlike the old approach
+            // (which posted to the real edit endpoint and could apply the edit twice).
             validateRelationsBeforeSave(formData, parentComponent) {
                 this.parentComponent = parentComponent;
                 this.pendingFormData = formData;
-                
-                console.log('=== VALIDATION CALL ===');
-                console.log('Parent business ID:', parentComponent.business_id);
-                console.log('Child bisnes_id:', this.bisnes_id);
-                console.log('FormData stored for validation selections');
-                
-                // Use the parent component's business_id for consistency
+
                 const businessId = parentComponent.business_id || this.bisnes_id;
-                
+
                 axios
-                    .post('/set_bisnes/edit_local_bisnes/' + businessId, formData)
+                    .post('/set_bisnes/check_article_relation_capacity', {
+                        editing_business_id: businessId,
+                        selected_category: this.selected_category || null,
+                        bisnes_new_article_relations: this.new_article_relationes
+                            .map(relation => relation.article_id)
+                            .filter(id => id),
+                    })
                     .then(response => {
-                        console.log('=== VALIDATION RESPONSE ===');
-                        console.log('Response:', response);
-                        
-                        // Check if validation conflicts were returned
-                        if (response.data.validation_needed) {
-                            console.log('Validation conflicts found:', response.data.conflicting_articles);
+                        if (response.data.conflicts && response.data.conflicts.length > 0) {
+                            this.maxRelations = response.data.max_relations;
+                            this.validationConflicts = response.data.conflicts;
                             this.showValidationConflicts = true;
-                            this.validationConflicts = response.data.conflicting_articles;
                         } else {
-                            console.log('No validation conflicts, proceeding with save...');
-                            // No conflicts, proceed with save
                             this.parentComponent.proceedWithSave(formData);
                         }
                     })
                     .catch(error => {
-                        console.error('Validation error:', error);
-                        console.log('Error response:', error.response);
                         this.parentComponent.handleValidationError(error);
                     });
             },
@@ -453,37 +572,20 @@
                 this.validationUserChoices[articleId] = choice;
             },
 
-            // Proceed with user's validation selections
+            // Proceed with user's rewrite/skip choices for at-capacity articles
             proceedWithValidationSelections() {
-                console.log('Starting proceedWithValidationSelections...');
-                
-                // Get parent component reference dynamically to avoid losing it
-                const parentComponent = this.$parent;
+                const parentComponent = this.parentComponent || this.$parent;
                 if (!parentComponent) {
-                    console.error('Parent component not found');
                     alert(this.$t('admin.local_business.parent_component_not_found_error'));
                     return;
                 }
-                
-                // Get all articles that user chose to add from validation conflicts
-                const allowedArticleIds = [];
-                
-                // Use validation conflicts as the source of truth for which articles to add
-                this.validationConflicts.forEach(conflict => {
-                    if (this.validationUserChoices[conflict.article_id] === 'add') {
-                        allowedArticleIds.push(conflict.article_id);
-                    }
-                });
 
-                console.log('Filtered article IDs from conflicts:', allowedArticleIds);
-                console.log('Selected category:', this.selected_category);
-                console.log('Parent component data:', parentComponent.data);
+                const skippedArticleIds = this.validationConflicts
+                    .filter(conflict => this.validationUserChoices[conflict.article_id] === 'skip')
+                    .map(conflict => conflict.article_id);
 
-                // CRITICAL: Handle change_url_title logic like parent component does
-                // Create a copy of parent data to avoid modifying the original
+                // Preserve the url_title change handling that edit_bisnes() applies
                 const dataToSend = JSON.parse(JSON.stringify(parentComponent.data));
-                
-                // Apply the same URL title change logic as parent component
                 if (parentComponent.change_url_title) {
                     dataToSend.global_bisnes.change_url_title = true;
                     dataToSend.global_bisnes.url_title = dataToSend.us_bisnes.title;
@@ -493,46 +595,39 @@
                     dataToSend.us_bisnes.is_change_url_title = false;
                 }
 
-                console.log('Data with URL title changes:', dataToSend);
-
-                // Use the existing FormData from parent instead of creating new one
                 let formData = this.pendingFormData;
-                
-                // Clear existing relation data from formData
-                const formDataKeys = Array.from(formData.keys());
-                formDataKeys.forEach(key => {
-                    if (key.includes('bisnes_new_article_relations[')) {
-                        formData.delete(key);
-                    }
-                });
 
-                // Add filtered individual relations to the existing FormData
-                if (allowedArticleIds.length > 0) {
-                    console.log('Adding article relations:', allowedArticleIds.length);
-                    var relation_loop_num = 0;
-                    allowedArticleIds.forEach(id => {
-                        formData.append('bisnes_new_article_relations['+relation_loop_num+']', id);
-                        relation_loop_num++;
+                // Category and individual mode can be active together, so both need to
+                // respect the skip choices independently, not as an either/or.
+                if (this.selected_category) {
+                    // Category mode: keep the bulk category relation, just tell the
+                    // backend which of its articles to leave out.
+                    skippedArticleIds.forEach((id, index) => {
+                        formData.append('excluded_article_ids[' + index + ']', id);
                     });
                 }
 
-                // Update the main data JSON with any changes
-                console.log('Updating data JSON...');
-                const dataJson = JSON.stringify(dataToSend);
-                console.log('Data to send:', dataJson);
-                formData.set('data', dataJson);
+                if (this.new_article_relationes.length > 0) {
+                    // Individual mode: rebuild the relation list without the skipped articles.
+                    const skipped = new Set(skippedArticleIds.map(String));
+                    Array.from(formData.keys()).forEach(key => {
+                        if (key.startsWith('bisnes_new_article_relations[')) {
+                            formData.delete(key);
+                        }
+                    });
 
-                // Debug: Check what we're actually sending
-                console.log('FormData entries:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, ':', value);
+                    let relationIndex = 0;
+                    this.new_article_relationes.forEach(relation => {
+                        if (relation.article_id && !skipped.has(String(relation.article_id))) {
+                            formData.append('bisnes_new_article_relations[' + relationIndex + ']', relation.article_id);
+                            relationIndex++;
+                        }
+                    });
                 }
 
-                // Close validation report and proceed with save
+                formData.set('data', JSON.stringify(dataToSend));
+
                 this.closeValidationReport();
-                console.log('Calling parent proceedWithSave...');
-                console.log('Parent business ID:', parentComponent.business_id);
-                
                 parentComponent.proceedWithSave(formData);
             },
         },

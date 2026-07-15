@@ -40,6 +40,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     Route::controller(TeamMemberController::class)->prefix('get_team')->group( function() {
         Route::get('/get_member_status/{id}', 'get_member_status');
         Route::get('/get_team_members', 'get_team_members');
+        Route::get('/get_team_member_data/{id}', 'get_team_member_data');
     });
 
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {

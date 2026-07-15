@@ -20,17 +20,6 @@
                         <div v-for="(msg, i) in errors" :key="i">{{ msg }}</div>
                     </div>
 
-                    <!-- Current image preview -->
-                    <div class="form-group row" v-if="editing_data.image">
-                        <div class="col-md-12">
-                            <img
-                                :src="image_path_prop + editing_data.image"
-                                :alt="editing_data.title"
-                                style="max-height:200px; max-width:100%; border-radius:4px;"
-                            >
-                        </div>
-                    </div>
-
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">{{ $t('common.title') }} *</label>
                         <div class="col-md-9">
@@ -93,12 +82,14 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">{{ $t('admin.gallery.replace_image_label') }}</label>
                         <div class="col-md-9">
-                            <input
-                                type="file"
-                                accept="image/*,.webp"
-                                @change="on_image_change"
-                            >
-                            <small class="text-muted">{{ $t('admin.gallery.replace_image_hint') }}</small>
+                            <single_image_edit
+                                :key="editing_data.id || 0"
+                                :title_prop="''"
+                                :crop_ratio_prop="{ width: 16, height: 9 }"
+                                :existing_image_url_prop="editing_data.image ? (image_path_prop + editing_data.image) : ''"
+                                @update_single_image="image_file = $event"
+                                @processing="image_processing = $event"
+                            />
                         </div>
                     </div>
 
@@ -109,7 +100,10 @@
 </template>
 
 <script>
+import single_image_edit from '../../../../items/single_image/singleImageEditComponent.vue'
+
 export default {
+    components: { single_image_edit },
     props: ['image_path_prop'],
     data() {
         return {
@@ -117,6 +111,7 @@ export default {
             is_loading: false,
             errors: [],
             image_file: null,
+            image_processing: false,
             editing_data: {},
         }
     },
@@ -133,6 +128,7 @@ export default {
         reset() {
             this.errors = []
             this.image_file = null
+            this.image_processing = false
             this.editing_data = {}
         },
         load_slide(id) {
@@ -142,16 +138,19 @@ export default {
                 .catch(() => { this.errors = [this.$t('admin.gallery.failed_load_slide')] })
                 .finally(() => { this.is_loading = false })
         },
-        on_image_change(e) {
-            this.image_file = e.target.files[0] || null
-        },
         edit_image() {
             this.errors = []
+
+            if (this.image_processing) {
+                this.errors = [this.$t('admin.gallery.image_still_processing')]
+                return
+            }
+
             this.is_loading = true
 
             const formData = new FormData()
-            if (this.image_file instanceof File) {
-                formData.append('image', this.image_file)
+            if (this.image_file) {
+                formData.append('image', this.image_file, this.image_file.name || 'image.jpg')
             }
             formData.append('data', JSON.stringify(this.editing_data))
 

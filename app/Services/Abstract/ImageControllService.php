@@ -17,7 +17,7 @@ class ImageControllService
      * @param string $image_dir: image derectory from '/public/'
      * @param int $request:  HTTP request
      * @param int $form_value_id:  image value name in your form
-     * @param int $resize:  Image resize action (defolt it null). 0 = no resize, 1 = resize + crop to 1920x1080, 2 = resize to fit inside 1920x1080 keeping original aspect ratio (no crop)
+     * @param int $resize:  Image resize action (defolt it null). 0 = no resize, 1 = resize + crop to 1920x1080, 2 = resize to fit inside 1920x1080 keeping original aspect ratio (no crop), 3 = resize + crop to a 1080x1080 square (avatars)
      *
      * This function deliting old image and upload new
      */
@@ -104,15 +104,6 @@ class ImageControllService
         if(file_exists($original_file)){
             File::delete($original_file);
         }
-        if(!file_exists($file)){
-            echo ('<p> Demo file does not exists.</p>');
-            echo ('<p>'.$file.'</p>');
-        }
-        if(!file_exists($original_file)){
-            echo ('<p> Origin file does not exists.</p>');
-            echo ('<p>'.$original_file.'</p>');
-        }
-        
     }
 
     private static function generate_image_name()
@@ -165,6 +156,8 @@ class ImageControllService
             ImageControllService::resize_image($image, $outputFile, $quality, 1920, 1080, true);
         } elseif ($resize == 2) {
             ImageControllService::resize_image($image, $outputFile, $quality, 1920, 1080, false);
+        } elseif ($resize == 3) {
+            ImageControllService::resize_image($image, $outputFile, $quality, 1080, 1080, true);
         } else {
             imagewebp($image, $outputFile, $quality);
         }

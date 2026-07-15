@@ -26,8 +26,12 @@ class TeamMemberController extends Controller
         return User::where('is_team_member', '!=', null)->get();
     }
 
-    public function get_team_member_data(Request $request)
+    public function get_team_member_data(Request $request, $id)
     {
-        return User::where('id', '=', $request->id)->get();
+        $user = User::with('sites')->find($id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json($user);
     }
 }

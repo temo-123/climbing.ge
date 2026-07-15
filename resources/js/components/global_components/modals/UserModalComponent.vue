@@ -22,15 +22,30 @@
                 <div v-else class="max-w-2xl mx-auto">
                     <div class="flex flex-col items-center mb-6">
                         <img v-if='localUser.image' :src="'/public/images/user_profil_img/' + localUser.image" class="modal_profil_image" :alt="$t('global.profile_image_of_prefix') + ' ' + localUser.name + ' ' + localUser.surname" />
-                        <h1 class="text-2xl md:text-3xl font-bold text-center text-gray-800">{{ localUser.name }} {{ localUser.surname }}</h1>
-                        <p class="text-lg text-gray-600 text-center">{{ localUser.city }}, {{ localUser.country }}</p>
+                        <div v-else class="modal_profil_image modal_profil_image_placeholder"><i class="fa fa-user"></i></div>
+                        <h1 class="text-3xl md:text-4xl font-bold text-center text-gray-800">{{ localUser.name }} {{ localUser.surname }}</h1>
+                        <span v-if="localUser.member_status" class="user-modal-status">{{ localUser.member_status }}</span>
+                        <p v-if="localUser.city || localUser.country" class="user-modal-subtitle">
+                            <i class="fa fa-map-marker"></i> {{ [localUser.city, localUser.country].filter(Boolean).join(', ') }}
+                        </p>
                     </div>
-                    <div class="row">
-                        <p><strong>{{ localUser.email }}</strong></p>
 
-                        <span v-for="site in localUser.sites" :key="site.id">
-                            <p @click="go_to_user_site(site.url)" class="cursor_pointer"><strong>{{ from_user_site_url_get_domen(site.url) }}</strong></p>
-                        </span>
+                    <div class="user-modal-info">
+                        <div class="user-modal-info-row" v-if="localUser.email">
+                            <i class="fa fa-envelope"></i>
+                            <span>{{ localUser.email }}</span>
+                        </div>
+
+                        <div class="user-modal-sites" v-if="localUser.sites && localUser.sites.length">
+                            <span
+                                v-for="site in localUser.sites"
+                                :key="site.id"
+                                @click="go_to_user_site(site.url)"
+                                class="user-modal-site-link"
+                            >
+                                <i class="fa fa-globe"></i> {{ from_user_site_url_get_domen(site.url) }}
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -78,7 +93,7 @@ export default {
         get_user_data(id, type) {
             const url = type === 'guide'
                 ? '/get_tour/get_guide/' + id
-                : '/get_user/get_user_data/' + id;
+                : '/get_team/get_team_member_data/' + id;
             axios
                 .get(url)
                 .then((response) => {
@@ -99,10 +114,96 @@ export default {
 
 <style>
 .modal_profil_image {
+    display: block;
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
     border: 4px solid #edf2f7;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    margin-bottom: 1rem;
-    max-width: 70%;
-    margin-left: 15%;
+    margin: 0 auto 1rem;
+}
+
+.modal_profil_image_placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f2f6;
+    color: #b2b2ff;
+    font-size: 3rem;
+}
+
+.user-modal-status {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 4px 14px;
+    background: linear-gradient(135deg, #7c7cfd, #b2b2ff);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.user-modal-subtitle {
+    color: #6b7280;
+    font-size: 1.15rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+.user-modal-subtitle i {
+    color: #7c7cfd;
+}
+
+.user-modal-info {
+    background: #f9fafb;
+    border-radius: 10px;
+    padding: 16px 20px;
+}
+
+.user-modal-info-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    font-size: 1.35rem;
+    color: #374151;
+}
+
+.user-modal-info-row i {
+    width: 22px;
+    text-align: center;
+    font-size: 1.3rem;
+    color: #7c7cfd;
+}
+
+.user-modal-sites {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.user-modal-site-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    color: #4b5563;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.user-modal-site-link:hover {
+    background: #7c7cfd;
+    color: #fff;
+    border-color: #7c7cfd;
 }
 </style>

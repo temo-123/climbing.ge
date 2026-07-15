@@ -7,19 +7,29 @@
             </div>
 
             <div class="form-group clearfix">
-                <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
+                <label class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
                 <div class="col-xs-8">
-                    <select class="form-control" v-model="article_options" @change="onCategoryChange()">
-                        <option disable value="">{{ $t('admin.local_business.select_option_label') }}</option>
-                        <option value="individual">{{ $t('admin.local_business.individual_article_option') }}</option>
-                        <option value="categoriable">{{ $t('admin.local_business.all_for_options_option') }}</option>
-                    </select>
+                    <div class="btn-group" role="group">
+                        <button
+                            type="button"
+                            class="btn"
+                            :class="use_category ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="toggleCategoryMode()"
+                        >{{ $t('admin.local_business.all_for_options_option') }}</button>
+                        <button
+                            type="button"
+                            class="btn"
+                            :class="use_individual ? 'btn-primary' : 'btn-outline-primary'"
+                            @click="toggleIndividualMode()"
+                        >{{ $t('admin.local_business.individual_article_option') }}</button>
+                    </div>
+                    <p class="text-muted small" style="margin-top: 6px;">{{ $t('admin.local_business.combine_modes_hint') }}</p>
                 </div>
             </div>
         </div>
 
         <!-- Category Selection Section -->
-        <div class="col-md-12" v-if="article_options === 'categoriable'">
+        <div class="col-md-12" v-if="use_category">
             <h4>{{ $t('admin.local_business.auto_category_relations_title') }}</h4>
             <div class="form-group clearfix">
                 <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.export.select_category_label') }}</label>
@@ -35,10 +45,38 @@
                 <strong>{{ $t('admin.local_business.auto_relation_enabled_prefix') }}</strong> {{ $t('admin.local_business.auto_relation_enabled_text', { category: selected_category }) }}
                 <button type="button" class="btn btn-danger" @click="clearCategorySelection()" style="margin-left: 10px;">{{ $t('admin.local_business.clear_btn') }}</button>
             </div>
+
+            <div v-if="selected_category && categoryArticlesOverview.length > 0" class="table-responsive" style="margin-top: 15px;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>{{ $t('admin.comments.col_article') }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="article in categoryArticlesOverview" :key="article.article_id">
+                            <td>{{ article.article_title }}</td>
+                            <td v-for="slot in [0, 1]" :key="slot">
+                                <span v-if="relationAt(article.related_businesses, slot)" class="label label-default">
+                                    {{ relationAt(article.related_businesses, slot).bisnes_title }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(article.related_businesses, slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
+                                </span>
+                                <span v-else class="text-muted">&mdash;</span>
+                                <div v-if="slot === 1 && article.related_businesses.length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                    {{ $t('admin.local_business.extra_relations_note', { count: article.related_businesses.length - maxRelations }) }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(article.related_businesses).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
 
-        <div class="row" v-if="article_options === 'individual'">
+        <div class="row" v-if="use_individual">
 
             <div class="col-md-12">
                 <div class="form-groupe">
@@ -52,6 +90,8 @@
                         <tr>
                             <th>{{ $t('admin.comments.col_article') }}</th>
                             <th>{{ $t('common.category') }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
+                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
                             <th>{{ $t('admin.local_business.col_delete_item') }}</th>
                         </tr>
                     </thead>
@@ -66,6 +106,17 @@
                                 </select>
                             </td>
                             <td>{{ get_article_category(article.article_id) }}</td>
+                            <td v-for="slot in [0, 1]" :key="slot">
+                                <span v-if="article.article_id && relationAt(getRelatedBusinesses(article.article_id), slot)" class="label label-default">
+                                    {{ relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_title }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
+                                </span>
+                                <span v-else class="text-muted">&mdash;</span>
+                                <div v-if="slot === 1 && article.article_id && getRelatedBusinesses(article.article_id).length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                    {{ $t('admin.local_business.extra_relations_note', { count: getRelatedBusinesses(article.article_id).length - maxRelations }) }}
+                                    <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(getRelatedBusinesses(article.article_id)).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
+                                </div>
+                            </td>
                             <td>
                                 <button class="btn btn-danger" @click="del_article(index)">{{ $t('common.delete') }}</button>
                             </td>
@@ -80,99 +131,6 @@
                 </div>
             </div>
         </div>
-
-<!-- Validation Conflicts Report -->
-                    <div v-if="showValidationConflicts" class="panel panel-warning" style="margin-top: 20px;">
-                        <div class="panel-heading">
-                            <h3 class="panel-title">
-                                <i class="fa fa-exclamation-triangle"></i>
-                                {{ $t('admin.local_business.conflicts_found_title') }}
-                            </h3>
-                        </div>
-                        <div class="panel-body">
-                            <div class="alert alert-warning">
-                                {{ $t('admin.local_business.conflicts_warning') }}
-                            </div>
-
-                            <div class="table-responsive">
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>{{ $t('admin.comments.col_article') }}</th>
-                                            <th>{{ $t('common.category') }}</th>
-                                            <th>{{ $t('admin.local_business.col_currently_related_to') }}</th>
-                                            <th>{{ $t('admin.local_business.col_proposed_for') }}</th>
-                                            <th>{{ $t('admin.local_business.col_action') }}</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for="(conflict, index) in validationConflicts" :key="`conflict-${conflict.article_id}-${index}`">
-                                            <td>
-                                                <strong>{{ conflict.article_title }}</strong>
-                                                <br>
-                                                <small class="text-muted">ID: {{ conflict.article_id }}</small>
-                                            </td>
-                                            <td>
-                                                <span class="label label-info">{{ conflict.article_category || $t('admin.local_business.no_category_fallback') }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-default">{{ conflict.current_business }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-warning">{{ conflict.proposed_business }}</span>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-sm btn-danger"
-                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'skip'}"
-                                                        @click="setValidationChoice(conflict.article_id, 'skip')"
-                                                    >
-                                                        {{ $t('admin.local_business.skip_article_btn') }}
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        class="btn btn-sm btn-success"
-                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'add'}"
-                                                        @click="setValidationChoice(conflict.article_id, 'add')"
-                                                    >
-                                                        {{ $t('admin.local_business.add_anyway_btn') }}
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <div v-if="hasUndecidedValidationArticles" class="alert alert-info">
-                                {{ $t('admin.local_business.choose_action_note') }}
-                            </div>
-
-                            <div class="text-center">
-                                <div class="btn-group">
-                                    <button
-                                        type="button"
-                                        class="btn btn-primary btn-lg"
-                                        :disabled="hasUndecidedValidationArticles"
-                                        @click="proceedWithValidationSelections"
-                                    >
-                                        <i class="fa fa-check"></i>
-                                        {{ $t('admin.local_business.continue_selected_articles_btn', { count: decidedValidationArticlesCount }) }}
-                                    </button>
-                                    <button
-                                        type="button"
-                                        class="btn btn-default btn-lg"
-                                        @click="cancelValidation"
-                                    >
-                                        <i class="fa fa-times"></i>
-                                        {{ $t('admin.local_business.cancel_review_btn') }}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
     </div>
 </template>
 
@@ -190,18 +148,22 @@
                 regions: [],
                 filtered_regions: [],
 
-                article_options: '',
-                
+                use_category: false,
+                use_individual: false,
+
                 // Required for validation
                 article_categories: [],
+                maxRelations: 2,
+
+                // Relation overview (shows ALL current relations for the relevant articles,
+                // not just conflicts)
+                categoryArticlesOverview: [],
+                individualArticlesOverview: {},
 
                 parentComponent: null,
             }
         },
 
-        computed: {
-            // Validation computed properties are handled by parent component
-        },
         mounted() {
             this.get_region_data()
             this.get_article_categories()
@@ -215,18 +177,32 @@
                 },
                 immediate: true
             },
-            article_options: {
-                handler(newOption) {
-                    // Clear data when switching between modes
-                    if (newOption === 'categoriable') {
-                        this.new_article_relationes = []
-                        this.update_perent_component_data()
-                    } else if (newOption === 'individual') {
-                        this.selected_category = null
-                        this.update_perent_component_category()
-                    }
+            // Category and individual relations are combinable - toggling one off
+            // clears just its own data, without touching the other.
+            use_category(enabled) {
+                if (!enabled) {
+                    this.selected_category = null
+                    this.update_perent_component_category()
                 }
-            }
+            },
+            use_individual(enabled) {
+                if (!enabled) {
+                    this.new_article_relationes = []
+                    this.update_perent_component_data()
+                }
+            },
+            selected_category: {
+                handler(newCategory) {
+                    this.fetchCategoryOverview(newCategory)
+                },
+                immediate: true
+            },
+            new_article_relationes: {
+                handler() {
+                    this.fetchIndividualOverview()
+                },
+                deep: true
+            },
         },
         methods: {
             get_region_data: function () {
@@ -248,13 +224,76 @@
                     .catch((error) => console.log(error));
             },
 
-            onCategoryChange() {
-                // Clear manual selections when category is selected
-                if (this.selected_category) {
-                    this.new_article_relationes = []
-                    this.update_perent_component_data()
-                    // No need to trigger validation here - it will be handled when save is clicked
+            // Every article in the selected category, with ALL of its current relations
+            // (not just conflicts) - so the admin can see the full picture before saving.
+            fetchCategoryOverview(category) {
+                if (!category) {
+                    this.categoryArticlesOverview = [];
+                    return;
                 }
+                axios
+                    .post('/set_bisnes/get_article_relations_overview', { category })
+                    .then(response => {
+                        this.categoryArticlesOverview = response.data.articles;
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            // Current relations for every article picked in individual mode.
+            fetchIndividualOverview() {
+                const articleIds = this.new_article_relationes
+                    .map(relation => relation.article_id)
+                    .filter(id => id);
+
+                if (articleIds.length === 0) {
+                    this.individualArticlesOverview = {};
+                    return;
+                }
+
+                axios
+                    .post('/set_bisnes/get_article_relations_overview', { article_ids: articleIds })
+                    .then(response => {
+                        const overview = {};
+                        response.data.articles.forEach(article => {
+                            overview[article.article_id] = article.related_businesses;
+                        });
+                        this.individualArticlesOverview = overview;
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            getRelatedBusinesses(articleId) {
+                return this.individualArticlesOverview[articleId] || [];
+            },
+
+            relationAt(relations, index) {
+                return (relations && relations[index]) || null;
+            },
+
+            lastRelation(relations) {
+                return relations[relations.length - 1];
+            },
+
+            deleteRelation(articleId, bisnesId) {
+                if (!confirm(this.$t('admin.common.confirm_delete'))) return;
+                axios
+                    .delete(`/set_bisnes/del_bisnes_article_relation/${articleId}/${bisnesId}`)
+                    .then(() => {
+                        this.fetchCategoryOverview(this.selected_category);
+                        this.fetchIndividualOverview();
+                    })
+                    .catch(error => console.log(error));
+            },
+
+            toggleCategoryMode() {
+                this.use_category = !this.use_category
+            },
+
+            toggleIndividualMode() {
+                this.use_individual = !this.use_individual
+            },
+
+            onCategoryChange() {
                 this.update_perent_component_category()
             },
 
@@ -317,12 +356,6 @@
 
             update_perent_component_category() {
                 this.$emit("update_selected_category", this.selected_category);
-            },
-
-            // Set user choice for a specific conflict
-            setValidationChoice(articleId, choice) {
-                // Emit event to parent component
-                this.$emit('validation-choice-made', articleId, choice);
             },
         }
     }

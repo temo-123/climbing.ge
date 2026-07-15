@@ -749,8 +749,7 @@ export default {
 .summit-photo-item img {
     display: block;
     height: 220px;
-    width: auto;
-    max-width: 100%;
+    width: 100%;
     object-fit: cover;
     transition: transform 0.2s;
 }

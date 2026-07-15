@@ -82,13 +82,13 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">{{ $t('admin.gallery.image_required_label') }}</label>
                         <div class="col-md-9">
-                            <input
-                                type="file"
-                                accept="image/*,.webp"
-                                @change="on_image_change"
-                                required
-                            >
-                            <small class="text-muted">jpg, png, gif, webp — max 2 MB</small>
+                            <single_image_add
+                                :key="image_reset_id"
+                                :title_prop="''"
+                                :crop_ratio_prop="{ width: 16, height: 9 }"
+                                @update_single_image="image_file = $event"
+                                @processing="image_processing = $event"
+                            />
                         </div>
                     </div>
 
@@ -99,7 +99,10 @@
 </template>
 
 <script>
+import single_image_add from '../../../../items/single_image/singleImageAddComponent.vue'
+
 export default {
+    components: { single_image_add },
     props: ['category_prop'],
     data() {
         return {
@@ -107,6 +110,8 @@ export default {
             is_loading: false,
             errors: [],
             image_file: null,
+            image_processing: false,
+            image_reset_id: 0,
             form_data: {
                 published: 0,
                 category: '',
@@ -129,6 +134,8 @@ export default {
         reset() {
             this.errors = []
             this.image_file = null
+            this.image_processing = false
+            this.image_reset_id++
             this.form_data = {
                 published: 0,
                 category: this.category_prop,
@@ -138,11 +145,13 @@ export default {
                 text_position: 'center',
             }
         },
-        on_image_change(e) {
-            this.image_file = e.target.files[0] || null
-        },
         add_image() {
             this.errors = []
+
+            if (this.image_processing) {
+                this.errors = [this.$t('admin.gallery.image_still_processing')]
+                return
+            }
 
             if (!this.image_file) {
                 this.errors = [this.$t('admin.gallery.please_select_image')]
@@ -152,7 +161,7 @@ export default {
             this.is_loading = true
 
             const formData = new FormData()
-            formData.append('image', this.image_file)
+            formData.append('image', this.image_file, this.image_file.name || 'image.jpg')
             formData.append('data', JSON.stringify(this.form_data))
 
             axios.post('set_head_slider/add_slide/', formData)

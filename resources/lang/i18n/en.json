@@ -170,14 +170,9 @@
             "service_global_info_subtitle": "Service global information.",
             "published_before_label": "Published before (after this date it will not be public)",
             "totaly_public_label": "Totally public",
-            "conflicts_found_title": "Article Relation Conflicts Found",
-            "conflicts_warning": "Warning: The following articles already have business relations. Each article can only be related to one business.",
-            "col_currently_related_to": "Currently Related To",
-            "col_proposed_for": "Proposed For",
             "col_action": "Action",
             "no_category_fallback": "No Category",
             "skip_article_btn": "Skip Article",
-            "add_anyway_btn": "Add Anyway",
             "choose_action_note": "Note: Please choose an action for all conflicting articles before proceeding.",
             "continue_selected_articles_btn": "Continue with Selected Articles ({count} articles)",
             "cancel_review_btn": "Cancel & Review",
@@ -205,7 +200,18 @@
             "select_article_placeholder": "Select article",
             "no_article_selected": "No article selected",
             "article_not_found": "Article not found",
-            "parent_component_not_found_error": "Error: Parent component not found. Please refresh the page and try again."
+            "parent_component_not_found_error": "Error: Parent component not found. Please refresh the page and try again.",
+            "max_relations_conflicts_title": "Articles Already at Maximum Related Services",
+            "max_relations_warning": "The following articles already have the maximum of {max} related services. Choose whether to replace the oldest relation or skip the article.",
+            "existing_relations_label": "Currently related to",
+            "oldest_relation_note": "Oldest (will be removed if you rewrite): {business}",
+            "rewrite_article_btn": "Rewrite (delete oldest)",
+            "this_business_suffix": "this business",
+            "relation_slot_label": "Relation {n}",
+            "extra_relations_note": "+{count} extra relation(s) beyond the limit.",
+            "delete_last_relation_btn": "Delete last relation",
+            "combine_modes_hint": "These can be used together — e.g. relate a whole category and add a few extra articles on top.",
+            "delete_relation_btn": "Remove this relation"
         },
         "live_camera": {
             "live_cameras_table": "Live Cameras",
@@ -791,7 +797,8 @@
             "please_select_image": "Please select an image.",
             "replace_image_label": "Replace image",
             "replace_image_hint": "jpg, png, gif, webp — max 2 MB. Leave blank to keep current image.",
-            "failed_load_slide": "Failed to load slide data."
+            "failed_load_slide": "Failed to load slide data.",
+            "image_still_processing": "The image is still being processed — please wait a moment and try saving again."
         },
         "films": {
             "films_table": "Films",
@@ -977,6 +984,9 @@
             "location_detected_prefix": "Location detected:",
             "altitude_not_available_hint": "Altitude not available from your device — leave blank to estimate it automatically, or enter it manually.",
             "click_use_my_location_hint": "Click \"Use My Location\" tab to detect your current position.",
+            "pick_on_map_tab": "Pick on Map",
+            "map_click_hint": "Click anywhere on the map to set the location, or drag the marker to fine-tune it.",
+            "map_height_hint": "Leave height blank to estimate it automatically from the selected point.",
             "save_coordinates_btn": "Save Coordinates",
             "geolocation_not_supported": "Geolocation is not supported by your browser.",
             "could_not_get_location_prefix": "Could not get location:",
@@ -3004,7 +3014,10 @@
                 "title": "Favorite products",
                 "go_to_list": "Go to product list",
                 "empty": "You don't have any favorite products",
-                "confirm_delete": "Are you sure you want to remove this product from your favorites?"
+                "confirm_delete": "Are you sure you want to remove this product from your favorites?",
+                "empty_hint": "Browse the shop and tap the heart on any product to save it here.",
+                "remove_tooltip": "Remove from favorites",
+                "view_product": "View product"
             },
             "outdoor": {
                 "tab_areas": "Favorite outdoor areas",
@@ -3019,19 +3032,26 @@
                 "col_id": "@:common.id",
                 "col_route": "Route name",
                 "col_rating": "Rating",
-                "col_delete": "@:common.delete"
+                "col_delete": "@:common.delete",
+                "empty_hint": "Browse the outdoor spot list and tap the heart on any spot to save it here.",
+                "remove_tooltip": "Remove from favorites",
+                "view_spot": "View spot"
             },
             "events": {
                 "title": "Interested events",
                 "empty": "You don't have any interested events",
                 "finished": "Finished",
-                "confirm_delete": "Are you sure you want to remove this event from your favorites?"
+                "confirm_delete": "Are you sure you want to remove this event from your favorites?",
+                "remove_tooltip": "Remove from favorites"
             },
             "films": {
                 "title": "Favorite climbing films",
                 "go_to_list": "Go to film list",
                 "empty": "You don't have any favorite films",
-                "confirm_delete": "Are you sure you want to remove this film from your favorites?"
+                "confirm_delete": "Are you sure you want to remove this film from your favorites?",
+                "empty_hint": "Browse the film list and tap the heart on any film to save it here.",
+                "remove_tooltip": "Remove from favorites",
+                "view_film": "Watch film"
             }
         },
         "notifications": {
@@ -3317,7 +3337,8 @@
         "article_image": "Article image",
         "loading": "Loading...",
         "retry": "Retry",
-        "error_loading_product": "Failed to load product details. Please try again."
+        "error_loading_product": "Failed to load product details. Please try again.",
+        "processing_image": "Processing image..."
     },
     "head_slider": {
         "guide_images": "Guide header images",

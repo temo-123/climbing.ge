@@ -141,26 +141,31 @@
             async setFile(file) {
                 if (!this.validateFileType(file)) return;
 
-                const cropped = await this.maybeCropImage(file);
-                if (!cropped) return;
-                file = cropped;
+                this.$emit('processing', true);
+                try {
+                    const cropped = await this.maybeCropImage(file);
+                    if (!cropped) return;
+                    file = cropped;
 
-                if (this.preview) URL.revokeObjectURL(this.preview);
+                    if (this.preview) URL.revokeObjectURL(this.preview);
 
-                this.image = null;
-                this.preview = null;
-                this.compressed = false;
-                this.originalSize = null;
-                this.compressing = true;
+                    this.image = null;
+                    this.preview = null;
+                    this.compressed = false;
+                    this.originalSize = null;
+                    this.compressing = true;
 
-                const processed = await this.compressIfNeeded(file);
-                this.image = processed;
-                this.preview = URL.createObjectURL(processed);
-                this.compressed = processed !== file;
-                this.originalSize = processed !== file ? file.size : null;
-                this.compressing = false;
+                    const processed = await this.compressIfNeeded(file);
+                    this.image = processed;
+                    this.preview = URL.createObjectURL(processed);
+                    this.compressed = processed !== file;
+                    this.originalSize = processed !== file ? file.size : null;
+                    this.compressing = false;
 
-                this.emitUpdate();
+                    this.emitUpdate();
+                } finally {
+                    this.$emit('processing', false);
+                }
             },
 
             removeImage() {

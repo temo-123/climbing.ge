@@ -100,6 +100,11 @@
                             <i class="fa fa-map-marker"></i> {{ $t('admin.summits.use_my_location_tab') }}
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" :class="{ active: gps_tab === 'map' }" href="#" @click.prevent="open_map_tab()">
+                            <i class="fa fa-map"></i> {{ $t('admin.summits.pick_on_map_tab') }}
+                        </a>
+                    </li>
                 </ul>
 
                 <!-- Manual tab -->
@@ -133,6 +138,35 @@
                     <div v-else class="text-muted small text-center py-2">
                         {{ $t('admin.summits.click_use_my_location_hint') }}
                     </div>
+                </div>
+
+                <!-- Pick on map tab -->
+                <div v-show="gps_tab === 'map'">
+                    <p class="text-muted small mb-2">{{ $t('admin.summits.map_click_hint') }}</p>
+                    <l-map
+                        ref="gpsMap"
+                        style="width: 100%; height: 320px; border-radius: 8px;"
+                        :zoom="map_picker_zoom"
+                        :center="map_picker_center"
+                        :use-global-leaflet="false"
+                        @click="on_map_click"
+                    >
+                        <l-tile-layer
+                            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            attribution="&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"
+                        />
+                        <l-marker
+                            v-if="gps_form.latitude && gps_form.longitude"
+                            :lat-lng="[gps_form.latitude, gps_form.longitude]"
+                            :draggable="true"
+                            @update:lat-lng="on_marker_drag"
+                        />
+                    </l-map>
+                    <div v-if="gps_form.latitude && gps_form.longitude" class="alert alert-success py-2 mt-2 small mb-0">
+                        <i class="fa fa-check"></i>
+                        {{ $t('admin.summits.location_detected_prefix') }} <strong>{{ gps_form.latitude }}, {{ gps_form.longitude }}</strong>
+                    </div>
+                    <div class="small text-muted mt-2 mb-0">{{ $t('admin.summits.map_height_hint') }}</div>
                 </div>
 
                 <div v-if="gps_error" class="alert alert-danger py-2 small mt-2">
@@ -170,10 +204,14 @@
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import QrcodeVue from 'qrcode.vue'
+import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
+import 'leaflet/dist/leaflet.css'
+
+const GEORGIA_CENTER = [42.3154, 43.3569]
 
 export default {
     name: 'SummitListPage',
-    components: { breadcrumb, tabsComponent, QrcodeVue },
+    components: { breadcrumb, tabsComponent, QrcodeVue, LMap, LTileLayer, LMarker },
     data() {
         return {
             summits: [],
@@ -199,6 +237,8 @@ export default {
             gps_error: null,
             gps_locating: false,
             gps_location_error: null,
+            map_picker_center: GEORGIA_CENTER,
+            map_picker_zoom: 7,
 
             edit_ascent_modal: false,
             ascent_to_edit: null,
@@ -499,6 +539,30 @@ export default {
                 }
                 this.gps_locating = false
             }
+        },
+
+        open_map_tab() {
+            this.gps_tab = 'map'
+            if (this.gps_form.latitude && this.gps_form.longitude) {
+                this.map_picker_center = [this.gps_form.latitude, this.gps_form.longitude]
+                this.map_picker_zoom = 13
+            } else {
+                this.map_picker_center = GEORGIA_CENTER
+                this.map_picker_zoom = 7
+            }
+            this.$nextTick(() => {
+                this.$refs.gpsMap?.leafletObject?.invalidateSize()
+            })
+        },
+
+        on_map_click(e) {
+            this.gps_form.latitude = parseFloat(e.latlng.lat.toFixed(6))
+            this.gps_form.longitude = parseFloat(e.latlng.lng.toFixed(6))
+        },
+
+        on_marker_drag(latlng) {
+            this.gps_form.latitude = parseFloat(latlng.lat.toFixed(6))
+            this.gps_form.longitude = parseFloat(latlng.lng.toFixed(6))
         },
 
         save_coordinates() {

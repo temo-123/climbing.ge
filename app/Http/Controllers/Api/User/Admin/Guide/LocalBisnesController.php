@@ -14,13 +14,15 @@ use App\Models\Guide\Suport_local_bisnes_article;
 // use App\Services\URLTitleService;
 use App\Services\Abstract\ImageControllService;
 use App\Services\GalleryService;
-use App\Services\Abstract\LocaleContentControllService_fixed as LocaleContentControllService;
+use App\Services\Abstract\LocaleContentControllService;
 use App\Services\PermissionService;
 
 use Validator;
 
 class LocalBisnesController extends Controller
 {
+    const MAX_RELATIONS_PER_ARTICLE = 2;
+
     public function add_local_bisnes(Request $request)
     {
         $auth = PermissionService::authorize('local_bisnes', 'add');
@@ -42,16 +44,7 @@ class LocalBisnesController extends Controller
             }
             
             $image_path = 'images/local_bisnes_img/';
-            
-            // First, validate article relations if any are provided
-            if ($request->has('bisnes_new_article_relations') || $request->has('selected_category')) {
-                $validation_result = $this->validate_article_relations($request);
-                
-                if ($validation_result['validation_needed']) {
-                    return response()->json($validation_result, 200);
-                }
-            }
-            
+
             \Log::info('Calling LocaleContentControllService::add_content', [
                 'data_keys' => array_keys($data),
                 'global_model' => Suport_local_bisnes::class,
@@ -100,7 +93,7 @@ class LocalBisnesController extends Controller
                     
                     // Handle category-based relations
                     if($request->selected_category){
-                        $this->add_bisnes_relation_by_category($request->selected_category, $article_adding->original['global_bisnes_id']);
+                        $this->add_bisnes_relation_by_category($request->selected_category, $article_adding->original['global_bisnes_id'], $request->excluded_article_ids ?? []);
                     }
                     
                     // Handle manual article relations
@@ -167,15 +160,6 @@ class LocalBisnesController extends Controller
 
             $image_path = 'images/local_bisnes_img/';
 
-            // First, validate article relations if any are provided
-            if ($request->has('bisnes_new_article_relations') || $request->has('selected_category')) {
-                $validation_result = $this->validate_article_relations($request);
-                
-                if ($validation_result['validation_needed']) {
-                    return response()->json($validation_result, 200);
-                }
-            }
-
             \Log::info('Calling LocaleContentControllService::edit_content', [
                 'global_model' => Suport_local_bisnes::class,
                 'local_model' => Locale_bisnes::class
@@ -215,7 +199,7 @@ class LocalBisnesController extends Controller
                     
                     // Handle category-based relations
                     if($request->selected_category){
-                        $this->add_bisnes_relation_by_category($request->selected_category, $article_editing->original['global_bisnes_id']);
+                        $this->add_bisnes_relation_by_category($request->selected_category, $article_editing->original['global_bisnes_id'], $request->excluded_article_ids ?? []);
                     }
                     
                     // Handle manual article relations
@@ -290,22 +274,45 @@ class LocalBisnesController extends Controller
     public function add_bisnes_relation($relations, $bisnes_id){
         foreach ($relations as $relation) {
             if($relation != null || $relation != ''){
-                // First, delete existing relation if it exists
+                // First, delete existing relation between this article and this business, if it exists
                 Suport_local_bisnes_article::where('article_id', $relation)
                                           ->where('bisnes_id', $bisnes_id)
                                           ->delete();
-                
+
+                $this->evict_oldest_relation_if_at_capacity($relation, $bisnes_id);
+
                 // Then create new relation
                 $relatione = new Suport_local_bisnes_article;
-                
+
                 $relatione['article_id'] = $relation;
                 $relatione['bisnes_id'] = $bisnes_id;
-        
+
                 $saiving = $relatione -> save();
             }
         }
     }
-    
+
+    /**
+     * An article may be related to at most self::MAX_RELATIONS_PER_ARTICLE businesses.
+     * If the article is already at (or over) the cap, delete its oldest relation
+     * (excluding any relation to $bisnes_id itself) to make room for the new one.
+     */
+    private function evict_oldest_relation_if_at_capacity($article_id, $bisnes_id)
+    {
+        $existing_relations = Suport_local_bisnes_article::where('article_id', $article_id)
+            ->where('bisnes_id', '!=', $bisnes_id)
+            ->orderBy('id')
+            ->get();
+
+        $overflow = $existing_relations->count() - self::MAX_RELATIONS_PER_ARTICLE + 1;
+
+        if ($overflow > 0) {
+            $existing_relations->take($overflow)->each(function ($relation) {
+                $relation->delete();
+            });
+        }
+    }
+
 
 
     public function get_editing_local_bisnes_info($bisnes_id)
@@ -363,44 +370,16 @@ class LocalBisnesController extends Controller
             return response()->json(['error' => 'Business not found'], 404);
         }
 
-        // Check if this business has category-based relations
-        // We'll check if all articles belong to the same category
-        $relations = [];
-        $allArticles = $bisnes->articles;
-        
-        if ($allArticles->count() > 0) {
-            $firstCategory = $allArticles->first()->category;
-            $allSameCategory = $allArticles->every(function($article) use ($firstCategory) {
-                return $article->category === $firstCategory;
-            });
-            
-            if ($allSameCategory) {
-                // This is a category-based relation
-                $relations[] = [
-                    'article_id' => null, // No specific article ID for category relations
-                    'article_url_title' => null,
-                    'article_category' => $firstCategory,
-                    'category_based' => true,
-                    'category_id' => $firstCategory, // Use category name as ID
-                    'category_name' => $firstCategory
-                ];
-            } else {
-                // These are individual article relations
-                foreach ($allArticles as $article) {
-                    $relations[] = [
-                        'article_id' => $article->id,
-                        'article_url_title' => $article->url_title,
-                        'article_category' => $article->category,
-                        'category_based' => false,
-                        'category_id' => null,
-                        'category_name' => null
-                    ];
-                }
-            }
-        }
-
-
-        return $relations;
+        // Whether this business is in category mode or individual mode is decided
+        // authoritatively by for_article_category - this endpoint just lists the
+        // business's currently related articles (used to populate individual mode).
+        return $bisnes->articles->map(function ($article) {
+            return [
+                'article_id' => $article->id,
+                'article_url_title' => $article->url_title,
+                'article_category' => $article->category,
+            ];
+        })->values();
     }
 
     public function del_local_bisnes(Request $request)
@@ -434,8 +413,13 @@ class LocalBisnesController extends Controller
 
 
     public function del_bisnes_article_relation(Request $request) {
+        $auth = PermissionService::authorize('local_bisnes', 'edit');
+        if ($auth) return $auth;
+
         $relation_value = Suport_local_bisnes_article::where('article_id', '=', $request->article_id)->where('bisnes_id', '=', $request->bisnes_id)->first();
-        $relation_value -> delete();
+        if ($relation_value) {
+            $relation_value->delete();
+        }
     }
 
 
@@ -459,29 +443,75 @@ class LocalBisnesController extends Controller
         return $categories;
     }
 
-    public function add_bisnes_relation_by_category($category, $bisnes_id)
+    /**
+     * Read-only overview used by the relation-editing UI: for a category (categoriable
+     * mode) or an explicit list of article ids (individual mode), return every matching
+     * article together with ALL of its current business relations - not just conflicts.
+     */
+    public function get_article_relations_overview(Request $request)
     {
-        // Find all articles with the specified category
-        $articles = Article::where('category', $category)->get();
-        
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
+
+        if ($request->category) {
+            $articles = Article::where('category', $request->category)->get();
+        } elseif ($request->has('article_ids')) {
+            $article_ids = array_filter($request->article_ids);
+            $articles = $article_ids ? Article::whereIn('id', $article_ids)->get() : collect();
+        } else {
+            $articles = collect();
+        }
+
+        $result = $articles->map(function ($article) {
+            $related_businesses = Suport_local_bisnes_article::where('article_id', $article->id)
+                ->orderBy('id')
+                ->get()
+                ->map(function ($relation) {
+                    $business = Suport_local_bisnes::find($relation->bisnes_id);
+                    return [
+                        'bisnes_id' => $relation->bisnes_id,
+                        'bisnes_title' => $business ? $business->url_title : null,
+                    ];
+                })
+                ->values();
+
+            return [
+                'article_id' => $article->id,
+                'article_title' => $article->url_title,
+                'article_category' => $article->category,
+                'related_businesses' => $related_businesses,
+            ];
+        })->values();
+
+        return response()->json(['articles' => $result]);
+    }
+
+    public function add_bisnes_relation_by_category($category, $bisnes_id, $excluded_article_ids = [])
+    {
+        // Find all articles with the specified category, minus any the admin chose to skip
+        $articles = Article::where('category', $category)
+            ->whereNotIn('id', $excluded_article_ids)
+            ->get();
+
         $created_relations = [];
         foreach ($articles as $article) {
             // Check if relation already exists
             $existing_relation = Suport_local_bisnes_article::where('article_id', $article->id)
                                                             ->where('bisnes_id', $bisnes_id)
                                                             ->first();
-            
+
             // If relation doesn't exist, create it
             if (!$existing_relation) {
+                $this->evict_oldest_relation_if_at_capacity($article->id, $bisnes_id);
+
                 $relation = new Suport_local_bisnes_article();
                 $relation->article_id = $article->id;
                 $relation->bisnes_id = $bisnes_id;
                 $relation->save();
-                
+
                 $created_relations[] = $relation;
             }
         }
-        
+
         return $created_relations;
     }
 
@@ -535,95 +565,74 @@ class LocalBisnesController extends Controller
     }
 
     /**
-     * Validate article relations to prevent articles from having 2+ business relations
+     * Dry-run check: does proceeding with these proposed relations push any article
+     * over the MAX_RELATIONS_PER_ARTICLE cap? Read-only - no relations are created,
+     * moved, or deleted here. The frontend calls this before saving to warn the admin
+     * and let them decide (rewrite/skip) per article; the actual eviction happens in
+     * add_bisnes_relation() / add_bisnes_relation_by_category() at save time.
      */
-    private function validate_article_relations(Request $request)
+    public function check_article_relation_capacity(Request $request)
     {
-        $conflicting_articles = [];
-        $proposed_business_name = '';
-        $is_edit_mode = false;
-        $editing_business_id = null;
-        
-        // Get the proposed business name (from global data or URL)
-        $data = json_decode($request->data, true);
-        if (isset($data['global_bisnes']['url_title'])) {
-            $proposed_business_name = $data['global_bisnes']['url_title'];
-        }
-        
-        // Check if this is edit mode and get the business ID
-        $route = $request->route();
-        if ($route && $route->parameter('id')) {
-            $is_edit_mode = true;
-            $editing_business_id = $route->parameter('id');
-        }
-        
-        // Check individual article relations
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
+
+        $editing_business_id = $request->editing_business_id ?: null;
+
+        $article_ids = [];
+
         if ($request->has('bisnes_new_article_relations')) {
-            $article_relations = $request->bisnes_new_article_relations;
-            
-            foreach ($article_relations as $article_id) {
+            foreach ($request->bisnes_new_article_relations as $article_id) {
                 if ($article_id) {
-                    $existing_relations = Suport_local_bisnes_article::where('article_id', $article_id)->get();
-                    
-                    foreach ($existing_relations as $existing_relation) {
-                        $business = Suport_local_bisnes::find($existing_relation->bisnes_id);
-                        $article = Article::find($article_id);
-                        
-                        // Skip if it's the same business being edited
-                        if ($is_edit_mode && $existing_relation->bisnes_id == $editing_business_id) {
-                            continue;
-                        }
-                        
-                        if ($business && $article) {
-                            $conflicting_articles[] = [
-                                'article_id' => $article->id,
-                                'article_title' => $article->url_title,
-                                'article_category' => $article->category,
-                                'current_business' => $business->url_title,
-                                'proposed_business' => $proposed_business_name,
-                                'relation_type' => 'individual'
-                            ];
-                        }
-                    }
+                    $article_ids[] = $article_id;
                 }
             }
         }
-        
-        // Check category-based relations
+
         if ($request->has('selected_category') && $request->selected_category) {
-            $category = $request->selected_category;
-            $articles = Article::where('category', $category)->get();
-            
-            foreach ($articles as $article) {
-                $existing_relations = Suport_local_bisnes_article::where('article_id', $article->id)->get();
-                
-                foreach ($existing_relations as $existing_relation) {
-                    $business = Suport_local_bisnes::find($existing_relation->bisnes_id);
-                    
-                    // Skip if it's the same business being edited
-                    if ($is_edit_mode && $existing_relation->bisnes_id == $editing_business_id) {
-                        continue;
-                    }
-                    
-                    if ($business) {
-                        $conflicting_articles[] = [
-                            'article_id' => $article->id,
-                            'article_title' => $article->url_title,
-                            'article_category' => $article->category,
-                            'current_business' => $business->url_title,
-                            'proposed_business' => $proposed_business_name,
-                            'relation_type' => 'category'
-                        ];
-                    }
-                }
-            }
+            $article_ids = array_merge(
+                $article_ids,
+                Article::where('category', $request->selected_category)->pluck('id')->all()
+            );
         }
-        
-        return [
-            'validation_needed' => !empty($conflicting_articles),
-            'conflicting_articles' => $conflicting_articles,
-            'total_conflicts' => count($conflicting_articles)
-        ];
+
+        $conflicts = [];
+
+        foreach (array_unique($article_ids) as $article_id) {
+            $query = Suport_local_bisnes_article::where('article_id', $article_id);
+            if ($editing_business_id) {
+                $query->where('bisnes_id', '!=', $editing_business_id);
+            }
+            $existing_relations = $query->orderBy('id')->get();
+
+            if ($existing_relations->count() < self::MAX_RELATIONS_PER_ARTICLE) {
+                continue;
+            }
+
+            $article = Article::find($article_id);
+            if (!$article) {
+                continue;
+            }
+
+            $existing = $existing_relations->map(function ($relation) {
+                $business = Suport_local_bisnes::find($relation->bisnes_id);
+                return [
+                    'bisnes_id' => $relation->bisnes_id,
+                    'bisnes_title' => $business ? $business->url_title : null,
+                ];
+            })->values();
+
+            $conflicts[] = [
+                'article_id' => $article->id,
+                'article_title' => $article->url_title,
+                'article_category' => $article->category,
+                'existing_relations' => $existing,
+                'oldest_relation' => $existing->first(),
+            ];
+        }
+
+        return response()->json([
+            'max_relations' => self::MAX_RELATIONS_PER_ARTICLE,
+            'conflicts' => $conflicts,
+        ]);
     }
 
 }

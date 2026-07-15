@@ -25,8 +25,10 @@
 
         <div class="tour-guide-section" v-if="tour.users && tour.users.length > 0">
             <h2 class="section-title">{{ $t('shop.tour.guide') }}</h2>
-            <usersIconsComponent
-                :users_prop="tour.users"
+            <teamCardsSlider
+                :users="tour.users"
+                :modal-type="'guide'"
+                :show-status="false"
             />
         </div>
 
@@ -74,7 +76,7 @@
     import gallery from '../../items/GalleryComponent.vue'
     import tourMessageForm from '../../items/reservation_forms/TourMessageFormComponent.vue'
 
-    import usersIconsComponent from '../../../global_components/UsersIconsComponent.vue'
+    import teamCardsSlider from '../../../global_components/TeamCardsSliderComponent.vue'
 
     export default {
         components: {
@@ -83,7 +85,7 @@
             breadcrumb,
             gallery,
             tourMessageForm,
-            usersIconsComponent
+            teamCardsSlider
         },
         props:[
             'data'

@@ -102,6 +102,8 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::delete('/del_bisnes_article_relation/{article_id}/{bisnes_id}', 'del_bisnes_article_relation');
         Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
         Route::get('/get_article_categories', 'get_article_categories');
+        Route::post('/check_article_relation_capacity', 'check_article_relation_capacity');
+        Route::post('/get_article_relations_overview', 'get_article_relations_overview');
     });
 
     Route::controller(DonationController::class)->prefix('set_donation_admin')->group( function() {

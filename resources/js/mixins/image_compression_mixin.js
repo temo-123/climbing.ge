@@ -1,53 +1,14 @@
+import { compressImage } from '../services/image/compressImage.js'
+
 export default {
     methods: {
         async compressIfNeeded(file) {
-            const maxBytes = this.max_size_mb * 1024 * 1024;
-            if (file.size <= maxBytes) return file;
-
             this.isCompressing = true;
             try {
-                return await this.compressImage(file, maxBytes);
+                return await compressImage(file, { maxSizeMB: this.max_size_mb ?? 1.5 });
             } finally {
                 this.isCompressing = false;
             }
-        },
-
-        compressImage(file, maxBytes) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.createElement('canvas');
-                        let w = img.width, h = img.height;
-
-                        const MAX_DIM = 2560;
-                        if (w > MAX_DIM || h > MAX_DIM) {
-                            const r = Math.min(MAX_DIM / w, MAX_DIM / h);
-                            w = Math.round(w * r);
-                            h = Math.round(h * r);
-                        }
-
-                        canvas.width = w;
-                        canvas.height = h;
-                        canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-
-                        const tryQuality = (q) => {
-                            canvas.toBlob((blob) => {
-                                if (blob.size <= maxBytes || q <= 0.3) {
-                                    const name = file.name.replace(/\.[^.]+$/, '.jpg');
-                                    resolve(new File([blob], name, { type: 'image/jpeg', lastModified: Date.now() }));
-                                } else {
-                                    tryQuality(Math.round((q - 0.1) * 10) / 10);
-                                }
-                            }, 'image/jpeg', q);
-                        };
-                        tryQuality(0.85);
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
         },
 
         validateFileType(file) {

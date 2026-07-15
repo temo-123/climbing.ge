@@ -175,6 +175,9 @@
             <input type="file" class="form-control-file" accept="image/*" capture="environment"
                    @change="handlePhoto" />
             <small class="form-text text-muted">You can use your camera to take a photo directly.</small>
+            <div v-if="compressingPhoto" class="text-muted small mt-2">
+              <span class="spinner-border spinner-border-sm mr-1"></span> {{ $t('common.processing_image') }}
+            </div>
             <div v-if="photoPreview" class="mt-2">
               <img :src="photoPreview" alt="Photo preview" style="max-height: 150px;" class="img-thumbnail" />
             </div>
@@ -184,7 +187,7 @@
             <i class="fa fa-exclamation-triangle"></i>
             reCAPTCHA failed to load. Please reload the page and try again.
           </div>
-          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting || captcha_error">
+          <button type="submit" class="btn btn-success btn-block btn-send main-btn" :disabled="submitting || captcha_error || compressingPhoto">
             <span v-if="submitting">
               <span class="spinner-border spinner-border-sm mr-1"></span>
               {{ $t('summit.ascent_page.submitting') }}
@@ -203,6 +206,7 @@
 
 <script>
 import { useAuthStore } from '../../../../store/auth.js'
+import { compressImage } from '../../../../services/image/compressImage.js'
 
 function haversine(lat1, lon1, lat2, lon2) {
   const R = 6371000
@@ -252,6 +256,7 @@ export default {
       },
       showOtherRoute: false,
       photoPreview: null,
+      compressingPhoto: false,
       submitting: false,
       submitted: false,
       submitResult: null,
@@ -319,6 +324,7 @@ export default {
       this.form = { name: '', surname: '', email: '', article_id: null, other_route: '', comment: '', photo: null }
       this.showOtherRoute = false
       this.photoPreview = null
+      this.compressingPhoto = false
       this.submitting = false
       this.submitted = false
       this.submitResult = null
@@ -419,17 +425,22 @@ export default {
       this.form.article_id = this.showOtherRoute ? null : this.selectedRoute
       if (!this.showOtherRoute) this.form.other_route = ''
     },
-    handlePhoto(event) {
+    async handlePhoto(event) {
       const file = event.target.files[0]
       if (!file) {
         this.form.photo = null
         this.photoPreview = null
         return
       }
-      this.form.photo = file
+      this.compressingPhoto = true
+      try {
+        this.form.photo = await compressImage(file, { maxSizeMB: 3, maxWidthOrHeight: 1920 })
+      } finally {
+        this.compressingPhoto = false
+      }
       const reader = new FileReader()
       reader.onload = (e) => { this.photoPreview = e.target.result }
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(this.form.photo)
     },
     async get_recaptcha_token(action = 'ascent') {
         const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY

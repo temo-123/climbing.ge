@@ -87,7 +87,8 @@ class FilmsController extends Controller
             $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->get();
             $films = [];
             foreach ($fav_film as $film) {
-                $global_films = Film::where('id', '=', $film->film_id)->get();
+                $global_films = Film::where('id', '=', $film->film_id)->where('published', '=', 1)->get();
+                if ($global_films->isEmpty()) continue;
                 $f_film = GetFilmService::get_films_list_use_locale($global_films, $request->lang);
                 array_push($films, $f_film[0]);
             }

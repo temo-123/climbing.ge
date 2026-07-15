@@ -181,13 +181,17 @@
             >
             <div>
 
-                <img v-if="user.image == null" :src="'/public/images/site_img/user_demo_img.gif'" class="rounded mx-auto d-block user_demo_img"  :alt="this.user.name">
-                <img v-if="user.image"  :src="'/public/images/user_profil_img/' + this.user.image" class="rounded mx-auto d-block"  :alt="this.user.name">
-
                 <form ref="myForm" v-on:submit.prevent="edit_image" id="profil_image_form">
                     <div class="container">
                         <div class="form-group clearfix row">
-                            <input type="file" name="image" id="image">
+                            <single_image_edit
+                                :key="(user.id || 0) + '-' + image_reset_id"
+                                :title_prop="''"
+                                :crop_ratio_prop="{ width: 1, height: 1 }"
+                                :existing_image_url_prop="user.image ? ('/public/images/user_profil_img/' + user.image) : ''"
+                                @update_single_image="profile_image_file = $event"
+                                @processing="profile_image_processing = $event"
+                            />
                         </div>
                     </div>
                 </form>
@@ -224,9 +228,10 @@
 
 <script>
 
+    import single_image_edit from '../single_image/singleImageEditComponent.vue'
 
     export default {
-        components: {},
+        components: { single_image_edit },
         data(){
             return {
                 tab_num: 1,
@@ -237,6 +242,9 @@
 
                 is_edit_data: false,
                 is_change_image: false,
+                profile_image_file: null,
+                profile_image_processing: false,
+                image_reset_id: 0,
                 is_change_password: false,
 
                 edit_data: {
@@ -358,10 +366,17 @@
             },
 
             edit_image(){
+                if (this.profile_image_processing) {
+                    return
+                }
+                if (!this.profile_image_file) {
+                    this.is_change_image = false
+                    return
+                }
                 this.is_change_image = false
-                // alert('update image')
 
-                var myFormData = new FormData(this.$refs.myForm)
+                var myFormData = new FormData()
+                myFormData.append('image', this.profile_image_file)
                 axios({
                     method: 'post',
                     url: 'user/user_image_update/'+this.user.id,
@@ -390,6 +405,9 @@
                 this.is_edit_data = true
             },
             open_edit_image_modal() {
+                this.profile_image_file = null
+                this.profile_image_processing = false
+                this.image_reset_id++
                 this.is_change_image = true
             },
 

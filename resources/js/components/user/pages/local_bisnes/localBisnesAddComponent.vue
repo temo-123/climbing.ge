@@ -73,20 +73,19 @@
                         ref="article_bisnes_add_relatione_tab"
                         @update_article_relations="update_article_relations"
                         @update_selected_category="update_selected_category"
-                        @validation-choice-made="handleValidationChoice"
                     />
                     
-                    <!-- Validation Conflicts Report -->
+                    <!-- Max Relations Conflicts Report -->
                     <div v-if="showValidationConflicts" class="panel panel-warning" style="margin-top: 20px;">
                         <div class="panel-heading">
                             <h3 class="panel-title">
                                 <i class="fa fa-exclamation-triangle"></i>
-                                {{ $t('admin.local_business.conflicts_found_title') }}
+                                {{ $t('admin.local_business.max_relations_conflicts_title') }}
                             </h3>
                         </div>
                         <div class="panel-body">
                             <div class="alert alert-warning">
-                                {{ $t('admin.local_business.conflicts_warning') }}
+                                {{ $t('admin.local_business.max_relations_warning', { max: maxRelations }) }}
                             </div>
 
                             <div class="table-responsive">
@@ -95,8 +94,7 @@
                                         <tr>
                                             <th>{{ $t('admin.comments.col_article') }}</th>
                                             <th>{{ $t('common.category') }}</th>
-                                            <th>{{ $t('admin.local_business.col_currently_related_to') }}</th>
-                                            <th>{{ $t('admin.local_business.col_proposed_for') }}</th>
+                                            <th>{{ $t('admin.local_business.existing_relations_label') }}</th>
                                             <th>{{ $t('admin.local_business.col_action') }}</th>
                                         </tr>
                                     </thead>
@@ -111,10 +109,12 @@
                                                 <span class="label label-info">{{ conflict.article_category || $t('admin.local_business.no_category_fallback') }}</span>
                                             </td>
                                             <td>
-                                                <span class="label label-default">{{ conflict.current_business }}</span>
-                                            </td>
-                                            <td>
-                                                <span class="label label-warning">{{ conflict.proposed_business }}</span>
+                                                <div v-for="rel in conflict.existing_relations" :key="rel.bisnes_id">
+                                                    <span class="label label-default">{{ rel.bisnes_title }}</span>
+                                                </div>
+                                                <div class="text-muted small mt-1" v-if="conflict.oldest_relation">
+                                                    {{ $t('admin.local_business.oldest_relation_note', { business: conflict.oldest_relation.bisnes_title }) }}
+                                                </div>
                                             </td>
                                             <td>
                                                 <div class="btn-group">
@@ -129,10 +129,10 @@
                                                     <button
                                                         type="button"
                                                         class="btn btn-sm btn-success"
-                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'add'}"
-                                                        @click="setValidationChoice(conflict.article_id, 'add')"
+                                                        :class="{'active': validationUserChoices[conflict.article_id] === 'rewrite'}"
+                                                        @click="setValidationChoice(conflict.article_id, 'rewrite')"
                                                     >
-                                                        {{ $t('admin.local_business.add_anyway_btn') }}
+                                                        {{ $t('admin.local_business.rewrite_article_btn') }}
                                                     </button>
                                                 </div>
                                             </td>
@@ -275,6 +275,8 @@
                 showValidationConflicts: false,
                 validationConflicts: [],
                 validationUserChoices: {},
+                pendingFormData: null,
+                maxRelations: 2,
                 editor_config: {
                     us_short_description: {},
                     us_text: {},
@@ -322,7 +324,7 @@
                 return this.validationConflicts.some(conflict => !this.validationUserChoices[conflict.article_id]);
             },
             decidedValidationArticlesCount() {
-                return Object.keys(this.validationUserChoices).filter(id => this.validationUserChoices[id] === 'add').length;
+                return Object.keys(this.validationUserChoices).filter(id => this.validationUserChoices[id] === 'rewrite').length;
             }
         },
 
@@ -414,42 +416,11 @@
                 this.showValidationConflicts = false;
                 this.validationConflicts = [];
                 this.validationUserChoices = {};
+                this.pendingFormData = null;
             },
 
             cancelValidation() {
                 this.closeValidationReport();
-            },
-
-            handleValidationProceed(filteredRelations) {
-                this.closeValidationReport();
-
-                // Prepare form data with filtered relations
-                let formData = new FormData();
-                formData.append('data', JSON.stringify(this.data));
-
-                // Add filtered individual relations
-                if (filteredRelations.add && filteredRelations.add.length > 0) {
-                    filteredRelations.add.forEach((id, index) => {
-                        formData.append('bisnes_new_article_relations[' + index + ']', id);
-                    });
-                }
-
-                // Add category if selected
-                if (this.selected_category) {
-                    formData.append('selected_category', this.selected_category);
-                }
-
-                // Add images
-                if (this.bisnes_images) {
-                    var image_loop_num = 0;
-                    this.bisnes_images.forEach(image => {
-                        formData.append('bisnes_images[' + image_loop_num + ']', image.image);
-                        image_loop_num++;
-                    });
-                }
-
-                // Proceed with save
-                this.proceedWithSave(formData);
             },
 
             // Set user choice for a specific conflict
@@ -457,46 +428,42 @@
                 this.validationUserChoices[articleId] = choice;
             },
 
-            // Proceed with user's validation selections
+            // Proceed with user's rewrite/skip choices for at-capacity articles
             proceedWithValidationSelections() {
-                // Filter out articles that user chose to skip
-                const allowedArticleIds = [];
-                const allowedRelations = [];
-                
-                this.bisnes_new_article_relations.forEach(relation => {
-                    if (this.validationUserChoices[relation.article_id] === 'add') {
-                        allowedArticleIds.push(relation.article_id);
-                        allowedRelations.push(relation);
-                    }
-                });
+                const skippedArticleIds = this.validationConflicts
+                    .filter(conflict => this.validationUserChoices[conflict.article_id] === 'skip')
+                    .map(conflict => conflict.article_id);
 
-                // Prepare form data with filtered relations - same as in add_bisnes()
-                this.data.global_bisnes.url_title = this.data.us_bisnes.title;
-                let formData = new FormData();
+                let formData = this.pendingFormData;
 
-                // Add images
-                if (this.bisnes_images) {
-                    var loop_num = 0;
-                    this.bisnes_images.forEach(image => {
-                        formData.append('bisnes_images[' + loop_num + ']', image.image);
-                        loop_num++;
-                    });
-                    loop_num = 0;
-                }
-
-                // Add category if selected
+                // Category and individual mode can be active together, so both need to
+                // respect the skip choices independently, not as an either/or.
                 if (this.selected_category) {
-                    formData.append('selected_category', this.selected_category);
+                    // Category mode: keep the bulk category relation, just tell the
+                    // backend which of its articles to leave out.
+                    skippedArticleIds.forEach((id, index) => {
+                        formData.append('excluded_article_ids[' + index + ']', id);
+                    });
                 }
 
-                // Add filtered individual relations
-                allowedArticleIds.forEach((id, index) => {
-                    formData.append('bisnes_new_article_relations[' + index + ']', id);
-                });
+                if (this.bisnes_new_article_relations && this.bisnes_new_article_relations.length > 0) {
+                    // Individual mode: rebuild the relation list without the skipped articles.
+                    const skipped = new Set(skippedArticleIds.map(String));
+                    Array.from(formData.keys()).forEach(key => {
+                        if (key.startsWith('bisnes_new_article_relations[')) {
+                            formData.delete(key);
+                        }
+                    });
 
-                formData.append('data', JSON.stringify(this.data));
+                    let relationIndex = 0;
+                    this.bisnes_new_article_relations.forEach(relation => {
+                        if (relation.article_id && !skipped.has(String(relation.article_id))) {
+                            formData.append('bisnes_new_article_relations[' + relationIndex + ']', relation.article_id);
+                            relationIndex++;
+                        }
+                    });
+                }
 
-                // Close validation report and proceed with save
                 this.closeValidationReport();
                 this.proceedWithSave(formData);
             },
@@ -510,22 +477,23 @@
                 }
             },
 
-            // Handle validation choice made in child component
-            handleValidationChoice(articleId, choice) {
-                this.validationUserChoices[articleId] = choice;
-            },
-
-            // Validate relations before save
+            // Dry-run check: would this push any article over the max-relations cap?
+            // Read-only - does not create the business, unlike the old approach.
             validateRelationsBeforeSave(formData) {
                 axios
-                    .post('/set_bisnes/add_local_bisnes', formData)
+                    .post('/set_bisnes/check_article_relation_capacity', {
+                        selected_category: this.selected_category || null,
+                        bisnes_new_article_relations: this.bisnes_new_article_relations
+                            .map(relation => relation.article_id)
+                            .filter(id => id),
+                    })
                     .then(response => {
-                        // Check if validation conflicts were returned
-                        if (response.data.validation_needed) {
+                        if (response.data.conflicts && response.data.conflicts.length > 0) {
+                            this.maxRelations = response.data.max_relations;
+                            this.validationConflicts = response.data.conflicts;
+                            this.pendingFormData = formData;
                             this.showValidationConflicts = true;
-                            this.validationConflicts = response.data.conflicting_articles;
                         } else {
-                            // No conflicts, proceed with save
                             this.proceedWithSave(formData);
                         }
                     })

@@ -88,7 +88,7 @@ class HeadSliderController extends Controller
                 if($request->hasFile('image')){
                     $edit_gallery_image['image'] =  ImageControllService::image_update('images/head_slider_img/'.$data['category'].'/', $edit_gallery_image, $request, 'image', 'image', 1);
                 }
-            
+
                 $edit_gallery_image->save();
             }
             else{

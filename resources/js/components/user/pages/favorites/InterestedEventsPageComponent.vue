@@ -1,77 +1,69 @@
 <template>
 	<div class="row">
-		<!-- <div class="col-sm-3"> -->
-			<left-menu />
-		<!-- </div> -->
-		
+		<left-menu />
+
 		<div class="col-sm-12">
-			
+
 			<div class="row">
 				<div class="col-md-12">
 					<breadcrumb />
 				</div>
 			</div>
 
-			<div class="row font-italic">
-				<div class="col-md-6">
-					<h3 class="mt-3 pb-3 mb-4 ">
-						{{ $t('user.favorites.events.title') }}
-					</h3>
+			<div class="favorites_header">
+				<div class="favorites_header_title">
+					<i class="fa fa-heart favorites_header_icon"></i>
+					<h3>{{ $t('user.favorites.events.title') }}</h3>
 				</div>
-				<div class="col-md-6">
-					<button class="btn btn-success float-right" @click="get_interestid_events()">
-						{{ $t('common.refresh') }}
+				<div class="favorites_header_actions">
+					<button type="button" class="btn_icon" :class="{ 'is_spinning': is_loading }" @click="get_interestid_events()" :title="$t('common.refresh')">
+						<i class="fa fa-refresh"></i>
 					</button>
 				</div>
 			</div>
-			<!-- <div class="row">
-				<div class="col-md-12">
-					<button class="btn btn-success float-right" @click="get_interestid_events()">
-						Refresh
-					</button>
-				</div>
-			</div> -->
-			
-			<div class="container">
-				<div class="row" v-if="events.length">
-					<div class="col-xs-12 col-sm-12">
-						<ul class="event-list">
 
-							<li v-for="event in events" :key="event.id">
-								<time datetime="2014-07-20">
-									<span class="day">{{ show_d(event.start_data) }}</span>
-									<span class="month">{{ show_m(event.start_data) }}</span>
-									<span class="year">{{ show_y(event.start_data) }}</span>
-									<!-- <span class="time">ALL DAY</span> -->
-								</time>
+			<div v-if="is_loading" class="favorites_loading">
+				<div class="spinner-border" role="status"></div>
+			</div>
 
-								<!-- <span @click="go_to_events_list('/event/'+event.url_title)" >
-									<img v-if="event.image != null" :src="'/public/images/event_img/'+event.image" :alt='event.url_title' />
-									<img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title' />
-								</span> -->
+			<div class="event_list" v-else-if="events.length">
+				<transition-group name="favorite_card_fade" tag="div" class="event_list_inner">
+					<div class="event_row" :class="row_action(event.end_data)" v-for="event in events" :key="event.id">
+						<div class="event_date">
+							<span class="event_date_day">{{ show_d(event.start_data) }}</span>
+							<span class="event_date_month">{{ show_m(event.start_data) }}</span>
+							<span class="event_date_year">{{ show_y(event.start_data) }}</span>
+						</div>
 
-								
-								<img v-if="event.image != null" :src="'/public/images/event_img/'+event.image" :alt='event.url_title' />
-								<img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title' />
+						<div class="event_img" @click="go_to_events_list('/event/'+event.url_title)">
+							<img v-if="event.image != null" :src="'/public/images/event_img/'+event.image" :alt='event.url_title' />
+							<img v-else :src="'/public/images/site_img/image.png'" :alt='event.url_title' />
+						</div>
 
-								<!-- <img alt="Independence Day" src="https://farm4.staticflickr.com/3100/2693171833_3545fb852c_q.jpg" /> -->
-								<div :class='"info " + row_action(event.end_data)'>
+						<div class="event_info">
+							<h2 class="event_title cursor_pointer" @click="go_to_events_list('/event/'+event.url_title)">
+								{{ event.us_event ? event.us_event.title : event.url_title }}
+							</h2>
+							<span class="event_finished_badge" v-if="row_action(event.end_data) == 'completed_event'">
+								{{ $t('user.favorites.events.finished') }}
+							</span>
+						</div>
 
-									<h2 class="title cursor_pointer">
-										<a @click="go_to_events_list('/event/'+event.url_title)">{{ event.us_event ? event.us_event.title : event.url_title }}</a>
-									</h2>
-									<span @click="del_interested_event(event.id)" class="float-right">X</span>
-									<p class="desc" v-if="row_action(event.end_data) == 'completed_event'">{{ $t('user.favorites.events.finished') }}</p>
-								</div>
-							</li>
-
-
-						</ul>
+						<button
+							type="button"
+							class="favorite_card_remove"
+							@click="del_interested_event(event.id)"
+							:title="$t('user.favorites.events.remove_tooltip')"
+						>
+							<i class="fa fa-times"></i>
+						</button>
 					</div>
-				</div>
-				<div class="row" v-else>
-					<h2>{{ $t('user.favorites.events.empty') }}</h2>
-				</div>
+				</transition-group>
+			</div>
+
+			<div class="favorites_empty" v-else>
+				<i class="fa fa-calendar favorites_empty_icon"></i>
+				<h2>{{ $t('user.favorites.events.empty') }}</h2>
 			</div>
 		</div>
 	</div>
@@ -90,6 +82,7 @@
                 events: [],
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
+                is_loading: true,
             };
         },
         mounted() {
@@ -104,12 +97,17 @@
 			show_m(data){return moment(data).format("MMM")},
 			show_d(data){return moment(data).format("D")},
             get_interestid_events(){
+                this.is_loading = true
                 axios
                 .get('/get_faworite/get_interested_events')
                 .then(response => {
                     this.events = response.data
                 })
-                .catch(error =>{
+                .catch(error => {
+                    this.$bus.$emit('toast', { type: 'danger', message: this.$t('user.favorites.error') })
+                })
+                .finally(() => {
+                    this.is_loading = false
                 })
             },
 
@@ -126,10 +124,9 @@
                     })
                     .then(Response => {
                         this.get_interestid_events()
-                        // alert("Ewnt delited from your favorite list!");
                     })
                     .catch(error => {
-                        // alert("Error");
+                        this.$bus.$emit('toast', { type: 'danger', message: this.$t('user.favorites.error') })
                     })
                 }
             }
@@ -138,181 +135,219 @@
 </script>
 
 <style scoped>
-
-.completed_event{
-    background-color: #fb9b9b !important;
+.favorites_header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 20px 0 24px;
 }
-.event-list {
-		list-style: none;
-		font-family: 'Lato', sans-serif;
-		margin: 0px;
-		padding: 0px;
-	}
-	.event-list > li {
-		background-color: rgb(255, 255, 255);
-		box-shadow: 0px 0px 5px rgb(51, 51, 51);
-		box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
-		padding: 0px;
-		margin: 0px 0px 20px;
-	}
-	.event-list > li > time {
-		display: inline-block;
-		width: 100%;
-		color: rgb(255, 255, 255);
-		background-color: rgb(197, 44, 102);
-		padding: 5px;
-		text-align: center;
-		text-transform: uppercase;
-	}
-	.event-list > li:nth-child(even) > time {
-		background-color: rgb(165, 82, 167);
-	}
-	.event-list > li > time > span {
-		display: none;
-	}
-	.event-list > li > time > .day {
-		display: block;
-		font-size: 56pt;
-		font-weight: 100;
-		line-height: 1;
-	}
-	.event-list > li time > .month {
-		display: block;
-		font-size: 20pt;
-		font-weight: 900;
-		line-height: 1;
-	}
-	.event-list > li time > .year {
-		display: block;
-		font-size: 14pt;
-		font-weight: 900;
-		line-height: 1;
-	}
-	.event-list > li > img {
-		width: 100%;
-	}
-	.event-list > li > .info {
-		padding-top: 5px;
-		text-align: center;
-	}
-	.event-list > li > .info > .title {
-		font-size: 17pt;
-		font-weight: 700;
-		margin: 0px;
-	}
-	.event-list > li > .info > .desc {
-		font-size: 13pt;
-		font-weight: 300;
-		margin: 0px;
-	}
-	.event-list > li > .info > ul,
-	.event-list > li > .social > ul {
-		display: table;
-		list-style: none;
-		margin: 10px 0px 0px;
-		padding: 0px;
-		width: 100%;
-		text-align: center;
-	}
-	.event-list > li > .social > ul {
-		margin: 0px;
-	}
-	.event-list > li > .info > ul > li,
-	.event-list > li > .social > ul > li {
-		display: table-cell;
-		cursor: pointer;
-		color: rgb(30, 30, 30);
-		font-size: 11pt;
-		font-weight: 300;
-        padding: 3px 0px;
-	}
-    .event-list > li > .info > ul > li > a {
-		display: block;
-		width: 100%;
-		color: rgb(30, 30, 30);
-		text-decoration: none;
-	} 
-    .event-list > li > .social > ul > li {    
-        padding: 0px;
+.favorites_header_title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.favorites_header_title h3 {
+    margin: 0;
+}
+.favorites_header_icon {
+    color: #279fbb;
+    font-size: 1.3rem;
+}
+.favorites_header_actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn_icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1px solid #e9e9e9;
+    background: #fff;
+    color: #606060;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.btn_icon:hover {
+    background: #279fbb;
+    border-color: #279fbb;
+    color: #fff;
+}
+.btn_icon.is_spinning i {
+    animation: favorites_spin 0.8s linear infinite;
+}
+@keyframes favorites_spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.favorites_loading {
+    display: flex;
+    justify-content: center;
+    padding: 60px 0;
+    color: #279fbb;
+}
+
+.event_list_inner {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.event_row {
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.event_row:hover {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+}
+.favorite_card_fade-move,
+.favorite_card_fade-enter-active,
+.favorite_card_fade-leave-active {
+    transition: all 0.25s ease;
+}
+.favorite_card_fade-enter-from,
+.favorite_card_fade-leave-to {
+    opacity: 0;
+    transform: scale(0.97);
+}
+.favorite_card_fade-leave-active {
+    position: absolute;
+}
+
+.event_row.completed_event {
+    opacity: 0.7;
+}
+
+.event_date {
+    flex: 0 0 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #279fbb;
+    color: #fff;
+    text-align: center;
+    padding: 10px 6px;
+}
+.event_date_day {
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+.event_date_month {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+.event_date_year {
+    font-size: 0.75rem;
+    opacity: 0.85;
+}
+
+.event_img {
+    flex: 0 0 110px;
+    cursor: pointer;
+    background: #f4f4f4;
+}
+.event_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.event_info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 10px 50px 10px 18px;
+    min-width: 0;
+}
+.event_title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.event_finished_badge {
+    display: inline-block;
+    align-self: flex-start;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #e3342f;
+    background: #fbe4e3;
+    border-radius: 50px;
+    padding: 2px 10px;
+}
+
+.favorite_card_remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+.favorite_card_remove:hover {
+    background: #e3342f;
+}
+
+.favorites_empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: #606060;
+}
+.favorites_empty_icon {
+    font-size: 2.5rem;
+    color: #ccc;
+    margin-bottom: 14px;
+    display: block;
+}
+.favorites_empty h2 {
+    font-size: 1.3rem;
+    margin-bottom: 6px;
+}
+
+@media (max-width: 600px) {
+    .event_row {
+        flex-wrap: wrap;
     }
-    .event-list > li > .social > ul > li > a {
-        padding: 3px 0px;
-	} 
-	.event-list > li > .info > ul > li:hover,
-	.event-list > li > .social > ul > li:hover {
-		color: rgb(30, 30, 30);
-		background-color: rgb(200, 200, 200);
-	}
-
-	@media (min-width: 768px) {
-		.event-list > li {
-			position: relative;
-			display: block;
-			width: 100%;
-			height: 120px;
-			padding: 0px;
-		}
-		.event-list > li > time,
-		.event-list > li > img  {
-			display: inline-block;
-		}
-
-		.event-list > li > time,
-		.event-list > li > img {
-			/* width: 120px; */
-			height: 100%;
-			float: left;
-		}
-		.event-list > li > .info {
-			background-color: rgb(245, 245, 245);
-			overflow: hidden;
-		}
-		.event-list > li > time,
-		.event-list > li > img {
-			/* width: 120px;
-			height: 120px; */
-			height: 100%;
-			width: auto;
-			padding: 0px;
-			margin: 0px;
-		}
-		.event-list > li > time {
-			width: 120px;
-			height: 120px;
-		}
-		.event-list > li > .info {
-			position: relative;
-			height: 120px;
-			text-align: left;
-			padding-right: 40px;
-		}	
-		.event-list > li > .info > .title, 
-		.event-list > li > .info > .desc {
-			padding: 0px 10px;
-		}
-		.event-list > li > .info > ul {
-			position: absolute;
-			left: 0px;
-			bottom: 0px;
-		}
-		.event-list > li > .social {
-			position: absolute;
-			top: 0px;
-			right: 0px;
-			display: block;
-			width: 40px;
-		}
-        .event-list > li > .social > ul {
-            border-left: 1px solid rgb(230, 230, 230);
-        }
-		.event-list > li > .social > ul > li {			
-			display: block;
-            padding: 0px;
-		}
-		.event-list > li > .social > ul > li > a {
-			display: block;
-			width: 40px;
-			padding: 10px 0px 9px;
-		}
-	}
+    .event_date {
+        flex: 0 0 70px;
+    }
+    .event_img {
+        flex: 0 0 90px;
+    }
+    .event_info {
+        padding: 10px 45px 10px 14px;
+    }
+}
 </style>

@@ -46,7 +46,7 @@ class FaworitesController extends Controller
         $fav_items = Interested_event::where('user_id', $user->id)->get();
         $articles = [];
         foreach ($fav_items as $item) {
-            $event = Event::with(['us_event', 'ka_event'])->where('id', $item->event_id)->first();
+            $event = Event::with(['us_event', 'ka_event'])->where('id', $item->event_id)->where('published', 1)->first();
             if ($event) {
                 array_push($articles, $event);
             }
@@ -90,7 +90,7 @@ class FaworitesController extends Controller
         $fav_area = Favorite_outdoor_area::where('user_id', $user->id)->get();
         $articles = [];
         foreach ($fav_area as $area) {
-            $global_articles = Article::where('id', $area->article_id)->get();
+            $global_articles = Article::where('id', $area->article_id)->where('published', 1)->get();
             if ($global_articles->isEmpty()) continue;
             $outdoors = ArticlesService::get_locale_article_use_locale($global_articles);
             if (!empty($outdoors)) {

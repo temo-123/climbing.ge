@@ -184,7 +184,8 @@ class ProductController extends Controller
             $fav_products = Favorite_product::where('user_id', '=', Auth::user()->id)->get();
             $products = array();
             foreach ($fav_products as $fav_product) {
-                $global_product = Product::where('id', '=', $fav_product->product_id)->get();
+                $global_product = Product::where('id', '=', $fav_product->product_id)->where('published', '=', 1)->get();
+                if ($global_product->isEmpty()) continue;
                 $product = ProductService::get_locale_product_use_locale($global_product, 'en');
                 array_push($products, $product[0]);
             }
