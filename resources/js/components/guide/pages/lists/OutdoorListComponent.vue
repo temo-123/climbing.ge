@@ -40,13 +40,15 @@
                 </div>
             </div>
 
-            <div class="region-list-header" v-if="filter_spot != 'All' && selected_region_data?.name">
-                <div class="region-header-top">
-                    <h2>{{ selected_region_data.name }}</h2>
+            <region-list-header
+                v-if="filter_spot != 'All' && selected_region_data?.name"
+                :title="selected_region_data.name"
+                :description="selected_region_data.text"
+            >
+                <template #map-button>
                     <RegionMapModal v-if="selected_region_data.map" :region="selected_region_data" />
-                </div>
-                <p v-if="selected_region_data.text" v-html="selected_region_data.text"></p>
-            </div>
+                </template>
+            </region-list-header>
 
             <!-- View Controls Component -->
             <view-controls-component
@@ -73,14 +75,14 @@
                                         <!-- Grid View by Region -->
                                         <div class="row width_100" v-if="viewMode === 'grid'" v-for="region in (regions_and_spots || [])">
                                             <div class="col-md-12">
-                                                <div class="region-list-header">
-                                                    <div class="region-header-top">
-                                                        <h2 v-if="region.region?.['name'] != 'other'">{{ region.region?.name }}</h2>
-                                                        <h2 v-else>Other</h2>
+                                                <region-list-header
+                                                    :title="region.region?.['name'] != 'other' ? region.region?.name : 'Other'"
+                                                    :description="region.region?.text"
+                                                >
+                                                    <template #map-button>
                                                         <RegionMapModal v-if="region.region?.map" :region="region.region" />
-                                                    </div>
-                                                    <p v-if="region.region?.text" class="region-header-desc" v-html="region.region.text"></p>
-                                                </div>
+                                                    </template>
+                                                </region-list-header>
                                             </div>
                                             <div class="col-md-12 cards_block">
                                                 <outdoorCard  
@@ -94,14 +96,14 @@
                                         
                                         <!-- List View by Region -->
                                         <div v-if="viewMode === 'list'" v-for="region in (regions_and_spots || [])">
-                                            <div class="region-list-header">
-                                                <div class="region-header-top">
-                                                    <h2 v-if="region.region?.['name'] != 'other'">{{ region.region?.name }}</h2>
-                                                    <h2 v-else>Other</h2>
+                                            <region-list-header
+                                                :title="region.region?.['name'] != 'other' ? region.region?.name : 'Other'"
+                                                :description="region.region?.text"
+                                            >
+                                                <template #map-button>
                                                     <RegionMapModal v-if="region.region?.map" :region="region.region" />
-                                                </div>
-                                                <p v-if="region.region?.text" class="region-header-desc" v-html="region.region.text"></p>
-                                            </div>
+                                                </template>
+                                            </region-list-header>
                                             <div class="list-view-container">
                                                 <outdoorHorizontalCard
                                                     v-for="outdoor in (region.spots || [])"
@@ -212,6 +214,7 @@
     import mostPopularRoutesModal from '../../items/climbing_routes/items/modals/statistic_modals/MostPopularRoutesModal.vue'
     import ViewControlsComponent from '../../items/ViewControlsComponent.vue'
     import RegionMapModal from '../../items/modals/RegionMapModalComponent.vue'
+    import RegionListHeader from '../../items/RegionListHeaderComponent.vue'
 
     export default {
 
@@ -250,7 +253,8 @@
             routesAutersModal,
             mostPopularRoutesModal,
             ViewControlsComponent,
-            RegionMapModal
+            RegionMapModal,
+            RegionListHeader
         },
         mounted() {
             this.get_outdoor_articles()
@@ -383,29 +387,6 @@
 .list-view .cards_block > * {
   width: 100% !important;
   margin-bottom: 1rem;
-}
-
-.region-list-header {
-    background: #efeff0;
-    border-left: 3px solid #007bff;
-    border-top: 2px solid #007bff;
-    margin-bottom: 1.2rem;
-    margin-top: 1.5rem;
-    padding: .875rem 1rem;
-    border-radius: 20px 0 0 0;
-}
-
-.region-header-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  flex-wrap: wrap;
-}
-
-.region-list-header h2 {
-  margin: 0;
-  text-align: left;
 }
 
 .list-view-container {

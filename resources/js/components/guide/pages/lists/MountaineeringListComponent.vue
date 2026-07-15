@@ -25,12 +25,20 @@
                 </div>
             </div>
 
-            <div class="row articles_filter_bar" v-if="filter_mount != 'All'">
-                <div class="col-md-12" style="text-align: center;">
-                    <h4>{{selected_mount_data?.locale_data?.title}}</h4>
-                    <span v-html="selected_mount_data?.locale_data?.text || ''"></span>
-                </div>
-            </div>
+            <region-list-header
+                v-if="filter_mount != 'All' && selected_mount_data?.locale_data?.title"
+                :title="selected_mount_data.locale_data.title"
+                :description="selected_mount_data.locale_data.text"
+            >
+                <template #map-button>
+                    <mount-summits-map-modal
+                        v-if="selected_mount_data?.global_data?.map"
+                        :mount-id="selected_mount_data.global_data.id"
+                        :title="selected_mount_data.locale_data.title"
+                        :map="selected_mount_data.global_data.map"
+                    />
+                </template>
+            </region-list-header>
             
             <!-- View Controls Component -->
             <view-controls-component
@@ -52,12 +60,19 @@
                             <!-- Grid View by Mountain -->
                             <div class="row width_100" v-if="viewMode === 'grid'" v-for="masiv in mount_routes_by_masiv">
                                 <div class="col-md-12">
-                                    <div v-if="masiv.mount" class="mountain-list-header">
-                                        <h2 class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
-                                    </div>
-                                    <div v-else class="mountain-list-header">
-                                        <h2 class="article_list_short_description">Other</h2>
-                                    </div>
+                                    <region-list-header
+                                        :title="masiv.mount ? masiv.mount.locale_data.title : 'Other'"
+                                        :description="masiv.mount ? masiv.mount.locale_data.short_description : ''"
+                                    >
+                                        <template #map-button>
+                                            <mount-summits-map-modal
+                                                v-if="masiv.mount?.global_data?.map"
+                                                :mount-id="masiv.mount.global_data.id"
+                                                :title="masiv.mount.locale_data.title"
+                                                :map="masiv.mount.global_data.map"
+                                            />
+                                        </template>
+                                    </region-list-header>
                                 </div>
                                 <div class="col-md-12 cards_block">
                                     <mountCard 
@@ -71,12 +86,19 @@
 
                             <!-- List View by Mountain -->
                             <div v-if="viewMode === 'list'" v-for="masiv in mount_routes_by_masiv">
-                                <div v-if="masiv.mount" class="mountain-list-header">
-                                    <h2 class="article_list_short_description">{{masiv.mount.locale_data.title}}</h2>
-                                </div>
-                                <div v-else class="mountain-list-header">
-                                    <h2 class="article_list_short_description">Other</h2>
-                                </div>
+                                <region-list-header
+                                    :title="masiv.mount ? masiv.mount.locale_data.title : 'Other'"
+                                    :description="masiv.mount ? masiv.mount.locale_data.short_description : ''"
+                                >
+                                    <template #map-button>
+                                        <mount-summits-map-modal
+                                            v-if="masiv.mount?.global_data?.map"
+                                            :mount-id="masiv.mount.global_data.id"
+                                            :title="masiv.mount.locale_data.title"
+                                            :map="masiv.mount.global_data.map"
+                                        />
+                                    </template>
+                                </region-list-header>
                                 <div class="list-view-container">
                                     <mountHorithontalCard
                                         v-for="mount_route in masiv.mount_route"
@@ -178,6 +200,7 @@
 
     import metaData from '../../items/MetaDataComponent'
     import viewControlsComponent from '../../items/ViewControlsComponent.vue'
+    import regionListHeader from '../../items/RegionListHeaderComponent.vue'
     export default {
         data: function () {
             return {
@@ -200,6 +223,7 @@
 
             metaData,
             viewControlsComponent,
+            regionListHeader,
         },
         watch: {
             filter_mount(newVal) {
@@ -307,14 +331,6 @@
 .list-view .cards_block > * {
   width: 100% !important;
   margin-bottom: 1rem;
-}
-
-.mountain-list-header {
-  background: #f8f9fa;
-  padding: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-  border-left: 4px solid #007bff;
 }
 
 .list-view-container {

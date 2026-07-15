@@ -2617,6 +2617,7 @@
             "community_title": "Climber Community"
         },
         "summit_map_description": "Explore summits on the map and plan your next climb in Georgia.",
+        "mount_filtr": "Select Mount System and Filter Summits",
         "map": {
             "coming_soon": "Interactive map coming soon.",
             "summits_on_map": "summits shown",

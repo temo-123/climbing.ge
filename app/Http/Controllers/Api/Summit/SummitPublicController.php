@@ -35,19 +35,60 @@ class SummitPublicController extends Controller
         $summits = Summit::where('published', 1)
             ->orderBy('title')
             ->get()
-            ->map(function ($summit) {
-                return [
-                    'id'        => $summit->id,
-                    'title'     => $summit->title,
-                    'url_title' => $summit->url_title,
-                    'height'    => $summit->height,
-                    'latitude'  => $summit->latitude,
-                    'longitude' => $summit->longitude,
-                    'image'     => $summit->image,
-                ];
-            });
+            ->map(fn ($summit) => $this->mapSummit($summit));
 
         return response()->json($summits);
+    }
+
+    public function list_by_mount($lang)
+    {
+        $locale = $lang === 'ka' ? 'ka' : 'us';
+
+        $summits = Summit::where('published', 1)
+            ->with(['mount.us_mount', 'mount.ka_mount'])
+            ->orderBy('title')
+            ->get();
+
+        $result = $summits->groupBy('mount_id')->map(function ($group) use ($locale) {
+            $mount      = $group->first()->mount;
+            $localeMount = $mount ? ($locale === 'ka' ? $mount->ka_mount : $mount->us_mount) : null;
+
+            return [
+                'mount'   => $mount ? [
+                    'id'                => $mount->id,
+                    'title'             => $localeMount->title ?? $mount->name,
+                    'short_description' => $localeMount->short_description ?? null,
+                    'map'               => $mount->map,
+                ] : null,
+                'summits' => $group->map(fn ($summit) => $this->mapSummit($summit))->values(),
+            ];
+        })->values();
+
+        return response()->json($result);
+    }
+
+    public function list_filtered_by_mount($mount_id)
+    {
+        $summits = Summit::where('published', 1)
+            ->where('mount_id', $mount_id)
+            ->orderBy('title')
+            ->get()
+            ->map(fn ($summit) => $this->mapSummit($summit));
+
+        return response()->json($summits);
+    }
+
+    private function mapSummit($summit)
+    {
+        return [
+            'id'        => $summit->id,
+            'title'     => $summit->title,
+            'url_title' => $summit->url_title,
+            'height'    => $summit->height,
+            'latitude'  => $summit->latitude,
+            'longitude' => $summit->longitude,
+            'image'     => $summit->image,
+        ];
     }
 
     public function show($url_title)

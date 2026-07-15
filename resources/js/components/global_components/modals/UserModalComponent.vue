@@ -117,8 +117,8 @@ export default {
 <style>
 .modal_profil_image {
     display: block;
-    width: 200px;
-    height: 200px;
+    width: 400px;
+    /* height: 200px; */
     object-fit: cover;
     border-radius: 50%;
     border: 4px solid #edf2f7;

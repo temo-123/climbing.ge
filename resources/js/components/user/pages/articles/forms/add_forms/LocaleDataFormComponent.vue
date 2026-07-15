@@ -34,12 +34,10 @@
                     <div class="form-group clearfix row">
                         <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
                         <div class="col-md-10">
-                            <!-- <big_editor v-model="data.text" />
+                            <big_editor v-model="data.text" />
                             <div class="alert alert-danger" role="alert" v-if="errors.text">
                                 {{ errors.text[0] }}
-                            </div> -->
-
-                            <!-- <big_editor v-model="data.text" />
+                            </div>
                         </div>
                     </div>
 
