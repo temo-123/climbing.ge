@@ -204,8 +204,8 @@
     }
 
     .user_img_wrapper {
-        width: 6.5em;
-        height: 6.5em;
+        width: 8.5em;
+        height: 8.5em;
         margin: 0 auto;
         border-radius: 50%;
         padding: 4px;
@@ -321,8 +321,8 @@
 
     @media (max-width: 767px) {
         .user_img_wrapper {
-            width: 5.5em;
-            height: 5.5em;
+            width: 7em;
+            height: 7em;
         }
 
         .team-card {

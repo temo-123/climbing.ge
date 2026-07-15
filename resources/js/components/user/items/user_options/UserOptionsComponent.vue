@@ -27,6 +27,7 @@
                     <p>{{ $t('user.profile.label_country', { value: this.user.country }) }}</p>
                     <p>{{ $t('user.profile.label_city', { value: this.user.city }) }}</p>
                     <p>{{ $t('user.profile.label_language', { value: this.user.lang === 'ka' ? $t('user.profile.lang_georgian') : $t('user.profile.lang_english') }) }}</p>
+                    <p v-if="user.my_bio">{{ $t('user.profile.label_bio') }}: {{ user.my_bio }}</p>
 
                     <div class="row">
                         <div class="col-md-12">
@@ -167,6 +168,9 @@
                         <option value="us">{{ $t('user.profile.lang_english') }}</option>
                         <option value="ka">{{ $t('user.profile.lang_georgian') }}</option>
                     </select>
+
+                    <label for="my_bio">{{ $t('user.profile.bio_label') }}</label>
+                    <textarea class="form-control" v-model="edit_data.my_bio" name="my_bio" id="my_bio" rows="4" :placeholder="$t('user.profile.bio_placeholder')" :title="$t('user.profile.bio_placeholder')"></textarea>
                 </form>
             </div>
         </StackModal>
@@ -255,6 +259,7 @@
                     city: '',
                     country: '',
                     lang: 'us',
+                    my_bio: '',
                 },
 
                 password_edit_data: {
@@ -317,6 +322,7 @@
                         city: '',
                         country: '',
                         lang: 'us',
+                        my_bio: '',
                     }
 
                     this.is_edit_data = false
@@ -400,6 +406,7 @@
                     city: this.user.city,
                     country: this.user.country,
                     lang: this.user.lang || 'us',
+                    my_bio: this.user.my_bio || '',
                 }
 
                 this.is_edit_data = true

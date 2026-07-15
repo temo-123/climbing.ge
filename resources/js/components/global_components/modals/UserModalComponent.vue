@@ -31,6 +31,8 @@
                     </div>
 
                     <div class="user-modal-info">
+                        <p class="user-modal-bio" v-if="localUser.my_bio">{{ localUser.my_bio }}</p>
+
                         <div class="user-modal-info-row" v-if="localUser.email">
                             <i class="fa fa-envelope"></i>
                             <span>{{ localUser.email }}</span>
@@ -115,8 +117,8 @@ export default {
 <style>
 .modal_profil_image {
     display: block;
-    width: 160px;
-    height: 160px;
+    width: 200px;
+    height: 200px;
     object-fit: cover;
     border-radius: 50%;
     border: 4px solid #edf2f7;
@@ -130,7 +132,7 @@ export default {
     justify-content: center;
     background: #f1f2f6;
     color: #b2b2ff;
-    font-size: 3rem;
+    font-size: 3.5rem;
 }
 
 .user-modal-status {
@@ -162,6 +164,16 @@ export default {
     background: #f9fafb;
     border-radius: 10px;
     padding: 16px 20px;
+}
+
+.user-modal-bio {
+    font-size: 1.3rem;
+    line-height: 1.6;
+    color: #374151;
+    white-space: pre-line;
+    margin: 0 0 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .user-modal-info-row {
