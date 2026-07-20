@@ -7,6 +7,7 @@ Automatic and manual email notifications for new content and events across the g
 ## Table of Contents
 
 - [Overview](#overview)
+- [Server Requirements](#server-requirements)
 - [User Preferences](#user-preferences)
 - [Dedup Log](#dedup-log)
 - [NotificationDispatchService](#notificationdispatchservice)
@@ -30,6 +31,22 @@ Two kinds of "you should hear about this" exist:
 - **Per-item favorites** — "notify me when *this specific* product/outdoor area/film I favorited changes" (`Favorite_product`, `Favorite_outdoor_area`, `Favorite_film`, `Interested_event`)
 
 On top of that, each of those two also has an **add** variant (new item published) and, separately, an **update** variant (an already-published item gets edited) — see [Trigger Points](#trigger-points). The two are independent opt-ins with separate preference keys (e.g. `add_new_sector` vs `sector_updated`), so a user can subscribe to new sectors without also getting pinged on every edit to existing ones, or vice versa.
+
+---
+
+## Server Requirements
+
+Every notification described in this document — content publish/update emails, follow-activity emails, new-follower emails, event reminders, admin manual sends — goes through the exact same pipeline: `App\Jobs\UserNotifications` queued onto the `emails` queue, sent via whatever `MAIL_*` transport is configured. **Four independent pieces of server infrastructure** have to be in place for any of it to actually reach an inbox. Missing any single one produces the identical symptom — no error anywhere, the email just never arrives — so when a notification "isn't sending," check all four before assuming it's a code bug:
+
+1. **Mail transport configured** (`.env`): `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_ENCRYPTION`, `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`. Template values live in `docs/BACKEND/examples/_.env .exemple`. Dev/staging here points at a Mailtrap sandbox (`MAIL_HOST=smtp.mailtrap.io`) — Mailtrap **never delivers to a real inbox**, it just captures mail for inspection, so a production deploy must swap these to a real SMTP provider (or another Laravel-supported mail driver) or every send will look successful while nothing ever reaches a real user.
+
+2. **Queue driver + a running worker process** (`.env`: `QUEUE_CONNECTION=database`). Dispatching a job only inserts a row into the `jobs` table — nothing sends until a `php artisan queue:work` process picks it up and runs it. No worker running = jobs silently pile up forever, with nothing in `failed_jobs` either, because nothing ever attempted them. This is the single most common way the whole system goes quiet. **See `docs/QUEUE_WORKER.md`** for the full supervisor setup, how to verify the worker is actually alive, and a copy-pasteable end-to-end test. Requires `php artisan migrate` to have created the `jobs`/`failed_jobs` tables in the first place.
+
+3. **Cron-driven scheduler**, for the two daily commands registered in `app/Console/Kernel.php` (`send_event_notificatione:users` — event reminder emails — and `app:generate-sitemap`). Laravel's scheduler does nothing by itself — it needs exactly one crontab entry running `php artisan schedule:run` every minute. Without it, event reminder emails never go out at all, regardless of how many users have `interested_event` favorites — not a queue problem, the job is simply never dispatched in the first place. **See `docs/CRON_SETUP.md`** for the exact crontab line, how to verify it's actually firing, and troubleshooting.
+
+4. **Migrations applied**: `php artisan migrate` — needed for every table this system touches (`content_notification_logs`, `user_notifications`, `admin_alert_views`, `user_follows`, `jobs`, `failed_jobs`, ...). A fresh environment that skips this will fail loudly (missing table errors) rather than silently, so it's the easiest of the four to notice.
+
+**Also worth checking if mail silently stops on an already-working server:** `storage/logs` (and specifically `storage/logs/worker.log`, per `docs/QUEUE_WORKER.md`) must be writable by the user the queue worker runs as — a permissions problem there can prevent the worker process itself from starting, which looks identical to "notifications aren't sending" from the app's side.
 
 ---
 

@@ -39,5 +39,6 @@ class EventServiceProvider extends ServiceProvider
         \App\Models\Guide\Sport_route_review::observe(\App\Observers\SportRouteReviewObserver::class);
         \App\Models\Guide\Mtp_review::observe(\App\Observers\MtpReviewObserver::class);
         \App\Models\User\UserFollow::observe(\App\Observers\UserFollowObserver::class);
+        \App\Models\User::observe(\App\Observers\UserObserver::class);
     }
 }

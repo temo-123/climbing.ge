@@ -259,7 +259,16 @@ class NotificationAnalyticsController extends Controller
     {
         if ($auth = PermissionService::authorize('user_notification', 'show')) return $auth;
 
-        $rows = user_notification::with('user:id,name,surname,email,email_verified_at')->get();
+        // user_notifications should be 1 row per user, but nothing enforces that at the
+        // DB level and legacy data has duplicates for some accounts (pre-dating the
+        // notification_type column's int->json migration). updateOrCreate()/firstOrNew()
+        // elsewhere in the app always resolve to the lowest-id row for a given user_id,
+        // so that's the one treated as canonical here too — ordering by id ascending
+        // before unique() keeps the first (lowest-id) row per user and drops the rest.
+        $rows = user_notification::with('user:id,name,surname,email,email_verified_at')
+            ->orderBy('id')
+            ->get()
+            ->unique('user_id');
 
         $data = $rows->filter(fn ($row) => $row->user)->map(function ($row) {
             $types = is_array($row->notification_type) ? $row->notification_type : [];

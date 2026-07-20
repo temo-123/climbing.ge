@@ -112,20 +112,27 @@ class SocialController extends Controller
     private function createUserPermissionsAndNotifications(int $user_id): void
     {
         if (user_notification::where('user_id', $user_id)->count() === 0) {
+            // notification_type is a single JSON column (not individual
+            // add_new_gym/news/etc. columns — those were dropped by the
+            // 2025_10_25_173638 migration). Setting them as direct properties
+            // bypasses mass-assignment protection and would throw an "unknown
+            // column" SQL error on save() instead of silently no-op'ing.
             $notif = new user_notification();
-            $notif->user_id                = $user_id;
-            $notif->add_new_gym            = 1;
-            $notif->news                   = 1;
-            $notif->add_new_ice_spot       = 1;
-            $notif->add_new_outdoor_spot   = 1;
-            $notif->add_new_product        = 1;
-            $notif->add_new_sector         = 1;
-            $notif->add_new_service        = 1;
-            $notif->add_new_techtip        = 1;
-            $notif->favorite_film          = 1;
-            $notif->favorite_outdoor       = 1;
-            $notif->favorite_product       = 1;
-            $notif->interested_event       = 1;
+            $notif->user_id = $user_id;
+            $notif->notification_type = [
+                'add_new_gym' => true,
+                'news' => true,
+                'add_new_ice_spot' => true,
+                'add_new_outdoor_spot' => true,
+                'add_new_product' => true,
+                'add_new_sector' => true,
+                'add_new_service' => true,
+                'add_new_techtip' => true,
+                'favorite_film' => true,
+                'favorite_outdoor' => true,
+                'favorite_product' => true,
+                'interested_event' => true,
+            ];
             $notif->save();
         }
 

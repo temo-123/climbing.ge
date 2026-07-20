@@ -102,7 +102,7 @@
                 })
                 .then(Response => {
                     this.feedback_type = 'success'
-                    this.feedback_message = Response.data
+                    this.feedback_message = Response.data?.message || Response.data
                     this.email = ''
                 })
                 .catch(error =>{

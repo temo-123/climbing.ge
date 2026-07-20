@@ -167,24 +167,30 @@ class UsersController extends Controller
 
     public function create_user_notifications($user_id)
     {
-        $new_notification =  new user_notification();
-
-        $new_notification['user_id'] = $user_id;
-
-        $new_notification['add_new_gym'] = 1;
-        $new_notification['news'] = 1;
-        $new_notification['add_new_ice_spot'] = 1;
-        $new_notification['add_new_outdoor_spot'] = 1;
-        $new_notification['add_new_product'] = 1;
-        $new_notification['add_new_sector'] = 1;
-        $new_notification['add_new_service'] = 1;
-        $new_notification['add_new_techtip'] = 1;
-        $new_notification['favorite_film'] = 1;
-        $new_notification['favorite_outdoor'] = 1;
-        $new_notification['favorite_product'] = 1;
-        $new_notification['interested_event'] = 1;
-
-        $new_notification -> save();
+        // notification_type has been a single JSON column since the
+        // 2025_10_25_173638 migration dropped the individual per-preference
+        // columns this used to set directly (add_new_gym, news, etc.) — those
+        // no longer exist, so setting them here would throw an "unknown
+        // column" SQL error. firstOrCreate() also guards against duplicate
+        // rows for the same user_id, which the old unconditional `new` + save()
+        // didn't.
+        user_notification::firstOrCreate(
+            ['user_id' => $user_id],
+            ['notification_type' => [
+                'add_new_gym' => true,
+                'news' => true,
+                'add_new_ice_spot' => true,
+                'add_new_outdoor_spot' => true,
+                'add_new_product' => true,
+                'add_new_sector' => true,
+                'add_new_service' => true,
+                'add_new_techtip' => true,
+                'favorite_film' => true,
+                'favorite_outdoor' => true,
+                'favorite_product' => true,
+                'interested_event' => true,
+            ]]
+        );
     }
 
     public function del_user(Request $request)
