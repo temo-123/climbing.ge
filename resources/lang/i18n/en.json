@@ -13,6 +13,7 @@
             "col_from": "From",
             "col_date": "@:common.date",
             "col_status": "Status",
+            "mail_account_label": "Mailbox:",
             "status_read": "Read",
             "status_unread": "Unread",
             "no_recent_messages": "No recent messages",

@@ -30,7 +30,14 @@
                 </div>
 
                 <div v-if="!compact">
-                    <ul class="nav nav-tabs mt-3">
+                    <div class="d-flex align-items-center flex-wrap mt-3 mb-2" style="gap: 8px;" v-if="accounts.length > 1">
+                        <label class="mb-0 small text-muted">{{ $t('admin.dashboards.mail_account_label') }}</label>
+                        <select class="form-control form-control-sm d-inline-block w-auto" v-model="selected_account" @change="select_account(selected_account)">
+                            <option v-for="a in accounts" :key="a.key" :value="a.key">{{ a.label }}</option>
+                        </select>
+                    </div>
+
+                    <ul class="nav nav-tabs">
                         <li class="nav-item" v-for="f in folders" :key="f.path">
                             <a class="nav-link" href="#" :class="{ active: selected_folder === f.path }" @click.prevent="select_folder(f.path)">
                                 {{ f.label }}
@@ -68,6 +75,8 @@ export default {
             unseen: 0,
             webmailUrl: '',
             error: '',
+            accounts: [],
+            selected_account: 'default',
             folders: [],
             selected_folder: 'INBOX',
             messages: [],
@@ -105,6 +114,7 @@ export default {
     mounted() {
         this.fetchUnread()
         if (!this.compact) {
+            this.fetchAccounts()
             this.fetchFolders()
             this.fetchRecentMessages()
         }
@@ -113,7 +123,7 @@ export default {
         fetchUnread() {
             this.loading = true
             this.error = ''
-            axios.get('mail/unread_count')
+            axios.get('mail/unread_count', { params: { account: this.selected_account } })
                 .then(r => {
                     this.unseen = r.data.unseen || 0
                     this.webmailUrl = r.data.webmail_url || ''
@@ -126,10 +136,20 @@ export default {
                 })
                 .finally(() => { this.loading = false })
         },
+        fetchAccounts() {
+            axios.get('mail/accounts')
+                .then(r => { this.accounts = r.data || [] })
+                .catch(() => {})
+        },
         fetchFolders() {
             axios.get('mail/folders')
                 .then(r => { this.folders = r.data || [] })
                 .catch(() => {})
+        },
+        select_account(key) {
+            this.selected_account = key
+            this.fetchUnread()
+            this.fetchRecentMessages()
         },
         select_folder(path) {
             if (this.selected_folder === path) return
@@ -138,13 +158,13 @@ export default {
         },
         fetchRecentMessages() {
             this.messages_loading = true
-            axios.get('mail/recent_messages', { params: { folder: this.selected_folder } })
+            axios.get('mail/recent_messages', { params: { account: this.selected_account, folder: this.selected_folder } })
                 .then(r => { this.messages = r.data || [] })
                 .catch(() => {})
                 .finally(() => { this.messages_loading = false })
         },
         show_mail_detail(uid) {
-            this.$refs.mail_detail_modal.show_modal(this.selected_folder, uid)
+            this.$refs.mail_detail_modal.show_modal(this.selected_account, this.selected_folder, uid)
         },
     }
 }

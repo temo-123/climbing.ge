@@ -41,11 +41,11 @@ export default {
         }
     },
     methods: {
-        show_modal(folder, uid) {
+        show_modal(account, folder, uid) {
             this.is_open = true
             this.loading = true
             this.message = null
-            axios.get('mail/message/' + uid, { params: { folder } })
+            axios.get('mail/message/' + uid, { params: { account, folder } })
                 .then(r => { this.message = r.data })
                 .catch(() => {})
                 .finally(() => { this.loading = false })

@@ -13,6 +13,7 @@
             "col_from": "გამომგზავნი",
             "col_date": "@:common.date",
             "col_status": "სტატუსი",
+            "mail_account_label": "საფოსტო ყუთი:",
             "status_read": "წაკითხული",
             "status_unread": "წაუკითხავი",
             "no_recent_messages": "ბოლო შეტყობინებები არ არის",

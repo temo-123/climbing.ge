@@ -9,12 +9,68 @@ use Webklex\IMAP\Facades\Client;
 
 class MailCheckController extends Controller
 {
+    /**
+     * IMAP accounts exposed in the admin mail widget, keyed by the account
+     * identifier configured in config/imap.php.
+     */
+    private const ACCOUNTS = [
+        'default' => 'info@climbing.ge',
+        'temo'    => 'temo@climbing.ge',
+    ];
+
+    /**
+     * Mailbox folders exposed in the admin mail widget. Keyed by the real
+     * IMAP folder path on this account so the frontend never has to guess it.
+     */
+    private const FOLDERS = [
+        'INBOX' => 'Inbox',
+        'Sent'  => 'Sent',
+        'Trash' => 'Trash',
+    ];
+
+    private function resolveAccount(Request $request): ?string
+    {
+        $account = $request->query('account', 'default');
+        return array_key_exists($account, self::ACCOUNTS) ? $account : null;
+    }
+
+    public function get_accounts(Request $request)
+    {
+        if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
+
+        $accounts = array_map(
+            fn ($key, $label) => ['key' => $key, 'label' => $label],
+            array_keys(self::ACCOUNTS),
+            self::ACCOUNTS
+        );
+
+        return response()->json($accounts);
+    }
+
+    public function get_folders(Request $request)
+    {
+        if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
+
+        $folders = array_map(
+            fn ($path, $label) => ['path' => $path, 'label' => $label],
+            array_keys(self::FOLDERS),
+            self::FOLDERS
+        );
+
+        return response()->json($folders);
+    }
+
     public function get_unread_count(Request $request)
     {
         if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
 
+        $account = $this->resolveAccount($request);
+        if (!$account) {
+            return response()->json(['error' => 'Unknown account'], 422);
+        }
+
         try {
-            $client = Client::account('default');
+            $client = Client::account($account);
             $client->connect();
 
             $folder = $client->getFolder('INBOX');
@@ -34,32 +90,14 @@ class MailCheckController extends Controller
         }
     }
 
-    /**
-     * Mailbox folders exposed in the admin mail widget. Keyed by the real
-     * IMAP folder path on this account so the frontend never has to guess it.
-     */
-    private const FOLDERS = [
-        'INBOX' => 'Inbox',
-        'Sent'  => 'Sent',
-        'Trash' => 'Trash',
-    ];
-
-    public function get_folders(Request $request)
-    {
-        if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
-
-        $folders = array_map(
-            fn ($path, $label) => ['path' => $path, 'label' => $label],
-            array_keys(self::FOLDERS),
-            self::FOLDERS
-        );
-
-        return response()->json($folders);
-    }
-
     public function get_recent_messages(Request $request)
     {
         if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
+
+        $account = $this->resolveAccount($request);
+        if (!$account) {
+            return response()->json(['error' => 'Unknown account'], 422);
+        }
 
         $folderPath = $request->query('folder', 'INBOX');
         if (!array_key_exists($folderPath, self::FOLDERS)) {
@@ -67,7 +105,7 @@ class MailCheckController extends Controller
         }
 
         try {
-            $client = Client::account('default');
+            $client = Client::account($account);
             $client->connect();
 
             $folder = $client->getFolder($folderPath);
@@ -100,13 +138,18 @@ class MailCheckController extends Controller
     {
         if ($auth = PermissionService::authorize('mail', 'show')) return $auth;
 
+        $account = $this->resolveAccount($request);
+        if (!$account) {
+            return response()->json(['error' => 'Unknown account'], 422);
+        }
+
         $folderPath = $request->query('folder', 'INBOX');
         if (!array_key_exists($folderPath, self::FOLDERS)) {
             return response()->json(['error' => 'Unknown folder'], 422);
         }
 
         try {
-            $client = Client::account('default');
+            $client = Client::account($account);
             $client->connect();
 
             $folder = $client->getFolder($folderPath);

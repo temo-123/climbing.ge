@@ -81,6 +81,7 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::get('/mail/unread_count', 'get_unread_count');
         Route::get('/mail/recent_messages', 'get_recent_messages');
         Route::get('/mail/folders', 'get_folders');
+        Route::get('/mail/accounts', 'get_accounts');
         Route::get('/mail/message/{uid}', 'get_message');
     });
 

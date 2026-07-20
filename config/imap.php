@@ -46,7 +46,7 @@ return [
     */
     'accounts' => [
 
-        'default' => [// account identifier
+        'default' => [// account identifier — info@climbing.ge
             'host'  => env('IMAP_HOST', 'localhost'),
             'port'  => env('IMAP_PORT', 993),
             'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
@@ -54,6 +54,25 @@ return [
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
             'username' => env('IMAP_USERNAME', 'root@example.com'),
             'password' => env('IMAP_PASSWORD', ''),
+            'authentication' => env('IMAP_AUTHENTICATION', null),
+            'proxy' => [
+                'socket' => null,
+                'request_fulluri' => false,
+                'username' => null,
+                'password' => null,
+            ],
+            "timeout" => 30,
+            "extensions" => []
+        ],
+
+        'temo' => [// account identifier — temo@climbing.ge (secondary mailbox)
+            'host'  => env('IMAP_HOST', 'localhost'),
+            'port'  => env('IMAP_PORT', 993),
+            'protocol'  => env('IMAP_PROTOCOL', 'imap'),
+            'encryption'    => env('IMAP_ENCRYPTION', 'ssl'),
+            'validate_cert' => env('IMAP_VALIDATE_CERT', true),
+            'username' => env('IMAP_USERNAME_TEMO', ''),
+            'password' => env('IMAP_PASSWORD_TEMO', ''),
             'authentication' => env('IMAP_AUTHENTICATION', null),
             'proxy' => [
                 'socket' => null,
