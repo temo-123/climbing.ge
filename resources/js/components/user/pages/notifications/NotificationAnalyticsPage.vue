@@ -9,6 +9,16 @@
             </div>
 
             <div class="row mb-3">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <button class="btn btn-primary" @click="open_notify_modal()">{{ $t('admin.dashboards.make_mail_notification_btn') }}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-3">
                 <div class="col-md-12 d-flex align-items-center flex-wrap" style="gap:10px;">
                     <label class="mb-0 font-weight-bold">{{ $t('admin.dashboards.period_label') }}</label>
                     <select class="form-control d-inline-block w-auto" v-model="selectedPeriod" @change="fetchVolume">
@@ -153,6 +163,7 @@
 
         <SubscriberDetailModal ref="subscriber_detail_modal" @refreshed="fetchRegisteredSubscribers" />
         <GuestFollowerDetailModal ref="guest_follower_detail_modal" />
+        <user_notifications_modal ref="user_notifications" />
     </div>
 </template>
 
@@ -162,9 +173,12 @@ import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import SubscriberDetailModal from '../../items/modal/SubscriberDetailModal.vue'
 import GuestFollowerDetailModal from '../../items/modal/GuestFollowerDetailModal.vue'
+import user_notifications_modal from '../../items/modal/notifications/UserMailNotificationModelComponent.vue'
 
 export default {
-    components: { GChart, breadcrumb, tabsComponent, SubscriberDetailModal, GuestFollowerDetailModal },
+    components: {
+        GChart, breadcrumb, tabsComponent, SubscriberDetailModal, GuestFollowerDetailModal, user_notifications_modal,
+    },
     data() {
         return {
             selectedPeriod: '30days',
@@ -440,6 +454,9 @@ export default {
         show_guest_follower_detail(id) {
             const follower = this.guest_followers.find(f => f.id == id)
             if (follower) this.$refs.guest_follower_detail_modal.show_modal(follower)
+        },
+        open_notify_modal() {
+            this.$refs.user_notifications.show_modal()
         },
     },
 }

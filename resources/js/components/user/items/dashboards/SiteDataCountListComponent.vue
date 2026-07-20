@@ -11,6 +11,10 @@
             </button>
         </div>
 
+        <integrity_issues_alert />
+
+        <admin_notifications_list />
+
         <div v-if="loading && !loaded_once">
             <skeleton-loader v-for="n in 5" :key="n" />
         </div>
@@ -33,62 +37,7 @@
                     </div>
                 </div>
 
-                <div class="alert alert-danger" role="alert" v-if="counts['us_article_errors']">
-                    <i class="fa fa-bug" aria-hidden="true"></i>
-                    {{ $t('admin.dashboards.en_article_errors_prefix') }} {{ counts['us_article_errors'] }}
-                    <div class="float-end">
-                        <button class="btn btn-warning btn-sm me-1" @click="show_errors('us')">
-                            <i class="fa fa-eye"></i> {{ $t('admin.dashboards.view_btn') }}
-                        </button>
-                        <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
-                            <i class="fa fa-trash"></i> {{ $t('admin.dashboards.fix_delete_btn') }}
-                        </button>
-                    </div>
-                </div>
-
-                <div class="alert alert-danger" role="alert" v-if="counts['ka_article_errors']">
-                    <i class="fa fa-bug" aria-hidden="true"></i>
-                    {{ $t('admin.dashboards.ka_article_errors_prefix') }} {{ counts['ka_article_errors'] }}
-                    <div class="float-end">
-                        <button class="btn btn-warning btn-sm me-1" @click="show_errors('ka')">
-                            <i class="fa fa-eye"></i> {{ $t('admin.dashboards.view_btn') }}
-                        </button>
-                        <button class="btn btn-danger btn-sm" @click="fix_article_bug()">
-                            <i class="fa fa-trash"></i> {{ $t('admin.dashboards.fix_delete_btn') }}
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Error articles modal -->
-                <div v-if="error_modal_open" class="error-modal-backdrop" @click.self="error_modal_open = false">
-                    <div class="error-modal">
-                        <div class="error-modal-header">
-                            <strong>{{ $t('admin.dashboards.orphaned_articles_title', { locale: error_modal_locale.toUpperCase(), count: error_articles.length }) }}</strong>
-                            <button class="btn btn-sm btn-light" @click="error_modal_open = false"><i class="fa fa-times"></i></button>
-                        </div>
-                        <div class="error-modal-body">
-                            <div v-if="error_modal_loading" class="text-center py-3">
-                                <i class="fa fa-spinner fa-spin fa-2x"></i>
-                            </div>
-                            <table v-else class="table table-condensed table-hover mb-0">
-                                <thead>
-                                    <tr>
-                                        <th>{{ $t('common.id') }}</th>
-                                        <th>{{ $t('common.title') }}</th>
-                                        <th>{{ $t('admin.dashboards.col_locale') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="a in error_articles" :key="a.id">
-                                        <td class="text-muted small">{{ a.id }}</td>
-                                        <td>{{ a.title }}</td>
-                                        <td><span class="badge bg-secondary">{{ a.locale }}</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <entity_locale_errors :tables="['articles']" />
             </dashboard_section>
 
             <dashboard_section :title="$t('admin.dashboards.content_categories_section')" icon="fa-th-large">
@@ -129,6 +78,52 @@
                             :value="counts['product_categories']" :label="$t('admin.dashboards.product_categories_label')" :loading="loading" />
                     </div>
                 </div>
+
+                <entity_locale_errors :tables="['products']" />
+            </dashboard_section>
+
+            <dashboard_section :title="$t('admin.dashboards.services_section')" icon="fa-concierge-bell">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-concierge-bell" color="light" :to="{ name: 'servicesList' }"
+                            :value="counts['services']" :label="$t('admin.dashboards.services_label')" :loading="loading" />
+                    </div>
+                </div>
+
+                <entity_locale_errors :tables="['services']" />
+            </dashboard_section>
+
+            <dashboard_section :title="$t('admin.dashboards.tours_section')" icon="fa-bus">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-bus" color="light" :to="{ name: 'allToursList' }"
+                            :value="counts['tours']" :label="$t('admin.dashboards.tours_label')" :loading="loading" />
+                    </div>
+                </div>
+
+                <entity_locale_errors :tables="['tours']" />
+            </dashboard_section>
+
+            <dashboard_section :title="$t('admin.dashboards.films_section')" icon="fa-film">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-film" color="light" :to="{ name: 'filmsList' }"
+                            :value="counts['films']" :label="$t('admin.dashboards.films_label')" :loading="loading" />
+                    </div>
+                </div>
+
+                <entity_locale_errors :tables="['films']" />
+            </dashboard_section>
+
+            <dashboard_section :title="$t('admin.dashboards.blog_section')" icon="fa-rss">
+                <div class="row row-cols-1 row-cols-sm-2 g-3">
+                    <div class="col">
+                        <stat_card icon="fa-rss" color="light" :to="{ name: 'posts' }"
+                            :value="counts['blog_posts']" :label="$t('admin.dashboards.blog_posts_label')" :loading="loading" />
+                    </div>
+                </div>
+
+                <entity_locale_errors :tables="['posts']" />
             </dashboard_section>
 
             <dashboard_section :title="$t('admin.dashboards.outdoor_climbing_section')" icon="fa-tree">
@@ -155,6 +150,8 @@
                             :value="counts['mount_masives']" :label="$t('admin.dashboards.mount_massifs_label')" :loading="loading" />
                     </div>
                 </div>
+
+                <entity_locale_errors :tables="['mounts']" />
             </dashboard_section>
 
             <dashboard_section :title="$t('admin.dashboards.events_competitions_section')" icon="fa-calendar">
@@ -297,19 +294,18 @@
 <script>
 import dashboard_section from './DashboardSectionComponent.vue'
 import stat_card from './StatCardComponent.vue'
+import entity_locale_errors from './EntityLocaleErrorsComponent.vue'
+import integrity_issues_alert from './IntegrityIssuesAlertComponent.vue'
+import admin_notifications_list from '../notificatione/AdminNotificationsListComponent.vue'
 
 export default {
-    components: { dashboard_section, stat_card },
+    components: { dashboard_section, stat_card, entity_locale_errors, integrity_issues_alert, admin_notifications_list },
     data() {
         return {
             counts: {},
             loading: false,
             loaded_once: false,
             last_updated: '',
-            error_modal_open: false,
-            error_modal_locale: '',
-            error_modal_loading: false,
-            error_articles: [],
         }
     },
     mounted() {
@@ -336,39 +332,6 @@ export default {
                     this.loaded_once = true
                 })
         },
-
-        show_errors(locale) {
-            this.error_modal_locale = locale
-            this.error_modal_open = true
-            this.error_modal_loading = true
-            this.error_articles = []
-            axios.get('set_site_data/article_errors/' + locale)
-                .then(r => { this.error_articles = r.data })
-                .catch(() => {})
-                .finally(() => { this.error_modal_loading = false })
-        },
-
-        fix_article_bug() {
-            if (window.confirm(this.$t('admin.dashboards.confirm_delete_conflicting_items'))) {
-                axios
-                    .get('set_site_data/fix_article_bugs')
-                    .then(response => {
-                        this.$bus.$emit('toast', {
-                            type: 'success',
-                            title: this.$t('admin.dashboards.article_bugs_fixed_title'),
-                            message: this.$t('admin.dashboards.deleted_orphaned_articles_msg', { us: response.data.us_deleted, ka: response.data.ka_deleted }),
-                        })
-                        this.get_site_counts()
-                    })
-                    .catch(() => {
-                        this.$bus.$emit('toast', {
-                            type: 'danger',
-                            title: this.$t('admin.dashboards.dashboard_toast_title'),
-                            message: this.$t('admin.dashboards.failed_fix_article_bugs'),
-                        })
-                    })
-            }
-        }
     }
 }
 </script>
@@ -387,36 +350,5 @@ export default {
     font-size: 1.5rem;
     font-weight: 700;
     margin: 0;
-}
-
-.error-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.55);
-    z-index: 9999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.error-modal {
-    background: #fff;
-    border-radius: 6px;
-    width: 90vw;
-    max-width: 560px;
-    max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 8px 32px rgba(0,0,0,.25);
-}
-.error-modal-header {
-    padding: 14px 18px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-.error-modal-body {
-    overflow-y: auto;
-    padding: 0;
 }
 </style>

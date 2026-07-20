@@ -23,127 +23,116 @@ use App\Models\User;
 use App\Services\PermissionService;
 use App\Services\NotificationDispatchService;
 
-use App\Jobs\UserNotifications;
-
 class UserNotificationsController extends Controller
 {
+    /**
+     * Manual, admin-triggered "notify subscribers now" action. Routed through
+     * NotificationDispatchService::sendOnce() (the same dispatch path used by
+     * the automatic draft->published / content-updated triggers) so every
+     * send here is logged to ContentNotificationLog and shows up in the
+     * Notification Analytics page instead of being invisible to it.
+     * $bypassDedup=true because this is a deliberate one-off admin action —
+     * it should always go out, even to users already notified once before.
+     */
     public function send_user_favorites_notification(Request $request)
     {
         $auth = PermissionService::authorize('user_notification', 'add');
         if ($auth) return $auth;
-        
-        if($request->action != 'special_articles'){
-            $users_with_preference = NotificationDispatchService::usersWithPreference($request->action);
-            if($users_with_preference){
-                foreach ($users_with_preference as $user) {
-                    if($request->action == 'interested_event' && $user->interested_events){
-                        if ($request->event_notification_type == 'select_event') {
-                            $interested_event = $user->interested_events->where('event_id', '=', $request->id)->first();
-                            if($interested_event){
-                                $global_event = $interested_event->event;
-                                
-                                $locale_event = $global_event->us_event;
-                                $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-                                $text = 'Check one of your, favorite event climbing area in Georgia, (' . $locale_event->title . ') for check what is new.';
-                                $subject = "Notification from climbing.ge";
 
-                                UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
+        $sent = 0;
+        $subject = 'Notification from climbing.ge';
 
-                                return 'Send message socsesfuly';
-                            }
-                        }
-                        elseif ($request->event_notification_type == 'next') {
-                            $global_event = Event::orderBy('start_data')->first();
-                            if($global_event){
-                                
-                                $locale_event = $global_event->us_event;
-                                $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-                                $text = 'Check one of your, favorite event climbing area in Georgia, (' . $locale_event->title . ') for check what is new.';
-                                $subject = "Notification from climbing.ge";
+        if ($request->action === 'special_articles') {
+            $global_article = Article::where('category', '=', 'special')->first();
+            if (!$global_article) {
+                return response()->json(['sent' => 0, 'message' => 'No special article found.']);
+            }
 
-                                UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
+            $locale_article = $global_article->global_article_us;
+            $url = config('app.base_url_ssh') . '/special_article/' . $global_article->url_title;
+            $text = 'Important information from climbing.ge! ' . $locale_article->title . ' Check this article as soon as possible.';
 
-                                return 'Send message socsesfuly';
-                            }
-                        }
+            foreach (User::get() as $user) {
+                if (NotificationDispatchService::sendOnce($user, $global_article, 'new_content', $url, 'Important notification from climbing.ge', $text, true)) {
+                    $sent++;
+                }
+            }
+
+            return response()->json(['sent' => $sent]);
+        }
+
+        $users_with_preference = NotificationDispatchService::usersWithPreference($request->action);
+
+        foreach ($users_with_preference as $user) {
+            if ($request->action === 'interested_event') {
+                $global_event = null;
+
+                if ($request->event_notification_type === 'select_event' && $user->interested_events) {
+                    $interested_event = $user->interested_events->where('event_id', '=', $request->id)->first();
+                    $global_event = $interested_event->event ?? null;
+                } elseif ($request->event_notification_type === 'next') {
+                    $global_event = Event::orderBy('start_data')->first();
+                }
+
+                if ($global_event) {
+                    $locale_event = $global_event->us_event;
+                    $url = config('app.base_url_ssh') . '/event/' . $global_event->url_title;
+                    $text = 'Check one of your favorite event climbing areas in Georgia, (' . $locale_event->title . ') to see what is new.';
+
+                    if (NotificationDispatchService::sendOnce($user, $global_event, 'favorite_publish', $url, $subject, $text, true)) {
+                        $sent++;
                     }
-                    else if($request->action == 'favorite_product' && $user->favorite_products){
-                        $favorite_products = $user->favorite_products->where('product_id', '=', $request->id)->first();
-                        if($favorite_products){
-                            $global_product = $favorite_products->product;
+                }
+            } elseif ($request->action === 'favorite_product' && $user->favorite_products) {
+                $favorite_product = $user->favorite_products->where('product_id', '=', $request->id)->first();
+                if ($favorite_product) {
+                    $global_product = $favorite_product->product;
+                    $locale_product = $global_product->us_product;
+                    $url = 'https://' . config('app.shop_url') . '/product/' . $global_product->url_title;
+                    $text = 'Check one of your favorite products on climbing.ge, (' . $locale_product->title . ') to see what is new.';
 
-                            $locale_product = $global_product->us_product;
-                            $url = 'https://'.config('app.shop_url').'/product/'.$global_product->url_title;
-                            $text = 'Check one of your, favorite product climbing area in Georgia, (' . $locale_product->title . ') for check what is new.';
-                            $subject = "Notification from climbing.ge";
-
-                            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-
-                            return 'Send message socsesfuly';
-                        }
+                    if (NotificationDispatchService::sendOnce($user, $global_product, 'favorite_publish', $url, $subject, $text, true)) {
+                        $sent++;
                     }
-                    else if($request->action == 'favorite_outdoor' && $user->favorite_outdoors){
-                        $faworite_outdoor = $user->favorite_outdoors->where('article_id', '=', $request->id)->first();
-                        if($faworite_outdoor){
-                            $global_outdoor = $faworite_outdoor->outdoor_area;
-                            
-                            $locale_outdoor = $global_outdoor->global_article_us;
-                            $url = config('app.base_url_ssh').'/outdoor/'.$global_outdoor->url_title;
-                            $text = 'Check one of your, favorite outdoor climbing area in Georgia, (' . $locale_outdoor->title . ') for check what is new.';
-                            $subject = "Notification from climbing.ge";
+                }
+            } elseif ($request->action === 'favorite_outdoor' && $user->favorite_outdoors) {
+                $favorite_outdoor = $user->favorite_outdoors->where('article_id', '=', $request->id)->first();
+                if ($favorite_outdoor) {
+                    $global_outdoor = $favorite_outdoor->outdoor_area;
+                    $locale_outdoor = $global_outdoor->global_article_us;
+                    $url = config('app.base_url_ssh') . '/outdoor/' . $global_outdoor->url_title;
+                    $text = 'Check one of your favorite outdoor climbing areas in Georgia, (' . $locale_outdoor->title . ') to see what is new.';
 
-                            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-
-                            return 'Send message socsesfuly';
-                        }
+                    if (NotificationDispatchService::sendOnce($user, $global_outdoor, 'favorite_publish', $url, $subject, $text, true)) {
+                        $sent++;
                     }
-                    else if($request->action == 'news'){
-                        $last_news = Article::where('category', '=', 'news')->latest('id')->first();
-                        if($last_news){
-                            $locale_outdoor = $last_news->global_article_us;
-                            $url = config('app.base_url_ssh').'/news/'.$last_news->url_title;
-                            $text = 'News from climbing.ge ' . $locale_outdoor->title . ' check what is new.';
-                            $subject = "Notification from climbing.ge";
+                }
+            } elseif ($request->action === 'news') {
+                $last_news = Article::where('category', '=', 'news')->latest('id')->first();
+                if ($last_news) {
+                    $locale_news = $last_news->global_article_us;
+                    $url = config('app.base_url_ssh') . '/news/' . $last_news->url_title;
+                    $text = 'News from climbing.ge: ' . $locale_news->title . '. Check what is new.';
 
-                            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-
-                            return 'Send message socsesfuly';
-                        }
+                    if (NotificationDispatchService::sendOnce($user, $last_news, 'new_content', $url, $subject, $text, true)) {
+                        $sent++;
                     }
-                    else if($request->action == 'favorite_film' && $user->favorite_films){
-                        $favorite_film = $user->favorite_films->where('film_id', '=', $request->id)->first();
-                        if($favorite_film){
-                            $global_film = $favorite_film->film;
+                }
+            } elseif ($request->action === 'favorite_film' && $user->favorite_films) {
+                $favorite_film = $user->favorite_films->where('film_id', '=', $request->id)->first();
+                if ($favorite_film) {
+                    $global_film = $favorite_film->film;
+                    $locale_film = $global_film->us_film;
+                    $url = 'https://' . config('app.films_url') . '/film/' . $global_film->url_title;
+                    $text = 'Check one of your favorite films on climbing.ge, (' . $locale_film->title . ') to see what is new.';
 
-                            $locale_film = $global_film->us_film;
-                            $url = 'https://'.config('app.films_url').'/film/'.$global_film->url_title;
-                            $text = 'Check one of your, favorite film on climbing.ge, (' . $locale_film->title . ') for check what is new.';
-                            $subject = "Notification from climbing.ge";
-
-                            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-
-                            return 'Send message socsesfuly';
-                        }
+                    if (NotificationDispatchService::sendOnce($user, $global_film, 'favorite_publish', $url, $subject, $text, true)) {
+                        $sent++;
                     }
                 }
             }
         }
-        else if($request->action == 'special_articles'){
-            $users = User::get();
-            foreach ($users as $user) {
-                $global_outdoor = Article::where('category', '=', 'special')->first();
-                
-                $locale_outdoor = $global_outdoor->global_article_us;
-                $url = config('app.base_url_ssh').'/special_article/'.$global_outdoor->url_title;
-                $text = 'Important information from climbing.ge! ' . $locale_outdoor->title . ' Check this article as soon as possible.';
-                $subject = 'Importent notification from climbing.ge';
 
-                UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-
-                return 'Send message socsesfuly';
-            }
-        }
-
-        return 'Nathing for senging!';
+        return response()->json(['sent' => $sent]);
     }
 }

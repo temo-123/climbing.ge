@@ -71,6 +71,42 @@ class DatabaseController extends Controller
         }
     }
 
+    /**
+     * Fix every currently-detected issue that has an automatic fix available.
+     * Issues with no fix closure (e.g. missing-field checks on sectors/summits)
+     * are left untouched and still show up in a subsequent detectIssues() call.
+     */
+    public function fixAllIssues(): JsonResponse
+    {
+        if ($auth = PermissionService::authorize('database', 'edit')) return $auth;
+
+        $fixes = $this->getFixMap();
+        $affected = 0;
+        $fixedKeys = 0;
+
+        foreach ($this->detectIssues() as $issue) {
+            if (!$issue['fixable'] || !isset($fixes[$issue['key']])) {
+                continue;
+            }
+
+            try {
+                $affected += $fixes[$issue['key']]();
+                $fixedKeys++;
+            } catch (\Exception $e) {
+                // skip this key, keep fixing the rest
+            }
+        }
+
+        $remaining = count($this->detectIssues());
+
+        return response()->json([
+            'success'   => true,
+            'affected'  => $affected,
+            'fixed_keys' => $fixedKeys,
+            'remaining' => $remaining,
+        ]);
+    }
+
     // -------------------------------------------------------------------------
     // Integrity checks
     // -------------------------------------------------------------------------
@@ -199,23 +235,24 @@ class DatabaseController extends Controller
             ];
         }
 
-        // Content types that store translations as flat bilingual columns
-        // directly on the table instead of a separate locale table.
-        $flatBilingualColumns = [
-            'sectors' => ['us_description', 'ka_description'],
-            'summits' => ['ka_title', 'ka_description'],
-        ];
-
-        foreach ($flatBilingualColumns as $table => $columns) {
-            foreach ($columns as $column) {
+        // "Leftover translation row" checks: a locale_X row whose parent
+        // (articles/products/...) doesn't (or no longer does) point back at
+        // it — e.g. the parent was deleted directly without also deleting
+        // its two locale rows. This is the opposite direction from the
+        // orphan_locale_* checks above (which catch a parent pointing at a
+        // locale id that no longer exists) and is what the "article errors"
+        // dashboard alert has always detected for articles; generalized
+        // here to every entity that has the same locale-table shape.
+        foreach ($this->translationEntities() as $table => [$localeTable, $singular, $displayColumn]) {
+            foreach (['us', 'ka'] as $locale) {
+                $col = "{$locale}_{$singular}_id";
                 $checks[] = [
-                    'key'   => "{$table}_missing_{$column}",
-                    'table' => $table,
-                    'label' => ucfirst($table) . " rows missing {$column}",
-                    'count' => fn() => DB::table($table)
-                        ->where(function ($q) use ($column) {
-                            $q->whereNull($column)->orWhere($column, '');
-                        })
+                    'key'   => "orphan_translation_{$table}_{$locale}",
+                    'table' => $localeTable,
+                    'label' => strtoupper($locale) . " {$table} translation rows with no parent {$singular}",
+                    'count' => fn() => DB::table($localeTable)
+                        ->where('locale', $locale)
+                        ->whereNotIn('id', DB::table($table)->whereNotNull($col)->pluck($col))
                         ->count(),
                 ];
             }
@@ -247,7 +284,7 @@ class DatabaseController extends Controller
      */
     private function getFixMap(): array
     {
-        return [
+        $fixes = [
             'orphan_article_images' => function () {
                 return DB::table('article_images')
                     ->whereNotIn('article_id', DB::table('articles')->pluck('id'))
@@ -269,6 +306,74 @@ class DatabaseController extends Controller
                     ->whereNotIn('user_id', DB::table('users')->pluck('id'))
                     ->delete();
             },
+        ];
+
+        foreach ($this->translationEntities() as $table => [$localeTable, $singular, $displayColumn]) {
+            foreach (['us', 'ka'] as $locale) {
+                $col = "{$locale}_{$singular}_id";
+                $fixes["orphan_translation_{$table}_{$locale}"] = function () use ($localeTable, $table, $col, $locale) {
+                    return DB::table($localeTable)
+                        ->where('locale', $locale)
+                        ->whereNotIn('id', DB::table($table)->whereNotNull($col)->pluck($col))
+                        ->delete();
+                };
+            }
+        }
+
+        return $fixes;
+    }
+
+    /**
+     * Preview rows for a fixable/viewable "leftover translation row" issue key
+     * (orphan_translation_{table}_{locale}) — generalizes the old
+     * SiteDataController::get_article_errors to every entity.
+     */
+    public function getIssueRows(Request $request, string $key): JsonResponse
+    {
+        if ($auth = PermissionService::authorize('database', 'show')) return $auth;
+
+        if (!preg_match('/^orphan_translation_(.+)_(us|ka)$/', $key, $m)) {
+            return response()->json([], 422);
+        }
+
+        [, $table, $locale] = $m;
+        $entities = $this->translationEntities();
+
+        if (!isset($entities[$table])) {
+            return response()->json([], 422);
+        }
+
+        [$localeTable, $singular, $displayColumn] = $entities[$table];
+        $col = "{$locale}_{$singular}_id";
+
+        $rows = DB::table($localeTable)
+            ->where('locale', $locale)
+            ->whereNotIn('id', DB::table($table)->whereNotNull($col)->pluck($col))
+            ->get(['id', $displayColumn])
+            ->map(fn ($row) => [
+                'id'     => $row->id,
+                'title'  => $row->{$displayColumn} ?: '(no title)',
+                'locale' => $locale,
+            ]);
+
+        return response()->json($rows);
+    }
+
+    /**
+     * Entities that store translations in a separate locale_X table, linked
+     * via us_{singular}_id / ka_{singular}_id FK columns on the parent table.
+     * table => [locale table, FK singular, display column on the locale table]
+     */
+    private function translationEntities(): array
+    {
+        return [
+            'articles' => ['locale_articles', 'article', 'title'],
+            'products' => ['locale_products', 'product', 'title'],
+            'services' => ['locale_services', 'service', 'title'],
+            'tours'    => ['locale_tours', 'tour', 'title'],
+            'films'    => ['locale_films', 'film', 'name'],
+            'mounts'   => ['locale_mounts', 'mount', 'title'],
+            'posts'    => ['locale_posts', 'post', 'title'],
         ];
     }
 }

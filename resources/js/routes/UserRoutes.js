@@ -171,6 +171,8 @@ const routes = [
 
             { path: 'notification_analytics', name: 'notificationAnalytics', component: load('notifications/NotificationAnalyticsPage'), meta: {title: 'user page', permissions: [['show', 'user_notification']]}},
 
+            { path: 'mail', name: 'mailPage', component: load('notifications/MailPageComponent'), meta: {title: 'user page', permissions: [['show', 'mail']]}},
+
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},

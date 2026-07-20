@@ -32,6 +32,10 @@ use App\Models\User\Permission;
 
 use App\Models\Shop\Product;
 use App\Models\Shop\Product_category;
+use App\Models\Shop\Service;
+use App\Models\Shop\Tour;
+use App\Models\Films\Film;
+use App\Models\Blog\Post;
 
 use App\Models\Social_account;
 
@@ -108,56 +112,12 @@ class SiteDataController extends Controller
 
         $counts['products'] = Product::count();
         $counts['product_categories'] = Product_category::count();
-
-        $counts['us_article_errors'] = $this->getOrphanedLocaleArticles('us')->count();
-        $counts['ka_article_errors'] = $this->getOrphanedLocaleArticles('ka')->count();
+        $counts['services'] = Service::count();
+        $counts['tours'] = Tour::count();
+        $counts['films'] = Film::count();
+        $counts['blog_posts'] = Post::count();
 
         return $counts;
-    }
-
-    /**
-     * Locale articles ('us'/'ka') whose linked global article is missing.
-     */
-    private function getOrphanedLocaleArticles(string $locale)
-    {
-        $relation = $locale === 'ka' ? 'global_article_ka' : 'global_article_us';
-
-        return Locale_article::where('locale', $locale)
-            ->with($relation)
-            ->get()
-            ->reject(fn ($local_article) => $local_article->{$relation})
-            ->values();
-    }
-
-    public function fix_article_bugs(Request $request)
-    {
-        $orphaned_us = $this->getOrphanedLocaleArticles('us');
-        $orphaned_ka = $this->getOrphanedLocaleArticles('ka');
-
-        Locale_article::destroy($orphaned_us->pluck('id'));
-        Locale_article::destroy($orphaned_ka->pluck('id'));
-
-        return response()->json([
-            'message' => 'Article bugs fixed successfully',
-            'us_deleted' => $orphaned_us->count(),
-            'ka_deleted' => $orphaned_ka->count(),
-        ]);
-    }
-
-    public function get_article_errors(Request $request, $locale)
-    {
-        $allowed = ['us', 'ka'];
-        if (!in_array($locale, $allowed)) {
-            return response()->json([], 400);
-        }
-
-        $errors = $this->getOrphanedLocaleArticles($locale)->map(fn ($local_article) => [
-            'id'    => $local_article->id,
-            'title' => $local_article->title ?: '(no title)',
-            'locale' => $locale,
-        ]);
-
-        return response()->json($errors);
     }
 
     public function get_site_global_data(){

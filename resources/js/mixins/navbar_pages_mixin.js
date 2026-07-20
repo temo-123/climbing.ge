@@ -327,6 +327,13 @@ export default {
                             ]
                         },
                         {
+                            name: this.$t('user.nav.site_options_mail'),
+                            route: "/mail",
+                            permissions: [
+                                ['show', 'mail'],
+                            ]
+                        },
+                        {
                             name: this.$t('user.nav.site_options_all_comments'),
                             route: "/comments_and_reviews",
                             permissions: [

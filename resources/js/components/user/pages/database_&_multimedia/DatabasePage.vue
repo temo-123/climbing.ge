@@ -44,24 +44,7 @@
                     </a>
                 </div>
 
-                <div v-if="issues.length" class="alert alert-warning mb-3">
-                    <strong><i class="fa fa-exclamation-triangle"></i> {{ $t('admin.database.integrity_issues_title') }} ({{ issues.length }})</strong>
-                    <div v-for="issue in issues" :key="issue.key" class="d-flex align-items-center mt-2 gap-2">
-                        <code>{{ issue.table }}</code>
-                        <span class="text-muted small">{{ issue.label }}</span>
-                        <span class="badge badge-danger">{{ issue.count }} {{ issue.count !== 1 ? $t('admin.database.row_plural') : $t('admin.database.row_singular') }}</span>
-                        <button
-                            v-if="issue.fixable"
-                            class="btn btn-sm btn-danger ml-auto"
-                            :disabled="fixing === issue.key"
-                            @click="fixIssue(issue)"
-                        >
-                            <i class="fa fa-wrench"></i>
-                            {{ fixing === issue.key ? $t('admin.database.fixing_ellipsis') : $t('admin.database.fix_btn') }}
-                        </button>
-                        <span v-else class="badge badge-secondary ml-auto">{{ $t('admin.database.manual_fix_needed') }}</span>
-                    </div>
-                </div>
+                <integrity_issues_alert @fixed="load" />
 
                 <div v-if="loading" class="text-center py-4">
                     <i class="fa fa-spinner fa-spin fa-2x"></i>
@@ -83,9 +66,10 @@
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import ArticleImagesPage from './multimedia/ArticleImagesPage.vue'
+import integrity_issues_alert from '../../items/dashboards/IntegrityIssuesAlertComponent.vue'
 
 export default {
-    components: { breadcrumb, tabsComponent, ArticleImagesPage },
+    components: { breadcrumb, tabsComponent, ArticleImagesPage, integrity_issues_alert },
     data() {
         return {
             page_tab: 'multimedia',
@@ -93,7 +77,6 @@ export default {
             issues: [],
             loading: false,
             error: null,
-            fixing: null,
             phpmyadmin_url: process.env.MIX_PHPMYADMIN_URL,
         }
     },
@@ -149,22 +132,6 @@ export default {
                 this.error = this.$t('admin.database.failed_load_db_stats')
             } finally {
                 this.loading = false
-            }
-        },
-        async fixIssue(issue) {
-            if (!confirm(this.$t('admin.database.confirm_delete_orphaned_rows', { count: issue.count, table: issue.table }))) return
-            this.fixing = issue.key
-            try {
-                const res = await axios.post('/set_database/fix_issue', { key: issue.key })
-                if (res.data.success) {
-                    await this.load()
-                } else {
-                    alert(res.data.message || this.$t('admin.database.fix_failed'))
-                }
-            } catch (e) {
-                alert(this.$t('admin.database.request_failed'))
-            } finally {
-                this.fixing = null
             }
         },
         formatBytes(bytes) {

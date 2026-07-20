@@ -31,6 +31,18 @@
                 </div>
             </div>
 
+            <div class="row justify-content-center" v-if="$can('show', 'mail')">
+                <div class="col-md-6 mb-3">
+                    <mail_notification_widget compact />
+                    <router-link :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
+                        {{ $t('user.home.view_mail_alerts_btn') }}
+                    </router-link>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <entity_locale_errors summary />
+                </div>
+            </div>
+
             <div class="row justify-content-center">
                 <div class="col-md-12">
                     <div class="card">
@@ -63,6 +75,8 @@
 
 <script>
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
+    import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
+    import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
 
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import ClimberCard from '../../global_components/ClimberCardComponent.vue'
@@ -73,6 +87,8 @@
         mixins: [go_to_service_mixin],
         components: {
             user_notifications_list,
+            mail_notification_widget,
+            entity_locale_errors,
             servicesListComponent,
             'climber-card': ClimberCard,
             'climber-profile-modal': ClimberProfileModal,

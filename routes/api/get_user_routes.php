@@ -79,6 +79,9 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
 
     Route::controller(\App\Http\Controllers\Api\User\MailCheckController::class)->group(function () {
         Route::get('/mail/unread_count', 'get_unread_count');
+        Route::get('/mail/recent_messages', 'get_recent_messages');
+        Route::get('/mail/folders', 'get_folders');
+        Route::get('/mail/message/{uid}', 'get_message');
     });
 
     Route::controller(\App\Http\Controllers\Api\User\UserFollowController::class)->prefix('set_user_follow')->group(function () {

@@ -104,7 +104,9 @@
                     type="submit"
                     form="sund_user_notification"
                     :class="{'btn btn-primary': true}"
+                    :disabled="is_sending"
                 >
+                <i class="fa fa-spinner fa-spin" v-if="is_sending"></i>
                 {{ $t('admin.notifications.send_btn') }}
                 </button>
             </div>
@@ -127,13 +129,13 @@
 
                 is_notifay_modal: false,
                 is_select_notification_type_error: false,
+                is_sending: false,
+                loading: false,
 
                 notification_type: 0,
-                notification_id: 0
+                notification_id: 0,
+                event_notification_type: 0,
             }
-        },
-        mounted(){
-            // 
         },
         methods: {
             show_modal(){
@@ -149,25 +151,31 @@
                 this.is_select_notification_type_error = false
 
                 if(this.notification_type != 0 && this.notification_id != 0 || this.event_notification_type != 0){
+                    this.is_sending = true
                     axios
                     .post('/user/notifications/send_user_favorites_notification/' + this.notification_type, {
                         id: this.notification_id,
                         event_notification_type: this.event_notification_type
                     })
                     .then(response => {
-                        alert(response.data)
+                        this.$bus.$emit('toast', {
+                            type: 'success',
+                            title: this.$t('admin.notifications.send_mail_notification_title'),
+                            message: this.$t('admin.notifications.notification_sent_count_msg', { count: response.data.sent }),
+                        })
                         this.close_modal()
                     })
                     .catch(err => {
                         console.log(err);
                     })
-                    .finally(() => this.is_mail_sending_procesing = false);
+                    .finally(() => this.is_sending = false);
                 }
                 else{
                     this.is_select_notification_type_error = true
                 }
             },
             get_events(){
+                this.loading = true
                 axios
                 .get("/event/get_all_events/")
                 .then(response => {
@@ -176,10 +184,11 @@
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.event_loading = false);
+                .finally(() => this.loading = false);
             },
 
             get_products(){
+                this.loading = true
                 axios
                 .get("/products/en/")
                 .then(response => {
@@ -187,7 +196,8 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.loading = false);
             },
 
             selected_notification_action(){
@@ -209,6 +219,7 @@
             },
 
             get_articles(category){
+                this.loading = true
                 axios
                 .get("/article/get_category_articles/" + category)
                 .then(response => {
@@ -217,10 +228,11 @@
                 .catch(
                     error => console.log(error)
                 )
-                .finally(() => this.article_loading = false);
+                .finally(() => this.loading = false);
             },
 
             get_films(){
+                this.loading = true
                 axios
                 .get("/films/")
                 .then(response => {
@@ -228,7 +240,8 @@
                 })
                 .catch(
                     error => console.log(error)
-                );
+                )
+                .finally(() => this.loading = false);
             },
         }
     }

@@ -56,6 +56,8 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
     Route::controller(DatabaseController::class)->prefix('set_database')->group(function () {
         Route::get('/table_stats', 'getTableStats');
         Route::post('/fix_issue', 'fixIssue');
+        Route::post('/fix_all_issues', 'fixAllIssues');
+        Route::get('/issue_rows/{key}', 'getIssueRows');
     });
 
     Route::controller(AdminAlertsController::class)->prefix('set_admin_alerts')->group(function () {

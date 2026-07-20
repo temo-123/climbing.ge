@@ -38,14 +38,50 @@
                                 <option value="gif">{{ $t('admin.multimedia.filter_gif') }}</option>
                                 <option value="svg">{{ $t('admin.multimedia.filter_svg') }}</option>
                             </select>
+
+                            <select v-model="usageFilter" @change="filterItems" class="filter-select">
+                                <option value="">{{ $t('admin.multimedia.usage_all') }}</option>
+                                <option value="used">{{ $t('admin.multimedia.usage_used') }}</option>
+                                <option value="unused">{{ $t('admin.multimedia.usage_unused') }}</option>
+                            </select>
                         </div>
                     </div>
 
                     <!-- Breadcrumbs -->
                     <div class="breadcrumbs">
-                        <span @click="setCurrentFolder(null)" class="breadcrumb-item">{{ $t('admin.multimedia.root_label') }}</span>
-                        <span v-if="currentFolder" class="breadcrumb-separator"> / </span>
-                        <span v-if="currentFolder" class="breadcrumb-item active">{{ currentFolder.name }}</span>
+                        <span @click="setCurrentFolder(null)" class="breadcrumb-item" :class="{ active: !currentFolder }">{{ $t('admin.multimedia.root_label') }}</span>
+                        <template v-for="crumb in breadcrumbTrail" :key="crumb.path">
+                            <span class="breadcrumb-separator"> / </span>
+                            <span
+                                @click="setCurrentFolder(crumb)"
+                                class="breadcrumb-item"
+                                :class="{ active: currentFolder && currentFolder.path === crumb.path }"
+                            >{{ crumb.name }}</span>
+                        </template>
+                    </div>
+
+                    <!-- Stats Summary -->
+                    <div v-if="!loading && !error" class="stats-bar">
+                        <div class="stat-pill">
+                            <i class="fa fa-images"></i>
+                            <span>{{ stats.total }} {{ $t('admin.multimedia.stat_total') }}</span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa fa-hdd-o"></i>
+                            <span>{{ formatFileSize(stats.totalSize) }}</span>
+                        </div>
+                        <div class="stat-pill stat-used">
+                            <i class="fa fa-check-circle"></i>
+                            <span>{{ stats.used }} {{ $t('admin.multimedia.stat_used') }}</span>
+                        </div>
+                        <div
+                            class="stat-pill stat-unused"
+                            :class="{ clickable: stats.unused > 0 }"
+                            @click="stats.unused > 0 && (usageFilter = 'unused')"
+                        >
+                            <i class="fa fa-exclamation-triangle"></i>
+                            <span>{{ stats.unused }} {{ $t('admin.multimedia.stat_unused') }} &middot; {{ formatFileSize(stats.unusedSize) }} {{ $t('admin.multimedia.stat_reclaimable') }}</span>
+                        </div>
                     </div>
 
                     <!-- Bulk Actions Toolbar -->
@@ -155,12 +191,32 @@
                                 <i class="fa fa-images"></i>
                                 {{ $t('admin.multimedia.images_title') }}{{ currentFolder ? ` — ${currentFolder.name}` : '' }}
                             </h3>
-                            <label class="btn btn-sm btn-primary" style="cursor:pointer; margin-bottom:0;">
-                                <i class="fa fa-upload"></i> {{ $t('admin.multimedia.upload_btn') }}
-                                <input type="file" multiple accept="image/*" style="display:none" @change="handleFileSelect">
-                            </label>
+                            <div class="section-title-actions">
+                                <button
+                                    v-if="unusedImagesInView.length > 0"
+                                    @click="selectAllUnused"
+                                    class="btn btn-sm btn-outline-danger"
+                                    :title="$t('admin.multimedia.select_all_unused_tooltip')"
+                                >
+                                    <i class="fa fa-magic"></i> {{ $t('admin.multimedia.select_all_unused_btn') }} ({{ unusedImagesInView.length }})
+                                </button>
+                                <label class="btn btn-sm btn-primary" style="cursor:pointer; margin-bottom:0;">
+                                    <i class="fa fa-upload"></i> {{ $t('admin.multimedia.upload_btn') }}
+                                    <input type="file" multiple accept="image/*" style="display:none" @change="handleFileSelect">
+                                </label>
+                            </div>
                         </div>
-                        <div class="images-grid">
+                        <div
+                            class="images-grid"
+                            :class="{ 'drag-over': isDraggingOver }"
+                            @dragover.prevent="isDraggingOver = true"
+                            @dragleave.prevent="isDraggingOver = false"
+                            @drop="handleDrop"
+                        >
+                            <div v-if="isDraggingOver" class="drop-hint">
+                                <i class="fa fa-upload"></i>
+                                <p>{{ $t('admin.multimedia.drop_to_upload') }}</p>
+                            </div>
                             <div
                                 v-for="image in filteredImages"
                                 :key="image.path"
@@ -249,27 +305,60 @@
                 searchQuery: '',
                 sortBy: 'name',
                 filterType: '',
-                
+                usageFilter: '',
+
                 // File handling
                 currentImageIndex: 0,
 
                 // Create folder
                 showCreateFolder: false,
-                newFolderName: ''
+                newFolderName: '',
+
+                // Drag & drop upload
+                isDraggingOver: false
             }
         },
-        
+
         computed: {
             // Filter and sort folders - get all folders with proper hierarchy
             filteredFolders() {
                 let folders = this.getAllFolders();
                 return this.filterAndSortItems(folders);
             },
-            
+
             // Filter and sort images
             filteredImages() {
                 let images = this.getImagesInFolder(this.currentFolder);
                 return this.filterAndSortItems(images);
+            },
+
+            // Unused images within the currently filtered/visible set
+            unusedImagesInView() {
+                return this.filteredImages.filter(img => img.used === false);
+            },
+
+            // Site-wide usage stats (independent of current folder/search filters)
+            stats() {
+                const all = this.getAllImages();
+                const unused = all.filter(img => img.used === false);
+                return {
+                    total: all.length,
+                    used: all.length - unused.length,
+                    unused: unused.length,
+                    totalSize: all.reduce((sum, img) => sum + (img.size || 0), 0),
+                    unusedSize: unused.reduce((sum, img) => sum + (img.size || 0), 0)
+                };
+            },
+
+            // Full folder chain from root to the current folder, for breadcrumbs
+            breadcrumbTrail() {
+                const trail = [];
+                let folder = this.currentFolder;
+                while (folder) {
+                    trail.unshift(folder);
+                    folder = folder.parent;
+                }
+                return trail;
             }
         },
         
@@ -327,9 +416,9 @@
                             parent: parent
                         };
                         folders.push(folderWithInfo);
-                        
+
                         if (item.children && Array.isArray(item.children)) {
-                            this.recursiveFolderSearch(item.children, folders, depth + 1, item);
+                            this.recursiveFolderSearch(item.children, folders, depth + 1, folderWithInfo);
                         }
                     }
                 });
@@ -395,7 +484,11 @@
             clearSelection() {
                 this.selectedItems = [];
             },
-            
+
+            selectAllUnused() {
+                this.selectedItems = this.unusedImagesInView.map(img => img.path);
+            },
+
             // Search and filtering
             filterAndSortItems(items) {
                 let filtered = items;
@@ -417,7 +510,15 @@
                         return true;
                     });
                 }
-                
+
+                // Apply usage filter (files only — folders are unaffected)
+                if (this.usageFilter) {
+                    filtered = filtered.filter(item => {
+                        if (item.type !== 'file') return true;
+                        return this.usageFilter === 'used' ? item.used !== false : item.used === false;
+                    });
+                }
+
                 // Apply sorting
                 return filtered.sort((a, b) => {
                     switch (this.sortBy) {
@@ -497,9 +598,13 @@
             // Individual delete operations with confirmation
             async deleteItem(item) {
                 const itemType = item.type === 'directory' ? this.$t('admin.multimedia.folder_type') : this.$t('admin.multimedia.file_type');
-                const msg = item.type === 'directory'
+                let msg = item.type === 'directory'
                     ? this.$t('admin.multimedia.confirm_delete_folder', { name: item.name })
                     : this.$t('admin.multimedia.confirm_delete_file', { name: item.name });
+
+                if (item.type === 'file' && item.used) {
+                    msg = this.$t('admin.multimedia.confirm_delete_used_file', { name: item.name });
+                }
 
                 if (!confirm(msg)) return;
 
@@ -540,7 +645,13 @@
             },
             
             async bulkDelete() {
-                if (!confirm(this.$t('admin.multimedia.confirm_bulk_delete', { count: this.selectedItems.length }))) return;
+                const selectedImages = this.getAllImages().filter(img => this.selectedItems.includes(img.path));
+                const usedCount = selectedImages.filter(img => img.used).length;
+                const msg = usedCount > 0
+                    ? this.$t('admin.multimedia.confirm_bulk_delete_with_used', { count: this.selectedItems.length, usedCount })
+                    : this.$t('admin.multimedia.confirm_bulk_delete', { count: this.selectedItems.length });
+
+                if (!confirm(msg)) return;
 
                 try {
                     await axios.delete('/set_multimedia/delete_items', { data: { paths: [...this.selectedItems] } });
@@ -575,8 +686,9 @@
             
             handleDrop(event) {
                 event.preventDefault();
-                const files = Array.from(event.dataTransfer.files);
-                this.uploadFiles(files);
+                this.isDraggingOver = false;
+                const files = Array.from(event.dataTransfer.files).filter(f => f.type.startsWith('image/'));
+                if (files.length) this.uploadFiles(files);
             },
             
             async uploadFiles(files) {
@@ -773,6 +885,46 @@
         color: rgba(255, 255, 255, 0.7);
     }
 
+    .media-manager-container .stats-bar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 16px;
+    }
+
+    .media-manager-container .stat-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .media-manager-container .stat-pill.stat-used i {
+        color: #28a745;
+    }
+
+    .media-manager-container .stat-pill.stat-unused {
+        background: rgba(220, 53, 69, 0.25);
+    }
+
+    .media-manager-container .stat-pill.stat-unused i {
+        color: #ff8080;
+    }
+
+    .media-manager-container .stat-pill.clickable {
+        cursor: pointer;
+        transition: background 0.2s ease;
+    }
+
+    .media-manager-container .stat-pill.clickable:hover {
+        background: rgba(220, 53, 69, 0.4);
+    }
+
     .media-manager-container .bulk-actions {
         background: rgba(255, 255, 255, 0.1);
         padding: 12px 16px;
@@ -851,6 +1003,25 @@
         align-items: center;
         justify-content: space-between;
         margin-bottom: 8px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .media-manager-container .section-title-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .media-manager-container .btn-outline-danger {
+        background: white;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+    .media-manager-container .btn-outline-danger:hover {
+        background: #dc3545;
+        color: white;
     }
     .media-manager-container .section-title {
         font-size: 18px;
@@ -1265,6 +1436,39 @@
         max-height: 600px;
         overflow-y: auto;
         padding-right: 8px;
+        position: relative;
+        border-radius: 8px;
+        transition: background 0.2s ease;
+    }
+
+    .media-manager-container .images-grid.drag-over {
+        background: rgba(0, 123, 255, 0.06);
+        outline: 2px dashed #007bff;
+        outline-offset: -4px;
+    }
+
+    .media-manager-container .drop-hint {
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        pointer-events: none;
+        color: #007bff;
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 8px;
+    }
+
+    .media-manager-container .drop-hint i {
+        font-size: 36px;
+    }
+
+    .media-manager-container .drop-hint p {
+        margin: 0;
+        font-weight: 600;
     }
 
     .media-manager-container .images-grid::-webkit-scrollbar {

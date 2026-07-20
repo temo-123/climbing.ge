@@ -65,8 +65,6 @@ Route::group(['namespace'=>'Api'], function() {
         Route::post('/add_site_local_data', 'add_site_local_data');
         Route::post('/edit_site_local_data/{id}/{leng}', 'edit_site_local_data');
 
-        Route::get('/fix_article_bugs', 'fix_article_bugs');
         Route::get('/site_data_counts', 'site_data_counts');
-        Route::get('/article_errors/{locale}', 'get_article_errors');
     });
 });

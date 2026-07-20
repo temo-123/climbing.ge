@@ -42,44 +42,76 @@ class MultimediaController extends Controller
     }
 
     /**
-     * Collect every image filename referenced in the database.
+     * Tables that hold framework/queue bookkeeping data rather than site
+     * content — never worth scanning for image references.
+     */
+    private const NON_CONTENT_TABLES = [
+        'migrations', 'jobs', 'failed_jobs', 'job_batches',
+        'password_resets', 'password_reset_tokens', 'personal_access_tokens',
+        'sessions', 'cache', 'cache_locks',
+    ];
+
+    /**
+     * Collect every image filename referenced anywhere in the database.
+     *
+     * Instead of a hand-maintained table/column list (which silently misses
+     * new image fields — e.g. products, brands, mtp routes, site settings —
+     * and then wrongly flags their images as "unused"), this inspects the
+     * live schema for any column that plausibly stores an image reference:
+     *   1. varchar/char columns named like image/photo/avatar/logo/... (direct file refs)
+     *   2. text/longtext/json columns (rich-text/JSON bodies) scanned for
+     *      embedded filenames with an image extension.
+     *
      * Returns a flat Set-like array (values are keys for O(1) lookup).
      */
     private function collectUsedImageFilenames(): array
     {
-        $used = [];
+        $used     = [];
+        $database = DB::getDatabaseName();
 
-        // Tables with a simple `image` column
-        $simpleTables = [
-            'articles', 'posts', 'summits', 'header_images',
-            'sector_local_images', 'spot_rocks_images',
-            'mount_route_images', 'service_images', 'tour_images',
-            'article_images', 'users',
-        ];
+        $imageColumns = DB::select("
+            SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS
+            WHERE TABLE_SCHEMA = ?
+              AND DATA_TYPE IN ('varchar', 'char')
+              AND (
+                    COLUMN_NAME LIKE '%image%' OR COLUMN_NAME LIKE '%photo%' OR COLUMN_NAME LIKE '%avatar%'
+                 OR COLUMN_NAME LIKE '%logo%'  OR COLUMN_NAME LIKE '%icon%'  OR COLUMN_NAME LIKE '%thumbnail%'
+                 OR COLUMN_NAME LIKE '%cover%' OR COLUMN_NAME LIKE '%gallery%' OR COLUMN_NAME LIKE '%banner%'
+                 OR COLUMN_NAME LIKE '%picture%'
+              )
+        ", [$database]);
 
-        foreach ($simpleTables as $table) {
+        foreach ($imageColumns as $col) {
+            if (in_array($col->TABLE_NAME, self::NON_CONTENT_TABLES)) continue;
+
             try {
-                $rows = DB::table($table)->whereNotNull('image')->pluck('image');
-                foreach ($rows as $img) {
-                    if ($img) $used[basename($img)] = true;
+                $rows = DB::table($col->TABLE_NAME)->whereNotNull($col->COLUMN_NAME)->pluck($col->COLUMN_NAME);
+                foreach ($rows as $value) {
+                    if ($value) $used[basename(parse_url($value, PHP_URL_PATH) ?: $value)] = true;
                 }
             } catch (\Exception $e) {
-                // table might not exist in some environments
+                // column readable via information_schema but not queryable (view, permissions, etc.)
             }
         }
 
-        // Scan editor HTML content for embedded <img src="..."> filenames
-        $textColumns = [
-            ['table' => 'locale_articles', 'col' => 'text'],
-            ['table' => 'locale_posts',    'col' => 'text'],
-        ];
-        foreach ($textColumns as $tc) {
+        // Scan rich-text / JSON bodies for embedded image filenames
+        // (editor HTML like <img src="...">, CSS background-image, JSON blobs, ...)
+        $textColumns = DB::select("
+            SELECT TABLE_NAME, COLUMN_NAME FROM information_schema.COLUMNS
+            WHERE TABLE_SCHEMA = ?
+              AND DATA_TYPE IN ('text', 'mediumtext', 'longtext', 'json')
+        ", [$database]);
+
+        foreach ($textColumns as $col) {
+            if (in_array($col->TABLE_NAME, self::NON_CONTENT_TABLES)) continue;
+
             try {
-                $rows = DB::table($tc['table'])->whereNotNull($tc['col'])->pluck($tc['col']);
-                foreach ($rows as $html) {
-                    preg_match_all('/src=["\']([^"\']+)["\']/', $html ?? '', $m);
-                    foreach ($m[1] as $src) {
-                        $used[basename($src)] = true;
+                $rows = DB::table($col->TABLE_NAME)->whereNotNull($col->COLUMN_NAME)->pluck($col->COLUMN_NAME);
+                foreach ($rows as $content) {
+                    if (!$content) continue;
+                    preg_match_all('/[\w\-.\/%]+\.(?:jpe?g|png|gif|webp|svg)\b/i', $content, $m);
+                    foreach ($m[0] as $match) {
+                        $used[basename($match)] = true;
                     }
                 }
             } catch (\Exception $e) {}

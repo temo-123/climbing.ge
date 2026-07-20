@@ -36,6 +36,8 @@ On top of that, each of those two also has an **add** variant (new item publishe
 
 ## Server Requirements
 
+**For a full, ordered, copy-pasteable Ubuntu setup walkthrough (fresh server → working automatic notifications), see `docs/NOTIFICATIONS_DEPLOYMENT.md`** — it also has the "which services does event-reminder vs. everything-else need" breakdown. The rest of this section is the quick-reference version.
+
 Every notification described in this document — content publish/update emails, follow-activity emails, new-follower emails, event reminders, admin manual sends — goes through the exact same pipeline: `App\Jobs\UserNotifications` queued onto the `emails` queue, sent via whatever `MAIL_*` transport is configured. **Four independent pieces of server infrastructure** have to be in place for any of it to actually reach an inbox. Missing any single one produces the identical symptom — no error anywhere, the email just never arrives — so when a notification "isn't sending," check all four before assuming it's a code bug:
 
 1. **Mail transport configured** (`.env`): `MAIL_MAILER`, `MAIL_HOST`, `MAIL_PORT`, `MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_ENCRYPTION`, `MAIL_FROM_ADDRESS`, `MAIL_FROM_NAME`. Template values live in `docs/BACKEND/examples/_.env .exemple`. Dev/staging here points at a Mailtrap sandbox (`MAIL_HOST=smtp.mailtrap.io`) — Mailtrap **never delivers to a real inbox**, it just captures mail for inspection, so a production deploy must swap these to a real SMTP provider (or another Laravel-supported mail driver) or every send will look successful while nothing ever reaches a real user.

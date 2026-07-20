@@ -39,14 +39,25 @@
                             {{ expanded[card.key] ? $t('admin.notifications.admin_panel.alerts.show_less') : $t('admin.notifications.admin_panel.alerts.review_btn') }}
                         </button>
 
-                        <router-link
-                            v-else-if="card.route"
-                            :to="{ name: card.route }"
-                            class="btn btn-outline-secondary btn-sm ml-2"
-                            @click="on_alert_link_click(card)"
-                        >
-                            {{ $t('admin.notifications.admin_panel.alerts.view_all_btn') }}
-                        </router-link>
+                        <template v-else-if="card.route">
+                            <button
+                                v-if="card.key === 'db_relation_issues'"
+                                class="btn btn-danger btn-sm ml-2"
+                                :disabled="fixing_relations"
+                                @click="fix_all_relations()"
+                            >
+                                <i class="fa fa-wrench"></i>
+                                {{ fixing_relations ? $t('admin.database.fixing_ellipsis') : $t('admin.database.fix_btn') }}
+                            </button>
+                            <router-link
+                                v-if="card.key !== 'db_relation_issues'"
+                                :to="{ name: card.route }"
+                                class="btn btn-outline-secondary btn-sm ml-2"
+                                @click="on_alert_link_click(card)"
+                            >
+                                {{ $t('admin.notifications.admin_panel.alerts.view_all_btn') }}
+                            </router-link>
+                        </template>
                     </div>
 
                     <!-- Expanded individual complaint rows (comment / feedback complaints only) -->
@@ -173,6 +184,8 @@
                 expanded: {},
                 show_all: false,
                 collapse_after: 4,
+
+                fixing_relations: false,
             }
         },
         computed: {
@@ -289,6 +302,29 @@
                 .then(response => {
                     this.tracked_alerts = response.data
                 })
+            },
+
+            fix_all_relations(){
+                if (!window.confirm(this.$t('admin.dashboards.confirm_delete_conflicting_items'))) return
+                this.fixing_relations = true
+                axios
+                .post('set_database/fix_all_issues')
+                .then(response => {
+                    this.$bus.$emit('toast', {
+                        type: 'success',
+                        title: this.$t('admin.dashboards.entity_errors_fixed_title'),
+                        message: this.$t('admin.dashboards.deleted_orphaned_entity_msg', { count: response.data.affected }),
+                    })
+                    this.get_admin_alerts_summary()
+                })
+                .catch(() => {
+                    this.$bus.$emit('toast', {
+                        type: 'danger',
+                        title: this.$t('admin.dashboards.dashboard_toast_title'),
+                        message: this.$t('admin.dashboards.failed_fix_entity_errors'),
+                    })
+                })
+                .finally(() => { this.fixing_relations = false })
             },
 
             refresh(){
