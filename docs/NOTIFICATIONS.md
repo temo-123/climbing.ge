@@ -91,7 +91,8 @@ Every send goes through a log row with a DB-level unique constraint on `(user_id
 - `favorite_publish` — a specific favorited item was published
 - `content_updated` — broad category subscription send (already-published item edited, admin opted in — see [Trigger Points](#trigger-points))
 - `favorite_updated` — a specific favorited item was edited (not the publish itself), admin opted in
-- `event_reminder` — the 6–8 day event reminder
+- `event_reminder` — legacy key, no longer written by the cron (kept so historical log rows still resolve to a readable label in analytics); superseded by the four keys below
+- `event_reminder_1month` / `event_reminder_2weeks` / `event_reminder_1week` / `event_reminder_1day` — one per reminder checkpoint (see [Event Reminder Cron](#event-reminder-cron)); distinct keys are required so all four can fire for the same user/event as the date approaches — a single shared key would let only the first checkpoint ever send, per the once-ever-per-`(item, key)` rule below
 
 The unique constraint normally caps a user to **at most one** email ever per `(item, key)` — `sendOnce()`'s default behavior. Any send triggered by the admin's `NotifySubscribersComponent` choice on an edit form passes `$bypassDedup = true` (whether that's `notifyContentUpdated` for "notify as an update", or `notifyNewContent`/`notifyFavoritersOfPublish` for "notify as new content"), so it sends every time the admin picks it, even for the same item across multiple edits (a log row still gets written best-effort via `insertOrIgnore`, but a repeat trigger for the same item won't get a second logged row — only the email itself is guaranteed to go out every time). Only the *automatic*, unforced new-content trigger (the draft→published transition) relies on the default once-ever dedup.
 
@@ -181,7 +182,18 @@ Registered in `App\Providers\EventServiceProvider::boot()`.
 **Command:** `php artisan send_event_notificatione:users` (`App\Console\Commands\UserAutoNotificatione`)
 **Schedule:** daily, `app/Console/Kernel.php`
 
-Finds events starting 6–8 days out and, for each one, notifies only the users who specifically favorited *that* event (via `App\Models\Guide\Interested_event`) — not every user with the `interested_event` preference on. Locale (`ka`/`us`) comes from `User::lang`. Sends go through `NotificationDispatchService::sendOnce()`, so the daily run never double-sends across the 2-day window.
+Four fixed reminder checkpoints, defined in `UserAutoNotificatione::PERIODS`:
+
+| Checkpoint | Days before event | `notification_key` |
+|---|---|---|
+| 1 month  | 30 | `event_reminder_1month` |
+| 2 weeks  | 14 | `event_reminder_2weeks` |
+| 1 week   | 7  | `event_reminder_1week` |
+| 1 day    | 1  | `event_reminder_1day` |
+
+For each checkpoint, the command matches events whose `start_data` falls on that **exact calendar date** (`whereDate('start_data', now()->addDays($days)->toDateString())`) — not a fuzzy multi-day window like the original single-reminder version, since running once daily already guarantees each checkpoint is hit on exactly the right day. For each matching event, it notifies only the users who specifically favorited *that* event (via `App\Models\Guide\Interested_event`) — not every user with the `interested_event` preference on. Locale (`ka`/`us`) comes from `User::lang`.
+
+Sends go through `NotificationDispatchService::sendOnce()` (unforced), so a user gets each checkpoint's email **at most once** per event — but all four checkpoints still fire independently as the event approaches, since each uses its own `notification_key` (see [Dedup Log](#dedup-log)).
 
 ---
 

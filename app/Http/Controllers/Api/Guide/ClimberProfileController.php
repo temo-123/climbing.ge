@@ -23,6 +23,7 @@ class ClimberProfileController extends Controller
         $users = User::select(['id', 'name', 'surname', 'image'])
             ->whereDoesntHave('role', fn($q) => $q->where('slug', 'ban'))
             ->whereNotNull('name')
+            ->whereNotNull('email_verified_at')
             ->when($authUser, fn($q) => $q->where('id', '!=', $authUser->id))
             ->withCount('followers')
             ->orderBy('name')

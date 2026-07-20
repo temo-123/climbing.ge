@@ -79,6 +79,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'social_links' => 'array',
+        'is_team_member' => 'boolean',
     ];
 
     /**

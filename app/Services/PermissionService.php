@@ -16,7 +16,7 @@ class PermissionService
     public static function checkPermission($subject, $action)
     {
         if (!auth()->check()) {
-            return response()->json(['error' => 'Unauthorized'], 403);
+            return false;
         }
 
         return auth()->user()->hasPermissionFor($subject, $action);

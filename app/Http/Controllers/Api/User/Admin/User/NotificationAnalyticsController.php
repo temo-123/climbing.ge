@@ -66,6 +66,10 @@ class NotificationAnalyticsController extends Controller
         'new_content' => 'New Content',
         'favorite_publish' => 'Favorite Item Published',
         'event_reminder' => 'Event Reminder',
+        'event_reminder_1month' => 'Event Reminder (1 Month Before)',
+        'event_reminder_2weeks' => 'Event Reminder (2 Weeks Before)',
+        'event_reminder_1week' => 'Event Reminder (1 Week Before)',
+        'event_reminder_1day' => 'Event Reminder (1 Day Before)',
         'content_updated' => 'Content Updated',
         'favorite_updated' => 'Favorite Item Edited',
     ];

@@ -8,9 +8,12 @@ use Illuminate\Http\Request;
 use App\Models\User;
 
 class TeamMemberController extends Controller
-{    public function get_team_members()
+{
+    public function get_team_members()
     {
-        return User::where('is_team_member', '!=', null)->get();
+        return User::select(['id', 'name', 'surname', 'image', 'member_status'])
+            ->where('is_team_member', 1)
+            ->get();
     }
 
     public function get_member_status(Request $request, $id)

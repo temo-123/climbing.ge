@@ -82,7 +82,7 @@ export default {
         },
         close_modal(){
             this.is_member_editing_modal = false
-            this.member_status = 'member'
+            this.data = { is_team_member: false, member_status: '' }
             this.user_id = ''
         },
         go_back(){
