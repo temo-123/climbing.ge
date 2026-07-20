@@ -1,88 +1,74 @@
 <template>
     <div class="container">
-    <div class="row">
-            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-                <ShareNetwork
-                    network="facebook"
-                    :url="url"
-                    :title="title"
-                    :description="description"
-                    :quote="quote"
-                    :hashtags="hashtags"
-                >
-                    <i class="share_icons fa fa-facebook-square" aria-hidden="true"></i>
-                </ShareNetwork>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-                <ShareNetwork
-                    network="Email"
-                    :url="url"
-                    :title="title"
-                    :description="description"
-                    :quote="quote"
-                    :hashtags="hashtags"
-                >
-                    <i class="share_icons fa fa-envelope" aria-hidden="true"></i>
-                </ShareNetwork>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-                <ShareNetwork
-                    network="Twitter"
-                    :url="url"
-                    :title="title"
-                    :description="description"
-                    :quote="quote"
-                    :hashtags="hashtags"
-                >
-                    <i class="share_icons fa fa-twitter-square" aria-hidden="true"></i>
-                </ShareNetwork>
-            </div>
-            <div class="col-md-3 col-sm-3 col-xs-3 share_icons_col">
-                <ShareNetwork
-                    network="WhatsApp"
-                    :url="url"
-                    :title="title"
-                    :description="description"
-                    :quote="quote"
-                    :hashtags="hashtags"
-                >
-                    <i class="share_icons fa fa-whatsapp" aria-hidden="true"></i>
-                </ShareNetwork>
-            </div>
-            <!-- <ShareNetwork
-                network="Messenger"
-                :url="url"
-                :title="title"
-                :description="description"
-                :quote="quote"
-                :hashtags="hashtags"
-            >
-                Share on Messenger
-            </ShareNetwork> -->
+        <div class="share_icons_row">
+            <a class="share_icons_col" :href="facebookUrl" target="_blank" rel="noopener noreferrer" :aria-label="$t('common.share')">
+                <i class="share_icons fa fa-facebook-square" aria-hidden="true"></i>
+            </a>
+            <a class="share_icons_col" :href="twitterUrl" target="_blank" rel="noopener noreferrer" :aria-label="$t('common.share')">
+                <i class="share_icons fa fa-twitter-square" aria-hidden="true"></i>
+            </a>
+            <a class="share_icons_col" :href="telegramUrl" target="_blank" rel="noopener noreferrer" :aria-label="$t('common.share')">
+                <i class="share_icons fa fa-telegram" aria-hidden="true"></i>
+            </a>
+            <a class="share_icons_col" :href="whatsappUrl" target="_blank" rel="noopener noreferrer" :aria-label="$t('common.share')">
+                <i class="share_icons fa fa-whatsapp" aria-hidden="true"></i>
+            </a>
+            <a class="share_icons_col" :href="emailUrl" :aria-label="$t('common.share')">
+                <i class="share_icons fa fa-envelope" aria-hidden="true"></i>
+            </a>
         </div>
     </div>
 </template>
 
 <script>
+    // Plain share-link anchors — no vue-social-sharing dependency (it isn't
+    // installed and ShareNetwork was never registered, so this previously
+    // rendered nothing at all).
     export default {
-        // https://www.npmjs.com/package/vue-social-sharing
-        data: function () {
+        props: {
+            title: { type: String, default: 'climbing.ge' },
+            description: { type: String, default: '' },
+            hashtags: { type: String, default: 'georgia,climbingingeorgia' },
+        },
+        data() {
             return {
                 url: window.location.href,
-                // title: "Say hi to Vite! A brand new, extremely fast development setup for Vue.",
-                // description: "This week, I’d like to introduce you to 'Vite', which means 'Fast'. It’s a brand new development setup created by Evan You.",
-                // quote: "The hot reload is so fast it\'s near instant. - Evan You",
-                hashtags: "georgia, climbingingeorgia",
-            };
+            }
+        },
+        computed: {
+            facebookUrl() {
+                return 'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.url);
+            },
+            twitterUrl() {
+                const params = new URLSearchParams({ url: this.url, text: this.title, hashtags: this.hashtags });
+                return 'https://twitter.com/intent/tweet?' + params.toString();
+            },
+            telegramUrl() {
+                const params = new URLSearchParams({ url: this.url, text: this.title });
+                return 'https://t.me/share/url?' + params.toString();
+            },
+            whatsappUrl() {
+                return 'https://api.whatsapp.com/send?text=' + encodeURIComponent(this.title + ' ' + this.url);
+            },
+            emailUrl() {
+                const body = (this.description ? this.description + '\n\n' : '') + this.url;
+                return 'mailto:?subject=' + encodeURIComponent(this.title) + '&body=' + encodeURIComponent(body);
+            },
         },
     }
 </script>
 
 <style>
+.share_icons_row{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
 .share_icons{
     font-size: 3em;
 }
 .share_icons_col{
     text-align: center;
+    padding: 0 15px;
 }
 </style>

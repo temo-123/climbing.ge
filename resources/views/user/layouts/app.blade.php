@@ -5,6 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    {{-- Private dashboard — never index user accounts/admin pages in search results --}}
+    <meta name="robots" content="noindex, nofollow">
 
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
 

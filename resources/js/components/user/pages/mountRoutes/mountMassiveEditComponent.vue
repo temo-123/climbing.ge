@@ -11,7 +11,12 @@
             </div>
         </div>
         <div class="row" v-if="!is_loading">
-            <div class="form-group">  
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+        <div class="row" v-if="!is_loading">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary" v-on:click="edit_mount()" >{{ $t('common.save') }}</button>
             </div>
         </div>
@@ -181,6 +186,7 @@
 
 <script>
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
+    import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
     export default {
         mixins: [
             ],
@@ -188,10 +194,12 @@
             //
         ],
         components: {
+            notify_subscribers,
             // validator_alerts_component
         },
         data(){
             return {
+                notify_mode: 'none',
                 data: {
                     us_data: {
                         title: '',
@@ -274,6 +282,7 @@
                 axios
                 .post('/set_mount/edit_mount_massive/' + this.$route.params.id, {
                     data: this.data,
+                    notify_mode: this.notify_mode,
                 })
                 .then(Response => { 
                     this.go_back(true)

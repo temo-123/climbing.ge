@@ -86,6 +86,7 @@
                     </div>
                     <FormCapchaComponent
                         :buttonTextProp="$t('global.message.send_message_btn')"
+                        recaptchaAction="message"
                         @recaptcha-verified="send_message"
                         @expired="onCaptchaExpired"
                     />

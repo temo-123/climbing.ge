@@ -8,7 +8,10 @@
         $seoUrl         = $seo['url'] ?? request()->url();
         $seoSchema      = $seo['schema'] ?? null;
         $seoKeywords    = $seo['keywords'] ?? '';
+        $seoPrice       = $seo['price'] ?? null;
         $seoLocale      = app()->getLocale() === 'ka' ? 'ka_GE' : 'en_US';
+        $googleVerify   = config('services.seo.google_site_verification');
+        $bingVerify     = config('services.seo.bing_site_verification');
     @endphp
 
     <title>{{ $seoTitle }}</title>
@@ -16,22 +19,49 @@
     @if($seoKeywords)
     <meta name="keywords" content="{{ $seoKeywords }}">
     @endif
+    <meta name="robots" content="index, follow">
+
+    {{-- Search engine ownership verification --}}
+    @if($googleVerify)
+    <meta name="google-site-verification" content="{{ $googleVerify }}">
+    @endif
+    @if($bingVerify)
+    <meta name="msvalidate.01" content="{{ $bingVerify }}">
+    @endif
 
     {{-- Open Graph --}}
     <meta property="og:title" content="{{ $seoTitle }}">
     <meta property="og:description" content="{{ $seoDescription }}">
     <meta property="og:image" content="{{ $seoImage }}">
+    <meta property="og:image:secure_url" content="{{ $seoImage }}">
+    <meta property="og:image:alt" content="{{ $seoTitle }}">
     <meta property="og:url" content="{{ $seoUrl }}">
     <meta property="og:type" content="{{ $seoType }}">
     <meta property="og:locale" content="{{ $seoLocale }}">
     <meta property="og:locale:alternate" content="{{ $seoLocale === 'ka_GE' ? 'en_US' : 'ka_GE' }}">
     <meta property="og:site_name" content="climbing.ge">
 
+    {{-- Product price (Facebook/WhatsApp/Telegram product previews + Google) --}}
+    @if($seoPrice)
+    <meta property="product:price:amount" content="{{ $seoPrice['amount'] }}">
+    <meta property="product:price:currency" content="{{ $seoPrice['currency'] }}">
+    <meta property="product:availability" content="{{ $seoPrice['inStock'] ? 'in stock' : 'out of stock' }}">
+    @endif
+
     {{-- Twitter / X --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{ $seoTitle }}">
     <meta name="twitter:description" content="{{ $seoDescription }}">
     <meta name="twitter:image" content="{{ $seoImage }}">
+    <meta name="twitter:image:alt" content="{{ $seoTitle }}">
+    @if($seoPrice)
+    <meta name="twitter:label1" content="Price">
+    <meta name="twitter:data1" content="{{ $seoPrice['amount'] }} {{ $seoPrice['currency'] }}">
+    @if(!$seoPrice['inStock'])
+    <meta name="twitter:label2" content="Availability">
+    <meta name="twitter:data2" content="Out of stock">
+    @endif
+    @endif
 
     {{-- Canonical --}}
     <link rel="canonical" href="{{ $seoUrl }}">

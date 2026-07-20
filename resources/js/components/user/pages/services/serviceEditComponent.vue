@@ -13,7 +13,13 @@
         </div>
 
         <div class="row" v-show="!is_loading">
-            <div class="form-group">  
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+
+        <div class="row" v-show="!is_loading">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary" v-on:click="edit_service()" >{{ $t('admin.local_business.save_update_btn') }}</button>
             </div>
         </div>
@@ -156,9 +162,11 @@
 
 <script>
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
+    import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
     export default {
         components: {
             gallery_images_edit,
+            notify_subscribers,
         },
         mixins: [],
         props: [
@@ -173,6 +181,7 @@
                 error: [],
 
                 is_loading: false,
+                notify_mode: 'none',
 
                 editor_config: {
                     us_short_description_text: {},
@@ -276,9 +285,10 @@
                 loop_num = 0
 
                 formData.append('data', JSON.stringify(this.data))
+                formData.append('notify_mode', this.notify_mode)
 
                 axios
-                .post('/set_service/edit_service/'+this.$route.params.id, 
+                .post('/set_service/edit_service/'+this.$route.params.id,
                     formData
                 )
                 .then(response => {

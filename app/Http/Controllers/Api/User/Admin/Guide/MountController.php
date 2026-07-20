@@ -197,7 +197,8 @@ class MountController extends Controller
             !$validation_issets['us_info_validation']
         ) {
             $local_mounts = $this->edit_global_mount(
-                $request['data']['global_data'],                
+                $request['data']['global_data'],
+                $request->input('notify_mode', 'none'),
             );
             
             if (
@@ -232,7 +233,7 @@ class MountController extends Controller
         }
     }
 
-    public function edit_global_mount($global_data,)
+    public function edit_global_mount($global_data, $notifyMode = 'none')
     {
         // dd($global_data['id']);
         $editing_global_mount = Mount::where('id', '=', $global_data['id'])->first();
@@ -241,7 +242,8 @@ class MountController extends Controller
         $editing_global_mount['weather']=$global_data["weather"];
 
         $editing_global_mount['name'] = $global_data["name"];
-        
+
+        $editing_global_mount->notifyMode = $notifyMode;
         $saved = $editing_global_mount -> save();
 
         if(!$saved){

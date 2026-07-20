@@ -262,7 +262,26 @@
                 "approve_request_option": "მოთხოვნის დამტკიცება",
                 "reject_request_option": "მოთხოვნის უარყოფა",
                 "please_select_decision": "გთხოვთ, აირჩიოთ გადაწყვეტილება!",
-                "make_decision_btn": "გადაწყვეტილების მიღება"
+                "make_decision_btn": "გადაწყვეტილების მიღება",
+                "alerts": {
+                    "title": "საჭიროებს ყურადღებას",
+                    "info_label": "ახალია!",
+                    "danger_group_label": "საჭიროებს ყურადღებას",
+                    "info_group_label": "ახალი აქტივობა",
+                    "all_caught_up": "ყველაფერი მოგვარებულია! ამჟამად ყურადღების საჭიროება არაფერს არ სჭირდება.",
+                    "show_more": "კიდევ {count} ჩვენება",
+                    "show_less": "ნაკლების ჩვენება",
+                    "review_btn": "შემოწმება",
+                    "view_all_btn": "ყველას ნახვა",
+                    "comment_complaints": "{count} კომენტარის საჩივარი — გთხოვთ, შეამოწმოთ",
+                    "feedback_complaints": "{count} პროდუქტის შეფასების საჩივარი — გთხოვთ, შეამოწმოთ",
+                    "db_relation_issues": "მონაცემთა ბაზაში ნაპოვნია {count} კავშირის შეცდომა",
+                    "new_comments": "{count} ახალი კომენტარი სტატიებზე",
+                    "new_product_feedback": "{count} ახალი პროდუქტის შეფასება",
+                    "new_mtp_reviews": "{count} ახალი MTP შეფასება",
+                    "new_route_reviews": "{count} ახალი მარშრუტის შეფასება",
+                    "new_ascents": "{count} ახალი ასვლა დარეგისტრირდა"
+                }
             }
         },
         "task": {
@@ -444,9 +463,7 @@
             "cannot_delete_self_msg": "საკუთარი თავის წაშლა არ შეგიძლიათ!",
             "confirm_delete_permission": "წავშალო ეს უფლება? ის წაიშლება ყველა როლიდან და მომხმარებლიდან.",
             "confirm_sync_admin_permissions": "ეს დაამატებს ყველა დაკარგულ უფლებას ადმინის როლს. გავაგრძელო?",
-            "sync_admin_permissions_done_msg": "დასრულდა. დაემატა {count} დაკარგული უფლება ადმინის როლს.",
-            "site_followers_table": "საიტის გამომწერები",
-            "col_service": "სერვისი"
+            "sync_admin_permissions_done_msg": "დასრულდა. დაემატა {count} დაკარგული უფლება ადმინის როლს."
         },
         "orders": {
             "add_custom_order_title": "მორგებული შეკვეთის დამატება",
@@ -904,6 +921,45 @@
             "confirm_delete_orphaned_rows": "წავშალოთ {count} მიტოვებული ჩანაწერი „{table}“-დან?",
             "fix_failed": "გასწორება ვერ მოხერხდა.",
             "request_failed": "მოთხოვნა ვერ შესრულდა."
+        },
+        "notification_analytics": {
+            "stat_total_sent": "სულ გაგზავნილი",
+            "stat_last_7_days": "ბოლო 7 დღე",
+            "stat_last_30_days": "ბოლო 30 დღე",
+            "stat_users_notified": "შეტყობინებული მომხმარებელი",
+            "stat_preferences_set": "პარამეტრები დაყენებული აქვთ",
+            "volume_chart_title": "შეტყობინებების მოცულობა დროში",
+            "breakdown_by_key_title": "განაწილება ტიპის მიხედვით",
+            "breakdown_by_content_type_title": "განაწილება კონტენტის ტიპის მიხედვით",
+            "adoption_chart_title": "პარამეტრების გამოყენება",
+            "recent_activity_title": "ბოლო შეტყობინებების აქტივობა",
+            "chart_notifications_col": "შეტყობინებები",
+            "chart_users_col": "მომხმარებელი",
+            "col_preference": "პარამეტრი",
+            "col_user": "მომხმარებელი",
+            "col_type": "ტიპი",
+            "col_content_type": "კონტენტის ტიპი",
+            "col_content_id": "კონტენტის ID",
+            "col_sent_at": "გაგზავნის დრო",
+            "registered_subscribers_title": "დარეგისტრირებული მომხმარებლების გამოწერები",
+            "guest_followers_title": "სტუმარი გამომწერები",
+            "col_subscriptions": "გამოწერილია",
+            "col_service": "სერვისი",
+            "col_followed_at": "გამოწერის თარიღი",
+            "guest_follower_detail_title": "სტუმარი გამომწერის დეტალები",
+            "subscriber_detail_title": "გამომწერის დეტალები",
+            "col_details": "დეტალები",
+            "verify_user_btn": "მომხმარებლის დადასტურება",
+            "subscribe_all_btn": "ყველა სერვისის გამოწერა",
+            "confirm_subscribe_all": "ჩავრთოთ ყველა შეტყობინების კატეგორია ამ მომხმარებლისთვის?",
+            "failed_jobs_title": "ჩავარდნილი დავალებები",
+            "col_email": "ელფოსტა",
+            "col_subject": "თემა",
+            "col_error": "შეცდომა",
+            "col_failed_at": "ჩავარდნის დრო",
+            "retry_btn": "ხელახლა ცდა",
+            "retry_all_btn": "ყველას ხელახლა ცდა",
+            "confirm_retry_all": "ხელახლა გაიგზავნოს ყველა ჩავარდნილი შეტყობინების დავალება?"
         },
         "donations": {
             "donations_table": "დონაციები",
@@ -1709,7 +1765,13 @@
             "category": "@:common.category",
             "grade": "@:common.grade",
             "height": "@:common.height",
-            "bolts": "ანკერი"
+            "bolts": "ანკერი",
+            "notify_subscribers_title": "ელფოსტის შეტყობინება",
+            "notify_none_label": "არ შეატყობინო",
+            "notify_update_label": "შეატყობინე როგორც განახლება",
+            "notify_update_hint": "წერილი გაეგზავნება ყველას, ვინც გამოწერილი აქვს ამ ტიპის კონტენტის განახლებები.",
+            "notify_new_label": "შეატყობინე როგორც ახალი კონტენტი",
+            "notify_new_hint": "ხელახლა აცნობებს ამ კონტენტს ყველას, ვინც გამოწერილი აქვს ახალი კონტენტის შეტყობინებები ამ ტიპისთვის, მაშინაც კი, თუ მათ უკვე მიიღეს წერილი პირველი გამოქვეყნებისას."
         },
         "table": {
             "loading": "იტვირთება...",
@@ -2753,7 +2815,12 @@
             "confirm_delete_site": "დარწმუნებული ხართ, რომ გსურთ ამ საიტის წაშლა? ეს მოქმედება შეუქცევადია.",
             "label_bio": "ბიოგრაფია",
             "bio_label": "ბიოგრაფია",
-            "bio_placeholder": "მოგვიყევით ცოტა თქვენს შესახებ"
+            "bio_placeholder": "მოგვიყევით ცოტა თქვენს შესახებ",
+            "social_links_label": "სოციალური ბმულები",
+            "facebook_placeholder": "Facebook პროფილის ბმული",
+            "instagram_placeholder": "Instagram პროფილის ბმული",
+            "youtube_placeholder": "YouTube არხის ბმული",
+            "website_placeholder": "პირადი ვებგვერდის ბმული"
         },
         "orders": {
             "my_purchases": "ჩემი შეძენები",
@@ -2845,6 +2912,7 @@
             }
         },
         "notifications": {
+            "title": "შეტყობინებები",
             "refresh": "შეტყობინებების განახლება",
             "updating": "@:common.updating",
             "danger": "საშიშროება!",
@@ -2855,7 +2923,8 @@
             "please_wait": "გთხოვთ დაელოდოთ!",
             "missing_image": "დაამატეთ პროფილის სურათი, რომ ადამიანებმა უფრო ადვილად გიცნონ.",
             "resend_success": "ახალი დამადასტურებელი წერილი გამოგზავნილია. გთხოვთ შეამოწმოთ ფოსტა.",
-            "resend_error": "დაფიქსირდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით; თუ პრობლემა გაგრძელდა, დაუკავშირდით მხარდაჭერას."
+            "resend_error": "დაფიქსირდა შეცდომა. გთხოვთ სცადოთ მოგვიანებით; თუ პრობლემა გაგრძელდა, დაუკავშირდით მხარდაჭერას.",
+            "all_good": "ყველაფერი წესრიგშია — ამჟამად შეტყობინებები არ არის."
         },
         "notification_settings": {
             "manage_notifications_hint": "მართეთ თქვენი ელფოსტის შეტყობინებები. აირჩიეთ შეტყობინებები, რომლების მიღებაც გსურთ ელფოსტით.",
@@ -2877,6 +2946,25 @@
             "new_gym_added": "ახალი დარბაზი დაემატა",
             "new_product_added": "ახალი პროდუქტი დაემატა",
             "new_service_added": "ახალი სერვისი დაემატა",
+            "new_tour_added": "ახალი ტური დაემატა",
+            "new_mount_added": "ახალი მთა დაემატა",
+            "new_summit_added": "ახალი მწვერვალი დაემატა",
+            "new_blog_post_added": "ახალი ბლოგპოსტი დაემატა",
+            "new_film_added": "ახალი ფილმი დაემატა",
+            "content_updates_section_label": "შემატყობინეთ, როცა ჩემს გამოწერილ კონტენტს ცვლილება ეხება",
+            "sector_updated": "სექტორი განახლდა",
+            "news_content_updated": "სიახლის სტატია განახლდა",
+            "outdoor_spot_updated": "გარე ლოკაცია განახლდა",
+            "ice_spot_updated": "ყინულის ლოკაცია განახლდა",
+            "techtip_updated": "ტექნიკური რჩევა განახლდა",
+            "gym_updated": "დარბაზი განახლდა",
+            "product_updated": "პროდუქტი განახლდა",
+            "service_updated": "სერვისი განახლდა",
+            "tour_updated": "ტური განახლდა",
+            "mount_updated": "მთა განახლდა",
+            "summit_updated": "მწვერვალი განახლდა",
+            "blog_post_updated": "ბლოგპოსტი განახლდა",
+            "film_updated": "ფილმი განახლდა",
             "confirm_enable_all": "დარწმუნებული ხართ, რომ გსურთ ყველა შეტყობინების ჩართვა? ეს გამოგზავნის წერილებს ყველა ტიპის განახლებისთვის.",
             "confirm_disable_all": "დარწმუნებული ხართ, რომ გსურთ ყველა შეტყობინების გამორთვა? აღარ მიიღებთ ელფოსტით განახლებებს."
         },
@@ -2934,6 +3022,10 @@
             "welcome_brand": "კეთილი იყოს თქვენი მობრძანება climbing.ge-ის მომხმარებლის გვერდზე",
             "cart": "კალათა",
             "my_account": "ჩემი ანგარიში",
+            "go_to_guidebook": "გზამკვლევი",
+            "go_to_shop": "მაღაზია",
+            "go_to_summit": "მწვერვალები",
+            "go_to_blog": "ბლოგი",
             "login": "@:common.login",
             "menu_header": "მენიუ",
             "loading_menu": "მენიუს ჩატვირთვა...",
@@ -2981,10 +3073,10 @@
             "site_options": "საიტის პარამეტრები",
             "site_options_about_us": "ჩვენ შესახებ",
             "site_options_head_sliders": "მთავარი სლაიდერები",
-            "site_options_site_followers": "საიტის გამომწერები",
             "site_options_users_and_permissions": "მომხმარებლები და უფლებები",
             "site_options_other_commenters": "სხვა კომენტატორები",
             "site_options_multimedia_and_database": "მედია და მონაცემთა ბაზა",
+            "site_options_notification_analytics": "შეტყობინებების ანალიტიკა",
             "site_options_all_comments": "ყველა კომენტარი",
             "site_options_all_routes_reviews": "მარშრუტების ყველა შეფასება"
         }
@@ -3038,6 +3130,26 @@
         "errors": {
             "no_permission": "თქვენ არ გაქვთ ამ მოქმედების შესრულების უფლება.",
             "generic_status": "შეცდომა {status}: {statusText}"
+        },
+        "follow": {
+            "follow_btn": "გამოწერა",
+            "unfollow_btn": "გამოწერის გაუქმება",
+            "profile_not_found": "ამ მომხმარებლის პროფილი ვერ მოიძებნა.",
+            "followers_label": "გამომწერი",
+            "following_label": "გამოწერილი",
+            "recent_reviews_title": "ბოლო მარშრუტისა და MTP შეფასებები",
+            "recent_ascents_title": "ბოლო აღსვლები",
+            "recent_comments_title": "ბოლო კომენტარები",
+            "no_activity": "საჯარო აქტივობა ჯერ არ არის.",
+            "no_followers": "გამომწერები ჯერ არ არის.",
+            "no_following": "ჯერ არავის მისდევთ.",
+            "all_climbers_title": "ყველა მომხმარებელი",
+            "load_more_btn": "მეტის ჩვენება",
+            "profile_modal_title": "მომხმარებლის პროფილი",
+            "all_users_btn": "ყველა მომხმარებელი",
+            "view_full_profile_btn": "სრული პროფილის ნახვა",
+            "climbers_meta_description": "დაათვალიერეთ climbing.ge-ზე რეგისტრირებული ყველა მომხმარებელი — გამოიწერეთ ისინი და ნახეთ მათი კომენტარები, აღსვლები და მარშრუტის/MTP შეფასებები.",
+            "climber_meta_description": "ნახეთ {name}-ის კომენტარები, აღსვლები და მარშრუტის/MTP შეფასებები climbing.ge-ზე — გამოიწერეთ, რომ მიიღოთ შეტყობინება მათ აქტივობაზე."
         },
         "confirm_go_back": "დარწმუნებული ხართ, რომ გსურთ უკან დაბრუნება?",
         "slider": {
@@ -3339,7 +3451,10 @@
         "loading": "იტვირთება...",
         "retry": "ხელახლა ცდა",
         "error_loading_product": "პროდუქტის დეტალების ჩატვირთვა ვერ მოხერხდა. გთხოვთ, სცადოთ ხელახლა.",
-        "processing_image": "სურათის დამუშავება..."
+        "processing_image": "სურათის დამუშავება...",
+        "share": "გაზიარება",
+        "link_copied": "ბმული დაკოპირდა!",
+        "link_copy_failed": "ბმულის დაკოპირება ვერ მოხერხდა."
     },
     "head_slider": {
         "guide_images": "გიდის სლაიდერი",

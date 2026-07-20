@@ -16,6 +16,8 @@ class ServiceFollowing extends Controller
 {
     public function follow(Request $request)
     {
+        $request->validate(['email' => 'required|email']);
+
         $captcha = new ReCaptchaV3Service();
         if ($captcha->isConfigured()) {
             $token = $request->input('recaptcha_token');
@@ -26,11 +28,11 @@ class ServiceFollowing extends Controller
 
         if ($request -> isMethod('post')) {
             if(Following_users::where('email','=',$request->email)->count()){
-                return("You are already subscribed");
+                return("You're already subscribed to updates from this site.");
             }
             else{
                 if (auth()->user() && $request->email == auth()->user()->email) {
-                    return("You are olredy registred");
+                    return("You're already registered with us, so there's no need to subscribe separately.");
                 }
                 else {
                     $follow = new Following_users();
@@ -41,21 +43,16 @@ class ServiceFollowing extends Controller
                     $EmailArray = array(
                         'email' => $request->email,
                         'unfollow_url' => env('APP_URL').'/unfollow/'.$follow->id,
-                        'message' => 'Thenk you for following. Your following is completed',
+                        'message' => 'Thanks for following! You will now receive updates by email.',
                         'from_site' => $request->service_id,
                     );
 
                     Mail::to($request->email)->send(new FollowingNotification($EmailArray));
 
-                    return("Tenk you for following! :) Plis check your emeil!");
+                    return("Thanks for following! Please check your email to confirm.");
                 }
             }
         }
-    }
-
-    public function get_followers_list()
-    {
-        return following_users::latest('id')->get();
     }
 
     function del_follower(Request $request){
@@ -69,10 +66,5 @@ class ServiceFollowing extends Controller
         else if($del_follower == 0){
             return 'Email whith this ID is not finded!';
         }
-    }
-
-    public function get_following_users_list()
-    {
-        return following_users::latest('id')->get();
     }
 }

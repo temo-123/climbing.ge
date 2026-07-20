@@ -12,4 +12,16 @@ class TeamMemberController extends Controller
     {
         return User::where('is_team_member', '!=', null)->get();
     }
+
+    public function get_member_status(Request $request, $id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['error' => 'User not found'], 404);
+        }
+        return response()->json([
+            'is_team_member' => $user->is_team_member,
+            'member_status' => $user->member_status,
+        ]);
+    }
 }

@@ -43,6 +43,11 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_team_member_data/{id}', 'get_team_member_data');
     });
 
+    Route::controller(ClimberProfileController::class)->prefix('get_climber_profile')->group( function() {
+        Route::get('/list', 'list');
+        Route::get('/{user_id}', 'show');
+    });
+
     Route::controller(OutdoorController::class)->prefix('get_outdoor')->group( function() {
         Route::get('/get_filtred_outdoor_spots/{lang}/{filter_id}/{published}', 'get_filtred_outdoor_spots');
         Route::get('/get_filtred_outdoor_spots_for_gest/{lang}/{filter_id}', 'get_filtred_outdoor_spots_for_gest');

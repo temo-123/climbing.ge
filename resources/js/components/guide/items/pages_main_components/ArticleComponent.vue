@@ -2,9 +2,17 @@
     <div>
         <div class="row">
             <div class="col-sm-8 blog-header">
-                <h1 class="blog-title">
-                    {{ this.article_prop.locale_data.title  }}
-                </h1>
+                <div class="article-title-row">
+                    <h1 class="blog-title">
+                        {{ this.article_prop.locale_data.title  }}
+                    </h1>
+                    <share-button
+                        :title="this.article_prop.locale_data.title"
+                        :text="this.article_prop.locale_data.short_description"
+                        content-type="article"
+                        :item-id="this.article_prop.global_data.id"
+                    />
+                </div>
             </div>
         </div>
         <div class="row">
@@ -72,14 +80,28 @@
             }
         },
         mounted() {
-            // 
+            //
         },
         watch: {
             '$route' (to, from) {
-                // 
+                //
+            },
+            'article_prop.global_data.id': {
+                immediate: true,
+                handler() {
+                    this.trackContentView()
+                }
             }
         },
         methods: {
+            trackContentView() {
+                if (!this.$gtag || !this.article_prop?.global_data?.id) return
+                this.$gtag.event('select_content', {
+                    content_type: 'article',
+                    item_id: String(this.article_prop.global_data.id),
+                    event_category: this.article_prop.global_data.category,
+                })
+            },
             update_similar_articles_component(id){
                 this.$refs.similar_articles.update(id)
                 this.$refs.route_quan_diogram.update(id)
@@ -89,3 +111,12 @@
         }
     }
 </script>
+
+<style scoped>
+.article-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+</style>

@@ -136,6 +136,7 @@ class SummitController extends Controller
             $data['image'] = ImageControllService::image_update('images/summit_img/', $summit, $request, 'image', 'image', 1);
         }
 
+        $summit->notifyMode = $request->input('notify_mode', 'none');
         $summit->update($data);
 
         return response()->json($summit->fresh());

@@ -152,7 +152,7 @@ class ProductFeedbackController extends Controller
         $auth = PermissionService::authorize('product_feedback', 'edit');
         if ($auth) return $auth;
         
-        return CommentService::make_decision($request, Feedback::class, Product_feedback_complaint::class, Product::class, 'product', 'feedback');
+        return CommentService::make_decision($request, Product_feedback::class, Product_feedback_complaint::class, Product::class, 'product', 'feedback');
     }
 }
 

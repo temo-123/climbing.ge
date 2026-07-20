@@ -80,4 +80,10 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
     Route::controller(\App\Http\Controllers\Api\User\MailCheckController::class)->group(function () {
         Route::get('/mail/unread_count', 'get_unread_count');
     });
+
+    Route::controller(\App\Http\Controllers\Api\User\UserFollowController::class)->prefix('set_user_follow')->group(function () {
+        Route::post('/follow/{user_id}', 'follow');
+        Route::delete('/unfollow/{user_id}', 'unfollow');
+        Route::get('/follow_status/{user_id}', 'follow_status');
+    });
 });

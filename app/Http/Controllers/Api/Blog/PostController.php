@@ -103,6 +103,7 @@ class PostController extends Controller
         }
 
         return response()->json([
+            'id' => $post->id,
             'title' => $locale_post->title,
             'content' => $locale_post->text,
             'created_at' => $post->created_at,

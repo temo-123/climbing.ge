@@ -14,6 +14,12 @@
         </div>
 
         <div class="row" v-show="!is_loading">
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+
+        <div class="row" v-show="!is_loading">
             <div class="form-group">
                 <button type="button" class="btn btn-primary" @click="save()">{{ $t('common.save') }}</button>
             </div>
@@ -168,14 +174,16 @@ import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import SummitRoutesRelationTab from './SummitRoutesRelationTab.vue'
 import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
 import published_item from '../../items/form/parts/PublishedValueComponent.vue'
+import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
 
 export default {
     name: 'SummitEditPage',
-    components: { breadcrumb, SummitRoutesRelationTab, single_image_edit, published_item },
+    components: { breadcrumb, SummitRoutesRelationTab, single_image_edit, published_item, notify_subscribers },
     data() {
         return {
             tab_num: 1,
             is_loading: false,
+            notify_mode: 'none',
             summit_id: parseInt(this.$route.params.id),
             form: {
                 title: '',
@@ -256,6 +264,7 @@ export default {
             formData.append('longitude', this.form.longitude ?? '')
             formData.append('mount_id', this.form.mount_id ?? '')
             formData.append('published', this.form.published)
+            formData.append('notify_mode', this.notify_mode)
             if (this.form.image) formData.append('image', this.form.image)
             if (this.is_change_url_title) {
                 formData.append('is_change_url_title', 1)

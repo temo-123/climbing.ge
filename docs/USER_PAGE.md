@@ -160,6 +160,10 @@ Browse, upload, and delete images across all subdomains. The file tree shows whi
 
 View all database tables with row counts and detected integrity issues. Apply fixes directly from the UI.
 
+### Notification Analytics
+
+Charts and tables covering notification volume over time, breakdown by notification type and content type, per-preference adoption, and recent send activity. See [NOTIFICATIONS.md](NOTIFICATIONS.md).
+
 ### Export
 
 Export guide articles by category to PDF.
@@ -236,12 +240,12 @@ php artisan horizon                       # Horizon dashboard
 
 ### Scheduled Notifications
 
-Laravel Task Scheduling sends automatic event notifications to interested users.
+Laravel Task Scheduling runs the event-reminder command daily.
 
 ```bash
 php artisan schedule:work          # run scheduler locally
 php artisan schedule:list          # list all scheduled tasks
-php artisan send_event_notification:users  # run manually
+php artisan send_event_notificatione:users  # run manually
 ```
 
 Scheduler defined in `app/Console/Kernel.php`. Notification job: `app/Jobs/UserNotifications.php`.
@@ -250,7 +254,11 @@ Timezone: `Asia/Tbilisi` — set in `config/app.php`.
 
 ### User Notification Preferences
 
-Each user has a `user_notifications` record controlling which email types they receive. Managed at: `GET/POST /api/get_options/get_user_notification_data` and `/api/get_options/update_user_notification_data`.
+Each user has a `user_notifications` record (JSON preference blob) controlling which email types they receive. Managed at: `GET/POST /api/get_options/get_user_notification_data` and `/api/get_options/update_user_notification_data`.
+
+### Automatic New-Content Notifications
+
+Publishing new content in the guide, shop, blog, summit, or films domains automatically emails subscribed users — no admin action required. Sends are deduplicated via `content_notification_logs` so nothing is ever emailed twice. See [NOTIFICATIONS.md](NOTIFICATIONS.md) for the full architecture (resolvers, observers, dedup log, the analytics dashboard).
 
 ---
 

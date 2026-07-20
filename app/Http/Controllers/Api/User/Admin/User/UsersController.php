@@ -27,8 +27,9 @@ class UsersController extends Controller
     {
         $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
-        return User::latest('id')->get()->map(function ($user) {
+        return User::with('role')->latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
+            $user->role_name = optional($user->role->first())->name;
             return $user;
         });
     }
@@ -208,6 +209,20 @@ class UsersController extends Controller
         $user->tokens()->delete();
 
         return response()->json(['message' => 'Password has been reset.']);
+    }
+
+    public function verify_user(Request $request, $user_id)
+    {
+        $auth = PermissionService::authorize('user', 'edit');
+        if ($auth) return $auth;
+
+        $user = User::findOrFail($user_id);
+        if (is_null($user->email_verified_at)) {
+            $user->email_verified_at = now();
+            $user->save();
+        }
+
+        return response()->json(['email_verified_at' => $user->email_verified_at]);
     }
 
     public function del_user(Request $request)

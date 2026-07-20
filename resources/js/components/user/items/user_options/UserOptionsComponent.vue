@@ -171,6 +171,24 @@
 
                     <label for="my_bio">{{ $t('user.profile.bio_label') }}</label>
                     <textarea class="form-control" v-model="edit_data.my_bio" name="my_bio" id="my_bio" rows="4" :placeholder="$t('user.profile.bio_placeholder')" :title="$t('user.profile.bio_placeholder')"></textarea>
+
+                    <label class="mt-2">{{ $t('user.profile.social_links_label') }}</label>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="fa fa-facebook" aria-hidden="true"></i></span>
+                        <input type="url" class="form-control" v-model="edit_data.social_links.facebook" name="facebook" :placeholder="$t('user.profile.facebook_placeholder')">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="fa fa-instagram" aria-hidden="true"></i></span>
+                        <input type="url" class="form-control" v-model="edit_data.social_links.instagram" name="instagram" :placeholder="$t('user.profile.instagram_placeholder')">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="fa fa-youtube-play" aria-hidden="true"></i></span>
+                        <input type="url" class="form-control" v-model="edit_data.social_links.youtube" name="youtube" :placeholder="$t('user.profile.youtube_placeholder')">
+                    </div>
+                    <div class="input-group mb-2">
+                        <span class="input-group-text"><i class="fa fa-globe" aria-hidden="true"></i></span>
+                        <input type="url" class="form-control" v-model="edit_data.social_links.website" name="website" :placeholder="$t('user.profile.website_placeholder')">
+                    </div>
                 </form>
             </div>
         </StackModal>
@@ -260,6 +278,12 @@
                     country: '',
                     lang: 'us',
                     my_bio: '',
+                    social_links: {
+                        facebook: '',
+                        instagram: '',
+                        youtube: '',
+                        website: '',
+                    },
                 },
 
                 password_edit_data: {
@@ -407,6 +431,12 @@
                     country: this.user.country,
                     lang: this.user.lang || 'us',
                     my_bio: this.user.my_bio || '',
+                    social_links: {
+                        facebook: this.user.social_links?.facebook || '',
+                        instagram: this.user.social_links?.instagram || '',
+                        youtube: this.user.social_links?.youtube || '',
+                        website: this.user.social_links?.website || '',
+                    },
                 }
 
                 this.is_edit_data = true

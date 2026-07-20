@@ -216,9 +216,18 @@ export default {
           const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
           if (!key || !window.grecaptcha) return null
           try {
-              await new Promise(resolve => window.grecaptcha.ready(resolve))
+              // grecaptcha.ready() never calls back if the script was blocked
+              // (ad-blockers/privacy extensions) or never finished loading,
+              // which left this awaiting forever with no error surfaced.
+              // Racing against a timeout guarantees it always resolves.
+              const ready = new Promise(resolve => window.grecaptcha.ready(resolve))
+              const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('reCAPTCHA timed out')), 8000))
+              await Promise.race([ready, timeout])
               return await window.grecaptcha.execute(key, { action })
-          } catch { return null }
+          } catch (e) {
+              console.error('reCAPTCHA error:', e)
+              return null
+          }
       },
 
       social_login(service){
@@ -327,20 +336,26 @@ export default {
                 })
                 .catch((error) => {
                   console.log('Login error:', error.response || error);
-                  if(error.response && error.response.status === 422) {
-                    if(error.response.data.message == 'auth.failed'){
+                  const data = error.response && error.response.data;
+                  // Recaptcha rejections are also a 422 but carry no `errors` key —
+                  // check for them first, otherwise the branch below used to run
+                  // instead and set this.error to undefined, crashing the
+                  // error.email/error.password checks in the template.
+                  if (data && data.message && data.message.toLowerCase().includes('recaptcha')) {
+                    this.captcha_error = true
+                  } else if (error.response && error.response.status === 422) {
+                    if (data.message == 'auth.failed') {
                       this.auth_error = 'Email or password is incorrect'
+                    } else {
+                      this.error = data.errors || {}
                     }
-                    else{
-                      this.error = error.response.data.errors
-                    }
-                  } else if (error.response && error.response.data && error.response.data.message) {
-                    this.auth_error = error.response.data.message
+                  } else if (data && data.message) {
+                    this.auth_error = data.message
                   } else if (error.response && error.response.status === 302) {
                     // Handle redirect - try direct API call
                     this.auth_error = 'Redirect detected - please check credentials'
-                  } else if (error.response?.status === 422 && error.response?.data?.message?.toLowerCase().includes('recaptcha')) {
-                    this.captcha_error = true
+                  } else {
+                    this.auth_error = 'Login failed. Please try again.'
                   }
                 })
                 .finally(() => this.is_loading = false);

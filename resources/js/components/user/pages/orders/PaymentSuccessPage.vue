@@ -62,6 +62,18 @@ export default {
                     const s = res.data.tbc_pay_status
                     this.paid   = s === 'SUCCEEDED'
                     this.failed = ['FAILED', 'REJECTED', 'EXPIRED', 'CANCELLED'].includes(s)
+
+                    // sessionStorage guard — GA4 doesn't dedupe purchase events by
+                    // transaction_id, so a page refresh would otherwise double-count revenue.
+                    const trackedKey = 'ga_purchase_' + this.orderId
+                    if (this.paid && this.$gtag && !sessionStorage.getItem(trackedKey)) {
+                        this.$gtag.event('purchase', {
+                            transaction_id: String(this.orderId),
+                            currency: 'GEL',
+                            value: res.data.total,
+                        })
+                        sessionStorage.setItem(trackedKey, '1')
+                    }
                 })
                 .catch(() => { this.failed = false })
                 .finally(() => { this.loading = false })

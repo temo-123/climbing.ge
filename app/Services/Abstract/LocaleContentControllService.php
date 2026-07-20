@@ -144,12 +144,16 @@ class LocaleContentControllService
         $global_data['ka'.$prefix.'_id']=$ka_info_id;
         // $global_data['ru'.$prefix.'_id']=$ru_info_id;
 
-        $saved = $global_model::insertGetId($global_data); 
+        $saved = $global_model::insertGetId($global_data);
 
         if(!$saved){
             // App::abort(500, 'Error');
         }
         else{
+            if ((int)($global_data['published'] ?? 0) === 1) {
+                \App\Services\NotificationDispatchService::notifyNewContent($global_model, $saved);
+            }
+
             return $saved;
         }
     }
@@ -265,6 +269,7 @@ class LocaleContentControllService
     private static function edit_global_content($global_data, $us_data, $id, $global_model, $request, $image_path, $prefix)
     {
         $editing_global_content = $global_model::where('id', '=', $id)->first();
+        $wasLive = (int)($editing_global_content->published ?? 0) === 1;
 
         // Check if URL title should be changed
         if(array_key_exists('is_change_url_title', $us_data) && $us_data['is_change_url_title'] == true){
@@ -293,6 +298,17 @@ class LocaleContentControllService
             return 'Error';
         }
         else{
+            $isLiveNow = (int)($editing_global_content->fresh()->published ?? 0) === 1;
+            $notifyMode = $request->input('notify_mode', 'none');
+
+            if (!$wasLive && $isLiveNow) {
+                \App\Services\NotificationDispatchService::notifyNewContent($global_model, $id);
+            } elseif ($wasLive && $isLiveNow && $notifyMode === 'update') {
+                \App\Services\NotificationDispatchService::notifyContentUpdated($global_model, $id, true);
+            } elseif ($wasLive && $isLiveNow && $notifyMode === 'new') {
+                \App\Services\NotificationDispatchService::notifyNewContent($global_model, $id, true);
+            }
+
             return $locale_tabs = [
                 'us'.$prefix.'_id' => $editing_global_content['us'.$prefix.'_id'],
                 'ka'.$prefix.'_id' => $editing_global_content['ka'.$prefix.'_id'],

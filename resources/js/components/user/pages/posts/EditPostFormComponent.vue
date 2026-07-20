@@ -11,7 +11,12 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading">
-            <div class="form-group">  
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+        <div class="row" v-show="!is_loading">
+            <div class="form-group">
                 <button type="button" class="btn btn-primary" @click="edit_post">{{ $t('common.save') }}</button>
             </div>
         </div>
@@ -74,6 +79,7 @@
 import GlobalDataForm from './forms/edit_forms/GlobalDataFormComponent.vue'
 import LocaleDataForm from './forms/edit_forms/LocaleDataFormComponent.vue'
 import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
+import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
 // import validator_alerts_component from '../../items/validator_alerts_component.vue'
 
 export default {
@@ -81,6 +87,7 @@ export default {
         single_image_edit,
         GlobalDataForm,
         LocaleDataForm,
+        notify_subscribers,
         // validator_alerts_component
     },
     data() {
@@ -90,6 +97,7 @@ export default {
             error: [],
             post_old_image: '',
             post_image: null,
+            notify_mode: 'none',
             editing_data: {
                 global_post: {},
                 us_post: {},
@@ -133,7 +141,8 @@ export default {
             formData.append('image', this.post_image);
             formData.append('data', JSON.stringify(this.editing_data))
             // formData.append('global_blocks', JSON.stringify(this.global_blocks))
-            
+            formData.append('notify_mode', this.notify_mode)
+
             axios
             .post('/set_post/edit_post/' + this.post_id, 
                 formData,

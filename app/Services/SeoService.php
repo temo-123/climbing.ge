@@ -385,13 +385,28 @@ class SeoService
             'brand'       => $this->publisherSchema(),
         ];
 
+        $price = null;
         $option = Product_option::where('product_id', $product->id)->orderBy('price')->first();
         if ($option && $option->price) {
+            // `discount` is a percentage (0-100), not an absolute price —
+            // see ProductPage.vue's colculate_discount_actyve_price().
+            $finalPrice = $option->discount > 0
+                ? round($option->price - ($option->discount * $option->price / 100), 2)
+                : (float) $option->price;
+
+            $inStock = ProductService::get_option_stock_quantity($option) > 0;
+
+            $price = [
+                'amount'   => $finalPrice,
+                'currency' => $this->isoCurrency($option->currency),
+                'inStock'  => $inStock,
+            ];
+
             $schema['offers'] = [
                 '@type'         => 'Offer',
-                'price'         => $option->discount ?: $option->price,
-                'priceCurrency' => $option->currency ?? 'GEL',
-                'availability'  => 'https://schema.org/InStock',
+                'price'         => $finalPrice,
+                'priceCurrency' => $price['currency'],
+                'availability'  => $inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
                 'url'           => request()->url(),
             ];
         }
@@ -405,7 +420,7 @@ class SeoService
         );
         $schema['keywords'] = $keywords;
 
-        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema, $keywords);
+        return $this->build($title . ' | shop.climbing.ge', $desc, $image, 'product', $schema, $keywords, $price);
     }
 
     private function serviceMeta(string $slug, string $locale): array
@@ -688,7 +703,7 @@ class SeoService
 
     // ── Helpers ───────────────────────────────────────────────────────────
 
-    private function build(string $title, string $description, string $image, string $type, ?array $schema = null, string $keywords = ''): array
+    private function build(string $title, string $description, string $image, string $type, ?array $schema = null, string $keywords = '', ?array $price = null): array
     {
         return [
             'title'       => $title,
@@ -698,6 +713,7 @@ class SeoService
             'schema'      => $schema,
             'url'         => request()->url(),
             'keywords'    => $keywords,
+            'price'       => $price,
         ];
     }
 
@@ -840,5 +856,19 @@ class SeoService
     private function defaultImage(): string
     {
         return asset('images/meta_img/default.jpg');
+    }
+
+    /**
+     * Product_option::currency stores a display symbol (e.g. "₾"), but Google
+     * and Facebook's product structured data both require an ISO 4217 code.
+     */
+    private function isoCurrency(?string $currency): string
+    {
+        return match ($currency) {
+            '₾', 'GEL' => 'GEL',
+            '$', 'USD' => 'USD',
+            '€', 'EUR' => 'EUR',
+            default    => 'GEL',
+        };
     }
 }

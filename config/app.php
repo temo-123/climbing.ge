@@ -25,6 +25,8 @@ return [
     'forum_url' => env('FORUM_URL', 'forum.climbing.ge'),
     'films_url' => env('FILMS_URL', 'films.climbing.ge'),
     'user_page_url' => env('USER_PAGE_URL', 'user.climbing.ge'),
+    'blog_url' => env('BLOG_URL', 'blog.climbing.ge'),
+    'summit_url' => env('SUMMIT_URL', 'summit.climbing.ge'),
 
     'default' => env('QUEUE_DRIVER', 'database'),
 

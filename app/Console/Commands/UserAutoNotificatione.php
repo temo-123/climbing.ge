@@ -5,9 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 
 use App\Models\Guide\Event;
-use App\Models\User\user_notification;
+use App\Models\Guide\Interested_event;
+use App\Models\User;
 
-use App\Jobs\UserNotifications;
+use App\Services\NotificationDispatchService;
 
 class UserAutoNotificatione extends Command
 {
@@ -32,46 +33,50 @@ class UserAutoNotificatione extends Command
      */
     public function handle()
     {
-        // return Command::SUCCESS;
-        // $url = '';
-        // $text = '';
-        // $subject = '';
+        $windowStart = now()->addDays(6)->startOfDay();
+        $windowEnd = now()->addDays(8)->endOfDay();
 
-        $user_notifictions = user_notification::where('interested_event', '=', 1)->get();
-        if($user_notifictions){
-            foreach ($user_notifictions as $notifiction) {
-                $user = $notifiction->user;
-                
-                $action_data = date("Y-m-d H:i:s");
-                $plas_6_day = date('Y-m-d H:i:s', strtotime($action_data. ' + 6 days'));
-                $plas_8_day = date('Y-m-d H:i:s', strtotime($action_data. ' + 8 days'));
-                
-                $global_event = Event::where('start_data', '>', $plas_6_day)->where('start_data', '<', $plas_8_day)->first();
+        $upcoming_events = Event::where('published', 1)
+            ->whereBetween('start_data', [$windowStart, $windowEnd])
+            ->get();
 
-                if($global_event){
-                    $locale_event;
-                    // if($user->lang == 'ka'){
-                    //     $locale_event = $global_event->ka_event;
-                    //     $url = config('app.base_url_ssh').'/ka/event/'.$global_event->url_title;
-                    //     $text = 'თქვენ ფავორიტ ღონისძიებამდე დარჩა 1 კვირა. (' . $locale_event->title . ') ეწვიეთ ღონისძიების გვერდს, რათა გაიგოთ მეტი სიახლე მის შესახებ.';
-                    //     $subject = $locale_event->title;
-                    // }
-                    // else if($user->lang == 'ru'){
-                    //     $locale_event = $global_event->ru_event;
-                    //     $url = config('app.base_url_ssh').'/ru/event/'.$global_event->url_title;
-                    //     $text = 'До любимого события осталось меньше недели. (' . $locale_event->title . ') Посетите страницу мероприятия, чтобы узнать больше новостей о нем.';
-                    //     $subject = $locale_event->title;
-                    // }
-                    // else{
-                        $locale_event = $global_event->us_event;
-                        $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-                        $text = 'Less than 1 week left until your favorite event. (' . $locale_event->title . ') Visit the event page to find out more news about it.';
-                        $subject = $locale_event->title;
-                    // }
+        foreach ($upcoming_events as $event) {
+            $interested = Interested_event::where('event_id', $event->id)->get();
 
-                    UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
+            foreach ($interested as $interest) {
+                $user = User::find($interest->user_id);
+                if (!$user) {
+                    continue;
                 }
+
+                $locale = $user->lang === 'ka' ? 'ka' : 'us';
+                $locale_event = $locale === 'ka' ? $event->ka_event : $event->us_event;
+                if (!$locale_event) {
+                    continue;
+                }
+
+                $url = config('app.base_url_ssh') . '/event/' . $event->url_title;
+
+                NotificationDispatchService::sendOnce(
+                    $user,
+                    $event,
+                    'event_reminder',
+                    $url,
+                    $locale_event->title,
+                    $this->reminderText($locale_event->title, $locale)
+                );
             }
         }
+
+        return Command::SUCCESS;
+    }
+
+    private function reminderText(string $title, string $locale): string
+    {
+        if ($locale === 'ka') {
+            return 'თქვენ ფავორიტ ღონისძიებამდე დარჩა 1 კვირაზე ნაკლები. (' . $title . ') ეწვიეთ ღონისძიების გვერდს, რათა გაიგოთ მეტი სიახლე მის შესახებ.';
+        }
+
+        return 'Less than 1 week left until your favorite event. (' . $title . ') Visit the event page to find out more news about it.';
     }
 }

@@ -14,6 +14,11 @@ class FollowingNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $email;
+    protected $msg;
+    protected $unfollow_url;
+    protected $from_site;
+
     /**
      * Create a new message instance.
      *
@@ -36,7 +41,7 @@ class FollowingNotification extends Mailable
     {
         $service = $this->check_site($this->from_site);
 
-        $subject = 'Following '.$service;
+        $subject = "You're now following ".$service;
         
         return $this->markdown('emails.FollowingNotificationMessage')->with([
             'email'=>$this->email,
@@ -48,15 +53,13 @@ class FollowingNotification extends Mailable
 
     public function check_site($site_id)
     {
-        if ($site_id == 'guid') {
-            return 'climbing.ge';
-        }
-        else if ($site_id == 'shop') {
-            return 'shop.climbing.ge';
-        } 
-        // else if ($site_id == 'cinema') {
-        //     return 'films.climbing.ge';
-        // }
-        
+        return match ($site_id) {
+            'guid' => config('app.site_url'),
+            'shop' => config('app.shop_url'),
+            'blog' => config('app.blog_url'),
+            'summit' => config('app.summit_url'),
+            'films', 'cinema' => config('app.films_url'),
+            default => config('app.site_url'),
+        };
     }
 }

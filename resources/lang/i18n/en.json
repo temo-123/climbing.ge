@@ -262,7 +262,26 @@
                 "approve_request_option": "Approve the request",
                 "reject_request_option": "Reject the request",
                 "please_select_decision": "Please select a decision!",
-                "make_decision_btn": "Make a decision"
+                "make_decision_btn": "Make a decision",
+                "alerts": {
+                    "title": "Action needed",
+                    "info_label": "New!",
+                    "danger_group_label": "Needs attention",
+                    "info_group_label": "New activity",
+                    "all_caught_up": "You're all caught up! Nothing needs your attention right now.",
+                    "show_more": "Show {count} more",
+                    "show_less": "Show less",
+                    "review_btn": "Review",
+                    "view_all_btn": "View all",
+                    "comment_complaints": "{count} comment complaint(s) reported — please review",
+                    "feedback_complaints": "{count} product review complaint(s) reported — please review",
+                    "db_relation_issues": "{count} data relation issue(s) found in the database",
+                    "new_comments": "{count} new comment(s) on articles",
+                    "new_product_feedback": "{count} new product review(s)",
+                    "new_mtp_reviews": "{count} new MTP review(s)",
+                    "new_route_reviews": "{count} new route review(s)",
+                    "new_ascents": "{count} new summit ascent(s) logged"
+                }
             }
         },
         "task": {
@@ -444,9 +463,7 @@
             "cannot_delete_self_msg": "You cannot delete yourself!",
             "confirm_delete_permission": "Delete this permission? It will be removed from all roles and users.",
             "confirm_sync_admin_permissions": "This will add all missing permissions to the Admin role. Continue?",
-            "sync_admin_permissions_done_msg": "Done. Added {count} missing permission(s) to Admin role.",
-            "site_followers_table": "Site Followers",
-            "col_service": "Service"
+            "sync_admin_permissions_done_msg": "Done. Added {count} missing permission(s) to Admin role."
         },
         "orders": {
             "add_custom_order_title": "Add Custom Order",
@@ -904,6 +921,45 @@
             "confirm_delete_orphaned_rows": "Delete {count} orphaned row(s) from \"{table}\"?",
             "fix_failed": "Fix failed.",
             "request_failed": "Request failed."
+        },
+        "notification_analytics": {
+            "stat_total_sent": "Total Sent",
+            "stat_last_7_days": "Last 7 Days",
+            "stat_last_30_days": "Last 30 Days",
+            "stat_users_notified": "Users Notified",
+            "stat_preferences_set": "Users With Preferences Set",
+            "volume_chart_title": "Notification Volume Over Time",
+            "breakdown_by_key_title": "Breakdown by Notification Type",
+            "breakdown_by_content_type_title": "Breakdown by Content Type",
+            "adoption_chart_title": "Preference Adoption",
+            "recent_activity_title": "Recent Notification Activity",
+            "chart_notifications_col": "Notifications",
+            "chart_users_col": "Users",
+            "col_preference": "Preference",
+            "col_user": "User",
+            "col_type": "Type",
+            "col_content_type": "Content Type",
+            "col_content_id": "Content ID",
+            "col_sent_at": "Sent At",
+            "registered_subscribers_title": "Registered User Subscriptions",
+            "guest_followers_title": "Guest Followers",
+            "col_subscriptions": "Subscribed To",
+            "col_service": "Service",
+            "col_followed_at": "Followed At",
+            "guest_follower_detail_title": "Guest Follower Details",
+            "subscriber_detail_title": "Subscriber Details",
+            "col_details": "Details",
+            "verify_user_btn": "Verify User",
+            "subscribe_all_btn": "Follow All Services",
+            "confirm_subscribe_all": "Enable every notification category for this user?",
+            "failed_jobs_title": "Failed Jobs",
+            "col_email": "Email",
+            "col_subject": "Subject",
+            "col_error": "Error",
+            "col_failed_at": "Failed At",
+            "retry_btn": "Retry",
+            "retry_all_btn": "Retry All",
+            "confirm_retry_all": "Retry all failed notification jobs?"
         },
         "donations": {
             "donations_table": "Donations",
@@ -1709,7 +1765,13 @@
             "category": "@:common.category",
             "grade": "@:common.grade",
             "height": "@:common.height",
-            "bolts": "Bolts"
+            "bolts": "Bolts",
+            "notify_subscribers_title": "Email Notification",
+            "notify_none_label": "Don't notify",
+            "notify_update_label": "Notify as an update",
+            "notify_update_hint": "Emails everyone subscribed to update-notifications for this content type.",
+            "notify_new_label": "Notify as new content",
+            "notify_new_hint": "Re-announces this item to everyone subscribed to new-content notifications for this type, even if they were already emailed when it was first published."
         },
         "table": {
             "loading": "Loading...",
@@ -2967,7 +3029,12 @@
             "confirm_delete_site": "Are you sure you want to delete this site? This action cannot be undone.",
             "label_bio": "Bio",
             "bio_label": "Bio",
-            "bio_placeholder": "Tell others a little about yourself"
+            "bio_placeholder": "Tell others a little about yourself",
+            "social_links_label": "Social links",
+            "facebook_placeholder": "Facebook profile URL",
+            "instagram_placeholder": "Instagram profile URL",
+            "youtube_placeholder": "YouTube channel URL",
+            "website_placeholder": "Personal website URL"
         },
         "orders": {
             "my_purchases": "My Purchases",
@@ -3059,6 +3126,7 @@
             }
         },
         "notifications": {
+            "title": "Notifications",
             "refresh": "Refresh notifications",
             "updating": "@:common.updating",
             "danger": "Danger!",
@@ -3069,7 +3137,8 @@
             "please_wait": "Please wait!",
             "missing_image": "Add a profile picture so people can recognize you more easily.",
             "resend_success": "A new verification email has been sent. Please check your inbox.",
-            "resend_error": "Something went wrong. Please try again later, and contact support if this keeps happening."
+            "resend_error": "Something went wrong. Please try again later, and contact support if this keeps happening.",
+            "all_good": "You're all set — no notifications right now."
         },
         "notification_settings": {
             "manage_notifications_hint": "Manage your email notifications. Select the notifications you want to receive via email.",
@@ -3091,6 +3160,25 @@
             "new_gym_added": "New Gym Added",
             "new_product_added": "New Product Added",
             "new_service_added": "New Service Added",
+            "new_tour_added": "New Tour Added",
+            "new_mount_added": "New Mountain/Peak Added",
+            "new_summit_added": "New Summit Added",
+            "new_blog_post_added": "New Blog Post",
+            "new_film_added": "New Film Added",
+            "content_updates_section_label": "Notify me when content I'm subscribed to is edited",
+            "sector_updated": "Sector Updated",
+            "news_content_updated": "News Article Updated",
+            "outdoor_spot_updated": "Outdoor Climbing Spot Updated",
+            "ice_spot_updated": "Ice Climbing Spot Updated",
+            "techtip_updated": "Tech Tip Updated",
+            "gym_updated": "Gym Updated",
+            "product_updated": "Product Updated",
+            "service_updated": "Service Updated",
+            "tour_updated": "Tour Updated",
+            "mount_updated": "Mountain/Peak Updated",
+            "summit_updated": "Summit Updated",
+            "blog_post_updated": "Blog Post Updated",
+            "film_updated": "Film Updated",
             "confirm_enable_all": "Are you sure you want to enable all notifications? This will send emails for all types of updates.",
             "confirm_disable_all": "Are you sure you want to disable all notifications? You will no longer receive email updates."
         },
@@ -3149,6 +3237,10 @@
             "welcome_brand": "Welcome to climbing.ge user page",
             "cart": "Cart",
             "my_account": "My account",
+            "go_to_guidebook": "Guidebook",
+            "go_to_shop": "Shop",
+            "go_to_summit": "Summits",
+            "go_to_blog": "Blog",
             "login": "@:common.login",
             "menu_header": "Menu",
             "loading_menu": "Loading menu...",
@@ -3196,10 +3288,10 @@
             "site_options": "Site options",
             "site_options_about_us": "About us",
             "site_options_head_sliders": "Head Sliders",
-            "site_options_site_followers": "Site followers",
             "site_options_users_and_permissions": "Users & Permissions",
             "site_options_other_commenters": "Other commenters",
             "site_options_multimedia_and_database": "Multimedia and Database",
+            "site_options_notification_analytics": "Notification Analytics",
             "site_options_all_comments": "All comments",
             "site_options_all_routes_reviews": "All routes reviews"
         }
@@ -3254,6 +3346,26 @@
         "errors": {
             "no_permission": "You don't have permission to perform this action.",
             "generic_status": "Error {status}: {statusText}"
+        },
+        "follow": {
+            "follow_btn": "Follow",
+            "unfollow_btn": "Unfollow",
+            "profile_not_found": "This climber's profile couldn't be found.",
+            "followers_label": "Followers",
+            "following_label": "Following",
+            "recent_reviews_title": "Recent route & MTP reviews",
+            "recent_ascents_title": "Recent ascents",
+            "recent_comments_title": "Recent comments",
+            "no_activity": "No public activity yet.",
+            "no_followers": "No followers yet.",
+            "no_following": "Not following anyone yet.",
+            "all_climbers_title": "All Climbers",
+            "load_more_btn": "Load more",
+            "profile_modal_title": "Climber Profile",
+            "all_users_btn": "All users",
+            "view_full_profile_btn": "View full profile",
+            "climbers_meta_description": "Browse all registered climbers on climbing.ge — follow them and see their comments, ascents, and route/MTP reviews.",
+            "climber_meta_description": "See {name}'s comments, ascents, and route/MTP reviews on climbing.ge — follow them to get notified about their activity."
         },
         "confirm_go_back": "Are you sure you want to go back?",
         "slider": {
@@ -3342,7 +3454,10 @@
         "loading": "Loading...",
         "retry": "Retry",
         "error_loading_product": "Failed to load product details. Please try again.",
-        "processing_image": "Processing image..."
+        "processing_image": "Processing image...",
+        "share": "Share",
+        "link_copied": "Link copied to clipboard!",
+        "link_copy_failed": "Could not copy link."
     },
     "head_slider": {
         "guide_images": "Guide header images",

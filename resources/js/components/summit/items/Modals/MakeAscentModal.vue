@@ -483,6 +483,14 @@ export default {
           this.submitResult = response.data
           this.submitted = true
           this.$emit('submitted', response.data)
+
+          if (this.$gtag) {
+            this.$gtag.event('submit_ascent', {
+              content_type: 'summit',
+              item_id: String(this.summit.id),
+              method: this.isLoggedIn ? 'logged_in' : 'guest',
+            })
+          }
         })
         .catch(error => {
           if (error.response?.status === 422 && error.response?.data?.message?.toLowerCase().includes('recaptcha')) {

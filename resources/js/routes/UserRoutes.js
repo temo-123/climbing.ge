@@ -60,7 +60,6 @@ const routes = [
 
             { path: 'cart', name: 'cart', component: load('cartPageComponent'), meta: {title: 'user page'}},
             { path: 'head_sliders_images', name: 'head_sliders_images', component: load('gallery/HeadSlidersPage'), meta: {title: 'user page', permissions: [['show', 'head_slider']]}},
-            { path: 'site_folloers', name: 'site_folloers', component: load('SiteFolloersListPageComponent'), meta: {title: 'user page', permissions: [['show', 'site_folloers']]}},
             { path: 'options', name: 'options', component: load('optionsPageComponent'), meta: {title: 'user page'}},
             { path: 'users_list', name: 'usersList', component: load('usersListPageComponent'), meta: {title: 'user page', permissions: [['show', 'user']]}},
 
@@ -169,6 +168,8 @@ const routes = [
             { path: 'service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), meta: {title: 'user page', permissions: [['show', 'services']]}},
 
             { path: 'multimedia', name: 'multimedia', component: load('database_&_multimedia/DatabasePage'), meta: {title: 'user page', permissions: [['show', 'export']]}},
+
+            { path: 'notification_analytics', name: 'notificationAnalytics', component: load('notifications/NotificationAnalyticsPage'), meta: {title: 'user page', permissions: [['show', 'user_notification']]}},
 
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},

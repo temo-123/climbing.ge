@@ -11,6 +11,11 @@
             </div>
         </div>
         <div class="row" v-show="!is_loading">
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+        <div class="row" v-show="!is_loading">
             <div class="form-group">
                 <button type="submit" class="btn btn-primary" @click="edit_product()" >{{ $t('admin.shop.save_updating') }}</button>
             </div>
@@ -216,12 +221,14 @@
 <script>
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+    import notify_subscribers from '../../../items/form/parts/NotifySubscribersComponent.vue'
     import productOptionsComponent from '../product_options/items/ProductOptionsComponent.vue'
-    
+
     export default {
         components: {
             // validator_alerts_component,
             published_item,
+            notify_subscribers,
             productOptionsComponent,
         },
         mixins: [],
@@ -236,6 +243,7 @@
                 categories: [],
                 is_change_url_title: false,
                 is_loading: false,
+                notify_mode: 'none',
 
                 errors: [],
 
@@ -337,6 +345,7 @@
                 .post('/set_product/edit_product/'+this.$route.params.id, {
                     data: JSON.stringify(this.data),
                     change_url_title: this.change_url_title,
+                    notify_mode: this.notify_mode,
                 })
                 .then((response)=> {
                     this.go_back(true)

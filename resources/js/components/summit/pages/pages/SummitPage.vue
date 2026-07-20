@@ -25,6 +25,15 @@
                     <h1 class="index_h2">{{ summit.title }}</h1>
                     <p v-if="summit.ka_title" class="text-muted text-center" style="font-size:1.1rem; margin-top:-10px; margin-bottom:10px">{{ summit.ka_title }}</p>
 
+                    <div class="text-center" style="margin-bottom:10px">
+                        <share-button
+                            :title="summit.title"
+                            :text="summit.description"
+                            content-type="summit"
+                            :item-id="summit.id"
+                        />
+                    </div>
+
                     <div class="bar"><i class="fa fa-flag-checkered"></i></div>
 
                     <!-- Badges -->
@@ -196,7 +205,10 @@
                                                 <td>
                                                     <img v-if="a.photo" :src="'/public/images/summit_ascents_img/' + a.photo" class="summit-climber-avatar" />
                                                     <i v-else class="fa fa-user-circle summit-climber-avatar-placeholder"></i>
-                                                    <strong>{{ a.name }} {{ a.surname }}</strong>
+                                                    <a v-if="a.user_id" :href="climberProfileUrl(a.user_id)" @click.stop>
+                                                        <strong>{{ a.name }} {{ a.surname }}</strong>
+                                                    </a>
+                                                    <strong v-else>{{ a.name }} {{ a.surname }}</strong>
                                                 </td>
                                                 <td class="text-muted small">{{ formatDate(a.ascent_date) }}</td>
                                                 <td>
@@ -484,6 +496,12 @@ export default {
                     if ('make_ascent' in this.$route.query) {
                         this.showAscentModal = true
                     }
+                    if (this.$gtag && this.summit?.id) {
+                        this.$gtag.event('select_content', {
+                            content_type: 'summit',
+                            item_id: String(this.summit.id),
+                        })
+                    }
                 })
                 .catch(() => { this.summit = null })
                 .finally(() => { this.loading = false })
@@ -585,6 +603,11 @@ export default {
             const ssh = process.env.MIX_APP_SSH || 'http://'
             const siteHost = process.env.MIX_GUIDBOOK_URL || process.env.MIX_SITE_URL || ''
             return `${ssh}${siteHost}/outdoor/${articleUrl}`
+        },
+        climberProfileUrl(userId) {
+            const ssh = process.env.MIX_APP_SSH || 'http://'
+            const siteHost = process.env.MIX_GUIDBOOK_URL || process.env.MIX_SITE_URL || ''
+            return `${ssh}${siteHost}/climber/${userId}`
         },
     }
 }

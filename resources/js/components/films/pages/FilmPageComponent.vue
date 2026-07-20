@@ -19,8 +19,11 @@
                 <div class="row">
                     <h1>
                         {{ film.local_film.name }}
-                            
-                        <span @click="add_in_favorite_film(film.global_film.id)" style="float: right;"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span>
+
+                        <span style="float: right;">
+                            <share-button :title="film.local_film.name" :text="film.local_film.short_description" />
+                            <span @click="add_in_favorite_film(film.global_film.id)"> <i class="fa fa-heart-o favorite_icon add_to_favorite" ></i> </span>
+                        </span>
                     </h1>
                 </div>
                 <div class="row">

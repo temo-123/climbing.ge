@@ -12,7 +12,13 @@
         </div>
 
         <div class="row" v-show="!is_loading">
-            <div class="form-group">  
+            <div class="form-group col-md-12">
+                <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+            </div>
+        </div>
+
+        <div class="row" v-show="!is_loading">
+            <div class="form-group">
                 <button type="submit" class="btn btn-primary" v-on:click="edit_article()" >{{ $t('common.save') }}</button>
             </div>
         </div>
@@ -128,6 +134,7 @@
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
+    import notify_subscribers from '../../items/form/parts/NotifySubscribersComponent.vue'
     // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     // import { going } from '../.p./../../../mixins/easy_navigation_mixin.js'
     export default {
@@ -145,6 +152,7 @@
 
             gallery_images_edit,
             single_image_edit,
+            notify_subscribers,
             // validator_alerts_component
         },
         data(){
@@ -153,6 +161,8 @@
                 tab_num: 1,
 
                 error: [],
+
+                notify_mode: 'none',
 
                 editing_data: [],
 
@@ -255,6 +265,7 @@
                 formData.append('image', this.article_image);
                 formData.append('data', JSON.stringify(this.editing_data))
                 formData.append('global_blocks', JSON.stringify(this.global_blocks))
+                formData.append('notify_mode', this.notify_mode)
 
                 if(this.article_gallery_image){
                     var loop_num = 0

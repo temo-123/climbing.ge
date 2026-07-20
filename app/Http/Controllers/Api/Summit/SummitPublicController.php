@@ -241,6 +241,7 @@ class SummitPublicController extends Controller
             ->with([
                 'ascentRoutes.article.global_article_us',
                 'ascentRoutes.article.global_article_ka',
+                'users',
             ])
             ->orderBy('ascent_date', 'desc')
             ->get()
@@ -272,6 +273,7 @@ class SummitPublicController extends Controller
                     'id'                => $ascent->id,
                     'name'              => $ascent->name,
                     'surname'           => $ascent->surname,
+                    'user_id'           => $ascent->users->first()->user_id ?? null,
                     'comment'           => $ascent->comment,
                     'photo'             => $ascent->photo,
                     'is_gps_validated'  => $ascent->is_gps_validated,

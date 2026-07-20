@@ -67,6 +67,8 @@ const routes = [
             { path: "search_articles", name: "search_articles", component: load("SerchPageComponent"), meta: { title: 'Search Articles' } },
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },
+            { path: "climber/:id", name: "climberProfile", component: load("ClimberProfilePageComponent"), meta: { title: 'Climber Profile' } },
+            { path: "climbers", name: "climberList", component: load("ClimberListPageComponent"), meta: { title: 'Climbers' } },
             { path: "confirm_comment_email/:comment_id/:email/:token", name: "confirm_comment_email", component: CommentEmailVerificationePage, meta: { title: 'Confirm Comment Email' } },
 
             { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },

@@ -46,6 +46,11 @@ return [
         'redirect' => env('GOOGLE_URL'),
     ],
 
+    'seo' => [
+        'google_site_verification' => env('GOOGLE_SITE_VERIFICATION'),
+        'bing_site_verification'   => env('BING_SITE_VERIFICATION'),
+    ],
+
     'analytics' => [
         'site'   => env('MIX_CLIMBING_GUIDBOOK_ANALITICS_ID'),
         'shop'   => env('MIX_SHOP_ANALITICS_ID'),

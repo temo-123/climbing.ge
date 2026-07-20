@@ -29,6 +29,15 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot();
 
-        //
+        \App\Models\Guide\Sector::observe(\App\Observers\SectorObserver::class);
+        \App\Models\Guide\Mount::observe(\App\Observers\MountObserver::class);
+        \App\Models\Summit\Summit::observe(\App\Observers\SummitObserver::class);
+        \App\Models\Films\Film::observe(\App\Observers\FilmObserver::class);
+
+        \App\Models\Guide\Article_comment_user::observe(\App\Observers\ArticleCommentUserObserver::class);
+        \App\Models\Summit\SummitAscentUser::observe(\App\Observers\SummitAscentUserObserver::class);
+        \App\Models\Guide\Sport_route_review::observe(\App\Observers\SportRouteReviewObserver::class);
+        \App\Models\Guide\Mtp_review::observe(\App\Observers\MtpReviewObserver::class);
+        \App\Models\User\UserFollow::observe(\App\Observers\UserFollowObserver::class);
     }
 }

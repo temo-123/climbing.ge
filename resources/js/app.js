@@ -73,6 +73,9 @@ app.component("canvas-json-show", CanvasJsonDataShow);
 import MountSummitsMapModal from "./components/global_components/modals/MountSummitsMapModalComponent.vue";
 app.component("mount-summits-map-modal", MountSummitsMapModal);
 
+import ShareButton from "./components/global_components/ShareButtonComponent.vue";
+app.component("share-button", ShareButton);
+
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
 import GlobalInfoFormBlock from "./components/user/items/form/parts/GlobalInfoFormBlockComponent.vue";
@@ -162,9 +165,6 @@ else {
 const analytic_id = document.querySelector('meta[name="ga-tag-id"]')?.content;
 
 import { createGtag } from "vue-gtag";
-if (analytic_id) {
-    app.use(createGtag({ tagId: analytic_id }));
-}
 
 app.config.productionTip = false;
 app.config.globalProperties.$siteData = reactive({ data: [], loaded: false });
@@ -231,6 +231,16 @@ const router = createRouter({
 });
 window.router = router;
 
+// Installed after the router exists so gtag's pageTracker can hook into it —
+// without this, gtag only ever sees the initial hard page load and none of
+// the in-SPA route changes register as pageviews in Analytics.
+if (analytic_id) {
+    app.use(createGtag({
+        tagId: analytic_id,
+        pageTracker: { router, useRouteFullPath: true },
+    }));
+}
+
 import { getCurrentLocale } from './services/routerUtils.js';
 
 let isFirstNavigation = true;
@@ -296,6 +306,10 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
         'login', 'register', 'forget_pass', 'reset_pass',
         'callback', 'verify', 'create_pass',
     ];
+    // Accessible whether logged in or not — must NOT bounce an authenticated
+    // user away, since the verification link is normally opened by a user
+    // who is already logged in (registration auto-logs them in).
+    const authNeutralRoutes = ['verify'];
 
     let authVerified = false;
 
@@ -333,8 +347,9 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
             return next({ name: 'login', query: { redirect: to.fullPath } });
         }
 
-        // Logged in — bounce away from public/auth pages
-        if (userPublicRoutes.includes(to.name)) {
+        // Logged in — bounce away from public/auth pages (except routes that
+        // must work regardless of auth state, e.g. email verification)
+        if (userPublicRoutes.includes(to.name) && !authNeutralRoutes.includes(to.name)) {
             return next({ name: 'home' });
         }
 

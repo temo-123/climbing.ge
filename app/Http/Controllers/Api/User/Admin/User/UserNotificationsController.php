@@ -21,6 +21,7 @@ use App\Models\User\user_notification;
 use App\Models\User;
 
 use App\Services\PermissionService;
+use App\Services\NotificationDispatchService;
 
 use App\Jobs\UserNotifications;
 
@@ -32,11 +33,9 @@ class UserNotificationsController extends Controller
         if ($auth) return $auth;
         
         if($request->action != 'special_articles'){
-            $user_notifictions = user_notification::where($request->action, '=', 1)->get();
-            if($user_notifictions){
-                foreach ($user_notifictions as $notifiction) {
-                    $user = $notifiction->user;
-
+            $users_with_preference = NotificationDispatchService::usersWithPreference($request->action);
+            if($users_with_preference){
+                foreach ($users_with_preference as $user) {
                     if($request->action == 'interested_event' && $user->interested_events){
                         if ($request->event_notification_type == 'select_event') {
                             $interested_event = $user->interested_events->where('event_id', '=', $request->id)->first();
@@ -69,12 +68,12 @@ class UserNotificationsController extends Controller
                         }
                     }
                     else if($request->action == 'favorite_product' && $user->favorite_products){
-                        $favorite_products = $user->favorite_products->where('id', '=', $request->id)->first();
+                        $favorite_products = $user->favorite_products->where('product_id', '=', $request->id)->first();
                         if($favorite_products){
                             $global_product = $favorite_products->product;
-                            
-                            $locale_product = $global_product->global_article_us;
-                            $url = config('app.base_url_ssh').'/product/'.$global_product->url_title;
+
+                            $locale_product = $global_product->us_product;
+                            $url = 'https://'.config('app.shop_url').'/product/'.$global_product->url_title;
                             $text = 'Check one of your, favorite product climbing area in Georgia, (' . $locale_product->title . ') for check what is new.';
                             $subject = "Notification from climbing.ge";
 
@@ -102,7 +101,7 @@ class UserNotificationsController extends Controller
                         $last_news = Article::where('category', '=', 'news')->latest('id')->first();
                         if($last_news){
                             $locale_outdoor = $last_news->global_article_us;
-                            $url = config('app.base_url_ssh').'/outdoor/'.$last_news->url_title;
+                            $url = config('app.base_url_ssh').'/news/'.$last_news->url_title;
                             $text = 'News from climbing.ge ' . $locale_outdoor->title . ' check what is new.';
                             $subject = "Notification from climbing.ge";
 
@@ -112,7 +111,19 @@ class UserNotificationsController extends Controller
                         }
                     }
                     else if($request->action == 'favorite_film' && $user->favorite_films){
-                        return 'Film notification is not functionable!';
+                        $favorite_film = $user->favorite_films->where('film_id', '=', $request->id)->first();
+                        if($favorite_film){
+                            $global_film = $favorite_film->film;
+
+                            $locale_film = $global_film->us_film;
+                            $url = 'https://'.config('app.films_url').'/film/'.$global_film->url_title;
+                            $text = 'Check one of your, favorite film on climbing.ge, (' . $locale_film->title . ') for check what is new.';
+                            $subject = "Notification from climbing.ge";
+
+                            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
+
+                            return 'Send message socsesfuly';
+                        }
                     }
                 }
             }

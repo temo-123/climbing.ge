@@ -177,6 +177,17 @@ class GenerateSitemap extends Command
                         ->setLastModificationDate($p->updated_at ?? Carbon::now())
                 );
             });
+
+            // The blog subdomain also serves guide "news" articles at /news/{url_title}
+            // (see PostController::get_news / BlogRoutes.js), so they belong in this sitemap too.
+            Article::where('category', 'news')->where('published', true)->get(['url_title', 'updated_at'])->each(function (Article $n) use ($sitemap, $prefix) {
+                $sitemap->add(
+                    Url::create($prefix . 'news/' . $n->url_title)
+                        ->setPriority(0.7)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                        ->setLastModificationDate($n->updated_at ?? Carbon::now())
+                );
+            });
         }
 
         $sitemap->writeToFile(public_path('blog-sitemap.xml'));

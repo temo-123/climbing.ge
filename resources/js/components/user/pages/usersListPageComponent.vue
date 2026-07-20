@@ -46,7 +46,7 @@
             @update="get_users"
         />
         <UserBunModel ref="user_ban_modal" @update="get_users"/>
-        <UserInfoModal ref="user_info_modal"/>
+        <UserInfoModal ref="user_info_modal" @update="get_users"/>
 
         <EditRoleModel ref="edit_role_model"/>
         <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
@@ -127,6 +127,7 @@
                                     this.$t('admin.users.col_verified'),
                                     this.$t('admin.users.col_banned'),
                                     this.$t('admin.users.col_role'),
+                                    this.$t('common.edit'),
                                     this.$t('admin.users.col_ban'),
                                     this.$t('admin.users.col_reset'),
                                     this.$t('common.delete'),
@@ -138,6 +139,7 @@
                                     ['data', ['is_team_member'],'bool'],
                                     ['data', ['email_verified_at'],'bool_2'],
                                     ['data', ['is_banned'],'bool'],
+                                    ['data', ['role_name']],
                                     ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
                                     ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
@@ -150,7 +152,8 @@
                                     ['no'],
                                     ['no'],
                                     ['no'],
-                                    ['user', 'edit_permissions'],
+                                    ['no'],
+                                    ['role', 'edit'],
                                     ['user', 'create_ban'],
                                     ['user', 'edit'],
                                     ['user', 'del'],

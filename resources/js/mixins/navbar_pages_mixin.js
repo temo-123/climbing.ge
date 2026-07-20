@@ -299,13 +299,6 @@ export default {
                             ]
                         },
                         {
-                            name: this.$t('user.nav.site_options_site_followers'),
-                            route: "/site_folloers",
-                            permissions: [
-                                ['show', 'site_folloers'],
-                            ]
-                        },
-                        {
                             name: this.$t('user.nav.site_options_users_and_permissions'),
                             route: "/users_list",
                             permissions: [
@@ -324,6 +317,13 @@ export default {
                             route: "/multimedia",
                             permissions: [
                                 ['show', 'database'],
+                            ]
+                        },
+                        {
+                            name: this.$t('user.nav.site_options_notification_analytics'),
+                            route: "/notification_analytics",
+                            permissions: [
+                                ['show', 'user_notification'],
                             ]
                         },
                         {

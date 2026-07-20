@@ -153,6 +153,7 @@ class SectorController extends Controller
             $edit_sector['wolking_time'] = $data['wolking_time'];
             $edit_sector['is_helmet'] = $data['is_helmet'];
 
+            $edit_sector->notifyMode = $request->input('notify_mode', 'none');
             $save_sector = $edit_sector -> save();
             
             if($request->sector_new_images){

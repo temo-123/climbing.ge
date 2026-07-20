@@ -47,6 +47,11 @@
                     </div>
                 </div>
                 <div class="form-group clearfix row">
+                    <div class="col-md-10 offset-md-2">
+                        <notify_subscribers :notify_mode_prop="notify_mode" @item_data="notify_mode = $event" />
+                    </div>
+                </div>
+                <div class="form-group clearfix row">
                     <label for="name" class="col-md-2 control-label">
                         {{ $t('admin.routes_sectors.sector_name') }}
                     </label>
@@ -523,6 +528,7 @@
     import { SlickList, SlickItem } from "vue-slicksort";
     import gallery_images_add from '../../../items/gallery/galleryImageAddComponent.vue'
     import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
+    import notify_subscribers from '../../../items/form/parts/NotifySubscribersComponent.vue'
 
     export default {
         mixins: [],
@@ -532,6 +538,7 @@
             SlickList,
             gallery_images_add,
             text_block_localization,
+            notify_subscribers,
         },
         data() {
             return {
@@ -547,6 +554,8 @@
 
                 errors: [],
                 // image_errors: [],
+
+                notify_mode: 'none',
 
                 data: {
                     published: 0,
@@ -729,6 +738,7 @@
                 loop_num = 0
 
                 formData.append('data', JSON.stringify(this.data))
+                formData.append('notify_mode', this.notify_mode)
 
                 axios
                 .post("/set_sector/edit_sector/"+this.$route.params.id, formData)

@@ -24,8 +24,9 @@ class UsersController extends Controller
 {
     public function get_all_users()
     {
-        return User::latest('id')->get()->map(function ($user) {
+        return User::with('role')->latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
+            $user->role_name = optional($user->role->first())->name;
             return $user;
         });
     }

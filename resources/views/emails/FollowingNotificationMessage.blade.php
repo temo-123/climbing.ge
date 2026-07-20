@@ -1,12 +1,18 @@
 @component('mail::message')
-# Message from - {{ $from_site }}
+# You're following {{ $from_site }}
 
-<p>{{$msg}}</p>
+Hi there,
 
-@component('mail::button', ['url' => $unfollow_url])
-Unfollow
+{{ $msg }}
+
+@if(!empty($unfollow_url))
+We'll only email you when there's something worth sharing. If you ever change your mind, you can unsubscribe any time:
+
+@component('mail::button', ['url' => $unfollow_url, 'color' => 'error'])
+Unfollow {{ $from_site }}
 @endcomponent
+@endif
 
-Thanks!<br>
+Thanks for being part of the community!<br>
 {{ config('app.name') }}
 @endcomponent

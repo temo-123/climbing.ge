@@ -30,6 +30,7 @@
                 </template>
 
                 <localeSwitcher />
+                <serviceLinks />
                 <nav-badges />
 
                 <!-- <li class="nav-item dropdown">
@@ -87,6 +88,7 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <localeSwitcher />
+                <serviceLinks />
                 <nav-badges />
             </ul>
         </div>
@@ -96,11 +98,13 @@
 <script>
     import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
     import localeSwitcher from '../../../global_components/LocaleChangeComponent.vue'
+    import serviceLinks from './ServiceLinksComponent.vue'
 
     export default {
         mixins: [navbar_pages_mixin],
         components: {
             localeSwitcher,
+            serviceLinks,
         },
         computed: {
             menu_items() {
@@ -334,5 +338,50 @@
     }
     .animate {
         transition: all .5s ease;
+    }
+
+    /* app.scss has a shared, !important rule (@media max-width:1230px,
+       .collapse.navbar-collapse { display: none !important; }) written for
+       the guide/shop/summit Bootstrap-3 toggler-driven collapse. It's a
+       shared stylesheet loaded on every subdomain, and this specific
+       order-3 collapse block (locale switcher, service links, cart/account)
+       has no toggle button wired to it at all, so on desktop widths
+       (>=993px, where #navbarNav's hamburger menu is hidden above) it was
+       being hidden entirely between 993px-1230px too. Scoped to this navbar
+       only, via the admin_page_header_navbar class that's unique to the
+       user dashboard, so guide/shop/summit's own collapse behavior is
+       untouched. Only applied >=993px: below that, #navbarNav's hamburger
+       menu is the one and only nav (it already includes localeSwitcher,
+       serviceLinks and nav-badges), so order-3 must stay collapsed there —
+       forcing it visible unconditionally duplicated those icons under the
+       expanded mobile menu and stacked them full-height beforehand. */
+    @media (min-width: 993px) {
+        .admin_page_header_navbar .navbar-collapse.order-3 {
+            display: flex !important;
+            flex-basis: 100%;
+            flex-grow: 1;
+            align-items: center;
+        }
+    }
+
+    /* LocaleChangeComponent is a shared global component (also used by the
+       Bootstrap-3 guide/shop/summit/blog/films navbars), so its own <li>/<a>
+       carry no sizing of their own. Next to service-link-btn/nav-badge-btn
+       (which pad themselves to 15px/10px and center via inline-flex), that
+       left it a different height and top-aligned instead of centered.
+       Scoped to this navbar only. */
+    .admin_page_header_navbar .navbar-nav > li.dropdown.cursor_pointer {
+        display: inline-flex;
+        align-items: center;
+        list-style: none;
+    }
+    .admin_page_header_navbar .navbar-nav > li.dropdown.cursor_pointer > a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 10px;
+        color: #fff !important;
+        font-size: 1.1em;
+        cursor: pointer;
     }
 </style>

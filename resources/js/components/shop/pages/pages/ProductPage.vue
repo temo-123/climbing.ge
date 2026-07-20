@@ -28,9 +28,10 @@
                                     <h1 class="product-page-title">{{ product.locale_product.title }}</h1>
                                 </div>
                                 <div class="action-icons">
-                                    <button class="icon-btn share-btn" @click="shareProduct" :aria-label="$t('shop.product.share_product')" :title="$t('shop.product.share_product')">
-                                        <i class="fa fa-share-alt" aria-hidden="true"></i>
-                                    </button>
+                                    <share-button
+                                        :title="product.locale_product.title"
+                                        :text="product.locale_product.short_description"
+                                    />
                                     <button class="icon-btn favorite-btn" @click="add_to_faworite(product.global_product.id)" :class="{ disabled: addingToFavorite }" :aria-label="$t('shop.product.add_to_favorites')" :title="$t('shop.product.add_to_favorites')">
                                         <i v-if="addingToFavorite" class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                         <i v-else class="fa fa-heart-o" aria-hidden="true"></i>
@@ -391,6 +392,18 @@
                     this.product = response.data
 
                     this.get_product_options_images()
+
+                    if (this.$gtag) {
+                        this.$gtag.event('view_item', {
+                            currency: 'GEL',
+                            value: this.product.min_price,
+                            items: [{
+                                item_id: String(this.product.global_product.id),
+                                item_name: this.product.locale_product.title,
+                                price: this.product.min_price,
+                            }],
+                        })
+                    }
                 })
                 .catch(error =>{
                 })
@@ -470,6 +483,20 @@
                         this.add_to_cart_message = response
                         this.is_adding_in_cart_socsesful = true
                         this.$bus.$emit('cart-updated')
+
+                        if (this.$gtag) {
+                            this.$gtag.event('add_to_cart', {
+                                currency: 'GEL',
+                                value: this.actyve_price.new_price * qty,
+                                items: [{
+                                    item_id: String(this.product.global_product.id),
+                                    item_name: this.product.locale_product.title,
+                                    item_variant: String(this.product_modification_for_cart),
+                                    price: this.actyve_price.new_price,
+                                    quantity: qty,
+                                }],
+                            })
+                        }
                     })
                     .catch(error =>{
                         if (error.response && error.response.data) {
@@ -522,20 +549,6 @@
                     this.showMaxProductsAlert = false;
                 } else if (type === 'addSuccess') {
                     this.showAddSuccessAlert = false;
-                }
-            },
-            shareProduct() {
-                const url = window.location.href;
-                const title = this.product.locale_product.title;
-                if (navigator.share) {
-                    navigator.share({
-                        title: title,
-                        url: url
-                    });
-                } else {
-                    navigator.clipboard.writeText(url).then(() => {
-                        alert('Product link copied to clipboard!');
-                    });
                 }
             },
             open_login_modal() {

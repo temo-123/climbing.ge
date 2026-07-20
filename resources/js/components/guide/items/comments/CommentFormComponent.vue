@@ -130,7 +130,12 @@
 
                                 <div class="col-xs-10 col-md-10">
                                     <div class="row">
-                                        <h3 class="comentator_name"><strong>{{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
+                                        <h3 class="comentator_name">
+                                            <router-link v-if="comment.user && comment.user.id" :to="{ name: 'climberProfile', params: { id: comment.user.id } }">
+                                                <strong>{{comment.comment.name}} {{comment.comment.surname}}</strong>
+                                            </router-link>
+                                            <strong v-else>{{comment.comment.name}} {{comment.comment.surname}}</strong>
+                                        </h3>
                                     </div>
                                     <div class="row">
                                         <p>{{comment.comment.text}}</p>
@@ -168,7 +173,13 @@
                                         <div class="col-xs-10 col-md-10">
                                             <div class="row">
                                                 <h6>Answer</h6>
-                                                <h3 class="comentator_name"><strong>{{answer.answer.name}} {{answer.answer.surname}} -> {{comment.comment.name}} {{comment.comment.surname}}</strong> </h3>
+                                                <h3 class="comentator_name">
+                                                    <router-link v-if="answer.user && answer.user.id" :to="{ name: 'climberProfile', params: { id: answer.user.id } }">
+                                                        <strong>{{answer.answer.name}} {{answer.answer.surname}}</strong>
+                                                    </router-link>
+                                                    <strong v-else>{{answer.answer.name}} {{answer.answer.surname}}</strong>
+                                                    -> {{comment.comment.name}} {{comment.comment.surname}}
+                                                </h3>
 
                                                 <span v-if="user.length != 0">
                                                     <button @click="show_complaint_modal(answer.answer.id)" v-if="answer.user && answer.user.id != user.id" class="btn btn-warning">

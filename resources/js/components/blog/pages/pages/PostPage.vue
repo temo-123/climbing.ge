@@ -11,7 +11,15 @@
               <div v-else-if="post">
                 <article class="blog-post">
                   <header class="mb-4">
-                    <h1 class="display-4">{{ post.title }}</h1>
+                    <div class="d-flex align-items-start justify-content-between">
+                      <h1 class="display-4">{{ post.title }}</h1>
+                      <share-button
+                        :title="post.title"
+                        :text="post.short_description"
+                        content-type="blog_post"
+                        :item-id="post.id"
+                      />
+                    </div>
                     <div class="d-flex align-items-center text-muted">
                       <small>{{ $t('blog.loading.created', { date: formatDate(post.created_at) }) }}</small>
                     </div>
@@ -60,6 +68,13 @@
         axios.get(`/get_post/get_post/${this.$route.params.url_title}`)
           .then(response => {
             this.post = response.data
+
+            if (this.$gtag && this.post?.id) {
+              this.$gtag.event('select_content', {
+                content_type: 'blog_post',
+                item_id: String(this.post.id),
+              })
+            }
           })
           .catch(error => {
             console.error('Error fetching post:', error)

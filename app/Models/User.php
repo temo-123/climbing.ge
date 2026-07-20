@@ -57,6 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'country',
         'city',
         'my_bio',
+        'social_links',
 
         'password',
     ];
@@ -77,6 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'social_links' => 'array',
     ];
 
     /**
@@ -277,5 +279,20 @@ class User extends Authenticatable implements MustVerifyEmail
     public function donations()
     {
         return $this->hasMany(\App\Models\Guide\Donation::class, 'user_id');
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'user_follows', 'follower_id', 'followed_id');
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'user_follows', 'followed_id', 'follower_id');
+    }
+
+    public function isFollowing($userId): bool
+    {
+        return $this->following()->where('users.id', $userId)->exists();
     }
 }

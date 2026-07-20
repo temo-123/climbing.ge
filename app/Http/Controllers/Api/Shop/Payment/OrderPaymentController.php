@@ -146,6 +146,7 @@ class OrderPaymentController extends Controller
         return response()->json([
             'tbc_pay_status' => $order->tbc_pay_status,
             'status'         => $order->status,
+            'total'          => $this->calculateOrderTotal($order),
         ]);
     }
 

@@ -10,7 +10,7 @@
         </div>
 
         <div v-if="loading == false" class="form-group">
-            <button class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp || $t('global.verify_btn') }}</button>
+            <button type="button" class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp || $t('global.verify_btn') }}</button>
         </div>
         <div v-if="loading == true">
             <h4 class="footer_title">{{ $t('global.loading') }}</h4>
@@ -24,6 +24,10 @@ export default {
         buttonTextProp: {
             type: String,
             default: null
+        },
+        recaptchaAction: {
+            type: String,
+            default: 'submit'
         }
     },
     data() {
@@ -43,9 +47,17 @@ export default {
         }
     },
     methods: {
-        async executeRecaptcha(action = 'follow') {
+        // grecaptcha.ready() never calls back if the script was blocked
+        // (ad-blockers/privacy extensions commonly stub window.grecaptcha
+        // with a no-op) or never finished loading, which used to leave
+        // handleSubmit awaiting forever — the button looked "stuck" with no
+        // request ever sent and no error shown. Racing against a timeout
+        // guarantees this always resolves one way or another.
+        async executeRecaptcha(action) {
             try {
-                await new Promise(resolve => window.grecaptcha.ready(resolve));
+                const ready = new Promise(resolve => window.grecaptcha.ready(resolve));
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('reCAPTCHA timed out')), 8000));
+                await Promise.race([ready, timeout]);
                 const token = await window.grecaptcha.execute(this.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY, {action});
                 return token;
             } catch (error) {
@@ -55,7 +67,7 @@ export default {
         },
         async handleSubmit() {
             this.loading = true;
-            const token = await this.executeRecaptcha('message');
+            const token = await this.executeRecaptcha(this.recaptchaAction);
             if (token) {
                 this.$emit('recaptcha-verified', token);
             } else {

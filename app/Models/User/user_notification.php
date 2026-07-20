@@ -13,6 +13,10 @@ class user_notification extends Model
 
     protected $fillable = ['user_id', 'notification_type'];
 
+    protected $casts = [
+        'notification_type' => 'array',
+    ];
+
 	public function user()
 	{
 		return $this->hasOne(User::class, 'id', 'user_id');

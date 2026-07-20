@@ -35,6 +35,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
 
         Route::get('/get_worker_users', 'get_worker_users');
         Route::post('/reset_password/{user_id}', 'reset_password');
+        Route::post('/verify_user/{user_id}', 'verify_user');
 
         Route::get('/post_user/{user_id}', 'get_post_user');
 
@@ -55,6 +56,29 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
     Route::controller(DatabaseController::class)->prefix('set_database')->group(function () {
         Route::get('/table_stats', 'getTableStats');
         Route::post('/fix_issue', 'fixIssue');
+    });
+
+    Route::controller(AdminAlertsController::class)->prefix('set_admin_alerts')->group(function () {
+        Route::get('/summary', 'summary');
+        Route::post('/mark_viewed', 'mark_viewed');
+    });
+
+    Route::controller(NotificationAnalyticsController::class)->prefix('set_notification_analytics')->group(function () {
+        Route::get('/summary', 'get_summary');
+        Route::get('/volume_over_time/{period}', 'get_volume_over_time');
+        Route::get('/breakdown_by_key', 'get_breakdown_by_key');
+        Route::get('/breakdown_by_content_type', 'get_breakdown_by_content_type');
+        Route::get('/preference_adoption', 'get_preference_adoption');
+        Route::get('/recent', 'get_recent');
+        Route::get('/registered_subscribers', 'get_registered_subscribers');
+        Route::get('/guest_followers', 'get_guest_followers');
+        Route::delete('/guest_followers/{id}', 'del_guest_follower');
+        Route::post('/subscribers/{user_id}/verify', 'verify_subscriber');
+        Route::post('/subscribers/{user_id}/subscribe_all', 'subscribe_all');
+        Route::get('/failed_jobs', 'get_failed_jobs');
+        Route::post('/failed_jobs/retry_all', 'retry_all_failed_jobs');
+        Route::post('/failed_jobs/{id}/retry', 'retry_failed_job');
+        Route::delete('/failed_jobs/{id}', 'del_failed_job');
     });
 
     Route::controller(RolesController::class)->prefix('set_role')->group( function() {

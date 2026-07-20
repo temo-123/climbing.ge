@@ -194,6 +194,18 @@ MIX_ERROR_PAGE_ANALITICS_ID="..."
 
 #
 #
+# Search engine verification (site ownership) — leave blank to omit the tag.
+# Google Search Console: Settings > Ownership verification > HTML tag > content="..."
+# Bing Webmaster Tools (also covers Yahoo & DuckDuckGo, which run on Bing's index):
+#   Settings > Ownership verification > "Meta tag" option > content="..."
+#
+GOOGLE_SITE_VERIFICATION=
+BING_SITE_VERIFICATION=
+
+
+
+#
+#
 # Google captcha configuration
 #
 #

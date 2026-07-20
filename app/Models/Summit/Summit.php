@@ -11,6 +11,12 @@ class Summit extends Model
 {
     use HasFactory;
 
+    // Real PHP property (not an Eloquent attribute) so setting it doesn't get
+    // picked up by getDirty()/the UPDATE query. Read by SummitObserver::updated()
+    // to decide whether/how the admin opted in to a notification for this save:
+    // 'none' (default), 'update', or 'new' (re-announce as if newly published).
+    public $notifyMode = 'none';
+
     protected $fillable = [
         'title', 'ka_title',
         'url_title',

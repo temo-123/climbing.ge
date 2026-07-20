@@ -131,6 +131,14 @@ export default {
         this.$bus.$on('open-login-modal', (callback) => {
             this.show_modal(callback || null)
         })
+        if (!window.grecaptcha) {
+            const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+            if (key) {
+                const s = document.createElement('script')
+                s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+                document.head.appendChild(s)
+            }
+        }
     },
     methods: {
         show_modal(callback = null) {
@@ -169,11 +177,38 @@ export default {
                     this.is_loading = false
                 })
         },
+        async get_recaptcha_token(action = 'login') {
+            const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+            if (!key || !window.grecaptcha) return null
+            try {
+                // grecaptcha.ready() never calls back if the script was blocked
+                // (ad-blockers/privacy extensions) or never finished loading.
+                // Racing against a timeout guarantees this always resolves
+                // instead of hanging the login button forever.
+                const ready = new Promise(resolve => window.grecaptcha.ready(resolve))
+                const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error('reCAPTCHA timed out')), 8000))
+                await Promise.race([ready, timeout])
+                return await window.grecaptcha.execute(key, { action })
+            } catch (e) {
+                console.error('reCAPTCHA error:', e)
+                return null
+            }
+        },
         async login() {
             if (!this.email || !this.password) return
             this.auth_error = ''
             this.is_loading = true
             try {
+                // The backend rejects every login with "reCAPTCHA verification
+                // failed" whenever GOOGLE_CAPTCHA_V3_SECRET_KEY is configured and
+                // no valid recaptcha_token is sent — this modal never sent one.
+                const recaptcha_token = await this.get_recaptcha_token('login')
+                if (!recaptcha_token) {
+                    this.auth_error = 'reCAPTCHA verification failed. Please refresh and try again.'
+                    this.is_loading = false
+                    return
+                }
+
                 if (!JSEncrypt) await loadJSEncrypt()
                 const encryptor = new JSEncrypt()
                 encryptor.setPublicKey(PUBLIC_KEY)
@@ -188,6 +223,7 @@ export default {
                     email: this.email,
                     password: encryptedPassword,
                     remember: false,
+                    recaptcha_token,
                 })
                 localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])
                 if (response.data && response.data.token) {
@@ -205,10 +241,15 @@ export default {
                 if (this.after_login_callback) this.after_login_callback()
                 this.close_modal()
             } catch (error) {
-                if (error.response && error.response.status === 422) {
+                const data = error.response && error.response.data
+                if (data && data.message === 'auth.failed') {
                     this.auth_error = 'Email or password is incorrect.'
-                } else if (error.response && error.response.data && error.response.data.message) {
-                    this.auth_error = error.response.data.message
+                } else if (data && data.message) {
+                    // Surfaces recaptcha failures, validation errors, etc.
+                    // instead of always masking every 422 as bad credentials.
+                    this.auth_error = data.message
+                } else if (error.response && error.response.status === 422) {
+                    this.auth_error = 'Email or password is incorrect.'
                 } else {
                     this.auth_error = 'Login failed. Please try again.'
                 }

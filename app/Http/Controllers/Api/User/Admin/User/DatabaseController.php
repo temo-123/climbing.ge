@@ -75,7 +75,11 @@ class DatabaseController extends Controller
     // Integrity checks
     // -------------------------------------------------------------------------
 
-    private function detectIssues(): array
+    /**
+     * Public so other admin features (e.g. AdminAlertsService) can reuse the
+     * same integrity checks without duplicating the queries.
+     */
+    public function detectIssues(): array
     {
         $checks = [
             // Orphaned article gallery images
@@ -156,6 +160,66 @@ class DatabaseController extends Controller
                     ->count(),
             ],
         ];
+
+        // Content types that store translations in a separate locale_X table,
+        // linked via us_{singular}_id / ka_{singular}_id FK columns (same shape as
+        // articles/posts above, just repeated per content type).
+        $localeContentTypes = [
+            'products' => ['locale_products', 'product'],
+            'services' => ['locale_services', 'service'],
+            'tours'    => ['locale_tours', 'tour'],
+            'films'    => ['locale_films', 'film'],
+            'mounts'   => ['locale_mounts', 'mount'],
+        ];
+
+        foreach ($localeContentTypes as $table => [$localeTable, $singular]) {
+            foreach (['us', 'ka'] as $locale) {
+                $col = "{$locale}_{$singular}_id";
+                $checks[] = [
+                    'key'   => "orphan_locale_{$table}_{$locale}",
+                    'table' => $localeTable,
+                    'label' => strtoupper($locale) . " locale {$table} linked to non-existent {$singular}",
+                    'count' => fn() => DB::table($table)
+                        ->whereNotNull($col)
+                        ->whereNotIn($col, DB::table($localeTable)->pluck('id'))
+                        ->count(),
+                ];
+            }
+
+            $usCol = "us_{$singular}_id";
+            $kaCol = "ka_{$singular}_id";
+            $checks[] = [
+                'key'   => "{$table}_no_locale",
+                'table' => $table,
+                'label' => ucfirst($table) . ' with neither EN nor KA locale data',
+                'count' => fn() => DB::table($table)
+                    ->whereNull($usCol)
+                    ->whereNull($kaCol)
+                    ->count(),
+            ];
+        }
+
+        // Content types that store translations as flat bilingual columns
+        // directly on the table instead of a separate locale table.
+        $flatBilingualColumns = [
+            'sectors' => ['us_description', 'ka_description'],
+            'summits' => ['ka_title', 'ka_description'],
+        ];
+
+        foreach ($flatBilingualColumns as $table => $columns) {
+            foreach ($columns as $column) {
+                $checks[] = [
+                    'key'   => "{$table}_missing_{$column}",
+                    'table' => $table,
+                    'label' => ucfirst($table) . " rows missing {$column}",
+                    'count' => fn() => DB::table($table)
+                        ->where(function ($q) use ($column) {
+                            $q->whereNull($column)->orWhere($column, '');
+                        })
+                        ->count(),
+                ];
+            }
+        }
 
         $issues = [];
         foreach ($checks as $check) {

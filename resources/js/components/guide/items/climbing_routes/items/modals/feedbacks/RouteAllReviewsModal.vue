@@ -30,7 +30,12 @@
                     <div v-else class="reviews-list">
                         <div v-for="(review, index) in safeReviews" :key="review.id || index" class="review-item">
                             <div class="review-header">
-                                <h3 class="reviewer-name">{{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}</h3>
+                                <h3 class="reviewer-name">
+                                    <router-link v-if="review.user.id" :to="{ name: 'climberProfile', params: { id: review.user.id } }">
+                                        {{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}
+                                    </router-link>
+                                    <span v-else>{{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}</span>
+                                </h3>
                                 <starsReiting
                                     :reviews_count_prop="1"
                                     :reviews_stars_prop="review.stars"

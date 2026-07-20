@@ -37,16 +37,9 @@ Route::get('/payment/status', 'Api\PaymentStatusController@status');
 // Public routes - no authentication required for viewing content
 Route::group(['namespace'=>'Api'], function() {
 
-    Route::controller(ServiceFollowing::class)->prefix('get_follow')->group( function() {
-        // Editing routes moved to adminAction.php
-        Route::get('/following_users_list', 'get_following_users_list');
-        // Route::delete('/del_follower/{id}', 'del_follower');
-    });
-
     Route::controller(ServiceFollowing::class)->prefix('set_follow')->group( function() {
         Route::post('/{service_id}', 'follow');
         Route::delete('/del_follower/{id}', 'del_follower');
-        // Route::get('/following_users_list', 'get_following_users_list');
     });
 
     Route::controller(SocialLinkController::class)->prefix('set_site_social_links')->group( function() {
