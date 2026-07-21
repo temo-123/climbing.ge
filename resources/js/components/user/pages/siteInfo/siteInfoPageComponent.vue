@@ -317,11 +317,24 @@ components: {
             }
         },
         mounted() {
+            const saved = parseInt(localStorage.getItem(this._getStorageKey()));
+            if ([1, 2, 3, 5].includes(saved)) {
+                this.action_tab = saved;
+            }
+
             this.get_site_data()
             this.get_general_info()
             this.get_social_links()
         },
+        watch: {
+            action_tab(newTab) {
+                localStorage.setItem(this._getStorageKey(), newTab);
+            }
+        },
         methods: {
+            _getStorageKey(){
+                return `tab_num_${this.$route.name}`;
+            },
             from_user_site_url_get_domen(url){
                 return new URL(url).hostname;
             },

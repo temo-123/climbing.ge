@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="ga-tag-id" content="{{ config('services.analytics.summit') }}">
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
-    @include('partials.seo')
+    @include('partials.seo', ['subdomain' => 'summit'])
     @include('partials.adsense')
 
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">

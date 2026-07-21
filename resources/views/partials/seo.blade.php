@@ -10,8 +10,9 @@
         $seoKeywords    = $seo['keywords'] ?? '';
         $seoPrice       = $seo['price'] ?? null;
         $seoLocale      = app()->getLocale() === 'ka' ? 'ka_GE' : 'en_US';
-        $googleVerify   = config('services.seo.google_site_verification');
-        $bingVerify     = config('services.seo.bing_site_verification');
+        $seoSubdomain   = $subdomain ?? 'site';
+        $googleVerify   = config("services.seo.google_site_verification.{$seoSubdomain}");
+        $bingVerify     = config("services.seo.bing_site_verification.{$seoSubdomain}");
     @endphp
 
     <title>{{ $seoTitle }}</title>

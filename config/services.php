@@ -47,8 +47,20 @@ return [
     ],
 
     'seo' => [
-        'google_site_verification' => env('GOOGLE_SITE_VERIFICATION'),
-        'bing_site_verification'   => env('BING_SITE_VERIFICATION'),
+        'google_site_verification' => [
+            'site'   => env('GOOGLE_SITE_VERIFICATION'),
+            'shop'   => env('GOOGLE_SITE_VERIFICATION_SHOP'),
+            'summit' => env('GOOGLE_SITE_VERIFICATION_SUMMIT'),
+            'films'  => env('GOOGLE_SITE_VERIFICATION_FILMS'),
+            'blog'   => env('GOOGLE_SITE_VERIFICATION_BLOG'),
+        ],
+        'bing_site_verification' => [
+            'site'   => env('BING_SITE_VERIFICATION'),
+            'shop'   => env('BING_SITE_VERIFICATION_SHOP'),
+            'summit' => env('BING_SITE_VERIFICATION_SUMMIT'),
+            'films'  => env('BING_SITE_VERIFICATION_FILMS'),
+            'blog'   => env('BING_SITE_VERIFICATION_BLOG'),
+        ],
     ],
 
     'analytics' => [

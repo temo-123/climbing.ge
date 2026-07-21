@@ -196,13 +196,24 @@ MIX_ERROR_PAGE_ANALITICS_ID="..."
 
 #
 #
-# Search engine verification (site ownership) — leave blank to omit the tag.
+# Search engine verification (site ownership) — per subdomain, leave blank to omit the tag.
+# Each subdomain is a separate property in Search Console / Webmaster Tools, so each
+# gets its own verification code. Unsuffixed vars are for climbing.ge (main guidebook).
 # Google Search Console: Settings > Ownership verification > HTML tag > content="..."
 # Bing Webmaster Tools (also covers Yahoo & DuckDuckGo, which run on Bing's index):
 #   Settings > Ownership verification > "Meta tag" option > content="..."
 #
 GOOGLE_SITE_VERIFICATION=
+GOOGLE_SITE_VERIFICATION_SHOP=
+GOOGLE_SITE_VERIFICATION_SUMMIT=
+GOOGLE_SITE_VERIFICATION_FILMS=
+GOOGLE_SITE_VERIFICATION_BLOG=
+
 BING_SITE_VERIFICATION=
+BING_SITE_VERIFICATION_SHOP=
+BING_SITE_VERIFICATION_SUMMIT=
+BING_SITE_VERIFICATION_FILMS=
+BING_SITE_VERIFICATION_BLOG=
 
 
 
