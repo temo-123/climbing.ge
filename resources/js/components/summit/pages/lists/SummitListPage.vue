@@ -13,7 +13,7 @@
                     <div class="container articles_filter_bar">
                         <div class="col-md-6 col-sm-6">{{ $t('summit.mount_filtr') }}</div>
                         <div class="col-md-6 col-sm-6">
-                            <select class="form-control" v-model="filter_mount">
+                            <select class="form-control" v-model="filter_mount" @change="on_filter_change()">
                                 <option value="All">{{ $t('all') }}</option>
                                 <option v-for="mount in mounts" :key="mount.global_data.id" :value="mount.global_data.id">{{ mount.locale_data.title }}</option>
                             </select>
@@ -49,8 +49,8 @@
                     <i class="fa fa-spinner fa-spin fa-3x"></i>
                 </div>
 
-                <div v-else-if="summits.length === 0 && summits_by_mount.length === 0" class="text-center py-5">
-                    <p class="text-muted">{{ $t('summit.no_summits') }}</p>
+                <div v-else-if="summits.length === 0 && summits_by_mount.length === 0">
+                    <emptyPageComponent />
                 </div>
 
                 <div v-else>
@@ -109,10 +109,11 @@ import metaData from '../../items/MetaDataComponent.vue'
 import SummitCard from '../../items/cards/SummitCardComponent.vue'
 import viewControlsComponent from '../../../guide/items/ViewControlsComponent.vue'
 import regionListHeader from '../../../guide/items/RegionListHeaderComponent.vue'
+import emptyPageComponent from '../../../global_components/EmptyPageComponent.vue'
 
 export default {
     name: 'SummitListPage',
-    components: { metaData, SummitCard, viewControlsComponent, regionListHeader },
+    components: { metaData, SummitCard, viewControlsComponent, regionListHeader, emptyPageComponent },
     data() {
         return {
             summits: [],
@@ -127,20 +128,42 @@ export default {
         }
     },
     watch: {
-        filter_mount() {
-            this.loadSummits()
-        },
         '$route'(to, from) {
-            this.get_mounts()
-            this.loadSummits()
             window.scrollTo(0, 0)
+            const pathChanged = to.path !== from.path
+            const mountChanged = (to.query.mount || 'All') !== this.filter_mount
+
+            this.loadFiltersFromUrl()
+
+            if (pathChanged) this.get_mounts()
+            if (pathChanged || mountChanged) this.loadSummits()
         },
+        viewMode() { this.updateUrl() },
+        groupMode() { this.updateUrl() },
     },
     mounted() {
         this.get_mounts()
+        this.loadFiltersFromUrl()
         this.loadSummits()
     },
     methods: {
+        loadFiltersFromUrl() {
+            const query = this.$route.query
+            this.filter_mount = query.mount || 'All'
+            this.viewMode = query.view === 'list' ? 'list' : 'grid'
+            this.groupMode = query.group === 'flat' ? 'flat' : 'grouped'
+        },
+        updateUrl() {
+            let query = {}
+            if (this.filter_mount !== 'All') query.mount = this.filter_mount
+            if (this.viewMode !== 'grid') query.view = this.viewMode
+            if (this.groupMode !== 'grouped') query.group = this.groupMode
+            this.$router.replace({ query }).catch(() => {})
+        },
+        on_filter_change() {
+            this.updateUrl()
+            this.loadSummits()
+        },
         loadSummits() {
             if (this.filter_mount === 'All') {
                 this.get_unfiltered_summits()

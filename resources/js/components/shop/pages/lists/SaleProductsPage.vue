@@ -92,16 +92,19 @@
                 currentFilters: {
                     sale_type: null,
                     brand_id: null,
+                    category_id: null,
                     subcategory_id: null,
                     price_min: null,
                     price_max: null
                 },
+                all_subcategories: [],
                 viewMode: 'grid' // 'grid' or 'list'
             };
         },
         mounted() {
             this.loadFiltersFromUrl();
             this.get_products();
+            this.load_all_subcategories();
         },
         watch: {
             '$route.query': {
@@ -109,6 +112,9 @@
                     this.loadFiltersFromUrl();
                 },
                 deep: true
+            },
+            viewMode(newMode) {
+                this.updateUrl();
             }
         },
         computed: {
@@ -122,6 +128,11 @@
                 }
                 if (this.currentFilters.subcategory_id) {
                     filtered = filtered.filter(p => p.global_product.subcategory_id == this.currentFilters.subcategory_id);
+                } else if (this.currentFilters.category_id) {
+                    const subcategory_ids = this.all_subcategories
+                        .filter(sc => sc.category_id == this.currentFilters.category_id)
+                        .map(sc => sc.id);
+                    filtered = filtered.filter(p => subcategory_ids.includes(p.global_product.subcategory_id));
                 }
                 if (this.currentFilters.price_min !== null && this.currentFilters.price_min !== undefined && this.currentFilters.price_min > 0) {
                     filtered = filtered.filter(p => (p.min_price !== undefined ? p.min_price : 0) >= this.currentFilters.price_min);
@@ -132,7 +143,7 @@
                 return filtered;
             },
             hasActiveFilters() {
-                return this.currentFilters.sale_type || this.currentFilters.brand_id || this.currentFilters.subcategory_id || this.currentFilters.price_min || this.currentFilters.price_max;
+                return this.currentFilters.sale_type || this.currentFilters.brand_id || this.currentFilters.category_id || this.currentFilters.subcategory_id || this.currentFilters.price_min || this.currentFilters.price_max;
             },
             activeFilterCount() {
                 return Object.values(this.currentFilters).filter(v => v !== null && v !== undefined && v !== '').length;
@@ -151,13 +162,25 @@
                 .finally(() => this.products_loading = false);
             },
 
+            load_all_subcategories(){
+                axios
+                .get('/get_product/get_product_category/get_subcategory/get_all_subcategories')
+                .then(response => {
+                    this.all_subcategories = response.data
+                })
+                .catch(error => {
+                })
+            },
+
             updateUrl(){
                 let query = {};
                 if (this.currentFilters.sale_type && this.currentFilters.sale_type !== '0') query.sale_type = this.currentFilters.sale_type;
                 if (this.currentFilters.brand_id && this.currentFilters.brand_id !== 0) query.brand_id = this.currentFilters.brand_id;
+                if (this.currentFilters.category_id && this.currentFilters.category_id !== 0) query.category_id = this.currentFilters.category_id;
                 if (this.currentFilters.subcategory_id && this.currentFilters.subcategory_id !== 0) query.subcategory_id = this.currentFilters.subcategory_id;
                 if (this.currentFilters.price_min !== null && this.currentFilters.price_min !== 0 && this.currentFilters.price_min !== undefined) query.price_min = this.currentFilters.price_min;
                 if (this.currentFilters.price_max !== null && this.currentFilters.price_max !== 0 && this.currentFilters.price_max !== undefined && this.currentFilters.price_max < 5000) query.price_max = this.currentFilters.price_max;
+                if (this.viewMode && this.viewMode !== 'grid') query.view = this.viewMode;
                 this.$router.replace({ query });
             },
 
@@ -166,16 +189,19 @@
                 this.currentFilters = {
                     sale_type: query.sale_type || null,
                     brand_id: query.brand_id ? Number(query.brand_id) : null,
+                    category_id: query.category_id ? Number(query.category_id) : null,
                     subcategory_id: query.subcategory_id ? Number(query.subcategory_id) : null,
                     price_min: query.price_min ? Number(query.price_min) : null,
                     price_max: query.price_max ? Number(query.price_max) : null
                 };
+                if (query.view === 'list') this.viewMode = 'list';
             },
 
             applyFilters(filters) {
                 this.currentFilters = {
                     sale_type: filters.sale_type || null,
                     brand_id: filters.brand_id || null,
+                    category_id: filters.category_id || null,
                     subcategory_id: filters.subcategory_id || null,
                     price_min: filters.price_min !== null && filters.price_min !== undefined ? filters.price_min : null,
                     price_max: filters.price_max !== null && filters.price_max !== undefined ? filters.price_max : null
@@ -187,6 +213,7 @@
                 this.currentFilters = {
                     sale_type: null,
                     brand_id: null,
+                    category_id: null,
                     subcategory_id: null,
                     price_min: null,
                     price_max: null
@@ -199,6 +226,8 @@
                     this.currentFilters.sale_type = null;
                 } else if (key === 'brand_id') {
                     this.currentFilters.brand_id = null;
+                } else if (key === 'category_id') {
+                    this.currentFilters.category_id = null;
                 } else if (key === 'subcategory_id') {
                     this.currentFilters.subcategory_id = null;
                 } else if (key === 'price_min') {

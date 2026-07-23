@@ -21,7 +21,7 @@
                         Select region and filtred spots by region
                     </div>
                     <div class="col-md-6 col-sm-6">
-                        <select class="form-control" v-model="event_filtrs" @click="sortByTime()">
+                        <select class="form-control" v-model="event_filtrs" @change="on_filter_change()">
                             <option value="all">All</option>
                             <option value="next" disabled>In future</option>
                             <option value="now" disabled>At the moment</option>
@@ -79,14 +79,32 @@ import moment from "moment"; // https://www.npmjs.com/package/vue-moment
         }
     },
     mounted() {
+        this.loadFiltersFromUrl()
         this.get_event()
     },
     watch: {
         '$route' (to, from) {
+            this.loadFiltersFromUrl()
             this.get_event()
         }
     },
     methods: {
+        loadFiltersFromUrl(){
+            const query = this.$route.query
+            this.event_filtrs = query.event_filtr || 'all'
+        },
+
+        updateUrl(){
+            let query = {}
+            if (this.event_filtrs !== 'all') query.event_filtr = this.event_filtrs
+            this.$router.replace({ query }).catch(() => {})
+        },
+
+        on_filter_change(){
+            this.updateUrl()
+            this.sortByTime()
+        },
+
         get_event(){
             axios
             .get('/get_event/get_event_on_site_list/'+localStorage.getItem('lang'))

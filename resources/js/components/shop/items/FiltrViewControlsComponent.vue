@@ -50,6 +50,7 @@
             :activeFilters="filters"
             @apply-filters="$emit('apply-filters', $event)"
             @brands-loaded="brands = $event"
+            @categories-loaded="categories = $event"
             @subcategories-loaded="subcategories = $event"
         />
     </div>
@@ -72,6 +73,7 @@
                 default: () => ({
                     sale_type: null,
                     brand_id: null,
+                    category_id: null,
                     subcategory_id: null,
                     price_min: null,
                     price_max: null
@@ -81,6 +83,7 @@
         data() {
             return {
                 brands: [],
+                categories: [],
                 subcategories: [],
             }
         },
@@ -110,6 +113,7 @@
                 const labels = {
                     sale_type: this.$t('shop.filters.sale_type_label'),
                     brand_id: this.$t('shop.product.brand'),
+                    category_id: this.$t('shop.filters.categories_label'),
                     subcategory_id: this.$t('common.category'),
                     price_min: this.$t('shop.filters.min_price_label'),
                     price_max: this.$t('shop.filters.max_price_label')
@@ -123,6 +127,10 @@
                 if (key === 'brand_id') {
                     const brand = this.brands.find(b => b.id == value)
                     return brand && brand.us_brand ? brand.us_brand.title : value
+                }
+                if (key === 'category_id') {
+                    const category = this.categories.find(c => c.id == value)
+                    return category ? category.us_name : value
                 }
                 if (key === 'subcategory_id') {
                     const subcat = this.subcategories.find(s => s.id == value)

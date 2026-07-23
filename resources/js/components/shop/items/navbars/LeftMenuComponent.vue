@@ -140,10 +140,13 @@
                     if (!filters) return
                     this.sale_type    = filters.sale_type    || 0
                     this.filter_brand = filters.brand_id     || 0
+                    this.filter_category = filters.category_id || 0
                     this.selected_subcategory = filters.subcategory_id || 0
                     this.min_price    = filters.price_min    || 0
                     this.max_price    = filters.price_max    || 1000
-                    if (filters.subcategory_id && this.subcategories.length === 0) {
+                    if (this.filter_category && this.subcategories.length === 0) {
+                        this.get_category_subcategories()
+                    } else if (filters.subcategory_id && this.subcategories.length === 0) {
                         this.load_subcategories_for_active_brand()
                     }
                 },
@@ -176,6 +179,7 @@
                 const filters = {
                     brand_id: this.filter_brand == 0 ? null : this.filter_brand,
                     sale_type: this.sale_type == 0 ? null : this.sale_type,
+                    category_id: this.filter_category == 0 ? null : this.filter_category,
                     subcategory_id: this.selected_subcategory == 0 ? null : this.selected_subcategory,
                     price_min: this.min_price,
                     price_max: this.max_price
@@ -188,6 +192,7 @@
                 axios.get('/get_product/get_product_category/get_all_product_category')
                     .then(response => {
                         this.categories = response.data
+                        this.$emit('categories-loaded', this.categories)
                         this.get_product_brabds()
                     })
                     .catch(error => console.log(error))

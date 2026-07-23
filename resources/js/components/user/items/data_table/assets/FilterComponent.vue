@@ -107,6 +107,7 @@ export default {
             filter_id: 0,
             current_filter_id: 0,
             filter_ids: [], // Array to store multiple filter values
+            active_tab_id: this.filtr_data_prop?.id,
         }
     },
     watch: {
@@ -114,6 +115,16 @@ export default {
             deep: true,
             handler(newVal) {
                 this.action_data = newVal || { filter_data: null };
+
+                // filtr_data_prop is the whole tab object, including tab_data.data - the
+                // rows being displayed. Applying a filter mutates that same array in
+                // place, which re-fires this deep watcher even though the tab itself
+                // hasn't changed. Only reset the selected filter value(s) when the user
+                // has actually switched to a different tab, otherwise every filter
+                // selection immediately snaps back to "All".
+                if (newVal?.id === this.active_tab_id) return;
+                this.active_tab_id = newVal?.id;
+
                 if (this.action_data?.filter_data && Array.isArray(this.action_data.filter_data)) {
                     this.filter_ids = this.action_data.filter_data.map(() => 0);
                 }

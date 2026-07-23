@@ -32,7 +32,7 @@
                         {{ $t('guide.article.region_filtr') }}
                     </div>
                     <div class="col-md-6 col-sm-6" v-if="(regions || [])?.length > 0">
-                        <select class="form-control" v-model="filter_spot" @click="get_outdoor_articles()">
+                        <select class="form-control" v-model="filter_spot" @change="on_filter_change()">
                             <option value="All">{{ $t('all') }}</option>
                             <option v-for="region in (regions || [])" :key='region.id' :value="region.id">{{ region.name }}</option> 
                         </select>
@@ -257,25 +257,46 @@
             RegionListHeader
         },
         mounted() {
-            this.get_outdoor_articles()
             this.get_regions()
-
-            if(location.hash != ''){
-                this.create_url(location.hash)
-            }
+            this.loadFiltersFromUrl()
+            this.get_outdoor_articles()
         },
 
         watch: {
             '$route' (to, from) {
-                this.get_outdoor_articles()
-                this.get_regions()
                 window.scrollTo(0,0)
+                const pathChanged = to.path !== from.path
+                const spotChanged = (to.query.region || 'All') !== this.filter_spot
+
+                this.loadFiltersFromUrl()
+
+                if (pathChanged) this.get_regions()
+                if (pathChanged || spotChanged) this.get_outdoor_articles()
             },
-            filter_spot(newVal) {
-                this.get_outdoor_articles();
-            }
+            viewMode() { this.updateUrl() },
+            groupMode() { this.updateUrl() }
         },
         methods: {
+
+            loadFiltersFromUrl(){
+                const query = this.$route.query
+                this.filter_spot = query.region || 'All'
+                this.viewMode = query.view === 'list' ? 'list' : 'grid'
+                this.groupMode = query.group === 'flat' ? 'flat' : 'grouped'
+            },
+
+            updateUrl(){
+                let query = {}
+                if (this.filter_spot !== 'All') query.region = this.filter_spot
+                if (this.viewMode !== 'grid') query.view = this.viewMode
+                if (this.groupMode !== 'grouped') query.group = this.groupMode
+                this.$router.replace({ query }).catch(() => {})
+            },
+
+            on_filter_change(){
+                this.updateUrl()
+                this.get_outdoor_articles()
+            },
 
             get_filtered_articles(id){
                 this.oudoor_loading = true
@@ -308,25 +329,11 @@
             get_outdoor_articles(){
                 if (this.filter_spot === 'All') {
                     this.get_unfiltered_articles()
-
-                    this.delete_url_hash()
                 }
                 else{
-                    this.get_filtered_articles(Number(this.filter_spot)) 
+                    this.get_filtered_articles(Number(this.filter_spot))
                     this.get_region_selected_data(Number(this.filter_spot))
                 }
-            },
-
-
-            delete_url_hash(){
-                // https://gist.github.com/azu/36ba5a80feb857c77a3a
-                // var noHashURL = location.href.replace(/#.*$/, '');
-                // history.replaceState('', document.title, noHashURL) 
-            },
-
-            create_url_hash (category) {	
-                // https://www.tutorialsplane.com/vue-js-set-hash-url/	
-                // location.hash = "#" + category;
             },
 
             get_regions(){
@@ -351,8 +358,7 @@
                     axios
                     .get('/get_region/get_local_region/'+localStorage.getItem('lang')+'/'+region_id)
                     .then(response => {
-                    this.selected_region_data = response.data[0] || {}
-                        this.create_url_hash(this.selected_region_data.name)
+                        this.selected_region_data = response.data[0] || {}
                     })
                     .catch(error => {
                         this.error = error.message;

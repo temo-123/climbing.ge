@@ -81,6 +81,7 @@
                 // Store data for filters
                 brands_data: [],
                 categories_data: [],
+                subcategories_data: [],
                 // Store current filter values
                 filters: {
                     brand_id: 0,
@@ -92,6 +93,7 @@
                 // Track loading state
                 brands_loaded: false,
                 categories_loaded: false,
+                subcategories_loaded: false,
                 products_loaded: false,
             }
         },
@@ -101,6 +103,7 @@
             Promise.all([
                 this.loadProducts(),
                 this.loadCategories(),
+                this.loadSubcategories(),
                 this.loadBrands()
             ]).then(() => {
                 this.buildProductsTab();
@@ -132,7 +135,17 @@
                         return response;
                     });
             },
-            
+
+            // Load subcategories data (this is what Product.subcategory_id actually points to)
+            loadSubcategories() {
+                return axios.get("/get_product/get_product_category/get_subcategory/get_all_subcategories")
+                    .then(response => {
+                        this.subcategories_data = response.data;
+                        this.subcategories_loaded = true;
+                        return response;
+                    });
+            },
+
             // Load brands data
             loadBrands() {
                 return axios.get("/get_product/get_brand/get_all_brands")
@@ -288,14 +301,18 @@
                         'title': this.$t('admin.shop.filter_brand'),
                         'data': this.brands_data,
                         'action_fun_id': 'filter_by_brand_with_multi_id',
+                        'id_key': 'global_brand.id',
                         'array_key': 'us_brand.title'
                     },
                     {
                         'id': 'sale_type_filter',
                         'title': this.$t('admin.shop.filter_sale_type'),
                         'data': [
-                            { id: 1, name: this.$t('admin.shop.regular_products') },
-                            { id: 2, name: this.$t('admin.shop.sale_products') }
+                            { id: 'online_order', name: this.$t('admin.shop.online_order') },
+                            { id: 'produced_by_order', name: this.$t('admin.shop.produced_by_order') },
+                            { id: 'custom_production', name: this.$t('admin.shop.custom_production') },
+                            { id: 'donation', name: this.$t('admin.shop.donation_option') },
+                            { id: 'outlet', name: this.$t('admin.shop.outlet_option') }
                         ],
                         'action_fun_id': 'filter_by_sale_type_with_multi_id',
                         'array_key': 'name'
@@ -303,42 +320,38 @@
                     {
                         'id': 'subcategory_filter',
                         'title': this.$t('admin.shop.filter_subcategory'),
-                        'data': this.categories_data,
+                        'data': this.subcategories_data,
                         'action_fun_id': 'filter_by_subcategory_with_multi_id',
                         'array_key': 'us_name'
                     }
                 ];
             },
-            
+
             // Apply all filters to products data
             apply_filters(products) {
                 let filtered = [...products];
-                
+
                 // Filter by brand
                 if (this.filters.brand_id > 0) {
-                    filtered = filtered.filter(item => 
-                        item.global_brand && item.global_brand.id === this.filters.brand_id
+                    filtered = filtered.filter(item =>
+                        item.product && item.product.brand_id === this.filters.brand_id
                     );
                 }
-                
-                // Filter by sale type
-                if (this.filters.sale_type_id > 0) {
-                    if (this.filters.sale_type_id === 1) {
-                        // Regular products (not on sale)
-                        filtered = filtered.filter(item => !item.product.is_sale_product);
-                    } else if (this.filters.sale_type_id === 2) {
-                        // Sale products
-                        filtered = filtered.filter(item => item.product.is_sale_product);
-                    }
+
+                // Filter by sale type (sale_type is a string column: online_order/produced_by_order/custom_production/donation/outlet)
+                if (this.filters.sale_type_id !== 0) {
+                    filtered = filtered.filter(item =>
+                        item.product && item.product.sale_type === this.filters.sale_type_id
+                    );
                 }
-                
+
                 // Filter by subcategory
                 if (this.filters.subcategory_id > 0) {
-                    filtered = filtered.filter(item => 
-                        item.product && item.product.product_category_id === this.filters.subcategory_id
+                    filtered = filtered.filter(item =>
+                        item.product && item.product.subcategory_id === this.filters.subcategory_id
                     );
                 }
-                
+
                 return filtered;
             },
             
@@ -497,6 +510,7 @@
                 Promise.all([
                     this.loadProducts(),
                     this.loadCategories(),
+                    this.loadSubcategories(),
                     this.loadBrands()
                 ]).then(() => {
                     this.buildProductsTab();

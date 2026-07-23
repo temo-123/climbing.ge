@@ -587,6 +587,7 @@
         "tour": {
             "tours_table": "Tours",
             "tour_categories_table": "Tour categories",
+            "filter_by_category": "Filter by category",
             "url_title_col": "URL Title",
             "guides_col": "Guides",
             "edit_guides_col": "Edit Guides",
@@ -2153,6 +2154,7 @@
             "working_time": "Working Hours",
             "no_info_working_time": "No information available about the gym's working hours.",
             "mount_route_filtr": "Select Mount System and Filter Routes",
+            "summit_filtr": "Filter Routes by Summit",
             "mount_route": {
                 "grade": "Route Grade",
                 "easy": "Easy",
