@@ -27,15 +27,15 @@
 
                         <form v-on:submit.prevent="edit_general_info" id="edit_genral_info_form" class="form">
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
+                                <label for="edit_general_info_title" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
                                 <div class="col-xs-10">
-                                    <input type="text" v-model="data.title" name="us_name" class="form-control" required>
+                                    <input id="edit_general_info_title" type="text" v-model="data.title" name="us_name" class="form-control" required>
                                 </div>
                             </div>
                             <div class="form-group clearfix">
-                                <label for="name" class='col-xs-2 control-label'> {{ $t('admin.site_info.is_show_action_label') }} </label>
+                                <label for="edit_general_info_is_show" class='col-xs-2 control-label'> {{ $t('admin.site_info.is_show_action_label') }} </label>
                                 <div class="col-xs-10">
-                                    <input type="checkbox" v-model="data.is_show" name="is_show" class="form-control">
+                                    <input id="edit_general_info_is_show" type="checkbox" v-model="data.is_show" name="is_show" class="form-check-input">
                                 </div>
                             </div>
                             <div class="form-group clearfix">
