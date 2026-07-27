@@ -154,9 +154,11 @@
             "crop_image_title": "სურათის მოჭრა {width}:{height} პროპორციით",
             "drag_reposition_hint": "გადაათრიეთ პოზიციის შესაცვლელად, გამოიყენეთ სლაიდერი გასადიდებლად.",
             "zoom_label": "გადიდება",
-            "crop_use_btn": "მოჭრა და გამოყენება"
+            "crop_use_btn": "მოჭრა და გამოყენება",
+            "confirm_cancel_crop": "გავაუქმო სურათი და დავხურო მოჭრის ფანჯარა?"
         },
         "gallery_manager": {
+            "image_preview_title": "სურათის დათვალიერება",
             "add_gallery_images_title": "გალერეის სურათების დამატება",
             "add_images_btn": "+ სურათების დამატება",
             "sort_by_name_btn": "დალაგება სახელით",

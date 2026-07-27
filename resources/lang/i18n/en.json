@@ -154,9 +154,11 @@
             "crop_image_title": "Crop image to {width}:{height}",
             "drag_reposition_hint": "Drag to reposition, use the slider to zoom.",
             "zoom_label": "Zoom",
-            "crop_use_btn": "Crop & Use"
+            "crop_use_btn": "Crop & Use",
+            "confirm_cancel_crop": "Discard this image and close the crop tool?"
         },
         "gallery_manager": {
+            "image_preview_title": "Image Preview",
             "add_gallery_images_title": "Add Gallery Images",
             "add_images_btn": "+ Add Images",
             "sort_by_name_btn": "Sort by Name",

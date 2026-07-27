@@ -40,7 +40,7 @@ class MountRouteController extends Controller
         if ($auth) return $auth;
         
         $image = Mount_route_image::where('id', '=', $request->image_id)->first();
-        ImageControllService::image_delete('images/mount_route_description_img/', $image, 'image');
+        ImageControllService::image_delete('images/mount_route_img/', $image, 'image');
         $image ->delete();
     }
 }

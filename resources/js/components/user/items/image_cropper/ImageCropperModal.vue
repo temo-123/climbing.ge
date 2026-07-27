@@ -92,6 +92,7 @@
             },
 
             cancel() {
+                if (this.imgSrc && !confirm(this.$t('admin.image_cropper.confirm_cancel_crop'))) return
                 this.$emit('cancel')
                 this.reset()
             },

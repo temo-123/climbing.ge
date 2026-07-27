@@ -91,6 +91,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::delete('/del_mount_massive/{mount_id}', 'del_mount_massive');
     });
 
+    Route::controller(MountRouteController::class)->prefix('set_mount_route')->group( function() {
+        Route::delete('/del_mount_route_image/{image_id}', 'del_mount_route_image');
+    });
+
 
     Route::controller(LocalBisnesController::class)->prefix('set_bisnes')->group( function() {
         Route::post('/edit_local_bisnes/{bisnes_id}', 'edit_local_bisnes');

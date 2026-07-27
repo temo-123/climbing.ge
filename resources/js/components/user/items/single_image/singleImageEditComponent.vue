@@ -10,7 +10,8 @@
             <div class="row g-3">
                 <div class="col-6 col-md-4 col-xl-3">
                     <div class="card single-image-card-existing h-100">
-                        <div class="single-image-card-img-wrap bg-light">
+                        <div class="single-image-card-img-wrap bg-light single-image-card-img-clickable"
+                             @click="openViewer(existing_image_url_prop)">
                             <img :src="existing_image_url_prop" class="single-image-card-img">
                         </div>
                     </div>
@@ -51,7 +52,7 @@
                             <div class="spinner-border spinner-border-sm text-warning mb-1"></div>
                             <small class="text-muted">{{ $t('admin.gallery_manager.compressing_ellipsis_dots') }}</small>
                         </div>
-                        <img v-else-if="preview" :src="preview" class="single-image-card-img">
+                        <img v-else-if="preview" :src="preview" class="single-image-card-img single-image-card-img-clickable" @click="openViewer(preview)">
 
                         <span v-if="compressed && !compressing"
                               class="badge bg-success position-absolute top-0 end-0 m-1"
@@ -89,6 +90,19 @@
             @confirm="onCropConfirm"
             @cancel="onCropCancel"
         />
+
+        <StackModal
+            :show="!!viewer_image_url"
+            :title="$t('admin.gallery_manager.image_preview_title')"
+            size="xl"
+            :saveButton="false"
+            :cancelButton="false"
+            @close="closeViewer"
+        >
+            <div class="single-image-viewer-stage">
+                <img :src="viewer_image_url" class="single-image-viewer-img">
+            </div>
+        </StackModal>
     </div>
 </template>
 
@@ -97,10 +111,11 @@
     import image_compression_mixin from '../../../../mixins/image_compression_mixin.js'
     import image_crop_mixin from '../../../../mixins/image_crop_mixin.js'
     import ImageCropperModal from '../image_cropper/ImageCropperModal.vue'
+    import StackModal from '../../../global_components/modals/StackModal.vue'
 
     export default {
         mixins: [image_compression_mixin, image_crop_mixin],
-        components: { ImageCropperModal },
+        components: { ImageCropperModal, StackModal },
         props: {
             max_size_mb: { type: Number, default: 1.5 },
             title_prop: { type: String, default: '' },
@@ -116,12 +131,21 @@
                 originalSize: null,
                 isExternalDragOver: false,
                 isCompressing: false,
+                viewer_image_url: null,
             }
         },
         beforeUnmount() {
             if (this.preview) URL.revokeObjectURL(this.preview);
         },
         methods: {
+            openViewer(url) {
+                this.viewer_image_url = url;
+            },
+
+            closeViewer() {
+                this.viewer_image_url = null;
+            },
+
             triggerFileInput() {
                 this.$refs.fileInput.value = '';
                 this.$refs.fileInput.click();
@@ -234,5 +258,21 @@
 .single-image-card-compressing {
     height: 100%;
     width: 100%;
+}
+
+.single-image-card-img-clickable {
+    cursor: zoom-in;
+}
+
+.single-image-viewer-stage {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.single-image-viewer-img {
+    max-width: 100%;
+    max-height: 78vh;
+    object-fit: contain;
 }
 </style>
