@@ -234,9 +234,9 @@ class ArticleController extends Controller
     public function add_mount_route_images($images, $article_id)
     {
         foreach ($images as $image) {
-            $file_new_name = ImageControllService::upload_loop_image('images/mount_route_img/', $image, 0);
+            $file_new_name = ImageControllService::upload_loop_image('images/mount_route_description_img/', $image, 0);
 
-            if(file_exists(public_path('images/mount_route_img/') . '/' . $file_new_name)){
+            if(file_exists(public_path('images/mount_route_description_img/') . '/' . $file_new_name)){
                 $add_mount_route_image = new Mount_route_image;
         
                 $add_mount_route_image['image'] = $file_new_name;

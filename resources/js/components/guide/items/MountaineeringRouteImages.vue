@@ -3,7 +3,7 @@
         <openImg
             v-for="image in mount_route_images"
             :key="image.id"
-            :img="'/public/images/mount_route_img/' + image.image"
+            :img="'/public/images/mount_route_description_img/' + image.image"
             :img_alt="image.image"
             :img_class="
                 'sector_images sector_images_' +
