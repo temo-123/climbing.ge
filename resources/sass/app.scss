@@ -465,6 +465,84 @@ table {
     background: none;
 }
 
+// ----------------------------------------------------------------
+// Active / hovered main-menu button — friendly gradient highlight
+// ----------------------------------------------------------------
+// Vue Router tags the currently matched link with router-link-exact-active.
+// A dropdown's own toggle isn't a router-link, so its parent <li> opts in
+// manually via an `active` class bound in the navbar component instead.
+// Default (teal) — also guide/site's own brand color, so it needs no
+// separate override below.
+.navbar-inverse, .navbar-default {
+    .navbar-nav > li {
+        &.active > a,
+        &.open > a,
+        > a:hover,
+        > a:focus,
+        > a.router-link-exact-active {
+            background: linear-gradient(135deg, $primary 0%, $primary-hover 100%);
+            color: $white;
+
+            span { color: $white; }
+        }
+    }
+}
+
+// Each subdomain keeps its own established header color (see the matching
+// .navbar background in that subdomain's *MainComponent.vue) — the active/
+// hover state below is just a distinct shade of the same hue so it reads as
+// "pressed" instead of blending into the bar.
+.shop-navbar .navbar-nav > li {
+    &.active > a,
+    &.open > a,
+    > a:hover,
+    > a:focus,
+    > a.router-link-exact-active {
+        background: linear-gradient(135deg, $shop-green-hover 0%, $shop-green-active 100%);
+    }
+}
+
+.blog-navbar .navbar-nav > li {
+    &.active > a,
+    &.open > a,
+    > a:hover,
+    > a:focus,
+    > a.router-link-exact-active {
+        background: linear-gradient(135deg, #00a875 0%, #007a53 100%);
+    }
+}
+
+.summit-navbar .navbar-nav > li {
+    &.active > a,
+    &.open > a,
+    > a:hover,
+    > a:focus,
+    > a.router-link-exact-active {
+        background: linear-gradient(135deg, #6f42c1 0%, #522f92 100%);
+    }
+}
+
+.films-navbar .navbar-nav > li {
+    &.active > a,
+    &.open > a,
+    > a:hover,
+    > a:focus,
+    > a.router-link-exact-active {
+        background: linear-gradient(135deg, #5a5a5a 0%, #404040 100%);
+    }
+}
+
+// Admin dashboard nav (Bootstrap 4 markup) gets the same treatment, in the
+// dashboard's own purple.
+.admin_page_header_navbar .navbar-nav > li.nav-item {
+    > a.nav-link.router-link-exact-active,
+    &.dropdown > a.dropdown-toggle[aria-expanded="true"] {
+        background: linear-gradient(135deg, #9451d6 0%, #7427bb 100%);
+        color: $white !important;
+        border-radius: $radius-sm;
+    }
+}
+
 // collapse navbar for small screens
 @media (max-width: 1230px) {
     .navbar-collapse {

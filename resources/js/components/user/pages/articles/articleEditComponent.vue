@@ -81,6 +81,11 @@
                     :article_id="article_id"
                 />
 
+                <BusinessRelationForm
+                    v-if="article_id"
+                    :article_id="article_id"
+                />
+
                 <gallery_images_edit
                     @update_gallery_images="update_gallery_images"
 
@@ -131,6 +136,7 @@
     import SectorsImagesForm from './forms/edit_forms/SectorImagesFormComponent.vue'
     import MountRouteImagesForm from './forms/edit_forms/MountRouteImageFormComponent.vue'
     import SummitRelationForm from './forms/edit_forms/SummitRelationFormComponent.vue'
+    import BusinessRelationForm from './forms/edit_forms/BusinessRelationFormComponent.vue'
 
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
     import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
@@ -149,6 +155,7 @@
             SectorsImagesForm,
             MountRouteImagesForm,
             SummitRelationForm,
+            BusinessRelationForm,
 
             gallery_images_edit,
             single_image_edit,

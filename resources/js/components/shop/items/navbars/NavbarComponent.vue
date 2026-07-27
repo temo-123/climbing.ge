@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark">
+    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark shop-navbar">
         <div class="container-fluid">
 
             <!-- BRAND -->
@@ -25,8 +25,20 @@
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
                     
-                    <li><router-link :to="{name: 'catalog',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.products') }}  </span> </router-link></li>
-                    <li v-if="sale_products_count > 0"><router-link :to="{name: 'sale_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.sale_products') }}  </span> </router-link></li>
+                    <li class="dropdown" :class="{ active: is_catalog_page }">
+                        <a href="#" class="dropdown-toggle cursor_pointer" id="shopProductsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span> {{ $t('shop.menu.products') }} </span>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="shopProductsDropdown">
+                            <li :class="{ active: is_all_products_active }"><router-link :to="{name: 'catalog', params: {locale: this.$i18n.locale}}" exact> {{ $t('shop.menu.all_products') }} </router-link></li>
+                            <li v-if="sale_products_count > 0" :class="{ active: this.$route.name == 'sale_products' }"><router-link :to="{name: 'sale_products', params: {locale: this.$i18n.locale}}" exact> {{ $t('shop.menu.sale_products') }} </router-link></li>
+
+                            <li v-if="product_categories.length > 0" class="divider"></li>
+                            <li v-for="category in product_categories" :key="category.id" :class="{ active: is_category_active(category.id) }">
+                                <router-link :to="{name: 'catalog', params: {locale: this.$i18n.locale}, query: {category_id: category.id}}"> {{ category.us_name }} </router-link>
+                            </li>
+                        </ul>
+                    </li>
                     <li v-if="outlet_products_count > 0"><router-link :to="{name: 'outlet_products',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.outlet_products') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'wall_price_colculator',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.climbing wall') }}  </span> </router-link></li>
                     <li><router-link :to="{name: 'services',  params: {locale: this.$i18n.locale}}" exact> <span> {{ $t('shop.menu.services') }} </span> </router-link></li>
@@ -92,6 +104,7 @@
                 // link to a page that would just render EmptyPageComponent.
                 sale_products_count: 0,
                 outlet_products_count: 0,
+                product_categories: [],
 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -104,8 +117,17 @@
         components: {
             localeSwitcher,
         },
+        computed: {
+            is_catalog_page() {
+                return this.$route.name == 'catalog';
+            },
+            is_all_products_active() {
+                return this.$route.name == 'catalog' && !this.$route.query.category_id;
+            },
+        },
         mounted() {
             this.check_sale_and_outlet_products();
+            this.get_product_categories();
         },
         watch: {
             '$route' (to, from) {
@@ -123,6 +145,15 @@
                 .get('/get_product/get_outlet_products/' + lang)
                 .then(response => { this.outlet_products_count = (response.data || []).length; })
                 .catch(() => {});
+            },
+            get_product_categories(){
+                axios
+                .get('/get_product/get_product_category/get_all_product_category')
+                .then(response => { this.product_categories = response.data || []; })
+                .catch(() => {});
+            },
+            is_category_active(category_id){
+                return this.$route.name == 'catalog' && Number(this.$route.query.category_id) === category_id;
             },
             open_navbar(){
                 if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){

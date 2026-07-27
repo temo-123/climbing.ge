@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark">
+    <nav class="navbar navbar-inverse navbar-fixed-top bg-dark blog-navbar">
         <div class="container-fluid">
 
             <!-- BRAND -->

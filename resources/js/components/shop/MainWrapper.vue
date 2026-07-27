@@ -92,21 +92,8 @@
     }
 
     .navbar {
-        background-color: #09bb80 !important;
+        background: linear-gradient(135deg, #1ba97a 0%, #158f66 100%) !important;
         border-color: #6a8991;
     }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #0e9f6f !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #0c8a60 !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #23788c;
-    }
-    
 
 </style>

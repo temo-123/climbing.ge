@@ -10,7 +10,7 @@
                 </div>
             </div>
             
-                <nav class="navbar navbar-default float-top" role="navigation">
+                <nav class="navbar navbar-default float-top films-navbar" role="navigation">
                     <div class="container-fluid">
 
                         <button type="button" class="navbar-toggle collapsed" @click="open_navbar()">

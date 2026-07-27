@@ -27,8 +27,8 @@
 
                 <!-- Links -->
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <a data-toggle="dropdown" class="cursor_pointer"> 
+                    <li class="dropdown" :class="{ active: is_climbing_active }">
+                        <a data-toggle="dropdown" class="cursor_pointer">
                             <span>{{ $t('guide.menu.climbing') }}</span>
                         </a>
 
@@ -140,6 +140,11 @@
         },
         components: {
             localeSwitcher,
+        },
+        computed: {
+            is_climbing_active() {
+                return ['indoors', 'outdoors', 'spot_projects'].includes(this.$route.name);
+            },
         },
         mounted() {
             this.navbar_class = this.navbar_general_class

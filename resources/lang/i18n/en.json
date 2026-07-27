@@ -1758,6 +1758,22 @@
                 "summit_relation_removed_msg": "Summit relation removed.",
                 "could_not_remove_relation": "Could not remove relation."
             },
+            "business_relation": {
+                "title": "Local Business Relation",
+                "no_business_linked": "No local business linked to this article.",
+                "link_to_business_label": "Link to local business",
+                "select_business_placeholder": "-- Select business --",
+                "link_business_btn": "Link business",
+                "saving_ellipsis": "Saving...",
+                "saved_title": "Saved",
+                "business_relation_updated_msg": "Local business relation updated.",
+                "error_title": "Error",
+                "could_not_save_relation": "Could not save relation.",
+                "removed_title": "Removed",
+                "business_relation_removed_msg": "Local business relation removed.",
+                "could_not_remove_relation": "Could not remove relation.",
+                "max_relations_note": "Maximum {max} businesses can be linked to this article."
+            },
             "global_form": {
                 "title_suffix": "article global information",
                 "subtitle": "Article global information.",
@@ -2223,6 +2239,7 @@
         },
         "menu": {
             "products": "Products",
+            "all_products": "All Products",
             "sale_products": "Sale Products",
             "outlet_products": "Outlet",
             "services": "Services",

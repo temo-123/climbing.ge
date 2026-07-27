@@ -361,6 +361,74 @@ class LocalBisnesController extends Controller
     }
 
 
+    /**
+     * Full business list with locale titles, for the article-side "link to business"
+     * picker (the public get_local_bisneses endpoint returns bare rows with no titles).
+     */
+    public function get_local_bisneses_list(Request $request)
+    {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
+
+        return Suport_local_bisnes::with('us_bisnes', 'ka_bisnes')->latest('id')->get();
+    }
+
+    /**
+     * Businesses currently linked to a given article - the reverse direction of
+     * get_bisnes_article_relations(), used by the article edit page.
+     */
+    public function get_article_bisnes_relations($article_id)
+    {
+        if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;
+
+        $article = Article::find($article_id);
+
+        if (!$article) {
+            return response()->json(['error' => 'Article not found'], 404);
+        }
+
+        return $article->businesses->map(function ($business) {
+            return [
+                'bisnes_id' => $business->id,
+                'bisnes_title' => $business->url_title,
+                'us_title' => optional($business->us_bisnes)->title,
+                'ka_title' => optional($business->ka_bisnes)->title,
+            ];
+        })->values();
+    }
+
+    /**
+     * Replaces the full set of business relations for a single article. Enforces the
+     * same MAX_RELATIONS_PER_ARTICLE cap used by the business-side relation manager.
+     */
+    public function set_article_bisnes_relations(Request $request)
+    {
+        if ($auth = PermissionService::authorize('local_bisnes', 'edit')) return $auth;
+
+        $article = Article::find($request->article_id);
+        if (!$article) {
+            return response()->json(['error' => 'Article not found'], 404);
+        }
+
+        $bisnes_ids = array_values(array_unique(array_filter($request->bisnes_ids ?? [])));
+
+        if (count($bisnes_ids) > self::MAX_RELATIONS_PER_ARTICLE) {
+            return response()->json([
+                'error' => 'A business can have at most ' . self::MAX_RELATIONS_PER_ARTICLE . ' related businesses.'
+            ], 422);
+        }
+
+        Suport_local_bisnes_article::where('article_id', $article->id)->delete();
+
+        foreach ($bisnes_ids as $bisnes_id) {
+            $relation = new Suport_local_bisnes_article;
+            $relation['article_id'] = $article->id;
+            $relation['bisnes_id'] = $bisnes_id;
+            $relation->save();
+        }
+
+        return $this->get_article_bisnes_relations($article->id);
+    }
+
     public function get_bisnes_article_relations($bisnes_id)
     {
         if ($auth = PermissionService::authorize('local_bisnes', 'show')) return $auth;

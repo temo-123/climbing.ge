@@ -1758,6 +1758,22 @@
                 "summit_relation_removed_msg": "მწვერვალთან კავშირი წაიშალა.",
                 "could_not_remove_relation": "კავშირის წაშლა ვერ მოხერხდა."
             },
+            "business_relation": {
+                "title": "ლოკალურ ბიზნესთან კავშირი",
+                "no_business_linked": "ამ სტატიას ლოკალური ბიზნესი დაკავშირებული არ აქვს.",
+                "link_to_business_label": "ლოკალურ ბიზნესთან დაკავშირება",
+                "select_business_placeholder": "-- აირჩიეთ ბიზნესი --",
+                "link_business_btn": "ბიზნესის დაკავშირება",
+                "saving_ellipsis": "ინახება...",
+                "saved_title": "შენახულია",
+                "business_relation_updated_msg": "ლოკალურ ბიზნესთან კავშირი განახლდა.",
+                "error_title": "შეცდომა",
+                "could_not_save_relation": "კავშირის შენახვა ვერ მოხერხდა.",
+                "removed_title": "წაშლილია",
+                "business_relation_removed_msg": "ლოკალურ ბიზნესთან კავშირი წაიშალა.",
+                "could_not_remove_relation": "კავშირის წაშლა ვერ მოხერხდა.",
+                "max_relations_note": "მაქსიმუმ {max} ბიზნესის დაკავშირება შესაძლებელია ამ სტატიასთან."
+            },
             "global_form": {
                 "title_suffix": "სტატიის ზოგადი ინფორმაცია",
                 "subtitle": "სტატიის ზოგადი ინფორმაცია.",
@@ -2221,6 +2237,7 @@
         },
         "menu": {
             "products": "პროდუქტები",
+            "all_products": "ყველა პროდუქტი",
             "sale_products": "ფასდაკლება",
             "outlet_products": "აუთლეთი",
             "services": "სერვისები",

@@ -108,6 +108,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_article_categories', 'get_article_categories');
         Route::post('/check_article_relation_capacity', 'check_article_relation_capacity');
         Route::post('/get_article_relations_overview', 'get_article_relations_overview');
+        Route::get('/get_local_bisneses_list', 'get_local_bisneses_list');
+        Route::get('/get_article_bisnes_relations/{article_id}', 'get_article_bisnes_relations');
+        Route::post('/set_article_bisnes_relations', 'set_article_bisnes_relations');
     });
 
     Route::controller(DonationController::class)->prefix('set_donation_admin')->group( function() {
