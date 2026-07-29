@@ -1629,6 +1629,7 @@
                 "stroke_width_px_tooltip": "ხაზის სისქე (px)",
                 "select_for_grouping_tooltip": "მონიშვნა დასაჯგუფებლად",
                 "group_selected_tooltip": "მონიშნული {count} ელემენტის დაჯგუფება",
+                "drag_to_reorder_tooltip": "გადაათრიეთ თანმიმდევრობის შესაცვლელად",
                 "drag_to_move_into_group_tooltip": "გადაათრიეთ ჯგუფზე შესატანად",
                 "move_to_group_tooltip": "ჯგუფში გადატანა (ან გადაათრიეთ ჯგუფის მწკრივზე)",
                 "move_to_group_placeholder": "ჯგუფში გადატანა…",

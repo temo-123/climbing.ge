@@ -155,6 +155,8 @@
                     @change-layer-size="changeLayerSize"
                     @change-child-color="changeChildColor"
                     @change-child-size="changeChildSize"
+                    @highlight-layer="highlightLayerOnCanvas"
+                    @unhighlight-layer="unhighlightLayerOnCanvas"
                 />
             </div>
         </div>
@@ -217,7 +219,12 @@ export default {
             panOffset: { x: 0, y: 0 },
             selectedItems: [],
             isPanning: false,
-            panStartPoint: null
+            panStartPoint: null,
+            // Tracks which Paper.js item is currently hover-highlighted from the
+            // layers panel, and its selected state from BEFORE the hover started,
+            // so unhighlighting can restore it instead of blindly clearing it.
+            hoverHighlightId: null,
+            hoverHighlightPrevSelected: false
         }),
         mounted() {
             if (this.image_prop) {
@@ -437,6 +444,47 @@ export default {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return null;
                 return scope.project.layers.find(l => l.id === id) || null;
+            },
+
+            // Resolves a layers-panel row (top-level item/group, related-route
+            // entry, or group child) to its live Paper.js item/Layer.
+            _resolveLayerNode(node) {
+                return node.isRelated ? this._layerById(node.id) : this._itemById(node.id);
+            },
+
+            // Hover-highlight: when the cursor sits on a layer row, show exactly
+            // where that item lives on the drawing paper. Reuses Paper.js's own
+            // native "selected" bounds/handles rendering (the same visual the
+            // selection/move tools already use — see CanvasHandlers.vue) instead
+            // of drawing a separate overlay, so no extra canvas items are added
+            // that would need excluding from JSON export / undo history / the
+            // layers list. Saves/restores the item's PRIOR selected state so a
+            // hover never clobbers a real, tool-driven selection underneath it.
+            highlightLayerOnCanvas(node) {
+                const item = this._resolveLayerNode(node);
+                if (!item) return;
+                if (this.hoverHighlightId !== null && this.hoverHighlightId !== item.id) {
+                    this._restoreHoverHighlight();
+                }
+                this.hoverHighlightId = item.id;
+                this.hoverHighlightPrevSelected = item.selected;
+                item.selected = true;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+            },
+
+            unhighlightLayerOnCanvas() {
+                this._restoreHoverHighlight();
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+            },
+
+            _restoreHoverHighlight() {
+                if (this.hoverHighlightId === null) return;
+                const item = this._itemById(this.hoverHighlightId) || this._layerById(this.hoverHighlightId);
+                if (item) item.selected = this.hoverHighlightPrevSelected;
+                this.hoverHighlightId = null;
+                this.hoverHighlightPrevSelected = false;
             },
 
             // Recursively sets locked state on an item and all its children.

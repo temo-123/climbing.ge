@@ -134,6 +134,16 @@ export default {
                 if (this._multiSelectedItems) this._multiSelectedItems.forEach(i => { try { i.selected = false; } catch(_){} });
                 this._multiSelectedItems = [];
             }
+            // this.group (set by createGroup(), used by the number/combined tools) is
+            // only cleared on mouseUp while action is still 3 or 7 — switching tools
+            // mid-gesture (e.g. clicking a different toolbar button before mouseup)
+            // skips that reset and leaves it dangling. A later plain "text" add would
+            // then silently nest into that stale group instead of becoming its own
+            // top-level item, making it invisible in the layers list until that
+            // unrelated group is expanded.
+            if ((oldVal === 3 || oldVal === 7) && this.group) {
+                this.group = null;
+            }
             if (this.scope && this.scope.view && this.scope.view.element) {
                 const cursors = {
                     9:  'grab',

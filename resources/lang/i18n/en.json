@@ -1629,6 +1629,7 @@
                 "stroke_width_px_tooltip": "Stroke width (px)",
                 "select_for_grouping_tooltip": "Select for grouping",
                 "group_selected_tooltip": "Group {count} selected items",
+                "drag_to_reorder_tooltip": "Drag to reorder",
                 "drag_to_move_into_group_tooltip": "Drag onto a group to move it in",
                 "move_to_group_tooltip": "Move to group (or drag onto a group row)",
                 "move_to_group_placeholder": "Move to group…",

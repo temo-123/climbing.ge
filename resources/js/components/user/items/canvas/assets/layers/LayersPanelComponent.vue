@@ -41,12 +41,49 @@
                 <div class="d-flex align-items-center border-bottom layer-row px-1"
                      :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '', layer.isGroup && dragOverGroupId === layer.id ? 'layer-drop-target' : '']"
                      :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }"
-                     :draggable="!layer.isRelated && !layer.isGroup"
-                     @dragstart="onDragStart($event, layer)"
                      @dragover.prevent="onDragOverRow(layer)"
                      @dragleave="onDragLeaveRow(layer)"
                      @drop.prevent="onDropRow($event, layer)"
-                     @dragend="onDragEnd">
+                     @mouseenter="$emit('highlight-layer', layer)"
+                     @mouseleave="$emit('unhighlight-layer', layer)">
+
+                    <!-- Editing a text item takes over the whole row — the normal row is only
+                         90px wide for the name column, nowhere near enough to comfortably type
+                         and read real text content in. -->
+                    <template v-if="layer.isText && layer.isEditing">
+                        <i class="fa fa-font mx-2 text-muted" style="flex-shrink:0;"></i>
+                        <input v-model="layer.editText"
+                               class="form-control form-control-sm text-edit-input"
+                               :placeholder="$t('admin.articles.canvas_editor.empty_placeholder')"
+                               @blur="onTextBlur(layer)"
+                               @keydown.enter.prevent="finishEditingText(layer)"
+                               @keydown.esc.prevent="cancelEditingText(layer)"
+                               :ref="'textInput-' + layer.id" />
+                        <div class="btn-group btn-group-sm ms-1 me-1" role="group">
+                            <button type="button" class="btn btn-success text-edit-action-btn"
+                                    @mousedown.prevent @click="finishEditingText(layer)" :title="$t('common.save')">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline-secondary text-edit-action-btn"
+                                    @mousedown.prevent @click="cancelEditingText(layer)" :title="$t('common.cancel')">
+                                <i class="fa fa-times"></i>
+                            </button>
+                        </div>
+                    </template>
+                    <template v-else>
+
+                    <!-- Drag handle — the ONLY draggable element in the row (matches the fa-bars
+                         convention used by the MTP/sector sequence modals). Keeping the whole row
+                         draggable made the browser treat any click-and-tiny-move on the name/text
+                         as a drag gesture instead of a click, so the edit box never opened. -->
+                    <span v-if="!layer.isRelated && !layer.isGroup" class="drag-handle me-1"
+                          draggable="true"
+                          @dragstart="onDragStart($event, layer)"
+                          @dragend="onDragEnd"
+                          :title="$t('admin.articles.canvas_editor.drag_to_reorder_tooltip')">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    <span v-else style="width:14px; flex-shrink:0;" class="me-1"></span>
 
                     <!-- Multi-select checkbox (for grouping several items at once) -->
                     <input v-if="!layer.isRelated && !layer.isGroup" type="checkbox"
@@ -87,9 +124,9 @@
                             <span class="badge ms-1" :style="{ background: layer.color || '#999', fontSize: '8px', verticalAlign: 'middle' }">ref</span>
                         </template>
                         <template v-else-if="!layer.isText">
-                            <span v-if="!layer.isEditing"
+                            <span v-if="!layer.isEditing" class="text-truncate editable-name d-block"
                                   @click="startEditingLayerName(layer)"
-                                  class="editable-name" :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (layer.displayName || layer.name)">
+                                  :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (layer.displayName || layer.name)">
                                 {{ layer.displayName || layer.name }}
                             </span>
                             <input v-else v-model="layer.editName"
@@ -100,21 +137,25 @@
                                    :ref="'nameInput-' + layer.id" />
                         </template>
                         <template v-else>
-                            <span class="text-muted" style="font-size:9px;">text</span>
-                            <span v-if="!layer.isEditing"
-                                  @click="startEditingText(layer)"
-                                  class="text-truncate d-block editable-name layer-text-preview"
-                                  :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                            <!-- layer.isEditing can't be true here — editing a text item
+                                 replaces the whole row with the wide edit bar above. -->
+                            <span class="text-muted d-block" style="font-size:9px;">text</span>
+                            <span class="text-truncate editable-name layer-text-preview d-block"
+                                  :title="layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder')">
                                 "{{ layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder') }}"
                             </span>
-                            <input v-else v-model="layer.editText"
-                                   class="form-control form-control-sm py-0"
-                                   @blur="onTextBlur(layer)"
-                                   @keydown.enter.prevent="finishEditingText(layer)"
-                                   @keydown.esc.prevent="cancelEditingText(layer)"
-                                   :ref="'textInput-' + layer.id" />
                         </template>
                     </div>
+
+                    <!-- Edit pencil — kept OUTSIDE the clipped 90px name column above so it
+                         always has guaranteed room and never gets cut off by that column's
+                         own overflow:hidden edge. -->
+                    <span v-if="layer.isText && !layer.isEditing" class="edit-point-btn me-1"
+                          @click="startEditingText(layer)"
+                          :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (layer.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                        <i class="fa fa-pencil"></i>
+                    </span>
+                    <span v-else style="width:18px; flex-shrink:0;" class="me-1"></span>
 
                     <!-- Color + size -->
                     <input type="color" :value="layer.color || '#999999'"
@@ -175,6 +216,7 @@
                             <i class="fa fa-trash"></i>
                         </button>
                     </div>
+                    </template>
                 </div>
 
                 <!-- Group children (single-line, indented) -->
@@ -182,9 +224,38 @@
                     <div v-for="child in layer.children" :key="child.id || child.name"
                          class="d-flex align-items-center border-bottom layer-row layer-child px-1"
                          :style="{ borderLeft: '3px solid ' + (child.color || '#999'), paddingLeft: '28px' }"
-                         draggable="true"
-                         @dragstart="onDragStart($event, child)"
-                         @dragend="onDragEnd">
+                         @mouseenter="$emit('highlight-layer', child)"
+                         @mouseleave="$emit('unhighlight-layer', child)">
+
+                        <template v-if="child.isText && child.isEditing">
+                            <i class="fa fa-font mx-2 text-muted" style="flex-shrink:0;"></i>
+                            <input v-model="child.editText"
+                                   class="form-control form-control-sm text-edit-input"
+                                   :placeholder="$t('admin.articles.canvas_editor.empty_placeholder')"
+                                   @blur="onChildTextBlur(layer, child)"
+                                   @keydown.enter.prevent="finishEditingChildText(layer, child)"
+                                   @keydown.esc.prevent="cancelEditingChildText(child)"
+                                   :ref="'childTextInput-' + child.id" />
+                            <div class="btn-group btn-group-sm ms-1 me-1" role="group">
+                                <button type="button" class="btn btn-success text-edit-action-btn"
+                                        @mousedown.prevent @click="finishEditingChildText(layer, child)" :title="$t('common.save')">
+                                    <i class="fa fa-check"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary text-edit-action-btn"
+                                        @mousedown.prevent @click="cancelEditingChildText(child)" :title="$t('common.cancel')">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                            </div>
+                        </template>
+                        <template v-else>
+
+                        <span class="drag-handle me-1"
+                              draggable="true"
+                              @dragstart="onDragStart($event, child)"
+                              @dragend="onDragEnd"
+                              :title="$t('admin.articles.canvas_editor.drag_to_reorder_tooltip')">
+                            <i class="fa fa-bars"></i>
+                        </span>
 
                         <span class="me-1 layer-icon-btn text-center" style="flex-shrink:0;">
                             <i :class="'fa ' + getTypeIcon(child.name)" :style="{ color: child.color || '#999' }"></i>
@@ -192,9 +263,9 @@
 
                         <div class="overflow-hidden small layer-name me-1" style="min-width:0; max-width:80px;">
                             <template v-if="!child.isText">
-                                <span v-if="!child.isEditing"
+                                <span v-if="!child.isEditing" class="text-truncate editable-name d-block"
                                       @click="startEditingChildName(layer, child)"
-                                      class="editable-name" :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (child.displayName || child.name)">
+                                      :title="$t('admin.articles.canvas_editor.click_to_rename_prefix') + (child.displayName || child.name)">
                                     {{ child.displayName || child.name }}
                                 </span>
                                 <input v-else v-model="child.editName"
@@ -205,20 +276,24 @@
                                        :ref="'childNameInput-' + child.id" />
                             </template>
                             <template v-else>
-                                <span v-if="!child.isEditing"
-                                      @click="startEditingChildText(layer, child)"
-                                      class="text-truncate d-block editable-name layer-text-preview"
-                                      :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (child.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                                <!-- child.isEditing can't be true here — editing a text item
+                                     replaces the whole row with the wide edit bar above. -->
+                                <span class="text-truncate editable-name layer-text-preview d-block"
+                                      :title="child.textContent || $t('admin.articles.canvas_editor.empty_placeholder')">
                                     "{{ child.textContent || $t('admin.articles.canvas_editor.empty_placeholder') }}"
                                 </span>
-                                <input v-else v-model="child.editText"
-                                       class="form-control form-control-sm py-0"
-                                       @blur="onChildTextBlur(layer, child)"
-                                       @keydown.enter.prevent="finishEditingChildText(layer, child)"
-                                       @keydown.esc.prevent="cancelEditingChildText(child)"
-                                       :ref="'childTextInput-' + child.id" />
                             </template>
                         </div>
+
+                        <!-- Edit pencil — kept OUTSIDE the clipped 80px name column above so it
+                             always has guaranteed room and never gets cut off by that column's
+                             own overflow:hidden edge. -->
+                        <span v-if="child.isText && !child.isEditing" class="edit-point-btn me-1"
+                              @click="startEditingChildText(layer, child)"
+                              :title="$t('admin.articles.canvas_editor.click_to_edit_prefix') + (child.textContent || $t('admin.articles.canvas_editor.empty_placeholder'))">
+                            <i class="fa fa-pencil"></i>
+                        </span>
+                        <span v-else style="width:18px; flex-shrink:0;" class="me-1"></span>
 
                         <input type="color" :value="child.color || '#999999'"
                                @change="$emit('change-child-color', layer, child, $event.target.value)"
@@ -259,6 +334,7 @@
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
+                        </template>
                     </div>
                 </template>
 
@@ -297,6 +373,7 @@ export default {
         'finish-editing-child-text', 'cancel-editing-child-text',
         'change-layer-color', 'change-layer-size',
         'change-child-color', 'change-child-size',
+        'highlight-layer', 'unhighlight-layer',
     ],
     data() {
         return {
@@ -511,6 +588,18 @@ export default {
     height: 100%;
 }
 
+.text-edit-input {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 12px;
+}
+
+.text-edit-action-btn {
+    padding: 3px 10px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+
 .layers-list {
     overflow-y: auto;
     max-height: 540px;
@@ -526,6 +615,23 @@ export default {
 
 .layer-row:hover {
     background: #f0f4ff !important;
+}
+
+.drag-handle {
+    width: 14px;
+    flex-shrink: 0;
+    text-align: center;
+    color: #adb5bd;
+    font-size: 11px;
+    cursor: grab;
+}
+
+.drag-handle:hover {
+    color: #6c757d;
+}
+
+.drag-handle:active {
+    cursor: grabbing;
 }
 
 .layer-group {
@@ -602,6 +708,26 @@ export default {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.edit-point-btn {
+    cursor: pointer;
+    color: #0d6efd;
+    background: #eef2ff;
+    border: 1px solid #cfe0ff;
+    font-size: 10px;
+    flex-shrink: 0;
+    padding: 2px 5px;
+    border-radius: 3px;
+    line-height: 1.4;
+}
+
+.edit-point-btn:hover {
+    color: #fff;
+    background: #0d6efd;
+    border-color: #0d6efd;
 }
 
 .editable-name:focus {
