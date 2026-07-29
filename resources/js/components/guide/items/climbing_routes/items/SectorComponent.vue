@@ -70,7 +70,7 @@
             <openImg
                 v-for="image in sector.sector_imgs"
                 :key="image.id"
-                :img="'/public/images/sector_img/' + image.image"
+                :img="'/public/images/sector_img/' + image.image + (image.updated_at ? '?v=' + encodeURIComponent(image.updated_at) : '')"
                 :img_alt="image.image"
                 :img_class="'sector_images sector_images_' + sector.sector_imgs.length"
             />

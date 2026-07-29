@@ -14,6 +14,7 @@ use App\Models\Guide\Sector_image;
 use App\Models\Guide\Spot_rocks_image;
 use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
+use App\Models\Guide\Region;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\CanvasService;
@@ -270,6 +271,31 @@ class SectorController extends Controller
             'images' => $sector->images,
         ];
         return $data;
+    }
+
+    public function get_filtred_ice_sectors_for_admin(Request $request)
+    {
+        if ($auth = PermissionService::authorize('sector', 'show')) return $auth;
+
+        $region = Region::find($request->filter_id);
+        if (!$region) {
+            return [];
+        }
+
+        $ice_articles = $region->articles()->where('category', '=', 'ice')->get();
+
+        $sectors = [];
+        foreach ($ice_articles as $article) {
+            foreach ($article->sectors as $sector) {
+                $sectors[] = $sector;
+            }
+        }
+
+        usort($sectors, function($a, $b) {
+            return $b->id <=> $a->id;
+        });
+
+        return $sectors;
     }
 
     public function replace_sector_image(Request $request, $image_id)

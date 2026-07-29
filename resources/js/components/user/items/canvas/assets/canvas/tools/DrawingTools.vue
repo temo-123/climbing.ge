@@ -42,6 +42,12 @@ export default {
             this.groupCounter++;
             this.group = new paper.Group();
             this.group.name = `group ${this.groupCounter}`;
+            // Stable role marker the layers panel uses to identify this as a group
+            // regardless of what the user later renames it to (see EditorComponent's
+            // _isGroupContainer) — the name alone used to be the only signal, so
+            // renaming a group away from the "group " prefix silently broke its own
+            // color/width controls.
+            this.group.data = { isLayerGroup: true };
             this.scope.project.activeLayer.addChild(this.group);
         },
 
@@ -55,6 +61,10 @@ export default {
                 strokeJoin: 'round',
                 name: `line ${this.layerCounters.line}`
             });
+            // Stable role marker so a group's own width control can find "the
+            // route line" (as opposed to the number label) even after a rename —
+            // see EditorComponent._getItemWidth's group branch.
+            this.currentLine.data = { isRouteLine: true };
             if (this.path && this.path.data && this.path.data.isRectangle) {
                 const rectBounds = this.path.bounds;
                 const startPoint = this.getClosestPerimeterPoint(rectBounds, mousePoint);
@@ -188,6 +198,108 @@ export default {
             this.path = polygon;
             if (this.group) this.group.addChild(polygon);
             return polygon;
+        },
+
+        // Arrow = a Group containing the shaft (a straight 2-point Path) + a filled
+        // triangular head. Modeled on add_rectangle's "seed a fixed structure on
+        // mousedown, then reposition on drag" pattern (see updateArrow) rather than
+        // add_line's freehand point-accumulation, since an arrow always has exactly
+        // one start point and one end point.
+        add_arrow(event) {
+            this.layerCounters.arrow++;
+            const n = this.layerCounters.arrow;
+
+            const shaft = new paper.Path({
+                strokeColor: this._stroke(),
+                strokeWidth: this._width(),
+                strokeJoin: 'round',
+                name: `arrow-shaft ${n}`
+            });
+            shaft.add(event.point);
+            shaft.add(event.point);
+            // Stable role markers so resize/color logic can find these by role
+            // rather than by name — same reasoning as isRouteLine/isLayerGroup above.
+            shaft.data = { isArrowShaft: true };
+
+            const head = new paper.Path({
+                closed: true,
+                fillColor: this._stroke(),
+                strokeColor: this._stroke(),
+                name: `arrow-head ${n}`
+            });
+            head.add(event.point);
+            head.add(event.point);
+            head.add(event.point);
+            head.data = { isArrowHead: true };
+
+            const arrow = new paper.Group([shaft, head]);
+            arrow.name = `arrow ${n}`;
+            arrow.data = { isArrow: true, startPoint: event.point };
+
+            if (this.group) this.group.addChild(arrow);
+            this.path = arrow;
+            return arrow;
+        },
+
+        // Repositions the shaft and recomputes the triangular head so the arrow
+        // points from startPoint to endPoint. Called on every onMouseDrag frame
+        // while the arrow tool is active (see CanvasHandlers.vue), where the head
+        // size is derived from the CURRENT default stroke width (_width()). Also
+        // reused by resizeArrow() below with an explicit widthOverride so an
+        // EXISTING arrow's head can be rescaled to a specific width chosen
+        // afterwards (e.g. via the layers panel), rather than the tool's default.
+        updateArrow(arrowGroup, startPoint, endPoint, widthOverride) {
+            const shaft = arrowGroup.children[0];
+            const head  = arrowGroup.children[1];
+            if (!shaft || !head) return;
+
+            const strokeW    = widthOverride != null ? widthOverride : this._width();
+            const headLength = Math.max(10, strokeW * 4);
+            const headAngle  = Math.PI / 7; // ~25.7°, typical arrowhead spread
+
+            const dx = endPoint.x - startPoint.x;
+            const dy = endPoint.y - startPoint.y;
+            const lineAngle = Math.atan2(dy, dx);
+            const dist = startPoint.getDistance(endPoint);
+
+            // Pull the shaft's end back so it doesn't poke through the head's tip.
+            const shaftEndDist = Math.max(0, dist - headLength * 0.6);
+            const shaftEnd = new paper.Point(
+                startPoint.x + Math.cos(lineAngle) * shaftEndDist,
+                startPoint.y + Math.sin(lineAngle) * shaftEndDist
+            );
+            shaft.segments[0].point = startPoint;
+            shaft.segments[1].point = shaftEnd;
+
+            const backLeft = new paper.Point(
+                endPoint.x - headLength * Math.cos(lineAngle - headAngle),
+                endPoint.y - headLength * Math.sin(lineAngle - headAngle)
+            );
+            const backRight = new paper.Point(
+                endPoint.x - headLength * Math.cos(lineAngle + headAngle),
+                endPoint.y - headLength * Math.sin(lineAngle + headAngle)
+            );
+            head.segments[0].point = endPoint;
+            head.segments[1].point = backLeft;
+            head.segments[2].point = backRight;
+        },
+
+        // Rescales an EXISTING arrow's shaft width AND its arrowhead size together,
+        // keeping the same start/tip points — used when the width is changed after
+        // the arrow was already drawn (e.g. the layers panel's size input). Without
+        // this, only the shaft's strokeWidth would change, leaving the arrowhead's
+        // triangle geometry at its original (usually much smaller) fixed size, so a
+        // thickened shaft visually swallows the now-comparatively-tiny head instead
+        // of the whole arrow scaling up together.
+        resizeArrow(arrowGroup, width) {
+            const shaft = arrowGroup.children[0];
+            const head  = arrowGroup.children[1];
+            if (!shaft || !head || shaft.segments.length < 2 || head.segments.length < 3) return;
+
+            const startPoint = shaft.segments[0].point;
+            const endPoint    = head.segments[0].point; // the true tip — shaft's own end point is pulled back, not the tip
+            shaft.strokeWidth = width;
+            this.updateArrow(arrowGroup, startPoint, endPoint, width);
         },
 
         add_text(event) {

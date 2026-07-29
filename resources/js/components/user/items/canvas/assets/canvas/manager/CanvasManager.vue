@@ -76,7 +76,8 @@ export default {
             ellipse: 0,
             polygon: 0,
             text: 0,
-            group: 0
+            group: 0,
+            arrow: 0
         },
         history: [],
         redoStack: [],

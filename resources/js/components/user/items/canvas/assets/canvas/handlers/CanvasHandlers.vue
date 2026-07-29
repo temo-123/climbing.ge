@@ -70,6 +70,8 @@ export default {
                     this.startResizeOrSelect(event);
                 } else if (this.action == 20) {
                     this.startContinueLine(event);
+                } else if (this.action == 21) {
+                    this.add_arrow(event);
                 }
             };
 
@@ -180,6 +182,10 @@ export default {
                     this.dragResize(event);
                 } else if (this.action == 20) {
                     if (this.path) this.path.add(event.point);
+                } else if (this.action == 21) {
+                    if (this.path && this.path.data && this.path.data.isArrow) {
+                        this.updateArrow(this.path, this.path.data.startPoint, event.point);
+                    }
                 }
             };
 

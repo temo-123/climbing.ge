@@ -27,6 +27,7 @@
                 @pan="handlePan"
                 @circle="handleCircle"
                 @ellipse="handleEllipse"
+                @arrow="handleArrow"
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
@@ -124,19 +125,20 @@
             <div class="col-lg-3 col-md-4">
                 <LayersPanelComponent
                     :layers="layers"
+                    :selected-layer-ids="selectedLayerIds"
                     :show-layers-table="true"
                     @refresh-layers="updateLayersList"
                     @toggle-all-visibility="toggleLayersVisibility"
                     @delete-all-layers="deleteAllLayers"
                     @move-layer-up="moveLayerUp"
                     @move-layer-down="moveLayerDown"
-                    @create-group-from-layer="createGroupFromLayer"
-                    @show-move-to-group-modal="showMoveToGroupModal"
+                    @toggle-layer-selection="toggleLayerSelection"
+                    @create-group-from-selection="createGroupFromSelection"
+                    @assign-item-group="assignItemToGroup"
                     @ungroup-layer="ungroupLayer"
                     @toggle-layer-visibility="toggleLayerVisibility"
                     @toggle-layer-lock="toggleLayerLock"
                     @delete-layer-item="deleteLayerItem"
-                    @move-child-out-of-group="moveChildOutOfGroup"
                     @toggle-child-visibility="toggleChildVisibility"
                     @toggle-child-lock="toggleChildLock"
                     @delete-child-item="deleteChildItem"
@@ -202,13 +204,9 @@ export default {
 
             action: 1,
             layers: [],
+            selectedLayerIds: [],
             historyCount: 0,
             redoCount: 0,
-            moveToGroupModal: {
-                show: false,
-                layer: null,
-                targetGroup: null
-            },
             // Style controls
             currentStrokeColor: '#ff0000',
             currentFillColor: null,
@@ -344,6 +342,10 @@ export default {
                 this.action = 11;
             },
 
+            handleArrow() {
+                this.action = 21;
+            },
+
             handlePolygon() {
                 this.action = 12;
             },
@@ -444,10 +446,30 @@ export default {
                 if (item.children) item.children.forEach(c => this._deepSetLocked(c, locked));
             },
 
-            // Returns the CSS hex color of a Paper.js item (or its first child for groups).
+            // Stable type checks based on Paper.js item.data flags (set at creation
+            // time — see DrawingTools.vue's createGroup/add_arrow), falling back to
+            // the legacy name-prefix convention for items saved before these flags
+            // existed. Using .data instead of parsing item.name means renaming a
+            // group or arrow in the layers panel can no longer silently break its
+            // own color/width controls — previously anything checking
+            // `name.startsWith('group ')`/`'arrow '` simply stopped matching the
+            // moment a user renamed the item.
+            _isGroupContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isLayerGroup) || !!(item.name && item.name.startsWith('group '));
+            },
+            _isArrowContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isArrow) || !!(item.name && item.name.startsWith('arrow '));
+            },
+            _isTextItem(item) {
+                return !!item && (item instanceof paper.PointText || (item.name && item.name.startsWith('text ')));
+            },
+
+            // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows).
             _getItemColor(item) {
                 if (!item) return '#999999';
-                if (item.name && item.name.startsWith('group ') && item.children && item.children.length > 0) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item)) && item.children && item.children.length > 0) {
                     return this._getItemColor(item.children[0]);
                 }
                 const color = item.strokeColor || item.fillColor;
@@ -457,10 +479,21 @@ export default {
 
             _getItemWidth(item) {
                 if (!item) return 3;
-                if (item.name && item.name.startsWith('group ') && item.children && item.children.length > 0) {
-                    return this._getItemWidth(item.children[0]);
+                if (this._isGroupContainer(item) && item.children && item.children.length > 0) {
+                    // The group-level control is labeled/behaves as the route LINE's stroke
+                    // width (see LayersPanelComponent's "stroke_width_px_tooltip"), so it must
+                    // read the route-line child specifically, not children[0] (which is the
+                    // number label) — otherwise it displays the label's font size here.
+                    const lineChild = item.children.find(c => (c.data && c.data.isRouteLine) || (c.name && c.name.startsWith('line ')));
+                    return this._getItemWidth(lineChild || item.children[0]);
                 }
-                if (item.name && item.name.startsWith('text ')) {
+                if (this._isArrowContainer(item) && item.children && item.children.length > 0) {
+                    // An arrow is a Group of [shaft, head] — its "width" is the shaft's
+                    // stroke width; the head's size is derived from that (see updateArrow).
+                    const shaft = item.children.find(c => (c.data && c.data.isArrowShaft) || (c.name && c.name.startsWith('arrow-shaft')));
+                    return this._getItemWidth(shaft || item.children[0]);
+                }
+                if (this._isTextItem(item)) {
                     return Math.round(item.fontSize) || 16;
                 }
                 return item.strokeWidth || 3;
@@ -468,7 +501,7 @@ export default {
 
             _setItemColor(item, color) {
                 if (!item) return;
-                if (item.name && item.name.startsWith('group ') && item.children) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item)) && item.children) {
                     [...item.children].forEach(child => this._setItemColor(child, color));
                     return;
                 }
@@ -478,11 +511,28 @@ export default {
 
             _setItemWidth(item, width) {
                 if (!item) return;
-                if (item.name && item.name.startsWith('group ') && item.children) {
-                    [...item.children].forEach(child => this._setItemWidth(child, width));
+                if (this._isGroupContainer(item) && item.children) {
+                    // The group-level control only represents/edits the route LINE's stroke
+                    // width (see _getItemWidth above and the "stroke_width_px_tooltip" label
+                    // it's shown under) — it must never also resize the number label, or one
+                    // control silently inflates both the line and the number together. The
+                    // number label has its own dedicated size control in the expanded
+                    // per-child rows.
+                    [...item.children].forEach(child => {
+                        if (this._isTextItem(child)) return;
+                        this._setItemWidth(child, width);
+                    });
                     return;
                 }
-                if (item.name && item.name.startsWith('text ')) {
+                if (this._isArrowContainer(item)) {
+                    // Resize the shaft AND recompute the arrowhead geometry together
+                    // (see CanvasContainerComponent.resizeArrow / DrawingTools.resizeArrow)
+                    // — setting only the shaft's strokeWidth would leave the head at its
+                    // original fixed size, so a thick shaft visually swallows a tiny head.
+                    this.$refs.canvasContainer.resizeArrow(item, width);
+                    return;
+                }
+                if (this._isTextItem(item)) {
                     item.fontSize = width;
                 } else if (item.strokeWidth !== undefined) {
                     item.strokeWidth = width;
@@ -548,9 +598,12 @@ export default {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) { this.layers = []; return; }
 
+                // Keyed by id, not name — two groups can end up with the same
+                // user-given name (nothing enforces uniqueness), which would
+                // otherwise bleed one group's expanded state into the other's.
                 const expandedStates = {};
                 this.layers.forEach(layer => {
-                    if (layer.isGroup && layer.expanded) expandedStates[layer.name] = true;
+                    if (layer.isGroup && layer.expanded) expandedStates[layer.id] = true;
                 });
 
                 // Colors must match those used in importRelatedJsons
@@ -580,7 +633,7 @@ export default {
                     }
 
                     layer.children.forEach(item => {
-                        if (item.name && item.name.startsWith('group ')) {
+                        if (this._isGroupContainer(item)) {
                             mainItems.push({
                                 id: item.id,
                                 name: item.name || 'unnamed',
@@ -591,7 +644,7 @@ export default {
                                 locked: item.locked || false,
                                 layerName: layer.name,
                                 isGroup: true,
-                                expanded: expandedStates[item.name] || false,
+                                expanded: expandedStates[item.id] || false,
                                 isEditing: false,
                                 editText: '',
                                 children: item.children.map(child => ({
@@ -603,13 +656,14 @@ export default {
                                     visible: child.visible !== false,
                                     locked: child.locked || false,
                                     parentGroup: item.name,
-                                    isText: child instanceof paper.PointText || (child.name && child.name.startsWith('text ')),
+                                    isLine: !!(child.data && child.data.isRouteLine) || (child.name && child.name.startsWith('line ')),
+                                    isText: this._isTextItem(child),
                                     textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null),
                                     isEditing: false,
                                     editText: ''
                                 }))
                             });
-                        } else if (!item.parent || !item.parent.name || !item.parent.name.startsWith('group ')) {
+                        } else if (!item.parent || !this._isGroupContainer(item.parent)) {
                             mainItems.push({
                                 id: item.id,
                                 name: item.name || 'unnamed',
@@ -619,7 +673,9 @@ export default {
                                 visible: item.visible !== false,
                                 locked: item.locked || false,
                                 layerName: layer.name,
-                                isText: item instanceof paper.PointText || (item.name && item.name.startsWith('text ')),
+                                isGroup: false,
+                                isArrow: this._isArrowContainer(item),
+                                isText: this._isTextItem(item),
                                 textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
                                 isEditing: false,
                                 editText: ''
@@ -629,6 +685,11 @@ export default {
                 });
 
                 this.layers = [...mainItems, ...relatedEntries];
+
+                // Drop selection ids for items that no longer exist as selectable
+                // (non-group, non-related) rows — e.g. deleted, or just grouped away.
+                const selectableIds = new Set(mainItems.filter(l => !l.isGroup).map(l => l.id));
+                this.selectedLayerIds = this.selectedLayerIds.filter(id => selectableIds.has(id));
             },
 
             toggleLayerVisibility(layer) {
@@ -790,19 +851,31 @@ export default {
                 this.saveCanvasData();
             },
 
-            createGroupFromLayer(layer) {
-                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_create_group', { name: layer.displayName }))) return;
+            toggleLayerSelection(layer) {
+                const idx = this.selectedLayerIds.indexOf(layer.id);
+                if (idx === -1) this.selectedLayerIds.push(layer.id);
+                else this.selectedLayerIds.splice(idx, 1);
+            },
+
+            // Groups multiple selected top-level items into one new group at once,
+            // running the same paper.Group#addChild reparenting assignItemToGroup
+            // uses for a single item, once per selected item.
+            createGroupFromSelection(ids) {
+                if (!ids || ids.length < 2) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_create_group_from_selection', { count: ids.length }))) return;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
-                const foundItem = this._itemById(layer.id);
-                if (!foundItem) return;
-                const foundLayer = foundItem.layer; // Paper.js item.layer = the Layer it belongs to
+                const items = ids.map(id => this._itemById(id)).filter(Boolean);
+                if (items.length < 2) return;
+                const foundLayer = items[0].layer;
                 const newGroup = new paper.Group();
                 const currentCount = this.$refs.canvasContainer.getGroupCounter();
                 newGroup.name = `group ${currentCount + 1}`;
+                newGroup.data = { isLayerGroup: true };
                 this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
-                newGroup.addChild(foundItem); // addChild re-parents automatically
+                items.forEach(item => newGroup.addChild(item)); // re-parents each, preserves order
                 foundLayer.addChild(newGroup);
+                this.selectedLayerIds = [];
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
@@ -824,38 +897,49 @@ export default {
                 this.saveCanvasData();
             },
 
-            showMoveToGroupModal(layer) {
-                this.moveToGroupModal.layer = layer;
-                this.moveToGroupModal.show = true;
-                // For simplicity, we'll just move to the first available group
-                // In a real implementation, you'd show a modal to select the target group
-                if (this.availableGroups.length > 0) {
-                    this.moveLayerToGroup(layer, this.availableGroups[0]);
-                }
-            },
-
-            moveLayerToGroup(layer, targetGroup) {
+            // Unified group (re)assignment for one item, used by BOTH the layers
+            // panel's per-row "move to group" picker and drag-and-drop — replacing
+            // the old create-group / move-to-group-modal / move-child-out-of-group
+            // trio, which each duplicated similar reparenting logic and, in the
+            // move-to-group-modal case, silently moved the item into whichever
+            // group happened to be FIRST in the list instead of asking which one
+            // the user actually meant (the root cause of "doesn't add to the
+            // correct group"). `value` is one of:
+            //   ''       — ungroup / move to top level
+            //   '__new__' — create a brand-new group containing just this item
+            //   <id>     — move into the existing group with that Paper.js id
+            // Works identically whether `itemId` currently sits at the top level
+            // or inside a different group, so moving an already-grouped item
+            // straight into another group is a single action, not ungroup-then-regroup.
+            assignItemToGroup(itemId, value) {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) return;
-                const foundItem  = this._itemById(layer.id);
-                const foundGroup = this._itemById(targetGroup.id);
-                if (foundItem && foundGroup && foundGroup instanceof paper.Group) {
+                const foundItem = this._itemById(itemId);
+                if (!foundItem) return;
+
+                if (value === '__new__') {
+                    const foundLayer = foundItem.layer;
+                    const newGroup = new paper.Group();
+                    const currentCount = this.$refs.canvasContainer.getGroupCounter();
+                    newGroup.name = `group ${currentCount + 1}`;
+                    newGroup.data = { isLayerGroup: true };
+                    this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
+                    newGroup.addChild(foundItem); // re-parents automatically
+                    foundLayer.addChild(newGroup);
+                } else if (!value) {
+                    // foundItem.layer walks all the way up to the enclosing Layer
+                    // regardless of nesting depth, so this always lands at top level.
+                    foundItem.layer.addChild(foundItem);
+                } else {
+                    const targetId = parseInt(value, 10);
+                    const foundGroup = this._itemById(targetId);
+                    // _isGroupContainer (not instanceof paper.Group) on purpose — an
+                    // arrow is ALSO a paper.Group internally, but must never be used
+                    // as a drop target for other items.
+                    if (!foundGroup || !this._isGroupContainer(foundGroup)) return;
                     foundGroup.addChild(foundItem); // re-parents automatically
-                    scope.view.update();
-                    this.updateLayersList();
-                    this.saveCanvasData();
                 }
-                this.moveToGroupModal.show = false;
-            },
 
-            moveChildOutOfGroup(layer, child) {
-                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_move_child_out_of_group', { child: child.displayName, group: layer.displayName }))) return;
-                const scope = this.$refs.canvasContainer.getCanvasScope();
-                if (!scope || !scope.project) return;
-                const foundChild = this._itemById(child.id);
-                if (!foundChild) return;
-                const parentLayer = foundChild.layer; // The Layer the group belongs to
-                parentLayer.addChild(foundChild); // re-parents: removes from group, adds to layer
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
@@ -877,8 +961,15 @@ export default {
             finishEditingLayerName(layer, newName) {
                 const foundItem = this._itemById(layer.id);
                 if (foundItem && newName) {
-                    const finalName = layer.isGroup && !newName.startsWith('group ') ? `group ${newName}` : newName;
-                    foundItem.name = finalName;
+                    // Role (group/arrow) is tracked via foundItem.data, not the name
+                    // (see _isGroupContainer/_isArrowContainer), so renaming is now
+                    // free-form and can no longer break the item's own color/width
+                    // controls. Backfill the flag for legacy items that only ever
+                    // had the old name-prefix convention, so it keeps working going
+                    // forward even without the prefix.
+                    if (layer.isGroup) foundItem.data = { ...foundItem.data, isLayerGroup: true };
+                    if (layer.isArrow) foundItem.data = { ...foundItem.data, isArrow: true };
+                    foundItem.name = newName;
                     this.saveCanvasData();
                     this.updateLayersList();
                 }
@@ -892,6 +983,10 @@ export default {
             finishEditingChildName(layer, child, newName) {
                 const foundItem = this._itemById(child.id);
                 if (foundItem && newName) {
+                    // Backfill the route-line role marker for legacy items so the
+                    // group's own width control (see _getItemWidth) can still find
+                    // it after this rename even without the "line " prefix.
+                    if (child.isLine) foundItem.data = { ...foundItem.data, isRouteLine: true };
                     foundItem.name = newName;
                     this.saveCanvasData();
                     this.updateLayersList();

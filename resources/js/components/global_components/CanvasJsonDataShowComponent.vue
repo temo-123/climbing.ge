@@ -466,7 +466,15 @@ export default {
 
         // ── Canvas drawing ────────────────────────────────────────────────────────
 
-        drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize) {
+        // `widthMul`/`fontMul` are multipliers applied to each path/text's OWN authored
+        // strokeWidth/fontSize (as Paper.js recorded them, e.g. 3px / 20pt) — not
+        // absolute final pixel sizes. The caller's ctx.scale(sx, sy) (see
+        // drawItemScaled) then scales that local, pre-scale value up to the canvas's
+        // pixel space in one step, exactly mirroring how Paper.js's own
+        // item.transform(matrix) scales strokeWidth together with geometry. Using the
+        // item's actual authored size (instead of a resolution-derived approximation)
+        // is what makes this match the real composited/baked photo pixel-for-pixel.
+        drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1) {
             const parseSeg = (s) => {
                 if (!Array.isArray(s)) return null;
                 if (Array.isArray(s[0])) {
@@ -512,7 +520,7 @@ export default {
                         ctx.fill();
                     } else {
                         ctx.strokeStyle = strokeStyle;
-                        ctx.lineWidth   = lineWidth;
+                        ctx.lineWidth   = (data.strokeWidth || 3) * widthMul;
                         ctx.lineCap     = 'round';
                         ctx.lineJoin    = 'round';
                         ctx.beginPath();
@@ -536,13 +544,23 @@ export default {
                             );
                             ctx.closePath();
                         }
+                        // Closed shapes with a recorded fillColor (a filled rectangle, or
+                        // an arrow's solid triangular head) must be FILLED, not just
+                        // outlined — Paper.js itself always fills before stroking when
+                        // both are set. Skipping this left solid shapes like the
+                        // arrowhead rendering as a hollow outline with a visible gap at
+                        // the tip instead of a solid point touching the shaft.
+                        if (data.closed && data.fillColor) {
+                            ctx.fillStyle = strokeStyle;
+                            ctx.fill();
+                        }
                         ctx.stroke();
                     }
                     ctx.restore();
 
                 } else if (type === 'PointText') {
                     if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
-                    const fs = fontSize || data.fontSize || 20;
+                    const fs = (data.fontSize || 20) * fontMul;
                     ctx.save();
                     ctx.fillStyle    = textFillStyle;
                     ctx.font         = `bold ${fs}px Arial`;
@@ -570,7 +588,15 @@ export default {
         // Draws one item scaled from ITS OWN authored coordinate space into canvas-pixel
         // space. Each item may have been drawn in a differently-sized browser container,
         // so the scale must be resolved per item rather than once globally.
-        drawItemScaled(ctx, meta, canvas, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize) {
+        //
+        // ctx.scale(sx, sy) below scales every subsequent drawing coordinate — including
+        // whatever ctx.lineWidth/ctx.font size drawItem() sets — by (sx, sy). Since
+        // drawItem() now sets those from the item's own authored strokeWidth/fontSize
+        // (a LOCAL, pre-scale value, same as what Paper.js itself stored), this one
+        // transform is the only scaling that happens, so the result matches the actual
+        // composited/baked photo exactly, regardless of what container width the route
+        // was originally drawn in.
+        drawItemScaled(ctx, meta, canvas, strokeStyle, dotFillStyle, textFillStyle, widthMul, fontMul) {
             const { sx, sy } = this._itemScale(meta, canvas);
             const { ox, oy } = this._itemOffset(meta);
             ctx.save();
@@ -579,7 +605,7 @@ export default {
             // the stroke coordinates and (ox,oy) are both recorded in.
             if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
             if (ox !== 0 || oy !== 0) ctx.translate(-ox, -oy);
-            this.drawItem(ctx, meta.json, strokeStyle, dotFillStyle, textFillStyle, lineWidth, fontSize);
+            this.drawItem(ctx, meta.json, strokeStyle, dotFillStyle, textFillStyle, widthMul, fontMul);
             ctx.restore();
         },
 
@@ -590,10 +616,6 @@ export default {
             const ctx = canvas.getContext('2d');
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const refW     = this.compositeWidth  || canvas.width;
-            const base     = Math.max(3, refW / 280);
-            const textSize = Math.max(12, base * 6);
-
             const colorDef = this.color_default;
             const colorSel = this.color_selected;
             const colorHov = this.color_hover;
@@ -602,13 +624,14 @@ export default {
             const hovId = this._hoveredId;
             const selId = this.selected_id != null ? String(this.selected_id) : null;
 
-            // 1. Draw background items (all non-highlighted ones)
+            // 1. Draw background items (all non-highlighted ones), at their own
+            // authored size — preview_all boosts it slightly for overview visibility.
             if (this.preview_all || this.show_all) {
-                const lw = this.preview_all ? base * 1.4 : base;
+                const widthMul = this.preview_all ? 1.4 : 1;
                 Object.entries(this.items).forEach(([id, meta]) => {
                     if (selId && id === selId) return;
                     if (hovId && id === String(hovId)) return;
-                    this.drawItemScaled(ctx, meta, canvas, colorDef, colorDot, colorDef, lw, textSize);
+                    this.drawItemScaled(ctx, meta, canvas, colorDef, colorDot, colorDef, widthMul, 1);
                 });
             }
 
@@ -617,8 +640,8 @@ export default {
                 ctx.save();
                 ctx.shadowColor = 'rgba(255,170,0,0.65)';
                 ctx.shadowBlur  = 14;
-                const lw = this.preview_all ? base * 1.4 : base * 2;
-                this.drawItemScaled(ctx, this.items[hovId], canvas, colorHov, colorDot, colorHov, lw, textSize);
+                const widthMul = this.preview_all ? 1.4 : 2;
+                this.drawItemScaled(ctx, this.items[hovId], canvas, colorHov, colorDot, colorHov, widthMul, 1);
                 ctx.restore();
             }
 
@@ -627,7 +650,7 @@ export default {
                 ctx.save();
                 ctx.shadowColor = 'rgba(0,220,60,0.55)';
                 ctx.shadowBlur  = 10;
-                this.drawItemScaled(ctx, this.items[selId], canvas, colorSel, colorDot, colorDef, base * 2.5, textSize * 1.2);
+                this.drawItemScaled(ctx, this.items[selId], canvas, colorSel, colorDot, colorDef, 2.5, 1.2);
                 ctx.restore();
             }
 
@@ -635,7 +658,7 @@ export default {
             // landmarks — not a route, never selectable/hoverable) — always on
             // top so it stays readable over any route lines it points at.
             if (this.extra_item && this.extra_item.json) {
-                this.drawItemScaled(ctx, this.extra_item, canvas, this.color_extra, this.color_dot, this.color_extra, base, textSize);
+                this.drawItemScaled(ctx, this.extra_item, canvas, this.color_extra, this.color_dot, this.color_extra, 1, 1);
             }
 
             ctx.setTransform(1, 0, 0, 1, 0, 0);

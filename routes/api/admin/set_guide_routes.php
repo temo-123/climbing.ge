@@ -136,6 +136,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/routes_sequence', 'routes_sequence');
         Route::post('/save_sector_sequence', 'save_sector_sequence');
         Route::get('/get_sector_editing_data/{sector_id}', 'get_sector_editing_data');
+        Route::get('/get_filtred_ice_sectors_for_admin/{filter_id}', 'get_filtred_ice_sectors_for_admin');
 
         Route::controller(SectorLocalImagesController::class)->prefix('set_sector_local_images')->group( function() {
             Route::post('/add_sector_local_image', 'add_sector_local_image');

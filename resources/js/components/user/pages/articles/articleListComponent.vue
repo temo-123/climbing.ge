@@ -24,6 +24,7 @@
                         @del_sector="del_sector"
                         @del_mount_massive="del_mount_massive"
                         @filtr_outdoors="filtr_outdoors"
+                        @filtr_ice_sectors="filtr_ice_sectors"
                         @show_spot_sectors_modal="show_spot_sectors_modal"
                         @quick_wiev_action="quick_wiev_action"
                         @sector_modal="show_sector_model"
@@ -171,8 +172,12 @@ export default {
         },
         get_ice_sectors(category){
             if(category == 'ice'){
-                axios.get("/get_sector/get_sectors_by_article_category/ice/").then(response => {
-                    const validData = this.validateData(response.data)
+                Promise.all([
+                    axios.get("/get_sector/get_sectors_by_article_category/ice/"),
+                    axios.get("/get_region/get_all_outdoor_regions")
+                ]).then(([sectorsResponse, regionsResponse]) => {
+                    const validData = this.validateData(sectorsResponse.data)
+                    const validRegions = this.validateData(regionsResponse.data)
                     this.data_for_tab.push({
                         id: 2,
                         table_name: this.$t('admin.articles.ice_sectors_table'),
@@ -209,6 +214,12 @@ export default {
                                     ['sector', 'del'],
                                 ]
                             }
+                        },
+                        filter_data: {
+                            title: this.$t('admin.articles.filter_by_regions'),
+                            data: validRegions,
+                            action_fun_id: 'filtr_ice_sectors',
+                            array_key: 'us_name'
                         },
                     })
                     this.get_ice_routes()
@@ -445,6 +456,25 @@ export default {
             } else {
                 this.get_unfilted_articles()
             }
+        },
+        filtr_ice_sectors(event){
+            if(event != 0){
+                this.get_filtred_ice_sectors(event)
+            } else {
+                this.get_unfilted_articles()
+            }
+        },
+        get_filtred_ice_sectors(region_id){
+            axios.get("/set_sector/get_filtred_ice_sectors_for_admin/"+region_id)
+                .then(response => {
+                    const validData = this.validateData(response.data)
+                    const ice_sectors_tab = this.data_for_tab.find(tab => tab.id === 2)
+                    if (ice_sectors_tab?.tab_data) {
+                        ice_sectors_tab.tab_data.data = validData
+                    }
+                }).catch(error => {
+                    console.error('Error fetching filtered ice sectors:', error)
+                })
         },
         show_spot_sectors_modal(article_id){
             this.$refs.show_spot_sectors_modal.show_spot_sectors_modal(article_id)

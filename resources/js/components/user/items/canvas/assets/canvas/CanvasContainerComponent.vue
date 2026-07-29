@@ -143,6 +143,31 @@ export default {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getBackgroundBounds() : null;
         },
 
+        // Rescales/translates freshly-imported sibling-route layers (e.g. temporary
+        // layers imported just to bake a composite screenshot) from the coordinate
+        // space they were originally saved in (meta.bg_*) to fit the CURRENT
+        // background raster — same transform importRelatedJsons() applies to the
+        // on-screen reference layers. Without this, a route drawn in a
+        // differently-sized container renders shifted/mis-scaled (sometimes off
+        // canvas entirely) when captured, silently dropping it from the saved image.
+        rescaleLayersToCurrentBackground(layers, meta) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager._rescaleToCurrentBackground === 'function') {
+                this.$refs.canvasManager._rescaleToCurrentBackground(layers, meta);
+            }
+        },
+
+        // Rescales an arrow Group's shaft width + arrowhead geometry together to a
+        // specific width (see DrawingTools.vue's resizeArrow) — used by the layers
+        // panel's size input, which otherwise only has direct access to raw Paper.js
+        // item references, not the DrawingTools mixin methods that live on canvasManager.
+        resizeArrow(arrowGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeArrow === 'function') {
+                this.$refs.canvasManager.resizeArrow(arrowGroup, width);
+            }
+        },
+
         // Access to group counter for layer management
         getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;

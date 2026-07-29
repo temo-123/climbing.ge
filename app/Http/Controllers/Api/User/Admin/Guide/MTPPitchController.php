@@ -196,6 +196,10 @@ class MTPPitchController extends Controller
         if ($editedImageData) {
             $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $editedImageData);
             file_put_contents($editedPath, base64_decode($imageData));
+            // Bump updated_at so frontends can cache-bust the <img> URL (same filename
+            // gets overwritten every save) — without this, browsers keep serving the
+            // stale pre-save bytes indefinitely since there's no other change signal.
+            $sectorImage->touch();
         }
 
         $attrs = [

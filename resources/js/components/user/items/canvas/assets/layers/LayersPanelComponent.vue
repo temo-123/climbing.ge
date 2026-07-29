@@ -10,6 +10,11 @@
                 </span>
             </span>
             <div class="d-flex gap-1">
+                <button v-if="selectedLayerIds.length > 1" type="button" class="btn btn-sm btn-success"
+                        @click="$emit('create-group-from-selection', selectedLayerIds)"
+                        :title="$t('admin.articles.canvas_editor.group_selected_tooltip', { count: selectedLayerIds.length })">
+                    <i class="fa fa-object-group"></i> {{ selectedLayerIds.length }}
+                </button>
                 <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" :title="$t('common.refresh')">
                     <i class="fa fa-refresh"></i>
                 </button>
@@ -34,8 +39,22 @@
 
                 <!-- Single-line layer row -->
                 <div class="d-flex align-items-center border-bottom layer-row px-1"
-                     :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '']"
-                     :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }">
+                     :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '', layer.isGroup && dragOverGroupId === layer.id ? 'layer-drop-target' : '']"
+                     :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }"
+                     :draggable="!layer.isRelated && !layer.isGroup"
+                     @dragstart="onDragStart($event, layer)"
+                     @dragover.prevent="onDragOverRow(layer)"
+                     @dragleave="onDragLeaveRow(layer)"
+                     @drop.prevent="onDropRow($event, layer)"
+                     @dragend="onDragEnd">
+
+                    <!-- Multi-select checkbox (for grouping several items at once) -->
+                    <input v-if="!layer.isRelated && !layer.isGroup" type="checkbox"
+                           class="form-check-input me-1 layer-select-checkbox"
+                           :checked="selectedLayerIds.includes(layer.id)"
+                           @change="$emit('toggle-layer-selection', layer)"
+                           :title="$t('admin.articles.canvas_editor.select_for_grouping_tooltip')" />
+                    <span v-else style="width:16px; flex-shrink:0;" class="me-1"></span>
 
                     <!-- Reorder arrows -->
                     <div v-if="!layer.isRelated" class="d-flex flex-column me-1" style="gap:1px; flex-shrink:0;">
@@ -116,20 +135,19 @@
                     <!-- Push buttons to far right -->
                     <div class="flex-grow-1"></div>
 
+                    <!-- Group actions -->
+                    <select v-if="!layer.isRelated && !layer.isGroup"
+                            class="layer-group-select form-select form-select-sm me-1"
+                            value=""
+                            @change="$emit('assign-item-group', layer.id, $event.target.value)"
+                            :title="$t('admin.articles.canvas_editor.move_to_group_tooltip')">
+                        <option value="" disabled selected>{{ $t('admin.articles.canvas_editor.move_to_group_placeholder') }}</option>
+                        <option v-for="g in availableGroups" :key="g.id" :value="g.id">{{ g.displayName || g.name }}</option>
+                        <option value="__new__">{{ $t('admin.articles.canvas_editor.new_group_option') }}</option>
+                    </select>
+
                     <!-- Action buttons -->
                     <div class="d-flex gap-1" style="flex-shrink:0;">
-                        <!-- Group actions -->
-                        <template v-if="!layer.isRelated && !layer.isGroup">
-                            <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('create-group-from-layer', layer)" :title="$t('admin.articles.canvas_editor.create_group_tooltip')">
-                                <i class="fa fa-object-group"></i>
-                            </button>
-                            <button v-if="availableGroups.length > 0"
-                                    type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('show-move-to-group-modal', layer)" :title="$t('admin.articles.canvas_editor.move_into_group_tooltip')">
-                                <i class="fa fa-arrow-right"></i>
-                            </button>
-                        </template>
                         <button v-if="!layer.isRelated && layer.isGroup"
                                 type="button" class="btn btn-sm btn-warning layer-action-btn"
                                 @click="$emit('ungroup-layer', layer)" :title="$t('admin.articles.canvas_editor.ungroup_tooltip')">
@@ -163,7 +181,10 @@
                 <template v-if="layer.isGroup && layer.expanded">
                     <div v-for="child in layer.children" :key="child.id || child.name"
                          class="d-flex align-items-center border-bottom layer-row layer-child px-1"
-                         :style="{ borderLeft: '3px solid ' + (child.color || '#999'), paddingLeft: '28px' }">
+                         :style="{ borderLeft: '3px solid ' + (child.color || '#999'), paddingLeft: '28px' }"
+                         draggable="true"
+                         @dragstart="onDragStart($event, child)"
+                         @dragend="onDragEnd">
 
                         <span class="me-1 layer-icon-btn text-center" style="flex-shrink:0;">
                             <i :class="'fa ' + getTypeIcon(child.name)" :style="{ color: child.color || '#999' }"></i>
@@ -213,11 +234,16 @@
 
                         <div class="flex-grow-1"></div>
 
+                        <select class="layer-group-select form-select form-select-sm me-1"
+                                :value="String(layer.id)"
+                                @change="$emit('assign-item-group', child.id, $event.target.value)"
+                                :title="$t('admin.articles.canvas_editor.move_to_group_tooltip')">
+                            <option value="">{{ $t('admin.articles.canvas_editor.ungroup_option') }}</option>
+                            <option v-for="g in availableGroups" :key="g.id" :value="String(g.id)">{{ g.displayName || g.name }}</option>
+                            <option value="__new__">{{ $t('admin.articles.canvas_editor.new_group_option') }}</option>
+                        </select>
+
                         <div class="d-flex gap-1" style="flex-shrink:0;">
-                            <button type="button" class="btn btn-sm btn-primary layer-action-btn"
-                                    @click="$emit('move-child-out-of-group', layer, child)" :title="$t('admin.articles.canvas_editor.move_out_of_group_tooltip')">
-                                <i class="fa fa-arrow-left"></i>
-                            </button>
                             <button type="button" class="btn btn-sm btn-secondary layer-action-btn"
                                     @click="$emit('toggle-child-visibility', layer, child)"
                                     :title="child.visible ? $t('admin.articles.canvas_editor.hide_tooltip') : $t('admin.articles.canvas_editor.show_tooltip')">
@@ -252,14 +278,19 @@ export default {
         showLayersTable: {
             type: Boolean,
             default: true
+        },
+        selectedLayerIds: {
+            type: Array,
+            default: () => []
         }
     },
     emits: [
         'refresh-layers', 'toggle-all-visibility', 'delete-all-layers',
         'move-layer-up', 'move-layer-down',
-        'toggle-group-expansion', 'create-group-from-layer', 'show-move-to-group-modal',
+        'toggle-group-expansion', 'assign-item-group',
+        'toggle-layer-selection', 'create-group-from-selection',
         'ungroup-layer', 'toggle-layer-visibility', 'toggle-layer-lock', 'delete-layer-item',
-        'move-child-out-of-group', 'toggle-child-visibility', 'toggle-child-lock', 'delete-child-item',
+        'toggle-child-visibility', 'toggle-child-lock', 'delete-child-item',
         'finish-editing-layer-name', 'cancel-editing-layer-name',
         'finish-editing-child-name', 'cancel-editing-child-name',
         'finish-editing-text', 'cancel-editing-text',
@@ -267,12 +298,53 @@ export default {
         'change-layer-color', 'change-layer-size',
         'change-child-color', 'change-child-size',
     ],
+    data() {
+        return {
+            // Id of the group row currently being dragged over, for drop-target
+            // highlighting. Not derived from `layers` since it's purely transient
+            // drag-interaction state, not part of the canvas/layers model.
+            dragOverGroupId: null
+        };
+    },
     computed: {
         availableGroups() {
             return this.layers.filter(l => l.isGroup);
         }
     },
     methods: {
+        // ── Drag-and-drop: drag an item row (top-level or already inside a group)
+        // and drop it onto a group row to move it straight into that group — the
+        // mouse-driven counterpart to the per-row group-picker <select>. Both paths
+        // funnel into the same 'assign-item-group' event/handler so there's exactly
+        // one place (EditorComponent.assignItemToGroup) that actually reparents.
+        onDragStart(event, row) {
+            if (row.isRelated || row.isGroup) { event.preventDefault(); return; }
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', String(row.id));
+        },
+
+        onDragOverRow(layer) {
+            if (!layer.isGroup) return;
+            this.dragOverGroupId = layer.id;
+        },
+
+        onDragLeaveRow(layer) {
+            if (this.dragOverGroupId === layer.id) this.dragOverGroupId = null;
+        },
+
+        onDropRow(event, layer) {
+            this.dragOverGroupId = null;
+            if (!layer.isGroup) return;
+            const draggedId = parseInt(event.dataTransfer.getData('text/plain'), 10);
+            if (!draggedId || draggedId === layer.id) return;
+            this.$emit('assign-item-group', draggedId, String(layer.id));
+        },
+
+        onDragEnd() {
+            this.dragOverGroupId = null;
+        },
+
+
         getTypeIcon(name) {
             if (!name) return 'fa-file-o';
             if (name.startsWith('related-')) return 'fa-map-marker';
@@ -283,6 +355,7 @@ export default {
             if (name.startsWith('text')) return 'fa-font';
             if (name.startsWith('polygon')) return 'fa-star';
             if (name.startsWith('ellipse')) return 'fa-ellipsis-h';
+            if (name.startsWith('arrow')) return 'fa-long-arrow-right';
             return 'fa-file-o';
         },
 
@@ -482,6 +555,18 @@ export default {
     opacity: 0.85;
 }
 
+.layer-drop-target {
+    outline: 2px dashed #0d6efd;
+    outline-offset: -2px;
+    background: #eaf2ff !important;
+}
+
+.layer-select-checkbox {
+    flex-shrink: 0;
+    cursor: pointer;
+    margin-top: 0 !important;
+}
+
 .layer-icon-btn {
     width: 20px;
     font-size: 12px;
@@ -551,6 +636,16 @@ export default {
     font-size: 11px;
     padding: 1px 3px;
     text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    flex-shrink: 0;
+    height: 22px;
+}
+
+.layer-group-select {
+    width: 84px;
+    font-size: 10px;
+    padding: 1px 3px;
     border: 1px solid #ccc;
     border-radius: 3px;
     flex-shrink: 0;
