@@ -356,6 +356,45 @@ class ProductService extends LocaleContentService
     }
 
     /**
+     * Get stock quantity for a product option from a SPECIFIC warehouse
+     * (as opposed to get_option_stock_quantity(), which always reads the
+     * general warehouse) — used by the warehouse-scoped custom-order flow.
+     *
+     * @param Product_option $option
+     * @param int|null $warehouseId
+     * @return int
+     */
+    public static function get_option_stock_quantity_for_warehouse($option, $warehouseId)
+    {
+        if (!$option || !$warehouseId) {
+            return 0;
+        }
+
+        $warehouse = $option->warehouse->where('id', $warehouseId)->first();
+        return $warehouse && isset($warehouse->pivot->quantity) ? (int) $warehouse->pivot->quantity : 0;
+    }
+
+    /**
+     * Resolves which warehouse the CURRENTLY AUTHENTICATED user's sale should
+     * be scoped to. A user carrying the 'warehouse'/'sell_own' permission is
+     * restricted to their own assigned warehouse (or null if not yet
+     * assigned — callers must handle that explicitly rather than silently
+     * falling back to the general warehouse). Everyone else keeps today's
+     * existing behavior: always the general warehouse.
+     *
+     * @param \App\Models\User $user
+     * @return int|null
+     */
+    public static function resolveEffectiveWarehouseId($user)
+    {
+        if ($user && $user->hasPermissionFor('warehouse', 'sell_own')) {
+            return optional($user->warehouseAssignment)->warehouse_id;
+        }
+
+        return Warehouse::where('general', 1)->value('id');
+    }
+
+    /**
      * Check if ALL options for a product are out of stock
      *
      * @param Product $product

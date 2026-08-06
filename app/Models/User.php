@@ -169,6 +169,13 @@ class User extends Authenticatable implements MustVerifyEmail
       return $this->belongsToMany(Permission::class, 'user_permissions', 'user_id', 'permission_id');
     }
 
+    // The single warehouse a "warehouse › sell_own" user is restricted to sell
+    // from — see ProductService::resolveEffectiveWarehouseId().
+    public function warehouseAssignment()
+    {
+        return $this->hasOne(\App\Models\User\Warehouse_user::class, 'user_id');
+    }
+
 
 
     public function adreses()

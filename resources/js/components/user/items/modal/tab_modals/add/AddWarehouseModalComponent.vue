@@ -14,6 +14,11 @@
                     <input type="checkbox" id="general" name="general" v-model="data.general">
                     <label for="general">{{ $t('admin.warehouses.is_general_warehouse_question') }}</label>
                 </div>
+
+                <div class="form-group">
+                    <input type="checkbox" id="is_sale_point" name="is_sale_point" v-model="data.is_sale_point">
+                    <label for="is_sale_point">{{ $t('admin.warehouses.is_sale_point_question') }}</label>
+                </div>
             </form>
         </div>
         <div slot="modal-footer">
@@ -54,6 +59,7 @@
                 data: {
                     name: '',
                     general: false,
+                    is_sale_point: false,
                 }
             }
         },

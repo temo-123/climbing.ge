@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\User\Warehouse;
+use App\Models\User\Warehouse_user;
 use App\Models\Shop\Product_option;
 
 use App\Services\PermissionService;
@@ -59,6 +60,43 @@ class WarehouseController extends Controller
         if ($auth) return $auth;
         $deleted = Warehouse::where('id', $request->id)->delete();
         return response()->json(['deleted' => $deleted > 0], $deleted ? 200 : 400);
+    }
+
+    // --- Warehouse ↔ User (restricted "shop manager" sale-point assignment) ---
+
+    // Warehouses eligible to be assigned to a warehouse-restricted seller.
+    public function get_sale_point_warehouses() {
+        $auth = PermissionService::authorize('warehouse', 'show');
+        if ($auth) return $auth;
+        return Warehouse::where('is_sale_point', 1)->get(['id', 'name']);
+    }
+
+    public function get_user_warehouse($user_id) {
+        $auth = PermissionService::authorize('warehouse', 'edit');
+        if ($auth) return $auth;
+        return Warehouse_user::with('warehouse')->where('user_id', $user_id)->first();
+    }
+
+    public function assign_user_warehouse(Request $request, $user_id) {
+        $auth = PermissionService::authorize('warehouse', 'edit');
+        if ($auth) return $auth;
+
+        if (!$request->warehouse_id) {
+            Warehouse_user::where('user_id', $user_id)->delete();
+            return response()->json(['assigned' => false]);
+        }
+
+        $warehouse = Warehouse::where('id', $request->warehouse_id)->where('is_sale_point', 1)->first();
+        if (!$warehouse) {
+            return response()->json(['error' => 'Not a valid sale-point warehouse'], 422);
+        }
+
+        $assignment = Warehouse_user::updateOrCreate(
+            ['user_id' => $user_id],
+            ['warehouse_id' => $warehouse->id]
+        );
+
+        return response()->json($assignment);
     }
 
     // --- Warehouse-ProductOption Relations ---

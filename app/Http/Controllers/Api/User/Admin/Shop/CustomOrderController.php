@@ -35,11 +35,19 @@ class CustomOrderController extends Controller
             'order_product_list.*.quantity'          => 'required|integer|min:1',
         ]);
 
+        $user = auth()->user();
+        $warehouseId = ProductService::resolveEffectiveWarehouseId($user);
+        if ($user->hasPermissionFor('warehouse', 'sell_own') && !$warehouseId) {
+            return response()->json([
+                'error' => 'No warehouse assigned to your account. Contact an administrator.'
+            ], 422);
+        }
+
         // Stock check unless production task override
         if (!$request->create_production_task) {
             foreach ($request->order_product_list as $item) {
                 $option = Product_option::with('warehouse')->find($item['product_option_id']);
-                $stock  = ProductService::get_option_stock_quantity($option);
+                $stock  = ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId);
                 if ($stock < $item['quantity']) {
                     return response()->json([
                         'error' => 'Not enough stock for option ID ' . $item['product_option_id']
@@ -51,6 +59,7 @@ class CustomOrderController extends Controller
         // Create the order
         $order = Order::create([
             'is_custom'            => true,
+            'warehouse_id'         => $warehouseId,
             'shiping'              => $request->delivery_type,
             'payment'              => $request->payment_type,
             'confirm'              => 1,
@@ -82,7 +91,7 @@ class CustomOrderController extends Controller
             ]);
 
             if (!$request->create_production_task) {
-                $this->subtractStock($item['product_option_id'], $item['quantity']);
+                $this->subtractStock($item['product_option_id'], $item['quantity'], $warehouseId);
             }
         }
 
@@ -332,13 +341,75 @@ class CustomOrderController extends Controller
         ];
     }
 
-    private function subtractStock(int $optionId, int $quantity): void
+    private function subtractStock(int $optionId, int $quantity, ?int $warehouseId): void
     {
+        if (!$warehouseId) return;
         $option    = Product_option::find($optionId);
-        $warehouse = $option?->warehouse->where('general', 1)->first();
+        $warehouse = $option?->warehouse->where('id', $warehouseId)->first();
         if ($warehouse) {
             $warehouse->pivot->quantity = max(0, $warehouse->pivot->quantity - $quantity);
             $warehouse->pivot->save();
         }
+    }
+
+    // Warehouse-scoped product list for the custom-order modal — mirrors
+    // Api\Shop\ProductController::get_current_products()'s response shape
+    // exactly, but sourced from ProductService::resolveEffectiveWarehouseId()
+    // instead of always returning every published product. A restricted
+    // 'warehouse'/'sell_own' user only sees products actually stocked in
+    // their own warehouse; everyone else sees the same general-warehouse
+    // list as before (just through this endpoint instead of the public one).
+    public function get_products_for_order()
+    {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+
+        $warehouseId = ProductService::resolveEffectiveWarehouseId(auth()->user());
+        if (!$warehouseId) return response()->json([]);
+
+        $products = Product::where('published', 1)
+            ->whereHas('product_options.warehouse', fn($q) => $q->where('warehouses.id', $warehouseId))
+            ->with(['product_options.warehouse' => fn($q) => $q->where('warehouses.id', $warehouseId), 'product_options.images'])
+            ->get();
+
+        return response()->json($products->map(function ($product) use ($warehouseId) {
+            $locale_product = ProductService::get_locale_product_in_page_use_locale($product, 'en');
+            return [
+                'id'    => $product->id,
+                'title' => $locale_product['locale_product']->title ?? 'No title',
+                'options' => $product->product_options
+                    ->filter(fn($option) => $option->warehouse->isNotEmpty())
+                    ->values()
+                    ->map(fn($option) => [
+                        'id'     => $option->id,
+                        'name'   => $option->name ?? 'Option ' . $option->id,
+                        'price'  => $option->price,
+                        'quantity' => ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId),
+                        'images' => $option->images->map(fn($image) => [
+                            'id'    => $image->id,
+                            'image' => $image->image,
+                        ]),
+                    ]),
+            ];
+        })->values());
+    }
+
+    // Warehouse-scoped option list for a single product — mirrors
+    // Api\Shop\ProductController::get_product_options()'s response shape.
+    public function get_options_for_order($product_id)
+    {
+        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+
+        $warehouseId = ProductService::resolveEffectiveWarehouseId(auth()->user());
+        $product = Product::find($product_id);
+        if (!$product || !$warehouseId) return response()->json([]);
+
+        $options = $product->product_options;
+        return response()->json($options->map(fn($option) => [
+            'id'    => $option->id,
+            'name'  => $option->name ?? 'Option ' . $option->id,
+            'price' => $option->price,
+            'quantity' => ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId),
+            'image' => $option->images->first()->image ?? null,
+        ]));
     }
 }

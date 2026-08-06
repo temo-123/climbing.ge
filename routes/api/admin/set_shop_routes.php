@@ -35,7 +35,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('product_price_interval', 'get_product_price_interval');
         Route::get('/get_user_favorite_products', 'get_user_favorite_products');
         Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
-        // Route::get('/get_products_for_custom_order', 'get_products_for_custom_order');
+        // Implemented as custom_order/get_products (CustomOrderController::get_products_for_order) below.
 
 
         Route::controller(ProductImageController::class)->prefix('set_product_img')->group(function () {
@@ -140,6 +140,8 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_warehouse_product_options/{id}', 'get_warehouse_product_options');
         Route::get('/get_warehouse_product_options_grouped/{id}', 'get_warehouse_product_options_grouped_by_product');
         Route::get('/get_product_option_details/{id}/{product_option_id}', 'get_product_option_details');
+        Route::get('/get_sale_point_warehouses', 'get_sale_point_warehouses');
+        Route::get('/get_user_warehouse/{user_id}', 'get_user_warehouse');
     });
 
     Route::controller(WarehouseController::class)->prefix('set_warehouse')->group( function() {
@@ -152,6 +154,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
         Route::post('/migrate_product_option/{id}/{product_option_id}', 'migrate_product_option');
         Route::post('/scan_barcode/{id}', 'scan_barcode_to_warehouse');
+        Route::post('/assign_user_warehouse/{user_id}', 'assign_user_warehouse');
     });
     
     Route::controller(TourController::class)->prefix('set_tour')->group( function() {
@@ -239,6 +242,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/index', 'index');
         Route::get('/show/{order_id}', 'show');
         Route::post('/export_invoice_pdf', 'exportInvoicePdf');
+        // Warehouse-scoped product listing for the order-creation modal — see
+        // the CustomOrderController::store() warehouse-scoping this mirrors.
+        Route::get('/get_products', 'get_products_for_order');
+        Route::get('/get_product_options/{product_id}', 'get_options_for_order');
     });
 
     Route::controller(OrderController::class)->prefix('set_order')->group( function() {

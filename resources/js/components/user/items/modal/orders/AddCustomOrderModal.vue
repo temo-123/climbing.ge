@@ -244,7 +244,7 @@ export default {
     },
     methods: {
         fetchProducts() {
-            axios.get('/get_product/get_current_products')
+            axios.get('/custom_order/get_products')
                 .then(r => { this.products = r.data; })
                 .catch(() => {});
         },
@@ -331,7 +331,7 @@ export default {
             item.product_option_id = '';
             item.options = [];
             if (!item.product_id) return;
-            axios.get(`/get_product/get_product_options/${item.product_id}`)
+            axios.get(`/custom_order/get_product_options/${item.product_id}`)
                 .then(r => { item.options = r.data; })
                 .catch(() => {});
         },

@@ -484,6 +484,7 @@
             "col_verified": "დადასტურებული",
             "col_banned": "დაბლოკილი",
             "col_role": "როლი",
+            "col_warehouse": "საწყობი",
             "col_ban": "ბლოკირება",
             "col_reset": "გადატვირთვა",
             "edit_role_btn": "როლის რედაქტირება",
@@ -504,7 +505,13 @@
             "role_saved_error_message": "როლის შენახვა ვერ მოხერხდა. შეამოწმეთ სახელი/აღწერა და სცადეთ ხელახლა.",
             "role_created_success_message": "როლი შეიქმნა.",
             "role_created_error_message": "როლის შექმნა ვერ მოხერხდა. შეამოწმეთ სახელი/აღწერა და სცადეთ ხელახლა.",
-            "add_role_btn": "როლის დამატება"
+            "add_role_btn": "როლის დამატება",
+            "assign_warehouse_title": "საწყობის მინიჭება",
+            "assign_warehouse_needs_permission_hint": "ამ მომხმარებელს ჯერ სჭირდება 'warehouse › sell_own' უფლება საწყობის მინიჭებამდე. მიანიჭეთ ეს უფლება როლების/უფლებების ფანჯარაში.",
+            "assign_warehouse_select_label": "გაყიდვის წერტილის საწყობი",
+            "assign_warehouse_none_option": "არ არის მინიჭებული",
+            "assign_warehouse_hint": "ზღუდავს ამ მომხმარებელს გაყიდვების შექმნა მხოლოდ ამ საწყობიდან.",
+            "assign_warehouse_saved_message": "საწყობის მინიჭება შენახულია."
         },
         "orders": {
             "add_custom_order_title": "მორგებული შეკვეთის დამატება",
@@ -844,6 +851,7 @@
             "edit_order_warehouse_title": "შეკვეთის საწყობის რედაქტირება",
             "name_placeholder": "სახელი",
             "is_general_warehouse_question": "არის ეს საწყობი ზოგადი?",
+            "is_sale_point_question": "არის ეს საწყობი გაყიდვის წერტილი?",
             "add_warehouse_btn": "საწყობის დამატება",
             "save_warehouse_btn": "საწყობის შენახვა"
         },

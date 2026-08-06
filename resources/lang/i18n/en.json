@@ -484,6 +484,7 @@
             "col_verified": "Verified",
             "col_banned": "Banned",
             "col_role": "Role",
+            "col_warehouse": "Warehouse",
             "col_ban": "Ban",
             "col_reset": "Reset",
             "edit_role_btn": "Edit Role",
@@ -504,7 +505,13 @@
             "role_saved_error_message": "Could not save this role. Please check the name/description and try again.",
             "role_created_success_message": "Role created.",
             "role_created_error_message": "Could not create the role. Please check the name/description and try again.",
-            "add_role_btn": "Add Role"
+            "add_role_btn": "Add Role",
+            "assign_warehouse_title": "Assign Warehouse",
+            "assign_warehouse_needs_permission_hint": "This user needs the 'warehouse › sell_own' permission before a warehouse can be assigned. Grant it via the roles/permissions modal first.",
+            "assign_warehouse_select_label": "Sale-point warehouse",
+            "assign_warehouse_none_option": "Not assigned",
+            "assign_warehouse_hint": "Restricts this user to creating sales from this warehouse only.",
+            "assign_warehouse_saved_message": "Warehouse assignment saved."
         },
         "orders": {
             "add_custom_order_title": "Add Custom Order",
@@ -844,6 +851,7 @@
             "edit_order_warehouse_title": "Edit order warehouse",
             "name_placeholder": "Name",
             "is_general_warehouse_question": "Is this warehouse general?",
+            "is_sale_point_question": "Is this warehouse a sale point?",
             "add_warehouse_btn": "Add warehouse",
             "save_warehouse_btn": "Save Warehouse"
         },

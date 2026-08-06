@@ -206,8 +206,17 @@ class ProductOptionController extends Controller
             return response()->json(['error' => 'No product option found with this barcode'], 404);
         }
 
-        // Total stock across all warehouses
-        $totalStock = $option->warehouse()->sum('quantity');
+        // A warehouse-restricted seller must only see/scan stock from their OWN
+        // warehouse — everyone else keeps the existing "sum across all
+        // warehouses" behavior unchanged.
+        $user = Auth::user();
+        if ($user->hasPermissionFor('warehouse', 'sell_own')) {
+            $warehouseId = \App\Services\ProductService::resolveEffectiveWarehouseId($user);
+            $totalStock  = \App\Services\ProductService::get_option_stock_quantity_for_warehouse($option, $warehouseId);
+        } else {
+            // Total stock across all warehouses
+            $totalStock = $option->warehouse()->sum('quantity');
+        }
 
         return response()->json([
             'option' => $option,

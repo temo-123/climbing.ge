@@ -27,6 +27,7 @@
                         @user_ban="show_user_ban_modal"
                         @edit_user_role="show_edit_user_role_modal"
                         @user_info_modal="show_user_info_modal"
+                        @assign_warehouse="show_assign_warehouse_modal"
 
                         @show_edit_role_modal="show_edit_role_modal"
                         @del_role="del_role"
@@ -46,6 +47,7 @@
             @show_team_member_modal="$refs.teamMemberStatusModal.show_modal($event)"
             @update="get_users"
         />
+        <AssignUserWarehouseModal ref="assign_warehouse_modal"/>
         <UserBunModel ref="user_ban_modal" @update="get_users"/>
         <UserInfoModal ref="user_info_modal" @update="get_users"/>
 
@@ -69,6 +71,7 @@
     import MemberStatusModal from '../items/modal/tab_modals/edit/EditUserMemberStatusModalComponent.vue'
 
     import EditUserRoleAndPermissionsModel from "../items/modal/tab_modals/edit/EditUserRoleAndPermissionsModelComponent"
+    import AssignUserWarehouseModal from "../items/modal/tab_modals/edit/AssignUserWarehouseModalComponent"
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
     import RolesAddModal from "../items/modal/tab_modals/add/RolesAddModalComponent"
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
@@ -85,6 +88,7 @@
             MemberStatusModal,
 
             EditUserRoleAndPermissionsModel,
+            AssignUserWarehouseModal,
             EditRoleModel,
             RolesAddModal,
             AddPermissionModal,
@@ -132,6 +136,7 @@
                                     this.$t('admin.users.col_banned'),
                                     this.$t('admin.users.col_role'),
                                     this.$t('common.edit'),
+                                    this.$t('admin.users.col_warehouse'),
                                     this.$t('admin.users.col_ban'),
                                     this.$t('admin.users.col_reset'),
                                     this.$t('common.delete'),
@@ -145,6 +150,7 @@
                                     ['data', ['is_banned'],'bool'],
                                     ['data', ['role_name']],
                                     ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
+                                    ['action_fun_id', 'assign_warehouse', 'btn btn-info btn-sm', '<i class="fa fa-building" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
                                     ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
@@ -158,6 +164,7 @@
                                     ['no'],
                                     ['no'],
                                     ['role', 'edit'],
+                                    ['warehouse', 'edit'],
                                     ['user', 'create_ban'],
                                     ['user', 'edit'],
                                     ['user', 'del'],
@@ -289,6 +296,10 @@
 
             show_edit_user_role_modal(id){
                 this.$refs.edit_user_role_modal.show_modal(id)
+            },
+
+            show_assign_warehouse_modal(id){
+                this.$refs.assign_warehouse_modal.show_modal(id)
             },
 
             show_user_ban_modal(id){

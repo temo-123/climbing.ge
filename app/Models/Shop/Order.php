@@ -18,6 +18,7 @@ class Order extends Model
         'discount',
         'shiping',
         'is_custom',
+        'warehouse_id',
         'status',
         'status_updating_data',
         'tbc_pay_id',
@@ -53,5 +54,10 @@ class Order extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function warehouse()
+    {
+        return $this->belongsTo(\App\Models\User\Warehouse::class, 'warehouse_id');
     }
 }
