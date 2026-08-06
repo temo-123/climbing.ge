@@ -37,6 +37,10 @@ export default {
             type: Array,
             default: () => []
         },
+        relatedFirstLabel: {
+            type: String,
+            default: null
+        },
         image: {
             type: String,
             default: null
@@ -87,6 +91,9 @@ export default {
         currentStrokeWidth: 3,
         minZoom: 1,
         rasterBounds: null,
+        // True while a loadBackgroundRaster() call is in flight (image loading over
+        // the network). See the jsonProp/relatedJsons watchers below.
+        bgLoadInFlight: false,
         canvasHeight: 500,
         canvasWidth: 0   // 0 = use CSS width:100%; >0 = portrait mode fixed px width
         // Paper.js item references (selectedItem, group, editingSegment,
@@ -99,6 +106,14 @@ export default {
             handler: function(newVal, oldVal) {
                 // Only re-import after mount (scope exists) and when value actually changes
                 if (!this.scope || newVal === oldVal) return;
+                // A background image is currently loading (e.g. switching sector
+                // images) — rasterBounds is momentarily stale/unset, so rescaling
+                // now would compute against the WRONG (old or absent) background fit.
+                // loadBackgroundRaster's onReady callback always calls
+                // _reimportStrokes() once the new background is ready, which reads
+                // this same jsonProp fresh at that point — so it's safe to skip here
+                // and let that catch-up call do the real import.
+                if (this.bgLoadInFlight) return;
                 if (newVal && newVal === this._lastDrawingJson) {
                     // Echo of what THIS canvas just exported (e.g. a parent's save flow
                     // calling getCleanJson() and round-tripping it back down through a
@@ -122,7 +137,10 @@ export default {
         },
         relatedJsons: {
             handler: function(newVal) {
-                if (this.scope) this.importRelatedJsons();
+                // Same reasoning as the jsonProp guard above — a mid-flight background
+                // load means rasterBounds isn't trustworthy yet, and the pending
+                // _reimportStrokes() call will re-run this with fresh data once ready.
+                if (this.scope && !this.bgLoadInFlight) this.importRelatedJsons();
             },
             immediate: false
         },
@@ -250,11 +268,14 @@ export default {
             if (!url) {
                 this.minZoom = 0.1;
                 this.rasterBounds = null;
+                this.bgLoadInFlight = false;
                 this.scope.view.update();
                 this._activateMainLayer();
                 if (onReady) onReady();
                 return;
             }
+
+            this.bgLoadInFlight = true;
 
             const tempImg = new Image();
             const doLoad = (naturalW, naturalH) => {
@@ -323,9 +344,10 @@ export default {
 
                         this._activateMainLayer();
                         this.scope.view.update();
+                        this.bgLoadInFlight = false;
                         if (onReady) onReady();
                     };
-                    raster.onError = () => { if (onReady) onReady(); };
+                    raster.onError = () => { this.bgLoadInFlight = false; if (onReady) onReady(); };
 
                     raster.source = url;
                 });

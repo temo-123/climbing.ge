@@ -30,6 +30,7 @@
 
                         @show_edit_role_modal="show_edit_role_modal"
                         @del_role="del_role"
+                        @add_role="show_add_role_modal"
 
                         @add_permission="show_add_permission_modal"
                         @del_permission="del_permission"
@@ -48,7 +49,8 @@
         <UserBunModel ref="user_ban_modal" @update="get_users"/>
         <UserInfoModal ref="user_info_modal" @update="get_users"/>
 
-        <EditRoleModel ref="edit_role_model"/>
+        <EditRoleModel ref="edit_role_model" @update="get_users"/>
+        <RolesAddModal ref="add_role_modal" @update="get_users"/>
         <AddPermissionModal ref="add_permission_modal" @saved="get_parmisions"/>
         <ResetUserPasswordModal ref="reset_password_modal"/>
 
@@ -68,6 +70,7 @@
 
     import EditUserRoleAndPermissionsModel from "../items/modal/tab_modals/edit/EditUserRoleAndPermissionsModelComponent"
     import EditRoleModel from "../items/modal/tab_modals/edit/EditRoleModelComponent"
+    import RolesAddModal from "../items/modal/tab_modals/add/RolesAddModalComponent"
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
     import UserBunModel from "../items/modal/tab_modals/UserBunModelComponent"
     import UserInfoModal from "../items/modal/tab_modals/UserInfoModalComponent"
@@ -83,6 +86,7 @@
 
             EditUserRoleAndPermissionsModel,
             EditRoleModel,
+            RolesAddModal,
             AddPermissionModal,
             UserBunModel,
             UserInfoModal,
@@ -182,6 +186,12 @@
                     const tab = {
                         'id': 3,
                         'table_name': this.$t('admin.users.roles_table'),
+                        'add_action': {
+                            'action': 'fun',
+                            'link': 'add_role',
+                            'class': 'btn btn-primary',
+                            'btn_title': this.$t('admin.users.add_role_btn')
+                        },
                         'tab_data': {
                             'data': response.data,
                             'tab': {
@@ -271,6 +281,10 @@
 
             show_edit_role_modal(id){
                 this.$refs.edit_role_model.show_modal(id)
+            },
+
+            show_add_role_modal(){
+                this.$refs.add_role_modal.show_modal()
             },
 
             show_edit_user_role_modal(id){

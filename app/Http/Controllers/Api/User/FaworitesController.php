@@ -10,7 +10,6 @@ use App\Models\Guide\Interested_event;
 use App\Models\Guide\Favorite_outdoor_area;
 use App\Models\Guide\Article;
 use App\Models\Guide\Event;
-use App\Jobs\UserNotifications;
 
 class FaworitesController extends Controller
 {
@@ -27,14 +26,11 @@ class FaworitesController extends Controller
         $faworit['event_id'] = $request->event_id;
         $faworit->save();
 
-        $global_event = Event::where('id', $request->event_id)->first();
-        if ($global_event && $global_event->us_event) {
-            $locale_event = $global_event->us_event;
-            $url = config('app.base_url_ssh').'/event/'.$global_event->url_title;
-            $text = 'Less than 1 week left until your favorite event, ' . $locale_event->title . ' Visit our website for more information.';
-            $subject = $locale_event->title;
-            UserNotifications::dispatch($url, $text, $subject, $user->email)->onQueue('emails');
-        }
+        // Reminder emails for interested events are handled on schedule by
+        // send_event_notificatione:users (UserAutoNotificatione), which checks
+        // the actual days-until-event and the user's interested_event preference.
+        // Sending one here too duplicated those reminders with an inaccurate
+        // "less than 1 week left" message regardless of the real event date.
 
         return response()->json(['message' => 'Event added to favorites']);
     }

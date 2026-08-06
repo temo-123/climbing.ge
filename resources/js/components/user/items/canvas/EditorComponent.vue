@@ -112,6 +112,7 @@
                     :json_meta="json_meta"
                     :related_jsons="related_jsons"
                     :related_jsons_meta="related_jsons_meta"
+                    :related_first_label="related_first_label"
                     :image="image"
                     ref="canvasContainer"
                     @canvas_data="handleCanvasData"
@@ -195,6 +196,13 @@ export default {
             related_jsons_meta: {
                 type: Array,
                 default: () => []
+            },
+            // Non-null when related_jsons[0] isn't actually "another route/layout"
+            // (it's the extra-info drawing, or the currently-edited item shown as
+            // reference while extra-drawing mode is on) — see updateLayersList().
+            related_first_label: {
+                type: String,
+                default: null
             },
             route_name: {
                 type: String,
@@ -666,14 +674,24 @@ export default {
                         const idx = parseInt(layer.name.replace('related-', ''));
                         const firstChild = layer.children[0];
                         const isLocked = !firstChild || firstChild.locked !== false;
+                        // related_first_label reserves index 0 for something that
+                        // ISN'T another route/layout (the extra drawing, or the
+                        // currently-edited item shown as reference) — see the
+                        // relatedJsons computed in the page component. Without this,
+                        // it silently got numbered/colored as if it were just one
+                        // more route, and shifted every real route's number by one.
+                        const hasSpecialFirst = !!this.related_first_label;
+                        const isSpecialFirst = hasSpecialFirst && idx === 0;
+                        const routeNumber = idx - (hasSpecialFirst ? 1 : 0) + 1;
                         relatedEntries.push({
                             id: layer.id,
                             name: layer.name,
-                            displayName: `Route ${idx + 1}`,
-                            color: relatedColors[idx % relatedColors.length],
+                            displayName: isSpecialFirst ? this.related_first_label : `Route ${routeNumber}`,
+                            color: isSpecialFirst ? '#808080' : relatedColors[(routeNumber - 1) % relatedColors.length],
                             visible: layer.visible !== false,
                             locked: isLocked,
                             isRelated: true,
+                            isExtraInfo: isSpecialFirst,
                             isGroup: false,
                             children: []
                         });

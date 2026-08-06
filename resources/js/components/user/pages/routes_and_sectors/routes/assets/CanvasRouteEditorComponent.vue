@@ -104,6 +104,7 @@
                     :json_meta="activeJsonMeta"
                     :related_jsons="related_jsons"
                     :related_jsons_meta="related_jsons_meta"
+                    :related_first_label="related_first_label"
                     :route_name="extra_drawing_mode ? 'extra info' : route_name_prop"
                     @canvas_data="handleCanvasData"
                   />
@@ -145,8 +146,12 @@ export default {
             show_editor: false,
             sector_images: [],
             images_tab_num: '',
-            related_jsons: [],
-            related_jsons_meta: [],
+            // Raw "other routes drawn on this image" fetch — always excludes the
+            // current route server-side, regardless of extra-drawing mode. The
+            // related_jsons/related_jsons_meta computed below layer the current
+            // route's own drawing / the extra drawing on top of this as needed.
+            otherRoutesJson: [],
+            otherRoutesJsonMeta: [],
             drawing_saving: false,
             drawing_deleting: false,
             drawing_save_status: null,
@@ -167,6 +172,40 @@ export default {
         },
         activeJsonMeta() {
             return this.extra_drawing_mode ? this.extra_drawing_meta : this.json_meta_prop;
+        },
+        // Reference-only overlay shown alongside whatever's actively being edited.
+        // - In extra-drawing mode, this route isn't "the active drawing" anymore
+        //   (the extra drawing is), so this route's own strokes join the other
+        //   routes as reference — otherwise it just vanishes off the canvas.
+        // - In normal route mode, the extra drawing isn't being edited, so it
+        //   shows as reference too, same as any other route on this image.
+        // Non-null when related_jsons[0] is this route's own drawing or the extra
+        // drawing rather than another route — always placed FIRST (not appended)
+        // so other routes keep a stable position/number regardless of whether
+        // this extra entry has finished loading yet. Tells the Editor to label/
+        // color that one entry with this name instead of numbering it as just
+        // another route.
+        related_first_label() {
+            if (this.extra_drawing_mode) return this.route_json_prop ? (this.route_name_prop || 'this route') : null;
+            return this.extra_drawing_json ? 'extra info' : null;
+        },
+        related_jsons() {
+            const jsons = [...this.otherRoutesJson];
+            if (this.extra_drawing_mode) {
+                if (this.route_json_prop) jsons.unshift(this.route_json_prop);
+            } else if (this.extra_drawing_json) {
+                jsons.unshift(this.extra_drawing_json);
+            }
+            return jsons;
+        },
+        related_jsons_meta() {
+            const metas = [...this.otherRoutesJsonMeta];
+            if (this.extra_drawing_mode) {
+                if (this.route_json_prop) metas.unshift(this.json_meta_prop);
+            } else if (this.extra_drawing_json) {
+                metas.unshift(this.extra_drawing_meta);
+            }
+            return metas;
         },
     },
     watch: {
@@ -193,9 +232,27 @@ export default {
         toggleEditor() {
             this.show_editor = !this.show_editor;
         },
+        // Loaded eagerly (not just on first toggle, and not just while extra-drawing
+        // mode is on) so it's already available to show as a reference overlay in
+        // normal route-editing mode from the start.
+        async loadExtraDrawing(sectorImageId) {
+            try {
+                const response = await axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId);
+                const drawing = response.data && response.data.extra_drawing;
+                this.extra_drawing_json = drawing ? drawing.json : null;
+                this.extra_drawing_meta = drawing ? {
+                    canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
+                    bg_left: drawing.bg_left, bg_top: drawing.bg_top,
+                    bg_width: drawing.bg_width, bg_height: drawing.bg_height,
+                } : null;
+            } catch (e) {
+                this.extra_drawing_json = null;
+                this.extra_drawing_meta = null;
+            }
+        },
         // Switches the editor between "this route's drawing" and the image's
-        // general extra-info layer — fetches the extra drawing once per
-        // sector image the first time it's needed, same as related_jsons does.
+        // general extra-info layer. Re-fetches on entry to make sure it's the
+        // freshest copy (e.g. in case it changed since the eager load).
         async toggleExtraDrawingMode() {
             if (!this.extra_drawing_mode && !this.images_tab_num) {
                 alert(this.$t('admin.routes_sectors.select_sector_image_first'));
@@ -203,21 +260,8 @@ export default {
             }
             if (!this.extra_drawing_mode) {
                 this.extra_drawing_loading = true;
-                try {
-                    const response = await axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + this.images_tab_num);
-                    const drawing = response.data && response.data.extra_drawing;
-                    this.extra_drawing_json = drawing ? drawing.json : null;
-                    this.extra_drawing_meta = drawing ? {
-                        canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
-                        bg_left: drawing.bg_left, bg_top: drawing.bg_top,
-                        bg_width: drawing.bg_width, bg_height: drawing.bg_height,
-                    } : null;
-                } catch (e) {
-                    this.extra_drawing_json = null;
-                    this.extra_drawing_meta = null;
-                } finally {
-                    this.extra_drawing_loading = false;
-                }
+                await this.loadExtraDrawing(this.images_tab_num);
+                this.extra_drawing_loading = false;
             }
             this.extra_drawing_mode = !this.extra_drawing_mode;
         },
@@ -244,24 +288,14 @@ export default {
         updateSectorImageId() {
             this.$emit('update:sector_image_id_prop', this.images_tab_num);
             this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
-            // Switching images while in extra-drawing mode must reload that
-            // OTHER image's own extra drawing, not keep showing the previous
-            // image's annotations on the new background.
-            if (this.extra_drawing_mode) {
-                this.extra_drawing_json = null;
-                this.extra_drawing_meta = null;
-                axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + this.images_tab_num)
-                    .then(response => {
-                        const drawing = response.data && response.data.extra_drawing;
-                        this.extra_drawing_json = drawing ? drawing.json : null;
-                        this.extra_drawing_meta = drawing ? {
-                            canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
-                            bg_left: drawing.bg_left, bg_top: drawing.bg_top,
-                            bg_width: drawing.bg_width, bg_height: drawing.bg_height,
-                        } : null;
-                    })
-                    .catch(() => { this.extra_drawing_json = null; this.extra_drawing_meta = null; });
-            }
+            // Switching images must reload that OTHER image's own extra drawing —
+            // not keep showing the previous image's annotations on the new
+            // background — regardless of whether extra-drawing mode is currently on
+            // (it needs to be loaded eagerly so it also shows as a reference overlay
+            // in normal route-editing mode, not just once toggled into directly).
+            this.extra_drawing_json = null;
+            this.extra_drawing_meta = null;
+            if (this.images_tab_num) this.loadExtraDrawing(this.images_tab_num);
         },
         get_sector_images(sectorId) {
             axios.get('/get_sector/get_sector_images/' + sectorId)
@@ -273,6 +307,7 @@ export default {
                     }
                     if (this.images_tab_num) {
                         this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
+                        this.loadExtraDrawing(this.images_tab_num);
                     }
                 })
                 .catch(() => {});
@@ -283,8 +318,8 @@ export default {
             })
                 .then(response => {
                     const items = response.data || [];
-                    this.related_jsons = items.map(i => i.json);
-                    this.related_jsons_meta = items;
+                    this.otherRoutesJson = items.map(i => i.json);
+                    this.otherRoutesJsonMeta = items;
                 })
                 .catch(() => {});
         },
@@ -506,6 +541,14 @@ export default {
             const bgLayer       = scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
 
+            // Paper.js draws a selected item's bounding box + resize handles directly
+            // onto the canvas, not as a separate DOM overlay — so if the user's last
+            // click before hitting Save left an item selected, toDataURL() below bakes
+            // that blue selection UI straight into the saved PNG. Clear it first and
+            // restore it after so the on-screen editor experience is unaffected.
+            const previouslySelected = scope.project.selectedItems.slice();
+            scope.project.deselectAll();
+
             // Hide background (composited separately from the clean photo).
             const wasBgVisible = bgLayer ? bgLayer.visible : false;
             if (bgLayer) bgLayer.visible = false;
@@ -542,6 +585,12 @@ export default {
                 });
             }
 
+            // Keep sibling routes' reference geometry BELOW this route's own strokes,
+            // matching the live editing view — otherwise an overlapping sibling shape
+            // paints over this route's own strokes in the snapshot.
+            const mainLayer = scope.project.layers.find(l => l.name === 'main');
+            if (mainLayer) tempLayers.forEach(l => { try { l.insertBelow(mainLayer); } catch (_) {} });
+
             scope.view.update();
             const canvas = canvasContainer.$refs.canvasManager.$el;
             const dataUrl = canvas.toDataURL('image/png');
@@ -550,6 +599,7 @@ export default {
             tempLayers.forEach(l => { try { l.remove(); } catch (_) {} });
             if (bgLayer) bgLayer.visible = wasBgVisible;
             relatedLayers.forEach((l, i) => { l.visible = relatedWasVisible[i]; });
+            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
             const vs = scope.view.viewSize;
             canvasContainer.updateView(savedZoom, {
                 x: savedCenterX - vs.width  / 2,

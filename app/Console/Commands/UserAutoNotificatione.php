@@ -47,6 +47,10 @@ class UserAutoNotificatione extends Command
      */
     public function handle()
     {
+        $subscribedUserIds = NotificationDispatchService::usersWithPreference('interested_event')
+            ->pluck('id')
+            ->all();
+
         foreach (self::PERIODS as $notificationKey => $period) {
             $targetDate = now()->addDays($period['days'])->toDateString();
 
@@ -55,7 +59,9 @@ class UserAutoNotificatione extends Command
                 ->get();
 
             foreach ($upcoming_events as $event) {
-                $interested = Interested_event::where('event_id', $event->id)->get();
+                $interested = Interested_event::where('event_id', $event->id)
+                    ->whereIn('user_id', $subscribedUserIds)
+                    ->get();
 
                 foreach ($interested as $interest) {
                     $user = User::find($interest->user_id);

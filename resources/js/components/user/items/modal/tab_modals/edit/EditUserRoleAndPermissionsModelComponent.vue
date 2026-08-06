@@ -53,34 +53,11 @@
 
                 <h3>{{ $t('admin.users.add_more_permissions_title') }}</h3>
 
-                <button type="button" class="btn btn-primary float-left" @click="add_permission_value()">{{ $t('admin.users.add_new_permission_btn') }}</button>
-
-                <table class="table table-hover" id="dev-table" v-if="!perm_loading">
-                    <thead>
-                        <tr>
-                            <th>{{ $t('admin.users.col_permission') }}</th>
-                            <th></th>
-                            <th>{{ $t('admin.users.col_remove') }}</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr v-for="permission in permissions_array" :key="permission.id">
-                            <td>
-                                <form ref="myForm">
-                                    <select class="form-control" v-on:change="onFileChange($event, permission.id)">
-                                        <option disabled selected>{{ $t('admin.users.choose_permission_to_add_placeholder') }}</option>
-                                        <option v-for="permission in permissions" :key="permission.id" :value="permission.id">{{ permission.subject }} {{ permission.action }}</option>
-                                    </select>
-                                </form>
-                            </td>
-                            <td></td>
-                            <td>
-                                <button type="button" class="btn btn-danger" @click="del_permission_value(permission.id)" :title="$t('admin.users.remove_entry_tooltip')"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <RolePermissionsPicker
+                    v-if="!perm_loading"
+                    :permissions="assignablePermissions"
+                    v-model="new_permission_ids"
+                />
                 <div class="row justify-content-center" v-if="perm_loading">
                     <div class="col-md-4">
                         <img :src="'/images/site_img/loading.gif'" alt="loading">
@@ -101,14 +78,11 @@
 
 
 <script>
-    // import MemberStatusModal from './EditUserMemberStatusModalComponent.vue'
+    import RolePermissionsPicker from '../RolePermissionsPickerComponent.vue'
 
-    // import breadcrumb from '../items/BreadcrumbComponent.vue'
-// import StackModal from '@innologica/vue-stackable-modal'  // Global now
     export default {
         components: {
-            // MemberStatusModal,
-            // breadcrumb,
+            RolePermissionsPicker,
         },
         data(){
             return {
@@ -124,21 +98,16 @@
                 roles: [],
                 permissions: [],
 
-                permissions_array: [],
+                new_permission_ids: [],
 
                 user_id: '',
-                // danger_color: ''
             }
         },
-        mounted() {
-            // this.get_users()
-        },
-        watch: {
-            // '$route' (to, from) {
-            //     this.data_for_tab = [],
-            //     // this.get_users()
-            //     window.scrollTo(0,0)
-            // }
+        computed: {
+            assignablePermissions(){
+                const assignedIds = new Set(this.user_permissions.map(permission => permission.id))
+                return this.permissions.filter(permission => !assignedIds.has(permission.id))
+            },
         },
         methods: {
             show_modal(id){
@@ -157,7 +126,7 @@
                 this.roles = []
                 this.permissions = []
 
-                this.permissions_array = []
+                this.new_permission_ids = []
 
                 this.user_id = ''
             },
@@ -171,17 +140,27 @@
                 this.is_loading = true
                 axios
                 .post("/set_role/edit_permissions_and_role/"+this.user_id, {
-                    new_permissions: this.permissions_array,
+                    new_permissions: this.new_permission_ids.map(permission_id => ({ permission_id })),
                     role: this.user_role,
                 })
                 .then(response => {
+                    this.$bus.$emit('toast', {
+                        type: 'success',
+                        title: this.$t('admin.users.toast_title'),
+                        message: this.$t('admin.users.role_saved_success_message'),
+                    })
                     this.close_modal()
 
                     this.$emit('update');
                 })
-                .catch(
-                    error => console.log('Error saving permissions and role:', error)
-                )
+                .catch(error => {
+                    console.log('Error saving permissions and role:', error)
+                    this.$bus.$emit('toast', {
+                        type: 'danger',
+                        title: this.$t('admin.users.toast_title'),
+                        message: this.$t('admin.users.role_saved_error_message'),
+                    })
+                })
                 .finally(() => this.is_loading = false);
             },
 
@@ -194,7 +173,14 @@
                     .then(response => {
                         this.get_user_permissions_and_roles()
                     })
-                    .catch(error => console.log('Error removing permission:', error))
+                    .catch(error => {
+                        console.log('Error removing permission:', error)
+                        this.$bus.$emit('toast', {
+                            type: 'danger',
+                            title: this.$t('admin.users.toast_title'),
+                            message: this.$t('admin.users.role_saved_error_message'),
+                        })
+                    })
                 }
             },
 
@@ -238,32 +224,6 @@
                     error => console.log('Error fetching permissions:', error)
                 )
                 .finally(() => this.perm_loading = false);
-            },
-
-
-            onFileChange(event, item_id){
-                let permisson = event.target.value
-                let id = item_id - 1 
-                this.permissions_array[id]['permission_id'] = permisson
-            },
-            add_permission_value(){
-                var new_item_id = this.permissions_array.length+1
-                this.permissions_array.push(
-                    {
-                        id: new_item_id,
-                        permission_id: ''
-                    }
-                );
-            },
-
-            del_permission_value(id){
-                this.removeObjectWithId(this.permissions_array, id);
-            },
-            removeObjectWithId(arr, id) {
-                const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-                arr.splice(objWithIdIndex, 1);
-
-                return arr;
             },
         }
     }

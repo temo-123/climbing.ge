@@ -107,6 +107,7 @@
                         :json_meta="activeJsonMeta"
                         :related_jsons="relatedJsons"
                         :related_jsons_meta="relatedJsonsMeta"
+                        :related_first_label="relatedFirstLabel"
                         @canvas_data="handleCanvasData"
                     />
                     <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.loading_image_ellipsis') }}</div>
@@ -155,18 +156,37 @@ export default {
         },
     },
     computed: {
+        // Reference-only overlay shown alongside whatever's actively being edited.
+        // - In extra-drawing mode, NOTHING is "the active layout" (the active
+        //   content is the extra drawing itself), so every sector layout shows as
+        //   reference — including the one that was selected right before switching
+        //   modes, which activeLayoutId still points to.
+        // - In normal layout mode, the extra drawing isn't being edited, so it
+        //   shows as reference too, same as any other non-active layout.
+        // Non-null when relatedJsons[0] is the extra drawing rather than a sector
+        // layout — always placed FIRST (not appended) so real layouts keep a
+        // stable position/number regardless of whether the extra drawing has
+        // finished loading yet. Tells the Editor to label/color that one entry
+        // with this name instead of numbering it as just another layout.
+        relatedFirstLabel() {
+            return (!this.extra_drawing_mode && this.extra_drawing_json) ? 'extra info' : null;
+        },
         relatedJsons() {
-            return this.layouts
-                .filter(l => l.id !== this.activeLayoutId && l.json)
+            const jsons = this.layouts
+                .filter(l => (this.extra_drawing_mode || l.id !== this.activeLayoutId) && l.json)
                 .map(l => l.json);
+            if (this.relatedFirstLabel) jsons.unshift(this.extra_drawing_json);
+            return jsons;
         },
         // Sibling to relatedJsons, aligned by index — the background photo's own
         // position/size within each layout's OWN save-time view, so the editor can
         // rescale each overlay onto the current background fit.
         relatedJsonsMeta() {
-            return this.layouts
-                .filter(l => l.id !== this.activeLayoutId && l.json)
+            const metas = this.layouts
+                .filter(l => (this.extra_drawing_mode || l.id !== this.activeLayoutId) && l.json)
                 .map(l => this._layoutMeta(l));
+            if (this.relatedFirstLabel) metas.unshift(this.extra_drawing_meta);
+            return metas;
         },
         bgImageUrl() {
             if (!this.imageInfo || !this.imageInfo.image) return null;
@@ -189,8 +209,21 @@ export default {
         const nav = document.querySelector('.admin_page_header_navbar');
         if (nav) nav.style.marginLeft = '0';
         this.loadImageData();
+        this.loadExtraDrawing();
     },
     methods: {
+        // Loaded eagerly (not just on first toggle) so it's already available to
+        // show as a reference overlay in normal layout mode from the start.
+        loadExtraDrawing() {
+            axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id)
+                .then(response => {
+                    const drawing = response.data && response.data.extra_drawing;
+                    this.extra_drawing_json = drawing ? drawing.json : null;
+                    this.extra_drawing_meta = this._layoutMeta(drawing);
+                })
+                .catch(error => console.log(error));
+        },
+
         loadImageData() {
             axios.get('/set_sector/set_sector_local_images/get_for_editor/' + this.$route.params.id)
                 .then(response => {
@@ -459,6 +492,14 @@ export default {
             const bgLayer       = scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
 
+            // Paper.js draws a selected item's bounding box + resize handles directly
+            // onto the canvas, not as a separate DOM overlay — so if the user's last
+            // click before hitting Save left an item selected, toDataURL() below bakes
+            // that blue selection UI straight into the saved PNG. Clear it first and
+            // restore it after so the on-screen editor experience is unaffected.
+            const previouslySelected = scope.project.selectedItems.slice();
+            scope.project.deselectAll();
+
             const wasBgVisible = bgLayer ? bgLayer.visible : false;
             if (bgLayer) bgLayer.visible = false;
 
@@ -485,6 +526,14 @@ export default {
                 });
             }
 
+            // Sibling sectors' reference geometry must render BELOW this sector's own
+            // strokes, same as the live editing view (see _repositionRelatedLayersBelow
+            // in CanvasHandlers.vue) — otherwise a solid-filled neighboring rectangle
+            // that overlaps this sector's own arrow/text paints over it in the snapshot,
+            // even though it's never occluded on-screen.
+            const mainLayer = scope.project.layers.find(l => l.name === 'main');
+            if (mainLayer) tempLayers.forEach(l => { try { l.insertBelow(mainLayer); } catch (_) {} });
+
             scope.view.update();
             const canvas = canvasContainer.$refs.canvasManager.$el;
             const dataUrl = canvas.toDataURL('image/png');
@@ -492,6 +541,7 @@ export default {
             tempLayers.forEach(l => { try { l.remove(); } catch (_) {} });
             if (bgLayer) bgLayer.visible = wasBgVisible;
             relatedLayers.forEach((l, i) => { l.visible = relatedWasVisible[i]; });
+            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
             const vs = scope.view.viewSize;
             canvasContainer.updateView(savedZoom, {
                 x: savedCenterX - vs.width  / 2,

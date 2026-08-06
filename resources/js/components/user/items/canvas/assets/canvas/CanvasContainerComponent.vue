@@ -7,6 +7,7 @@
             :json-meta="json_meta"
             :related-jsons="related_jsons"
             :related-jsons-meta="related_jsons_meta"
+            :related-first-label="related_first_label"
             :image="image"
             :stroke-color="strokeColor"
             :fill-color="fillColor"
@@ -52,6 +53,10 @@ export default {
         related_jsons_meta: {
             type: Array,
             default: () => []
+        },
+        related_first_label: {
+            type: String,
+            default: null
         },
         image: {
             type: String,

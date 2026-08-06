@@ -92,7 +92,6 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('get_user_permissions/{user_id}', 'get_user_permissions');
         Route::post('/create_role', 'create_role');
         Route::post('/edit_role/{role_id}', 'edit_role');
-        Route::delete('/del_role_permission/{role_id}/{permission_id}', 'del_role_permission');
         Route::delete('/del_role/{role_id}', 'del_role');
         Route::post('/edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
         Route::delete('/del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');

@@ -193,6 +193,14 @@ export default {
             const bgLayer       = scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
 
+            // Paper.js draws a selected item's bounding box + resize handles directly
+            // onto the canvas, not as a separate DOM overlay — so if the user's last
+            // click before hitting Save left an item selected, toDataURL() below bakes
+            // that blue selection UI straight into the saved PNG. Clear it first and
+            // restore it after so the on-screen editor experience is unaffected.
+            const previouslySelected = scope.project.selectedItems.slice();
+            scope.project.deselectAll();
+
             const wasBgVisible = bgLayer ? bgLayer.visible : false;
             if (bgLayer) bgLayer.visible = false;
 
@@ -218,6 +226,12 @@ export default {
                 });
             }
 
+            // Keep sibling pitches' reference geometry BELOW this pitch's own strokes,
+            // matching the live editing view — otherwise an overlapping sibling shape
+            // paints over this pitch's own strokes in the snapshot.
+            const mainLayer = scope.project.layers.find(l => l.name === 'main');
+            if (mainLayer) tempLayers.forEach(l => { try { l.insertBelow(mainLayer); } catch (_) {} });
+
             scope.view.update();
             const canvas = canvasContainer.$refs.canvasManager.$el;
             const dataUrl = canvas.toDataURL('image/png');
@@ -225,6 +239,7 @@ export default {
             tempLayers.forEach(l => { try { l.remove(); } catch (_) {} });
             if (bgLayer) bgLayer.visible = wasBgVisible;
             relatedLayers.forEach((l, i) => { l.visible = relatedWasVisible[i]; });
+            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
             const vs = scope.view.viewSize;
             canvasContainer.updateView(savedZoom, {
                 x: savedCenterX - vs.width / 2,

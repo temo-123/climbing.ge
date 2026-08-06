@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api\User\Admin\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 use App\Models\User\Role;
 use App\Models\User\Role_permission;
@@ -111,12 +113,42 @@ class RolesController extends Controller
     {
         $auth = PermissionService::authorize('role', 'add');
         if ($auth) return $auth;
-        $per = new Role;
-        $per['name'] = $request->role_data['name'];
-        $per['description'] = $request->role_data['description'];
-        $per->save();
 
-        $this->save_role_permissions($request->new_permissions, $per['id']);
+        $request->validate([
+            'role_data.name' => 'required|string|max:255',
+            'role_data.description' => 'nullable|string|max:255',
+            'permission_ids' => 'array',
+            'permission_ids.*' => 'integer',
+        ]);
+
+        $role = DB::transaction(function () use ($request) {
+            $role = new Role;
+            $role->name = $request->role_data['name'];
+            $role->description = $request->role_data['description'] ?? null;
+            $role->slug = $this->uniqueSlug($request->role_data['name']);
+            $role->save();
+
+            $validIds = Permission::whereIn('id', $request->permission_ids ?? [])->pluck('id')->all();
+            $role->permissions()->sync($validIds);
+
+            return $role;
+        });
+
+        return response()->json($role, 201);
+    }
+
+    private function uniqueSlug(string $name): string
+    {
+        $base = Str::slug($name);
+        $slug = $base;
+        $suffix = 1;
+
+        while (Role::where('slug', $slug)->exists()) {
+            $suffix++;
+            $slug = $base . '-' . $suffix;
+        }
+
+        return $slug;
     }
 
     public function get_editing_role(Request $request)
@@ -138,33 +170,26 @@ class RolesController extends Controller
     {
         $auth = PermissionService::authorize('role', 'edit');
         if ($auth) return $auth;
-        $editing_role = Role::where("id", "=", $request->role_id)->first();
-        $saiving_action = 0;
 
-        if($editing_role -> name != $request->role['name']){
-            $saiving_action++;
-            $editing_role -> name = $request->role['name'];
-        }
-        if($editing_role -> description != $request->role['description']){
-            $saiving_action++;
-            $editing_role -> description = $request->role['description'];
-        }
+        $request->validate([
+            'role.name' => 'required|string|max:255',
+            'role.description' => 'nullable|string|max:255',
+            'permission_ids' => 'array',
+            'permission_ids.*' => 'integer',
+        ]);
 
-        if($saiving_action > 0){
+        $editing_role = Role::findOrFail($request->role_id);
+
+        DB::transaction(function () use ($request, $editing_role) {
+            $editing_role->name = $request->role['name'];
+            $editing_role->description = $request->role['description'] ?? null;
             $editing_role->save();
-        }
 
-        $this->save_role_permissions($request->new_permissions, $editing_role->id);
-    }
+            $validIds = Permission::whereIn('id', $request->permission_ids ?? [])->pluck('id')->all();
+            $editing_role->permissions()->sync($validIds);
+        });
 
-    public function save_role_permissions($permission_array, $role_id)
-    {
-        foreach ($permission_array as $permission) {
-            $per = new Role_permission;
-            $per['role_id'] = $role_id;
-            $per['permission_id'] = $permission['permission_id'];
-            $per->save();
-        }
+        return response()->json(['message' => 'Role updated']);
     }
 
     public function del_role(Request $request)
@@ -179,16 +204,6 @@ class RolesController extends Controller
         }
 
         $role -> delete();
-    }
-
-    
-    public function del_role_permission(Request $request)
-    {
-        $auth = PermissionService::authorize('role', 'del');
-        if ($auth) return $auth;
-        $role_permision = Role_permission::where("role_id", "=", $request->role_id)->where("permission_id", "=", $request->permission_id)->first();
-
-        $role_permision -> delete();
     }
 
     public function sync_admin_permissions()

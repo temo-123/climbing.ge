@@ -14,7 +14,24 @@ use App\Models\User\user_notification;
 
 class UserOptionController extends Controller
 {
-    
+    /**
+     * Every key the notification preferences UI can toggle. Used both to fill
+     * in defaults for users who never saved preferences yet (or saved before a
+     * key was added) and to whitelist what update_user_notification_data will
+     * persist, since notification_type is stored as free-form JSON.
+     */
+    private const NOTIFICATION_KEYS = [
+        'add_new_gym', 'add_new_ice_spot', 'add_new_outdoor_spot', 'add_new_product',
+        'add_new_sector', 'add_new_service', 'add_new_techtip', 'add_new_tour',
+        'add_new_mount', 'add_new_summit', 'add_new_blog_post', 'add_new_film',
+        'favorite_film', 'favorite_outdoor', 'favorite_product', 'interested_event',
+        'news', 'sector_updated', 'news_updated', 'outdoor_spot_updated',
+        'ice_spot_updated', 'techtip_updated', 'gym_updated', 'product_updated',
+        'service_updated', 'tour_updated', 'mount_updated', 'summit_updated',
+        'blog_post_updated', 'film_updated',
+    ];
+
+
     // public function get_user_data()
     // {
     //     return auth()->user();
@@ -68,26 +85,34 @@ class UserOptionController extends Controller
     
     public function get_user_notification_data(Request $request)
     {
-        if (Auth::user()) {
-            $record = user_notification::where('user_id', '=', Auth::user()->id)->first();
-            if ($record) {
-                return $record->notification_type ?? (object)[];
-            }
-            return (object)[];
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
         }
-        return 'Plees login';
+
+        $record = user_notification::where('user_id', '=', Auth::user()->id)->first();
+        $saved = $record->notification_type ?? [];
+
+        $defaults = array_fill_keys(self::NOTIFICATION_KEYS, false);
+        return response()->json(array_merge($defaults, array_intersect_key($saved, $defaults)));
     }
 
     public function update_user_notification_data(Request $request)
     {
-        if (Auth::user()) {
-            $data = $request->data ?? [];
-            user_notification::updateOrCreate(
-                ['user_id' => Auth::user()->id],
-                ['notification_type' => $data]
-            );
-        } else {
-            return 'Plees login';
+        if (!Auth::user()) {
+            return response()->json(['message' => 'Please login'], 401);
         }
+
+        $data = $request->data ?? [];
+        $whitelisted = [];
+        foreach (self::NOTIFICATION_KEYS as $key) {
+            $whitelisted[$key] = filter_var($data[$key] ?? false, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        user_notification::updateOrCreate(
+            ['user_id' => Auth::user()->id],
+            ['notification_type' => $whitelisted]
+        );
+
+        return response()->json(['message' => 'Notification preferences saved']);
     }
 }

@@ -85,19 +85,19 @@ const routes = [
             { path: 'site_info/add_general_info', name: 'GlobalInfoAdd', component: load('siteInfo/GeneralInfo/GlobalInfoAddFormComponent'), meta: {title: 'user page', permissions: [['show', 'site_data']]}},
             { path: 'site_info/edit_general_info/:id', name: 'GlobalInfoEdit', component: load('siteInfo/GeneralInfo/GlobalInfoEditFormComponent'), meta: {title: 'user page', permissions: [['show', 'site_data']]}},
 
-            { path: 'films', name: 'filmsList', component: load('films/filmsListComponent'), meta: {title: 'user page', permissions: [['show', 'export']]}},
-            { path: 'films/add', name: 'filmsAdd', component: load('films/filmsAddComponent'), meta: {title: 'user page', permissions: [['show', 'export']]}},
-            { path: 'films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent'), meta: {title: 'user page', permissions: [['show', 'export']]}},
+            { path: 'films', name: 'filmsList', component: load('films/filmsListComponent'), meta: {title: 'user page', permissions: [['show', 'film']]}},
+            { path: 'films/add', name: 'filmsAdd', component: load('films/filmsAddComponent'), meta: {title: 'user page', permissions: [['show', 'film']]}},
+            { path: 'films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent'), meta: {title: 'user page', permissions: [['show', 'film']]}},
 
-            { path: 'mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
-            { path: 'mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
+            { path: 'mount_massive/edit/:id', name: 'mount_massive_edit', component: load('mountRoutes/mountMassiveEditComponent'), meta: {title: 'user page', permissions: [['show', 'mount_massive']]}},
+            { path: 'mount_massive/add/', name: 'mount_massive_add', component: load('mountRoutes/mountMassiveAddComponent'), meta: {title: 'user page', permissions: [['show', 'mount_massive']]}},
 
             { path: 'article/:article_category', name: 'articlelist', component: load('articles/articleListComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
             { path: 'article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
             { path: 'article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
 
-            { path: 'region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
-            { path: 'region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
+            { path: 'region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent'), meta: {title: 'user page', permissions: [['show', 'region']]}},
+            { path: 'region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent'), meta: {title: 'user page', permissions: [['show', 'region']]}},
 
             { path: 'ice_route/add', name: 'iceRouteAdd', component: load('ice/routes/add_route'), meta: {title: 'user page', permissions: [['show', 'route']]}},
             { path: 'ice_route/edit/:id', name: 'iceRouteEdit', component: load('ice/routes/edit_route'), meta: {title: 'user page', permissions: [['show', 'route']]}},
@@ -113,8 +113,8 @@ const routes = [
             { path: 'sector/edit/:id', name: 'sectorEdit', component: load('routes_and_sectors/sectors/sectorEditComponent'), props: true, meta: {title: 'user page', permissions: [['show', 'route']]}},
             { path: 'sector/:id/routes_drawing', name: 'sectorRoutesDrawing', component: load('routes_and_sectors/routes/sectorRouteDrawingsEditorComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
 
-            { path: 'MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
-            { path: 'MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent'), meta: {title: 'user page', permissions: [['show', 'route']]}},
+            { path: 'MTP/add', name: 'MTPAdd', component: load('routes_and_sectors/MTP/MTPAddComponent'), meta: {title: 'user page', permissions: [['show', 'route'], ['show', 'mtp']]}},
+            { path: 'MTP/edit/:id', name: 'MTPEdit', component: load('routes_and_sectors/MTP/MTPEditComponent'), meta: {title: 'user page', permissions: [['show', 'route'], ['show', 'mtp']]}},
 
             { path: 'sector_local_images', name: 'sectorLocalImagesList', component: load('sector_local_images/sectorLocalImagesListComponent'), meta: {title: 'user page', permissions: [['show', 'sector_local_image']]}},
             { path: 'sector_local_images/add', name: 'sectorLocalImagesListAdd', component: load('sector_local_images/sectorLocalImageAddComponent'), meta: {title: 'user page', permissions: [['show', 'sector_local_image']]}},
@@ -167,7 +167,7 @@ const routes = [
             { path: 'service/edit/:id', name: 'serviceEdit', component: load('services/serviceEditComponent'), meta: {title: 'user page', permissions: [['show', 'services']]}},
             { path: 'service/add/', name: 'serviceAdd', component: load('services/serviceAddComponent'), meta: {title: 'user page', permissions: [['show', 'services']]}},
 
-            { path: 'multimedia', name: 'multimedia', component: load('database_&_multimedia/DatabasePage'), meta: {title: 'user page', permissions: [['show', 'export']]}},
+            { path: 'multimedia', name: 'multimedia', component: load('database_&_multimedia/DatabasePage'), meta: {title: 'user page', permissions: [['show', 'database'], ['show', 'export']]}},
 
             { path: 'notification_analytics', name: 'notificationAnalytics', component: load('notifications/NotificationAnalyticsPage'), meta: {title: 'user page', permissions: [['show', 'user_notification']]}},
 

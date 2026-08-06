@@ -827,12 +827,39 @@ export default {
 
                 this._activateMainLayer();
                 this.scope.view.update();
+
+                // _lastDrawingJson is the jsonProp watcher's echo-guard — it exists to
+                // recognize "this incoming value is just an echo of what we ourselves
+                // JUST exported" (e.g. a save flow round-tripping getCleanJson() back
+                // through jsonProp) so it can skip a redundant reimport that would
+                // otherwise apply the rescale correction twice and drift coordinates.
+                // But it was only ever updated on EXPORT, never on import — so after
+                // switching the active document (e.g. route drawing ↔ extra drawing)
+                // and switching back WITHOUT drawing anything new in between, the guard
+                // still held the stale value from before the switch, matched the
+                // incoming (correct) value by coincidence, and silently skipped the
+                // reimport — leaving the OTHER document's content stuck on the main
+                // layer. Updating it here too keeps it meaning "what's actually
+                // rendered right now", so a genuine switch back always re-renders.
+                this._lastDrawingJson = typeof jsonData === 'string' ? jsonData : JSON.stringify(jsonData);
+
                 this.$emit('layers_ready');
             } catch (e) {}
         },
 
         importRelatedJsons() {
             if (!this.scope) return;
+
+            // relatedJsons is a freshly-mapped/filtered array every time its parent
+            // recomputes it (e.g. after any save reloads the sibling layouts list),
+            // so this rebuild fires far more often than the actual reference content
+            // changes. Without remembering which related-N layer the user toggled
+            // off via the Layers panel, every such rebuild silently makes it visible
+            // again — a hidden sibling drawing "coming back" for no visible reason.
+            const previousVisibility = {};
+            this.scope.project.layers
+                .filter(l => l.name && l.name.startsWith('related-'))
+                .forEach(l => { previousVisibility[l.name] = l.visible; });
 
             this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-')).forEach(l => l.remove());
 
@@ -851,11 +878,20 @@ export default {
                     const newLayers = this.scope.project.layers.slice(before);
                     const meta = (this.relatedJsonsMeta && this.relatedJsonsMeta[index]) || null;
                     this._rescaleToCurrentBackground(newLayers, meta);
-                    const color = colors[index % colors.length];
+                    // relatedFirstLabel reserves index 0 for something that ISN'T
+                    // another route/layout — see EditorComponent.vue's updateLayersList,
+                    // which uses this exact same color/index scheme so the Layers panel
+                    // swatch always matches what's actually drawn on the canvas.
+                    const hasSpecialFirst = !!this.relatedFirstLabel;
+                    const isSpecialFirst = hasSpecialFirst && index === 0;
+                    const routeColorIndex = index - (hasSpecialFirst ? 1 : 0);
+                    const color = isSpecialFirst ? '#808080' : colors[routeColorIndex % colors.length];
 
                     newLayers.forEach(layer => {
-                        layer.name   = `related-${index}`;
-                        layer.locked = true;
+                        layer.name    = `related-${index}`;
+                        layer.locked  = true;
+                        layer.data    = { ...layer.data, isExtraInfo: isSpecialFirst };
+                        if (previousVisibility[layer.name] !== undefined) layer.visible = previousVisibility[layer.name];
 
                         const applyColor = (item) => {
                             if (!item || typeof item !== 'object') return;

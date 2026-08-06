@@ -11,6 +11,10 @@ class URLTitleService
         $us_title = str_replace(" ", "_", $us_title);
         $us_title = str_replace("-", "_", $us_title);
         $us_title = str_replace("_", "_", $us_title);
+        $us_title = str_replace('/', "_", $us_title);
+        $us_title = str_replace('|', "_", $us_title);
+        $us_title = str_replace('\\', "_", $us_title);
+        $us_title = str_replace('/', "_", $us_title);
 
         $us_title = str_replace("%", "", $us_title);
         $us_title = str_replace("$", "", $us_title);

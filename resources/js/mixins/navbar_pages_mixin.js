@@ -268,6 +268,19 @@ export default {
                     ]
                 },
                 {
+                    title: this.$t('user.nav.films'),
+                    name: "films",
+                    routes: [
+                        {
+                            name: this.$t('user.nav.films_list'),
+                            route: "/films",
+                            permissions: [
+                                ['show', 'film'],
+                            ]
+                        },
+                    ]
+                },
+                {
                     title: this.$t('common.summit'),
                     name: "summit",
                     routes: [
@@ -317,6 +330,7 @@ export default {
                             route: "/multimedia",
                             permissions: [
                                 ['show', 'database'],
+                                ['show', 'export'],
                             ]
                         },
                         {
