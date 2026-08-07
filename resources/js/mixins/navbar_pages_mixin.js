@@ -204,6 +204,13 @@ export default {
                             ]
                         },
                         {
+                            name: this.$t('user.nav.shop_quick_sale'),
+                            route: "/order/quick_sale",
+                            permissions: [
+                                ['sell_own', 'warehouse'],
+                            ]
+                        },
+                        {
                             name: this.$t('user.nav.shop_all_tours'),
                             route: "/all_tours_list",
                             permissions: [

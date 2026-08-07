@@ -20,7 +20,7 @@ class CustomOrderController extends Controller
 {
     public function store(Request $request)
     {
-        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
 
         $request->validate([
             'name'               => 'required|string|max:100',
@@ -199,7 +199,7 @@ class CustomOrderController extends Controller
 
     public function exportInvoicePdf(Request $request)
     {
-        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
 
         $request->validate([
             'name'               => 'required|string|max:100',
@@ -361,7 +361,7 @@ class CustomOrderController extends Controller
     // list as before (just through this endpoint instead of the public one).
     public function get_products_for_order()
     {
-        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
 
         $warehouseId = ProductService::resolveEffectiveWarehouseId(auth()->user());
         if (!$warehouseId) return response()->json([]);
@@ -397,7 +397,7 @@ class CustomOrderController extends Controller
     // Api\Shop\ProductController::get_product_options()'s response shape.
     public function get_options_for_order($product_id)
     {
-        if ($auth = PermissionService::authorize('order', 'add')) return $auth;
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
 
         $warehouseId = ProductService::resolveEffectiveWarehouseId(auth()->user());
         $product = Product::find($product_id);

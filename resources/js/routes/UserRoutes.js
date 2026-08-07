@@ -45,6 +45,11 @@ const routes = [
             { path: 'purchases', name: 'userPurchases', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
             { path: 'order/user_orders', name: 'userOrders', component: load('orders/PurchasesPage'), meta: {title: 'user page'}},
             { path: 'order/all_orders', name: 'allOrders', component: load('orders/allOrderPageComponent'), meta: {title: 'user page', permissions: [['show', 'order']]}},
+            // Minimal sale-creation entry point for warehouse-restricted sellers — the
+            // full Orders page requires 'show'/'order' just to load its order list, which
+            // a 'warehouse'/'sell_own' user should never see. This route/page skips that
+            // entirely and just exposes the same AddCustomOrderModal.
+            { path: 'order/quick_sale', name: 'quickSale', component: load('orders/QuickSaleComponent'), meta: {title: 'user page', permissions: [['sell_own', 'warehouse'], ['add', 'order']]}},
 
             { path: 'order/decloration/order_decloration/:payment/:adres/:discount?', name: 'orderDecloration', component: load('orders/decloration/orderDeclorationPageComponent'), meta: {title: 'user page'}},
             { path: 'order/decloration/order_payment', name: 'orderPayment', component: load('orders/decloration/orderPaymentPageComponent'), meta: {title: 'user page'}},

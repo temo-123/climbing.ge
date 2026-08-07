@@ -191,7 +191,7 @@ class ProductOptionController extends Controller
 
     public function find_by_barcode(Request $request)
     {
-        if ($auth = PermissionService::authorize('product_option', 'show')) return $auth;
+        if ($auth = PermissionService::authorizeAny([['product_option', 'show'], ['warehouse', 'sell_own']])) return $auth;
 
         $barcode = trim($request->barcode ?? '');
         if (!$barcode) {

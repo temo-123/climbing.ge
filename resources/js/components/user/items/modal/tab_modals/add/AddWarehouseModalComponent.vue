@@ -21,7 +21,7 @@
                 </div>
             </form>
         </div>
-        <div slot="modal-footer">
+        <template #footer>
             <div class="modal-footer">
                 <button
                     type="submit"
@@ -31,7 +31,7 @@
                 {{ $t('admin.warehouses.add_warehouse_btn') }}
                 </button>
             </div>
-        </div>
+        </template>
     </stack-modal>
 </template>
 
@@ -83,12 +83,18 @@
                 this.data = {
                     name: '',
                     general: false,
+                    is_sale_point: false,
                 }
             },
             show_modal(){
                 this.is_warehouse_add_model = true
             },
             close_modal(){
+                // StackModal's own internal `show` watcher re-emits 'close' the
+                // instant is_warehouse_add_model flips to false below — without
+                // this guard, that second emission re-entered close_modal() and
+                // popped the confirm() dialog a second time for one click.
+                if (!this.is_warehouse_add_model) return
                 if(confirm(this.$t('admin.live_camera.confirm_close_form_discard'))){
                     this.is_warehouse_add_model = false
                     this.clear_form()
