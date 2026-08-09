@@ -97,6 +97,7 @@ class RouteServiceProvider extends ServiceProvider
                 require base_path('routes/api/get_films_routes.php');
                 require base_path('routes/api/get_blog_routes.php');
                 require base_path('routes/api/get_user_routes.php');
+                require base_path('routes/api/get_training_routes.php');
 
                 require base_path('routes/api/admin/set_blog_routes.php');
                 require base_path('routes/api/admin/set_films_routes.php');
@@ -104,6 +105,7 @@ class RouteServiceProvider extends ServiceProvider
                 require base_path('routes/api/admin/set_shop_routes.php');
                 require base_path('routes/api/admin/set_user_routes.php');
                 require base_path('routes/api/admin/set_summit_routes.php');
+                require base_path('routes/api/admin/set_training_routes.php');
 
                 require base_path('routes/api/summit_public_routes.php');
             });

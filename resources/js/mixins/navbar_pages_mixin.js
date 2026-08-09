@@ -301,6 +301,26 @@ export default {
                     ]
                 },
                 {
+                    title: this.$t('user.nav.training'),
+                    name: "training",
+                    routes: [
+                        {
+                            name: this.$t('user.nav.training_workouts'),
+                            route: "/trainings",
+                            permissions: [
+                                ['show', 'training'],
+                            ]
+                        },
+                        {
+                            name: this.$t('user.nav.training_plans'),
+                            route: "/training_plans",
+                            permissions: [
+                                ['show', 'training_plan'],
+                            ]
+                        },
+                    ]
+                },
+                {
                     title: this.$t('user.nav.site_options'),
                     name: "site_options",
                     routes: [

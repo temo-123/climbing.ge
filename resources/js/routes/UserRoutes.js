@@ -178,6 +178,14 @@ const routes = [
 
             { path: 'mail', name: 'mailPage', component: load('notifications/MailPageComponent'), meta: {title: 'user page', permissions: [['show', 'mail']]}},
 
+            { path: 'trainings', name: 'trainingsList', component: load('trainings/TrainingsListComponent'), meta: {title: 'user page', permissions: [['show', 'training']]}},
+            { path: 'training/add', name: 'trainingAdd', component: load('trainings/TrainingAddComponent'), meta: {title: 'user page', permissions: [['add', 'training']]}},
+            { path: 'training/edit/:id', name: 'trainingEdit', component: load('trainings/TrainingEditComponent'), meta: {title: 'user page', permissions: [['edit', 'training']]}},
+
+            { path: 'training_plans', name: 'trainingPlansList', component: load('trainings/TrainingPlansListComponent'), meta: {title: 'user page', permissions: [['show', 'training_plan']]}},
+            { path: 'training_plan/add', name: 'trainingPlanAdd', component: load('trainings/TrainingPlanAddComponent'), meta: {title: 'user page', permissions: [['add', 'training_plan']]}},
+            { path: 'training_plan/edit/:id', name: 'trainingPlanEdit', component: load('trainings/TrainingPlanEditComponent'), meta: {title: 'user page', permissions: [['edit', 'training_plan']]}},
+
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},

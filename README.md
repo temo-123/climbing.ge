@@ -428,6 +428,7 @@ All five sitemaps are referenced at the bottom so any crawler that reads `robots
 | [docs/SUMMIT.md](docs/SUMMIT.md) | Summit: QR ascent tracking |
 | [docs/FILMS.md](docs/FILMS.md) | Films portal |
 | [docs/USER_PAGE.md](docs/USER_PAGE.md) | User dashboard and admin CMS |
+| [docs/TRAINING.md](docs/TRAINING.md) | Training content management: workouts & plans for the companion mobile app |
 | [docs/AUTH.md](docs/AUTH.md) | Authentication & authorization |
 | [docs/BACKEND/API.md](docs/BACKEND/API.md) | Full API reference |
 | [docs/FRONTEND/FRONTEND.md](docs/FRONTEND/FRONTEND.md) | Frontend architecture & components |

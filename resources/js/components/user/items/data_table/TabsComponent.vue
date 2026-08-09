@@ -100,11 +100,11 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" v-if="selection_functions">
                     <div class="col-md-12">
-                        <div class="form-groupe float-right bulk-actions-group">
+                        <div class="form-groupe float-left bulk-actions-group">
                             <select
-                                class="form-select d-inline-block w-auto me-2"
+                                class="form-control d-inline-block w-auto"
                                 v-model="bulkAction"
                                 :disabled="selectedItems.length === 0"
                             >
@@ -114,6 +114,8 @@
                                     <option value="unpublish">{{ $t('admin.table.unpublish_selected') }}</option>
                                 </template>
                             </select>
+                        </div>
+                        <div class="form-groupe float-right">
                             <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="applyBulkAction">
                                 {{ $t('admin.table.apply_bulk_action') }}
                             </button>
@@ -178,12 +180,14 @@
                         :total-items="currentTabData.tab_data?.data?.length || 0"
                         :sort-col-index="sortColIndex"
                         :sort-dir="sortDir"
+                        :show-selection="selection_functions"
                         @toggle-select-all="toggleSelectAll"
                         @sort="onSort"
                     />
                     <TabBodyComponent
                         :body_data_prop="paginatedTableData[0] ? paginatedTableData[0].tab_data : currentTabData.tab_data"
                         v-model:selected-items="selectedItems"
+                        :show-selection="selection_functions"
                         @action_for_perent_component_with_option="action_for_perent_component_with_option"
                         @action_for_perent_component="action_for_perent_component"
                     />
@@ -249,6 +253,10 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        },
+        selection_functions: {
+            type: Boolean,
+            default: true
         }
     },
 

@@ -11,6 +11,7 @@
                 <div class="col-sm-12">
                     <tabsComponent
                         :table_data="this.data_for_tab"
+                        :selection_functions="false"
                         @update="get_all_guide_comments_data"
 
                         @show_comment_modal="on_show_comment"

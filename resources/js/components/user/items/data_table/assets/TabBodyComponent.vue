@@ -2,7 +2,7 @@
 <tbody v-if="tab_data && tab_data.data">
         <!-- Checkbox column -->
         <tr v-for="(row, rowIndex) in tab_data.data" :key="row.id || rowIndex" :class="row._row_class || ''">
-            <td style="text-align: center">
+            <td v-if="showSelection" style="text-align: center">
                 <input
                     type="checkbox"
                     :value="row.id"
@@ -76,6 +76,10 @@ export default {
         selectedItems: {
             type: Array,
             default: () => []
+        },
+        showSelection: {
+            type: Boolean,
+            default: true
         }
     },
     data(){

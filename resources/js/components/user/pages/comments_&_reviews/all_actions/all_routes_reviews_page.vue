@@ -11,6 +11,7 @@
                 <div class="col-sm-12">
                     <tabsComponent
                         :table_data="data_for_tab"
+                        :selection_functions="false"
                         @update="load_data"
                         @show_review="show_review_modal"
                         @hide_review="on_hide_review"

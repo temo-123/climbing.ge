@@ -1,7 +1,7 @@
 <template>
     <thead>
         <tr>
-            <th style="text-align: center">
+            <th v-if="showSelection" style="text-align: center">
                 <input type="checkbox" class="all" ref="selectAllCheckbox" :checked="isAllSelected" :indeterminate.prop="isIndeterminate" @change="toggleSelectAll" />
             </th>
 
@@ -43,6 +43,10 @@ export default {
         sortDir: {
             type: String,
             default: 'asc'
+        },
+        showSelection: {
+            type: Boolean,
+            default: true
         }
     },
     data(){
