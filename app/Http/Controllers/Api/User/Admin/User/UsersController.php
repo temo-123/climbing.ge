@@ -27,11 +27,25 @@ class UsersController extends Controller
     {
         $auth = PermissionService::authorize('user', 'show');
         if ($auth) return $auth;
-        return User::with('role')->latest('id')->get()->map(function ($user) {
+        return User::with('role')->withPointsCounts()->latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
             $user->role_name = optional($user->role->first())->name;
+            $user->points_total = User::pointsFromCounts($user);
+            $user->activity_status = $this->activity_status($user->last_seen_at);
             return $user;
         });
+    }
+
+    /**
+     * Bucket a user's last_seen_at into the options the admin Users list
+     * activity filter offers.
+     */
+    private function activity_status($lastSeenAt): string
+    {
+        if (!$lastSeenAt) return 'inactive';
+        if ($lastSeenAt->diffInMinutes(now()) <= 15) return 'online';
+        if ($lastSeenAt->diffInDays(now()) <= 7) return 'recent';
+        return 'inactive';
     }
 
     public function get_auth_user_data() {

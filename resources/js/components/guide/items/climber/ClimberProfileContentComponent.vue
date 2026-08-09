@@ -56,6 +56,10 @@
                         <a href="#" @click.prevent="toggle_list('following')">
                             <strong>{{ profile.following_count }}</strong> {{ $t('global.follow.following_label') }}
                         </a>
+                        <span class="climber-profile__points">
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                            <strong>{{ profile.points_total }}</strong> {{ $t('global.follow.points_label') }}
+                        </span>
                     </div>
 
                     <user-follow-button
@@ -281,6 +285,9 @@
 }
 .climber-profile__counts a:hover {
     text-decoration: underline;
+}
+.climber-profile__points {
+    color: #e0a800;
 }
 .climber-profile__section {
     margin-bottom: 24px;

@@ -78,6 +78,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'last_seen_at' => 'datetime',
         'social_links' => 'array',
         'is_team_member' => 'boolean',
     ];
@@ -220,6 +221,10 @@ class User extends Authenticatable implements MustVerifyEmail
 	{
 		return $this->hasMany(Sport_route_review::class, 'user_id');
 	}
+	public function mtp_reviews()
+	{
+		return $this->hasMany(\App\Models\Guide\Mtp_review::class, 'user_id');
+	}
 	public function product_feedbacks()
 	{
         // return $this->hasMany(Product_feedback::class, 'user_id');
@@ -287,6 +292,59 @@ class User extends Authenticatable implements MustVerifyEmail
     public function donations()
     {
         return $this->hasMany(\App\Models\Guide\Donation::class, 'user_id');
+    }
+
+    /**
+     * Points are computed on the fly from existing activity — route reviews,
+     * MTP reviews, ascents and article comments — weighted by
+     * config/user_points.php, rather than tracked in a separate ledger table.
+     */
+    public function pointsTotal(): int
+    {
+        return $this->sport_route_reviews()->count() * (int) config('user_points.route_review')
+            + $this->mtp_reviews()->count() * (int) config('user_points.mtp_review')
+            + $this->ascents()->count() * (int) config('user_points.ascent')
+            + $this->article_comments()->count() * (int) config('user_points.comment');
+    }
+
+    /**
+     * Adds route_review_count/mtp_review_count/ascent_count/comment_count
+     * aggregates to a User query in a single pass, for bulk listing
+     * endpoints — pair with User::pointsFromCounts() once the rows are
+     * loaded, or orderByRaw(User::pointsOrderByExpression()) to sort by it.
+     */
+    public function scopeWithPointsCounts($query)
+    {
+        return $query->withCount([
+            'sport_route_reviews as route_review_count',
+            'mtp_reviews as mtp_review_count',
+            'ascents as ascent_count',
+            'article_comments as comment_count',
+        ]);
+    }
+
+    public static function pointsFromCounts($user): int
+    {
+        return ($user->route_review_count ?? 0) * (int) config('user_points.route_review')
+            + ($user->mtp_review_count ?? 0) * (int) config('user_points.mtp_review')
+            + ($user->ascent_count ?? 0) * (int) config('user_points.ascent')
+            + ($user->comment_count ?? 0) * (int) config('user_points.comment');
+    }
+
+    /**
+     * Raw SQL expression combining the withPointsCounts() aggregates into a
+     * weighted total, for ORDER BY on a "top active users" listing (the
+     * weighted sum can't be expressed as a single Eloquent column).
+     */
+    public static function pointsOrderByExpression(): string
+    {
+        return sprintf(
+            '(route_review_count * %d + mtp_review_count * %d + ascent_count * %d + comment_count * %d)',
+            (int) config('user_points.route_review'),
+            (int) config('user_points.mtp_review'),
+            (int) config('user_points.ascent'),
+            (int) config('user_points.comment')
+        );
     }
 
     public function following()

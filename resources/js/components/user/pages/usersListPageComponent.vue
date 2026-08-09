@@ -28,6 +28,7 @@
                         @edit_user_role="show_edit_user_role_modal"
                         @user_info_modal="show_user_info_modal"
                         @assign_warehouse="show_assign_warehouse_modal"
+                        @filtr_users_by_activity="filtr_users_by_activity"
 
                         @show_edit_role_modal="show_edit_role_modal"
                         @del_role="del_role"
@@ -99,6 +100,13 @@
         data(){
             return {
                 data_for_tab: [],
+                all_users: [],
+                activity_filter_id: 0,
+                activity_options: [
+                    { id: 1, name: this.$t('admin.users.activity_online') },
+                    { id: 2, name: this.$t('admin.users.activity_recent') },
+                    { id: 3, name: this.$t('admin.users.activity_inactive') },
+                ],
             }
         },
         mounted() {
@@ -113,77 +121,106 @@
         },
         methods: {
             get_users(){
-                this.data_for_tab = []
+                this.data_for_tab = this.data_for_tab.filter(t => t.id !== 1)
                 this.get_roles()
                 this.get_parmisions()
 
                 axios
                 .get("/get_user/get_all_users/")
                 .then(response => {
-                    const existing = this.data_for_tab.findIndex(t => t.id === 1)
-                    const tab = {
-                        'id': 1,
-                        'table_name': this.$t('admin.users.users_table'),
-                        'tab_data': {
-                            'data': response.data,
-                            'tab': {
-                                'head': [
-                                    this.$t('common.id'),
-                                    this.$t('common.name'),
-                                    this.$t('common.email'),
-                                    this.$t('admin.users.col_team'),
-                                    this.$t('admin.users.col_verified'),
-                                    this.$t('admin.users.col_banned'),
-                                    this.$t('admin.users.col_role'),
-                                    this.$t('common.edit'),
-                                    this.$t('admin.users.col_warehouse'),
-                                    this.$t('admin.users.col_ban'),
-                                    this.$t('admin.users.col_reset'),
-                                    this.$t('common.delete'),
-                                ],
-                                'body': [
-                                    ['data', ['id']],
-                                    ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
-                                    ['data', ['email']],
-                                    ['data', ['is_team_member'],'bool'],
-                                    ['data', ['email_verified_at'],'bool_2'],
-                                    ['data', ['is_banned'],'bool'],
-                                    ['data', ['role_name']],
-                                    ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
-                                    ['action_fun_id', 'assign_warehouse', 'btn btn-info btn-sm', '<i class="fa fa-building" aria-hidden="true"></i>'],
-                                    ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
-                                    ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
-                                    ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                ],
-                                'perm': [
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['role', 'edit'],
-                                    ['warehouse', 'edit'],
-                                    ['user', 'create_ban'],
-                                    ['user', 'edit'],
-                                    ['user', 'del'],
-                                ]
-                            }
-                        },
-                    }
-                    if (existing !== -1) {
-                        this.data_for_tab.splice(existing, 1, tab)
-                    } else {
-                        this.data_for_tab.push(tab)
-                    }
+                    this.all_users = response.data
+                    this.build_users_tab()
                 })
                 .catch(error => {
                     console.log(error)
-                    if (this.data_for_tab.findIndex(t => t.id === 1) === -1) {
-                        this.data_for_tab.push({ 'id': 1, 'table_name': this.$t('admin.users.users_table'), 'tab_data': { 'data': [], 'tab': { 'head': [], 'body': [], 'perm': [] } } })
-                    }
+                    this.all_users = []
+                    this.build_users_tab()
                 });
+            },
+
+            build_users_tab(){
+                const filteredUsers = this.activity_filter_id
+                    ? this.all_users.filter(u => {
+                        const map = { 1: 'online', 2: 'recent', 3: 'inactive' }
+                        return u.activity_status === map[this.activity_filter_id]
+                    })
+                    : this.all_users
+
+                const existing = this.data_for_tab.findIndex(t => t.id === 1)
+                const tab = {
+                    'id': 1,
+                    'table_name': this.$t('admin.users.users_table'),
+                    'filter_data': {
+                        'title': this.$t('admin.users.filter_by_activity'),
+                        'data': this.activity_options,
+                        'action_fun_id': 'filtr_users_by_activity',
+                        'array_key': 'name',
+                        'id_key': 'id',
+                    },
+                    'tab_data': {
+                        'data': filteredUsers,
+                        'tab': {
+                            'head': [
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('common.email'),
+                                this.$t('admin.users.col_team'),
+                                this.$t('admin.users.col_verified'),
+                                this.$t('admin.users.col_banned'),
+                                this.$t('admin.users.col_role'),
+                                this.$t('admin.users.col_points'),
+                                this.$t('admin.users.col_last_seen'),
+                                this.$t('common.edit'),
+                                this.$t('admin.users.col_warehouse'),
+                                this.$t('admin.users.col_ban'),
+                                this.$t('admin.users.col_reset'),
+                                this.$t('common.delete'),
+                            ],
+                            'body': [
+                                ['data', ['id']],
+                                ['data_action_id', ['name'], ['surname'], 'user_info_modal'],
+                                ['data', ['email']],
+                                ['data', ['is_team_member'],'bool'],
+                                ['data', ['email_verified_at'],'bool_2'],
+                                ['data', ['is_banned'],'bool'],
+                                ['data', ['role_name']],
+                                ['data', ['points_total']],
+                                ['data', ['last_seen_at']],
+                                ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
+                                ['action_fun_id', 'assign_warehouse', 'btn btn-info btn-sm', '<i class="fa fa-building" aria-hidden="true"></i>'],
+                                ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
+                                ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
+                                ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                            ],
+                            'perm': [
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['role', 'edit'],
+                                ['warehouse', 'edit'],
+                                ['user', 'create_ban'],
+                                ['user', 'edit'],
+                                ['user', 'del'],
+                            ]
+                        }
+                    },
+                }
+                if (existing !== -1) {
+                    this.data_for_tab.splice(existing, 1, tab)
+                } else {
+                    this.data_for_tab.push(tab)
+                }
+            },
+
+            filtr_users_by_activity(id){
+                this.activity_filter_id = id
+                this.build_users_tab()
             },
             get_roles(){
                 axios

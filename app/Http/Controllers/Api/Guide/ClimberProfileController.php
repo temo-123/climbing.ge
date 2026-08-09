@@ -19,15 +19,30 @@ class ClimberProfileController extends Controller
     public function list(Request $request): JsonResponse
     {
         $authUser = auth('sanctum')->user();
+        $search = trim((string) $request->query('search', ''));
+        $sort = $request->query('sort', 'name') === 'top_active' ? 'top_active' : 'name';
 
-        $users = User::select(['id', 'name', 'surname', 'image'])
+        $query = User::select(['id', 'name', 'surname', 'image'])
             ->whereDoesntHave('role', fn($q) => $q->where('slug', 'ban'))
             ->whereNotNull('name')
             ->whereNotNull('email_verified_at')
             ->when($authUser, fn($q) => $q->where('id', '!=', $authUser->id))
+            ->when($search !== '', fn($q) => $q->where(fn($sub) => $sub
+                ->where('name', 'like', "%{$search}%")
+                ->orWhere('surname', 'like', "%{$search}%")
+            ))
             ->withCount('followers')
-            ->orderBy('name')
-            ->paginate(24);
+            ->withPointsCounts();
+
+        $query = $sort === 'top_active'
+            ? $query->orderByRaw(User::pointsOrderByExpression() . ' desc')
+            : $query->orderBy('name');
+
+        $users = $query->paginate(24)
+            ->through(function ($user) {
+                $user->points_total = User::pointsFromCounts($user);
+                return $user;
+            });
 
         return response()->json($users);
     }
@@ -106,6 +121,7 @@ class ClimberProfileController extends Controller
 
         return response()->json([
             'user' => $user,
+            'points_total' => $user->pointsTotal(),
             'followers_count' => $user->followers()->count(),
             'following_count' => $user->following()->count(),
             'followers' => $followers,
