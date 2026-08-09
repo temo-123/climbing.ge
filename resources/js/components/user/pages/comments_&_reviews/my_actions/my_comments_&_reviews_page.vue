@@ -10,6 +10,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
+                        ref="tabsComponent"
                         :table_data="this.data_for_tab"
                         @update="get_my_guide_comments_data"
 
@@ -22,6 +23,8 @@
                         @toggle_feedback="on_toggle_feedback"
                         @edit_feedback_modal="on_edit_feedback_modal"
                         @del_feedback="on_del_feedback"
+
+                        @delete_selected="bulk_delete_dispatch"
                     />
                 </div>
             </div>
@@ -229,6 +232,16 @@ export default {
             }
             if (confirm(this.$t('user.my_comments.confirm_delete_feedback'))) {
                 axios.delete('/set_product/set_product_feedback/del_feedback/' + id)
+                    .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
+            }
+        },
+        bulk_delete_dispatch(ids) {
+            const tab_num = this.$refs.tabsComponent?.tab_num;
+            if (tab_num === 1) {
+                axios.post('/set_article/set_guide_comment/user_bulk_del_comment', { ids })
+                    .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
+            } else if (tab_num === 2) {
+                axios.post('/set_product/set_product_feedback/bulk_delete', { ids })
                     .then(() => this.get_my_guide_comments_data()).catch(e => console.log(e));
             }
         },

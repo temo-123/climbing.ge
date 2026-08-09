@@ -11,6 +11,7 @@ use App\Models\Blog\Locale_post;
 
 use App\Services\PostService;
 use App\Services\PermissionService;
+use Illuminate\Support\Facades\DB;
 
 class PostController extends Controller
 {
@@ -79,5 +80,54 @@ class PostController extends Controller
 
         PostService::del_content($global_id, Post::class, Locale_post::class, '_post', 'image', 'images/blog_img/');
 
+    }
+
+    function bulk_delete(Request $request) {
+        $auth = PermissionService::authorize('post', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Post::where('id', $id)->exists()) {
+                    continue;
+                }
+                PostService::del_content($id, Post::class, Locale_post::class, '_post', 'image', 'images/blog_img/');
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    function bulk_publish(Request $request) {
+        $auth = PermissionService::authorize('post', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Post::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    function bulk_unpublish(Request $request) {
+        $auth = PermissionService::authorize('post', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Post::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

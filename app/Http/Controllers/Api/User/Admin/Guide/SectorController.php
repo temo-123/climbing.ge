@@ -21,6 +21,7 @@ use App\Services\CanvasService;
 use App\Services\PermissionService;
 
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class SectorController extends Controller
 {
@@ -172,13 +173,23 @@ class SectorController extends Controller
     {
         $auth = PermissionService::authorize('sector', 'del');
         if ($auth) return $auth;
-        $sector_id=$request->sector_id;
 
+        $this->deleteOneSector($request->sector_id);
+    }
+
+    /**
+     * Deletes a single sector along with its images (files + canvas drawing data).
+     * Extracted from del_sector so bulk_delete can reuse the exact same cascade.
+     * Matches the original method's behavior of not guarding against a missing
+     * sector — bulk_delete checks existence before calling this.
+     */
+    private function deleteOneSector($sector_id)
+    {
         $sector = Sector::where('id',strip_tags($sector_id))->first();
 
         // delete product file
         $sector_images_count = Sector_image::where('sector_id',strip_tags($sector_id))->count();
-        
+
         if ($sector_images_count > 0) {
             $sector_images = Sector_image::where('sector_id',strip_tags($sector_id))->get();
             foreach ($sector_images as $sector_image) {
@@ -190,6 +201,56 @@ class SectorController extends Controller
 
         // delete product from db
         $sector ->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('sector', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Sector::where('id', $id)->exists()) continue;
+                $this->deleteOneSector($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Sector::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('sector', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Sector::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function sector_image_validate($request)

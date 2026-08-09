@@ -70,6 +70,24 @@ class TourCategoryController extends Controller
         $deleted_product_category -> delete();
     }
 
+    /**
+     * Bulk delete tour categories. No cascading side effects, so a plain destroy() is safe.
+     */
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('tour_category', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = Tour_category::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
+
     public function validation($request)
     {
         $validator = validator($data = $request->data, [

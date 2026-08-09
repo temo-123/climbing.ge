@@ -26,11 +26,14 @@
                     </skeleton-loader>
                 </div>
                 <div class="col-sm-12" v-else>
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_posts"
 
                         @del_post="del_post"
+                        @delete_selected="bulk_delete_posts"
+                        @publish_selected="bulk_publish_posts"
+                        @unpublish_selected="bulk_unpublish_posts"
                     />
                 </div>
             </div>
@@ -71,6 +74,7 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': this.$t('admin.posts.posts_table'),
+                                            'has_published': true,
                                             // 'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
                                             'add_action': {
                                                 'action': 'route',
@@ -117,6 +121,27 @@
                         this.get_posts()
                     })
                 }
+            },
+            bulk_delete_posts(ids){
+                axios
+                .post("/set_post/bulk_delete", { ids })
+                .then(response => {
+                    this.get_posts()
+                })
+            },
+            bulk_publish_posts(ids){
+                axios
+                .post("/set_post/bulk_publish", { ids })
+                .then(response => {
+                    this.get_posts()
+                })
+            },
+            bulk_unpublish_posts(ids){
+                axios
+                .post("/set_post/bulk_unpublish", { ids })
+                .then(response => {
+                    this.get_posts()
+                })
             },
         }
     }

@@ -21,6 +21,8 @@
                         @del_tour_reservation="del_tour_reservation"
 
                         @show_reservation_details="show_reservation_details"
+
+                        @delete_selected="delete_selected"
                     />
                 </div>
             </div>
@@ -149,6 +151,14 @@
             onReservationDeleted(deletedId){
                 // Refresh the reservations list after deletion
                 this.get_reservations();
+            },
+            delete_selected(ids){
+                axios
+                .post('/set_tour/set_reservation/bulk_delete', { ids })
+                .then(Response => {
+                    this.get_reservations()
+                })
+                .catch(error => console.log(error))
             },
         }
     }

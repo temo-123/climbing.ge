@@ -8,6 +8,7 @@ use App\Models\Guide\Mtp_review;
 use App\Services\ReCaptchaV3Service;
 use App\Services\PermissionService;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class MtpReitingController extends Controller
 {
@@ -123,5 +124,41 @@ class MtpReitingController extends Controller
         }
         $review->delete();
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Bulk version of del_mtp_review. Replicates the exact same branching
+     * logic as the single-item method: admins (has 'comment','del' permission)
+     * can delete any review by id; non-admins can only delete their own, and
+     * never one an admin has hidden. The admin-permission check happens once
+     * before the loop (not per id). Missing / not-owned / admin-hidden ids
+     * are silently skipped rather than surfacing individual errors, since a
+     * bulk operation can't return one status per id.
+     */
+    public function bulk_del_mtp_review(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $hasAdminPermission = PermissionService::authorize('comment', 'del') === null;
+
+        DB::transaction(function () use ($request, $hasAdminPermission) {
+            foreach ($request->ids as $id) {
+                if ($hasAdminPermission) {
+                    $review = Mtp_review::find($id);
+                } else {
+                    $review = Mtp_review::where('id', $id)->where('user_id', Auth::id())->first();
+                }
+
+                if (!$review) continue;
+                if (!$hasAdminPermission && $review->admin_hidden) continue;
+
+                $review->delete();
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

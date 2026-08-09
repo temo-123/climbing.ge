@@ -18,6 +18,7 @@ use App\Services\Abstract\LocaleContentControllService;
 use App\Services\PermissionService;
 
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class LocalBisnesController extends Controller
 {
@@ -454,8 +455,19 @@ class LocalBisnesController extends Controller
     {
         $auth = PermissionService::authorize('local_bisnes', 'del');
         if ($auth) return $auth;
-        
-        $bisnes = Suport_local_bisnes::where('id', '=', $request->bisnes_id)->first();
+
+        $this->deleteOneLocalBisnes($request->bisnes_id);
+    }
+
+    /**
+     * Deletes a single local business and its images. Extracted from
+     * del_local_bisnes so bulk_delete can reuse the exact same cascade.
+     * Matches the original method's behavior of not guarding against a
+     * missing business — bulk_delete checks existence before calling this.
+     */
+    private function deleteOneLocalBisnes($bisnes_id)
+    {
+        $bisnes = Suport_local_bisnes::where('id', '=', $bisnes_id)->first();
         $bisnes_images_count = Suport_local_bisnes_image::where('bisnes_id', '=', $bisnes->id)->count();
 
         if($bisnes_images_count > 0){
@@ -467,6 +479,56 @@ class LocalBisnesController extends Controller
             }
         }
         $bisnes ->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('local_bisnes', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Suport_local_bisnes::where('id', $id)->exists()) continue;
+                $this->deleteOneLocalBisnes($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('local_bisnes', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Suport_local_bisnes::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('local_bisnes', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Suport_local_bisnes::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function del_local_bisnes_image(Request $request)

@@ -9,6 +9,9 @@ Route::group(['namespace'=>'Api\User\Admin\Blog', 'middleware'=>['auth:sanctum',
         Route::post('/add_post', 'add_post');
         Route::post('/edit_post/{id}', 'edit_post');
         Route::delete('/del_post/{id}', 'del_post');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
     });
     
 });

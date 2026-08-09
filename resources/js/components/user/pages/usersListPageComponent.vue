@@ -19,6 +19,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
+                        ref="tabsComponent"
                         :table_data="this.data_for_tab"
                         @update="get_users"
 
@@ -38,6 +39,8 @@
                         @del_permission="del_permission"
 
                         @reset_user_password="show_reset_password_modal"
+
+                        @delete_selected="bulk_delete_selected"
                     />
                 </div>
             </div>
@@ -101,6 +104,8 @@
             return {
                 data_for_tab: [],
                 all_users: [],
+                all_roles: [],
+                all_permissions: [],
                 activity_filter_id: 0,
                 activity_options: [
                     { id: 1, name: this.$t('admin.users.activity_online') },
@@ -226,6 +231,7 @@
                 axios
                 .get("/set_role")
                 .then(response => {
+                    this.all_roles = response.data
                     const existing = this.data_for_tab.findIndex(t => t.id === 3)
                     const tab = {
                         'id': 3,
@@ -280,6 +286,7 @@
                 axios
                 .get("/parmisions_list")
                 .then(response => {
+                    this.all_permissions = response.data
                     const existing = this.data_for_tab.findIndex(t => t.id === 2)
                     const tab = {
                         'id': 2,
@@ -405,6 +412,39 @@
             del_permission(id){
                 if(!confirm(this.$t('admin.users.confirm_delete_permission'))) return
                 axios.post('/set_permission/destroy/'+id, { _method: 'DELETE' })
+                    .then(() => this.get_parmisions())
+                    .catch(error => console.log(error))
+            },
+
+            // The bulk-action bar (TabsComponent) emits delete_selected with just the
+            // selected ids. Selection is cleared whenever the active tab changes, so
+            // this.$refs.tabsComponent.tab_num reliably identifies which of the 3 tabs
+            // (users=1 / permissions=2 / roles=3) the selection belongs to — safer than
+            // filtering by id membership in all_users/all_roles/all_permissions, since
+            // those are independent id sequences that can numerically collide (e.g. a
+            // role id and a user id both being 3 would previously have caused both to
+            // be bulk-deleted).
+            bulk_delete_selected(ids){
+                const tab_num = this.$refs.tabsComponent?.tab_num
+                if (tab_num === 1) this.bulk_delete_users(ids)
+                else if (tab_num === 2) this.bulk_delete_permissions(ids)
+                else if (tab_num === 3) this.bulk_delete_roles(ids)
+            },
+
+            bulk_delete_users(ids){
+                axios.post('/set_user/bulk_delete', { ids })
+                    .then(() => this.get_users())
+                    .catch(error => console.log(error))
+            },
+
+            bulk_delete_roles(ids){
+                axios.post('/set_role/bulk_delete', { ids })
+                    .then(() => this.get_users())
+                    .catch(error => console.log(error))
+            },
+
+            bulk_delete_permissions(ids){
+                axios.post('/set_permission/bulk_delete', { ids })
                     .then(() => this.get_parmisions())
                     .catch(error => console.log(error))
             },

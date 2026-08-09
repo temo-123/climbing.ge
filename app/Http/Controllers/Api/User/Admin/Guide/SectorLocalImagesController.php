@@ -14,6 +14,7 @@ use App\Models\Guide\Sector_local_image_sector;
 use App\Models\Guide\SectorLocalImagesJson;
 use App\Models\Guide\SectorLocalImagesJsonSector;
 use App\Models\Guide\Sector;
+use Illuminate\Support\Facades\DB;
 
 class SectorLocalImagesController extends Controller
 {
@@ -203,7 +204,19 @@ class SectorLocalImagesController extends Controller
     {
         $auth = PermissionService::authorize('sector_local_image', 'del');
         if ($auth) return $auth;
-        
+
+        $this->deleteOneLocaleImage($id);
+    }
+
+    /**
+     * Deletes a single sector local image along with its sector relations
+     * and canvas drawing data. Extracted from del_locale_image so bulk_delete
+     * can reuse the exact same cascade. Matches the original method's
+     * behavior of not guarding against a missing image — bulk_delete checks
+     * existence before calling this.
+     */
+    private function deleteOneLocaleImage($id)
+    {
         $deleting_sector_local_images = Sector_local_image::where("id", "=", $id)->first();
 
         $image_sector_relations = Sector_local_image_sector::where("image_id", "=", $deleting_sector_local_images->id)->get();
@@ -213,12 +226,32 @@ class SectorLocalImagesController extends Controller
                 $image_sector_relation ->delete();
             }
         }
-        
+
         CanvasService::deleteSectorLocalImageCanvasData($deleting_sector_local_images->id);
 
         ImageControllService::image_delete('images/sector_local_img/', $deleting_sector_local_images, 'image');
 
         $deleting_sector_local_images->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('sector_local_image', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Sector_local_image::where('id', $id)->exists()) continue;
+                $this->deleteOneLocaleImage($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function del_image_sector_from_db(Request $request)

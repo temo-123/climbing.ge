@@ -14,6 +14,7 @@
                         @show_ascent_detail="show_ascent_detail"
                         @edit_ascent="edit_ascent"
                         @del_ascent="del_ascent"
+                        @delete_selected="bulk_delete_ascents"
                     />
                 </div>
             </div>
@@ -96,6 +97,12 @@
             del_ascent(id) {
                 if (!confirm(this.$t('user.ascents.confirm_delete'))) return
                 axios.delete('/get_user_ascents/del_ascent/' + id)
+                    .then(() => this.load_ascents())
+                    .catch(error => console.log(error))
+            },
+
+            bulk_delete_ascents(ids) {
+                axios.post('/get_user_ascents/bulk_delete', { ids })
                     .then(() => this.load_ascents())
                     .catch(error => console.log(error))
             },

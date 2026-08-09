@@ -12,6 +12,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <tabsComponent
+                            ref="tabsComponent"
                             :table_data="data_for_tab"
                             @update="get_orders"
 
@@ -24,6 +25,8 @@
                             @show_order_tracking_odal="show_order_tracking_odal"
 
                             @add_costom_order="add_costom_order"
+
+                            @delete_selected="delete_selected"
                         />
                     </div>
                 </div>
@@ -223,6 +226,20 @@
 
             add_costom_order(){
                 this.$refs.addCustomOrderModal.show_modal()
+            },
+
+            delete_selected(ids){
+                // Bulk delete is only wired for the "shipped regions" tab (id 2) —
+                // the "orders" tab (id 1) has no delete action at all, so ignore it there.
+                const activeTab = this.$refs.tabsComponent ? this.$refs.tabsComponent.tab_num : null;
+                if (activeTab !== 2) return;
+
+                axios
+                .post('/set_shiped_region/bulk_delete', { ids })
+                .then(Response => {
+                    this.get_orders()
+                })
+                .catch(error => console.log(error))
             },
 
         }

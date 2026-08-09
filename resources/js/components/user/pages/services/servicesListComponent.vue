@@ -11,10 +11,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_services_data"
                         @del_service="del_service"
+                        @delete_selected="delete_selected"
+                        @publish_selected="publish_selected"
+                        @unpublish_selected="unpublish_selected"
                     />
                 </div>
             </div>
@@ -53,9 +56,10 @@
                                             'id': 1,
                                             'table_name': this.$t('admin.services.services_table'),
                                             'list_page': (process.env.MIX_APP_SSH || 'http://') + (process.env.MIX_SHOP_URL || '') + '/services',
+                                            'has_published': true,
                                             'add_action': {
                                                 'action': 'route',
-                                                'link': 'serviceAdd', 
+                                                'link': 'serviceAdd',
                                                 'class': 'btn btn-primary'
                                             },
                                             'tab_data': {
@@ -101,6 +105,30 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            delete_selected(ids){
+                axios
+                .post('/set_service/bulk_delete', { ids })
+                .then(Response => {
+                    this.get_services_data();
+                })
+                .catch(error => console.log(error))
+            },
+            publish_selected(ids){
+                axios
+                .post('/set_service/bulk_publish', { ids })
+                .then(Response => {
+                    this.get_services_data();
+                })
+                .catch(error => console.log(error))
+            },
+            unpublish_selected(ids){
+                axios
+                .post('/set_service/bulk_unpublish', { ids })
+                .then(Response => {
+                    this.get_services_data();
+                })
+                .catch(error => console.log(error))
             },
         }
     }

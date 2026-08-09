@@ -21,6 +21,7 @@ use App\Models\Shop\Option_image;
 use App\Models\Shop\Product_category;
 use App\Models\User\User_product;
 use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -233,6 +234,74 @@ class ProductController extends Controller
         $auth = PermissionService::authorize('product', 'del');
         if ($auth) return $auth;
 
-        ProductService::del_content($request->product_id, Product::class, Locale_product::class, '_product', 'image', 'images/product_option_img/');
+        $this->deleteOneProduct($request->product_id);
+    }
+
+    /**
+     * Deletes a single product and all of its cascading related records
+     * (options, option images, cart rows, order_products rows, locale content, main image).
+     * Returns false gracefully if the product no longer exists (used by bulk_delete).
+     */
+    private function deleteOneProduct($id)
+    {
+        if (!Product::where('id', '=', $id)->exists()) {
+            return false;
+        }
+
+        ProductService::del_content($id, Product::class, Locale_product::class, '_product', 'image', 'images/product_option_img/');
+        return true;
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('product', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = 0;
+
+        DB::transaction(function () use ($request, &$deleted_count) {
+            foreach ($request->ids as $id) {
+                if ($this->deleteOneProduct($id)) {
+                    $deleted_count++;
+                }
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('product', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Product::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('product', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Product::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

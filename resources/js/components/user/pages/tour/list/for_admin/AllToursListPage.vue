@@ -10,6 +10,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
+                        ref="tabsComponent"
                         :table_data="this.data_for_tab"
                         @update="get_all_tours_data"
 
@@ -21,6 +22,10 @@
                         @del_tour="del_tour"
 
                         @filtr_tour_category="filtr_tour_category"
+
+                        @delete_selected="delete_selected"
+                        @publish_selected="publish_selected"
+                        @unpublish_selected="unpublish_selected"
                     />
                 </div>
             </div>
@@ -101,6 +106,7 @@
                     list_page: process.env.MIX_APP_SSH
                         ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/tours'
                         : window.location.origin + '/tours',
+                    'has_published': true,
                     'add_action': {
                         'action': 'route',
                         'link': 'tourAdd',
@@ -211,6 +217,27 @@
             },
             show_user_change_modal(tour_id) {
                 this.$refs.tour_guide_modal.show_modal(tour_id)
+            },
+            delete_selected(ids) {
+                // Tab 1 = tours (/set_tour/bulk_delete), tab 2 = tour categories
+                // (/set_tour/set_category/bulk_delete) — disambiguate via the active tab.
+                const activeTab = this.$refs.tabsComponent ? this.$refs.tabsComponent.tab_num : null;
+                const url = activeTab === 2
+                    ? '/set_tour/set_category/bulk_delete'
+                    : '/set_tour/bulk_delete';
+                axios.post(url, { ids })
+                    .then(() => this.get_all_tours_data())
+                    .catch(error => console.log(error))
+            },
+            publish_selected(ids) {
+                axios.post('/set_tour/bulk_publish', { ids })
+                    .then(() => this.get_all_tours_data())
+                    .catch(error => console.log(error))
+            },
+            unpublish_selected(ids) {
+                axios.post('/set_tour/bulk_unpublish', { ids })
+                    .then(() => this.get_all_tours_data())
+                    .catch(error => console.log(error))
             },
         }
     }

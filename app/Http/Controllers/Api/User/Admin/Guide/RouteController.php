@@ -20,6 +20,7 @@ use App\Models\Guide\Mtp_pitch;
 use App\Services\SportClimbingRoutesService;
 
 use App\Http\Controllers\Api\User\Admin\Guide\RouteJsonController;
+use Illuminate\Support\Facades\DB;
 
 class RouteController extends Controller
 {
@@ -198,12 +199,44 @@ class RouteController extends Controller
     {
         $auth = PermissionService::authorize('route', 'del');
         if ($auth) return $auth;
-        $route = Route::where('id',strip_tags($request->route_id))->first();
+
+        $this->deleteOneRoute($request->route_id);
+    }
+
+    /**
+     * Deletes a single route and its related drawing JSON. Extracted from
+     * del_route so bulk_delete can reuse the exact same cascade. Matches the
+     * original method's behavior of not guarding against a missing route —
+     * bulk_delete checks existence before calling this.
+     */
+    private function deleteOneRoute($route_id)
+    {
+        $route = Route::where('id',strip_tags($route_id))->first();
 
         // Delete related JSON data first to avoid foreign key constraint
         ClimbingRoutesJson::where('route_id', $route->id)->delete();
 
         $route->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('route', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Route::where('id', $id)->exists()) continue;
+                $this->deleteOneRoute($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function get_routes_quantity(Request $request)

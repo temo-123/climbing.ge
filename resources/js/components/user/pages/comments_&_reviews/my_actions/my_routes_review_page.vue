@@ -10,6 +10,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
+                        ref="tabsComponent"
                         :table_data="data_for_tab"
                         @update="load_data"
                         @show_review="show_review_modal"
@@ -20,6 +21,7 @@
                         @toggle_mtp_review="toggle_mtp_review"
                         @edit_mtp_review_modal="edit_mtp_review_modal_fn"
                         @del_mtp_review="del_mtp_review"
+                        @delete_selected="bulk_delete_dispatch"
                     />
                 </div>
             </div>
@@ -204,6 +206,16 @@ export default {
                 return;
             }
             this.$refs.mtp_review_edit_modal.show_modal(id);
+        },
+        bulk_delete_dispatch(ids) {
+            const tab_num = this.$refs.tabsComponent?.tab_num;
+            if (tab_num === 1) {
+                axios.post('/set_route/set_route_review/bulk_del_route_review', { ids })
+                    .then(() => this.load_data()).catch(e => console.log(e));
+            } else if (tab_num === 2) {
+                axios.post('/set_mtp_review/bulk_del_mtp_review', { ids })
+                    .then(() => this.load_data()).catch(e => console.log(e));
+            }
         },
     },
 };

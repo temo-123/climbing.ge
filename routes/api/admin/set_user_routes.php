@@ -38,6 +38,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::post('/verify_user/{user_id}', 'verify_user');
 
         Route::get('/post_user/{user_id}', 'get_post_user');
+        Route::post('/bulk_delete', 'bulk_delete');
 
         Route::controller(UserNotificationsController::class)->prefix('set_notifications')->group( function() {
             Route::post('/send_user_favorites_notification/{action}', 'send_user_favorites_notification');
@@ -75,12 +76,14 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/registered_subscribers', 'get_registered_subscribers');
         Route::get('/guest_followers', 'get_guest_followers');
         Route::delete('/guest_followers/{id}', 'del_guest_follower');
+        Route::post('/guest_followers/bulk_delete', 'bulk_delete_guest_followers');
         Route::post('/subscribers/{user_id}/verify', 'verify_subscriber');
         Route::post('/subscribers/{user_id}/subscribe_all', 'subscribe_all');
         Route::get('/failed_jobs', 'get_failed_jobs');
         Route::post('/failed_jobs/retry_all', 'retry_all_failed_jobs');
         Route::post('/failed_jobs/{id}/retry', 'retry_failed_job');
         Route::delete('/failed_jobs/{id}', 'del_failed_job');
+        Route::post('/failed_jobs/bulk_delete', 'bulk_delete_failed_jobs');
     });
 
     Route::controller(RolesController::class)->prefix('set_role')->group( function() {
@@ -96,6 +99,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::post('/edit_permissions_and_role/{user_id}', 'edit_permissions_and_role');
         Route::delete('/del_user_pemisino/{permission_id}/{user_id}', 'del_user_pemisino');
         Route::post('/sync_admin_permissions', 'sync_admin_permissions');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
     Route::get('/parmisions_list', 'RolesController@get_parmisions_list');
 
@@ -103,6 +107,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('get_parmisions_for_role/{role_id}', 'get_parmisions_for_role');
         Route::post('store', 'store');
         Route::delete('destroy/{id}', 'destroy');
+        Route::post('bulk_delete', 'bulk_delete');
     });
 
     Route::controller(ExportController::class)->prefix('set_export')->group(function() {
@@ -117,6 +122,7 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::get('/get_all_my_ascents', 'get_all_my_ascents');
         Route::post('/update_ascent/{id}', 'update_ascent');
         Route::delete('/del_ascent/{id}', 'del_ascent');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
 
     Route::controller(UserDonationController::class)->prefix('get_user_donations')->group(function() {

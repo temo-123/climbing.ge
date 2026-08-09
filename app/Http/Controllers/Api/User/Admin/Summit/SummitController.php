@@ -150,6 +150,62 @@ class SummitController extends Controller
         return response()->json(['message' => 'Deleted']);
     }
 
+    public function bulk_delete(Request $request)
+    {
+        if ($auth = PermissionService::authorize('summit', 'del')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Summit::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Summit::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Summit::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_delete_ascents(Request $request)
+    {
+        if ($auth = PermissionService::authorize('summit', 'del')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        SummitAscent::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
     public function update_coordinates(Request $request, $id)
     {
         if ($auth = PermissionService::authorize('summit', 'edit')) return $auth;

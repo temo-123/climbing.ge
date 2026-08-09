@@ -82,9 +82,24 @@ class RegionController extends Controller
     {
         $auth = PermissionService::authorize('region', 'del');
         if ($auth) return $auth;
-        
+
         $region = Region::where('id',strip_tags($request->id))->first();
         $region -> delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('region', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Region::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function region_validate($data)

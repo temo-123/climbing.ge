@@ -11,11 +11,12 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_sectors"
                         @del_sector_local_image="del_sector_local_image"
                         @show_local_image_modal="show_local_image_modal"
+                        @delete_selected="bulk_delete_sector_local_images"
                     />
                 </div>
             </div>
@@ -109,6 +110,9 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            bulk_delete_sector_local_images(ids){
+                axios.post('/set_sector/set_sector_local_images/bulk_delete', { ids }).then(() => this.get_sectors()).catch(error => console.log(error))
             },
             show_local_image_modal(id){
                 this.$refs.sector_local_image_modal.show_sector_local_image_modal(id)

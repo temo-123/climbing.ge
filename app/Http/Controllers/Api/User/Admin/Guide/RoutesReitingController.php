@@ -185,10 +185,24 @@ class RoutesReitingController extends Controller
     public function del_route_review($review_id) {
         $auth = PermissionService::authorize('routes_rewiew', 'del');
         if ($auth) return $auth;
-        
+
         $review = Sport_route_review::where('id', strip_tags($review_id))->first();
         if ($review) {
             $review->delete();
         }
+    }
+
+    public function bulk_del_route_review(Request $request) {
+        $auth = PermissionService::authorize('routes_rewiew', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Sport_route_review::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

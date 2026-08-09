@@ -11,6 +11,7 @@ use App\Models\Shop\product_options;
 
 use App\Services\PermissionService;
 
+use Illuminate\Support\Facades\DB;
 use Validator;
 
 class ProductCategoryController extends Controller
@@ -73,6 +74,25 @@ class ProductCategoryController extends Controller
 
         $deleted_product_category = Product_category::where("id", "=", $id)->first();
         $deleted_product_category->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('product_category', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            // Delete all subcategories first to avoid foreign key constraint violation
+            Product_subcategory::whereIn('category_id', $request->ids)->delete();
+            Product_category::destroy($request->ids);
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function validation($request)

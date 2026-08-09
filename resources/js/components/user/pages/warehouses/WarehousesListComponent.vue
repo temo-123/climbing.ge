@@ -18,6 +18,7 @@
                         @show_warehouse_edit_medal="show_warehouse_edit_medal"
                         @show_warehouse_add_medal="show_warehouse_add_medal"
                         @del_warehouse="del_warehouse"
+                        @delete_selected="delete_selected"
                     />
                 </div>
             </div>
@@ -133,6 +134,15 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+
+            delete_selected(ids){
+                axios
+                .post('/set_warehouse/bulk_delete', { ids })
+                .then(Response => {
+                    this.get_warehouses_data();
+                })
+                .catch(error => console.log(error))
             },
         }
     }

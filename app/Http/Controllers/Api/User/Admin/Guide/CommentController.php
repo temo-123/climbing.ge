@@ -20,6 +20,7 @@ use App\Services\CommentService;
 use App\Services\PermissionService;
 
 use App\Notifications\comments\CommentAnswerNotification;
+use Illuminate\Support\Facades\DB;
 
 class CommentController extends Controller
 {
@@ -115,6 +116,35 @@ class CommentController extends Controller
         if ($comment->admin_hidden) return response()->json(['error' => 'Admin hidden', 'admin_hidden' => true], 403);
         $comment->delete();
         return response()->json(['success' => true]);
+    }
+
+    /**
+     * Self-service bulk delete for a user's own guide comments — no admin
+     * permission gate, mirrors user_del_comment's self-ownership filter
+     * (only ids found within the authenticated user's own article_comments)
+     * and skips comments an admin has hidden, exactly like the single-item
+     * version does (there it returns 403; here it's simply skipped since a
+     * bulk operation can't surface one status per id).
+     */
+    public function user_bulk_del_comment(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $user = auth()->user();
+
+        DB::transaction(function () use ($request, $user) {
+            foreach ($request->ids as $id) {
+                $comment = $user->article_comments()->find($id);
+                if (!$comment) continue;
+                if ($comment->admin_hidden) continue;
+                $comment->delete();
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function admin_hide_comment(Request $request, $comment_id)

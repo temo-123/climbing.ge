@@ -15,7 +15,8 @@
                     </div>
                 </div>
                 <div class="col-sm-12" v-else-if="data_for_tab.length">
-                    <tabsComponent 
+                    <tabsComponent
+                        ref="tabsComponent"
                         :table_data="safeDataForTab"
                         @update="get_articles"
                         @del_article="del_article"
@@ -28,6 +29,9 @@
                         @show_spot_sectors_modal="show_spot_sectors_modal"
                         @quick_wiev_action="quick_wiev_action"
                         @sector_modal="show_sector_model"
+                        @delete_selected="bulk_delete_dispatch"
+                        @publish_selected="bulk_publish_dispatch"
+                        @unpublish_selected="bulk_unpublish_dispatch"
                     />
                 </div>
                 <div v-else class="col-sm-12 text-center py-4">
@@ -181,6 +185,7 @@ export default {
                     this.data_for_tab.push({
                         id: 2,
                         table_name: this.$t('admin.articles.ice_sectors_table'),
+                        has_published: true,
                         add_action: {
                             action: 'url',
                             link: '../sector/add/ice',
@@ -323,6 +328,7 @@ export default {
                         id: 1,
                         table_name: this.$route.params.article_category,
                         list_page: process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
+                        has_published: true,
                         add_action: {
                             action: 'route',
                             link: 'articleAdd',
@@ -383,6 +389,7 @@ export default {
                 this.data_for_tab.push({
                     id: 2,
                     table_name: this.$t('admin.articles.mount_masives_table'),
+                    has_published: true,
                     add_action: {
                         action: 'route',
                         link: 'mount_massive_add',
@@ -444,6 +451,43 @@ export default {
         del_sector(id){
             if(confirm(this.$t('admin.common.confirm_delete'))){
                 axios.post('/set_sector/del_sector/'+id, {_method: 'DELETE'}).then(() => this.get_articles()).catch(error => console.log(error))
+            }
+        },
+        bulk_delete_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            const category = this.current_article_category
+            if(tab_num === 1){
+                axios.post('/set_article/bulk_delete', { ids }).then(() => this.get_articles()).catch(error => console.error('Bulk delete articles error:', error))
+            } else if(tab_num === 2 && category === 'outdoor'){
+                axios.post('/set_region/bulk_delete', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            } else if(tab_num === 2 && category === 'ice'){
+                axios.post('/set_sector/bulk_delete', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            } else if(tab_num === 2 && category === 'mount_route'){
+                axios.post('/set_mount/bulk_delete', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            } else if(tab_num === 3 && category === 'ice'){
+                axios.post('/set_route/bulk_delete', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            }
+        },
+        bulk_publish_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            const category = this.current_article_category
+            if(tab_num === 1){
+                axios.post('/set_article/bulk_publish', { ids }).then(() => this.get_articles()).catch(error => console.error('Bulk publish articles error:', error))
+            } else if(tab_num === 2 && category === 'ice'){
+                axios.post('/set_sector/bulk_publish', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            } else if(tab_num === 2 && category === 'mount_route'){
+                axios.post('/set_mount/bulk_publish', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            }
+        },
+        bulk_unpublish_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            const category = this.current_article_category
+            if(tab_num === 1){
+                axios.post('/set_article/bulk_unpublish', { ids }).then(() => this.get_articles()).catch(error => console.error('Bulk unpublish articles error:', error))
+            } else if(tab_num === 2 && category === 'ice'){
+                axios.post('/set_sector/bulk_unpublish', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
+            } else if(tab_num === 2 && category === 'mount_route'){
+                axios.post('/set_mount/bulk_unpublish', { ids }).then(() => this.get_articles()).catch(error => console.log(error))
             }
         },
         filtr_outdoors(event){

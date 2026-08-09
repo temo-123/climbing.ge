@@ -17,7 +17,8 @@
             </div>
             <div class="row" v-else>
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
+                        ref="tabsComponent"
                         :table_data="table_data"
                         @update="get_sectors"
                         @del_sector="del_sector"
@@ -28,6 +29,9 @@
                         @filtr_sector="filtr_sector"
                         @filtr_route="filtr_route"
                         @filtr_mtp="filtr_mtp"
+                        @delete_selected="bulk_delete_dispatch"
+                        @publish_selected="bulk_publish_dispatch"
+                        @unpublish_selected="bulk_unpublish_dispatch"
                     />
                 </div>
             </div>
@@ -110,6 +114,7 @@ export default {
                 this.data_for_tab.push({
                     'id': 1,
                     'table_name': this.$t('admin.routes_sectors.sectors_table'),
+                    'has_published': true,
                     'add_action': {
                         'action': 'url',
                         'link': 'sector/add/outdoor',
@@ -364,6 +369,28 @@ export default {
         },
         show_mtp_model(sector_id){
             this.$refs.mtp_modal.show_modal(sector_id)
+        },
+        bulk_delete_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            if(tab_num === 1){
+                axios.post('/set_sector/bulk_delete', { ids }).then(() => this.get_sectors()).catch(error => console.error('Bulk delete sectors error:', error))
+            } else if(tab_num === 2){
+                axios.post('/set_route/bulk_delete', { ids }).then(() => this.get_sectors()).catch(error => console.error('Bulk delete routes error:', error))
+            } else if(tab_num === 3){
+                axios.post('/set_mtp/bulk_delete', { ids }).then(() => this.get_sectors()).catch(error => console.error('Bulk delete mtp error:', error))
+            }
+        },
+        bulk_publish_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            if(tab_num === 1){
+                axios.post('/set_sector/bulk_publish', { ids }).then(() => this.get_sectors()).catch(error => console.error('Bulk publish sectors error:', error))
+            }
+        },
+        bulk_unpublish_dispatch(ids){
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            if(tab_num === 1){
+                axios.post('/set_sector/bulk_unpublish', { ids }).then(() => this.get_sectors()).catch(error => console.error('Bulk unpublish sectors error:', error))
+            }
         },
     }
 }

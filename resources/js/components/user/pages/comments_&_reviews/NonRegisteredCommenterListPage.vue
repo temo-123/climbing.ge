@@ -11,10 +11,11 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_users"
                         @del_xuser="del_xuser"
+                        @delete_selected="bulk_delete_xusers"
                     />
                 </div>
             </div>
@@ -58,8 +59,18 @@
                     .catch(
                         error => console.log(error)
                     );
-                    
+
                 }
+            },
+            bulk_delete_xusers(ids){
+                axios
+                .post("/set_non_registered_commenter/bulk_delete", { ids })
+                .then(response => {
+                    this.get_users()
+                })
+                .catch(
+                    error => console.log(error)
+                );
             },
             get_users(){
                 this.data_for_tab = [],
@@ -71,7 +82,10 @@
                                             'id': 1,
                                             'table_name': this.$t('admin.comments.non_registered_commenters_table'),
                                             'tab_data': {
-                                                'data': response.data,
+                                                // Row checkboxes (used for bulk actions) key off a
+                                                // top-level `id`, but this endpoint nests it under
+                                                // `comenter.id` — mirror it up so selection works.
+                                                'data': (response.data || []).map(item => ({ ...item, id: item.comenter?.id })),
                                                 'tab': {
                                                     'head': [
                                                         this.$t('common.id'),

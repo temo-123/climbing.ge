@@ -12,6 +12,7 @@ use App\Models\Guide\Mtp_pitch;
 
 use Validator;
 use App\Services\PermissionService;
+use Illuminate\Support\Facades\DB;
 
 class MTPController extends Controller
 {
@@ -101,8 +102,19 @@ class MTPController extends Controller
     {
         $auth = PermissionService::authorize('mtp', 'del');
         if ($auth) return $auth;
-        
-        $mtp = Mtp::where('id',strip_tags($request->mtp_id))->first();
+
+        $this->deleteOneMtp($request->mtp_id);
+    }
+
+    /**
+     * Deletes a single multi-pitch route and its pitches. Extracted from
+     * del_mtp so bulk_delete can reuse the exact same cascade. Matches the
+     * original method's behavior of not guarding against a missing mtp —
+     * bulk_delete checks existence before calling this.
+     */
+    private function deleteOneMtp($mtp_id)
+    {
+        $mtp = Mtp::where('id',strip_tags($mtp_id))->first();
         $mtp_pitchs_count = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->count();
         if ($mtp_pitchs_count > 0) {
             $mtp_pitchs = Mtp_pitch::where('mtp_id',strip_tags($mtp->id))->get();
@@ -111,6 +123,26 @@ class MTPController extends Controller
             }
         }
         $mtp ->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('mtp', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Mtp::where('id', $id)->exists()) continue;
+                $this->deleteOneMtp($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function get_mtp_editing_data(Request $request)

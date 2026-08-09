@@ -9,6 +9,7 @@ use Validator;
 use Auth;
 use Mail;
 use Hash;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\User;
 use App\Models\User\Role;
@@ -281,5 +282,55 @@ class UsersController extends Controller
         else {
             return("You don`t can delete yourself! :)");
         }
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('user', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        // Never allow an admin to bulk-delete their own account out of their session.
+        $ids = array_diff($request->ids, [auth()->id()]);
+
+        if (empty($ids)) {
+            return response()->json(['success' => true, 'count' => 0]);
+        }
+
+        DB::transaction(function () use ($ids) {
+            foreach ($ids as $id) {
+                $deliting_user = User::find($id);
+                if (!$deliting_user) continue;
+
+                if (User_role::where('user_id', '=', $deliting_user->id)->count() > 0) {
+                    $user_roles = User_role::where('user_id', '=', $deliting_user->id)->first();
+                    $user_roles->delete();
+                }
+
+                if (user_notification::where('user_id', '=', $deliting_user->id)->count() > 0) {
+                    $user_notifications = user_notification::where('user_id', '=', $deliting_user->id)->first();
+                    $user_notifications->delete();
+                }
+
+                if (User_permission::where('user_id', '=', $deliting_user->id)->count() > 0) {
+                    $user_parmissions = User_permission::where('user_id', '=', $deliting_user->id)->get();
+                    foreach ($user_parmissions as $user_parmission) {
+                        $user_parmission->delete();
+                    }
+                }
+
+                if ($deliting_user->image) {
+                    ImageControllService::image_delete('images/user_profil_img/'.$deliting_user->image.'_img/', $deliting_user, 'image');
+                }
+
+                $deliting_user->delete();
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($ids)]);
     }
 }

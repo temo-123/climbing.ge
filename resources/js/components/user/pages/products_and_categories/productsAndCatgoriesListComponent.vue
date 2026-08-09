@@ -12,6 +12,7 @@
             <div class="row">
                 <div class="col-sm-12">
                     <tabsComponent
+                        ref="tabsComponent"
                         :table_data="data_for_tab"
                         @update="get_products_data"
 
@@ -33,6 +34,10 @@
                         @filter_by_subcategory_with_multi_id="filter_by_subcategory_with_multi_id"
 
                         @show_product_quick_view="show_product_quick_view"
+
+                        @delete_selected="delete_selected"
+                        @publish_selected="publish_selected"
+                        @unpublish_selected="unpublish_selected"
                     />
                 </div>
             </div>
@@ -165,6 +170,7 @@
                     'id': 1,
                     'table_name': this.$t('admin.shop.products_table'),
                     'list_page': process.env.MIX_APP_SSH + process.env.MIX_SHOP_URL + '/products',
+                    'has_published': true,
                     'add_action': {
                         'action': 'route',
                         'link': 'productAdd',
@@ -520,6 +526,45 @@
                 }).catch(error => {
                     console.log('Error reloading data:', error);
                 });
+            },
+
+            delete_selected(ids) {
+                // Tab 1 = products, tab 2 = categories, tab 3 = brands, tab 4 = sale codes —
+                // each has its own delete endpoint, so disambiguate via the active tab.
+                const activeTab = this.$refs.tabsComponent ? this.$refs.tabsComponent.tab_num : null;
+                let url = '/set_product/bulk_delete';
+                if (activeTab === 2) {
+                    url = '/set_product/set_product_category/bulk_delete';
+                } else if (activeTab === 3) {
+                    url = '/set_product/set_brand/bulk_delete';
+                } else if (activeTab === 4) {
+                    url = '/set_product/set_sale_code/bulk_delete';
+                }
+
+                axios
+                .post(url, { ids })
+                .then(Response => {
+                    this.get_products_data()
+                })
+                .catch(error => console.log(error))
+            },
+
+            publish_selected(ids) {
+                axios
+                .post('/set_product/bulk_publish', { ids })
+                .then(Response => {
+                    this.get_products_data()
+                })
+                .catch(error => console.log(error))
+            },
+
+            unpublish_selected(ids) {
+                axios
+                .post('/set_product/bulk_unpublish', { ids })
+                .then(Response => {
+                    this.get_products_data()
+                })
+                .catch(error => console.log(error))
             },
         }
     }

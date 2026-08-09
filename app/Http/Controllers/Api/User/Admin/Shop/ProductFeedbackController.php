@@ -16,6 +16,7 @@ use App\Models\Shop\Product_feedback_query;
 
 use App\Services\CommentService;
 use App\Services\PermissionService;
+use Illuminate\Support\Facades\DB;
 
 class ProductFeedbackController extends Controller
 {
@@ -138,6 +139,35 @@ class ProductFeedbackController extends Controller
         if ($auth) return $auth;
 
         return CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
+    }
+
+    /**
+     * Bulk version of del_feedback, reached from the user's own "my reviews"
+     * self-service page (see my_comments_&_reviews_page.vue) as well as any
+     * future admin usage. Same authorize('product_feedback','del') gate as
+     * the single-item method. CommentService::del_comment() assumes the
+     * model exists (it dereferences ->id without a null check), so stale ids
+     * are skipped here before calling it, matching the general bulk_delete
+     * "skip stale ids gracefully" rule.
+     */
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('product_feedback', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Product_feedback::where('id', $id)->exists()) continue;
+                CommentService::del_comment($id, Product_feedback::class, User_product_feedbacks::class, 'feedback');
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     public function get_feedbacks_complaints(Request $request)

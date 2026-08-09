@@ -294,6 +294,51 @@ class MountController extends Controller
         $deleted_product_category -> delete();
     }
 
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('mount_massive', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Mount::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('mount_massive', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Mount::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('mount_massive', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Mount::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
     public function global_mount_validate($data)
     {
         $validator = Validator::make($data, [

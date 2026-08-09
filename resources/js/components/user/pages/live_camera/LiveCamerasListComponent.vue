@@ -26,13 +26,16 @@
                     </skeleton-loader>
                 </div>
                 <div class="col-sm-12" v-else>
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_live_camera_data"
 
                         @show_live_camera_edit_medal="show_live_camera_edit_medal"
                         @show_live_camera_add_medal="show_live_camera_add_medal"
                         @del_live_camera="del_live_camera"
+                        @delete_selected="bulk_delete_live_cameras"
+                        @publish_selected="bulk_publish_live_cameras"
+                        @unpublish_selected="bulk_unpublish_live_cameras"
                     />
                 </div>
             </div>
@@ -88,6 +91,7 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': this.$t('admin.live_camera.live_cameras_table'),
+                                            'has_published': true,
                                             // 'list_page': process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
                                             'add_action': {
                                                 'action': 'function',
@@ -144,6 +148,18 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+
+            bulk_delete_live_cameras(ids){
+                axios.post('/set_live_camera/bulk_delete', { ids }).then(() => this.get_live_camera_data()).catch(error => console.log(error))
+            },
+
+            bulk_publish_live_cameras(ids){
+                axios.post('/set_live_camera/bulk_publish', { ids }).then(() => this.get_live_camera_data()).catch(error => console.log(error))
+            },
+
+            bulk_unpublish_live_cameras(ids){
+                axios.post('/set_live_camera/bulk_unpublish', { ids }).then(() => this.get_live_camera_data()).catch(error => console.log(error))
             },
 
             show_live_camera_add_medal(){

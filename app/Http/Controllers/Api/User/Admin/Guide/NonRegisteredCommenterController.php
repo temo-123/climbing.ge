@@ -33,8 +33,22 @@ class NonRegisteredCommenterController extends Controller
     public function del_non_registered_commenter($id) {
         $auth = PermissionService::authorize('commenter', 'del');
         if ($auth) return $auth;
-        
+
         $del_non_registered_commenter = Non_registered_commenter::where("id", "=", $id)->first();
         $del_non_registered_commenter -> delete();
+    }
+
+    public function bulk_delete(Request $request) {
+        $auth = PermissionService::authorize('commenter', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Non_registered_commenter::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

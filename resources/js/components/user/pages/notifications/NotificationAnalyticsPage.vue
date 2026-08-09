@@ -146,6 +146,7 @@
                             <div v-if="loading_recent" class="text-center py-4 text-muted">{{ $t('admin.dashboards.loading_ellipsis_dots') }}</div>
                             <tabsComponent
                                 v-else
+                                ref="tabsComponent"
                                 :table_data="activity_tab_data"
                                 @update="fetchActivityTabs"
                                 @del_guest_follower="del_guest_follower"
@@ -154,6 +155,7 @@
                                 @retry_failed_job="retry_failed_job"
                                 @del_failed_job="del_failed_job"
                                 @retry_all_failed_jobs="retry_all_failed_jobs"
+                                @delete_selected="bulk_delete_selected"
                             />
                         </div>
                     </div>
@@ -446,6 +448,30 @@ export default {
                     .then(() => this.fetchGuestFollowers())
                     .catch(error => console.log(error))
             }
+        },
+        // The bulk-action bar (TabsComponent) emits delete_selected with just the
+        // selected ids. Selection is cleared whenever the active tab changes, so
+        // this.$refs.tabsComponent.tab_num reliably identifies which tab (3 =
+        // guest_followers, 4 = failed_jobs) the selection belongs to — safer than
+        // filtering by id membership in this.guest_followers/this.failed_jobs, since
+        // those are independent id sequences that can numerically collide. Tabs 1/2
+        // have no delete action, so any other tab_num is a no-op.
+        bulk_delete_selected(ids) {
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            if (tab_num === 3) this.bulk_delete_guest_followers(ids)
+            else if (tab_num === 4) this.bulk_delete_failed_jobs(ids)
+        },
+        bulk_delete_guest_followers(ids) {
+            axios
+                .post('/set_notification_analytics/guest_followers/bulk_delete', { ids })
+                .then(() => this.fetchGuestFollowers())
+                .catch(error => console.log(error))
+        },
+        bulk_delete_failed_jobs(ids) {
+            axios
+                .post('/set_notification_analytics/failed_jobs/bulk_delete', { ids })
+                .then(() => this.fetchFailedJobs())
+                .catch(error => console.log(error))
         },
         show_subscriber_detail(id) {
             const subscriber = this.registered_subscribers.find(s => s.id == id)

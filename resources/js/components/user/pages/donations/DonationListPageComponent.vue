@@ -27,6 +27,7 @@
                         @update="load"
                         @del_donation="del_donation"
                         @show_status_modal="show_status_modal"
+                        @delete_selected="bulk_delete_donations"
                     />
                 </div>
             </div>
@@ -120,6 +121,12 @@
                         .then(() => this.load())
                         .catch(e => console.error(e));
                 }
+            },
+
+            bulk_delete_donations(ids) {
+                axios.post('set_donation_admin/bulk_delete', { ids })
+                    .then(() => this.load())
+                    .catch(e => console.error(e));
             },
 
             show_status_modal(id) {

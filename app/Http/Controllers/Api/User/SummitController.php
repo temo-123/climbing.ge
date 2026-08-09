@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Models\Summit\SummitAscentRoute;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SummitController extends Controller
 {
@@ -105,5 +106,27 @@ class SummitController extends Controller
             return response()->json(['message' => 'Ascent deleted successfully']);
         }
         return response()->json(['message' => 'Ascent not found'], 404);
+    }
+
+    public function bulk_delete(Request $request) {
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $auth_user = auth()->user();
+
+        // Self-service, no CASL gate — only ever delete ascents the authenticated
+        // user actually owns, same guard as the single-item del_ascent() above.
+        $count = 0;
+        DB::transaction(function () use ($auth_user, $request, &$count) {
+            $ascents = $auth_user->ascents()->whereIn('id', $request->ids)->get();
+            foreach ($ascents as $ascent) {
+                $ascent->delete();
+                $count++;
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => $count]);
     }
 }

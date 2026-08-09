@@ -11,10 +11,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_user_tours"
                         @del_tour="del_tour"
+                        @delete_selected="delete_selected"
+                        @publish_selected="publish_selected"
+                        @unpublish_selected="unpublish_selected"
                     />
                 </div>
             </div>
@@ -53,6 +56,7 @@
                         list_page: process.env.MIX_APP_SSH
                             ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SHOP_URL || '').replace(/^\/|\/$/g, '') + '/tours'
                             : window.location.origin + '/tours',
+                        'has_published': true,
                         'add_action': {
                             'action': 'route',
                             'link': 'tourAdd', 
@@ -101,6 +105,30 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            delete_selected(ids){
+                axios
+                .post('/set_tour/bulk_delete', { ids })
+                .then(Response => {
+                    this.get_user_tours()
+                })
+                .catch(error => console.log(error))
+            },
+            publish_selected(ids){
+                axios
+                .post('/set_tour/bulk_publish', { ids })
+                .then(Response => {
+                    this.get_user_tours()
+                })
+                .catch(error => console.log(error))
+            },
+            unpublish_selected(ids){
+                axios
+                .post('/set_tour/bulk_unpublish', { ids })
+                .then(Response => {
+                    this.get_user_tours()
+                })
+                .catch(error => console.log(error))
             },
         }
     }

@@ -16,11 +16,14 @@
                     </div>
                 </div>
                 <div class="col-sm-12" v-else>
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_events"
 
                         @del_event="del_event"
+                        @delete_selected="bulk_delete_events"
+                        @publish_selected="bulk_publish_events"
+                        @unpublish_selected="bulk_unpublish_events"
                     />
                 </div>
             </div>
@@ -69,6 +72,7 @@
                     this.data_for_tab.push({
                                             'id': 1,
                                             'table_name': this.$t('admin.events.events_table'),
+                                            'has_published': true,
                                             'list_page': process.env.MIX_APP_SSH
                                                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
                                                 : window.location.origin + '/events',
@@ -130,6 +134,7 @@
                     this.data_for_tab.push({
                                             'id': 2,
                                             'table_name': this.$t('admin.events.competitions_table'),
+                                            'has_published': true,
                                             'list_page': process.env.MIX_APP_SSH
                                                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_GUIDBOOK_URL || '').replace(/^\/|\/$/g, '') + '/events'
                                                 : window.location.origin + '/events',
@@ -192,6 +197,15 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            bulk_delete_events(ids){
+                axios.post('/set_event/bulk_delete', { ids }).then(() => this.get_events()).catch(error => console.log(error))
+            },
+            bulk_publish_events(ids){
+                axios.post('/set_event/bulk_publish', { ids }).then(() => this.get_events()).catch(error => console.log(error))
+            },
+            bulk_unpublish_events(ids){
+                axios.post('/set_event/bulk_unpublish', { ids }).then(() => this.get_events()).catch(error => console.log(error))
             },
         }
     }

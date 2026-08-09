@@ -18,6 +18,7 @@ use App\Services\PermissionService;
 
 use Validator;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class TourController extends Controller
 {
@@ -188,16 +189,28 @@ class TourController extends Controller
     function del_tour(Request $request){
         $auth = PermissionService::authorize('tour', 'del');
         if ($auth) return $auth;
-        $global_id = $request->tour_id;
 
+        $this->deleteOneTour($request->tour_id);
+    }
+
+    /**
+     * Deletes a single tour, its gallery images, and its us/ka locale content.
+     * Returns false gracefully if the tour no longer exists (used by bulk_delete).
+     */
+    private function deleteOneTour($global_id)
+    {
         $global_tour = Tour::where('id',strip_tags($global_id))->first();
+        if (!$global_tour) {
+            return false;
+        }
+
         $us_tour = Locale_tour::where('id',strip_tags($global_tour->us_tour_id))->first();
         // $ru_tour = Locale_tour::where('id',strip_tags($global_tour->ru_tour_id))->first();
         $ka_tour = Locale_tour::where('id',strip_tags($global_tour->ka_tour_id))->first();
-        
+
         // delete tour file
         $tour_images_count = Tour_image::where('tour_id',strip_tags($global_id))->count();
-        
+
         if ($tour_images_count > 0) {
             $tour_images = Tour_image::where('tour_id',strip_tags($global_id))->get();
             foreach ($tour_images as $tour_image) {
@@ -208,9 +221,64 @@ class TourController extends Controller
 
         // delete tour from db
         $global_tour ->delete();
-        $us_tour ->delete();
-        // $ru_tour ->delete();
-        $ka_tour ->delete();
+        if ($us_tour) $us_tour ->delete();
+        // if ($ru_tour) $ru_tour ->delete();
+        if ($ka_tour) $ka_tour ->delete();
+
+        return true;
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('tour', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = 0;
+
+        DB::transaction(function () use ($request, &$deleted_count) {
+            foreach ($request->ids as $id) {
+                if ($this->deleteOneTour($id)) {
+                    $deleted_count++;
+                }
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('tour', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Tour::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('tour', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Tour::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
     function del_tour_image(Request $request) {

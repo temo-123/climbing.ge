@@ -148,6 +148,23 @@ class TourReservationController extends Controller
         $del_item -> delete();
     }
 
+    /**
+     * Bulk delete tour reservations. No cascading side effects, so a plain destroy() is safe.
+     */
+    function bulk_delete(Request $request){
+        $auth = PermissionService::authorize('tour_reservation', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = Tour_reservation::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
+
     // Google Calendar Integration Methods
     function initGoogleAuth(Request $request){
         $auth = PermissionService::authorize('tour_reservation', 'edit');

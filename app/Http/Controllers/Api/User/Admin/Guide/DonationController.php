@@ -41,4 +41,18 @@ class DonationController extends Controller
 
         Donation::findOrFail($id)->delete();
     }
+
+    public function bulk_delete(Request $request)
+    {
+        if ($auth = PermissionService::authorize('donation', 'del')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Donation::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
 }

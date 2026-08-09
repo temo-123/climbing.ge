@@ -206,6 +206,46 @@ class RolesController extends Controller
         $role -> delete();
     }
 
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('role', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        // del_role() has no existing guard against deleting system-critical roles,
+        // so defensively exclude 'admin' and 'ban' here — bulk mistakes have a
+        // higher blast radius than single-row ones.
+        $protected_slugs = ['admin', 'ban'];
+        $ids = Role::whereIn('id', $request->ids)
+            ->whereNotIn('slug', $protected_slugs)
+            ->pluck('id')
+            ->all();
+
+        if (empty($ids)) {
+            return response()->json(['success' => true, 'count' => 0]);
+        }
+
+        DB::transaction(function () use ($ids) {
+            foreach ($ids as $id) {
+                $role = Role::find($id);
+                if (!$role) continue;
+
+                $role_permision = Role_permission::where("role_id", "=", $role->id)->get();
+                foreach ($role_permision as $r_p) {
+                    $r_p->delete();
+                }
+
+                $role->delete();
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($ids)]);
+    }
+
     public function sync_admin_permissions()
     {
         $auth = PermissionService::authorize('role', 'edit');

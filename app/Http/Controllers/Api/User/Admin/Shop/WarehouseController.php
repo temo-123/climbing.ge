@@ -62,6 +62,25 @@ class WarehouseController extends Controller
         return response()->json(['deleted' => $deleted > 0], $deleted ? 200 : 400);
     }
 
+    /**
+     * Bulk delete warehouses. No cascading side effects handled here (pivot rows
+     * are managed by the DB / warehouse relation code paths elsewhere), so a
+     * plain destroy() is safe.
+     */
+    public function bulk_delete (Request $request) {
+        $auth = PermissionService::authorize('warehouse', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = Warehouse::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
+
     // --- Warehouse ↔ User (restricted "shop manager" sale-point assignment) ---
 
     // Warehouses eligible to be assigned to a warehouse-restricted seller.

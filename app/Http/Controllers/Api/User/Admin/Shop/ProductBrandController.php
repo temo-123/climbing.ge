@@ -9,6 +9,7 @@ use Validator;
 use App\Models\Shop\Product_brand;
 use App\Models\Shop\Locale_brand;
 use App\Services\PermissionService;
+use Illuminate\Support\Facades\DB;
 
 class ProductBrandController extends Controller
 {
@@ -133,15 +134,51 @@ class ProductBrandController extends Controller
     function del_brand(Request $request) {
         $auth = PermissionService::authorize('product_brand', 'del');
         if ($auth) return $auth;
-        
-        $deleted_product_brand = Product_brand::where("id", "=", $request->id)->first();
+
+        $this->deleteOneBrand($request->id);
+    }
+
+    /**
+     * Deletes a single brand and its us/ka locale content rows.
+     * Returns false gracefully if the brand no longer exists (used by bulk_delete).
+     */
+    private function deleteOneBrand($id)
+    {
+        $deleted_product_brand = Product_brand::where("id", "=", $id)->first();
+        if (!$deleted_product_brand) {
+            return false;
+        }
 
         $us_deleted_product_brand = $deleted_product_brand->us_brand;
         $ka_deleted_product_brand = $deleted_product_brand->ka_brand;
 
         $deleted_product_brand -> delete();
-        $us_deleted_product_brand -> delete();
-        $ka_deleted_product_brand -> delete();
+        if ($us_deleted_product_brand) $us_deleted_product_brand -> delete();
+        if ($ka_deleted_product_brand) $ka_deleted_product_brand -> delete();
+
+        return true;
+    }
+
+    function bulk_delete(Request $request) {
+        $auth = PermissionService::authorize('product_brand', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = 0;
+
+        DB::transaction(function () use ($request, &$deleted_count) {
+            foreach ($request->ids as $id) {
+                if ($this->deleteOneBrand($id)) {
+                    $deleted_count++;
+                }
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
     }
 
     private static function local_content_validate($data)

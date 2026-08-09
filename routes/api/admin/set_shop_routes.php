@@ -21,6 +21,9 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::get('/get_product_user_relation/{product_id}', 'get_product_user_relation');
         Route::post('/fix_product_user_relation/{product_id}', 'fix_product_user_relation');
         Route::delete('/del_product/{product_id}', 'del_product');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
         Route::get('/get_current_products', 'get_current_products');
 
         // });
@@ -75,6 +78,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/add_product_category', 'add_product_category');
             Route::post('/edit_product_category/{id}', 'edit_product_category');
             Route::delete('/del_product_category/{id}', 'del_product_category');
+            Route::post('/bulk_delete', 'bulk_delete');
 
             Route::controller(ProductSubcategoryController::class)->prefix('set_subcategory')->group( function() {
                 // Route::get('/get_all_subcategories', 'get_all_subcategories');
@@ -92,6 +96,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/create_brand', 'create_brand');
             Route::post('/edit_brand/{id}', 'edit_brand');
             Route::delete('/del_brand/{id}', 'del_brand');
+            Route::post('/bulk_delete', 'bulk_delete');
         });
 
         /*
@@ -119,6 +124,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/edit_feedback/{feedback_id}', 'edit_feedback');
 
             Route::delete('/del_feedback/{feedback_id}', 'del_feedback');
+            Route::post('/bulk_delete', 'bulk_delete');
         });
 
         Route::controller(SaleCodeController::class)->prefix('set_sale_code')->group( function() {
@@ -127,6 +133,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::get('/get_editing_sale_code/{sale_code_id}', 'get_editing_sale_code');
             Route::post('/edit_sale_code/{sale_code_id}', 'edit_sale_code');
             Route::delete('/del_sale_code/{sale_code_id}', 'del_sale_code');
+            Route::post('/bulk_delete', 'bulk_delete');
         });
     });
     /*
@@ -149,6 +156,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/add_warehouse', 'add_warehouse');
         Route::post('/edit_warehouse/{id}', 'edit_warehouse');
         Route::delete('/del_warehouse/{id}', 'del_warehouse');
+        Route::post('/bulk_delete', 'bulk_delete');
         Route::post('/add_product_option_to_warehouse/{id}', 'add_product_option_to_warehouse');
         Route::post('/edit_product_option_quantity/{id}/{product_option_id}', 'edit_product_option_quantity');
         Route::delete('/delete_product_option_from_warehouse/{id}/{product_option_id}', 'delete_product_option_from_warehouse');
@@ -170,6 +178,9 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::delete('/remove_tour_user/{tour_id}/{user_id}', 'remove_tour_user');
         Route::delete('/del_tour_image/{image_id}', 'del_tour_image');
         Route::delete('/del_tour/{tour_id}', 'del_tour');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
 
         Route::controller(TourCategoryController::class)->prefix('set_category')->group( function() {
             // Route::get('/get_all_categories', 'get_all_categories');
@@ -177,6 +188,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/add_category', 'add_category');
             Route::post('/edit_category/{category_id}', 'edit_category');
             Route::delete('/del_category/{category_id}', 'del_category');
+            Route::post('/bulk_delete', 'bulk_delete');
             Route::get('/get_editing_category/{category_id}', 'get_editing_category');
         });
 
@@ -186,6 +198,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
             Route::post('/create_reservation/{tour_id}', 'create_reservation');
             Route::post('/verifiation_reservation/{reservation_id}', 'verifiation_reservation');
             Route::delete('/del_reservation/{reservation_id}', 'del_reservation');
+            Route::post('/bulk_delete', 'bulk_delete');
 
             // Google Calendar Sync Routes
             Route::prefix('google-calendar')->group( function() {
@@ -218,6 +231,9 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/edit_service/{service_id}', 'edit_service');
         Route::delete('/del_service/{service_id}', 'del_service');
         Route::delete('/del_service_image/{image_id}', 'del_service_image');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
 
         // Route::get('/{lang}/{url_title}', 'get_local_service_in_page');
     });
@@ -285,6 +301,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/add_region', 'add_region');
         Route::post('/edit_region/{region_id}', 'edit_region');
         Route::delete('/del_region/{region_id}', 'del_region');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
 
     /*

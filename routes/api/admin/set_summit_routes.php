@@ -16,6 +16,10 @@ Route::group(['middleware' => ['auth:sanctum', 'banned']], function () {
             Route::delete('/remove_mount_route_relation/{id}', 'remove_mount_route_relation');
             Route::post('/update_ascent/{id}', 'update_ascent');
             Route::delete('/delete_ascent/{id}', 'delete_ascent');
+            Route::post('/bulk_delete', 'bulk_delete');
+            Route::post('/bulk_publish', 'bulk_publish');
+            Route::post('/bulk_unpublish', 'bulk_unpublish');
+            Route::post('/bulk_delete_ascents', 'bulk_delete_ascents');
         });
     });
 

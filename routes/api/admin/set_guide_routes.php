@@ -8,6 +8,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/add_article/{category}', 'add_article');
         Route::post('/edit_article/{article_id}', 'edit_article');
         Route::delete('/del_article/{article_id}', 'del_article');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
         Route::get('/get_editing_data/{id}', 'get_editing_data');
 
 
@@ -36,6 +39,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::post('/user_show_comment/{comment_id}', 'user_show_comment');
             Route::post('/user_edit_comment/{comment_id}', 'user_edit_comment');
             Route::delete('/user_del_comment/{comment_id}', 'user_del_comment');
+            Route::post('/user_bulk_del_comment', 'user_bulk_del_comment');
 
             Route::delete('/del_comment/{comment_id}', 'del_comment');
         });
@@ -52,6 +56,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_editing_region_data/{id}', 'get_editing_region_data');
         Route::post('/edit_region/{id}', 'edit_region');
         Route::delete('/del_region/{id}', 'del_region');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
 
     Route::controller(TeamMemberController::class)->prefix('set_team')->group( function() {
@@ -61,6 +66,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
     Route::controller(NonRegisteredCommenterController::class)->prefix('set_non_registered_commenter')->group(function() {
         Route::get('get_non_registered_commenter', 'get_non_registered_commenter');
         Route::delete('/del_non_registered_commenter/{id}', 'del_non_registered_commenter');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
 
     Route::controller(GeneralInfoController::class)->prefix('set_general_info')->group( function() {
@@ -68,7 +74,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_editing_general_info/{id}', 'get_editing_general_info');
         Route::post('/edit_general_info/{id}', 'edit_general_info');
         Route::delete('/del_general_info/{id}', 'del_general_info');
-        
+
         // Action tracking routes
         Route::post('/track_action', 'track_action');
         Route::get('/get_action_stats', 'get_action_stats');
@@ -79,6 +85,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_editing_event/{event_id}', 'get_editing_event');
         Route::post('/edit_event/{event_id}', 'edit_event');
         Route::delete('/del_event/{event_id}', 'del_event');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
     });
 
     Route::controller(MountController::class)->prefix('set_mount')->group( function() {
@@ -89,6 +98,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
 
         Route::get('/get_editing_mount_massive_data/{mount_id}', 'get_editing_mount_massive_data');
         Route::delete('/del_mount_massive/{mount_id}', 'del_mount_massive');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
     });
 
     Route::controller(MountRouteController::class)->prefix('set_mount_route')->group( function() {
@@ -103,6 +115,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_bisnes_article_relations/{bisnes_id}', 'get_bisnes_article_relations');
         Route::post('/add_local_bisnes', 'add_local_bisnes');
         Route::delete('/del_local_bisnes/{bisnes_id}', 'del_local_bisnes');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
         Route::delete('/del_bisnes_article_relation/{article_id}/{bisnes_id}', 'del_bisnes_article_relation');
         Route::delete('/del_local_bisnes_image/{image_id}', 'del_local_bisnes_image');
         Route::get('/get_article_categories', 'get_article_categories');
@@ -118,6 +133,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_donation/{id}', 'get_donation');
         Route::post('/update_status/{id}', 'update_status');
         Route::delete('/del_donation/{id}', 'del_donation');
+        Route::post('/bulk_delete', 'bulk_delete');
     });
 
     Route::controller(HeadSliderController::class)->prefix('set_head_slider')->group( function() {
@@ -131,6 +147,9 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/add_sector', 'add_sector');
         Route::post('/edit_sector/{sector_id}', 'edit_sector');
         Route::delete('/del_sector/{sector_id}', 'del_sector');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
         Route::delete('/del_sector_image_from_db/{image_id}', 'del_sector_image_from_db');
         Route::post('/replace_sector_image/{image_id}', 'replace_sector_image');
         Route::post('/routes_sequence', 'routes_sequence');
@@ -145,6 +164,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::get('/get_for_editor/{id}', 'get_for_editor');
             Route::delete('/del_image_sector_from_db/{image_id}/{sector_id}', 'del_image_sector_from_db');
             Route::delete('/del_locale_image/{image_id}', 'del_locale_image');
+            Route::post('/bulk_delete', 'bulk_delete');
             Route::post('/save_canvas_data/{image_id}', 'save_canvas_data');
             Route::delete('/del_layout/{layout_id}', 'del_layout');
             Route::get('/get_editing_sectors/{image_id}', 'get_editing_sectors');
@@ -175,6 +195,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/save_route_drawing', 'save_route_drawing');
         Route::delete('/del_sector_image_drawing/{sector_image_id}', 'del_sector_image_drawing');
         Route::delete('/del_route/{route_id}', 'del_route');
+        Route::post('/bulk_delete', 'bulk_delete');
 
         Route::controller(RouteJsonController::class)->prefix('set_route_json')->group( function() {
             Route::post('/add_route_json', 'add_route_json');
@@ -195,6 +216,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::post('/user_show_review/{review_id}', 'user_show_review');
 
             Route::delete('/del_route_review/{review_id}', 'del_route_review');
+            Route::post('/bulk_del_route_review', 'bulk_del_route_review');
         });
     });
 
@@ -207,6 +229,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/user_hide_mtp_review/{review_id}', 'user_hide_mtp_review');
         Route::post('/user_show_mtp_review/{review_id}', 'user_show_mtp_review');
         Route::delete('/del_mtp_review/{review_id}', 'del_mtp_review');
+        Route::post('/bulk_del_mtp_review', 'bulk_del_mtp_review');
     });
 
     Route::controller(MTPController::class)->prefix('set_mtp')->group( function() {
@@ -214,6 +237,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
         Route::post('/mtp_edit/{mtp_id}', 'mtp_edit');
         Route::delete('/del_mtp/{mtp_id}', 'del_mtp');
+        Route::post('/bulk_delete', 'bulk_delete');
 
         Route::controller(MTPPitchController::class)->prefix('set_mtp_pitch')->group( function() {
             Route::post('/mtp_pitch_add', 'mtp_pitch_add');
@@ -236,5 +260,8 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/add_live_camera', 'add_live_camera');
         Route::post('/edit_live_camera/{id}', 'edit_live_camera');
         Route::delete('/del_live_camera/{id}', 'del_live_camera');
+        Route::post('/bulk_delete', 'bulk_delete');
+        Route::post('/bulk_publish', 'bulk_publish');
+        Route::post('/bulk_unpublish', 'bulk_unpublish');
     });
 });

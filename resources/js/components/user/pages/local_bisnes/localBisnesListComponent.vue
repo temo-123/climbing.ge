@@ -11,10 +11,13 @@
             </div>
             <div class="row">
                 <div class="col-sm-12">
-                    <tabsComponent 
+                    <tabsComponent
                         :table_data="this.data_for_tab"
                         @update="get_local_bisnes_data"
                         @del_local_bisnes="del_bisnes"
+                        @delete_selected="bulk_delete_local_bisnes"
+                        @publish_selected="bulk_publish_local_bisnes"
+                        @unpublish_selected="bulk_unpublish_local_bisnes"
                     />
                 </div>
             </div>
@@ -49,6 +52,7 @@
                 .then(response => {
                     this.data_for_tab.push({'id': 1,
                                             'table_name': this.$t('admin.local_business.local_business_table'),
+                                            'has_published': true,
                                             'add_action': {
                                                 'action': 'route',
                                                 'link': 'localBisnesAdd', 
@@ -144,6 +148,15 @@
                     })
                     .catch(error => console.log(error))
                 }
+            },
+            bulk_delete_local_bisnes(ids){
+                axios.post('/set_bisnes/bulk_delete', { ids }).then(() => this.get_local_bisnes_data()).catch(error => console.log(error))
+            },
+            bulk_publish_local_bisnes(ids){
+                axios.post('/set_bisnes/bulk_publish', { ids }).then(() => this.get_local_bisnes_data()).catch(error => console.log(error))
+            },
+            bulk_unpublish_local_bisnes(ids){
+                axios.post('/set_bisnes/bulk_unpublish', { ids }).then(() => this.get_local_bisnes_data()).catch(error => console.log(error))
             },
         }
     }

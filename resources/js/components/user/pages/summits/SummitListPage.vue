@@ -16,6 +16,7 @@
             </div>
             <div class="col-sm-12" v-else-if="data_for_tab.length">
                 <tabsComponent
+                    ref="tabsComponent"
                     :table_data="data_for_tab"
                     @update="load_all"
                     @open_add="open_add"
@@ -27,6 +28,9 @@
                     @filtr_summits_by_mount="filtr_summits_by_mount"
                     @open_edit_ascent="open_edit_ascent"
                     @confirm_delete_ascent="confirm_delete_ascent"
+                    @delete_selected="bulk_delete_selected"
+                    @publish_selected="bulk_publish_summits"
+                    @unpublish_selected="bulk_unpublish_summits"
                 />
             </div>
             <div v-else class="col-sm-12 text-center py-4">
@@ -265,6 +269,7 @@ export default {
                 {
                     id: 1,
                     table_name: this.$t('admin.summits.summits_table'),
+                    has_published: true,
                     list_page: process.env.MIX_APP_SSH
                         ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '') + '/summits/list'
                         : window.location.origin + '/summits/list',
@@ -455,13 +460,53 @@ export default {
                     this.edit_ascent_modal = false
                     this.ascent_to_edit = null
                 })
-                .catch(() => { alert(this.$t('admin.summits.failed_update_ascent')) })
+                .catch(() => { alert(this.$t('common.error')) })
                 .finally(() => { this.saving_ascent = false })
         },
 
         confirm_delete_ascent(id) {
             if (!confirm(this.$t('admin.summits.delete_ascent_confirm'))) return
             this.delete_ascent(id)
+        },
+
+        // The bulk-action bar (TabsComponent) emits delete_selected with just the
+        // selected ids. Selection is cleared whenever the active tab changes, so
+        // this.$refs.tabsComponent.tab_num reliably identifies which tab (summits
+        // vs ascents) the selection belongs to — safer than filtering by id
+        // membership in this.summits/this.ascents, since summit ids and ascent
+        // ids are independent sequences that can numerically collide.
+        bulk_delete_selected(ids) {
+            const tab_num = this.$refs.tabsComponent?.tab_num
+            if (tab_num === 1) this.bulk_delete_summits(ids)
+            else if (tab_num === 2) this.bulk_delete_ascents(ids)
+        },
+
+        bulk_delete_summits(ids) {
+            axios.post('set_summit/bulk_delete', { ids })
+                .then(() => {
+                    this.summits = this.summits.filter(s => !ids.includes(s.id))
+                })
+                .catch(() => { alert(this.$t('admin.summits.failed_delete_summit')) })
+        },
+
+        bulk_publish_summits(ids) {
+            axios.post('set_summit/bulk_publish', { ids })
+                .then(() => { this.load_all() })
+                .catch(() => { alert(this.$t('common.error')) })
+        },
+
+        bulk_unpublish_summits(ids) {
+            axios.post('set_summit/bulk_unpublish', { ids })
+                .then(() => { this.load_all() })
+                .catch(() => { alert(this.$t('common.error')) })
+        },
+
+        bulk_delete_ascents(ids) {
+            axios.post('set_summit/bulk_delete_ascents', { ids })
+                .then(() => {
+                    this.ascents = this.ascents.filter(a => !ids.includes(a.id))
+                })
+                .catch(() => { alert(this.$t('admin.summits.failed_delete_ascent')) })
         },
 
         delete_ascent(id) {

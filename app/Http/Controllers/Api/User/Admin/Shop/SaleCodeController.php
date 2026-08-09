@@ -81,5 +81,23 @@ class SaleCodeController extends Controller
         $deleted_product_category = Sale_code::where("id", "=", $id)->first();
         $deleted_product_category -> delete();
     }
+
+    /**
+     * Bulk delete sale codes. No cascading side effects, so a plain destroy() is safe.
+     */
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('sale_code', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = Sale_code::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
 }
 

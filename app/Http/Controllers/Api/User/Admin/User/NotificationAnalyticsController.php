@@ -364,6 +364,20 @@ class NotificationAnalyticsController extends Controller
         return response()->json(['message' => 'Deleted']);
     }
 
+    public function bulk_delete_guest_followers(Request $request)
+    {
+        if ($auth = PermissionService::authorize('user_notification', 'del')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Following_users::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
     public function get_failed_jobs(Request $request)
     {
         if ($auth = PermissionService::authorize('user_notification', 'show')) return $auth;
@@ -426,5 +440,19 @@ class NotificationAnalyticsController extends Controller
         }
 
         return response()->json(['message' => 'Deleted']);
+    }
+
+    public function bulk_delete_failed_jobs(Request $request)
+    {
+        if ($auth = PermissionService::authorize('user_notification', 'manage')) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::table('failed_jobs')->whereIn('id', $request->ids)->delete();
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

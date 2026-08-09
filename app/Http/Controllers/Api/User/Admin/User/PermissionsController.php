@@ -52,4 +52,19 @@ class PermissionsController extends Controller
         Permission::findOrFail($id)->delete();
         return response()->json(['message' => 'Deleted']);
     }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('permission', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Permission::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
 }

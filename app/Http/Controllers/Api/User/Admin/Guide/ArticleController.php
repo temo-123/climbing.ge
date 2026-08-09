@@ -48,6 +48,7 @@ use App\Models\Guide\Spots_rocks_image;
 use Auth;
 use File;
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class ArticleController extends Controller
 {
@@ -334,8 +335,20 @@ class ArticleController extends Controller
     {
         $auth = PermissionService::authorize('article', 'del');
         if ($auth) return $auth;
-        $global_id=$request->article_id;
 
+        $this->deleteOneArticle($request->article_id);
+    }
+
+    /**
+     * Deletes a single article and its cascading related records (general info
+     * relations, locale content, gallery/description images). Extracted from
+     * del_article so bulk_delete can reuse the exact same cascade per id.
+     * Preserves the original method's behavior of not guarding against a
+     * missing article — callers that need graceful skipping (bulk_delete)
+     * check existence before calling this.
+     */
+    private function deleteOneArticle($global_id)
+    {
         $global_article = Article::where('id',strip_tags($global_id))->first();
 
         $image_path = 'images/'.$global_article->category.'_img/';
@@ -350,13 +363,61 @@ class ArticleController extends Controller
             }
         }
 
-
-
         // Note: Child record deletion is now handled in LocaleContentControllService::del_content()
         // This prevents foreign key constraint violations by ensuring proper deletion order
 
         ArticlesService::del_content($global_id, Article::class, Locale_article::class, '_article', 'image', $image_path);
 
         ImageControllService::image_delete('images/region_sectors_img/', $global_article, 'climbing_area_image');
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('article', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Article::where('id', $id)->exists()) continue;
+                $this->deleteOneArticle($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('article', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Article::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('article', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Article::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

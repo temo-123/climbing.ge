@@ -102,9 +102,20 @@
 
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="form-groupe float-right">
-                            <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="deleteSelected">
-                                {{ $t('admin.table.delete_selected') }}
+                        <div class="form-groupe float-right bulk-actions-group">
+                            <select
+                                class="form-select d-inline-block w-auto me-2"
+                                v-model="bulkAction"
+                                :disabled="selectedItems.length === 0"
+                            >
+                                <option value="delete">{{ $t('admin.table.delete_selected') }}</option>
+                                <template v-if="currentTabData && currentTabData.has_published">
+                                    <option value="publish">{{ $t('admin.table.publish_selected') }}</option>
+                                    <option value="unpublish">{{ $t('admin.table.unpublish_selected') }}</option>
+                                </template>
+                            </select>
+                            <button class="btn btn-danger" :disabled="selectedItems.length === 0" @click="applyBulkAction">
+                                {{ $t('admin.table.apply_bulk_action') }}
                             </button>
                         </div>
                     </div>
@@ -249,6 +260,7 @@ export default {
             itemsPerPage: 10,
             itemsPerPageOptions: [10, 20, 30, 50, 100, 'All'],
             selectedItems: [],
+            bulkAction: 'delete',
             sortColIndex: null,
             sortKey: null,
             sortDir: 'asc',
@@ -287,6 +299,8 @@ export default {
             this.sortColIndex = null;
             this.sortKey = null;
             this.sortDir = 'asc';
+            this.bulkAction = 'delete';
+            this.selectedItems = [];
             const key = this._getStorageKey();
             if (key && newTab) {
                 localStorage.setItem(key, newTab);
@@ -422,10 +436,21 @@ export default {
                 this.selectedItems = tabData.tab_data.data.map(item => item.id).filter(Boolean);
             }
         },
-        deleteSelected() {
+        applyBulkAction() {
             if (this.selectedItems.length === 0) return;
-            this.$emit('delete_selected', this.selectedItems);
+            const ids = [...this.selectedItems];
+            if (this.bulkAction === 'publish') {
+                if (!confirm(this.$t('admin.table.confirm_bulk_publish', { count: ids.length }))) return;
+                this.$emit('publish_selected', ids);
+            } else if (this.bulkAction === 'unpublish') {
+                if (!confirm(this.$t('admin.table.confirm_bulk_unpublish', { count: ids.length }))) return;
+                this.$emit('unpublish_selected', ids);
+            } else {
+                if (!confirm(this.$t('admin.table.confirm_bulk_delete', { count: ids.length }))) return;
+                this.$emit('delete_selected', ids);
+            }
             this.selectedItems = [];
+            this.bulkAction = 'delete';
         },
         privies_page_pagination(){
             if(this.currentPage > 1){

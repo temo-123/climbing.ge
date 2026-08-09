@@ -47,9 +47,51 @@ class LiveCameraController extends Controller
     function del_live_camera(Request $request) {
         $auth = PermissionService::authorize('live_camera', 'del');
         if ($auth) return $auth;
-        
+
         // dd($request->id);
         $deleted = LiveCamera::where('id', $request->id)->delete();
         return response()->json(['deleted' => $deleted > 0], $deleted ? 200 : 404);
+    }
+
+    function bulk_delete(Request $request) {
+        $auth = PermissionService::authorize('live_camera', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        LiveCamera::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    function bulk_publish(Request $request) {
+        $auth = PermissionService::authorize('live_camera', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        LiveCamera::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    function bulk_unpublish(Request $request) {
+        $auth = PermissionService::authorize('live_camera', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        LiveCamera::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 }

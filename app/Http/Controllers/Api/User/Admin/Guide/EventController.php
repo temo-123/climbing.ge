@@ -16,6 +16,7 @@ use App\Services\URLTitleService;
 use App\Services\PermissionService;
 
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
@@ -192,29 +193,30 @@ class EventController extends Controller
     {
         $auth = PermissionService::authorize('event', 'del');
         if ($auth) return $auth;
-        $global_global_info_relatione = General_info_event::where('event_id', '=', $request->event_id)->first();
 
-        $global_event = Event::where('id',strip_tags($request->event_id))->first();
+        $this->deleteOneEvent($request->event_id);
+    }
+
+    /**
+     * Deletes a single event and its cascading related records (image file,
+     * general info relation, both locale rows). Extracted from del_event so
+     * bulk_delete can reuse the exact same cascade per id. Matches the
+     * original method's behavior of not guarding against a missing event —
+     * bulk_delete checks existence before calling this.
+     */
+    private function deleteOneEvent($event_id)
+    {
+        $global_global_info_relatione = General_info_event::where('event_id', '=', $event_id)->first();
+
+        $global_event = Event::where('id',strip_tags($event_id))->first();
         $us_event = Locale_event::where('id',strip_tags($global_event->us_event_id))->first();
         // $ru_event = Locale_event::where('id',strip_tags($global_event->ru_event_id))->first();
         $ka_event = Locale_event::where('id',strip_tags($global_event->ka_event_id))->first();
-        
+
         // delete event file
         ImageControllService::image_delete('images/event_img/', $global_event, 'image');
-        
-        // Del general info event relatione
-        // if ($global_event->general_info->count() > 0) {
-        //     foreach ($global_event->general_info as $del_info) {
-        //         $deliting_info = General_info_event::
-        //                                             where('event_id',strip_tags($del_info->pivot->event_id))->
-        //                                             where('info_id',strip_tags($del_info->pivot->info_id))->
-        //                                             first();
-        //         $deliting_info -> delete();
-        //     }
-        // }
 
         // delete event from db
-        // dd($global_global_info_relatione);
         if($global_global_info_relatione){
             $global_global_info_relatione ->delete();
         }
@@ -222,6 +224,56 @@ class EventController extends Controller
         $us_event ->delete();
         // $ru_event ->delete();
         $ka_event ->delete();
+    }
+
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('event', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        DB::transaction(function () use ($request) {
+            foreach ($request->ids as $id) {
+                if (!Event::where('id', $id)->exists()) continue;
+                $this->deleteOneEvent($id);
+            }
+        });
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_publish(Request $request)
+    {
+        $auth = PermissionService::authorize('event', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Event::whereIn('id', $request->ids)->update(['published' => 1]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
+    }
+
+    public function bulk_unpublish(Request $request)
+    {
+        $auth = PermissionService::authorize('event', 'edit');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        Event::whereIn('id', $request->ids)->update(['published' => 0]);
+
+        return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
 

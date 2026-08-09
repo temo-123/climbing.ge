@@ -52,5 +52,23 @@ class ShipedRegionController extends Controller
         $deliting_item = Shiped_region::where('id',strip_tags($request->region_id))->first();
         $deliting_item ->delete();
     }
+
+    /**
+     * Bulk delete shipping regions. No cascading side effects, so a plain destroy() is safe.
+     */
+    public function bulk_delete(Request $request)
+    {
+        $auth = PermissionService::authorize('shipping_region', 'del');
+        if ($auth) return $auth;
+
+        $request->validate([
+            'ids' => 'required|array|min:1',
+            'ids.*' => 'integer',
+        ]);
+
+        $deleted_count = Shiped_region::destroy($request->ids);
+
+        return response()->json(['success' => true, 'count' => $deleted_count]);
+    }
 }
 
