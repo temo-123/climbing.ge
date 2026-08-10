@@ -51,6 +51,23 @@
             <div class="col-md-12" v-show="tab_num == 1">
 
                 <div class="form-group">
+                    <label>{{ $t('admin.training.mode_label') }}</label>
+                    <select v-model="trainingMode" class="form-control" @change="onModeChange">
+                        <option value="custom">{{ $t('admin.training.mode_custom') }}</option>
+                        <option value="shop_product">{{ $t('admin.training.mode_shop_product') }}</option>
+                    </select>
+                </div>
+
+                <div class="form-group" v-if="trainingMode === 'shop_product'">
+                    <label>{{ $t('admin.training.product_label') }}</label>
+                    <input type="text" v-model="productSearchQuery" @input="searchProducts" class="form-control" :placeholder="$t('admin.training.product_search_placeholder')">
+                    <ul v-if="productResults.length" class="list-group product-search-results">
+                        <li v-for="p in productResults" :key="p.id" class="list-group-item list-group-item-action" style="cursor:pointer" @click="selectProduct(p)">{{ p.title }}</li>
+                    </ul>
+                    <small v-if="form.product_id" class="text-muted d-block mt-1">{{ $t('admin.training.selected_product') }}: {{ productSearchQuery }}</small>
+                </div>
+
+                <div class="form-group">
                     <label>{{ $t('admin.training.name_label') }} <span class="text-danger">*</span></label>
                     <input type="text" v-model="form.name" class="form-control">
                 </div>
@@ -147,8 +164,9 @@
                             <input type="number" min="0" v-model.number="step.duration_seconds" class="form-control">
                         </div>
                         <div class="form-group col-md-3">
-                            <label>{{ $t('admin.training.image_url_label') }}</label>
-                            <input type="text" v-model="step.image_url" class="form-control">
+                            <label>{{ $t('admin.training.image_url_label') }}<span v-if="trainingMode === 'shop_product'" class="text-danger">*</span></label>
+                            <input type="file" accept="image/*" @change="onStepImageChange(index, $event)" class="form-control">
+                            <img v-if="step.image_url" :src="step.image_url" alt="" style="max-height:60px;margin-top:4px;">
                         </div>
                     </div>
                     <div class="form-group">
@@ -200,6 +218,9 @@ export default {
             types: ['fingerboard', 'campus', 'flexibility', 'strength', 'endurance'],
             difficulties: ['easy', 'medium', 'hard'],
             phases: ['prepare', 'hang', 'rest', 'recover', 'work', 'stretch'],
+            trainingMode: 'custom',
+            productSearchQuery: '',
+            productResults: [],
             form: {
                 name: '',
                 description: '',
@@ -208,6 +229,7 @@ export default {
                 target_muscle: '',
                 coach_tip: '',
                 image_url: '',
+                product_id: null,
                 hang_time: 7,
                 rest_time: 3,
                 reps: 6,
@@ -247,13 +269,24 @@ export default {
                 this.form.sets = data.sets;
                 this.form.recover_time = data.recover_time;
                 this.form.is_published = data.is_published ? 1 : 0;
+                this.form.product_id = data.product_id || null;
                 this.form.steps = (data.steps || []).map(step => ({
                     phase: step.phase,
                     label: step.label,
                     duration_seconds: step.duration_seconds,
                     image_url: step.image_url,
                     instructions: step.instructions,
+                    _imageFile: null,
                 }));
+
+                if (data.product_id) {
+                    this.trainingMode = 'shop_product';
+                    this.productSearchQuery = data.product && data.product.us_product
+                        ? data.product.us_product.title
+                        : ('Product #' + data.product_id);
+                } else {
+                    this.trainingMode = 'custom';
+                }
 
                 const kaTranslation = (data.translations || []).find(t => t.locale === 'ka');
                 if (kaTranslation) {
@@ -269,17 +302,96 @@ export default {
             .finally(() => this.is_loading = false);
         },
         addStep() {
-            this.form.steps.push({ phase: 'work', label: '', duration_seconds: 30, image_url: '', instructions: '' });
+            this.form.steps.push({ phase: 'work', label: '', duration_seconds: 30, image_url: '', instructions: '', _imageFile: null });
         },
         removeStep(index) {
             this.form.steps.splice(index, 1);
         },
+        onModeChange() {
+            if (this.trainingMode === 'custom') {
+                this.form.product_id = null;
+                this.productSearchQuery = '';
+                this.productResults = [];
+            }
+        },
+        searchProducts() {
+            clearTimeout(this._productSearchTimeout);
+            if (!this.productSearchQuery) {
+                this.productResults = [];
+                return;
+            }
+            this._productSearchTimeout = setTimeout(() => {
+                axios.get('/set_training/search_products', { params: { query: this.productSearchQuery } })
+                    .then(response => {
+                        this.productResults = response.data.products || [];
+                    });
+            }, 300);
+        },
+        selectProduct(p) {
+            this.form.product_id = p.id;
+            this.productSearchQuery = p.title;
+            this.productResults = [];
+        },
+        onStepImageChange(index, event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.form.steps[index]._imageFile = file;
+                this.form.steps[index].image_url = URL.createObjectURL(file);
+            }
+        },
+        buildStepsFormData(formData) {
+            this.form.steps.forEach((step, i) => {
+                formData.append(`steps[${i}][phase]`, step.phase);
+                if (step.label) formData.append(`steps[${i}][label]`, step.label);
+                formData.append(`steps[${i}][duration_seconds]`, step.duration_seconds);
+                if (step.instructions) formData.append(`steps[${i}][instructions]`, step.instructions);
+                if (step._imageFile) {
+                    formData.append(`steps[${i}][image]`, step._imageFile);
+                } else if (step.image_url) {
+                    formData.append(`steps[${i}][image_url]`, step.image_url);
+                }
+            });
+        },
+        buildFormData() {
+            const formData = new FormData();
+            formData.append('name', this.form.name);
+            if (this.form.description) formData.append('description', this.form.description);
+            formData.append('type', this.form.type);
+            formData.append('difficulty', this.form.difficulty);
+            if (this.form.target_muscle) formData.append('target_muscle', this.form.target_muscle);
+            if (this.form.coach_tip) formData.append('coach_tip', this.form.coach_tip);
+            if (this.form.image_url) formData.append('image_url', this.form.image_url);
+            if (this.form.product_id) formData.append('product_id', this.form.product_id);
+            formData.append('hang_time', this.form.hang_time);
+            formData.append('rest_time', this.form.rest_time);
+            formData.append('reps', this.form.reps);
+            formData.append('sets', this.form.sets);
+            formData.append('recover_time', this.form.recover_time);
+            formData.append('is_published', this.form.is_published);
+            Object.keys(this.form.translations.ka).forEach(k => {
+                if (this.form.translations.ka[k]) formData.append(`translations[ka][${k}]`, this.form.translations.ka[k]);
+            });
+            this.buildStepsFormData(formData);
+            return formData;
+        },
         save() {
-            this.is_loading = true;
             this.errors = {};
 
+            if (this.trainingMode === 'shop_product') {
+                const missingImage = this.form.steps.length === 0 || this.form.steps.some(s => !s.image_url && !s._imageFile);
+                if (missingImage) {
+                    this.errors = { steps: [this.$t('admin.training.step_image_required_error')] };
+                    return;
+                }
+            }
+
+            this.is_loading = true;
+
+            const hasNewStepImage = this.form.steps.some(s => s._imageFile);
+            const payload = hasNewStepImage ? this.buildFormData() : this.form;
+
             axios
-            .post('/set_training/update_training/' + this.$route.params.id, this.form)
+            .post('/set_training/update_training/' + this.$route.params.id, payload)
             .then(() => {
                 this.$router.push({ name: 'trainingsList' });
             })

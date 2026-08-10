@@ -78,6 +78,22 @@ class ProductController extends Controller
         }
     }
 
+    public function get_trainable_products(Request $request)
+    {
+        $global_products = Product::latest('id')
+            ->where('published', '=', 1)
+            ->whereNotNull('equipment_type')
+            ->get();
+        $products = ProductService::get_locale_product_use_locale($global_products, $request->lang);
+
+        $byId = $global_products->keyBy('id');
+        foreach ($products as &$p) {
+            $p['equipment_type'] = $byId[$p['global_product']->id]->equipment_type ?? null;
+        }
+
+        return $products;
+    }
+
     public function get_local_products(Request $request)
     {
         // Outlet products are exclusive to the dedicated outlet page — kept

@@ -13,6 +13,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_current_products', 'get_current_products');
         
         Route::get('/get_local_products/{lang}', 'get_local_products');
+        Route::get('/get_trainable_products/{lang}', 'get_trainable_products');
         Route::get('/get_donation_products/{lang}', 'get_donation_products');
         Route::get('/get_outlet_products/{lang}', 'get_outlet_products');
         Route::get('/get_local_product_in_page/{lang}/{url_title}', 'get_local_product_in_page');

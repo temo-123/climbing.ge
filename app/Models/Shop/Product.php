@@ -37,6 +37,7 @@ class Product extends Model
 
       'subcategory_id',
       'brand_id',
+      'equipment_type',
 
       'us_product_id',
       'ka_product_id'

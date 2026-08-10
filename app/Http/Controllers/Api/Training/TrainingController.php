@@ -16,6 +16,10 @@ class TrainingController extends Controller
             $query->where('type', $request->type);
         }
 
+        if ($request->filled('product_id')) {
+            $query->where('product_id', $request->product_id);
+        }
+
         return $query->get()->map(fn($training) => self::format($training))->values();
     }
 
@@ -44,6 +48,7 @@ class TrainingController extends Controller
             'targetMuscle' => $training->target_muscle,
             'coachTip' => $training->coach_tip,
             'imageUrl' => $training->image_url,
+            'productId' => $training->product_id,
             'hangTime' => $training->hang_time,
             'restTime' => $training->rest_time,
             'reps' => $training->reps,

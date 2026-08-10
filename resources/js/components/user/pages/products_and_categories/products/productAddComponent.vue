@@ -107,6 +107,21 @@
                                 </select>
                             </div>
                         </div>
+
+                        <div class="form-group clearfix">
+                            <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.equipment_type_label') }} </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="data.global_product.equipment_type" name="equipment_type" >
+                                    <option v-bind:value="null">{{ $t('admin.shop.equipment_type_none') }}</option>
+                                    <option v-bind:value="'fingerboard'">{{ $t('admin.shop.equipment_type_fingerboard') }}</option>
+                                    <option v-bind:value="'campus_board'">{{ $t('admin.shop.equipment_type_campus_board') }}</option>
+                                    <option v-bind:value="'climbing_wall'">{{ $t('admin.shop.equipment_type_climbing_wall') }}</option>
+                                    <option v-bind:value="'system_wall'">{{ $t('admin.shop.equipment_type_system_wall') }}</option>
+                                    <option v-bind:value="'pull_up_bar'">{{ $t('admin.shop.equipment_type_pull_up_bar') }}</option>
+                                    <option v-bind:value="'weights'">{{ $t('admin.shop.equipment_type_weights') }}</option>
+                                </select>
+                            </div>
+                        </div>
                     </form>
 
                 </div>
@@ -233,6 +248,7 @@
                         subcategory_id: 0,
                         brand_id: '',
                         sale_type: "",
+                        equipment_type: null,
 
                         made_in_georgia: null,
                     },

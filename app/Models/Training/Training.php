@@ -22,4 +22,9 @@ class Training extends Model
     {
         return $this->hasMany(TrainingTranslation::class, 'training_id');
     }
+
+    public function product()
+    {
+        return $this->belongsTo(\App\Models\Shop\Product::class, 'product_id');
+    }
 }

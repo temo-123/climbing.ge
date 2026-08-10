@@ -6,6 +6,7 @@ Route::group(['namespace'=>'Api\User\Admin\Training', 'middleware'=>['auth:sanct
     Route::controller(TrainingController::class)->prefix('set_training')->group( function() {
         Route::get('/get_all_trainings', 'get_all_trainings');
         Route::get('/get_training_data/{id}', 'get_training_data');
+        Route::get('/search_products', 'search_products');
         Route::post('/create_training', 'create_training');
         Route::post('/update_training/{id}', 'update_training');
         Route::delete('/del_training/{id}', 'del_training');

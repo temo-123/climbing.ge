@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User\Admin\Training;
 
 use App\Http\Controllers\Controller;
 use App\Models\Training\Training;
+use App\Services\Abstract\ImageControllService;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +17,7 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        return Training::with(['steps', 'translations'])->orderByDesc('created_at')->get();
+        return Training::with(['steps', 'translations', 'product.us_product'])->orderByDesc('created_at')->get();
     }
 
     function get_training_data($id)
@@ -24,12 +25,37 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        $training = Training::with(['steps', 'translations'])->where('id', strip_tags($id))->first();
+        $training = Training::with(['steps', 'translations', 'product.us_product'])->where('id', strip_tags($id))->first();
         if (!$training) {
             return response()->json(['error' => 'Not found'], 404);
         }
 
         return $training;
+    }
+
+    function search_products(Request $request)
+    {
+        $auth = PermissionService::authorize('training', 'show');
+        if ($auth) return $auth;
+
+        $query = $request->query('query', '');
+
+        $products = \App\Models\Shop\Product::with('us_product')
+            ->when($query, function ($q) use ($query) {
+                $q->whereHas('us_product', function ($sq) use ($query) {
+                    $sq->where('title', 'like', '%' . $query . '%');
+                });
+            })
+            ->limit(40)
+            ->get()
+            ->map(function ($p) {
+                return [
+                    'id' => $p->id,
+                    'title' => optional($p->us_product)->title ?? 'Product #' . $p->id,
+                ];
+            });
+
+        return response()->json(['products' => $products]);
     }
 
     function create_training(Request $request)
@@ -45,6 +71,7 @@ class TrainingController extends Controller
             'target_muscle' => 'nullable|string|max:160',
             'coach_tip' => 'nullable|string',
             'image_url' => 'nullable|string|max:500',
+            'product_id' => 'nullable|exists:products,id',
             'hang_time' => 'nullable|integer',
             'rest_time' => 'nullable|integer',
             'reps' => 'nullable|integer',
@@ -57,7 +84,7 @@ class TrainingController extends Controller
             'translations' => 'nullable|array',
         ]);
 
-        $training = DB::transaction(function () use ($data) {
+        $training = DB::transaction(function () use ($data, $request) {
             $training = Training::create([
                 'id' => $this->generateId($data['name']),
                 'name' => $data['name'],
@@ -67,6 +94,7 @@ class TrainingController extends Controller
                 'target_muscle' => $data['target_muscle'] ?? null,
                 'coach_tip' => $data['coach_tip'] ?? null,
                 'image_url' => $data['image_url'] ?? null,
+                'product_id' => $data['product_id'] ?? null,
                 'hang_time' => $data['hang_time'] ?? 7,
                 'rest_time' => $data['rest_time'] ?? 3,
                 'reps' => $data['reps'] ?? 6,
@@ -75,7 +103,7 @@ class TrainingController extends Controller
                 'is_published' => $data['is_published'] ?? 1,
             ]);
 
-            $this->syncSteps($training, $data['steps'] ?? []);
+            $this->syncSteps($training, $data['steps'] ?? [], $request);
             $this->syncTranslations($training, $data['translations'] ?? []);
 
             return $training;
@@ -102,6 +130,7 @@ class TrainingController extends Controller
             'target_muscle' => 'nullable|string|max:160',
             'coach_tip' => 'nullable|string',
             'image_url' => 'nullable|string|max:500',
+            'product_id' => 'nullable|exists:products,id',
             'hang_time' => 'nullable|integer',
             'rest_time' => 'nullable|integer',
             'reps' => 'nullable|integer',
@@ -114,7 +143,7 @@ class TrainingController extends Controller
             'translations' => 'nullable|array',
         ]);
 
-        DB::transaction(function () use ($training, $data) {
+        DB::transaction(function () use ($training, $data, $request) {
             $training->update([
                 'name' => $data['name'],
                 'description' => $data['description'] ?? null,
@@ -123,6 +152,7 @@ class TrainingController extends Controller
                 'target_muscle' => $data['target_muscle'] ?? null,
                 'coach_tip' => $data['coach_tip'] ?? null,
                 'image_url' => $data['image_url'] ?? null,
+                'product_id' => $data['product_id'] ?? null,
                 'hang_time' => $data['hang_time'] ?? 7,
                 'rest_time' => $data['rest_time'] ?? 3,
                 'reps' => $data['reps'] ?? 6,
@@ -131,7 +161,7 @@ class TrainingController extends Controller
                 'is_published' => $data['is_published'] ?? $training->is_published,
             ]);
 
-            $this->syncSteps($training, $data['steps'] ?? []);
+            $this->syncSteps($training, $data['steps'] ?? [], $request);
             $this->syncTranslations($training, $data['translations'] ?? []);
         });
 
@@ -207,16 +237,25 @@ class TrainingController extends Controller
         return response()->json(['success' => true, 'count' => count($request->ids)]);
     }
 
-    protected function syncSteps(Training $training, array $steps): void
+    protected function syncSteps(Training $training, array $steps, ?Request $request = null): void
     {
         $training->steps()->delete();
         foreach (array_values($steps) as $index => $step) {
+            $image_url = $step['image_url'] ?? null;
+
+            if ($request && $request->hasFile("steps.$index.image")) {
+                $uploaded = ImageControllService::image_upload('/images/training_step_img/', $request, "steps.$index.image", 2);
+                if ($uploaded) {
+                    $image_url = url('/images/training_step_img/' . $uploaded);
+                }
+            }
+
             $training->steps()->create([
                 'step_order' => $index + 1,
                 'phase' => $step['phase'],
                 'label' => $step['label'] ?? null,
                 'duration_seconds' => $step['duration_seconds'],
-                'image_url' => $step['image_url'] ?? null,
+                'image_url' => $image_url,
                 'instructions' => $step['instructions'] ?? null,
             ]);
         }

@@ -43,14 +43,15 @@ class ProductController extends Controller
             'subcategory_id' => 'required',
             'brand_id' => 'required',
             'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
+            'equipment_type' => 'nullable|in:fingerboard,campus_board,climbing_wall,system_wall,pull_up_bar,weights',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'validation' => $validator->messages()
             ], 422);
         }
-    
+
         // $product_adding = ProductService::add_content($data, product::class, Locale_product::class, '_product', $request);
         $product_adding = ProductService::add_content($data, Product::class, Locale_product::class, '_product', $request);
         
@@ -196,8 +197,9 @@ class ProductController extends Controller
             'subcategory_id' => 'required',
             'brand_id' => 'required',
             'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
+            'equipment_type' => 'nullable|in:fingerboard,campus_board,climbing_wall,system_wall,pull_up_bar,weights',
         ]);
-        
+
         if ($validator->fails()) {
             return response()->json([
                 'validation' => $validator->messages()
