@@ -50,21 +50,36 @@
             <!-- Tab 1: Global info -->
             <div class="col-md-12" v-show="tab_num == 1">
 
-                <div class="form-group">
-                    <label>{{ $t('admin.training.mode_label') }}</label>
+                <div class="alert alert-warning mode-warning-box">
+                    <label class="font-weight-bold">⚠ {{ $t('admin.training.mode_label') }}</label>
                     <select v-model="trainingMode" class="form-control" @change="onModeChange">
                         <option value="custom">{{ $t('admin.training.mode_custom') }}</option>
                         <option value="shop_product">{{ $t('admin.training.mode_shop_product') }}</option>
                     </select>
+                    <p class="mb-0 mt-2 small">
+                        {{ trainingMode === 'shop_product' ? $t('admin.training.mode_warning_shop') : $t('admin.training.mode_warning_custom') }}
+                    </p>
                 </div>
 
                 <div class="form-group" v-if="trainingMode === 'shop_product'">
-                    <label>{{ $t('admin.training.product_label') }}</label>
-                    <input type="text" v-model="productSearchQuery" @input="searchProducts" class="form-control" :placeholder="$t('admin.training.product_search_placeholder')">
-                    <ul v-if="productResults.length" class="list-group product-search-results">
-                        <li v-for="p in productResults" :key="p.id" class="list-group-item list-group-item-action" style="cursor:pointer" @click="selectProduct(p)">{{ p.title }}</li>
-                    </ul>
-                    <small v-if="form.product_id" class="text-muted d-block mt-1">{{ $t('admin.training.selected_product') }}: {{ productSearchQuery }}</small>
+                    <label>{{ $t('admin.training.category_label') }}</label>
+                    <select v-model="selectedCategoryId" class="form-control" @change="onCategoryChange">
+                        <option :value="0" disabled>{{ $t('admin.training.select_category') }}</option>
+                        <option v-for="c in categories" :key="c.id" :value="c.id">{{ c.us_name }}</option>
+                    </select>
+
+                    <label class="mt-2" v-if="selectedCategoryId">{{ $t('admin.training.subcategory_label') }}</label>
+                    <select v-if="selectedCategoryId" v-model="selectedSubcategoryId" class="form-control" @change="onSubcategoryChange">
+                        <option :value="0" disabled>{{ $t('admin.training.select_subcategory') }}</option>
+                        <option v-for="s in subcategories" :key="s.id" :value="s.id">{{ s.us_name }}</option>
+                    </select>
+
+                    <label class="mt-2" v-if="selectedSubcategoryId">{{ $t('admin.training.product_label') }}</label>
+                    <select v-if="selectedSubcategoryId" v-model="form.product_id" class="form-control">
+                        <option :value="null" disabled>{{ $t('admin.training.select_product') }}</option>
+                        <option v-for="p in products" :key="p.id" :value="p.id">{{ p.title }}</option>
+                    </select>
+                    <small v-if="selectedSubcategoryId && !products.length" class="text-muted d-block mt-1">{{ $t('admin.training.no_products_in_subcategory') }}</small>
                 </div>
 
                 <div class="form-group">
@@ -145,6 +160,11 @@
 
             <!-- Tab 2: Steps -->
             <div class="col-md-12" v-show="tab_num == 2">
+                <div class="alert alert-info">
+                    <p class="mb-2">{{ $t('admin.training.generate_steps_hint', { sets: form.sets, reps: form.reps, total: form.sets * form.reps }) }}</p>
+                    <button type="button" class="btn btn-outline-primary btn-sm" @click="generateStepsFromFormula()">{{ $t('admin.training.generate_steps_btn') }}</button>
+                </div>
+
                 <p v-if="form.steps.length == 0" class="text-muted">{{ $t('admin.training.no_steps_hint') }}</p>
 
                 <div v-for="(step, index) in form.steps" :key="index" class="card mb-3 p-3">
@@ -219,8 +239,11 @@ export default {
             difficulties: ['easy', 'medium', 'hard'],
             phases: ['prepare', 'hang', 'rest', 'recover', 'work', 'stretch'],
             trainingMode: 'custom',
-            productSearchQuery: '',
-            productResults: [],
+            categories: [],
+            subcategories: [],
+            products: [],
+            selectedCategoryId: 0,
+            selectedSubcategoryId: 0,
             form: {
                 name: '',
                 description: '',
@@ -255,30 +278,82 @@ export default {
         removeStep(index) {
             this.form.steps.splice(index, 1);
         },
+        generateStepsFromFormula() {
+            const sets = parseInt(this.form.sets) || 0;
+            const reps = parseInt(this.form.reps) || 0;
+            if (sets < 1 || reps < 1) return;
+
+            if (this.form.steps.length && !confirm(this.$t('admin.training.generate_steps_confirm'))) {
+                return;
+            }
+
+            const steps = [];
+            for (let s = 1; s <= sets; s++) {
+                for (let r = 1; r <= reps; r++) {
+                    steps.push({
+                        phase: 'hang',
+                        label: this.$t('admin.training.generated_hang_label', { set: s, rep: r }),
+                        duration_seconds: this.form.hang_time,
+                        image_url: '', instructions: '', _imageFile: null,
+                    });
+                    if (!(s === sets && r === reps)) {
+                        steps.push({
+                            phase: 'rest',
+                            label: this.$t('admin.training.generated_rest_label', { set: s }),
+                            duration_seconds: this.form.rest_time,
+                            image_url: '', instructions: '', _imageFile: null,
+                        });
+                    }
+                }
+                if (s < sets) {
+                    steps.push({
+                        phase: 'recover',
+                        label: this.$t('admin.training.generated_recover_label', { set: s + 1 }),
+                        duration_seconds: this.form.recover_time,
+                        image_url: '', instructions: '', _imageFile: null,
+                    });
+                }
+            }
+            this.form.steps = steps;
+        },
         onModeChange() {
             if (this.trainingMode === 'custom') {
                 this.form.product_id = null;
-                this.productSearchQuery = '';
-                this.productResults = [];
+                this.selectedCategoryId = 0;
+                this.selectedSubcategoryId = 0;
+                this.subcategories = [];
+                this.products = [];
+            } else if (!this.categories.length) {
+                this.fetchCategories();
             }
         },
-        searchProducts() {
-            clearTimeout(this._productSearchTimeout);
-            if (!this.productSearchQuery) {
-                this.productResults = [];
-                return;
-            }
-            this._productSearchTimeout = setTimeout(() => {
-                axios.get('/set_training/search_products', { params: { query: this.productSearchQuery } })
+        fetchCategories() {
+            axios.get('/get_product/get_product_category/get_all_product_category')
+                .then(response => {
+                    this.categories = response.data || [];
+                });
+        },
+        onCategoryChange() {
+            this.selectedSubcategoryId = 0;
+            this.products = [];
+            this.form.product_id = null;
+            this.subcategories = [];
+            if (this.selectedCategoryId) {
+                axios.get('/get_product/get_product_category/get_subcategory/get_subcategories_for_category/' + this.selectedCategoryId)
                     .then(response => {
-                        this.productResults = response.data.products || [];
+                        this.subcategories = response.data || [];
                     });
-            }, 300);
+            }
         },
-        selectProduct(p) {
-            this.form.product_id = p.id;
-            this.productSearchQuery = p.title;
-            this.productResults = [];
+        onSubcategoryChange() {
+            this.products = [];
+            this.form.product_id = null;
+            if (this.selectedSubcategoryId) {
+                axios.get('/set_training/search_products', { params: { subcategory_id: this.selectedSubcategoryId } })
+                    .then(response => {
+                        this.products = response.data.products || [];
+                    });
+            }
         },
         onStepImageChange(index, event) {
             const file = event.target.files[0];
@@ -373,5 +448,8 @@ export default {
 .tabs input[type="radio"]:checked + label {
     background: #fff;
     border: 1px solid #ccc !important;
+}
+.mode-warning-box {
+    border: 2px solid #ffc107;
 }
 </style>

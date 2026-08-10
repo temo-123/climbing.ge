@@ -17,7 +17,7 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        return Training::with(['steps', 'translations', 'product.us_product'])->orderByDesc('created_at')->get();
+        return Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory'])->orderByDesc('created_at')->get();
     }
 
     function get_training_data($id)
@@ -25,7 +25,7 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        $training = Training::with(['steps', 'translations', 'product.us_product'])->where('id', strip_tags($id))->first();
+        $training = Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory'])->where('id', strip_tags($id))->first();
         if (!$training) {
             return response()->json(['error' => 'Not found'], 404);
         }
@@ -39,14 +39,18 @@ class TrainingController extends Controller
         if ($auth) return $auth;
 
         $query = $request->query('query', '');
+        $subcategory_id = $request->query('subcategory_id');
 
         $products = \App\Models\Shop\Product::with('us_product')
+            ->when($subcategory_id, function ($q) use ($subcategory_id) {
+                $q->where('subcategory_id', $subcategory_id);
+            })
             ->when($query, function ($q) use ($query) {
                 $q->whereHas('us_product', function ($sq) use ($query) {
                     $sq->where('title', 'like', '%' . $query . '%');
                 });
             })
-            ->limit(40)
+            ->limit($subcategory_id ? 500 : 40)
             ->get()
             ->map(function ($p) {
                 return [
