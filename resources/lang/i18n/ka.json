@@ -1927,6 +1927,8 @@
             "target_muscle_label": "სამიზნე კუნთი",
             "coach_tip_label": "მწვრთნელის რჩევა",
             "image_url_label": "სურათის URL",
+            "cover_image_label": "მთავარი სურათი",
+            "step_image_label": "ეტაპის სურათი",
             "hang_time_label": "ჩამოკიდების დრო (წმ)",
             "rest_time_label": "დასვენების დრო (წმ)",
             "reps_label": "გამეორება",

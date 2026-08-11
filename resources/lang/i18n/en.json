@@ -1927,6 +1927,8 @@
             "target_muscle_label": "Target Muscle",
             "coach_tip_label": "Coach Tip",
             "image_url_label": "Image URL",
+            "cover_image_label": "Cover Image",
+            "step_image_label": "Step Image",
             "hang_time_label": "Hang Time (seconds)",
             "rest_time_label": "Rest Time (seconds)",
             "reps_label": "Reps",

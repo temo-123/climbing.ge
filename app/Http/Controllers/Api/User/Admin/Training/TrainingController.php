@@ -75,6 +75,7 @@ class TrainingController extends Controller
             'target_muscle' => 'nullable|string|max:160',
             'coach_tip' => 'nullable|string',
             'image_url' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10240',
             'product_id' => 'nullable|exists:products,id',
             'hang_time' => 'nullable|integer',
             'rest_time' => 'nullable|integer',
@@ -88,7 +89,15 @@ class TrainingController extends Controller
             'translations' => 'nullable|array',
         ]);
 
-        $training = DB::transaction(function () use ($data, $request) {
+        $image_url = $data['image_url'] ?? null;
+        if ($request->hasFile('image')) {
+            $uploaded = ImageControllService::image_upload('/images/training_img/', $request, 'image', 2);
+            if ($uploaded) {
+                $image_url = url('/images/training_img/' . $uploaded);
+            }
+        }
+
+        $training = DB::transaction(function () use ($data, $request, $image_url) {
             $training = Training::create([
                 'id' => $this->generateId($data['name']),
                 'name' => $data['name'],
@@ -97,7 +106,7 @@ class TrainingController extends Controller
                 'difficulty' => $data['difficulty'] ?? 'medium',
                 'target_muscle' => $data['target_muscle'] ?? null,
                 'coach_tip' => $data['coach_tip'] ?? null,
-                'image_url' => $data['image_url'] ?? null,
+                'image_url' => $image_url,
                 'product_id' => $data['product_id'] ?? null,
                 'hang_time' => $data['hang_time'] ?? 7,
                 'rest_time' => $data['rest_time'] ?? 3,
@@ -134,6 +143,7 @@ class TrainingController extends Controller
             'target_muscle' => 'nullable|string|max:160',
             'coach_tip' => 'nullable|string',
             'image_url' => 'nullable|string|max:500',
+            'image' => 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:10240',
             'product_id' => 'nullable|exists:products,id',
             'hang_time' => 'nullable|integer',
             'rest_time' => 'nullable|integer',
@@ -147,7 +157,15 @@ class TrainingController extends Controller
             'translations' => 'nullable|array',
         ]);
 
-        DB::transaction(function () use ($training, $data, $request) {
+        $image_url = $data['image_url'] ?? null;
+        if ($request->hasFile('image')) {
+            $uploaded = ImageControllService::image_upload('/images/training_img/', $request, 'image', 2);
+            if ($uploaded) {
+                $image_url = url('/images/training_img/' . $uploaded);
+            }
+        }
+
+        DB::transaction(function () use ($training, $data, $request, $image_url) {
             $training->update([
                 'name' => $data['name'],
                 'description' => $data['description'] ?? null,
@@ -155,7 +173,7 @@ class TrainingController extends Controller
                 'difficulty' => $data['difficulty'] ?? 'medium',
                 'target_muscle' => $data['target_muscle'] ?? null,
                 'coach_tip' => $data['coach_tip'] ?? null,
-                'image_url' => $data['image_url'] ?? null,
+                'image_url' => $image_url,
                 'product_id' => $data['product_id'] ?? null,
                 'hang_time' => $data['hang_time'] ?? 7,
                 'rest_time' => $data['rest_time'] ?? 3,

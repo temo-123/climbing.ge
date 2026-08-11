@@ -118,8 +118,10 @@
                 </div>
 
                 <div class="form-group">
-                    <label>{{ $t('admin.training.image_url_label') }}</label>
-                    <input type="text" v-model="form.image_url" class="form-control">
+                    <single_image_add
+                        :title_prop="$t('admin.training.cover_image_label')"
+                        @update_single_image="mainImageFile = $event"
+                    />
                 </div>
 
                 <div class="form-row">
@@ -167,33 +169,38 @@
 
                 <p v-if="form.steps.length == 0" class="text-muted">{{ $t('admin.training.no_steps_hint') }}</p>
 
-                <div v-for="(step, index) in form.steps" :key="index" class="card mb-3 p-3">
-                    <div class="form-row">
-                        <div class="form-group col-md-3">
-                            <label>{{ $t('admin.training.step_phase_label') }}</label>
-                            <select v-model="step.phase" class="form-control">
-                                <option v-for="p in phases" :key="p" :value="p">{{ $t('admin.training.phase_' + p) }}</option>
-                            </select>
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>{{ $t('admin.training.step_label_label') }}</label>
-                            <input type="text" v-model="step.label" class="form-control">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>{{ $t('admin.training.step_duration_label') }}</label>
-                            <input type="number" min="0" v-model.number="step.duration_seconds" class="form-control">
-                        </div>
-                        <div class="form-group col-md-3">
-                            <label>{{ $t('admin.training.image_url_label') }}<span v-if="trainingMode === 'shop_product'" class="text-danger">*</span></label>
-                            <input type="file" accept="image/*" @change="onStepImageChange(index, $event)" class="form-control">
-                            <img v-if="step.image_url" :src="step.image_url" alt="" style="max-height:60px;margin-top:4px;">
-                        </div>
+                <div v-for="(step, index) in form.steps" :key="index" class="card mb-3 step-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <strong>{{ $t('admin.training.step_label_label') }} #{{ index + 1 }} — {{ $t('admin.training.phase_' + step.phase) }}</strong>
+                        <button type="button" class="btn btn-danger btn-sm" @click="removeStep(index)">{{ $t('admin.training.remove_step_btn') }}</button>
                     </div>
-                    <div class="form-group">
-                        <label>{{ $t('admin.training.step_instructions_label') }}</label>
-                        <textarea v-model="step.instructions" class="form-control" rows="2"></textarea>
+                    <div class="card-body">
+                        <div class="form-row">
+                            <div class="form-group col-md-4">
+                                <label>{{ $t('admin.training.step_phase_label') }}</label>
+                                <select v-model="step.phase" class="form-control">
+                                    <option v-for="p in phases" :key="p" :value="p">{{ $t('admin.training.phase_' + p) }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>{{ $t('admin.training.step_label_label') }}</label>
+                                <input type="text" v-model="step.label" class="form-control">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label>{{ $t('admin.training.step_duration_label') }}</label>
+                                <input type="number" min="0" v-model.number="step.duration_seconds" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ $t('admin.training.step_instructions_label') }}</label>
+                            <textarea v-model="step.instructions" class="form-control" rows="2"></textarea>
+                        </div>
+
+                        <single_image_add
+                            :title_prop="$t('admin.training.step_image_label') + (trainingMode === 'shop_product' ? ' *' : '')"
+                            @update_single_image="step._imageFile = $event"
+                        />
                     </div>
-                    <button type="button" class="btn btn-danger btn-sm" @click="removeStep(index)">{{ $t('admin.training.remove_step_btn') }}</button>
                 </div>
 
                 <button type="button" class="btn btn-secondary" @click="addStep()">{{ $t('admin.training.add_step_btn') }}</button>
@@ -229,11 +236,17 @@
 </template>
 
 <script>
+import single_image_add from '../../items/single_image/singleImageAddComponent.vue'
+
 export default {
     name: 'TrainingAddComponent',
+    components: {
+        single_image_add,
+    },
     data() {
         return {
             tab_num: 1,
+            mainImageFile: null,
             is_loading: false,
             types: ['fingerboard', 'campus', 'flexibility', 'strength', 'endurance'],
             difficulties: ['easy', 'medium', 'hard'],
@@ -251,7 +264,6 @@ export default {
                 difficulty: 'medium',
                 target_muscle: '',
                 coach_tip: '',
-                image_url: '',
                 product_id: null,
                 hang_time: 7,
                 rest_time: 3,
@@ -355,13 +367,6 @@ export default {
                     });
             }
         },
-        onStepImageChange(index, event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.form.steps[index]._imageFile = file;
-                this.form.steps[index].image_url = URL.createObjectURL(file);
-            }
-        },
         buildStepsFormData(formData) {
             this.form.steps.forEach((step, i) => {
                 formData.append(`steps[${i}][phase]`, step.phase);
@@ -383,7 +388,7 @@ export default {
             formData.append('difficulty', this.form.difficulty);
             if (this.form.target_muscle) formData.append('target_muscle', this.form.target_muscle);
             if (this.form.coach_tip) formData.append('coach_tip', this.form.coach_tip);
-            if (this.form.image_url) formData.append('image_url', this.form.image_url);
+            if (this.mainImageFile) formData.append('image', this.mainImageFile);
             if (this.form.product_id) formData.append('product_id', this.form.product_id);
             formData.append('hang_time', this.form.hang_time);
             formData.append('rest_time', this.form.rest_time);
@@ -410,11 +415,8 @@ export default {
 
             this.is_loading = true;
 
-            const hasNewStepImage = this.form.steps.some(s => s._imageFile);
-            const payload = hasNewStepImage ? this.buildFormData() : this.form;
-
             axios
-            .post('/set_training/create_training', payload)
+            .post('/set_training/create_training', this.buildFormData())
             .then(() => {
                 this.$router.push({ name: 'trainingsList' });
             })
@@ -451,5 +453,12 @@ export default {
 }
 .mode-warning-box {
     border: 2px solid #ffc107;
+}
+.step-card {
+    border-radius: 8px;
+    overflow: hidden;
+}
+.step-card .card-header {
+    background: #f8f9fa;
 }
 </style>

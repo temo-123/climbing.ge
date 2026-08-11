@@ -9,3 +9,8 @@ php_value upload_max_filesize 100M
 php_value post_max_size 100M
 php_value max_execution_time 300
 php_value max_input_time 300
+
+# Default max_file_uploads is 20 — bulk image uploads (multimedia manager,
+# gallery components) silently drop every file past the 20th with no error
+# if this isn't raised.
+php_value max_file_uploads 200
