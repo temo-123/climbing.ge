@@ -121,6 +121,7 @@
                     <single_image_edit
                         :title_prop="$t('admin.training.cover_image_label')"
                         :existing_image_url_prop="form.image_url || ''"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
                         @update_single_image="mainImageFile = $event"
                     />
                 </div>
@@ -200,6 +201,7 @@
                         <single_image_edit
                             :title_prop="$t('admin.training.step_image_label') + (trainingMode === 'shop_product' ? ' *' : '')"
                             :existing_image_url_prop="step.image_url || ''"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_single_image="step._imageFile = $event"
                         />
                     </div>

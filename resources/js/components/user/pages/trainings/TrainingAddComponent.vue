@@ -120,6 +120,7 @@
                 <div class="form-group">
                     <single_image_add
                         :title_prop="$t('admin.training.cover_image_label')"
+                        :crop_ratio_prop="{ width: 16, height: 9 }"
                         @update_single_image="mainImageFile = $event"
                     />
                 </div>
@@ -198,6 +199,7 @@
 
                         <single_image_add
                             :title_prop="$t('admin.training.step_image_label') + (trainingMode === 'shop_product' ? ' *' : '')"
+                            :crop_ratio_prop="{ width: 16, height: 9 }"
                             @update_single_image="step._imageFile = $event"
                         />
                     </div>
