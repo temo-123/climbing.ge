@@ -19,7 +19,7 @@ class TrainingPlanController extends Controller
     function get_plan_data($id)
     {
         $plan = TrainingPlan::with(['translations', 'sessions.planSessionTrainings.training.steps', 'sessions.planSessionTrainings.training.translations'])
-            ->where('id', strip_tags($id))
+            ->where('slug', strip_tags($id))
             ->where('is_published', 1)
             ->first();
 
@@ -33,7 +33,7 @@ class TrainingPlanController extends Controller
     public static function format(TrainingPlan $plan): array
     {
         return [
-            'id' => $plan->id,
+            'id' => $plan->slug,
             'name' => $plan->name,
             'emoji' => $plan->emoji,
             'level' => $plan->level,

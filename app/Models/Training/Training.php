@@ -10,9 +10,6 @@ class Training extends Model
 
     protected $table = 'trainings';
 
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     public function steps()
     {
         return $this->hasMany(TrainingStep::class, 'training_id')->orderBy('step_order');

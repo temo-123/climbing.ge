@@ -91,6 +91,8 @@ class SectorController extends Controller
 
     public function add_sector_images($images, $sector_id)
     {
+        $any_saved = false;
+
         foreach ($images as $image) {
             $file_new_name;
             $file_new_name = ImageControllService::upload_loop_image('images/sector_img/', $image, 0);
@@ -107,16 +109,21 @@ class SectorController extends Controller
 
                 $new_option_image['image'] = $file_new_name;
                 $new_option_image['sector_id'] = $sector_id;
-        
+
                 $saiving = $new_option_image -> save();
 
                 if($saiving){
+                    $any_saved = true;
                     echo 'Upload socsesful \n';
                 }
             }
             else{
                 echo 'Upload error \n';
             }
+        }
+
+        if($any_saved){
+            Sector::where('id', $sector_id)->update(['updated_at' => now()]);
         }
     }
 

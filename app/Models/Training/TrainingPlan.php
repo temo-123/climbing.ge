@@ -10,9 +10,6 @@ class TrainingPlan extends Model
 
     protected $table = 'training_plans';
 
-    public $incrementing = false;
-    protected $keyType = 'string';
-
     public function sessions()
     {
         return $this->hasMany(PlanSession::class, 'plan_id')->orderBy('day_index');

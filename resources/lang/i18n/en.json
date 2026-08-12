@@ -2290,6 +2290,8 @@
                 "back": "Go Back",
                 "all articles": "All Articles"
             },
+            "created_label": "Created",
+            "updated_label": "Updated",
             "route_quantyty": "Georgia has {sectors} outdoor climbing sectors, {sport_routes} sport climbing routes, {boulder_routes} boulder routes, and {mtps} multi-pitch routes. Find all outdoor climbing area info on this page.",
             "route_quantyty_sport": "Georgia has {sectors} sport climbing sectors with {sport_routes} sport climbing routes.",
             "route_quantyty_boulder": "Georgia has {sectors} bouldering sectors with {boulder_routes} boulder routes.",

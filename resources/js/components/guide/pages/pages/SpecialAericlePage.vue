@@ -16,7 +16,8 @@
                 <div class="col-sm-8 blog-header">
                     <breadcrumb />
 
-                    <p class="blog-post-meta"> {{ partner.global_data.created_at  }}</p>
+                    <p v-if="partner.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.created_label') }}: {{ $formatDate(partner.global_data.created_at) }}</p>
+                    <p v-if="partner.global_data.updated_at && partner.global_data.updated_at !== partner.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.updated_label') }}: {{ $formatDate(partner.global_data.updated_at) }}</p>
 
                     <h2>{{ $t('guide.donation.support_title') }}</h2>
                 </div>

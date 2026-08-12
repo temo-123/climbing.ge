@@ -46,7 +46,7 @@ class TrainingPlanController extends Controller
 
         $plan = DB::transaction(function () use ($data) {
             $plan = TrainingPlan::create([
-                'id' => $this->generateId($data['name']),
+                'slug' => $this->generateId($data['name']),
                 'name' => $data['name'],
                 'emoji' => $data['emoji'] ?? null,
                 'level' => $data['level'],
@@ -121,7 +121,7 @@ class TrainingPlanController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         TrainingPlan::whereIn('id', $request->ids)->delete();
@@ -136,7 +136,7 @@ class TrainingPlanController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         TrainingPlan::whereIn('id', $request->ids)->update(['is_published' => 1]);
@@ -151,7 +151,7 @@ class TrainingPlanController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         TrainingPlan::whereIn('id', $request->ids)->update(['is_published' => 0]);
@@ -175,7 +175,7 @@ class TrainingPlanController extends Controller
             'sessions.*.day_index' => 'required_with:sessions|integer|min:0|max:6',
             'sessions.*.day_label' => 'required_with:sessions|string|max:40',
             'sessions.*.training_ids' => 'nullable|array',
-            'sessions.*.training_ids.*' => 'string',
+            'sessions.*.training_ids.*' => 'integer',
             'translations' => 'nullable|array',
         ]);
     }
@@ -217,7 +217,7 @@ class TrainingPlanController extends Controller
     {
         $base = Str::slug($name) ?: 'plan';
         $id = $base;
-        while (TrainingPlan::where('id', $id)->exists()) {
+        while (TrainingPlan::where('slug', $id)->exists()) {
             $id = $base . '-' . Str::lower(Str::random(6));
         }
         return $id;

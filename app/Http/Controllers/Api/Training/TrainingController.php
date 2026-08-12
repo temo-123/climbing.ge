@@ -26,7 +26,7 @@ class TrainingController extends Controller
     function get_training_data($id)
     {
         $training = Training::with(['steps', 'translations'])
-            ->where('id', strip_tags($id))
+            ->where('slug', strip_tags($id))
             ->where('is_published', 1)
             ->first();
 
@@ -40,7 +40,7 @@ class TrainingController extends Controller
     public static function format(Training $training): array
     {
         return [
-            'id' => $training->id,
+            'id' => $training->slug,
             'name' => $training->name,
             'description' => $training->description,
             'type' => $training->type,

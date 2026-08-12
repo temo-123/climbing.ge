@@ -99,7 +99,7 @@ class TrainingController extends Controller
 
         $training = DB::transaction(function () use ($data, $request, $image_url) {
             $training = Training::create([
-                'id' => $this->generateId($data['name']),
+                'slug' => $this->generateId($data['name']),
                 'name' => $data['name'],
                 'description' => $data['description'] ?? null,
                 'type' => $data['type'],
@@ -216,7 +216,7 @@ class TrainingController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         $blocked = DB::table('plan_session_trainings')->whereIn('training_id', $request->ids)->pluck('training_id')->unique()->values();
@@ -236,7 +236,7 @@ class TrainingController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         Training::whereIn('id', $request->ids)->update(['is_published' => 1]);
@@ -251,7 +251,7 @@ class TrainingController extends Controller
 
         $request->validate([
             'ids' => 'required|array|min:1',
-            'ids.*' => 'string',
+            'ids.*' => 'integer',
         ]);
 
         Training::whereIn('id', $request->ids)->update(['is_published' => 0]);
@@ -302,7 +302,7 @@ class TrainingController extends Controller
     {
         $base = Str::slug($name) ?: 'training';
         $id = $base;
-        while (Training::where('id', $id)->exists()) {
+        while (Training::where('slug', $id)->exists()) {
             $id = $base . '-' . Str::lower(Str::random(6));
         }
         return $id;

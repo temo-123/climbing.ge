@@ -175,6 +175,23 @@ app.mixin({
         $get_site_data() {
             return this.get_site_data;
         },
+        $formatDate(dateStr) {
+            if (!dateStr) {
+                return '';
+            }
+
+            const date = new Date(dateStr);
+            if (isNaN(date)) {
+                return dateStr;
+            }
+
+            const locale = this.$i18n?.locale === 'ka' ? 'ka-GE' : 'en-US';
+            return date.toLocaleDateString(locale, {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+        },
         get_site_data(force = false) {
             if (!force && this.$siteData.loaded && this.$globalSiteData.loaded) {
                 console.log('Site data already loaded, skipping fetch.');

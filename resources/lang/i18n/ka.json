@@ -2287,6 +2287,8 @@
                 "back": "უკან დაბრუნება",
                 "all articles": "ყველა სტატია"
             },
+            "created_label": "შექმნილია",
+            "updated_label": "განახლდა",
             "route_quantyty": "საქართველოში არის {sectors} საცოცი სექტორი, {sport_routes} სპორტული ცოცვის მარშრუტი, {boulder_routes} ბოლდერინგის მარშრუტი, {mtps} მულტიპიჩი. თქვენ შეგიძლიათ ნახოთ ყველა რეგიონის აღწერა მაგვერდზე.",
             "route_quantyty_sport": "საქართველოში არის {sectors} სპორტული ცოცვის სექტორი {sport_routes} მარშრუტით.",
             "route_quantyty_boulder": "საქართველოში არის {sectors} ბოლდერინგის სექტორი {boulder_routes} მარშრუტით.",

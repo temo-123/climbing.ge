@@ -11,7 +11,8 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
-                <p class="blog-post-meta"> {{ this.bisnes_data.global_data.created_at  }}</p>
+                <p v-if="this.bisnes_data.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.created_label') }}: {{ $formatDate(this.bisnes_data.global_data.created_at) }}</p>
+                <p v-if="this.bisnes_data.global_data.updated_at && this.bisnes_data.global_data.updated_at !== this.bisnes_data.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.updated_label') }}: {{ $formatDate(this.bisnes_data.global_data.updated_at) }}</p>
             </div>
         </div>
 

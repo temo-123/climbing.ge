@@ -248,19 +248,22 @@ class LocalBisnesController extends Controller
 
     public function add_bisnes_images($images, $bisnes_id)
     {
+        $any_saved = false;
+
         foreach ($images as $image) {
             // if($file_new_name = ImageControllService::upload_loop_image('images/suport_local_bisnes_img/', $image, 1)){
                 $file_new_name;
                 $file_new_name = ImageControllService::upload_loop_image('images/suport_local_bisnes_img/', $image, 1);
                 if(file_exists(public_path('images/suport_local_bisnes_img/') . $file_new_name)){
                     $new_option_image = new Suport_local_bisnes_image;
-            
+
                     $new_option_image['image'] = $file_new_name;
                     $new_option_image['bisnes_id'] = $bisnes_id;
-            
+
                     $saiving = $new_option_image -> save();
 
                     if($saiving){
+                        $any_saved = true;
                         echo 'Upload socsesful \n';
                     }
                 }
@@ -268,6 +271,10 @@ class LocalBisnesController extends Controller
                     echo 'Upload error \n';
                 }
             // }
+        }
+
+        if($any_saved){
+            Suport_local_bisnes::where('id', $bisnes_id)->update(['updated_at' => now()]);
         }
     }
 
