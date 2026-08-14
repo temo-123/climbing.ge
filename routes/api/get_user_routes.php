@@ -90,4 +90,8 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::delete('/unfollow/{user_id}', 'unfollow');
         Route::get('/follow_status/{user_id}', 'follow_status');
     });
+
+    Route::controller(\App\Http\Controllers\Api\User\UserTrainingSyncController::class)->prefix('user_training')->group(function () {
+        Route::post('/sync', 'sync');
+    });
 });

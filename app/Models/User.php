@@ -253,6 +253,21 @@ class User extends Authenticatable implements MustVerifyEmail
 		  return $this->hasMany(Interested_event::class, 'user_id');
     }
 
+    public function training_workouts()
+    {
+        return $this->hasMany(\App\Models\Training\UserWorkout::class, 'user_id');
+    }
+
+    public function training_plan_states()
+    {
+        return $this->hasMany(\App\Models\Training\UserPlanState::class, 'user_id');
+    }
+
+    public function training_history()
+    {
+        return $this->hasMany(\App\Models\Training\UserTrainingHistory::class, 'user_id');
+    }
+
 
     /*
     *   User product and orders

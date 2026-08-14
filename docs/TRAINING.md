@@ -328,4 +328,8 @@ feature was originally scaffolded from — trainings map to the app's
 
 ---
 
+See [TRAINING_SYNC.md](TRAINING_SYNC.md) for the account sync API (custom workouts, plan activation state, history) that lets this content follow a logged-in user across devices.
+
+---
+
 [Go back](../README.md)
