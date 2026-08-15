@@ -126,7 +126,6 @@
         },
         methods: {
             get_users(){
-                this.data_for_tab = this.data_for_tab.filter(t => t.id !== 1)
                 this.get_roles()
                 this.get_parmisions()
 
@@ -357,9 +356,7 @@
             del_user(id){
                 if(confirm(this.$t('admin.common.confirm_delete'))){
                     axios
-                    .post('/set_user/del_user/'+id, {
-                        _method: 'DELETE'
-                    })
+                    .delete('/set_user/del_user/'+id)
                     .then(Response => {
                         if(Response.data != 'You don`t can delete yourself! :)'){
                             // alert(Response.data);

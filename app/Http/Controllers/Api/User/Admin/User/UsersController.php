@@ -246,11 +246,11 @@ class UsersController extends Controller
         return response()->json(['email_verified_at' => $user->email_verified_at]);
     }
 
-    public function del_user(Request $request)
+    public function del_user($user_id)
     {
         $auth = PermissionService::authorize('user', 'del');
         if ($auth) return $auth;
-        $deliting_user = User::where('id',strip_tags($request->user_id))->first();
+        $deliting_user = User::where('id', $user_id)->first();
 
         if (Auth::user()->id != $deliting_user->id) {
             if(User_role::where('user_id', '=', $deliting_user->id)->count() > 0){

@@ -38,6 +38,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::post('/verify_user/{user_id}', 'verify_user');
 
         Route::get('/post_user/{user_id}', 'get_post_user');
+        Route::delete('/del_user/{user_id}', 'del_user');
         Route::post('/bulk_delete', 'bulk_delete');
 
         Route::controller(UserNotificationsController::class)->prefix('set_notifications')->group( function() {

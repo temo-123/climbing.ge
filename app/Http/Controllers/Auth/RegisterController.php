@@ -73,7 +73,14 @@ class RegisterController extends Controller
 
         $user = $this->create($request->all());
 
-        event(new Registered($user));
+        try {
+            event(new Registered($user));
+        } catch (\Throwable $e) {
+            // Registration must still succeed even if the verification email
+            // fails to send (SMTP down/rate-limited/etc). The user can retry
+            // via the "resend verification email" action once logged in.
+            report($e);
+        }
 
         auth()->login($user);
 

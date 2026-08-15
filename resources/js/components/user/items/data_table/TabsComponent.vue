@@ -300,6 +300,17 @@ export default {
                     this.currentPage = 1;
                 }
             }
+
+            const maxPage = this.getMaxPage();
+            if (this.currentPage > maxPage) {
+                this.currentPage = maxPage;
+            }
+
+            const currentTab = safeData.find(t => t.id === this.tab_num);
+            if (currentTab) {
+                const validIds = new Set(currentTab.tab_data.data.map(item => item.id));
+                this.selectedItems = this.selectedItems.filter(id => validIds.has(id));
+            }
         },
         tab_num(newTab) {
             this.currentPage = 1;

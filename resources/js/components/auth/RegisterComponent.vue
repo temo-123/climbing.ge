@@ -51,12 +51,52 @@
           </div>
           <div class="form-group">
             <label for="password">Password *</label>
-            <input type="password" class="form-control" id="password" v-model="password" placeholder="Password" minlength="8" required />
+            <div style="position: relative;">
+              <input
+                :type="showPassword ? 'text' : 'password'"
+                class="form-control"
+                style="padding-right: 42px;"
+                id="password"
+                v-model="password"
+                placeholder="Password"
+                minlength="8"
+                required
+              />
+              <button
+                type="button"
+                class="pwd-toggle-btn"
+                tabindex="-1"
+                @click="showPassword = !showPassword"
+                title="Toggle password visibility"
+              >
+                <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+              </button>
+            </div>
             <div class="invalid-feedback d-block" v-if="error.password">{{ error.password[0] }}</div>
           </div>
           <div class="form-group">
             <label for="password_confirmation">Confirm password *</label>
-            <input type="password" class="form-control" id="password_confirmation" v-model="password_confirmation" placeholder="Confirm password" minlength="8" required />
+            <div style="position: relative;">
+              <input
+                :type="showPasswordConfirmation ? 'text' : 'password'"
+                class="form-control"
+                style="padding-right: 42px;"
+                id="password_confirmation"
+                v-model="password_confirmation"
+                placeholder="Confirm password"
+                minlength="8"
+                required
+              />
+              <button
+                type="button"
+                class="pwd-toggle-btn"
+                tabindex="-1"
+                @click="showPasswordConfirmation = !showPasswordConfirmation"
+                title="Toggle password visibility"
+              >
+                <i :class="showPasswordConfirmation ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+              </button>
+            </div>
           </div>
           <div class="form-group">
             <input type="checkbox" v-model="terms_of_use" name="terms_of_use" value="1">
@@ -130,6 +170,8 @@ export default {
       city: null,
       password: null,
       password_confirmation: null,
+      showPassword: false,
+      showPasswordConfirmation: false,
 
       is_loading: false,
       terms_of_use: false,
