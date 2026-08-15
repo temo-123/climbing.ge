@@ -8,9 +8,10 @@
     <div v-else-if="status === 'success'" class="card mx-auto" style="max-width: 480px;">
       <div class="card-body">
         <i class="fa fa-check-circle text-success" style="font-size: 3em;"></i>
-        <h3 class="mt-3">Email verified!</h3>
-        <p class="text-muted">Your email address has been verified successfully.</p>
-        <router-link :to="{ name: 'home' }" class="btn btn-success mt-2">Go to dashboard</router-link>
+        <h3 class="mt-3">Your email is verified!</h3>
+        <p class="text-muted">All set — your account is fully active now.</p>
+        <router-link v-if="isLoggedInHere" :to="{ name: 'home' }" class="btn btn-success mt-2">Go to dashboard</router-link>
+        <router-link v-else :to="{ name: 'login' }" class="btn btn-success mt-2">Log in to continue</router-link>
       </div>
     </div>
 
@@ -18,8 +19,9 @@
       <div class="card-body">
         <i class="fa fa-info-circle text-info" style="font-size: 3em;"></i>
         <h3 class="mt-3">Already verified</h3>
-        <p class="text-muted">Your email is already verified.</p>
-        <router-link :to="{ name: 'home' }" class="btn btn-primary mt-2">Go to dashboard</router-link>
+        <p class="text-muted">This email was already confirmed — nothing more to do here.</p>
+        <router-link v-if="isLoggedInHere" :to="{ name: 'home' }" class="btn btn-primary mt-2">Go to dashboard</router-link>
+        <router-link v-else :to="{ name: 'login' }" class="btn btn-primary mt-2">Log in to continue</router-link>
       </div>
     </div>
 
@@ -44,6 +46,7 @@ export default {
       status: 'loading',
       errorMessage: 'The verification link is invalid or has expired.',
       resending: false,
+      isLoggedInHere: !!(localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token')),
     };
   },
   mounted() {
@@ -61,6 +64,11 @@ export default {
             this.status = 'already';
           } else {
             this.status = 'success';
+          }
+          // Same device that's already signed in (e.g. verifying right after
+          // registration) — take them straight in instead of showing a login prompt.
+          if (this.isLoggedInHere) {
+            this.$router.push({ name: 'home' });
           }
         })
         .catch(error => {

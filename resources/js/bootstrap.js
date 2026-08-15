@@ -82,7 +82,12 @@ axios.interceptors.response.use(response => response, async err => {
         }
 
         if (status === 401 || status === 419) {
-            if (!isHandlingAuthError) {
+            // Only treat this as "your session died" if a session actually existed.
+            // A 401 from a background check (e.g. NavBadges polling auth_user) on a
+            // page a guest is allowed to use — verify/register/reset-password — is
+            // expected and must not yank them away from what they're doing.
+            const hadToken = !!(localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token'));
+            if (hadToken && !isHandlingAuthError) {
                 isHandlingAuthError = true;
                 localStorage.removeItem('x_xsrf_token');
                 localStorage.removeItem('auth_token');
