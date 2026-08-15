@@ -10,7 +10,7 @@ class TrainingController extends Controller
 {
     function get_all_trainings(Request $request)
     {
-        $query = Training::with(['steps', 'translations'])->where('is_published', 1);
+        $query = Training::with(['steps', 'translations', 'products'])->where('is_published', 1);
 
         if ($request->filled('type')) {
             $query->where('type', $request->type);
@@ -25,7 +25,7 @@ class TrainingController extends Controller
 
     function get_training_data($id)
     {
-        $training = Training::with(['steps', 'translations'])
+        $training = Training::with(['steps', 'translations', 'products'])
             ->where('slug', strip_tags($id))
             ->where('is_published', 1)
             ->first();
@@ -49,6 +49,7 @@ class TrainingController extends Controller
             'coachTip' => $training->coach_tip,
             'imageUrl' => $training->image_url,
             'productId' => $training->product_id,
+            'productIds' => $training->products->pluck('id')->values(),
             'hangTime' => $training->hang_time,
             'restTime' => $training->rest_time,
             'reps' => $training->reps,

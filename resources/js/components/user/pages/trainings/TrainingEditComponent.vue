@@ -44,6 +44,10 @@
                         <input type="radio" id="tab3" :value="3" v-model="tab_num">
                         <label for="tab3">{{ $t('common.georgian_text') }}</label>
                     </div>
+                    <div class="col">
+                        <input type="radio" id="tab4" :value="4" v-model="tab_num">
+                        <label for="tab4">{{ $t('admin.training.tab_products') }}</label>
+                    </div>
                 </div>
             </div>
 
@@ -234,6 +238,36 @@
                     <textarea v-model="form.translations.ka.coach_tip" class="form-control" rows="2"></textarea>
                 </div>
             </div>
+
+            <!-- Tab 4: Linked Products -->
+            <div class="col-md-12" v-show="tab_num == 4">
+                <p class="text-muted">{{ $t('admin.training.linked_products_hint') }}</p>
+
+                <div v-if="selectedProducts.length > 0" class="mb-3">
+                    <label class="form-label">{{ $t('admin.training.selected_products_count', { count: selectedProducts.length }) }}</label>
+                    <div class="d-flex flex-wrap gap-1">
+                        <span v-for="p in selectedProducts" :key="p.id" class="opt-tag">
+                            {{ p.title }}
+                            <span class="opt-tag-x" @click="removeProduct(p.id)">✕</span>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>{{ $t('admin.training.product_search_placeholder') }}</label>
+                    <input type="text" v-model="productSearchQuery" @input="onProductSearchInput" class="form-control" :placeholder="$t('admin.training.product_search_placeholder')">
+                </div>
+
+                <div v-if="productSearchResults.length > 0" class="options-list border rounded">
+                    <div v-for="p in productSearchResults" :key="p.id"
+                         class="opt-row d-flex align-items-center gap-2 p-2 border-bottom"
+                         :class="{ 'opt-selected': isProductSelected(p.id) }"
+                         @click="toggleProduct(p)">
+                        <input type="checkbox" :checked="isProductSelected(p.id)" @click.stop="toggleProduct(p)">
+                        <div class="fw-bold" style="font-size:13px;">{{ p.title }}</div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -261,6 +295,10 @@ export default {
             products: [],
             selectedCategoryId: 0,
             selectedSubcategoryId: 0,
+            selectedProducts: [],
+            productSearchQuery: '',
+            productSearchResults: [],
+            productSearchTimeout: null,
             form: {
                 name: '',
                 description: '',
@@ -317,6 +355,11 @@ export default {
                     image_url: step.image_url,
                     instructions: step.instructions,
                     _imageFile: null,
+                }));
+
+                this.selectedProducts = (data.products || []).map(p => ({
+                    id: p.id,
+                    title: (p.us_product && p.us_product.title) || ('Product #' + p.id),
                 }));
 
                 if (data.product_id) {
@@ -435,6 +478,29 @@ export default {
                     });
             }
         },
+        onProductSearchInput() {
+            clearTimeout(this.productSearchTimeout);
+            this.productSearchTimeout = setTimeout(() => {
+                axios.get('/set_training/search_products', { params: { query: this.productSearchQuery } })
+                    .then(response => {
+                        this.productSearchResults = response.data.products || [];
+                    });
+            }, 300);
+        },
+        isProductSelected(id) {
+            return this.selectedProducts.some(p => p.id === id);
+        },
+        toggleProduct(p) {
+            if (this.isProductSelected(p.id)) {
+                this.removeProduct(p.id);
+            } else {
+                this.selectedProducts.push(p);
+            }
+        },
+        removeProduct(id) {
+            const i = this.selectedProducts.findIndex(p => p.id === id);
+            if (i !== -1) this.selectedProducts.splice(i, 1);
+        },
         buildStepsFormData(formData) {
             this.form.steps.forEach((step, i) => {
                 formData.append(`steps[${i}][phase]`, step.phase);
@@ -471,6 +537,7 @@ export default {
             Object.keys(this.form.translations.ka).forEach(k => {
                 if (this.form.translations.ka[k]) formData.append(`translations[ka][${k}]`, this.form.translations.ka[k]);
             });
+            this.selectedProducts.forEach(p => formData.append('product_ids[]', p.id));
             this.buildStepsFormData(formData);
             return formData;
         },
@@ -532,5 +599,36 @@ export default {
 }
 .step-card .card-header {
     background: #f8f9fa;
+}
+.options-list {
+    max-height: 340px;
+    overflow-y: auto;
+}
+.opt-row {
+    cursor: pointer;
+    transition: background .12s;
+}
+.opt-row:hover {
+    background: #f0f4ff;
+}
+.opt-selected {
+    background: #e8f0fe;
+}
+.opt-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: #0d6efd;
+    color: #fff;
+    border-radius: 4px;
+    padding: 3px 8px;
+    font-size: 12px;
+}
+.opt-tag-x {
+    cursor: pointer;
+    opacity: .8;
+}
+.opt-tag-x:hover {
+    opacity: 1;
 }
 </style>

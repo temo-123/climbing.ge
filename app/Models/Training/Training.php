@@ -24,4 +24,9 @@ class Training extends Model
     {
         return $this->belongsTo(\App\Models\Shop\Product::class, 'product_id');
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(\App\Models\Shop\Product::class, 'training_products', 'training_id', 'product_id');
+    }
 }

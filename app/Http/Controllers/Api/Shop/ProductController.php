@@ -94,6 +94,19 @@ class ProductController extends Controller
         return $products;
     }
 
+    public function get_products_by_ids(Request $request)
+    {
+        $ids = array_filter(array_map('intval', explode(',', (string) $request->query('ids', ''))));
+
+        if (empty($ids)) {
+            return [];
+        }
+
+        $global_products = Product::whereIn('id', $ids)->where('published', '=', 1)->get();
+
+        return ProductService::get_locale_product_use_locale($global_products, $request->query('lang', 'en'));
+    }
+
     public function get_local_products(Request $request)
     {
         // Outlet products are exclusive to the dedicated outlet page — kept

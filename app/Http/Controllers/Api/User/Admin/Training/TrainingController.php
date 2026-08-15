@@ -17,7 +17,7 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        return Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory'])->orderByDesc('created_at')->get();
+        return Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory', 'products.us_product'])->orderByDesc('created_at')->get();
     }
 
     function get_training_data($id)
@@ -25,7 +25,7 @@ class TrainingController extends Controller
         $auth = PermissionService::authorize('training', 'show');
         if ($auth) return $auth;
 
-        $training = Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory'])->where('id', strip_tags($id))->first();
+        $training = Training::with(['steps', 'translations', 'product.us_product', 'product.product_subcategory', 'products.us_product'])->where('id', strip_tags($id))->first();
         if (!$training) {
             return response()->json(['error' => 'Not found'], 404);
         }
@@ -87,6 +87,8 @@ class TrainingController extends Controller
             'steps.*.phase' => 'required_with:steps|in:prepare,hang,rest,recover,work,stretch',
             'steps.*.duration_seconds' => 'required_with:steps|integer',
             'translations' => 'nullable|array',
+            'product_ids' => 'nullable|array',
+            'product_ids.*' => 'integer|exists:products,id',
         ]);
 
         $image_url = $data['image_url'] ?? null;
@@ -118,11 +120,12 @@ class TrainingController extends Controller
 
             $this->syncSteps($training, $data['steps'] ?? [], $request);
             $this->syncTranslations($training, $data['translations'] ?? []);
+            $training->products()->sync($data['product_ids'] ?? []);
 
             return $training;
         });
 
-        return $training->load(['steps', 'translations']);
+        return $training->load(['steps', 'translations', 'products']);
     }
 
     function update_training(Request $request, $id)
@@ -155,6 +158,8 @@ class TrainingController extends Controller
             'steps.*.phase' => 'required_with:steps|in:prepare,hang,rest,recover,work,stretch',
             'steps.*.duration_seconds' => 'required_with:steps|integer',
             'translations' => 'nullable|array',
+            'product_ids' => 'nullable|array',
+            'product_ids.*' => 'integer|exists:products,id',
         ]);
 
         $image_url = $data['image_url'] ?? null;
@@ -185,9 +190,10 @@ class TrainingController extends Controller
 
             $this->syncSteps($training, $data['steps'] ?? [], $request);
             $this->syncTranslations($training, $data['translations'] ?? []);
+            $training->products()->sync($data['product_ids'] ?? []);
         });
 
-        return $training->fresh(['steps', 'translations']);
+        return $training->fresh(['steps', 'translations', 'products']);
     }
 
     function del_training($id)

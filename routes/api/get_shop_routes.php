@@ -12,6 +12,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
         
+        Route::get('/get_products_by_ids', 'get_products_by_ids');
         Route::get('/get_local_products/{lang}', 'get_local_products');
         Route::get('/get_trainable_products/{lang}', 'get_trainable_products');
         Route::get('/get_donation_products/{lang}', 'get_donation_products');

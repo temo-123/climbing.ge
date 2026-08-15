@@ -1976,7 +1976,10 @@
             "day_label_label": "Day Label",
             "session_trainings_label": "Trainings for this day",
             "no_trainings_available_hint": "No published trainings available — add some trainings first.",
-            "ka_translation_hint": "Optional — leave blank to fall back to the fields above."
+            "ka_translation_hint": "Optional — leave blank to fall back to the fields above.",
+            "tab_products": "Linked Products",
+            "linked_products_hint": "Tag shop products this training uses. The app shows a training as available once the user owns all of its linked products.",
+            "selected_products_count": "Selected products ({count})"
         }
     },
     "guide": {
