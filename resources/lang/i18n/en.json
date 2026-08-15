@@ -3588,6 +3588,11 @@
             "profile_modal_title": "Climber Profile",
             "all_users_btn": "All users",
             "view_full_profile_btn": "View full profile",
+            "activity_chart_title": "Activity",
+            "route_reviews_label": "Route Reviews",
+            "mtp_reviews_label": "MTP Reviews",
+            "ascents_label": "Ascents",
+            "comments_label": "Comments",
             "climbers_meta_description": "Browse all registered climbers on climbing.ge — follow them and see their comments, ascents, and route/MTP reviews.",
             "climber_meta_description": "See {name}'s comments, ascents, and route/MTP reviews on climbing.ge — follow them to get notified about their activity."
         },

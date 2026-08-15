@@ -3372,6 +3372,11 @@
             "profile_modal_title": "მომხმარებლის პროფილი",
             "all_users_btn": "ყველა მომხმარებელი",
             "view_full_profile_btn": "სრული პროფილის ნახვა",
+            "activity_chart_title": "აქტივობა",
+            "route_reviews_label": "მარშრუტის შეფასებები",
+            "mtp_reviews_label": "MTP შეფასებები",
+            "ascents_label": "აღსვლები",
+            "comments_label": "კომენტარები",
             "climbers_meta_description": "დაათვალიერეთ climbing.ge-ზე რეგისტრირებული ყველა მომხმარებელი — გამოიწერეთ ისინი და ნახეთ მათი კომენტარები, აღსვლები და მარშრუტის/MTP შეფასებები.",
             "climber_meta_description": "ნახეთ {name}-ის კომენტარები, აღსვლები და მარშრუტის/MTP შეფასებები climbing.ge-ზე — გამოიწერეთ, რომ მიიღოთ შეტყობინება მათ აქტივობაზე."
         },

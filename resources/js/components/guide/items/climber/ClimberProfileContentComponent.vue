@@ -69,6 +69,14 @@
                         @changed="on_follow_changed"
                     />
                 </div>
+
+                <div class="climber-profile__activity-chart">
+                    <h3>{{ $t('global.follow.activity_chart_title') }}</h3>
+                    <radar-stats-chart
+                        :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.comments_label')]"
+                        :values="[profile.route_reviews_count, profile.mtp_reviews_count, profile.ascents_count, profile.comments_count]"
+                    />
+                </div>
             </div>
 
             <div class="climber-profile__section" v-if="open_list">
@@ -130,10 +138,12 @@
 
 <script>
     import UserFollowButton from '../../../global_components/UserFollowButtonComponent.vue';
+    import RadarStatsChart from '../../../global_components/RadarStatsChartComponent.vue';
 
     export default {
         components: {
             'user-follow-button': UserFollowButton,
+            'radar-stats-chart': RadarStatsChart,
         },
         props: {
             userId: { type: [Number, String], required: true },
@@ -288,6 +298,15 @@
 }
 .climber-profile__points {
     color: #e0a800;
+}
+.climber-profile__activity-chart {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #eee;
+}
+.climber-profile__activity-chart h3 {
+    font-size: 1.6rem;
+    margin-bottom: 10px;
 }
 .climber-profile__section {
     margin-bottom: 24px;

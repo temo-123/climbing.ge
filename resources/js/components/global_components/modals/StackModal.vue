@@ -33,7 +33,8 @@
           </div>
 
           <!-- Content Slot -->
-          <div class="flex-1 w-full max-w-full overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-white hover:scrollbar-thumb-gray-400 p-4 md:p-6 lg:p-8 modal-scrol">
+          <div class="flex-1 w-full max-w-full overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-white hover:scrollbar-thumb-gray-400 p-4 md:p-6 lg:p-8 modal-scrol"
+            :class="{ 'modal-scrol--user': isUserPage }">
             <slot></slot>
           </div>
 
@@ -104,6 +105,8 @@
   const emit = defineEmits(['update:modelValue', 'close', 'save'])
 
   const modalRef = ref(null)
+
+  const isUserPage = window.location.hostname === process.env.MIX_USER_PAGE_URL
 
   const isVisible = computed(() => props.modelValue || props.show)
 
@@ -217,6 +220,9 @@
     scrollbar-width: thin;
     scrollbar-color: #9ca3af transparent;
     padding: 3%;
+  }
+  .modal-scrol--user {
+    font-size: 0.875rem;
   }
   .modal-scrol::-webkit-scrollbar {
     width: 6px;

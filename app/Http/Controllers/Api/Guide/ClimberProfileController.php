@@ -131,6 +131,10 @@ class ClimberProfileController extends Controller
             'recent_ascents' => $recentAscents,
             'recent_route_reviews' => $recentRouteReviews,
             'recent_mtp_reviews' => $recentMtpReviews,
+            'comments_count' => $user->article_comments()->count(),
+            'ascents_count' => $user->ascents()->count(),
+            'route_reviews_count' => $user->sport_route_reviews()->where('published', 1)->where('admin_hidden', 0)->count(),
+            'mtp_reviews_count' => $user->mtp_reviews()->where('published', 1)->where('admin_hidden', 0)->count(),
         ]);
     }
 }

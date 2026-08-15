@@ -28,6 +28,14 @@
             </div>
         </div>
 
+        <div class="current-user-card__chart">
+            <radar-stats-chart
+                :labels="[$t('global.follow.route_reviews_label'), $t('global.follow.mtp_reviews_label'), $t('global.follow.ascents_label'), $t('global.follow.comments_label')]"
+                :values="[counts.route_reviews_count, counts.mtp_reviews_count, counts.ascents_count, counts.comments_count]"
+                :size="110"
+            />
+        </div>
+
         <div class="current-user-card__extra">
             <slot name="extra"></slot>
         </div>
@@ -55,10 +63,12 @@
 
 <script>
     import ClimberProfileModal from '../guide/items/climber/ClimberProfileModalComponent.vue'
+    import RadarStatsChart from './RadarStatsChartComponent.vue'
 
     export default {
         components: {
             'climber-profile-modal': ClimberProfileModal,
+            'radar-stats-chart': RadarStatsChart,
         },
         emits: ['loaded'],
         data() {
@@ -69,6 +79,10 @@
                     followers_count: 0,
                     following_count: 0,
                     points_total: 0,
+                    route_reviews_count: 0,
+                    mtp_reviews_count: 0,
+                    ascents_count: 0,
+                    comments_count: 0,
                 },
             };
         },
@@ -94,6 +108,10 @@
                         this.counts.followers_count = response.data.followers_count;
                         this.counts.following_count = response.data.following_count;
                         this.counts.points_total = response.data.points_total;
+                        this.counts.route_reviews_count = response.data.route_reviews_count;
+                        this.counts.mtp_reviews_count = response.data.mtp_reviews_count;
+                        this.counts.ascents_count = response.data.ascents_count;
+                        this.counts.comments_count = response.data.comments_count;
                     })
                     .catch(() => {});
             },
@@ -177,6 +195,9 @@
     background: #fff7e0;
     color: #b5860a;
     border-color: #f2e2ab;
+}
+.current-user-card__chart {
+    flex: 0 0 auto;
 }
 .current-user-card__extra {
     flex: 0 0 auto;
