@@ -51,7 +51,7 @@ class GuestDataLinkingService
     private static function linkComments(User $user): void
     {
         $comments = Comment::where('email', $user->email)
-            ->whereDoesntHave('users', fn($q) => $q->where('user_id', $user->id))
+            ->whereDoesntHave('user', fn($q) => $q->where('user_id', $user->id))
             ->get();
 
         foreach ($comments as $comment) {
