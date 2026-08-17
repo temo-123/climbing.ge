@@ -71,7 +71,7 @@
             adresList,
             breadcrumb,
             userOptions,
-            notificationsControlList
+            notificationsControlList,
         },
         props: [
             'status',

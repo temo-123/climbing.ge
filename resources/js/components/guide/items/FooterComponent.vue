@@ -110,6 +110,8 @@
 
             </div>
 
+            <appsLinksFooter />
+
             <footerText />
         </div>
     </div>
@@ -121,6 +123,7 @@
     import share from "../../global_components/ShareComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
     import Donation from "../items/DonationComponent.vue";
+    import appsLinksFooter from "../../global_components/AppsLinksFooterComponent.vue";
     import QrcodeVue from 'qrcode.vue'
 
     export default {
@@ -139,7 +142,8 @@
             share,
             footerText,
             QrcodeVue,
-            Donation
+            Donation,
+            appsLinksFooter
         },
         watch: {
             '$route' (to, from) {

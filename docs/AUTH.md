@@ -27,29 +27,56 @@
 {
   "name": "John",
   "surname": "Doe",
+  "country": "Georgia",
+  "city": "Tbilisi",
+  "phone_number": "+995500000000",
   "email": "john@example.com",
   "password": "secret123",
-  "password_confirmation": "secret123"
+  "password_confirmation": "secret123",
+  "lang": "us"
 }
 ```
 
+`country`, `city`, and `phone_number` are all **required**, not optional — a request missing any of them fails validation. `password` requires `min:8` (not 6). `lang` is optional (`us` or `ka`, defaults to `us`) and sets the user's stored locale preference, used for email language later.
+
+If `GOOGLE_CAPTCHA_V3_*` is configured (`ReCaptchaV3Service::isConfigured()`), the request must also include a `recaptcha_token` that passes `verifySmart()`, or registration fails with `422`.
+
 ### Process
 
-1. Validates name, surname, email (unique), password (confirmed, min 6)
-2. Creates `User` record with hashed password
-3. Assigns default role (e.g. `user`)
-4. Creates `UserNotification` preference record
-5. Sends verification email (queued)
-6. Returns Sanctum token + user data
+1. Validates the fields above; the email-uniqueness check also rejects emails belonging to an already-banned user (`isBanned()`), even if that account no longer exists in a usable state.
+2. Creates `User` record with hashed password.
+3. Creates a `user_notification` record with all notification types enabled by default (only if one doesn't already exist for this user — relevant for the guest-linking case below).
+4. Assigns the default `user` role.
+5. **Links any pre-existing guest activity to the new account by email** — see [Guest Data Linking](#guest-data-linking) below. This runs on every registration, not just ones that had prior guest activity.
+6. Fires `Registered` (queues the verification email) — wrapped in try/catch: **registration still succeeds even if the email fails to send** (SMTP down, rate-limited, etc.); the failure is only logged (`report($e)`), and the user can retry via "resend verification email" once logged in.
+7. Logs the user in immediately and returns a Sanctum token + user data — the user does not have to wait for email verification to start using the site (features that require a verified email, if any, are gated separately per-feature, not at login).
 
 ### Response
 
 ```json
 {
   "token": "1|abc123...",
-  "user": { "id": 1, "name": "John", "email": "john@example.com", ... }
+  "user": { "id": 1, "name": "John", "email": "john@example.com", ... },
+  "message": "Registration successful. Please check your email to verify your account."
 }
 ```
+
+Status `201`. Validation failures return `422` with `{ "message": "Validation failed", "errors": {...} }`.
+
+### Guest Data Linking
+
+**Service:** `App\Services\GuestDataLinkingService::link_all($user)` — called at the end of every registration (`RegisterController::create()`).
+
+Before an account exists, the site lets guests do a few things by just typing an email: submit a summit ascent (`POST /api/summit/ascent/{id}`, no auth), leave an article comment as a non-registered commenter, or make a donation. When someone later registers with that same email, this service retroactively attaches all of that prior activity to the new account, and cleans up the now-redundant guest record:
+
+| Guest activity | Linked by matching `email` on... | Effect |
+|---|---|---|
+| Donations | `donations.email` where `user_id IS NULL` | Sets `donations.user_id` |
+| Summit ascents | `summit_ascents.email` | Creates a `summit_ascent_users` row (so it shows up in the new account's ascent history / [Climber Profile](CLIMBER_PROFILE.md)) |
+| Article comments | `comments.email` | Creates an `article_comment_user` row **and** force-publishes the comment if it wasn't already (`published = 1`) |
+| Non-registered commenter record | `non_registered_commenters.email` | Deleted — the user now has a real account with its own notification preferences |
+
+This means a climber who logged ascents or left comments as a guest, then registers later with the same email, sees that history appear on their profile immediately — no manual re-linking. Added by `database/migrations/2026_08_15_153533_add_user_id_to_donations_table.php` and the `2026-08-15` "Fixed registration buigs" commits; there is no equivalent teardown if a user later changes their email, so a changed email silently stops matching any *new* guest activity (existing linked rows are unaffected).
 
 ---
 
@@ -163,20 +190,36 @@ See [SOCIAL_LOGIN_GUIDE.md](SOCIAL_LOGIN_GUIDE.md) for full OAuth app setup inst
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/email/verify/{user_id}/{hash}` | Verify email link |
-| GET | `/api/email/resend` | Resend verification email (auth required) |
+| GET | `/api/email/verify/{user_id}/{hash}` | Verify email link — public, no auth required |
+| GET | `/api/email/resend` | Resend verification email (`auth:sanctum` + `banned` required) |
 
-The `User` model implements `MustVerifyEmail`. A signed URL is emailed after registration. Clicking it sets `email_verified_at`.
+The `User` model implements `MustVerifyEmail`, but verification does **not** use Laravel's built-in signed-URL mechanism. `{hash}` is a custom HMAC: `hash_hmac('sha256', "{email}|{id}", config('app.key'))`, generated identically in both the notification (`App\Notifications\VerifyEmail::verificationUrl()`) and the controller (`VerificationController::verify()`, via `hash_equals()`). There used to be a second, separate `Api\User\VerificationController` using Laravel's default `Crypt::decrypt()`-based signed URLs — it was **dead code** (never routed) and was deleted in the August 2026 registration/verification cleanup; if you find references to it elsewhere, they're stale.
 
-**Required env var:**
+`resend` now wraps `sendEmailVerificationNotification()` in a try/catch and returns `500 {"message": "Could not send verification email. Please try again in a moment."}` on failure instead of letting an SMTP error bubble up as an unhandled 500.
+
+**Env vars that actually build the verification URL:**
 ```env
-FRONTPAGE_VERIFY_URL=http://user.climbing.loc/api/email/verify/
-# Format: https://user.climbing.ge/api/email/verify/{user_id}/{hash}
+APP_SSH=https://
+USER_PAGE_URL=user.climbing.ge
+# VerifyEmail builds: rtrim(APP_SSH . USER_PAGE_URL, '/') . '/email/verify/{user_id}/{hash}'
 ```
+
+`FRONTPAGE_VERIFY_URL` (and `config('frontent.email_verify_url')`, which reads it) still exists but is **dead** — nothing in the codebase consumes it anymore. Don't set it expecting it to change the verification link; edit `APP_SSH` / `USER_PAGE_URL` instead.
+
+### Cross-device verification (Verify.vue)
+
+**`resources/js/components/auth/Verify.vue`**
+
+The verification link can now be opened on a *different* device/browser than the one used to register (e.g. checking email on a phone after registering on a laptop). The page checks `isLoggedInHere` (`!!(localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token'))`) independently of the verification API call itself:
+
+- Verification succeeds **and** this browser is already logged in (same device) → auto-redirects straight to the dashboard.
+- Verification succeeds **and** this browser is *not* logged in (different device) → shows a "Log in to continue" button instead of a broken "Go to dashboard" link.
+
+Relatedly, the global axios 401/419 interceptor in `resources/js/bootstrap.js` now only treats a 401 as "your session died" (clear tokens + redirect to login) if a token actually existed in `localStorage` first. Before this fix, a background `auth_user` poll (e.g. `NavBadges`) returning 401 on a guest-accessible page like `/verify` or `/register` would incorrectly yank a not-yet-logged-in visitor away from the page they were legitimately on.
 
 ### Custom Notification
 
-`App\Notifications\VerifyEmail` — overrides default Laravel verification email with custom branding and bilingual (EN/KA) content.
+`App\Notifications\VerifyEmail` — overrides default Laravel verification email with custom branding and bilingual (EN/KA) content, and the custom HMAC URL scheme described above.
 
 ---
 

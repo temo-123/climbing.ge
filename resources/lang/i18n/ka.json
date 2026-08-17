@@ -1214,7 +1214,16 @@
             "georgian_data_label": "ქართული მონაცემები:",
             "english_data_label": "ინგლისური მონაცემები:",
             "add_social_link_title": "საიტის სოციალური ბმულის დამატება",
-            "url_placeholder": "URL"
+            "url_placeholder": "URL",
+            "apps_links_title": "App Store / Google Play ბმულები",
+            "add_apps_link": "აპლიკაციის ბმულის დამატება",
+            "add_apps_link_title": "აპლიკაციის ბმულის დამატება",
+            "edit_apps_link_title": "აპლიკაციის ბმულის რედაქტირება",
+            "keyword_col": "საკვანძო სიტყვა",
+            "keyword_placeholder": "მაგ. guide_app_store, training_play_store",
+            "keyword_hint": "მოკლე, უნიკალური საკვანძო სიტყვა, რომლითაც საიტის წინა ნაწილი ეძებს ბმულს. ამჟამად ფუტერი და გვერდი \"ჩემი ვარჯიშები\" ეძებენ: guide_app_store, guide_play_store, training_app_store, training_play_store.",
+            "link_placeholder": "https://...",
+            "no_apps_links": "აპლიკაციის ბმულები ჯერ არ დამატებულა."
         },
         "comments": {
             "guidebook_comments_table": "გიდის კომენტარები",
@@ -3022,6 +3031,29 @@
             "youtube_placeholder": "YouTube არხის ბმული",
             "website_placeholder": "პირადი ვებგვერდის ბმული"
         },
+        "training_summary": {
+            "load_error": "თქვენი ვარჯიშის მონაცემების ჩატვირთვა ვერ მოხერხდა.",
+            "loading": "თქვენი ვარჯიშის მონაცემები იტვირთება...",
+            "total_sessions_label": "დასრულებული სესიები",
+            "success_count_label": "წარმატებული",
+            "failed_count_label": "გამოტოვებული / წარუმატებელი",
+            "custom_workouts_label": "საკუთარი ვარჯიშები",
+            "chart_title": "ვარჯიშის პროგრესი",
+            "active_plan_title": "აქტიური ვარჯიშის გეგმა",
+            "active_plan_started": "დაწყებულია {date}",
+            "days_per_week": "{count} დღე/კვირაში",
+            "weeks_count": "{count} კვირა",
+            "no_active_plan": "ამჟამად აქტიური ვარჯიშის გეგმა არ გაქვთ.",
+            "recent_history_title": "ბოლო სესიები",
+            "no_history": "სესიები ჯერ არ დაფიქსირებულა.",
+            "status_success": "წარმატებული",
+            "status_failed": "წარუმატებელი",
+            "reps_sets": "{reps} გამეორება × {sets} სეტი",
+            "promo_title": "თვალი ადევნეთ ვარჯიშს გზაზეც",
+            "promo_text": "თქვენ ჯერ არცერთი ვარჯიში არ დაგიფიქსირებიათ. ჩამოტვირთეთ Climbing Trainer აპლიკაცია ფინგერბორდის, კამპუსისა და ძალის ვარჯიშების შესასრულებლად, კოაჩინგ-გეგმის მისაყოლად და პროგრესის აქ, პროფილზე სანახავად.",
+            "app_store_alt": "ჩამოტვირთეთ App Store-დან",
+            "google_play_alt": "მიიღეთ Google Play-დან"
+        },
         "orders": {
             "my_purchases": "ჩემი შეძენები",
             "col_id": "@:common.id",
@@ -3226,7 +3258,8 @@
             "my purchases": "ჩემი შეძენები",
             "my ascents": "ჩემი ასვლები",
             "my donations": "ჩემი შემოწირულობები",
-            "my routes reviews": "ჩემი მარშრუტების შეფასებები"
+            "my routes reviews": "ჩემი მარშრუტების შეფასებები",
+            "my trainings": "ჩემი ვარჯიშები"
         },
         "nav": {
             "welcome_brand": "კეთილი იყოს თქვენი მობრძანება climbing.ge-ის მომხმარებლის გვერდზე",
@@ -3307,7 +3340,12 @@
             "follow": "გამოიწერე სერვისი",
             "follow_btn": "გამოწერა",
             "csrf_mismatch_error": "CSRF ტოკენი არ ემთხვევა. გთხოვთ, განაახლოთ გვერდი და სცადოთ ხელახლა!",
-            "qr": "QR კოდი"
+            "qr": "QR კოდი",
+            "get_app": "ჩამოტვირთეთ აპლიკაცია",
+            "guide_app_label": "გიდის აპლიკაცია",
+            "training_app_label": "ვარჯიშის აპლიკაცია",
+            "app_store_alt": "@:user.training_summary.app_store_alt",
+            "google_play_alt": "@:user.training_summary.google_play_alt"
         },
         "form": {
             "save": "@:common.save"

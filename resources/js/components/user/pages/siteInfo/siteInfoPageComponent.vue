@@ -125,6 +125,39 @@
                                     </tr>
                                 </tbody>
                             </table>
+
+                            <p>{{ $t('admin.site_info.apps_links_title') }}</p>
+
+                            <div class="row edit_buttom">
+                                <div class="col-md-6">
+                                    <a class="btn btn-primary pull-left" @click="open_add_apps_link_modal()">{{ $t('admin.site_info.add_apps_link') }}</a>
+                                </div>
+                                <div class="col-md-6">
+                                    <button @click="get_apps_links()" class="btn btn-success float-right">{{ $t('common.refresh') }}</button>
+                                </div>
+                            </div>
+
+                            <table class="table table-hover" id="dev-table">
+                                <thead>
+                                    <tr>
+                                        <th>{{ $t('admin.site_info.keyword_col') }}</th>
+                                        <th>{{ $t('admin.site_info.link_col') }}</th>
+                                        <th>{{ $t('common.edit') }}</th>
+                                        <th>{{ $t('common.delete') }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-if="!apps_links.length">
+                                        <td colspan="4">{{ $t('admin.site_info.no_apps_links') }}</td>
+                                    </tr>
+                                    <tr v-for="apps_link in apps_links" :key="apps_link.id">
+                                        <td>{{ apps_link.keyword }}</td>
+                                        <td><a :href="apps_link.link" target="_blank">{{ apps_link.link }}</a></td>
+                                        <td><button class="btn btn-primary" @click="open_edit_apps_link_modal(apps_link)">{{ $t('common.edit') }}</button></td>
+                                        <td><button class="btn btn-danger" @click="del_apps_link(apps_link.id)">{{ $t('common.delete') }}</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </span>
 
                         <!-- <input type="radio" name="tabs" id="2">
@@ -254,6 +287,17 @@
             @update="get_social_links"
         />
 
+<add_apps_link_modal
+            ref="add_apps_link_modal"
+
+            @update="get_apps_links"
+        />
+        <edit_apps_link_modal
+            ref="edit_apps_link_modal"
+
+            @update="get_apps_links"
+        />
+
         <statistic_modal
             ref="statistic_modal"
 
@@ -274,6 +318,8 @@
 // import { info } from 'cli';
 
 import add_link_modal from './SiteData/Modals/SiteSocialLinks/AddLinkModal.vue'
+    import add_apps_link_modal from './SiteData/Modals/AppsLinks/AddAppsLinkModal.vue'
+    import edit_apps_link_modal from './SiteData/Modals/AppsLinks/EditAppsLinkModal.vue'
     import add_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/AddSiteLocaleInfoComponent.vue'
     import edit_site_local_data_modal from './SiteData/Modals/SiteLocaleInfo/EditSiteLocaleInfoComponent.vue'
     import statistic_modal from './GeneralInfo/modals/StatisticModalComponent.vue'
@@ -289,6 +335,8 @@ components: {
             // validator_alerts_component
 
             add_link_modal,
+            add_apps_link_modal,
+            edit_apps_link_modal,
             add_site_local_data_modal,
             edit_site_local_data_modal,
             statistic_modal,
@@ -311,6 +359,8 @@ components: {
                 site_social_links: [],
                 is_social_links_refresh: false,
 
+                apps_links: [],
+
                 showAddLinkModal: false,
 
                 action_tab: 1
@@ -325,6 +375,7 @@ components: {
             this.get_site_data()
             this.get_general_info()
             this.get_social_links()
+            this.get_apps_links()
         },
         watch: {
             action_tab(newTab) {
@@ -401,6 +452,27 @@ components: {
                 }
             },
 
+            get_apps_links(){
+                axios
+                .get('/set_apps_links/get_all')
+                .then(response => {
+                    this.apps_links = response.data
+                })
+                .catch(
+                    error => console.log(error)
+                );
+            },
+            del_apps_link(id){
+                if(confirm(this.$t('admin.common.confirm_delete'))){
+                    axios
+                    .delete('/set_apps_links/del/'+id)
+                    .then(response => {
+                        this.get_apps_links()
+                    })
+                    .catch(error => console.log(error))
+                }
+            },
+
             get_general_info: function(){
                 axios
                 .get('/get_general_info/get_all_general_infos')
@@ -434,6 +506,20 @@ components: {
             open_add_link_modal(){
                 if (this.$refs.add_link_modal) {
                     this.$refs.add_link_modal.show_modal()
+                }
+            },
+
+            // Method to open add apps link modal
+            open_add_apps_link_modal(){
+                if (this.$refs.add_apps_link_modal) {
+                    this.$refs.add_apps_link_modal.show_modal()
+                }
+            },
+
+            // Method to open edit apps link modal with specific data
+            open_edit_apps_link_modal(item){
+                if (this.$refs.edit_apps_link_modal) {
+                    this.$refs.edit_apps_link_modal.show_modal_with_data(item)
                 }
             },
 

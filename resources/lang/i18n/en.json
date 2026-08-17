@@ -1214,7 +1214,16 @@
             "georgian_data_label": "Georgian Data:",
             "english_data_label": "English Data:",
             "add_social_link_title": "Add site social link",
-            "url_placeholder": "URL"
+            "url_placeholder": "URL",
+            "apps_links_title": "App Store / Google Play links",
+            "add_apps_link": "Add App Link",
+            "add_apps_link_title": "Add app link",
+            "edit_apps_link_title": "Edit app link",
+            "keyword_col": "Keyword",
+            "keyword_placeholder": "e.g. guide_app_store, training_play_store",
+            "keyword_hint": "A short, unique keyword the frontend looks the link up by. The footer and My Trainings page currently look for: guide_app_store, guide_play_store, training_app_store, training_play_store.",
+            "link_placeholder": "https://...",
+            "no_apps_links": "No app links added yet."
         },
         "comments": {
             "guidebook_comments_table": "Guidebook comments",
@@ -3236,6 +3245,29 @@
             "youtube_placeholder": "YouTube channel URL",
             "website_placeholder": "Personal website URL"
         },
+        "training_summary": {
+            "load_error": "Could not load your training data.",
+            "loading": "Loading your training data...",
+            "total_sessions_label": "Completed sessions",
+            "success_count_label": "Successful",
+            "failed_count_label": "Missed / failed",
+            "custom_workouts_label": "Custom workouts",
+            "chart_title": "Training progress",
+            "active_plan_title": "Active training plan",
+            "active_plan_started": "Started {date}",
+            "days_per_week": "{count} days/week",
+            "weeks_count": "{count} weeks",
+            "no_active_plan": "No active training plan right now.",
+            "recent_history_title": "Recent sessions",
+            "no_history": "No sessions logged yet.",
+            "status_success": "Success",
+            "status_failed": "Failed",
+            "reps_sets": "{reps} reps × {sets} sets",
+            "promo_title": "Track your training on the go",
+            "promo_text": "You haven't logged any training yet. Download the Climbing Trainer app to run fingerboard, campus board, and strength workouts, follow a coaching plan, and see your progress here on your profile.",
+            "app_store_alt": "Download on the App Store",
+            "google_play_alt": "Get it on Google Play"
+        },
         "orders": {
             "my_purchases": "My Purchases",
             "col_id": "@:common.id",
@@ -3441,7 +3473,8 @@
             "my purchases": "My Purchases",
             "my ascents": "My Ascents",
             "my donations": "My Donations",
-            "my routes reviews": "My Route Reviews"
+            "my routes reviews": "My Route Reviews",
+            "my trainings": "My Trainings"
         },
         "nav": {
             "welcome_brand": "Welcome to climbing.ge user page",
@@ -3522,7 +3555,12 @@
             "follow": "Follow Us",
             "follow_btn": "Follow",
             "csrf_mismatch_error": "CSRF token mismatch. Please reload the page and try again!",
-            "qr": "QR Code"
+            "qr": "QR Code",
+            "get_app": "Get the App",
+            "guide_app_label": "Guidebook App",
+            "training_app_label": "Training App",
+            "app_store_alt": "@:user.training_summary.app_store_alt",
+            "google_play_alt": "@:user.training_summary.google_play_alt"
         },
         "form": {
             "save": "@:common.save"

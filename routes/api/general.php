@@ -51,6 +51,10 @@ Route::group(['namespace'=>'Api'], function() {
         Route::get('/get_site_social_links', 'get_site_social_links');
     });
 
+    Route::controller(AppsLinkController::class)->prefix('get_apps_links')->group( function() {
+        Route::get('/get_all', 'get_all');
+    });
+
     Route::controller(SiteDataController::class)->prefix('get_site_data')->group( function() {
 
         Route::get('/get_site_global_data', 'get_site_global_data');

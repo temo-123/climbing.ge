@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Models\Training\TrainingPlan;
 use App\Models\Training\UserPlanState;
 use App\Models\Training\UserTrainingHistory;
 use App\Models\Training\UserWorkout;
@@ -10,6 +11,79 @@ use Illuminate\Http\Request;
 
 class UserTrainingSyncController extends Controller
 {
+    /**
+     * Read-only "My Training" summary for the user dashboard profile page.
+     * Distinct from sync() -- this never writes anything, it just reads
+     * whatever the mobile app has already synced for this account. A user
+     * who has never opened the mobile app has no rows in any of these
+     * tables, which the frontend uses to decide whether to show stats or
+     * an app-download prompt (`hasTrainingData: false`).
+     */
+    public function summary(Request $request)
+    {
+        $userId = $request->user()->id;
+
+        $historyQuery = UserTrainingHistory::where('user_id', $userId);
+        $totalSessions = (clone $historyQuery)->count();
+        $successCount = (clone $historyQuery)->where('status', 'success')->count();
+        $failedCount = (clone $historyQuery)->where('status', 'failed')->count();
+
+        $customWorkoutsCount = UserWorkout::where('user_id', $userId)->whereNull('deleted_at')->count();
+
+        $activePlanState = UserPlanState::where('user_id', $userId)->where('is_active', 1)->first();
+        $activePlan = null;
+        if ($activePlanState) {
+            $activePlan = [
+                'planId' => $activePlanState->plan_id,
+                'name' => TrainingPlan::where('slug', $activePlanState->plan_id)->value('name'),
+                'startDate' => $activePlanState->start_date,
+                'activatedAt' => $activePlanState->activated_at,
+            ];
+        }
+
+        $recentHistory = (clone $historyQuery)
+            ->orderByDesc('date')
+            ->take(5)
+            ->get()
+            ->map(fn($h) => [
+                'date' => $h->date,
+                'workoutName' => $h->workout_name,
+                'workoutType' => $h->workout_type,
+                'repsCompleted' => $h->reps_completed,
+                'setsCompleted' => $h->sets_completed,
+                'status' => $h->status,
+            ])
+            ->values();
+
+        // Oldest-first, for the progress chart -- last 20 sessions is plenty
+        // to plot without the chart becoming unreadable. Read-only aggregate
+        // for display, unlike sync()'s history rows: safe to just sort/slice
+        // the string `date` values here rather than treat them as opaque.
+        $chartHistory = (clone $historyQuery)
+            ->orderByDesc('date')
+            ->take(20)
+            ->get()
+            ->sortBy('date')
+            ->values()
+            ->map(fn($h) => [
+                'date' => $h->date,
+                'repsCompleted' => $h->reps_completed,
+                'setsCompleted' => $h->sets_completed,
+                'status' => $h->status,
+            ]);
+
+        return response()->json([
+            'hasTrainingData' => $totalSessions > 0 || $customWorkoutsCount > 0 || $activePlan !== null,
+            'totalSessions' => $totalSessions,
+            'chartHistory' => $chartHistory,
+            'successCount' => $successCount,
+            'failedCount' => $failedCount,
+            'customWorkoutsCount' => $customWorkoutsCount,
+            'activePlan' => $activePlan,
+            'recentHistory' => $recentHistory,
+        ]);
+    }
+
     /**
      * Full-state sync for the training mobile app: custom workouts, plan
      * activation state, and workout history. Each request carries the

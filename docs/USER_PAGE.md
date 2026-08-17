@@ -145,7 +145,8 @@ Manage film catalogue: add/edit/delete films, categories, and tags.
 Manage registered users:
 - View all users, search, filter by role
 - Edit user roles and permissions
-- Ban/unban users (attaches/detaches the `ban` role)
+- Ban/unban users (attaches/detaches the `ban` role) — reversible, keeps the account and its data
+- **Permanently delete a user** — `DELETE /api/set_user/del_user/{user_id}` (requires `user:del`, added alongside the August 2026 registration fixes). Distinct from banning: this removes the `User_role`, `user_notification`, and `User_permission` rows and the account's uploaded image, then deletes the `User` row itself. An admin cannot delete their own account this way (`bulk_delete` has the same self-protection, filtering the acting admin's own id out of the `ids` array before deleting). Not reversible — no soft-delete.
 - Reset user passwords
 
 ### Tasks
@@ -341,6 +342,16 @@ All routes behind `auth:sanctum` + `banned` middleware.
 | GET | `/api/get_faworite/get_interested_events` | Interested events |
 | POST | `/api/set_faworite_by_user/add_to_favorite_outdoor_area/:id` | Add favorite |
 | DELETE | `/api/set_faworite/del_favorite_outdoor_area/:id` | Remove favorite |
+
+**Climber follow (climber-to-climber, not the legacy shop/guide "service following"):**
+
+| Method | Path | Description |
+|---|---|---|
+| POST | `/api/set_user_follow/follow/{user_id}` | Follow another climber |
+| DELETE | `/api/set_user_follow/unfollow/{user_id}` | Unfollow |
+| GET | `/api/set_user_follow/follow_status/{user_id}` | `{ following, is_self }` |
+
+Full writeup — social graph, activity-email notifications, and the two other similarly-named-but-unrelated "follow" models this can be confused with — in [CLIMBER_PROFILE.md](CLIMBER_PROFILE.md#the-follow-system).
 
 ---
 

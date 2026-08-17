@@ -27,6 +27,13 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::delete('/remove_ban/{user_id}', 'remove_ban');
     });
 
+    Route::controller(AppsLinkController::class)->prefix('set_apps_links')->group(function() {
+        Route::get('/get_all', 'get_all');
+        Route::post('/create', 'create');
+        Route::post('/update/{id}', 'update');
+        Route::delete('/del/{id}', 'delete');
+    });
+
     Route::controller(UsersController::class)->prefix('set_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');

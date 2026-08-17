@@ -22,7 +22,7 @@ There is no dedicated subdomain for this feature — it's authored entirely from
 
 **Public API base:** `/api/get_training` and `/api/get_training_plan` (no auth)
 **Admin API base:** `/api/set_training` and `/api/set_training_plan` (`auth:sanctum` + `banned`, permission-gated)
-**Migrations:** `database/migrations/2026_08_09_1200*`
+**Migrations:** `database/migrations/2026_08_09_1200*` (base schema) + `2026_08_10_0900*` (shop-product linkage) + `2026_08_12_204631` (integer PK conversion) + `2026_08_15_100000` (`training_products` pivot) — full list in [Database Schema](#database-schema)
 **Models:** `app/Models/Training/`
 **Public controllers:** `app/Http/Controllers/Api/Training/`
 **Admin controllers:** `app/Http/Controllers/Api/User/Admin/Training/`
@@ -41,18 +41,33 @@ There is no dedicated subdomain for this feature — it's authored entirely from
 
 | Column | Type | Notes |
 |---|---|---|
-| `id` | `varchar(64)` PK | Slug-style string ID (e.g. `dead-hang-20s`), not auto-incrementing |
+| `id` | `bigint unsigned` auto_increment PK | Was a slug-style varchar PK; converted by `2026_08_12_204631_convert_training_ids_to_integer_pk` — the old slug string is preserved in `slug` (see below) |
+| `slug` | `varchar(64)` unique | Original slug-style identifier (e.g. `dead-hang-20s`); still used as the human-readable/import-time key, but no longer the PK |
 | `name` | `varchar(120)` | |
 | `description` | `text`\|null | |
 | `type` | enum | `fingerboard`, `campus`, `flexibility`, `strength`, `endurance` |
 | `difficulty` | enum | `easy`, `medium`, `hard` — default `medium` |
 | `target_muscle` | `varchar(160)`\|null | |
 | `coach_tip` | `text`\|null | |
-| `image_url` | `varchar(500)`\|null | Plain URL, no upload widget |
+| `image_url` | `varchar(500)`\|null | Populated either by pasting a URL directly or via the admin form's cover-image upload widget (`single_image_add`), which posts a real file and gets back a URL — see [Admin Panel](#admin-panel) |
 | `hang_time`, `rest_time`, `reps`, `sets`, `recover_time` | int | Legacy formula fields — **always required as a fallback** even when `steps` exist, since the app's History/Analytics and completion screen read `reps`/`sets` directly. For a step-based training, set `reps` = number of work steps and `sets` = 1 so those summaries still read sensibly. |
+| `product_id` | `bigint unsigned`\|null FK | → `products.id`, `ON DELETE SET NULL` — the single "primary suggested" shop product for this training (e.g. the flagship hangboard for a fingerboard training). Nullable: most trainings (campus, strength, endurance, flexibility) need no specific product. |
 | `is_published` | boolean | Public API only returns `is_published = 1` rows |
 
-**Relationships:** `steps()` `HasMany(TrainingStep)` ordered by `step_order`, `translations()` `HasMany(TrainingTranslation)`
+**Relationships:** `steps()` `HasMany(TrainingStep)` ordered by `step_order`, `translations()` `HasMany(TrainingTranslation)`, `product()` `BelongsTo(Product)` via `product_id`, `products()` `BelongsToMany(Product)` via `training_products` (see below)
+
+### `training_products`
+
+Many-to-many pivot listing every shop product *compatible* with a training (not just the one primary suggestion in `product_id`) — e.g. a fingerboard training might suggest one flagship hangboard via `product_id` but list several other hangboard models here as alternatives.
+
+| Column | Type | Notes |
+|---|---|---|
+| `training_id` | FK → `trainings.id`, `ON DELETE CASCADE` | Composite PK with `product_id` |
+| `product_id` | FK → `products.id`, `ON DELETE CASCADE` | |
+
+### Product equipment typing
+
+`products.equipment_type` (nullable enum: `fingerboard`, `campus_board`, `climbing_wall`, `system_wall`, `pull_up_bar`, `weights` — added by `2026_08_10_090100_add_equipment_type_to_products_table`) marks which shop products are climbing-training *equipment*, as opposed to ordinary gear. This is what distinguishes "trainings tied to a purchasable product" from "trainings that need no equipment" — currently only real hangboard/fingerboard products in the shop are tagged and linked this way (see `docs/BACKEND/sql-imports/t4c_inspired_training_seed.sql`); campus-board/system-wall products can be tagged and linked the same way once such a product exists in the shop.
 
 ### `training_steps`
 
@@ -60,7 +75,7 @@ Optional ordered step-by-step breakdown for a training. A training with no rows 
 
 | Column | Type | Notes |
 |---|---|---|
-| `training_id` | `varchar(64)` FK | → `trainings.id`, `ON DELETE CASCADE` |
+| `training_id` | `bigint unsigned` FK | → `trainings.id`, `ON DELETE CASCADE` — remapped from the original `varchar(64)` by `2026_08_12_204631_convert_training_ids_to_integer_pk`, same as `training_translations.training_id`, `plan_translations.plan_id`, and `plan_session_trainings.training_id` |
 | `step_order` | int | Unique per training |
 | `phase` | enum | `prepare`, `hang`, `rest`, `recover`, `work`, `stretch` |
 | `label`, `image_url`, `instructions` | | all nullable |
@@ -80,7 +95,7 @@ Per-locale overrides. One row per non-default locale (currently just `ka`) per t
 
 | Column | Type | Notes |
 |---|---|---|
-| `id` | `varchar(64)` PK | Slug-style string ID, not auto-incrementing |
+| `id` | `bigint unsigned` auto_increment PK | Was a slug-style varchar PK; converted the same way as `trainings.id` (see above), old slug preserved in `slug` |
 | `name`, `emoji`, `tagline`, `description`, `coach_note` | | |
 | `level` | enum | `beginner`, `intermediate`, `expert`, `maintenance` |
 | `days_per_week` | int | |
@@ -123,7 +138,7 @@ Join table: which trainings run on a given session day, and in what order.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_training/get_all_trainings?type=<type>` | All published trainings, optional `type` filter |
+| GET | `/api/get_training/get_all_trainings?type=<type>&product_id=<id>` | All published trainings, optional `type` filter and optional `product_id` filter (trainings linked to that shop product via `product_id` or the `training_products` pivot) |
 | GET | `/api/get_training/get_training_data/{id}` | Single published training incl. `steps` + `translations` |
 | GET | `/api/get_training_plan/get_all_plans` | All published plans |
 | GET | `/api/get_training_plan/get_plan_data/{id}` | Single published plan incl. `sessions` (each with nested training objects) + `translations` |
@@ -142,6 +157,8 @@ Field names are camelCase to match the mobile app's TypeScript models directly:
   "targetMuscle": "Forearms",
   "coachTip": "Keep shoulders engaged.",
   "imageUrl": "https://.../dead-hang.jpg",
+  "productId": 1,
+  "productIds": [1, 4, 9],
   "hangTime": 20,
   "restTime": 10,
   "reps": 6,
@@ -155,6 +172,8 @@ Field names are camelCase to match the mobile app's TypeScript models directly:
   }
 }
 ```
+
+`productId` is the single "primary suggested" product (`trainings.product_id`); `productIds` is the full list of compatible products from the `training_products` pivot, including the primary one.
 
 ### Response shape: `GET /api/get_training_plan/get_plan_data/{id}`
 
@@ -198,7 +217,8 @@ Note: `isActive`, `startDate`, `notificationsEnabled` and similar per-device sta
 |---|---|---|---|
 | GET | `/api/set_training/get_all_trainings` | `training:show` | All trainings incl. unpublished, for the admin list |
 | GET | `/api/set_training/get_training_data/{id}` | `training:show` | Single training incl. steps + translations (raw snake_case model, for editing) |
-| POST | `/api/set_training/create_training` | `training:add` | Create |
+| GET | `/api/set_training/search_products` | `training:show` | Shop-product search for the Products tab's category→subcategory→product picker (see [Admin Panel](#admin-panel)) |
+| POST | `/api/set_training/create_training` | `training:add` | Create — `multipart/form-data` when a cover image file is included |
 | POST | `/api/set_training/update_training/{id}` | `training:edit` | Update |
 | DELETE | `/api/set_training/del_training/{id}` | `training:del` | Delete — 422 if referenced by a plan session |
 | POST | `/api/set_training/bulk_delete` | `training:del` | `{ ids: [...] }` — skips (and reports) any still in use by a plan |
@@ -229,6 +249,9 @@ Note: `isActive`, `startDate`, `notificationsEnabled` and similar per-device sta
   "target_muscle": "Forearms",
   "coach_tip": "...",
   "image_url": "https://...",
+  "image": "<file, optional — sent as multipart/form-data instead of image_url when uploading a new cover photo>",
+  "product_id": 1,
+  "product_ids": [1, 4, 9],
   "hang_time": 20, "rest_time": 10, "reps": 6, "sets": 4, "recover_time": 180,
   "is_published": 1,
   "steps": [
@@ -240,7 +263,7 @@ Note: `isActive`, `startDate`, `notificationsEnabled` and similar per-device sta
 }
 ```
 
-`id` is never sent by the client — it's auto-generated server-side from `name` via `Str::slug()`, with a random 6-character suffix appended on collision. On update, `steps` and `translations` are **fully replaced** (delete-all-then-recreate) rather than diffed, so the request must always include the complete current set, not just changes.
+`id` is never sent by the client — it's auto-generated server-side from `name` via `Str::slug()`, with a random 6-character suffix appended on collision. On update, `steps` and `translations` are **fully replaced** (delete-all-then-recreate) rather than diffed, so the request must always include the complete current set, not just changes. `product_ids` is likewise fully replaced via `$training->products()->sync($data['product_ids'] ?? [])` on every update — omitting it clears all compatible-product links, it does not leave them untouched. When an `image` file is present it's saved via `ImageControllService::image_upload()` and `image_url` is set from the result, overriding any `image_url` also sent in the same request.
 
 ### Create/Update request body — plan
 
@@ -294,10 +317,10 @@ List pages use the standard admin `tabsComponent` pattern (same shared component
 
 Add/Edit pages are tabbed:
 
-- **Training form:** Global Info (name, type, difficulty, target muscle, coach tip, image URL, hang/rest/reps/sets/recover formula, publish toggle) / Steps (repeatable phase + duration + instructions list) / Georgian translation (optional overrides).
-- **Plan form:** Global Info (name, emoji, level, tagline, description, coach note, days/week, weeks, publish toggle) / Sessions (repeatable day with a multi-select of published trainings for that day) / Georgian translation.
+- **Training form (4 tabs):** Global Info (name, type, difficulty, target muscle, coach tip, image URL **or** cover-image upload via a `single_image_add` widget, hang/rest/reps/sets/recover formula, publish toggle) / Steps (repeatable phase + duration + instructions list) / Georgian translation (optional overrides) / **Products** — a shop-product picker with a custom-vs-shop_product mode toggle, cascading category → subcategory → product selects (backed by `GET /api/set_training/search_products`), and a multi-select "compatible products" search box wired to `product_ids[]`.
+- **Plan form (3 tabs):** Global Info (name, emoji, level, tagline, description, coach note, days/week, weeks, publish toggle) / Sessions (repeatable day with a multi-select of published trainings for that day) / Georgian translation.
 
-Left-menu entry ("Training" → "Workouts" / "Training Plans" in `resources/js/mixins/navbar_pages_mixin.js`) and router route guards (`resources/js/routes/UserRoutes.js`) are permission-gated exactly like every other admin section, via `[['show', 'training']]` / `[['show', 'training_plan']]`.
+Left-menu entry ("Training" → "Workouts" / "Training Plans" in `resources/js/mixins/navbar_pages_mixin.js`) is permission-gated on `[['show', 'training']]` / `[['show', 'training_plan']]` like every other admin section, but the individual **route guards** in `resources/js/routes/UserRoutes.js` are more granular than that single check: the List routes use `show`, the Add routes use `add`, and the Edit routes use `edit` (and the `_plan` equivalents) — so e.g. a `training_creator` with `show`/`add`/`edit` but no `del` can still reach every page, while a hypothetical role with only `show` could see the lists but not open the Add/Edit forms.
 
 ---
 
@@ -329,6 +352,8 @@ feature was originally scaffolded from — trainings map to the app's
 ---
 
 See [TRAINING_SYNC.md](TRAINING_SYNC.md) for the account sync API (custom workouts, plan activation state, history) that lets this content follow a logged-in user across devices.
+
+**Not yet connected to Climber Profile:** `App\Models\User` exposes `training_workouts()` / `training_plan_states()` / `training_history()` relations (added alongside the sync feature), but nothing in the codebase calls them outside `User.php` and their own migrations — no training stats, streaks, or badges appear on the public [Climber Profile](CLIMBER_PROFILE.md) page today. Reads as scaffolding for a future integration, not a shipped one.
 
 ---
 

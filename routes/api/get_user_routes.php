@@ -93,5 +93,6 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
 
     Route::controller(\App\Http\Controllers\Api\User\UserTrainingSyncController::class)->prefix('user_training')->group(function () {
         Route::post('/sync', 'sync');
+        Route::get('/summary', 'summary');
     });
 });
