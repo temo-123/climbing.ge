@@ -395,21 +395,22 @@ class SeoService
                 : (float) $option->price;
 
             $inStock = ProductService::get_option_stock_quantity($option) > 0;
-            // Made-to-order products are still purchasable with no warehouse
-            // stock (produced on demand), so they're never "OutOfStock" —
-            // schema.org's BackOrder availability fits that better.
-            $isMadeToOrder = $product->sale_type === 'produced_by_order';
+            // Made-to-order and custom-production products are still
+            // requestable with no warehouse stock (produced on demand /
+            // fully bespoke), so they're never "OutOfStock" — schema.org's
+            // BackOrder availability fits that better.
+            $isOnRequest = in_array($product->sale_type, ProductService::NEVER_OUT_OF_STOCK_SALE_TYPES, true);
 
             $price = [
                 'amount'   => $finalPrice,
                 'currency' => $this->isoCurrency($option->currency),
-                'inStock'  => $inStock || $isMadeToOrder,
+                'inStock'  => $inStock || $isOnRequest,
             ];
 
             $availability = 'https://schema.org/OutOfStock';
             if ($inStock) {
                 $availability = 'https://schema.org/InStock';
-            } elseif ($isMadeToOrder) {
+            } elseif ($isOnRequest) {
                 $availability = 'https://schema.org/BackOrder';
             }
 

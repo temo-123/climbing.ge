@@ -17,6 +17,14 @@ use App\Models\User\Warehouse;
 
 class ProductService extends LocaleContentService
 {
+    /**
+     * sale_types that aren't sold out of premade warehouse stock, so a
+     * general-warehouse quantity of 0 doesn't mean "out of stock" for them —
+     * produced_by_order ships on a made-to-order timeline, custom_production
+     * is a fully bespoke request handled outside the cart entirely.
+     */
+    const NEVER_OUT_OF_STOCK_SALE_TYPES = ['produced_by_order', 'custom_production'];
+
     public static function get_locale_product_use_locale($global_product, $locale = 'en')
     {
         $reponce = array();
@@ -311,7 +319,7 @@ class ProductService extends LocaleContentService
                 'option'          => $combo,
                 'images'          => $combo->images,
                 'stock_quantity'  => $stock,
-                'is_out_of_stock' => $stock <= 0 && optional($combo->product)->sale_type !== 'produced_by_order',
+                'is_out_of_stock' => $stock <= 0 && !in_array(optional($combo->product)->sale_type, self::NEVER_OUT_OF_STOCK_SALE_TYPES, true),
                 'is_combination'  => true,
                 'combination_option_ids' => $combo->options->pluck('id')->toArray(),
             ];
@@ -429,12 +437,15 @@ class ProductService extends LocaleContentService
     /**
      * Whether a single option should be reported as out of stock.
      *
-     * "produced_by_order" (made to order) products are never out of stock —
-     * zero general-warehouse quantity just means it ships on the made-to-order
-     * timeline instead of immediately. If the general warehouse DOES carry
-     * quantity for a made-to-order option, it's available right away just
-     * like a normal online_order option (the quantity check above already
-     * covers that case, since a positive quantity is never "out of stock").
+     * "produced_by_order" (made to order) and "custom_production" products are
+     * never out of stock — zero general-warehouse quantity just means a
+     * produced_by_order item ships on the made-to-order timeline instead of
+     * immediately, and custom_production is a fully bespoke request that was
+     * never backed by warehouse stock to begin with. If the general warehouse
+     * DOES carry quantity for a produced_by_order option, it's available right
+     * away just like a normal online_order option (the quantity check above
+     * already covers that case, since a positive quantity is never "out of
+     * stock").
      *
      * @param Product_option $option
      * @param string|null $sale_type
@@ -452,6 +463,6 @@ class ProductService extends LocaleContentService
 
         $sale_type = $sale_type ?? optional($option->product)->sale_type;
 
-        return $sale_type !== 'produced_by_order';
+        return !in_array($sale_type, self::NEVER_OUT_OF_STOCK_SALE_TYPES, true);
     }
 }
