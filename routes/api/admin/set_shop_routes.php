@@ -311,4 +311,13 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/export_pdf', 'exportWallPdf');
     });
 
+    /*
+    *   QuickShipper delivery integration (test/scaffold — 'quick_shipper' permission)
+    */
+    Route::controller(QuickShipperController::class)->prefix('set_quick_shipper')->group( function() {
+        Route::post('/get_rates', 'get_rates');
+        Route::post('/create_shipment', 'create_shipment');
+        Route::post('/get_shipment_status', 'get_shipment_status');
+    });
+
 });

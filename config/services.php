@@ -84,4 +84,11 @@ return [
             'client_secret' => env('TBC_PAY_DONATION_CLIENT_SECRET'),
         ],
     ],
+
+    // Placeholder shape (base_url + single API key header) — confirm against QuickShipper's real docs.
+    'quickshipper' => [
+        'base_url' => env('QUICKSHIPPER_BASE_URL'),
+        'api_key'  => env('QUICKSHIPPER_API_KEY'),
+        'mode'     => env('QUICKSHIPPER_MODE', 'test'),
+    ],
 ];

@@ -24,6 +24,10 @@ class Order extends Model
         'tbc_pay_id',
         'tbc_pay_status',
         'payment_amount',
+        'quickshipper_shipment_id',
+        'quickshipper_tracking_number',
+        'quickshipper_label_url',
+        'quickshipper_status',
     ];
 
     public function products()
