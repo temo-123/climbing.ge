@@ -58,7 +58,7 @@ class CartController extends Controller
                         "quantity"=>$cart_item->quantity,
                         "product_image" => $product_image,
                         "stock_quantity" => $stock_quantity,
-                        "is_out_of_stock" => $stock_quantity <= 0,
+                        "is_out_of_stock" => ProductService::is_option_out_of_stock($opt, $product[0]->sale_type ?? null),
                     ]);
                 }
             }
@@ -175,7 +175,7 @@ class CartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $option_item = Product_option::with('warehouse')->where('id', '=', $request->modification_id)->first();
+        $option_item = Product_option::with(['warehouse', 'product'])->where('id', '=', $request->modification_id)->first();
         if (!$option_item) {
             return response()->json(['error' => 'Product option not found'], 404);
         }
@@ -183,10 +183,17 @@ class CartController extends Controller
         $stock = ProductService::get_option_stock_quantity($option_item);
         $requested_quantity = (int) $request->quantity;
 
+        // Made-to-order products with no general-warehouse stock are produced
+        // on demand, so the stock cap doesn't apply — if the warehouse DOES
+        // carry quantity, they're bought like a normal online_order option
+        // and the usual stock cap below still applies.
+        $is_unlimited_made_to_order = $stock <= 0
+            && optional($option_item->product)->sale_type === 'produced_by_order';
+
         $cart_item = Cart::where('user_id', '=', Auth::user()->id)->where('option_id', '=', $request->modification_id)->first();
         if ($cart_item) {
             $new_total = $cart_item->quantity + $requested_quantity;
-            if ($new_total > $stock) {
+            if (!$is_unlimited_made_to_order && $new_total > $stock) {
                 return response()->json([
                     'error' => 'Not enough stock available',
                     'available' => $stock,
@@ -195,7 +202,7 @@ class CartController extends Controller
             $cart_item->quantity = $new_total;
             $cart_item->save();
         } else {
-            if ($requested_quantity > $stock) {
+            if (!$is_unlimited_made_to_order && $requested_quantity > $stock) {
                 return response()->json([
                     'error' => 'Not enough stock available',
                     'available' => $stock,

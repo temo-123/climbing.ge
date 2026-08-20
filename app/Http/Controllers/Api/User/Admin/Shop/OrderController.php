@@ -107,9 +107,21 @@ class OrderController extends Controller
         }
 
         foreach ($request->order_product_list as $product) {
-            $option = Product_option::with('warehouse')->find($product['option']['id']);
+            $option = Product_option::with(['warehouse', 'product'])->find($product['option']['id']);
+            if (!$option) {
+                return response()->json(['error' => 'Not enough stock for: ' . ($product['option']['name'] ?? $product['option']['id'])], 400);
+            }
+
             $stock = ProductService::get_option_stock_quantity($option);
-            if (!$option || $stock < $product['quantity']) {
+
+            // Made-to-order products with no general-warehouse stock are produced
+            // on demand, so they're never blocked by the stock check. If the
+            // warehouse DOES carry quantity, they're bought like a normal
+            // online_order option and the usual stock check still applies.
+            $is_unlimited_made_to_order = $stock <= 0
+                && optional($option->product)->sale_type === 'produced_by_order';
+
+            if (!$is_unlimited_made_to_order && $stock < $product['quantity']) {
                 return response()->json(['error' => 'Not enough stock for: ' . ($product['option']['name'] ?? $product['option']['id'])], 400);
             }
         }

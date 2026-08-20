@@ -69,10 +69,10 @@
                             </div>
 
                             <!-- Delivery badge -->
-                            <div class="delivery-badge" v-if="isOnlineOrderCartFlow">
+                            <div class="delivery-badge" v-if="isOnlineOrderCartFlow && !isMadeToOrderPending">
                                 <i class="fa fa-truck" aria-hidden="true"></i> {{ $t('shop.product.delivery_online_order') }}
                             </div>
-                            <div class="delivery-badge delivery-badge--warning" v-if="product.global_product.sale_type === 'produced_by_order'">
+                            <div class="delivery-badge delivery-badge--warning" v-if="isMadeToOrderPending">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('shop.product.delivery_produced_by_order') }}
                             </div>
 
@@ -253,6 +253,11 @@
         },
         data () {
             return {
+                // Made-to-order options with no premade warehouse stock are produced
+                // on demand rather than pulled from stock, so the quantity selector
+                // isn't capped at the (zero) warehouse quantity — this is just a
+                // sane upper bound for the input, not a real stock limit.
+                MADE_TO_ORDER_MAX_QTY: 99,
                 is_adding_in_cart_socsesful: false,
                 is_loading: false,
                 addingToCart: false,
@@ -310,9 +315,33 @@
         computed: {
             // Donation and outlet products are sold the same way as regular
             // online-order products (same 2-4 day delivery, same cart flow)
-            // — they only differ in what shelf they're listed on.
+            // — they only differ in what shelf they're listed on. Made-to-order
+            // products use this same cart flow too: when the general warehouse
+            // holds stock they behave exactly like online_order, and when it
+            // doesn't they're still purchasable (produced on demand) instead of
+            // being blocked as out of stock.
             isOnlineOrderCartFlow() {
-                return ['online_order', 'donation', 'outlet'].includes(this.product.global_product.sale_type);
+                return ['online_order', 'donation', 'outlet', 'produced_by_order'].includes(this.product.global_product.sale_type);
+            },
+            // True once we know a made-to-order product actually has to be
+            // produced (no premade stock for the relevant option) — used to
+            // pick between the "2-4 days" and "made to order, 5-9 days"
+            // delivery badges, since a made-to-order item WITH warehouse
+            // stock ships immediately just like a normal online_order item.
+            isMadeToOrderPending() {
+                if (this.product.global_product.sale_type !== 'produced_by_order') {
+                    return false;
+                }
+                if (this.product_modification_for_cart !== 'All' && this.product.product_option) {
+                    const selectedOption = this.product.product_option.find(
+                        option => option.option && option.option.id == this.product_modification_for_cart
+                    );
+                    return !selectedOption || (selectedOption.stock_quantity || 0) <= 0;
+                }
+                // No variant picked yet — pending unless at least one option already has stock.
+                return !this.product.product_option || !this.product.product_option.some(
+                    option => (option.stock_quantity || 0) > 0
+                );
             },
             isOutOfStock() {
                 // If product data is not loaded yet, return false
@@ -435,7 +464,11 @@
                 else if (this.product && this.product.product_option) {
                     this.product.product_option.forEach(option => {
                         if (option.option && this.product_modification_for_cart == option.option.id) {
-                            this.select_product_max_quantyty = option.stock_quantity || 0
+                            // Made-to-order + no warehouse stock: it's produced on demand,
+                            // so don't cap the selector at 0 (which would block purchase).
+                            this.select_product_max_quantyty = this.isMadeToOrderPending
+                                ? this.MADE_TO_ORDER_MAX_QTY
+                                : (option.stock_quantity || 0)
                             this.actyve_price.price = option.option.price
                             if (option.option.discount > 0) {
                                 this.actyve_price.new_price = this.colculate_discount_actyve_price(option.option.price, option.option.discount)

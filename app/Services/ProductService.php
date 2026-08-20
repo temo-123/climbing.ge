@@ -55,6 +55,8 @@ class ProductService extends LocaleContentService
                 
                 // Build product options array
                 $product_options = [];
+                $sale_type = $product['global_data']->sale_type;
+
                 foreach($options as $option){
                     $product_image = [];
                     $product_images = Option_image::where('option_id', '=', $option->id)->get();
@@ -62,7 +64,7 @@ class ProductService extends LocaleContentService
                         'option' => $option,
                         'images' => $product_images,
                         'stock_quantity' => self::get_option_stock_quantity($option),
-                        'is_out_of_stock' => self::get_option_stock_quantity($option) <= 0
+                        'is_out_of_stock' => self::is_option_out_of_stock($option, $sale_type)
                     ]);
                 }
 
@@ -124,13 +126,15 @@ class ProductService extends LocaleContentService
 
         $options = product_option::where('product_id', '=', $product['global_data']->id)->with('warehouse')->get();
 
+        $sale_type = $product['global_data']->sale_type;
+
         foreach($options as $option){
             $product_images = Option_image::where('option_id', '=', $option->id)->get();
             array_push($product_option, [
                 'option' => $option,
                 'images' => $product_images,
                 'stock_quantity' => self::get_option_stock_quantity($option),
-                'is_out_of_stock' => self::get_option_stock_quantity($option) <= 0
+                'is_out_of_stock' => self::is_option_out_of_stock($option, $sale_type)
             ]);
         }
 
@@ -307,7 +311,7 @@ class ProductService extends LocaleContentService
                 'option'          => $combo,
                 'images'          => $combo->images,
                 'stock_quantity'  => $stock,
-                'is_out_of_stock' => $stock <= 0,
+                'is_out_of_stock' => $stock <= 0 && optional($combo->product)->sale_type !== 'produced_by_order',
                 'is_combination'  => true,
                 'combination_option_ids' => $combo->options->pluck('id')->toArray(),
             ];
@@ -409,15 +413,45 @@ class ProductService extends LocaleContentService
             return false;
         }
 
+        $sale_type = $product->sale_type;
+
         foreach ($options as $option) {
-            $quantity = self::get_option_stock_quantity($option);
-            if ($quantity > 0) {
-                // Found at least one option with stock, product is in stock
+            if (!self::is_option_out_of_stock($option, $sale_type)) {
+                // Found at least one option that is available, product is in stock
                 return false;
             }
         }
 
-        // All options have 0 or less quantity
+        // All options have 0 or less quantity (and aren't made-to-order)
         return true;
+    }
+
+    /**
+     * Whether a single option should be reported as out of stock.
+     *
+     * "produced_by_order" (made to order) products are never out of stock —
+     * zero general-warehouse quantity just means it ships on the made-to-order
+     * timeline instead of immediately. If the general warehouse DOES carry
+     * quantity for a made-to-order option, it's available right away just
+     * like a normal online_order option (the quantity check above already
+     * covers that case, since a positive quantity is never "out of stock").
+     *
+     * @param Product_option $option
+     * @param string|null $sale_type
+     * @return bool
+     */
+    public static function is_option_out_of_stock($option, $sale_type = null)
+    {
+        if (!$option) {
+            return true;
+        }
+
+        if (self::get_option_stock_quantity($option) > 0) {
+            return false;
+        }
+
+        $sale_type = $sale_type ?? optional($option->product)->sale_type;
+
+        return $sale_type !== 'produced_by_order';
     }
 }
