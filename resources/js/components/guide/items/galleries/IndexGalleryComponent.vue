@@ -6,17 +6,17 @@
 
       <h3 class="article_list_short_description"> {{this.$siteData.data.index_gallery_description}} </h3>
 
-      <galleryComponrnt :images_prop="this.db_images" :image_path_prop="this.images_path"/>
+      <articleImageGallery :images="db_images" :image_path="images_path"/>
 
     </span>
   </div>
 </template>
 
 <script>
-    import galleryComponrnt from "../../../global_components/GalleryImagesComponent.vue";
+    import articleImageGallery from "./ArticleImageGalleryComponent.vue";
     export default {
       components: {
-        galleryComponrnt,
+        articleImageGallery,
       },
       props:[
           // 'article_id',

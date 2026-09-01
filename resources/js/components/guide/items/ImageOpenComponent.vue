@@ -14,6 +14,13 @@
             >
                 <div class="close_bottom cursor_zoom_out" @click.stop="close_image()">X</div>
 
+                <div v-if="current_link" class="open_article_button" :class="{ above_thumbs: has_gallery }" @click.stop>
+                    <router-link :to="current_link" @click="close_image()">
+                        {{ $t('global.open_article_btn') }}
+                        <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                    </router-link>
+                </div>
+
                 <div v-if="has_gallery" class="img_counter" @click.stop>
                     {{ current_index + 1 }} / {{ gallery.length }}
                 </div>
@@ -68,8 +75,11 @@
             img_alt: String,
             img_class: String,
             // Optional sibling images so the lightbox can be browsed without
-            // closing it. Each entry: { src, alt }. Anything shorter than two
-            // items keeps the old single-image behaviour.
+            // closing it. Each entry: { src, alt, link? }. Anything shorter
+            // than two items keeps the old single-image behaviour. `link`
+            // (a router-link target), when present on the current item,
+            // shows a "go to article" button — used by galleries that mix
+            // photos from several source articles (e.g. the index gallery).
             gallery: {
                 type: Array,
                 default: null,
@@ -99,6 +109,13 @@
             },
             current_alt() {
                 return this.current_item ? this.current_item.alt : this.img_alt;
+            },
+            // Independent of has_gallery — a single-image "gallery" (one photo
+            // still tagged with its source article) should still offer the link.
+            current_link() {
+                if (!Array.isArray(this.gallery) || !this.gallery.length) return null;
+                const item = this.gallery[this.current_index] || this.gallery[0];
+                return item && item.link ? item.link : null;
             },
         },
         mounted() {
@@ -279,6 +296,52 @@
         color: #b3b2b2d9;
         font-size: 1em;
         letter-spacing: .05em;
+    }
+    .open_article_button{
+        position: absolute;
+        bottom: 1.2em;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 3;
+        transition: bottom .15s linear;
+    }
+    .open_article_button.above_thumbs{
+        bottom: 5.6em;
+    }
+    .open_article_button a{
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+        color: #fff;
+        padding: 10px 22px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 1em;
+        font-weight: 600;
+        box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+        transition: all .2s ease;
+        white-space: nowrap;
+    }
+    .open_article_button a:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(40, 167, 69, 0.5);
+        color: #fff;
+    }
+    .open_article_button a i{
+        font-size: 0.9em;
+    }
+    @media (max-width: 756px) {
+        .open_article_button{
+            bottom: 0.8em;
+        }
+        .open_article_button.above_thumbs{
+            bottom: 5em;
+        }
+        .open_article_button a{
+            padding: 8px 16px;
+            font-size: 0.85em;
+        }
     }
     .thumb_strip{
         position: absolute;

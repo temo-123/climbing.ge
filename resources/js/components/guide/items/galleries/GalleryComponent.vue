@@ -4,26 +4,16 @@
           <h2 id="gallery">{{ $t('guide.article.title.gallery')}}</h2>
       </div>
 
-      <div class="sector-images-wrap">
-        <openImg
-            v-for="(image, index) in db_images"
-            :key="image.id"
-            :img="images_path + image.image"
-            :img_alt="image.title || $t('global.gallery_image_alt')"
-            :img_class="'sector_images sector_images_' + db_images.length"
-            :gallery="gallery"
-            :gallery_index="index"
-        />
-      </div>
+      <articleImageGallery :images="db_images" :image_path="images_path"/>
 
   </div>
 </template>
 
 <script>
-    import openImg from "../ImageOpenComponent.vue";
+    import articleImageGallery from "./ArticleImageGalleryComponent.vue";
     export default {
       components: {
-        openImg,
+        articleImageGallery,
       },
       props:[
           'images_prop',
@@ -33,17 +23,6 @@
           db_images: [],
           images_path: '/public/images/article_gallery_img/'
         };
-      },
-      computed: {
-        // Every gallery image as one list, so the lightbox can page through them
-        // instead of forcing a close/reopen per photo — same pattern as
-        // SectorComponent's sector_gallery.
-        gallery() {
-          return this.db_images.map(image => ({
-            src: this.images_path + image.image,
-            alt: image.title || this.$t('global.gallery_image_alt'),
-          }));
-        },
       },
       watch: {
         // '$route' (to, from) {
