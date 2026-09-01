@@ -203,6 +203,12 @@ export default {
             }
         },
 
+        setSmoothLines(value) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.setSmoothLines === 'function') {
+                this.$refs.canvasManager.setSmoothLines(value);
+            }
+        },
+
         // Enhanced zoom methods
         zoomIn() {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.zoomIn === 'function') {

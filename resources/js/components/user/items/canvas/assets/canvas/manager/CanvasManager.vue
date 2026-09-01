@@ -89,6 +89,9 @@ export default {
         currentStrokeColor: '#ff0000',
         currentFillColor: null,
         currentStrokeWidth: 3,
+        // When true (default), freehand lines are simplified/flattened on
+        // mouse-up and drag points are distance-throttled — see CanvasHandlers.
+        smoothLines: true,
         minZoom: 1,
         rasterBounds: null,
         // True while a loadBackgroundRaster() call is in flight (image loading over
@@ -604,6 +607,10 @@ export default {
             this.currentStrokeColor = strokeColor;
             this.currentFillColor   = fillColor;
             this.currentStrokeWidth = strokeWidth;
+        },
+
+        setSmoothLines(value) {
+            this.smoothLines = value;
         },
 
         zoomIn() {

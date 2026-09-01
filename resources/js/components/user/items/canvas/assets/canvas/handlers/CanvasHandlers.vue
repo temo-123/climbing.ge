@@ -22,6 +22,29 @@ export default {
     },
 
     methods: {
+        // Distance-throttles freehand point-adding while smoothLines is on, so a
+        // slow/jittery drag doesn't pile up hundreds of near-duplicate segments
+        // (the main cause of the "so sensitive" jagged lines and the occasional
+        // UI freeze on long strokes). Scaled by zoom so it reads as a constant
+        // on-screen distance regardless of how far in/out the view is.
+        _shouldAddDragPoint(path, point) {
+            if (!this.smoothLines || !path || path.segments.length === 0) return true;
+            const zoom = (this.scope && this.scope.view && this.scope.view.zoom) || 1;
+            const minDistance = 2 / zoom;
+            return path.lastSegment.point.getDistance(point) >= minDistance;
+        },
+
+        // Flattens a just-drawn freehand path into a smooth curve-fitted line
+        // and drops redundant segments — only when smoothLines is enabled.
+        // Tolerance below paper.js's own default (2.5) — keeps more of the
+        // hand-drawn shape/segment count; a higher value cuts corners and
+        // reads as "too straight".
+        _simplifyIfSmooth(path) {
+            if (this.smoothLines && path && path.segments && path.segments.length > 2) {
+                path.simplify(1.5);
+            }
+        },
+
         mouseDown() {
             this.tool = this.createTool(this.scope);
 
@@ -77,7 +100,7 @@ export default {
 
             this.tool.onMouseDrag = (event) => {
                 if (this.action == 1 || this.action == 3) {
-                    if (this.path) this.path.add(event.point);
+                    if (this.path && this._shouldAddDragPoint(this.path, event.point)) this.path.add(event.point);
                 } else if (this.action == 4) {
                     if (this.path && this.path.data && this.path.data.isRectangle) {
                         const startPoint = this.path.data.startPoint;
@@ -181,7 +204,7 @@ export default {
                 } else if (this.action == 19) {
                     this.dragResize(event);
                 } else if (this.action == 20) {
-                    if (this.path) this.path.add(event.point);
+                    if (this.path && this._shouldAddDragPoint(this.path, event.point)) this.path.add(event.point);
                 } else if (this.action == 21) {
                     if (this.path && this.path.data && this.path.data.isArrow) {
                         this.updateArrow(this.path, this.path.data.startPoint, event.point);
@@ -194,6 +217,7 @@ export default {
                     if (this.path) this.add_point(event);
                 }
                 if (this.action == 7) {
+                    this._simplifyIfSmooth(this.currentLine);
                     this.add_point(event);
                     this.currentLine = null;
                 }
@@ -238,8 +262,13 @@ export default {
                     }
                 }
                 if (this.action == 20) {
+                    this._simplifyIfSmooth(this.path);
                     this.path = null;
                     this.saveCanvasData();
+                }
+
+                if (this.action == 1 || this.action == 3) {
+                    this._simplifyIfSmooth(this.path);
                 }
 
                 this.path = null;

@@ -89,6 +89,20 @@
 
             <div class="vr"></div>
 
+            <!-- Smooth freehand lines toggle -->
+            <div class="d-flex align-items-center gap-1" :title="smoothLines ? $t('admin.articles.canvas_editor.smooth_lines_enabled_tooltip') : $t('admin.articles.canvas_editor.smooth_lines_disabled_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.smooth_lines_label') }}</span>
+                <button type="button"
+                        class="btn btn-sm py-0 px-1"
+                        :class="smoothLines ? 'btn-primary' : 'btn-outline-secondary'"
+                        style="font-size:10px; line-height:1.6;"
+                        @click="toggleSmoothLines">
+                    <i class="fa fa-magic"></i>
+                </button>
+            </div>
+
+            <div class="vr"></div>
+
             <!-- Zoom -->
             <div class="d-flex align-items-center gap-1">
                 <span class="small text-muted">{{ $t('admin.articles.canvas_editor.zoom_label') }}</span>
@@ -222,6 +236,7 @@ export default {
             currentFillColor: null,
             fillEnabled: false,
             strokeWidth: 3,
+            smoothLines: true,
             zoomLevel: 1,
             currentZoom: 1,
             panOffset: { x: 0, y: 0 },
@@ -244,6 +259,9 @@ export default {
                     // Sync initial color/stroke values into the canvas manager
                     if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
                         this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                    }
+                    if (this.$refs.canvasContainer && this.$refs.canvasContainer.setSmoothLines) {
+                        this.$refs.canvasContainer.setSmoothLines(this.smoothLines);
                     }
                 }, 150);
             });
@@ -1149,6 +1167,13 @@ export default {
                 this.strokeWidth = width;
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
                     this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
+                }
+            },
+
+            toggleSmoothLines() {
+                this.smoothLines = !this.smoothLines;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.setSmoothLines) {
+                    this.$refs.canvasContainer.setSmoothLines(this.smoothLines);
                 }
             },
 

@@ -10,7 +10,7 @@
                 <div class="root">
                     <div class="col-md-12">
                         <div class="row">
-                            <img :src="'/public/images/sector_local_img/'+sector_sector_local_image_pitchs_for_modal.image.image" :alt="$t('admin.users.locale_sectors_image_alt')">
+                            <img :src="'/public/images/sector_local_img/'+sector_sector_local_image_pitchs_for_modal.image.image+'?v='+(sector_sector_local_image_pitchs_for_modal.image.updated_at || '')" :alt="$t('admin.users.locale_sectors_image_alt')">
                             <!-- <div class="row"> -->
                                 <div class="col-md-12">
                                     <table class="table table-hover" id="dev-table">

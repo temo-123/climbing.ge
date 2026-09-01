@@ -126,6 +126,11 @@ class SectorLocalImagesController extends Controller
             $imageData = preg_replace('/^data:image\/\w+;base64,/', '', $editedImageData);
             file_put_contents($editedPath, base64_decode($imageData));
             $hasOriginal = file_exists($originalPath);
+
+            // The filename never changes on re-save, so bump updated_at — the
+            // admin "view" modal cache-busts the <img> src with it, otherwise
+            // the browser keeps showing the pre-edit image it already cached.
+            $sectorLocalImage->touch();
         }
 
         // Upsert by (sector_local_image_id, sector_id) — guarantees one record per sector,

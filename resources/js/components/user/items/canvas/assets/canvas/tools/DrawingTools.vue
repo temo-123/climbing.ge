@@ -15,9 +15,12 @@ export default {
         add_point(event) {
             this.layerCounters.point++;
             const dotColor = (this.currentFillColor != null) ? this.currentFillColor : '#ffd700';
+            // Radius follows the same stroke-width slider (1-20) as every other
+            // tool, so the dot can actually be made smaller or bigger — it used
+            // to be hardcoded to 7 regardless of the width control.
             const point = new paper.Path.Circle({
                 center: event.point,
-                radius: 7,
+                radius: this._width(),
                 fillColor: dotColor,
                 strokeColor: dotColor,
                 name: `point ${this.layerCounters.point}`
