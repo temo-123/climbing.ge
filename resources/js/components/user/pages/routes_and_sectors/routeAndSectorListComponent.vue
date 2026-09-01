@@ -116,8 +116,9 @@ export default {
                     'table_name': this.$t('admin.routes_sectors.sectors_table'),
                     'has_published': true,
                     'add_action': {
-                        'action': 'url',
-                        'link': 'sector/add/outdoor',
+                        'action': 'route',
+                        'link': 'sectorAdd',
+                        'params': { 'category': 'outdoor' },
                         'class': 'btn btn-primary'
                     },
                     'tab_data': {
@@ -176,8 +177,9 @@ export default {
                     'id': 2,
                     'table_name': this.$t('common.routes'),
                     'add_action': {
-                        'action': 'url',
-                        'link': '/route/add/outdoor',
+                        'action': 'route',
+                        'link': 'routeAdd',
+                        'params': { 'category': 'outdoor' },
                         'class': 'btn btn-primary',
                         'name': 'Add Route'
                     },

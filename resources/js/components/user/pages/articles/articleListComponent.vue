@@ -132,115 +132,119 @@ export default {
             }
             return validData;
         },
-        get_regions(category){
-            if(category == 'outdoor'){
-                axios.get("/get_region/get_all_outdoor_regions").then(response => {
-                    const validData = this.validateData(response.data)
-                    this.data_for_tab.push({
-                        id: 2,
-                        table_name: this.$t('admin.articles.regions_table'),
-                        add_action: {
-                            action: 'route',
-                            link: 'region_add',
-                            class: 'btn btn-primary'
-                        },
-                        tab_data: {
-                            data: validData,
-                            tab: {
-                                head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.edit'), this.$t('common.delete')],
-                                body: [
-                                    ['data', ['id']],
-                                    ['data', ['us_name']],
-                                    ['action_router', 'region_edit', 'btn btn-primary', this.$t('common.edit')],
-                                    ['action_fun_id', 'del_region', 'btn btn-danger', this.$t('common.delete')],
-                                ],
-                                perm: [
-                                    ['no'],
-                                    ['no'],
-                                    ['region', 'edit'],
-                                    ['region', 'del'],
-                                ]
-                            }
-                        },
-                    })
-                    if (this.data_for_tab[0] && Array.isArray(this.data_for_tab)) {
-                        this.data_for_tab[0].filter_data = {
-                            title: this.$t('admin.articles.filter_by_regions'),
-                            data: validData,
-                            action_fun_id: 'filtr_outdoors',
-                            array_key: 'us_name'
+        get_regions(category, tabs){
+            if(category != 'outdoor'){
+                return Promise.resolve()
+            }
+            return axios.get("/get_region/get_all_outdoor_regions").then(response => {
+                const validData = this.validateData(response.data)
+                tabs.push({
+                    id: 2,
+                    table_name: this.$t('admin.articles.regions_table'),
+                    add_action: {
+                        action: 'route',
+                        link: 'region_add',
+                        class: 'btn btn-primary'
+                    },
+                    tab_data: {
+                        data: validData,
+                        tab: {
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('common.edit'), this.$t('common.delete')],
+                            body: [
+                                ['data', ['id']],
+                                ['data', ['us_name']],
+                                ['action_router', 'region_edit', 'btn btn-primary', this.$t('common.edit')],
+                                ['action_fun_id', 'del_region', 'btn btn-danger', this.$t('common.delete')],
+                            ],
+                            perm: [
+                                ['no'],
+                                ['no'],
+                                ['region', 'edit'],
+                                ['region', 'del'],
+                            ]
                         }
+                    },
+                })
+                if (tabs[0]) {
+                    tabs[0].filter_data = {
+                        title: this.$t('admin.articles.filter_by_regions'),
+                        data: validData,
+                        action_fun_id: 'filtr_outdoors',
+                        array_key: 'us_name'
                     }
-                }).catch(error => console.log(error))
-            }
+                }
+            }).catch(error => console.log(error))
         },
-        get_ice_sectors(category){
-            if(category == 'ice'){
-                Promise.all([
-                    axios.get("/get_sector/get_sectors_by_article_category/ice/"),
-                    axios.get("/get_region/get_all_outdoor_regions")
-                ]).then(([sectorsResponse, regionsResponse]) => {
-                    const validData = this.validateData(sectorsResponse.data)
-                    const validRegions = this.validateData(regionsResponse.data)
-                    this.data_for_tab.push({
-                        id: 2,
-                        table_name: this.$t('admin.articles.ice_sectors_table'),
-                        has_published: true,
-                        add_action: {
-                            action: 'url',
-                            link: '../sector/add/ice',
-                            class: 'btn btn-primary'
-                        },
-                        tab_data: {
-                            data: validData,
-                            tab: {
-                                head: [
-                                    this.$t('common.id'),
-                                    this.$t('common.name'),
-                                    this.$t('admin.common.public'),
-                                    this.$t('admin.articles.col_edit_routes'),
-                                    this.$t('common.edit'),
-                                    this.$t('common.delete'),
-                                ],
-                                body: [
-                                    ['data', ['id']],
-                                    ['data', ['name']],
-                                    ['data', ['published'], 'bool'],
-                                    ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
-                                    ['action_router', 'articleEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
-                                    ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
-                                ],
-                                perm: [
-                                    ['no'],
-                                    ['no'],
-                                    ['no'],
-                                    ['sector', 'edit'],
-                                    ['sector', 'edit'],
-                                    ['sector', 'del'],
-                                ]
-                            }
-                        },
-                        filter_data: {
-                            title: this.$t('admin.articles.filter_by_regions'),
-                            data: validRegions,
-                            action_fun_id: 'filtr_ice_sectors',
-                            array_key: 'us_name'
-                        },
-                    })
-                    this.get_ice_routes()
-                }).catch(error => console.log(error))
+        get_ice_sectors(category, tabs){
+            if(category != 'ice'){
+                return Promise.resolve()
             }
+            return Promise.all([
+                axios.get("/get_sector/get_sectors_by_article_category/ice/"),
+                axios.get("/get_region/get_all_outdoor_regions")
+            ]).then(([sectorsResponse, regionsResponse]) => {
+                const validData = this.validateData(sectorsResponse.data)
+                const validRegions = this.validateData(regionsResponse.data)
+                tabs.push({
+                    id: 2,
+                    table_name: this.$t('admin.articles.ice_sectors_table'),
+                    has_published: true,
+                    add_action: {
+                        action: 'route',
+                        link: 'sectorAdd',
+                        params: { category: 'ice' },
+                        class: 'btn btn-primary'
+                    },
+                    tab_data: {
+                        data: validData,
+                        tab: {
+                            head: [
+                                this.$t('common.id'),
+                                this.$t('common.name'),
+                                this.$t('admin.common.public'),
+                                this.$t('admin.articles.col_edit_routes'),
+                                this.$t('common.edit'),
+                                this.$t('common.delete'),
+                            ],
+                            body: [
+                                ['data', ['id']],
+                                ['data', ['name']],
+                                ['data', ['published'], 'bool'],
+                                ['action_fun_id', 'sector_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'],
+                                ['action_router', 'sectorEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
+                                ['action_fun_id', 'del_sector', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
+                            ],
+                            perm: [
+                                ['no'],
+                                ['no'],
+                                ['no'],
+                                ['sector', 'edit'],
+                                ['sector', 'edit'],
+                                ['sector', 'del'],
+                            ]
+                        }
+                    },
+                    filter_data: {
+                        title: this.$t('admin.articles.filter_by_regions'),
+                        data: validRegions,
+                        action_fun_id: 'filtr_ice_sectors',
+                        array_key: 'us_name'
+                    },
+                })
+                return this.get_ice_routes(tabs)
+            }).catch(error => console.log(error))
         },
-        get_ice_routes(){
-            axios.get("/get_route/get_routes_by_category_array", { params: { categories: ['ice climbing', 'dry tooling'] } })
+        get_ice_routes(tabs){
+            return axios.get("/get_route/get_routes_by_category_array", { params: { categories: ['ice climbing', 'dry tooling'] } })
                 .then(response => {
                     const validData = this.validateData(response.data)
-                    this.data_for_tab.push({
+                    tabs.push({
                         id: 3,
                         table_name: this.$t('admin.articles.ice_routes_table'),
                         add_action: {
-                            action: 'url',
-                            link: '../route/add/ice',
+                            action: 'route',
+                            link: 'routeAdd',
+                            params: { category: 'ice' },
                             class: 'btn btn-primary'
                         },
                         tab_data: {
@@ -307,7 +311,8 @@ export default {
         },
         get_unfilted_articles(){
             this.article_loading = true
-            axios.get("/get_article/get_category_articles/"+this.$route.params.article_category)
+            const category = this.$route.params.article_category
+            axios.get("/get_article/get_category_articles/"+category)
                 .then(response => {
                     const rawData = Array.isArray(response.data) ? response.data : []
                     const validData = rawData
@@ -322,17 +327,21 @@ export default {
                             return item
                         }).filter(item => item !== null && item.id !== undefined)
                     if (validData.length === 0) {
-                        console.warn(`No valid articles found for category: ${this.$route.params.article_category}`)
+                        console.warn(`No valid articles found for category: ${category}`)
                     }
-                    this.data_for_tab = [{
+                    // Tabs are collected here and assigned to data_for_tab in one go, once
+                    // every request has settled. Pushing them in as they arrive made the
+                    // table briefly render with only tab 1, which reset the active tab and
+                    // looked like the list had not refreshed after adding an item.
+                    const tabs = [{
                         id: 1,
-                        table_name: this.$route.params.article_category,
-                        list_page: process.env.MIX_BASE_URL_SSH + '/' + this.$route.params.article_category,
+                        table_name: category,
+                        list_page: process.env.MIX_BASE_URL_SSH + '/' + category,
                         has_published: true,
                         add_action: {
                             action: 'route',
                             link: 'articleAdd',
-                            params: { article_category: this.$route.params.article_category },
+                            params: { article_category: category },
                             class: 'btn btn-primary'
                         },
                         tab_data: {
@@ -362,31 +371,36 @@ export default {
                             }
                         }
                     }]
-                    if(this.$route.params.article_category == 'outdoor'){
-                        this.get_regions(this.$route.params.article_category)
-                        if (this.data_for_tab[0] && this.data_for_tab[0].tab_data?.data?.length > 0) {
-                            this.data_for_tab[0].tab_data.tab.head.splice(3, 0, this.$t('common.sectors'))
-                            this.data_for_tab[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_sectors_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'])
-                            this.data_for_tab[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
+                    if(category == 'outdoor'){
+                        if (tabs[0].tab_data.data.length > 0) {
+                            tabs[0].tab_data.tab.head.splice(3, 0, this.$t('common.sectors'))
+                            tabs[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_sectors_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-list-ol"></i>'])
+                            tabs[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
                         }
+                        return this.get_regions(category, tabs).then(() => tabs)
                     }
-                    if(this.$route.params.article_category == 'ice'){
-                        this.get_ice_sectors(this.$route.params.article_category)
+                    if(category == 'ice'){
+                        return this.get_ice_sectors(category, tabs).then(() => tabs)
                     }
-                    if(this.$route.params.article_category == 'mount_route'){
-                        this.get_mounts()
+                    if(category == 'mount_route'){
+                        return this.get_mounts(tabs).then(() => tabs)
                     }
-                }).catch(error => {
+                    return tabs
+                })
+                .then(tabs => {
+                    this.data_for_tab = tabs || []
+                })
+                .catch(error => {
                     console.error('Error loading articles:', error)
                     this.data_for_tab = []
                 }).finally(() => {
                     this.article_loading = false
                 })
         },
-        get_mounts(){
-            axios.get("/get_mount/get_all_mount").then(response => {
+        get_mounts(tabs){
+            return axios.get("/get_mount/get_all_mount").then(response => {
                 const validData = this.validateData(response.data)
-                this.data_for_tab.push({
+                tabs.push({
                     id: 2,
                     table_name: this.$t('admin.articles.mount_masives_table'),
                     has_published: true,
@@ -414,8 +428,8 @@ export default {
                         }
                     }
                 })
-                if (this.data_for_tab[0] && Array.isArray(this.data_for_tab)) {
-                    this.data_for_tab[0].filter_data = {
+                if (tabs[0]) {
+                    tabs[0].filter_data = {
                         title: this.$t('admin.articles.filter_by_mount_masive'),
                         data: validData,
                         action_fun_id: 'filtr_outdoors',

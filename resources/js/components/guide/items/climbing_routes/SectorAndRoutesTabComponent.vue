@@ -5,7 +5,7 @@
         <div v-if="spot_images && spot_images.length > 0">
             <div
                 :class="'sector_images sector_images_' + spot_images.length"
-                v-for="spot_image in spot_images"
+                v-for="(spot_image, spot_index) in spot_images"
                 :key="spot_image && spot_image.id ? spot_image.id : 'spot-img-' + Math.random()"
             >
 
@@ -13,6 +13,8 @@
                     v-if="spot_image && spot_image.image"
                     :img="'/public/images/spot_rocks_img/' + spot_image.image"
                     :img_alt="spot_image.title || $t('guide.spot_rock_image_alt')"
+                    :gallery="spot_gallery"
+                    :gallery_index="spot_gallery_index(spot_image)"
                 />
             </div>
         </div>
@@ -61,6 +63,18 @@ export default {
             this.get_spot_rocks_images();
         },
     },
+    computed: {
+        // The whole spot-rock photo set as one browsable lightbox gallery.
+        spot_gallery() {
+            return (this.spot_images || [])
+                .filter(spot_image => spot_image && spot_image.image)
+                .map(spot_image => ({
+                    src: '/public/images/spot_rocks_img/' + spot_image.image,
+                    alt: spot_image.title || this.$t('guide.spot_rock_image_alt'),
+                }));
+        },
+    },
+
     data: function () {
         return {
             climbing_area: [],

@@ -3673,6 +3673,8 @@
     "common": {
         "error": "Error",
         "close": "Close",
+        "next": "Next",
+        "previous": "Previous",
         "cancel": "Cancel",
         "title": "Title",
         "sectors": "Sectors",

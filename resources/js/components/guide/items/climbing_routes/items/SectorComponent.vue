@@ -68,11 +68,13 @@
 
         <div class="col-12 sector-images-wrap" v-if="sector.sector_imgs.length > 0">
             <openImg
-                v-for="image in sector.sector_imgs"
+                v-for="(image, image_index) in sector.sector_imgs"
                 :key="image.id"
-                :img="'/public/images/sector_img/' + image.image + (image.updated_at ? '?v=' + encodeURIComponent(image.updated_at) : '')"
+                :img="sector_gallery[image_index].src"
                 :img_alt="image.image"
                 :img_class="'sector_images sector_images_' + sector.sector_imgs.length"
+                :gallery="sector_gallery"
+                :gallery_index="image_index"
             />
         </div>
 
@@ -325,6 +327,18 @@ export default {
     props: [
         "sector",
     ],
+
+    computed: {
+        // Every sector image as one list, so the lightbox can page through them
+        // instead of forcing a close/reopen per photo.
+        sector_gallery() {
+            return (this.sector.sector_imgs || []).map(image => ({
+                src: '/public/images/sector_img/' + image.image
+                    + (image.updated_at ? '?v=' + encodeURIComponent(image.updated_at) : ''),
+                alt: image.image,
+            }));
+        },
+    },
 
     data: function () {
         return {
