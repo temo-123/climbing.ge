@@ -98,6 +98,26 @@ export default {
         }
     },
     methods: {
+        // Admin category slugs don't all match their public-site URL segment
+        // (e.g. articles stored with category "mount_route" are served at
+        // /mountaineering, "partners" at /partner, "special" at
+        // /special_article — see SiteRoutes.js). tech_tip/partners/special
+        // have no public list page at all, so we omit list_page for those
+        // rather than link to a 404.
+        publicListUrl(category){
+            const list_paths = {
+                outdoor: 'outdoor',
+                indoor: 'indoor',
+                ice: 'ice',
+                other: 'other',
+                news: 'news',
+                mount_route: 'mountaineering',
+                spot_projects: 'spot_projects',
+            }
+            const path = list_paths[category]
+            return path ? process.env.MIX_BASE_URL_SSH + '/' + path : null
+        },
+
         get_articles(filt_id = 'all'){
             if (filt_id === 'all' || filt_id === 'All') {
                 this.get_unfilted_articles()
@@ -336,7 +356,7 @@ export default {
                     const tabs = [{
                         id: 1,
                         table_name: category,
-                        list_page: process.env.MIX_BASE_URL_SSH + '/' + category,
+                        list_page: this.publicListUrl(category),
                         has_published: true,
                         add_action: {
                             action: 'route',

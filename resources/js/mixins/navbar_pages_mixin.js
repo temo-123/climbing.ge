@@ -321,6 +321,19 @@ export default {
                     ]
                 },
                 {
+                    title: this.$t('user.nav.partner_organizations'),
+                    name: "partner_organizations",
+                    routes: [
+                        {
+                            name: this.$t('user.nav.partner_organizations_list'),
+                            route: "/partner_organizations",
+                            permissions: [
+                                ['show', 'partner_organization'],
+                            ]
+                        },
+                    ]
+                },
+                {
                     title: this.$t('user.nav.site_options'),
                     name: "site_options",
                     routes: [

@@ -4,7 +4,7 @@
         :title="modalTitle"
         :modal-class="{ 'modal-lg': true }"
         :cancelButton="{ visible: true, title: $t('common.close'), btnClass: { 'btn btn-secondary': true } }"
-        :saveButton="{ visible: !!articleUrl, title: $t('admin.articles.quick_view.go_to_article_btn'), btnClass: { 'btn btn-primary': true } }"
+        :saveButton="{ visible: !!articleUrl && isPublicallyViewable, title: $t('admin.articles.quick_view.go_to_article_btn'), btnClass: { 'btn btn-primary': true } }"
         @save="goToArticle"
         @close="close_modal"
     >
@@ -96,10 +96,27 @@ export default {
         modalTitle() {
             return this.localeTitle
         },
+        // published: 0 = not public (no live URL), 1 = public, 2 = public_url
+        // (direct-link only) — both 1 and 2 actually resolve on the site,
+        // matching get_locale_article_on_page's published=1 OR published=2 gate.
+        isPublicallyViewable() {
+            return this.article?.published == 1 || this.article?.published == 2
+        },
         articleUrl() {
             if (!this.article?.url_title) return null
             const base = (process.env.MIX_APP_SSH || '') + (process.env.MIX_GUIDBOOK_URL || '')
-            return base + '/' + (this.category || this.article.category) + '/' + this.article.url_title
+            // Admin category slugs don't all match their public-site URL segment
+            // (see SiteRoutes.js) — e.g. "mount_route" is served at /mountaineering,
+            // "partners" at /partner, "special" at /special_article.
+            const detail_paths = {
+                mount_route: 'mountaineering',
+                partners: 'partner',
+                special: 'special_article',
+                spot_projects: 'spot_project',
+            }
+            const category = this.category || this.article.category
+            const path = detail_paths[category] || category
+            return base + '/' + path + '/' + this.article.url_title
         },
     },
 

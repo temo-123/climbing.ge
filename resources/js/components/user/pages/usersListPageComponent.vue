@@ -26,6 +26,7 @@
                         @del_user="del_user"
                         @del_user_pemisino_from_db="del_user_pemisino_from_db"
                         @user_ban="show_user_ban_modal"
+                        @assign_partner_organization="show_assign_partner_organization_modal"
                         @edit_user_role="show_edit_user_role_modal"
                         @user_info_modal="show_user_info_modal"
                         @assign_warehouse="show_assign_warehouse_modal"
@@ -54,6 +55,7 @@
         <AssignUserWarehouseModal ref="assign_warehouse_modal"/>
         <UserBunModel ref="user_ban_modal" @update="get_users"/>
         <UserInfoModal ref="user_info_modal" @update="get_users"/>
+        <AssignPartnerOrganizationModal ref="assign_partner_organization_modal" @update="get_users"/>
 
         <EditRoleModel ref="edit_role_model" @update="get_users"/>
         <RolesAddModal ref="add_role_modal" @update="get_users"/>
@@ -81,6 +83,7 @@
     import AddPermissionModal from "../items/modal/tab_modals/AddPermissionModalComponent"
     import UserBunModel from "../items/modal/tab_modals/UserBunModelComponent"
     import UserInfoModal from "../items/modal/tab_modals/UserInfoModalComponent"
+    import AssignPartnerOrganizationModal from "../items/modal/tab_modals/AssignPartnerOrganizationModalComponent"
     import ResetUserPasswordModal from "../items/modal/tab_modals/ResetUserPasswordModalComponent"
 
     import breadcrumb from '../items/BreadcrumbComponent.vue'
@@ -98,6 +101,7 @@
             AddPermissionModal,
             UserBunModel,
             UserInfoModal,
+            AssignPartnerOrganizationModal,
             ResetUserPasswordModal,
         },
         data(){
@@ -174,9 +178,11 @@
                                 this.$t('admin.users.col_role'),
                                 this.$t('admin.users.col_points'),
                                 this.$t('admin.users.col_last_seen'),
+                                this.$t('admin.partner_organizations.organization_col'),
                                 this.$t('common.edit'),
                                 this.$t('admin.users.col_warehouse'),
                                 this.$t('admin.users.col_ban'),
+                                this.$t('admin.partner_organizations.assign_organization_btn'),
                                 this.$t('admin.users.col_reset'),
                                 this.$t('common.delete'),
                             ],
@@ -190,9 +196,11 @@
                                 ['data', ['role_name']],
                                 ['data', ['points_total']],
                                 ['data', ['last_seen_at']],
+                                ['data', ['partner_organization_name']],
                                 ['action_fun_id', 'edit_user_role', 'btn btn-primary btn-sm', this.$t('admin.users.edit_role_btn')],
                                 ['action_fun_id', 'assign_warehouse', 'btn btn-info btn-sm', '<i class="fa fa-building" aria-hidden="true"></i>'],
                                 ['action_fun_id', 'user_ban', 'btn btn-warning btn-sm', '<i class="fa fa-ban" aria-hidden="true"></i>'],
+                                ['action_fun_id', 'assign_partner_organization', 'btn btn-info btn-sm', '<i class="fa fa-handshake-o" aria-hidden="true"></i>'],
                                 ['action_fun_id', 'reset_user_password', 'btn btn-secondary btn-sm', '<i class="fa fa-key" aria-hidden="true"></i>'],
                                 ['action_fun_id', 'del_user', 'btn btn-danger btn-sm', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                             ],
@@ -206,9 +214,11 @@
                                 ['no'],
                                 ['no'],
                                 ['no'],
+                                ['no'],
                                 ['role', 'edit'],
                                 ['warehouse', 'edit'],
                                 ['user', 'create_ban'],
+                                ['partner_organization', 'add'],
                                 ['user', 'edit'],
                                 ['user', 'del'],
                             ]
@@ -347,6 +357,10 @@
 
             show_user_ban_modal(id){
                 this.$refs.user_ban_modal.show_modal(id)
+            },
+
+            show_assign_partner_organization_modal(id){
+                this.$refs.assign_partner_organization_modal.show_modal(id)
             },
 
             show_user_info_modal(id){

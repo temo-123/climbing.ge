@@ -106,6 +106,7 @@ class RouteServiceProvider extends ServiceProvider
                 require base_path('routes/api/admin/set_user_routes.php');
                 require base_path('routes/api/admin/set_summit_routes.php');
                 require base_path('routes/api/admin/set_training_routes.php');
+                require base_path('routes/api/admin/set_partner_organization_routes.php');
 
                 require base_path('routes/api/summit_public_routes.php');
             });

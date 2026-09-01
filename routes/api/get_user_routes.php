@@ -95,4 +95,8 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::post('/sync', 'sync');
         Route::get('/summary', 'summary');
     });
+
+    Route::controller(\App\Http\Controllers\Api\User\PartnerOrganizationController::class)->prefix('partner_organization')->group(function () {
+        Route::get('/my_status', 'my_status');
+    });
 });

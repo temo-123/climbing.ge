@@ -186,12 +186,19 @@ const routes = [
             { path: 'training_plan/add', name: 'trainingPlanAdd', component: load('trainings/TrainingPlanAddComponent'), meta: {title: 'user page', permissions: [['add', 'training_plan']]}},
             { path: 'training_plan/edit/:id', name: 'trainingPlanEdit', component: load('trainings/TrainingPlanEditComponent'), meta: {title: 'user page', permissions: [['edit', 'training_plan']]}},
 
+            { path: 'partner_organizations', name: 'partnerOrganizationList', component: load('partner_organizations/partnerOrganizationListComponent'), meta: {title: 'user page', permissions: [['show', 'partner_organization']]}},
+            { path: 'partner_organization/add', name: 'partnerOrganizationAdd', component: load('partner_organizations/organizationAddComponent'), meta: {title: 'user page', permissions: [['add', 'partner_organization']]}},
+            { path: 'partner_organization/edit/:id', name: 'partnerOrganizationEdit', component: load('partner_organizations/organizationEditComponent'), meta: {title: 'user page', permissions: [['edit', 'partner_organization']]}},
+            { path: 'partner_organization_member/add', name: 'partnerOrganizationMemberAdd', component: load('partner_organizations/memberAddComponent'), meta: {title: 'user page', permissions: [['add', 'partner_organization']]}},
+            { path: 'partner_organization_member/edit/:id', name: 'partnerOrganizationMemberEdit', component: load('partner_organizations/memberEditComponent'), meta: {title: 'user page', permissions: [['edit', 'partner_organization']]}},
+
             { path: 'summits', name: 'summitList', component: load('summits/SummitListPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'user page', permissions: [['show', 'summit']]}},
             { path: 'my_ascents', name: 'myAscents', component: load('myAscents/MyAscentsListPage'), meta: {title: 'user page'}},
             { path: 'my_donations', name: 'myDonations', component: load('donations/MyDonationsPageComponent'), meta: {title: 'user page'}},
             { path: 'my_trainings', name: 'myTrainings', component: load('MyTrainingsPageComponent'), meta: {title: 'user page'}},
+            { path: 'my_organization', name: 'myOrganization', component: load('MyOrganizationPageComponent'), meta: {title: 'user page'}},
 
             { path: 'banned', name: 'banned', component: BannedPage, meta: { title: 'Account Suspended' } },
 

@@ -1052,6 +1052,29 @@
             "currency_col": "Currency",
             "comment_col": "Comment"
         },
+        "partner_organizations": {
+            "organizations_table": "Organizations",
+            "members_table": "Members",
+            "discount_col": "Discount %",
+            "discount_label": "Discount (%)",
+            "organization_col": "Organization",
+            "linked_user_col": "Linked user",
+            "select_organization": "Select organization",
+            "add_organization_title": "Add partner organization",
+            "edit_organization_title": "Edit partner organization",
+            "add_member_title": "Add organization member",
+            "edit_member_title": "Edit organization member",
+            "other_members_table": "Other members in your organization",
+            "your_discount": "Your discount",
+            "not_a_member": "You are not part of any partner organization.",
+            "auto_link_hint": "If this email matches a registered user, their account is automatically linked to this member.",
+            "assign_title": "Assign to partner organization",
+            "assign_prefix": "Assign {name} to partner organization",
+            "currently_member_of": "Currently a member of",
+            "assign_organization_btn": "Assign to organization",
+            "change_organization_btn": "Change organization",
+            "remove_from_organization_btn": "Remove from organization"
+        },
         "events": {
             "loading_ellipsis": "Loading...",
             "events_table": "Events",
@@ -3545,7 +3568,9 @@
             "site_options_all_routes_reviews": "All routes reviews",
             "training": "Training",
             "training_workouts": "Workouts",
-            "training_plans": "Training Plans"
+            "training_plans": "Training Plans",
+            "partner_organizations": "Partner Organizations",
+            "partner_organizations_list": "Organizations & Members"
         }
     },
     "global": {
@@ -3682,6 +3707,7 @@
         "sectors": "Sectors",
         "id": "ID",
         "name": "Name",
+        "surname": "Surname",
         "edit": "Edit",
         "delete": "Delete",
         "category": "Category",

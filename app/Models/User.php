@@ -268,6 +268,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(\App\Models\Training\UserTrainingHistory::class, 'user_id');
     }
 
+    public function partner_organization_member()
+    {
+        return $this->hasOne(\App\Models\PartnerOrganization\PartnerOrganizationMember::class, 'user_id');
+    }
+
 
     /*
     *   User product and orders

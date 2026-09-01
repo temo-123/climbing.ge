@@ -9,6 +9,7 @@ use App\Models\Summit\SummitAscentUser;
 use App\Models\Guide\Comment;
 use App\Models\Guide\Article_comment_user;
 use App\Models\User\Non_registered_commenter;
+use App\Models\PartnerOrganization\PartnerOrganizationMember;
 
 class GuestDataLinkingService
 {
@@ -21,6 +22,7 @@ class GuestDataLinkingService
         self::linkDonations($user);
         self::linkAscents($user);
         self::linkComments($user);
+        self::linkPartnerOrganizationMember($user);
         self::cleanupGuestSubscriptions($user);
     }
 
@@ -63,6 +65,15 @@ class GuestDataLinkingService
                 $comment->update(['published' => 1]);
             }
         }
+    }
+
+    // Link this user to a partner-organization member row submitted with the
+    // same email (e.g. an org added them by email before they ever registered)
+    private static function linkPartnerOrganizationMember(User $user): void
+    {
+        PartnerOrganizationMember::where('email', $user->email)
+            ->whereNull('user_id')
+            ->update(['user_id' => $user->id]);
     }
 
     // Remove the guest email record — the user now has a full account with

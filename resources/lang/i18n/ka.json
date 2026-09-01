@@ -1052,6 +1052,29 @@
             "currency_col": "ვალუტა",
             "comment_col": "კომენტარი"
         },
+        "partner_organizations": {
+            "organizations_table": "ორგანიზაციები",
+            "members_table": "წევრები",
+            "discount_col": "ფასდაკლება %",
+            "discount_label": "ფასდაკლება (%)",
+            "organization_col": "ორგანიზაცია",
+            "linked_user_col": "დაკავშირებული მომხმარებელი",
+            "select_organization": "აირჩიეთ ორგანიზაცია",
+            "add_organization_title": "პარტნიორი ორგანიზაციის დამატება",
+            "edit_organization_title": "პარტნიორი ორგანიზაციის რედაქტირება",
+            "add_member_title": "ორგანიზაციის წევრის დამატება",
+            "edit_member_title": "ორგანიზაციის წევრის რედაქტირება",
+            "other_members_table": "თქვენი ორგანიზაციის სხვა წევრები",
+            "your_discount": "თქვენი ფასდაკლება",
+            "not_a_member": "თქვენ არ ხართ არცერთი პარტნიორი ორგანიზაციის წევრი.",
+            "auto_link_hint": "თუ ეს ელფოსტა ემთხვევა რეგისტრირებულ მომხმარებელს, მათი ანგარიში ავტომატურად დაუკავშირდება ამ წევრს.",
+            "assign_title": "პარტნიორ ორგანიზაციაზე მიბმა",
+            "assign_prefix": "{name}-ის მიბმა პარტნიორ ორგანიზაციაზე",
+            "currently_member_of": "ამჟამად წევრია",
+            "assign_organization_btn": "ორგანიზაციაზე მიბმა",
+            "change_organization_btn": "ორგანიზაციის შეცვლა",
+            "remove_from_organization_btn": "ორგანიზაციიდან წაშლა"
+        },
         "events": {
             "loading_ellipsis": "იტვირთება...",
             "events_table": "ღონისძიებები",
@@ -3330,7 +3353,9 @@
             "site_options_all_routes_reviews": "მარშრუტების ყველა შეფასება",
             "training": "წვრთნა",
             "training_workouts": "ვარჯიშები",
-            "training_plans": "სავარჯიშო გეგმები"
+            "training_plans": "სავარჯიშო გეგმები",
+            "partner_organizations": "პარტნიორი ორგანიზაციები",
+            "partner_organizations_list": "ორგანიზაციები და წევრები"
         }
     },
     "global": {
@@ -3679,6 +3704,7 @@
         "sectors": "სექტორები",
         "id": "ID",
         "name": "სახელი",
+        "surname": "გვარი",
         "edit": "რედაქტირება",
         "delete": "წაშლა",
         "category": "კატეგორია",

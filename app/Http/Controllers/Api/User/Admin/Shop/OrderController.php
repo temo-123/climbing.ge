@@ -20,6 +20,8 @@ use App\Models\Shop\Product;
 use App\Models\Shop\Cart;
 use App\Models\Shop\Sale_code;
 
+use App\Models\PartnerOrganization\PartnerOrganizationMember;
+
 use App\Services\ProductService;
 use App\Services\PermissionService;
 
@@ -133,6 +135,7 @@ class OrderController extends Controller
         $new_order['payment'] = $request->payment_tupe;
         $new_order['status'] = 'pending';
         $new_order['status_updating_data'] = now();
+        $new_order['discount'] = (new static)->resolve_partner_discount($new_order['user_id']);
 
         if (!$new_order->save()) {
             return response()->json(['error' => 'Failed to create order'], 500);
@@ -358,6 +361,16 @@ class OrderController extends Controller
             'buyer_address'  => $buyer_address,
             'related_users'  => $related_users,
         ];
+    }
+
+    // Buyers linked (by email) to a partner organization member get that
+    // organization's discount % stamped onto the order at creation time, so
+    // later changes to the org's rate don't retroactively alter past orders.
+    private function resolve_partner_discount($user_id)
+    {
+        $member = PartnerOrganizationMember::with('organization')->where('user_id', $user_id)->first();
+
+        return optional(optional($member)->organization)->discount;
     }
 
     private function get_order_products_raw($order_id)

@@ -1,14 +1,13 @@
 <template>
-    <div class="row">
+    <div class="sector-images-wrap" v-if="mount_route_images.length > 0">
         <openImg
-            v-for="image in mount_route_images"
+            v-for="(image, index) in mount_route_images"
             :key="image.id"
             :img="'/public/images/mount_route_description_img/' + image.image"
             :img_alt="image.image"
-            :img_class="
-                'sector_images sector_images_' +
-                mount_route_images.length
-            "
+            :img_class="'sector_images sector_images_' + mount_route_images.length"
+            :gallery="gallery"
+            :gallery_index="index"
         />
     </div>
 </template>
@@ -29,7 +28,18 @@
         components: {
             openImg,
         },
-        
+        computed: {
+            // Every route image as one list, so the lightbox can page through them
+            // instead of forcing a close/reopen per photo — same pattern as
+            // SectorComponent's sector_gallery.
+            gallery() {
+                return this.mount_route_images.map(image => ({
+                    src: '/public/images/mount_route_description_img/' + image.image,
+                    alt: image.image,
+                }));
+            },
+        },
+
         mounted() {
             this.article_id = this.article_id_prop
             this.get_mount_route_images()
@@ -70,7 +80,3 @@
         }
     }
 </script>
-
-<style lang="scss" scoped>
-
-</style>

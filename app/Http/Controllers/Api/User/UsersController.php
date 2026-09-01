@@ -24,9 +24,10 @@ class UsersController extends Controller
 {
     public function get_all_users()
     {
-        return User::with('role')->latest('id')->get()->map(function ($user) {
+        return User::with(['role', 'partner_organization_member.organization'])->latest('id')->get()->map(function ($user) {
             $user->is_banned = $user->isBanned();
             $user->role_name = optional($user->role->first())->name;
+            $user->partner_organization_name = optional($user->partner_organization_member->organization ?? null)->name;
             return $user;
         });
     }
