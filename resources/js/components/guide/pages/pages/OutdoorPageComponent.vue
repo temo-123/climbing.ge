@@ -4,12 +4,12 @@
             <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
-            <outdoor 
-                :article_prop="outdoor" 
+            <outdoor
+                :article_prop="outdoor"
                 ref="article_page"
             />
 
-            <metaData 
+            <metaData
                 :title = "outdoor.locale_data.title"
                 :description = "outdoor.locale_data.description"
                 :image = "'/public/images/outdoor_img/'+outdoor.image"

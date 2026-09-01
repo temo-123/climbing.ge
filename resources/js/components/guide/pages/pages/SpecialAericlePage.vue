@@ -19,21 +19,17 @@
                     <p v-if="partner.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.created_label') }}: {{ $formatDate(partner.global_data.created_at) }}</p>
                     <p v-if="partner.global_data.updated_at && partner.global_data.updated_at !== partner.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.updated_label') }}: {{ $formatDate(partner.global_data.updated_at) }}</p>
 
-                    <h2>{{ $t('guide.donation.support_title') }}</h2>
+                    <!-- <h2>{{ $t('guide.donation.support_title') }}</h2> -->
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-sm-8 blog-main">
-                    <Donation position="left"/>
-
                     <articleTextBlocks :article_prop="partner"/>
 
-                    <h2>{{ $t('guide.donation.support_title') }}</h2>
+                    <!-- <h2>{{ $t('guide.donation.support_title') }}</h2> -->
 
-                    <!-- <Donation position="left"/> -->
-
-                    <galleryComponent 
+                    <galleryComponent
                         :images_prop="partner.gallery_images" 
                     />
                 </div>
@@ -68,7 +64,6 @@
 <script>
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
     import metaData from '../../items/MetaDataComponent'
-    import Donation from '../../items/DonationComponent.vue'
 
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
@@ -86,7 +81,6 @@
 
             articlePreloader,
             metaData,
-            Donation,
         },
         data: function () {
             return {

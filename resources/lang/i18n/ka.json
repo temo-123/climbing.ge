@@ -1830,6 +1830,7 @@
                 "subtitle_edit": "სტატიის ზოგადი ინფორმაციის რედაქტირება.",
                 "publish": "გამოქვეყნება",
                 "not_public": "არასაჯარო",
+                "show_donation_label": "დონაციის ფანჯრის ჩვენება ამ სტატიის გვერდზე",
                 "regions_label": "რეგიონები",
                 "select_region": "აირჩიეთ რეგიონი",
                 "without_region": "რეგიონის გარეშე",
@@ -1856,7 +1857,8 @@
             "ice_routes_table": "ყინულის მარშრუტები",
             "mount_masives_table": "მთის მასივები",
             "filter_by_mount_masive": "ფილტრი მთის მასივის მიხედვით",
-            "col_sectors": "@:common.sectors"
+            "col_sectors": "@:common.sectors",
+            "donation_col": "დონაცია"
         },
         "common": {
             "id": "@:common.id",

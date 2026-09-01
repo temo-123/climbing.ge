@@ -1830,6 +1830,7 @@
                 "subtitle_edit": "Edit article global information.",
                 "publish": "Publish",
                 "not_public": "Not public",
+                "show_donation_label": "Show donation modal on this article's page",
                 "regions_label": "Regions",
                 "select_region": "Select region",
                 "without_region": "Without region",
@@ -1856,7 +1857,8 @@
             "ice_routes_table": "Ice routes",
             "mount_masives_table": "Mount Masives",
             "filter_by_mount_masive": "Filter by Mount Masive",
-            "col_sectors": "@:common.sectors"
+            "col_sectors": "@:common.sectors",
+            "donation_col": "Donation"
         },
         "common": {
             "id": "@:common.id",

@@ -8,6 +8,7 @@
                         <p class="lead">{{ $t('admin.articles.global_form.subtitle') }}</p>
                     </div>
                 </div>
+                
                 <form method="POST" @submit.prevent="add_article">
                     <!-- <div class="form-group clearfix row">
                         <label for="published" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.publish') }} </label>
@@ -19,10 +20,17 @@
                         </div>
                     </div> -->
                     
-                    <published_item 
+                    <published_item
                         :published_prop = data.published
-                        @item_data="data.published = $event" 
+                        @item_data="data.published = $event"
                     />
+
+                    <div class="form-group clearfix row">
+                        <label for="show_donation" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.show_donation_label') }} </label>
+                        <div class="col-md-10">
+                            <input type="checkbox" id="show_donation" name="show_donation" v-model="data.show_donation" :true-value="1" :false-value="0">
+                        </div>
+                    </div>
 
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
                         <label for="region" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.regions_label') }} </label>
@@ -151,6 +159,7 @@
                     category: this.$route.params.article_category,
                     // us_title_for_url_title: "",
                     published: 0,
+                    show_donation: 0,
                     // completed: "",
                     // map: "",
                     // weather: "",

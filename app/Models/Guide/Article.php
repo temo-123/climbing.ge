@@ -30,6 +30,7 @@ class Article extends Model
 
     protected $fillable = [
 	    'published',
+		'show_donation',
 		'url_title',
 		'map',
 		'weather',

@@ -4,12 +4,12 @@
             <articlePreloader />
         </span>
         <span v-else-if="!article_loading">
-            <articlePage 
-                :article_prop="indoors" 
+            <articlePage
+                :article_prop="indoors"
                 ref="article_page"
             />
 
-            <metaData 
+            <metaData
                 :title = "indoors.locale_data.title"
                 :description = "indoors.locale_data.description"
                 :image = "'/public/images/indoor_img/'+indoors.image"
@@ -33,7 +33,7 @@
         components: {
             articlePreloader,
             articlePage,
-            metaData,
+            metaData
         },
         mounted() {
             this.get_indoors()

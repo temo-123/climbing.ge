@@ -95,6 +95,13 @@ export default {
         // this.get_spot_rocks_images();
     },
     methods: {
+        spot_gallery_index(spot_image) {
+            if (!spot_image || !spot_image.image) return 0;
+            const src = '/public/images/spot_rocks_img/' + spot_image.image;
+            const idx = this.spot_gallery.findIndex(item => item.src === src);
+            return idx >= 0 ? idx : 0;
+        },
+
         update(id){
             this.id = id
             this.get_outdoor_routes();

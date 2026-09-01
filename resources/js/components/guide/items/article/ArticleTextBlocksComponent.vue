@@ -72,14 +72,17 @@
 
         </div>
 
+        <Donation v-if="!!article_prop.global_data.show_donation" position="left" :autoShow="false"/>
+
         <LocalBisnesListComponentComponent />
-        
+
     </div>
 </template>
 
 <script>
     import LocalBisnesListComponentComponent from '../LocaleBisnesListComponent.vue';
     import generalInfo from './GeneralInfoComponent'
+    import Donation from '../DonationComponent.vue'
 
     export default {
         props: [
@@ -93,6 +96,7 @@
         components: {
             generalInfo,
             LocalBisnesListComponentComponent,
+            Donation,
         },
         mounted() {
             // this.get_local_bisnes_for_article()

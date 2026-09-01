@@ -6,7 +6,7 @@
         <span v-else-if="!article_loading">
             <articlPage :article_prop="news" />
 
-            <metaData 
+            <metaData
                 :title = "news.locale_data.title"
                 :description = "news.locale_data.description"
                 :image = "'/public/images/news_img/'+news.image"

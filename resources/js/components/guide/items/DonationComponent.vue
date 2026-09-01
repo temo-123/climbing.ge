@@ -1,10 +1,10 @@
 <template>
     <div v-if="donationEnabled" :class="['donation-section', 'my-4', 'donation-' + position]">
 
-        <!-- <h4 class="modal-title">
+        <h2 class="modal-title">
             <i class="fa fa-heart text-danger mr-2"></i>
             {{ $t('guide.donation.support_title') }}
-        </h4> -->
+        </h2>
 
         <button
             @click="showDonationModal"
@@ -45,6 +45,10 @@
                     return ['left', 'right', 'center'].indexOf(value) !== -1
                 }
             },
+            autoShow: {
+                type: Boolean,
+                default: false,
+            },
         },
 
         data: function () {
@@ -55,8 +59,21 @@
 
         mounted() {
             axios.get('payment/status')
-                .then(r => { this.donationEnabled = !!r.data.donation_enabled })
+                .then(r => {
+                    this.donationEnabled = !!r.data.donation_enabled
+                    if (this.donationEnabled && this.autoShow) {
+                        this.$nextTick(() => this.showDonationModal());
+                    }
+                })
                 .catch(() => { this.donationEnabled = false })
+        },
+
+        watch: {
+            autoShow(newVal) {
+                if (newVal && this.donationEnabled) {
+                    this.$nextTick(() => this.showDonationModal());
+                }
+            },
         },
 
         methods: {
