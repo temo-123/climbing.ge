@@ -9,6 +9,7 @@ use App\Models\Shop\Product_option;
 use App\Services\TbcPaymentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class OrderPaymentController extends Controller
@@ -100,9 +101,10 @@ class OrderPaymentController extends Controller
             $order->status               = 'paid';
             $order->confirm              = 1;
             $order->status_updating_data = now();
-        } elseif (TbcPaymentService::isFailed($tbcStatus)) {
+        } elseif (TbcPaymentService::isFailed($tbcStatus) && $order->status !== 'payment_failed') {
             $order->status               = 'payment_failed';
             $order->status_updating_data = now();
+            $this->restockOrder($order);
         }
 
         $order->save();
@@ -136,9 +138,10 @@ class OrderPaymentController extends Controller
                 $order->status               = 'paid';
                 $order->confirm              = 1;
                 $order->status_updating_data = now();
-            } elseif (TbcPaymentService::isFailed($tbcStatus)) {
+            } elseif (TbcPaymentService::isFailed($tbcStatus) && $order->status !== 'payment_failed') {
                 $order->status               = 'payment_failed';
                 $order->status_updating_data = now();
+                $this->restockOrder($order);
             }
             $order->save();
         }
@@ -154,6 +157,11 @@ class OrderPaymentController extends Controller
     {
         $items = Order_products::where('order_id', $order->id)->get();
         $total = $items->sum(function ($item) {
+            // Use the price snapshotted at order creation — never the option's
+            // current price, which may have changed since checkout.
+            if ($item->total_price !== null) {
+                return floatval($item->total_price);
+            }
             $option = Product_option::find($item->product_option_id);
             return $option ? floatval($option->price) * $item->quantity : 0;
         });
@@ -167,5 +175,25 @@ class OrderPaymentController extends Controller
         }
 
         return round($total, 2);
+    }
+
+    // Restores the general-warehouse stock that create_order() reserved for
+    // this order — called when an online payment fails or is abandoned, so
+    // inventory isn't lost forever for an order that was never actually paid for.
+    private function restockOrder(Order $order): void
+    {
+        $items = Order_products::where('order_id', $order->id)->get();
+        foreach ($items as $item) {
+            $option = Product_option::with('warehouse')->find($item->product_option_id);
+            if (!$option) continue;
+
+            $warehouse = $option->warehouse->where('general', '=', 1)->first();
+            if (!$warehouse) continue;
+
+            DB::table('warehouses_product_options')
+                ->where('warehouse_id', $warehouse->id)
+                ->where('product_option_id', $option->id)
+                ->increment('quantity', $item->quantity);
+        }
     }
 }

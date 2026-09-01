@@ -368,10 +368,11 @@ export default {
             else if(this.selected_payment_type && this.selected_adreses_id){
                 this.$router.push({
                                     name: "orderDecloration",
-                                    params: { 
+                                    params: {
                                         payment: this.selected_payment_type,
                                         adres: this.selected_adreses_id,
                                         discount: this.sale_code_discount,
+                                        sale_code: this.sale_code_discount > 0 ? this.enterd_sale_code : '',
                                     }
                 });
             }

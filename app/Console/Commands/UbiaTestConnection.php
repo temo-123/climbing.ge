@@ -4,17 +4,16 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Str;
 
 /**
  * One-off diagnostic for the A8/ucon trail camera.
  *
- * ucon is a white-labeled app on UBIA's shared cloud backend
- * (portal.ubianet.com) — the same backend also serves "ubox", "ybox", etc.
- * This command logs in with the account's own ucon credentials, lists the
- * paired devices, and fetches recent cloud-synced photos, purely to confirm
- * the protocol (reverse-engineered from https://github.com/JEMcats/ubox_camera_api)
- * actually works against this account before any pipeline is built on it.
+ * ucon is a white-labeled app on UBIA's cloud backend. This account's data
+ * lives on the web.ubianet.com regional deployment (not portal.ubianet.com,
+ * which the public ubox_camera_api reference project targets and which
+ * rejects this account outright). Request/response shapes below were
+ * confirmed against a real HAR capture of https://web.ubianet.com/sign/sign-in
+ * on 2026-09-01 — not guessed.
  *
  * Not wired into the app anywhere else. Delete once validated.
  */
@@ -23,71 +22,53 @@ class UbiaTestConnection extends Command
     protected $signature   = 'app:ubia-test-connection';
     protected $description = 'Diagnostic: log in to the UBIA/ucon cloud backend and list recent camera photos';
 
-    private const BASE_URL = 'https://portal.ubianet.com';
+    private const BASE_URL = 'https://web.ubianet.com';
 
     public function handle(): int
     {
-        $email    = env('UBIA_ACCOUNT_EMAIL');
-        $password = env('UBIA_ACCOUNT_PASSWORD');
+        $email    = trim((string) env('UBIA_ACCOUNT_EMAIL'));
+        $password = trim((string) env('UBIA_ACCOUNT_PASSWORD'));
 
         if (!$email || !$password) {
             $this->error('Set UBIA_ACCOUNT_EMAIL and UBIA_ACCOUNT_PASSWORD in .env first.');
             return self::FAILURE;
         }
 
+        $this->line("Using email: [{$email}]  password length: " . strlen($password));
         $this->info('Logging in...');
 
+        // Real captured body has exactly these 3 fields — no lang/device_token/device_type.
         $loginResponse = Http::withHeaders([
-            'accept'       => '*/*',
-            'content-type' => 'application/json',
+            'accept'                => 'application/json, text/plain, */*',
+            'content-type'          => 'application/json',
+            'x-ubiaapi-callcontext' => 'source=web&app=ubox&ver=0.0.1&uuid=&os=Linux&osver=x86_64&lang=en-US',
         ])->post(self::BASE_URL . '/api/v3/login', [
-            'account'      => $email,
-            'password'     => $this->hashPassword($password),
-            'lang'         => 'en',
-            'app'          => 'ucon',
-            'device_token' => Str::random(30),
-            'device_type'  => 2,
+            'app'      => 'UBox',
+            'account'  => $email,
+            'password' => $this->hashPassword($password),
         ]);
 
         $loginData = $loginResponse->json();
+        $this->line('login -> code=' . ($loginData['code'] ?? 'null') . ' msg=' . ($loginData['msg'] ?? '') . '  raw=' . json_encode($loginData));
 
         if (($loginData['code'] ?? null) !== 0) {
-            $this->error('Login failed (app=ucon): ' . ($loginData['msg'] ?? $loginResponse->status()));
-            $this->line('Retrying with app=ubox in case the "app" field is validated against a fixed enum...');
-
-            $loginResponse = Http::withHeaders([
-                'accept'       => '*/*',
-                'content-type' => 'application/json',
-            ])->post(self::BASE_URL . '/api/v3/login', [
-                'account'      => $email,
-                'password'     => $this->hashPassword($password),
-                'lang'         => 'en',
-                'app'          => 'ubox',
-                'device_token' => Str::random(30),
-                'device_type'  => 2,
-            ]);
-
-            $loginData = $loginResponse->json();
-
-            if (($loginData['code'] ?? null) !== 0) {
-                $this->error('Login failed (app=ubox too): ' . ($loginData['msg'] ?? $loginResponse->status()));
-                $this->line('Raw response: ' . json_encode($loginData));
-                return self::FAILURE;
-            }
+            $this->error('Login failed — see raw response above.');
+            return self::FAILURE;
         }
 
         $token = $loginData['data']['Token'] ?? null;
+        $uuid  = $loginData['data']['uuid'] ?? '';
 
         if (!$token) {
-            $this->error('Login "succeeded" but no Token in response — dumping raw response:');
-            $this->line(json_encode($loginData));
+            $this->error('Login "succeeded" but no Token in response.');
             return self::FAILURE;
         }
 
         $this->info('Login OK. Fetching device list...');
 
-        $devicesResponse = $this->ubiaPost('/api/v2/user/device_list', [], $token);
+        $devicesResponse = $this->ubiaPost('/api/user/qry/device/list/v2', [], $token, $uuid);
         $devices         = $devicesResponse['data']['items'] ?? [];
+        $infos           = $devicesResponse['data']['infos'] ?? [];
 
         if (empty($devices)) {
             $this->warn('Logged in, but device_list returned no devices. Raw response:');
@@ -98,56 +79,58 @@ class UbiaTestConnection extends Command
         foreach ($devices as $device) {
             $uid  = $device['device_uid'] ?? null;
             $name = $device['device_name'] ?? '(unnamed)';
-            $this->info("Device: {$name}  [uid: {$uid}]");
+            $info = collect($infos)->firstWhere('device_uid', $uid);
+            $this->info("Device: {$name}  [uid: {$uid}]  has_cloud_storage=" . json_encode($info['has_cloud_storage'] ?? null) . ' is_cloud_storage_opened=' . json_encode($info['is_cloud_storage_opened'] ?? null));
 
             if (!$uid) {
                 continue;
             }
 
+            // NOT confirmed against a real capture yet (Video Replay wasn't
+            // clicked during the HAR capture) — best guess from the mobile
+            // SDK's documented cloud_list shape. Expect this to need fixing.
             $cloudList = $this->ubiaPost('/api/user/cloud_list', [
                 'summer_time'  => 0,
                 'time_revised' => true,
                 'device_uid'   => [$uid],
                 'time_diff'    => 0,
                 'page'         => 1,
-                'timestamp'    => [now()->subHours(48)->timestamp, now()->timestamp],
-            ], $token);
+                'timestamp'    => [now()->subDays(7)->timestamp, now()->timestamp],
+            ], $token, $uuid);
 
-            $items = $cloudList['data']['list'] ?? [];
-            $this->line('  Cloud photos in last 48h: ' . count($items));
-
-            foreach (array_slice($items, 0, 3) as $item) {
-                $when = isset($item['event_time']) ? date('Y-m-d H:i:s', $item['event_time']) : '?';
-                $this->line("   - {$when}  {$item['cloud_image_url']}");
-            }
+            $this->line('  cloud_list raw: ' . json_encode($cloudList));
         }
 
         return self::SUCCESS;
     }
 
-    private function ubiaPost(string $path, array $body, string $token): array
+    private function ubiaPost(string $path, array $body, string $token, string $uuid): array
     {
         $response = Http::withHeaders([
-            'accept'                  => '*/*',
-            'content-type'            => 'application/json',
-            'x-ubia-auth-usertoken'   => $token,
-        ])->post(self::BASE_URL . $path, $body + ['token' => $token]);
+            'accept'                => 'application/json, text/plain, */*',
+            'content-type'          => 'application/json',
+            'x-ubia-auth-usertoken' => $token,
+            'x-ubiaapi-callcontext' => "source=web&app=ubox&ver=0.0.1&uuid={$uuid}&os=Linux&osver=x86_64&lang=en-US",
+        ])->post(self::BASE_URL . $path, $body);
 
         return $response->json() ?? [];
     }
 
     /**
      * UBIA's login "hash": HMAC-SHA1 with an empty key over the plaintext
-     * password, base64-encoded, with the final character replaced by a comma.
-     * Not real security — just what the client is expected to send instead
-     * of the plaintext password. Reverse-engineered from ubox_camera_api's
-     * hash_password.js.
+     * password, base64url-encoded (- and _ instead of + and /), with the
+     * final character replaced by a comma. Not real security — just what
+     * the client sends instead of the plaintext password. Confirmed against
+     * a real captured request (the earlier standard-base64 version produced
+     * a near-identical hash that differed only in +/- at one position, which
+     * is what silently broke every login attempt before this).
      */
     private function hashPassword(string $password): string
     {
-        $raw    = hash_hmac('sha1', $password, '', true);
-        $base64 = base64_encode($raw);
+        $raw     = hash_hmac('sha1', $password, '', true);
+        $base64  = base64_encode($raw);
+        $urlSafe = strtr($base64, '+/', '-_');
 
-        return substr($base64, 0, -1) . ',';
+        return substr($urlSafe, 0, -1) . ',';
     }
 }

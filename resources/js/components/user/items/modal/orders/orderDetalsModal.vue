@@ -155,7 +155,7 @@
                     </div>
                     <div class="col-md-2">
                         <label class="text-muted d-block mb-1" v-if="index === 0">{{ $t('common.price') }}</label>
-                        <input type="text" class="form-control" :value="(item.option ? item.option.price * item.quantity : 0) + ' ₾'" readonly>
+                        <input type="text" class="form-control" :value="item_total(item) + ' ₾'" readonly>
                     </div>
                 </div>
             </div>
@@ -215,10 +215,16 @@ export default {
                 })
                 .catch(error => console.log(error))
         },
+        item_total(item) {
+            if (item.total_price !== undefined && item.total_price !== null) {
+                return parseFloat(item.total_price).toFixed(2)
+            }
+            return (item.option ? item.option.price * item.quantity : 0).toFixed(2)
+        },
         calculate_total() {
             this.total_price = this.order_product_items.reduce((sum, item) => {
-                return sum + (item.option ? item.option.price * item.quantity : 0)
-            }, 0)
+                return sum + parseFloat(this.item_total(item))
+            }, 0).toFixed(2)
         },
     }
 }

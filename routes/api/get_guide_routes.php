@@ -102,6 +102,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
     Route::controller(LiveCameraController::class)->prefix('get_live_camera')->group( function() {
         Route::get('/get_live_cameras', 'get_live_cameras');
         Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
+        Route::get('/get_camera_for_article/{article_id}', 'get_camera_for_article');
+        Route::get('/get_camera_timeline/{id}', 'get_camera_timeline');
     });
 
     Route::controller(LocalBisnesController::class)->prefix('get_bisnes')->group( function() {

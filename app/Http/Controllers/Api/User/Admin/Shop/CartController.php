@@ -38,6 +38,7 @@ class CartController extends Controller
                 "product"       => $product,
                 "option"        => $option,
                 "stock_quantity"=> ProductService::get_option_stock_quantity($option),
+                "is_out_of_stock" => ProductService::is_option_out_of_stock($option, $product->sale_type ?? null),
                 "quantity"      => $cart_item->quantity,
                 "product_image" => $product_image,
             ];
@@ -46,36 +47,54 @@ class CartController extends Controller
         return $products;
     }
 
-    public function update_quantity(Request $request)
+    public function update_quantity(Request $request, $item_id)
     {
-        $cart_item = Cart::where('id', '=', $request->item_id)->first();
-        
-        $cart_item['quantity'] = $request->quantity;
-        
-        $cart_item -> save();
+        $cart_item = Cart::where('id', $item_id)->where('user_id', $request->user()->id)->first();
+        if (!$cart_item) {
+            return response()->json(['error' => 'Cart item not found'], 404);
+        }
+
+        $requested_quantity = (int) $request->quantity;
+        if ($requested_quantity < 1) {
+            return response()->json(['error' => 'Invalid quantity'], 400);
+        }
+
+        $option = Product_option::with(['warehouse', 'product'])->find($cart_item->option_id);
+        if ($option) {
+            $stock = ProductService::get_option_stock_quantity($option);
+            $is_unlimited_made_to_order = $stock <= 0
+                && optional($option->product)->sale_type === 'produced_by_order';
+
+            if (!$is_unlimited_made_to_order && $requested_quantity > $stock) {
+                return response()->json([
+                    'error' => 'Not enough stock available',
+                    'available' => $stock,
+                ], 400);
+            }
+        }
+
+        $cart_item->quantity = $requested_quantity;
+        $cart_item->save();
+
+        return response()->json(['status' => 'ok']);
     }
 
-    public function add_to_favorite(Request $request)
+    public function add_to_favorite(Request $request, $product_id)
     {
         $userId = $request->user()->id;
 
-        if (Favorite_product::where('user_id', $userId)->where('product_id', $request->product_id)->count() > 0) {
-            $editing_faworit = Favorite_product::where('user_id', $userId)->where('product_id', $request->product_id)->first();
-            $editing_faworit['user_id'] = $userId;
-            $editing_faworit['product_id'] = $request->product_id;
-            $editing_faworit->save();
-        } else {
+        if (!Favorite_product::where('user_id', $userId)->where('product_id', $product_id)->exists()) {
             $faworit = new Favorite_product();
             $faworit['user_id'] = $userId;
-            $faworit['product_id'] = $request->product_id;
+            $faworit['product_id'] = $product_id;
             $faworit->save();
         }
     }
 
-    public function del_from_favorite(Request $request)
+    public function del_from_favorite(Request $request, $product_id)
     {
         $product = Favorite_product::where('user_id', $request->user()->id)
-            ->where('product_id', $request->product_id)
+            ->where('product_id', $product_id)
             ->first();
 
         if ($product) {
@@ -83,62 +102,9 @@ class CartController extends Controller
         }
     }
     
-    public function create()
-    {
-        $request->user()->authorizeRoles(['user', 'manager', 'admin','ka_manager','us_manager','seller']);
-
-        $userId = $request->user()->id;
-
-        $option = Product_option::find($request->id);
-        if (!$option || $option->quantity < 1) {
-            return response()->json(['error' => 'Out of stock'], 400);
-        }
-
-        $old_cart_products = Cart::where('user_id', strip_tags($userId))->get();
-        $old_cart_products_count = $old_cart_products->count();
-        $is_update_cart_item = true;
-
-        if ($old_cart_products_count > 0) {
-            foreach ($old_cart_products as $old_cart_product) {
-                if ($old_cart_product->option_id == $request->id) {
-                    $editing_cart_item = Cart::where('user_id', strip_tags($userId))->where('option_id', strip_tags($request->id))->first();
-                    $new_quantity = $old_cart_product->quantity + 1;
-
-                    if ($new_quantity > $option->quantity) {
-                        return response()->json(['error' => 'Not enough stock available'], 400);
-                    }
-
-                    $editing_cart_item['quantity'] = $new_quantity;
-                    $editing_cart_item->update();
-                    $is_update_cart_item = false;
-                }
-            }
-            if ($is_update_cart_item) {
-                $cart = new Cart();
-                $cart['option_id'] = $request->id;
-                $cart['user_id'] = $userId;
-                $cart['quantity'] = 1;
-                $cart->save();
-            }
-        } else {
-            $cart = new Cart();
-            $cart['option_id'] = $request->id;
-            $cart['user_id'] = $userId;
-            $cart['quantity'] = 1;
-            $cart->save();
-        }
-    }
-
-    public function edit($id)
-    {        
-        $cart_item = Cart::find($request->id);
-        $cart_item->quantity = $request->quantity;
-        $cart_item->update();
-    }
-
     public function update(Request $request, $id)
     {
-        $option_item = Product_option::with('warehouse')->where('id', '=', $request->modification_id)->first();
+        $option_item = Product_option::with(['warehouse', 'product'])->where('id', '=', $request->modification_id)->first();
         if (!$option_item) {
             return response()->json(['error' => 'Product option not found'], 404);
         }
@@ -146,10 +112,17 @@ class CartController extends Controller
         $stock = ProductService::get_option_stock_quantity($option_item);
         $requested_quantity = (int) $request->quantity;
 
+        // Made-to-order products with no general-warehouse stock are produced
+        // on demand, so the stock cap doesn't apply — if the warehouse DOES
+        // carry quantity, they're bought like a normal online_order option
+        // and the usual stock cap below still applies.
+        $is_unlimited_made_to_order = $stock <= 0
+            && optional($option_item->product)->sale_type === 'produced_by_order';
+
         $cart_item = Cart::where('user_id', '=', $request->user()->id)->where('option_id', '=', $request->modification_id)->first();
         if ($cart_item) {
             $new_total = $cart_item->quantity + $requested_quantity;
-            if ($new_total > $stock) {
+            if (!$is_unlimited_made_to_order && $new_total > $stock) {
                 return response()->json([
                     'error' => 'Not enough stock available',
                     'available' => $stock,
@@ -158,7 +131,7 @@ class CartController extends Controller
             $cart_item->quantity = $new_total;
             $cart_item->save();
         } else {
-            if ($requested_quantity > $stock) {
+            if (!$is_unlimited_made_to_order && $requested_quantity > $stock) {
                 return response()->json([
                     'error' => 'Not enough stock available',
                     'available' => $stock,

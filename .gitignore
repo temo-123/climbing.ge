@@ -50,6 +50,7 @@
 /public/images/summit_ascents_img
 /public/images/training_img
 /public/images/training_step_img
+/public/images/live_cameras_img
 
 # Local training-image prep kit (prompts only, no real assets — not for the repo)
 /docs/BACKEND/training-images/

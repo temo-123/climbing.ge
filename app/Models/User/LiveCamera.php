@@ -10,7 +10,11 @@ class LiveCamera extends Model
     use HasFactory;
 
     protected $fillable = [
-        // Add all column names from your live_cameras table, for example:
-        'name', 'link', 'published', 'article_id'
+        'name', 'link', 'published', 'article_id', 'source', 'ubia_device_uid'
     ];
+
+    public function photos()
+    {
+        return $this->hasMany(LiveCameraPhoto::class)->orderByDesc('created_at');
+    }
 }

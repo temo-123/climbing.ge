@@ -293,6 +293,7 @@
                     payment_tupe: this.selected_payment,
                     adres: this.$route.params.adres,
                     shiping: this.shiping,
+                    sale_code: this.$route.params.sale_code || null,
                 }).then(response => {
                     const orderId = response.data && response.data.order_id
                     if (this.selected_payment === 'online payment' && orderId) {

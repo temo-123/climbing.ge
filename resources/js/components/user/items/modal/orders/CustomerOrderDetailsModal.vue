@@ -193,6 +193,9 @@ export default {
                 .finally(() => this.loading = false)
         },
         item_total(item) {
+            if (item.total_price !== undefined && item.total_price !== null) {
+                return parseFloat(item.total_price).toFixed(2)
+            }
             const price = item.option && item.option.price ? parseFloat(item.option.price) : 0
             return (price * (item.quantity || 1)).toFixed(2)
         },

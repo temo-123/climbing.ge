@@ -256,10 +256,15 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
     Route::controller(LiveCameraController::class)->prefix('set_live_camera')->group( function() {
         // Route::get('/get_live_cameras', 'get_live_cameras');
         Route::get('/get_editing_live_camera/{id}', 'get_editing_live_camera');
+        Route::get('/get_editing_live_camera_photos/{live_camera_id}', 'get_editing_live_camera_photos');
         // Route::get('/get_activ_live_camera/{id}', 'get_activ_live_camera');
         Route::post('/add_live_camera', 'add_live_camera');
         Route::post('/edit_live_camera/{id}', 'edit_live_camera');
         Route::delete('/del_live_camera/{id}', 'del_live_camera');
+        Route::post('/preview_ubia_camera', 'preview_ubia_camera');
+        Route::post('/get_camera_gallery', 'get_camera_gallery');
+        Route::post('/upload_live_camera_photos', 'upload_live_camera_photos');
+        Route::delete('/delete_live_camera_photo/{id}', 'delete_live_camera_photo');
         Route::post('/bulk_delete', 'bulk_delete');
         Route::post('/bulk_publish', 'bulk_publish');
         Route::post('/bulk_unpublish', 'bulk_unpublish');

@@ -67,8 +67,22 @@
   </Teleport>
 </template>
 
+<script>
+  // Module scope (shared across every <StackModal> instance/import) — this is
+  // deliberately OUTSIDE <script setup>, which runs fresh per component
+  // instance and would otherwise give each open modal its own private stack,
+  // making them unable to see each other and stack their z-index correctly.
+  // That's what broke nested modals (e.g. an upload/crop popup opened from
+  // inside an already-open modal): with a per-instance stack, two modals
+  // could get the same z-index, so a click meant for the inner one could
+  // land on the outer modal's overlay and close it instead.
+  import { reactive } from 'vue'
+  const modalStack = reactive(new Set())
+  const zIndexCounter = 9999
+</script>
+
 <script setup>
-  import { ref, onMounted, onUnmounted, nextTick, computed, reactive, watch, useSlots } from 'vue'
+  import { ref, onMounted, onUnmounted, nextTick, computed, watch, useSlots } from 'vue'
   import { useI18n } from 'vue-i18n'
 
   defineOptions({ inheritAttrs: false })
@@ -109,9 +123,6 @@
   const isUserPage = window.location.hostname === process.env.MIX_USER_PAGE_URL
 
   const isVisible = computed(() => props.modelValue || props.show)
-
-  const modalStack = reactive(new Set())
-  let zIndexCounter = 9999
 
   const computedZIndex = computed(() => {
     if (isVisible.value && !modalStack.has(props)) {

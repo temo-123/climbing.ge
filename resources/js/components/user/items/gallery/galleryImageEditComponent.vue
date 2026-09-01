@@ -17,7 +17,7 @@
                                  class="gallery-card-img">
                         </div>
                         <div class="card-footer p-1">
-                            <button class="btn btn-danger btn-sm w-100" @click="del_image_from_db(old_image.id)">
+                            <button type="button" class="btn btn-danger btn-sm w-100" @click="del_image_from_db(old_image.id)">
                                 {{ $t('common.delete') }}
                             </button>
                         </div>
@@ -29,18 +29,18 @@
 
         <!-- Toolbar for new images -->
         <div class="d-flex flex-wrap gap-2 mb-3">
-            <button class="btn btn-primary btn-sm" @click="triggerFileInput">
+            <button type="button" class="btn btn-primary btn-sm" @click="triggerFileInput">
                 {{ $t('admin.gallery_manager.add_images_btn') }}
             </button>
             <template v-if="hasImageFiles">
-                <button class="btn btn-outline-secondary btn-sm" @click="sortImages('name')">
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="sortImages('name')">
                     {{ $t('admin.gallery_manager.sort_by_name_btn') }}
                 </button>
-                <button class="btn btn-outline-secondary btn-sm" @click="sortImages('size')">
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="sortImages('size')">
                     {{ $t('admin.gallery_manager.sort_by_size_btn') }}
                 </button>
             </template>
-            <button v-if="selectedImages.length > 0" class="btn btn-danger btn-sm" @click="bulkDelete">
+            <button v-if="selectedImages.length > 0" type="button" class="btn btn-danger btn-sm" @click="bulkDelete">
                 {{ $t('admin.gallery_manager.delete_selected_count_btn', { count: selectedImages.length }) }}
             </button>
             <span v-if="isCompressing" class="badge bg-warning align-self-center">
@@ -128,7 +128,7 @@
 
                     <!-- Card footer: delete -->
                     <div class="card-footer p-1">
-                        <button class="btn btn-danger btn-sm w-100" @click="del_image(image.id)">
+                        <button type="button" class="btn btn-danger btn-sm w-100" @click="del_image(image.id)">
                             {{ $t('common.delete') }}
                         </button>
                     </div>

@@ -93,9 +93,10 @@ Route::group(['namespace'=>'Api\Shop'], function() {
 
         Route::get('/get_local_service_in_page/{lang}/{url_title}', 'get_local_service_in_page');
     });
-    Route::controller(CartController::class)->group( function() {
-        Route::apiResource('/cart', 'CartController');
-    });
+    // Cart/favorite routes for this domain live in admin/set_shop_routes.php
+    // (Api\User\Admin\Shop\CartController) — that file loads after this one,
+    // so registering the same '/cart' apiResource here would only ever be
+    // dead, silently-shadowed routes.
 
     Route::controller(SaleCodeController::class)->prefix('get_sale_code')->group( function() {
         Route::get('/get_all_sale_code', 'get_all_sale_code');

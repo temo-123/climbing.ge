@@ -39,8 +39,10 @@
 
                 </div>
 
-                <routesTab 
-                    :article_id_prop="this.article_prop.global_data.id" 
+                <liveCameraTimeline :article_id="this.article_prop.global_data.id" />
+
+                <routesTab
+                    :article_id_prop="this.article_prop.global_data.id"
                     ref="routes_tab"
                 />
                 
@@ -80,6 +82,7 @@
     import articleTextBlocks from '../article/ArticleTextBlocksComponent'
 
     import routeQuanDiogram from '../climbing_routes/RoutesQuantityComponent.vue'
+    import liveCameraTimeline from '../live_camera/LiveCameraTimelineComponent'
 
     import generalInfo from '../article/GeneralInfoComponent'
 
@@ -96,7 +99,8 @@
             breadcrumb,
             routeQuanDiogram,
             articleTextBlocks,
-            generalInfo
+            generalInfo,
+            liveCameraTimeline,
         },
 
         data: function () {
