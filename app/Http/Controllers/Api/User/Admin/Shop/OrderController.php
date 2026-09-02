@@ -22,6 +22,7 @@ use App\Models\Shop\Sale_code;
 
 use App\Services\ProductService;
 use App\Services\PermissionService;
+use App\Services\QuickShipperService;
 
 use App\Notifications\order\OrderConfirm;
 use App\Notifications\order\AdminOrderDeclorationNotification;
@@ -443,7 +444,30 @@ class OrderController extends Controller
             } catch (\Exception $e) {}
         }
 
-        return response()->json(['message' => 'Status updated', 'status' => $order->status]);
+        // "Ready to ship" auto-sends the order to QuickShipper for delivery — only once per
+        // order (a second "Ready to ship" pass, e.g. after editing the address, doesn't
+        // re-send). If QuickShipper isn't configured yet, or the call fails, the status
+        // change itself still succeeds — 'quickshipper' in the response reports what happened.
+        $quickshipper_result = null;
+        if ($request->status === 'Ready to ship' && !$order->quickshipper_shipment_id) {
+            $quickShipper = new QuickShipperService();
+            if ($quickShipper->isConfigured()) {
+                try {
+                    $quickShipper->placeOrderAndPersist($order);
+                    $quickshipper_result = ['success' => true];
+                } catch (\RuntimeException $e) {
+                    $quickshipper_result = ['success' => false, 'message' => $e->getMessage()];
+                }
+            } else {
+                $quickshipper_result = ['success' => false, 'message' => 'QuickShipper is not configured'];
+            }
+        }
+
+        return response()->json([
+            'message' => 'Status updated',
+            'status' => $order->status,
+            'quickshipper' => $quickshipper_result,
+        ]);
     }
 
     public function order_status_notification($status, $data_time, $user_id, $order_id)

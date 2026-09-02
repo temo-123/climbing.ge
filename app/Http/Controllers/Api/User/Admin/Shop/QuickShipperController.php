@@ -11,7 +11,7 @@ use App\Services\PermissionService;
 
 class QuickShipperController extends Controller
 {
-    // Quote rates for an order's address + products against QuickShipper. Payload shape is a placeholder.
+    // Quote the delivery fee for an order's destination against QuickShipper's pickup point.
     public function get_rates(Request $request, QuickShipperService $quickShipper)
     {
         if ($auth = PermissionService::authorize('quick_shipper', 'show')) return $auth;
@@ -21,24 +21,24 @@ class QuickShipperController extends Controller
         ]);
 
         $order = Order::with('userAdres')->findOrFail($request->order_id);
+        $pickup = config('services.quickshipper.pickup', []);
 
         try {
-            $rates = $quickShipper->getRates([
-                'destination' => [
-                    'city'    => optional($order->userAdres)->city,
-                    'street'  => optional($order->userAdres)->strit,
-                    'zip'     => optional($order->userAdres)->zip_code,
-                ],
-                'order_id' => $order->id,
+            $fees = $quickShipper->getFees([
+                'FromCityName' => $pickup['city'] ?? '',
+                'FromStreetName' => $pickup['address'] ?? '',
+                'ToCityName' => optional($order->userAdres)->city,
+                'ToStreetName' => optional($order->userAdres)->strit,
             ]);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 502);
         }
 
-        return response()->json($rates);
+        return response()->json($fees);
     }
 
-    // Create a shipment for an order and persist QuickShipper's shipment id/tracking/label on it
+    // Manually place a QuickShipper order for a shop order (normally done automatically —
+    // see OrderController::edit_order_status() — this is for retrying a failed auto-send).
     public function create_shipment(Request $request, QuickShipperService $quickShipper)
     {
         $auth = PermissionService::authorize('quick_shipper', 'add');
@@ -46,36 +46,20 @@ class QuickShipperController extends Controller
 
         $request->validate([
             'order_id' => 'required|integer|exists:orders,id',
-            'rate_id'  => 'nullable|string',
         ]);
 
-        $order = Order::with('userAdres')->findOrFail($request->order_id);
+        $order = Order::findOrFail($request->order_id);
 
         try {
-            $shipment = $quickShipper->createShipment([
-                'order_id' => $order->id,
-                'rate_id'  => $request->rate_id,
-                'destination' => [
-                    'city'   => optional($order->userAdres)->city,
-                    'street' => optional($order->userAdres)->strit,
-                    'zip'    => optional($order->userAdres)->zip_code,
-                ],
-            ]);
+            $shipment = $quickShipper->placeOrderAndPersist($order);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 502);
         }
 
-        $order->update([
-            'quickshipper_shipment_id'      => $shipment['shipment_id'] ?? null,
-            'quickshipper_tracking_number'  => $shipment['tracking_number'] ?? null,
-            'quickshipper_label_url'        => $shipment['label_url'] ?? null,
-            'quickshipper_status'           => $shipment['status'] ?? 'created',
-        ]);
-
         return response()->json($shipment);
     }
 
-    // Refresh a shipment's status from QuickShipper
+    // Refresh an order's status from QuickShipper
     public function get_shipment_status(Request $request, QuickShipperService $quickShipper)
     {
         if ($auth = PermissionService::authorize('quick_shipper', 'show')) return $auth;
@@ -91,15 +75,15 @@ class QuickShipperController extends Controller
         }
 
         try {
-            $shipment = $quickShipper->getShipment($order->quickshipper_shipment_id);
+            $info = $quickShipper->getOrderInfo((int) $order->quickshipper_shipment_id);
         } catch (\RuntimeException $e) {
             return response()->json(['message' => $e->getMessage()], 502);
         }
 
-        if (isset($shipment['status'])) {
-            $order->update(['quickshipper_status' => $shipment['status']]);
+        if (isset($info['order']['status'])) {
+            $order->update(['quickshipper_status' => $info['order']['status']]);
         }
 
-        return response()->json($shipment);
+        return response()->json($info);
     }
 }

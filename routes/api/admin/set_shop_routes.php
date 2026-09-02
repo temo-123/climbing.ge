@@ -312,7 +312,9 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
     });
 
     /*
-    *   QuickShipper delivery integration (test/scaffold — 'quick_shipper' permission)
+    *   QuickShipper delivery integration — manual admin actions ('quick_shipper' permission).
+    *   The automatic send-on-"Ready to ship" trigger lives in OrderController::edit_order_status()
+    *   instead, since it fires from the regular order-status endpoint, not this one.
     */
     Route::controller(QuickShipperController::class)->prefix('set_quick_shipper')->group( function() {
         Route::post('/get_rates', 'get_rates');

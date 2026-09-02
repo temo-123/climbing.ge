@@ -85,10 +85,25 @@ return [
         ],
     ],
 
-    // Placeholder shape (base_url + single API key header) — confirm against QuickShipper's real docs.
+    // Verified against QuickShipper's live OpenAPI spec (https://delivery.quickshipper.app/swagger/v1/swagger.json),
+    // September 2026. OAuth2 client_credentials grant against auth.quickshipper.app, Bearer token on /v1/* calls.
     'quickshipper' => [
-        'base_url' => env('QUICKSHIPPER_BASE_URL'),
-        'api_key'  => env('QUICKSHIPPER_API_KEY'),
-        'mode'     => env('QUICKSHIPPER_MODE', 'test'),
+        'base_url'      => env('QUICKSHIPPER_BASE_URL', 'https://delivery.quickshipper.app'),
+        'token_url'     => env('QUICKSHIPPER_TOKEN_URL', 'https://auth.quickshipper.app/connect/token'),
+        'client_id'     => env('QUICKSHIPPER_CLIENT_ID'),
+        'client_secret' => env('QUICKSHIPPER_CLIENT_SECRET'),
+        // Optional: force a specific courier/provider id (GET /v1/Provider/list for the list).
+        // Leave unset to let QuickShipper auto-assign (autoAssign: true).
+        'provider_id'   => env('QUICKSHIPPER_PROVIDER_ID'),
+        // Pickup point — this shop's own warehouse/office, sent as pickUpInfo on every order.
+        'pickup' => [
+            'name'      => env('QUICKSHIPPER_PICKUP_NAME'),
+            'phone'     => env('QUICKSHIPPER_PICKUP_PHONE'),
+            'address'   => env('QUICKSHIPPER_PICKUP_ADDRESS'),
+            'city'      => env('QUICKSHIPPER_PICKUP_CITY', 'Tbilisi'),
+            'country'   => env('QUICKSHIPPER_PICKUP_COUNTRY', 'Georgia'),
+            'latitude'  => env('QUICKSHIPPER_PICKUP_LATITUDE', 0),
+            'longitude' => env('QUICKSHIPPER_PICKUP_LONGITUDE', 0),
+        ],
     ],
 ];

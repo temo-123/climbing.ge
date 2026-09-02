@@ -126,10 +126,26 @@ orders
     ├── product_id, product_option_id, quantity
 ```
 
-Order statuses: `pending` → `processing` → `shipped` → `delivered` / `cancelled`
+**Order statuses** (`orders.status`, free-form string — no DB enum/check constraint): a new order is created with `'pending'` (`OrderController::add_order`/similar) and moves to `'treatment'` once the buyer confirms via the email link (`order_is_confirm`). Beyond that, the admin picks from a fixed dropdown in `EditOrderStatusModalComponent` (`resources/js/components/user/items/modal/orders/editOrderStatusModal.vue`) that `POST`s the exact label as `status` to `set_order/edit_order_status/{order_id}` (`OrderController::edit_order_status`) — there is no server-side validation restricting `status` to these values, so the string must match exactly for the dropdown's pre-select-on-reopen logic to recognize it:
+
+`Treatment` → `Preparation for shipment` → **`Ready to ship`** → `Order has been sent` → `Transferred to the delivery service` → `Delivered`
 
 ![Order structure](DEMO_IMAGES/Shop/Order_structure.svg)
 ![Order full structure](DEMO_IMAGES/Shop/Order_full_structure.svg)
+
+### QuickShipper Delivery Integration
+
+Setting an order's status to exactly `'Ready to ship'` auto-sends it to [QuickShipper](https://qshpr.com/) (`App\Services\QuickShipperService`) — wired directly into `OrderController::edit_order_status()` right after the status write, not a separate action. Only fires once per order (skipped if `quickshipper_shipment_id` is already set, so re-saving "Ready to ship" — e.g. after editing the address — doesn't double-send) and never blocks the status update itself: if QuickShipper isn't configured or the API call fails, the status still saves and the response's `quickshipper` key reports `{success: false, message: ...}` instead.
+
+**Auth**: OAuth2 `client_credentials` grant against `auth.quickshipper.app/connect/token` (`QUICKSHIPPER_CLIENT_ID`/`QUICKSHIPPER_CLIENT_SECRET` in `.env`), Bearer token cached 55 minutes, same pattern as `TbcPaymentService`. **API**: `POST /v1/Order` on `delivery.quickshipper.app` to place, `GET /v1/Order?OrderId=` to refresh status, `POST /v1/Order/status` to change it, `GET /v1/Order/fees` for a rate quote — verified against QuickShipper's live OpenAPI spec (`delivery.quickshipper.app/swagger/v1/swagger.json`).
+
+**Destination address**: a regular order's `dropOffInfo` comes from `Order::user()` (name/phone) + `Order::userAdres()` (`User_adreses`: street/city — no lat/lng stored, sent as `0`); an `is_custom` order uses its own `CustomOrderAddress` instead (has its own name/surname/phone/address/city). **Pickup address**: this shop's own warehouse, sent identically on every order from `QUICKSHIPPER_PICKUP_*` env vars — there's no per-warehouse address in the DB (`Warehouse` only has `name`/`general`/`is_sale_point`), so multi-warehouse pickup isn't supported today.
+
+**Provider/courier**: `autoAssign: true` (QuickShipper picks a courier) unless `QUICKSHIPPER_PROVIDER_ID` is set, in which case that specific provider is forced on every order (`GET /v1/Provider/list` for the id list, needs a valid token).
+
+Persisted onto the order: `quickshipper_shipment_id`/`quickshipper_tracking_number` ← QuickShipper's `orderId` (their API returns no separate human tracking number from the place-order response — `orderNo` is only available via a follow-up `GET /v1/Order`), `quickshipper_label_url` ← `trackingUrl`, `quickshipper_status` ← `orderStatus`.
+
+**Admin actions** (`Api\User\Admin\Shop\QuickShipperController`, `set_quick_shipper` prefix, `quick_shipper` permission subject): `get_rates` (fee quote), `create_shipment` (manual retry — calls the same `placeOrderAndPersist()` the automatic trigger uses, so the two can't drift apart), `get_shipment_status` (refresh from QuickShipper). No frontend UI calls these yet — sending is currently automatic-only; a manual "resend to QuickShipper" button in the admin order list would need to be added to actually reach `create_shipment`.
 
 ### Custom Orders
 
