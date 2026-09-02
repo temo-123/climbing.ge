@@ -84,4 +84,27 @@ return [
             'client_secret' => env('TBC_PAY_DONATION_CLIENT_SECRET'),
         ],
     ],
+
+    // RS.ge (Georgian Revenue Service) electronic waybill ("ზედნადები") SOAP API.
+    // Operation names/auth (su/sp) confirmed against RS.ge's live WSDL
+    // (services.rs.ge/WayBillService/WayBillService.asmx?WSDL), September 2026. The exact
+    // inner <waybill> field names for save_waybill are NOT in that WSDL (declared as
+    // untyped xs:any) — RsGeWaybillService reconstructs them from a third-party open-source
+    // client's confirmed get_waybill *response* schema, since RS.ge's save/get shapes are
+    // symmetric by convention. Treat as unverified until tested against a real account.
+    //
+    // No separate RS.ge test/sandbox host was found to exist — 'mode' => 'test' here is a
+    // LOCAL dry run (logs the request, never calls RS.ge) rather than a real RS.ge sandbox.
+    // Also note: RS.ge requires this server's outbound IP to be allowlisted on their side
+    // before any call succeeds, regardless of credentials being correct.
+    'rs_ge' => [
+        'service_url'   => env('RS_GE_SERVICE_URL', 'http://services.rs.ge/WayBillService/WayBillService.asmx'),
+        'su'            => env('RS_GE_SU'),
+        'sp'            => env('RS_GE_SP'),
+        'seller_tin'    => env('RS_GE_SELLER_TIN'),
+        'seller_name'   => env('RS_GE_SELLER_NAME'),
+        'start_address' => env('RS_GE_START_ADDRESS'),
+        // 'test' = dry run only (default, safe); 'live' = real calls to RS.ge.
+        'mode'          => env('RS_GE_MODE', 'test'),
+    ],
 ];

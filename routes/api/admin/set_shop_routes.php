@@ -311,4 +311,14 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         Route::post('/export_pdf', 'exportWallPdf');
     });
 
+    /*
+    *   RS.ge electronic waybill integration — manual admin actions ('rs_ge_waybill' permission).
+    *   The automatic send-on-"Ready to ship" trigger lives in OrderController::edit_order_status()
+    *   instead, since it fires from the regular order-status endpoint, not this one.
+    */
+    Route::controller(RsGeWaybillController::class)->prefix('set_rs_ge_waybill')->group( function() {
+        Route::post('/send_waybill', 'send_waybill');
+        Route::post('/get_waybill_status', 'get_waybill_status');
+    });
+
 });

@@ -131,6 +131,20 @@ Order statuses: `pending` → `processing` → `shipped` → `delivered` / `canc
 ![Order structure](DEMO_IMAGES/Shop/Order_structure.svg)
 ![Order full structure](DEMO_IMAGES/Shop/Order_full_structure.svg)
 
+### RS.ge Electronic Waybill Integration
+
+Setting an order's status to exactly `'Ready to ship'` (via `OrderController::edit_order_status`) auto-files an electronic waybill ("ზედნადები") with [RS.ge](https://rs.ge) (the Georgian Revenue Service) — `App\Services\RsGeWaybillService`, wired directly into that same method right after the status write. Fires once per order (skipped if `rs_ge_waybill_id` is already set) and never blocks the status update: if RS.ge isn't configured, is still in local test mode, or the SOAP call fails, the status still saves and the response's `rs_ge_waybill` key reports `{success: false, message: ...}` instead.
+
+**Auth**: `su`/`sp` (service username/password) on every SOAP call, issued by RS.ge for a registered service user — `RS_GE_SU`/`RS_GE_SP` in `.env`. RS.ge also requires this server's outbound IP to be allowlisted on their side before any call succeeds, independent of credentials.
+
+**API**: legacy ASMX SOAP service at `services.rs.ge/WayBillService/WayBillService.asmx` — confirmed against RS.ge's live WSDL: `save_waybill(su, sp, waybill)` creates a draft, `send_waybill(su, sp, waybill_id)` activates/sends it, `get_waybill(su, sp, waybill_id)` reads it back. **Not confirmed**: the WSDL declares `<waybill>` as untyped `xs:any` with no published field schema — the inner fields `RsGeWaybillService::buildWaybillXml()` sends are reconstructed from a third-party open-source client's confirmed *response*-side field names (RS.ge's save/get shapes are conventionally symmetric, but this wasn't independently verified against RS.ge's own documentation). Treat as unverified until tested against a real filing.
+
+**No RS.ge sandbox found to exist** — `RS_GE_MODE=test` (the default) is a local dry run only: the request is built and logged but never sent. Set `RS_GE_MODE=live` only after confirming credentials, IP allowlisting, and the field mapping above are all correct.
+
+**Buyer/goods mapping**: destination address and buyer name/phone come from `Order::user()` + `Order::userAdres()` for a regular order, or `CustomOrderAddress` for an `is_custom` one. Goods lines come from `Order::orderProducts()`, using each `Product`'s localized title and the `Product_option`'s `price`/`barcode`. The waybill type is hardcoded to "without transport" (`RsGeWaybillService::TYPE_WITHOUT_TRANSPORT`) — call `getWaybillTypes()`/`getTransTypes()`/`getWaybillUnits()` against a real account to confirm this and the (currently unverified) unit code before going live.
+
+**Admin actions** (`Api\User\Admin\Shop\RsGeWaybillController`, `set_rs_ge_waybill` prefix, `rs_ge_waybill` permission subject): `send_waybill` (manual retry — shares `sendWaybillForOrderAndPersist()` with the automatic trigger), `get_waybill_status` (refresh from RS.ge). No frontend UI calls these yet.
+
 ### Custom Orders
 
 Manual orders created by admin for special requests. Uses `custom_orders` + `CustomOrderAddress` model.

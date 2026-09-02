@@ -22,6 +22,7 @@ use App\Models\Shop\Sale_code;
 
 use App\Services\ProductService;
 use App\Services\PermissionService;
+use App\Services\RsGeWaybillService;
 
 use App\Notifications\order\OrderConfirm;
 use App\Notifications\order\AdminOrderDeclorationNotification;
@@ -443,7 +444,30 @@ class OrderController extends Controller
             } catch (\Exception $e) {}
         }
 
-        return response()->json(['message' => 'Status updated', 'status' => $order->status]);
+        // "Ready to ship" auto-files an RS.ge waybill ("ზედნადები") for the order — only once
+        // per order (skipped if rs_ge_waybill_id is already set), and never blocks the status
+        // change itself: if RS.ge isn't configured, is still in local test mode, or the call
+        // fails, the status still saves — 'rs_ge_waybill' in the response reports what happened.
+        $rs_ge_result = null;
+        if ($request->status === 'Ready to ship' && !$order->rs_ge_waybill_id) {
+            $rsGe = new RsGeWaybillService();
+            if ($rsGe->isConfigured()) {
+                try {
+                    $rsGe->sendWaybillForOrderAndPersist($order);
+                    $rs_ge_result = ['success' => true];
+                } catch (\RuntimeException $e) {
+                    $rs_ge_result = ['success' => false, 'message' => $e->getMessage()];
+                }
+            } else {
+                $rs_ge_result = ['success' => false, 'message' => 'RS.ge is not configured'];
+            }
+        }
+
+        return response()->json([
+            'message' => 'Status updated',
+            'status' => $order->status,
+            'rs_ge_waybill' => $rs_ge_result,
+        ]);
     }
 
     public function order_status_notification($status, $data_time, $user_id, $order_id)
