@@ -11,6 +11,7 @@ use App\Models\Blog\Locale_post;
 use App\Models\Guide\Article;
 use App\Models\User;
 use App\Services\ArticlesService;
+use App\Services\PermissionService;
 
 class PostController extends Controller
 {
@@ -21,7 +22,7 @@ class PostController extends Controller
         $perPage = $request->get('per_page', 5);
         $page = $request->get('page', 1);
 
-        $posts = Post::latest()->get();
+        $posts = Post::where('published', '=', 1)->latest()->get();
         $news = Article::where('category', '=', 'news')->where('published', '=', 1)->latest()->get();
 
         // Localize news using ArticlesService
@@ -31,7 +32,7 @@ class PostController extends Controller
 
         // Add posts with type
         foreach ($posts as $post) {
-            $user = User::where('id', '=', $post->user_id)->first();
+            $user = User::select(['id', 'name', 'surname', 'image'])->where('id', '=', $post->user_id)->first();
             if ($user) {
                 $locale_post = null;
                 if ($lang === 'en') {
@@ -81,12 +82,12 @@ class PostController extends Controller
     {
         $lang = $request->get('locale', 'en');
 
-        $post = Post::where('url_title', $url_title)->first();
+        $post = Post::where('url_title', $url_title)->where('published', 1)->first();
         if (!$post) {
             return response()->json(['error' => 'Post not found'], 404);
         }
 
-        $user = User::find($post->user_id);
+        $user = User::select(['id', 'name', 'surname', 'image'])->find($post->user_id);
         if (!$user) {
             return response()->json(['error' => 'User not found'], 404);
         }
@@ -141,12 +142,14 @@ class PostController extends Controller
     }
 
     public function get_all_posts(Request $request){
+        if ($auth = PermissionService::authorize('post', 'show')) return $auth;
+
         $lang = $request->get('locale', 'en');
 
         $posts = Post::with(['us_post', 'ka_post'])->orderBy('created_at', 'desc')->get();
         $resp = [];
         foreach ($posts as $post) {
-            $user = User::where('id', $post->user_id)->first();
+            $user = User::select(['id', 'name', 'surname', 'image'])->where('id', $post->user_id)->first();
             $locale_post = null;
             if ($lang === 'en') {
                 $locale_post = $post->us_post;

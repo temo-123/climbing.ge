@@ -13,6 +13,8 @@ Online shop for climbing gear, apparel, guided tours, and services.
 - [Product Combinations](#product-combinations)
 - [Payment](#payment)
 - [Admin Panel](#admin-panel)
+- [Barcode Scan System](#barcode-scan-system)
+- [Known Issues](#known-issues)
 - [Climbing Wall Calculator (3D)](WALL_CALCULATOR_3D.md)
 
 ---
@@ -419,6 +421,14 @@ Permission: product_option › show
 product_options
 └── barcode  (string, nullable, unique)  -- added by migration 2026_06_23_174849
 ```
+
+---
+
+## Known Issues
+
+Found during a documentation audit (September 2026) — noted here rather than silently fixed, since fixing code was out of scope for this pass. **This is the same bug class documented in [SECURITY_AND_PITFALLS.md](BACKEND/SECURITY_AND_PITFALLS.md#bug-class-2--public-endpoints-over-exposing-user-data) for the Guide comments/reviews system — it exists here too, just wasn't caught in that sweep since Shop wasn't in its scope.**
+
+1. **`get_product_feedbacks` leaks the full `User` model on a fully public endpoint.** `Api\Shop\ProductFeedbackController::get_product_feedbacks` (`GET /api/get_product/get_product_feedback/get_product_feedbacks/{product_id}`, shown on every product page's review section) does `$feedback->user->first()` with no column restriction — `email`, `phone_number`, `country`, `city`, etc. all serialize to any anonymous visitor for every reviewer on every product. A grep of `resources/js/components/shop/items/FeedbacksComponent.vue` confirms the frontend only ever reads `feedback.user.id` and `feedback.user.image` from *other* users' feedback entries (the `.name`/`.surname`/`.email` reads in that same file are off a separate `this.user` — the *current logged-in* user, used to pre-fill their own complaint-form fields, not the listed reviewers). Same fix pattern as documented in SECURITY_AND_PITFALLS.md: restrict the loaded relation to `id, name, surname, image`.
 
 ---
 

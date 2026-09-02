@@ -117,8 +117,8 @@
         methods: {
             get_same_films(category_id, id) {
                 axios
-                    // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-                    .get("../api/film/get_same_films/"+category_id+"/"+id+"/us")
+                    // .get('../api/get_films/get_films/'+localStorage.getItem('lang'))
+                    .get("../api/get_films/get_same_films/"+category_id+"/"+id+"/us")
                     .then((response) => {
                         this.same_films = response.data;
                     })
@@ -127,7 +127,7 @@
             },
             get_film() {
                 axios
-                    .get("../api/film/get_film/us/"+this.$route.params.url_title)
+                    .get("../api/get_films/get_film/us/"+this.$route.params.url_title)
                     .then((response) => {
                         this.film = response.data;
                         // this.category = this.film.category
@@ -137,7 +137,7 @@
             },
             add_in_favorite_film(film_id){
                 axios
-                    .post("../../api/film/add_to_faworite/",{
+                    .post("../../api/set_films/add_to_faworite/",{
                         film_id: film_id
                     })
                     .then((response) => {

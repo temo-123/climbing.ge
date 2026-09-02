@@ -13,14 +13,14 @@ class MtpReitingController extends Controller
     {
         $reviews = Mtp_review::where('mtp_id', $mtp_id)->get();
         foreach ($reviews as $review) {
-            $review->user;
+            $review->setRelation('user', $review->user()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->first());
         }
         return $reviews;
     }
 
     public function get_user_mtp_reviews()
     {
-        return Mtp_review::where('user_id', Auth::id())->with('mtp')->get()->map(function ($r) {
+        return Mtp_review::where('user_id', auth('sanctum')->id())->with('mtp')->get()->map(function ($r) {
             return ['review' => $r, 'mtp' => $r->mtp];
         });
     }

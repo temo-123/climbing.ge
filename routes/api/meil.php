@@ -6,7 +6,7 @@ Route::group(['namespace'=>'Api\Meil'], function() {
     /*
     *   Mails routes
     */
-    Route::apiResource('/message', 'MessageController');
+    Route::apiResource('/message', 'MessageController')->only(['store']);
 
     /*
     *   Editing routes

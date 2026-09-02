@@ -111,6 +111,15 @@ new TbcPaymentService('donation')  // uses TBC_PAY_DONATION_* credentials
 - `app/Http/Controllers/Api/Shop/Payment/OrderPaymentController.php` — shop payments
 - `app/Http/Controllers/Api/Guide/Donations/DonationPaymentController.php` — donation payments + bank transfer info endpoint (`GET /api/get_donation/tbc_info`)
 
+**Graceful degradation when credentials aren't set:** `TbcPaymentService::isConfigured()` returns `true` only when both `TBC_PAY_{CHANNEL}_CLIENT_ID` and `TBC_PAY_{CHANNEL}_CLIENT_SECRET` are non-empty for that channel. Both `OrderPaymentController` and `DonationPaymentController` check this before attempting a card payment and reject with an error instead of calling out to TBC with empty credentials. The frontend has its own way to know this ahead of time — a small public status endpoint:
+
+```
+GET /api/payment/status   (App\Http\Controllers\Api\PaymentStatusController@status, routes/api/general.php, no auth)
+→ { "donation_enabled": bool, "shop_enabled": bool }
+```
+
+This lets the Vue frontend hide the online-card-payment option (donation form / shop checkout) rather than offering a payment path that's guaranteed to fail — useful for a fresh dev/staging environment where `.env` hasn't been filled in yet. Bank transfer donations (`DONATION_TBC_*` display info below) are unaffected by this flag — they're always offered regardless of whether TBC Pay API credentials are configured, since they don't call the API at all.
+
 ---
 
 ## Testing

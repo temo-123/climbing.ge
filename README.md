@@ -1,4 +1,4 @@
-<p align="center"><img src="public/images/site_img/site_logo/climibng,ge(becground).jpg" alt="climbing.ge logo" width="400"></p>
+<p align="center"><img src="public/images/site_img/site_logo/climibng%2Cge%28becground%29.jpg" alt="climbing.ge logo" width="400"></p>
 <h1 align="center">climbing.ge — Open Source Climbing Platform</h1>
 
 **Laravel 11 (PHP 8.2) · Vue 3 · Multi-subdomain SPA · MySQL · Sanctum**
@@ -102,31 +102,35 @@ All six subdomains share a **single compiled Vue bundle** (`public/assets/js/app
 
 ```
 routes/api/
-├── auth.php                    # Login, register, OAuth, password reset
-├── general.php                 # Search, site data, editor image upload, social links
-├── get_guide_routes.php        # Public guide/climbing data
-├── get_shop_routes.php         # Public shop/product data
-├── get_blog_routes.php         # Public blog posts
-├── get_films_routes.php        # Public films
-├── get_user_routes.php         # Authenticated user data
-├── summit_public_routes.php    # Public summit data
-└── admin/
-    ├── set_guide_routes.php    # Admin guide CRUD
-    ├── set_shop_routes.php     # Admin shop CRUD
-    ├── set_blog_routes.php     # Admin blog CRUD
-    ├── set_films_routes.php    # Admin films CRUD
-    ├── set_user_routes.php     # Admin user management
-    └── set_summit_routes.php   # Admin summit CRUD
+├── auth.php                       # Login, register, OAuth, password reset
+├── general.php                    # Search, site data, editor image upload, social links, payment-status flag
+├── meil.php                       # Messaging (contact-style /message endpoint) + following notifications
+├── get_guide_routes.php           # Public guide/climbing data (articles, comments, reviews, climber profiles, donations)
+├── get_shop_routes.php            # Public shop/product data
+├── get_blog_routes.php            # Public blog posts
+├── get_films_routes.php           # Public films
+├── get_training_routes.php        # Public read API for the companion training mobile app
+├── get_user_routes.php            # Authenticated user data (dashboard, follow/unfollow)
+├── summit_public_routes.php       # Public summit data
+└── admin/                          # every file below requires auth:sanctum + banned at the group level
+    ├── set_guide_routes.php        # Admin guide CRUD
+    ├── set_shop_routes.php         # Admin shop CRUD
+    ├── set_blog_routes.php         # Admin blog CRUD
+    ├── set_films_routes.php        # Admin films CRUD
+    ├── set_user_routes.php         # Admin user management (roles, permissions, tasks, multimedia)
+    ├── set_summit_routes.php       # Admin summit CRUD
+    ├── set_training_routes.php     # Admin training/workout + training-plan CRUD
+    └── set_partner_organization_routes.php  # Admin partner-organization + member management
 ```
 
-Protected routes require `auth:sanctum` + custom `banned` middleware.
+Protected routes require `auth:sanctum` + custom `banned` middleware. A handful of individual routes inside the otherwise-public files above also carry `->middleware('auth:sanctum')` on just that one line (e.g. "my favorites"/"my reviews"-style endpoints that need to know who's asking without gating the whole file) — see [CLAUDE.md's Common Backend Pitfalls](CLAUDE.md#common-backend-pitfalls) for why that distinction matters.
 
 ### Frontend Services
 
 | Service | Purpose |
 |---|---|
 | **Pinia** (`store/`) | App-wide reactive state |
-| **auth_user** (`store/auth_user.js`) | Authenticated user via `/api/auth_user` |
+| **Pinia auth store** (`store/auth.js`, `useAuthStore`) | Authenticated user + CASL sync, fetched via `/api/auth_user` |
 | **CASL** (`services/ability/`) | Permission checks: `$can(action, subject)` |
 | **i18n** (`services/localization/`) | English (`us`) / Georgian (`ka`) translations |
 | **`$bus`** | Global event bus for cross-component events |
@@ -436,6 +440,6 @@ All five sitemaps are referenced at the bottom so any crawler that reads `robots
 
 ---
 
-<h5 align="center">Project version 13.5.1</h5>
+<h5 align="center">Project version 13.5.21</h5>
 <h2 align="center">Best wishes from climbing.ge</h2>
-<p align="center"><img src="/public/images/site_img/site_logo/header logo(bacground).png" alt="header logo" width="400"></p>
+<p align="center"><img src="public/images/site_img/site_logo/header%20logo%28bacground%29.png" alt="header logo" width="75%"></p>

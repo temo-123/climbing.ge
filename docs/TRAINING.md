@@ -37,6 +37,8 @@ There is no dedicated subdomain for this feature — it's authored entirely from
 
 ## Database Schema
 
+![Training content schema](DEMO_IMAGES/Training/Training_content_schema.svg)
+
 ### `trainings`
 
 | Column | Type | Notes |
@@ -138,7 +140,7 @@ Join table: which trainings run on a given session day, and in what order.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_training/get_all_trainings?type=<type>&product_id=<id>` | All published trainings, optional `type` filter and optional `product_id` filter (trainings linked to that shop product via `product_id` or the `training_products` pivot) |
+| GET | `/api/get_training/get_all_trainings?type=<type>&product_id=<id>` | All published trainings, optional `type` filter and optional `product_id` filter — **`product_id` only matches `trainings.product_id` (the single primary-suggested product), not the `training_products` many-to-many pivot** (`Api\Training\TrainingController::get_all_trainings` does a plain `where('product_id', ...)`, no `orWhereHas('products', ...)`) — a training that lists a product only as a secondary/compatible option via `training_products` will **not** appear when filtering by that product's id here |
 | GET | `/api/get_training/get_training_data/{id}` | Single published training incl. `steps` + `translations` |
 | GET | `/api/get_training_plan/get_all_plans` | All published plans |
 | GET | `/api/get_training_plan/get_plan_data/{id}` | Single published plan incl. `sessions` (each with nested training objects) + `translations` |

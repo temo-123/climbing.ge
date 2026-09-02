@@ -91,7 +91,7 @@
             get_faworite_films(){
                 this.is_loading = true
                 axios
-                .get('/get_film/get_faworite_film_list')
+                .get('/get_films/get_faworite_film_list')
                 .then(response => {
                     this.films = response.data
                 })
@@ -110,7 +110,7 @@
             del_from_faworites(id){
                 if(confirm(this.$t('user.favorites.films.confirm_delete'))){
                     axios
-                    .post('/get_film/del_from_faworite/'+id, {
+                    .post('/set_films/del_from_faworite/'+id, {
                         film_id: id,
                         _method: 'DELETE'
                     })

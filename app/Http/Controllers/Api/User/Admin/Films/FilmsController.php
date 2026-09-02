@@ -23,17 +23,17 @@ class FilmsController extends Controller
 
     public function get_films(Request $request)
     {
-        $films = Film::where('public', '=', 1)->get();
+        $films = Film::where('published', '=', 1)->get();
         return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_same_films(Request $request){
-        $films = Film::where('public', '=', 1)->where('category_id', '=', $request->category_id)->where('id', '!=', $request->film_id)->limit(4)->get();
+        $films = Film::where('published', '=', 1)->where('category_id', '=', $request->category_id)->where('id', '!=', $request->film_id)->limit(4)->get();
         return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_film(Request $request){
-        $film = Film::where('public', '=', 1)->where('url_title', '=', $request->url_title)->first();
+        $film = Film::where('published', '=', 1)->where('url_title', '=', $request->url_title)->first();
         return FilmService::get_film_on_page_use_locale($film, $request->locale);
     }
 
@@ -46,7 +46,7 @@ class FilmsController extends Controller
         if($request->top_film_type == 'get_most_liked_films'){
             $films_likes = [];
             
-            foreach (Film::where('public', '=', 1)->get() as $film) {
+            foreach (Film::where('published', '=', 1)->get() as $film) {
                 $likes_count = Favorite_film::where('film_id', '=', $film->id)->count();
                 array_push(
                     $films_likes,
@@ -70,9 +70,9 @@ class FilmsController extends Controller
                 }
             }
 
-            // return Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->first();
+            // return Film::where('published', '=', 1)->where('id', '=', $bigest_film_id)->first();
 
-            $film = Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->get();
+            $film = Film::where('published', '=', 1)->where('id', '=', $bigest_film_id)->get();
             return FilmService::get_films_list_use_locale($film, $request->locale);
 
         }
@@ -133,7 +133,7 @@ class FilmsController extends Controller
     {
         $query = $request->query ?? '';
         if ($query != "") {
-            $films = Film::where('public', '=', 1)
+            $films = Film::where('published', '=', 1)
                 ->where('url_title', 'LIKE', '%' . $query . '%')
                 ->get();
             if ($films->count() > 0) {

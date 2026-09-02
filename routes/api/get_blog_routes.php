@@ -11,7 +11,7 @@ Route::group(['namespace'=>'Api\Blog'], function() {
         Route::get('/get_post/{url_title}', 'get_post');
         Route::get('/get_news/{url_title}', 'get_news');
 
-        Route::get('/get_all_posts', 'get_all_posts');
+        Route::get('/get_all_posts', 'get_all_posts')->middleware('auth:sanctum');
     });
     
 });

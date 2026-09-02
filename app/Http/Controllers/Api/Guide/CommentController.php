@@ -17,6 +17,7 @@ use App\Models\Guide\Article_comment_user;
 use App\Models\Guide\Article_comment_complaint;
 
 use App\Services\CommentService;
+use App\Services\PermissionService;
 
 use App\Notifications\comments\CommentAnswerNotification;
 
@@ -24,6 +25,8 @@ class CommentController extends Controller
 {
     public function get_all_comments()
     {
+        if ($auth = PermissionService::authorize('comment', 'show')) return $auth;
+
         if(Comment::count() > 0){
             $all_comments = Comment::latest()->get();
 
@@ -42,7 +45,7 @@ class CommentController extends Controller
 
     public function get_user_comments()
     {
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
 
         $comments = [];
         foreach ($user->article_comments as $comment) {
@@ -77,16 +80,19 @@ class CommentController extends Controller
 
             if($comment->answers->count() > 0){
                 foreach ($comment->answers as $ans) {
+                    $ans_user = $ans->user()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->first();
                     array_push($answers_array, [
                         'answer' => $ans,
-                        'user' => $ans->user ? $ans->user->first() : null,
+                        'user' => $ans_user,
                     ]);
                 }
             }
 
+            $comment_user = $comment->user()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->first();
+
             array_push($comment_array, [
                 'comment' => $comment,
-                'user' => $comment->user ? $comment->user->first() : null,
+                'user' => $comment_user,
                 'answers' => $answers_array
             ]);
         }

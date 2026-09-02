@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="280" font-family="Arial,sans-serif">
+<rect width="860" height="280" fill="white" />
+<text x="430" y="20" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Mobile-app sync tables — auto-increment id PK is internal only; client_id/plan_id/date is what the API echoes back as "id"</text>
+
+<rect x="20" y="40" width="250" height="140" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="145" y="60" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">user_workouts</text>
+<text x="145" y="78" text-anchor="middle" font-size="9.5" fill="#444">id (internal), user_id -&gt; users</text>
+<text x="145" y="93" text-anchor="middle" font-size="9.5" fill="#c62828" font-weight="bold">client_id (echoed as "id", never reassigned)</text>
+<text x="145" y="108" text-anchor="middle" font-size="9.5" fill="#444">name, type, hang/rest/reps/sets</text>
+<text x="145" y="123" text-anchor="middle" font-size="9.5" fill="#c62828">updated_at: varchar, NOT datetime cast</text>
+<text x="145" y="138" text-anchor="middle" font-size="9.5" fill="#c62828">deleted_at: varchar tombstone flag</text>
+<text x="145" y="153" text-anchor="middle" font-size="9.5" fill="#444">(NOT Eloquent SoftDeletes)</text>
+<text x="145" y="168" text-anchor="middle" font-size="9" fill="#888">$timestamps = false</text>
+
+<rect x="305" y="40" width="250" height="140" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="430" y="60" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">user_plan_states</text>
+<text x="430" y="78" text-anchor="middle" font-size="9.5" fill="#444">id (internal), user_id -&gt; users</text>
+<text x="430" y="93" text-anchor="middle" font-size="9.5" fill="#c62828" font-weight="bold">plan_id (echoed as "id") = training_plans.slug</text>
+<text x="430" y="108" text-anchor="middle" font-size="9.5" fill="#444">is_active, start_date</text>
+<text x="430" y="123" text-anchor="middle" font-size="9.5" fill="#c62828">activated_at: varchar conflict-timestamp</text>
+<text x="430" y="138" text-anchor="middle" font-size="9.5" fill="#444">notifications_enabled, notification_ids (json)</text>
+<text x="430" y="153" text-anchor="middle" font-size="9.5" fill="#444">calendar_enabled, calendar_event_ids (json)</text>
+<text x="430" y="168" text-anchor="middle" font-size="9" fill="#888">notification/calendar ids: device-local, meaningless cross-device</text>
+
+<rect x="590" y="40" width="250" height="140" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="715" y="60" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">user_training_history</text>
+<text x="715" y="78" text-anchor="middle" font-size="9.5" fill="#444">id (internal), user_id -&gt; users</text>
+<text x="715" y="93" text-anchor="middle" font-size="9.5" fill="#c62828" font-weight="bold">date (echoed as "id" for this table)</text>
+<text x="715" y="108" text-anchor="middle" font-size="9.5" fill="#444">workout_name, workout_type</text>
+<text x="715" y="123" text-anchor="middle" font-size="9.5" fill="#444">reps_completed, sets_completed, status</text>
+<text x="715" y="138" text-anchor="middle" font-size="9.5" fill="#444">plan_id (nullable, not FK-enforced)</text>
+<text x="715" y="153" text-anchor="middle" font-size="9.5" fill="#c62828">updated_at: varchar, NOT datetime cast</text>
+
+<text x="430" y="210" text-anchor="middle" font-size="10.5" fill="#333" font-weight="bold">All three: ON DELETE CASCADE from users. No composite PK — house style is auto-increment id + unique index (see content_notification_logs).</text>
+<text x="430" y="230" text-anchor="middle" font-size="10.5" fill="#c62828">Never parse the varchar timestamp columns as dates — conflict resolution is a byte-for-byte string compare (see "Two Things Easy to Get Wrong").</text>
+<text x="430" y="250" text-anchor="middle" font-size="9.5" fill="#2e7d32">GET /api/user_training/summary reads these read-only for the dashboard "My Training" widget; POST /api/user_training/sync is the only writer.</text>
+</svg>

@@ -206,15 +206,17 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 
 | Method | Path | Description |
 |---|---|---|
+| POST | `/api/set_donation/process` | Card donation via TBC Pay — dual-flow (works for guests and, separately, `auth('sanctum')` logged-in users; see `App\Http\Controllers\Api\Guide\Donations\DonationPaymentController::processDonation`) |
 | POST | `/api/set_donation/create` | Create donation payment |
 | POST | `/api/set_donation/callback` | Payment gateway callback |
 | GET | `/api/set_donation/status/{id}` | Donation status |
+| GET | `/api/get_donation/tbc_info` | Bank-transfer display info (IBAN/account name/SWIFT) — public, no auth |
 
-Uses the Flitt payment gateway. TBC Bank display details come from env:
+Uses **TBC Pay** (`App\Services\TbcPaymentService`, channel `'donation'`) for card payments — not Flitt, despite `FLITT_*` env vars and `App\Services\FlittPaymentService` still existing in the codebase (`AppServiceProvider` still configures the Flitt SDK globally, and the `Donation` model still carries a legacy `flitt_order_id` fillable column) — Flitt was superseded by TBC Pay for both shop orders and donations and appears to be dead in the live payment flow now, just not yet cleaned up. Full setup, credentials, and the `GET /api/payment/status` graceful-degradation flag: [TBC_PAYMENT_SETUP.md](../TBC_PAYMENT_SETUP.md). Relevant env:
 ```env
-FLITT_MERCHANT_ID=...
-FLITT_SECRET_KEY=...
-FLITT_API_VERSION=1.0
+TBC_PAY_BASE_URL=https://api.tbcbank.ge/v1/tpay
+TBC_PAY_DONATION_CLIENT_ID=
+TBC_PAY_DONATION_CLIENT_SECRET=
 
 DONATION_TBC_IBAN=
 DONATION_TBC_ACCOUNT_NAME=

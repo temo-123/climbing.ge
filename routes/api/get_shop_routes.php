@@ -7,7 +7,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
     Route::controller(ProductController::class)->prefix('get_product')->group( function() {
         Route::get('/get_products_for_index/{lang}', 'get_products_for_index');
         Route::get('/get_all_products', 'get_all_products');
-        Route::get('/get_user_products', 'get_user_products');
+        Route::get('/get_user_products', 'get_user_products')->middleware('auth:sanctum');
 
         Route::get('/get_product_options/{product_id}', 'get_product_options');
         Route::get('/get_current_products', 'get_current_products');
@@ -20,7 +20,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_local_product_in_page/{lang}/{url_title}', 'get_local_product_in_page');
         Route::get('/get_similar_product/{lang}/{product_id}', 'get_similar_product');
         Route::get('/get_product_price_interval', 'get_product_price_interval');
-        Route::get('/get_user_favorite_products', 'get_user_favorite_products');
+        Route::get('/get_user_favorite_products', 'get_user_favorite_products')->middleware('auth:sanctum');
         Route::get('/get_quick_product/{lang}/{product_id}', 'get_quick_product');
 
         Route::get('/get_local_saled_products/{lang}', 'get_local_saled_products');
@@ -66,7 +66,7 @@ Route::group(['namespace'=>'Api\Shop'], function() {
         Route::get('/get_tours/{lang}', 'get_tours');
         Route::get('/get_all_tours/{lang}', 'get_all_tours'); // get_tours
         Route::get('/get_all_tours', 'get_all_tours');
-        Route::get('/get_user_tours', 'get_user_tours');
+        Route::get('/get_user_tours', 'get_user_tours')->middleware('auth:sanctum');
         Route::get('/get_similar_tours/{lang}/{tour_id}', 'get_similar_tours');
         Route::get('/get_tour/{lang}/{url_title}', 'get_tour');
 

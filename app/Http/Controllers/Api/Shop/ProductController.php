@@ -47,7 +47,7 @@ class ProductController extends Controller
 
     public function get_user_products()
     {
-        $products = Auth::user()->products;
+        $products = auth('sanctum')->user()->products;
         $returned_array = [];
         foreach($products as $product){
             array_push($returned_array, [
@@ -209,8 +209,8 @@ class ProductController extends Controller
 
     public function get_user_favorite_products()
     {
-        if (Auth::user()) {
-            $fav_products = Favorite_product::where('user_id', '=', Auth::user()->id)->get();
+        if (auth('sanctum')->user()) {
+            $fav_products = Favorite_product::where('user_id', '=', auth('sanctum')->id())->get();
             $products = array();
             foreach ($fav_products as $fav_product) {
                 $global_product = Product::where('id', '=', $fav_product->product_id)->where('published', '=', 1)->get();

@@ -36,19 +36,19 @@ class UserTourReservationController extends Controller
         $new_reservation = $validated['form_data'];
         $new_reservation['tour_id'] = $request->tour_id;
 
-        if (Auth::user()) {
+        if (auth('sanctum')->user()) {
             $new_reservation['verificate'] = 1;
         }
 
-        $saved_id = Tour_reservation::insertGetId($new_reservation); 
+        $saved_id = Tour_reservation::insertGetId($new_reservation);
 
-        if (Auth::user()) {
-            $this->create_reservatione_user_relatione($saved_id, Auth::user()->id);
+        if (auth('sanctum')->user()) {
+            $this->create_reservatione_user_relatione($saved_id, auth('sanctum')->id());
 
             $tour = Tour::where('id', '=', $request->tour_id)->first();
             $guide = $tour->user;
 
-            $this->reservatione_completed_notification($guide[0]->email, Auth::user()->email, $new_reservation);
+            $this->reservatione_completed_notification($guide[0]->email, auth('sanctum')->user()->email, $new_reservation);
 
             return 'The reservation is complete and it is linked to you as a acaunt. You can find it in the user panel!';
         }

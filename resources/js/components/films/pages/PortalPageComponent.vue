@@ -236,8 +236,8 @@ import metaData from '../items/MetaDataComponent'
         methods: {
             get_films() {
                 axios
-                    // .get('../api/film/get_films/'+localStorage.getItem('lang'))
-                    .get("../api/film/get_films/us")
+                    // .get('../api/get_films/get_films/'+localStorage.getItem('lang'))
+                    .get("../api/get_films/get_films/us")
                     .then((response) => {
                         this.not_filtred_films = response.data;
                         this.sort_film_by_category()
@@ -247,7 +247,7 @@ import metaData from '../items/MetaDataComponent'
             },
             get_films_categories() {
                 axios
-                    .get("../api/film/get_films_categories/us")
+                    .get("../api/get_films/get_films_categories/us")
                     .then((response) => {
                         this.films_categories = response.data;
                     })
@@ -330,7 +330,7 @@ import metaData from '../items/MetaDataComponent'
             // },
             get_most_liked_film(){
                 axios
-                    .get("../api/film/top_films/get_most_liked_films/us")
+                    .get("../api/get_films/top_films/get_most_liked_films/us")
                     .then((response) => {
                         this.most_liked_film = response.data[0];
                     })

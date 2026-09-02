@@ -200,9 +200,26 @@ Guests and authenticated users can comment on articles.
 
 **Comment violations:** Any user can report a comment. Admin reviews and decides. Email notification sent.
 
+**Public API field exposure (fixed September 2026):** the commenter/answerer `user` object attached to the public per-article comment feed (`get_article_comments`) is restricted to `id, name, surname, image` — it used to serialize the full `User` model, leaking `email`/`phone_number`/`country`/`city` to any anonymous visitor. The admin-only "all comments" moderation view (which does legitimately need the raw stored `name`/`surname`/`email` columns for guest commenters) is gated behind `auth:sanctum` + `comment › show` permission rather than having its data trimmed. Full writeup: [SECURITY_AND_PITFALLS.md](BACKEND/SECURITY_AND_PITFALLS.md).
+
 ![Comments diagram](DEMO_IMAGES/Guidbook/Comments_structure.svg)  
 ![Is it your comment](DEMO_IMAGES/Guidbook/Comment_queries.svg)  
-![Comment complaints](DEMO_IMAGES/Guidbook/Comment_complaints.svg)
+![Comment complaints](DEMO_IMAGES/Guidbook/Comment_complaints.svg)  
+![Public vs admin comment/review data exposure](DEMO_IMAGES/Guidbook/Comment_public_vs_admin_exposure.svg)
+
+### Route & MTP Reviews
+
+Authenticated climbers can leave a star rating + text review on a sport/bouldering route (`sport_route_reviews`, `Api\Guide\RoutesReitingController`) or a multi-pitch route (`mtp_reviews`, `Api\Guide\MtpReitingController`). Unlike comments, review creation is auth-only (no guest flow) — `create_route_review`/`create_mtp_review` reject a request with no valid Sanctum token.
+
+**Public listings** (shown on the route/MTP page itself, no login required): `GET get_route_review/get_all_route_reviews/{route_id}` and `GET get_mtp_review/get_all_mtp_reviews/{mtp_id}`. Both are rendered by `RouteAllReviewsModal.vue` / `MtpAllReviewsModal.vue`, which link the reviewer's name to their [Climber Profile](CLIMBER_PROFILE.md) (`review.user.id`).
+
+**Admin moderation** (all reviews site-wide, across every route — used to review/hide reviews and handle complaints): the frontend's `all_routes_reviews_page.vue` calls `get_route_review/get_all_review` for route reviews (backed by `Api\Guide\RoutesReitingController::get_all_review`) and `set_mtp_review/get_all_mtp_reviews_admin` for MTP reviews (the properly admin-namespaced `Api\User\Admin\Guide\MtpReitingController`). Both require the `comment › show` permission (reviews share the same moderation permission subject as comments).
+
+**Published/hidden filtering**: only reviews with `published=1, admin_hidden=0` count toward a climber's public `route_reviews_count`/`mtp_reviews_count` and the weighted [points total](CLIMBER_PROFILE.md#the-points-system) shown on their profile — same filter the public listing endpoints apply.
+
+**Data exposure fix (September 2026)**: the public per-route/per-MTP listing endpoints used to attach the *full* `User` row (email, phone number, etc.) to each review — trimmed to `id, name, surname, image` now, matching what the review modals actually render. The site-wide admin "all reviews" endpoints (which do legitimately need more, e.g. email, for moderation) were separately found to be reachable *without any login at all* — now require `auth:sanctum` + the `comment › show` permission. Full writeup, including every other bug found in the same audit: [SECURITY_AND_PITFALLS.md](BACKEND/SECURITY_AND_PITFALLS.md).
+
+![Public vs admin comment/review data exposure](DEMO_IMAGES/Guidbook/Comment_public_vs_admin_exposure.svg)
 
 ### Local Businesses
 

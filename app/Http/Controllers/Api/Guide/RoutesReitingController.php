@@ -9,12 +9,16 @@ use App\Models\User;
 use App\Models\Guide\Sport_route_review;
 // use App\Models\Guide\Sport_route_review_user;
 
+use App\Services\PermissionService;
+
 use Auth;
 
 class RoutesReitingController extends Controller
 {
     public function get_all_review() {
         // return Sport_route_review::get();
+
+        if ($auth = PermissionService::authorize('comment', 'show')) return $auth;
 
         if(Sport_route_review::count() > 0){
             $all_reviews = Sport_route_review::get();
@@ -41,13 +45,13 @@ class RoutesReitingController extends Controller
     public function get_all_route_reviews(Request $request) {
         $rews = Sport_route_review::where('route_id', '=', $request->route_id)->get();
         foreach ($rews as $rew) {
-            $rew -> user;
+            $rew->setRelation('user', $rew->user()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->first());
         }
         return $rews;
     }
 
     public function get_user_review() {
-        $user = auth()->user();
+        $user = auth('sanctum')->user();
         // return $user->sport_route_reviews;
 
         if($user->sport_route_reviews->count() > 0){

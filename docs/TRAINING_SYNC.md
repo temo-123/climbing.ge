@@ -40,6 +40,8 @@ This repo's house style uses an auto-increment `id` PK plus a unique index for p
 
 All three tables are scoped to `user_id` (`ON DELETE CASCADE`).
 
+![Training sync schema](DEMO_IMAGES/Training/Training_sync_schema.svg)
+
 ### `user_workouts`
 
 | Column | Type | Notes |
@@ -147,6 +149,41 @@ Field names are camelCase, matching the app's TypeScript models directly.
   "syncedAt": "2026-08-13T10:05:01.000Z"
 }
 ```
+
+### `GET /api/user_training/summary`
+
+Auth: `auth:sanctum` + `banned`, same self-service scoping as `sync()`. **Not documented anywhere else in this repo's docs before this pass** — easy to miss since it lives on the same controller as `sync()` but is a completely separate, read-only concern.
+
+A "My Training" dashboard summary for the `user.climbing.ge` profile page (`resources/js/components/user/items/user_options/UserTrainingSummaryComponent.vue`) — distinct from `sync()` in that it **never writes anything**, it only reads whatever the mobile app has already pushed via `sync()`. A user who has never opened the mobile app (or never synced) has zero rows in all three tables, which the frontend uses to decide whether to render training stats or an "get the app" prompt (`hasTrainingData: false`).
+
+**Response:**
+
+```json
+{
+  "hasTrainingData": true,
+  "totalSessions": 42,
+  "chartHistory": [
+    { "date": "2026-08-01T...", "repsCompleted": 6, "setsCompleted": 4, "status": "success" }
+  ],
+  "successCount": 39,
+  "failedCount": 3,
+  "customWorkoutsCount": 2,
+  "activePlan": {
+    "planId": "beginner-4-week",
+    "name": "Beginner 4-Week Plan",
+    "startDate": "2026-08-13T00:00:00.000Z",
+    "activatedAt": "2026-08-13T09:00:00.000Z"
+  },
+  "recentHistory": [
+    { "date": "...", "workoutName": "7-3 Repeaters", "workoutType": "fingerboard", "repsCompleted": 6, "setsCompleted": 4, "status": "success" }
+  ]
+}
+```
+
+- `chartHistory` — oldest-first, capped at the 20 most recent sessions (fetched newest-first then re-sorted ascending), meant for a progress chart. Read-only aggregate display, so — unlike `sync()`'s conflict resolution — this endpoint freely sorts/slices the `date` strings without needing to treat them as opaque (see [Two Things Easy to Get Wrong](#two-things-easy-to-get-wrong) for why `sync()` itself can't do that).
+- `recentHistory` — newest-first, capped at 5, for a simple recent-activity list.
+- `activePlan` — the one `user_plan_states` row with `is_active = 1` for this user, if any (`name` is looked up live from `training_plans.name` by `plan_id`/slug, not stored on `user_plan_states`, so it always reflects the plan's current title even if renamed after activation). `null` if no plan is active.
+- `customWorkoutsCount` — count of `user_workouts` rows with `deleted_at` null (excludes tombstoned ones).
 
 ### Process (`UserTrainingSyncController::sync`)
 

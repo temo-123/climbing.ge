@@ -50,7 +50,7 @@ class CommentService extends EmailVarificationeService
         if(!$validate){
             $data = $request->data;
 
-            $auth = Auth::user();
+            $auth = auth('sanctum')->user();
 
             if ($auth) {
                 if($auth->role[0]['slug'] == 'ban'){
@@ -164,18 +164,18 @@ class CommentService extends EmailVarificationeService
         * $save_origin_image    - Save orifinal image in ./origin_img/ folder (defolt it true)
         *
         */
-        if (Auth::user()) {
-            $user_complaint_count = $complaint_model::where('user_id', '=', Auth::user())->where($prefix.'_id', '=', $request[$prefix.'_id'])->count();
+        if (auth('sanctum')->user()) {
+            $user_complaint_count = $complaint_model::where('user_id', '=', auth('sanctum')->id())->where($prefix.'_id', '=', $request[$prefix.'_id'])->count();
 
             if($user_complaint_count){
                 return('You olrede have complaint on this comment!');
             }
             else{
                 $comment_complaint = new $complaint_model;
-        
+
                 $comment_complaint[$prefix.'_id'] = $request[$prefix.'_id'];
                 $comment_complaint->complaint = $request[$prefix.'_complaint'];
-                $comment_complaint->user_id = Auth::user()->id;
+                $comment_complaint->user_id = auth('sanctum')->id();
                 
                 $comment_complaint->save();
 
@@ -360,6 +360,9 @@ class CommentService extends EmailVarificationeService
         */
         
         $em = Non_registered_commenter::where('email', '=', $email)->first();
+        if (!$em) {
+            return;
+        }
         $em['confirmed'] = 1;
         $em -> save();
 

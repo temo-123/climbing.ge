@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="400" font-family="Arial,sans-serif">
+<rect width="880" height="400" fill="white" />
+<text x="440" y="20" text-anchor="middle" font-size="13" fill="#333" font-weight="bold">Training content schema — trainings/*.id are bigint auto_increment; slug is the original human-readable key</text>
+
+<rect x="20" y="35" width="220" height="90" rx="6" fill="#e1d5e7" stroke="#9673a6" stroke-width="1.5" />
+<text x="130" y="55" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">training_plans</text>
+<text x="130" y="73" text-anchor="middle" font-size="9.5" fill="#444">id, slug, name</text>
+<text x="130" y="88" text-anchor="middle" font-size="9.5" fill="#444">level, days_per_week</text>
+<text x="130" y="103" text-anchor="middle" font-size="9.5" fill="#444">weeks (0 = ongoing)</text>
+<text x="130" y="118" text-anchor="middle" font-size="9.5" fill="#444">is_published</text>
+
+<rect x="300" y="35" width="200" height="90" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="400" y="55" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">plan_sessions</text>
+<text x="400" y="73" text-anchor="middle" font-size="9.5" fill="#444">id</text>
+<text x="400" y="88" text-anchor="middle" font-size="9.5" fill="#444">plan_id -&gt; training_plans</text>
+<text x="400" y="103" text-anchor="middle" font-size="9.5" fill="#444">day_index (0=Mon..6=Sun)</text>
+<text x="400" y="118" text-anchor="middle" font-size="9.5" fill="#444">day_label</text>
+
+<rect x="560" y="35" width="260" height="90" rx="6" fill="#f8cecc" stroke="#b85450" stroke-width="1.5" />
+<text x="690" y="55" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">plan_session_trainings</text>
+<text x="690" y="73" text-anchor="middle" font-size="9.5" fill="#444">plan_session_id -&gt; plan_sessions</text>
+<text x="690" y="88" text-anchor="middle" font-size="9.5" fill="#444">training_id -&gt; trainings (RESTRICT)</text>
+<text x="690" y="103" text-anchor="middle" font-size="9.5" fill="#444">sort_order</text>
+
+<line x1="240" y1="80" x2="298" y2="80" stroke="#555" stroke-width="1.5" />
+<polygon points="240,80 248.5,75.5 248.5,84.5" fill="#555" />
+<line x1="500" y1="80" x2="558" y2="80" stroke="#555" stroke-width="1.5" />
+<polygon points="500,80 508.5,75.5 508.5,84.5" fill="#555" />
+
+<rect x="560" y="240" width="260" height="110" rx="6" fill="#d5e8d4" stroke="#82b366" stroke-width="1.5" />
+<text x="690" y="260" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">trainings</text>
+<text x="690" y="278" text-anchor="middle" font-size="9.5" fill="#444">id, slug, name, type</text>
+<text x="690" y="293" text-anchor="middle" font-size="9.5" fill="#444">difficulty, hang/rest/reps/sets</text>
+<text x="690" y="308" text-anchor="middle" font-size="9.5" fill="#444">product_id -&gt; products (SET NULL)</text>
+<text x="690" y="323" text-anchor="middle" font-size="9.5" fill="#444">is_published</text>
+<text x="690" y="338" text-anchor="middle" font-size="9.5" fill="#444">(no steps rows = classic formula timer)</text>
+
+<line x1="690" y1="125" x2="690" y2="238" stroke="#555" stroke-width="1.5" />
+<polygon points="690,238 685.5,229.5 694.5,229.5" fill="#555" />
+
+<rect x="300" y="240" width="200" height="80" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="400" y="260" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">training_steps</text>
+<text x="400" y="278" text-anchor="middle" font-size="9.5" fill="#444">training_id -&gt; trainings (CASCADE)</text>
+<text x="400" y="293" text-anchor="middle" font-size="9.5" fill="#444">step_order, phase</text>
+<text x="400" y="308" text-anchor="middle" font-size="9.5" fill="#444">duration_seconds, instructions</text>
+
+<line x1="558" y1="280" x2="502" y2="280" stroke="#555" stroke-width="1.5" />
+<polygon points="502,280 510.5,275.5 510.5,284.5" fill="#555" />
+
+<rect x="20" y="240" width="220" height="80" rx="6" fill="#dae8fc" stroke="#6c8ebf" stroke-width="1.5" />
+<text x="130" y="260" text-anchor="middle" font-size="12" fill="#222" font-weight="bold">training_translations</text>
+<text x="130" y="278" text-anchor="middle" font-size="9.5" fill="#444">training_id -&gt; trainings (CASCADE)</text>
+<text x="130" y="293" text-anchor="middle" font-size="9.5" fill="#444">locale (e.g. "ka"), unique per training</text>
+<text x="130" y="308" text-anchor="middle" font-size="9.5" fill="#444">name/description/coach_tip overrides</text>
+
+<line x1="298" y1="280" x2="242" y2="280" stroke="#555" stroke-width="1.5" />
+<polygon points="242,280 250.5,275.5 250.5,284.5" fill="#555" />
+
+<rect x="620" y="365" width="200" height="30" rx="6" fill="#fff2cc" stroke="#d6b656" stroke-width="1.5" />
+<text x="720" y="384" text-anchor="middle" font-size="10" fill="#7f6000">training_products (pivot) -&gt; products.equipment_type</text>
+<line x1="690" y1="350" x2="720" y2="363" stroke="#555" stroke-width="1.5" />
+<polygon points="720,363 711,361.7 714.5,353.5" fill="#555" />
+<text x="440" y="380" text-anchor="middle" font-size="9" fill="#888">training_products: many-to-many "compatible" products, separate from the single trainings.product_id "primary suggested" one</text>
+</svg>

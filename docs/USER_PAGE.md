@@ -132,6 +132,17 @@ Manage all content for `summit.climbing.ge`:
 
 See [SUMMIT.md](SUMMIT.md) for full summit admin documentation.
 
+### Training Admin
+
+Content management for the companion **climbing training mobile app** (fingerboard/campus/flexibility/strength/endurance workouts and multi-day coaching plans) — this repo is the CMS + public JSON API the app points at, there is no dedicated public subdomain for it.
+
+| Section | What You Can Manage |
+|---|---|
+| **Trainings** | Individual exercises/workouts — global info incl. cover image, step-by-step breakdown, Georgian translation, compatible shop products |
+| **Training Plans** | Multi-day coaching programs — global info, per-day sessions (which trainings run on which day), Georgian translation |
+
+Left-menu visibility gated on `training`/`training_plan` `show` permission; a dedicated `training_creator` role exists for a trusted non-admin to manage content (`show`/`add`/`edit`, no `del`). Full detail: [TRAINING.md](TRAINING.md).
+
 ### Blog Admin
 
 Create, edit, publish, and delete blog posts and news articles. Uses Quill rich-text editor.
@@ -320,8 +331,17 @@ All routes behind `auth:sanctum` + `banned` middleware.
 |---|---|---|
 | GET | `/api/auth_user` | Current user + abilities |
 | GET | `/api/get_user/get_auth_user_data` | Detailed user data |
+| GET | `/api/get_user/get_user_data/:user_id` | Another user's data (admin lookup) |
 | GET | `/api/get_user/get_all_users` | All users (admin) |
+| GET | `/api/get_user/get_worker_users` | Users with a staff-capable role, for assignment dropdowns (e.g. task assignee) |
 | GET | `/api/get_user/get_auth_user_permissions` | User's permissions array |
+| GET | `/api/get_user/post_user/:user_id` | *(controller method `get_post_user` — route path doesn't match the method name)* |
+| GET | `/api/get_user/get_team/get_member_status/:id` / `get_team_members` | Team-member lookups scoped under the authenticated-user namespace, distinct from the public guide team endpoints |
+| POST | `/api/user/user_image_update/:user_id` | Upload/replace avatar |
+| POST | `/api/user/update_password` | Change own password |
+| GET/POST/PUT/DELETE | `/api/user_site` (`Route::apiResource`) | CRUD for the profile's external links list (`user_sites` table, `id`+`url`+`user_id`) — the `user_sites` shown on the public [Climber Profile](CLIMBER_PROFILE.md#backend-api) |
+| GET | `/api/get_options/get_selected_user_data/:user_id` | Admin: load one user's editable profile data |
+| GET | `/api/get_options/get_user_notification_data` | Current user's notification-preference blob |
 | POST | `/api/get_options/user_info_update/:user_id` | Update profile |
 | POST | `/api/get_options/update_user_notification_data` | Update notifications |
 
@@ -330,6 +350,8 @@ All routes behind `auth:sanctum` + `banned` middleware.
 | Method | Path | Description |
 |---|---|---|
 | GET | `/api/get_user_adreses` | All saved addresses |
+| GET | `/api/get_activ_adres/:id` | The one address currently marked active/default |
+| POST | `/api/get_editing_adres/:id` | Load one address for editing (POST despite being a read, per this controller's existing convention) |
 | POST | `/api/add_user_adreses` | Add address |
 | POST | `/api/edit_adres/:id` | Edit address |
 | DELETE | `/api/del_user_adreses/:id` | Delete address |
@@ -340,8 +362,12 @@ All routes behind `auth:sanctum` + `banned` middleware.
 |---|---|---|
 | GET | `/api/get_faworite/get_faworite_outdoor_region` | Favorite areas |
 | GET | `/api/get_faworite/get_interested_events` | Interested events |
+| GET | `/api/get_faworite/check_interested_status/:event_id` | Is the current user interested in this event? |
+| GET | `/api/get_faworite/check_favorite_status/:article_id` | Has the current user favorited this outdoor area? |
 | POST | `/api/set_faworite_by_user/add_to_favorite_outdoor_area/:id` | Add favorite |
+| POST | `/api/set_faworite_by_user/add_to_interested_events` | Mark interested in an event |
 | DELETE | `/api/set_faworite/del_favorite_outdoor_area/:id` | Remove favorite |
+| DELETE | `/api/set_faworite/del_interested_event/:id` | Remove interest |
 
 **Climber follow (climber-to-climber, not the legacy shop/guide "service following"):**
 

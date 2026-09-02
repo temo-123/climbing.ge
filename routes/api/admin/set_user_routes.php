@@ -95,7 +95,7 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
     });
 
     Route::controller(RolesController::class)->prefix('set_role')->group( function() {
-        Route::apiResource('/', 'RolesController');
+        Route::apiResource('/', 'RolesController')->only(['index']);
 
         Route::get('get_editing_role/{role_id}', 'get_editing_role');
         Route::get('get_editing_role_permissions/{role_id}', 'get_editing_role_permissions');

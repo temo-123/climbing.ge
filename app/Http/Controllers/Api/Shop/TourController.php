@@ -85,7 +85,7 @@ class TourController extends Controller
     }
 
     function get_user_tours(){
-        return Auth::user()->tours;
+        return auth('sanctum')->user()->tours;
     }
 
     function get_similar_tours(Request $request) {

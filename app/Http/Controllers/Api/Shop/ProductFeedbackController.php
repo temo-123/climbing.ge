@@ -66,7 +66,8 @@ class ProductFeedbackController extends Controller
         $feedback_array = [];
 
         foreach ($feedbacks as $feedback) {
-            array_push($feedback_array, ['feedback' => $feedback, 'user' => $feedback->user->first()]);
+            $feedback_user = $feedback->user()->select(['users.id', 'users.name', 'users.surname', 'users.image'])->first();
+            array_push($feedback_array, ['feedback' => $feedback, 'user' => $feedback_user]);
         }
 
         return $feedback_array;

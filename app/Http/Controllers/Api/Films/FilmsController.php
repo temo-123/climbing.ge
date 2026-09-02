@@ -26,18 +26,18 @@ class FilmsController extends Controller
 
     public function get_films(Request $request)
     {
-        $films = Film::where('public', '=', 1)->get();
-        return GetFilmService::get_films_list_use_locale($films, $request->locale);
+        $films = Film::where('published', '=', 1)->get();
+        return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_same_films(Request $request){
-        $films = Film::where('public', '=', 1)->where('category_id', '=', $request->category_id)->where('id', '!=', $request->film_id)->limit(4)->get();
-        return GetFilmService::get_films_list_use_locale($films, $request->locale);
+        $films = Film::where('published', '=', 1)->where('category_id', '=', $request->category_id)->where('id', '!=', $request->film_id)->limit(4)->get();
+        return FilmService::get_films_list_use_locale($films, $request->locale);
     }
 
     public function get_film(Request $request){
-        $film = Film::where('public', '=', 1)->where('url_title', '=', $request->url_title)->first();
-        return GetFilmService::get_film_on_page_use_locale($film, $request->locale);
+        $film = Film::where('published', '=', 1)->where('url_title', '=', $request->url_title)->first();
+        return FilmService::get_film_on_page_use_locale($film, $request->locale);
     }
 
     public function get_films_categories(Request $request){
@@ -49,7 +49,7 @@ class FilmsController extends Controller
         if($request->top_film_type == 'get_most_liked_films'){
             $films_likes = [];
             
-            foreach (Film::where('public', '=', 1)->get() as $film) {
+            foreach (Film::where('published', '=', 1)->get() as $film) {
                 $likes_count = Favorite_film::where('film_id', '=', $film->id)->count();
                 array_push(
                     $films_likes,
@@ -73,23 +73,23 @@ class FilmsController extends Controller
                 }
             }
 
-            // return Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->first();
+            // return Film::where('published', '=', 1)->where('id', '=', $bigest_film_id)->first();
 
-            $film = Film::where('public', '=', 1)->where('id', '=', $bigest_film_id)->get();
-            return GetFilmService::get_films_list_use_locale($film, $request->locale);
+            $film = Film::where('published', '=', 1)->where('id', '=', $bigest_film_id)->get();
+            return FilmService::get_films_list_use_locale($film, $request->locale);
 
         }
     }
 
     public function get_faworite_film_list(Request $request)
     {
-        if (Auth::user()) {
-            $fav_film = Favorite_film::where('user_id', '=', Auth::user()->id)->get();
+        if (auth('sanctum')->user()) {
+            $fav_film = Favorite_film::where('user_id', '=', auth('sanctum')->id())->get();
             $films = [];
             foreach ($fav_film as $film) {
                 $global_films = Film::where('id', '=', $film->film_id)->where('published', '=', 1)->get();
                 if ($global_films->isEmpty()) continue;
-                $f_film = GetFilmService::get_films_list_use_locale($global_films, $request->lang);
+                $f_film = FilmService::get_films_list_use_locale($global_films, $request->lang);
                 array_push($films, $f_film[0]);
             }
             return $films;

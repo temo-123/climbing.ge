@@ -62,7 +62,7 @@
 
             get_categories_data: function(){
                 axios
-                .get("/get_film/get_films_categories/us/")
+                .get("/set_films/get_films_categories/us/")
                 .then(response => {
                     this.data_for_tab.push({'id': 3,
                                             'data': response.data, 

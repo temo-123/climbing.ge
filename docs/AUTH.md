@@ -105,36 +105,46 @@ const encryptedPassword = encrypt.encrypt(plainPassword)
 }
 ```
 
-### Process
+### Process (`LoginController::apiLogin`)
 
-1. Fetches RSA private key from `storage/framework/private.key`
-2. Decrypts password using OpenSSL
-3. Validates credentials with `Auth::attempt()`
-4. Checks `banned` status
-5. Creates / returns Sanctum token
-6. Sets Sanctum session cookie
-7. Returns user data + abilities
+1. If `GOOGLE_CAPTCHA_V3_*` is configured, requires a `recaptcha_token` that passes `ReCaptchaV3Service::verifySmart()` — same as registration, `422` on failure. The frontend (`LoginComponent.vue`) fetches this token client-side via `grecaptcha.execute(key, {action:'login'})` before ever POSTing.
+2. Fetches RSA private key from `storage/framework/private.key`, decrypts the password with `openssl_private_decrypt()`. Missing/unreadable key file → `500 {"message":"Server configuration error"}`; decrypt failure → `400 {"message":"Invalid encrypted password"}`.
+3. Validates credentials with `auth()->attempt($credentials, $request->remember)` — this uses Laravel's **default** guard purely to verify the email/password pair against the `users` table; it is not the same as being authenticated for the rest of the request (see [Common Backend Pitfalls](../CLAUDE.md#common-backend-pitfalls) for why the default guard is generally *not* safe to rely on elsewhere in this codebase — login is the one legitimate exception, since it's establishing identity fresh, not reading an already-authenticated user).
+4. On success, checks `$user->isBanned()` — if banned, logs the just-established session back out (`auth()->logout()`) and returns `403` with an `alert` object (`type/title/message/icon`) the frontend renders as a toast.
+5. **`$user->tokens()->delete()`** — every prior Sanctum token for this user is revoked before a new one is issued. Logging in on a new device/browser silently invalidates every other active session for that account; there is no "active sessions" list to review this or opt out of it.
+6. Creates a new token (`createToken('authToken')->plainTextToken`) and returns it.
+7. Every attempt is logged: a successful login logs `Login successful for user: {email}`, a bad-credentials attempt logs `Login failed for email: {email}` and returns `422 {"message":"auth.failed"}` (a raw translation key string, not a human-readable message — the frontend is expected to run it through i18n), and an unexpected exception is caught, logged with file/line, and returns a generic `500`. The handler also logs every incoming request's IP, scheme, `X-Forwarded-Proto`/`X-Forwarded-Ssl`, user agent, and referer up front (`'API Login request'` log entry) — added specifically to debug mixed-content/HTTPS-detection issues behind a reverse proxy; check `storage/logs/laravel.log` for this line first if login works locally but not behind production's proxy.
 
 ### Response
 
 ```json
 {
   "token": "2|xyz789...",
-  "user": {
-    "id": 5,
-    "name": "John",
-    "email": "john@example.com",
-    "roles": ["user"],
-    "casl_permissions": [{"action":"edit","subject":"article"}, ...]
-  }
+  "user": { "id": 5, "name": "John", "surname": "Doe", "email": "john@example.com", ... },
+  "message": "Login successful"
 }
 ```
 
-### Frontend token storage
+That's the **entire** response shape — `user` is the raw `User` model (Eloquent's `$hidden` still strips `password`/`remember_token`), and there is **no** `roles` or `casl_permissions` key inline despite older versions of this doc claiming otherwise. Those come from two separate follow-up calls the frontend makes immediately after login succeeds (see below) — `GET /api/auth_user` is a third source of the same permissions data, used on every subsequent page load rather than right after login.
+
+### Frontend token storage (`LoginComponent.vue`)
 
 ```javascript
-localStorage.setItem('x_xsrf_token', response.data.token)
+// .then(response => { ... })
+localStorage.setItem('auth_token', response.data.token)                                  // the Sanctum Bearer token from the login response
+localStorage.setItem('x_xsrf_token', response.config.headers['X-XSRF-TOKEN'])             // NOT the login token — the CSRF token Laravel's stateful-domain cookie middleware attached to the outgoing request itself
+
+// then, still inside the same .then(), before redirecting:
+axios.get('get_user/get_auth_user_permissions/', { headers: { Authorization: 'Bearer ' + response.data.token } })
+  .then(permResponse => {
+    localStorage.setItem('user_permissions', JSON.stringify(permResponse.data))  // 3rd localStorage key, permissions-only cache
+    this.$ability.update(permResponse.data)                                       // CASL updated immediately, before the redirect
+    this.$bus.$emit('permissions-loaded', permResponse.data)
+    this.$router.push(this.$route.query.redirect || { name: 'home' })
+  })
 ```
+
+`auth_token` and `x_xsrf_token` end up holding **different values from different sources** — don't assume they're the same token under two names. `Api\User\UsersController::get_auth_user_permissions` (`GET get_user/get_auth_user_permissions`, `auth:sanctum`+`banned`) exists specifically so the frontend can populate CASL synchronously right after login without waiting for the next page's `/api/auth_user` round-trip; there's also an admin-namespaced duplicate registered under `routes/api/admin/set_user_routes.php` (`Api\User\Admin\User\UsersController::get_auth_user_permissions`) with the same method name — check which one a given call site actually resolves to via the URL prefix (`get_user/...` vs `set_user/...`), not just the method name.
 
 ---
 
@@ -152,16 +162,13 @@ localStorage.setItem('x_xsrf_token', response.data.token)
 
 **Controller:** `App\Http\Controllers\Auth\SocialController`
 
-### Flow
+### Flow (`SocialController::callback`)
 
-1. Frontend calls `GET /api/login/google` → redirected to Google consent
-2. Google redirects back to `/api/login/google/callback`
-3. `SocialController@Callback`:
-   - Finds or creates `User` by email
-   - If new user: sends welcome email, assigns default role
-   - Creates Sanctum token
-   - Returns token to frontend via redirect with query param
-4. If user has no password yet (first social login), prompts `create_password`
+1. Frontend calls `GET /api/login/{provider}` → redirected to the provider's consent screen.
+2. Provider redirects back to `user.climbing.ge/login/{provider}/callback?code=...`; the Vue route renders `CallbackComponent.vue`, which itself calls `GET /api/login/{provider}/callback?code=...` (Socialite `stateless()`, since there's no server session to correlate the original redirect).
+3. **Existing user** (matched by email): checked for a ban first (`403` if banned, same as regular login) — otherwise a new Sanctum token is created and returned **directly in the JSON body**: `{status:'login', token:'...'}`. There is no redirect-with-query-param and no separate `GET /api/token` round-trip — the frontend reads `response.data.token` straight off this response and writes it to `localStorage.auth_token` itself. Unlike email/password login, `x_xsrf_token` is **not** set by this path.
+4. **New user**: created with `email_verified_at = now()` immediately (the OAuth provider already verified the email, so there's no verification-email step and — despite what an older version of this doc claimed — **no welcome email is sent** either; nothing in `SocialController::callback` fires `Registered` or queues any mail). Full name is split into `name`/`surname` on the first space; avatar URL saved via `forceFill` (not mass-assignable); a `Social_account` row links the OAuth provider + provider user id to the new `User`; the default `user` role and default-enabled `user_notifications` row are created via `createUserPermissionsAndNotifications()`. Response: `{status:'registratione', new_user_email:'...'}` — no token yet, since the account has no password.
+5. A user with no password set (every first-time social login) is routed to `/create_password/{email}` → `POST /api/login/social/create_password/{email}` sets one, after which they can also log in the normal email/password way.
 
 ### Environment Variables
 

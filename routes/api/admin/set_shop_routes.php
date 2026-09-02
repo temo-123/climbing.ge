@@ -243,7 +243,7 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
     *   Cart and orders routes
     */
     Route::controller(CartController::class)->group( function() {
-        Route::apiResource('/cart', 'CartController');
+        Route::apiResource('/cart', 'CartController')->only(['index', 'update', 'destroy']);
         Route::post('/cart/update_quantity/{item_id}', 'update_quantity');
 
         /*

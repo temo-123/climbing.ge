@@ -20,11 +20,9 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         });
 
         Route::controller(CommentController::class)->prefix('get_guide_comment')->group( function() {
-            Route::get('/get_all_comments', 'get_all_comments');
-            Route::get('/get_user_comments', 'get_user_comments');
+            Route::get('/get_all_comments', 'get_all_comments')->middleware('auth:sanctum');
+            Route::get('/get_user_comments', 'get_user_comments')->middleware('auth:sanctum');
             Route::get('/get_article_comments/{article_id}', 'get_article_comments');
-
-            Route::get('/get_comments_complaints', 'get_comments_complaints');
         });
 
     });
@@ -191,8 +189,8 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         });
 
         Route::controller(RoutesReitingController::class)->prefix('get_route_review')->group( function() {
-            Route::get('/get_user_review', 'get_user_review');
-            Route::get('/get_all_review', 'get_all_review');
+            Route::get('/get_user_review', 'get_user_review')->middleware('auth:sanctum');
+            Route::get('/get_all_review', 'get_all_review')->middleware('auth:sanctum');
             Route::get('/get_actyve_review/{review_id}', 'get_actyve_review');
 
             Route::get('/get_all_route_reviews/{route_id}', 'get_all_route_reviews');
@@ -211,7 +209,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
 
     Route::controller(MtpReitingController::class)->prefix('get_mtp_review')->group(function () {
         Route::get('/get_all_mtp_reviews/{mtp_id}', 'get_all_mtp_reviews');
-        Route::get('/get_user_mtp_reviews', 'get_user_mtp_reviews');
+        Route::get('/get_user_mtp_reviews', 'get_user_mtp_reviews')->middleware('auth:sanctum');
     });
 
     Route::controller(\App\Http\Controllers\Api\Guide\Donations\DonationPaymentController::class)->prefix('set_donation')->group( function() {

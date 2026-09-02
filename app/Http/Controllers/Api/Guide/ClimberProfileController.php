@@ -49,7 +49,9 @@ class ClimberProfileController extends Controller
 
     public function show($user_id): JsonResponse
     {
-        $user = User::select(['id', 'name', 'surname', 'image', 'my_bio', 'social_links', 'created_at'])->find($user_id);
+        $user = User::select(['id', 'name', 'surname', 'image', 'my_bio', 'social_links', 'created_at'])
+            ->whereDoesntHave('role', fn($q) => $q->where('slug', 'ban'))
+            ->find($user_id);
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);

@@ -27,7 +27,7 @@ class DonationPaymentController extends Controller
 
         $request->validate(['amount' => 'required|numeric|min:1']);
 
-        $authUser = \Auth::user();
+        $authUser = auth('sanctum')->user();
 
         if ($authUser) {
             $name        = $authUser->name;
