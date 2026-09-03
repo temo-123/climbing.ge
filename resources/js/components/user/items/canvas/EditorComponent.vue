@@ -89,6 +89,30 @@
 
             <div class="vr"></div>
 
+            <!-- Text size -->
+            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.text_size_pixels_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.text_size_label') }}</span>
+                <input type="range" min="8" max="60" :value="textSize"
+                       @input="handleTextSizeChange(parseInt($event.target.value))"
+                       class="form-range" style="width:70px;">
+                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ textSize }}</span>
+                <span class="small text-muted" style="font-size:10px;">px</span>
+            </div>
+
+            <div class="vr"></div>
+
+            <!-- Dot size -->
+            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.dot_size_pixels_tooltip')">
+                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.dot_size_label') }}</span>
+                <input type="range" min="1" max="50" :value="dotSize"
+                       @input="handleDotSizeChange(parseInt($event.target.value))"
+                       class="form-range" style="width:70px;">
+                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ dotSize }}</span>
+                <span class="small text-muted" style="font-size:10px;">px</span>
+            </div>
+
+            <div class="vr"></div>
+
             <!-- Smooth freehand lines toggle -->
             <div class="d-flex align-items-center gap-1" :title="smoothLines ? $t('admin.articles.canvas_editor.smooth_lines_enabled_tooltip') : $t('admin.articles.canvas_editor.smooth_lines_disabled_tooltip')">
                 <span class="small text-muted">{{ $t('admin.articles.canvas_editor.smooth_lines_label') }}</span>
@@ -119,7 +143,7 @@
 
         <!-- Canvas + Layers sidebar -->
         <div class="row g-2">
-            <div class="col-lg-9 col-md-8">
+            <div :class="canvas_col_class">
                 <CanvasContainerComponent
                     :action="action"
                     :json_prop="json_prop"
@@ -137,7 +161,7 @@
                     @crop-save="handleCropSave"
                 />
             </div>
-            <div class="col-lg-3 col-md-4">
+            <div :class="layers_col_class">
                 <LayersPanelComponent
                     :layers="layers"
                     :selected-layer-ids="selectedLayerIds"
@@ -221,6 +245,17 @@ export default {
             route_name: {
                 type: String,
                 default: ''
+            },
+            // Column split for the canvas/layers row — overridable per page (e.g. the
+            // sector local-image editor wants a wider drawing area) without changing
+            // the default for every other page that embeds this same editor.
+            canvas_col_class: {
+                type: String,
+                default: 'col-lg-9 col-md-8'
+            },
+            layers_col_class: {
+                type: String,
+                default: 'col-lg-3 col-md-4'
             }
         },
         data: () => ({
@@ -236,6 +271,8 @@ export default {
             currentFillColor: null,
             fillEnabled: false,
             strokeWidth: 3,
+            textSize: 16,
+            dotSize: 4,
             smoothLines: true,
             zoomLevel: 1,
             currentZoom: 1,
@@ -256,9 +293,9 @@ export default {
             this.$nextTick(() => {
                 setTimeout(() => {
                     this.updateLayersList();
-                    // Sync initial color/stroke values into the canvas manager
+                    // Sync initial color/stroke/text/dot values into the canvas manager
                     if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                        this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth);
+                        this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.currentFillColor, this.strokeWidth, this.textSize, this.dotSize);
                     }
                     if (this.$refs.canvasContainer && this.$refs.canvasContainer.setSmoothLines) {
                         this.$refs.canvasContainer.setSmoothLines(this.smoothLines);
@@ -1147,7 +1184,7 @@ export default {
                     this.currentFillColor = '#ffffff';
                 }
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth, this.textSize, this.dotSize);
                 }
             },
 
@@ -1159,14 +1196,33 @@ export default {
                     this.fillEnabled = true;
                 }
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth, this.textSize, this.dotSize);
                 }
             },
 
             handleStrokeWidthChange(width) {
                 this.strokeWidth = width;
                 if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
-                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth);
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth, this.textSize, this.dotSize);
+                }
+            },
+
+            // Text size and dot size are kept as their own reactive data properties
+            // (not local variables in the draw methods) so a value set while
+            // editing one route/layout stays in effect when switching to another —
+            // see DrawingTools.vue's _textSize()/_dotSize() helpers, which read
+            // the synced currentTextSize/currentDotSize on the canvas manager.
+            handleTextSizeChange(size) {
+                this.textSize = size;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth, this.textSize, this.dotSize);
+                }
+            },
+
+            handleDotSizeChange(size) {
+                this.dotSize = size;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.updateColors) {
+                    this.$refs.canvasContainer.updateColors(this.currentStrokeColor, this.fillColor, this.strokeWidth, this.textSize, this.dotSize);
                 }
             },
 

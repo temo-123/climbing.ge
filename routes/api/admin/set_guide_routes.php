@@ -172,6 +172,10 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
 
         Route::controller(SpotRockController::class)->prefix('set_spot_rock_images')->group( function() {
             Route::delete('/del_spot_rock_image/{image_id}', 'del_spot_rock_image');
+            // Canvas drawing on an existing spot rock image (no new image entity)
+            Route::get('/get_for_editor/{id}', 'get_for_editor');
+            Route::post('/save_drawing/{image_id}', 'save_drawing');
+            Route::delete('/del_layout/{layout_id}', 'del_layout');
         });
 
         Route::controller(SectorImageExtraDrawingController::class)->prefix('set_sector_image_extra_drawing')->group( function() {
@@ -235,6 +239,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
     Route::controller(MTPController::class)->prefix('set_mtp')->group( function() {
         Route::post('/mtp_add', 'mtp_add');
         Route::get('/get_editing_mtp/{mtp_id}', 'get_editing_mtp');
+        Route::get('/get_mtps_for_sector/{sector_id}', 'get_mtps_for_sector');
         Route::post('/mtp_edit/{mtp_id}', 'mtp_edit');
         Route::delete('/del_mtp/{mtp_id}', 'del_mtp');
         Route::post('/bulk_delete', 'bulk_delete');

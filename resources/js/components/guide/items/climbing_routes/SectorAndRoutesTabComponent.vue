@@ -5,12 +5,23 @@
         <div v-if="spot_images && spot_images.length > 0">
             <div
                 :class="'sector_images sector_images_' + spot_images.length"
-                v-for="(spot_image, spot_index) in spot_images"
+                v-for="spot_image in spot_images"
                 :key="spot_image && spot_image.id ? spot_image.id : 'spot-img-' + Math.random()"
             >
 
+                <!-- Photo has one or more sector drawings on it — show the same
+                     hover-tooltip / click-to-scroll canvas overlay
+                     sector_local_images already uses (SectorLocalImageCanvasComponent),
+                     instead of a plain lightbox photo. Its `layouts` prop shape
+                     ({id, json, sector_id, sector, canvas_width, canvas_height,
+                     bg_*}) matches spot_rocks_image_jsons rows exactly. -->
+                <SectorLocalImageCanvas
+                    v-if="spot_image && spot_image.image && spot_image.jsons && spot_image.jsons.length > 0"
+                    :image_src="spotImageSrc(spot_image)"
+                    :layouts="spot_image.jsons"
+                />
                 <openImg
-                    v-if="spot_image && spot_image.image"
+                    v-else-if="spot_image && spot_image.image"
                     :img="'/public/images/spot_rocks_img/' + spot_image.image"
                     :img_alt="spot_image.title || $t('guide.spot_rock_image_alt')"
                     :gallery="spot_gallery"
@@ -37,6 +48,7 @@
 
 import sector from "./items/SectorComponent.vue"
 import sector_and_local_area_images from "./items/SectorsAndAreaLocalImageComponrnt.vue"
+import SectorLocalImageCanvas from "./items/SectorLocalImageCanvasComponent.vue"
 
 import openImg from "../ImageOpenComponent.vue";
 
@@ -50,6 +62,7 @@ export default {
     components: {
         sector,
         sector_and_local_area_images,
+        SectorLocalImageCanvas,
 
         openImg,
     },
@@ -100,6 +113,15 @@ export default {
             const src = '/public/images/spot_rocks_img/' + spot_image.image;
             const idx = this.spot_gallery.findIndex(item => item.src === src);
             return idx >= 0 ? idx : 0;
+        },
+
+        // Same has_original branching every other drawing viewer uses — the
+        // clean origin_img backup once a drawing exists, so strokes aren't
+        // rendered on top of a composite that already has them baked in.
+        spotImageSrc(spot_image) {
+            return spot_image.has_original
+                ? '/public/images/spot_rocks_img/origin_img/' + spot_image.image
+                : '/public/images/spot_rocks_img/' + spot_image.image;
         },
 
         update(id){

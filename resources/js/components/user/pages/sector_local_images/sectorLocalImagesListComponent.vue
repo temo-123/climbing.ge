@@ -75,14 +75,16 @@
                                                     'head': [
                                                         this.$t('common.id'),
                                                         this.$t('common.name'),
-                                                        this.$t('admin.warehouses.options_col'),
+                                                        // this.$t('admin.warehouses.options_col'),
+                                                        this.$t('admin.routes_sectors.col_routes_drawing'),
                                                         this.$t('common.edit'),
                                                         this.$t('common.delete'),
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
                                                         ['data_action_id', ['title'], 'show_local_image_modal'],
-                                                        ['action_router', 'sectorLocalImagesOptions', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>'],
+                                                        // ['action_router', 'sectorLocalImagesOptions', 'btn btn-success', '<i class="fa fa-list" aria-hidden="true"></i>'],
+                                                        ['action_router', 'sectorLocalImagesOptions', 'btn btn-info', '<i aria-hidden="true" class="fa fa-pencil-square-o"></i>'],
                                                         ['action_router', 'sectorLocalImagesListEdit', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_sector_local_image', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],

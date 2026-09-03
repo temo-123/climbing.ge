@@ -210,14 +210,21 @@ export default {
             const tempLayers = [];
             if (this.related_jsons && this.related_jsons.length > 0) {
                 scope.activate();
-                this.related_jsons.forEach(jsonData => {
+                this.related_jsons.forEach((jsonData, index) => {
                     if (!jsonData) return;
                     try {
                         let parsed = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
                         if (typeof parsed === 'string') parsed = JSON.parse(parsed);
                         const before = scope.project.layers.length;
                         scope.project.importJSON(parsed);
-                        scope.project.layers.slice(before).forEach(l => {
+                        const newLayers = scope.project.layers.slice(before);
+                        // Without this, a sibling pitch drawn in a differently-sized
+                        // container than the current session bakes in the wrong
+                        // place (or off-canvas) in the saved composite JPEG, even
+                        // though its DB row and the live on-screen display are fine.
+                        const meta = (this.related_jsons_meta && this.related_jsons_meta[index]) || null;
+                        canvasContainer.rescaleLayersToCurrentBackground(newLayers, meta);
+                        newLayers.forEach(l => {
                             if (l.name === 'background') { l.remove(); return; }
                             l.name = 'temp-capture';
                             tempLayers.push(l);

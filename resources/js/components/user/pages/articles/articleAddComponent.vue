@@ -54,8 +54,8 @@
                     />
                 </div>
 
-                <SectorsImagesForm      
-                    v-if="this.category == 'outdoor'"  
+                <SectorsImagesForm
+                    v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'spot_projects'"
 
                     :category="this.category" 
 
@@ -221,7 +221,7 @@
                     loop_num = 0
                 }
 
-                if(this.category == 'outdoor'){
+                if(this.category == 'outdoor' || this.category == 'ice' || this.category == 'spot_projects'){
                     let loop_num = 0
                     this.area_images.forEach(area_image => {
                         formData.append('outdoor_area_images['+loop_num+']', area_image.image)

@@ -18,6 +18,7 @@ use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
 
 use App\Services\SportClimbingRoutesService;
+use App\Services\CanvasService;
 
 use App\Http\Controllers\Api\User\Admin\Guide\RouteJsonController;
 use Illuminate\Support\Facades\DB;
@@ -392,8 +393,12 @@ class RouteController extends Controller
             return response()->json(['error' => 'Sector image not found'], 404);
         }
 
-        // Delete all route JSON drawings for this image
-        $deleted = ClimbingRoutesJson::where('sector_image_id', $sector_image_id)->delete();
+        // Delete all route + pitch + extra-info JSON drawings for this image
+        // (not just route ones — the composite below bakes in all three kinds,
+        // so leaving pitch/extra-info rows behind would resurrect them into
+        // the next composite save even though this "erase" restored a blank photo).
+        $deleted = ClimbingRoutesJson::where('sector_image_id', $sector_image_id)->count();
+        CanvasService::deleteSectorImageCanvasData($sector_image_id);
 
         // Restore original clean photo over the composite (undo all baked-in drawings)
         $originalPath = public_path('images/sector_img/origin_img/' . $sectorImage->image);

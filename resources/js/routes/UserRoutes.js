@@ -100,6 +100,7 @@ const routes = [
             { path: 'article/:article_category', name: 'articlelist', component: load('articles/articleListComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
             { path: 'article/edit/:id', name: 'articleEdit', component: load('articles/articleEditComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
             { path: 'article/add/:article_category', name: 'articleAdd', component: load('articles/articleAddComponent'), meta: {title: 'user page', permissions: [['show', 'article']]}},
+            { path: 'spot_rock_image/options/:id', name: 'spotRockImageEditor', component: load('articles/spotRockImageEditorComponent'), meta: {title: 'user page', permissions: [['show', 'sector']]}},
 
             { path: 'region/edit/:id', name: 'region_edit', component: load('regions/RegionEditPageComponent'), meta: {title: 'user page', permissions: [['show', 'region']]}},
             { path: 'region/add/', name: 'region_add', component: load('regions/RegionAddPageComponent'), meta: {title: 'user page', permissions: [['show', 'region']]}},

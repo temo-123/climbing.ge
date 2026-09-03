@@ -4,7 +4,7 @@
             <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center gap-3">
                     <button class="btn btn-secondary btn-sm" @click="goBack">← {{ $t('common.back') }}</button>
-                    <h1 class="mb-0 h4">{{ $t('admin.articles.sector_local_image_editor.title') }}</h1>
+                    <h1 class="mb-0 h4">{{ $t('admin.articles.spot_rock_image_editor.title') }}</h1>
                 </div>
             </div>
 
@@ -14,7 +14,7 @@
                     <h5>{{ $t('admin.articles.sector_local_image_editor.layouts_title') }} <small class="text-muted">{{ $t('admin.articles.sector_local_image_editor.per_sector_hint') }}</small></h5>
                     <div class="layout-list mb-2">
                         <div
-                            v-for="(layout, index) in layouts"
+                            v-for="layout in layouts"
                             :key="layout.id"
                             class="layout-item d-flex align-items-center justify-content-between mb-1 p-2"
                             :class="{ 'layout-active': activeLayoutId === layout.id }"
@@ -24,31 +24,18 @@
                             <span style="font-size:0.95rem; flex:1;">
                                 {{ layout.sector ? layout.sector.name : $t('admin.articles.sector_local_image_editor.layout_number_prefix', { id: layout.id }) }}
                             </span>
-                            <div class="d-flex gap-1 ms-1" @click.stop>
-                                <button class="btn btn-outline-secondary btn-sm p-0"
-                                    style="width:22px;height:22px;line-height:1;"
-                                    :disabled="index === 0"
-                                    @click="moveLayoutUp(index)" :title="$t('admin.articles.sector_local_image_editor.move_up_tooltip')">↑</button>
-                                <button class="btn btn-outline-secondary btn-sm p-0"
-                                    style="width:22px;height:22px;line-height:1;"
-                                    :disabled="index >= layouts.length - 1"
-                                    @click="moveLayoutDown(index)" :title="$t('admin.articles.sector_local_image_editor.move_down_tooltip')">↓</button>
-                                <button class="btn btn-danger btn-sm p-0"
-                                    style="width:22px;height:22px;line-height:1;"
-                                    @click="deleteLayout(layout.id)">✕</button>
-                            </div>
+                            <button class="btn btn-danger btn-sm p-0" style="width:22px;height:22px;line-height:1;" @click.stop="deleteLayout(layout.id)">✕</button>
                         </div>
                         <div v-if="layouts.length === 0" class="text-muted small p-2">{{ $t('admin.articles.sector_local_image_editor.no_layouts_yet') }}</div>
                     </div>
-                    <button class="btn btn-outline-primary btn-sm" @click="newLayout">{{ $t('admin.articles.sector_local_image_editor.new_layout_btn') }}</button>
                 </div>
 
-                <!-- Right: sector selector (radio — one sector per layout) -->
+                <!-- Right: sector selector (radio — one drawing per sector) -->
                 <div class="col-md-8">
                     <h5>{{ $t('admin.articles.sector_local_image_editor.select_sector_title') }}</h5>
                     <p class="text-muted small mb-2">{{ $t('admin.articles.sector_local_image_editor.select_sector_hint') }}</p>
                     <div style="max-height:220px; overflow-y:auto; border:1px solid #dee2e6; border-radius:4px; padding:8px;">
-                        <div v-for="sector in availableSectors" :key="sector.id" class="form-check mb-1">
+                        <div v-for="sector in sectors" :key="sector.id" class="form-check mb-1">
                             <input
                                 class="form-check-input"
                                 type="radio"
@@ -61,7 +48,7 @@
                                 <span v-if="layoutBySector(sector.id)" class="badge bg-success ms-1" style="font-size:10px;">{{ $t('admin.articles.sector_local_image_editor.has_drawing_badge') }}</span>
                             </label>
                         </div>
-                        <div v-if="availableSectors.length === 0" class="text-muted small">{{ $t('admin.articles.sector_local_image_editor.no_sectors_linked') }}</div>
+                        <div v-if="sectors.length === 0" class="text-muted small">{{ $t('admin.articles.spot_rock_image_editor.no_sectors_for_article') }}</div>
                     </div>
                 </div>
             </div>
@@ -69,30 +56,13 @@
             <!-- Save button + status -->
             <div class="row mb-2">
                 <div class="col-12 d-flex align-items-center gap-2">
-                    <button
-                        class="btn"
-                        :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
-                        :disabled="extra_drawing_loading"
-                        @click="toggleExtraDrawingMode"
-                    >
-                        <i class="fa fa-map-marker"></i>
-                        {{ extra_drawing_loading ? $t('admin.export.loading_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.extra_drawing_mode_on') : $t('admin.articles.sector_local_image_editor.add_extra_drawing_btn')) }}
-                    </button>
                     <button class="btn btn-success" :disabled="saving" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? $t('admin.articles.sector_local_image_editor.saving_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.save_extra_drawing_btn') : $t('admin.articles.sector_local_image_editor.save_layout_btn')) }}
-                    </button>
-                    <button v-if="extra_drawing_mode" class="btn btn-danger" :disabled="deletingExtraDrawing" @click="deleteExtraDrawing">
-                        <i class="fa fa-trash"></i> {{ deletingExtraDrawing ? $t('admin.users.deleting_ellipsis') : $t('admin.articles.sector_local_image_editor.delete_extra_drawing_btn') }}
+                        <i class="fa fa-save"></i> {{ saving ? $t('admin.articles.spot_rock_image_editor.saving_ellipsis') : $t('admin.articles.spot_rock_image_editor.save_drawing_btn') }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'ok' ? 'text-success' : 'text-danger'">
-                        {{ saveStatus === 'ok' ? $t('admin.articles.sector_local_image_editor.saved_badge') : $t('admin.articles.sector_local_image_editor.error_badge') }}
+                        {{ saveStatus === 'ok' ? $t('admin.articles.spot_rock_image_editor.saved_badge') : $t('admin.articles.spot_rock_image_editor.error_badge') }}
                     </span>
-                    <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">{{ $t('admin.articles.sector_local_image_editor.original_saved_badge') }}</span>
-                </div>
-                <div class="col-12" v-if="extra_drawing_mode">
-                    <p class="text-muted mb-0" style="font-size:12px;">
-                        {{ $t('admin.articles.sector_local_image_editor.extra_drawing_mode_hint') }}
-                    </p>
+                    <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">{{ $t('admin.articles.spot_rock_image_editor.original_saved_badge') }}</span>
                 </div>
             </div>
 
@@ -103,16 +73,15 @@
                         v-if="imageUrl"
                         ref="editorComponent"
                         :image_prop="imageUrl"
-                        :json_prop="activeJsonProp"
-                        :json_meta="activeJsonMeta"
+                        :json_prop="canvasData"
+                        :json_meta="canvasJsonMeta"
                         :related_jsons="relatedJsons"
                         :related_jsons_meta="relatedJsonsMeta"
-                        :related_first_label="relatedFirstLabel"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
                     />
-                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.loading_image_ellipsis') }}</div>
+                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.spot_rock_image_editor.loading_image_ellipsis') }}</div>
                 </div>
             </div>
         </div>
@@ -131,18 +100,11 @@ export default {
             canvasData:       null,
             canvasJsonMeta:   null,
             layouts:          [],
-            availableSectors: [],
+            sectors:          [],
             selectedSectorId: null,
             activeLayoutId:   null,
             saving:           false,
             saveStatus:       null,
-            // "Extra drawing" mode: a general annotation layer tied only to
-            // this image (not to any one sector) — see SectorLocalImageExtraDrawing.
-            extra_drawing_mode:    false,
-            extra_drawing_json:    null,
-            extra_drawing_meta:    null,
-            extra_drawing_loading: false,
-            deletingExtraDrawing:  false,
         }
     },
     watch: {
@@ -158,52 +120,23 @@ export default {
         },
     },
     computed: {
-        // Reference-only overlay shown alongside whatever's actively being edited.
-        // - In extra-drawing mode, NOTHING is "the active layout" (the active
-        //   content is the extra drawing itself), so every sector layout shows as
-        //   reference — including the one that was selected right before switching
-        //   modes, which activeLayoutId still points to.
-        // - In normal layout mode, the extra drawing isn't being edited, so it
-        //   shows as reference too, same as any other non-active layout.
-        // Non-null when relatedJsons[0] is the extra drawing rather than a sector
-        // layout — always placed FIRST (not appended) so real layouts keep a
-        // stable position/number regardless of whether the extra drawing has
-        // finished loading yet. Tells the Editor to label/color that one entry
-        // with this name instead of numbering it as just another layout.
-        relatedFirstLabel() {
-            return (!this.extra_drawing_mode && this.extra_drawing_json) ? 'extra info' : null;
-        },
+        // Reference-only overlay: every OTHER sector's own layout shows as a
+        // dimmed reference while editing the active one.
         relatedJsons() {
-            const jsons = this.layouts
-                .filter(l => (this.extra_drawing_mode || l.id !== this.activeLayoutId) && l.json)
+            return this.layouts
+                .filter(l => l.id !== this.activeLayoutId && l.json)
                 .map(l => l.json);
-            if (this.relatedFirstLabel) jsons.unshift(this.extra_drawing_json);
-            return jsons;
         },
-        // Sibling to relatedJsons, aligned by index — the background photo's own
-        // position/size within each layout's OWN save-time view, so the editor can
-        // rescale each overlay onto the current background fit.
         relatedJsonsMeta() {
-            const metas = this.layouts
-                .filter(l => (this.extra_drawing_mode || l.id !== this.activeLayoutId) && l.json)
+            return this.layouts
+                .filter(l => l.id !== this.activeLayoutId && l.json)
                 .map(l => this._layoutMeta(l));
-            if (this.relatedFirstLabel) metas.unshift(this.extra_drawing_meta);
-            return metas;
         },
         bgImageUrl() {
             if (!this.imageInfo || !this.imageInfo.image) return null;
             return this.imageInfo.has_original
-                ? '/public/images/sector_local_img/origin_img/' + this.imageInfo.image
-                : '/public/images/sector_local_img/' + this.imageInfo.image;
-        },
-        // What the Editor actually shows/edits — the selected sector's own
-        // layout normally, or the image's general extra-info layer while
-        // that mode is toggled on.
-        activeJsonProp() {
-            return this.extra_drawing_mode ? this.extra_drawing_json : this.canvasData;
-        },
-        activeJsonMeta() {
-            return this.extra_drawing_mode ? this.extra_drawing_meta : this.canvasJsonMeta;
+                ? '/public/images/spot_rocks_img/origin_img/' + this.imageInfo.image
+                : '/public/images/spot_rocks_img/' + this.imageInfo.image;
         },
     },
     mounted() {
@@ -218,44 +151,30 @@ export default {
         const container = document.querySelector('.container.top_menu_margin');
         if (container) container.classList.remove('container');
         this.loadImageData();
-        this.loadExtraDrawing();
     },
     beforeUnmount() {
         const container = document.querySelector('.top_menu_margin');
         if (container) container.classList.add('container');
     },
     methods: {
-        // Loaded eagerly (not just on first toggle) so it's already available to
-        // show as a reference overlay in normal layout mode from the start.
-        loadExtraDrawing() {
-            axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id)
-                .then(response => {
-                    const drawing = response.data && response.data.extra_drawing;
-                    this.extra_drawing_json = drawing ? drawing.json : null;
-                    this.extra_drawing_meta = this._layoutMeta(drawing);
-                })
-                .catch(error => console.log(error));
-        },
-
         loadImageData() {
-            axios.get('/set_sector/set_sector_local_images/get_for_editor/' + this.$route.params.id)
+            axios.get('/set_sector/set_spot_rock_images/get_for_editor/' + this.$route.params.id)
                 .then(response => {
                     const d = response.data || {};
                     if (d.image) {
                         this.imageInfo = d.image;
-                        // Use original as background for drawing if backed up; otherwise current image
                         this.imageUrl = d.image.has_original
-                            ? '/public/images/sector_local_img/origin_img/' + d.image.image
-                            : '/public/images/sector_local_img/' + d.image.image;
+                            ? '/public/images/spot_rocks_img/origin_img/' + d.image.image
+                            : '/public/images/spot_rocks_img/' + d.image.image;
                     }
-                    this.availableSectors = d.sectors || [];
+                    this.sectors = d.sectors || [];
                     this.layouts = d.layouts || [];
                 })
                 .catch(error => console.log(error));
         },
 
         reloadLayouts() {
-            axios.get('/set_sector/set_sector_local_images/get_for_editor/' + this.$route.params.id)
+            axios.get('/set_sector/set_spot_rock_images/get_for_editor/' + this.$route.params.id)
                 .then(response => {
                     this.layouts = (response.data && response.data.layouts) ? response.data.layouts : [];
                 })
@@ -280,39 +199,14 @@ export default {
         selectLayout(layoutId) {
             const layout = this.layouts.find(l => l.id === layoutId);
             if (!layout) return;
-            this.canvasData       = layout.json;
-            this.canvasJsonMeta   = this._layoutMeta(layout);
-            this.selectedSectorId = layout.sector_id;
-            this.activeLayoutId   = layout.id;
-        },
-
-        moveLayoutUp(index) {
-            if (index === 0) return;
-            const arr = [...this.layouts];
-            [arr[index - 1], arr[index]] = [arr[index], arr[index - 1]];
-            this.layouts = arr;
-        },
-
-        moveLayoutDown(index) {
-            if (index >= this.layouts.length - 1) return;
-            const arr = [...this.layouts];
-            [arr[index], arr[index + 1]] = [arr[index + 1], arr[index]];
-            this.layouts = arr;
-        },
-
-        newLayout() {
-            this.canvasData       = null;
-            this.canvasJsonMeta   = null;
-            this.selectedSectorId = null;
-            this.activeLayoutId   = null;
+            this.canvasData        = layout.json;
+            this.canvasJsonMeta    = this._layoutMeta(layout);
+            this.selectedSectorId  = layout.sector_id;
+            this.activeLayoutId    = layout.id;
         },
 
         handleCanvasData(data) {
-            if (this.extra_drawing_mode) {
-                this.extra_drawing_json = data;
-            } else {
-                this.canvasData = data;
-            }
+            this.canvasData = data;
         },
 
         // The background photo's own actual position + size within the Paper.js
@@ -332,118 +226,23 @@ export default {
             };
         },
 
-        // Switches the editor between "the selected sector's own layout" and
-        // the image's general extra-info layer, shared by every sector using
-        // this image — fetched once when entering the mode.
-        async toggleExtraDrawingMode() {
-            if (!this.extra_drawing_mode) {
-                this.extra_drawing_loading = true;
-                try {
-                    const response = await axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id);
-                    const drawing = response.data && response.data.extra_drawing;
-                    this.extra_drawing_json = drawing ? drawing.json : null;
-                    this.extra_drawing_meta = this._layoutMeta(drawing);
-                } catch (e) {
-                    this.extra_drawing_json = null;
-                    this.extra_drawing_meta = null;
-                } finally {
-                    this.extra_drawing_loading = false;
-                }
-            }
-            this.extra_drawing_mode = !this.extra_drawing_mode;
-        },
-
-        async saveExtraDrawing() {
-            if (!this.$route.params.id) { alert(this.$t('admin.articles.sector_local_image_editor.no_image_selected_alert')); return; }
-
-            this.saving    = true;
-            this.saveStatus = null;
-
-            try {
-                const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
-
-                let json = this.extra_drawing_json;
-                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
-                    const cleanJson = canvasContainer.getCleanJson();
-                    if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
-                }
-                if (!json) { alert(this.$t('admin.articles.sector_local_image_editor.no_drawing_data_alert')); return; }
-
-                let editedImageData = null;
-                let canvasWidth = 0;
-                let canvasHeight = 0;
-                if (canvasContainer) {
-                    const scope = canvasContainer.getCanvasScope();
-                    if (scope && scope.view) {
-                        canvasWidth  = Math.round(scope.view.viewSize.width);
-                        canvasHeight = Math.round(scope.view.viewSize.height);
-                    }
-                    const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
-                    editedImageData = await this.compositeImages(
-                        this.bgImageUrl,
-                        drawingDataUrl,
-                        canvasContainer.$refs.canvasManager.$el
-                    );
-                }
-
-                const response = await axios.post(
-                    '/set_sector/set_sector_local_image_extra_drawing/save/' + this.$route.params.id,
-                    {
-                        json, edited_image: editedImageData, canvas_width: canvasWidth, canvas_height: canvasHeight,
-                        ...this.bgBoundsPayload(canvasContainer),
-                    }
-                );
-
-                this.saveStatus = response.data.success ? 'ok' : 'error';
-                if (response.data.success && this.imageInfo) {
-                    this.imageInfo.has_original = true;
-                    this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
-                }
-                setTimeout(() => { this.saveStatus = null; }, 3000);
-            } catch (e) {
-                console.error(e);
-                this.saveStatus = 'error';
-            } finally {
-                this.saving = false;
-            }
-        },
-
-        async deleteExtraDrawing() {
-            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_extra_drawing'))) return;
-
-            this.deletingExtraDrawing = true;
-            try {
-                await axios.delete('/set_sector/set_sector_local_image_extra_drawing/delete/' + this.$route.params.id);
-                this.extra_drawing_json = null;
-                this.saveStatus = 'ok';
-                setTimeout(() => { this.saveStatus = null; }, 3000);
-            } catch (e) {
-                this.saveStatus = 'error';
-            } finally {
-                this.deletingExtraDrawing = false;
-            }
-        },
-
         async saveChanges() {
-            if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
-
             if (!this.canvasData)       { alert(this.$t('admin.articles.sector_local_image_editor.draw_something_alert')); return; }
             if (!this.selectedSectorId) { alert(this.$t('admin.articles.sector_local_image_editor.select_sector_first_alert')); return; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.articles.spot_rock_image_editor.editor_not_ready')); return; }
 
             this.saving    = true;
             this.saveStatus = null;
 
             try {
-                const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
+                const canvasContainer = this.$refs.editorComponent.$refs.canvasContainer;
 
-                // Get most up-to-date JSON directly from Paper.js
                 let json = this.canvasData;
                 if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) json = cleanJson;
                 }
 
-                // Build composite: background photo + all drawn strokes baked in
                 let editedImageData = null;
                 let canvasWidth = 0;
                 let canvasHeight = 0;
@@ -462,10 +261,10 @@ export default {
                 }
 
                 const response = await axios.post(
-                    '/set_sector/set_sector_local_images/save_canvas_data/' + this.$route.params.id,
+                    '/set_sector/set_spot_rock_images/save_drawing/' + this.$route.params.id,
                     {
-                        canvasData:    json,
-                        sectorId:      this.selectedSectorId,
+                        json,
+                        sector_id:     this.selectedSectorId,
                         edited_image:  editedImageData,
                         canvas_width:  canvasWidth,
                         canvas_height: canvasHeight,
@@ -473,13 +272,12 @@ export default {
                     }
                 );
 
-                this.saveStatus    = 'ok';
+                this.saveStatus     = 'ok';
                 this.activeLayoutId = response.data.layout_id;
 
-                // After first save the original is backed up — switch editor background to origin_img/
                 if (response.data.has_original && this.imageInfo) {
                     this.imageInfo.has_original = true;
-                    this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
+                    this.imageUrl = '/public/images/spot_rocks_img/origin_img/' + this.imageInfo.image;
                 }
 
                 this.reloadLayouts();
@@ -490,6 +288,21 @@ export default {
             } finally {
                 this.saving = false;
             }
+        },
+
+        deleteLayout(layoutId) {
+            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_layout'))) return;
+            axios.delete('/set_sector/set_spot_rock_images/del_layout/' + layoutId)
+                .then(() => {
+                    if (this.activeLayoutId === layoutId) {
+                        this.canvasData = null;
+                        this.canvasJsonMeta = null;
+                        this.selectedSectorId = null;
+                        this.activeLayoutId = null;
+                    }
+                    this.reloadLayouts();
+                })
+                .catch(error => console.log(error));
         },
 
         // Capture all drawing strokes (all layouts) with original colors — no background raster.
@@ -547,10 +360,9 @@ export default {
             }
 
             // Sibling sectors' reference geometry must render BELOW this sector's own
-            // strokes, same as the live editing view (see _repositionRelatedLayersBelow
-            // in CanvasHandlers.vue) — otherwise a solid-filled neighboring rectangle
-            // that overlaps this sector's own arrow/text paints over it in the snapshot,
-            // even though it's never occluded on-screen.
+            // strokes, same as the live editing view — otherwise a solid-filled
+            // neighboring shape that overlaps this sector's own arrow/text paints
+            // over it in the snapshot.
             const mainLayer = scope.project.layers.find(l => l.name === 'main');
             if (mainLayer) tempLayers.forEach(l => { try { l.insertBelow(mainLayer); } catch (_) {} });
 
@@ -572,10 +384,9 @@ export default {
             return dataUrl;
         },
 
-        // Composite: draw background photo then drawing strokes on top. Renders at the
-        // PHOTO's own native resolution, not the browser's current on-screen canvas
-        // size — otherwise every save silently downscales the sector image to
-        // whatever width the editor happened to be rendered at.
+        // Renders at the PHOTO's own native resolution, not the browser's current
+        // on-screen canvas size — otherwise every save silently downscales the
+        // photo to whatever width the editor happened to be rendered at.
         compositeImages(bgPath, drawingDataUrl, paperCanvas) {
             return new Promise((resolve) => {
                 const drawStrokesThenResolve = (ctx, w, h) => {
@@ -607,16 +418,6 @@ export default {
                 bg.onerror = fallback;
                 bg.src = bgPath;
             });
-        },
-
-        deleteLayout(layoutId) {
-            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_layout'))) return;
-            axios.delete('/set_sector/set_sector_local_images/del_layout/' + layoutId)
-                .then(() => {
-                    if (this.activeLayoutId === layoutId) this.newLayout();
-                    this.reloadLayouts();
-                })
-                .catch(error => console.log(error));
         },
 
         goBack() { this.$router.go(-1); },

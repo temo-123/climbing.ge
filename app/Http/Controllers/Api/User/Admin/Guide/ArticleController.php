@@ -146,7 +146,10 @@ class ArticleController extends Controller
 
     private function description_img($actyve_id, $global_blocks, $data, $request) 
     {
-        if($data['global_article']["category"] == 'outdoor'){
+        // Spot rock / area images gallery — originally outdoor-only, opened up
+        // to ice and spot_projects articles too (same upload flow, field name
+        // kept as-is since it's internal-only).
+        if(in_array($data['global_article']["category"], ['outdoor', 'ice', 'spot_projects'])){
             if($request->hasFile('outdoor_area_images')){
                 $this->add_outdoor_area_images($request->outdoor_area_images, $actyve_id);
             }

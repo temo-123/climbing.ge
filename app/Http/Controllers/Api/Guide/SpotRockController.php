@@ -13,6 +13,6 @@ class SpotRockController extends Controller
 {
     public function get_spot_rock_images(Request $request)
     {
-        return Spot_rocks_image::where('article_id', '=', $request->article_id)->get();
+        return Spot_rocks_image::with('jsons.sector')->where('article_id', '=', $request->article_id)->get();
     }
 }

@@ -27,6 +27,7 @@
                         @filtr_outdoors="filtr_outdoors"
                         @filtr_ice_sectors="filtr_ice_sectors"
                         @show_spot_sectors_modal="show_spot_sectors_modal"
+                        @show_spot_rock_images_modal="show_spot_rock_images_modal"
                         @quick_wiev_action="quick_wiev_action"
                         @sector_modal="show_sector_model"
                         @delete_selected="bulk_delete_dispatch"
@@ -40,6 +41,7 @@
             </div>
         </div>
         <spot_sectors_modal ref="show_spot_sectors_modal" />
+        <spot_rock_images_modal ref="show_spot_rock_images_modal" />
         <sectorModal ref="sector_modal" />
         <ArticleQuickViewModal ref="quick_view_modal" />
     </div>
@@ -49,6 +51,7 @@
 import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import breadcrumb from '../../items/BreadcrumbComponent.vue'
 import spot_sectors_modal from "../../items/modal/tab_modals/ArticleSectorSequenceModalComponent.vue";
+import spot_rock_images_modal from "../../items/modal/tab_modals/SpotRockImagesModalComponent.vue";
 import sectorModal from "../../items/modal/tab_modals/SectorModalComponent.vue";
 import ArticleQuickViewModal from "../../items/modal/ArticleQuickViewModal.vue";
 
@@ -58,6 +61,7 @@ export default {
         tabsComponent,
         sectorModal,
         spot_sectors_modal,
+        spot_rock_images_modal,
         ArticleQuickViewModal,
     },
     computed: {
@@ -394,6 +398,15 @@ export default {
                             }
                         }
                     }]
+                    // Route/approach-line drawings on this article's spot rock
+                    // images (see SectorImagesFormComponent.vue's data table on
+                    // the edit page for the same list) — a quick jump straight
+                    // from the list without opening the full edit form first.
+                    if((category == 'outdoor' || category == 'ice') && tabs[0].tab_data.data.length > 0){
+                        tabs[0].tab_data.tab.head.splice(3, 0, this.$t('admin.articles.spot_rock_drawing_table_title'))
+                        tabs[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_rock_images_modal', 'btn btn-warning', '<i aria-hidden="true" class="fa fa-pencil-square-o"></i>'])
+                        tabs[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
+                    }
                     if(category == 'outdoor'){
                         if (tabs[0].tab_data.data.length > 0) {
                             tabs[0].tab_data.tab.head.splice(3, 0, this.$t('common.sectors'))
@@ -559,6 +572,9 @@ export default {
         },
         show_spot_sectors_modal(article_id){
             this.$refs.show_spot_sectors_modal.show_spot_sectors_modal(article_id)
+        },
+        show_spot_rock_images_modal(article_id){
+            this.$refs.show_spot_rock_images_modal.show_spot_rock_images_modal(article_id)
         },
         quick_wiev_action(article_id){
             let article = null

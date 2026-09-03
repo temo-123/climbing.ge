@@ -158,20 +158,31 @@
                     <span v-else style="width:18px; flex-shrink:0;" class="me-1"></span>
 
                     <!-- Color + size -->
-                    <input type="color" :value="layer.color || '#999999'"
+                    <!-- Same reasoning as the size input below: a group can mix lines, dots,
+                         text and shapes with different colors, so one swatch here was always
+                         misleading (it only ever reflected one arbitrary child). Each child
+                         still gets its own correct color control when the group is expanded. -->
+                    <input v-if="!layer.isGroup" type="color" :value="layer.color || '#999999'"
                            @change="!layer.isRelated && $emit('change-layer-color', layer, $event.target.value)"
                            :disabled="layer.isRelated"
                            class="layer-color-swatch me-1"
                            :title="layer.isRelated ? $t('admin.articles.canvas_editor.reference_route_color_tooltip') : $t('admin.articles.canvas_editor.color_tooltip')" />
+                    <span v-else style="width:22px; flex-shrink:0;" class="me-1"></span>
 
-                    <template v-if="!layer.isRelated">
+                    <template v-if="!layer.isRelated && !layer.isGroup">
                         <input type="number"
                                :value="layer.strokeWidth || (layer.isText ? 16 : 3)"
                                :min="layer.isText ? 6 : 1"
                                :max="layer.isText ? 120 : 20"
-                               @change="$emit('change-layer-size', layer, $event.target.value)"
+                               @input="$emit('change-layer-size', layer, $event.target.value)"
                                class="layer-size-input me-1"
                                :title="layer.isText ? $t('admin.articles.canvas_editor.font_size_pt_tooltip') : $t('admin.articles.canvas_editor.stroke_width_px_tooltip')" /></template>
+                    <!-- A group's own "size" is meaningless — it can mix lines, dots, text
+                         and shapes at completely different scales, so showing any single
+                         number here (previously the first/line child's width) was always
+                         misleading. Each child still gets its own size control below when
+                         the group is expanded. -->
+                    <span v-else-if="layer.isGroup" style="width:38px; flex-shrink:0;" class="me-1"></span>
 
                     <!-- Push buttons to far right -->
                     <div class="flex-grow-1"></div>
@@ -303,7 +314,7 @@
                                :value="child.strokeWidth || (child.isText ? 16 : 3)"
                                :min="child.isText ? 6 : 1"
                                :max="child.isText ? 120 : 20"
-                               @change="$emit('change-child-size', layer, child, $event.target.value)"
+                               @input="$emit('change-child-size', layer, child, $event.target.value)"
                                class="layer-size-input me-1"
                                :title="child.isText ? $t('admin.articles.canvas_editor.font_size_pt_tooltip') : $t('admin.articles.canvas_editor.stroke_width_px_tooltip')" />
 

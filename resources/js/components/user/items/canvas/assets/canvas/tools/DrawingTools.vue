@@ -3,9 +3,11 @@ import paper from 'paper';
 
 export default {
     methods: {
-        _stroke() { return this.currentStrokeColor || '#ff0000'; },
-        _fill()   { return this.currentFillColor   || null; },
-        _width()  { return this.currentStrokeWidth  || 3; },
+        _stroke()    { return this.currentStrokeColor || '#ff0000'; },
+        _fill()      { return this.currentFillColor   || null; },
+        _width()     { return this.currentStrokeWidth  || 3; },
+        _textSize()  { return this.currentTextSize     || 16; },
+        _dotSize()   { return this.currentDotSize      || 4; },
 
         createTool(scope) {
             scope.activate();
@@ -15,12 +17,14 @@ export default {
         add_point(event) {
             this.layerCounters.point++;
             const dotColor = (this.currentFillColor != null) ? this.currentFillColor : '#ffd700';
-            // Radius follows the same stroke-width slider (1-20) as every other
-            // tool, so the dot can actually be made smaller or bigger — it used
-            // to be hardcoded to 7 regardless of the width control.
+            // Radius follows its own reactive dot-size control (see
+            // EditorComponent's currentDotSize/handleDotSizeChange), independent
+            // of the line stroke width — it used to be hardcoded to 7, then
+            // briefly shared the line-width slider before dot size got its own
+            // dedicated control.
             const point = new paper.Path.Circle({
                 center: event.point,
-                radius: this._width(),
+                radius: this._dotSize(),
                 fillColor: dotColor,
                 strokeColor: dotColor,
                 name: `point ${this.layerCounters.point}`
@@ -131,7 +135,7 @@ export default {
                 content: this.layerCounters.rectangle.toString(),
                 fillColor: this._stroke(),
                 fontFamily: 'Arial',
-                fontSize: 20,
+                fontSize: this._textSize(),
                 fontWeight: 'bold',
                 justification: 'center',
                 name: `text ${this.layerCounters.rectangle}`
@@ -312,7 +316,7 @@ export default {
                 content: 'Text',
                 fillColor: this._stroke(),
                 fontFamily: 'Arial',
-                fontSize: 16,
+                fontSize: this._textSize(),
                 justification: 'center',
                 name: `text ${this.layerCounters.text}`
             });

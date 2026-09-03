@@ -168,11 +168,25 @@ export default {
         hasPitches() {
             return this.mtp_detals.mtp_pitchs && this.mtp_detals.mtp_pitchs.length > 0;
         },
-        // Build json_items array for canvas-json-show — all pitches with drawings
+        // Build json_items array for canvas-json-show — all pitches with drawings.
+        // Must include canvas_width/canvas_height/bg_* alongside the json itself —
+        // CanvasJsonDataShowComponent's per-item _itemScale/_itemOffset read these
+        // to place each pitch's strokes correctly on the current background image;
+        // without them every pitch silently fell back to a 1:1/no-offset guess,
+        // which is what made the overlay land at the wrong size/position.
         allPitchJsonItems() {
             if (!this.mtp_detals.mtp_pitchs) return [];
             return this.mtp_detals.mtp_pitchs
-                .map(p => ({ id: p.id, json: this.parsePitchJson(p) }))
+                .map(p => ({
+                    id: p.id,
+                    json: this.parsePitchJson(p),
+                    canvas_width: p.json ? p.json.canvas_width : null,
+                    canvas_height: p.json ? p.json.canvas_height : null,
+                    bg_left: p.json ? p.json.bg_left : null,
+                    bg_top: p.json ? p.json.bg_top : null,
+                    bg_width: p.json ? p.json.bg_width : null,
+                    bg_height: p.json ? p.json.bg_height : null,
+                }))
                 .filter(item => item.json !== null);
         },
         // Sector image src — from the first pitch that has a drawing

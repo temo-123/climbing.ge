@@ -103,7 +103,16 @@ class SectorController extends Controller
 
     public function get_spot_rocks_images(Request $request)
     {
-        return (Spot_rocks_image::where('article_id','=', $request->article_id)->get());
+        // jsons.sector eager-loaded so the public page can overlay each
+        // sector's drawing on the photo and click-to-scroll to that sector
+        // (see SectorAndRoutesTabComponent.vue). has_original computed here —
+        // it isn't a stored column, every other public controller serving
+        // this flag (e.g. get_sector_data above) computes it the same way.
+        $images = Spot_rocks_image::with('jsons.sector')->where('article_id','=', $request->article_id)->get();
+        $images->each(function ($image) {
+            $image->has_original = file_exists(public_path('images/spot_rocks_img/origin_img/' . $image->image));
+        });
+        return $images;
     }
 
     public function get_sector_and_routes(Request $request, $article_id)
@@ -204,24 +213,36 @@ class SectorController extends Controller
         if (!$sector_imgs) $sector_imgs = array();
 
         $sport_routes = $sector->sport_routes()->with('review')->get();
+        $boulder_routes = $sector->boulder_routes()->with('review')->get();
+
+        // Which sector image each route's drawing actually lives on — a sector
+        // can have several images with different routes drawn on each one, so
+        // the modal needs this to switch to the right image when a route is
+        // selected (see SectorCanvasModalComponent.vue::selectRoute).
+        $route_drawings = ClimbingRoutesJson::whereIn(
+            'route_id',
+            $sport_routes->pluck('id')->merge($boulder_routes->pluck('id'))
+        )->get(['route_id', 'sector_image_id'])->keyBy('route_id');
+
         if ($sport_routes->isNotEmpty()) {
-            $sport_route_info = $sport_routes->map(function ($route) {
+            $sport_route_info = $sport_routes->map(function ($route) use ($route_drawings) {
                 $published = $route->review->where('published', 1);
                 $count = $published->count();
                 $route['reviews_count'] = $count;
                 $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
+                $route['sector_image_id'] = optional($route_drawings->get($route->id))->sector_image_id;
                 return $route;
             });
         }
         else $sport_route_info = array();
 
-        $boulder_routes = $sector->boulder_routes()->with('review')->get();
         if ($boulder_routes->isNotEmpty()) {
-            $boulder_route_info = $boulder_routes->map(function ($route) {
+            $boulder_route_info = $boulder_routes->map(function ($route) use ($route_drawings) {
                 $published = $route->review->where('published', 1);
                 $count = $published->count();
                 $route['reviews_count'] = $count;
                 $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
+                $route['sector_image_id'] = optional($route_drawings->get($route->id))->sector_image_id;
                 return $route;
             });
         }

@@ -87,8 +87,28 @@ class MTPController extends Controller
     public function get_editing_mtp(Request $request, $id)
     {
         if ($auth = PermissionService::authorize('mtp', 'show')) return $auth;
-        
+
         return Mtp::where('id',strip_tags($request->mtp_id))->first();
+    }
+
+    // MTPs belonging to a sector — used by the sector-drawing page's MTP
+    // picker, so an admin can choose which multi-pitch route a pitch
+    // drawing on that page's canvas belongs to.
+    public function get_mtps_for_sector(Request $request, $sector_id)
+    {
+        if ($auth = PermissionService::authorize('mtp', 'show')) return $auth;
+
+        // pitchs_count / pitchs_drawn_count let the picker show "(drawn/total)"
+        // per MTP (e.g. "2/3") without a separate round-trip per MTP.
+        return Mtp::where('sector_id', strip_tags($sector_id))
+            ->withCount([
+                'pitchs',
+                'pitchs as pitchs_drawn_count' => function ($q) {
+                    $q->whereHas('json');
+                },
+            ])
+            ->orderBy('num')
+            ->get();
     }
     
 

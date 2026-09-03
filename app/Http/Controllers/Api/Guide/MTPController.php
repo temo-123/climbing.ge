@@ -36,7 +36,14 @@ class MTPController extends Controller
                 $img = \App\Models\Guide\Sector_image::find($pitch->json->sector_image_id);
                 if ($img) {
                     $pitch->json->sector_image_filename = $img->image;
-                    $pitch->json->has_original = $img->has_original ?? false;
+                    // has_original isn't a stored column — it must be computed here the
+                    // same way every other controller serving this flag does (see
+                    // SectorController/RouteController). Reading $img->has_original
+                    // directly always returned null → false, so the public modal never
+                    // used the clean origin_img backup and instead showed the composite
+                    // (strokes already baked in) UNDERNEATH the live vector overlay too —
+                    // double-rendered and, since it wasn't the origin_img, wrongly scaled.
+                    $pitch->json->has_original = file_exists(public_path('images/sector_img/origin_img/' . $img->image));
                 }
             }
         });

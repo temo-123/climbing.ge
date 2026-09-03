@@ -30,12 +30,67 @@
                         </div>
                         <div v-if="routes.length === 0" class="text-muted small p-2">{{ $t('admin.routes_sectors.no_routes_in_sector') }}</div>
                     </div>
+
+                    <!-- MTP pitch picker: an independent entry point alongside routes above —
+                         a sector can have MTPs (multi-pitch routes) with NO plain routes at
+                         all, so this must not live behind selecting a route first. Styled to
+                         match the routes list exactly (click-to-select rows, active highlight,
+                         "has drawing" badge) rather than plain <select> dropdowns — clicking a
+                         pitch activates pitch-drawing mode automatically (see selectPitch),
+                         no separate mode toggle needed; clicking the active MTP/pitch again
+                         deselects it. -->
+                    <template v-if="available_mtps.length > 0">
+                        <h5 class="mt-3">{{ $t('admin.routes_sectors.mtp_section_title') }}</h5>
+                        <div class="route-list mb-2" style="max-height:160px; overflow-y:auto;">
+                            <div
+                                v-for="mtp in available_mtps"
+                                :key="mtp.id"
+                                class="route-item d-flex align-items-center justify-content-between mb-1 p-2"
+                                :class="{ 'route-active': selected_mtp_id === mtp.id }"
+                                style="border:1px solid #dee2e6; border-radius:4px; background:#f8f9fa; cursor:pointer;"
+                                @click="selectMtp(mtp.id)"
+                            >
+                                <span style="font-size:0.95rem; flex:1;">
+                                    <i class="fa fa-route text-muted me-1"></i>{{ mtp.name }}
+                                </span>
+                                <span v-if="mtp.pitchs_count" class="badge ms-1" :class="mtp.pitchs_drawn_count >= mtp.pitchs_count ? 'bg-success' : 'bg-secondary'" style="font-size:10px;">
+                                    {{ mtp.pitchs_drawn_count }}/{{ mtp.pitchs_count }}
+                                </span>
+                            </div>
+                        </div>
+
+                        <template v-if="selected_mtp_id">
+                            <div style="margin-left:8px; border-left:2px solid #dee2e6; padding-left:8px;">
+                                <h6 class="text-muted mb-1">{{ $t('admin.routes_sectors.select_pitch_label') }}</h6>
+                                <div class="route-list mb-2" style="max-height:160px; overflow-y:auto;">
+                                    <div
+                                        v-for="pitch in mtp_pitchs"
+                                        :key="pitch.id"
+                                        class="route-item d-flex align-items-center justify-content-between mb-1 p-2"
+                                        :class="{ 'route-active': selected_pitch_id === pitch.id }"
+                                        style="border:1px solid #dee2e6; border-radius:4px; background:#f8f9fa; cursor:pointer;"
+                                        @click="selectPitch(pitch.id)"
+                                    >
+                                        <span style="font-size:0.95rem; flex:1;">
+                                            <template v-if="pitch.num">{{ pitch.num }}.</template>
+                                            {{ pitch.name }}
+                                            <small class="text-muted">{{ pitch.grade }}</small>
+                                        </span>
+                                        <span v-if="pitch.json_exists" class="badge bg-success ms-1" style="font-size:10px;">{{ $t('admin.routes_sectors.has_drawing') }}</span>
+                                    </div>
+                                    <div v-if="mtp_pitchs.length === 0" class="text-muted small p-2">{{ $t('admin.routes_sectors.no_pitches_in_mtp') }}</div>
+                                </div>
+                            </div>
+                        </template>
+
+                        <span v-if="mtp_pitch_mode" class="badge bg-warning text-dark mt-1">{{ $t('admin.routes_sectors.mtp_pitch_mode_on') }}</span>
+                    </template>
                 </div>
 
                 <!-- Right: sector image selector -->
                 <div class="col-md-8">
                     <h5>{{ $t('admin.routes_sectors.select_background_image') }}</h5>
-                    <p v-if="!selectedRouteId" class="text-muted small mb-2">{{ $t('admin.routes_sectors.select_route_first_hint') }}</p>
+                    <p v-if="!selectedRouteId && !mtp_pitch_mode" class="text-muted small mb-2">{{ $t('admin.routes_sectors.select_route_or_pitch_first_hint') }}</p>
                     <template v-else>
                         <div style="max-height:220px; overflow-y:auto; border:1px solid #dee2e6; border-radius:4px; padding:8px;">
                             <div v-for="image in sectorImages" :key="image.id" class="form-check mb-1 d-flex align-items-center gap-2">
@@ -62,10 +117,10 @@
             </div>
 
             <!-- Save / delete + status -->
-            <div class="row mb-2" v-if="selectedRouteId">
+            <div class="row mb-2" v-if="selectedRouteId || mtp_pitch_mode">
                 <div class="col-12 d-flex align-items-center gap-2">
                     <button
-                        v-if="selectedImageId"
+                        v-if="selectedImageId && !mtp_pitch_mode"
                         type="button"
                         class="btn"
                         :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
@@ -76,10 +131,10 @@
                         {{ extra_drawing_loading ? $t('admin.routes_sectors.loading_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.extra_drawing_mode_on') : $t('admin.routes_sectors.add_extra_drawing')) }}
                     </button>
                     <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? $t('admin.routes_sectors.saving_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : $t('admin.routes_sectors.save_drawing')) }}
+                        <i class="fa fa-save"></i> {{ saving ? $t('admin.routes_sectors.saving_ellipsis') : (mtp_pitch_mode ? $t('admin.routes_sectors.save_pitch_drawing_btn') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : $t('admin.routes_sectors.save_drawing'))) }}
                     </button>
                     <button class="btn btn-danger" :disabled="deleting || !canDeleteCurrent" @click="deleteDrawing">
-                        <i class="fa fa-trash"></i> {{ deleting ? $t('admin.routes_sectors.deleting_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : $t('admin.routes_sectors.delete_drawing')) }}
+                        <i class="fa fa-trash"></i> {{ deleting ? $t('admin.routes_sectors.deleting_ellipsis') : (mtp_pitch_mode ? $t('admin.routes_sectors.delete_pitch_drawing_btn') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : $t('admin.routes_sectors.delete_drawing'))) }}
                     </button>
                     <span v-if="saveStatus" :class="saveStatus === 'error' ? 'text-danger' : 'text-success'">
                         {{ saveStatus === 'ok' ? '✓ ' + $t('admin.routes_sectors.status_saved') : saveStatus === 'deleted' ? '✓ ' + $t('admin.routes_sectors.status_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
@@ -90,10 +145,15 @@
                         {{ $t('admin.routes_sectors.extra_drawing_mode_hint') }}
                     </p>
                 </div>
+                <div class="col-12" v-if="mtp_pitch_mode">
+                    <p class="text-muted mt-1 mb-0" style="font-size:12px;">
+                        {{ $t('admin.routes_sectors.mtp_pitch_mode_hint') }}
+                    </p>
+                </div>
             </div>
 
             <!-- Canvas editor -->
-            <div class="row" v-if="selectedRouteId">
+            <div class="row" v-if="selectedRouteId || mtp_pitch_mode">
                 <div class="col-12">
                     <Editor
                         v-if="imageUrl"
@@ -104,7 +164,9 @@
                         :related_jsons="relatedJsons"
                         :related_jsons_meta="relatedJsonsMeta"
                         :related_first_label="relatedFirstLabel"
-                        :route_name="extra_drawing_mode ? 'extra info' : selectedRouteName"
+                        :route_name="mtp_pitch_mode ? ('Pitch ' + selectedPitchName) : (extra_drawing_mode ? 'extra info' : selectedRouteName)"
+                        canvas_col_class="col-lg-8 col-md-8"
+                        layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
                     />
                     <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.routes_sectors.select_background_to_draw') }}</div>
@@ -145,6 +207,24 @@ export default {
             extra_drawing_meta: null,
             extra_drawing_loading: false,
 
+            // "MTP pitch drawing" mode: draws a pitch of a multi-pitch route
+            // belonging to this sector, on the currently selected sector image —
+            // saves into that pitch's own MtpPitchJson record (the SAME
+            // sector_image-based endpoints CanvasPitchEditorComponent.vue uses),
+            // not into this route's ClimbingRoutesJson. Unlike extra-drawing mode
+            // this has no manual toggle button — a sector can have MTPs with NO
+            // plain routes at all, so picking a pitch (see selectPitch) is
+            // what activates it, independent of any route selection.
+            mtp_pitch_mode: false,
+            available_mtps: [],
+            selected_mtp_id: null,
+            mtp_pitchs: [],
+            selected_pitch_id: null,
+            pitch_json: null,
+            pitch_json_meta: null,
+            pitch_related_jsons: [],
+            pitch_related_jsons_meta: [],
+
             saving: false,
             deleting: false,
             saveStatus: null,
@@ -155,12 +235,19 @@ export default {
             const r = this.routes.find(r => r.id === this.selectedRouteId);
             return r ? r.name : '';
         },
+        selectedPitchName() {
+            const p = this.mtp_pitchs.find(p => p.id === this.selected_pitch_id);
+            return p ? p.name : '';
+        },
         // What the Editor actually shows/edits — the route's own drawing normally,
-        // or the image's general extra-info layer while that mode is toggled on.
+        // the image's general extra-info layer while that mode is toggled on, or
+        // the selected MTP pitch's own drawing in pitch mode.
         activeJsonProp() {
+            if (this.mtp_pitch_mode) return this.pitch_json;
             return this.extra_drawing_mode ? this.extra_drawing_json : this.canvasData;
         },
         activeJsonMeta() {
+            if (this.mtp_pitch_mode) return this.pitch_json_meta;
             return this.extra_drawing_mode ? this.extra_drawing_meta : this.canvasJsonMeta;
         },
         // Reference-only overlay shown alongside whatever's actively being edited.
@@ -176,10 +263,16 @@ export default {
         // color that one entry with this name instead of numbering it as just
         // another route.
         relatedFirstLabel() {
+            if (this.mtp_pitch_mode) return null;
             if (this.extra_drawing_mode) return this.canvasData ? (this.selectedRouteName || 'this route') : null;
             return this.extra_drawing_json ? 'extra info' : null;
         },
         relatedJsons() {
+            // Pitch mode's reference overlay is sibling pitches of the same MTP
+            // already drawn on the currently selected sector image (fetched
+            // pre-filtered by the backend), not the sibling routes shown in the
+            // other two modes.
+            if (this.mtp_pitch_mode) return this.pitch_related_jsons;
             const jsons = [...this.otherRoutesJson];
             if (this.extra_drawing_mode) {
                 if (this.canvasData) jsons.unshift(this.canvasData);
@@ -189,6 +282,7 @@ export default {
             return jsons;
         },
         relatedJsonsMeta() {
+            if (this.mtp_pitch_mode) return this.pitch_related_jsons_meta;
             const metas = [...this.otherRoutesJsonMeta];
             if (this.extra_drawing_mode) {
                 if (this.canvasData) metas.unshift(this.canvasJsonMeta);
@@ -198,6 +292,7 @@ export default {
             return metas;
         },
         canDeleteCurrent() {
+            if (this.mtp_pitch_mode) return !!this.pitch_json;
             return this.extra_drawing_mode ? !!this.extra_drawing_json : !!this.drawingsByRoute[this.selectedRouteId];
         },
         selectedImage() {
@@ -211,7 +306,10 @@ export default {
         },
         // Once a route has a saved drawing its background image is fixed — changing it
         // here would silently orphan the drawing already baked into the old image.
+        // Doesn't apply in pitch mode: a pitch isn't tied to the route's own image,
+        // so the admin must be free to pick whichever sector image the pitch is on.
         lockImageChoice() {
+            if (this.mtp_pitch_mode) return false;
             return !!(this.selectedRouteId && this.drawingsByRoute[this.selectedRouteId]);
         },
     },
@@ -236,6 +334,18 @@ export default {
         // drawn on that image as a locked reference layer. Also reloads extra-drawing
         // state since it's tied to this specific image, not the route.
         selectedImageId(imageId) {
+            if (this.mtp_pitch_mode) {
+                // Pitch mode reference overlay is sibling pitches on THIS image,
+                // not sibling routes — refresh it here instead of the route/extra
+                // drawing state below, which pitch mode doesn't use.
+                if (imageId && this.selected_pitch_id) {
+                    this.fetchPitchRelatedJsons(imageId, this.selected_pitch_id);
+                } else {
+                    this.pitch_related_jsons = [];
+                    this.pitch_related_jsons_meta = [];
+                }
+                return;
+            }
             this.extra_drawing_mode = false;
             this.extra_drawing_json = null;
             this.extra_drawing_meta = null;
@@ -253,7 +363,19 @@ export default {
         document.querySelector('body').style.marginLeft = '0';
         const nav = document.querySelector('.admin_page_header_navbar');
         if (nav) nav.style.marginLeft = '0';
+        // This page needs the full viewport width for the canvas — HomeComponent.vue
+        // wraps every user-subdomain page in a Bootstrap `.container`, which caps
+        // max-width per breakpoint. Drop just that class (page-local DOM tweak, not
+        // an edit to HomeComponent.vue itself) and restore it on leaving so no other
+        // page under this same layout is affected.
+        const container = document.querySelector('.container.top_menu_margin');
+        if (container) container.classList.remove('container');
         this.loadSectorData();
+        this.loadMtps();
+    },
+    beforeUnmount() {
+        const container = document.querySelector('.top_menu_margin');
+        if (container) container.classList.add('container');
     },
     methods: {
         loadSectorData() {
@@ -270,8 +392,26 @@ export default {
                 .catch(error => console.log(error));
         },
 
+        // Loaded eagerly (not behind a toggle) so the MTP picker shows up
+        // immediately for a sector that has MTPs — including one with NO plain
+        // routes at all, which otherwise had no way to reach pitch drawing.
+        loadMtps() {
+            axios.get('/set_mtp/get_mtps_for_sector/' + this.sectorId)
+                .then(response => { this.available_mtps = response.data || []; })
+                .catch(() => { this.available_mtps = []; });
+        },
+
         selectRoute(routeId) {
             if (this.selectedRouteId === routeId) return;
+            // Selecting a route always means "go back to editing this route's
+            // own drawing" — exit pitch mode. Clears selected_pitch_id (not just
+            // mtp_pitch_mode) so re-picking the SAME pitch afterwards still
+            // fires the select's @change event; the MTP dropdown keeps its
+            // value so the pitch list doesn't need refetching.
+            this.mtp_pitch_mode = false;
+            this.selected_pitch_id = null;
+            this.pitch_json = null;
+            this.pitch_json_meta = null;
             this.selectedRouteId = routeId;
         },
 
@@ -334,6 +474,7 @@ export default {
                 return;
             }
             if (!this.extra_drawing_mode) {
+                this.mtp_pitch_mode = false; // modes are mutually exclusive
                 this.extra_drawing_loading = true;
                 await this.loadExtraDrawing(this.selectedImageId);
                 this.extra_drawing_loading = false;
@@ -341,8 +482,92 @@ export default {
             this.extra_drawing_mode = !this.extra_drawing_mode;
         },
 
+        // Click-to-select, styled and behaving exactly like selectRoute() above —
+        // clicking the already-active MTP again deselects it (collapses the
+        // pitch list), same click-to-toggle affordance as the pitch row below.
+        async selectMtp(mtpId) {
+            this.selected_mtp_id = (this.selected_mtp_id === mtpId) ? null : mtpId;
+
+            this.selected_pitch_id       = null;
+            this.mtp_pitchs              = [];
+            this.pitch_json               = null;
+            this.pitch_json_meta          = null;
+            this.pitch_related_jsons      = [];
+            this.pitch_related_jsons_meta = [];
+            this.mtp_pitch_mode           = false;
+            if (!this.selected_mtp_id) return;
+
+            try {
+                const response = await axios.get('/set_mtp/set_mtp_pitch/get_mtp_pitchs_for_model/' + this.selected_mtp_id);
+                this.mtp_pitchs = response.data || [];
+            } catch (e) {
+                this.mtp_pitchs = [];
+            }
+        },
+
+        // Picking a pitch is what ACTIVATES pitch-drawing mode (no separate
+        // toggle button — see the data() comment on mtp_pitch_mode) and
+        // deactivates route/extra-drawing editing, so only one drawing target
+        // is ever active. Clicking the already-active pitch again deselects it,
+        // which is the way back out of pitch mode.
+        async selectPitch(pitchId) {
+            this.selected_pitch_id = (this.selected_pitch_id === pitchId) ? null : pitchId;
+
+            this.pitch_json               = null;
+            this.pitch_json_meta          = null;
+            this.pitch_related_jsons      = [];
+            this.pitch_related_jsons_meta = [];
+
+            if (!this.selected_pitch_id) {
+                this.mtp_pitch_mode = false;
+                return;
+            }
+
+            this.mtp_pitch_mode = true;
+            this.extra_drawing_mode = false;
+            this.selectedRouteId = null; // also resets canvasData/selectedImageId via its own watcher
+
+            try {
+                const response = await axios.get('/set_mtp/set_mtp_pitch/get_editin_pitch/' + this.selected_pitch_id);
+                const pitch = response.data;
+                this.pitch_json      = (pitch && pitch.json) ? pitch.json.json : null;
+                this.pitch_json_meta = (pitch && pitch.json) ? {
+                    canvas_width: pitch.json.canvas_width, canvas_height: pitch.json.canvas_height,
+                    bg_left: pitch.json.bg_left, bg_top: pitch.json.bg_top,
+                    bg_width: pitch.json.bg_width, bg_height: pitch.json.bg_height,
+                } : null;
+                // A pitch drawing already carries the sector image it was drawn
+                // on — switch the picker to match so reopening a pitch shows its
+                // own photo, not whatever was last selected for the route.
+                if (pitch && pitch.json && pitch.json.sector_image_id) {
+                    this.selectedImageId = pitch.json.sector_image_id;
+                }
+            } catch (e) {
+                this.pitch_json = null;
+                this.pitch_json_meta = null;
+            }
+
+            if (this.selectedImageId) {
+                this.fetchPitchRelatedJsons(this.selectedImageId, this.selected_pitch_id);
+            }
+        },
+
+        fetchPitchRelatedJsons(sectorImageId, excludePitchId) {
+            axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', {
+                params: { sector_image_id: sectorImageId, exclude_pitch_id: excludePitchId }
+            })
+                .then(response => {
+                    const items = response.data || [];
+                    this.pitch_related_jsons      = items.map(i => i.json);
+                    this.pitch_related_jsons_meta = items;
+                })
+                .catch(() => {});
+        },
+
         handleCanvasData(data) {
-            if (this.extra_drawing_mode) {
+            if (this.mtp_pitch_mode) {
+                this.pitch_json = data;
+            } else if (this.extra_drawing_mode) {
                 this.extra_drawing_json = data;
             } else {
                 this.canvasData = data;
@@ -367,6 +592,7 @@ export default {
         },
 
         async saveChanges() {
+            if (this.mtp_pitch_mode) { return this.savePitchDrawing(); }
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
 
             if (!this.selectedRouteId) { alert(this.$t('admin.routes_sectors.select_route_first_alert')); return; }
@@ -488,6 +714,89 @@ export default {
             }
         },
 
+        // Pitch-mode counterpart of saveChanges/deleteDrawing above — same
+        // composite-image approach, but targets MtpPitchJson (keyed by
+        // mtp_pitch_id via the SAME endpoint CanvasPitchEditorComponent.vue
+        // uses) instead of ClimbingRoutesJson (keyed by route_id).
+        async savePitchDrawing() {
+            if (!this.selected_pitch_id) { alert(this.$t('admin.routes_sectors.select_pitch_first_alert')); return; }
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
+
+            this.saving = true;
+            this.saveStatus = null;
+
+            try {
+                const canvasContainer = this.$refs.editorComponent.$refs.canvasContainer;
+
+                let json = this.pitch_json;
+                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
+                    const cleanJson = canvasContainer.getCleanJson();
+                    if (cleanJson) { json = cleanJson; this.pitch_json = json; }
+                }
+                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
+
+                const selectedImage = this.selectedImage;
+                const bgPath = selectedImage && selectedImage.has_original
+                    ? '/public/images/sector_img/origin_img/' + selectedImage.image
+                    : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+
+                const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
+                const editedImageData = await this.compositeImages(
+                    bgPath, drawingDataUrl, canvasContainer.$refs.canvasManager.$el
+                );
+
+                const scope = canvasContainer.getCanvasScope();
+                const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
+                const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
+
+                const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
+                    pitch_id: this.selected_pitch_id,
+                    sector_image_id: this.selectedImageId,
+                    json,
+                    edited_image: editedImageData,
+                    canvas_width: canvasWidth,
+                    canvas_height: canvasHeight,
+                    ...this.bgBoundsPayload(canvasContainer),
+                });
+
+                if (response.data.success) {
+                    this.saveStatus = 'ok';
+                    if (selectedImage) selectedImage.has_original = true;
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
+                    setTimeout(() => { this.saveStatus = null; }, 3000);
+                } else {
+                    this.saveStatus = 'error';
+                }
+            } catch (e) {
+                console.error(e);
+                this.saveStatus = 'error';
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        async deletePitchDrawing() {
+            if (!this.selected_pitch_id) return;
+            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_pitch_drawing'))) return;
+
+            this.deleting = true;
+            this.saveStatus = null;
+            try {
+                await axios.delete('/set_mtp/set_mtp_pitch/del_pitch_drawing/' + this.selected_pitch_id);
+                this.pitch_json = null;
+                this.pitch_json_meta = null;
+                this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
+                this.saveStatus = 'deleted';
+                setTimeout(() => { this.saveStatus = null; }, 3000);
+            } catch (e) {
+                console.error(e);
+                this.saveStatus = 'error';
+            } finally {
+                this.deleting = false;
+            }
+        },
+
         async deleteExtraDrawing() {
             if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.no_sector_image_selected')); return; }
             if (!confirm(this.$t('admin.routes_sectors.confirm_delete_extra_drawing'))) return;
@@ -510,6 +819,7 @@ export default {
         },
 
         async deleteDrawing() {
+            if (this.mtp_pitch_mode) { return this.deletePitchDrawing(); }
             if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
             if (!this.selectedRouteId) return;
             if (!confirm(this.$t('admin.routes_sectors.confirm_delete_route_drawing'))) return;

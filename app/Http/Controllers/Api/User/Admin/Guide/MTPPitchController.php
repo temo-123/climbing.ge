@@ -23,7 +23,12 @@ class MTPPitchController extends Controller
         $auth = PermissionService::authorize('mtp_pitch', 'show');
         if ($auth) return $auth;
 
-        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->orderBy('num')->get();
+        // withExists('json') adds a json_exists boolean per row — used by the
+        // sector-drawing page's pitch picker to show a "has drawing" badge,
+        // the same signal the route list already shows via drawingsByRoute.
+        // Extra attribute on an existing shared endpoint; harmless for other
+        // consumers (e.g. PitchListComponent.vue) that don't read it.
+        return Mtp_pitch::where('mtp_id',strip_tags($request->mtp_id))->withExists('json')->orderBy('num')->get();
     }
 
     public function pitch_sequence(Request $request)

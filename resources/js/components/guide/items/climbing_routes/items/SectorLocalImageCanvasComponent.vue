@@ -155,20 +155,29 @@ export default {
                     } catch(_) { json = null; }
 
                     // Scale Paper.js canvas coordinates to natural image coordinates.
-                    // Paper.js canvas is sized to the admin container width (canvas_width);
-                    // the article canvas is sized to the image's natural resolution.
-                    const canvasW = l.canvas_width  || 0;
-                    const scaleX  = (canvasW > 0 && this.imgW > 0) ? this.imgW / canvasW : 1;
-                    const canvasH = l.canvas_height || 0;
-                    const scaleY  = (canvasH > 0 && this.imgH > 0) ? this.imgH / canvasH : 1;
+                    // The editor fits the background photo with a uniform COVER scale,
+                    // centered in the Paper.js view — the photo does not necessarily
+                    // start at view-space (0,0) or exactly fill canvas_width/canvas_height
+                    // (see CanvasManager.vue's loadBackgroundRaster). bg_width/bg_height
+                    // is the photo's own actual size within that view, and bg_left/bg_top
+                    // its own top-left offset — prefer those; canvas_width/canvas_height
+                    // alone (assuming zero offset) is only a fallback for legacy rows
+                    // saved before bg_* was tracked. Same formula as
+                    // CanvasJsonDataShowComponent's _itemScale/_itemOffset.
+                    const bw = l.bg_width  || l.canvas_width  || 0;
+                    const bh = l.bg_height || l.canvas_height || 0;
+                    const scaleX = (bw > 0 && this.imgW > 0) ? this.imgW / bw : 1;
+                    const scaleY = (bh > 0 && this.imgH > 0) ? this.imgH / bh : 1;
+                    const offsetX = l.bg_left || 0;
+                    const offsetY = l.bg_top  || 0;
 
                     const rawShapes = json ? this.extractShapes(json) : [];
                     const shapes = rawShapes.map(s => {
                         if (s.type === 'rect') {
-                            return { type: 'rect', x: s.x * scaleX, y: s.y * scaleY, w: s.w * scaleX, h: s.h * scaleY };
+                            return { type: 'rect', x: (s.x - offsetX) * scaleX, y: (s.y - offsetY) * scaleY, w: s.w * scaleX, h: s.h * scaleY };
                         }
                         if (s.type === 'ellipse') {
-                            return { type: 'ellipse', x: s.x * scaleX, y: s.y * scaleY, rx: s.rx * scaleX, ry: s.ry * scaleY };
+                            return { type: 'ellipse', x: (s.x - offsetX) * scaleX, y: (s.y - offsetY) * scaleY, rx: s.rx * scaleX, ry: s.ry * scaleY };
                         }
                         return s;
                     });

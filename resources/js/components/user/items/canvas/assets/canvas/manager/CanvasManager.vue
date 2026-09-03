@@ -89,6 +89,8 @@ export default {
         currentStrokeColor: '#ff0000',
         currentFillColor: null,
         currentStrokeWidth: 3,
+        currentTextSize: 16,
+        currentDotSize: 7,
         // When true (default), freehand lines are simplified/flattened on
         // mouse-up and drag points are distance-throttled — see CanvasHandlers.
         smoothLines: true,
@@ -603,10 +605,12 @@ export default {
             }
         },
 
-        updateColors(strokeColor, fillColor, strokeWidth) {
+        updateColors(strokeColor, fillColor, strokeWidth, textSize, dotSize) {
             this.currentStrokeColor = strokeColor;
             this.currentFillColor   = fillColor;
             this.currentStrokeWidth = strokeWidth;
+            if (textSize !== undefined) this.currentTextSize = textSize;
+            if (dotSize !== undefined) this.currentDotSize = dotSize;
         },
 
         setSmoothLines(value) {

@@ -197,9 +197,9 @@ export default {
             }
         },
 
-        updateColors(strokeColor, fillColor, strokeWidth) {
+        updateColors(strokeColor, fillColor, strokeWidth, textSize, dotSize) {
             if (this.isCanvasManagerReady && this.$refs.canvasManager && typeof this.$refs.canvasManager.updateColors === 'function') {
-                this.$refs.canvasManager.updateColors(strokeColor, fillColor, strokeWidth);
+                this.$refs.canvasManager.updateColors(strokeColor, fillColor, strokeWidth, textSize, dotSize);
             }
         },
 

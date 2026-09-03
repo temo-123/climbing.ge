@@ -7,6 +7,7 @@ use App\Models\Guide\MtpPitchJson;
 use App\Models\Guide\SectorLocalImagesJson;
 use App\Models\Guide\SectorImageExtraDrawing;
 use App\Models\Guide\SectorLocalImageExtraDrawing;
+use App\Models\Guide\SpotRocksImageJson;
 
 class CanvasService
 {
@@ -31,5 +32,19 @@ class CanvasService
     {
         SectorLocalImagesJson::where('sector_local_image_id', $sectorLocalImageId)->delete();
         SectorLocalImageExtraDrawing::where('sector_local_image_id', $sectorLocalImageId)->delete();
+    }
+
+    /**
+     * Delete all canvas JSON records (per-sector drawings) linked to a
+     * spot_rocks_image. Call this before deleting the image file so nothing
+     * is orphaned in DB. Redundant with the FK's onDelete('cascade') on
+     * spot_rocks_image_id, but kept explicit for the same reason every other
+     * method here is: consistency with how the image FILE cleanup
+     * (ImageControllService::image_delete) is never itself transactional
+     * with the DB delete, so an app-level call here is the reliable point.
+     */
+    public static function deleteSpotRocksImageCanvasData(int $spotRocksImageId): void
+    {
+        SpotRocksImageJson::where('spot_rocks_image_id', $spotRocksImageId)->delete();
     }
 }

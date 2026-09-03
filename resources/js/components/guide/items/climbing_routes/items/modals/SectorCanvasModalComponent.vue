@@ -272,6 +272,23 @@ export default {
         selectRoute(routeId) {
             this.selected_route_id = this.selected_route_id == routeId ? null : routeId;
             if (this.selected_route_id) {
+                // A sector can have several images with different routes drawn on
+                // each one — switch to whichever image THIS route's drawing
+                // actually lives on. Without this, selecting a route drawn on an
+                // image other than the one currently shown just silently failed
+                // to highlight anything (its json was never fetched for the
+                // wrong image, since canvas-json-show fetches per currentImage).
+                const route = [
+                    ...(this.sectorData.sport_routes  || []),
+                    ...(this.sectorData.boulder_route || []),
+                ].find(r => r.id == this.selected_route_id);
+                if (route && route.sector_image_id) {
+                    const idx = this.sectorData.sector_imgs.findIndex(img => img.id === route.sector_image_id);
+                    if (idx !== -1 && idx !== this.selectedImageIdx) {
+                        this.selectedImageIdx = idx;
+                    }
+                }
+
                 this.$nextTick(() => {
                     const rows = this.$refs['route-row-' + this.selected_route_id];
                     const el   = Array.isArray(rows) ? rows[0] : rows;

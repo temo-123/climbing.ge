@@ -65,10 +65,10 @@
                     @update_single_image="article_image = $event"
                 />
 
-                <SectorsImagesForm      
-                    v-if="this.category == 'outdoor'"
+                <SectorsImagesForm
+                    v-if="this.category == 'outdoor' || this.category == 'ice' || this.category == 'spot_projects'"
 
-                    @area_images="area_rocks_images = $event" 
+                    @area_images="area_rocks_images = $event"
                 />
                 <MountRouteImagesForm
                     v-if="this.category == 'mount_route'"
@@ -283,7 +283,7 @@
                     loop_num = 0
                 }
 
-                if(this.category == 'outdoor'){
+                if(this.category == 'outdoor' || this.category == 'ice' || this.category == 'spot_projects'){
                     if(this.area_rocks_images){
                         var loop_num = 0
                         this.area_rocks_images.forEach(area_image => {
