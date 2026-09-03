@@ -696,6 +696,13 @@ export default {
             const w  = Math.round(Math.abs(br.x - tl.x));
             const h  = Math.round(Math.abs(br.y - tl.y));
 
+            // Same reasoning as CanvasManager.exportCanvas: a selected item's
+            // handles are drawn straight onto view.element, so drawImage() below
+            // would bake them into the cropped snapshot if we didn't clear first.
+            const previouslySelected = this.scope.project.selectedItems.slice();
+            this.scope.project.deselectAll();
+            this.scope.view.update();
+
             let croppedDataUrl = null;
             if (w > 0 && h > 0) {
                 const temp = document.createElement('canvas');
@@ -704,6 +711,8 @@ export default {
                 temp.getContext('2d').drawImage(this.scope.view.element, x, y, w, h, 0, 0, w, h);
                 croppedDataUrl = temp.toDataURL('image/jpeg', 0.92);
             }
+
+            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
 
             // Zoom canvas to show only the cropped area
             const viewSize = this.scope.view.viewSize;

@@ -588,6 +588,16 @@ export default {
 
         exportCanvas(format) {
             if (this.scope && this.scope.project) {
+                // Paper.js draws a selected item's bounding box + resize/segment
+                // handles directly onto the canvas, not as a separate DOM overlay —
+                // so if an item was left selected, toDataURL() below bakes that
+                // cyan selection UI straight into the exported PNG. Clear it first
+                // and restore it after (same pattern as the page-level save flows
+                // in sectorRouteDrawingsEditorComponent.vue and friends).
+                const previouslySelected = this.scope.project.selectedItems.slice();
+                this.scope.project.deselectAll();
+                this.scope.view.update();
+
                 if (format === 'png') {
                     const canvas = this.scope.view.element;
                     const link = document.createElement('a');
@@ -602,6 +612,9 @@ export default {
                     link.href = URL.createObjectURL(blob);
                     link.click();
                 }
+
+                previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
+                this.scope.view.update();
             }
         },
 
