@@ -87,6 +87,7 @@
 
 <script>
 import Editor from '../../../../../items/canvas/EditorComponent.vue'
+import { drawItemScaled } from '../../../../../../../services/canvas/paperJsonRenderer.js'
 
 export default {
     components: { Editor },
@@ -181,128 +182,34 @@ export default {
             };
         },
 
-        captureAllDrawingStrokes(canvasContainer) {
-            const scope = canvasContainer.getCanvasScope();
-            if (!scope) return null;
-
-            const savedZoom    = scope.view.zoom;
-            const savedCenterX = scope.view.center.x;
-            const savedCenterY = scope.view.center.y;
-            canvasContainer.updateView(1, { x: 0, y: 0 });
-
-            const bgLayer       = scope.project.layers.find(l => l.name === 'background');
-            const relatedLayers = scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
-
-            // Paper.js draws a selected item's bounding box + resize handles directly
-            // onto the canvas, not as a separate DOM overlay — so if the user's last
-            // click before hitting Save left an item selected, toDataURL() below bakes
-            // that blue selection UI straight into the saved PNG. Clear it first and
-            // restore it after so the on-screen editor experience is unaffected.
-            const previouslySelected = scope.project.selectedItems.slice();
-            scope.project.deselectAll();
-
-            const wasBgVisible = bgLayer ? bgLayer.visible : false;
-            if (bgLayer) bgLayer.visible = false;
-
-            const relatedWasVisible = relatedLayers.map(l => l.visible);
-            relatedLayers.forEach(l => { l.visible = false; });
-
-            const tempLayers = [];
-            if (this.related_jsons && this.related_jsons.length > 0) {
-                scope.activate();
-                this.related_jsons.forEach((jsonData, index) => {
-                    if (!jsonData) return;
-                    try {
-                        let parsed = typeof jsonData === 'string' ? JSON.parse(jsonData) : jsonData;
-                        if (typeof parsed === 'string') parsed = JSON.parse(parsed);
-                        const before = scope.project.layers.length;
-                        scope.project.importJSON(parsed);
-                        const newLayers = scope.project.layers.slice(before);
-                        // Without this, a sibling pitch drawn in a differently-sized
-                        // container than the current session bakes in the wrong
-                        // place (or off-canvas) in the saved composite JPEG, even
-                        // though its DB row and the live on-screen display are fine.
-                        const meta = (this.related_jsons_meta && this.related_jsons_meta[index]) || null;
-                        canvasContainer.rescaleLayersToCurrentBackground(newLayers, meta);
-                        newLayers.forEach(l => {
-                            if (l.name === 'background') { l.remove(); return; }
-                            l.name = 'temp-capture';
-                            tempLayers.push(l);
-                        });
-                    } catch (_) {}
-                });
-            }
-
-            // Keep sibling pitches' reference geometry BELOW this pitch's own strokes,
-            // matching the live editing view — otherwise an overlapping sibling shape
-            // paints over this pitch's own strokes in the snapshot.
-            const mainLayer = scope.project.layers.find(l => l.name === 'main');
-            if (mainLayer) tempLayers.forEach(l => { try { l.insertBelow(mainLayer); } catch (_) {} });
-
-            scope.view.update();
-            const canvas = canvasContainer.$refs.canvasManager.$el;
-            const dataUrl = canvas.toDataURL('image/png');
-
-            tempLayers.forEach(l => { try { l.remove(); } catch (_) {} });
-            if (bgLayer) bgLayer.visible = wasBgVisible;
-            relatedLayers.forEach((l, i) => { l.visible = relatedWasVisible[i]; });
-            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
-            const vs = scope.view.viewSize;
-            canvasContainer.updateView(savedZoom, {
-                x: savedCenterX - vs.width / 2,
-                y: savedCenterY - vs.height / 2,
-            });
-            scope.view.update();
-
-            return dataUrl;
-        },
-
-        // Renders at the PHOTO's own native resolution, not the browser's current
-        // on-screen canvas size — otherwise every save silently downscales the sector
-        // image to whatever width the editor happened to be rendered at.
-        compositeImages(bgPath, drawingDataUrl, paperCanvas, bgBounds) {
+        // Bakes the saved composite image by drawing the background photo at its own
+        // full native resolution, then drawing this pitch's own strokes plus every
+        // sibling pitch's strokes directly from their Paper.js JSON via the shared
+        // paperJsonRenderer — the SAME algorithm the public guidebook viewer uses to
+        // redraw a route/pitch from its JSON. Replaces an earlier raster-capture-
+        // then-stretch approach that blurred every edge and could shift colors.
+        renderCompositeAtFullResolution(bgPath, ownMeta, relatedMetas) {
             return new Promise((resolve) => {
-                const drawStrokesThenResolve = (ctx, w, h) => {
-                    if (!drawingDataUrl) { resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); return; }
-                    const si = new Image();
-                    si.onload  = () => {
-                        // The strokes were captured at the live editor's own viewport size,
-                        // where the background photo itself only occupies the (bgBounds.left,
-                        // top, width, height) sub-rect — a uniform cover-fit crop, not
-                        // necessarily starting at (0,0) or filling the captured canvas
-                        // exactly (see getBackgroundBounds). Blindly stretching the FULL
-                        // captured canvas onto the full-resolution background ignores that
-                        // crop and drags every stroke out of alignment by its proportion —
-                        // draw only the photo-covering sub-rect.
-                        if (bgBounds && bgBounds.width && bgBounds.height) {
-                            ctx.drawImage(si, bgBounds.left, bgBounds.top, bgBounds.width, bgBounds.height, 0, 0, w, h);
-                        } else {
-                            ctx.drawImage(si, 0, 0, w, h);
-                        }
-                        resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
-                    };
-                    si.onerror = () => resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
-                    si.src = drawingDataUrl;
-                };
-                const fallback = () => {
-                    const w = paperCanvas.width, h = paperCanvas.height;
-                    const offscreen = document.createElement('canvas');
-                    offscreen.width = w; offscreen.height = h;
-                    drawStrokesThenResolve(offscreen.getContext('2d'), w, h);
-                };
-
-                if (!bgPath) { fallback(); return; }
+                if (!bgPath) { resolve(null); return; }
                 const bg = new Image();
                 bg.onload = () => {
-                    const w = bg.naturalWidth  || paperCanvas.width;
-                    const h = bg.naturalHeight || paperCanvas.height;
-                    const offscreen = document.createElement('canvas');
-                    offscreen.width = w; offscreen.height = h;
-                    const ctx = offscreen.getContext('2d');
+                    const w = bg.naturalWidth, h = bg.naturalHeight;
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w; canvas.height = h;
+                    const ctx = canvas.getContext('2d');
                     ctx.drawImage(bg, 0, 0, w, h);
-                    drawStrokesThenResolve(ctx, w, h);
+
+                    (relatedMetas || []).forEach(meta => {
+                        if (!meta || !meta.json) return;
+                        try { drawItemScaled(ctx, meta, w, h, null, null, null, 1, 1); } catch (_) {}
+                    });
+                    if (ownMeta && ownMeta.json) {
+                        try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
+                    }
+
+                    resolve(canvas.toDataURL('image/jpeg', 0.92));
                 };
-                bg.onerror = fallback;
+                bg.onerror = () => resolve(null);
                 bg.src = bgPath;
             });
         },
@@ -329,14 +236,18 @@ export default {
                     ? '/public/images/sector_img/origin_img/' + selectedImage.image
                     : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
 
-                const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
-                const editedImageData = await this.compositeImages(bgPath, drawingDataUrl,
-                    canvasContainer.$refs.canvasManager.$el,
-                    canvasContainer.getBackgroundBounds && canvasContainer.getBackgroundBounds());
-
                 const scope = canvasContainer.getCanvasScope();
                 const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
                 const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
+                const bgBounds = this.bgBoundsPayload(canvasContainer);
+
+                const ownMeta = {
+                    json,
+                    canvas_width: canvasWidth, canvas_height: canvasHeight,
+                    bg_left: bgBounds.bg_left, bg_top: bgBounds.bg_top,
+                    bg_width: bgBounds.bg_width, bg_height: bgBounds.bg_height,
+                };
+                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.related_jsons_meta);
 
                 const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
                     pitch_id:        this.pitch_id_prop,
@@ -345,7 +256,7 @@ export default {
                     edited_image:    editedImageData,
                     canvas_width:    canvasWidth,
                     canvas_height:   canvasHeight,
-                    ...this.bgBoundsPayload(canvasContainer),
+                    ...bgBounds,
                 });
 
                 if (response.data.success) {

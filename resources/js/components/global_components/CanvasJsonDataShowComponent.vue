@@ -513,10 +513,19 @@ export default {
                         const maxX = Math.max(...pts.map(p => p.x));
                         const minY = Math.min(...pts.map(p => p.y));
                         const maxY = Math.max(...pts.map(p => p.y));
+                        // add_point() (DrawingTools.vue) creates this circle with BOTH
+                        // fillColor and strokeColor set, so Paper.js — both live in the
+                        // editor and when baked into the saved composite via
+                        // compositeImages() — renders a filled disc PLUS a stroke ring
+                        // extending strokeWidth/2 further out, making the true visual
+                        // radius bigger than the fill geometry's own bounding box. Filling
+                        // only at the bare fill radius (as this used to) drew a visibly
+                        // smaller dot here than what's baked into the composite image.
+                        const fillRadius = Math.max(4, (maxX - minX) / 2);
+                        const radius = (fillRadius + (data.strokeWidth || 0) / 2) * widthMul;
                         ctx.fillStyle = dotFillStyle;
                         ctx.beginPath();
-                        ctx.arc((minX + maxX) / 2, (minY + maxY) / 2,
-                                Math.max(4, (maxX - minX) / 2), 0, Math.PI * 2);
+                        ctx.arc((minX + maxX) / 2, (minY + maxY) / 2, radius, 0, Math.PI * 2);
                         ctx.fill();
                     } else {
                         ctx.strokeStyle = strokeStyle;

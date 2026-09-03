@@ -203,18 +203,24 @@ export default {
         },
         // Use the original clean photo when available so the canvas can draw all route
         // lines itself (dim + green selected). Fall back to the composite sector image.
+        // Cache-busted with ?v=updated_at (mirrors SectorComponent.vue's sector_gallery) —
+        // without it, a browser that had cached a 404 for origin_img/ (before it existed)
+        // or a stale copy of either file from before the latest resave would keep serving
+        // that stale content indefinitely, since the filename never changes on resave.
         currentImageSrc() {
             if (!this.currentImage) return null;
-            return this.currentImage.has_original
+            const v = this.currentImage.updated_at ? '?v=' + encodeURIComponent(this.currentImage.updated_at) : '';
+            return (this.currentImage.has_original
                 ? '/public/images/sector_img/origin_img/' + this.currentImage.image
-                : '/public/images/sector_img/'            + this.currentImage.image;
+                : '/public/images/sector_img/'            + this.currentImage.image) + v;
         },
         // When has_original, the composite (routes baked in) has the same pixel dimensions
         // as the Paper.js coordinate space used to draw the routes. Pass it to route_lines
         // so it can scale coordinates from composite space → origin image space.
         compositeSrc() {
             if (!this.currentImage || !this.currentImage.has_original) return null;
-            return '/public/images/sector_img/' + this.currentImage.image;
+            const v = this.currentImage.updated_at ? '?v=' + encodeURIComponent(this.currentImage.updated_at) : '';
+            return '/public/images/sector_img/' + this.currentImage.image + v;
         },
         selectedRoute() {
             if (!this.selected_route_id || !this.sectorData) return null;
