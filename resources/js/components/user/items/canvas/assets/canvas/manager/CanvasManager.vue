@@ -416,7 +416,24 @@ export default {
             if (bgLayer) bgLayer.remove();
             relatedLayers.forEach(l => l.remove());
 
+            // exportJSON() serializes each item's live `selected` flag verbatim.
+            // Unlike the raster capture paths (which deselect right before
+            // toDataURL()), nothing previously deselected here, so a route saved
+            // while an item was still selected baked "selected":true straight into
+            // the stored JSON. That JSON later gets re-imported as a read-only
+            // reference overlay on every sibling route sharing this sector image
+            // (see importRelatedJsons / captureAllDrawingStrokes), and Paper.js
+            // faithfully restores the selected look — a handle square at every one
+            // of that path's (often 100-300+) freehand segments, reading as a solid
+            // cyan dotted line, plus a crosshair "position selected" marker — which
+            // then gets baked into every future composite forever. Clear and
+            // restore selection around the export so new saves stop seeding this.
+            const previouslySelected = this.scope.project.selectedItems.slice();
+            this.scope.project.deselectAll();
+
             const json = JSON.stringify(this.scope.project.exportJSON());
+
+            previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
 
             // Restore: background below everything, related on top
             if (bgLayer) {

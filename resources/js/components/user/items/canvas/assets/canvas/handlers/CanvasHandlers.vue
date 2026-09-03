@@ -914,6 +914,14 @@ export default {
                     const before = this.scope.project.layers.length;
                     this.scope.project.importJSON(parsedData);
                     const newLayers = this.scope.project.layers.slice(before);
+                    // A sibling route's stored JSON may still carry a baked-in
+                    // "selected":true from before _getDrawingJson() started
+                    // deselecting on export (older saves). importJSON() faithfully
+                    // restores that, which Paper.js then renders as a permanent
+                    // handle square at every segment of that route's line (reading
+                    // as a solid color turning into a dotted look) plus a crosshair
+                    // marker — never trust it on a read-only reference overlay.
+                    newLayers.forEach(l => { try { l.selected = false; } catch (_) {} });
                     const meta = (this.relatedJsonsMeta && this.relatedJsonsMeta[index]) || null;
                     this._rescaleToCurrentBackground(newLayers, meta);
                     // relatedFirstLabel reserves index 0 for something that ISN'T

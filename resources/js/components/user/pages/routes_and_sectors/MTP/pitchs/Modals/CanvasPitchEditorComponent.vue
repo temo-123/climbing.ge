@@ -260,12 +260,27 @@ export default {
         // Renders at the PHOTO's own native resolution, not the browser's current
         // on-screen canvas size — otherwise every save silently downscales the sector
         // image to whatever width the editor happened to be rendered at.
-        compositeImages(bgPath, drawingDataUrl, paperCanvas) {
+        compositeImages(bgPath, drawingDataUrl, paperCanvas, bgBounds) {
             return new Promise((resolve) => {
                 const drawStrokesThenResolve = (ctx, w, h) => {
                     if (!drawingDataUrl) { resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); return; }
                     const si = new Image();
-                    si.onload  = () => { ctx.drawImage(si, 0, 0, w, h); resolve(ctx.canvas.toDataURL('image/jpeg', 0.9)); };
+                    si.onload  = () => {
+                        // The strokes were captured at the live editor's own viewport size,
+                        // where the background photo itself only occupies the (bgBounds.left,
+                        // top, width, height) sub-rect — a uniform cover-fit crop, not
+                        // necessarily starting at (0,0) or filling the captured canvas
+                        // exactly (see getBackgroundBounds). Blindly stretching the FULL
+                        // captured canvas onto the full-resolution background ignores that
+                        // crop and drags every stroke out of alignment by its proportion —
+                        // draw only the photo-covering sub-rect.
+                        if (bgBounds && bgBounds.width && bgBounds.height) {
+                            ctx.drawImage(si, bgBounds.left, bgBounds.top, bgBounds.width, bgBounds.height, 0, 0, w, h);
+                        } else {
+                            ctx.drawImage(si, 0, 0, w, h);
+                        }
+                        resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
+                    };
                     si.onerror = () => resolve(ctx.canvas.toDataURL('image/jpeg', 0.9));
                     si.src = drawingDataUrl;
                 };
@@ -316,7 +331,8 @@ export default {
 
                 const drawingDataUrl = this.captureAllDrawingStrokes(canvasContainer);
                 const editedImageData = await this.compositeImages(bgPath, drawingDataUrl,
-                    canvasContainer.$refs.canvasManager.$el);
+                    canvasContainer.$refs.canvasManager.$el,
+                    canvasContainer.getBackgroundBounds && canvasContainer.getBackgroundBounds());
 
                 const scope = canvasContainer.getCanvasScope();
                 const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
