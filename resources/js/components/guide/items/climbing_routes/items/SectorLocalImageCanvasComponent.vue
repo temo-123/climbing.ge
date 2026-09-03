@@ -1,41 +1,40 @@
 <template>
     <div class="sector-local-canvas-wrap" ref="wrap">
-        <canvas
-            ref="canvas"
-            class="sector-local-canvas"
-            @mousemove="onMouseMove"
-            @mouseleave="onMouseLeave"
-            @click="onClick"
-        />
-        <!-- Tooltip -->
-        <div
-            v-if="hoveredSector"
-            class="canvas-sector-tooltip"
-            :style="{ left: tooltipX + 'px', top: tooltipY + 'px' }"
-        >
-            {{ hoveredSector.sectorName }}
-        </div>
-
-        <button
-            v-if="image_src"
-            type="button"
-            class="canvas-open-image-btn"
-            :title="$t('guide.open_image')"
-            :aria-label="$t('guide.open_image')"
-            @click.stop="open_image()"
-        >
-            <i class="fa fa-expand"></i>
-        </button>
-
-        <Teleport to="body">
-            <div class="open_img" v-if="open_img" @click="close_image()">
-                <div class="close_bottom cursor_zoom_out" @click.stop="close_image()">X</div>
-                <img
-                    :src="image_src"
-                    :alt="hoveredSector ? hoveredSector.sectorName : ''"
-                    class="big_img_position cursor_zoom_out zoom"
-                    style="max-width:96%;max-height:80%;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"
+        <!-- The SAME canvas element (drawing, hover, click all shared) moves to a
+             fullscreen backdrop when expanded instead of being replaced by a plain
+             <img> — Teleport's :disabled prop renders it in place when not open, so
+             this needs no separate "big view" markup or duplicated draw logic, and
+             the shape overlay + click-to-scroll-to-sector keep working when expanded. -->
+        <Teleport to="body" :disabled="!open_img">
+            <div :class="open_img ? 'open_img' : null" @click="open_img && close_image()">
+                <div v-if="open_img" class="close_bottom cursor_zoom_out" @click.stop="close_image()">X</div>
+                <canvas
+                    ref="canvas"
+                    :class="open_img ? 'sector-local-canvas-big cursor_zoom_out' : 'sector-local-canvas'"
+                    @mousemove="onMouseMove"
+                    @mouseleave="onMouseLeave"
+                    @click="onClick"
                 />
+                <!-- Tooltip: position:fixed uses raw viewport coords, which stay
+                     correct whether the canvas is inline or teleported fullscreen. -->
+                <div
+                    v-if="hoveredSector"
+                    class="canvas-sector-tooltip"
+                    :style="{ left: tooltipX + 'px', top: tooltipY + 'px' }"
+                >
+                    {{ hoveredSector.sectorName }}
+                </div>
+
+                <button
+                    v-if="image_src && !open_img"
+                    type="button"
+                    class="canvas-open-image-btn"
+                    :title="$t('guide.open_image')"
+                    :aria-label="$t('guide.open_image')"
+                    @click.stop="open_image()"
+                >
+                    <i class="fa fa-expand"></i>
+                </button>
             </div>
         </Teleport>
     </div>
@@ -306,9 +305,10 @@ export default {
                 this.$refs.canvas.style.cursor = idx >= 0 ? 'pointer' : 'default';
             }
             if (idx >= 0) {
-                const rect = this.$refs.wrap.getBoundingClientRect();
-                this.tooltipX = e.clientX - rect.left + 12;
-                this.tooltipY = e.clientY - rect.top - 28;
+                // position:fixed tooltip — raw viewport coords stay correct whether
+                // the canvas is inline (small) or teleported fullscreen (expanded).
+                this.tooltipX = e.clientX + 12;
+                this.tooltipY = e.clientY - 28;
             }
         },
 
@@ -322,10 +322,17 @@ export default {
         onClick(e) {
             const { x, y } = this.canvasCoords(e);
             const idx = this.hitTest(x, y);
-            if (idx < 0) return;
+            if (idx < 0) {
+                // Missed every shape — when expanded, this is a plain "click the
+                // photo to close" (matches the old plain-<img> modal's behavior).
+                if (this.open_img) this.close_image();
+                return;
+            }
             const layout = this.parsedLayouts[idx];
             this.$emit('sector-click', layout);
-            // Scroll to sector on the page
+            // Close the expanded view first so the scroll animation is visible
+            // against the real page instead of racing behind the fixed overlay.
+            if (this.open_img) this.close_image();
             const sectorId = layout.sectorId;
             if (sectorId) {
                 const el = document.querySelector('#sector-' + sectorId);
@@ -349,7 +356,7 @@ export default {
     border-radius: 8px;
 }
 .canvas-sector-tooltip {
-    position: absolute;
+    position: fixed;
     background: rgba(0,0,0,0.75);
     color: #fff;
     padding: 4px 10px;
@@ -409,12 +416,17 @@ export default {
     background: #000000d9;
     transition: opacity .15s linear;
 }
-.big_img_position {
+.sector-local-canvas-big {
     max-width: 96%;
     max-height: 80%;
+    width: auto;
+    height: auto;
+    display: block;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    border-radius: 8px;
+    cursor: pointer;
 }
 </style>
