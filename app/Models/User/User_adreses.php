@@ -22,6 +22,11 @@ class User_adreses extends Model
         'entrance',
         'zip_code',
         'map',
+        'is_default',
+    ];
+
+    protected $casts = [
+        'is_default' => 'boolean',
     ];
 
 	public function user()

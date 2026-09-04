@@ -135,6 +135,18 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ $t('admin.orders.confirmed_col') }}</label>
+                        <div>
+                            <span v-if="order.confirm == 1" class="badge badge-success">{{ $t('admin.orders.confirmed_yes') }}</span>
+                            <span v-else class="badge badge-warning">{{ $t('admin.orders.confirmed_no') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <hr>
 
             <!-- Products -->
@@ -186,9 +198,11 @@ export default {
         },
         paymentLabel() {
             const map = {
-                deliverd_payment: this.$t('admin.orders.payment_on_delivery_option'),
-                mony_transfer: this.$t('admin.orders.money_transfer_option'),
-                online_payment: this.$t('admin.orders.online_payment_label'),
+                'deliverd payment': this.$t('admin.orders.payment_on_delivery_option'),
+                'deliverd_payment': this.$t('admin.orders.payment_on_delivery_option'),
+                'mony_transfer': this.$t('admin.orders.money_transfer_option'),
+                'online payment': this.$t('admin.orders.online_payment_label'),
+                'online_payment': this.$t('admin.orders.online_payment_label'),
             }
             return map[this.order?.payment] || this.order?.payment || '—'
         },

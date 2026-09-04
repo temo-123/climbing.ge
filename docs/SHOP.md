@@ -57,15 +57,25 @@ Full product page: images, description, options (size/color), price, add to cart
 - `GET /api/get_product/get_product_options/{product_id}`
 - `GET /api/get_product/get_product_feedback/get_product_feedbacks/{product_id}`
 
-### `CartPage.vue` — Shopping Cart
+### `cartPageComponent.vue` — Shopping Cart
 
-Cart management: update quantities, remove items, apply sale code, see shipping estimate.
+Cart management: update quantities, remove items, and — since the September 2026 checkout-integration pass — a full pre-checkout shipping/discount preview built from the user's **default address** (see [Shipping Regions](#shipping-regions--checkout-shipping-rules) below):
 
-**API:** `GET/POST/PUT/DELETE /api/cart`
+- Subtotal, partner-organization discount preview (`GET /api/partner_organization/my_status`), shipping cost, minimum-order-price warning, and free-shipping-remaining/-reached messaging.
+- If the user has no saved address at all: an inline "add address" modal (posts to `add_user_adreses`) instead of sending them to a separate page.
+- Per-item **stock-vs-cart-quantity mismatch** detection — if a cart item's saved quantity now exceeds live stock (e.g. someone else bought the remaining units after it was added), an inline "update to max" action appears.
+- The checkout button is disabled while any out-of-stock item, quantity mismatch, sub-minimum-order subtotal, or missing address exists.
 
-### `CheckoutPage.vue` — Checkout
+**API:** `GET/POST/PUT/DELETE /api/cart` (see also `/api/cart/update_quantity/:item_id`)
 
-Delivery address selection/entry, order summary, payment via Flitt gateway.
+### `orderPaymentPageComponent.vue` + `orderDeclorationPageComponent.vue` — Checkout
+
+Two-step checkout, both API-driven by the same cart endpoints as the cart page (there is no separate `CheckoutPage.vue`):
+
+1. **`orderPaymentPageComponent.vue`** — address selection/entry (auto-selects the user's default address; "set as default" checkbox when adding a new one) and payment method, plus the same shipping/min-price/free-shipping/partner-discount preview and quantity-mismatch check as the cart page. "Next" is disabled while a mismatch or a sub-minimum subtotal exists. Sale code entry also lives here.
+2. **`orderDeclorationPageComponent.vue`** — final order review: line items (each flagged if its quantity now exceeds live stock), shipping cost, and the discount that will actually be charged — computed client-side as `max(partner_discount_percent, sale_code_percent)`, mirroring `OrderController::create_order()`'s server-side `max()` (discounts don't stack). "Place order" is disabled under the same conditions as the cart page.
+
+Shipping cost, the minimum-order-price gate, and the partner/sale-code discount are always **recomputed and enforced server-side** in `OrderController::create_order()` — every client-side figure above is a preview only.
 
 ### `SearchPage.vue` — Product Search
 
@@ -90,8 +100,11 @@ Full endpoint list in [BACKEND/API.md](BACKEND/API.md#shop--public).
 | GET | `/api/get_tour/get_tour/{lang}/{url_title}` | Tour detail |
 | POST | `/api/set_user_reservation/create_reservation/{tour_id}` | Book tour |
 | GET/POST/PUT/DELETE | `/api/cart` | Cart CRUD |
+| POST | `/api/cart/update_quantity/:item_id` | Update one cart item's quantity (400s with `{error, available}` if it exceeds live stock) |
 | GET | `/api/get_sale_code/get_all_sale_code` | Sale codes |
 | GET | `/api/get_shiped_region/get_all_shiped_regions` | Shipping regions |
+| GET | `/api/get_shiped_region/get_activ_region/:region_id` | One shipping region's `shiping_price`/`ship_min_price`/`free_shiping_price_after` |
+| GET | `/api/partner_organization/my_status` | Current user's partner-org membership + discount percent, if any |
 
 ---
 
@@ -137,13 +150,25 @@ Order statuses: `pending` → `processing` → `shipped` → `delivered` / `canc
 
 Manual orders created by admin for special requests. Uses `custom_orders` + `CustomOrderAddress` model.
 
-### Shipping Regions
+### Shipping Regions — checkout shipping rules
 
 ```
-siped_countries (shipped regions)
-├── name
-└── price (shipping cost)
+shiped_regions
+├── id, region
+├── shiping_price            # flat shipping fee for this region
+├── ship_min_price           # minimum order subtotal required to check out to this region (nullable)
+└── free_shiping_price_after # subtotal at/above which shipping becomes free (nullable)
 ```
+
+`Shiped_region` model, admin CRUD via `ShipedRegionController` (`/api/set_shiped_region/*`, permission subject `shipping_region`), public read via `/api/get_shiped_region/*`.
+
+**Checkout rule, enforced identically client-side (cart/checkout pages) and server-side (`OrderController::resolve_shipping_cost()`)**, given a region and the cart subtotal:
+
+1. Subtotal below `ship_min_price` (if set) → **order is blocked** — `create_order()` returns a 400 before any stock reservation happens.
+2. Otherwise, subtotal at/above `free_shiping_price_after` (if set) → shipping cost is `0`.
+3. Otherwise → shipping cost is `shiping_price`.
+
+The client-submitted shipping figure sent with `POST /api/set_order/create_order` is never trusted for the charged amount — it's always recomputed from the order's own address/region and cart contents.
 
 ### Sale Codes
 
@@ -158,11 +183,13 @@ sale_codes
 
 ```
 user_adreses
-├── user_id
-├── name, surname, phone
-├── country, city, address
-└── is_default
+├── user_id, name (label, not a person's name)
+├── region_id (→ shiped_regions), city, strit, number, floor, flat, entrance, zip_code
+├── map          # optional Google Maps link/coordinates
+└── is_default   # exactly one true per user; enforced by UserAdresesController
 ```
+
+Full endpoint list and default-address behavior in [USER_PAGE.md](USER_PAGE.md#user-profile-addresses--favorites).
 
 ### Tours
 

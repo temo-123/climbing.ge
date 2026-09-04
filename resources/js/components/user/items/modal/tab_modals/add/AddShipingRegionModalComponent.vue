@@ -3,7 +3,8 @@
             :show="is_order_region_add_model"
             :title="$t('admin.shop.add_shipping_region_title')"
             @close="close_modal"
-            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
+            @save="add_region"
+            :saveButton="{ visible: true, title: $t('admin.shop.add_region_btn'), btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
         >
         <div>
@@ -12,19 +13,10 @@
                 <input type="text" class="form-control" v-model="adding_data.region" name="region name" :placeholder="$t('admin.shop.region_placeholder')" :title="$t('admin.shop.region_placeholder')" required>
                 <input type="number" class="form-control" v-model="adding_data.shiping_price" name="shiping price" :placeholder="$t('admin.shop.shipping_price_label')" :title="$t('admin.shop.shipping_price_label')" required>
 
+                <input type="number" class="form-control" v-model="adding_data.ship_min_price" name="ship min price" :placeholder="$t('admin.shop.ship_min_price_label')" :title="$t('admin.shop.ship_min_price_label')">
+
                 <input type="number" class="form-control" v-model="adding_data.free_shiping_price_after" name="free shiping price after" :placeholder="$t('admin.shop.free_shipping_price_after_label')" :title="$t('admin.shop.free_shipping_price_after_label')">
             </form>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    form="add_region"
-                    :class="{'btn btn-primary': true}"
-                >
-                {{ $t('admin.shop.add_region_btn') }}
-                </button>
-            </div>
         </div>
     </stack-modal>
 </template>
@@ -52,6 +44,7 @@
                 adding_data: {
                     region: '',
                     shiping_price: '',
+                    ship_min_price: '',
                     free_shiping_price_after: '',
                 }
             }
@@ -79,6 +72,7 @@
                     this.adding_data = {
                         region: '',
                         shiping_price: '',
+                        ship_min_price: '',
                         free_shiping_price_after: '',
                     }
                 }

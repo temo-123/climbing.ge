@@ -59,9 +59,9 @@ After login, authenticated users access their personal dashboard.
 
 ### Delivery Addresses
 
-CRUD for saved delivery addresses used in shop checkout.
+CRUD for saved delivery addresses used in shop checkout. One address per user can be marked default (`is_default`) — it's used to auto-select an address and preview shipping cost on the cart/checkout pages.
 
-- API: `GET /api/get_user_adreses`, `POST /api/add_user_adreses`, `POST /api/edit_adres/:id`, `DELETE /api/del_user_adreses/:id`
+- API: `GET /api/get_user_adreses`, `POST /api/add_user_adreses`, `POST /api/edit_adres/:id`, `POST /api/set_default_adres/:id`, `DELETE /api/del_user_adreses/:id`
 
 ### Orders
 
@@ -349,12 +349,17 @@ All routes behind `auth:sanctum` + `banned` middleware.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_user_adreses` | All saved addresses |
-| GET | `/api/get_activ_adres/:id` | The one address currently marked active/default |
+| GET | `/api/get_user_adreses` | All saved addresses for the current user, including `is_default` |
+| GET | `/api/get_activ_adres/:id` | Fetch one specific address by id (used by checkout once an address is selected — despite the name, this does *not* return "the default one"; use `is_default` from `get_user_adreses` for that) |
 | POST | `/api/get_editing_adres/:id` | Load one address for editing (POST despite being a read, per this controller's existing convention) |
-| POST | `/api/add_user_adreses` | Add address |
-| POST | `/api/edit_adres/:id` | Edit address |
+| POST | `/api/add_user_adreses` | Add address. `adding_data.is_default: true` (or being the user's first address) makes it the new default and demotes any other default the user had |
+| POST | `/api/edit_adres/:id` | Edit address. Include `is_default` in `data` to change which address is default |
+| POST | `/api/set_default_adres/:id` | Mark one existing address as the user's default, demoting all others |
 | DELETE | `/api/del_user_adreses/:id` | Delete address |
+
+All five id-scoped endpoints (`get_activ_adres`, `get_editing_adres`, `edit_adres`, `set_default_adres`, `del_user_adreses`) are scoped to `user_id = auth user` server-side — an id belonging to another user resolves to "not found" rather than exposing/mutating their address. `User_adreses.map` (an optional Google Maps link/coordinates field, shown as `quick_adres.map` in checkout) has a real migrated column — a prior version of `add_user_adreses` set this attribute without the column existing, which made every address-add request fail with a SQL error.
+
+A user always has exactly one `is_default` address, used to preview shipping cost/minimum-order-price/free-shipping messaging on the cart page and to pre-select an address on the checkout payment step (see [SHOP.md](SHOP.md#shipping-regions--checkout-shipping-rules)).
 
 **Favorites:**
 

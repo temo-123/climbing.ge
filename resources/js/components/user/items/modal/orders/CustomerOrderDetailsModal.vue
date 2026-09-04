@@ -13,9 +13,15 @@
             <div class="mb-3 d-flex align-items-center flex-wrap" style="gap:6px">
                 <span class="badge badge-secondary">{{ $t('user.orders.order_number', { id: order.id }) }}</span>
                 <span :class="statusBadgeClass">{{ statusLabel }}</span>
+                <span v-if="order.confirm == 1" class="badge badge-success">{{ $t('user.orders.confirmed_yes') }}</span>
+                <span v-else class="badge badge-warning">{{ $t('user.orders.confirmed_no') }}</span>
                 <span class="badge badge-info">
                     <i class="fa fa-clock-o"></i> {{ $t('user.orders.delivery_days', { days: delivery_days }) }}
                 </span>
+            </div>
+
+            <div v-if="needs_confirmation" class="alert alert-danger py-2 mb-3">
+                <i class="fa fa-exclamation-triangle"></i> {{ $t('user.orders.not_confirmed_warning') }}
             </div>
 
             <!-- Status timeline -->
@@ -159,12 +165,18 @@ export default {
         has_produced_by_order() {
             return this.order_products.some(item => item.product && item.product.sale_type === 'produced_by_order')
         },
+        // Email confirmation is only required for cash-on-delivery orders —
+        // an online payment confirms itself.
+        needs_confirmation() {
+            const payment = this.order?.payment
+            return this.order?.confirm != 1 && (payment === 'deliverd payment' || payment === 'deliverd_payment')
+        },
         delivery_days() {
             return this.has_produced_by_order ? '5-9' : '2-4'
         },
         subtotal() {
             return this.order_products.reduce((sum, item) => {
-                return sum + this.item_total(item)
+                return sum + parseFloat(this.item_total(item))
             }, 0).toFixed(2)
         },
         discount_amount() {

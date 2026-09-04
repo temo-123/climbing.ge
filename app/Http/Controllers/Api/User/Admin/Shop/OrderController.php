@@ -129,7 +129,14 @@ class OrderController extends Controller
 
         // Shipping cost is recalculated server-side from the address' region —
         // the client-sent value is display-only and must never be trusted for money.
-        $shipping_cost = (new static)->resolve_shipping_cost($address, $request->order_product_list);
+        // resolve_shipping_cost() also enforces the region's minimum order price
+        // (throws if the cart subtotal doesn't meet it), so it must run before the
+        // main try/catch below, which only wraps stock reservation / order creation.
+        try {
+            $shipping_cost = (new static)->resolve_shipping_cost($address, $request->order_product_list);
+        } catch (\RuntimeException $e) {
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
 
         $partner_discount = (float) ((new static)->resolve_partner_discount($user->id) ?? 0);
 
@@ -209,13 +216,18 @@ class OrderController extends Controller
 
         (new static)->del_cart_items($user->id);
 
-        try {
-            (new static)->send_order_confirm_mail_to_user($new_order->id);
-        } catch (\Exception $e) {}
-
-        try {
-            (new static)->send_order_mail_ot_admin();
-        } catch (\Exception $e) {}
+        // Email confirmation is only required for cash-on-delivery orders —
+        // an online payment is itself the buyer's confirmation (TBC's
+        // callback/status endpoints set orders.confirm = 1 on success and
+        // notify the seller from there instead). The seller/site notification
+        // is intentionally NOT sent here either way — order_is_confirm() /
+        // the payment callback send it once the order is actually confirmed,
+        // so a buyer who never confirms a COD order never triggers it.
+        if ($request->payment_tupe === 'deliverd payment') {
+            try {
+                (new static)->send_order_confirm_mail_to_user($new_order->id);
+            } catch (\Exception $e) {}
+        }
 
         return response()->json(['message' => 'Order created successfully', 'order_id' => $new_order->id]);
     }
@@ -239,13 +251,15 @@ class OrderController extends Controller
         return $affected > 0;
     }
 
-    // Mirrors the free-shipping-threshold logic the checkout UI shows the
-    // customer, but computed server-side from the buyer's own address so the
+    // Mirrors the min-order/free-shipping-threshold logic the checkout UI shows
+    // the customer, but computed server-side from the buyer's own address so the
     // client-submitted shipping figure is never trusted for the charged amount.
+    // Throws \RuntimeException (caught by the caller as a 400) if the cart
+    // subtotal doesn't meet the region's minimum order price.
     private function resolve_shipping_cost(User_adreses $address, array $order_product_list): float
     {
         $region = Shiped_region::find($address->region_id);
-        if (!$region || !$region->shiping_price) {
+        if (!$region) {
             return 0;
         }
 
@@ -255,6 +269,16 @@ class OrderController extends Controller
             if ($option) {
                 $subtotal += floatval($option->price) * (int) $product['quantity'];
             }
+        }
+
+        if ($region->ship_min_price && $subtotal < floatval($region->ship_min_price)) {
+            throw new \RuntimeException(
+                'Minimum order amount for delivery to ' . $region->region . ' is ' . floatval($region->ship_min_price) . ' ₾'
+            );
+        }
+
+        if (!$region->shiping_price) {
+            return 0;
         }
 
         if ($region->free_shiping_price_after && $subtotal >= floatval($region->free_shiping_price_after)) {
@@ -371,12 +395,16 @@ class OrderController extends Controller
         return 'All items is deleted';
     }
 
-    public function send_order_mail_ot_admin()
-    {   
-        $order_info = array(  
-            'name' => Auth::user()->name,
-            'surname' => Auth::user()->surname,
-            'user_id' => Auth::user()->id,
+    // Accepts an explicit $user so this can be called from contexts with no
+    // authenticated session (e.g. the unauthenticated TBC payment callback) —
+    // falls back to Auth::user() for the existing buyer-confirms-by-email path.
+    public function send_order_mail_ot_admin($user = null)
+    {
+        $user = $user ?: Auth::user();
+        $order_info = array(
+            'name' => $user->name,
+            'surname' => $user->surname,
+            'user_id' => $user->id,
         );
         $site_data = Site::first();
         // dd($site_data);

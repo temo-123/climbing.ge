@@ -12,6 +12,7 @@ class Shiped_region extends Model
     protected $fillable = [
         'region',
         'shiping_price',
+        'ship_min_price',
         'free_shiping_price_after',
 	];
 }

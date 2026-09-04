@@ -339,11 +339,22 @@ All require `auth:sanctum` + `banned` middleware.
 
 | Method | Path | Description |
 |---|---|---|
-| GET | `/api/get_user_adreses` | All saved addresses |
-| GET | `/api/get_activ_adres/{id}` | Single address |
-| POST | `/api/add_user_adreses` | Add new address |
+| GET | `/api/get_user_adreses` | All saved addresses, incl. `is_default` |
+| GET | `/api/get_activ_adres/{id}` | Single address, owned by the current user |
+| POST | `/api/add_user_adreses` | Add new address (`is_default: true`, or being the user's first address, makes it the default) |
 | POST | `/api/edit_adres/{id}` | Edit address |
+| POST | `/api/set_default_adres/{id}` | Mark this address as the user's default, demoting any other default |
 | DELETE | `/api/del_user_adreses/{id}` | Delete address |
+
+### Shipping regions & partner discount
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/get_shiped_region/get_all_shiped_regions` | All shipping regions |
+| GET | `/api/get_shiped_region/get_activ_region/{region_id}` | One region's `shiping_price`/`ship_min_price`/`free_shiping_price_after` |
+| GET | `/api/partner_organization/my_status` | Current user's partner-org membership + discount percent |
+
+See [SHOP.md](../SHOP.md#shipping-regions--checkout-shipping-rules) for the min-order-price / free-shipping rule these drive.
 
 ### Favorites
 

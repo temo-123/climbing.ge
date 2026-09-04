@@ -9,6 +9,7 @@
             <h1>{{ $t('user.checkout.order_completed') }}</h1>
             <h2>{{ $t('user.checkout.check_email', { email: user.email }) }}</h2>
             <h3>{{ $t('user.checkout.before_confirm_notice') }}</h3>
+            <p class="text-danger">{{ $t('user.checkout.wont_ship_without_confirm') }}</p>
         </div>
 
         <div class="confirm_page_back_button">

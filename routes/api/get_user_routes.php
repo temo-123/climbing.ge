@@ -74,6 +74,7 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
         Route::get('/get_activ_adres/{adres_id}', 'get_activ_adres');
         Route::post('/add_user_adreses', 'add_user_adreses');
         Route::post('/edit_adres/{adres_id}', 'edit_adres');
+        Route::post('/set_default_adres/{adres_id}', 'set_default_adres');
         Route::delete('/del_user_adreses/{adres_id}', 'del_user_adreses');
     });
 

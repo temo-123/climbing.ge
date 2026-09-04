@@ -53,6 +53,7 @@ export default {
                             head: [
                                 this.$t('common.id'),
                                 this.$t('user.orders.col_status'),
+                                this.$t('user.orders.col_confirmed'),
                                 this.$t('common.payment'),
                                 this.$t('user.orders.col_shipping'),
                                 this.$t('user.orders.col_delivery'),
@@ -62,13 +63,14 @@ export default {
                             body: [
                                 ['data', ['id']],
                                 ['data', ['status']],
+                                ['data', ['confirm'], 'bool'],
                                 ['data', ['payment']],
                                 ['data', ['shiping']],
                                 ['data', ['delivery_days']],
                                 ['data', ['created_at']],
                                 ['action_fun_id', 'show_customer_order_details', 'btn btn-info btn-sm', '<i class="fa fa-eye" aria-hidden="true"></i>'],
                             ],
-                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
+                            perm: [['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no'], ['no']],
                         }
                     },
                 })

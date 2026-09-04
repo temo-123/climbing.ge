@@ -11,7 +11,7 @@
                             </button>
                         </div>
                         <div class="col text-right">
-                            <button class="btn btn-success" @click="create_order()" :disabled="create_order_loading || !cart_items.length">
+                            <button class="btn btn-success" @click="create_order()" :disabled="create_order_loading || !cart_items.length || min_ship_price_not_met || has_quantity_mismatch">
                                 <i v-if="!create_order_loading" :class="selected_payment === 'online payment' ? 'fa fa-credit-card' : 'fa fa-check'" aria-hidden="true"></i>
                                 <i v-else class="fa fa-spinner fa-spin" aria-hidden="true"></i>
                                 {{ create_order_loading
@@ -38,6 +38,24 @@
 
                     <div v-if="order_error" class="alert alert-danger">
                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ order_error }}
+                    </div>
+
+                    <div v-if="!create_order_loading && min_ship_price_not_met" class="alert alert-warning">
+                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        {{ $t('user.checkout.min_order_price_error', { amount: shiping_country.ship_min_price }) }}
+                    </div>
+
+                    <div v-if="!create_order_loading && has_quantity_mismatch" class="alert alert-danger">
+                        <div v-for="product in quantity_mismatch_items" :key="product.id">
+                            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                            {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
+                            <button type="button" class="btn btn-link btn-sm p-0 ml-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
+                        </div>
+                    </div>
+
+                    <div v-if="!create_order_loading && !min_ship_price_not_met && free_shipping_remaining > 0" class="alert alert-info">
+                        <i class="fa fa-truck" aria-hidden="true"></i>
+                        {{ $t('user.cart.free_shipping_remaining', { amount: free_shipping_remaining.toFixed(2), region: shiping_country.region }) }}
                     </div>
 
                     <div v-if="!create_order_loading && cart_items.length" class="row mb-3">
@@ -131,7 +149,12 @@
                                     <tbody>
                                         <tr v-for="(product, index) in cart_items" :key="product.id">
                                             <td>{{ index + 1 }}</td>
-                                            <td>{{ product.product && product.product.url_title || '—' }}</td>
+                                            <td>
+                                                {{ product.product && product.product.url_title || '—' }}
+                                                <div v-if="is_quantity_mismatch(product)" class="text-danger">
+                                                    <small><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}</small>
+                                                </div>
+                                            </td>
                                             <td class="text-muted">{{ product.option && product.option.name || '—' }}</td>
                                             <td class="text-center">{{ product.quantity }}</td>
                                             <td class="text-right">{{ product.option && product.option.price }} ₾</td>
@@ -151,8 +174,8 @@
                                             <td class="text-right">{{ shiping }} ₾</td>
                                             <td></td>
                                         </tr>
-                                        <tr v-if="$route.params.discount && $route.params.discount > 0">
-                                            <td colspan="5" class="text-right text-success">{{ $t('user.checkout.discount', { percent: $route.params.discount }) }}</td>
+                                        <tr v-if="effective_discount_percent > 0">
+                                            <td colspan="5" class="text-right text-success">{{ $t('user.checkout.discount', { percent: effective_discount_percent }) }}</td>
                                             <td class="text-right text-success">−{{ discount_amount }} ₾</td>
                                             <td></td>
                                         </tr>
@@ -185,6 +208,7 @@
             return {
                 cart_items: [],
                 total_price: 0,
+                subtotal: 0,
                 shiping: 0,
                 discount_amount: 0,
                 user_id: 0,
@@ -194,6 +218,8 @@
                 order_error: null,
                 selected_payment: 'deliverd payment',
                 shop_payment_enabled: false,
+                is_partner_member: false,
+                partner_discount_percent: 0,
             }
         },
         computed: {
@@ -202,6 +228,28 @@
             },
             delivery_days() {
                 return this.has_produced_by_order ? '5-9' : '2-4'
+            },
+            min_ship_price_not_met() {
+                const min_price = this.shiping_country && this.shiping_country.ship_min_price ? parseFloat(this.shiping_country.ship_min_price) : 0
+                return min_price > 0 && this.subtotal < min_price
+            },
+            free_shipping_remaining() {
+                if (!this.shiping_country || !this.shiping_country.free_shiping_price_after) return 0
+                const remaining = parseFloat(this.shiping_country.free_shiping_price_after) - this.subtotal
+                return remaining > 0 ? remaining : 0
+            },
+            quantity_mismatch_items() {
+                return this.cart_items.filter(p => this.is_quantity_mismatch(p))
+            },
+            has_quantity_mismatch() {
+                return this.quantity_mismatch_items.length > 0
+            },
+            // Mirrors OrderController::create_order()'s max(partner_discount,
+            // sale_code_discount) — discounts don't stack, so preview whichever
+            // one the server will actually apply.
+            effective_discount_percent() {
+                const sale_code_percent = parseFloat(this.$route.params.discount) || 0
+                return Math.max(this.partner_discount_percent, sale_code_percent)
             },
         },
         mounted() {
@@ -213,6 +261,7 @@
                 this.selected_payment = this.$route.params.payment
             }
             this.get_products_cart()
+            this.get_partner_status()
             axios.get('payment/status')
                 .then(r => {
                     this.shop_payment_enabled = !!r.data.shop_enabled
@@ -235,16 +284,38 @@
                     this.get_activ_adres(this.$route.params.adres)
                 }).catch(error => console.log(error))
             },
+            get_partner_status() {
+                axios.get('partner_organization/my_status')
+                    .then(response => {
+                        this.is_partner_member = !!response.data.is_member
+                        this.partner_discount_percent = this.is_partner_member && response.data.organization
+                            ? parseFloat(response.data.organization.discount) || 0
+                            : 0
+                        this.colculat_total_price()
+                    })
+                    .catch(error => console.log(error))
+            },
+            is_quantity_mismatch(product) {
+                if (product.is_out_of_stock) return false
+                if (product.product && product.product.sale_type === 'produced_by_order') return false
+                return product.stock_quantity != null && product.quantity > product.stock_quantity
+            },
+            update_to_max_quantity(product) {
+                axios.post('cart/update_quantity/' + product.id, { quantity: product.stock_quantity })
+                    .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
+                    .catch(error => console.log(error))
+            },
             colculat_total_price() {
                 let subtotal = this.cart_items.reduce((sum, p) => {
                     const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
                     return sum + price * (p.quantity || 1)
                 }, 0)
+                this.subtotal = subtotal
 
                 this.shiping = parseFloat(this.colculate_shiping_price(subtotal)) || 0
 
-                if (this.$route.params.discount && this.$route.params.discount > 0) {
-                    this.discount_amount = ((subtotal * this.$route.params.discount) / 100).toFixed(2)
+                if (this.effective_discount_percent > 0) {
+                    this.discount_amount = ((subtotal * this.effective_discount_percent) / 100).toFixed(2)
                     this.total_price = (subtotal - parseFloat(this.discount_amount) + this.shiping).toFixed(2)
                 } else {
                     this.discount_amount = 0
@@ -286,6 +357,14 @@
                     })
             },
             create_order() {
+                if (this.min_ship_price_not_met) {
+                    this.order_error = this.$t('user.checkout.min_order_price_error', { amount: this.shiping_country.ship_min_price })
+                    return
+                }
+                if (this.has_quantity_mismatch) {
+                    this.order_error = this.$t('user.cart.fix_issues_to_checkout_tooltip')
+                    return
+                }
                 this.order_error = null
                 this.create_order_loading = true
                 axios.post('set_order/create_order', {

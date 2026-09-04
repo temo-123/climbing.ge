@@ -96,6 +96,7 @@ class OrderPaymentController extends Controller
         }
 
         $order->tbc_pay_status = $tbcStatus;
+        $was_confirmed = $order->confirm == 1;
 
         if (TbcPaymentService::isSucceeded($tbcStatus)) {
             $order->status               = 'paid';
@@ -108,6 +109,18 @@ class OrderPaymentController extends Controller
         }
 
         $order->save();
+
+        // A successful online payment IS the buyer's confirmation — no
+        // separate "confirm by email" step is required for this payment
+        // type, so notify the seller/site the first time this order becomes
+        // confirmed rather than waiting on an email click that will never come.
+        if (!$was_confirmed && $order->confirm == 1) {
+            try {
+                (new \App\Http\Controllers\Api\User\Admin\Shop\OrderController)->send_order_mail_ot_admin($order->user);
+            } catch (\Exception $e) {
+                Log::error('TBC shop callback: seller notification failed', ['error' => $e->getMessage()]);
+            }
+        }
 
         return response()->json(['ok' => true]);
     }
@@ -134,6 +147,8 @@ class OrderPaymentController extends Controller
 
         if ($tbcStatus !== $order->tbc_pay_status) {
             $order->tbc_pay_status = $tbcStatus;
+            $was_confirmed = $order->confirm == 1;
+
             if (TbcPaymentService::isSucceeded($tbcStatus)) {
                 $order->status               = 'paid';
                 $order->confirm              = 1;
@@ -144,6 +159,17 @@ class OrderPaymentController extends Controller
                 $this->restockOrder($order);
             }
             $order->save();
+
+            // Same first-confirmation notification as callback() — this poll
+            // endpoint can be the first place a success is ever observed if
+            // TBC's server-to-server callback is delayed or missed.
+            if (!$was_confirmed && $order->confirm == 1) {
+                try {
+                    (new \App\Http\Controllers\Api\User\Admin\Shop\OrderController)->send_order_mail_ot_admin($order->user);
+                } catch (\Exception $e) {
+                    Log::error('TBC shop status: seller notification failed', ['error' => $e->getMessage()]);
+                }
+            }
         }
 
         return response()->json([

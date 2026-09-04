@@ -10,13 +10,25 @@
                             </div>
                             <div class="col">
                                 <!-- <router-link :to="{name: 'confirmOrder'}" exact> -->
-                                    <button class="btn btn-primary float-right" @click="go_next()">{{ $t('user.checkout.next') }}</button>
+                                    <button class="btn btn-primary float-right" @click="go_next()" :disabled="next_disabled" :title="next_disabled_reason">{{ $t('user.checkout.next') }}</button>
                                 <!-- </router-link> -->
                             </div>
                         </div>
 
                         <div class="row">
                             <productDradcrumb :props_page="'payment'"/>
+                        </div>
+
+                        <div v-if="quantity_mismatch_items.length" class="row">
+                            <div class="col-12">
+                                <div class="alert alert-danger">
+                                    <div v-for="product in quantity_mismatch_items" :key="product.id">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
+                                        <button type="button" class="btn btn-link btn-sm p-0 ml-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <div class="row">
@@ -79,6 +91,11 @@
                                             <div class="mt-2">
                                                 <label class="text-muted small">{{ $t('user.checkout.map_location_label') }}</label>
                                                 <textarea class="form-control" v-model="adding_data.map" name="map" id="map" rows="2" :placeholder="$t('user.checkout.map_placeholder')"></textarea>
+                                            </div>
+
+                                            <div class="form-check mt-2 mb-2">
+                                                <input type="checkbox" class="form-check-input" id="payment_adres_default" v-model="adding_data.is_default">
+                                                <label class="form-check-label" for="payment_adres_default">{{ $t('user.cart.set_as_default_label') }}</label>
                                             </div>
 
                                             <button
@@ -171,6 +188,37 @@
                             </div>
                         </div>
 
+                        <div class="row justify-content-center" v-if="shiping_region">
+                            <div class="col-md-6">
+                                <div class="alert alert-secondary">
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">{{ $t('user.cart.subtotal_label') }}</span>
+                                        <span>{{ subtotal.toFixed(2) }} ₾</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-success" v-if="is_partner_member && partner_discount_percent > 0">
+                                        <span>{{ $t('user.cart.partner_discount_label', { percent: partner_discount_percent }) }}</span>
+                                        <span>−{{ ((subtotal * partner_discount_percent) / 100).toFixed(2) }} ₾</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between">
+                                        <span class="text-muted">{{ $t('user.cart.shipping_label') }}</span>
+                                        <span>{{ shiping_cost.toFixed(2) }} ₾</span>
+                                    </div>
+
+                                    <div v-if="min_ship_price_not_met" class="alert alert-danger py-1 px-2 mt-2 mb-0 small">
+                                        <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                        {{ $t('user.cart.min_order_price_warning', { region: shiping_region.region, amount: shiping_region.ship_min_price }) }}
+                                    </div>
+                                    <div v-else-if="free_shipping_remaining > 0" class="alert alert-info py-1 px-2 mt-2 mb-0 small">
+                                        <i class="fa fa-truck" aria-hidden="true"></i>
+                                        {{ $t('user.cart.free_shipping_remaining', { amount: free_shipping_remaining.toFixed(2), region: shiping_region.region }) }}
+                                    </div>
+                                    <div v-else-if="shiping_region.free_shiping_price_after" class="alert alert-success py-1 px-2 mt-2 mb-0 small">
+                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                        {{ $t('user.cart.free_shipping_reached', { region: shiping_region.region }) }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <div class="row justify-content-center">
                             <div class="col-md-6">
@@ -259,6 +307,7 @@ export default {
                 entrance: null,
                 zip_code: null,
                 map: null,
+                is_default: true,
             },
             errors: {
                 demo_name: false,
@@ -273,11 +322,46 @@ export default {
 
             sale_code: [],
             sale_code_discount: 0,
+
+            cart_items: [],
+            subtotal: 0,
+            shiping_region: null,
+            shiping_cost: 0,
+            is_partner_member: false,
+            partner_discount_percent: 0,
         };
+    },
+
+    computed: {
+        quantity_mismatch_items() {
+            return this.cart_items.filter(p => this.is_quantity_mismatch(p))
+        },
+        min_ship_price_not_met() {
+            const min_price = this.shiping_region && this.shiping_region.ship_min_price ? parseFloat(this.shiping_region.ship_min_price) : 0
+            return min_price > 0 && this.subtotal < min_price
+        },
+        free_shipping_remaining() {
+            if (!this.shiping_region || !this.shiping_region.free_shiping_price_after) return 0
+            const remaining = parseFloat(this.shiping_region.free_shiping_price_after) - this.subtotal
+            return remaining > 0 ? remaining : 0
+        },
+        next_disabled() {
+            return this.quantity_mismatch_items.length > 0
+                || (!!this.shiping_region && this.min_ship_price_not_met)
+        },
+        next_disabled_reason() {
+            if (this.quantity_mismatch_items.length) return this.$t('user.cart.fix_issues_to_checkout_tooltip')
+            if (this.shiping_region && this.min_ship_price_not_met) {
+                return this.$t('user.cart.min_order_price_warning', { region: this.shiping_region.region, amount: this.shiping_region.ship_min_price })
+            }
+            return ''
+        },
     },
 
     mounted() {
         this.get_adres()
+        this.get_products_cart()
+        this.get_partner_status()
 
         axios.get('payment/status')
             .then(r => {
@@ -293,6 +377,55 @@ export default {
     },
 
     methods: {
+        get_products_cart() {
+            axios.get('cart').then(response => {
+                this.cart_items = Array.isArray(response.data) ? response.data : []
+                this.colculat_subtotal()
+            }).catch(error => console.log(error))
+        },
+        is_quantity_mismatch(product) {
+            if (product.is_out_of_stock) return false
+            if (product.product && product.product.sale_type === 'produced_by_order') return false
+            return product.stock_quantity != null && product.quantity > product.stock_quantity
+        },
+        update_to_max_quantity(product) {
+            axios.post('cart/update_quantity/' + product.id, { quantity: product.stock_quantity })
+                .then(() => { this.get_products_cart(); this.$bus.$emit('cart-updated') })
+                .catch(error => console.log(error))
+        },
+        colculat_subtotal() {
+            this.subtotal = this.cart_items.reduce((sum, p) => {
+                const price = p.option && p.option.price ? parseFloat(p.option.price) : 0
+                return sum + price * (p.quantity || 1)
+            }, 0)
+            this.shiping_cost = this.colculate_shiping_price(this.subtotal)
+        },
+        colculate_shiping_price(subtotal) {
+            if (!this.shiping_region || !this.shiping_region.shiping_price) return 0
+            if (this.shiping_region.free_shiping_price_after && subtotal >= parseFloat(this.shiping_region.free_shiping_price_after)) return 0
+            return parseFloat(this.shiping_region.shiping_price)
+        },
+        get_shiping_region(region_id) {
+            axios.get('get_shiped_region/get_activ_region/' + region_id)
+                .then(response => {
+                    this.shiping_region = response.data
+                    this.colculat_subtotal()
+                })
+                .catch(error => {
+                    console.log(error)
+                    this.shiping_region = null
+                })
+        },
+        get_partner_status() {
+            axios.get('partner_organization/my_status')
+                .then(response => {
+                    this.is_partner_member = !!response.data.is_member
+                    this.partner_discount_percent = this.is_partner_member && response.data.organization
+                        ? parseFloat(response.data.organization.discount) || 0
+                        : 0
+                })
+                .catch(error => console.log(error))
+        },
         check_sale_code(){
             this.is_code_enterd = false
             if(this.enterd_sale_code == ''){
@@ -330,22 +463,30 @@ export default {
                 .get('get_activ_adres/'+adres_id)
                 .then(Response => {
                     this.quick_adres = Response.data
+                    this.get_shiping_region(Response.data.region_id)
                 })
                 .catch(error => console.log(error))
             }
             else if(adres_id == 'new adres'){
                 this.get_shipd_countries()
+                this.shiping_region = null
             }
         },
 
-        get_adres(last_adres = false) {
+        get_adres() {
             axios
             .get('get_user_adreses')
             .then(Response => {
                 this.adreses = Response.data
 
-                if(last_adres){
-                    this.get_last_adres()
+                if(this.selected_adreses_id === 'your adres'){
+                    // Nothing picked yet — jump straight to the user's default
+                    // address instead of making them pick it from the list.
+                    const default_adres = this.adreses.find(a => a.is_default)
+                    if (default_adres) {
+                        this.selected_adreses_id = default_adres.id
+                        this.get_activ_adres(default_adres.id)
+                    }
                 }
             })
             .catch(error => console.log(error))
@@ -355,9 +496,13 @@ export default {
                 this.$router.go(-1)
             }
         },
-        go_next(){  
+        go_next(){
             this.payment_error = false
             this.adreses_error = false
+
+            if (this.next_disabled) {
+                return
+            }
 
             if(this.selected_payment_type == ''){
                 this.payment_error = true
@@ -388,7 +533,7 @@ export default {
                 floor: false,
             }
             if(
-                this.adding_data.demo_name && 
+                this.adding_data.demo_name &&
                 this.adding_data.region_id &&
                 this.adding_data.city &&
                 this.adding_data.strit &&
@@ -402,7 +547,6 @@ export default {
                     _method: 'POST'
                 })
                 .then(Response => {
-                    this.get_adres(true)
                     this.adding_data = {
                         demo_name: null,
                         region_id: 0,
@@ -414,7 +558,16 @@ export default {
                         entrance: null,
                         zip_code: null,
                         map: null,
+                        is_default: !this.adreses.length,
                     }
+                    // The new address's id comes straight back from the API,
+                    // so select it directly instead of assuming it's last in
+                    // a freshly refetched list.
+                    if (Response.data && Response.data.id) {
+                        this.selected_adreses_id = Response.data.id
+                        this.get_activ_adres(Response.data.id)
+                    }
+                    this.get_adres()
                 })
                 .catch(error => console.log(error))
             }
@@ -439,11 +592,6 @@ export default {
                 }
             }
         },
-        get_last_adres(){
-            var select_new_adres = this.adreses[this.adreses.length - 1].id
-            this.selected_adreses_id = select_new_adres
-            this.get_activ_adres(this.selected_adreses_id)
-        }
     }
 }
 </script>

@@ -25,6 +25,7 @@ class ShipedRegionController extends Controller
 
         $adding_item['region'] = $request['adding_data']['region'];
         $adding_item['shiping_price'] = $request['adding_data']['shiping_price'];
+        $adding_item['ship_min_price'] = $request['adding_data']['ship_min_price'];
         $adding_item['free_shiping_price_after'] = $request['adding_data']['free_shiping_price_after'];
 
         $adding_item->save();
@@ -39,6 +40,7 @@ class ShipedRegionController extends Controller
         
         $editing_item['region'] = $request['editing_data']['region'];
         $editing_item['shiping_price'] = $request['editing_data']['shiping_price'];
+        $editing_item['ship_min_price'] = $request['editing_data']['ship_min_price'];
         $editing_item['free_shiping_price_after'] = $request['editing_data']['free_shiping_price_after'];
 
         $editing_item->update();
