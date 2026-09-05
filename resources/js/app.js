@@ -400,6 +400,24 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 
         next();
     });
+
+    // ── Per-page <title>/meta description ──────────────────────────────────
+    // UserRoutes.js gives every route a unique meta.title; the static
+    // "climbing.ge user" <title> in resources/views/user/layouts/app.blade.php
+    // is only the pre-hydration fallback. Each navigation replaces the
+    // previous head entry (rather than pushing a new one every time) so
+    // stale title/meta tags don't accumulate across an SPA session.
+    let titleHeadEntry = null;
+    router.afterEach((to) => {
+        if (titleHeadEntry) titleHeadEntry.dispose();
+        const pageTitle = to.meta?.title;
+        titleHeadEntry = head.push({
+            title: pageTitle ? `${pageTitle} — climbing.ge` : 'climbing.ge user',
+            meta: [
+                { name: 'description', content: 'climbing.ge user dashboard — manage your account, orders, and content.' },
+            ],
+        });
+    });
 }
 // ─────────────────────────────────────────────────────────────────────────────
 
