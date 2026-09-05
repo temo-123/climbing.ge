@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use App\Models\Article;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Log;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class ImageControllService
@@ -32,9 +33,9 @@ class ImageControllService
 
             $file_temp_path = $request->file($form_value_id)->getPathName();
 
-            ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
+            $converted = ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
 
-            return $file_new_name;
+            return $converted ? $file_new_name : null;
         }
     }
 
@@ -73,9 +74,9 @@ class ImageControllService
 
         $file_temp_path = $form_value_id->getPathName();
 
-        ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
-        
-        return $file_new_name;
+        $converted = ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
+
+        return $converted ? $file_new_name : null;
     }
 
     /**
@@ -115,11 +116,11 @@ class ImageControllService
      * @param string $inputFile: relative or absolute path
      * @param string $outputFile: relative or absolute path
      * @param int $quality of output: 0 is worst, 100 is best
-     * @return void
-     * 
+     * @return bool true if the image was decoded and written, false if the type was unrecognized or decoding failed
+     *
      * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
      */
-    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): void
+    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): bool
     {
         $dir = dirname($outputFile);
         if (!file_exists($dir)) {
@@ -131,25 +132,43 @@ class ImageControllService
         switch ($fileType) {
             case IMAGETYPE_GIF:
                 $image = imagecreatefromgif($inputFile);
-                imagepalettetotruecolor($image);
-                imagealphablending($image, true);
-                imagesavealpha($image, true);
+                if ($image !== false) {
+                    imagepalettetotruecolor($image);
+                    imagealphablending($image, true);
+                    imagesavealpha($image, true);
+                }
                 break;
             case IMAGETYPE_JPEG:
                 $image = imagecreatefromjpeg($inputFile);
                 break;
             case IMAGETYPE_PNG:
                 $image = imagecreatefrompng($inputFile);
-                imagepalettetotruecolor($image);
-                imagealphablending($image, true);
-                imagesavealpha($image, true);
+                if ($image !== false) {
+                    imagepalettetotruecolor($image);
+                    imagealphablending($image, true);
+                    imagesavealpha($image, true);
+                }
                 break;
             case IMAGETYPE_WEBP:
                 $image = imagecreatefromwebp($inputFile);
-                imagesavealpha($image, true);
+                if ($image !== false) {
+                    imagesavealpha($image, true);
+                }
                 break;
             default:
-                return;
+                Log::warning('ImageControllService: unrecognized image type, conversion skipped', [
+                    'inputFile' => $inputFile,
+                    'exif_imagetype' => $fileType,
+                ]);
+                return false;
+        }
+
+        if ($image === false) {
+            Log::warning('ImageControllService: GD failed to decode image', [
+                'inputFile' => $inputFile,
+                'exif_imagetype' => $fileType,
+            ]);
+            return false;
         }
 
         if ($resize == 1) {
@@ -163,6 +182,8 @@ class ImageControllService
         }
 
         imagedestroy($image);
+
+        return true;
     }
 
 
