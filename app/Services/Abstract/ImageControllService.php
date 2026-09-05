@@ -26,17 +26,63 @@ class ImageControllService
     {
         // https://therichpost.com/vue-laravel-image-upload/
 
-        if ($request->hasFile($form_value_id)){
-            // rename file
-            $new_name = ImageControllService::generate_image_name();
-            $file_new_name = $new_name . '.webp';
-
-            $file_temp_path = $request->file($form_value_id)->getPathName();
-
-            $converted = ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
-
-            return $converted ? $file_new_name : null;
+        [$file_temp_path, $isOwnTempFile] = ImageControllService::resolveImageSource($request, $form_value_id);
+        if (!$file_temp_path) {
+            return null;
         }
+
+        $new_name = ImageControllService::generate_image_name();
+        $file_new_name = $new_name . '.webp';
+
+        $converted = ImageControllService::convertImageToWebp($file_temp_path, public_path($image_dir . $file_new_name), 80, $resize);
+
+        if ($isOwnTempFile) {
+            @unlink($file_temp_path);
+        }
+
+        return $converted ? $file_new_name : null;
+    }
+
+    /**
+     * Resolves either a real multipart upload OR a base64 fallback field into a
+     * temp file path. The mobile app now sends new images as base64 inside a
+     * plain JSON body (e.g. "photo_base64" / "photo_ext") instead of multipart,
+     * because some networks and on-device software (VPNs, firewalls, "security"
+     * apps that proxy all app traffic to inspect it) reject or corrupt
+     * multipart/form-data bodies specifically while leaving plain JSON/
+     * urlencoded POSTs untouched. Device-confirmed case: an upload failed on
+     * every attempt with the connection-level error
+     * "multipart != application/x-www-form-urlencoded" — some interceptor
+     * rejecting the Content-Type outright — while an identical plain-JSON
+     * request from the same device always succeeded.
+     *
+     * @return array{0: ?string, 1: bool} [$tempPath, $isOwnTempFile] — the
+     *         second element tells the caller whether it's safe/necessary to
+     *         unlink $tempPath afterwards (true for our own base64-decoded
+     *         file; false for Laravel's framework-managed upload tmp path).
+     */
+    private static function resolveImageSource($request, $form_value_id)
+    {
+        if ($request->hasFile($form_value_id)) {
+            return [$request->file($form_value_id)->getPathName(), false];
+        }
+
+        $base64 = $request->input($form_value_id . '_base64');
+        if (!$base64) {
+            return [null, false];
+        }
+
+        $decoded = base64_decode($base64, true);
+        if ($decoded === false) {
+            Log::warning('ImageControllService: invalid base64 for ' . $form_value_id . '_base64');
+            return [null, false];
+        }
+
+        $ext = preg_replace('/[^a-zA-Z0-9]/', '', $request->input($form_value_id . '_ext', 'jpg')) ?: 'jpg';
+        $tempPath = tempnam(sys_get_temp_dir(), 'upl_') . '.' . $ext;
+        file_put_contents($tempPath, $decoded);
+
+        return [$tempPath, true];
     }
 
     /**
@@ -51,7 +97,7 @@ class ImageControllService
      */
     public static function image_update($image_dir, $editing_model_value, $request, $form_value_id, $db_value, $resize = 1)
     {
-        if ($request->hasFile($form_value_id)){ 
+        if ($request->hasFile($form_value_id) || $request->filled($form_value_id . '_base64')){
             // delete old image
             ImageControllService::image_delete($image_dir, $editing_model_value, $db_value);
 

@@ -153,6 +153,8 @@ class SummitPublicController extends Controller
             'other_route'   => 'nullable|string|max:255',
             'comment'       => 'nullable|string',
             'photo'         => 'nullable|image|max:10240',
+            'photo_base64'  => 'nullable|string',
+            'photo_ext'     => 'nullable|string|max:10',
             'user_latitude' => 'nullable|numeric',
             'user_longitude'=> 'nullable|numeric',
         ]);

@@ -126,7 +126,7 @@ class UsersController extends Controller
         if (Auth::user()) {
             $user = user::where('id', '=', $request->user_id)->first();
             if($user->image != null){
-                if($request->hasFile('image')){
+                if($request->hasFile('image') || $request->filled('image_base64')){
                     $file_new_name = ImageControllService::image_update('images/user_profil_img/', $user, $request, 'image', 'image', 3);
                     $user['image'] = $file_new_name;
                 }
@@ -134,7 +134,7 @@ class UsersController extends Controller
                 $user -> save();
             }
             else{
-                if($request->hasFile('image')){
+                if($request->hasFile('image') || $request->filled('image_base64')){
                     $file_new_name = ImageControllService::image_upload('images/user_profil_img/', $request, 'image', 3);
                     $user['image'] = $file_new_name;
                 }
