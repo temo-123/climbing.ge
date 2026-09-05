@@ -1213,6 +1213,7 @@
             "adding_ellipsis": "ემატება...",
             "add_relation_btn": "კავშირის დამატება",
             "failed_add_relation": "კავშირის დამატება ვერ მოხერხდა.",
+            "col_details": "დეტალები",
             "col_edit": "@:common.edit",
             "col_delete_ascent": "@:common.delete",
             "edit_ascent_verification_title": "GPS დადასტურების რედაქტირება",

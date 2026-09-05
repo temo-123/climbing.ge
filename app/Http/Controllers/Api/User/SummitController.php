@@ -120,7 +120,7 @@ class SummitController extends Controller
         // user actually owns, same guard as the single-item del_ascent() above.
         $count = 0;
         DB::transaction(function () use ($auth_user, $request, &$count) {
-            $ascents = $auth_user->ascents()->whereIn('id', $request->ids)->get();
+            $ascents = $auth_user->ascents()->whereIn('summit_ascents.id', $request->ids)->get();
             foreach ($ascents as $ascent) {
                 $ascent->delete();
                 $count++;

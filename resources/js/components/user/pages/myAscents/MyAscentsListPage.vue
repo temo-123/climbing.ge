@@ -11,6 +11,7 @@
                 <div class="col-sm-12">
                     <tabsComponent
                         :table_data="data_for_tab"
+                        @update="load_ascents"
                         @show_ascent_detail="show_ascent_detail"
                         @edit_ascent="edit_ascent"
                         @del_ascent="del_ascent"

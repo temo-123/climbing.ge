@@ -1213,6 +1213,7 @@
             "adding_ellipsis": "Adding...",
             "add_relation_btn": "Add Relation",
             "failed_add_relation": "Failed to add relation.",
+            "col_details": "Details",
             "col_edit": "@:common.edit",
             "col_delete_ascent": "@:common.delete",
             "edit_ascent_verification_title": "Edit GPS Verification",

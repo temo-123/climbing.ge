@@ -26,6 +26,7 @@
                     @confirm_delete="confirm_delete_by_id"
                     @export_laser_plate="export_laser_plate_by_id"
                     @filtr_summits_by_mount="filtr_summits_by_mount"
+                    @show_ascent_detail="show_ascent_detail"
                     @open_edit_ascent="open_edit_ascent"
                     @confirm_delete_ascent="confirm_delete_ascent"
                     @delete_selected="bulk_delete_selected"
@@ -201,6 +202,8 @@
             </template>
         </stack-modal>
 
+        <AscentDetailModal ref="ascentDetailModal" />
+
     </div>
 </template>
 
@@ -210,12 +213,13 @@ import tabsComponent from '../../items/data_table/TabsComponent.vue'
 import QrcodeVue from 'qrcode.vue'
 import { LMap, LTileLayer, LMarker } from '@vue-leaflet/vue-leaflet'
 import 'leaflet/dist/leaflet.css'
+import AscentDetailModal from '../../items/modal/AscentDetailModal.vue'
 
 const GEORGIA_CENTER = [42.3154, 43.3569]
 
 export default {
     name: 'SummitListPage',
-    components: { breadcrumb, tabsComponent, QrcodeVue, LMap, LTileLayer, LMarker },
+    components: { breadcrumb, tabsComponent, QrcodeVue, LMap, LTileLayer, LMarker, AscentDetailModal },
     data() {
         return {
             summits: [],
@@ -321,7 +325,7 @@ export default {
                     tab_data: {
                         data: this.ascents,
                         tab: {
-                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment'), this.$t('admin.summits.col_edit'), this.$t('admin.summits.col_delete_ascent')],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment'), this.$t('admin.summits.col_details'), this.$t('admin.summits.col_edit'), this.$t('admin.summits.col_delete_ascent')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['name']],
@@ -333,12 +337,14 @@ export default {
                                 ['data', ['route_grade']],
                                 ['data', ['is_gps_validated'], 'bool'],
                                 ['data', ['comment']],
+                                ['action_fun_id', 'show_ascent_detail',   'btn btn-sm btn-info',    '<i class="fa fa-eye"></i>'],
                                 ['action_fun_id', 'open_edit_ascent',    'btn btn-sm btn-warning', '<i class="fa fa-pencil"></i>'],
                                 ['action_fun_id', 'confirm_delete_ascent', 'btn btn-sm btn-danger', '<i class="fa fa-trash"></i>'],
                             ],
                             perm: [
                                 ['no'], ['no'], ['no'], ['no'], ['no'],
                                 ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['summit', 'show'],
                                 ['summit', 'edit'],
                                 ['summit', 'del'],
                             ]
@@ -440,6 +446,11 @@ export default {
                 })
                 .catch(() => { alert(this.$t('admin.summits.failed_delete_summit')) })
                 .finally(() => { this.deleting = false })
+        },
+
+        show_ascent_detail(id) {
+            const a = this.ascents.find(x => x.id === id)
+            if (a) this.$refs.ascentDetailModal.show_modal(a)
         },
 
         open_edit_ascent(id) {
