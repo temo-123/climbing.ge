@@ -18,3 +18,16 @@
         Header set Cache-Control "public, max-age=31536000, immutable"
     </FilesMatch>
 </IfModule>
+
+# Belt-and-suspenders alongside public/.user.ini: the repo root's .htaccess
+# php_value overrides never reach Apache here (DocumentRoot is this public/
+# folder), so the real upload/execution limits must live in this file.
+# Guarded so it's inert (not a 500) if this ever runs under PHP-FPM/CGI
+# instead of mod_php.
+<IfModule mod_php.c>
+    php_value upload_max_filesize 100M
+    php_value post_max_size 100M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+    php_value max_file_uploads 200
+</IfModule>
