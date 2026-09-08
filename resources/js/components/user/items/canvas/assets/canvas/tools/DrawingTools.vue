@@ -322,6 +322,116 @@ export default {
             });
             if (this.group) this.group.addChild(text);
             return text;
+        },
+
+        // Rappel/lower-off marker: a solid circle (the bolt/anchor the user
+        // clicks on) with a downward shaft + open chevron below it — the
+        // standard topo symbol for a rappel station, distinct from the generic
+        // add_arrow above (which points in an arbitrary drag-defined direction
+        // with a solid triangular head). There's no drag step: like add_point,
+        // it's a single fixed-shape click, sized off the same dot-size control
+        // rather than needing its own dedicated size control. Proportions are
+        // scaled from a 30px-radius reference design (gemini-svg.svg: circle
+        // r=30 at cx=50,cy=40; shaft (50,70)→(50,135); chevron 22,110 → 50,145 →
+        // 78,110; stroke-width 14) by k = R/30.
+        add_rappel(event) {
+            this.layerCounters.rappel++;
+            const n = this.layerCounters.rappel;
+            // Defaults to the reference design's green rather than the shared
+            // stroke color (same reasoning as add_point's gold default above) —
+            // a rappel marker reads as its own fixed symbol, not a line the
+            // user is actively styling, so it shouldn't inherit whatever red/
+            // etc. the stroke picker happens to be set to. Still overridable:
+            // an explicitly-chosen fill color takes precedence, and the color
+            // can be changed afterward via the layers panel like anything else.
+            const color = (this.currentFillColor != null) ? this.currentFillColor : '#22C55E';
+            // Same dot-size control add_point uses, read the same way (no extra
+            // multiplier) — so the existing size slider resizes this marker the
+            // same way it already resizes points, with the same default (4).
+            const R = this._dotSize();
+            const k = R / 30;
+            const p = event.point;
+
+            const circle = new paper.Path.Circle({
+                center: p,
+                radius: R,
+                fillColor: color,
+                strokeColor: color,
+                strokeWidth: 14 * k,
+                name: `rappel-circle ${n}`
+            });
+
+            const shaft = new paper.Path({
+                strokeColor: color,
+                strokeWidth: 14 * k,
+                strokeCap: 'round',
+                name: `rappel-shaft ${n}`
+            });
+            shaft.add(new paper.Point(p.x, p.y + 30 * k));
+            shaft.add(new paper.Point(p.x, p.y + 95 * k));
+
+            const head = new paper.Path({
+                strokeColor: color,
+                strokeWidth: 14 * k,
+                strokeCap: 'round',
+                strokeJoin: 'round',
+                name: `rappel-head ${n}`
+            });
+            head.add(new paper.Point(p.x - 28 * k, p.y + 70 * k));
+            head.add(new paper.Point(p.x,          p.y + 105 * k));
+            head.add(new paper.Point(p.x + 28 * k, p.y + 70 * k));
+
+            // isRappel (its own flag, not isLayerGroup) — matches add_arrow's
+            // precedent: this is one atomic symbol, not a multi-part route the
+            // user would ever want to expand and edit piece-by-piece in the
+            // layers panel, so it should show as a single "rappel N" row with
+            // its own icon, not a generic expandable folder. See
+            // EditorComponent's _isRappelContainer + resizeRappel below.
+            const rappel = new paper.Group([circle, shaft, head]);
+            rappel.name = `rappel ${n}`;
+            rappel.data = { isRappel: true };
+
+            if (this.group) this.group.addChild(rappel);
+            this.path = rappel;
+            return rappel;
+        },
+
+        // Rescales an EXISTING rappel marker's circle/shaft/chevron together to
+        // a specific width, keeping the circle's current center fixed — same
+        // reasoning as resizeArrow above (used by the layers panel's size
+        // input). Paper.js can't resize a Path.Circle via bounds directly (see
+        // the resize-action note elsewhere in this file), so the circle is
+        // replaced rather than mutated; the shaft/chevron are plain paths and
+        // just get their segment points reassigned.
+        resizeRappel(rappelGroup, width) {
+            const circle = rappelGroup.children[0];
+            const shaft  = rappelGroup.children[1];
+            const head   = rappelGroup.children[2];
+            if (!circle || !shaft || !head || head.segments.length < 3) return;
+
+            const center = circle.position;
+            const color  = circle.fillColor;
+            const k = width / 14;
+            const R = k * 30;
+
+            const newCircle = new paper.Path.Circle({
+                center: center,
+                radius: R,
+                fillColor: color,
+                strokeColor: color,
+                strokeWidth: width,
+                name: circle.name
+            });
+            circle.replaceWith(newCircle);
+
+            shaft.strokeWidth = width;
+            shaft.segments[0].point = new paper.Point(center.x, center.y + 30 * k);
+            shaft.segments[1].point = new paper.Point(center.x, center.y + 95 * k);
+
+            head.strokeWidth = width;
+            head.segments[0].point = new paper.Point(center.x - 28 * k, center.y + 70 * k);
+            head.segments[1].point = new paper.Point(center.x,          center.y + 105 * k);
+            head.segments[2].point = new paper.Point(center.x + 28 * k, center.y + 70 * k);
         }
     }
 }

@@ -58,6 +58,9 @@
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 21 }]" @click.prevent="$emit('arrow')" :title="$t('admin.articles.canvas_editor.arrow_tooltip')">
                         <i class="fa fa-long-arrow-right"></i>
                     </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 22 }]" @click.prevent="$emit('rappel')" :title="$t('admin.articles.canvas_editor.rappel_tooltip')">
+                        <i class="fa fa-anchor"></i>
+                    </button>
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 13 }]" @click.prevent="$emit('text')" :title="$t('admin.articles.canvas_editor.text_label_tooltip')">
                         <i class="fa fa-font"></i>
                     </button>
@@ -192,6 +195,7 @@ export default {
                 19: this.$t('admin.articles.canvas_editor.action_label_resize'),
                 20: this.$t('admin.articles.canvas_editor.action_label_continue_line'),
                 21: this.$t('admin.articles.canvas_editor.action_label_arrow'),
+                22: this.$t('admin.articles.canvas_editor.action_label_rappel'),
             };
             return labels[this.action] || this.$t('admin.articles.canvas_editor.action_label_line');
         },
@@ -215,12 +219,13 @@ export default {
                 19: 'fa fa-expand',
                 20: 'fa fa-pencil',
                 21: 'fa fa-long-arrow-right',
+                22: 'fa fa-anchor',
             };
             return icons[this.action] || 'fa fa-pencil';
         },
         activeBadgeClass() {
             // Draw tools = primary, edit tools = warning, view = secondary
-            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21];
+            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21, 22];
             const warningActions  = [5, 8, 14, 15, 16, 17, 19];
             if (primaryActions.includes(this.action))  return 'bg-primary';
             if (warningActions.includes(this.action))  return 'bg-warning text-dark';

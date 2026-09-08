@@ -95,6 +95,8 @@ export default {
                     this.startContinueLine(event);
                 } else if (this.action == 21) {
                     this.add_arrow(event);
+                } else if (this.action == 22) {
+                    this.add_rappel(event);
                 }
             };
 

@@ -28,6 +28,7 @@
                 @circle="handleCircle"
                 @ellipse="handleEllipse"
                 @arrow="handleArrow"
+                @rappel="handleRappel"
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
@@ -416,6 +417,10 @@ export default {
                 this.action = 21;
             },
 
+            handleRappel() {
+                this.action = 22;
+            },
+
             handlePolygon() {
                 this.action = 12;
             },
@@ -573,14 +578,18 @@ export default {
                 if (!item) return false;
                 return !!(item.data && item.data.isArrow) || !!(item.name && item.name.startsWith('arrow '));
             },
+            _isRappelContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isRappel) || !!(item.name && item.name.startsWith('rappel '));
+            },
             _isTextItem(item) {
                 return !!item && (item instanceof paper.PointText || (item.name && item.name.startsWith('text ')));
             },
 
-            // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows).
+            // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows/rappel markers).
             _getItemColor(item) {
                 if (!item) return '#999999';
-                if ((this._isGroupContainer(item) || this._isArrowContainer(item)) && item.children && item.children.length > 0) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item)) && item.children && item.children.length > 0) {
                     return this._getItemColor(item.children[0]);
                 }
                 const color = item.strokeColor || item.fillColor;
@@ -604,6 +613,12 @@ export default {
                     const shaft = item.children.find(c => (c.data && c.data.isArrowShaft) || (c.name && c.name.startsWith('arrow-shaft')));
                     return this._getItemWidth(shaft || item.children[0]);
                 }
+                if (this._isRappelContainer(item) && item.children && item.children.length > 0) {
+                    // A rappel marker is a Group of [circle, shaft, head] — its "width" is
+                    // the circle's stroke width, which add_rappel/resizeRappel always keep
+                    // equal to the shaft/chevron's (see DrawingTools.vue).
+                    return this._getItemWidth(item.children[0]);
+                }
                 if (this._isTextItem(item)) {
                     return Math.round(item.fontSize) || 16;
                 }
@@ -612,7 +627,7 @@ export default {
 
             _setItemColor(item, color) {
                 if (!item) return;
-                if ((this._isGroupContainer(item) || this._isArrowContainer(item)) && item.children) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item)) && item.children) {
                     [...item.children].forEach(child => this._setItemColor(child, color));
                     return;
                 }
@@ -641,6 +656,13 @@ export default {
                     // — setting only the shaft's strokeWidth would leave the head at its
                     // original fixed size, so a thick shaft visually swallows a tiny head.
                     this.$refs.canvasContainer.resizeArrow(item, width);
+                    return;
+                }
+                if (this._isRappelContainer(item)) {
+                    // Same reasoning as the arrow branch above, for the circle/shaft/
+                    // chevron trio (see CanvasContainerComponent.resizeRappel /
+                    // DrawingTools.resizeRappel).
+                    this.$refs.canvasContainer.resizeRappel(item, width);
                     return;
                 }
                 if (this._isTextItem(item)) {
@@ -796,6 +818,7 @@ export default {
                                 layerName: layer.name,
                                 isGroup: false,
                                 isArrow: this._isArrowContainer(item),
+                                isRappel: this._isRappelContainer(item),
                                 isText: this._isTextItem(item),
                                 textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
                                 isEditing: false,
@@ -1090,6 +1113,7 @@ export default {
                     // forward even without the prefix.
                     if (layer.isGroup) foundItem.data = { ...foundItem.data, isLayerGroup: true };
                     if (layer.isArrow) foundItem.data = { ...foundItem.data, isArrow: true };
+                    if (layer.isRappel) foundItem.data = { ...foundItem.data, isRappel: true };
                     foundItem.name = newName;
                     this.saveCanvasData();
                     this.updateLayersList();

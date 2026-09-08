@@ -60,6 +60,8 @@ The active tool is an integer `action` prop passed down from `EditorComponent` t
 | 17 | `move-all` | Move all unlocked objects together |
 | 19 | `resize` | Resize a single shape (click-drag quadrant) |
 | 20 | `continue-line` | Extend an existing line from its nearest endpoint |
+| 21 | `arrow` | Directional arrow (drag from start to end, solid triangular head) |
+| 22 | `rappel` | Rappel / lower-off marker (click to place; fixed circle + shaft + chevron symbol) |
 
 ---
 
@@ -236,6 +238,14 @@ Circles: `_recreateCircle` creates a new `paper.Path.Circle` to replace the old 
 ### Continue Line (action 20)
 
 `startContinueLine`: finds the nearest segment endpoint (within 20px) on any non-locked path. If found, activates the line from that endpoint. If not found, starts a new line.
+
+### Arrow (action 21)
+
+Drag-to-define: `add_arrow` seeds a degenerate shaft+solid-triangle-head Group at `mouseDown`, `updateArrow` repositions both on every `mouseDrag` frame from the fixed start point to the current point. The Group is tagged `data: { isArrow: true }` (not `isLayerGroup`) so it shows in the layers panel as one item, not an expandable folder — see `EditorComponent._isArrowContainer` and its use in `_getItemColor`/`_setItemColor`/`_getItemWidth`/`_setItemWidth`. The layers-panel width input calls `resizeArrow` (rescales shaft width + recomputes head geometry together); the canvas's own drag-resize (action 19) uses the generic `item.fitBounds(...)` fallback instead, since an arrow isn't flagged `isCircle`/`isRectangle`.
+
+### Rappel Marker (action 22)
+
+Click-to-place (no drag step): `add_rappel` builds a solid circle + downward shaft + open chevron as one Group, proportioned from a 30px-radius reference design and scaled by the **same dot-size control `add_point` uses** (`R = dotSize`, default 4; `k = R / 30`) — no separate size control, and the existing size slider resizes a placed-but-not-yet-saved rappel marker exactly the way it already resizes a point. Defaults to green (`#22C55E`, matching the reference design) rather than the shared stroke color — same reasoning as `add_point`'s gold default — but an explicitly-set fill color still overrides it, and it can be recolored afterward via the layers panel like anything else. Represents the standard topo symbol for a rappel/lower-off station — the circle is the anchor/bolt point the user clicks on. Tagged `data: { isRappel: true }`, following the **same pattern as Arrow above** (own container-type check, single non-expandable layers-panel row, `fa-anchor` icon) rather than the generic `isLayerGroup` grouping used by the numbered-route tool — see `EditorComponent._isRappelContainer`. Layers-panel width changes go through `resizeRappel` (replaces the circle via `Item.replaceWith()` since Paper.js can't resize a `Path.Circle`'s bounds directly, then repositions the shaft/chevron segment points — all keeping the circle's center fixed); canvas drag-resize (action 19) again falls through to the generic `fitBounds`.
 
 ### Crop (action 15)
 

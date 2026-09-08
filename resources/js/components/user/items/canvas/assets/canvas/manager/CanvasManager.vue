@@ -81,7 +81,8 @@ export default {
             polygon: 0,
             text: 0,
             group: 0,
-            arrow: 0
+            arrow: 0,
+            rappel: 0
         },
         history: [],
         redoStack: [],

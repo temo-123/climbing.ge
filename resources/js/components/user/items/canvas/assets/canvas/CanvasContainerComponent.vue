@@ -173,6 +173,15 @@ export default {
             }
         },
 
+        // Same reasoning as resizeArrow above, for the rappel-marker Group
+        // (see DrawingTools.vue's resizeRappel).
+        resizeRappel(rappelGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeRappel === 'function') {
+                this.$refs.canvasManager.resizeRappel(rappelGroup, width);
+            }
+        },
+
         // Access to group counter for layer management
         getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;

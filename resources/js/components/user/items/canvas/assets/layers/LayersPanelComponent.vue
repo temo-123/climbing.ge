@@ -444,6 +444,7 @@ export default {
             if (name.startsWith('polygon')) return 'fa-star';
             if (name.startsWith('ellipse')) return 'fa-ellipsis-h';
             if (name.startsWith('arrow')) return 'fa-long-arrow-right';
+            if (name.startsWith('rappel')) return 'fa-anchor';
             return 'fa-file-o';
         },
 
