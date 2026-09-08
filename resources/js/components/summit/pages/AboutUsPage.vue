@@ -29,8 +29,10 @@
 
         <messageComponent />
 
+        <!-- summit.about.title already ends in "– Summit Climbing Georgia";
+             appending it again produced a duplicated title. -->
         <metaData
-            :title="$t('summit.about.title') + ' – Summit Climbing Georgia'"
+            :title="$t('summit.about.title')"
             :description="$t('summit.about.meta')"
             :image="'/public/images/meta_img/mountain.jpg'"
         />

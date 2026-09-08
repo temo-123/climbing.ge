@@ -56,64 +56,71 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->siteUrl;
 
-        foreach (['', 'ka/'] as $lang) {
-            $isKa   = $lang !== '';
-            $prefix = $base . '/' . $lang;
+        // Home page — en/ka cross-linked via hreflang so Google treats them
+        // as translations of one page instead of two separate, competing
+        // results for the same query.
+        $this->addBilingualUrl($sitemap, $base . '/', $base . '/ka', fn (string $url) =>
+            Url::create($url)->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
 
-            // Static pages
-            $sitemap->add(Url::create($base . ($isKa ? '/ka' : '/'))->setPriority(1.0)->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY));
+        $categoryMap = [
+            'outdoor'        => 'outdoor',
+            'indoor'         => 'indoor',
+            'ice'            => 'ice',
+            'mount_route'    => 'mountaineering',
+            'other'          => 'other',
+            'news'           => 'news',
+            'special'        => 'special_article',
+            'tech_tip'       => 'tech_tip',
+            'spot_projects'  => 'spot_projects',
+            'partners'       => 'partner',
+        ];
 
-            $categoryMap = [
-                'outdoor'        => 'outdoor',
-                'indoor'         => 'indoor',
-                'ice'            => 'ice',
-                'mount_route'    => 'mountaineering',
-                'other'          => 'other',
-                'news'           => 'news',
-                'special'        => 'special_article',
-                'tech_tip'       => 'tech_tip',
-                'spot_projects'  => 'spot_projects',
-                'partners'       => 'partner',
-            ];
-
-            foreach ($categoryMap as $category => $segment) {
-                Article::where('category', $category)
-                    ->where('published', true)
-                    ->get(['url_title', 'updated_at'])
-                    ->each(function (Article $a) use ($sitemap, $prefix, $segment) {
-                        $sitemap->add(
-                            Url::create($prefix . $segment . '/' . $a->url_title)
-                                ->setPriority($this->articlePriority($segment))
-                                ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                                ->setLastModificationDate($a->updated_at ?? Carbon::now())
-                        );
-                    });
-            }
-
-            // Events
-            Event::where('published', true)
+        foreach ($categoryMap as $category => $segment) {
+            Article::where('category', $category)
+                ->where('published', true)
                 ->get(['url_title', 'updated_at'])
-                ->each(function (Event $e) use ($sitemap, $prefix) {
-                    $sitemap->add(
-                        Url::create($prefix . 'event/' . $e->url_title)
-                            ->setPriority(0.8)
-                            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
-                            ->setLastModificationDate($e->updated_at ?? Carbon::now())
-                    );
-                });
-
-            // Local businesses
-            Suport_local_bisnes::where('published', true)
-                ->get(['url_title', 'updated_at'])
-                ->each(function (Suport_local_bisnes $b) use ($sitemap, $prefix) {
-                    $sitemap->add(
-                        Url::create($prefix . 'local_bisnes/' . $b->url_title)
-                            ->setPriority(0.6)
+                ->each(function (Article $a) use ($sitemap, $base, $segment) {
+                    $this->addBilingualUrl(
+                        $sitemap,
+                        $base . '/' . $segment . '/' . $a->url_title,
+                        $base . '/ka/' . $segment . '/' . $a->url_title,
+                        fn (string $url) => Url::create($url)
+                            ->setPriority($this->articlePriority($segment))
                             ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                            ->setLastModificationDate($b->updated_at ?? Carbon::now())
+                            ->setLastModificationDate($a->updated_at ?? Carbon::now())
                     );
                 });
         }
+
+        // Events
+        Event::where('published', true)
+            ->get(['url_title', 'updated_at'])
+            ->each(function (Event $e) use ($sitemap, $base) {
+                $this->addBilingualUrl(
+                    $sitemap,
+                    $base . '/event/' . $e->url_title,
+                    $base . '/ka/event/' . $e->url_title,
+                    fn (string $url) => Url::create($url)
+                        ->setPriority(0.8)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+                        ->setLastModificationDate($e->updated_at ?? Carbon::now())
+                );
+            });
+
+        // Local businesses
+        Suport_local_bisnes::where('published', true)
+            ->get(['url_title', 'updated_at'])
+            ->each(function (Suport_local_bisnes $b) use ($sitemap, $base) {
+                $this->addBilingualUrl(
+                    $sitemap,
+                    $base . '/local_bisnes/' . $b->url_title,
+                    $base . '/ka/local_bisnes/' . $b->url_title,
+                    fn (string $url) => Url::create($url)
+                        ->setPriority(0.6)
+                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                        ->setLastModificationDate($b->updated_at ?? Carbon::now())
+                );
+            });
 
         $sitemap->writeToFile(public_path('guide-sitemap.xml'));
     }
@@ -125,36 +132,41 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->shopUrl;
 
-        foreach (['', 'ka/'] as $lang) {
-            $prefix = $base . '/' . $lang;
+        Product::where('published', true)->get(['url_title', 'updated_at'])->each(function (Product $p) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/product/' . $p->url_title,
+                $base . '/ka/product/' . $p->url_title,
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.9)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($p->updated_at ?? Carbon::now())
+            );
+        });
 
-            Product::where('published', true)->get(['url_title', 'updated_at'])->each(function (Product $p) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'product/' . $p->url_title)
-                        ->setPriority(0.9)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($p->updated_at ?? Carbon::now())
-                );
-            });
+        Service::where('published', true)->get(['url_title', 'updated_at'])->each(function (Service $s) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/service/' . $s->url_title,
+                $base . '/ka/service/' . $s->url_title,
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.7)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($s->updated_at ?? Carbon::now())
+            );
+        });
 
-            Service::where('published', true)->get(['url_title', 'updated_at'])->each(function (Service $s) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'service/' . $s->url_title)
-                        ->setPriority(0.7)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($s->updated_at ?? Carbon::now())
-                );
-            });
-
-            Tour::where('published', true)->get(['url_title', 'updated_at'])->each(function (Tour $t) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'tour/' . $t->url_title)
-                        ->setPriority(0.8)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($t->updated_at ?? Carbon::now())
-                );
-            });
-        }
+        Tour::where('published', true)->get(['url_title', 'updated_at'])->each(function (Tour $t) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/tour/' . $t->url_title,
+                $base . '/ka/tour/' . $t->url_title,
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.8)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($t->updated_at ?? Carbon::now())
+            );
+        });
 
         $sitemap->writeToFile(public_path('shop-sitemap.xml'));
     }
@@ -200,18 +212,17 @@ class GenerateSitemap extends Command
         $sitemap = Sitemap::create();
         $base    = $this->ssh . $this->summitUrl;
 
-        foreach (['', 'ka/'] as $lang) {
-            $prefix = $base . '/' . $lang;
-
-            Summit::where('published', true)->get(['url_title', 'updated_at'])->each(function (Summit $s) use ($sitemap, $prefix) {
-                $sitemap->add(
-                    Url::create($prefix . 'summit/' . $s->url_title)
-                        ->setPriority(0.9)
-                        ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
-                        ->setLastModificationDate($s->updated_at ?? Carbon::now())
-                );
-            });
-        }
+        Summit::where('published', true)->get(['url_title', 'updated_at'])->each(function (Summit $s) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/summit/' . $s->url_title,
+                $base . '/ka/summit/' . $s->url_title,
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.9)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($s->updated_at ?? Carbon::now())
+            );
+        });
 
         $sitemap->writeToFile(public_path('summit-sitemap.xml'));
     }
@@ -231,6 +242,32 @@ class GenerateSitemap extends Command
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────
+
+    /**
+     * Adds the en and ka variants of one piece of content, cross-linked via
+     * hreflang (`addAlternate`) so Google indexes them as translations of
+     * the same page rather than two separate results competing against
+     * each other for the same query — this was previously missing, which
+     * is a likely contributor to weak organic search performance on a
+     * bilingual site with this much duplicate-shaped content.
+     *
+     * @param  callable(string $url): Url  $make  Builds a fresh Url for the given absolute URL.
+     */
+    private function addBilingualUrl(Sitemap $sitemap, string $enUrl, string $kaUrl, callable $make): void
+    {
+        $sitemap->add(
+            $make($enUrl)
+                ->addAlternate($enUrl, 'en')
+                ->addAlternate($kaUrl, 'ka')
+                ->addAlternate($enUrl, 'x-default')
+        );
+        $sitemap->add(
+            $make($kaUrl)
+                ->addAlternate($enUrl, 'en')
+                ->addAlternate($kaUrl, 'ka')
+                ->addAlternate($enUrl, 'x-default')
+        );
+    }
 
     private function articlePriority(string $segment): float
     {

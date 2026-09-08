@@ -262,7 +262,13 @@ export default {
             const base = process.env.MIX_APP_SSH
                 ? (process.env.MIX_APP_SSH || '').replace(/\/$/, '') + '/' + (process.env.MIX_SUMMIT_URL || '').replace(/^\/|\/$/g, '')
                 : window.location.origin
-            return `${base}/make_ascent/${this.selected.id}`
+            // UTM-tagged so on-crag scans of the printed plate show up as their
+            // own channel in Analytics instead of collapsing into (direct)/(none)
+            // — matches SummitController::export_laser_plate()'s fallback URL.
+            // This is the value that actually gets persisted to summits.qr_code
+            // via "Save QR" below, so it's the one that ends up on real plates.
+            const campaign = encodeURIComponent(this.selected.url_title || this.selected.id)
+            return `${base}/make_ascent/${this.selected.id}?utm_source=qr&utm_medium=offline&utm_campaign=${campaign}`
         },
         data_for_tab() {
             if (this.loading) return []

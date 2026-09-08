@@ -121,7 +121,9 @@ ascentUrl  // computed: MIX_APP_SSH + MIX_SUMMIT_URL + /make_ascent/:id
 
 **`resources/js/components/summit/pages/MakeSummitAscentPage.vue`**
 
-Despite the name (and despite being the QR code's actual target URL, `/make_ascent/:id`), this is **not** the ascent form — it's a thin redirector. On mount, it fetches `GET summit/list` (the public list endpoint), finds the summit whose `id` matches the route param client-side, and immediately `router.replace`s to `/summit/{url_title}?make_ascent=:id` (or back to `/summits/list` if the id doesn't resolve to a summit, e.g. because it's unpublished or was deleted). Nothing is rendered here but a loading spinner.
+Despite the name (and despite being the QR code's actual target URL, `/make_ascent/:id`), this is **not** the ascent form — it's a thin redirector. On mount, it fetches `GET summit/find/:id` (see below), and immediately `router.replace`s to `/summit/{url_title}?make_ascent=:id` (or back to `/summits/list` if the id doesn't resolve to a summit, e.g. because it's unpublished or was deleted). Nothing is rendered here but a loading spinner.
+
+It used to fetch `GET summit/list` (the full public list) and search it client-side for the matching `id` — replaced with the dedicated `find/:id` lookup because this page is disproportionately hit over weak mountain signal (it's the literal QR-scan landing page) and downloading every published summit just to discard all but one added avoidable latency exactly where it hurts most.
 
 The **actual form** is `MakeAscentModal.vue` (`resources/js/components/summit/items/Modals/MakeAscentModal.vue`), opened by `pages/SummitPage.vue` whenever a `make_ascent` query param is present on the URL — i.e. the real flow is *always* "land on the summit detail page with the modal open," never a dedicated route.
 
@@ -156,6 +158,7 @@ There is **no `region` concept anywhere in this feature** despite what older rev
 | Method | Path | Controller method | Description |
 |---|---|---|---|
 | GET | `/list` | `index` | Published (`published=1`) summits, alphabetical, minimal fields (see below) |
+| GET | `/find/{id}` | `find` | Resolves one summit's `url_title` (+ `id`) from its numeric id — `whereIn('published', [1, 2])`, same reachability rule as `show()`. Exists solely for `MakeSummitAscentPage.vue`'s QR-scan redirect, so it doesn't have to download the whole `/list` to find one summit. 404s (via `findOrFail`) if the id doesn't exist or isn't reachable. |
 | GET | `/list_by_mount/{lang}` | `list_by_mount` | Published summits grouped by their `Mount`, each group carrying the mount's localized title/description/map — used to render the summit list nested under mountain sections; `{lang}` is `ka` or anything else → `us` |
 | GET | `/list_filtered/{mount_id}` | `list_filtered_by_mount` | Published summits belonging to one mount |
 | GET | `/show/{url_title}` | `show` | Single summit. `whereIn('published', [1, 2])` — note **2 also renders**, not just 1 (see note below) |
@@ -434,20 +437,27 @@ Add/Edit modal. Fields: Title, KA Title, Description (Quill editor), KA Descript
 
 ## QR Code System
 
-QR code URL format: `https://summit.climbing.ge/make_ascent/{summit_id}`
+QR code URL format: `https://summit.climbing.ge/make_ascent/{summit_id}?utm_source=qr&utm_medium=offline&utm_campaign={summit.url_title}`
+
+The UTM params exist so a scan at the actual summit shows up as its own Analytics channel instead of collapsing into `(direct) / (none)` — before they were added, a QR scan was indistinguishable from someone just typing the URL, and (direct) was easily 90%+ of this property's traffic as a result. Two independent places build this same URL and **both** need to agree on the format — there's no shared helper, so a future change to the UTM scheme has to be made in both:
+
+1. **`qr_value` computed property**, `resources/js/components/user/pages/summits/SummitListPage.vue` — builds the admin QR-modal preview, and is what actually gets persisted via "Save QR" below.
+2. **`SummitController::export_laser_plate()`**, `app/Http/Controllers/Api/User/Admin/Summit/SummitController.php` — builds the PDF laser-plate export, but **only as a fallback** (`$summit->qr_code ?: $fallback`) for a summit that has never been through "Save QR". Once a summit has a saved `qr_code`, the laser-plate export just embeds that persisted value — it does not rebuild the URL itself. Practically: fix/change the URL format in `qr_value` (1) or the saved value stops matching what gets printed.
 
 Built from env vars:
 ```javascript
 const base = process.env.MIX_APP_SSH.replace(/\/$/, '')
            + '/' + process.env.MIX_SUMMIT_URL.replace(/^\/|\/$/g, '')
-const qr_value = `${base}/make_ascent/${summit.id}`
+const qr_value = `${base}/make_ascent/${summit.id}?utm_source=qr&utm_medium=offline&utm_campaign=${summit.url_title}`
 ```
 
 **Saving QR to database:**
-1. Admin opens QR modal → URL displayed + `qrcode-vue` preview
+1. Admin opens QR modal → URL (including the UTM params above) displayed + `qrcode-vue` preview
 2. Admin clicks **Save QR** → `POST /api/set_summit/save_qr/:id` with `{ qr_code: url }`
-3. URL persisted to `summits.qr_code`
+3. URL persisted to `summits.qr_code` — **this is the URL that ends up on the physical plate**, not whatever `export_laser_plate()` would generate on its own
 4. Badge on summit card/list changes from "None" to "Saved"
+
+A summit whose `qr_code` was saved *before* the UTM params were added still has the old, untagged URL in the database — re-saving (even with no other changes) is what picks up the new format. `export_laser_plate()`'s own fallback is fine as-is and only matters for a summit that has never been saved at all.
 
 **QR scanning (mobile):**
 1. `Html5QrcodeScanner` opens device camera

@@ -40,6 +40,24 @@ class SummitPublicController extends Controller
         return response()->json($summits);
     }
 
+    /**
+     * Resolves a summit's url_title from its numeric id — this is what a QR
+     * scan (which encodes the id, not the url_title, since it's shorter and
+     * stable) needs to redirect to the real /summit/{url_title} page. Kept
+     * separate from index() so a scan at the summit (often on weak mountain
+     * signal) doesn't have to download and search every published summit
+     * just to resolve one.
+     */
+    public function find($id)
+    {
+        $summit = Summit::whereIn('published', [1, 2])->findOrFail($id);
+
+        return response()->json([
+            'id'        => $summit->id,
+            'url_title' => $summit->url_title,
+        ]);
+    }
+
     public function list_by_mount($lang)
     {
         $locale = $lang === 'ka' ? 'ka' : 'us';

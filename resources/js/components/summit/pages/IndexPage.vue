@@ -131,8 +131,10 @@
             </div>
         </div>
 
+        <!-- summit.scan_qr.title already ends in "– Summit Climbing Georgia";
+             appending it again produced the duplicated title GA was recording. -->
         <metaData
-            :title="$t('summit.scan_qr.title') + ' – Summit Climbing Georgia'"
+            :title="$t('summit.scan_qr.title')"
             :description="$t('summit.scan_qr.meta')"
             :image="'/public/images/meta_img/mountain.jpg'"
         />

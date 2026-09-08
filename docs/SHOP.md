@@ -57,6 +57,8 @@ Full product page: images, description, options (size/color), price, add to cart
 - `GET /api/get_product/get_product_options/{product_id}`
 - `GET /api/get_product/get_product_feedback/get_product_feedbacks/{product_id}`
 
+`is_loading` starts `true` and the `<metaData :title="product.locale_product.title" .../>` tag is gated behind `v-if="!is_loading"` — both are load-bearing, not stylistic. `get_product()` runs in `mounted()`, not `created()`, so without the loading flag starting `true`, the very first render happens before that fetch even starts, with `product.locale_product` still `{}`. Google Analytics recorded that as a literal `"undefined - shop.climbing.ge"` page title (163 users hit it across 2026). If you add a similar detail page elsewhere in the shop, follow `ServicePage.vue`/`TourPage.vue` instead — they already gate their whole template behind `is_loading`, not just the meta tag.
+
 ### `cartPageComponent.vue` — Shopping Cart
 
 Cart management: update quantities, remove items, and — since the September 2026 checkout-integration pass — a full pre-checkout shipping/discount preview built from the user's **default address** (see [Shipping Regions](#shipping-regions--checkout-shipping-rules) below):
@@ -128,6 +130,8 @@ products (global)
 
 ![Product tables (colors)](DEMO_IMAGES/Shop/Product_colors_structure.svg)
 ![Product full structure](DEMO_IMAGES/Shop/Product_full_structure.svg)
+
+**Google Merchant Center feed** — `app:generate-merchant-feed` (`app/Console/Commands/GenerateMerchantFeed.php`, scheduled daily + run at the end of `npm run build`, see `docs/CRON_SETUP.md`) writes `public/google-merchant-feed.xml` (gitignored, env-dependent — don't commit it) from every published product with a priced option, for free Google Shopping listings. It re-derives price/currency/availability the same way `SeoService::productMeta()` does for the product page's own `Offer` schema, but as a small, separate, duplicated block rather than a shared helper — same reasoning as everywhere else in this codebase that avoids cross-method schema helpers. Sets `identifier_exists: no` on every item (no manufacturer GTIN/MPN on file for this shop's small-batch/handmade goods) so Merchant Center doesn't silently disapprove entries for a missing required field instead.
 
 ### Orders
 

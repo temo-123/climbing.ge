@@ -78,6 +78,8 @@ Features: region filter dropdown, grouped/list view toggle (`ViewControlsCompone
 - `EventPageComponent.vue` — event/competition detail
 - `LocalBisnesPageComponent.vue` — local business
 
+All of the above fetch their record in `mounted()` and gate their whole content span — `<metaData>` included — behind `article_loading` (`true` initially, `v-else-if="!article_loading"`), **except `EventPageComponent.vue`**, which used to initialize `article_loading: false` and left `<metaData>` ungated. Since its `event` object starts as `[]`, the very first render evaluated `event.locale_event.title` (`[].locale_event` → `undefined`, `.title` on that throws) before the fetch even started — a real render-crashing bug on every event-page load, not just an analytics artifact. Fixed to match the other five; if you add another page here, copy one of those five, not the old `EventPageComponent.vue` pattern.
+
 ### Search
 
 `SerchPageComponent.vue` — searches across articles, products, and films.

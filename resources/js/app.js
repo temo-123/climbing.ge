@@ -248,17 +248,42 @@ const router = createRouter({
 });
 window.router = router;
 
-// Installed after the router exists so gtag's pageTracker can hook into it —
-// without this, gtag only ever sees the initial hard page load and none of
-// the in-SPA route changes register as pageviews in Analytics.
+// Installed after the router exists so our manual pageview tracking below
+// can hook into it — without this, gtag only ever sees the initial hard
+// page load and none of the in-SPA route changes register in Analytics.
+//
+// We do NOT use vue-gtag's built-in `pageTracker` option here: it reports
+// page_title as the raw Vue Router route `name` (e.g. "outdoor", "index",
+// "mountaineerings") rather than the real page title, because it fires
+// synchronously in router.afterEach — before the destination page's async
+// data has loaded and useHead()/MetaDataComponent has updated
+// document.title. That was polluting ~35% of climbing.ge's and ~23% of
+// shop.climbing.ge's 2026 pageviews with meaningless route-name titles
+// instead of the real, correct titles that are actually rendered on the
+// page. See trackPageview() below for the fix.
 if (analytic_id) {
-    app.use(createGtag({
-        tagId: analytic_id,
-        pageTracker: { router, useRouteFullPath: true },
-    }));
+    app.use(createGtag({ tagId: analytic_id }));
 }
 
 import { getCurrentLocale } from './services/routerUtils.js';
+import { pageview } from 'vue-gtag';
+
+// Reports a pageview using the real document.title instead of the route's
+// internal name. Delayed so async page data (and the useHead()-driven title
+// update that follows it) has time to resolve first; if the user has
+// already navigated away by the time the delay elapses, the stale pageview
+// is dropped rather than sent with a mismatched title/path pair.
+function trackPageview(route) {
+    if (!analytic_id) return;
+    setTimeout(() => {
+        if (router.currentRoute.value.fullPath !== route.fullPath) return;
+        pageview({
+            page_title: document.title,
+            page_path: route.fullPath,
+            page_location: window.location.href,
+        });
+    }, 1000);
+}
 
 let isFirstNavigation = true;
 
@@ -309,11 +334,20 @@ router.beforeEach((to, from, next) => {
     next();
 });
 
-router.afterEach(() => {
+router.afterEach((to, from) => {
     setTimeout(() => {
         isRouteLoading.value = false;
     }, 300);
+
+    if (to.path !== from.path) {
+        trackPageview(to);
+    }
 });
+
+// The very first pageview (hard load, not an in-SPA navigation) still needs
+// reporting — vue-gtag's own automatic tracker used to cover this via its
+// `pageTracker` option, which we no longer use.
+router.isReady().then(() => trackPageview(router.currentRoute.value));
 
 // ── User subdomain: auth + permission guard ───────────────────────────────────
 // The UserRoutes.js beforeEach guards never execute because app.js extracts

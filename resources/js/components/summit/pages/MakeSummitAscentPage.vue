@@ -9,14 +9,13 @@ export default {
   name: 'MakeSummitAscentPage',
   mounted() {
     const id = this.$route.params.id
-    axios.get('summit/list')
+    // A QR scan resolves through here, often on weak signal at the summit —
+    // fetching just this one summit's url_title (instead of the full
+    // published-summits list, as before) means one small request instead of
+    // downloading and searching every summit just to redirect.
+    axios.get('summit/find/' + id)
       .then(r => {
-        const summit = r.data.find(s => String(s.id) === String(id))
-        if (summit) {
-          this.$router.replace(`/summit/${summit.url_title}?make_ascent`)
-        } else {
-          this.$router.replace('/summits/list')
-        }
+        this.$router.replace(`/summit/${r.data.url_title}?make_ascent`)
       })
       .catch(() => {
         this.$router.replace('/summits/list')

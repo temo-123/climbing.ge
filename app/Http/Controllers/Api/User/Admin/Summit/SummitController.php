@@ -255,9 +255,18 @@ class SummitController extends Controller
 
         $summit = Summit::findOrFail($id);
 
-        $appSsh = rtrim(config('app.app_ssh'), '/');
+        // app_ssh already includes the scheme's trailing "://" (e.g. "https://"),
+        // so it must concatenate directly with the domain — rtrim('/') on it
+        // collapses "https://" down to "https:", which produced a malformed
+        // single-slash "https:/summit.climbing.ge/..." URL baked into every
+        // printed QR plate.
+        $appSsh = config('app.app_ssh');
         $summitUrl = trim(env('SUMMIT_URL', 'summit.climbing.ge'), '/');
-        $qrValue = $summit->qr_code ?: ($appSsh . '/' . $summitUrl . '/make_ascent/' . $summit->id);
+        // UTM-tagged so on-crag scans of the printed plate show up as their
+        // own channel in Analytics instead of being indistinguishable from
+        // (direct) / (none) — a QR scan carries no HTTP referrer.
+        $utm = 'utm_source=qr&utm_medium=offline&utm_campaign=' . urlencode($summit->url_title ?: (string) $summit->id);
+        $qrValue = $summit->qr_code ?: ($appSsh . $summitUrl . '/make_ascent/' . $summit->id . '?' . $utm);
 
         $qrResult = Builder::create()
             ->data($qrValue)

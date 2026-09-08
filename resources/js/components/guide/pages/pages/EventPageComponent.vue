@@ -73,7 +73,8 @@
             </div>
         </div>
         
-        <metaData 
+        <metaData
+            v-if="!article_loading"
             :title = "event.locale_event.title"
             :description = "event.locale_event.description"
             :image = "'/public/images/event_img/'+event.image"
@@ -105,7 +106,14 @@
                 start_year: 0,
                 end_year: 0,
 
-                article_loading: false,
+                // Starts true — get_event() only runs in mounted(), so without
+                // this the very first render evaluates event.locale_event.title
+                // below (event is still []) before the fetch even starts. Unlike
+                // the other guide detail pages, that isn't gated behind
+                // article_loading, so it throws on every load until this fetch
+                // resolves. See the sibling PageComponent.vue's identical
+                // article_loading/v-else-if pattern.
+                article_loading: true,
                 is_interested: false,
             };
         },

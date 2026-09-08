@@ -225,6 +225,7 @@
         </div>
 
         <metaData
+            v-if="!is_loading"
             :title="product.locale_product.title"
             :description="product.locale_product.short_description"
             :image="items.length ? items[0].src : '/public/images/meta_img/shop.jpg'"
@@ -259,7 +260,13 @@
                 // sane upper bound for the input, not a real stock limit.
                 MADE_TO_ORDER_MAX_QTY: 99,
                 is_adding_in_cart_socsesful: false,
-                is_loading: false,
+                // Starts true (unlike is_loading in most sibling pages) because
+                // get_product() only runs in mounted(), not created() — without
+                // this, the very first render happens before that fetch even
+                // starts, with product.locale_product still {}. That one frame
+                // was enough for the <metaData> title below to be tracked as
+                // "undefined - shop.climbing.ge" in Analytics.
+                is_loading: true,
                 addingToCart: false,
                 addingToFavorite: false,
                 showMaxProductsAlert: true,
