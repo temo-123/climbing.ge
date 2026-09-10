@@ -182,6 +182,36 @@ export default {
             }
         },
 
+        // Same reasoning as resizeArrow/resizeRappel above, for the bolt/pin/
+        // pendulum/crux marker Groups (see DrawingTools.vue).
+        resizeBolt(boltGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeBolt === 'function') {
+                this.$refs.canvasManager.resizeBolt(boltGroup, width);
+            }
+        },
+
+        resizePin(pinGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizePin === 'function') {
+                this.$refs.canvasManager.resizePin(pinGroup, width);
+            }
+        },
+
+        resizePendulum(pendulumGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizePendulum === 'function') {
+                this.$refs.canvasManager.resizePendulum(pendulumGroup, width);
+            }
+        },
+
+        resizeCrux(cruxGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeCrux === 'function') {
+                this.$refs.canvasManager.resizeCrux(cruxGroup, width);
+            }
+        },
+
         // Access to group counter for layer management
         getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;

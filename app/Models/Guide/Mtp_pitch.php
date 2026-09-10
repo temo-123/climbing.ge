@@ -18,8 +18,10 @@ class Mtp_pitch extends Model
         "last_carabin",
         "height",
         "bolts",
+        "bolts_type",
         "bolter",
         "first_ascent",
+        "first_ascent_date",
     ];
 
     public function json()

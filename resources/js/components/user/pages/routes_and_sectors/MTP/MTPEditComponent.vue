@@ -79,6 +79,13 @@
           </div>
         </div>
 
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'>{{ $t('admin.routes_sectors.first_ascent_date_placeholder') }}</label>
+          <div class="col-md-5">
+            <partial_date_input v-model="data.first_ascent_date" />
+          </div>
+        </div>
+
       </form>
 
       <pitch_list :mtp_id_prop="data.id" :sector_id_prop="data.sector_id" />
@@ -95,6 +102,7 @@
 <script>
   import pitch_list from './pitchs/PitchListComponent'
   import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
+  import partial_date_input from '../../../items/form/parts/PartialDateInputComponent.vue'
 
   export default {
     mixins: [
@@ -102,6 +110,7 @@
     components: {
       pitch_list,
       text_block_localization,
+      partial_date_input,
     },
     data() {
       return {
@@ -120,6 +129,7 @@
           text_ka: "",
           height: "",
           first_ascent: "",
+          first_ascent_date: "",
           author: '',
         },
 

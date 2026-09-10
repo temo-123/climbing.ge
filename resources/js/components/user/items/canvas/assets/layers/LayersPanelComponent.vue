@@ -445,6 +445,10 @@ export default {
             if (name.startsWith('ellipse')) return 'fa-ellipsis-h';
             if (name.startsWith('arrow')) return 'fa-long-arrow-right';
             if (name.startsWith('rappel')) return 'fa-anchor';
+            if (name.startsWith('bolt')) return 'fa-times';
+            if (name.startsWith('pin')) return 'fa-thumb-tack';
+            if (name.startsWith('pendulum')) return 'fa-share';
+            if (name.startsWith('crux')) return 'fa-key';
             return 'fa-file-o';
         },
 

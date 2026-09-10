@@ -72,10 +72,12 @@ class MTPPitchController extends Controller
                 $article['text_ka']=$request->data['text_ka'] ?? null;
                 $article['height']=$request->data['height'];
                 $article['bolts']=$request->data['bolts'];
+                $article['bolts_type']=$request->data['bolts_type'] ?? null;
 
                 $article['author'] = $request->data["author"];
                 $article['creation_data'] = $request->data["creation_data"];
                 $article['first_ascent'] = $request->data["first_ascent"];
+                $article['first_ascent_date'] = $request->data["first_ascent_date"] ?? null;
 
                 $article -> save();
             }
@@ -115,10 +117,12 @@ class MTPPitchController extends Controller
                 $new_pitch['text_ka']=$request->data['text_ka'] ?? null;
                 $new_pitch['height']=$request->data['height'];
                 $new_pitch['bolts']=$request->data['bolts'];
+                $new_pitch['bolts_type']=$request->data['bolts_type'] ?? null;
 
                 $new_pitch['author'] = $request->data["author"];
                 $new_pitch['creation_data'] = $request->data["creation_data"];
                 $new_pitch['first_ascent'] = $request->data["first_ascent"];
+                $new_pitch['first_ascent_date'] = $request->data["first_ascent_date"] ?? null;
 
                 $new_pitch -> save();
             }

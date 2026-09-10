@@ -15,6 +15,9 @@ class Mtp extends Model
         "text_ka",
         "last_carabin",
         "height",
+        "author",
+        "first_ascent",
+        "first_ascent_date",
     ];
 
     public function pitchs()

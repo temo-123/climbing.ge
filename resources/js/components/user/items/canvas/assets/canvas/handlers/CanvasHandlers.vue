@@ -97,6 +97,16 @@ export default {
                     this.add_arrow(event);
                 } else if (this.action == 22) {
                     this.add_rappel(event);
+                } else if (this.action == 23) {
+                    this.add_bolt(event);
+                } else if (this.action == 24) {
+                    this.add_pin(event);
+                } else if (this.action == 25) {
+                    this.add_pendulum_left(event);
+                } else if (this.action == 26) {
+                    this.add_pendulum_right(event);
+                } else if (this.action == 27) {
+                    this.add_crux(event);
                 }
             };
 
@@ -396,6 +406,20 @@ export default {
             // groups only organize items in the Layers panel, they should not force
             // every member to drag together. Previously this bubbled up to the
             // top-level Group, so moving one member of a group moved the whole group.
+            //
+            // EXCEPTION: multi-part atomic symbols (Arrow/Rappel/Bolt/Pin/Pendulum/
+            // Crux) are one indivisible glyph internally built as a Group of several
+            // paths (shaft+head, circle+shaft+chevron, etc.), not an organizational
+            // group like the numbered-route feature above — dragging just one of
+            // their child paths visibly tears the symbol apart (e.g. a rappel's
+            // circle moves off while its shaft/chevron stay put). Bubble up to the
+            // parent ONLY when it's one of these atomic types (see
+            // DrawingTools._isAtomicMarkerGroup); a generic numbered-route
+            // `isLayerGroup` is deliberately left alone so its members keep moving
+            // independently as before.
+            while (item.parent && this._isAtomicMarkerGroup(item.parent)) {
+                item = item.parent;
+            }
 
             if (item instanceof paper.PointText && item.name && item.name.startsWith('text ')) {
                 const num = item.name.replace('text ', '');
@@ -429,10 +453,17 @@ export default {
                 fill: true, stroke: true, segments: true, tolerance: 15
             });
             if (hitResult && hitResult.item && !hitResult.item.locked) {
-                if (hitResult.item.data && hitResult.item.data.textLabel) {
-                    hitResult.item.data.textLabel.remove();
+                let item = hitResult.item;
+                // Same reasoning as selectItemForMove's atomic-marker bubble-up:
+                // erasing one child of a multi-part symbol must erase the whole
+                // symbol, not leave the rest of it behind as orphaned pieces.
+                while (item.parent && this._isAtomicMarkerGroup(item.parent)) {
+                    item = item.parent;
                 }
-                hitResult.item.remove();
+                if (item.data && item.data.textLabel) {
+                    item.data.textLabel.remove();
+                }
+                item.remove();
                 this.scope.view.update();
                 this.saveCanvasData();
             }

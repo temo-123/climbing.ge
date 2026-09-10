@@ -29,6 +29,11 @@
                 @ellipse="handleEllipse"
                 @arrow="handleArrow"
                 @rappel="handleRappel"
+                @bolt="handleBolt"
+                @pin="handlePin"
+                @pendulum-left="handlePendulumLeft"
+                @pendulum-right="handlePendulumRight"
+                @crux="handleCrux"
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
@@ -421,6 +426,26 @@ export default {
                 this.action = 22;
             },
 
+            handleBolt() {
+                this.action = 23;
+            },
+
+            handlePin() {
+                this.action = 24;
+            },
+
+            handlePendulumLeft() {
+                this.action = 25;
+            },
+
+            handlePendulumRight() {
+                this.action = 26;
+            },
+
+            handleCrux() {
+                this.action = 27;
+            },
+
             handlePolygon() {
                 this.action = 12;
             },
@@ -582,14 +607,38 @@ export default {
                 if (!item) return false;
                 return !!(item.data && item.data.isRappel) || !!(item.name && item.name.startsWith('rappel '));
             },
+            _isBoltContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isBolt) || !!(item.name && item.name.startsWith('bolt '));
+            },
+            _isPinContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isPin) || !!(item.name && item.name.startsWith('pin '));
+            },
+            _isPendulumContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isPendulum) || !!(item.name && item.name.startsWith('pendulum '));
+            },
+            _isCruxContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isCrux) || !!(item.name && item.name.startsWith('crux '));
+            },
+            // True for any of the fixed-shape single-click marker types above
+            // (bolt/pin/pendulum/crux) — used wherever they all behave the same
+            // way (children[0]-driven color/width), so callers don't need to
+            // chain all four checks individually.
+            _isFixedMarkerContainer(item) {
+                return this._isBoltContainer(item) || this._isPinContainer(item)
+                    || this._isPendulumContainer(item) || this._isCruxContainer(item);
+            },
             _isTextItem(item) {
                 return !!item && (item instanceof paper.PointText || (item.name && item.name.startsWith('text ')));
             },
 
-            // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows/rappel markers).
+            // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows/rappel/bolt/pin/pendulum/crux markers).
             _getItemColor(item) {
                 if (!item) return '#999999';
-                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item)) && item.children && item.children.length > 0) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item) || this._isFixedMarkerContainer(item)) && item.children && item.children.length > 0) {
                     return this._getItemColor(item.children[0]);
                 }
                 const color = item.strokeColor || item.fillColor;
@@ -619,6 +668,12 @@ export default {
                     // equal to the shaft/chevron's (see DrawingTools.vue).
                     return this._getItemWidth(item.children[0]);
                 }
+                if (this._isFixedMarkerContainer(item) && item.children && item.children.length > 0) {
+                    // Bolt/pin/pendulum/crux markers are Groups whose parts all share one
+                    // stroke width (see their add_*/resize* pairs in DrawingTools.vue) —
+                    // same reasoning as the rappel branch above.
+                    return this._getItemWidth(item.children[0]);
+                }
                 if (this._isTextItem(item)) {
                     return Math.round(item.fontSize) || 16;
                 }
@@ -627,7 +682,7 @@ export default {
 
             _setItemColor(item, color) {
                 if (!item) return;
-                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item)) && item.children) {
+                if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item) || this._isFixedMarkerContainer(item)) && item.children) {
                     [...item.children].forEach(child => this._setItemColor(child, color));
                     return;
                 }
@@ -663,6 +718,22 @@ export default {
                     // chevron trio (see CanvasContainerComponent.resizeRappel /
                     // DrawingTools.resizeRappel).
                     this.$refs.canvasContainer.resizeRappel(item, width);
+                    return;
+                }
+                if (this._isBoltContainer(item)) {
+                    this.$refs.canvasContainer.resizeBolt(item, width);
+                    return;
+                }
+                if (this._isPinContainer(item)) {
+                    this.$refs.canvasContainer.resizePin(item, width);
+                    return;
+                }
+                if (this._isPendulumContainer(item)) {
+                    this.$refs.canvasContainer.resizePendulum(item, width);
+                    return;
+                }
+                if (this._isCruxContainer(item)) {
+                    this.$refs.canvasContainer.resizeCrux(item, width);
                     return;
                 }
                 if (this._isTextItem(item)) {
@@ -819,6 +890,10 @@ export default {
                                 isGroup: false,
                                 isArrow: this._isArrowContainer(item),
                                 isRappel: this._isRappelContainer(item),
+                                isBolt: this._isBoltContainer(item),
+                                isPin: this._isPinContainer(item),
+                                isPendulum: this._isPendulumContainer(item),
+                                isCrux: this._isCruxContainer(item),
                                 isText: this._isTextItem(item),
                                 textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
                                 isEditing: false,
@@ -1114,6 +1189,10 @@ export default {
                     if (layer.isGroup) foundItem.data = { ...foundItem.data, isLayerGroup: true };
                     if (layer.isArrow) foundItem.data = { ...foundItem.data, isArrow: true };
                     if (layer.isRappel) foundItem.data = { ...foundItem.data, isRappel: true };
+                    if (layer.isBolt) foundItem.data = { ...foundItem.data, isBolt: true };
+                    if (layer.isPin) foundItem.data = { ...foundItem.data, isPin: true };
+                    if (layer.isPendulum) foundItem.data = { ...foundItem.data, isPendulum: true };
+                    if (layer.isCrux) foundItem.data = { ...foundItem.data, isCrux: true };
                     foundItem.name = newName;
                     this.saveCanvasData();
                     this.updateLayersList();

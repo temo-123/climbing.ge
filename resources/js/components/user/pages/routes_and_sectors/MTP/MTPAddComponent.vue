@@ -86,6 +86,13 @@
           </div>
         </div>
 
+        <div class="form-group clearfix row">
+          <label for="name" class='col-md-2 control-label'>{{ $t('admin.routes_sectors.first_ascent_date_placeholder') }}</label>
+          <div class="col-md-5">
+            <partial_date_input v-model="data.first_ascent_date" />
+          </div>
+        </div>
+
       </form>
     </div>
   </div>
@@ -94,10 +101,11 @@
 <script>
 
   import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
+  import partial_date_input from '../../../items/form/parts/PartialDateInputComponent.vue'
 
   export default {
     mixins: [],
-    components: { text_block_localization },
+    components: { text_block_localization, partial_date_input },
     data() {
       return {
         description_editor: {},
@@ -115,6 +123,7 @@
           text_ka: "",
           height: "",
           first_ascent: "",
+          first_ascent_date: "",
           author: '',
         },
 
@@ -209,6 +218,7 @@
           text: "",
           height: "",
           first_ascent: "",
+          first_ascent_date: "",
           author: '',
         }
       },

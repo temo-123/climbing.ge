@@ -154,7 +154,7 @@
             <input type="text" name="auther" class="form-control" v-model="data.author" :placeholder="$t('admin.routes_sectors.bolter_placeholder')">
           </div>
           <div class="col-md-5">
-            <input type="date" name="creating_data" class="form-control" v-model="data.creation_data" :placeholder="$t('admin.routes_sectors.bolting_date_placeholder')">
+            <partial_date_input v-model="data.creation_data" />
           </div>
         </div>
 
@@ -164,7 +164,7 @@
             <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
           </div>
           <div class="col-md-5">
-            <input type="date" name="first_ascent_date" class="form-control" v-model="data.first_ascent_date" :placeholder="$t('admin.routes_sectors.first_ascent_date_placeholder')">
+            <partial_date_input v-model="data.first_ascent_date" />
           </div>
         </div>
 
@@ -179,6 +179,7 @@
   import grades_form from './assets/gradingFormComponent.vue'
   import route_editor_component from './assets/CanvasRouteEditorComponent.vue'
   import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
+  import partial_date_input from '../../../items/form/parts/PartialDateInputComponent.vue'
 
   export default {
       mixins: [
@@ -189,6 +190,7 @@
           grades_form,
           route_editor_component,
           text_block_localization,
+          partial_date_input,
       },
     data() {
       return {

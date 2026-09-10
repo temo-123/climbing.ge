@@ -42,8 +42,9 @@ class MTPController extends Controller
                 $new_mtp->text_ka = $request->data['text_ka'] ?? null;
                 $new_mtp->height = $request->data['height'];
                 $new_mtp->first_ascent = $request->data['first_ascent'];
+                $new_mtp->first_ascent_date = $request->data['first_ascent_date'] ?? null;
                 $new_mtp->author = $request->data['author'];
-                
+
                 $new_mtp->save();
             }
         }
@@ -77,8 +78,9 @@ class MTPController extends Controller
                 $edit_mtp->text_ka = $request->data['text_ka'] ?? null;
                 $edit_mtp->height = $request->data['height'];
                 $edit_mtp->first_ascent = $request->data['first_ascent'];
+                $edit_mtp->first_ascent_date = $request->data['first_ascent_date'] ?? null;
                 $edit_mtp->author = $request->data['author'];
-                
+
                 $edit_mtp->save();
             }
         }

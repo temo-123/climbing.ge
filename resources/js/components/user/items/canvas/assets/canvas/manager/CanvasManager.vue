@@ -82,7 +82,11 @@ export default {
             text: 0,
             group: 0,
             arrow: 0,
-            rappel: 0
+            rappel: 0,
+            bolt: 0,
+            pin: 0,
+            pendulum: 0,
+            crux: 0
         },
         history: [],
         redoStack: [],

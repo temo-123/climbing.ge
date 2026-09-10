@@ -22,7 +22,7 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.history_group_label') }}</div>
             </div>
 
-            <div class="vr align-self-stretch my-1"></div>
+            <div class="vr align-self-stretch my-1 mx-2"></div>
 
             <!-- Draw tools -->
             <div class="tool-group">
@@ -58,9 +58,6 @@
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 21 }]" @click.prevent="$emit('arrow')" :title="$t('admin.articles.canvas_editor.arrow_tooltip')">
                         <i class="fa fa-long-arrow-right"></i>
                     </button>
-                    <button type="button" :class="['btn', 'btn-primary', { active: action === 22 }]" @click.prevent="$emit('rappel')" :title="$t('admin.articles.canvas_editor.rappel_tooltip')">
-                        <i class="fa fa-anchor"></i>
-                    </button>
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 13 }]" @click.prevent="$emit('text')" :title="$t('admin.articles.canvas_editor.text_label_tooltip')">
                         <i class="fa fa-font"></i>
                     </button>
@@ -68,7 +65,34 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.draw_group_label') }}</div>
             </div>
 
-            <div class="vr align-self-stretch my-1"></div>
+            <div class="vr align-self-stretch my-1 mx-2"></div>
+
+            <!-- Topo symbols -->
+            <div class="tool-group">
+                <div class="btn-group btn-group-sm">
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 22 }]" @click.prevent="$emit('rappel')" :title="$t('admin.articles.canvas_editor.rappel_tooltip')">
+                        <i class="fa fa-anchor"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 23 }]" @click.prevent="$emit('bolt')" :title="$t('admin.articles.canvas_editor.bolt_tooltip')">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 24 }]" @click.prevent="$emit('pin')" :title="$t('admin.articles.canvas_editor.pin_tooltip')">
+                        <i class="fa fa-thumb-tack"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 25 }]" @click.prevent="$emit('pendulum-left')" :title="$t('admin.articles.canvas_editor.pendulum_left_tooltip')">
+                        <i class="fa fa-reply"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 26 }]" @click.prevent="$emit('pendulum-right')" :title="$t('admin.articles.canvas_editor.pendulum_right_tooltip')">
+                        <i class="fa fa-share"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 27 }]" @click.prevent="$emit('crux')" :title="$t('admin.articles.canvas_editor.crux_tooltip')">
+                        <i class="fa fa-key"></i>
+                    </button>
+                </div>
+                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.topo_symbols_group_label') }}</div>
+            </div>
+
+            <div class="vr align-self-stretch my-1 mx-2"></div>
 
             <!-- Edit tools -->
             <div class="tool-group">
@@ -98,7 +122,7 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.edit_group_label') }}</div>
             </div>
 
-            <div class="vr align-self-stretch my-1"></div>
+            <div class="vr align-self-stretch my-1 mx-2"></div>
 
             <!-- View / Navigate -->
             <div class="tool-group">
@@ -119,7 +143,7 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.navigate_group_label') }}</div>
             </div>
 
-            <div class="vr align-self-stretch my-1"></div>
+            <div class="vr align-self-stretch my-1 mx-2"></div>
 
             <!-- Export -->
             <div class="tool-group">
@@ -196,6 +220,11 @@ export default {
                 20: this.$t('admin.articles.canvas_editor.action_label_continue_line'),
                 21: this.$t('admin.articles.canvas_editor.action_label_arrow'),
                 22: this.$t('admin.articles.canvas_editor.action_label_rappel'),
+                23: this.$t('admin.articles.canvas_editor.action_label_bolt'),
+                24: this.$t('admin.articles.canvas_editor.action_label_pin'),
+                25: this.$t('admin.articles.canvas_editor.action_label_pendulum_left'),
+                26: this.$t('admin.articles.canvas_editor.action_label_pendulum_right'),
+                27: this.$t('admin.articles.canvas_editor.action_label_crux'),
             };
             return labels[this.action] || this.$t('admin.articles.canvas_editor.action_label_line');
         },
@@ -220,12 +249,17 @@ export default {
                 20: 'fa fa-pencil',
                 21: 'fa fa-long-arrow-right',
                 22: 'fa fa-anchor',
+                23: 'fa fa-times',
+                24: 'fa fa-thumb-tack',
+                25: 'fa fa-reply',
+                26: 'fa fa-share',
+                27: 'fa fa-key',
             };
             return icons[this.action] || 'fa fa-pencil';
         },
         activeBadgeClass() {
             // Draw tools = primary, edit tools = warning, view = secondary
-            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21, 22];
+            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21, 22, 23, 24, 25, 26, 27];
             const warningActions  = [5, 8, 14, 15, 16, 17, 19];
             if (primaryActions.includes(this.action))  return 'bg-primary';
             if (warningActions.includes(this.action))  return 'bg-warning text-dark';

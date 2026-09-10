@@ -2,6 +2,7 @@
     <StackModal
             :show="is_show_add_modal"
             :title="$t('admin.routes_sectors.add_pitch_title')"
+            size="xxl"
             @close="close_modal()"
             :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
             :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
@@ -26,10 +27,25 @@
 
                 <input type="text" name="name" v-model="data.name" class="form-control" :placeholder="$t('common.name')">
                 <input type="number" name="bolts" v-model="data.bolts" class="form-control" :placeholder="$t('admin.common.bolts')">
+
+                <label class="mt-2 mb-1 d-block">{{ $t('admin.routes_sectors.bolts_type_colon') }}</label>
+                <select class="form-control" v-model="data.bolts_type">
+                    <option value="">{{ $t('admin.routes_sectors.bolts_type_placeholder') }}</option>
+                    <option :value=null>?</option>
+                    <option value="glued">{{ $t('admin.routes_sectors.bolts_type_glued') }}</option>
+                    <option value="hangerr">{{ $t('admin.routes_sectors.bolts_type_hanger') }}</option>
+                </select>
+
                 <input type="number" name="height" class="form-control" v-model="data.height" :placeholder="$t('common.height')">
                 <input type="text" name="auther" class="form-control" v-model="data.author" :placeholder="$t('admin.routes_sectors.bolter_placeholder')">
-                <input type="date" name="creation_data" class="form-control" v-model="data.creation_data" :placeholder="$t('admin.routes_sectors.bolting_date_placeholder')">
-                <input type="text" name="first_ascent" class="form-control" v-model="data.first_ascent" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
+
+                <label class="mt-2 mb-1 d-block">{{ $t('admin.routes_sectors.bolting_date_placeholder') }}</label>
+                <partial_date_input v-model="data.creation_data" />
+
+                <input type="text" name="first_ascent" class="form-control mt-2" v-model="data.first_ascent" :placeholder="$t('admin.routes_sectors.first_ascent_placeholder')">
+
+                <label class="mt-2 mb-1 d-block">{{ $t('admin.routes_sectors.first_ascent_date_placeholder') }}</label>
+                <partial_date_input v-model="data.first_ascent_date" />
 
                 <text_block_localization
                     v-model:en_value="data.text_us"
@@ -54,11 +70,14 @@
 <script>
     import Editor from '../../../../../items/canvas/EditorComponent.vue'
     import text_block_localization from '../../../../../items/form/parts/TextBlockLocalithationComponent.vue'
+    import partial_date_input from '../../../../../items/form/parts/PartialDateInputComponent.vue'
+    import { grade } from '../../../../../../../mixins/grade_mixin.js'
 
     export default {
         components: {
             Editor,
             text_block_localization,
+            partial_date_input,
         },
         mixins: [],
         data() {
@@ -79,23 +98,22 @@
                     text_ka: "",
                     height: "",
                     bolts: "",
+                    bolts_type: "",
                     author: "",
                     creation_data: "",
                     first_ascent: "",
+                    first_ascent_date: "",
                     anchor_type: "",
                     category: "",
                 },
-        
+
                 go_back_action: false,
 
-                sport_route_grade: [
-                    "4",
-                    "5a", "5b", "5c", "5c+",
-                    "6a", "6a+", "6b", "6b+", "6c", "6c+",
-                    "7a", "7a+", "7b", "7b+", "7c", "7c+",
-                    "8a", "8a+", "8b", "8b+", "8c", "8c+",
-                    "9a", "9a+", "9b", "9b+", "9c", "9c+",
-                ],
+                // Same list Route's grading form uses (grade_mixin.js's lead()) —
+                // this used to be its own hardcoded copy that had drifted from
+                // Route's (e.g. Route was missing "5c+"), so the two forms could
+                // silently offer different grades for the same French scale.
+                sport_route_grade: grade.lead(),
                 is_show_add_modal: false,
             }
         },
@@ -156,9 +174,11 @@
                     text_ka: "",
                     height: "",
                     bolts: "",
+                    bolts_type: "",
                     author: "",
                     creation_data: "",
                     first_ascent: "",
+                    first_ascent_date: "",
                 };
             },
         }

@@ -18,6 +18,35 @@ class Sector extends Model
     // 'none' (default), 'update', or 'new' (re-announce as if newly published).
     public $notifyMode = 'none';
 
+    // Without these casts, Eloquent returns the underlying int(1)/int(0)/null
+    // columns as raw PHP ints, which JSON-encode as JS numbers (1/0), not
+    // booleans. The admin edit form's checkboxes (plain `v-model="data.x"`
+    // with a static `value="1"`, no `true-value`) use Vue's default checkbox
+    // equality check, which falls back to `String(a) === String(b)` for a
+    // non-boolean model value — `String(1) === String(true)` is `"1" ===
+    // "true"`, always false. So every one of these checkboxes silently
+    // rendered unchecked on Edit (loading a real sector with real 1s in the
+    // DB) while looking fine on Add (which starts from empty/null, so
+    // "unchecked" was already the correct state and the bug was invisible).
+    // Casting to 'boolean' here makes the API return real JS true/false,
+    // which Vue's checkbox binding handles correctly — no frontend change
+    // needed.
+    protected $casts = [
+        'all_day_in_shade' => 'boolean',
+        'all_day_in_sun' => 'boolean',
+        'in_the_shade_afternoon' => 'boolean',
+        'in_the_shade_befornoon' => 'boolean',
+        'in_shade_after_10' => 'boolean',
+        'in_shade_after_15' => 'boolean',
+        'slabby' => 'boolean',
+        'vertical' => 'boolean',
+        'overhang' => 'boolean',
+        'roof' => 'boolean',
+        'for_family' => 'boolean',
+        'for_kids' => 'boolean',
+        'is_helmet' => 'boolean',
+    ];
+
     protected $fillable = [
         "name",
         "text",

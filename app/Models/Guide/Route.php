@@ -21,6 +21,7 @@ class Route extends Model
 
         "height",
         "bolts",
+        "bolts_type",
         "anchor_type",
 
         "author",

@@ -1,9 +1,11 @@
 export const grade = {
     lead() {
         return [
+            "4",
             "5a",
             "5b",
             "5c",
+            "5c+",
             "6a",
             "6a+",
             "6b",
