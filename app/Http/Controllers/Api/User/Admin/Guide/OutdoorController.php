@@ -11,11 +11,6 @@ use Validator;
 
 use App\Services\ArticlesService;
 
-use App\Models\Guide\Sector;
-use App\Models\Guide\Route;
-use App\Models\Guide\Mtp;
-use App\Models\Guide\Mtp_pitch;
-
 use App\Models\Guide\Favorite_outdoor_area;
 use App\Models\Guide\Article;
 use App\Models\Guide\Locale_article;
@@ -48,44 +43,15 @@ class OutdoorController extends Controller
 
             // $outdoors = ArticlesService::get_locale_article_use_locale($global_outdoors, $request->lang);
 
-            $route_num = 0;
-            $mtp_num = 0;
-            $route_quantity = array();
+            // Admin/permission-gated — sees TOTAL counts regardless of each
+            // Sector's own publish state (see
+            // ArticlesService::get_route_quantity_for_outdoors docblock),
+            // unlike the public-facing controller's equivalent method.
+            $route_quantity = ArticlesService::get_route_quantity_for_outdoors($global_outdoors, false);
 
             $area_data = [];
-
-            foreach($global_outdoors as $outdoor){
-                $sector_n = Sector::where('article_id', '=', $outdoor->id)->get();
-                $routes_a = array ($outdoor->title);
-                $boulder_routes = array ($outdoor->title);
-                $mtps_a = array ();
-                $sector_count = Sector::where('article_id', '=', $outdoor->id)->count();
-                foreach($sector_n as $sector){
-                    $routes = Route::where('sector_id', '=', $sector->id)->count();
-                    foreach((array) $routes as $route){
-                        $route_num++;
-                        array_push($routes_a, $route);
-                    }
-                    $mtps = MTP::where('sector_id', '=', $sector->id)->count();
-                    if ($mtps > 0) {
-                        foreach((array) $mtps as $mtp){
-                            $mtp_num++;
-                            array_push($mtps_a, $mtp);
-                        }
-                    }
-                }
-                if($route_num == $sector_count) {
-                    $route_sum=array_sum($routes_a);
-                    $mtp_sum=array_sum($mtps_a);
-                    array_push($route_quantity, array("article_id" => $outdoor->id, "sectors" => $sector_count, "routes" => $route_sum, "mtps" => $mtp_sum) ); // push route num in last array
-                }
-                else {
-                    $route_sum = 0;
-                    $route_num = 0;
-                }
-            }
         }
-        
+
         foreach ($outdoors as $outdoor) {
             foreach ($route_quantity as $quantity) {
                 if ($quantity['article_id'] == $outdoor['global_data']['id']) {
