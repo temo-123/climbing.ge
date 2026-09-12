@@ -4,11 +4,12 @@
             :title="$t('admin.routes_sectors.edit_pitch_title')"
             size="xxl"
             @close="close_modal()"
-            :saveButton="{ visible: false }"
+            :saveButton="{ visible: true, title: $t('common.save') }"
             :cancelButton="{ visible: false }"
+            @save="submitForm()"
         >
         <div>
-            <form id="mtp_edit_form" @submit.prevent="save()">
+            <form id="mtp_edit_form" ref="pitchForm" @submit.prevent="save()">
                 <select class="form-control" v-model="data.category" required>
                     <option value="" disabled>{{ $t('admin.routes_sectors.please_select_mtp_type') }}</option>
                     <option value="sport climbing">{{ $t('admin.routes_sectors.sport_climbing') }}</option>
@@ -51,10 +52,6 @@
                     v-model:en_value="data.text_us"
                     v-model:ka_value="data.text_ka"
                 />
-
-                <div class="mt-3">
-                    <button type="submit" form="mtp_edit_form" class="btn btn-primary">{{ $t('common.save') }}</button>
-                </div>
             </form>
 
             <!-- Canvas drawing editor for this pitch -->
@@ -138,6 +135,19 @@
             },
         },
         methods: {
+            // StackModal's own default Save button (saveButton prop) only
+            // emits a `save` event — it isn't part of the form, so clicking
+            // it wouldn't trigger the <select required> fields' native
+            // browser validation the way the form's own submit button did.
+            // requestSubmit() fires a real submit event on the form (running
+            // that validation first, exactly like clicking a submit button
+            // inside it would), which then reaches `save()` via the form's
+            // own `@submit.prevent="save()"` — so this stays a thin bridge
+            // rather than calling save() directly and skipping validation.
+            submitForm() {
+                this.$refs.pitchForm.requestSubmit();
+            },
+
             show_modal(id) {
                 this.editing_pitch_id = id;
                 this.is_show_edit_modal = true;

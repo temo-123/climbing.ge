@@ -4,11 +4,12 @@
             :title="$t('admin.routes_sectors.add_pitch_title')"
             size="xxl"
             @close="close_modal()"
-            :saveButton="{ visible: true, title: $t('common.save'), btnClass: { 'btn btn-primary': true } }"
-            :cancelButton="{ visible: false, title: $t('common.close'), btnClass: { 'btn btn-danger': true } }"
+            :saveButton="{ visible: true, title: $t('common.save') }"
+            :cancelButton="{ visible: false }"
+            @save="submitForm()"
         >
         <div>
-            <form id="mtp_add_form" @submit.prevent="save()">
+            <form id="mtp_add_form" ref="pitchForm" @submit.prevent="save()">
                 <select class="form-control"  v-model="data.category" required>
                     <option value="" disabled>{{ $t('admin.routes_sectors.please_select_mtp_type') }}</option>
                     <option value="sport climbing">{{ $t('admin.routes_sectors.sport_climbing') }}</option>
@@ -52,17 +53,6 @@
                     v-model:ka_value="data.text_ka"
                 />
             </form>
-        </div>
-        <div slot="modal-footer">
-            <div class="modal-footer">
-                <button
-                    type="submit"
-                    form='mtp_add_form'
-                    :class="{'btn btn-primary': true}"
-                >
-                    {{ $t('common.save') }}
-                </button>
-            </div>
         </div>
     </StackModal>
 </template>
@@ -135,6 +125,19 @@
         },
     
         methods: {
+            // StackModal's own default Save button (saveButton prop) only
+            // emits a `save` event — it isn't part of the form, so clicking
+            // it wouldn't trigger the <select required> fields' native
+            // browser validation the way the form's own submit button did.
+            // requestSubmit() fires a real submit event on the form (running
+            // that validation first, exactly like clicking a submit button
+            // inside it would), which then reaches `save()` via the form's
+            // own `@submit.prevent="save()"` — so this stays a thin bridge
+            // rather than calling save() directly and skipping validation.
+            submitForm() {
+                this.$refs.pitchForm.requestSubmit();
+            },
+
             show_modal(id){
                 this.data.mtp_id = id
                 this.is_show_add_modal = true
