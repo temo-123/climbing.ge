@@ -9,6 +9,10 @@
                 :redo-length="redoCount"
                 :has-drawing="hasDrawing"
                 :has-unlocked-drawing="hasUnlockedDrawing"
+                :legend-position="legendPosition"
+                @legend-position-change="handleLegendPositionChange"
+                :legend-scale="legendScale"
+                @legend-scale-change="handleLegendScaleChange"
                 @reset="handleReset"
                 @undo="handleUndo"
                 @redo="handleRedo"
@@ -34,6 +38,26 @@
                 @pendulum-left="handlePendulumLeft"
                 @pendulum-right="handlePendulumRight"
                 @crux="handleCrux"
+                @anchor-good="handleAnchorGood"
+                @anchor-mid="handleAnchorMid"
+                @anchor-bad="handleAnchorBad"
+                @portaledge-anchor-good="handlePortaledgeAnchorGood"
+                @portaledge-anchor-mid="handlePortaledgeAnchorMid"
+                @portaledge-anchor-bad="handlePortaledgeAnchorBad"
+                @rappel-anchor-good="handleRappelAnchorGood"
+                @rappel-anchor-mid="handleRappelAnchorMid"
+                @rappel-anchor-bad="handleRappelAnchorBad"
+                @rescue-anchor="handleRescueAnchor"
+                @summit="handleSummit"
+                @tent="handleTent"
+                @parking="handleParking"
+                @poi-hiking="handlePoiHiking"
+                @poi-bed="handlePoiBed"
+                @poi-bike="handlePoiBike"
+                @poi-water="handlePoiWater"
+                @poi-food="handlePoiFood"
+                @poi-tent="handlePoiTent"
+                @poi-medical="handlePoiMedical"
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
@@ -46,100 +70,107 @@
             />
         </div>
 
-        <!-- Style controls bar (attached visually to toolbar) -->
-        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 px-2 py-1 bg-white border border-top-0 rounded-bottom" style="border-top: 1px solid #dee2e6 !important; border-radius: 0 0 4px 4px !important;">
+        <!-- Style controls bar (attached visually to toolbar) — Stroke/Fill and
+             Width/Text/Symbol are each grouped into one visibly bordered
+             "chip" with a small caption on its LEFT edge (all on one line —
+             no stacked rows), so it's clear which controls affect color vs.
+             size without the bar turning into stacked/uneven rows. -->
+        <div class="d-flex flex-wrap align-items-center gap-3 mb-2 px-3 py-2 bg-white border border-top-0 rounded-bottom" style="border-top: 1px solid #dee2e6 !important; border-radius: 0 0 4px 4px !important;">
 
-            <!-- Stroke color -->
-            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.stroke_color_tooltip')">
-                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.stroke_label') }}</span>
-                <input type="color" :value="currentStrokeColor"
-                       @input="handleColorChange('stroke', $event.target.value)"
-                       class="color-swatch-input"
-                       style="width:28px; height:24px;">
-                <code class="small" style="font-size:10px; color:#555;">{{ currentStrokeColor }}</code>
+            <!-- Colors -->
+            <div class="style-chip">
+                <span class="style-chip-label"><i class="fa fa-paint-brush"></i> {{ $t('admin.articles.canvas_editor.colors_section_label') }}</span>
+
+                <!-- Stroke color -->
+                <div class="d-flex align-items-center gap-2" :title="$t('admin.articles.canvas_editor.stroke_color_tooltip')">
+                    <span class="small text-muted">{{ $t('admin.articles.canvas_editor.stroke_label') }}</span>
+                    <input type="color" :value="currentStrokeColor"
+                           @input="handleColorChange('stroke', $event.target.value)"
+                           class="color-swatch-input"
+                           style="width:28px; height:24px;">
+                    <code class="small" style="font-size:10px; color:#555;">{{ currentStrokeColor }}</code>
+                </div>
+
+                <div class="style-chip-sep"></div>
+
+                <!-- Fill color with on/off toggle -->
+                <div class="d-flex align-items-center gap-2" :title="fillEnabled ? $t('admin.articles.canvas_editor.fill_color_enabled_tooltip') : $t('admin.articles.canvas_editor.fill_color_disabled_tooltip')">
+                    <span class="small text-muted">{{ $t('admin.articles.canvas_editor.fill_label') }}</span>
+                    <button type="button"
+                            :class="['btn btn-sm py-0 px-2 toggle-btn', fillEnabled ? 'btn-secondary' : 'btn-dark']"
+                            @click="toggleFill"
+                            :title="fillEnabled ? $t('admin.articles.canvas_editor.disable_fill_tooltip') : $t('admin.articles.canvas_editor.enable_fill_tooltip')">
+                        <i class="fa fa-tint"></i> {{ fillEnabled ? $t('admin.articles.canvas_editor.on_label') : $t('admin.articles.canvas_editor.off_label') }}
+                    </button>
+                    <input type="color" :value="fillColor || '#ffffff'"
+                           @input="handleColorChange('fill', $event.target.value)"
+                           :disabled="!fillEnabled"
+                           class="color-swatch-input"
+                           :style="{ width: '28px', height: '24px', opacity: fillEnabled ? 1 : 0.3, cursor: fillEnabled ? 'pointer' : 'default' }">
+                    <code v-if="fillEnabled" class="small" style="font-size:10px; color:#555;">{{ fillColor || '#fff' }}</code>
+                </div>
             </div>
 
-            <div class="vr"></div>
+            <!-- Sizes -->
+            <div class="style-chip">
+                <span class="style-chip-label"><i class="fa fa-arrows-alt-v"></i> {{ $t('admin.articles.canvas_editor.sizes_section_label') }}</span>
 
-            <!-- Fill color with on/off toggle -->
-            <div class="d-flex align-items-center gap-1" :title="fillEnabled ? $t('admin.articles.canvas_editor.fill_color_enabled_tooltip') : $t('admin.articles.canvas_editor.fill_color_disabled_tooltip')">
-                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.fill_label') }}</span>
-                <button type="button"
-                        class="btn btn-sm py-0 px-1"
-                        :class="fillEnabled ? 'btn-primary' : 'btn-outline-secondary'"
-                        style="font-size:10px; line-height:1.6;"
-                        @click="toggleFill"
-                        :title="fillEnabled ? $t('admin.articles.canvas_editor.disable_fill_tooltip') : $t('admin.articles.canvas_editor.enable_fill_tooltip')">
-                    <i :class="fillEnabled ? 'fa fa-tint' : 'fa fa-tint'" style="opacity: fillEnabled ? 1 : 0.4;"></i>
-                </button>
-                <input type="color" :value="fillColor || '#ffffff'"
-                       @input="handleColorChange('fill', $event.target.value)"
-                       :disabled="!fillEnabled"
-                       class="color-swatch-input"
-                       :style="{ width: '28px', height: '24px', opacity: fillEnabled ? 1 : 0.3, cursor: fillEnabled ? 'pointer' : 'default' }">
-                <code v-if="fillEnabled" class="small" style="font-size:10px; color:#555;">{{ fillColor || '#fff' }}</code>
-                <span v-else class="small text-muted" style="font-size:10px; font-style:italic;">{{ $t('admin.articles.canvas_editor.fill_off_label') }}</span>
+                <!-- Stroke width -->
+                <div class="d-flex align-items-center gap-2" :title="$t('admin.articles.canvas_editor.stroke_width_pixels_tooltip')">
+                    <span class="small text-muted">{{ $t('admin.articles.canvas_editor.width_label') }}</span>
+                    <input type="range" min="1" max="20" :value="strokeWidth"
+                           @input="handleStrokeWidthChange(parseInt($event.target.value))"
+                           class="form-range" style="width:70px;">
+                    <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ strokeWidth }}</span>
+                    <span class="small text-muted" style="font-size:10px;">px</span>
+                </div>
+
+                <div class="style-chip-sep"></div>
+
+                <!-- Text size -->
+                <div class="d-flex align-items-center gap-2" :title="$t('admin.articles.canvas_editor.text_size_pixels_tooltip')">
+                    <span class="small text-muted">{{ $t('admin.articles.canvas_editor.text_size_label') }}</span>
+                    <input type="range" min="8" max="60" :value="textSize"
+                           @input="handleTextSizeChange(parseInt($event.target.value))"
+                           class="form-range" style="width:70px;">
+                    <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ textSize }}</span>
+                    <span class="small text-muted" style="font-size:10px;">px</span>
+                </div>
+
+                <div class="style-chip-sep"></div>
+
+                <!-- Symbol size (was labeled "Dot" — now also drives every
+                     topo/anchor/landmark symbol's overall size, not just
+                     plain dots) -->
+                <div class="d-flex align-items-center gap-2" :title="$t('admin.articles.canvas_editor.dot_size_pixels_tooltip')">
+                    <span class="small text-muted">{{ $t('admin.articles.canvas_editor.dot_size_label') }}</span>
+                    <input type="range" min="1" max="50" :value="dotSize"
+                           @input="handleDotSizeChange(parseInt($event.target.value))"
+                           class="form-range" style="width:70px;">
+                    <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ dotSize }}</span>
+                    <span class="small text-muted" style="font-size:10px;">px</span>
+                </div>
             </div>
-
-            <div class="vr"></div>
-
-            <!-- Stroke width -->
-            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.stroke_width_pixels_tooltip')">
-                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.width_label') }}</span>
-                <input type="range" min="1" max="20" :value="strokeWidth"
-                       @input="handleStrokeWidthChange(parseInt($event.target.value))"
-                       class="form-range" style="width:70px;">
-                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ strokeWidth }}</span>
-                <span class="small text-muted" style="font-size:10px;">px</span>
-            </div>
-
-            <div class="vr"></div>
-
-            <!-- Text size -->
-            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.text_size_pixels_tooltip')">
-                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.text_size_label') }}</span>
-                <input type="range" min="8" max="60" :value="textSize"
-                       @input="handleTextSizeChange(parseInt($event.target.value))"
-                       class="form-range" style="width:70px;">
-                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ textSize }}</span>
-                <span class="small text-muted" style="font-size:10px;">px</span>
-            </div>
-
-            <div class="vr"></div>
-
-            <!-- Dot size -->
-            <div class="d-flex align-items-center gap-1" :title="$t('admin.articles.canvas_editor.dot_size_pixels_tooltip')">
-                <span class="small text-muted">{{ $t('admin.articles.canvas_editor.dot_size_label') }}</span>
-                <input type="range" min="1" max="50" :value="dotSize"
-                       @input="handleDotSizeChange(parseInt($event.target.value))"
-                       class="form-range" style="width:70px;">
-                <span class="badge bg-primary" style="min-width:22px; font-size:11px;">{{ dotSize }}</span>
-                <span class="small text-muted" style="font-size:10px;">px</span>
-            </div>
-
-            <div class="vr"></div>
 
             <!-- Smooth freehand lines toggle -->
-            <div class="d-flex align-items-center gap-1" :title="smoothLines ? $t('admin.articles.canvas_editor.smooth_lines_enabled_tooltip') : $t('admin.articles.canvas_editor.smooth_lines_disabled_tooltip')">
+            <div class="style-chip" :title="smoothLines ? $t('admin.articles.canvas_editor.smooth_lines_enabled_tooltip') : $t('admin.articles.canvas_editor.smooth_lines_disabled_tooltip')">
                 <span class="small text-muted">{{ $t('admin.articles.canvas_editor.smooth_lines_label') }}</span>
                 <button type="button"
-                        class="btn btn-sm py-0 px-1"
-                        :class="smoothLines ? 'btn-primary' : 'btn-outline-secondary'"
-                        style="font-size:10px; line-height:1.6;"
+                        :class="['btn btn-sm py-0 px-2 toggle-btn', smoothLines ? 'btn-info' : 'btn-outline-info']"
                         @click="toggleSmoothLines">
-                    <i class="fa fa-magic"></i>
+                    <i class="fa fa-magic"></i> {{ smoothLines ? $t('admin.articles.canvas_editor.on_label') : $t('admin.articles.canvas_editor.off_label') }}
                 </button>
             </div>
 
             <div class="vr"></div>
 
             <!-- Zoom -->
-            <div class="d-flex align-items-center gap-1">
+            <div class="style-chip">
                 <span class="small text-muted">{{ $t('admin.articles.canvas_editor.zoom_label') }}</span>
                 <span class="badge bg-secondary" style="min-width:44px; font-size:11px; cursor:pointer;" @click="handleZoomReset" :title="$t('admin.articles.canvas_editor.click_to_reset_zoom_tooltip')">
                     {{ Math.round(currentZoom * 100) }}%
                 </span>
-                <button type="button" class="btn btn-sm btn-outline-secondary py-0 px-1" style="font-size:10px; line-height:1.6;"
+                <button type="button" class="btn btn-sm btn-success py-0 px-2"
                         @click="handleZoomReset" :title="$t('admin.articles.canvas_editor.reset_zoom_to_fit_canvas_tooltip')">
                     <i class="fa fa-search"></i>
                 </button>
@@ -157,6 +188,7 @@
                     :related_jsons="related_jsons"
                     :related_jsons_meta="related_jsons_meta"
                     :related_first_label="related_first_label"
+                    :disable_auto_legend="disable_auto_legend"
                     :image="image"
                     ref="canvasContainer"
                     @canvas_data="handleCanvasData"
@@ -262,6 +294,11 @@ export default {
             layers_col_class: {
                 type: String,
                 default: 'col-lg-3 col-md-4'
+            },
+            // See CanvasManager.vue's disableAutoLegend prop.
+            disable_auto_legend: {
+                type: Boolean,
+                default: false
             }
         },
         data: () => ({
@@ -280,6 +317,14 @@ export default {
             textSize: 16,
             dotSize: 4,
             smoothLines: true,
+            // Mirrors whatever's stored on the canvas's 'main' layer (see
+            // DrawingTools.vue's getLegendPosition) — kept in sync by
+            // updateLayersList() so the toolbar picker reflects the CURRENT
+            // drawing's own choice whenever it's loaded/switched.
+            legendPosition: 'top-right',
+            // Same mirroring as legendPosition, for the legend's overall size
+            // multiplier (see DrawingTools.vue's getLegendScale) — 1 = 100%.
+            legendScale: 1,
             zoomLevel: 1,
             currentZoom: 1,
             panOffset: { x: 0, y: 0 },
@@ -444,6 +489,54 @@ export default {
 
             handleCrux() {
                 this.action = 27;
+            },
+
+            handleAnchorGood()           { this.action = 28; },
+            handleAnchorMid()            { this.action = 29; },
+            handleAnchorBad()            { this.action = 30; },
+            handlePortaledgeAnchorGood() { this.action = 31; },
+            handlePortaledgeAnchorMid()  { this.action = 32; },
+            handlePortaledgeAnchorBad()  { this.action = 33; },
+            handleRappelAnchorGood()     { this.action = 34; },
+            handleRappelAnchorMid()      { this.action = 35; },
+            handleRappelAnchorBad()      { this.action = 36; },
+            handleRescueAnchor()         { this.action = 37; },
+            handleSummit()               { this.action = 38; },
+            handleTent()                 { this.action = 39; },
+            handleParking()              { this.action = 40; },
+            handlePoiHiking()            { this.action = 41; },
+            handlePoiBed()               { this.action = 42; },
+            handlePoiBike()              { this.action = 43; },
+            handlePoiWater()             { this.action = 44; },
+            handlePoiFood()              { this.action = 45; },
+            handlePoiTent()              { this.action = 46; },
+            handlePoiMedical()           { this.action = 47; },
+
+            // Toolbar legend-position picker — 'hidden' means "don't show it".
+            // rebuildLegend() both applies the new position immediately and
+            // persists it on the canvas's 'main' layer (see DrawingTools.vue),
+            // then this saves so the choice isn't lost if the user navigates
+            // away before making another edit.
+            handleLegendPositionChange(position) {
+                this.legendPosition = position;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.rebuildLegend) {
+                    this.$refs.canvasContainer.rebuildLegend(position, this.legendScale);
+                }
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.saveCanvasData();
+            },
+
+            // Toolbar legend-scale picker — same reasoning/flow as
+            // handleLegendPositionChange above, just for the size multiplier.
+            handleLegendScaleChange(scale) {
+                this.legendScale = scale;
+                if (this.$refs.canvasContainer && this.$refs.canvasContainer.rebuildLegend) {
+                    this.$refs.canvasContainer.rebuildLegend(this.legendPosition, scale);
+                }
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.saveCanvasData();
             },
 
             handlePolygon() {
@@ -623,13 +716,59 @@ export default {
                 if (!item) return false;
                 return !!(item.data && item.data.isCrux) || !!(item.name && item.name.startsWith('crux '));
             },
+            // Anchor-family marker (see DrawingTools.vue's add_anchor/
+            // _buildAnchorParts) — general/rappel/rescue hollow-ring quality
+            // markers, distinct from the older solid-dot isRappel above.
+            _isAnchorContainer(item) {
+                return !!(item && item.data && item.data.isAnchorSymbol);
+            },
+            // Landmark markers (see DrawingTools.vue's add_summit/add_tent) —
+            // general map-style glyphs, unrelated to the anchor family above.
+            _isSummitContainer(item) {
+                return !!(item && item.data && item.data.isSummitMarker);
+            },
+            _isTentContainer(item) {
+                return !!(item && item.data && item.data.isTentMarker);
+            },
+            _isParkingContainer(item) {
+                return !!(item && item.data && item.data.isParkingMarker);
+            },
+            // Points-of-interest pins (see DrawingTools.vue's add_poi/
+            // _buildPoiParts) — hiking/bed/bike/water/food/tent/medical.
+            _isPoiContainer(item) {
+                return !!(item && item.data && item.data.isPoiMarker);
+            },
+            // True for any marker in the toolbar's "Points of Interest" group
+            // — the 7 isPoiMarker pins above PLUS Summit and Parking (moved
+            // into that same toolbar group; see ToolbarComponent.vue). All of
+            // them are fixed-meaning signs/glyphs, not artist-drawn shapes,
+            // so color must never be user-editable for any of them — used by
+            // _setItemColor's early-return below and by the `isPoi` layer-row
+            // flag (drives LayersPanelComponent's disabled color swatch +
+            // 100px size cap). Deliberately excludes Tent, which stayed in
+            // the Anchors group and keeps its own selectable color.
+            _isColorLockedMarker(item) {
+                return this._isPoiContainer(item) || this._isSummitContainer(item) || this._isParkingContainer(item);
+            },
+            // Sector name-label (see sectorLocaleImageEditorComponent.vue's
+            // _createSectorLabel) — a [bg, text] Group, children[0]=bg.
+            _isSectorLabelContainer(item) {
+                return !!(item && item.data && item.data.isSectorLabel);
+            },
             // True for any of the fixed-shape single-click marker types above
-            // (bolt/pin/pendulum/crux) — used wherever they all behave the same
-            // way (children[0]-driven color/width), so callers don't need to
-            // chain all four checks individually.
+            // (bolt/pin/pendulum/crux/anchor/summit/tent/parking/poi/sector-
+            // label) — used wherever they all behave the same way for READING
+            // color/width (children[0]-driven), so callers don't need to
+            // chain all these checks individually. NOT used for writing color
+            // (see _setItemColor's own summit/tent/parking/poi/sector-label
+            // branch, which must skip the white hole/doorway/border/letter/
+            // icon/text instead of recoloring every child uniformly).
             _isFixedMarkerContainer(item) {
                 return this._isBoltContainer(item) || this._isPinContainer(item)
-                    || this._isPendulumContainer(item) || this._isCruxContainer(item);
+                    || this._isPendulumContainer(item) || this._isCruxContainer(item)
+                    || this._isAnchorContainer(item) || this._isSummitContainer(item)
+                    || this._isTentContainer(item) || this._isParkingContainer(item)
+                    || this._isPoiContainer(item) || this._isSectorLabelContainer(item);
             },
             _isTextItem(item) {
                 return !!item && (item instanceof paper.PointText || (item.name && item.name.startsWith('text ')));
@@ -668,6 +807,16 @@ export default {
                     // equal to the shaft/chevron's (see DrawingTools.vue).
                     return this._getItemWidth(item.children[0]);
                 }
+                if (this._isSectorLabelContainer(item) && item.children) {
+                    // A sector label's meaningful "size" is its TEXT's font
+                    // size, not children[0] (the bg box's 1.5px border stroke)
+                    // — the generic isFixedMarkerContainer branch below would
+                    // display that border width instead, which looked like
+                    // "the size control does nothing" even once resizeSectorLabel
+                    // (see DrawingTools.vue) made writes work.
+                    const text = item.children.find(c => this._isTextItem(c));
+                    return text ? (Math.round(text.fontSize) || 15) : 15;
+                }
                 if (this._isFixedMarkerContainer(item) && item.children && item.children.length > 0) {
                     // Bolt/pin/pendulum/crux markers are Groups whose parts all share one
                     // stroke width (see their add_*/resize* pairs in DrawingTools.vue) —
@@ -682,6 +831,29 @@ export default {
 
             _setItemColor(item, color) {
                 if (!item) return;
+                // A "Points of Interest" family marker (POI pin, Summit, or
+                // Parking — see _isColorLockedMarker) is a fixed-color sign,
+                // never user-recolorable — see DrawingTools.vue's _poiColor/
+                // _summitColor/_parkingColor (which also ignore the
+                // toolbar's chosen fill color at creation time) and
+                // LayersPanelComponent.vue, which disables this item's color
+                // swatch entirely for the same reason.
+                if (this._isColorLockedMarker(item)) return;
+                if ((this._isTentContainer(item) || this._isSectorLabelContainer(item)) && item.children) {
+                    // Recolor only the solid parts — skip the white hole/
+                    // doorway/border/letter/icon/text (see DrawingTools.vue's
+                    // _buildTentParts/sectorLocaleImageEditorComponent's
+                    // _createSectorLabel, which all tag it `data.isHole`), or
+                    // the generic "recolor every child" behavior below would
+                    // paint over the punched-out look that makes these read
+                    // as a tent silhouette, or turn a sector label's black
+                    // text the same color as its box.
+                    item.children.forEach(child => {
+                        if (child.data && child.data.isHole) return;
+                        this._setItemColor(child, color);
+                    });
+                    return;
+                }
                 if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item) || this._isFixedMarkerContainer(item)) && item.children) {
                     [...item.children].forEach(child => this._setItemColor(child, color));
                     return;
@@ -734,6 +906,30 @@ export default {
                 }
                 if (this._isCruxContainer(item)) {
                     this.$refs.canvasContainer.resizeCrux(item, width);
+                    return;
+                }
+                if (this._isAnchorContainer(item)) {
+                    this.$refs.canvasContainer.resizeAnchor(item, width);
+                    return;
+                }
+                if (this._isSummitContainer(item)) {
+                    this.$refs.canvasContainer.resizeSummit(item, width);
+                    return;
+                }
+                if (this._isTentContainer(item)) {
+                    this.$refs.canvasContainer.resizeTent(item, width);
+                    return;
+                }
+                if (this._isParkingContainer(item)) {
+                    this.$refs.canvasContainer.resizeParking(item, width);
+                    return;
+                }
+                if (this._isPoiContainer(item)) {
+                    this.$refs.canvasContainer.resizePoi(item, width);
+                    return;
+                }
+                if (this._isSectorLabelContainer(item)) {
+                    this.$refs.canvasContainer.resizeSectorLabel(item, width);
                     return;
                 }
                 if (this._isTextItem(item)) {
@@ -802,6 +998,13 @@ export default {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) { this.layers = []; return; }
 
+                if (this.$refs.canvasContainer.getLegendPosition) {
+                    this.legendPosition = this.$refs.canvasContainer.getLegendPosition();
+                }
+                if (this.$refs.canvasContainer.getLegendScale) {
+                    this.legendScale = this.$refs.canvasContainer.getLegendScale();
+                }
+
                 // Keyed by id, not name — two groups can end up with the same
                 // user-given name (nothing enforces uniqueness), which would
                 // otherwise bleed one group's expanded state into the other's.
@@ -847,6 +1050,13 @@ export default {
                     }
 
                     layer.children.forEach(item => {
+                        // The auto-generated topo-symbol legend (DrawingTools.vue's
+                        // rebuildLegend) is derived/system-managed content, not a
+                        // normal user layer — its only control is the toolbar's
+                        // position picker, so it's hidden from this list rather than
+                        // shown as a deletable/colorable row that would just get
+                        // regenerated on the next add/erase anyway.
+                        if (item.data && item.data.isLegend) return;
                         if (this._isGroupContainer(item)) {
                             mainItems.push({
                                 id: item.id,
@@ -894,6 +1104,12 @@ export default {
                                 isPin: this._isPinContainer(item),
                                 isPendulum: this._isPendulumContainer(item),
                                 isCrux: this._isCruxContainer(item),
+                                isAnchor: this._isAnchorContainer(item),
+                                isSummit: this._isSummitContainer(item),
+                                isTent: this._isTentContainer(item),
+                                isParking: this._isParkingContainer(item),
+                                isPoi: this._isColorLockedMarker(item),
+                                isSectorLabel: this._isSectorLabelContainer(item),
                                 isText: this._isTextItem(item),
                                 textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
                                 isEditing: false,
@@ -968,7 +1184,15 @@ export default {
                 if (!item) return;
                 // Remove associated text label if this is a rectangle
                 if (item.data && item.data.textLabel) item.data.textLabel.remove();
+                // Sector-name label — remove its sibling leader line too (a
+                // separate top-level item, found by flag rather than a stored
+                // reference — see CanvasHandlers.vue's action-8 drag handler).
+                if (item.data && item.data.isSectorLabel && item.layer) {
+                    const line = item.layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                    if (line) line.remove();
+                }
                 item.remove();
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
                 this.updateLayersList();
@@ -1003,6 +1227,7 @@ export default {
                 if (!item) return;
                 if (item.data && item.data.textLabel) item.data.textLabel.remove();
                 item.remove();
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
                 this.updateLayersList();
@@ -1172,6 +1397,7 @@ export default {
                     if (layer.name && (layer.name.startsWith('related-') || layer.name === 'background')) return;
                     layer.removeChildren();
                 });
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();
@@ -1410,5 +1636,50 @@ export default {
     .color-swatch-input:disabled {
         cursor: default;
         filter: grayscale(0.6);
+    }
+    /* Groups the style bar's Stroke/Fill controls into one "Colors" chip and
+       Width/Text/Symbol controls into one "Sizes" chip — a bordered/tinted
+       pill with its own caption on the left edge, all on a single line, so
+       it's clear which controls affect color vs. size without stacking rows
+       (which previously left an odd gap between the controls and caption). */
+    .style-chip {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        padding: 6px 14px;
+    }
+    .style-chip-label {
+        font-size: 9px;
+        font-weight: 600;
+        color: #6c757d;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+        padding-right: 10px;
+        border-right: 1px solid #dee2e6;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }
+    /* Thin vertical divider between individual controls INSIDE a chip — makes
+       each control (stroke / fill, width / text / symbol) read as its own
+       distinct unit instead of a run-on row, without the visual weight of a
+       full "vr" divider between every field. */
+    .style-chip-sep {
+        width: 1px;
+        align-self: stretch;
+        background: #dee2e6;
+    }
+    /* Fill/Smooth on-off toggles: same footprint and a visible ON/OFF label
+       (not just an icon-opacity change) so the current state is obvious at a
+       glance instead of reading as broken/unresponsive. */
+    .toggle-btn {
+        font-size: 11px;
+        line-height: 1.6;
+        font-weight: 600;
+        min-width: 52px;
     }
 </style>

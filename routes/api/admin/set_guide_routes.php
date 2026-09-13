@@ -178,6 +178,12 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
             Route::delete('/del_layout/{layout_id}', 'del_layout');
         });
 
+        Route::controller(SpotRocksImageExtraDrawingController::class)->prefix('set_spot_rocks_image_extra_drawing')->group( function() {
+            Route::get('/get_for_editor/{spot_rocks_image_id}', 'get_for_editor');
+            Route::post('/save/{spot_rocks_image_id}', 'save');
+            Route::delete('/delete/{spot_rocks_image_id}', 'delete');
+        });
+
         Route::controller(SectorImageExtraDrawingController::class)->prefix('set_sector_image_extra_drawing')->group( function() {
             Route::get('/get_for_editor/{sector_image_id}', 'get_for_editor');
             Route::post('/save/{sector_image_id}', 'save');

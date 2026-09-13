@@ -41,6 +41,15 @@ export default {
             type: String,
             default: null
         },
+        // See DrawingTools.vue's rebuildLegend — when true, the auto-legend
+        // system still records the position/scale toolbar choice on the
+        // 'main' layer but never builds a real Paper.js legend item. Used by
+        // pages that compute their own combined-legend PREVIEW externally
+        // (sectorLocaleImageEditorComponent.vue, spotRockImageEditorComponent.vue).
+        disableAutoLegend: {
+            type: Boolean,
+            default: false
+        },
         image: {
             type: String,
             default: null
@@ -86,7 +95,12 @@ export default {
             bolt: 0,
             pin: 0,
             pendulum: 0,
-            crux: 0
+            crux: 0,
+            anchor: 0,
+            summit: 0,
+            tent: 0,
+            parking: 0,
+            poi: 0
         },
         history: [],
         redoStack: [],
@@ -262,6 +276,7 @@ export default {
                 layer.removeChildren();
             });
             this.selectedItem = null;
+            this.rebuildLegend();
             this.saveCanvasData();
         },
 

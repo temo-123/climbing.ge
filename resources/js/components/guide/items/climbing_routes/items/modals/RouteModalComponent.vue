@@ -18,6 +18,25 @@
 
                 <div class="container" v-show="!is_loading">
                     <div class="row">
+                        <!-- This route's own drawing on its sector photo — same
+                             canvas-json-show component the sector-wide and
+                             MTP-pitch public viewers already use, just fed a
+                             single-item json_items array so it shows only
+                             this route, pre-selected/highlighted. Omitted
+                             entirely when the route has no saved drawing
+                             (route.drawing is only set by the backend when
+                             one exists). -->
+                        <div class="modal-section route-drawing" v-if="route.drawing && route.drawing.json && routeImageSrc">
+                            <canvas-json-show
+                                :json_items="[routeJsonItem]"
+                                :image_src="routeImageSrc"
+                                :composite_src="routeCompositeSrc"
+                                :selected_id="route.id"
+                                :show_all="true"
+                                :interactive="false"
+                            />
+                        </div>
+
                         <div class="modal-section basic-info">
                             <h2 class="section-title">{{ $t("guide.route.route_details") }}</h2>
 
@@ -163,6 +182,60 @@ export default {
             }
             return this.route.text_us || null;
         },
+        // Single-entry json_items array for canvas-json-show — mirrors
+        // SectorCanvasModalComponent.vue's item shape exactly (id + json +
+        // canvas_width/height + bg_*), just with this one route as the only
+        // (and therefore always-selected) entry.
+        //
+        // IMPORTANT: unlike canvas-json-show's OWN fetch_url/fetch_id path
+        // (which double-JSON.parses internally, see its fetchData()), the
+        // json_items PROP path does NOT parse anything — it expects an
+        // already-parsed object/array, matching MTPModalComponent.vue's
+        // parsePitchJson(). The backend stores JSON.stringify(paper.export
+        // JSON()), so this needs the same double-parse — passing the raw
+        // string through un-parsed draws nothing at all (Array.isArray on a
+        // string is false, so the walker's very first check silently
+        // no-ops), which reads as exactly this bug: the composite image has
+        // the drawing baked in, but the interactive canvas shows nothing.
+        routeJsonItem() {
+            const d = this.route.drawing || {};
+            let json = d.json;
+            try {
+                if (typeof json === 'string') json = JSON.parse(json);
+                if (typeof json === 'string') json = JSON.parse(json);
+            } catch (_) { json = null; }
+            return {
+                id: this.route.id,
+                json,
+                canvas_width: d.canvas_width || null,
+                canvas_height: d.canvas_height || null,
+                bg_left: d.bg_left ?? null,
+                bg_top: d.bg_top ?? null,
+                bg_width: d.bg_width || null,
+                bg_height: d.bg_height || null,
+            };
+        },
+        // Use the original clean photo when available so the canvas can draw
+        // the route line itself — same has_original/cache-busting pattern as
+        // SectorCanvasModalComponent.vue's currentImageSrc.
+        routeImageSrc() {
+            const img = this.route.sector_image;
+            if (!img) return null;
+            const v = img.updated_at ? '?v=' + encodeURIComponent(img.updated_at) : '';
+            return (img.has_original
+                ? '/public/images/sector_img/origin_img/' + img.image
+                : '/public/images/sector_img/'            + img.image) + v;
+        },
+        // When has_original, the composite (route baked in) has the same
+        // pixel dimensions as the Paper.js coordinate space used to draw the
+        // route — same rationale as SectorCanvasModalComponent.vue's
+        // compositeSrc.
+        routeCompositeSrc() {
+            const img = this.route.sector_image;
+            if (!img || !img.has_original) return null;
+            const v = img.updated_at ? '?v=' + encodeURIComponent(img.updated_at) : '';
+            return '/public/images/sector_img/' + img.image + v;
+        },
     },
     data() {
         return {
@@ -269,6 +342,12 @@ getCategoryText(category) {
 </script>
 
 <style scoped>
+.route-drawing {
+    padding: 0;
+    background: transparent;
+    border: none;
+    text-align: center;
+}
 .card{
     width:380px;
     border:none;

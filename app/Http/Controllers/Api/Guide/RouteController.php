@@ -10,6 +10,7 @@ use Validator;
 use App\Models\Guide\Article;
 
 use App\Models\Guide\Sector;
+use App\Models\Guide\Sector_image;
 use App\Models\Guide\Route;
 use App\Models\Guide\ClimbingRoutesJson;
 use App\Models\Guide\Mtp;
@@ -246,6 +247,35 @@ class RouteController extends Controller
             $route['reviews_stars'] = round($total, 1);
         }
 
+        // This route's own saved drawing (if any) — the "Info" modal
+        // otherwise had no way to show the route's line on its sector photo
+        // at all, unlike the sector-wide and MTP-pitch public viewers, which
+        // both already render via canvas-json-show. `drawing`/`sector_image`
+        // are only added when a drawing actually exists; the frontend
+        // v-if's on `route.drawing` to decide whether to render anything.
+        $json = ClimbingRoutesJson::where('route_id', $route->id)->first();
+        if ($json) {
+            $route['drawing'] = [
+                'json'          => $json->json,
+                'canvas_width'  => $json->canvas_width,
+                'canvas_height' => $json->canvas_height,
+                'bg_left'       => $json->bg_left,
+                'bg_top'        => $json->bg_top,
+                'bg_width'      => $json->bg_width,
+                'bg_height'     => $json->bg_height,
+            ];
+
+            $sectorImage = Sector_image::find($json->sector_image_id);
+            if ($sectorImage) {
+                $hasOriginal = file_exists(public_path('images/sector_img/origin_img/' . $sectorImage->image));
+                $route['sector_image'] = [
+                    'image'         => $sectorImage->image,
+                    'has_original'  => $hasOriginal,
+                    'updated_at'    => $sectorImage->updated_at,
+                ];
+            }
+        }
+
         return $route;
     }
 
@@ -273,6 +303,10 @@ class RouteController extends Controller
         return $relatedJsons->map(function($item) {
             return [
                 'route_id' => $item->route_id,
+                // Lets the editor label this sibling route's read-only reference
+                // overlay with its own name (see canvasOverlaysMixin.js) without a
+                // separate lookup request.
+                'route_name' => optional($item->route)->name,
                 'json' => $item->json,
                 'canvas_width' => $item->canvas_width,
                 'canvas_height' => $item->canvas_height,

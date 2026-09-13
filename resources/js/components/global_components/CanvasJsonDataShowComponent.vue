@@ -20,6 +20,7 @@
 
 <script>
 import axios from 'axios';
+import { drawCombinedLegend } from '../../services/canvas/legendRenderer.js';
 
 export default {
     emits: ['item-click', 'item-hover'],
@@ -33,10 +34,23 @@ export default {
         composite_src: { default: null },
 
         // ── Data source (pick one) ────────────────────────────────────────────────
-        // Option A: pass pre-fetched data directly → [{ id, json }]
+        // Option A: pass pre-fetched data directly → [{ id, json }]. `json`
+        // MUST already be a parsed object/array here — unlike Option B below,
+        // this path does NOT parse anything (see the `items` computed). The
+        // backend stores JSON.stringify(paper.exportJSON()), so a caller
+        // reading straight from an API response needs its own double
+        // `JSON.parse` first (see MTPModalComponent.vue's parsePitchJson() /
+        // RouteModalComponent.vue's routeJsonItem() for the pattern) —
+        // passing the raw string through un-parsed draws NOTHING at all with
+        // no error (Array.isArray on a string is false, so drawItem's walker
+        // no-ops on its very first check), which reads exactly like "the
+        // composite image has the drawing baked in, but the interactive
+        // canvas doesn't show it" — a real bug this shipped with once.
         json_items:    { default: null },
 
-        // Option B: let the component auto-fetch
+        // Option B: let the component auto-fetch — fetchData() below DOES
+        // double-parse each item's json itself, so a raw API response works
+        // here without the caller doing anything extra.
         fetch_url:     { default: null },   // e.g. 'get_route/get_route_jsons_for_sector_image'
         fetch_id:      { default: null },   // value passed as the fetch param
         fetch_param:   { default: 'sector_image_id' }, // query param name
@@ -474,7 +488,40 @@ export default {
         // item.transform(matrix) scales strokeWidth together with geometry. Using the
         // item's actual authored size (instead of a resolution-derived approximation)
         // is what makes this match the real composited/baked photo pixel-for-pixel.
-        drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1) {
+        // NOTE: an item's own baked-in `isLegend` Paper.js group (see
+        // DrawingTools.vue's rebuildLegend) is ALWAYS skipped here, regardless
+        // of which item or how many are being drawn — this viewer draws its
+        // own single combined legend instead (see drawCombinedLegendOverlay,
+        // called once per render()), computed fresh from every item sharing
+        // this photo. Drawing any ONE item's own possibly-stale legend used
+        // to mean the legend shown depended entirely on which route/pitch
+        // happened to be selected (some had one baked in, some didn't, and
+        // whichever did could be stale) — a real bug, not a feature; see
+        // legendRenderer.js's drawCombinedLegend for the full rationale.
+        // `realColors` (default false) makes every color fall back to the
+        // item's OWN authored Paper.js color instead of the passed-in
+        // strokeStyle/dotFillStyle/textFillStyle whenever the caller doesn't
+        // pass one — every regular route/pitch render call in render() below
+        // always passes an explicit highlight color and leaves this false, so
+        // behavior there is unchanged; the ONLY caller that passes true is
+        // drawCombinedLegendOverlay's per-icon draw (with null styles), which
+        // needs each symbol to keep its REAL color — a flat highlight-color
+        // recolor would collapse a multi-colored legend card into one
+        // indistinguishable color.
+        // `legendOpts` ({ minStrokePx, minFontPx }) — see paperJsonRenderer.js's
+        // drawItem for the full rationale: only ever passed when drawing one
+        // legend icon SAMPLE shrunk to fit a small fixed icon box, where an
+        // item's own authored proportions (correct at its natural on-photo
+        // size) can otherwise shrink a fine inner detail below a pixel.
+        drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1, realColors = false, legendOpts) {
+            const minStrokePx = legendOpts && legendOpts.minStrokePx;
+            const minFontPx = legendOpts && legendOpts.minFontPx;
+            const currentScale = () => {
+                try {
+                    const m = ctx.getTransform();
+                    return Math.hypot(m.a, m.b) || 1;
+                } catch (_) { return 1; }
+            };
             const parseSeg = (s) => {
                 if (!Array.isArray(s)) return null;
                 if (Array.isArray(s[0])) {
@@ -484,12 +531,35 @@ export default {
                 return { x: s[0], y: s[1], hIn: [0, 0], hOut: [0, 0] };
             };
 
+            // Paper.js exports colors as [r,g,b] or [r,g,b,a] floats in 0-1.
+            const colorOf = (c, fallback) => {
+                if (!c || !Array.isArray(c) || c.length < 3) return fallback;
+                const [r, g, b, a] = c;
+                const R = Math.round(r * 255), G = Math.round(g * 255), B = Math.round(b * 255);
+                return a != null ? `rgba(${R},${G},${B},${a})` : `rgb(${R},${G},${B})`;
+            };
+
             const walk = (item) => {
                 if (!Array.isArray(item) || item.length < 2) return;
                 const [type, data] = item;
                 if (!data || typeof data !== 'object') return;
 
                 if (type === 'Group' || type === 'CompoundPath') {
+                    // An item's own baked-in isLegend group (see
+                    // DrawingTools.vue's rebuildLegend) is ALWAYS skipped here
+                    // — this viewer draws its own single combined legend
+                    // instead (see drawCombinedLegendOverlay, called once per
+                    // render()), computed fresh from every item sharing this
+                    // photo. Drawing any ONE item's own possibly-stale legend
+                    // used to mean the legend shown depended entirely on
+                    // which route/pitch happened to be selected (some had one
+                    // baked in, some didn't, and whichever did could be
+                    // stale) — a real bug, not a feature; see
+                    // legendRenderer.js's drawCombinedLegend for the full
+                    // rationale.
+                    const gd = data.data || {};
+                    if (gd.isLegend) return;
+
                     ctx.save();
                     const m = data.matrix;
                     if (m && Array.isArray(m) && m.length >= 6)
@@ -523,13 +593,16 @@ export default {
                         // smaller dot here than what's baked into the composite image.
                         const fillRadius = Math.max(4, (maxX - minX) / 2);
                         const radius = (fillRadius + (data.strokeWidth || 0) / 2) * widthMul;
-                        ctx.fillStyle = dotFillStyle;
+                        ctx.fillStyle = realColors ? colorOf(data.fillColor, dotFillStyle) : dotFillStyle;
                         ctx.beginPath();
                         ctx.arc((minX + maxX) / 2, (minY + maxY) / 2, radius, 0, Math.PI * 2);
                         ctx.fill();
                     } else {
-                        ctx.strokeStyle = strokeStyle;
-                        ctx.lineWidth   = (data.strokeWidth || 3) * widthMul;
+                        const effectiveStroke = realColors ? colorOf(data.strokeColor, strokeStyle) : strokeStyle;
+                        ctx.strokeStyle = effectiveStroke;
+                        let lw = (data.strokeWidth || 3) * widthMul;
+                        if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
+                        ctx.lineWidth   = lw;
                         ctx.lineCap     = 'round';
                         ctx.lineJoin    = 'round';
                         ctx.beginPath();
@@ -560,7 +633,7 @@ export default {
                         // arrowhead rendering as a hollow outline with a visible gap at
                         // the tip instead of a solid point touching the shaft.
                         if (data.closed && data.fillColor) {
-                            ctx.fillStyle = strokeStyle;
+                            ctx.fillStyle = realColors ? colorOf(data.fillColor, effectiveStroke) : strokeStyle;
                             ctx.fill();
                         }
                         ctx.stroke();
@@ -569,9 +642,10 @@ export default {
 
                 } else if (type === 'PointText') {
                     if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
-                    const fs = (data.fontSize || 20) * fontMul;
+                    let fs = (data.fontSize || 20) * fontMul;
+                    if (minFontPx) fs = Math.max(fs, minFontPx / currentScale());
                     ctx.save();
-                    ctx.fillStyle    = textFillStyle;
+                    ctx.fillStyle    = realColors ? colorOf(data.fillColor, textFillStyle) : textFillStyle;
                     ctx.font         = `bold ${fs}px Arial`;
                     ctx.textAlign    = data.justification === 'center' ? 'center' : 'left';
                     ctx.textBaseline = 'alphabetic';
@@ -671,6 +745,54 @@ export default {
             }
 
             ctx.setTransform(1, 0, 0, 1, 0, 0);
+
+            // 5. ONE combined legend — the union of every distinct topo-symbol
+            // type across EVERY item sharing this photo (not just the
+            // selected one), drawn last so it stays on top. See
+            // drawCombinedLegendOverlay for the full rationale.
+            this.drawCombinedLegendOverlay(ctx, canvas);
+        },
+
+        // Draws the ONE combined legend for this photo — computed fresh from
+        // every item's own untouched JSON (this.items + extra_item), same
+        // union-of-symbols approach as SectorLocalImageCanvasComponent.vue's
+        // drawLegends() and every admin editor's live preview
+        // (canvasOverlaysMixin's computeEditorLegend). Always drawn (never
+        // gated by selected_id/hover), so switching which route/pitch is
+        // highlighted no longer changes what the legend shows — it shows
+        // everything on the photo, always, exactly like a printed topo would.
+        drawCombinedLegendOverlay(ctx, canvas) {
+            const metas = Object.values(this.items).slice();
+            if (this.extra_item && this.extra_item.json) metas.push(this.extra_item);
+            const jsons = metas.map(m => m.json).filter(Boolean);
+            if (!jsons.length) return;
+
+            // Scale the legend by the SAME reference width the strokes
+            // themselves are scaled by (see _itemScale) — the legend's icons
+            // are literal copies of symbols drawn via the same drawItem, so
+            // this keeps the legend the exact size it was authored at in the
+            // admin editor, matching every other symbol already on the
+            // photo. Deliberately NOT based on canvas.getBoundingClientRect()
+            // (an earlier version was) — that reads the CURRENT on-screen
+            // CSS width, which inside a modal can be measured before the
+            // modal has finished its open transition/layout, silently
+            // producing an oversized legend that never corrects itself since
+            // nothing re-renders after the transition settles.
+            const refMeta = metas.find(m => m && (m.bg_width || m.canvas_width));
+            const refWidth = refMeta ? (refMeta.bg_width || refMeta.canvas_width) : canvas.width;
+
+            try {
+                drawCombinedLegend(ctx, canvas.width, canvas.height, jsons, refWidth, {
+                    drawItem: (c, json, s, d, t, wm, fm, opts) => this.drawItem(c, json, s, d, t, wm, fm, true, opts),
+                    translate: (key) => this.$t ? this.$t('admin.articles.canvas_editor.' + key) : key,
+                });
+            } catch (e) {
+                // Deliberately logged (not silently swallowed) — a thrown
+                // error here previously meant "no legend, no visible sign
+                // why", which read as the same bug as the legend simply
+                // having nothing to show.
+                console.error('drawCombinedLegendOverlay failed:', e);
+            }
         },
     },
 }

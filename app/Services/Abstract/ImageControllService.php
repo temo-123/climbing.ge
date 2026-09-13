@@ -155,24 +155,21 @@ class ImageControllService
 
     private static function generate_image_name()
     {
-        return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}'; 
+        return date('Y-m-d-H-m-s-U').'{'.rand(1,1000000).'}';
     }
 
     /**
-     * @param string $inputFile: relative or absolute path
-     * @param string $outputFile: relative or absolute path
-     * @param int $quality of output: 0 is worst, 100 is best
-     * @return bool true if the image was decoded and written, false if the type was unrecognized or decoding failed
+     * Decodes a GIF/JPEG/PNG/WEBP file into a GD image resource — extracted
+     * out of convertImageToWebp() so image_upload_sized() (see below) can
+     * decode the same range of source formats without duplicating this
+     * format-detection switch.
      *
-     * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
+     * @param string $inputFile: relative or absolute path
+     * @return resource|false the decoded GD image, or false if the type is
+     *         unrecognized or GD failed to decode it (logged either way)
      */
-    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): bool
+    private static function loadGdImage(string $inputFile)
     {
-        $dir = dirname($outputFile);
-        if (!file_exists($dir)) {
-            mkdir($dir, 0755, true);
-        }
-
         $fileType = exif_imagetype($inputFile);
 
         switch ($fileType) {
@@ -214,6 +211,202 @@ class ImageControllService
                 'inputFile' => $inputFile,
                 'exif_imagetype' => $fileType,
             ]);
+            return false;
+        }
+
+        return $image;
+    }
+
+    /**
+     * @param string $image_dir: image derectory from '/public/'
+     * @param int $request:  HTTP request
+     * @param int $form_value_id:  image value name in your form
+     * @param int $minBytes:  lower bound of the target output file size
+     * @param int $maxBytes:  upper bound of the target output file size
+     * @param int $maxDimension:  longest-side cap in px — the source is
+     *        downscaled to fit (never upscaled) so a genuinely small source
+     *        photo isn't blown up past its own real detail
+     * @param float|null $lockAspectRatio:  width/height of an EXISTING photo
+     *        this upload is replacing, if any (see cropToAspectRatio) — pass
+     *        null for a brand-new upload with nothing drawn on it yet
+     *
+     * Uploads an image WITHOUT the generic image_upload()'s fixed 1920x1080
+     * crop/quality=80 preset — for photos meant to be examined closely as a
+     * climbing reference (a sector/area overview shot, say), that preset
+     * discarded real detail regardless of how large/sharp the original
+     * upload was. Binary-searches the WEBP quality so the final file size
+     * lands inside [$minBytes, $maxBytes] instead of a single fixed quality
+     * that swings wildly in size depending on how much detail/noise the
+     * photo has (see resources/js/services/canvas/imageSizing.js's
+     * canvasToJpegSized for the identical algorithm used client-side when
+     * baking a composite from this same image).
+     *
+     * @return string|null the new filename (always .webp), or null if the
+     *         request carried no image / decoding failed
+     */
+    public static function image_upload_sized($image_dir, $request, $form_value_id, $minBytes, $maxBytes, $maxDimension = 3000, $lockAspectRatio = null)
+    {
+        [$file_temp_path, $isOwnTempFile] = ImageControllService::resolveImageSource($request, $form_value_id);
+        if (!$file_temp_path) {
+            return null;
+        }
+
+        $image = ImageControllService::loadGdImage($file_temp_path);
+        if ($isOwnTempFile) {
+            @unlink($file_temp_path);
+        }
+        if ($image === false) {
+            return null;
+        }
+
+        if ($lockAspectRatio) {
+            $image = ImageControllService::cropToAspectRatio($image, $lockAspectRatio);
+        }
+
+        $current_width  = imagesx($image);
+        $current_height = imagesy($image);
+        $longest = max($current_width, $current_height);
+        if ($longest > $maxDimension) {
+            $scale     = $maxDimension / $longest;
+            $newWidth  = max(1, (int) round($current_width * $scale));
+            $newHeight = max(1, (int) round($current_height * $scale));
+            $resized = imagecreatetruecolor($newWidth, $newHeight);
+            imagealphablending($resized, false);
+            imagesavealpha($resized, true);
+            imagecopyresampled($resized, $image, 0, 0, 0, 0, $newWidth, $newHeight, $current_width, $current_height);
+            imagedestroy($image);
+            $image = $resized;
+        }
+
+        $bytes = ImageControllService::encodeWebpSized($image, $minBytes, $maxBytes);
+        imagedestroy($image);
+
+        $new_name      = ImageControllService::generate_image_name();
+        $file_new_name = $new_name . '.webp';
+        $dir = public_path($image_dir);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755, true);
+        }
+        file_put_contents($dir . $file_new_name, $bytes);
+
+        return $file_new_name;
+    }
+
+    /**
+     * Centered-crops a decoded GD image to match a target width/height
+     * ratio, without resizing (the crop region is copied at 1:1 — the
+     * caller's own fit-inside-maxDimension step handles final scaling).
+     *
+     * Why this exists: a sector/area-overview photo has admin-drawn
+     * rectangles/labels whose saved positions are computed against that
+     * SPECIFIC image's own bg_width/bg_height (see
+     * CanvasHandlers.vue's _rescaleToCurrentBackground). Replacing the photo
+     * with one of a DIFFERENT aspect ratio changes that width/height
+     * relationship, and _rescaleToCurrentBackground reacts by scaling X and
+     * Y by DIFFERENT factors to force-fit the old drawing onto the new
+     * shape — visibly stretching every existing rectangle/label out of
+     * proportion ("the drawing proportion crashed") even though nothing was
+     * touched in the editor. Cropping a REPLACEMENT photo to the SAME ratio
+     * as the one it's replacing keeps that scale uniform, so existing
+     * drawings stay aligned.
+     *
+     * @param resource $image
+     * @param float $targetRatio width / height to crop to
+     * @return resource the cropped image (or the original, untouched, if it
+     *         already matches closely enough)
+     */
+    private static function cropToAspectRatio($image, $targetRatio)
+    {
+        if (!$targetRatio || $targetRatio <= 0) {
+            return $image;
+        }
+
+        $current_width  = imagesx($image);
+        $current_height = imagesy($image);
+        $currentRatio = $current_width / $current_height;
+
+        if (abs($currentRatio - $targetRatio) < 0.005) {
+            return $image;
+        }
+
+        if ($currentRatio > $targetRatio) {
+            // Source is relatively WIDER than the target — crop the sides.
+            $newWidth  = max(1, (int) round($current_height * $targetRatio));
+            $newHeight = $current_height;
+            $srcX = (int) (($current_width - $newWidth) / 2);
+            $srcY = 0;
+        } else {
+            // Source is relatively TALLER than the target — crop top/bottom.
+            $newWidth  = $current_width;
+            $newHeight = max(1, (int) round($current_width / $targetRatio));
+            $srcX = 0;
+            $srcY = (int) (($current_height - $newHeight) / 2);
+        }
+
+        $cropped = imagecreatetruecolor($newWidth, $newHeight);
+        imagealphablending($cropped, false);
+        imagesavealpha($cropped, true);
+        imagecopyresampled($cropped, $image, 0, 0, $srcX, $srcY, $newWidth, $newHeight, $newWidth, $newHeight);
+        imagedestroy($image);
+
+        return $cropped;
+    }
+
+    /**
+     * Binary-searches WEBP quality (1-95) for a decoded GD image so the
+     * encoded byte size lands inside [$minBytes, $maxBytes] — mirrors
+     * resources/js/services/canvas/imageSizing.js's canvasToJpegSized.
+     * Encodes into an in-memory output buffer (imagewebp's $to=null form)
+     * rather than a temp file, since this runs several times per upload.
+     *
+     * @param resource $image
+     * @return string the best-achieved encoded bytes (may fall outside the
+     *         range for a source image whose own content can't be
+     *         compressed/inflated into it, e.g. an already near-flat photo)
+     */
+    private static function encodeWebpSized($image, $minBytes, $maxBytes, $maxIterations = 8)
+    {
+        $encode = function (int $quality) use ($image) {
+            ob_start();
+            imagewebp($image, null, $quality);
+            return ob_get_clean();
+        };
+
+        $lo = 5; $hi = 95;
+        $best = null; $bestDist = PHP_INT_MAX;
+        for ($i = 0; $i < $maxIterations && $lo <= $hi; $i++) {
+            $mid   = (int) round(($lo + $hi) / 2);
+            $bytes = $encode($mid);
+            $size  = strlen($bytes);
+            $dist  = $size < $minBytes ? ($minBytes - $size) : ($size > $maxBytes ? ($size - $maxBytes) : 0);
+            if ($dist < $bestDist) {
+                $bestDist = $dist;
+                $best = $bytes;
+            }
+            if ($dist === 0) break;
+            if ($size > $maxBytes) { $hi = $mid - 1; } else { $lo = $mid + 1; }
+        }
+
+        return $best ?? $encode(85);
+    }
+
+    /**
+     * @param string $inputFile: relative or absolute path
+     * @param string $outputFile: relative or absolute path
+     * @param int $quality of output: 0 is worst, 100 is best
+     * @return bool true if the image was decoded and written, false if the type was unrecognized or decoding failed
+     *
+     * exemple -> convertImageToWebp('/home/paul/image.gif', 'image.webp', 90);
+     */
+    private static function convertImageToWebp(string $inputFile, string $outputFile, int $quality = 80, int $resize): bool
+    {
+        $dir = dirname($outputFile);
+        if (!file_exists($dir)) {
+            mkdir($dir, 0755, true);
+        }
+
+        $image = ImageControllService::loadGdImage($inputFile);
+        if ($image === false) {
             return false;
         }
 

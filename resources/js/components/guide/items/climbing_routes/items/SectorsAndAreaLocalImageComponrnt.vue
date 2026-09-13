@@ -10,7 +10,7 @@
 
                 <SectorLocalImageCanvas
                     v-if="spot_image && spot_image.image"
-                    :image_src="'/public/images/sector_local_img/' + spot_image.image"
+                    :image_src="localImageSrc(spot_image)"
                     :layouts="imageLayouts[spot_image.id] || []"
                 />
             </div>
@@ -51,6 +51,22 @@ export default {
         },
     },
     methods: {
+        // Once an original backup exists (after the first admin save), use
+        // the CLEAN photo — SectorLocalImageCanvasComponent.vue already
+        // draws every sector's shapes + the combined legend live from JSON
+        // on top of whatever background it's given (see its own draw()/
+        // drawLegends()). The plain `sector_local_img/` file is the admin's
+        // own baked COMPOSITE (shapes AND legend already permanently drawn
+        // into its pixels by renderCompositeAtFullResolution on every save)
+        // — showing that AND drawing the live overlay on top of it doubled
+        // every shape and the legend card (a real bug, fixed September
+        // 2026; mirrors the route/pitch viewers' own has_original check,
+        // e.g. SectorCanvasModalComponent.vue's currentImageSrc).
+        localImageSrc(spot_image) {
+            return spot_image.has_original
+                ? '/public/images/sector_local_img/origin_img/' + spot_image.image
+                : '/public/images/sector_local_img/' + spot_image.image;
+        },
         fetchAllLayouts(images) {
             images.forEach(img => {
                 if (!img || !img.id) return;

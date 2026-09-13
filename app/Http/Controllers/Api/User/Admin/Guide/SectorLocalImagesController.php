@@ -50,7 +50,13 @@ class SectorLocalImagesController extends Controller
         $new_sector_local_image['title'] = $request['title'];
 
         if($request->hasFile('image')){
-            $file_new_name = ImageControllService::image_upload('images/sector_local_img/', $request, 'image');
+            // NOT the generic image_upload() — its fixed 1920x1080 crop +
+            // quality=80 preset (meant for thumbnails/cover images) discarded
+            // real rock/wall detail on a photo meant to be examined closely
+            // as a climbing reference. See ImageControllService::image_upload_sized.
+            $file_new_name = ImageControllService::image_upload_sized(
+                'images/sector_local_img/', $request, 'image', 800 * 1024, 1500 * 1024
+            );
             $new_sector_local_image['image'] = $file_new_name;
         }
 
@@ -179,7 +185,35 @@ class SectorLocalImagesController extends Controller
         $editing_sector_local_image['title'] = $request['title'];
 
         if($request->hasFile('image')){
-            $file_new_name = ImageControllService::image_update('images/sector_local_img/', $editing_sector_local_image, $request, 'image', 'image');
+            // See add_sector_local_image() above for why this bypasses the
+            // generic image_update()/image_upload() preset.
+            //
+            // This is a REPLACEMENT for a photo that may already have
+            // sectors drawn on it, unlike a brand-new upload — read the
+            // EXISTING file's own aspect ratio first (prefer the untouched
+            // origin_img backup, since that's what admin-drawn rectangles'
+            // bg_width/bg_height were actually computed against; the "main"
+            // file may already be a re-baked composite at a slightly
+            // different pixel size) and lock the new upload to match it, or
+            // every existing rectangle/label would get stretched out of
+            // proportion the next time this sector is opened (see
+            // ImageControllService::cropToAspectRatio for the full why).
+            $existingPath = public_path('images/sector_local_img/origin_img/' . $editing_sector_local_image->image);
+            if (!file_exists($existingPath)) {
+                $existingPath = public_path('images/sector_local_img/' . $editing_sector_local_image->image);
+            }
+            $lockAspectRatio = null;
+            if (file_exists($existingPath)) {
+                $dims = @getimagesize($existingPath);
+                if ($dims && $dims[0] > 0 && $dims[1] > 0) {
+                    $lockAspectRatio = $dims[0] / $dims[1];
+                }
+            }
+
+            ImageControllService::image_delete('images/sector_local_img/', $editing_sector_local_image, 'image');
+            $file_new_name = ImageControllService::image_upload_sized(
+                'images/sector_local_img/', $request, 'image', 800 * 1024, 1500 * 1024, 3000, $lockAspectRatio
+            );
             $editing_sector_local_image['image'] = $file_new_name;
         }
 

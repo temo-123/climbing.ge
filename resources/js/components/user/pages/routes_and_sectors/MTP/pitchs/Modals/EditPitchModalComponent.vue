@@ -63,6 +63,7 @@
                 :pitch_json_prop="data.json ? data.json.json : null"
                 :pitch_json_meta_prop="pitchJsonMeta"
                 :sector_image_id_prop="data.json ? data.json.sector_image_id : null"
+                :pitch_name_prop="data.name"
                 class="mt-4"
             />
         </div>

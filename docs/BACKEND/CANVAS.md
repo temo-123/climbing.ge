@@ -12,6 +12,7 @@ Drawing data for climbing routes, MTP pitches, and sector local images is stored
 - [Save Logic — Sector Local Images](#save-logic--sector-local-images)
 - [Save Logic — Climbing Routes](#save-logic--climbing-routes)
 - [Save Logic — MTP Pitches](#save-logic--mtp-pitches)
+- [Extra Drawing Tables](#extra-drawing-tables)
 - [CanvasService — Cleanup on Delete](#canvasservice--cleanup-on-delete)
 - [General Canvas Image Endpoint](#general-canvas-image-endpoint)
 - [File Storage Paths](#file-storage-paths)
@@ -21,16 +22,19 @@ Drawing data for climbing routes, MTP pitches, and sector local images is stored
 
 ## Overview
 
-Three different entities can have canvas drawings:
+Four different entities can have canvas drawings:
 
 | Entity | JSON Model | Image location |
 |---|---|---|
 | Sector image (shared background) | `ClimbingRoutesJson`, `MtpPitchJson` | `public/images/sector_img/` |
 | Sector local image | `SectorLocalImagesJson` | `public/images/sector_local_img/` |
+| Spot rocks image | `SpotRocksImageJson` | `public/images/spot_rocks_img/` |
 
 A single sector (background) image can have **multiple route drawings** and **multiple pitch drawings** layered on top of it. Each is stored separately and displayed as reference when editing another.
 
-A sector **local** image has one drawing per sector (the `(sector_local_image_id, sector_id)` pair is unique).
+A sector **local** image has one drawing per sector (the `(sector_local_image_id, sector_id)` pair is unique) — a **spot rocks** image works the same way, one drawing per sector (the `(spot_rocks_image_id, sector_id)` pair is unique).
+
+Any of the three "shared image" entities above (sector image, sector local image, spot rocks image) can ALSO carry one **extra drawing** — a general annotation layer independent of any one route/sector/pitch drawn on it. See [Extra Drawing Tables](#extra-drawing-tables).
 
 ---
 
@@ -112,6 +116,21 @@ Under `/api/set_mtp_pitch/`
 | DELETE | `del_pitch_drawing/{pitch_id}` | `MTPPitchController@del_pitch_drawing` | `mtp_pitch › edit` |
 | GET | `get_pitch_jsons_for_sector_image` | `MTPPitchController@get_pitch_jsons_for_sector_image` | `mtp_pitch › show` |
 
+### Spot Rocks Images Canvas
+
+Under `/api/set_sector/set_spot_rock_images/`
+
+| Method | URI | Controller | Permission |
+|---|---|---|---|
+| GET | `get_for_editor/{id}` | `SpotRockController@get_for_editor` | `sector › show` |
+| POST | `save_drawing/{image_id}` | `SpotRockController@save_drawing` | `sector › edit` |
+| DELETE | `del_layout/{layout_id}` | `SpotRockController@del_layout` | `sector › edit` |
+| DELETE | `del_spot_rock_image/{image_id}` | `SpotRockController@del_spot_rock_image` | `sector › del` |
+
+Public: `GET /api/get_sector/get_spot_rock_images/get_spot_rock_images/{article_id}` — `SpotRockController@get_spot_rock_images` (`Api\Guide`), no auth.
+
+See [Extra Drawing Tables](#extra-drawing-tables) for the three `*_extra_drawing` endpoint groups (one per shared-image entity above), also under `/api/set_sector/`.
+
 ### General Canvas Image Save
 
 | Method | URI | Controller | Auth |
@@ -151,6 +170,14 @@ Under `/api/set_mtp_pitch/`
 
 ---
 
+## Save Logic — Spot Rocks Images
+
+**Controller:** `App\Http\Controllers\Api\User\Admin\Guide\SpotRockController@save_drawing`
+
+Identical shape and backup rule to Sector Local Images above — `sector_id` required, backs up the clean original once to `images/spot_rocks_img/origin_img/{filename}`, overwrites the main file with the composite, upserts `SpotRocksImageJson` on `(spot_rocks_image_id, sector_id)`, returns `layout_id` and `has_original`.
+
+---
+
 ## Save Logic — Climbing Routes
 
 **Controller:** `App\Http\Controllers\Api\User\Admin\Guide\RouteJsonController`
@@ -174,7 +201,33 @@ Under `/api/set_mtp_pitch/`
 2. Saves the composite image to `images/sector_img/` (same path as the original sector image, overwriting with strokes).
 3. Upserts `MtpPitchJson` on `mtp_pitch_id`: updates if exists, creates if not.
 
-The `get_pitch_jsons_for_sector_image` endpoint returns JSON strings for all pitches on a given sector image EXCEPT the one currently being edited (used to show other pitches as reference layers in the editor).
+The `get_pitch_jsons_for_sector_image` endpoint returns JSON strings for all pitches on a given sector image EXCEPT the one currently being edited (used to show other pitches as reference layers in the editor). Each item also carries `pitch_name` (the sibling pitch's own `name`) so the frontend can label its reference overlay without a separate lookup — see `docs/FRONTEND/COMPONENTS/CANVAS_EDITOR.md`'s `canvasOverlaysMixin.js` section. `RouteJsonController@get_related_routes_jsons` carries the equivalent `route_name` field for the same reason.
+
+---
+
+## Extra Drawing Tables
+
+A toggleable general-annotation layer, separate from any one route/pitch/sector drawing — for approach notes, hazards, or landmarks that aren't about any one item on the shared photo. Three separate tables/controllers by design (each tied to a different "shared image" entity), unified only on the frontend via `canvasExtraDrawingMixin.js` (see `docs/FRONTEND/COMPONENTS/CANVAS_EDITOR.md`).
+
+| Entity | Table | Model | Keyed by | Admin controller | Public controller |
+|---|---|---|---|---|---|
+| Sector image (routes/pitches) | `sector_image_extra_drawings` | `SectorImageExtraDrawing` | `sector_image_id` (unique) | `Api\User\Admin\Guide\SectorImageExtraDrawingController` | `Api\Guide\SectorImageExtraDrawingController` |
+| Sector local image | `sector_local_image_extra_drawings` | `SectorLocalImageExtraDrawing` | `sector_local_image_id` (unique) | `Api\User\Admin\Guide\SectorLocalImageExtraDrawingController` | `Api\Guide\SectorLocalImageExtraDrawingController` |
+| Spot rocks image | `spot_rocks_image_extra_drawings` | `SpotRocksImageExtraDrawing` | `spot_rocks_image_id` (unique) | `Api\User\Admin\Guide\SpotRocksImageExtraDrawingController` | `Api\Guide\SpotRocksImageExtraDrawingController` |
+
+Every table has the same shape: `id`, `json`, `canvas_width`, `canvas_height`, `bg_left`/`bg_top`/`bg_width`/`bg_height`, the one FK column (unique, cascade-deletes with its parent image), `timestamps`.
+
+**Admin endpoints** (all three follow this exact pattern, permission subject `sector`/`sector_local_image` show+edit matching each entity's own regular canvas endpoints):
+
+| Method | URI pattern | Notes |
+|---|---|---|
+| GET | `/api/set_sector/set_<entity>_extra_drawing/get_for_editor/{id}` | Returns the parent image (with `has_original`) + the extra drawing row (or `null`) |
+| POST | `/api/set_sector/set_<entity>_extra_drawing/save/{id}` | Same composite-image backup/overwrite pattern as the entity's own regular save (backs up `origin_img/` once, overwrites the live file) |
+| DELETE | `/api/set_sector/set_<entity>_extra_drawing/delete/{id}` | Deletes the row; does not touch the image file |
+
+**Public endpoint** (read-only, no auth): `GET /api/get_sector/get_<entity>_extra_drawing/get/{id}` → `{ extra_drawing }`.
+
+`SectorImageExtraDrawing` is shared by routes AND pitches (both are drawn on the same kind of `sector_images` row) — `CanvasRouteEditorComponent.vue`, `sectorRouteDrawingsEditorComponent.vue` (route mode), and `CanvasPitchEditorComponent.vue` all point at the same three endpoints, keyed only by `sector_image_id`.
 
 ---
 
@@ -195,7 +248,15 @@ CanvasService::deleteSectorImageCanvasData($sectorImageId);
 // Before deleting a sector_local_images row:
 CanvasService::deleteSectorLocalImageCanvasData($sectorLocalImageId);
 // → deletes from sector_local_images_jsons WHERE sector_local_image_id = $sectorLocalImageId
+// → deletes from sector_local_image_extra_drawings WHERE sector_local_image_id = $sectorLocalImageId
+
+// Before deleting a spot_rocks_images row:
+CanvasService::deleteSpotRocksImageCanvasData($spotRocksImageId);
+// → deletes from spot_rocks_image_jsons WHERE spot_rocks_image_id = $spotRocksImageId
+// → deletes from spot_rocks_image_extra_drawings WHERE spot_rocks_image_id = $spotRocksImageId
 ```
+
+`deleteSectorImageCanvasData` (called before deleting a `sector_images` row) already also deletes from `sector_image_extra_drawings WHERE sector_image_id = $sectorImageId`.
 
 ---
 
@@ -218,6 +279,8 @@ CanvasService::deleteSectorLocalImageCanvasData($sectorLocalImageId);
 | Sector images (shared background) | `public/images/sector_img/` |
 | Sector local images | `public/images/sector_local_img/` |
 | Sector local images — originals backup | `public/images/sector_local_img/origin_img/` |
+| Spot rocks images | `public/images/spot_rocks_img/` |
+| Spot rocks images — originals backup | `public/images/spot_rocks_img/origin_img/` |
 | Product option combination images | `public/images/product_option_img/` |
 | General canvas saves | `storage/images/` (via Laravel Storage) |
 
@@ -234,6 +297,9 @@ CanvasService::deleteSectorLocalImageCanvasData($sectorLocalImageId);
 | `route` | `edit` | Update / delete route JSON |
 | `mtp_pitch` | `show` | Load pitch JSON |
 | `mtp_pitch` | `edit` | Save / delete pitch drawing |
+| `sector` | `show` | Load spot rocks image drawing / extra drawing; load sector-image extra drawing |
+| `sector` | `edit` | Save / delete spot rocks image drawing / extra drawing; save/delete sector-image extra drawing |
+| `sector_local_image` | `show` / `edit` | Load / save-delete sector-local-image extra drawing (same subject as its regular canvas endpoints) |
 
 ---
 

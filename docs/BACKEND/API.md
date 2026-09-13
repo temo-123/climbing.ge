@@ -166,7 +166,7 @@ Password must be **RSA-encrypted** by the client using the server's public key.
 | GET | `/api/get_sector/get_sector_images/{sector_id}` | Sector topo images |
 | GET | `/api/get_sector/sectors_and_routes_quantity` | Count summary |
 | GET | `/api/get_route/get_all_routes` | All routes |
-| GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail for modal |
+| GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail for modal — also includes `drawing`/`sector_image` when the route has a saved `ClimbingRoutesJson`, so `RouteModalComponent.vue` can render it via `canvas-json-show` (omitted entirely when no drawing exists) |
 | GET | `/api/get_route/get_routes_quantity/{article_id}` | Route count for article |
 | GET | `/api/get_route/get_most_popular_routes/{route_type}` | Popular routes |
 

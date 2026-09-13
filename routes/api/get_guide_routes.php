@@ -166,6 +166,10 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::controller(SectorLocalImageExtraDrawingController::class)->prefix('get_sector_local_image_extra_drawing')->group( function() {
             Route::get('/get/{sector_local_image_id}', 'get');
         });
+
+        Route::controller(SpotRocksImageExtraDrawingController::class)->prefix('get_spot_rocks_image_extra_drawing')->group( function() {
+            Route::get('/get/{spot_rocks_image_id}', 'get');
+        });
     });
 
 

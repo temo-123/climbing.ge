@@ -36,12 +36,19 @@ export default {
 
         // Flattens a just-drawn freehand path into a smooth curve-fitted line
         // and drops redundant segments — only when smoothLines is enabled.
-        // Tolerance below paper.js's own default (2.5) — keeps more of the
-        // hand-drawn shape/segment count; a higher value cuts corners and
-        // reads as "too straight".
+        // `simplify(tolerance)`'s tolerance is in PROJECT-space units, same as
+        // segment coordinates — on a large background photo viewed zoomed-out
+        // (the normal case), a flat tolerance was a fraction of a screen
+        // pixel, so the toggle visibly did nothing ("smooth doesn't work").
+        // Scale by 1/zoom, same as _shouldAddDragPoint's minDistance above, so
+        // it reads as a constant ~1.5 SCREEN-pixel smoothing regardless of
+        // zoom or photo resolution. Below paper.js's own default (2.5) —
+        // keeps more of the hand-drawn shape/segment count; a higher value
+        // cuts corners and reads as "too straight".
         _simplifyIfSmooth(path) {
             if (this.smoothLines && path && path.segments && path.segments.length > 2) {
-                path.simplify(1.5);
+                const zoom = (this.scope && this.scope.view && this.scope.view.zoom) || 1;
+                path.simplify(1.5 / zoom);
             }
         },
 
@@ -107,6 +114,46 @@ export default {
                     this.add_pendulum_right(event);
                 } else if (this.action == 27) {
                     this.add_crux(event);
+                } else if (this.action == 28) {
+                    this.add_anchor_good(event);
+                } else if (this.action == 29) {
+                    this.add_anchor_mid(event);
+                } else if (this.action == 30) {
+                    this.add_anchor_bad(event);
+                } else if (this.action == 31) {
+                    this.add_portaledge_anchor_good(event);
+                } else if (this.action == 32) {
+                    this.add_portaledge_anchor_mid(event);
+                } else if (this.action == 33) {
+                    this.add_portaledge_anchor_bad(event);
+                } else if (this.action == 34) {
+                    this.add_rappel_anchor_good(event);
+                } else if (this.action == 35) {
+                    this.add_rappel_anchor_mid(event);
+                } else if (this.action == 36) {
+                    this.add_rappel_anchor_bad(event);
+                } else if (this.action == 37) {
+                    this.add_rescue_anchor(event);
+                } else if (this.action == 38) {
+                    this.add_summit(event);
+                } else if (this.action == 39) {
+                    this.add_tent(event);
+                } else if (this.action == 40) {
+                    this.add_parking(event);
+                } else if (this.action == 41) {
+                    this.add_poi_hiking(event);
+                } else if (this.action == 42) {
+                    this.add_poi_bed(event);
+                } else if (this.action == 43) {
+                    this.add_poi_bike(event);
+                } else if (this.action == 44) {
+                    this.add_poi_water(event);
+                } else if (this.action == 45) {
+                    this.add_poi_food(event);
+                } else if (this.action == 46) {
+                    this.add_poi_tent(event);
+                } else if (this.action == 47) {
+                    this.add_poi_medical(event);
                 }
             };
 
@@ -142,6 +189,88 @@ export default {
                         this.selectedItem.translate(event.delta);
                         if (this.selectedItem.data && this.selectedItem.data.textLabel) {
                             this.selectedItem.data.textLabel.translate(event.delta);
+                        }
+                        // Sector-name label (see sectorLocaleImageEditorComponent.vue) —
+                        // its leader line is a SEPARATE sibling item (found by flag,
+                        // never a live reference stored in `.data`: Paper.js JSON-
+                        // serializes `.data` recursively, so a stored Item reference
+                        // would get deep-embedded on save and come back as inert data,
+                        // not a live Item, after any reload). The LABEL-side endpoint
+                        // (the line's last segment) always follows the drag; the
+                        // RECTANGLE-side endpoint (segment 0) live-re-anchors to
+                        // whichever corner/side-center of the sector's own rectangle
+                        // is currently closest to the label — recomputed on every
+                        // drag frame, directly from this drag, like any other
+                        // connected-item behavior in this editor (e.g. textLabel
+                        // above) — NOT from a separate background timer, unless the
+                        // user has manually pinned it via the "Edit Points" tool
+                        // (anchorAuto: false, see the action-16 handler below).
+                        if (this.selectedItem.data && this.selectedItem.data.isSectorLabel) {
+                            const layer = this.selectedItem.layer;
+                            const line = layer && layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                            if (line && line.segments && line.segments.length >= 2) {
+                                const last = line.segments[line.segments.length - 1];
+                                last.point = last.point.add(event.delta);
+
+                                if (!(line.data && line.data.anchorAuto === false)) {
+                                    const rectItem = layer.children.find(c => c.data &&
+                                        (c.data.isRectangle || c.data.isCircle || c.data.isEllipse));
+                                    if (rectItem) {
+                                        const b = rectItem.bounds;
+                                        const midX = (b.left + b.right) / 2, midY = (b.top + b.bottom) / 2;
+                                        const candidates = [
+                                            new paper.Point(b.left, b.top),    new paper.Point(midX, b.top),    new paper.Point(b.right, b.top),
+                                            new paper.Point(b.left, midY),                                       new paper.Point(b.right, midY),
+                                            new paper.Point(b.left, b.bottom), new paper.Point(midX, b.bottom), new paper.Point(b.right, b.bottom),
+                                        ];
+                                        const labelCenter = this.selectedItem.position;
+                                        let best = candidates[0], bestDist = Infinity;
+                                        candidates.forEach(c => {
+                                            const d = c.getDistance(labelCenter);
+                                            if (d < bestDist) { bestDist = d; best = c; }
+                                        });
+                                        line.segments[0].point = best;
+                                    }
+                                }
+                            }
+                        }
+                        // Reverse case: dragging the RECTANGLE/circle/ellipse
+                        // itself (not the label) must also drag the leader
+                        // line's rectangle-side endpoint (segment 0) along
+                        // with it — previously only the label-drag direction
+                        // above was handled, so moving the shape visibly left
+                        // the line's other end planted at its old spot.
+                        if (this.selectedItem.data && (this.selectedItem.data.isRectangle
+                            || this.selectedItem.data.isCircle || this.selectedItem.data.isEllipse)) {
+                            const layer = this.selectedItem.layer;
+                            const line = layer && layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                            if (line && line.segments && line.segments.length >= 1) {
+                                if (!(line.data && line.data.anchorAuto === false)) {
+                                    // Auto mode: recompute the closest corner/side-center
+                                    // of the shape's NEW bounds to the (fixed) label
+                                    // position — same rule used when the label moves.
+                                    const labelGroup = layer.children.find(c => c.data && c.data.isSectorLabel);
+                                    const b = this.selectedItem.bounds;
+                                    const midX = (b.left + b.right) / 2, midY = (b.top + b.bottom) / 2;
+                                    const candidates = [
+                                        new paper.Point(b.left, b.top),    new paper.Point(midX, b.top),    new paper.Point(b.right, b.top),
+                                        new paper.Point(b.left, midY),                                       new paper.Point(b.right, midY),
+                                        new paper.Point(b.left, b.bottom), new paper.Point(midX, b.bottom), new paper.Point(b.right, b.bottom),
+                                    ];
+                                    const labelCenter = labelGroup ? labelGroup.position : line.segments[line.segments.length - 1].point;
+                                    let best = candidates[0], bestDist = Infinity;
+                                    candidates.forEach(c => {
+                                        const d = c.getDistance(labelCenter);
+                                        if (d < bestDist) { bestDist = d; best = c; }
+                                    });
+                                    line.segments[0].point = best;
+                                } else {
+                                    // Manual mode: the user pinned this exact point on
+                                    // the shape via the Edit Points tool — keep it
+                                    // rigidly attached to the shape as it translates.
+                                    line.segments[0].point = line.segments[0].point.add(event.delta);
+                                }
+                            }
                         }
                         this.scope.view.update();
                     }
@@ -256,6 +385,19 @@ export default {
                 }
                 if (this.action == 16) {
                     if (this.editingSegment) {
+                        // The rectangle-side endpoint of a sector-name label's
+                        // leader line (see sectorLocaleImageEditorComponent.vue)
+                        // auto-tracks the closest corner/side-center to the
+                        // label by default — manually dragging THAT endpoint
+                        // here means the user wants a specific point instead,
+                        // so stop auto-repositioning it on future sync ticks.
+                        // The label-side endpoint (any other segment index)
+                        // is left alone — that one's supposed to keep
+                        // following the label, dragged via the Move tool.
+                        const seg = this.editingSegment;
+                        if (seg.path && seg.path.data && seg.path.data.isSectorLabelLine && seg.index === 0) {
+                            seg.path.data = { ...seg.path.data, anchorAuto: false };
+                        }
                         this.editingSegment = null;
                         this.editingSegmentDot = null;
                         this.saveCanvasData();
@@ -284,6 +426,14 @@ export default {
                 }
 
                 this.path = null;
+
+                // Placing a topo symbol (rappel/bolt/pin/pendulum/crux, one of
+                // the anchor-family markers, or a landmark marker) can change
+                // WHICH symbol types are present on canvas — refresh the
+                // legend before the auto-save below captures the state.
+                if (this.action >= 22 && this.action <= 47) {
+                    this.rebuildLegend();
+                }
 
                 // Auto-save for drawing actions that don't handle it themselves
                 const noAutoSave = [5, 6, 8, 9, 15, 16, 17, 18, 19, 20];
@@ -463,7 +613,18 @@ export default {
                 if (item.data && item.data.textLabel) {
                     item.data.textLabel.remove();
                 }
+                // Sector-name label — remove its sibling leader line too (found
+                // by flag, see the action-8 drag handler above for why not a
+                // stored reference), or erasing the label leaves an orphaned
+                // line pointing at nothing.
+                if (item.data && item.data.isSectorLabel && item.layer) {
+                    const line = item.layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                    if (line) line.remove();
+                }
                 item.remove();
+                // Erasing a topo symbol may drop the last instance of its type —
+                // refresh the legend so that row disappears too.
+                this.rebuildLegend();
                 this.scope.view.update();
                 this.saveCanvasData();
             }
@@ -619,6 +780,34 @@ export default {
             } else {
                 // Generic: incremental fitBounds (ellipse, polygon, etc.)
                 item.fitBounds(new paper.Rectangle(nl, nt, nr - nl, nb - nt));
+            }
+
+            // Resizing the sector's rectangle/circle/ellipse also moves its
+            // corners/side-centers, so the leader line's rectangle-side
+            // endpoint (if still auto-tracking) needs to be re-anchored to
+            // whichever one is now closest to the label — same rule used
+            // when the shape is translated (see the action-8 onMouseDrag
+            // handler above) or the label itself is dragged.
+            if (item.data && (item.data.isRectangle || item.data.isCircle || item.data.isEllipse)) {
+                const layer = item.layer;
+                const line = layer && layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                if (line && line.segments && line.segments.length >= 1 && !(line.data && line.data.anchorAuto === false)) {
+                    const labelGroup = layer.children.find(c => c.data && c.data.isSectorLabel);
+                    const b = item.bounds;
+                    const midX = (b.left + b.right) / 2, midY = (b.top + b.bottom) / 2;
+                    const candidates = [
+                        new paper.Point(b.left, b.top),    new paper.Point(midX, b.top),    new paper.Point(b.right, b.top),
+                        new paper.Point(b.left, midY),                                       new paper.Point(b.right, midY),
+                        new paper.Point(b.left, b.bottom), new paper.Point(midX, b.bottom), new paper.Point(b.right, b.bottom),
+                    ];
+                    const labelCenter = labelGroup ? labelGroup.position : line.segments[line.segments.length - 1].point;
+                    let best = candidates[0], bestDist = Infinity;
+                    candidates.forEach(c => {
+                        const d = c.getDistance(labelCenter);
+                        if (d < bestDist) { bestDist = d; best = c; }
+                    });
+                    line.segments[0].point = best;
+                }
             }
 
             this.scope.view.update();
@@ -881,9 +1070,6 @@ export default {
                 const existingMain = this.scope.project.layers.find(l => l.name === 'main');
                 if (existingMain) existingMain.remove();
 
-                const related = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
-                related.forEach(l => l.remove());
-
                 const beforeCount = this.scope.project.layers.length;
                 this.scope.project.importJSON(parsedData);
                 const importedLayers = this.scope.project.layers.slice(beforeCount);
@@ -893,10 +1079,26 @@ export default {
                     .filter(l => !l.name || (!l.name.startsWith('related-') && l.name !== 'background'))
                     .forEach(l => { l.name = 'main'; });
 
-                related.forEach(l => this.scope.project.addLayer(l));
-                this._repositionRelatedLayersBelow();
-
-                this._activateMainLayer();
+                // Rebuilds related-N FRESH from the CURRENT relatedJsons/
+                // relatedJsonsMeta props (already updated to their new value
+                // by the time ANY watcher fires, even though the LIVE
+                // Paper.js layers below haven't caught up yet) instead of
+                // preserving whatever related-N layers happened to exist
+                // before this import.
+                //
+                // BUG this fixed: for a page where switching the active
+                // document ALSO changes who counts as "related" (e.g.
+                // sectorLocaleImageEditorComponent.vue switching which
+                // sector is being edited swaps which siblings show as
+                // reference), the OLD code here re-added the STALE related-N
+                // layers verbatim — still showing the PREVIOUSLY active
+                // sector's own siblings for one frame (e.g. the sector-label
+                // reference overlay's box/anchor briefly reflecting the wrong
+                // sibling). importRelatedJsons() already removes any existing
+                // related-N layers itself before rebuilding, and ends by
+                // re-activating 'main' and repositioning them below it, so
+                // nothing else here needs to duplicate that.
+                this.importRelatedJsons();
                 this.scope.view.update();
 
                 // _lastDrawingJson is the jsonProp watcher's echo-guard — it exists to
@@ -913,6 +1115,12 @@ export default {
                 // layer. Updating it here too keeps it meaning "what's actually
                 // rendered right now", so a genuine switch back always re-renders.
                 this._lastDrawingJson = typeof jsonData === 'string' ? jsonData : JSON.stringify(jsonData);
+
+                // Self-heals the legend for drawings saved before this feature existed
+                // (adds one if symbols are present but no legend was ever saved), and
+                // keeps it in sync when switching between documents (e.g. route ↔
+                // extra drawing) that may have different symbols/no legend at all.
+                this.rebuildLegend();
 
                 this.$emit('layers_ready');
             } catch (e) {}
@@ -957,6 +1165,61 @@ export default {
                     newLayers.forEach(l => { try { l.selected = false; } catch (_) {} });
                     const meta = (this.relatedJsonsMeta && this.relatedJsonsMeta[index]) || null;
                     this._rescaleToCurrentBackground(newLayers, meta);
+                    // A sibling sector's own saved JSON now carries its own
+                    // sector-name label + leader line (see
+                    // sectorLocaleImageEditorComponent.vue's
+                    // addOrUpdateSectorLabel) — that's a real, editable item in
+                    // ITS OWN 'main' layer, so it comes along for the ride when
+                    // that whole JSON is reused here as a read-only reference
+                    // overlay for a DIFFERENT sector being edited. It must not
+                    // stay as a live item here (it would get recolored/locked
+                    // below like every other reference shape, showing as a
+                    // stray dimmed box instead of the bright yellow label) —
+                    // but its REAL saved position (now already rescaled onto
+                    // the current background, same as everything else here) is
+                    // captured onto the layer's own `.data` first, so
+                    // computeEditorLabels() can draw the reference label at the
+                    // position the admin actually placed it at, instead of a
+                    // separately recomputed default (the same class of bug
+                    // fixed on the public page's extractShapes/drawSectorLabels).
+                    newLayers.forEach(layer => {
+                        const toRemove = [];
+                        const findLabels = (item) => {
+                            if (!item) return;
+                            if (item.data && item.data.isSectorLabel) {
+                                const b = item.bounds;
+                                layer.data = { ...layer.data, sectorLabelBox: { x: b.left, y: b.top, w: b.width, h: b.height } };
+                                toRemove.push(item);
+                                return;
+                            }
+                            if (item.data && item.data.isSectorLabelLine && item.segments && item.segments.length >= 1) {
+                                const p = item.firstSegment.point;
+                                layer.data = { ...layer.data, sectorLabelAnchor: { x: p.x, y: p.y } };
+                                toRemove.push(item);
+                                return;
+                            }
+                            // A sibling sector/route/mtp-pitch's own saved JSON
+                            // may ALSO carry its own auto-generated topo-symbol
+                            // legend (see DrawingTools.vue's rebuildLegend) —
+                            // that's derived from ITS OWN symbols and has no
+                            // business appearing here at all, let alone
+                            // recolored/repositioned as if it were a real
+                            // reference shape. Left unstripped, every sibling
+                            // drawing that has any topo symbols contributes its
+                            // OWN legend box on top of this drawing's real one —
+                            // exactly the "legend duplicated" bug: one legend
+                            // per sibling shown as a phantom, wrongly-tinted
+                            // extra box, instead of ONE legend representing only
+                            // this drawing's own symbols.
+                            if (item.data && item.data.isLegend) {
+                                toRemove.push(item);
+                                return;
+                            }
+                            if (item.children) item.children.forEach(findLabels);
+                        };
+                        if (layer.children) layer.children.forEach(findLabels);
+                        toRemove.forEach(item => item.remove());
+                    });
                     // relatedFirstLabel reserves index 0 for something that ISN'T
                     // another route/layout — see EditorComponent.vue's updateLayersList,
                     // which uses this exact same color/index scheme so the Layers panel

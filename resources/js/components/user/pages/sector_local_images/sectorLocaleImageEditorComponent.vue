@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-12">
+    <div class="col-md-12 position-relative" ref="canvasOverlayAnchor">
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center gap-3">
@@ -24,12 +24,12 @@
                             <span style="font-size:0.95rem; flex:1;">
                                 {{ layout.sector ? layout.sector.name : $t('admin.articles.sector_local_image_editor.layout_number_prefix', { id: layout.id }) }}
                             </span>
-                            <div class="d-flex gap-1 ms-1" @click.stop>
-                                <button class="btn btn-outline-secondary btn-sm p-0"
+                            <div class="d-flex gap-2 ms-1" @click.stop>
+                                <button class="btn btn-secondary btn-sm p-0"
                                     style="width:22px;height:22px;line-height:1;"
                                     :disabled="index === 0"
                                     @click="moveLayoutUp(index)" :title="$t('admin.articles.sector_local_image_editor.move_up_tooltip')">↑</button>
-                                <button class="btn btn-outline-secondary btn-sm p-0"
+                                <button class="btn btn-secondary btn-sm p-0"
                                     style="width:22px;height:22px;line-height:1;"
                                     :disabled="index >= layouts.length - 1"
                                     @click="moveLayoutDown(index)" :title="$t('admin.articles.sector_local_image_editor.move_down_tooltip')">↓</button>
@@ -40,7 +40,7 @@
                         </div>
                         <div v-if="layouts.length === 0" class="text-muted small p-2">{{ $t('admin.articles.sector_local_image_editor.no_layouts_yet') }}</div>
                     </div>
-                    <button class="btn btn-outline-primary btn-sm" @click="newLayout">{{ $t('admin.articles.sector_local_image_editor.new_layout_btn') }}</button>
+                    <button class="btn btn-secondary btn-sm" @click="newLayout">{{ $t('admin.articles.sector_local_image_editor.new_layout_btn') }}</button>
                 </div>
 
                 <!-- Right: sector selector (radio — one sector per layout) -->
@@ -54,7 +54,8 @@
                                 type="radio"
                                 :id="'sec-' + sector.id"
                                 :value="sector.id"
-                                v-model="selectedSectorId"
+                                :checked="selectedSectorId === sector.id"
+                                @change="selectSector(sector.id)"
                             >
                             <label class="form-check-label" :for="'sec-' + sector.id">
                                 {{ sector.name }} <small class="text-muted">(#{{ sector.id }})</small>
@@ -66,28 +67,41 @@
                 </div>
             </div>
 
-            <!-- Save button + status -->
+            <!-- Mode/action buttons (left: toggle + label) and Save/Delete
+                 (right) — same grouping as every other canvas-editor page/modal. -->
             <div class="row mb-2">
-                <div class="col-12 d-flex align-items-center gap-2">
-                    <button
-                        class="btn"
-                        :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
-                        :disabled="extra_drawing_loading"
-                        @click="toggleExtraDrawingMode"
-                    >
-                        <i class="fa fa-map-marker"></i>
-                        {{ extra_drawing_loading ? $t('admin.export.loading_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.extra_drawing_mode_on') : $t('admin.articles.sector_local_image_editor.add_extra_drawing_btn')) }}
-                    </button>
-                    <button class="btn btn-success" :disabled="saving" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? $t('admin.articles.sector_local_image_editor.saving_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.save_extra_drawing_btn') : $t('admin.articles.sector_local_image_editor.save_layout_btn')) }}
-                    </button>
-                    <button v-if="extra_drawing_mode" class="btn btn-danger" :disabled="deletingExtraDrawing" @click="deleteExtraDrawing">
-                        <i class="fa fa-trash"></i> {{ deletingExtraDrawing ? $t('admin.users.deleting_ellipsis') : $t('admin.articles.sector_local_image_editor.delete_extra_drawing_btn') }}
-                    </button>
-                    <span v-if="saveStatus" :class="saveStatus === 'ok' ? 'text-success' : 'text-danger'">
-                        {{ saveStatus === 'ok' ? $t('admin.articles.sector_local_image_editor.saved_badge') : $t('admin.articles.sector_local_image_editor.error_badge') }}
-                    </span>
-                    <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">{{ $t('admin.articles.sector_local_image_editor.original_saved_badge') }}</span>
+                <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <button
+                            class="btn"
+                            :class="extra_drawing_mode ? 'btn-info' : 'btn-success'"
+                            :disabled="extra_drawing_loading"
+                            @click="toggleExtraDrawingMode"
+                        >
+                            <i class="fa fa-map-marker"></i>
+                            {{ extra_drawing_loading ? $t('admin.export.loading_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.extra_drawing_mode_on') : $t('admin.articles.sector_local_image_editor.add_extra_drawing_btn')) }}
+                        </button>
+                        <button v-if="!extra_drawing_mode" class="btn btn-warning" @click="addOrUpdateItemLabel">
+                            <i class="fa fa-tag"></i> {{ $t('admin.articles.sector_local_image_editor.add_sector_label_btn') }}
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-success" :disabled="saving" @click="saveChanges">
+                            <i class="fa fa-save"></i> {{ saving ? $t('admin.articles.sector_local_image_editor.saving_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.save_extra_drawing_btn') : $t('admin.articles.sector_local_image_editor.save_layout_btn')) }}
+                        </button>
+                        <button
+                            class="btn btn-danger"
+                            :disabled="extra_drawing_mode ? deletingExtraDrawing : !activeLayoutId"
+                            @click="deleteCurrentDrawing"
+                        >
+                            <i class="fa fa-trash"></i>
+                            {{ (extra_drawing_mode && deletingExtraDrawing) ? $t('admin.users.deleting_ellipsis') : (extra_drawing_mode ? $t('admin.articles.sector_local_image_editor.delete_extra_drawing_btn') : $t('admin.articles.sector_local_image_editor.delete_layout_btn')) }}
+                        </button>
+                        <span v-if="saveStatus" :class="saveStatus === 'ok' ? 'text-success' : 'text-danger'">
+                            {{ saveStatus === 'ok' ? $t('admin.articles.sector_local_image_editor.saved_badge') : $t('admin.articles.sector_local_image_editor.error_badge') }}
+                        </span>
+                        <span v-if="imageInfo && imageInfo.has_original" class="badge bg-success ms-2" style="font-size:11px;">{{ $t('admin.articles.sector_local_image_editor.original_saved_badge') }}</span>
+                    </div>
                 </div>
                 <div class="col-12" v-if="extra_drawing_mode">
                     <p class="text-muted mb-0" style="font-size:12px;">
@@ -108,6 +122,8 @@
                         :related_jsons="relatedJsons"
                         :related_jsons_meta="relatedJsonsMeta"
                         :related_first_label="relatedFirstLabel"
+                        :route_name="editorItemName"
+                        :disable_auto_legend="true"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
@@ -116,15 +132,34 @@
                 </div>
             </div>
         </div>
+
+        <!-- Item-name labels + leader lines + combined-legend preview — shared
+             across every canvas-editor page/modal that lets several items
+             share one background image; see canvasOverlaysMixin.js and
+             CanvasOverlaysComponent.vue for the full rationale. -->
+        <CanvasOverlaysComponent
+            ref="canvasOverlays"
+            :editor-labels="editorLabels"
+            :labels-clip-style="labelsClipStyle"
+            :legend-preview-style="legendPreviewStyle"
+            :legend-clip-style="legendClipStyle"
+        />
     </div>
 </template>
 
 <script>
 import Editor from '../../items/canvas/EditorComponent.vue'
-import { drawItemScaled } from '../../../../services/canvas/paperJsonRenderer.js'
+import CanvasOverlaysComponent from '../../items/canvas/assets/canvas/CanvasOverlaysComponent.vue'
+import canvasOverlaysMixin from '../../items/canvas/mixins/canvasOverlaysMixin.js'
+import canvasExtraDrawingMixin from '../../items/canvas/mixins/canvasExtraDrawingMixin.js'
+import { drawItem, drawItemScaled } from '../../../../services/canvas/paperJsonRenderer.js'
+import { drawCombinedLegend } from '../../../../services/canvas/legendRenderer.js'
+import { canvasToJpegSized, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES } from '../../../../services/canvas/imageSizing.js'
+import paper from 'paper'
 
 export default {
-    components: { Editor },
+    components: { Editor, CanvasOverlaysComponent },
+    mixins: [canvasOverlaysMixin, canvasExtraDrawingMixin],
     data() {
         return {
             imageInfo:        null,
@@ -137,13 +172,25 @@ export default {
             activeLayoutId:   null,
             saving:           false,
             saveStatus:       null,
-            // "Extra drawing" mode: a general annotation layer tied only to
-            // this image (not to any one sector) — see SectorLocalImageExtraDrawing.
-            extra_drawing_mode:    false,
-            extra_drawing_json:    null,
-            extra_drawing_meta:    null,
-            extra_drawing_loading: false,
-            deletingExtraDrawing:  false,
+            // canvasOverlaysMixin's item-label config — see its own header
+            // comment for the full contract.
+            itemLabelConfig: {
+                drawSomethingAlertKey:   'admin.articles.sector_local_image_editor.draw_something_alert',
+                selectItemFirstAlertKey: 'admin.articles.sector_local_image_editor.select_sector_first_alert',
+            },
+            // canvasExtraDrawingMixin's endpoint/alert config — see its own
+            // header comment for the full contract.
+            extraDrawingEndpoints: {
+                getForEditor: (id) => '/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + id,
+                save:         (id) => '/set_sector/set_sector_local_image_extra_drawing/save/' + id,
+                delete:       (id) => '/set_sector/set_sector_local_image_extra_drawing/delete/' + id,
+            },
+            extraDrawingAlertKeys: {
+                noResourceSelected: 'admin.articles.sector_local_image_editor.no_image_selected_alert',
+                noDrawingData:      'admin.articles.sector_local_image_editor.no_drawing_data_alert',
+                confirmDelete:      'admin.articles.sector_local_image_editor.confirm_delete_extra_drawing',
+                confirmSaveBeforeSwitch: 'admin.articles.sector_local_image_editor.confirm_save_before_switch',
+            },
         }
     },
     watch: {
@@ -156,6 +203,7 @@ export default {
             this.canvasData     = layout ? layout.json : null;
             this.canvasJsonMeta = this._layoutMeta(layout);
             this.activeLayoutId = layout ? layout.id   : null;
+            this._mainDrawingDirty = false;
         },
     },
     computed: {
@@ -191,6 +239,18 @@ export default {
             if (this.relatedFirstLabel) metas.unshift(this.extra_drawing_meta);
             return metas;
         },
+        // Another sibling to relatedJsons, same filter/order — the sector
+        // name to label each 'related-N' overlay with (see
+        // canvasOverlaysMixin's computeEditorLabels, which expects this exact
+        // computed name). The extra-info slot (when present) has no sector of
+        // its own.
+        relatedItemNames() {
+            const names = this.layouts
+                .filter(l => (this.extra_drawing_mode || l.id !== this.activeLayoutId) && l.json)
+                .map(l => (l.sector ? l.sector.name : ''));
+            if (this.relatedFirstLabel) names.unshift('');
+            return names;
+        },
         bgImageUrl() {
             if (!this.imageInfo || !this.imageInfo.image) return null;
             return this.imageInfo.has_original
@@ -206,6 +266,18 @@ export default {
         activeJsonMeta() {
             return this.extra_drawing_mode ? this.extra_drawing_meta : this.canvasJsonMeta;
         },
+        // Fed to the Editor's `route_name` prop — EditorComponent's
+        // _formatLayerName() appends this to every drawn item's own display
+        // name in the Layers panel (e.g. "line 1 Gveleti"), the SAME behavior
+        // CanvasRouteEditorComponent.vue/sectorRouteDrawingsEditorComponent.vue/
+        // CanvasPitchEditorComponent.vue already have for routes/pitches — this
+        // page was missing it entirely, leaving every layer here unnamed
+        // ("line 1") while the other editors' layers all showed their own
+        // item's name.
+        editorItemName() {
+            if (this.extra_drawing_mode) return 'extra info';
+            return this._currentItemLabelName() || '';
+        },
     },
     mounted() {
         document.querySelector('body').style.marginLeft = '0';
@@ -219,6 +291,14 @@ export default {
         const container = document.querySelector('.container.top_menu_margin');
         if (container) container.classList.remove('container');
         this.loadImageData();
+        // loadExtraDrawing/computeEditorLabels/computeEditorLegend come from
+        // canvasExtraDrawingMixin/canvasOverlaysMixin — the overlays mixin's
+        // own mounted() hook already starts the animation-frame sync loop
+        // (see its comment for why requestAnimationFrame beats a slower
+        // setInterval here), this host just needs to kick off the initial
+        // extra-drawing fetch so it's ready as a reference overlay from the
+        // start (see addOrUpdateItemLabel for the CURRENTLY-edited sector's
+        // own label, a plain explicit item created only on button click).
         this.loadExtraDrawing();
     },
     beforeUnmount() {
@@ -226,18 +306,6 @@ export default {
         if (container) container.classList.add('container');
     },
     methods: {
-        // Loaded eagerly (not just on first toggle) so it's already available to
-        // show as a reference overlay in normal layout mode from the start.
-        loadExtraDrawing() {
-            axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id)
-                .then(response => {
-                    const drawing = response.data && response.data.extra_drawing;
-                    this.extra_drawing_json = drawing ? drawing.json : null;
-                    this.extra_drawing_meta = this._layoutMeta(drawing);
-                })
-                .catch(error => console.log(error));
-        },
-
         loadImageData() {
             axios.get('/set_sector/set_sector_local_images/get_for_editor/' + this.$route.params.id)
                 .then(response => {
@@ -278,13 +346,22 @@ export default {
             };
         },
 
-        selectLayout(layoutId) {
+        // Picking a different layout (or "+ New") abandons whatever's
+        // CURRENTLY shown (this sector's own drawing, or the shared extra
+        // layer) — confirm-save first if it has unsaved edits, same
+        // protection the extra-drawing toggle button itself gets. See
+        // canvasExtraDrawingMixin.js's confirmSaveIfDirty() (bug fixed
+        // September 2026).
+        async selectLayout(layoutId) {
+            if (this.activeLayoutId === layoutId) return;
+            if (!(await this.confirmSaveIfDirty())) return;
             const layout = this.layouts.find(l => l.id === layoutId);
             if (!layout) return;
             this.canvasData       = layout.json;
             this.canvasJsonMeta   = this._layoutMeta(layout);
             this.selectedSectorId = layout.sector_id;
             this.activeLayoutId   = layout.id;
+            this._mainDrawingDirty = false;
         },
 
         moveLayoutUp(index) {
@@ -301,19 +378,43 @@ export default {
             this.layouts = arr;
         },
 
-        newLayout() {
+        // The sector radio picker used to be a plain v-model — clicking a
+        // radio updates the underlying data SYNCHRONOUSLY, before any custom
+        // logic gets a chance to intervene with a confirm(). Converted to
+        // :checked/@change so an unsaved dirty drawing can be confirm-saved
+        // (or the pick can be REJECTED, leaving the radio's checked state
+        // exactly as it visually was since selectedSectorId never actually
+        // changes) first — see canvasExtraDrawingMixin.js's
+        // confirmSaveIfDirty().
+        async selectSector(sectorId) {
+            if (this.selectedSectorId === sectorId) return;
+            if (!(await this.confirmSaveIfDirty())) return;
+            this.selectedSectorId = sectorId;
+        },
+        async newLayout() {
+            if (!this.activeLayoutId && !this.selectedSectorId && !this.canvasData) return;
+            if (!(await this.confirmSaveIfDirty())) return;
             this.canvasData       = null;
             this.canvasJsonMeta   = null;
             this.selectedSectorId = null;
             this.activeLayoutId   = null;
+            this._mainDrawingDirty = false;
         },
 
         handleCanvasData(data) {
+            this.markDrawingDirty();
             if (this.extra_drawing_mode) {
                 this.extra_drawing_json = data;
             } else {
                 this.canvasData = data;
             }
+        },
+
+        // Host hook for canvasOverlaysMixin's addOrUpdateItemLabel() — the
+        // display name to stamp on the CURRENTLY-edited item's own label.
+        _currentItemLabelName() {
+            const sector = this.selectedSectorId ? this.availableSectors.find(s => s.id === this.selectedSectorId) : null;
+            return sector ? sector.name : null;
         },
 
         // The background photo's own actual position + size within the Paper.js
@@ -333,109 +434,67 @@ export default {
             };
         },
 
-        // Switches the editor between "the selected sector's own layout" and
-        // the image's general extra-info layer, shared by every sector using
-        // this image — fetched once when entering the mode.
-        async toggleExtraDrawingMode() {
-            if (!this.extra_drawing_mode) {
-                this.extra_drawing_loading = true;
-                try {
-                    const response = await axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + this.$route.params.id);
-                    const drawing = response.data && response.data.extra_drawing;
-                    this.extra_drawing_json = drawing ? drawing.json : null;
-                    this.extra_drawing_meta = this._layoutMeta(drawing);
-                } catch (e) {
-                    this.extra_drawing_json = null;
-                    this.extra_drawing_meta = null;
-                } finally {
-                    this.extra_drawing_loading = false;
-                }
-            }
-            this.extra_drawing_mode = !this.extra_drawing_mode;
+        // canvasExtraDrawingMixin's HOST CONTRACT hooks — see its own header
+        // comment for the full contract. toggleExtraDrawingMode/
+        // saveExtraDrawing/deleteExtraDrawing themselves now come entirely
+        // from the mixin.
+        _extraDrawingResourceId() {
+            return this.$route.params.id;
+        },
+        // canvasExtraDrawingMixin's HOST CONTRACT hook for the confirm-before-
+        // switch flow — saveChanges() already guards `if (extra_drawing_mode)
+        // return saveExtraDrawing()`, so calling it here (only while still
+        // false) safely runs just the main-drawing save path.
+        _saveMainDrawing() {
+            return this.saveChanges();
         },
 
-        async saveExtraDrawing() {
-            if (!this.$route.params.id) { alert(this.$t('admin.articles.sector_local_image_editor.no_image_selected_alert')); return; }
-
-            this.saving    = true;
-            this.saveStatus = null;
-
-            try {
-                const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
-
-                let json = this.extra_drawing_json;
-                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
-                    const cleanJson = canvasContainer.getCleanJson();
-                    if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
+        async _buildExtraDrawingComposite(json) {
+            const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
+            let editedImageData = null;
+            let canvasWidth = 0;
+            let canvasHeight = 0;
+            if (canvasContainer) {
+                const scope = canvasContainer.getCanvasScope();
+                if (scope && scope.view) {
+                    canvasWidth  = Math.round(scope.view.viewSize.width);
+                    canvasHeight = Math.round(scope.view.viewSize.height);
                 }
-                if (!json) { alert(this.$t('admin.articles.sector_local_image_editor.no_drawing_data_alert')); return; }
+                const bgBounds = canvasContainer.getBackgroundBounds ? canvasContainer.getBackgroundBounds() : null;
+                const ownMeta = {
+                    json,
+                    canvas_width: canvasWidth, canvas_height: canvasHeight,
+                    bg_left: bgBounds && bgBounds.left, bg_top: bgBounds && bgBounds.top,
+                    bg_width: bgBounds && bgBounds.width, bg_height: bgBounds && bgBounds.height,
+                };
+                // relatedJsons/relatedJsonsMeta are parallel arrays (aligned by
+                // index), not pre-merged objects — renderCompositeAtFullResolution
+                // needs each related item's own json inline alongside its bg_*.
+                const relatedFull = this.relatedJsons.map((j, i) => ({ json: j, ...(this.relatedJsonsMeta[i] || {}) }));
+                editedImageData = await this.renderCompositeAtFullResolution(this.bgImageUrl, ownMeta, relatedFull);
+            }
+            return {
+                editedImageData, canvasWidth, canvasHeight,
+                bgBoundsPayload: this.bgBoundsPayload(canvasContainer),
+            };
+        },
 
-                let editedImageData = null;
-                let canvasWidth = 0;
-                let canvasHeight = 0;
-                if (canvasContainer) {
-                    const scope = canvasContainer.getCanvasScope();
-                    if (scope && scope.view) {
-                        canvasWidth  = Math.round(scope.view.viewSize.width);
-                        canvasHeight = Math.round(scope.view.viewSize.height);
-                    }
-                    const bgBounds = canvasContainer.getBackgroundBounds ? canvasContainer.getBackgroundBounds() : null;
-                    const ownMeta = {
-                        json,
-                        canvas_width: canvasWidth, canvas_height: canvasHeight,
-                        bg_left: bgBounds && bgBounds.left, bg_top: bgBounds && bgBounds.top,
-                        bg_width: bgBounds && bgBounds.width, bg_height: bgBounds && bgBounds.height,
-                    };
-                    // relatedJsons/relatedJsonsMeta are parallel arrays (aligned by
-                    // index), not pre-merged objects — renderCompositeAtFullResolution
-                    // needs each related item's own json inline alongside its bg_*.
-                    const relatedFull = this.relatedJsons.map((j, i) => ({ json: j, ...(this.relatedJsonsMeta[i] || {}) }));
-                    editedImageData = await this.renderCompositeAtFullResolution(this.bgImageUrl, ownMeta, relatedFull);
-                }
-
-                const response = await axios.post(
-                    '/set_sector/set_sector_local_image_extra_drawing/save/' + this.$route.params.id,
-                    {
-                        json, edited_image: editedImageData, canvas_width: canvasWidth, canvas_height: canvasHeight,
-                        ...this.bgBoundsPayload(canvasContainer),
-                    }
-                );
-
-                this.saveStatus = response.data.success ? 'ok' : 'error';
-                if (response.data.success && this.imageInfo) {
-                    this.imageInfo.has_original = true;
-                    this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
-                }
-                setTimeout(() => { this.saveStatus = null; }, 3000);
-            } catch (e) {
-                console.error(e);
-                this.saveStatus = 'error';
-            } finally {
-                this.saving = false;
+        _onExtraDrawingSaved(responseData) {
+            if (responseData.success && this.imageInfo) {
+                this.imageInfo.has_original = true;
+                this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
             }
         },
 
-        async deleteExtraDrawing() {
-            if (!confirm(this.$t('admin.articles.sector_local_image_editor.confirm_delete_extra_drawing'))) return;
-
-            this.deletingExtraDrawing = true;
-            try {
-                await axios.delete('/set_sector/set_sector_local_image_extra_drawing/delete/' + this.$route.params.id);
-                this.extra_drawing_json = null;
-                this.saveStatus = 'ok';
-                setTimeout(() => { this.saveStatus = null; }, 3000);
-            } catch (e) {
-                this.saveStatus = 'error';
-            } finally {
-                this.deletingExtraDrawing = false;
-            }
-        },
-
+        // Returns `true`/`false` — see canvasExtraDrawingMixin.js's
+        // `_saveMainDrawing()` contract for why a falsy result here matters:
+        // it stops the confirm-before-switch flow from proceeding to switch
+        // modes after a save that didn't actually happen.
         async saveChanges() {
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
 
-            if (!this.canvasData)       { alert(this.$t('admin.articles.sector_local_image_editor.draw_something_alert')); return; }
-            if (!this.selectedSectorId) { alert(this.$t('admin.articles.sector_local_image_editor.select_sector_first_alert')); return; }
+            if (!this.canvasData)       { alert(this.$t('admin.articles.sector_local_image_editor.draw_something_alert')); return false; }
+            if (!this.selectedSectorId) { alert(this.$t('admin.articles.sector_local_image_editor.select_sector_first_alert')); return false; }
 
             this.saving    = true;
             this.saveStatus = null;
@@ -487,6 +546,7 @@ export default {
                 );
 
                 this.saveStatus    = 'ok';
+                this._mainDrawingDirty = false;
                 this.activeLayoutId = response.data.layout_id;
 
                 // After first save the original is backed up — switch editor background to origin_img/
@@ -497,9 +557,11 @@ export default {
 
                 this.reloadLayouts();
                 setTimeout(() => { this.saveStatus = null; }, 3000);
+                return true;
             } catch (e) {
                 console.error(e);
                 this.saveStatus = 'error';
+                return false;
             } finally {
                 this.saving = false;
             }
@@ -530,7 +592,32 @@ export default {
                         try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
                     }
 
-                    resolve(canvas.toDataURL('image/jpeg', 0.92));
+                    // Bakes the ONE combined legend (every symbol type present
+                    // across this layout + every sibling sharing this image)
+                    // into the saved composite — see legendRenderer.js's
+                    // drawCombinedLegend for why this is safe (never
+                    // reads any item's own baked-in isLegend group) and
+                    // necessary (previously no legend was ever saved into the
+                    // actual image file at all).
+                    try {
+                        // Siblings BEFORE own on purpose (bug fixed September
+                        // 2026, reported as "legend position isn't synced
+                        // between pitches/routes" — see canvasOverlaysMixin
+                        // .js's computeEditorLegend for the same fix and its
+                        // full rationale): every save bakes into this SAME
+                        // shared photo file regardless of which sibling
+                        // triggered it, so "own first" meant the baked
+                        // position could shift depending on whichever item
+                        // was saved LAST.
+                        const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
+                        const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
+                        drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
+                            drawItem,
+                            translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
+                        });
+                    } catch (e) { console.error('drawCombinedLegend failed:', e); }
+
+                    resolve(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
                 };
                 bg.onerror = () => resolve(null);
                 bg.src = bgPath;
@@ -545,6 +632,17 @@ export default {
                     this.reloadLayouts();
                 })
                 .catch(error => console.log(error));
+        },
+
+        // Dispatcher bound to the action row's single Delete button — same
+        // pattern as sectorRouteDrawingsEditorComponent.vue's deleteDrawing():
+        // deletes whichever is currently active (the extra drawing, or the
+        // selected sector's own layout) instead of requiring the admin to
+        // find the same layout in the list on the left and click its own ✕.
+        deleteCurrentDrawing() {
+            if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
+            if (!this.activeLayoutId) { alert(this.$t('admin.articles.sector_local_image_editor.no_layout_selected_alert')); return; }
+            this.deleteLayout(this.activeLayoutId);
         },
 
         goBack() { this.$router.go(-1); },

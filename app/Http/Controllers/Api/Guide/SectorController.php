@@ -192,6 +192,21 @@ class SectorController extends Controller
             }
         }
 
+        // Mirrors the admin editor's own computed flag (see
+        // Admin\Guide\SectorLocalImagesController@get_for_editor) — the
+        // public guide page needs it too, to show the CLEAN original photo
+        // (drawing shapes/legend live from JSON, see
+        // SectorLocalImageCanvasComponent.vue) instead of the baked
+        // composite file, which already has its own legend/shapes baked in
+        // permanently by every admin save. Showing the composite AND
+        // drawing the live overlay on top of it doubled every shape and
+        // legend card (a real bug, fixed September 2026).
+        foreach ($images as $image) {
+            if ($image) {
+                $image->has_original = file_exists(public_path('images/sector_local_img/origin_img/' . $image->image));
+            }
+        }
+
         return $images;
     }
 

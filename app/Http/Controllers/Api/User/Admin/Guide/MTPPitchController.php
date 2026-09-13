@@ -260,6 +260,10 @@ class MTPPitchController extends Controller
         return $query->with('pitch')->get()->map(function($item) {
             return [
                 'mtp_pitch_id' => $item->mtp_pitch_id,
+                // Lets the editor label this sibling pitch's read-only reference
+                // overlay with its own name (see canvasOverlaysMixin.js) without a
+                // separate lookup request.
+                'pitch_name' => optional($item->pitch)->name,
                 'json' => $item->json,
                 'canvas_width' => $item->canvas_width,
                 'canvas_height' => $item->canvas_height,

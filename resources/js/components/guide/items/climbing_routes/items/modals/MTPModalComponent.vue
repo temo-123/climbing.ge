@@ -2,7 +2,7 @@
 <StackModal
         v-model="is_show_mtp_modal"
         :title="$t('guide.route.mtp_title')"
-        :modal-class="{ [modalClass]: true }"
+        :size="'xxl'"
         :saveButton="{ visible: false }"
         :cancelButton="{ visible: false }"
         @close="close_mtp_modal"
@@ -49,6 +49,7 @@
                                     :selected_id="selected_pitch_id"
                                     :show_all="true"
                                     :interactive="true"
+                                    :extra_item="extraDrawing"
                                     @item-click="e => selectPitch(e.id)"
                                 />
                             </div>
@@ -143,13 +144,27 @@ export default {
     mixins: [grade_chart],
     components: { starsReiting },
     props: [],
+    watch: {
+        pitchSectorImageId(sectorImageId) {
+            this.fetchExtraDrawing(sectorImageId);
+        },
+    },
     data() {
         return {
             is_show_mtp_modal: false,
             mtp_detals: {},
-            modalClass: '',
             loading: false,
             selected_pitch_id: null,
+            // The general-purpose "extra info" annotation for this MTP's
+            // sector image (approach notes, hazards, landmarks) — shared with
+            // routes drawn on the SAME sector image (SectorImageExtraDrawing,
+            // keyed only by sector_image_id), not tied to any one pitch.
+            // Missing here entirely used to mean an admin's saved extra
+            // drawing never showed in the public MTP viewer at all, even
+            // though the exact same drawing showed fine on the sector page's
+            // own modal (SectorCanvasModalComponent.vue) and in the admin
+            // editor — a real bug, fixed September 2026.
+            extraDrawing: null,
         };
     },
     computed: {
@@ -203,6 +218,14 @@ export default {
             const p = this.mtp_detals.mtp_pitchs.find(p => p.json && p.json.sector_image_filename && p.json.has_original);
             return p ? '/public/images/sector_img/' + p.json.sector_image_filename : null;
         },
+        // Same pitch pitchImageSrc/pitchCompositeSrc key off — its sector_image_id
+        // is what SectorImageExtraDrawing (and every route's own drawing on this
+        // same photo) is keyed by too.
+        pitchSectorImageId() {
+            if (!this.mtp_detals.mtp_pitchs) return null;
+            const p = this.mtp_detals.mtp_pitchs.find(p => p.json && p.json.sector_image_id);
+            return p ? p.json.sector_image_id : null;
+        },
         selectedPitch() {
             if (!this.selected_pitch_id || !this.mtp_detals.mtp_pitchs) return null;
             return this.mtp_detals.mtp_pitchs.find(p => p.id == this.selected_pitch_id) || null;
@@ -226,6 +249,30 @@ export default {
                 if (typeof j === 'string') j = JSON.parse(j);
             } catch(_) { return null; }
             return j;
+        },
+        // Mirrors SectorCanvasModalComponent.vue's identical method — fetches
+        // the current sector image's general "extra info" annotation
+        // (approach notes, hazards, landmarks), separate from pitch drawings,
+        // never selectable/hoverable, drawn as its own layer on the canvas.
+        async fetchExtraDrawing(sectorImageId) {
+            this.extraDrawing = null;
+            if (!sectorImageId) return;
+            try {
+                const res = await axios.get('/get_sector/get_sector_image_extra_drawing/get/' + sectorImageId);
+                const drawing = res.data && res.data.extra_drawing;
+                if (!drawing || !drawing.json) return;
+                let parsed = typeof drawing.json === 'string' ? JSON.parse(drawing.json) : drawing.json;
+                if (typeof parsed === 'string') parsed = JSON.parse(parsed);
+                this.extraDrawing = {
+                    json: parsed,
+                    canvas_width: drawing.canvas_width || null,
+                    canvas_height: drawing.canvas_height || null,
+                    bg_left: drawing.bg_left ?? null,
+                    bg_top: drawing.bg_top ?? null,
+                    bg_width: drawing.bg_width || null,
+                    bg_height: drawing.bg_height || null,
+                };
+            } catch (_) {}
         },
         selectPitch(pitchId) {
             this.selected_pitch_id = this.selected_pitch_id == pitchId ? null : pitchId;
@@ -261,6 +308,7 @@ export default {
             this.loading = false;
             this.mtp_detals = {};
             this.selected_pitch_id = null;
+            this.extraDrawing = null;
         },
         open_review_modal() {
             this.is_show_mtp_modal = false;

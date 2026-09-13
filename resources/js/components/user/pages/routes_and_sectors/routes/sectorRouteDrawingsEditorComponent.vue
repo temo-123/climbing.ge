@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-12">
+    <div class="col-md-12 position-relative" ref="canvasOverlayAnchor">
         <div class="container-fluid">
             <div class="row mb-3">
                 <div class="col-12 d-flex align-items-center gap-3">
@@ -99,8 +99,9 @@
                                     type="radio"
                                     :id="'img-' + image.id"
                                     :value="image.id"
-                                    v-model="selectedImageId"
+                                    :checked="selectedImageId === image.id"
                                     :disabled="lockImageChoice"
+                                    @change="selectImage(image.id)"
                                 >
                                 <label class="form-check-label d-flex align-items-center gap-2" :for="'img-' + image.id">
                                     <img :src="'/public/images/sector_img/' + image.image" class="img-thumbnail" style="max-width:80px; max-height:80px;">
@@ -118,34 +119,38 @@
 
             <!-- Save / delete + status -->
             <div class="row mb-2" v-if="selectedRouteId || mtp_pitch_mode">
-                <div class="col-12 d-flex align-items-center gap-2">
-                    <button
-                        v-if="selectedImageId && !mtp_pitch_mode"
-                        type="button"
-                        class="btn"
-                        :class="extra_drawing_mode ? 'btn-info' : 'btn-outline-info'"
-                        :disabled="extra_drawing_loading"
-                        @click="toggleExtraDrawingMode"
-                    >
-                        <i class="fa fa-map-marker"></i>
-                        {{ extra_drawing_loading ? $t('admin.routes_sectors.loading_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.extra_drawing_mode_on') : $t('admin.routes_sectors.add_extra_drawing')) }}
-                    </button>
-                    <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
-                        <i class="fa fa-save"></i> {{ saving ? $t('admin.routes_sectors.saving_ellipsis') : (mtp_pitch_mode ? $t('admin.routes_sectors.save_pitch_drawing_btn') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : $t('admin.routes_sectors.save_drawing'))) }}
-                    </button>
-                    <button class="btn btn-danger" :disabled="deleting || !canDeleteCurrent" @click="deleteDrawing">
-                        <i class="fa fa-trash"></i> {{ deleting ? $t('admin.routes_sectors.deleting_ellipsis') : (mtp_pitch_mode ? $t('admin.routes_sectors.delete_pitch_drawing_btn') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : $t('admin.routes_sectors.delete_drawing'))) }}
-                    </button>
-                    <span v-if="saveStatus" :class="saveStatus === 'error' ? 'text-danger' : 'text-success'">
-                        {{ saveStatus === 'ok' ? '✓ ' + $t('admin.routes_sectors.status_saved') : saveStatus === 'deleted' ? '✓ ' + $t('admin.routes_sectors.status_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
-                    </span>
+                <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <button
+                            v-if="selectedImageId"
+                            type="button"
+                            class="btn"
+                            :class="extra_drawing_mode ? 'btn-info' : 'btn-success'"
+                            :disabled="extra_drawing_loading"
+                            @click="toggleExtraDrawingMode"
+                        >
+                            <i class="fa fa-map-marker"></i>
+                            {{ extra_drawing_loading ? $t('admin.routes_sectors.loading_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.extra_drawing_mode_on') : $t('admin.routes_sectors.add_extra_drawing')) }}
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-success" :disabled="saving || !selectedImageId" @click="saveChanges">
+                            <i class="fa fa-save"></i> {{ saving ? $t('admin.routes_sectors.saving_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.save_extra_drawing') : (mtp_pitch_mode ? $t('admin.routes_sectors.save_pitch_drawing_btn') : $t('admin.routes_sectors.save_drawing'))) }}
+                        </button>
+                        <button class="btn btn-danger" :disabled="(extra_drawing_mode ? deletingExtraDrawing : deleting) || !canDeleteCurrent" @click="deleteDrawing">
+                            <i class="fa fa-trash"></i> {{ (extra_drawing_mode ? deletingExtraDrawing : deleting) ? $t('admin.routes_sectors.deleting_ellipsis') : (extra_drawing_mode ? $t('admin.routes_sectors.delete_extra_drawing') : (mtp_pitch_mode ? $t('admin.routes_sectors.delete_pitch_drawing_btn') : $t('admin.routes_sectors.delete_drawing'))) }}
+                        </button>
+                        <span v-if="saveStatus" :class="saveStatus === 'error' ? 'text-danger' : 'text-success'">
+                            {{ saveStatus === 'ok' ? '✓ ' + $t('admin.routes_sectors.status_saved') : saveStatus === 'deleted' ? '✓ ' + $t('admin.routes_sectors.status_deleted') : '✗ ' + $t('admin.routes_sectors.error') }}
+                        </span>
+                    </div>
                 </div>
                 <div class="col-12" v-if="extra_drawing_mode">
                     <p class="text-muted mt-1 mb-0" style="font-size:12px;">
                         {{ $t('admin.routes_sectors.extra_drawing_mode_hint') }}
                     </p>
                 </div>
-                <div class="col-12" v-if="mtp_pitch_mode">
+                <div class="col-12" v-if="mtp_pitch_mode && !extra_drawing_mode">
                     <p class="text-muted mt-1 mb-0" style="font-size:12px;">
                         {{ $t('admin.routes_sectors.mtp_pitch_mode_hint') }}
                     </p>
@@ -164,7 +169,8 @@
                         :related_jsons="relatedJsons"
                         :related_jsons_meta="relatedJsonsMeta"
                         :related_first_label="relatedFirstLabel"
-                        :route_name="mtp_pitch_mode ? ('Pitch ' + selectedPitchName) : (extra_drawing_mode ? 'extra info' : selectedRouteName)"
+                        :route_name="extra_drawing_mode ? 'extra info' : (mtp_pitch_mode ? ('Pitch ' + selectedPitchName) : selectedRouteName)"
+                        :disable_auto_legend="true"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
@@ -173,15 +179,33 @@
                 </div>
             </div>
         </div>
+
+        <!-- Item-name labels + leader lines + combined-legend preview — shared
+             across every canvas-editor page/modal that lets several items
+             share one background image; see canvasOverlaysMixin.js and
+             CanvasOverlaysComponent.vue for the full rationale. -->
+        <CanvasOverlaysComponent
+            ref="canvasOverlays"
+            :editor-labels="editorLabels"
+            :labels-clip-style="labelsClipStyle"
+            :legend-preview-style="legendPreviewStyle"
+            :legend-clip-style="legendClipStyle"
+        />
     </div>
 </template>
 
 <script>
 import Editor from '../../../items/canvas/EditorComponent.vue'
-import { drawItemScaled } from '../../../../../services/canvas/paperJsonRenderer.js'
+import CanvasOverlaysComponent from '../../../items/canvas/assets/canvas/CanvasOverlaysComponent.vue'
+import canvasOverlaysMixin from '../../../items/canvas/mixins/canvasOverlaysMixin.js'
+import canvasExtraDrawingMixin from '../../../items/canvas/mixins/canvasExtraDrawingMixin.js'
+import { drawItem, drawItemScaled } from '../../../../../services/canvas/paperJsonRenderer.js'
+import { drawCombinedLegend } from '../../../../../services/canvas/legendRenderer.js'
+import { canvasToJpegSized, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES } from '../../../../../services/canvas/imageSizing.js'
 
 export default {
-    components: { Editor },
+    components: { Editor, CanvasOverlaysComponent },
+    mixins: [canvasOverlaysMixin, canvasExtraDrawingMixin],
     data() {
         return {
             sectorId: this.$route.params.id,
@@ -229,6 +253,20 @@ export default {
             saving: false,
             deleting: false,
             saveStatus: null,
+
+            // canvasExtraDrawingMixin's endpoint/alert config — see its own
+            // header comment for the full contract.
+            extraDrawingEndpoints: {
+                getForEditor: (id) => '/set_sector/set_sector_image_extra_drawing/get_for_editor/' + id,
+                save:         (id) => '/set_sector/set_sector_image_extra_drawing/save/' + id,
+                delete:       (id) => '/set_sector/set_sector_image_extra_drawing/delete/' + id,
+            },
+            extraDrawingAlertKeys: {
+                noResourceSelected: 'admin.routes_sectors.select_sector_image_first',
+                noDrawingData:      'admin.routes_sectors.draw_something_first',
+                confirmDelete:      'admin.routes_sectors.confirm_delete_extra_drawing',
+                confirmSaveBeforeSwitch: 'admin.routes_sectors.confirm_save_before_switch',
+            },
         }
     },
     computed: {
@@ -241,60 +279,94 @@ export default {
             return p ? p.name : '';
         },
         // What the Editor actually shows/edits — the route's own drawing normally,
-        // the image's general extra-info layer while that mode is toggled on, or
-        // the selected MTP pitch's own drawing in pitch mode.
+        // the selected MTP pitch's own drawing in pitch mode, or the image's
+        // general extra-info layer while that mode is toggled on. extra_drawing_mode
+        // is checked FIRST everywhere in this block — it's an orthogonal overlay
+        // on top of route/pitch mode (mtp_pitch_mode is left untouched while
+        // toggling it, unlike an earlier version of this file that cleared it),
+        // not a third exclusive mode, so it must always win regardless of
+        // whether the underlying context is a route or a pitch. Getting this
+        // order backwards was a real bug (fixed September 2026): with
+        // mtp_pitch_mode checked first, entering extra-drawing mode from a
+        // selected pitch showed/edited/saved into the PITCH's own drawing
+        // instead of the extra layer — reported as "extra drawing just not
+        // showing" for MTP pitches.
         activeJsonProp() {
-            if (this.mtp_pitch_mode) return this.pitch_json;
-            return this.extra_drawing_mode ? this.extra_drawing_json : this.canvasData;
+            if (this.extra_drawing_mode) return this.extra_drawing_json;
+            return this.mtp_pitch_mode ? this.pitch_json : this.canvasData;
         },
         activeJsonMeta() {
-            if (this.mtp_pitch_mode) return this.pitch_json_meta;
-            return this.extra_drawing_mode ? this.extra_drawing_meta : this.canvasJsonMeta;
+            if (this.extra_drawing_mode) return this.extra_drawing_meta;
+            return this.mtp_pitch_mode ? this.pitch_json_meta : this.canvasJsonMeta;
         },
         // Reference-only overlay shown alongside whatever's actively being edited.
-        // - In extra-drawing mode, this route isn't "the active drawing" anymore
-        //   (the extra drawing is), so this route's own strokes join the other
-        //   routes as reference — otherwise it just vanishes off the canvas.
-        // - In normal route mode, the extra drawing isn't being edited, so it
-        //   shows as reference too, same as any other route on this image.
-        // Non-null when relatedJsons[0] is this route's own drawing or the extra
-        // drawing rather than another route — always placed FIRST (not appended)
-        // so other routes keep a stable position/number regardless of whether
-        // this extra entry has finished loading yet. Tells the Editor to label/
-        // color that one entry with this name instead of numbering it as just
-        // another route.
+        // - In extra-drawing mode, the route/pitch that was active isn't "the
+        //   active drawing" anymore (the extra drawing is), so its own strokes
+        //   join its siblings as reference — otherwise it just vanishes off
+        //   the canvas.
+        // - In normal route/pitch mode, the extra drawing isn't being edited,
+        //   so it shows as reference too, same as any other sibling.
+        // Non-null when relatedJsons[0] is the left-behind route/pitch or the
+        // extra drawing rather than another sibling — always placed FIRST (not
+        // appended) so siblings keep a stable position/number regardless of
+        // whether this extra entry has finished loading yet. Tells the Editor
+        // to label/color that one entry with this name instead of numbering
+        // it as just another sibling.
+        // NOT in extra-drawing mode, the extra drawing shows as a reference
+        // overlay REGARDLESS of whether the active item is a route or a
+        // pitch — it's the same shared SectorImageExtraDrawing either way
+        // (see the "Extra Drawing" doc section). Pitch mode's own version of
+        // this used to skip it entirely (`if (mtp_pitch_mode) return null` /
+        // `return pitch_related_jsons` with no extra_drawing_json check at
+        // all) — a real bug (fixed September 2026, reported as "extra
+        // drawing doesn't show in other drawing layouts"): editing a pitch
+        // never showed the sector's extra annotations as reference, even
+        // though editing a ROUTE on the very same image already did.
         relatedFirstLabel() {
-            if (this.mtp_pitch_mode) return null;
-            if (this.extra_drawing_mode) return this.canvasData ? (this.selectedRouteName || 'this route') : null;
+            if (this.extra_drawing_mode) {
+                if (this.mtp_pitch_mode) return this.pitch_json ? (this.selectedPitchName || 'this pitch') : null;
+                return this.canvasData ? (this.selectedRouteName || 'this route') : null;
+            }
             return this.extra_drawing_json ? 'extra info' : null;
         },
         relatedJsons() {
-            // Pitch mode's reference overlay is sibling pitches of the same MTP
+            // Pitch mode's OWN siblings are other pitches of the same MTP
             // already drawn on the currently selected sector image (fetched
-            // pre-filtered by the backend), not the sibling routes shown in the
-            // other two modes.
-            if (this.mtp_pitch_mode) return this.pitch_related_jsons;
-            const jsons = [...this.otherRoutesJson];
+            // pre-filtered by the backend), not the sibling routes shown in
+            // route mode — but the shared extra-info layer is added on top
+            // either way, same as route mode.
             if (this.extra_drawing_mode) {
+                if (this.mtp_pitch_mode) {
+                    const jsons = [...this.pitch_related_jsons];
+                    if (this.pitch_json) jsons.unshift(this.pitch_json);
+                    return jsons;
+                }
+                const jsons = [...this.otherRoutesJson];
                 if (this.canvasData) jsons.unshift(this.canvasData);
-            } else if (this.extra_drawing_json) {
-                jsons.unshift(this.extra_drawing_json);
+                return jsons;
             }
+            const jsons = this.mtp_pitch_mode ? [...this.pitch_related_jsons] : [...this.otherRoutesJson];
+            if (this.extra_drawing_json) jsons.unshift(this.extra_drawing_json);
             return jsons;
         },
         relatedJsonsMeta() {
-            if (this.mtp_pitch_mode) return this.pitch_related_jsons_meta;
-            const metas = [...this.otherRoutesJsonMeta];
             if (this.extra_drawing_mode) {
+                if (this.mtp_pitch_mode) {
+                    const metas = [...this.pitch_related_jsons_meta];
+                    if (this.pitch_json) metas.unshift(this.pitch_json_meta);
+                    return metas;
+                }
+                const metas = [...this.otherRoutesJsonMeta];
                 if (this.canvasData) metas.unshift(this.canvasJsonMeta);
-            } else if (this.extra_drawing_json) {
-                metas.unshift(this.extra_drawing_meta);
+                return metas;
             }
+            const metas = this.mtp_pitch_mode ? [...this.pitch_related_jsons_meta] : [...this.otherRoutesJsonMeta];
+            if (this.extra_drawing_json) metas.unshift(this.extra_drawing_meta);
             return metas;
         },
         canDeleteCurrent() {
-            if (this.mtp_pitch_mode) return !!this.pitch_json;
-            return this.extra_drawing_mode ? !!this.extra_drawing_json : !!this.drawingsByRoute[this.selectedRouteId];
+            if (this.extra_drawing_mode) return !!this.extra_drawing_json;
+            return this.mtp_pitch_mode ? !!this.pitch_json : !!this.drawingsByRoute[this.selectedRouteId];
         },
         selectedImage() {
             return this.sectorImages.find(i => i.id === this.selectedImageId) || null;
@@ -325,6 +397,7 @@ export default {
             this.otherRoutesJsonMeta = [];
             this.selectedImageId = null;
             this.saveStatus = null;
+            this._mainDrawingDirty = false;
 
             if (!routeId) return;
 
@@ -333,12 +406,19 @@ export default {
         },
         // Manual image pick (route has no drawing yet) — loads the other routes already
         // drawn on that image as a locked reference layer. Also reloads extra-drawing
-        // state since it's tied to this specific image, not the route.
+        // state since it's tied to this specific image (not the route or pitch), in
+        // EITHER mode — a pitch's sector image can be picked manually too (see
+        // selectPitch/lockImageChoice), so extra-drawing must refresh there as well.
         selectedImageId(imageId) {
+            this.extra_drawing_mode = false;
+            this.extra_drawing_json = null;
+            this.extra_drawing_meta = null;
+            if (imageId) this.loadExtraDrawing();
+
             if (this.mtp_pitch_mode) {
                 // Pitch mode reference overlay is sibling pitches on THIS image,
-                // not sibling routes — refresh it here instead of the route/extra
-                // drawing state below, which pitch mode doesn't use.
+                // not sibling routes — refresh it here instead of the route
+                // reference-fetch below, which pitch mode doesn't use.
                 if (imageId && this.selected_pitch_id) {
                     this.fetchPitchRelatedJsons(imageId, this.selected_pitch_id);
                 } else {
@@ -347,17 +427,9 @@ export default {
                 }
                 return;
             }
-            this.extra_drawing_mode = false;
-            this.extra_drawing_json = null;
-            this.extra_drawing_meta = null;
             if (imageId && !this.drawingsByRoute[this.selectedRouteId]) {
                 this.fetchRelatedJsons(imageId, this.selectedRouteId);
             }
-            // Eager-load (not just on first toggle) so the extra drawing is already
-            // available to show as a reference overlay in normal route-editing mode
-            // from the start, instead of only after the admin has opened extra-drawing
-            // mode at least once this session.
-            if (imageId) this.loadExtraDrawing(imageId);
         },
     },
     mounted() {
@@ -402,18 +474,42 @@ export default {
                 .catch(() => { this.available_mtps = []; });
         },
 
-        selectRoute(routeId) {
+        async selectRoute(routeId) {
             if (this.selectedRouteId === routeId) return;
+            // Picking a different route abandons whatever's CURRENTLY shown
+            // (this route/pitch's own drawing, or the shared extra layer) —
+            // confirm-save first if it has unsaved edits, same protection the
+            // extra-drawing toggle button itself gets. See
+            // canvasExtraDrawingMixin.js's confirmSaveIfDirty() for the full
+            // rationale (bug fixed September 2026).
+            if (!(await this.confirmSaveIfDirty())) return;
+
             // Selecting a route always means "go back to editing this route's
-            // own drawing" — exit pitch mode. Clears selected_pitch_id (not just
-            // mtp_pitch_mode) so re-picking the SAME pitch afterwards still
-            // fires the select's @change event; the MTP dropdown keeps its
-            // value so the pitch list doesn't need refetching.
+            // own drawing" — exit pitch AND extra-drawing mode. Clears
+            // selected_pitch_id (not just mtp_pitch_mode) so re-picking the
+            // SAME pitch afterwards still fires the select's @change event;
+            // the MTP dropdown keeps its value so the pitch list doesn't need
+            // refetching.
             this.mtp_pitch_mode = false;
+            this.extra_drawing_mode = false;
             this.selected_pitch_id = null;
             this.pitch_json = null;
             this.pitch_json_meta = null;
             this.selectedRouteId = routeId;
+        },
+
+        // The sector-image radio picker used to be a plain v-model — clicking
+        // a radio updates the underlying data SYNCHRONOUSLY, before any
+        // custom logic gets a chance to intervene with a confirm(). Converted
+        // to :checked/@change so an unsaved dirty drawing can be
+        // confirm-saved (or the pick can be REJECTED, leaving the radio's
+        // checked state exactly as it visually was since selectedImageId
+        // never actually changes) before switching backgrounds — see
+        // canvasExtraDrawingMixin.js's confirmSaveIfDirty().
+        async selectImage(imageId) {
+            if (this.selectedImageId === imageId) return;
+            if (!(await this.confirmSaveIfDirty())) return;
+            this.selectedImageId = imageId;
         },
 
         loadRouteJson(routeId) {
@@ -431,6 +527,7 @@ export default {
                     };
                     const imageId = d.sector_image_id || null;
                     this.selectedImageId = imageId;
+                    this._mainDrawingDirty = false;
                     if (imageId) this.fetchRelatedJsons(imageId, routeId);
                 })
                 .catch(error => console.log(error));
@@ -448,47 +545,26 @@ export default {
                 .catch(() => {});
         },
 
-        // Loaded eagerly on image select (not just on first toggle) so it's already
-        // available to show as a reference overlay in normal route-editing mode.
-        async loadExtraDrawing(sectorImageId) {
-            try {
-                const response = await axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId);
-                const drawing = response.data && response.data.extra_drawing;
-                this.extra_drawing_json = drawing ? drawing.json : null;
-                this.extra_drawing_meta = drawing ? {
-                    canvas_width: drawing.canvas_width, canvas_height: drawing.canvas_height,
-                    bg_left: drawing.bg_left, bg_top: drawing.bg_top,
-                    bg_width: drawing.bg_width, bg_height: drawing.bg_height,
-                } : null;
-            } catch (e) {
-                this.extra_drawing_json = null;
-                this.extra_drawing_meta = null;
-            }
+        // canvasExtraDrawingMixin's HOST CONTRACT hook — see its own header
+        // comment for the full contract. loadExtraDrawing/toggleExtraDrawingMode/
+        // saveExtraDrawing/deleteExtraDrawing themselves come entirely from
+        // the mixin now.
+        _extraDrawingResourceId() {
+            return this.selectedImageId;
         },
-
-        // Switches the editor between "this route's drawing" and the image's general
-        // extra-info layer. Re-fetches on entry to make sure it's the freshest copy
-        // (e.g. in case it changed since the eager load), same as before.
-        async toggleExtraDrawingMode() {
-            if (!this.extra_drawing_mode && !this.selectedImageId) {
-                alert(this.$t('admin.routes_sectors.select_sector_image_first'));
-                return;
-            }
-            if (!this.extra_drawing_mode) {
-                this.mtp_pitch_mode = false; // modes are mutually exclusive
-                this.extra_drawing_loading = true;
-                await this.loadExtraDrawing(this.selectedImageId);
-                this.extra_drawing_loading = false;
-            }
-            this.extra_drawing_mode = !this.extra_drawing_mode;
-        },
-
         // Click-to-select, styled and behaving exactly like selectRoute() above —
         // clicking the already-active MTP again deselects it (collapses the
         // pitch list), same click-to-toggle affordance as the pitch row below.
         async selectMtp(mtpId) {
+            // See selectRoute()'s comment / canvasExtraDrawingMixin.js's
+            // confirmSaveIfDirty() — picking a different MTP abandons the
+            // currently selected pitch's drawing (or the shared extra layer)
+            // just as much as picking a different route does.
+            if (!(await this.confirmSaveIfDirty())) return;
+
             this.selected_mtp_id = (this.selected_mtp_id === mtpId) ? null : mtpId;
 
+            this.extra_drawing_mode      = false;
             this.selected_pitch_id       = null;
             this.mtp_pitchs              = [];
             this.pitch_json               = null;
@@ -496,6 +572,7 @@ export default {
             this.pitch_related_jsons      = [];
             this.pitch_related_jsons_meta = [];
             this.mtp_pitch_mode           = false;
+            this._mainDrawingDirty        = false;
             if (!this.selected_mtp_id) return;
 
             try {
@@ -512,12 +589,19 @@ export default {
         // is ever active. Clicking the already-active pitch again deselects it,
         // which is the way back out of pitch mode.
         async selectPitch(pitchId) {
+            // See selectRoute()'s comment / canvasExtraDrawingMixin.js's
+            // confirmSaveIfDirty() — picking a different pitch (or deselecting
+            // the current one) abandons whatever's CURRENTLY shown just as
+            // much as picking a different route does.
+            if (!(await this.confirmSaveIfDirty())) return;
+
             this.selected_pitch_id = (this.selected_pitch_id === pitchId) ? null : pitchId;
 
             this.pitch_json               = null;
             this.pitch_json_meta          = null;
             this.pitch_related_jsons      = [];
             this.pitch_related_jsons_meta = [];
+            this._mainDrawingDirty        = false;
 
             if (!this.selected_pitch_id) {
                 this.mtp_pitch_mode = false;
@@ -543,6 +627,7 @@ export default {
                 if (pitch && pitch.json && pitch.json.sector_image_id) {
                     this.selectedImageId = pitch.json.sector_image_id;
                 }
+                this._mainDrawingDirty = false;
             } catch (e) {
                 this.pitch_json = null;
                 this.pitch_json_meta = null;
@@ -566,13 +651,28 @@ export default {
         },
 
         handleCanvasData(data) {
-            if (this.mtp_pitch_mode) {
-                this.pitch_json = data;
-            } else if (this.extra_drawing_mode) {
+            this.markDrawingDirty();
+            // extra_drawing_mode checked FIRST — see activeJsonProp's comment
+            // above for why. Getting this backwards routed live edits made
+            // while "editing the extra drawing" into pitch_json instead,
+            // silently corrupting the pitch's own saved drawing with extra-
+            // layer strokes the next time it got saved.
+            if (this.extra_drawing_mode) {
                 this.extra_drawing_json = data;
+            } else if (this.mtp_pitch_mode) {
+                this.pitch_json = data;
             } else {
                 this.canvasData = data;
             }
+        },
+        // canvasExtraDrawingMixin's HOST CONTRACT hook for the confirm-before-
+        // switch flow — saveChanges() already guards `if (extra_drawing_mode)
+        // return saveExtraDrawing()` (and dispatches to savePitchDrawing() in
+        // pitch mode), so calling it here (only while extra_drawing_mode is
+        // still false) safely runs whichever main-drawing save path — route
+        // or pitch — is currently active.
+        _saveMainDrawing() {
+            return this.saveChanges();
         },
 
         // The background photo's own actual position + size within the Paper.js
@@ -592,13 +692,19 @@ export default {
             };
         },
 
+        // Returns `true`/`false` on the plain-route path (dispatch branches
+        // just forward whatever savePitchDrawing()/saveExtraDrawing() return)
+        // — see canvasExtraDrawingMixin.js's `_saveMainDrawing()` contract for
+        // why a falsy result here matters: it stops the confirm-before-switch
+        // flow from proceeding to switch modes after a save that didn't
+        // actually happen.
         async saveChanges() {
-            if (this.mtp_pitch_mode) { return this.savePitchDrawing(); }
             if (this.extra_drawing_mode) { return this.saveExtraDrawing(); }
+            if (this.mtp_pitch_mode) { return this.savePitchDrawing(); }
 
-            if (!this.selectedRouteId) { alert(this.$t('admin.routes_sectors.select_route_first_alert')); return; }
-            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return; }
-            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
+            if (!this.selectedRouteId) { alert(this.$t('admin.routes_sectors.select_route_first_alert')); return false; }
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return false; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return false; }
 
             this.saving = true;
             this.saveStatus = null;
@@ -611,7 +717,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.canvasData = json; }
                 }
-                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return false; }
 
                 const selectedImage = this.selectedImage;
                 const bgPath = selectedImage && selectedImage.has_original
@@ -649,81 +755,65 @@ export default {
 
                 if (response.data.success) {
                     this.saveStatus = 'ok';
+                    this._mainDrawingDirty = false;
                     this.drawingsByRoute = { ...this.drawingsByRoute, [this.selectedRouteId]: this.selectedImageId };
                     if (selectedImage) selectedImage.has_original = true;
                     this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
                     setTimeout(() => { this.saveStatus = null; }, 3000);
+                    return true;
                 } else {
                     this.saveStatus = 'error';
+                    return false;
                 }
             } catch (e) {
                 console.error(e);
                 this.saveStatus = 'error';
+                return false;
             } finally {
                 this.saving = false;
             }
         },
 
-        // Extra-drawing-mode counterparts of saveChanges/deleteDrawing above — same
-        // composite-image approach, but targets SectorImageExtraDrawing (keyed only
-        // by sector_image_id) instead of ClimbingRoutesJson (keyed by route_id).
-        async saveExtraDrawing() {
-            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_sector_image_first')); return; }
-            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
+        // canvasExtraDrawingMixin's HOST CONTRACT hooks for save/delete — see
+        // its own header comment for the full contract. saveExtraDrawing/
+        // deleteExtraDrawing themselves come entirely from the mixin now;
+        // this just supplies the composite-image build (same approach as
+        // saveChanges above, targeting SectorImageExtraDrawing instead of
+        // ClimbingRoutesJson) and the route-drawing-updated bus event a
+        // sibling component listens for to refresh.
+        async _buildExtraDrawingComposite(json) {
+            const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
+            const selectedImage = this.selectedImage;
+            const bgPath = selectedImage && selectedImage.has_original
+                ? '/public/images/sector_img/origin_img/' + selectedImage.image
+                : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
 
-            this.saving = true;
-            this.saveStatus = null;
-
-            try {
-                const canvasContainer = this.$refs.editorComponent.$refs.canvasContainer;
-
-                let json = this.extra_drawing_json;
-                if (canvasContainer && typeof canvasContainer.getCleanJson === 'function') {
-                    const cleanJson = canvasContainer.getCleanJson();
-                    if (cleanJson) { json = cleanJson; this.extra_drawing_json = json; }
-                }
-                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
-
-                const selectedImage = this.selectedImage;
-                const bgPath = selectedImage && selectedImage.has_original
-                    ? '/public/images/sector_img/origin_img/' + selectedImage.image
-                    : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
-
+            let canvasWidth = null, canvasHeight = null;
+            if (canvasContainer) {
                 const scope = canvasContainer.getCanvasScope();
-                const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
-                const canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
-                const bgBounds = this.bgBoundsPayload(canvasContainer);
-
-                const ownMeta = {
-                    json,
-                    canvas_width: canvasWidth, canvas_height: canvasHeight,
-                    bg_left: bgBounds.bg_left, bg_top: bgBounds.bg_top,
-                    bg_width: bgBounds.bg_width, bg_height: bgBounds.bg_height,
-                };
-                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
-
-                const response = await axios.post('/set_sector/set_sector_image_extra_drawing/save/' + this.selectedImageId, {
-                    json,
-                    edited_image: editedImageData,
-                    canvas_width: canvasWidth,
-                    canvas_height: canvasHeight,
-                    ...this.bgBoundsPayload(canvasContainer),
-                });
-
-                if (response.data.success) {
-                    this.saveStatus = 'ok';
-                    if (selectedImage) selectedImage.has_original = true;
-                    this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
-                    setTimeout(() => { this.saveStatus = null; }, 3000);
-                } else {
-                    this.saveStatus = 'error';
-                }
-            } catch (e) {
-                console.error(e);
-                this.saveStatus = 'error';
-            } finally {
-                this.saving = false;
+                canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;
+                canvasHeight = scope && scope.view ? Math.round(scope.view.viewSize.height) : null;
             }
+            const bgBoundsPayload = this.bgBoundsPayload(canvasContainer);
+            const ownMeta = {
+                json,
+                canvas_width: canvasWidth, canvas_height: canvasHeight,
+                bg_left: bgBoundsPayload.bg_left, bg_top: bgBoundsPayload.bg_top,
+                bg_width: bgBoundsPayload.bg_width, bg_height: bgBoundsPayload.bg_height,
+            };
+            const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
+
+            this._extraDrawingSelectedImage = selectedImage; // read back in _onExtraDrawingSaved
+            return { editedImageData, canvasWidth, canvasHeight, bgBoundsPayload };
+        },
+
+        _onExtraDrawingSaved(responseData) {
+            if (responseData.success && this._extraDrawingSelectedImage) this._extraDrawingSelectedImage.has_original = true;
+            this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
+        },
+
+        _onExtraDrawingDeleted() {
+            this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
         },
 
         // Pitch-mode counterpart of saveChanges/deleteDrawing above — same
@@ -731,9 +821,9 @@ export default {
         // mtp_pitch_id via the SAME endpoint CanvasPitchEditorComponent.vue
         // uses) instead of ClimbingRoutesJson (keyed by route_id).
         async savePitchDrawing() {
-            if (!this.selected_pitch_id) { alert(this.$t('admin.routes_sectors.select_pitch_first_alert')); return; }
-            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return; }
-            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return; }
+            if (!this.selected_pitch_id) { alert(this.$t('admin.routes_sectors.select_pitch_first_alert')); return false; }
+            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.select_background_image_first')); return false; }
+            if (!this.$refs.editorComponent) { alert(this.$t('admin.routes_sectors.editor_not_ready')); return false; }
 
             this.saving = true;
             this.saveStatus = null;
@@ -746,7 +836,7 @@ export default {
                     const cleanJson = canvasContainer.getCleanJson();
                     if (cleanJson) { json = cleanJson; this.pitch_json = json; }
                 }
-                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return; }
+                if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return false; }
 
                 const selectedImage = this.selectedImage;
                 const bgPath = selectedImage && selectedImage.has_original
@@ -778,15 +868,19 @@ export default {
 
                 if (response.data.success) {
                     this.saveStatus = 'ok';
+                    this._mainDrawingDirty = false;
                     if (selectedImage) selectedImage.has_original = true;
                     this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
                     setTimeout(() => { this.saveStatus = null; }, 3000);
+                    return true;
                 } else {
                     this.saveStatus = 'error';
+                    return false;
                 }
             } catch (e) {
                 console.error(e);
                 this.saveStatus = 'error';
+                return false;
             } finally {
                 this.saving = false;
             }
@@ -813,30 +907,9 @@ export default {
             }
         },
 
-        async deleteExtraDrawing() {
-            if (!this.selectedImageId) { alert(this.$t('admin.routes_sectors.no_sector_image_selected')); return; }
-            if (!confirm(this.$t('admin.routes_sectors.confirm_delete_extra_drawing'))) return;
-
-            this.deleting = true;
-            this.saveStatus = null;
-            try {
-                await axios.delete('/set_sector/set_sector_image_extra_drawing/delete/' + this.selectedImageId);
-                this.extra_drawing_json = null;
-                this.extra_drawing_meta = null;
-                this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
-                this.saveStatus = 'deleted';
-                setTimeout(() => { this.saveStatus = null; }, 3000);
-            } catch (e) {
-                console.error(e);
-                this.saveStatus = 'error';
-            } finally {
-                this.deleting = false;
-            }
-        },
-
         async deleteDrawing() {
-            if (this.mtp_pitch_mode) { return this.deletePitchDrawing(); }
             if (this.extra_drawing_mode) { return this.deleteExtraDrawing(); }
+            if (this.mtp_pitch_mode) { return this.deletePitchDrawing(); }
             if (!this.selectedRouteId) return;
             if (!confirm(this.$t('admin.routes_sectors.confirm_delete_route_drawing'))) return;
 
@@ -900,7 +973,32 @@ export default {
                         try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
                     }
 
-                    resolve(canvas.toDataURL('image/jpeg', 0.92));
+                    // Bakes the ONE combined legend (every symbol type present
+                    // across this route/pitch + every sibling sharing this
+                    // sector image) into the saved composite — see
+                    // legendRenderer.js's drawCombinedLegend for why this
+                    // is safe (never reads any item's own baked-in isLegend
+                    // group) and necessary (previously no legend was ever
+                    // saved into the actual image file at all).
+                    try {
+                        // Siblings BEFORE own on purpose (bug fixed September
+                        // 2026, reported as "legend position isn't synced
+                        // between pitches/routes" — see canvasOverlaysMixin
+                        // .js's computeEditorLegend for the same fix and its
+                        // full rationale): every save bakes into this SAME
+                        // shared photo file regardless of which sibling
+                        // triggered it, so "own first" meant the baked
+                        // position could shift depending on whichever item
+                        // was saved LAST.
+                        const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
+                        const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
+                        drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
+                            drawItem,
+                            translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
+                        });
+                    } catch (e) { console.error('drawCombinedLegend failed:', e); }
+
+                    resolve(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
                 };
                 bg.onerror = () => resolve(null);
                 bg.src = bgPath;

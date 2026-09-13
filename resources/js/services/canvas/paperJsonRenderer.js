@@ -50,13 +50,63 @@ function parseSeg(s) {
 // Draws one item's own JSON tree onto ctx, in that item's own (pre-scale)
 // coordinate space — caller is expected to have already applied ctx.scale/
 // ctx.translate for this item's sx/sy/ox/oy (see drawItemScaled below).
-function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1) {
+//
+// `legendOpts` ({ minStrokePx, minFontPx }) is only ever passed by
+// legendRenderer.js's drawLegendCard, drawing one symbol SAMPLE shrunk to
+// fit a small fixed legend icon box. A symbol authored at its normal
+// on-photo size (e.g. a POI marker's inner pictogram/letter, drawn relative
+// to a comparatively LARGE outer pin shape) has thin strokes/small text that
+// are perfectly legible at that native size, but shrinking the WHOLE symbol
+// uniformly to fit a ~22px icon box can push those already-thin details
+// below a pixel — the outer pin shape (large filled areas) stays visible,
+// but the identifying inner glyph vanishes, and every POI kind ends up
+// looking like the same plain teardrop (a real bug, fixed September 2026:
+// "Points of interest" legend rows were indistinguishable from each other).
+// Clamps the ON-SCREEN result to a legible minimum regardless of how much
+// the current ctx transform has shrunk it — never used for normal drawing
+// (composite bake / interactive viewer / editor canvas), where an item's own
+// authored proportions are already correct at the scale it's actually shown.
+// `skipDataFlags` (array of `.data.<flag>` names, e.g. `['isSectorLabel',
+// 'isSectorLabelLine']`) lets a caller exclude specific UI-editing-aid
+// subtrees beyond the always-skipped `isLegend` — used by
+// SectorLocalImageCanvasComponent.vue when it draws a layout's full raw
+// content (every topo symbol/POI marker/line, not just the sector-boundary
+// rectangle it already extracted): the sector-name label is a REAL saved
+// Paper.js item (unlike the legend, which is never baked anywhere), so
+// composite-bake callers must keep drawing it (they pass no skipDataFlags,
+// same as before) — only the live public-viewer draw, which already renders
+// that label itself via its own drawSectorLabels() with its own styling/
+// leader-line, needs to skip it here to avoid drawing it twice.
+function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1, legendOpts, skipDataFlags) {
+    const minStrokePx = legendOpts && legendOpts.minStrokePx;
+    const minFontPx = legendOpts && legendOpts.minFontPx;
+    const isSkipped = (d) => skipDataFlags && skipDataFlags.some(f => d[f]);
+    const currentScale = () => {
+        try {
+            const m = ctx.getTransform();
+            return Math.hypot(m.a, m.b) || 1;
+        } catch (_) { return 1; }
+    };
     const walk = (item) => {
         if (!Array.isArray(item) || item.length < 2) return;
         const [type, data] = item;
         if (!data || typeof data !== 'object') return;
 
         if (type === 'Group' || type === 'CompoundPath') {
+            // The auto-generated topo-symbol legend (see DrawingTools.vue's
+            // rebuildLegend) is a live-computed overlay now (see
+            // SectorLocalImageCanvasComponent.vue's drawLegends) — it must
+            // NEVER be baked into a composite raster. A legend baked into
+            // pixels here is permanent: it can't be removed/repositioned by
+            // any later live-overlay fix, survives forever in that one saved
+            // image file, and (since a composite draws EVERY sibling
+            // sector's own JSON onto the SAME shared photo) accumulates one
+            // baked-in legend per sector that ever got saved, each frozen at
+            // whatever position/content it had at save time.
+            const gd = data.data || {};
+            if (gd.isLegend) return;
+            if (isSkipped(gd)) return;
+
             ctx.save();
             const m = data.matrix;
             if (m && Array.isArray(m) && m.length >= 6) ctx.transform(m[0], m[1], m[2], m[3], m[4], m[5]);
@@ -64,6 +114,7 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             ctx.restore();
 
         } else if (type === 'Path') {
+            if (isSkipped(data.data || {})) return;
             const segs = data.segments;
             if (!segs || !segs.length) return;
             const pts = segs.map(parseSeg).filter(Boolean);
@@ -91,7 +142,9 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             } else {
                 const pathStroke = strokeStyle || paperColorToCss(data.strokeColor) || '#cc2222';
                 ctx.strokeStyle = pathStroke;
-                ctx.lineWidth   = (data.strokeWidth || 3) * widthMul;
+                let lw = (data.strokeWidth || 3) * widthMul;
+                if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
+                ctx.lineWidth   = lw;
                 ctx.lineCap     = 'round';
                 ctx.lineJoin    = 'round';
                 ctx.beginPath();
@@ -125,7 +178,8 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
 
         } else if (type === 'PointText') {
             if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
-            const fs = (data.fontSize || 20) * fontMul;
+            let fs = (data.fontSize || 20) * fontMul;
+            if (minFontPx) fs = Math.max(fs, minFontPx / currentScale());
             ctx.save();
             ctx.fillStyle    = textFillStyle || paperColorToCss(data.fillColor) || '#cc2222';
             ctx.font         = `bold ${fs}px Arial`;
@@ -153,7 +207,7 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
 // Draws one item scaled from ITS OWN authored coordinate space into canvas-pixel
 // space (see itemScale/itemOffset) — the item may have been drawn in a
 // differently-sized browser container than the current target canvas.
-function drawItemScaled(ctx, meta, canvasWidth, canvasHeight, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1) {
+function drawItemScaled(ctx, meta, canvasWidth, canvasHeight, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1, skipDataFlags) {
     const { sx, sy } = itemScale(meta, canvasWidth, canvasHeight);
     const { ox, oy } = itemOffset(meta);
     ctx.save();
@@ -162,7 +216,7 @@ function drawItemScaled(ctx, meta, canvasWidth, canvasHeight, strokeStyle, dotFi
     let json = meta.json;
     if (typeof json === 'string') json = JSON.parse(json);
     if (typeof json === 'string') json = JSON.parse(json);
-    drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul, fontMul);
+    drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul, fontMul, undefined, skipDataFlags);
     ctx.restore();
 }
 

@@ -70,9 +70,6 @@
             <!-- Topo symbols -->
             <div class="tool-group">
                 <div class="btn-group btn-group-sm">
-                    <button type="button" :class="['btn', 'btn-primary', { active: action === 22 }]" @click.prevent="$emit('rappel')" :title="$t('admin.articles.canvas_editor.rappel_tooltip')">
-                        <i class="fa fa-anchor"></i>
-                    </button>
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 23 }]" @click.prevent="$emit('bolt')" :title="$t('admin.articles.canvas_editor.bolt_tooltip')">
                         <i class="fa fa-times"></i>
                     </button>
@@ -90,6 +87,154 @@
                     </button>
                 </div>
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.topo_symbols_group_label') }}</div>
+            </div>
+
+            <div class="vr align-self-stretch my-1 mx-2"></div>
+
+            <!-- Legend position/size — its own group (not nested under Topo
+                 Symbols) so it doesn't make that group's column taller than
+                 every other tool-group and throw off the row's alignment. -->
+            <div class="tool-group">
+                <div class="d-flex flex-column gap-1">
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="small text-muted legend-select-label">{{ $t('admin.articles.canvas_editor.legend_position_label') }}</span>
+                        <select class="form-select form-select-sm legend-position-select"
+                                :value="legendPosition"
+                                @change="$emit('legend-position-change', $event.target.value)"
+                                :title="$t('admin.articles.canvas_editor.legend_position_tooltip')">
+                            <option value="top-left">{{ $t('admin.articles.canvas_editor.legend_pos_top_left') }}</option>
+                            <option value="top-mid">{{ $t('admin.articles.canvas_editor.legend_pos_top_mid') }}</option>
+                            <option value="top-right">{{ $t('admin.articles.canvas_editor.legend_pos_top_right') }}</option>
+                            <option value="left-mid">{{ $t('admin.articles.canvas_editor.legend_pos_left_mid') }}</option>
+                            <option value="right-mid">{{ $t('admin.articles.canvas_editor.legend_pos_right_mid') }}</option>
+                            <option value="bot-left">{{ $t('admin.articles.canvas_editor.legend_pos_bot_left') }}</option>
+                            <option value="bot-mid">{{ $t('admin.articles.canvas_editor.legend_pos_bot_mid') }}</option>
+                            <option value="bot-right">{{ $t('admin.articles.canvas_editor.legend_pos_bot_right') }}</option>
+                            <option value="hidden">{{ $t('admin.articles.canvas_editor.legend_pos_hidden') }}</option>
+                        </select>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="small text-muted legend-select-label">{{ $t('admin.articles.canvas_editor.legend_scale_label') }}</span>
+                        <select class="form-select form-select-sm legend-position-select"
+                                :value="legendScale"
+                                @change="$emit('legend-scale-change', parseFloat($event.target.value))"
+                                :title="$t('admin.articles.canvas_editor.legend_scale_tooltip')">
+                            <option value="0.5">50%</option>
+                            <option value="0.75">75%</option>
+                            <option value="1">100%</option>
+                            <option value="1.25">125%</option>
+                            <option value="1.5">150%</option>
+                            <option value="2">200%</option>
+                            <option value="2.5">250%</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.legend_group_label') }}</div>
+            </div>
+
+            <div class="vr align-self-stretch my-1 mx-2"></div>
+
+            <!-- Anchors — four small sub-clusters (anchor / portaledge / rappel
+                 / rescue) instead of one undifferentiated 10-button row, so
+                 the near-identical circle icons read as distinct families at
+                 a glance instead of a single blob. -->
+            <div class="tool-group">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="btn-group btn-group-sm" :title="$t('admin.articles.canvas_editor.anchor_family_hint')">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 22 }]" @click.prevent="$emit('rappel')" :title="$t('admin.articles.canvas_editor.rappel_tooltip')">
+                            <i class="fa fa-anchor"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 28 }]" @click.prevent="$emit('anchor-good')" :title="$t('admin.articles.canvas_editor.anchor_good_tooltip')">
+                            <i class="fa fa-minus-circle"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 29 }]" @click.prevent="$emit('anchor-mid')" :title="$t('admin.articles.canvas_editor.anchor_mid_tooltip')">
+                            <i class="fa fa-minus-circle anchor-icon-rotated"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 30 }]" @click.prevent="$emit('anchor-bad')" :title="$t('admin.articles.canvas_editor.anchor_bad_tooltip')">
+                            <i class="fa fa-ban"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm" :title="$t('admin.articles.canvas_editor.portaledge_family_hint')">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 31 }]" @click.prevent="$emit('portaledge-anchor-good')" :title="$t('admin.articles.canvas_editor.portaledge_anchor_good_tooltip')">
+                            <i class="fa fa-long-arrow-up anchor-icon-accent"></i><i class="fa fa-minus-circle"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 32 }]" @click.prevent="$emit('portaledge-anchor-mid')" :title="$t('admin.articles.canvas_editor.portaledge_anchor_mid_tooltip')">
+                            <i class="fa fa-long-arrow-up anchor-icon-accent"></i><i class="fa fa-minus-circle anchor-icon-rotated"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 33 }]" @click.prevent="$emit('portaledge-anchor-bad')" :title="$t('admin.articles.canvas_editor.portaledge_anchor_bad_tooltip')">
+                            <i class="fa fa-long-arrow-up anchor-icon-accent"></i><i class="fa fa-ban"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm" :title="$t('admin.articles.canvas_editor.rappel_anchor_family_hint')">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 34 }]" @click.prevent="$emit('rappel-anchor-good')" :title="$t('admin.articles.canvas_editor.rappel_anchor_good_tooltip')">
+                            <i class="fa fa-minus-circle"></i><i class="fa fa-long-arrow-down anchor-icon-accent"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 35 }]" @click.prevent="$emit('rappel-anchor-mid')" :title="$t('admin.articles.canvas_editor.rappel_anchor_mid_tooltip')">
+                            <i class="fa fa-minus-circle anchor-icon-rotated"></i><i class="fa fa-long-arrow-down anchor-icon-accent"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 36 }]" @click.prevent="$emit('rappel-anchor-bad')" :title="$t('admin.articles.canvas_editor.rappel_anchor_bad_tooltip')">
+                            <i class="fa fa-ban"></i><i class="fa fa-long-arrow-down anchor-icon-accent"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 37 }]" @click.prevent="$emit('rescue-anchor')" :title="$t('admin.articles.canvas_editor.rescue_anchor_tooltip')">
+                            <i class="fa fa-dot-circle-o"></i>
+                        </button>
+                    </div>
+                    <!-- Tent (see DrawingTools.vue's add_tent) moved here from the
+                         old "Landmarks" group, which otherwise only ever had 3
+                         buttons and didn't earn its own toolbar section. -->
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 39 }]" @click.prevent="$emit('tent')" :title="$t('admin.articles.canvas_editor.tent_tooltip')">
+                            <span class="tent-icon-glyph">⛺</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.anchors_group_label') }}</div>
+            </div>
+
+            <div class="vr align-self-stretch my-1 mx-2"></div>
+
+            <!-- Points of interest — also carries Summit and Parking (see
+                 DrawingTools.vue's add_summit/add_parking), moved here from the
+                 old "Landmarks" group along with Tent above, since none of the
+                 three landmark markers needed a dedicated toolbar section of
+                 their own. -->
+            <div class="tool-group">
+                <div class="d-flex align-items-center gap-1">
+                    <div class="btn-group btn-group-sm" :title="$t('admin.articles.canvas_editor.landmarks_family_hint')">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 38 }]" @click.prevent="$emit('summit')" :title="$t('admin.articles.canvas_editor.summit_tooltip')">
+                            <i class="fa fa-map-marker"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 40 }]" @click.prevent="$emit('parking')" :title="$t('admin.articles.canvas_editor.parking_tooltip')">
+                            <b class="parking-icon-glyph">P</b>
+                        </button>
+                    </div>
+                    <div class="btn-group btn-group-sm">
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 41 }]" @click.prevent="$emit('poi-hiking')" :title="$t('admin.articles.canvas_editor.poi_hiking_tooltip')">
+                            <i class="fa fa-male"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 42 }]" @click.prevent="$emit('poi-bed')" :title="$t('admin.articles.canvas_editor.poi_bed_tooltip')">
+                            <i class="fa fa-bed"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 43 }]" @click.prevent="$emit('poi-bike')" :title="$t('admin.articles.canvas_editor.poi_bike_tooltip')">
+                            <i class="fa fa-bicycle"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 44 }]" @click.prevent="$emit('poi-water')" :title="$t('admin.articles.canvas_editor.poi_water_tooltip')">
+                            <i class="fa fa-tint"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 45 }]" @click.prevent="$emit('poi-food')" :title="$t('admin.articles.canvas_editor.poi_food_tooltip')">
+                            <i class="fa fa-cutlery"></i>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 46 }]" @click.prevent="$emit('poi-tent')" :title="$t('admin.articles.canvas_editor.poi_tent_tooltip')">
+                            <span class="tent-icon-glyph">⛺</span>
+                        </button>
+                        <button type="button" :class="['btn', 'btn-primary', { active: action === 47 }]" @click.prevent="$emit('poi-medical')" :title="$t('admin.articles.canvas_editor.poi_medical_tooltip')">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.poi_group_label') }}</div>
             </div>
 
             <div class="vr align-self-stretch my-1 mx-2"></div>
@@ -161,13 +306,18 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.export_group_label') }}</div>
             </div>
 
-            <!-- Active tool badge pushed to the right -->
-            <div class="ms-auto d-flex align-items-center pb-1">
-                <span class="badge rounded-pill" :class="activeBadgeClass" style="font-size:11px; padding:4px 10px;">
-                    <i :class="activeActionIcon" class="me-1"></i>{{ actionLabel }}
-                </span>
-            </div>
+        </div>
 
+        <!-- Active tool indicator — its own full-width row (not squeezed into
+             the tool-buttons row above via ms-auto), so it lands in the same
+             predictable spot every time no matter how many tool-groups wrap
+             above it, instead of getting stranded mid-layout next to
+             whichever group happened to be last on its line. -->
+        <div class="d-flex align-items-center justify-content-start gap-2 px-2 py-1 bg-light border border-top-0 active-tool-row">
+            <span class="small text-muted">{{ $t('admin.articles.canvas_editor.active_tool_label') }}</span>
+            <span class="badge rounded-pill" :class="activeBadgeClass" style="font-size:11px; padding:4px 10px;">
+                <i :class="activeActionIcon" class="me-1"></i>{{ actionLabel }}
+            </span>
         </div>
 
     </div>
@@ -196,6 +346,14 @@ export default {
         hasUnlockedDrawing: {
             type: Boolean,
             default: true
+        },
+        legendPosition: {
+            type: String,
+            default: 'top-right'
+        },
+        legendScale: {
+            type: Number,
+            default: 1
         }
     },
     computed: {
@@ -225,6 +383,26 @@ export default {
                 25: this.$t('admin.articles.canvas_editor.action_label_pendulum_left'),
                 26: this.$t('admin.articles.canvas_editor.action_label_pendulum_right'),
                 27: this.$t('admin.articles.canvas_editor.action_label_crux'),
+                28: this.$t('admin.articles.canvas_editor.action_label_anchor_good'),
+                29: this.$t('admin.articles.canvas_editor.action_label_anchor_mid'),
+                30: this.$t('admin.articles.canvas_editor.action_label_anchor_bad'),
+                31: this.$t('admin.articles.canvas_editor.action_label_portaledge_anchor_good'),
+                32: this.$t('admin.articles.canvas_editor.action_label_portaledge_anchor_mid'),
+                33: this.$t('admin.articles.canvas_editor.action_label_portaledge_anchor_bad'),
+                34: this.$t('admin.articles.canvas_editor.action_label_rappel_anchor_good'),
+                35: this.$t('admin.articles.canvas_editor.action_label_rappel_anchor_mid'),
+                36: this.$t('admin.articles.canvas_editor.action_label_rappel_anchor_bad'),
+                37: this.$t('admin.articles.canvas_editor.action_label_rescue_anchor'),
+                38: this.$t('admin.articles.canvas_editor.action_label_summit'),
+                39: this.$t('admin.articles.canvas_editor.action_label_tent'),
+                40: this.$t('admin.articles.canvas_editor.action_label_parking'),
+                41: this.$t('admin.articles.canvas_editor.action_label_poi_hiking'),
+                42: this.$t('admin.articles.canvas_editor.action_label_poi_bed'),
+                43: this.$t('admin.articles.canvas_editor.action_label_poi_bike'),
+                44: this.$t('admin.articles.canvas_editor.action_label_poi_water'),
+                45: this.$t('admin.articles.canvas_editor.action_label_poi_food'),
+                46: this.$t('admin.articles.canvas_editor.action_label_poi_tent'),
+                47: this.$t('admin.articles.canvas_editor.action_label_poi_medical'),
             };
             return labels[this.action] || this.$t('admin.articles.canvas_editor.action_label_line');
         },
@@ -254,12 +432,32 @@ export default {
                 25: 'fa fa-reply',
                 26: 'fa fa-share',
                 27: 'fa fa-key',
+                28: 'fa fa-minus-circle',
+                29: 'fa fa-minus-circle',
+                30: 'fa fa-ban',
+                31: 'fa fa-minus-circle',
+                32: 'fa fa-minus-circle',
+                33: 'fa fa-ban',
+                34: 'fa fa-minus-circle',
+                35: 'fa fa-minus-circle',
+                36: 'fa fa-ban',
+                37: 'fa fa-dot-circle-o',
+                38: 'fa fa-map-marker',
+                39: 'fa fa-map-marker',
+                40: 'fa fa-square',
+                41: 'fa fa-male',
+                42: 'fa fa-bed',
+                43: 'fa fa-bicycle',
+                44: 'fa fa-tint',
+                45: 'fa fa-cutlery',
+                46: 'fa fa-square',
+                47: 'fa fa-plus',
             };
             return icons[this.action] || 'fa fa-pencil';
         },
         activeBadgeClass() {
             // Draw tools = primary, edit tools = warning, view = secondary
-            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21, 22, 23, 24, 25, 26, 27];
+            const primaryActions  = [1, 2, 3, 4, 7, 10, 11, 13, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47];
             const warningActions  = [5, 8, 14, 15, 16, 17, 19];
             if (primaryActions.includes(this.action))  return 'bg-primary';
             if (warningActions.includes(this.action))  return 'bg-warning text-dark';
@@ -286,5 +484,43 @@ export default {
     letter-spacing: 0.04em;
     line-height: 1;
     text-align: center;
+}
+.legend-position-select {
+    font-size: 10px;
+    padding: 1px 16px 1px 4px;
+    height: auto;
+    width: 100px;
+    flex-shrink: 0;
+}
+.legend-select-label {
+    font-size: 9px;
+    width: 26px;
+    flex-shrink: 0;
+    text-align: right;
+}
+/* Approximates the "vertical bar in a circle" glyph (precarious/medium
+   quality anchor) by rotating the closest real FontAwesome 4 icon
+   (fa-minus-circle) 90° — the actual on-canvas symbol is drawn precisely via
+   Paper.js, this is just a toolbar button hint. */
+.anchor-icon-rotated {
+    display: inline-block;
+    transform: rotate(90deg);
+}
+.anchor-icon-accent {
+    font-size: 8px;
+    margin-left: 1px;
+    vertical-align: middle;
+}
+/* No plain tent icon exists in the FontAwesome 4 set this app uses elsewhere
+   (fa-*) — the tent emoji glyph is a widely-supported, instantly-recognizable
+   stand-in for the toolbar button hint; the actual on-canvas symbol is drawn
+   precisely via Paper.js (see DrawingTools.vue's add_tent). */
+.tent-icon-glyph {
+    font-size: 13px;
+    line-height: 1;
+}
+.parking-icon-glyph {
+    font-size: 13px;
+    line-height: 1;
 }
 </style>

@@ -8,6 +8,7 @@
             :related-jsons="related_jsons"
             :related-jsons-meta="related_jsons_meta"
             :related-first-label="related_first_label"
+            :disable-auto-legend="disable_auto_legend"
             :image="image"
             :stroke-color="strokeColor"
             :fill-color="fillColor"
@@ -57,6 +58,10 @@ export default {
         related_first_label: {
             type: String,
             default: null
+        },
+        disable_auto_legend: {
+            type: Boolean,
+            default: false
         },
         image: {
             type: String,
@@ -210,6 +215,81 @@ export default {
                 && typeof this.$refs.canvasManager.resizeCrux === 'function') {
                 this.$refs.canvasManager.resizeCrux(cruxGroup, width);
             }
+        },
+
+        // Same reasoning as resizeArrow/resizeRappel/resizeCrux above, for the
+        // anchor-family marker Group (see DrawingTools.vue's resizeAnchor).
+        resizeAnchor(anchorGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeAnchor === 'function') {
+                this.$refs.canvasManager.resizeAnchor(anchorGroup, width);
+            }
+        },
+
+        // Same reasoning as resizeAnchor above, for the summit/tent landmark
+        // markers (see DrawingTools.vue's resizeSummit/resizeTent).
+        resizeSummit(summitGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeSummit === 'function') {
+                this.$refs.canvasManager.resizeSummit(summitGroup, width);
+            }
+        },
+
+        resizeTent(tentGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeTent === 'function') {
+                this.$refs.canvasManager.resizeTent(tentGroup, width);
+            }
+        },
+
+        resizeParking(parkingGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeParking === 'function') {
+                this.$refs.canvasManager.resizeParking(parkingGroup, width);
+            }
+        },
+
+        // Same reasoning as resizeSummit/resizeTent/resizeParking above, for
+        // the points-of-interest pins (see DrawingTools.vue's resizePoi).
+        resizePoi(poiGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizePoi === 'function') {
+                this.$refs.canvasManager.resizePoi(poiGroup, width);
+            }
+        },
+
+        // Same reasoning as resizeSummit/resizeTent above, for the sector
+        // name-label's font size (see DrawingTools.vue's resizeSectorLabel).
+        resizeSectorLabel(labelGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeSectorLabel === 'function') {
+                this.$refs.canvasManager.resizeSectorLabel(labelGroup, width);
+            }
+        },
+
+        // Rebuilds the auto-generated topo-symbol legend (see DrawingTools.vue's
+        // rebuildLegend) — pass a position and/or scale to change/persist them
+        // (from the toolbar's pickers), or omit either to just refresh content
+        // against whatever is already stored.
+        rebuildLegend(position, scale) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.rebuildLegend === 'function') {
+                this.$refs.canvasManager.rebuildLegend(position, scale);
+            }
+        },
+
+        getLegendPosition() {
+            return this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.getLegendPosition === 'function'
+                ? this.$refs.canvasManager.getLegendPosition()
+                : 'top-right';
+        },
+
+        getLegendScale() {
+            return this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.getLegendScale === 'function'
+                ? this.$refs.canvasManager.getLegendScale()
+                : 1;
         },
 
         // Access to group counter for layer management
