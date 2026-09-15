@@ -321,11 +321,17 @@ export default {
                     if (!data || typeof data !== 'object') return;
 
                     if (type === 'Group' || type === 'CompoundPath') {
+                        // A hidden item shouldn't be clickable either — it
+                        // isn't drawn (see drawItem's own visible check
+                        // below), so a stale hit region behind it would let
+                        // the user click/hover an invisible shape.
+                        if (data.visible === false) return;
                         const m   = data.matrix;
                         const ctm2 = (m && m.length >= 6) ? this._mulM(ctm, m) : ctm;
                         if (data.children) data.children.forEach(c => walk(c, ctm2));
 
                     } else if (type === 'Path') {
+                        if (data.visible === false) return;
                         const segs = data.segments;
                         if (!segs || !segs.length) return;
                         const pm   = data.matrix;
@@ -383,6 +389,7 @@ export default {
                         }
 
                     } else if (type === 'PointText') {
+                        if (data.visible === false) return;
                         if (!data.content || !data.matrix || data.matrix.length < 6) return;
                         // Text drawn at (matrix[4], matrix[5]) in parent space
                         const pos = this._tPt(ctm, data.matrix[4], data.matrix[5]);
@@ -559,6 +566,9 @@ export default {
                     // stale) — a real bug, not a feature; see
                     // legendRenderer.js's drawCombinedLegend for the full
                     // rationale.
+                    // A hidden item ("hide selected" / any visibility
+                    // toggle) must not be baked/drawn here either.
+                    if (data.visible === false) return;
                     const gd = data.data || {};
                     if (gd.isLegend) return;
 
@@ -570,6 +580,7 @@ export default {
                     ctx.restore();
 
                 } else if (type === 'Path') {
+                    if (data.visible === false) return;
                     const segs = data.segments;
                     if (!segs || !segs.length) return;
                     const pts = segs.map(parseSeg).filter(Boolean);
@@ -674,6 +685,7 @@ export default {
                     ctx.restore();
 
                 } else if (type === 'PointText') {
+                    if (data.visible === false) return;
                     if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
                     // Paper.js's own default fontSize is 12 (omitted from
                     // exportJSON when left at that default).

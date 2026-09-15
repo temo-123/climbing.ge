@@ -280,7 +280,29 @@
     watch: {
       'data.category': function() {
         this.$forceUpdate();
-      }
+      },
+      // Vue Router reuses this component instance across two `route/edit/:id`
+      // URLs matching the same route record — mounted() (which calls
+      // get_route_editing_data()) doesn't refire, so navigating straight from
+      // editing one route to another (e.g. via the routes list, without an
+      // intervening page that forces a remount) left every field in `data`
+      // showing the PREVIOUS route while `CanvasRouteEditorComponent.vue`
+      // received the new `route_id_prop` — the exact mismatch its own
+      // route_id_prop watcher (fixed September 2026) was built to guard
+      // against, but only once THIS component actually re-fetches the new
+      // route's own data in the first place.
+      '$route.params.id': function(newVal, oldVal) {
+        if (newVal === oldVal) return;
+        this.clear_form();
+        this.errors = [];
+        this.problem_status = "";
+        this.article_id = "";
+        this.sectors = [];
+        this.show_no_json_alert = false;
+        this.show_alert_modal = false;
+        this.is_back_action_query = false;
+        this.get_route_editing_data();
+      },
     },
 
     beforeRouteLeave (to, from, next) {

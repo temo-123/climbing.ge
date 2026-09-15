@@ -33,6 +33,11 @@ function collectSymbolSamples(json, symbolTypes, samples) {
             if (data.layers)   data.layers.forEach(walk);
             if (data.children) data.children.forEach(walk);
         } else if (type === 'Group' || type === 'CompoundPath') {
+            // A hidden item (bulk "hide selected", or any single-item
+            // visibility toggle) must not still count as "present" for the
+            // legend — exportJSON() emits `visible: false` right alongside
+            // `data`/`matrix` on the node itself (not inside `data`).
+            if (data.visible === false) return;
             const gd = data.data || {};
             if (gd.isSectorLabel || gd.isLegend) return;
             symbolTypes.forEach(t => {
@@ -40,6 +45,7 @@ function collectSymbolSamples(json, symbolTypes, samples) {
             });
             if (data.children) data.children.forEach(walk);
         } else if (type === 'Path') {
+            if (data.visible === false) return;
             const d = data.data || {};
             if (d.isSectorLabelLine) return;
             symbolTypes.forEach(t => {
@@ -368,7 +374,7 @@ function drawCombinedLegend(ctx, w, h, jsons, refWidth, { drawItem, translate })
     if (!entries.length || resolvedMeta.position === 'hidden') return;
 
     const resScale = refWidth > 0 ? (w / refWidth) : 1;
-    const scale = resScale * Math.max(0.3, resolvedMeta.scale || 1);
+    let scale = resScale * Math.max(0.3, resolvedMeta.scale || 1);
 
     // Two-pass on a scratch canvas — drawLegendCard always draws at its own
     // (x, y) origin and needs to know its own size before the real draw (same
@@ -378,7 +384,20 @@ function drawCombinedLegend(ctx, w, h, jsons, refWidth, { drawItem, translate })
     const off = document.createElement('canvas');
     const octx = off.getContext('2d');
     off.width = 400; off.height = 400;
-    const size = drawLegendCard(octx, entries, { scale, drawItem, translate });
+    let size = drawLegendCard(octx, entries, { scale, drawItem, translate });
+    // Never let the card exceed 90% of the photo in either dimension — a
+    // sector/route sharing a photo with many siblings can accumulate enough
+    // distinct symbol types that, at scale 1, the card is taller/wider than
+    // the photo itself, drawing off-canvas (negative px/py below) and baking
+    // an oversized card into every composite image. Matches the same cap
+    // already applied by computeEditorLegend() (canvasOverlaysMixin.js) and
+    // _legendLayout() (SectorLocalImageCanvasComponent.vue) — this function
+    // was missing it (fixed September 2026).
+    const overflow = Math.max(size.width / (w * 0.9), size.height / (h * 0.9));
+    if (overflow > 1) {
+        scale = scale / overflow;
+        size = drawLegendCard(octx, entries, { scale, drawItem, translate });
+    }
     off.width = Math.ceil(size.width);
     off.height = Math.ceil(size.height);
     drawLegendCard(octx, entries, { scale, drawItem, translate });

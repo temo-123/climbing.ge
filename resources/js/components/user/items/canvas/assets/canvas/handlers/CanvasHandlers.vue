@@ -173,10 +173,10 @@ export default {
                 } else if (this.action == 6) {
                     this.erase_segment_at_point(event);
                 } else if (this.action == 7) {
-                    if (!this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
+                    if (!this.currentLine && this.path && this.path.data && this.path.data.isCombinedNumber) {
                         this.add_line_for_combined(event.point);
                     }
-                    if (this.currentLine && this.path && this.path.data && this.path.data.isRectangle) {
+                    if (this.currentLine && this.path && this.path.data && this.path.data.isCombinedNumber) {
                         const rectBounds = this.path.bounds;
                         const isInsideRect = event.point.x >= rectBounds.left &&
                                             event.point.x <= rectBounds.right &&

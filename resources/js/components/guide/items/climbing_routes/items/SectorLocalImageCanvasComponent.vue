@@ -334,6 +334,10 @@ export default {
                     if (data.layers)   data.layers.forEach(walk);
                     if (data.children) data.children.forEach(walk);
                 } else if (type === 'Group' || type === 'CompoundPath') {
+                    // A hidden item (single-item or bulk "hide selected"
+                    // toggle) must not still be treated as a present legend
+                    // symbol or a live sector-boundary shape here.
+                    if (data.visible === false) return;
                     // The sector-name label (see sectorLocaleImageEditorComponent.vue's
                     // _createSectorLabel) is a real UI element living in the same
                     // 'main' layer as the sector's own rectangle — never a
@@ -374,6 +378,7 @@ export default {
                     });
                     if (data.children) data.children.forEach(walk);
                 } else if (type === 'Path') {
+                    if (data.visible === false) return;
                     const d = data.data || {};
                     if (d.isSectorLabelLine) {
                         const segs = data.segments || [];
@@ -525,6 +530,14 @@ export default {
                     if (data.layers) data.layers.forEach(walk);
                     if (data.children) data.children.forEach(walk);
                 } else if (type === 'Group' || type === 'CompoundPath') {
+                    // A hidden marker (single-item or bulk "hide selected"
+                    // toggle) must not be individually boosted/drawn here —
+                    // the flat pass above already skips it via
+                    // paperJsonRenderer.js's own `data.visible === false`
+                    // check, but this separate collector walked the same raw
+                    // JSON with no such check, so a hidden marker still got
+                    // drawn a second time regardless (fixed September 2026).
+                    if (data.visible === false) return;
                     const gd = data.data || {};
                     if (gd.isSectorLabel || gd.isLegend) return;
                     if (MARKER_FLAGS.some(f => gd[f])) { found.push(item); return; }

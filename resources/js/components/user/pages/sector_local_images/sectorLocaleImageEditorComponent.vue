@@ -224,6 +224,36 @@ export default {
             this.activeLayoutId = layout ? layout.id   : null;
             this._mainDrawingDirty = false;
         },
+        // Vue Router reuses this component instance across two URLs that
+        // match the SAME route record with only `:id` differing (e.g.
+        // clicking "options" for a different image without ever leaving
+        // this page) — mounted() doesn't refire, so without this watcher
+        // every piece of state below (including the "must select a
+        // sector first" gate's own selectedSectorId) kept pointing at the
+        // PREVIOUS image, letting the Editor render immediately against
+        // the new image with data that doesn't belong to it (fixed
+        // September 2026).
+        '$route.params.id'(newVal, oldVal) {
+            if (newVal === oldVal) return;
+            this.imageInfo        = null;
+            this.imageUrl         = '';
+            this.canvasData       = null;
+            this.canvasJsonMeta   = null;
+            this.layouts          = [];
+            this.availableSectors = [];
+            this.selectedSectorId = null;
+            this.activeLayoutId   = null;
+            this.saving           = false;
+            this.saveStatus       = null;
+            this.extra_drawing_mode    = false;
+            this.extra_drawing_json    = null;
+            this.extra_drawing_meta    = null;
+            this.extra_drawing_loading = false;
+            this.deletingExtraDrawing  = false;
+            this._mainDrawingDirty     = false;
+            this._extraDrawingDirty    = false;
+            this.loadImageData();
+        },
     },
     computed: {
         // Reference-only overlay shown alongside whatever's actively being edited.

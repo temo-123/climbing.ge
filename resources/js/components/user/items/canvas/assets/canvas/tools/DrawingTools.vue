@@ -1,6 +1,7 @@
 <script>
 import paper from 'paper';
 import { TOPO_SYMBOL_TYPES } from './topoSymbolTypes.js';
+import { findLegendMeta } from '../../../../../../../services/canvas/legendRenderer.js';
 
 export default {
     methods: {
@@ -162,7 +163,22 @@ export default {
                 justification: 'center',
                 name: `text ${this.layerCounters.rectangle}`
             });
-            text.data = { isRectangle: true, startPoint: center };
+            // A dedicated flag, NOT `isRectangle` (fixed September 2026): this
+            // is a PointText, and several OTHER consumers of `data.isRectangle`
+            // (CanvasHandlers.vue's action-8 sector-label leader-line
+            // re-anchoring, action-19 resize, both keyed by `find()`/boolean
+            // checks against real shape items) assume any item carrying that
+            // flag is an actual rectangle with `.segments`/`.bounds` usable as
+            // a real boundary shape. A combined-number label sharing that flag
+            // could be mistaken for the sector's own boundary rectangle (wrong
+            // leader-line anchor point) or dragged as if it needed to drag the
+            // leader line along with it — both real, reachable bugs since the
+            // combined-number tool is exposed on every host page, including
+            // the sector-local-image editor where sector labels/leader lines
+            // exist. `isCombinedNumber` keeps this item's OWN mousedrag logic
+            // (CanvasHandlers.vue action 7) working without colliding with the
+            // real-rectangle consumers.
+            text.data = { isCombinedNumber: true, startPoint: center };
             this.path = text;
             if (this.group) this.group.addChild(text);
             return text;
@@ -701,8 +717,18 @@ export default {
             this.layerCounters.pendulum++;
             const n = this.layerCounters.pendulum;
             const color = this._markerColor();
-            const R = this._dotSize();
-            const k = R / 30;
+            // The anchor dot's build radius must go through the SAME damping
+            // formula resizePendulum() uses (baseR + (proportionalR-baseR) *
+            // growth) — building it at the raw, undamped dot-size instead
+            // meant the very first resize (even with the item's own
+            // unchanged width, e.g. just opening the width control) silently
+            // shrank the dot: resizePendulum re-derives R from `width` through
+            // the damped formula, which only reproduces the undamped build
+            // radius when the dot-size setting happens to equal baseR (4)
+            // (fixed September 2026).
+            const R0 = this._dotSize();
+            const k = R0 / 30;
+            const R = this._pendulumDotBaseR() + (R0 - this._pendulumDotBaseR()) * this._pendulumDotGrowth();
             const SW = this._markerStroke();
             const p = event.point;
 
@@ -1926,6 +1952,60 @@ export default {
             const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
             const s = mainLayer && mainLayer.data && mainLayer.data.legendScale;
             return (typeof s === 'number' && s > 0) ? s : 1;
+        },
+
+        // What the toolbar's Position/Size pickers should actually SHOW —
+        // the same "latest sibling wins" resolved position/scale that
+        // computeEditorLegend()/drawCombinedLegend() use to decide what's
+        // actually drawn (see legendRenderer.js's findLegendMeta), NOT just
+        // this one document's own stored choice (getLegendPosition/
+        // getLegendScale above, which rebuildLegend's internal refresh calls
+        // still correctly use as-is — deliberately NOT changed, so an
+        // implicit "just refresh after adding a symbol" call never
+        // overwrites this document's own stored preference with a
+        // sibling's).
+        //
+        // Without this, editing sector A while sector B (sharing the same
+        // photo) has a MORE RECENTLY chosen position/scale showed the
+        // toolbar highlighting sector A's own (older/possibly "hidden")
+        // choice while the actual live legend on screen displayed sector
+        // B's — the toolbar and the thing it's supposed to control looked
+        // completely out of sync (fixed September 2026, reported as "legend
+        // sincronithation for editing is not working normal"). Picking a
+        // toolbar option while editing A still works exactly as before: it
+        // stamps A's own legendUpdatedAt to now, which — via this same
+        // "latest wins" comparison — immediately makes A's new choice win on
+        // the very next resolve.
+        getDisplayedLegendMeta() {
+            const fallback = { position: this.getLegendPosition(), scale: this.getLegendScale() };
+            if (!this.scope) return fallback;
+            const mainLayer = this.scope.project.layers.find(l => l.name === 'main');
+            const ownLd = (mainLayer && mainLayer.data) || {};
+
+            let meta = null, hiddenMeta = null;
+            const consider = (position, scale, updatedAt) => {
+                if (!position) return;
+                if (position === 'hidden') {
+                    if (!hiddenMeta || (updatedAt || 0) > (hiddenMeta.updatedAt || 0)) hiddenMeta = { position, scale };
+                } else if (!meta || (updatedAt || 0) > (meta.updatedAt || 0)) {
+                    meta = { position, scale, updatedAt };
+                }
+            };
+            if (ownLd.legendPosition || ownLd.legendScale) {
+                consider(ownLd.legendPosition || 'top-right', ownLd.legendScale || 1, ownLd.legendUpdatedAt || 0);
+            }
+            (this.relatedJsons || []).forEach(raw => {
+                if (!raw) return;
+                let json = raw;
+                try {
+                    if (typeof json === 'string') json = JSON.parse(json);
+                    if (typeof json === 'string') json = JSON.parse(json);
+                } catch (_) { return; }
+                const m = findLegendMeta(json);
+                if (m) consider(m.position, m.scale, m.updatedAt);
+            });
+            const resolved = meta || hiddenMeta;
+            return resolved ? { position: resolved.position, scale: resolved.scale || 1 } : fallback;
         },
 
         // (Re)builds the legend from scratch: removes whatever legend Group is

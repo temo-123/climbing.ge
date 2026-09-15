@@ -345,11 +345,11 @@ export default {
             selectedItems: [],
             isPanning: false,
             panStartPoint: null,
-            // Tracks which Paper.js item is currently hover-highlighted from the
-            // layers panel, and its selected state from BEFORE the hover started,
-            // so unhighlighting can restore it instead of blindly clearing it.
-            hoverHighlightId: null,
-            hoverHighlightPrevSelected: false
+            // Tracks which Paper.js item is currently hover-highlighted from
+            // the layers panel, so unhighlighting can restore its real
+            // selection state (from selectedLayerIds) instead of blindly
+            // clearing it.
+            hoverHighlightId: null
         }),
         mounted() {
             if (this.image_prop) {
@@ -667,7 +667,6 @@ export default {
                     this._restoreHoverHighlight();
                 }
                 this.hoverHighlightId = item.id;
-                this.hoverHighlightPrevSelected = item.selected;
                 item.selected = true;
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
@@ -682,9 +681,15 @@ export default {
             _restoreHoverHighlight() {
                 if (this.hoverHighlightId === null) return;
                 const item = this._itemById(this.hoverHighlightId) || this._layerById(this.hoverHighlightId);
-                if (item) item.selected = this.hoverHighlightPrevSelected;
+                // Restore to whatever the item's selection state SHOULD be
+                // right now (checked against the live selectedLayerIds),
+                // not a stale snapshot taken at hover-start — a checkbox
+                // click while still hovering the same row used to be
+                // silently reverted the moment the mouse left the row,
+                // since the pre-hover snapshot predates that click (fixed
+                // September 2026).
+                if (item) item.selected = this.selectedLayerIds.includes(this.hoverHighlightId);
                 this.hoverHighlightId = null;
-                this.hoverHighlightPrevSelected = false;
             },
 
             // Recursively sets locked state on an item and all its children.
@@ -1012,11 +1017,27 @@ export default {
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (!scope || !scope.project) { this.layers = []; return; }
 
-                if (this.$refs.canvasContainer.getLegendPosition) {
-                    this.legendPosition = this.$refs.canvasContainer.getLegendPosition();
-                }
-                if (this.$refs.canvasContainer.getLegendScale) {
-                    this.legendScale = this.$refs.canvasContainer.getLegendScale();
+                // The toolbar must reflect what's actually being SHOWN, which
+                // — on any photo shared by several sectors/routes/pitches —
+                // is the "most recently touched sibling wins" resolved
+                // position/scale, not necessarily THIS item's own stored
+                // choice (see DrawingTools.vue's getDisplayedLegendMeta).
+                // Reading the two separately (as before) could show, say,
+                // "hidden" highlighted while a sibling's real position was
+                // what was actually on screen — fixed September 2026,
+                // reported as "legend sincronithation for editing is not
+                // working normal".
+                if (this.$refs.canvasContainer.getDisplayedLegendMeta) {
+                    const displayed = this.$refs.canvasContainer.getDisplayedLegendMeta();
+                    this.legendPosition = displayed.position;
+                    this.legendScale = displayed.scale;
+                } else {
+                    if (this.$refs.canvasContainer.getLegendPosition) {
+                        this.legendPosition = this.$refs.canvasContainer.getLegendPosition();
+                    }
+                    if (this.$refs.canvasContainer.getLegendScale) {
+                        this.legendScale = this.$refs.canvasContainer.getLegendScale();
+                    }
                 }
 
                 // Keyed by id, not name — two groups can end up with the same
@@ -1154,9 +1175,16 @@ export default {
                 const item = this._itemById(layer.id);
                 if (!item) return;
                 item.visible = !item.visible;
+                // Visibility must be persisted like any other edit (and
+                // reflected in the legend, which only lists present/visible
+                // symbol types) — this call was missing, so toggling an
+                // item's visibility here was silently lost on
+                // navigate-away/undo (fixed September 2026).
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
                 this.updateLayersList();
+                this.saveCanvasData();
             },
 
             toggleLayerLock(layer) {
@@ -1187,8 +1215,10 @@ export default {
                     const item = this._itemById(layer.id);
                     if (item) item.visible = newVisibility;
                 });
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 scope.view.update();
                 this.updateLayersList();
+                this.saveCanvasData();
             },
 
             deleteLayerItem(layer) {
@@ -1221,9 +1251,11 @@ export default {
                 const item = this._itemById(child.id);
                 if (!item) return;
                 item.visible = !item.visible;
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
                 this.updateLayersList();
+                this.saveCanvasData();
             },
 
             toggleChildLock(layer, child) {
@@ -1388,6 +1420,12 @@ export default {
                 if (!items.length) return;
                 const allVisible = items.every(item => item.visible !== false);
                 items.forEach(item => { item.visible = !allVisible; });
+                // Hiding the only remaining instance(s) of a symbol type must
+                // drop it from the legend too (and showing it again must
+                // bring it back) — every other item-removing/visibility path
+                // in this file already rebuilds the legend; this one was
+                // missing it (fixed September 2026).
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();

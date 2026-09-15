@@ -103,6 +103,11 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             // sector's own JSON onto the SAME shared photo) accumulates one
             // baked-in legend per sector that ever got saved, each frozen at
             // whatever position/content it had at save time.
+            // A hidden item (single-item or bulk "hide selected" toggle)
+            // must not still be baked into the composite / drawn by the
+            // public viewer — exportJSON() emits `visible: false` right on
+            // the node itself, not inside `data` (fixed September 2026).
+            if (data.visible === false) return;
             const gd = data.data || {};
             if (gd.isLegend) return;
             if (isSkipped(gd)) return;
@@ -114,6 +119,7 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             ctx.restore();
 
         } else if (type === 'Path') {
+            if (data.visible === false) return;
             if (isSkipped(data.data || {})) return;
             const segs = data.segments;
             if (!segs || !segs.length) return;
@@ -229,6 +235,7 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             ctx.restore();
 
         } else if (type === 'PointText') {
+            if (data.visible === false) return;
             if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
             // Paper.js's own default fontSize is 12 (omitted from
             // exportJSON when left at that default) — matches the

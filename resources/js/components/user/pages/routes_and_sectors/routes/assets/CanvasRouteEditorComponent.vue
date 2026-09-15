@@ -254,6 +254,40 @@ export default {
                 this.images_tab_num = newVal;
             }
         },
+        // Mirrors CanvasPitchEditorComponent.vue's pitch_id_prop watcher — if
+        // this component instance is ever reused across two different
+        // routes (e.g. the parent doesn't remount it on route-param
+        // navigation, the same reuse pattern that watcher's own comment
+        // documents for EditPitchModalComponent.vue), every field below used
+        // to leak from the PREVIOUS route into the new one: stale
+        // `otherRoutesJson`/`otherRoutesJsonMeta` reference overlays, a
+        // stuck `extra_drawing_mode`/dirty flag, or `images_tab_num`
+        // resolving to a sector-image tab that doesn't even belong to the
+        // new route's sector (fixed September 2026 — same bug class already
+        // fixed for pitches, left unfixed for routes).
+        route_id_prop(newVal, oldVal) {
+            if (newVal === oldVal) return;
+            this.images_tab_num        = this.sector_image_id_prop || '';
+            this.otherRoutesJson       = [];
+            this.otherRoutesJsonMeta   = [];
+            this.extra_drawing_mode    = false;
+            this.extra_drawing_json    = null;
+            this.extra_drawing_meta    = null;
+            this.extra_drawing_loading = false;
+            this.deletingExtraDrawing  = false;
+            this._mainDrawingDirty     = false;
+            this._extraDrawingDirty    = false;
+            this.saving                = false;
+            this.saveStatus            = null;
+            this.drawing_deleting      = false;
+            if (!this.images_tab_num && this.sector_images.length > 0) {
+                this.images_tab_num = this.sector_images[0].id;
+            }
+            if (this.images_tab_num) {
+                this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
+                this.loadExtraDrawing();
+            }
+        },
     },
     mounted() {
         if (this.sector_image_id_prop) {

@@ -407,13 +407,24 @@ export default {
             return [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5];
         },
         // Current position of `legendScale` within legendScaleOptions, for
-        // the stepper's own +/- bounds and display. Falls back to 100%'s
-        // index on a value that isn't one of the 7 fixed stops (shouldn't
-        // normally happen — every write path only ever picks from this same
-        // list — but keeps the stepper from landing on -1/showing nothing).
+        // the stepper's own +/- bounds and display. A value that isn't one
+        // of the 7 fixed stops (legacy data saved before this stepper
+        // existed, e.g. a raw 1.1) resolves to its NEAREST stop rather than
+        // a fixed 100% fallback — snapping to 100% regardless of the real
+        // value meant the displayed "___%" text was still correct (that
+        // reads `legendScale` directly) but a single +/- click stepped from
+        // the WRONG position, jumping far past the adjacent stop instead of
+        // moving one step from where the value actually was (fixed
+        // September 2026).
         legendScaleIndex() {
             const idx = this.legendScaleOptions.indexOf(this.legendScale);
-            return idx === -1 ? this.legendScaleOptions.indexOf(1) : idx;
+            if (idx !== -1) return idx;
+            let nearest = 0, nearestDist = Infinity;
+            this.legendScaleOptions.forEach((opt, i) => {
+                const dist = Math.abs(opt - this.legendScale);
+                if (dist < nearestDist) { nearestDist = dist; nearest = i; }
+            });
+            return nearest;
         },
         // Row-major 3x3 layout for the visual legend-position picker (see
         // the template) — each cell's grid slot IS its own real on-photo

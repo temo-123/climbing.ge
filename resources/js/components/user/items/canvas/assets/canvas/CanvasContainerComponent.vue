@@ -302,6 +302,13 @@ export default {
                 : 1;
         },
 
+        getDisplayedLegendMeta() {
+            return this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.getDisplayedLegendMeta === 'function'
+                ? this.$refs.canvasManager.getDisplayedLegendMeta()
+                : { position: 'top-right', scale: 1 };
+        },
+
         // Access to group counter for layer management
         getGroupCounter() {
             return this.isCanvasManagerReady && this.$refs.canvasManager ? this.$refs.canvasManager.getGroupCounter() : 0;

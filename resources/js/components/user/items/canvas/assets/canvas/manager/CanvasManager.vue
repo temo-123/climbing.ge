@@ -145,6 +145,17 @@ export default {
                     // Reimporting + rescaling it again would apply the scale-correction
                     // a second time on top of already-correct coordinates, causing a
                     // small drift to accumulate on every save.
+                    //
+                    // Consumed one-shot (cleared immediately below) rather than kept
+                    // as a standing memo: a genuine switch to a DIFFERENT item whose
+                    // export happens to be byte-identical to this one (e.g. two still-
+                    // blank items sharing a photo, before either has any drawing) would
+                    // otherwise ALSO match here and get wrongly treated as an echo,
+                    // skipping the _initHistory()/_repositionRelatedLayersBelow() calls
+                    // below and leaving the previous item's undo stack active for this
+                    // one — reproducing the exact "undo deletes everything" class of bug
+                    // this file already fixed once (fixed September 2026).
+                    this._lastDrawingJson = null;
                     return;
                 }
                 if (newVal) {
@@ -545,6 +556,7 @@ export default {
         },
 
         saveCanvasData() {
+            if (!this.scope || !this.scope.project) return;
             const canvasData = this._getDrawingJson();
             const currentState = JSON.parse(canvasData);
             const lastState = this.history.length > 0 ? this.history[this.history.length - 1] : null;
@@ -558,6 +570,7 @@ export default {
         },
 
         undoLastAction() {
+            if (!this.scope || !this.scope.project) return;
             if (this.history.length <= 1) return;
 
             // Move the most-recent state to the redo stack, then restore the one before it.
@@ -591,6 +604,7 @@ export default {
         },
 
         redoLastAction() {
+            if (!this.scope || !this.scope.project) return;
             if (this.redoStack.length === 0) return;
 
             // Pop the next state from redo and push it onto history (it becomes the new current).
