@@ -15,6 +15,26 @@
                         :title="$t('admin.articles.canvas_editor.group_selected_tooltip', { count: selectedLayerIds.length })">
                     <i class="fa fa-object-group"></i> {{ selectedLayerIds.length }}
                 </button>
+                <!-- Selection-scoped visibility/delete — same idea as the
+                     "Group N" button above (only shown once something is
+                     actually checked), but for the two other bulk actions
+                     that make sense on a plain multi-select: hide/show and
+                     delete the checked items only (fixed September 2026,
+                     "need make del selected items and dont show selectid
+                     items functions"). Both stay available for a SINGLE
+                     checked item too (unlike grouping, which needs 2+), so
+                     the checkbox column doubles as a normal one-item
+                     hide/delete shortcut as well as a multi-select tool. -->
+                <button v-if="selectedLayerIds.length > 0" type="button" class="btn btn-sm btn-warning"
+                        @click="$emit('toggle-selected-visibility', selectedLayerIds)"
+                        :title="$t('admin.articles.canvas_editor.toggle_selected_visibility_tooltip', { count: selectedLayerIds.length })">
+                    <i class="fa fa-eye"></i> {{ selectedLayerIds.length }}
+                </button>
+                <button v-if="selectedLayerIds.length > 0" type="button" class="btn btn-sm btn-danger"
+                        @click="$emit('delete-selected-layers', selectedLayerIds)"
+                        :title="$t('admin.articles.canvas_editor.delete_selected_tooltip', { count: selectedLayerIds.length })">
+                    <i class="fa fa-trash"></i> {{ selectedLayerIds.length }}
+                </button>
                 <button type="button" class="btn btn-sm btn-secondary" @click="$emit('refresh-layers')" :title="$t('common.refresh')">
                     <i class="fa fa-refresh"></i>
                 </button>
@@ -39,7 +59,7 @@
 
                 <!-- Single-line layer row -->
                 <div class="d-flex align-items-center border-bottom layer-row px-1"
-                     :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '', layer.isGroup && dragOverGroupId === layer.id ? 'layer-drop-target' : '']"
+                     :class="[layer.isRelated ? 'layer-related' : (layer.isGroup ? 'layer-group' : 'layer-item'), layer.locked ? 'layer-locked' : '', layer.isGroup && dragOverGroupId === layer.id ? 'layer-drop-target' : '', selectedLayerIds.includes(layer.id) ? 'layer-row-selected' : '']"
                      :style="{ borderLeft: '3px solid ' + (layer.color || '#999') }"
                      @dragover.prevent="onDragOverRow(layer)"
                      @dragleave="onDragLeaveRow(layer)"
@@ -376,6 +396,7 @@ export default {
         'move-layer-up', 'move-layer-down',
         'toggle-group-expansion', 'assign-item-group',
         'toggle-layer-selection', 'create-group-from-selection',
+        'toggle-selected-visibility', 'delete-selected-layers',
         'ungroup-layer', 'toggle-layer-visibility', 'toggle-layer-lock', 'delete-layer-item',
         'toggle-child-visibility', 'toggle-child-lock', 'delete-child-item',
         'finish-editing-layer-name', 'cancel-editing-layer-name',
@@ -617,20 +638,46 @@ export default {
 }
 
 .layers-list {
+    overflow-x: hidden;
     overflow-y: auto;
     max-height: 540px;
     background: #fff;
+    position: relative;
 }
 
 .layer-row {
     transition: background 0.1s;
     min-height: 30px;
+    width: 100%;
+    flex-wrap: nowrap;
+    /* Breathing room between every clickable control in the row (drag
+       handle, checkbox, reorder arrows, icon, color swatch, buttons...) —
+       fixed September 2026, "need make spaces around clicks": these all
+       used the same tight `.me-1` (4px) margin, but several controls are
+       small (checkbox, reorder arrows) and were butting up right against
+       their neighbor with visually zero gap, making it easy to miss the
+       intended target and hit the one next to it instead. `gap` here adds
+       consistent extra space between EVERY direct child on top of whatever
+       margin each one already has. */
+    gap: 3px;
     padding-top: 2px;
     padding-bottom: 2px;
 }
 
 .layer-row:hover {
     background: #f0f4ff !important;
+}
+
+/* Checked via the row's own "select for grouping" checkbox — a persistent,
+   unmistakable highlight in the PANEL ITSELF (fixed September 2026, "if i
+   select some item need show it on paper"): the canvas-side effect
+   (toggleLayerSelection sets the real Paper.js item's `.selected`, drawing
+   Paper.js's own thin dashed outline + corner handles) can be easy to miss
+   for a small symbol on a busy photo, especially at a glance — this gives
+   an immediate, impossible-to-miss confirmation right where the click
+   happened, regardless of how the canvas itself renders selection. */
+.layer-row-selected {
+    background: #e7f1ff !important;
 }
 
 .drag-handle {
@@ -684,9 +731,28 @@ export default {
 }
 
 .layer-select-checkbox {
+    /* Explicit box + colors instead of relying purely on Bootstrap's
+       `.form-check-input` (1em-based sizing off the inherited font-size,
+       plus `--bs-*` custom properties for its border/background) — hardens
+       this one checkbox against any outer font-size/variable inheritance
+       quirk regardless of the exact cause, since a collapsed/invisible
+       checkbox here silently drops a row out of "select for grouping"
+       entirely with no visible sign anything is even there to click. */
     flex-shrink: 0;
+    flex-grow: 0;
     cursor: pointer;
+    width: 16px !important;
+    height: 16px !important;
     margin-top: 0 !important;
+    position: relative;
+    z-index: 1;
+    background-color: #fff;
+    border: 1px solid #999;
+    border-radius: 3px;
+}
+.layer-select-checkbox:checked {
+    background-color: #0d6efd;
+    border-color: #0d6efd;
 }
 
 .layer-icon-btn {

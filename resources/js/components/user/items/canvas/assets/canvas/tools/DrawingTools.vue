@@ -1952,7 +1952,23 @@ export default {
 
             const resolvedPosition = position || this.getLegendPosition();
             const resolvedScale = scale || this.getLegendScale();
-            mainLayer.data = { ...mainLayer.data, legendPosition: resolvedPosition, legendScale: resolvedScale };
+            // legendUpdatedAt only advances on an EXPLICIT toolbar choice
+            // (position/scale actually passed in, not the internal
+            // "just refresh with whatever was already stored" calls after
+            // every add/erase/delete) — see the combined-legend resolvers in
+            // SectorLocalImageCanvasComponent.vue's _resolveLegendMeta and
+            // canvasOverlaysMixin.js's computeEditorLegend, which pick
+            // whichever sibling sector's legend meta has the LATEST
+            // timestamp instead of an arbitrary fixed sibling, so the admin's
+            // most recent choice on ANY sector sharing this photo always
+            // wins (fixed September 2026, round 6 — reported as "legend
+            // position and size is not changing", i.e. the toolbar picker
+            // silently doing nothing whenever some OTHER sector on the same
+            // photo already had a real position saved first).
+            const legendUpdatedAt = (position !== undefined || scale !== undefined)
+                ? Date.now()
+                : (mainLayer.data && mainLayer.data.legendUpdatedAt) || undefined;
+            mainLayer.data = { ...mainLayer.data, legendPosition: resolvedPosition, legendScale: resolvedScale, legendUpdatedAt };
 
             // sector_local_image/spot_rock_image editors compute their OWN
             // combined legend as a separate live PREVIEW (see

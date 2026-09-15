@@ -90,6 +90,18 @@ export default {
             // bounding rect, relative to the root element's own
             // position-relative wrapper.
             legendClipStyle: { display: 'none' },
+            // Whether ANY sibling (including the currently-edited item)
+            // sharing this photo has a topo-symbol/POI marker at all — i.e.
+            // whether the combined legend has anything to show. Host pages
+            // pass this straight through to `<Editor :has_legend_symbols>`,
+            // which hides the whole Legend Position/Size toolbar group when
+            // false (fixed September 2026, round 13 — "if i dont have a
+            // sign item dont show position and size selection") instead of
+            // showing two controls that visibly do nothing yet. Computed the
+            // same way computeEditorLegend() itself decides whether to draw
+            // anything, so this can never disagree with what the preview
+            // actually shows.
+            hasLegendSymbols: false,
         };
     },
 
@@ -465,7 +477,7 @@ export default {
             const canvasContainer = this.$refs.editorComponent && this.$refs.editorComponent.$refs.canvasContainer;
             const scope = canvasContainer && typeof canvasContainer.getCanvasScope === 'function'
                 ? canvasContainer.getCanvasScope() : null;
-            if (!scope || !scope.view) { this.legendPreviewStyle = { display: 'none' }; this.legendClipStyle = { display: 'none' }; return; }
+            if (!scope || !scope.view) { this.legendPreviewStyle = { display: 'none' }; this.legendClipStyle = { display: 'none' }; this.hasLegendSymbols = false; return; }
 
             const canvasEl = scope.view.element;
             const previewEl = this.$refs.canvasOverlays && typeof this.$refs.canvasOverlays.getLegendCanvasEl === 'function'
@@ -473,20 +485,22 @@ export default {
             if (!canvasEl || !canvasEl.isConnected || !previewEl) {
                 this.legendPreviewStyle = { display: 'none' };
                 this.legendClipStyle = { display: 'none' };
+                this.hasLegendSymbols = false;
                 return;
             }
 
             const bgBounds = canvasContainer.getBackgroundBounds ? canvasContainer.getBackgroundBounds() : null;
-            if (!bgBounds) { this.legendPreviewStyle = { display: 'none' }; this.legendClipStyle = { display: 'none' }; return; }
+            if (!bgBounds) { this.legendPreviewStyle = { display: 'none' }; this.legendClipStyle = { display: 'none' }; this.hasLegendSymbols = false; return; }
 
             const samples = {};
             // See legendRenderer.js's drawCombinedLegend for the full
-            // rationale: prefer the first sibling with a real (non-hidden)
-            // position; only fall back to an explicit "hidden" when NO
-            // sibling — including the item currently being edited — set a
-            // real one. Otherwise this item's own "hidden" (a holdover from
-            // the old per-item legend) would blank the live preview even
-            // while a sibling on the same photo has a real symbol + position.
+            // rationale: among several real (non-hidden) positions, prefer
+            // whichever document's `legendUpdatedAt` is latest; only fall
+            // back to an explicit "hidden" when NO sibling — including the
+            // item currently being edited — set a real one. Otherwise this
+            // item's own "hidden" (a holdover from the old per-item legend)
+            // would blank the live preview even while a sibling on the same
+            // photo has a real symbol + position.
             let meta = null;
             let hiddenMeta = null;
             const collectFrom = (rawJson) => {
@@ -499,33 +513,33 @@ export default {
                 collectSymbolSamples(json, TOPO_SYMBOL_TYPES, samples);
                 const m = findLegendMeta(json);
                 if (!m) return;
-                if (m.position === 'hidden') { if (!hiddenMeta) hiddenMeta = m; }
-                else if (!meta) meta = m;
+                if (m.position === 'hidden') {
+                    if (!hiddenMeta || (m.updatedAt || 0) > (hiddenMeta.updatedAt || 0)) hiddenMeta = m;
+                } else if (!meta || (m.updatedAt || 0) > (meta.updatedAt || 0)) {
+                    meta = m;
+                }
             };
-            // Siblings collected BEFORE the currently-active item on purpose
-            // (bug fixed September 2026, reported as "legend position isn't
-            // synced between pitches — switching pitches changes it"):
-            // rebuildLegend() writes SOME legendPosition/legendScale into
-            // EVERY item's own saved json on EVERY save, whether or not the
-            // admin ever touched the toolbar's position picker for that
-            // specific item — so nearly every sibling "has a real position"
-            // by this check. `activeJsonProp` is whichever item is CURRENTLY
-            // selected, which changes every time the admin clicks a
-            // different pitch/route — collecting it first meant the winning
-            // position flip-flopped to match whatever the just-selected
-            // item's own (often just incidental/default) value happened to
-            // be. `_overlaySiblingJsons()` stays in the same backend-fetched
-            // order regardless of which item is currently selected, so
-            // checking it first is far more likely to keep resolving to the
-            // SAME sibling's position call after call — not perfectly
-            // order-independent (a genuine 3+-way disagreement between
-            // different items' saved positions has no fully "correct"
-            // answer without a dedicated per-image setting), but stable for
-            // the common case of one shared, intentionally-chosen position.
+            // Order here no longer decides the outcome on its own (bug fixed
+            // September 2026, round 6, reported as "legend position and size
+            // is not changing"): `legendUpdatedAt` (see DrawingTools.vue's
+            // rebuildLegend) only advances on an EXPLICIT toolbar choice, so
+            // whichever item the admin actually just touched — sibling or
+            // the one currently being edited — wins regardless of which gets
+            // collected first. Siblings are still collected before
+            // `activeJsonProp` so two legacy documents with no timestamp at
+            // all (both `updatedAt` 0) keep resolving to the SAME sibling
+            // call after call, same stable fallback the previous fix relied
+            // on entirely.
             this._overlaySiblingJsons().forEach(collectFrom);
             collectFrom(this.activeJsonProp);
 
             const entries = TOPO_SYMBOL_TYPES.filter(t => samples[t.key]).map(t => ({ ...t, sample: samples[t.key] }));
+            // Independent of `resolvedMeta.position === 'hidden'` below on
+            // purpose — the toolbar's Position/Size controls should stay
+            // visible whenever there's SOME symbol to legend, even while its
+            // resolved position happens to be "hidden" (the admin may well
+            // want to use those very controls to un-hide it).
+            this.hasLegendSymbols = entries.length > 0;
             const resolvedMeta = meta || hiddenMeta || { position: 'top-right', scale: 1 };
             if (!entries.length || resolvedMeta.position === 'hidden') {
                 this.legendPreviewStyle = { display: 'none' };
@@ -539,13 +553,34 @@ export default {
             // used to use) — the Paper.js canvas' own zoom (applied below via
             // toScreen) is what makes this preview grow/shrink with the
             // photo; this only reflects the toolbar's Size picker.
-            const scale = Math.max(0.3, resolvedMeta.scale || 1);
+            let scale = Math.max(0.3, resolvedMeta.scale || 1);
 
-            // Two-pass: draw once to measure the card's real (project-space)
-            // size, then resize the canvas buffer exactly to fit and draw
-            // again for real.
+            // Measure-then-draw: draw once (to a scratch buffer) to learn the
+            // card's real (project-space) size at this scale.
             previewEl.width = 400; previewEl.height = 400;
-            const size = drawLegendCard(ctx, entries, { scale, drawItem, translate });
+            let size = drawLegendCard(ctx, entries, { scale, drawItem, translate });
+            // Never let the live preview render bigger than the photo it's
+            // overlaid on — a real bug, fixed September 2026, round 11
+            // (reported directly: "editor [legend] is very big... make
+            // editor legend sizing like [the public viewer]", which already
+            // got this same cap in round 9/10 — see
+            // SectorLocalImageCanvasComponent.vue's `_legendLayout`). Unlike
+            // the viewer, this preview has no `cssScale`/native-resolution
+            // correction at all — it's already meant to sit in the SAME
+            // logical (CSS-pixel-equivalent) space `bgBounds` is measured
+            // in, so this scale should normally just be the toolbar's own
+            // Size picker (0.3-2.5) — but a container/view-size mismatch
+            // (e.g. the editor's layout reflowing after the Paper.js view
+            // was first sized, without the view being re-fit to match) can
+            // still inflate it well past that. Capping directly against
+            // `bgBounds` (already computed above, same project-space units
+            // `size` is in) is robust to the exact cause: whatever inflated
+            // it, the preview still ends up no bigger than the photo.
+            const overflow = Math.max(1, size.width / (bgBounds.width * 0.9), size.height / (bgBounds.height * 0.9));
+            if (overflow > 1) {
+                scale = scale / overflow;
+                size = drawLegendCard(ctx, entries, { scale, drawItem, translate });
+            }
             previewEl.width = Math.ceil(size.width);
             previewEl.height = Math.ceil(size.height);
             drawLegendCard(ctx, entries, { scale, drawItem, translate });

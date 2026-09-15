@@ -140,13 +140,30 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
                 ctx.arc((minX + maxX) / 2, (minY + maxY) / 2, radius, 0, Math.PI * 2);
                 ctx.fill();
             } else {
-                const pathStroke = strokeStyle || paperColorToCss(data.strokeColor) || '#cc2222';
-                ctx.strokeStyle = pathStroke;
-                let lw = (data.strokeWidth || 3) * widthMul;
-                if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
-                ctx.lineWidth   = lw;
-                ctx.lineCap     = 'round';
-                ctx.lineJoin    = 'round';
+                // Several DrawingTools.vue builders set `strokeWidth` on a
+                // path with NO `strokeColor` purely to invisibly store a
+                // symbol's "size" for later resize (e.g. _buildParkingParts'
+                // `parking-body`, _buildPoiParts'/_buildSummitParts'/
+                // _buildTentParts' headCircle/body) — real Paper.js only
+                // ever draws a stroke when `strokeColor` is actually set, so
+                // that trick relies on it staying invisible. This renderer
+                // used to always `ctx.stroke()` regardless, falling back to
+                // a hardcoded red (`#cc2222`) whenever `strokeColor` was
+                // absent — painting an unwanted red ring around every such
+                // shape (most visibly Parking's square, and, at legend-icon
+                // scale, a POI pin's head/tail glyphs, which are ALSO
+                // fillColor-only paths with no strokeColor: the very same
+                // unwanted red stroke was being drawn right on top of their
+                // small black glyph fills, at low contrast against the pin's
+                // own red, effectively hiding them — a real bug, fixed
+                // September 2026, root cause of both the Parking legend row's
+                // phantom red border and the "invisible" water/medical/bike
+                // glyph rows). Only stroke when there's an ACTUAL color to
+                // stroke with — an explicit override, or the item's own real
+                // authored `strokeColor` — exactly matching Paper.js's own
+                // "no strokeColor means no stroke" rule.
+                const realStroke = paperColorToCss(data.strokeColor);
+                const pathStroke = strokeStyle || realStroke;
                 ctx.beginPath();
                 ctx.moveTo(pts[0].x, pts[0].y);
                 for (let i = 1; i < pts.length; i++) {
@@ -169,16 +186,54 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
                     ctx.closePath();
                 }
                 if (data.closed && data.fillColor) {
-                    ctx.fillStyle = strokeStyle || paperColorToCss(data.fillColor) || pathStroke;
+                    ctx.fillStyle = strokeStyle || paperColorToCss(data.fillColor) || pathStroke || '#cc2222';
                     ctx.fill();
                 }
-                ctx.stroke();
+                if (pathStroke) {
+                    ctx.strokeStyle = pathStroke;
+                    // Paper.js's OWN default strokeWidth is 1 (not 3) — and
+                    // exportJSON() omits any property left at its class
+                    // default, so a path deliberately given a hairline
+                    // border (e.g. _buildParkingParts' `parking-inner-border`,
+                    // `strokeWidth: Math.max(1, R*0.1)`, which clamps to
+                    // exactly 1 for a typical marker size) round-trips with
+                    // NO `strokeWidth` field at all. Falling back to 3 here
+                    // tripled that hairline's real thickness — at legend-icon
+                    // scale (~3x) that swelled a subtle inset accent line
+                    // into a band thick enough to swallow most of the
+                    // surrounding fill, reading as a broken/wrong-colored
+                    // outline (a real bug, fixed September 2026: root cause
+                    // of the Parking legend row still looking wrong even
+                    // after the phantom-red-stroke fix above).
+                    let lw = (data.strokeWidth || 1) * widthMul;
+                    if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
+                    ctx.lineWidth = lw;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                } else if (!(data.closed && data.fillColor)) {
+                    // No real stroke color AND nothing was filled either —
+                    // there is genuinely nothing else to show this path with
+                    // (shouldn't normally happen for real drawn content),
+                    // so fall back to the old default rather than rendering
+                    // it fully invisible.
+                    ctx.strokeStyle = '#cc2222';
+                    let lw = (data.strokeWidth || 1) * widthMul;
+                    if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
+                    ctx.lineWidth = lw;
+                    ctx.lineCap = 'round';
+                    ctx.lineJoin = 'round';
+                    ctx.stroke();
+                }
             }
             ctx.restore();
 
         } else if (type === 'PointText') {
             if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
-            let fs = (data.fontSize || 20) * fontMul;
+            // Paper.js's own default fontSize is 12 (omitted from
+            // exportJSON when left at that default) — matches the
+            // strokeWidth default fix above, same underlying quirk.
+            let fs = (data.fontSize || 12) * fontMul;
             if (minFontPx) fs = Math.max(fs, minFontPx / currentScale());
             ctx.save();
             ctx.fillStyle    = textFillStyle || paperColorToCss(data.fillColor) || '#cc2222';

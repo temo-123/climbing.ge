@@ -113,8 +113,25 @@
             <!-- Canvas editor -->
             <div class="row">
                 <div class="col-12">
+                    <!-- Gated on selectedSectorId/extra_drawing_mode, not just
+                         imageUrl (fixed September 2026 — "if i dont select
+                         some entity... make imposeble to make some drowing...
+                         for local-sectors and spot image is not [gated, unlike
+                         route/pitch which already require a selection before
+                         their own editor even renders]"): the photo loads
+                         (and this component becomes mountable) independently
+                         of which sector's layout is being edited, so drawing
+                         on a canvas with NO sector picked yet used to be
+                         perfectly possible — `handleCanvasData` still fires
+                         and populates `canvasData` from that drawing, saveChanges()'s
+                         own `!selectedSectorId` guard blocks the actual save
+                         with an alert, and picking a sector afterward
+                         overwrites `canvasData` with THAT sector's own saved
+                         json — silently discarding everything just drawn.
+                         Hiding the editor entirely until a sector (or Extra
+                         Drawing mode) is chosen prevents the trap outright. -->
                     <Editor
-                        v-if="imageUrl"
+                        v-if="imageUrl && (selectedSectorId || extra_drawing_mode)"
                         ref="editorComponent"
                         :image_prop="imageUrl"
                         :json_prop="activeJsonProp"
@@ -124,11 +141,13 @@
                         :related_first_label="relatedFirstLabel"
                         :route_name="editorItemName"
                         :disable_auto_legend="true"
+                        :has_legend_symbols="hasLegendSymbols"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
                     />
-                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.loading_image_ellipsis') }}</div>
+                    <div v-else-if="!imageUrl" class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.loading_image_ellipsis') }}</div>
+                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.select_sector_first_alert') }}</div>
                 </div>
             </div>
         </div>

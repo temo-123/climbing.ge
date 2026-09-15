@@ -278,6 +278,16 @@ export default {
             }
         },
 
+        // Pans the view to center on a project-space point, clamped so the
+        // photo/drawing can never scroll out of frame — see CanvasManager
+        // .vue's own centerViewOn for the full rationale.
+        centerViewOn(point) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.centerViewOn === 'function') {
+                this.$refs.canvasManager.centerViewOn(point);
+            }
+        },
+
         getLegendPosition() {
             return this.isCanvasManagerReady && this.$refs.canvasManager
                 && typeof this.$refs.canvasManager.getLegendPosition === 'function'

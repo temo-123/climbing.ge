@@ -13,6 +13,7 @@
                 @legend-position-change="handleLegendPositionChange"
                 :legend-scale="legendScale"
                 @legend-scale-change="handleLegendScaleChange"
+                :has-legend-symbols="has_legend_symbols"
                 @reset="handleReset"
                 @undo="handleUndo"
                 @redo="handleRedo"
@@ -211,6 +212,8 @@
                     @move-layer-down="moveLayerDown"
                     @toggle-layer-selection="toggleLayerSelection"
                     @create-group-from-selection="createGroupFromSelection"
+                    @toggle-selected-visibility="toggleSelectedVisibility"
+                    @delete-selected-layers="deleteSelectedLayers"
                     @assign-item-group="assignItemToGroup"
                     @ungroup-layer="ungroupLayer"
                     @toggle-layer-visibility="toggleLayerVisibility"
@@ -299,6 +302,17 @@ export default {
             disable_auto_legend: {
                 type: Boolean,
                 default: false
+            },
+            // Forwarded straight to ToolbarComponent's own `hasLegendSymbols`
+            // prop (see there for the full rationale) — a host page using
+            // canvasOverlaysMixin sets this from computeEditorLegend's own
+            // "is there anything to show a legend for" computation. Defaults
+            // true so a host that never wires this up keeps the Legend
+            // Position/Size controls always visible, same as before this
+            // prop existed.
+            has_legend_symbols: {
+                type: Boolean,
+                default: true
             }
         },
         data: () => ({
@@ -1295,10 +1309,44 @@ export default {
                 this.saveCanvasData();
             },
 
+            // Checking a layer's own select-for-grouping checkbox previously had
+            // NO effect on the canvas at all — only `selectedLayerIds` (an id
+            // array feeding the "Group N" button) changed, so there was no way
+            // to visually confirm WHICH items were actually picked before
+            // grouping them (fixed September 2026 — "if i select some element
+            // need show it in paper"). Flips the real Paper.js item's own
+            // `.selected` (the same outline the Move/Select tool draws) — but
+            // that alone turned out to still be easy to miss for a small
+            // symbol on a busy photo (reported again: "ok it match beter but
+            // it i select item need show it on canvas"), so checking a box
+            // now ALSO re-centers the canvas view on that item via
+            // CanvasContainerComponent's `centerViewOn` (CLAMPED, unlike
+            // setting `scope.view.center` directly — an earlier version of
+            // this fix did exactly that, and centering on an item near the
+            // photo's own edge could push the whole photo out of the visible
+            // frame, leaving blank canvas: a real bug, fixed September 2026,
+            // "image change position if i select some item... some [stuff]
+            // is happend") — a jump the admin can't miss, and a genuinely
+            // useful "find this item on the photo" side effect for a busy
+            // multi-sector image. Only pans on SELECT, not on deselect
+            // (nothing useful to jump to when un-picking something), and
+            // only for the LAST item checked in a multi-select (panning to
+            // each one in turn as a batch is checked would just be noise).
             toggleLayerSelection(layer) {
                 const idx = this.selectedLayerIds.indexOf(layer.id);
-                if (idx === -1) this.selectedLayerIds.push(layer.id);
-                else this.selectedLayerIds.splice(idx, 1);
+                const item = this._itemById(layer.id);
+                if (idx === -1) {
+                    this.selectedLayerIds.push(layer.id);
+                    if (item) {
+                        item.selected = true;
+                        if (item.bounds) this.$refs.canvasContainer.centerViewOn(item.bounds.center);
+                    }
+                } else {
+                    this.selectedLayerIds.splice(idx, 1);
+                    if (item) item.selected = false;
+                }
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
             },
 
             // Groups multiple selected top-level items into one new group at once,
@@ -1317,9 +1365,56 @@ export default {
                 newGroup.name = `group ${currentCount + 1}`;
                 newGroup.data = { isLayerGroup: true };
                 this.$refs.canvasContainer.setGroupCounter(currentCount + 1);
-                items.forEach(item => newGroup.addChild(item)); // re-parents each, preserves order
+                items.forEach(item => { item.selected = false; newGroup.addChild(item); }); // re-parents each, preserves order
                 foundLayer.addChild(newGroup);
                 this.selectedLayerIds = [];
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            // Same "if ALL are currently visible, hide them; otherwise show
+            // them" convention as toggleLayersVisibility() above (the
+            // existing all-layers version of this button), just scoped to
+            // whatever's checked (fixed September 2026, "need make... dont
+            // show selectid items functions"). Selection stays intact
+            // afterward — hiding something you just picked shouldn't also
+            // un-pick it, unlike delete below where the items are gone.
+            toggleSelectedVisibility(ids) {
+                if (!ids || !ids.length) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                const items = ids.map(id => this._itemById(id)).filter(Boolean);
+                if (!items.length) return;
+                const allVisible = items.every(item => item.visible !== false);
+                items.forEach(item => { item.visible = !allVisible; });
+                scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            // Bulk counterpart to deleteLayerItem() (fixed September 2026,
+            // "need make del selected items"): same per-item cleanup (a
+            // rectangle's own text label, a sector label's sibling leader
+            // line) as the single-item version, just applied to every
+            // checked id in one confirm + one save instead of one at a time.
+            deleteSelectedLayers(ids) {
+                if (!ids || !ids.length) return;
+                if (!confirm(this.$t('admin.articles.canvas_editor.confirm_delete_selected', { count: ids.length }))) return;
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (!scope || !scope.project) return;
+                ids.forEach(id => {
+                    const item = this._itemById(id);
+                    if (!item) return;
+                    if (item.data && item.data.textLabel) item.data.textLabel.remove();
+                    if (item.data && item.data.isSectorLabel && item.layer) {
+                        const line = item.layer.children.find(c => c.data && c.data.isSectorLabelLine);
+                        if (line) line.remove();
+                    }
+                    item.remove();
+                });
+                this.selectedLayerIds = [];
+                if (this.$refs.canvasContainer.rebuildLegend) this.$refs.canvasContainer.rebuildLegend();
                 scope.view.update();
                 this.updateLayersList();
                 this.saveCanvasData();

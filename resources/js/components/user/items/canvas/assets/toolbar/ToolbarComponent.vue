@@ -89,50 +89,71 @@
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.topo_symbols_group_label') }}</div>
             </div>
 
-            <div class="vr align-self-stretch my-1 mx-2"></div>
+            <template v-if="hasLegendSymbols">
+                <div class="vr align-self-stretch my-1 mx-2"></div>
 
-            <!-- Legend position/size — its own group (not nested under Topo
-                 Symbols) so it doesn't make that group's column taller than
-                 every other tool-group and throw off the row's alignment. -->
-            <div class="tool-group">
-                <div class="d-flex flex-column gap-1">
-                    <div class="d-flex align-items-center gap-1">
-                        <span class="small text-muted legend-select-label">{{ $t('admin.articles.canvas_editor.legend_position_label') }}</span>
-                        <select class="form-select form-select-sm legend-position-select"
-                                :value="legendPosition"
-                                @change="$emit('legend-position-change', $event.target.value)"
-                                :title="$t('admin.articles.canvas_editor.legend_position_tooltip')">
-                            <option value="top-left">{{ $t('admin.articles.canvas_editor.legend_pos_top_left') }}</option>
-                            <option value="top-mid">{{ $t('admin.articles.canvas_editor.legend_pos_top_mid') }}</option>
-                            <option value="top-right">{{ $t('admin.articles.canvas_editor.legend_pos_top_right') }}</option>
-                            <option value="left-mid">{{ $t('admin.articles.canvas_editor.legend_pos_left_mid') }}</option>
-                            <option value="right-mid">{{ $t('admin.articles.canvas_editor.legend_pos_right_mid') }}</option>
-                            <option value="bot-left">{{ $t('admin.articles.canvas_editor.legend_pos_bot_left') }}</option>
-                            <option value="bot-mid">{{ $t('admin.articles.canvas_editor.legend_pos_bot_mid') }}</option>
-                            <option value="bot-right">{{ $t('admin.articles.canvas_editor.legend_pos_bot_right') }}</option>
-                            <option value="hidden">{{ $t('admin.articles.canvas_editor.legend_pos_hidden') }}</option>
-                        </select>
+                <!-- Legend position/size — its own group (not nested under Topo
+                     Symbols) so it doesn't make that group's column taller than
+                     every other tool-group and throw off the row's alignment.
+                     The whole group only renders once there's actually a symbol
+                     SOMEWHERE on this photo for a legend to represent (see
+                     `hasLegendSymbols` prop doc) — fixed September 2026, round
+                     13: previously shown unconditionally, so an admin drawing a
+                     brand-new sector/route/pitch with nothing on it yet saw two
+                     controls that visibly did nothing. -->
+                <div class="tool-group">
+                    <div class="d-flex flex-column gap-1">
+                        <div class="d-flex align-items-start gap-1">
+                            <span class="small text-muted legend-select-label pt-1">{{ $t('admin.articles.canvas_editor.legend_position_label') }}</span>
+                            <!-- Visual 3x3 compass-arrow picker — replaced the plain text
+                                 dropdown (fixed September 2026, round 12/14, "make
+                                 selections match more friendly"): the 8 real corner/edge
+                                 positions sit at their own matching spot in the grid, each
+                                 pointing the same direction its slot sits in (top-left cell
+                                 = ↖, etc.), so picking one is a single recognizable click
+                                 instead of reading through 9 text option strings. The
+                                 center cell (no real direction of its own) doubles as
+                                 "hidden" (✕) — semantically the odd one out anyway, since
+                                 it means "don't show it" rather than pinning to an edge. -->
+                            <div class="legend-position-grid" :title="$t('admin.articles.canvas_editor.legend_position_tooltip')">
+                                <button v-for="cell in legendPositionGrid" :key="cell.value"
+                                        type="button"
+                                        class="legend-position-cell"
+                                        :class="{ active: legendPosition === cell.value, 'is-hidden-cell': cell.value === 'hidden' }"
+                                        :title="$t(`admin.articles.canvas_editor.${cell.labelKey}`)"
+                                        :aria-label="$t(`admin.articles.canvas_editor.${cell.labelKey}`)"
+                                        @click="$emit('legend-position-change', cell.value)">
+                                    {{ cell.arrow }}
+                                </button>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-1">
+                            <span class="small text-muted legend-select-label">{{ $t('admin.articles.canvas_editor.legend_scale_label') }}</span>
+                            <!-- "− 100% +" stepper — replaced the plain `<select>` (round
+                                 13, reported as "blinking" / refusing to keep the picked
+                                 size) and then the 7-button row it became (round 14, "make
+                                 selections match more friendly": 7 buttons read as busier/
+                                 wider than this whole toolbar column needs for a value
+                                 that's really just "smaller/bigger"). See
+                                 legendScaleOptions'/legendScaleIndex's own comments. -->
+                            <div class="legend-scale-stepper" :title="$t('admin.articles.canvas_editor.legend_scale_tooltip')">
+                                <button type="button" class="legend-scale-step-btn"
+                                        :disabled="legendScaleIndex <= 0"
+                                        :aria-label="$t('admin.articles.canvas_editor.legend_scale_decrease')"
+                                        @click="stepLegendScale(-1)">−</button>
+                                <span class="legend-scale-value">{{ Math.round(legendScale * 100) }}%</span>
+                                <button type="button" class="legend-scale-step-btn"
+                                        :disabled="legendScaleIndex >= legendScaleOptions.length - 1"
+                                        :aria-label="$t('admin.articles.canvas_editor.legend_scale_increase')"
+                                        @click="stepLegendScale(1)">+</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center gap-1">
-                        <span class="small text-muted legend-select-label">{{ $t('admin.articles.canvas_editor.legend_scale_label') }}</span>
-                        <select class="form-select form-select-sm legend-position-select"
-                                :value="legendScale"
-                                @change="$emit('legend-scale-change', parseFloat($event.target.value))"
-                                :title="$t('admin.articles.canvas_editor.legend_scale_tooltip')">
-                            <option value="0.5">50%</option>
-                            <option value="0.75">75%</option>
-                            <option value="1">100%</option>
-                            <option value="1.25">125%</option>
-                            <option value="1.5">150%</option>
-                            <option value="2">200%</option>
-                            <option value="2.5">250%</option>
-                        </select>
-                    </div>
+                    <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.legend_group_label') }}</div>
                 </div>
-                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.legend_group_label') }}</div>
-            </div>
 
-            <div class="vr align-self-stretch my-1 mx-2"></div>
+                <div class="vr align-self-stretch my-1 mx-2"></div>
+            </template>
 
             <!-- Anchors — four small sub-clusters (anchor / portaledge / rappel
                  / rescue) instead of one undifferentiated 10-button row, so
@@ -354,9 +375,68 @@ export default {
         legendScale: {
             type: Number,
             default: 1
+        },
+        // Whether ANY sector/route/pitch sharing this photo has a topo-
+        // symbol/POI marker to actually show a legend for (see
+        // canvasOverlaysMixin.js's computeEditorLegend, which computes this
+        // the same way the combined legend itself decides what to show —
+        // aggregated across every sibling, not just whichever item is
+        // currently selected). Hides the whole Legend Position/Size group
+        // when false instead of leaving two controls visible that affect
+        // nothing yet (fixed September 2026, round 13 — "if i dont have a
+        // sign item dont show position and size selection"). Defaults to
+        // true so a host page that hasn't wired this prop up at all (i.e.
+        // isn't one of the 5 combined-legend editors) keeps its old
+        // always-visible behavior.
+        hasLegendSymbols: {
+            type: Boolean,
+            default: true
         }
     },
     computed: {
+        // Same fixed 7 sizes the old `<select>` offered — now stepped
+        // through via a "− 100% +" stepper (fixed September 2026, round 13
+        // replaced the `<select>` with 7 separate pill buttons because a
+        // native `<select>`'s open dropdown was reported as "blinking" and
+        // refusing to keep the chosen size — the same live-preview
+        // recomputing every animation frame, see canvasOverlaysMixin.js's
+        // computeEditorLegend, was interrupting it; round 14 then swapped
+        // those 7 buttons for this narrower stepper, "make selections match
+        // more friendly").
+        legendScaleOptions() {
+            return [0.5, 0.75, 1, 1.25, 1.5, 2, 2.5];
+        },
+        // Current position of `legendScale` within legendScaleOptions, for
+        // the stepper's own +/- bounds and display. Falls back to 100%'s
+        // index on a value that isn't one of the 7 fixed stops (shouldn't
+        // normally happen — every write path only ever picks from this same
+        // list — but keeps the stepper from landing on -1/showing nothing).
+        legendScaleIndex() {
+            const idx = this.legendScaleOptions.indexOf(this.legendScale);
+            return idx === -1 ? this.legendScaleOptions.indexOf(1) : idx;
+        },
+        // Row-major 3x3 layout for the visual legend-position picker (see
+        // the template) — each cell's grid slot IS its own real on-photo
+        // corner/edge, so the array order below directly controls layout;
+        // 'hidden' sits in the unused center slot. Matches LEGEND_POSITIONS
+        // (topoSymbolTypes.js) minus the ordering, which there is a flat
+        // list (used by the old `<select>`) rather than a grid. Each cell's
+        // `arrow` glyph points the same direction its slot sits in the
+        // grid (compass-style, fixed September 2026, round 14) — 'hidden'
+        // (the center, no direction of its own) gets a plain ✕ instead.
+        legendPositionGrid() {
+            return [
+                { value: 'top-left',  labelKey: 'legend_pos_top_left',  arrow: '↖' },
+                { value: 'top-mid',   labelKey: 'legend_pos_top_mid',   arrow: '↑' },
+                { value: 'top-right', labelKey: 'legend_pos_top_right', arrow: '↗' },
+                { value: 'left-mid',  labelKey: 'legend_pos_left_mid',  arrow: '←' },
+                { value: 'hidden',    labelKey: 'legend_pos_hidden',    arrow: '✕' },
+                { value: 'right-mid', labelKey: 'legend_pos_right_mid', arrow: '→' },
+                { value: 'bot-left',  labelKey: 'legend_pos_bot_left',  arrow: '↙' },
+                { value: 'bot-mid',   labelKey: 'legend_pos_bot_mid',   arrow: '↓' },
+                { value: 'bot-right', labelKey: 'legend_pos_bot_right', arrow: '↘' },
+            ];
+        },
         actionLabel() {
             const labels = {
                 1:  this.$t('admin.articles.canvas_editor.action_label_line'),
@@ -463,6 +543,16 @@ export default {
             if (warningActions.includes(this.action))  return 'bg-warning text-dark';
             return 'bg-secondary';
         }
+    },
+    methods: {
+        // Steps the legend-scale stepper one stop (±1 through
+        // legendScaleOptions) — clamps at either end instead of wrapping,
+        // matching the +/- buttons' own `:disabled` state at those ends.
+        stepLegendScale(delta) {
+            const idx = this.legendScaleIndex + delta;
+            if (idx < 0 || idx >= this.legendScaleOptions.length) return;
+            this.$emit('legend-scale-change', this.legendScaleOptions[idx]);
+        }
     }
 }
 </script>
@@ -485,18 +575,93 @@ export default {
     line-height: 1;
     text-align: center;
 }
-.legend-position-select {
-    font-size: 10px;
-    padding: 1px 16px 1px 4px;
-    height: auto;
-    width: 100px;
-    flex-shrink: 0;
+/* "− 100% +" stepper replacing the old row of 7 size-percentage buttons
+   (fixed September 2026, round 14, "make selections match more friendly") —
+   a value that's really just "smaller/bigger" reads more like a real widget
+   as a compact stepper than as 7 separate pills. */
+.legend-scale-stepper {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.legend-scale-step-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ced4da;
+    border-radius: 3px;
+    background: #fff;
+    color: #495057;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+.legend-scale-step-btn:hover:not(:disabled) {
+    border-color: #86b7fe;
+    background: #f0f6ff;
+}
+.legend-scale-step-btn:disabled {
+    color: #ced4da;
+    cursor: default;
+}
+.legend-scale-value {
+    font-size: 11px;
+    font-weight: 600;
+    color: #333;
+    width: 34px;
+    text-align: center;
 }
 .legend-select-label {
     font-size: 9px;
     width: 26px;
     flex-shrink: 0;
     text-align: right;
+}
+/* Visual 3x3 compass-arrow picker replacing the old plain-text position
+   dropdown (fixed September 2026, round 12; arrows + bigger cells round 14,
+   "make selections match more friendly") — each cell shows a directional
+   glyph matching its own spot in the grid. */
+.legend-position-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 22px);
+    grid-template-rows: repeat(3, 22px);
+    gap: 3px;
+}
+.legend-position-cell {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    background: #fff;
+    color: #495057;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+}
+.legend-position-cell:hover {
+    border-color: #86b7fe;
+    background: #f0f6ff;
+}
+.legend-position-cell.active {
+    border-color: #0d6efd;
+    background: #0d6efd;
+    color: #fff;
+}
+/* The center "hidden" cell reads as a toggle (✕), not a direction, so it
+   gets its own muted resting look distinct from the 8 real positions —
+   still shares the same `.active` treatment when actually selected. */
+.legend-position-cell.is-hidden-cell {
+    color: #adb5bd;
+}
+.legend-position-cell.is-hidden-cell.active {
+    color: #fff;
 }
 /* Approximates the "vertical bar in a circle" glyph (precarious/medium
    quality anchor) by rotating the closest real FontAwesome 4 icon

@@ -386,7 +386,9 @@ export default {
                         if (!data.content || !data.matrix || data.matrix.length < 6) return;
                         // Text drawn at (matrix[4], matrix[5]) in parent space
                         const pos = this._tPt(ctm, data.matrix[4], data.matrix[5]);
-                        const fs  = data.fontSize || 20;
+                        // Paper.js's own default fontSize is 12 (omitted
+                        // from exportJSON when left at that default).
+                        const fs  = data.fontSize || 12;
                         // Approximate hit rect around the label
                         const w = fs * data.content.length * 0.65;
                         const h = fs * 1.2;
@@ -598,13 +600,29 @@ export default {
                         ctx.arc((minX + maxX) / 2, (minY + maxY) / 2, radius, 0, Math.PI * 2);
                         ctx.fill();
                     } else {
+                        // `realColors` mode (only drawCombinedLegendOverlay's
+                        // per-icon draw, with `strokeStyle` null) must respect
+                        // the item's REAL absence of a strokeColor — several
+                        // DrawingTools.vue builders set `strokeWidth` on a
+                        // fillColor-only path with no `strokeColor` purely to
+                        // invisibly store a symbol's "size" for later resize
+                        // (e.g. Parking's body, a POI/summit/tent marker's
+                        // headCircle) — real Paper.js only draws a stroke
+                        // when strokeColor is set. `colorOf(undefined, null)`
+                        // here returns null/undefined, and this used to still
+                        // `ctx.stroke()` unconditionally with whatever
+                        // strokeStyle the canvas 2D context happened to have
+                        // left over from the previous shape drawn — painting
+                        // a stray, essentially random-colored ring around
+                        // every such shape at legend-icon scale (mirrors the
+                        // same bug fixed in paperJsonRenderer.js's drawItem;
+                        // see there for the full writeup, including the
+                        // Parking legend row's phantom border this caused).
+                        // Outside `realColors` mode `strokeStyle` is always a
+                        // real flat highlight color (route/pitch default/
+                        // hover/selected), so `effectiveStroke` there is
+                        // unaffected and always stroked, same as before.
                         const effectiveStroke = realColors ? colorOf(data.strokeColor, strokeStyle) : strokeStyle;
-                        ctx.strokeStyle = effectiveStroke;
-                        let lw = (data.strokeWidth || 3) * widthMul;
-                        if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
-                        ctx.lineWidth   = lw;
-                        ctx.lineCap     = 'round';
-                        ctx.lineJoin    = 'round';
                         ctx.beginPath();
                         ctx.moveTo(pts[0].x, pts[0].y);
                         for (let i = 1; i < pts.length; i++) {
@@ -636,13 +654,30 @@ export default {
                             ctx.fillStyle = realColors ? colorOf(data.fillColor, effectiveStroke) : strokeStyle;
                             ctx.fill();
                         }
-                        ctx.stroke();
+                        if (effectiveStroke) {
+                            ctx.strokeStyle = effectiveStroke;
+                            // Paper.js's own default strokeWidth is 1 (not
+                            // 3) and exportJSON() omits any property left at
+                            // its class default — see paperJsonRenderer.js's
+                            // drawItem for the full rationale (a hairline
+                            // border, e.g. Parking's inset white square,
+                            // round-trips with no strokeWidth field at all,
+                            // and used to render 3x too thick here).
+                            let lw = (data.strokeWidth || 1) * widthMul;
+                            if (minStrokePx) lw = Math.max(lw, minStrokePx / currentScale());
+                            ctx.lineWidth = lw;
+                            ctx.lineCap = 'round';
+                            ctx.lineJoin = 'round';
+                            ctx.stroke();
+                        }
                     }
                     ctx.restore();
 
                 } else if (type === 'PointText') {
                     if (!data.content || !data.matrix || !Array.isArray(data.matrix) || data.matrix.length < 6) return;
-                    let fs = (data.fontSize || 20) * fontMul;
+                    // Paper.js's own default fontSize is 12 (omitted from
+                    // exportJSON when left at that default).
+                    let fs = (data.fontSize || 12) * fontMul;
                     if (minFontPx) fs = Math.max(fs, minFontPx / currentScale());
                     ctx.save();
                     ctx.fillStyle    = realColors ? colorOf(data.fillColor, textFillStyle) : textFillStyle;

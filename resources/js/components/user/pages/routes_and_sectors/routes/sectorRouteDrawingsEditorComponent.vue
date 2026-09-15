@@ -171,6 +171,7 @@
                         :related_first_label="relatedFirstLabel"
                         :route_name="extra_drawing_mode ? 'extra info' : (mtp_pitch_mode ? ('Pitch ' + selectedPitchName) : selectedRouteName)"
                         :disable_auto_legend="true"
+                        :has_legend_symbols="hasLegendSymbols"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"

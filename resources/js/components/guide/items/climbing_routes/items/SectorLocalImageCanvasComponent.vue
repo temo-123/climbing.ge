@@ -41,8 +41,25 @@
 </template>
 
 <script>
-import { drawItem, drawItemScaled } from '../../../../../services/canvas/paperJsonRenderer.js';
+import { drawItem, drawItemScaled, itemScale, itemOffset } from '../../../../../services/canvas/paperJsonRenderer.js';
 import { TOPO_SYMBOL_TYPES, LEGEND_CATEGORIES } from '../../../../user/items/canvas/assets/canvas/tools/topoSymbolTypes.js';
+
+// Every `.data` flag a topo-symbol/anchor/landmark/POI marker Group can carry
+// (see TOPO_SYMBOL_TYPES' own match() predicates) — used both to skip these
+// groups from the plain single-pass content draw (see draw(), which instead
+// draws each one individually with its own legibility boost) and to detect
+// one while walking a layout's json (_collectMarkerGroups).
+const MARKER_FLAGS = [
+    'isRappel', 'isBolt', 'isPin', 'isPendulum', 'isCrux', 'isAnchorSymbol',
+    'isSummitMarker', 'isTentMarker', 'isParkingMarker', 'isPoiMarker',
+];
+// Anchored at their own bottom tip (a teardrop pin's point, or a tent's
+// ground line) rather than centered — see DrawingTools.vue's _buildPoiParts/
+// _buildSummitParts/_buildTentParts, all of which build the shape ABOVE the
+// clicked point. Boosting these around their own bounding-box CENTER would
+// visibly drag the marker's point away from the real spot on the photo it's
+// marking; boosting around bottom-center keeps it exactly in place.
+const BOTTOM_ANCHORED_FLAGS = ['isPoiMarker', 'isSummitMarker', 'isTentMarker'];
 
 export default {
     props: {
@@ -307,7 +324,12 @@ export default {
                     // publicly.
                     const ld = data.data || {};
                     if (!legendMeta && (ld.legendPosition || ld.legendScale)) {
-                        legendMeta = { position: ld.legendPosition || 'top-right', scale: ld.legendScale || 1 };
+                        // updatedAt (DrawingTools.vue's `legendUpdatedAt`,
+                        // only advanced on an explicit toolbar choice) lets
+                        // _resolveLegendMeta below prefer whichever sector
+                        // was actually touched most recently instead of a
+                        // fixed "first sector in list order" — see there.
+                        legendMeta = { position: ld.legendPosition || 'top-right', scale: ld.legendScale || 1, updatedAt: ld.legendUpdatedAt || 0 };
                     }
                     if (data.layers)   data.layers.forEach(walk);
                     if (data.children) data.children.forEach(walk);
@@ -442,20 +464,133 @@ export default {
             // 2026). Drawn in each layout's own REAL authored colors (null
             // style overrides), same as the admin editor shows them — this
             // page has no "reference vs. selected" highlight concept, every
-            // sector's content is just always shown. Skips isSectorLabel/
-            // isSectorLabelLine — drawSectorLabels() below draws that with
-            // its own styling/leader-line; drawing it again here would
-            // double it, the same class of bug the shared isLegend skip
-            // already prevents for the legend.
+            // sector's content is just always shown.
+            //
+            // Skips isSectorLabel/isSectorLabelLine/isRectangle/isCircle/
+            // isEllipse (see below) PLUS every MARKER_FLAGS symbol — those
+            // are drawn separately, individually, by _drawMarkersBoosted
+            // right after, with a legibility boost this single flat pass
+            // can't apply (see there for the full rationale).
+            const cssScale = this._cssScale();
+            // Computed ONCE here and shared with BOTH the marker boost below
+            // and the actual legend draw at the end — see _legendLayout's
+            // own comment for why they must never be derived independently
+            // of each other again.
+            const legendLayout = this._legendLayout(cssScale);
+            const markerScale = legendLayout ? legendLayout.scale : cssScale;
+            const skipFlagsForFlatPass = ['isSectorLabel', 'isSectorLabelLine', 'isRectangle', 'isCircle', 'isEllipse', ...MARKER_FLAGS];
             this.parsedLayouts.forEach(layout => {
                 if (!layout.rawMeta) return;
+                // isSectorLabel/isSectorLabelLine — drawSectorLabels() below
+                // draws that with its own styling/leader-line; drawing it
+                // again here would double it, the same class of bug the
+                // shared isLegend skip already prevents for the legend.
+                // isRectangle/isCircle/isEllipse — the sector-boundary shape
+                // is ALREADY drawn just above as a translucent yellow/green
+                // hover-highlight box (see the `layout.shapes` loop above,
+                // extracted from this exact same Path by extractShapes) —
+                // without this skip, this pass drew it a SECOND time in its
+                // own real authored stroke color (e.g. plain red) sitting on
+                // top of/around the translucent highlight box, a real bug
+                // (fixed September 2026) that visibly cluttered every
+                // sector's boundary the moment this whole raw-content pass
+                // was added.
                 try {
-                    drawItemScaled(ctx, layout.rawMeta, w, h, null, null, null, 1, 1, ['isSectorLabel', 'isSectorLabelLine']);
+                    drawItemScaled(ctx, layout.rawMeta, w, h, null, null, null, 1, 1, skipFlagsForFlatPass);
+                } catch (_) {}
+                try {
+                    this._drawMarkersBoosted(ctx, layout, w, h, markerScale);
                 } catch (_) {}
             });
 
             this.drawSectorLabels(highlightIdx);
-            this.drawLegends();
+            this.drawLegends(legendLayout);
+        },
+
+        // Walks a layout's own untouched json, collecting every top-level
+        // topo-symbol/anchor/landmark/POI marker Group (see MARKER_FLAGS) —
+        // skips 'background'/'related-*' layers and isLegend/isSectorLabel
+        // subtrees, same convention as legendRenderer.js's
+        // collectSymbolSamples, but keeping EVERY instance found (not just
+        // one sample per type).
+        _collectMarkerGroups(json) {
+            const found = [];
+            const walk = (item) => {
+                if (!Array.isArray(item) || item.length < 2) return;
+                const [type, data] = item;
+                if (!data || typeof data !== 'object') return;
+                if (type === 'Layer' || type === 'Project') {
+                    const name = data.name || '';
+                    if (name === 'background' || name.startsWith('related-')) return;
+                    if (data.layers) data.layers.forEach(walk);
+                    if (data.children) data.children.forEach(walk);
+                } else if (type === 'Group' || type === 'CompoundPath') {
+                    const gd = data.data || {};
+                    if (gd.isSectorLabel || gd.isLegend) return;
+                    if (MARKER_FLAGS.some(f => gd[f])) { found.push(item); return; }
+                    if (data.children) data.children.forEach(walk);
+                }
+            };
+            if (Array.isArray(json) && json.length && Array.isArray(json[0])) json.forEach(walk);
+            else walk(json);
+            return found;
+        },
+
+        // Draws every marker Group in `layout` individually, boosted around
+        // its own real anchor point (see BOTTOM_ANCHORED_FLAGS) by `rawScale`
+        // — fixes markers staying pinned to the photo's own native-pixel
+        // proportions with NO correction at all (a real bug, fixed September
+        // 2026, reported as "signs... sizing in viewer... totally not
+        // correct"): on any screen narrower than the photo's native width —
+        // i.e. nearly always — they shrank into near-invisible specks while
+        // the legend, which DOES correct for this, stayed legible.
+        //
+        // `rawScale` MUST be the same final `scale` _legendLayout() computed
+        // (see draw(), which computes it once and passes it to both this and
+        // drawLegends()), not the raw `cssScale` — a photo whose combined
+        // legend is busy enough to hit _legendLayout's own "never bigger
+        // than the photo" cap has its legend scale shrunk below `cssScale`,
+        // and if markers kept using the uncapped `cssScale` instead, they'd
+        // render visibly BIGGER than the legend rows meant to represent them
+        // (a real bug, fixed September 2026, round 10 — the exact class of
+        // "signs vs. legend don't match" mismatch round 9 was built to fix,
+        // just reintroduced from the opposite direction by round 9's own
+        // legend-overflow cap).
+        //
+        // Boost is capped to [1, 3]: never shrinks a marker below its own
+        // authored native-pixel size (a photo shown BIGGER than native, e.g.
+        // a zoomed lightbox, needs no help), and never grows it past 3x even
+        // on a very narrow/busy-legend photo, so markers never balloon past
+        // a sane size even where the shared scale itself has no such cap.
+        _drawMarkersBoosted(ctx, layout, w, h, rawScale) {
+            let json = layout.rawMeta.json;
+            if (typeof json === 'string') json = JSON.parse(json);
+            if (typeof json === 'string') json = JSON.parse(json);
+            const groups = this._collectMarkerGroups(json);
+            if (!groups.length) return;
+
+            const boost = Math.max(1, Math.min(3, rawScale));
+            const { sx, sy } = itemScale(layout.rawMeta, w, h);
+            const { ox, oy } = itemOffset(layout.rawMeta);
+
+            groups.forEach(group => {
+                const bounds = this._rawNodeBounds(group);
+                if (!bounds) return;
+                const gd = (group[1] && group[1].data) || {};
+                const anchorX = (bounds.left + bounds.right) / 2;
+                const anchorY = BOTTOM_ANCHORED_FLAGS.some(f => gd[f]) ? bounds.bottom : (bounds.top + bounds.bottom) / 2;
+
+                ctx.save();
+                if (sx !== 1 || sy !== 1) ctx.scale(sx, sy);
+                if (ox !== 0 || oy !== 0) ctx.translate(-ox, -oy);
+                if (boost !== 1) {
+                    ctx.translate(anchorX, anchorY);
+                    ctx.scale(boost, boost);
+                    ctx.translate(-anchorX, -anchorY);
+                }
+                try { drawItem(ctx, group); } catch (_) {}
+                ctx.restore();
+            });
         },
 
         // Builds the ONE combined legend for this whole photo — the union of
@@ -502,7 +637,15 @@ export default {
                     if (data.children) data.children.forEach(visit);
                 } else if (type === 'Path') {
                     const segs = data.segments || [];
-                    const sw = (data.strokeWidth || 0) / 2;
+                    // Only pad by half the stroke width when this path
+                    // actually HAS a stroke (kept in sync with
+                    // legendRenderer.js's rawNodeBounds — see its comment
+                    // for the full rationale: several DrawingTools.vue
+                    // builders set `strokeWidth` on a fillColor-only path
+                    // with no `strokeColor` purely to invisibly store a
+                    // symbol's "size" for later resize, e.g. Parking's body
+                    // or a POI/summit/tent marker's headCircle).
+                    const sw = data.strokeColor ? (data.strokeWidth || 0) / 2 : 0;
                     segs.map(anchorPoint).forEach(p => {
                         minX = Math.min(minX, p.x - sw); maxX = Math.max(maxX, p.x + sw);
                         minY = Math.min(minY, p.y - sw); maxY = Math.max(maxY, p.y + sw);
@@ -514,15 +657,24 @@ export default {
             return { left: minX, top: minY, right: maxX, bottom: maxY };
         },
 
-        // Resolves the ONE combined legend's position/scale — the first
+        // Resolves the ONE combined legend's position/scale — among every
         // sector (in `this.layouts` order) that has EVER had its own legend
         // position/scale picker touched (see extractShapes' Layer-branch
-        // capture) AND set it to something other than "hidden" wins; falls
-        // back to 'top-right'/1 if none has. This is what makes the SAME
-        // toolbar picker the admin already sees in every sector's own editor
-        // actually control what shows up publicly, instead of that picker
-        // silently doing nothing for the combined legend (which otherwise
-        // always rendered top-right regardless).
+        // capture) and set it to something other than "hidden", whichever
+        // has the LATEST `updatedAt` wins (fixed September 2026, round 6 —
+        // reported as "legend position and size is not changing": picking a
+        // fixed first sector meant the toolbar picker silently did nothing
+        // whenever some OTHER sector sharing this photo already had a real
+        // position saved first); falls back to 'top-right'/1 if none has.
+        // This is what makes the SAME toolbar picker the admin already sees
+        // in every sector's own editor actually control what shows up
+        // publicly, instead of that picker silently doing nothing for the
+        // combined legend (which otherwise always rendered top-right
+        // regardless, or froze on whichever sector happened to sort first).
+        //
+        // `updatedAt` defaults to 0 for legacy saves made before this fix,
+        // so among those `reduce` below keeps the FIRST one found — same
+        // fallback behavior the previous fix relied on entirely.
         //
         // "hidden" is deliberately NOT preferred over a real position from a
         // LATER sector, even when an earlier one set it first — "hidden" is a
@@ -535,8 +687,10 @@ export default {
         // Only suppress here when EVERY sector that set anything at all asked
         // to hide it (i.e. no real position exists anywhere).
         _resolveLegendMeta() {
-            const real = this.parsedLayouts.find(l => l.legendMeta && l.legendMeta.position && l.legendMeta.position !== 'hidden');
-            if (real) return real.legendMeta;
+            const reals = this.parsedLayouts.filter(l => l.legendMeta && l.legendMeta.position && l.legendMeta.position !== 'hidden');
+            if (reals.length) {
+                return reals.reduce((best, l) => (l.legendMeta.updatedAt || 0) > (best.legendMeta.updatedAt || 0) ? l : best).legendMeta;
+            }
             const hidden = this.parsedLayouts.find(l => l.legendMeta && l.legendMeta.position === 'hidden');
             return (hidden && hidden.legendMeta) || { position: 'top-right', scale: 1 };
         },
@@ -568,28 +722,32 @@ export default {
             return groups;
         },
 
-        drawLegends() {
-            const entries = this._buildCombinedLegendEntries();
-            if (!entries.length) return;
-
-            const meta = this._resolveLegendMeta();
-            if (meta.position === 'hidden') return;
-
-            const ctx = this.ctx, w = this.imgW, h = this.imgH;
-            // This canvas is a flat raster at the photo's NATIVE resolution,
-            // CSS-scaled (usually down) to fit whatever width its container
-            // happens to be. The admin editor, by contrast, sizes the legend
-            // in Paper.js's LOGICAL (CSS-pixel-equivalent) units — completely
-            // independent of the photo's native resolution — so it always
-            // looks the same relative size regardless of how big the source
-            // photo is. Scaling by native-px-per-CSS-px here reproduces that:
-            // drawing BIGGER in raw canvas pixels whenever the CSS-displayed
-            // size is smaller than native, so after the browser's own
-            // downscale it lands back at a roughly CONSTANT ~13 CSS-pixel
-            // font — matching the editor instead of drifting with photo
-            // resolution or container width (which a native-pixel-width-based
-            // formula, e.g. "w / 1200", has no way to account for).
+        // This canvas is a flat raster at the photo's NATIVE resolution,
+        // CSS-scaled (usually down) to fit whatever width its container
+        // happens to be. The admin editor, by contrast, sizes everything
+        // (symbols AND the legend) in Paper.js's LOGICAL (CSS-pixel-
+        // equivalent) units — completely independent of the photo's native
+        // resolution — so it always looks the same relative size regardless
+        // of how big the source photo is. Scaling by native-px-per-CSS-px
+        // here reproduces that: drawing BIGGER in raw canvas pixels whenever
+        // the CSS-displayed size is smaller than native, so after the
+        // browser's own downscale it lands back at a roughly CONSTANT CSS
+        // size — matching the editor instead of drifting with photo
+        // resolution or container width (which a native-pixel-width-based
+        // formula, e.g. "w / 1200", has no way to account for). Shared by
+        // drawLegends() and the marker-legibility boost in draw() (see
+        // _drawMarkersBoosted) — both need the EXACT same ratio, or the two
+        // would drift apart from each other exactly as much as they already
+        // drift from the editor (a real bug, fixed September 2026: markers
+        // stayed pinned to the photo's own native-pixel proportions with NO
+        // correction at all, so on any screen narrower than the photo's
+        // native width — i.e. almost always — they shrank into near-
+        // invisible specks while the legend, correctly compensating, stayed
+        // legible and ballooned into looking wildly oversized/inconsistent
+        // by comparison).
+        _cssScale() {
             const canvasEl = this.$refs.canvas;
+            const w = this.imgW;
             const cssWidth = canvasEl ? canvasEl.getBoundingClientRect().width : 0;
             // Clamp range widened from the original [0.5, 6] — a common large
             // source photo (e.g. ~3000px, this app's own upload cap) shown at
@@ -598,30 +756,45 @@ export default {
             // in exactly the common case, making the legend land smaller than
             // the editor's own ~13px-at-default-zoom baseline instead of
             // matching it exactly.
-            const cssScale = cssWidth > 0 ? Math.max(0.3, Math.min(10, w / cssWidth)) : 1;
-            const scale = cssScale * (meta.scale || 1);
-            // iconBox/rowH bumped up (twice) to match legendRenderer.js's own
-            // drawLegendCard (fixed September 2026, kept in sync per this
-            // file's own header comment) — see its comment for why: more
-            // room keeps a FILLED (no-stroke) glyph like the water-drop/
-            // medical-cross icons recognizable, since minStrokePx/minFontPx
-            // below can't help a shape with no stroke at all.
-            const pad = 12 * scale, rowH = 40 * scale, iconBox = 38 * scale, gap = 10 * scale;
-            const fontSize = 13 * scale, titleSize = 15 * scale, titleGap = 10 * scale;
-            const headingSize = 11 * scale, headingH = 22 * scale;
-            const margin = 12;
+            return cssWidth > 0 ? Math.max(0.3, Math.min(10, w / cssWidth)) : 1;
+        },
+
+        // Computes the legend's card layout AND its final effective scale
+        // (after the "never bigger than the photo" overflow cap below) —
+        // pure measurement, no drawing. Returns null when there's nothing to
+        // show (no symbols anywhere, or every sector's own position choice
+        // resolved to "hidden" — see _resolveLegendMeta).
+        //
+        // Exposed as its own method (rather than inlined in drawLegends())
+        // so draw() can call it ONCE, get the same final `scale` back, and
+        // use THAT (not the raw, pre-overflow-cap `cssScale`) to size the
+        // on-photo markers via _drawMarkersBoosted — a real bug, fixed
+        // September 2026, round 10 (reported as "sizing again is
+        // [wrong]"): round 9 boosted markers by raw `cssScale` and the
+        // legend by `cssScale` ALSO capped-down-if-too-busy — consistent
+        // ONLY as long as the cap never triggered. The moment a photo's
+        // combined legend was busy enough to need shrinking (exactly the
+        // case round 9's own overflow fix was built for), markers kept
+        // their full, uncapped boost while the legend's own icons shrank —
+        // markers ended up visibly BIGGER than the legend rows meant to
+        // represent them, a fresh mismatch in the opposite direction from
+        // round 9's original bug. Both now derive from this ONE shared
+        // number, so they can never drift apart from each other again.
+        _legendLayout(cssScale) {
+            const entries = this._buildCombinedLegendEntries();
+            if (!entries.length) return null;
+
+            const meta = this._resolveLegendMeta();
+            if (meta.position === 'hidden') return null;
+
+            const ctx = this.ctx, w = this.imgW, h = this.imgH;
+            if (cssScale == null) cssScale = this._cssScale();
 
             const titleText = this.$t ? this.$t('admin.articles.canvas_editor.legend_title') : 'Legend';
-            ctx.font = `bold ${titleSize}px Arial`;
-            const titleWidth = ctx.measureText(titleText).width;
-
             const rows = entries.map(e => ({
                 ...e,
                 labelText: this.$t ? this.$t(`admin.articles.canvas_editor.${e.labelKey}`) : e.key,
             }));
-            ctx.font = `bold ${fontSize}px Arial`;
-            const labelWidths = rows.map(r => ctx.measureText(r.labelText).width);
-
             // Group into labeled sections (Topo symbols / Anchors / Landmarks
             // / Points of interest) so a combined legend spanning several
             // sectors' worth of symbols doesn't read as one undifferentiated
@@ -635,10 +808,65 @@ export default {
                     : null,
             }));
 
-            const contentWidth = Math.max(titleWidth, ...rows.map((r, i) => iconBox + gap + labelWidths[i]));
-            const boxW = contentWidth + pad * 2;
-            const contentH = groups.reduce((acc, g) => acc + (g.headingText ? headingH : 0) + g.rows.length * rowH, 0);
-            const boxH = pad + titleSize + titleGap + contentH + pad;
+            // iconBox/rowH kept in sync with legendRenderer.js's own
+            // drawLegendCard (fixed September 2026, see its comment for the
+            // full rationale) — a decisively bigger box, not another small
+            // nudge: EVERY symbol sample gets force-fit into this ONE box
+            // regardless of its own authored size, which is what crushes a
+            // POI marker's fine (and sometimes FILLED, no-stroke) inner
+            // pictogram — minStrokePx/minFontPx below can't help a shape
+            // with no stroke at all. Wrapped in a function (instead of one
+            // flat computation) so the overflow guard below can re-measure
+            // at a SMALLER scale — text width doesn't shrink in perfect
+            // lockstep with a naive post-hoc division, so an accurate fit
+            // needs a real re-measurement, not just scaling the box down.
+            const measure = (scale) => {
+                const pad = 14 * scale, rowH = 56 * scale, iconBox = 48 * scale, gap = 12 * scale;
+                const fontSize = 13 * scale, titleSize = 15 * scale, titleGap = 10 * scale;
+                const headingSize = 11 * scale, headingH = 22 * scale;
+                ctx.font = `bold ${titleSize}px Arial`;
+                const titleWidth = ctx.measureText(titleText).width;
+                ctx.font = `bold ${fontSize}px Arial`;
+                const labelWidths = rows.map(r => ctx.measureText(r.labelText).width);
+                const contentWidth = Math.max(titleWidth, ...rows.map((r, i) => iconBox + gap + labelWidths[i]));
+                const boxW = contentWidth + pad * 2;
+                const contentH = groups.reduce((acc, g) => acc + (g.headingText ? headingH : 0) + g.rows.length * rowH, 0);
+                const boxH = pad + titleSize + titleGap + contentH + pad;
+                return { pad, rowH, iconBox, gap, fontSize, titleSize, titleGap, headingSize, headingH, boxW, boxH };
+            };
+
+            let scale = cssScale * (meta.scale || 1);
+            let m = measure(scale);
+            // Never let the combined legend become bigger than the photo
+            // it's drawn on top of — with several distinct symbol categories
+            // present (topo/anchor/landmark/POI can total a dozen-plus rows
+            // once every sector sharing a photo has drawn its own symbols),
+            // the CSS-legibility scale above can otherwise produce a card
+            // TALLER than the photo's own native height (a real bug, fixed
+            // September 2026 — reported as "signs and legend sizing... is
+            // totally not correct": a busy legend on a wide-but-not-tall
+            // photo grew past the photo's own bottom edge entirely). Shrink
+            // scale so the card fits within 90% of the photo's own width
+            // and height, trading away some legibility only in this rare
+            // "very busy legend on a small/oddly-shaped photo" case.
+            const overflow = Math.max(1, m.boxW / (w * 0.9), m.boxH / (h * 0.9));
+            if (overflow > 1) {
+                scale = scale / overflow;
+                m = measure(scale);
+            }
+            return { entries, meta, titleText, groups, scale, m };
+        },
+
+        // Draws the legend using a layout already computed by _legendLayout
+        // (see draw(), which computes it once and shares the resulting
+        // `scale` with _drawMarkersBoosted so the two can never drift apart
+        // — see _legendLayout's own comment for the full rationale).
+        drawLegends(layout) {
+            if (!layout) return;
+            const { meta, titleText, groups, m } = layout;
+            const { pad, rowH, iconBox, gap, fontSize, titleSize, titleGap, headingSize, headingH, boxW, boxH } = m;
+            const ctx = this.ctx, w = this.imgW, h = this.imgH;
+            const margin = 12;
 
             let x, y;
             switch (meta.position) {
@@ -694,6 +922,13 @@ export default {
                     const rowCenterY = rowY + rowH / 2;
                     const iconCenterX = x + pad + iconBox / 2;
 
+                    // Every symbol — topo/anchor/landmark/POI alike — draws as
+                    // the REAL, unmodified sample found on canvas, uniformly
+                    // scaled to fit `iconBox` off its own bounds: a true
+                    // small copy of the actual drawn sign (kept in sync with
+                    // legendRenderer.js's drawLegendCard, see its own header
+                    // comment for why an earlier version decomposed POI pins
+                    // into a plain circle instead — reverted).
                     const bounds = this._rawNodeBounds(r.sample);
                     if (bounds) {
                         const bw = bounds.right - bounds.left, bh = bounds.bottom - bounds.top;
@@ -707,13 +942,10 @@ export default {
                         ctx.scale(iconScale, iconScale);
                         ctx.translate(-localCenterX, -localCenterY);
                         // minStrokePx/minFontPx — see paperJsonRenderer.js's
-                        // drawItem for the full rationale: without this, a
-                        // POI marker's thin inner pictogram/letter (correct
-                        // at its normal on-photo size) shrinks below a pixel
-                        // once the whole marker is fit into this small fixed
-                        // icon box, leaving every POI kind looking like the
-                        // same plain teardrop.
-                        try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.6, minFontPx: 10 }); } catch (_) {}
+                        // drawItem for the full rationale: a fine authored
+                        // stroke/font can otherwise shrink below a pixel
+                        // once fit into this small fixed icon box.
+                        try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11 }); } catch (_) {}
                         ctx.restore();
                     }
 

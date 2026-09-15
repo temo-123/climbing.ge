@@ -156,6 +156,33 @@ export default {
                     this._activateMainLayer();
                     this.scope.view.update();
                 }
+                // Re-anchor undo history to whatever just got loaded (fixed
+                // September 2026 — see _reimportStrokes()'s own comment for the
+                // full rationale; this is the OTHER path a document switch can
+                // take — a host page whose background photo stays the SAME
+                // across items, e.g. several sectors sharing one photo, changes
+                // jsonProp directly without the background ever reloading, so
+                // _reimportStrokes() never runs for this kind of switch at all).
+                // Without this, `history` kept whichever OTHER item's stack was
+                // active before the switch, and undoing on the newly-selected
+                // item could unwind straight past its own real saved content.
+                //
+                // _initHistory() → _getDrawingJson() temporarily REMOVES every
+                // 'related-N' layer (so a sibling's reference overlay never
+                // ends up baked into THIS item's own saved/undo snapshots) and
+                // then restores them with a plain `project.addLayer()` — which
+                // appends to the END of the layers array, i.e. drawn ON TOP of
+                // 'main'. `importJsonData()` just above already positioned
+                // every related layer BELOW 'main' via
+                // _repositionRelatedLayersBelow() (a sibling's overlay must sit
+                // behind the item actually being edited); re-running it here
+                // undoes that naive reordering — a real regression (fixed
+                // September 2026): the admin's OWN drawing/signs on the
+                // main layer rendered fully hidden behind a sibling's
+                // reference overlay after switching sectors, reported as
+                // "drowing also not working".
+                this._initHistory();
+                this._repositionRelatedLayersBelow();
             },
             immediate: false,
         },
@@ -229,11 +256,11 @@ export default {
         // CURRENT background fit (see getBackgroundBounds), so they must run after
         // loadBackgroundRaster resolves, not before it (view size isn't final yet).
         const finishInitialLoad = () => {
+            // _reimportStrokes() itself calls _initHistory() once it's done (see
+            // there for why) — do NOT emit canvas_data ourselves here either;
+            // emitting would overwrite the parent's route_json before the user
+            // has drawn anything.
             this._reimportStrokes();
-
-            // Initialise the undo history with the current state but do NOT emit canvas_data —
-            // emitting here would overwrite the parent's route_json before the user has drawn anything.
-            this._initHistory();
             this.$emit('layers_ready');
         };
 
@@ -256,6 +283,27 @@ export default {
         // fit is CURRENTLY in place. Always call this only after the background has
         // finished loading (see mounted()/the `image` watcher) so getBackgroundBounds()
         // is accurate for the rescale math in importJsonData/importRelatedJsons.
+        //
+        // Always re-anchors the undo history to whatever just got loaded (fixed
+        // September 2026 — reported as "undo button... if i have signs drowing
+        // and legends... it del evrithink"): this is called both at the VERY
+        // FIRST load (mounted()'s finishInitialLoad, where history legitimately
+        // needs its one-time initial baseline) AND every time the background
+        // image itself changes later (the `image` prop watcher below, e.g.
+        // switching which route/pitch/spot-rock/sector-image is being edited in
+        // a host page that reuses one Editor instance across several items) —
+        // that second case used to leave `history` completely untouched, still
+        // holding whatever the PREVIOUS item's undo stack was. A host page
+        // typically mounts its `<Editor>` before the admin has selected any
+        // item at all (jsonProp starts null, so this method's own initial call
+        // captures a BLANK baseline) — selecting an item with its OWN
+        // pre-existing signs then loads real content on top of that stale blank
+        // baseline without ever moving it, so as few as ONE undo click on a
+        // freshly-selected item could unwind straight past everything already
+        // saved on it, all the way back to that original blank canvas. Calling
+        // _initHistory() again here, AFTER the real content is in place, makes
+        // "what's on screen right now" the new floor for undo, exactly like a
+        // fresh mount would.
         _reimportStrokes() {
             this.importRelatedJsons();
             if (this.jsonProp) {
@@ -264,6 +312,18 @@ export default {
                 // No drawing data — create an empty main layer so the canvas is ready to draw
                 this._activateMainLayer();
             }
+            // _initHistory() → _getDrawingJson() temporarily removes every
+            // 'related-N' layer and restores them with a plain
+            // `project.addLayer()` (appends to the END of the layers array,
+            // i.e. drawn ON TOP of 'main') — undoing the correct "below main"
+            // ordering importRelatedJsons()/importJsonData() just established
+            // via _repositionRelatedLayersBelow(). Re-running it here fixes a
+            // real regression (fixed September 2026, reported as "drowing
+            // also not working"): a sibling's reference overlay ended up
+            // rendered on top of — fully hiding — the item's own main
+            // drawing after this method ran.
+            this._initHistory();
+            this._repositionRelatedLayersBelow();
         },
 
         handleMouseDown(event) {
@@ -694,6 +754,22 @@ export default {
                 );
                 this.$emit('zoom-changed', fitZoom);
             }
+        },
+
+        // Pans the view to center on an arbitrary project-space point (e.g.
+        // an item's own bounds.center, used by EditorComponent.vue's
+        // toggleLayerSelection to bring a checked layer into view), THEN
+        // re-clamps — every other caller that moves `view.center` (zoomIn/
+        // zoomOut/handleMouseWheel) always follows it with `_clampPan()`,
+        // and this is no exception: without it, centering on an item near
+        // the photo's own edge could push the photo itself (and everything
+        // drawn on it) mostly or fully out of the visible frame, leaving
+        // blank canvas — a real bug, fixed September 2026 ("image change
+        // position if i select some item... some [stuff] is happend").
+        centerViewOn(point) {
+            if (!this.scope || !this.scope.view || !point) return;
+            this.scope.view.center = new paper.Point(point.x, point.y);
+            this._clampPan();
         },
 
     }

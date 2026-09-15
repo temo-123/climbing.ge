@@ -111,6 +111,7 @@
                     :related_first_label="related_first_label"
                     :route_name="extra_drawing_mode ? 'extra info' : route_name_prop"
                     :disable_auto_legend="true"
+                    :has_legend_symbols="hasLegendSymbols"
                     canvas_col_class="col-lg-8 col-md-8"
                     layers_col_class="col-lg-4 col-md-4"
                     @canvas_data="handleCanvasData"

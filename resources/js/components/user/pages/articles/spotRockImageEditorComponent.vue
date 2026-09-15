@@ -100,8 +100,16 @@
             <!-- Canvas editor -->
             <div class="row">
                 <div class="col-12">
+                    <!-- Gated on selectedSectorId/extra_drawing_mode, not just
+                         imageUrl — see sectorLocaleImageEditorComponent.vue's
+                         matching comment for the full rationale (fixed
+                         September 2026): without this, the canvas was
+                         drawable before picking a sector, and picking one
+                         afterward silently discarded whatever had just been
+                         drawn (canvasData gets overwritten with that sector's
+                         own saved json). -->
                     <Editor
-                        v-if="imageUrl"
+                        v-if="imageUrl && (selectedSectorId || extra_drawing_mode)"
                         ref="editorComponent"
                         :image_prop="imageUrl"
                         :json_prop="activeJsonProp"
@@ -111,11 +119,13 @@
                         :related_first_label="relatedFirstLabel"
                         :route_name="editorItemName"
                         :disable_auto_legend="true"
+                        :has_legend_symbols="hasLegendSymbols"
                         canvas_col_class="col-lg-8 col-md-8"
                         layers_col_class="col-lg-4 col-md-4"
                         @canvas_data="handleCanvasData"
                     />
-                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.spot_rock_image_editor.loading_image_ellipsis') }}</div>
+                    <div v-else-if="!imageUrl" class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.spot_rock_image_editor.loading_image_ellipsis') }}</div>
+                    <div v-else class="text-muted p-4 text-center border rounded">{{ $t('admin.articles.sector_local_image_editor.select_sector_first_alert') }}</div>
                 </div>
             </div>
         </div>

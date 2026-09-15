@@ -55,7 +55,11 @@ function collectSymbolSamples(json, symbolTypes, samples) {
 // Finds the first 'main' (non-background/non-related) Layer's own
 // legendPosition/legendScale (see DrawingTools.vue's rebuildLegend, which
 // stores this on every save regardless of whether a legend is present) —
-// or null if this document never had one set.
+// or null if this document never had one set. Also carries `updatedAt`
+// (DrawingTools.vue's `legendUpdatedAt`, only advanced on an explicit
+// toolbar choice) so callers combining several documents' meta (see
+// drawCombinedLegend below) can prefer whichever one was chosen most
+// recently instead of an arbitrary fixed document.
 function findLegendMeta(json) {
     let found = null;
     const walk = (item) => {
@@ -67,7 +71,7 @@ function findLegendMeta(json) {
             if (name === 'background' || name.startsWith('related-')) return;
             const ld = data.data || {};
             if (ld.legendPosition || ld.legendScale) {
-                found = { position: ld.legendPosition || 'top-right', scale: ld.legendScale || 1 };
+                found = { position: ld.legendPosition || 'top-right', scale: ld.legendScale || 1, updatedAt: ld.legendUpdatedAt || 0 };
                 return;
             }
             if (data.layers)   data.layers.forEach(walk);
@@ -97,7 +101,21 @@ function rawNodeBounds(node) {
             if (data.children) data.children.forEach(visit);
         } else if (type === 'Path') {
             const segs = data.segments || [];
-            const sw = (data.strokeWidth || 0) / 2;
+            // Only pad by half the stroke width when this path actually HAS
+            // a stroke (see paperJsonRenderer.js's drawItem for the full
+            // rationale) — several DrawingTools.vue builders set
+            // `strokeWidth` on a fillColor-only path with no `strokeColor`
+            // purely to invisibly store a symbol's "size" for later resize
+            // (e.g. Parking's body, a POI/summit/tent marker's headCircle).
+            // Padding for a stroke that's never actually drawn inflated the
+            // computed bounds well past the shape's real visual size,
+            // making the generic legend-icon fit (`iconBox / maxDim` in
+            // drawLegendCard) shrink the shape more than it should — a real
+            // bug, fixed September 2026 (e.g. Parking's blue square legend
+            // icon rendering visibly smaller than its own icon box, with a
+            // stray red ring at the box's true edge — see drawItem's fix for
+            // where that red ring itself came from).
+            const sw = data.strokeColor ? (data.strokeWidth || 0) / 2 : 0;
             segs.map(anchorPoint).forEach(p => {
                 minX = Math.min(minX, p.x - sw); maxX = Math.max(maxX, p.x + sw);
                 minY = Math.min(minY, p.y - sw); maxY = Math.max(maxY, p.y + sw);
@@ -142,18 +160,22 @@ function groupEntriesByCategory(rows) {
 // `(k) => this.$t('admin...' + k)`. Returns the card's {width, height} in
 // case the caller needs it (e.g. to size a wrapping <canvas> element).
 function drawLegendCard(ctx, entries, { x = 0, y = 0, scale = 1, drawItem, translate }) {
-    // iconBox was 22 — big enough for a bold, simple topo symbol (rappel/
-    // bolt/pin) but too small for a POI marker's fine inner pictogram/letter
-    // to stay recognizable once the whole marker (much larger, comparatively
-    // thin-detailed) is shrunk to fit it; see minStrokePx/minFontPx below.
-    // Bumped up twice (fixed September 2026, round 2: 22→30 wasn't enough
-    // for the FILLED (no-stroke) glyphs like the water-drop/medical-cross
-    // icons, which the minStrokePx floor can't help at all — only a bigger
-    // box gives their fill area enough pixels to read as their actual shape
-    // instead of a plain blob) so every symbol keeps more of its natural
-    // on-photo proportions — closer to how it actually looks drawn on the
-    // canvas.
-    const pad = 12 * scale, rowH = 40 * scale, iconBox = 38 * scale, gap = 10 * scale;
+    // iconBox was 22, the underlying issue every earlier bump (→30, →38)
+    // kept chasing: EVERY symbol sample gets force-fit into this ONE box via
+    // `iconScale = iconBox / maxDim` below, regardless of how large its own
+    // outer shape was authored — a topo symbol (rappel/bolt/pin) is built
+    // from an absolute, non-proportional stroke width, so it stays legible
+    // shrunk almost arbitrarily far; a POI marker's fine inner pictogram/
+    // letter is sized RELATIVE to its own much-larger pin (`_buildPoiParts`'s
+    // R = dotSize*2, vs. a topo symbol's R = dotSize), so the SAME shrink
+    // factor that's harmless for a bolt crushes a POI glyph's already-thin
+    // detail toward zero — worst for a FILLED (no-stroke) glyph like the
+    // water-drop/medical-cross icons, which minStrokePx below can't help at
+    // all since there's no stroke to floor. Committed to a decisively
+    // bigger box (fixed September 2026, round 3 of tuning this) rather than
+    // nudging it again — every symbol should read as an actual small COPY
+    // of the real drawn element, not a blurred impression of one.
+    const pad = 14 * scale, rowH = 56 * scale, iconBox = 48 * scale, gap = 12 * scale;
     const fontSize = 13 * scale, titleSize = 15 * scale, titleGap = 10 * scale;
     const headingSize = 11 * scale, headingH = 22 * scale;
 
@@ -216,6 +238,13 @@ function drawLegendCard(ctx, entries, { x = 0, y = 0, scale = 1, drawItem, trans
             const rowCenterY = rowY + rowH / 2;
             const iconCenterX = x + pad + iconBox / 2;
 
+            // Every symbol — topo/anchor/landmark/POI alike — draws as the
+            // REAL, unmodified sample found on canvas, uniformly scaled to
+            // fit `iconBox` off its own bounds (see rawNodeBounds): a true
+            // small copy of the actual drawn sign, nothing invented or
+            // simplified away (see the September 2026 round-7 note above
+            // `iconBox` for why an earlier version decomposed POI pins into
+            // a plain circle instead — reverted).
             const bounds = rawNodeBounds(r.sample);
             if (bounds) {
                 const bw = bounds.right - bounds.left, bh = bounds.bottom - bounds.top;
@@ -228,14 +257,11 @@ function drawLegendCard(ctx, entries, { x = 0, y = 0, scale = 1, drawItem, trans
                 ctx.translate(iconCenterX, rowCenterY);
                 ctx.scale(iconScale, iconScale);
                 ctx.translate(-localCenterX, -localCenterY);
-                // minStrokePx/minFontPx — see paperJsonRenderer.js's drawItem
-                // for the full rationale: without this, a POI marker's thin
-                // inner pictogram/letter (correct at its normal on-photo
-                // size) shrinks below a pixel once the whole marker is fit
-                // into this small fixed icon box, leaving every POI kind
-                // looking like the same plain teardrop — a real bug (fixed
-                // September 2026).
-                try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.6, minFontPx: 10 }); } catch (_) {}
+                // minStrokePx/minFontPx — see paperJsonRenderer.js's
+                // drawItem for the full rationale: a fine authored
+                // stroke/font can otherwise shrink below a pixel once
+                // fit into this small fixed icon box.
+                try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11 }); } catch (_) {}
                 ctx.restore();
             }
 
@@ -311,6 +337,13 @@ function drawCombinedLegend(ctx, w, h, jsons, refWidth, { drawItem, translate })
     // "hidden" back when a shared legend wasn't a concept, silently blanked
     // the whole combined legend for every OTHER route/pitch sharing that
     // sector image, in both the interactive viewer and the baked composite.
+    // Among several real (non-hidden) positions, prefer whichever document's
+    // `legendUpdatedAt` is latest (fixed September 2026, round 6 — reported
+    // as "legend position and size is not changing": picking a fixed first
+    // sibling meant the toolbar picker silently did nothing whenever some
+    // OTHER item sharing this photo already had a real position saved) —
+    // `>` (not `>=`) so legacy documents with no timestamp (0) still fall
+    // back to "first one found", same as before this fix.
     let meta = null;
     let hiddenMeta = null;
     (jsons || []).forEach(raw => {
@@ -323,8 +356,11 @@ function drawCombinedLegend(ctx, w, h, jsons, refWidth, { drawItem, translate })
         collectSymbolSamples(json, TOPO_SYMBOL_TYPES, samples);
         const m = findLegendMeta(json);
         if (!m) return;
-        if (m.position === 'hidden') { if (!hiddenMeta) hiddenMeta = m; }
-        else if (!meta) meta = m;
+        if (m.position === 'hidden') {
+            if (!hiddenMeta || (m.updatedAt || 0) > (hiddenMeta.updatedAt || 0)) hiddenMeta = m;
+        } else if (!meta || (m.updatedAt || 0) > (meta.updatedAt || 0)) {
+            meta = m;
+        }
     });
 
     const entries = TOPO_SYMBOL_TYPES.filter(t => samples[t.key]).map(t => ({ ...t, sample: samples[t.key] }));
