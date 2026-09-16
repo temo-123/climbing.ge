@@ -545,6 +545,19 @@ export default {
             if (!this.canvasData)       { alert(this.$t('admin.articles.sector_local_image_editor.draw_something_alert')); return false; }
             if (!this.selectedSectorId) { alert(this.$t('admin.articles.sector_local_image_editor.select_sector_first_alert')); return false; }
 
+            // Captured up front, NOT re-read after the await below — this
+            // save can take real wall-clock time (renderCompositeAtFullResolution
+            // decodes the background photo fresh via a plain `Image`), and
+            // nothing blocks the admin from picking a different sector (or
+            // "+ New Layout", which nulls selectedSectorId entirely) while
+            // it's in flight. Reading `this.selectedSectorId` again at POST
+            // time used to silently attribute THIS save's drawing to
+            // whichever sector became active in the meantime — corrupting
+            // that other sector's own content — or send a null sectorId and
+            // fail outright if "+ New Layout" was clicked (fixed September
+            // 2026, reported as "saving problems").
+            const savingSectorId = this.selectedSectorId;
+
             this.saving    = true;
             this.saveStatus = null;
 
@@ -586,7 +599,7 @@ export default {
                     '/set_sector/set_sector_local_images/save_canvas_data/' + this.$route.params.id,
                     {
                         canvasData:    json,
-                        sectorId:      this.selectedSectorId,
+                        sectorId:      savingSectorId,
                         edited_image:  editedImageData,
                         canvas_width:  canvasWidth,
                         canvas_height: canvasHeight,
@@ -594,11 +607,22 @@ export default {
                     }
                 );
 
-                this.saveStatus    = 'ok';
-                this._mainDrawingDirty = false;
-                this.activeLayoutId = response.data.layout_id;
+                this.saveStatus = 'ok';
+                // Only apply this save's own side effects to `activeLayoutId`/
+                // the dirty flag if the admin is STILL looking at the sector
+                // this save was actually for — otherwise a fast sector-switch
+                // during the await above would have this stale response
+                // overwrite state that already correctly belongs to the
+                // newly-selected sector.
+                if (this.selectedSectorId === savingSectorId) {
+                    this._mainDrawingDirty = false;
+                    this.activeLayoutId = response.data.layout_id;
+                }
 
                 // After first save the original is backed up — switch editor background to origin_img/
+                // (applies regardless of which sector is now active: once any
+                // save creates the origin_img backup, every sector editing
+                // this same shared photo must use it from then on).
                 if (response.data.has_original && this.imageInfo) {
                     this.imageInfo.has_original = true;
                     this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
@@ -625,50 +649,77 @@ export default {
         renderCompositeAtFullResolution(bgPath, ownMeta, relatedMetas) {
             return new Promise((resolve) => {
                 if (!bgPath) { resolve(null); return; }
+                // This composite JPEG is a cosmetic best-effort add-on — the
+                // REAL data being saved is the Paper.js json, already
+                // captured before this ever runs. But saveExtraDrawing()/
+                // saveChanges() `await` this whole promise BEFORE posting
+                // that json, so if it never settles, the actual save never
+                // even reaches the server. `bg.onload`'s body runs as a raw
+                // DOM event callback, not inside an async function — any
+                // exception escaping it (canvas.toDataURL() throwing on a
+                // tainted canvas, or anything else) does NOT reject this
+                // Promise, it just vanishes, leaving `resolve` never called
+                // and the entire save hung forever with no error shown
+                // anywhere (fixed September 2026, confirmed CRITICAL via
+                // production data: every extra-drawing row had completed
+                // its initial insert but had NEVER once successfully
+                // recorded a later update — every save after the first was
+                // silently swallowed by exactly this hang). `finish()`
+                // guarantees exactly one resolve no matter which path is
+                // taken, and the timeout guarantees one fires even if the
+                // image itself never loads or errors.
+                let settled = false;
+                const finish = (value) => { if (settled) return; settled = true; clearTimeout(timeoutId); resolve(value); };
+                const timeoutId = setTimeout(() => finish(null), 15000);
                 const bg = new Image();
                 bg.onload = () => {
-                    const w = bg.naturalWidth, h = bg.naturalHeight;
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w; canvas.height = h;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(bg, 0, 0, w, h);
-
-                    (relatedMetas || []).forEach(meta => {
-                        if (!meta || !meta.json) return;
-                        try { drawItemScaled(ctx, meta, w, h, null, null, null, 1, 1); } catch (_) {}
-                    });
-                    if (ownMeta && ownMeta.json) {
-                        try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
-                    }
-
-                    // Bakes the ONE combined legend (every symbol type present
-                    // across this layout + every sibling sharing this image)
-                    // into the saved composite — see legendRenderer.js's
-                    // drawCombinedLegend for why this is safe (never
-                    // reads any item's own baked-in isLegend group) and
-                    // necessary (previously no legend was ever saved into the
-                    // actual image file at all).
                     try {
-                        // Siblings BEFORE own on purpose (bug fixed September
-                        // 2026, reported as "legend position isn't synced
-                        // between pitches/routes" — see canvasOverlaysMixin
-                        // .js's computeEditorLegend for the same fix and its
-                        // full rationale): every save bakes into this SAME
-                        // shared photo file regardless of which sibling
-                        // triggered it, so "own first" meant the baked
-                        // position could shift depending on whichever item
-                        // was saved LAST.
-                        const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
-                        const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
-                        drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
-                            drawItem,
-                            translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
-                        });
-                    } catch (e) { console.error('drawCombinedLegend failed:', e); }
+                        const w = bg.naturalWidth, h = bg.naturalHeight;
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(bg, 0, 0, w, h);
 
-                    resolve(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
+                        (relatedMetas || []).forEach(meta => {
+                            if (!meta || !meta.json) return;
+                            try { drawItemScaled(ctx, meta, w, h, null, null, null, 1, 1); } catch (_) {}
+                        });
+                        if (ownMeta && ownMeta.json) {
+                            try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
+                        }
+
+                        // Bakes the ONE combined legend (every symbol type present
+                        // across this layout + every sibling sharing this image)
+                        // into the saved composite — see legendRenderer.js's
+                        // drawCombinedLegend for why this is safe (never
+                        // reads any item's own baked-in isLegend group) and
+                        // necessary (previously no legend was ever saved into the
+                        // actual image file at all).
+                        try {
+                            // Siblings BEFORE own on purpose (bug fixed September
+                            // 2026, reported as "legend position isn't synced
+                            // between pitches/routes" — see canvasOverlaysMixin
+                            // .js's computeEditorLegend for the same fix and its
+                            // full rationale): every save bakes into this SAME
+                            // shared photo file regardless of which sibling
+                            // triggered it, so "own first" meant the baked
+                            // position could shift depending on whichever item
+                            // was saved LAST.
+                            const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
+                            const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
+                            drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
+                                drawItem,
+                                translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
+                            });
+                        } catch (e) { console.error('drawCombinedLegend failed:', e); }
+
+                        finish(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
+                    } catch (e) {
+                        console.error('renderCompositeAtFullResolution failed:', e);
+                        finish(null);
+                    }
                 };
-                bg.onerror = () => resolve(null);
+                bg.onerror = () => finish(null);
                 bg.src = bgPath;
             });
         },

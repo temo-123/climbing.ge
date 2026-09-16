@@ -581,50 +581,75 @@ export default {
         renderCompositeAtFullResolution(bgPath, ownMeta, relatedMetas) {
             return new Promise((resolve) => {
                 if (!bgPath) { resolve(null); return; }
+                // This composite JPEG is a cosmetic best-effort add-on — the
+                // REAL data being saved is the Paper.js json, already
+                // captured before this ever runs. But the save flow `await`s
+                // this whole promise BEFORE posting that json, so if it
+                // never settles, the actual save never even reaches the
+                // server. `bg.onload`'s body runs as a raw DOM event
+                // callback, not inside an async function — any exception
+                // escaping it does NOT reject this Promise, it just
+                // vanishes, leaving `resolve` never called and the entire
+                // save hung forever with no error shown anywhere (fixed
+                // September 2026, confirmed CRITICAL via production data on
+                // the sector-local-image/spot-rock siblings: saved rows had
+                // completed their initial insert but had NEVER once
+                // successfully recorded a later update). `finish()`
+                // guarantees exactly one resolve no matter which path is
+                // taken, and the timeout guarantees one fires even if the
+                // image itself never loads or errors.
+                let settled = false;
+                const finish = (value) => { if (settled) return; settled = true; clearTimeout(timeoutId); resolve(value); };
+                const timeoutId = setTimeout(() => finish(null), 15000);
                 const bg = new Image();
                 bg.onload = () => {
-                    const w = bg.naturalWidth, h = bg.naturalHeight;
-                    const canvas = document.createElement('canvas');
-                    canvas.width = w; canvas.height = h;
-                    const ctx = canvas.getContext('2d');
-                    ctx.drawImage(bg, 0, 0, w, h);
-
-                    (relatedMetas || []).forEach(meta => {
-                        if (!meta || !meta.json) return;
-                        try { drawItemScaled(ctx, meta, w, h, null, null, null, 1, 1); } catch (_) {}
-                    });
-                    if (ownMeta && ownMeta.json) {
-                        try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
-                    }
-
-                    // Bakes the ONE combined legend (every symbol type present
-                    // across this route + every sibling route sharing this
-                    // sector image) into the saved composite — see
-                    // legendRenderer.js's drawCombinedLegend for why this
-                    // is safe (never reads any item's own baked-in isLegend
-                    // group) and necessary (previously no legend was ever
-                    // saved into the actual image file at all).
                     try {
-                        // Siblings BEFORE own on purpose (bug fixed September
-                        // 2026, reported as "legend position isn't synced
-                        // between pitches/routes" — see canvasOverlaysMixin
-                        // .js's computeEditorLegend for the same fix and its
-                        // full rationale): every save bakes into this SAME
-                        // shared photo file regardless of which sibling
-                        // triggered it, so "own first" meant the baked
-                        // position could shift depending on whichever item
-                        // was saved LAST.
-                        const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
-                        const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
-                        drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
-                            drawItem,
-                            translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
-                        });
-                    } catch (e) { console.error('drawCombinedLegend failed:', e); }
+                        const w = bg.naturalWidth, h = bg.naturalHeight;
+                        const canvas = document.createElement('canvas');
+                        canvas.width = w; canvas.height = h;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(bg, 0, 0, w, h);
 
-                    resolve(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
+                        (relatedMetas || []).forEach(meta => {
+                            if (!meta || !meta.json) return;
+                            try { drawItemScaled(ctx, meta, w, h, null, null, null, 1, 1); } catch (_) {}
+                        });
+                        if (ownMeta && ownMeta.json) {
+                            try { drawItemScaled(ctx, ownMeta, w, h, null, null, null, 1, 1); } catch (_) {}
+                        }
+
+                        // Bakes the ONE combined legend (every symbol type present
+                        // across this route + every sibling route sharing this
+                        // sector image) into the saved composite — see
+                        // legendRenderer.js's drawCombinedLegend for why this
+                        // is safe (never reads any item's own baked-in isLegend
+                        // group) and necessary (previously no legend was ever
+                        // saved into the actual image file at all).
+                        try {
+                            // Siblings BEFORE own on purpose (bug fixed September
+                            // 2026, reported as "legend position isn't synced
+                            // between pitches/routes" — see canvasOverlaysMixin
+                            // .js's computeEditorLegend for the same fix and its
+                            // full rationale): every save bakes into this SAME
+                            // shared photo file regardless of which sibling
+                            // triggered it, so "own first" meant the baked
+                            // position could shift depending on whichever item
+                            // was saved LAST.
+                            const allJsons = [...(relatedMetas || []).map(m => m && m.json), ownMeta && ownMeta.json];
+                            const refWidth = (ownMeta && (ownMeta.bg_width || ownMeta.canvas_width)) || w;
+                            drawCombinedLegend(ctx, w, h, allJsons, refWidth, {
+                                drawItem,
+                                translate: (key) => this.$t('admin.articles.canvas_editor.' + key),
+                            });
+                        } catch (e) { console.error('drawCombinedLegend failed:', e); }
+
+                        finish(canvasToJpegSized(canvas, COMPOSITE_JPEG_MIN_BYTES, COMPOSITE_JPEG_MAX_BYTES));
+                    } catch (e) {
+                        console.error('renderCompositeAtFullResolution failed:', e);
+                        finish(null);
+                    }
                 };
-                bg.onerror = () => resolve(null);
+                bg.onerror = () => finish(null);
                 bg.src = bgPath;
             });
         },
