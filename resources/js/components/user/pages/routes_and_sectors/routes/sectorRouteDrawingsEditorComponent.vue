@@ -800,7 +800,8 @@ export default {
                 // already fixed on the sector-local-image/spot-rock/pitch editors.
                 const savingRouteId = this.selectedRouteId;
                 const savingImageId = this.selectedImageId;
-                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
+                const siblingMetas = await this._fetchAllSiblingMetas(savingImageId, { excludeRouteId: savingRouteId });
+                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, siblingMetas);
 
                 const response = await axios.post('/set_route/save_route_drawing', {
                     route_id: savingRouteId,
@@ -854,21 +855,47 @@ export default {
         // Reported September 2026 as "extra drawing save deletes the route
         // I was just editing" (both directions of this one bug — see the
         // _layoutMeta fix above for the other half).
-        async _fetchAllSiblingMetas(sectorImageId) {
+        // excludeRouteId/excludePitchId omit whichever item is CURRENTLY being
+        // saved — its own fresh (possibly still-unsaved) content is passed
+        // separately as ownMeta by the caller, so including it here too would
+        // draw a stale server-side copy underneath the live one.
+        //
+        // Deliberately fetches the extra drawing here too (not read from
+        // this.extra_drawing_json/meta) — loadExtraDrawing() runs
+        // asynchronously every time selectedImageId changes, and saving a
+        // route/pitch quickly after selecting it (the natural, common case)
+        // could easily beat that fetch to completion, leaving those still
+        // null at save time and silently excluding the extra layer even
+        // with the _layoutMeta fix above in place. Reported September 2026
+        // as "extra drawing save deletes the route I was just editing —
+        // happens for every route and MTP editor."
+        async _fetchAllSiblingMetas(sectorImageId, { excludeRouteId, excludePitchId, excludeExtra } = {}) {
             if (!sectorImageId) return [];
-            const [routesRes, pitchesRes] = await Promise.all([
+            const [routesRes, pitchesRes, extraRes] = await Promise.all([
                 axios.get('/get_route/get_related_routes_jsons', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
                 axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
+                axios.get('/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId).catch(() => ({ data: {} })),
             ]);
             const metas = [];
-            (routesRes.data || []).forEach(r => metas.push({
-                json: r.json, canvas_width: r.canvas_width, canvas_height: r.canvas_height,
-                bg_left: r.bg_left, bg_top: r.bg_top, bg_width: r.bg_width, bg_height: r.bg_height,
-            }));
-            (pitchesRes.data || []).forEach(p => metas.push({
-                json: p.json, canvas_width: p.canvas_width, canvas_height: p.canvas_height,
-                bg_left: p.bg_left, bg_top: p.bg_top, bg_width: p.bg_width, bg_height: p.bg_height,
-            }));
+            (routesRes.data || []).forEach(r => {
+                if (excludeRouteId && r.route_id === excludeRouteId) return;
+                metas.push({
+                    json: r.json, canvas_width: r.canvas_width, canvas_height: r.canvas_height,
+                    bg_left: r.bg_left, bg_top: r.bg_top, bg_width: r.bg_width, bg_height: r.bg_height,
+                });
+            });
+            (pitchesRes.data || []).forEach(p => {
+                if (excludePitchId && p.mtp_pitch_id === excludePitchId) return;
+                metas.push({
+                    json: p.json, canvas_width: p.canvas_width, canvas_height: p.canvas_height,
+                    bg_left: p.bg_left, bg_top: p.bg_top, bg_width: p.bg_width, bg_height: p.bg_height,
+                });
+            });
+            const extra = extraRes.data && extraRes.data.extra_drawing;
+            if (!excludeExtra && extra && extra.json) metas.push({
+                json: extra.json, canvas_width: extra.canvas_width, canvas_height: extra.canvas_height,
+                bg_left: extra.bg_left, bg_top: extra.bg_top, bg_width: extra.bg_width, bg_height: extra.bg_height,
+            });
             return metas;
         },
 
@@ -890,7 +917,7 @@ export default {
                 bg_left: bgBoundsPayload.bg_left, bg_top: bgBoundsPayload.bg_top,
                 bg_width: bgBoundsPayload.bg_width, bg_height: bgBoundsPayload.bg_height,
             };
-            const siblingMetas = await this._fetchAllSiblingMetas(this.selectedImageId);
+            const siblingMetas = await this._fetchAllSiblingMetas(this.selectedImageId, { excludeExtra: true });
             const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, siblingMetas);
 
             this._extraDrawingSelectedImage = selectedImage; // read back in _onExtraDrawingSaved
@@ -944,7 +971,8 @@ export default {
                 };
                 const savingPitchId = this.selected_pitch_id;
                 const savingImageId = this.selectedImageId;
-                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
+                const siblingMetas = await this._fetchAllSiblingMetas(savingImageId, { excludePitchId: savingPitchId });
+                const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, siblingMetas);
 
                 const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
                     pitch_id: savingPitchId,
