@@ -65,6 +65,16 @@ export default {
     props: {
         image_src:  { default: null },   // sector local image URL
         layouts:    { default: () => [] }, // array of {id, json, sector_id, sector: {id, name, url_title}}
+        // Fully-resolved GET endpoint for this image's "extra drawing" — the
+        // toggleable general-annotation layer tied to the shared background
+        // photo itself rather than to any one sector (see
+        // canvasExtraDrawingMixin.js in the admin editor). Passed in already
+        // resolved (rather than e.g. a bare id) so this shared public
+        // renderer — reused for both sector-local-images AND spot-rock
+        // images, each with their OWN backend table/endpoint — never needs
+        // to know which of the two it's being used for. Optional: omit for
+        // any caller that has no such endpoint.
+        extra_drawing_url: { default: null },
     },
     emits: ['sector-click'],
     data() {
@@ -74,6 +84,10 @@ export default {
             imgW:           0,
             imgH:           0,
             parsedLayouts:  [],  // [{sectorId, sectorName, sectorUrlTitle, shapes:[{type,x,y,w,h,rx,ry}], symbolSamples}]
+            // Raw {json, canvas_width, canvas_height, bg_left, bg_top,
+            // bg_width, bg_height} fetched from extra_drawing_url, or null —
+            // see fetchExtraDrawing()/_buildExtraDrawingEntry().
+            extraDrawingData: null,
             hoveredSector:  null,
             hoveredIdx:     -1,
             tooltipX:       0,
@@ -87,6 +101,7 @@ export default {
             if (newVal && newVal.length) this.parseLayouts();
         },
         image_src() { this.loadImage(); },
+        extra_drawing_url: { immediate: true, handler() { this.fetchExtraDrawing(); } },
     },
     mounted() {
         this.ctx = this.$refs.canvas.getContext('2d');
@@ -159,7 +174,15 @@ export default {
                 const canvas = this.$refs.canvas;
                 canvas.width  = this.imgW;
                 canvas.height = this.imgH;
-                if (this.layouts && this.layouts.length) this.parseLayouts();
+                // parseLayouts() safely handles an empty `layouts` array on
+                // its own (and still folds in extraDrawingData, if any) — it
+                // was only skipped here as a micro-optimization, but that
+                // meant an image with zero sector layouts yet SOME
+                // extra-drawing content never got that content built into
+                // parsedLayouts at all once the real image size was known
+                // (fixed September 2026, part of the extra-drawing-not-
+                // showable fix above).
+                if ((this.layouts && this.layouts.length) || this.extraDrawingData) this.parseLayouts();
                 else this.draw(-1);
             };
             img.onerror = () => {
@@ -284,7 +307,84 @@ export default {
                 // render at ALL, which silently hid every symbol on a layout
                 // the admin never bothered drawing a boundary box for.
                 .filter(l => l.shapes.length > 0 || l.rawMeta);
+            // The "extra drawing" general-annotation layer (see
+            // extra_drawing_url prop) is appended the SAME way as any other
+            // layout entry — every consumer of parsedLayouts (the raw-
+            // content draw pass, marker boosting, combined-legend symbol
+            // collection, legend position/scale resolution) already works
+            // generically off this array, so it needs no special-casing
+            // there. Its own sectorId/sectorName/shapes/sectorLabel are all
+            // left null/empty on purpose: it isn't a clickable sector region
+            // (hit-testing/hover-tooltip/click-navigate all key off `shapes`
+            // and `sectorName`, both empty here, so this entry is silently
+            // never matched by any of them) — only its raw drawn content and
+            // legend meta should ever surface publicly.
+            if (this.extraDrawingData) {
+                const entry = this._buildExtraDrawingEntry(this.extraDrawingData);
+                if (entry) this.parsedLayouts.push(entry);
+            }
             this.draw(-1);
+        },
+
+        // Fetches this image's "extra drawing" (see extra_drawing_url prop).
+        // Bug fixed (September 2026, reported as "extra drawing items is not
+        // showable for spot rock and sectors local images"): this component
+        // never fetched or drew this content at all — the admin's own
+        // baked composite DOES include it (renderCompositeAtFullResolution),
+        // but the public page only shows that plain composite file until the
+        // FIRST save backs up an `origin_img/` original, after which it
+        // permanently switches to that clean original plus this component's
+        // own live JSON redraw (see SectorsAndAreaLocalImageComponrnt.vue's
+        // localImageSrc — showing the composite AND redrawing live would
+        // double every shape/legend) — so once that switch happens, the
+        // extra-drawing layer had no live code path left to appear through
+        // at all, unlike every sector's own layout. Matches the same
+        // fetchExtraDrawing()/extraDrawing pattern already used by the MTP
+        // public viewer's own round-3 fix for the identical gap.
+        fetchExtraDrawing() {
+            this.extraDrawingData = null;
+            if (!this.extra_drawing_url) { this.parseLayouts(); return; }
+            axios.get(this.extra_drawing_url)
+                .then(res => {
+                    const drawing = res.data && res.data.extra_drawing;
+                    this.extraDrawingData = drawing || null;
+                    this.parseLayouts();
+                })
+                .catch(() => { this.extraDrawingData = null; this.parseLayouts(); });
+        },
+
+        // Builds a parsedLayouts-shaped entry from the raw extra-drawing
+        // record — same rescale math (bg_*/canvas_* → natural image
+        // coordinates) and same extractShapes() symbol/legend-meta
+        // extraction as every real layout above, just without a `sector`/
+        // `id` to read shapes/label off of (this layer never draws its own
+        // boundary box or name label publicly, only its raw content).
+        _buildExtraDrawingEntry(data) {
+            let json = data.json;
+            try {
+                if (typeof json === 'string') json = JSON.parse(json);
+                if (typeof json === 'string') json = JSON.parse(json);
+            } catch (_) { return null; }
+            if (!json) return null;
+
+            const raw = this.extractShapes(json);
+            return {
+                layoutId:       'extra-drawing',
+                sectorId:       null,
+                sectorName:     '',
+                sectorUrlTitle: '',
+                shapes:         [],
+                sectorLabel:    null,
+                sectorLabelLine: null,
+                symbolSamples:  raw.symbolSamples,
+                legendMeta:     raw.legendMeta,
+                rawMeta: {
+                    json,
+                    bg_width: data.bg_width, bg_height: data.bg_height,
+                    bg_left: data.bg_left, bg_top: data.bg_top,
+                    canvas_width: data.canvas_width, canvas_height: data.canvas_height,
+                },
+            };
         },
 
         // Walk Paper.js exported JSON and extract bounding shapes for hit detection,

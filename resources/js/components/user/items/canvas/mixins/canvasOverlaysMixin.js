@@ -217,16 +217,20 @@ export default {
             if (existingLabel) existingLabel.remove();
             if (existingLine) existingLine.remove();
 
-            const defaultAnchor = new paper.Point(anchorBounds.left + anchorBounds.width / 2, anchorBounds.top);
-            this._createItemLabel(mainLayer, defaultAnchor, name);
+            // Background bounds (project-space) decide which side of the box
+            // the label defaults to — see _createItemLabel for why.
+            const bgBounds = canvasContainer.getBackgroundBounds ? canvasContainer.getBackgroundBounds() : null;
+            this._createItemLabel(mainLayer, anchorBounds, bgBounds, name);
             scope.view.update();
             if (typeof canvasContainer.saveCanvasData === 'function') canvasContainer.saveCanvasData();
         },
 
         // Builds a fresh [bg, text] label Group positioned a fixed distance
-        // above `anchor` by default, plus its separate leader-line sibling
-        // from `anchor` up to the label.
-        _createItemLabel(mainLayer, anchor, name) {
+        // above the region's box by default, plus its separate leader-line
+        // sibling connecting box to label — UNLESS the box sits too close to
+        // the top of the photo for that to fit (see below), in which case it
+        // defaults below instead.
+        _createItemLabel(mainLayer, anchorBounds, bgBounds, name) {
             mainLayer.activate();
             const fontSize = 15, padX = 10, padY = 6, defaultOffsetY = 70;
 
@@ -245,7 +249,30 @@ export default {
             text.data = { isHole: true };
             const boxW = text.bounds.width + padX * 2;
             const boxH = fontSize + padY * 2;
-            const labelCenter = new paper.Point(anchor.x, anchor.y - defaultOffsetY - boxH / 2);
+
+            const topAnchor = new paper.Point(anchorBounds.left + anchorBounds.width / 2, anchorBounds.top);
+            // Room actually available above the box, inside the photo itself
+            // — a box cropped right against the top edge of the photo (e.g.
+            // a sector drawn near the top of a drone shot) has near-zero
+            // room there, so the old "always above" default placed the
+            // label ABOVE the photo entirely: invisible past the canvas'
+            // own top edge, cut off behind the toolbar (fixed September
+            // 2026, reported as "sector laible is out of image" when a
+            // sector sits close to the top). Falls back to "always fits"
+            // (Infinity) when the background bounds aren't known yet, so
+            // behavior is unchanged wherever this can't be determined.
+            const spaceAbove = bgBounds ? (topAnchor.y - bgBounds.top) : Infinity;
+            const placeBelow = spaceAbove < (defaultOffsetY + boxH);
+
+            const lineAnchor = placeBelow
+                ? new paper.Point(anchorBounds.left + anchorBounds.width / 2, anchorBounds.top + anchorBounds.height)
+                : topAnchor;
+            const labelCenter = placeBelow
+                ? new paper.Point(lineAnchor.x, lineAnchor.y + defaultOffsetY + boxH / 2)
+                : new paper.Point(lineAnchor.x, lineAnchor.y - defaultOffsetY - boxH / 2);
+            const lineLabelEnd = placeBelow
+                ? new paper.Point(labelCenter.x, labelCenter.y - boxH / 2)
+                : new paper.Point(labelCenter.x, labelCenter.y + boxH / 2);
 
             const bg = new paper.Path({
                 closed: true, fillColor: '#ffe100', strokeColor: '#1a1a1a', strokeWidth: 1.5,
@@ -259,8 +286,8 @@ export default {
             text.point = new paper.Point(labelCenter.x, labelCenter.y + fontSize * 0.35);
 
             const line = new paper.Path({ strokeColor: '#1a1a1a', strokeWidth: 1.5, name: 'sector-label-line' });
-            line.add(anchor);
-            line.add(new paper.Point(labelCenter.x, labelCenter.y + boxH / 2));
+            line.add(lineAnchor);
+            line.add(lineLabelEnd);
             // anchorAuto: true — the region-side endpoint auto-tracks whichever
             // corner/side-center is closest to the label LIVE as it is dragged
             // (see CanvasHandlers.vue's action-8 onMouseDrag) until the user
