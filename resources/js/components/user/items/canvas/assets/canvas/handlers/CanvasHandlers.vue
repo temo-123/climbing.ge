@@ -1123,7 +1123,14 @@ export default {
                 this.rebuildLegend();
 
                 this.$emit('layers_ready');
-            } catch (e) {}
+            } catch (e) {
+                // Was a totally silent catch-all — any exception mid-import
+                // (bad JSON, a rescale edge case, etc.) left the canvas
+                // simply blank with zero trace of why, in both dev and
+                // production. Logging it doesn't change behavior but turns
+                // an invisible failure into a diagnosable one.
+                console.error('importJsonData failed:', e);
+            }
         },
 
         importRelatedJsons() {
@@ -1249,7 +1256,12 @@ export default {
                     });
 
                     this.scope.view.update();
-                } catch (e) {}
+                } catch (e) {
+                    // Same silent-catch problem as importJsonData — a bad
+                    // sibling/extra-drawing entry used to just vanish from
+                    // the reference overlay with zero trace of why.
+                    console.error('importRelatedJsons: failed to import related json at index', index, e);
+                }
             });
 
             this._activateMainLayer();
