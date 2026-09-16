@@ -526,6 +526,7 @@
 <script>
     import Uploader from "vux-uploader-component";
     import { SlickList, SlickItem } from "vue-slicksort";
+    import { rebakeSectorImageAfterReplace } from '../../../../../services/canvas/rebakeAfterReplace.js';
     import gallery_images_add from '../../../items/gallery/galleryImageAddComponent.vue'
     import text_block_localization from '../../../items/form/parts/TextBlockLocalithationComponent.vue'
     import notify_subscribers from '../../../items/form/parts/NotifySubscribersComponent.vue'
@@ -660,6 +661,15 @@
                     if (res.data && res.data.image) {
                         const img = this.sector_old_images.find(i => i.id === image_id);
                         if (img) { img.image = res.data.image; img.has_original = false; }
+                        // Any routes/pitches/extra-drawing already saved on the OLD
+                        // photo would otherwise silently vanish from the public
+                        // composite until someone reopens and re-saves each one —
+                        // see rebakeAfterReplace.js for the full story.
+                        const rebake = await rebakeSectorImageAfterReplace(
+                            image_id, res.data.image,
+                            (key) => this.$t('admin.articles.canvas_editor.' + key)
+                        );
+                        if (rebake.rebaked && img) img.has_original = true;
                         this.img_cache_bust = { ...this.img_cache_bust, [image_id]: Date.now() };
                     }
                     this.img_upload_status = { ...this.img_upload_status, [image_id]: 'ok' };

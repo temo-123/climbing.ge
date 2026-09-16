@@ -126,6 +126,7 @@
 </template>
 
 <script>
+import { rebakeSectorLocalImageAfterReplace } from '../../../../services/canvas/rebakeAfterReplace.js';
     import addSectorModal from './assets/addSectorModalComponent.vue'
     import single_image_edit from '../../items/single_image/singleImageEditComponent.vue'
 
@@ -241,7 +242,18 @@
                     formData,
                     config
                 )
-                .then(response => {
+                .then(async response => {
+                    // A real new photo was picked (not just a title/sectors edit) —
+                    // any routes/pitches/extra-drawing already saved on the OLD
+                    // photo would otherwise silently vanish from the public
+                    // composite until someone reopens and re-saves each one — see
+                    // rebakeAfterReplace.js for the full story.
+                    if (this.image && response.data && response.data.image) {
+                        await rebakeSectorLocalImageAfterReplace(
+                            this.$route.params.id, response.data.image,
+                            (key) => this.$t('admin.articles.canvas_editor.' + key)
+                        );
+                    }
                     this.$router.go(-1)
                 })
                 .catch(

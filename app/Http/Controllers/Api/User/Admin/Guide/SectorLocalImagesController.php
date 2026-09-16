@@ -237,6 +237,14 @@ class SectorLocalImagesController extends Controller
             }
         }
 
+        // Lets the frontend know whether the photo itself was actually
+        // replaced (and under what filename) so it can trigger an automatic
+        // re-bake of any existing layouts/extra-drawing onto the new photo —
+        // see rebakeAfterReplace.js. Previously returned nothing at all.
+        return response()->json([
+            'success' => true,
+            'image'   => $editing_sector_local_image['image'],
+        ]);
     }
 
     public function del_locale_image($id)

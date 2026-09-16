@@ -193,6 +193,7 @@
 </template>
 
 <script>
+import { rebakeSectorImageAfterReplace } from '../../../../../services/canvas/rebakeAfterReplace.js';
 export default {
     data(){
             return {
@@ -298,6 +299,15 @@ export default {
                             img.image = res.data.image;
                             img.has_original = false;
                         }
+                        // Any routes/pitches/extra-drawing already saved on the OLD
+                        // photo would otherwise silently vanish from the public
+                        // composite until someone reopens and re-saves each one —
+                        // see rebakeAfterReplace.js for the full story.
+                        const rebake = await rebakeSectorImageAfterReplace(
+                            image_id, res.data.image,
+                            (key) => this.$t('admin.articles.canvas_editor.' + key)
+                        );
+                        if (rebake.rebaked && img) img.has_original = true;
                         // Bust the cache so the new image loads
                         this.img_cache_bust = { ...this.img_cache_bust, [image_id]: Date.now() };
                     }
