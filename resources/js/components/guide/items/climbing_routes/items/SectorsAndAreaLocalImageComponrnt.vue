@@ -12,7 +12,7 @@
                     v-if="spot_image && spot_image.image"
                     :image_src="localImageSrc(spot_image)"
                     :layouts="imageLayouts[spot_image.id] || []"
-                    :extra_drawing_url="spot_image.id ? ('/get_sector_local_image_extra_drawing/get/' + spot_image.id) : null"
+                    :extra_drawing_url="spot_image.id ? ('/get_sector/get_sector_local_image_extra_drawing/get/' + spot_image.id) : null"
                 />
             </div>
         </div>

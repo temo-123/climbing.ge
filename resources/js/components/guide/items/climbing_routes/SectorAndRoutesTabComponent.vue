@@ -19,7 +19,7 @@
                     v-if="spot_image && spot_image.image && spot_image.jsons && spot_image.jsons.length > 0"
                     :image_src="spotImageSrc(spot_image)"
                     :layouts="spot_image.jsons"
-                    :extra_drawing_url="spot_image.id ? ('/get_spot_rocks_image_extra_drawing/get/' + spot_image.id) : null"
+                    :extra_drawing_url="spot_image.id ? ('/get_sector/get_spot_rocks_image_extra_drawing/get/' + spot_image.id) : null"
                 />
                 <openImg
                     v-else-if="spot_image && spot_image.image"

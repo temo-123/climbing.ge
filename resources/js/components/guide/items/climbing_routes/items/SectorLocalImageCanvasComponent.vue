@@ -97,8 +97,12 @@ export default {
         };
     },
     watch: {
+        // Also rebuilds when `layouts` becomes empty but extraDrawingData is
+        // already present (same gap as loadImage()'s onload — an image with
+        // zero sector layouts yet SOME extra-drawing content needs this to
+        // run too, not just skip silently).
         layouts(newVal) {
-            if (newVal && newVal.length) this.parseLayouts();
+            if ((newVal && newVal.length) || this.extraDrawingData) this.parseLayouts();
         },
         image_src() { this.loadImage(); },
         extra_drawing_url: { immediate: true, handler() { this.fetchExtraDrawing(); } },
