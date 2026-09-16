@@ -357,6 +357,23 @@ export default {
         _saveMainDrawing() {
             return this.saveRouteDrawing();
         },
+
+        // canvasExtraDrawingMixin's HOST CONTRACT hook — without this, the
+        // mixin leaves extra_drawing_meta permanently null (missing on this
+        // host until now), so relatedJsonsMeta's inclusion of the extra
+        // drawing carried a null meta that renderCompositeAtFullResolution
+        // silently drops — the extra-info layer was correctly saved but
+        // never appeared in the baked composite whenever this route was
+        // saved. Mirrors sectorLocaleImageEditorComponent.vue/
+        // spotRockImageEditorComponent.vue's identical helper.
+        _layoutMeta(layout) {
+            if (!layout) return null;
+            return {
+                canvas_width: layout.canvas_width, canvas_height: layout.canvas_height,
+                bg_left: layout.bg_left, bg_top: layout.bg_top,
+                bg_width: layout.bg_width, bg_height: layout.bg_height,
+            };
+        },
         // The image-tab radio picker used to be a plain v-model — clicking a
         // radio updates the underlying data SYNCHRONOUSLY, before any custom
         // logic gets a chance to intervene with a confirm(). Converted to
@@ -560,12 +577,34 @@ export default {
         // of ClimbingRoutesJson) and the route-drawing-updated bus event a
         // sibling component (e.g. sectorEditComponent.vue's thumbnail)
         // listens for to refresh.
+        // Fetches the COMPLETE, current set of routes + pitches saved on this
+        // sector image straight from the server — deliberately NOT
+        // this.related_jsons_meta, which only reflects whichever route
+        // happens to still be loaded in this component's in-memory state.
+        // See sectorRouteDrawingsEditorComponent.vue's identical helper for
+        // the full rationale.
+        async _fetchAllSiblingMetas(sectorImageId) {
+            if (!sectorImageId) return [];
+            const [routesRes, pitchesRes] = await Promise.all([
+                axios.get('/get_route/get_related_routes_jsons', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
+                axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
+            ]);
+            const metas = [];
+            (routesRes.data || []).forEach(r => metas.push({
+                json: r.json, canvas_width: r.canvas_width, canvas_height: r.canvas_height,
+                bg_left: r.bg_left, bg_top: r.bg_top, bg_width: r.bg_width, bg_height: r.bg_height,
+            }));
+            (pitchesRes.data || []).forEach(p => metas.push({
+                json: p.json, canvas_width: p.canvas_width, canvas_height: p.canvas_height,
+                bg_left: p.bg_left, bg_top: p.bg_top, bg_width: p.bg_width, bg_height: p.bg_height,
+            }));
+            return metas;
+        },
+
         async _buildExtraDrawingComposite(json) {
             const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
             const selectedImage = this.sector_images.find(img => img.id === this.images_tab_num);
-            const bgPath = selectedImage && selectedImage.has_original
-                ? '/public/images/sector_img/origin_img/' + selectedImage.image
-                : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+            const bgPath = this._resolveImageUrl(selectedImage);
 
             let canvasWidth = null, canvasHeight = null;
             if (canvasContainer) {
@@ -580,7 +619,8 @@ export default {
                 bg_left: bgBoundsPayload.bg_left, bg_top: bgBoundsPayload.bg_top,
                 bg_width: bgBoundsPayload.bg_width, bg_height: bgBoundsPayload.bg_height,
             };
-            const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.related_jsons_meta);
+            const siblingMetas = await this._fetchAllSiblingMetas(this.images_tab_num);
+            const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, siblingMetas);
 
             this._extraDrawingSelectedImage = selectedImage; // read back in _onExtraDrawingSaved
             return { editedImageData, canvasWidth, canvasHeight, bgBoundsPayload };

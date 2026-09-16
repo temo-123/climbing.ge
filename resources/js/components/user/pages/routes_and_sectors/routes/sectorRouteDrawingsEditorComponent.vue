@@ -697,6 +697,25 @@ export default {
             return this.saveChanges();
         },
 
+        // canvasExtraDrawingMixin's HOST CONTRACT hook — without this, the
+        // mixin leaves extra_drawing_meta permanently null (missing on this
+        // host until now), so relatedJsonsMeta's `metas.unshift(this.
+        // extra_drawing_meta)` pushed a null entry that renderCompositeAt
+        // FullResolution's `if (!meta || !meta.json) return;` guard silently
+        // dropped — the extra-info layer was correctly SAVED but never
+        // appeared in the baked composite whenever a route/pitch was saved.
+        // Reported September 2026 as "route save's composite is missing the
+        // extra drawing text." Mirrors sectorLocaleImageEditorComponent.vue/
+        // spotRockImageEditorComponent.vue's identical helper.
+        _layoutMeta(layout) {
+            if (!layout) return null;
+            return {
+                canvas_width: layout.canvas_width, canvas_height: layout.canvas_height,
+                bg_left: layout.bg_left, bg_top: layout.bg_top,
+                bg_width: layout.bg_width, bg_height: layout.bg_height,
+            };
+        },
+
         // Single source of truth for "which file is the clean background for
         // this image right now" — has_original=true means the origin_img/
         // backup exists and must be used (the main file may already be a
@@ -823,6 +842,36 @@ export default {
         // saveChanges above, targeting SectorImageExtraDrawing instead of
         // ClimbingRoutesJson) and the route-drawing-updated bus event a
         // sibling component listens for to refresh.
+        // Fetches the COMPLETE, current set of routes + pitches saved on this
+        // sector image straight from the server — deliberately NOT
+        // this.relatedJsonsMeta, which only reflects whichever route/pitch
+        // happens to still be loaded in this component's in-memory state
+        // from earlier navigation this session. Reopening the editor and
+        // going straight into extra-drawing mode without first re-selecting
+        // a route left canvasData/otherRoutesJsonMeta incomplete, so that
+        // route's own line silently dropped out of the extra drawing's
+        // baked composite even though its own database row was untouched.
+        // Reported September 2026 as "extra drawing save deletes the route
+        // I was just editing" (both directions of this one bug — see the
+        // _layoutMeta fix above for the other half).
+        async _fetchAllSiblingMetas(sectorImageId) {
+            if (!sectorImageId) return [];
+            const [routesRes, pitchesRes] = await Promise.all([
+                axios.get('/get_route/get_related_routes_jsons', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
+                axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
+            ]);
+            const metas = [];
+            (routesRes.data || []).forEach(r => metas.push({
+                json: r.json, canvas_width: r.canvas_width, canvas_height: r.canvas_height,
+                bg_left: r.bg_left, bg_top: r.bg_top, bg_width: r.bg_width, bg_height: r.bg_height,
+            }));
+            (pitchesRes.data || []).forEach(p => metas.push({
+                json: p.json, canvas_width: p.canvas_width, canvas_height: p.canvas_height,
+                bg_left: p.bg_left, bg_top: p.bg_top, bg_width: p.bg_width, bg_height: p.bg_height,
+            }));
+            return metas;
+        },
+
         async _buildExtraDrawingComposite(json) {
             const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
             const selectedImage = this.selectedImage;
@@ -841,7 +890,8 @@ export default {
                 bg_left: bgBoundsPayload.bg_left, bg_top: bgBoundsPayload.bg_top,
                 bg_width: bgBoundsPayload.bg_width, bg_height: bgBoundsPayload.bg_height,
             };
-            const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
+            const siblingMetas = await this._fetchAllSiblingMetas(this.selectedImageId);
+            const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, siblingMetas);
 
             this._extraDrawingSelectedImage = selectedImage; // read back in _onExtraDrawingSaved
             return { editedImageData, canvasWidth, canvasHeight, bgBoundsPayload };
