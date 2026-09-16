@@ -742,11 +742,19 @@ export default {
                     bg_left: bgBounds.bg_left, bg_top: bgBounds.bg_top,
                     bg_width: bgBounds.bg_width, bg_height: bgBounds.bg_height,
                 };
+                // Capture identity BEFORE the await — renderCompositeAtFullResolution
+                // takes real wall-clock time, during which the admin can switch to a
+                // different route/image; reading this.selectedRouteId/selectedImageId
+                // at the post() call site afterward would then risk saving under the
+                // wrong route or misattributing drawingsByRoute — same race class
+                // already fixed on the sector-local-image/spot-rock/pitch editors.
+                const savingRouteId = this.selectedRouteId;
+                const savingImageId = this.selectedImageId;
                 const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
 
                 const response = await axios.post('/set_route/save_route_drawing', {
-                    route_id: this.selectedRouteId,
-                    sector_image_id: this.selectedImageId,
+                    route_id: savingRouteId,
+                    sector_image_id: savingImageId,
                     json,
                     edited_image: editedImageData,
                     canvas_width: canvasWidth,
@@ -755,12 +763,14 @@ export default {
                 });
 
                 if (response.data.success) {
-                    this.saveStatus = 'ok';
-                    this._mainDrawingDirty = false;
-                    this.drawingsByRoute = { ...this.drawingsByRoute, [this.selectedRouteId]: this.selectedImageId };
+                    if (this.selectedRouteId === savingRouteId) {
+                        this.saveStatus = 'ok';
+                        this._mainDrawingDirty = false;
+                        setTimeout(() => { this.saveStatus = null; }, 3000);
+                    }
+                    this.drawingsByRoute = { ...this.drawingsByRoute, [savingRouteId]: savingImageId };
                     if (selectedImage) selectedImage.has_original = true;
-                    this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
-                    setTimeout(() => { this.saveStatus = null; }, 3000);
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: savingImageId });
                     return true;
                 } else {
                     this.saveStatus = 'error';
@@ -855,11 +865,13 @@ export default {
                     bg_left: bgBounds.bg_left, bg_top: bgBounds.bg_top,
                     bg_width: bgBounds.bg_width, bg_height: bgBounds.bg_height,
                 };
+                const savingPitchId = this.selected_pitch_id;
+                const savingImageId = this.selectedImageId;
                 const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.relatedJsonsMeta);
 
                 const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
-                    pitch_id: this.selected_pitch_id,
-                    sector_image_id: this.selectedImageId,
+                    pitch_id: savingPitchId,
+                    sector_image_id: savingImageId,
                     json,
                     edited_image: editedImageData,
                     canvas_width: canvasWidth,
@@ -868,11 +880,13 @@ export default {
                 });
 
                 if (response.data.success) {
-                    this.saveStatus = 'ok';
-                    this._mainDrawingDirty = false;
+                    if (this.selected_pitch_id === savingPitchId) {
+                        this.saveStatus = 'ok';
+                        this._mainDrawingDirty = false;
+                        setTimeout(() => { this.saveStatus = null; }, 3000);
+                    }
                     if (selectedImage) selectedImage.has_original = true;
-                    this.$bus.$emit('route-drawing-updated', { sector_image_id: this.selectedImageId });
-                    setTimeout(() => { this.saveStatus = null; }, 3000);
+                    this.$bus.$emit('route-drawing-updated', { sector_image_id: savingImageId });
                     return true;
                 } else {
                     this.saveStatus = 'error';

@@ -15,6 +15,7 @@ use App\Models\Guide\Route;
 use App\Models\Guide\ClimbingRoutesJson;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Mtp_pitch;
+use App\Models\Guide\SectorImageExtraDrawing;
 
 use App\Services\SportClimbingRoutesService;
 
@@ -269,10 +270,30 @@ class RouteController extends Controller
             if ($sectorImage) {
                 $hasOriginal = file_exists(public_path('images/sector_img/origin_img/' . $sectorImage->image));
                 $route['sector_image'] = [
+                    'id'            => $sectorImage->id,
                     'image'         => $sectorImage->image,
                     'has_original'  => $hasOriginal,
                     'updated_at'    => $sectorImage->updated_at,
                 ];
+
+                // The general-purpose "extra info" annotation layer shared by
+                // every route/pitch drawn on this same sector photo (approach
+                // notes, hazards, landmarks) — already wired into the sector-wide
+                // and MTP-pitch public viewers via the same extra_item prop;
+                // without this the single-route Info modal silently showed a
+                // different (incomplete) picture of the same photo.
+                $extraDrawing = SectorImageExtraDrawing::where('sector_image_id', $sectorImage->id)->first();
+                if ($extraDrawing && $extraDrawing->json) {
+                    $route['extra_drawing'] = [
+                        'json'          => $extraDrawing->json,
+                        'canvas_width'  => $extraDrawing->canvas_width,
+                        'canvas_height' => $extraDrawing->canvas_height,
+                        'bg_left'       => $extraDrawing->bg_left,
+                        'bg_top'        => $extraDrawing->bg_top,
+                        'bg_width'      => $extraDrawing->bg_width,
+                        'bg_height'     => $extraDrawing->bg_height,
+                    ];
+                }
             }
         }
 

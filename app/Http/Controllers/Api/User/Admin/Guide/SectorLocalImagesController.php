@@ -295,8 +295,14 @@ class SectorLocalImagesController extends Controller
 
     public function del_image_sector_from_db(Request $request)
     {
+        $auth = PermissionService::authorize('sector_local_image', 'edit');
+        if ($auth) return $auth;
+
         $deleted_sector = Sector_local_image_sector::where("image_id", "=", $request->image_id)->where("sector_id", "=", $request->sector_id)->first();
-        $deleted_sector -> delete();
+        if (!$deleted_sector) {
+            return response()->json(['success' => true]);
+        }
+        $deleted_sector->delete();
 
         return 'Deliting socsesful';
     }

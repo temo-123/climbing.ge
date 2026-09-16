@@ -120,9 +120,10 @@ export default {
         // clean origin_img backup once a drawing exists, so strokes aren't
         // rendered on top of a composite that already has them baked in.
         spotImageSrc(spot_image) {
-            return spot_image.has_original
+            const v = spot_image.updated_at ? '?v=' + encodeURIComponent(spot_image.updated_at) : '';
+            return (spot_image.has_original
                 ? '/public/images/spot_rocks_img/origin_img/' + spot_image.image
-                : '/public/images/spot_rocks_img/' + spot_image.image;
+                : '/public/images/spot_rocks_img/' + spot_image.image) + v;
         },
 
         update(id){

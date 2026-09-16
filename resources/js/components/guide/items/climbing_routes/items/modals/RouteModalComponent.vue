@@ -34,6 +34,7 @@
                                 :selected_id="route.id"
                                 :show_all="true"
                                 :interactive="false"
+                                :extra_item="extraDrawingItem"
                             />
                         </div>
 
@@ -235,6 +236,28 @@ export default {
             if (!img || !img.has_original) return null;
             const v = img.updated_at ? '?v=' + encodeURIComponent(img.updated_at) : '';
             return '/public/images/sector_img/' + img.image + v;
+        },
+        // Same general-purpose "extra info" annotation layer (approach notes,
+        // hazards, landmarks) the sector-wide and MTP-pitch public viewers
+        // already draw — mirrors routeJsonItem's double-parse (backend stores
+        // JSON.stringify(paper.exportJSON())).
+        extraDrawingItem() {
+            const d = this.route.extra_drawing;
+            if (!d || !d.json) return null;
+            let json = d.json;
+            try {
+                if (typeof json === 'string') json = JSON.parse(json);
+                if (typeof json === 'string') json = JSON.parse(json);
+            } catch (_) { return null; }
+            return {
+                json,
+                canvas_width: d.canvas_width || null,
+                canvas_height: d.canvas_height || null,
+                bg_left: d.bg_left ?? null,
+                bg_top: d.bg_top ?? null,
+                bg_width: d.bg_width || null,
+                bg_height: d.bg_height || null,
+            };
         },
     },
     data() {

@@ -64,9 +64,10 @@ export default {
         // 2026; mirrors the route/pitch viewers' own has_original check,
         // e.g. SectorCanvasModalComponent.vue's currentImageSrc).
         localImageSrc(spot_image) {
-            return spot_image.has_original
+            const v = spot_image.updated_at ? '?v=' + encodeURIComponent(spot_image.updated_at) : '';
+            return (spot_image.has_original
                 ? '/public/images/sector_local_img/origin_img/' + spot_image.image
-                : '/public/images/sector_local_img/' + spot_image.image;
+                : '/public/images/sector_local_img/' + spot_image.image) + v;
         },
         fetchAllLayouts(images) {
             images.forEach(img => {

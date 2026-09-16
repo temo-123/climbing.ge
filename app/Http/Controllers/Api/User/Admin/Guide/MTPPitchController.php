@@ -148,13 +148,17 @@ class MTPPitchController extends Controller
 
     public function pitchs_sequence(Request $request)
     {
+        $auth = PermissionService::authorize('mtp_pitch', 'edit');
+        if ($auth) return $auth;
+
         $pitch_num = 0;
         foreach ($request->pitchs_sequence as $pitch) {
             $pitch_id = $pitch['id'];
             $pitch = Mtp_pitch::where('id',strip_tags($pitch_id))->first();
+            if (!$pitch) continue;
             $pitch_num++;
-            $pitch['num'] = $pitch_num;
-            $pitch->update();
+            $pitch->num = $pitch_num;
+            $pitch->save();
         }
     }
 

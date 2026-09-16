@@ -242,6 +242,7 @@ export default {
             this.extra_drawing_meta    = null;
             this.extra_drawing_loading = false;
             this.deletingExtraDrawing  = false;
+            this._extraDrawingSelectedImage = null;
             this._mainDrawingDirty     = false;
             this._extraDrawingDirty    = false;
             this.saving                = false;
@@ -483,11 +484,22 @@ export default {
                     bg_left: bgBounds.bg_left, bg_top: bgBounds.bg_top,
                     bg_width: bgBounds.bg_width, bg_height: bgBounds.bg_height,
                 };
+                // Capture the pitch/sector-image identity BEFORE the await —
+                // renderCompositeAtFullResolution takes real wall-clock time
+                // (image decode + full-resolution redraw), during which the
+                // admin can switch to a different pitch via EditPitchModalComponent's
+                // reused instance. Reading this.pitch_id_prop/this.images_tab_num
+                // at the post() call site (after the await) would then save
+                // the NEW pitch's drawing under the OLD pitch's id, or vice
+                // versa — same race class already fixed on the sector-local-image
+                // and spot-rock editors.
+                const savingPitchId = this.pitch_id_prop;
+                const savingSectorImageId = this.images_tab_num;
                 const editedImageData = await this.renderCompositeAtFullResolution(bgPath, ownMeta, this.related_jsons_meta);
 
                 const response = await axios.post('/set_mtp/set_mtp_pitch/save_pitch_drawing', {
-                    pitch_id:        this.pitch_id_prop,
-                    sector_image_id: this.images_tab_num,
+                    pitch_id:        savingPitchId,
+                    sector_image_id: savingSectorImageId,
                     json,
                     edited_image:    editedImageData,
                     canvas_width:    canvasWidth,
@@ -496,10 +508,12 @@ export default {
                 });
 
                 if (response.data.success) {
-                    this.saveStatus = 'ok';
-                    this._mainDrawingDirty = false;
+                    if (this.pitch_id_prop === savingPitchId) {
+                        this.saveStatus = 'ok';
+                        this._mainDrawingDirty = false;
+                        setTimeout(() => { this.saveStatus = null; }, 3000);
+                    }
                     if (selectedImage) selectedImage.has_original = true;
-                    setTimeout(() => { this.saveStatus = null; }, 3000);
                     return true;
                 } else {
                     this.saveStatus = 'error';
