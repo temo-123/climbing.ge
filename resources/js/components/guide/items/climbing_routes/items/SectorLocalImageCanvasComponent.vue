@@ -119,6 +119,26 @@ export default {
         };
         window.addEventListener('imageclose', this._closeHandler);
 
+        // The legend/marker "boost" (_cssScale) is derived from the canvas
+        // element's OWN rendered CSS width at redraw time — correct only if
+        // that width is already final. `loadImage()`'s onload can fire
+        // before the REST of the page (nav sidebar, other images, web
+        // fonts) has finished reflowing the surrounding layout — on a full
+        // article page (lots of sibling content) that measurement often
+        // lands on a narrower, not-yet-settled width than the page's real
+        // final width, understating `cssWidth` and so OVER-boosting the
+        // legend/signs relative to the admin editor's own (already-final-
+        // width) preview — a real bug, fixed September 2026, reported as
+        // "legend and sign size... very huge... need make it like in
+        // editor". The existing `window.resize` listener below only catches
+        // actual window resizes, never this kind of local, non-window
+        // layout settling. ResizeObserver reacts to the canvas's OWN
+        // rendered size changing for ANY reason, including this one.
+        if (typeof ResizeObserver !== 'undefined') {
+            this._resizeObserver = new ResizeObserver(() => this.draw(-1));
+            this._resizeObserver.observe(this.$refs.canvas);
+        }
+
         // The legend's size (see drawLegends) is computed relative to this
         // canvas element's CURRENT css-rendered width — anything that
         // changes that width (a window resize, or toggling fullscreen below,
@@ -131,6 +151,7 @@ export default {
     beforeUnmount() {
         window.removeEventListener('imageclose', this._closeHandler);
         window.removeEventListener('resize', this._resizeHandler);
+        if (this._resizeObserver) this._resizeObserver.disconnect();
         this._removePopstateHandler();
         if (this.open_img) {
             window.__imageOpen = false;
