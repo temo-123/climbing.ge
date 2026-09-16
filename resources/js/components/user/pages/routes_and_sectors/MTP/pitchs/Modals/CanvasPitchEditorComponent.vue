@@ -620,7 +620,7 @@ export default {
             const [routesRes, pitchesRes, extraRes] = await Promise.all([
                 axios.get('/get_route/get_related_routes_jsons', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
                 axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
-                axios.get('/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId).catch(() => ({ data: {} })),
+                axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId).catch(() => ({ data: {} })),
             ]);
             const metas = [];
             (routesRes.data || []).forEach(r => {

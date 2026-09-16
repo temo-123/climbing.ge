@@ -89,7 +89,7 @@ async function rebakeSectorImageAfterReplace(sectorImageId, newImageFilename, tr
         const [routesRes, pitchesRes, extraRes] = await Promise.all([
             axios.get('/get_route/get_related_routes_jsons', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
             axios.get('/set_mtp/set_mtp_pitch/get_pitch_jsons_for_sector_image', { params: { sector_image_id: sectorImageId } }).catch(() => ({ data: [] })),
-            axios.get('/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId).catch(() => ({ data: {} })),
+            axios.get('/set_sector/set_sector_image_extra_drawing/get_for_editor/' + sectorImageId).catch(() => ({ data: {} })),
         ]);
         const routes = routesRes.data || [];
         const pitches = pitchesRes.data || [];
@@ -118,7 +118,7 @@ async function rebakeSectorImageAfterReplace(sectorImageId, newImageFilename, tr
             canvas_width: p.canvas_width, canvas_height: p.canvas_height,
             bg_left: p.bg_left, bg_top: p.bg_top, bg_width: p.bg_width, bg_height: p.bg_height,
         })));
-        if (extra && extra.json) posts.push(axios.post('/set_sector_image_extra_drawing/save/' + sectorImageId, {
+        if (extra && extra.json) posts.push(axios.post('/set_sector/set_sector_image_extra_drawing/save/' + sectorImageId, {
             json: extra.json, edited_image: jpeg,
             canvas_width: extra.canvas_width, canvas_height: extra.canvas_height,
             bg_left: extra.bg_left, bg_top: extra.bg_top, bg_width: extra.bg_width, bg_height: extra.bg_height,
@@ -139,7 +139,7 @@ async function rebakeSectorLocalImageAfterReplace(sectorLocalImageId, newImageFi
     try {
         const editorRes = await axios.get('/set_sector/set_sector_local_images/get_for_editor/' + sectorLocalImageId).catch(() => ({ data: {} }));
         const layouts = editorRes.data.layouts || [];
-        const extraRes = await axios.get('/set_sector_local_image_extra_drawing/get_for_editor/' + sectorLocalImageId).catch(() => ({ data: {} }));
+        const extraRes = await axios.get('/set_sector/set_sector_local_image_extra_drawing/get_for_editor/' + sectorLocalImageId).catch(() => ({ data: {} }));
         const extra = extraRes.data && extraRes.data.extra_drawing;
 
         const metas = [];
@@ -159,7 +159,7 @@ async function rebakeSectorLocalImageAfterReplace(sectorLocalImageId, newImageFi
             canvas_width: l.canvas_width, canvas_height: l.canvas_height,
             bg_left: l.bg_left, bg_top: l.bg_top, bg_width: l.bg_width, bg_height: l.bg_height,
         })));
-        if (extra && extra.json) posts.push(axios.post('/set_sector_local_image_extra_drawing/save/' + sectorLocalImageId, {
+        if (extra && extra.json) posts.push(axios.post('/set_sector/set_sector_local_image_extra_drawing/save/' + sectorLocalImageId, {
             json: extra.json, edited_image: jpeg,
             canvas_width: extra.canvas_width, canvas_height: extra.canvas_height,
             bg_left: extra.bg_left, bg_top: extra.bg_top, bg_width: extra.bg_width, bg_height: extra.bg_height,
