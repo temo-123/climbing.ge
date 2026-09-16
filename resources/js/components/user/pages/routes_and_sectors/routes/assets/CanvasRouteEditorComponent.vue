@@ -103,7 +103,7 @@
 
                   <Editor
                     ref="editorComponent"
-                    :image_prop="getSectorImage()"
+                    :image_prop="lockedImageUrl"
                     :json_prop="activeJsonProp"
                     :json_meta="activeJsonMeta"
                     :related_jsons="related_jsons"
@@ -172,6 +172,10 @@ export default {
             show_editor: false,
             sector_images: [],
             images_tab_num: '',
+            // The background URL actually fed to the live canvas — frozen at
+            // the moment images_tab_num/sector_images changes; see
+            // _refreshLockedImageUrl()'s comment for why.
+            lockedImageUrl: null,
             // Raw "other routes drawn on this image" fetch — always excludes the
             // current route server-side, regardless of extra-drawing mode. The
             // related_jsons/related_jsons_meta computed below layer the current
@@ -283,6 +287,7 @@ export default {
             if (!this.images_tab_num && this.sector_images.length > 0) {
                 this.images_tab_num = this.sector_images[0].id;
             }
+            this._refreshLockedImageUrl();
             if (this.images_tab_num) {
                 this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
                 this.loadExtraDrawing();
@@ -293,6 +298,7 @@ export default {
         if (this.sector_image_id_prop) {
             this.images_tab_num = this.sector_image_id_prop;
         }
+        this._refreshLockedImageUrl();
         if (this.sector_id_prop) {
             this.get_sector_images(this.sector_id_prop);
         }
@@ -308,15 +314,30 @@ export default {
         _extraDrawingResourceId() {
             return this.images_tab_num;
         },
-        getSectorImage() {
-            if (this.sector_images.length > 0) {
-                const img = this.sector_images.find(i => i.id === this.images_tab_num) || this.sector_images[0];
-                const dir = img.has_original
-                    ? '/public/images/sector_img/origin_img/'
-                    : '/public/images/sector_img/';
-                return dir + img.image;
-            }
-            return null;
+        _resolveImageUrl(image) {
+            if (!image) return null;
+            return image.has_original
+                ? '/public/images/sector_img/origin_img/' + image.image
+                : '/public/images/sector_img/' + image.image;
+        },
+        // Freeze the canvas's background URL — has_original can flip true
+        // mid-session once this route's first save completes and backs up
+        // the origin photo, but the canvas already has that exact same
+        // clean photo loaded; reactively pointing image_prop at the new
+        // origin_img/ URL (the old `getSectorImage()`, called live from the
+        // template on every render) only forces CanvasManager to silently
+        // reload the background async (loadBackgroundRaster/bgLoadInFlight).
+        // If the admin toggles into extra-drawing mode while that reload is
+        // still in flight, its completion re-imports whatever jsonProp has
+        // become BY THEN onto the live canvas, wiping the route's
+        // just-saved strokes from view. Reported September 2026 as "extra
+        // drawing save deletes the route I was just editing." Call this
+        // explicitly wherever images_tab_num/sector_images is freshly
+        // established — NOT a value-change watcher, since sector_images
+        // populates asynchronously after images_tab_num is first set.
+        _refreshLockedImageUrl() {
+            const img = this.sector_images.find(i => i.id === this.images_tab_num) || null;
+            this.lockedImageUrl = this._resolveImageUrl(img);
         },
         getSectorImageThumb(image) {
             return '/public/images/sector_img/' + image.image;
@@ -354,6 +375,7 @@ export default {
         updateSectorImageId() {
             this.$emit('update:sector_image_id_prop', this.images_tab_num);
             this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
+            this._refreshLockedImageUrl();
             // Switching images must reload that OTHER image's own extra drawing —
             // not keep showing the previous image's annotations on the new
             // background — regardless of whether extra-drawing mode is currently on
@@ -371,6 +393,7 @@ export default {
                         this.images_tab_num = this.sector_images[0].id;
                         this.$emit('update:sector_image_id_prop', this.images_tab_num);
                     }
+                    this._refreshLockedImageUrl();
                     if (this.images_tab_num) {
                         this.get_related_routes_jsons(this.images_tab_num, this.route_id_prop);
                         this.loadExtraDrawing();

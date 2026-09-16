@@ -459,9 +459,16 @@ export default {
         },
 
         _onExtraDrawingSaved(responseData) {
+            // Deliberately does NOT also reassign `imageUrl` (the live canvas's
+            // background prop) here — the canvas already has this exact same
+            // clean photo loaded; pointing it at the new origin_img/ URL only
+            // forces an unnecessary async background reload (CanvasManager's
+            // loadBackgroundRaster/bgLoadInFlight), which can race with
+            // whatever the admin does next and wipe unsaved live-canvas
+            // content. Reported September 2026 as "extra drawing save deletes
+            // the drawing I was just editing."
             if (responseData.success && this.imageInfo) {
                 this.imageInfo.has_original = true;
-                this.imageUrl = '/public/images/spot_rocks_img/origin_img/' + this.imageInfo.image;
             }
         },
 
@@ -540,9 +547,11 @@ export default {
                     this.activeLayoutId = response.data.layout_id;
                 }
 
+                // Deliberately does NOT also reassign `imageUrl` (the live
+                // canvas's background prop) — see the identical fix/comment in
+                // sectorLocaleImageEditorComponent.vue's save handler.
                 if (response.data.has_original && this.imageInfo) {
                     this.imageInfo.has_original = true;
-                    this.imageUrl = '/public/images/spot_rocks_img/origin_img/' + this.imageInfo.image;
                 }
 
                 this.reloadLayouts();

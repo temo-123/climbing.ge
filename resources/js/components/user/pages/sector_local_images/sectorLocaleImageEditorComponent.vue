@@ -529,9 +529,19 @@ export default {
         },
 
         _onExtraDrawingSaved(responseData) {
+            // Deliberately does NOT also reassign `imageUrl` (the live canvas's
+            // background prop) here — the canvas already has this exact same
+            // clean photo loaded; pointing it at the new origin_img/ URL only
+            // forces an unnecessary async background reload (CanvasManager's
+            // loadBackgroundRaster/bgLoadInFlight), which can race with
+            // whatever the admin does next (switch sector/toggle mode) and
+            // wipe unsaved live-canvas content. `bgImageUrl` (used by the
+            // composite renderer, not the live display) already reacts to
+            // has_original correctly for the NEXT save. Reported September
+            // 2026 as "extra drawing save deletes the layout I was just
+            // editing."
             if (responseData.success && this.imageInfo) {
                 this.imageInfo.has_original = true;
-                this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
             }
         },
 
@@ -619,13 +629,20 @@ export default {
                     this.activeLayoutId = response.data.layout_id;
                 }
 
-                // After first save the original is backed up — switch editor background to origin_img/
-                // (applies regardless of which sector is now active: once any
-                // save creates the origin_img backup, every sector editing
-                // this same shared photo must use it from then on).
+                // After first save the original is backed up. Deliberately does
+                // NOT also reassign `imageUrl` (the live canvas's background
+                // prop) — the canvas already has this exact same clean photo
+                // loaded, so pointing it at the new origin_img/ URL only forces
+                // an unnecessary async background reload (CanvasManager's
+                // loadBackgroundRaster/bgLoadInFlight), which can race with
+                // whatever the admin does next (switch sector/toggle mode) and
+                // wipe unsaved live-canvas content. `bgImageUrl` (used by the
+                // composite renderer, not the live display) already reacts to
+                // has_original correctly for the NEXT save. Reported September
+                // 2026 as "extra drawing save deletes the layout I was just
+                // editing."
                 if (response.data.has_original && this.imageInfo) {
                     this.imageInfo.has_original = true;
-                    this.imageUrl = '/public/images/sector_local_img/origin_img/' + this.imageInfo.image;
                 }
 
                 this.reloadLayouts();

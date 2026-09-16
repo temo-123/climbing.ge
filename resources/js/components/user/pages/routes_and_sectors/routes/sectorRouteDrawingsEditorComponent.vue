@@ -163,7 +163,7 @@
                     <Editor
                         v-if="imageUrl"
                         ref="editorComponent"
-                        :image_prop="imageUrl"
+                        :image_prop="lockedImageUrl"
                         :json_prop="activeJsonProp"
                         :json_meta="activeJsonMeta"
                         :related_jsons="relatedJsons"
@@ -219,6 +219,11 @@ export default {
             selectedImageId: null,
             canvasData: null,
             canvasJsonMeta: null,
+            // The background URL actually fed to the live canvas — frozen at the
+            // moment a route/pitch/image is (re)selected, deliberately NOT
+            // recomputed when has_original later flips true after a same-session
+            // save. See the selectedImageId watcher below for why.
+            lockedImageUrl: null,
             // Raw "other routes drawn on this image" fetch — always excludes the
             // current route server-side, regardless of extra-drawing mode. The
             // relatedJsons/relatedJsonsMeta computed below layer the current
@@ -372,11 +377,11 @@ export default {
         selectedImage() {
             return this.sectorImages.find(i => i.id === this.selectedImageId) || null;
         },
+        // Live/reactive — tracks has_original as it flips, safe for a plain
+        // truthy check (v-if) but NOT for feeding the canvas component; see
+        // lockedImageUrl.
         imageUrl() {
-            if (!this.selectedImage) return null;
-            return this.selectedImage.has_original
-                ? '/public/images/sector_img/origin_img/' + this.selectedImage.image
-                : '/public/images/sector_img/' + this.selectedImage.image;
+            return this.selectedImage ? this._resolveImageUrl(this.selectedImage) : null;
         },
         // Once a route has a saved drawing its background image is fixed — changing it
         // here would silently orphan the drawing already baked into the old image.
@@ -414,6 +419,22 @@ export default {
             this.extra_drawing_mode = false;
             this.extra_drawing_json = null;
             this.extra_drawing_meta = null;
+            // Freeze the canvas's background URL for this image selection.
+            // has_original can flip true mid-session once this route/pitch's
+            // first save completes and backs up the origin photo — but the
+            // canvas already has that exact same clean photo loaded, so
+            // reactively pointing it at the new origin_img/ URL only forces
+            // CanvasManager to silently reload the background in the
+            // background (loadBackgroundRaster/bgLoadInFlight). If the admin
+            // toggles into extra-drawing mode while that reload is still in
+            // flight, the jsonProp watcher it temporarily blocks means the
+            // reload's OWN completion re-imports whatever jsonProp has
+            // become BY THEN (the extra drawing) onto the live canvas,
+            // wiping the route/pitch's just-saved strokes from view. Only
+            // re-resolve this URL when the image itself actually changes.
+            // Reported September 2026 as "extra drawing save deletes the
+            // route I was just editing."
+            this.lockedImageUrl = this.selectedImage ? this._resolveImageUrl(this.selectedImage) : null;
             if (imageId) this.loadExtraDrawing();
 
             if (this.mtp_pitch_mode) {
@@ -676,6 +697,18 @@ export default {
             return this.saveChanges();
         },
 
+        // Single source of truth for "which file is the clean background for
+        // this image right now" — has_original=true means the origin_img/
+        // backup exists and must be used (the main file may already be a
+        // baked composite); shared by lockedImageUrl's freeze point and
+        // every save method's own bgPath.
+        _resolveImageUrl(image) {
+            if (!image) return null;
+            return image.has_original
+                ? '/public/images/sector_img/origin_img/' + image.image
+                : '/public/images/sector_img/' + image.image;
+        },
+
         // The background photo's own actual position + size within the Paper.js
         // view — the editor fits it with a uniform cover-scale, centered, so it
         // doesn't necessarily start at (0,0) or fill the view exactly. Without
@@ -721,9 +754,7 @@ export default {
                 if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return false; }
 
                 const selectedImage = this.selectedImage;
-                const bgPath = selectedImage && selectedImage.has_original
-                    ? '/public/images/sector_img/origin_img/' + selectedImage.image
-                    : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+                const bgPath = this._resolveImageUrl(selectedImage);
 
                 // Paper.js view size at save time — the canvas is sized responsively to the
                 // browser container width, not to the photo's pixel dimensions, so any other
@@ -795,9 +826,7 @@ export default {
         async _buildExtraDrawingComposite(json) {
             const canvasContainer = this.$refs.editorComponent?.$refs.canvasContainer;
             const selectedImage = this.selectedImage;
-            const bgPath = selectedImage && selectedImage.has_original
-                ? '/public/images/sector_img/origin_img/' + selectedImage.image
-                : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+            const bgPath = this._resolveImageUrl(selectedImage);
 
             let canvasWidth = null, canvasHeight = null;
             if (canvasContainer) {
@@ -850,9 +879,7 @@ export default {
                 if (!json) { alert(this.$t('admin.routes_sectors.draw_something_first')); this.saving = false; return false; }
 
                 const selectedImage = this.selectedImage;
-                const bgPath = selectedImage && selectedImage.has_original
-                    ? '/public/images/sector_img/origin_img/' + selectedImage.image
-                    : '/public/images/sector_img/' + (selectedImage ? selectedImage.image : '');
+                const bgPath = this._resolveImageUrl(selectedImage);
 
                 const scope = canvasContainer.getCanvasScope();
                 const canvasWidth  = scope && scope.view ? Math.round(scope.view.viewSize.width)  : null;

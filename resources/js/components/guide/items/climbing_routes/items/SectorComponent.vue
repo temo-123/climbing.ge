@@ -55,51 +55,34 @@
 
         <div class="col-12 sector-text" v-html="sector.sector.text"></div>
 
-        <!-- Live per-route topo lines + this image's "extra info" annotation
-             layer, drawn straight from their own saved JSON — same
-             component/endpoint SectorCanvasModalComponent.vue's own modal
-             already uses successfully. Previously this whole block was a
-             plain static <openImg> gallery of the admin's baked composite
-             file: correct only if THAT composite bake had ever actually
-             succeeded for a given image, which — for any image whose
-             composite write hangs/fails (see canvasExtraDrawingMixin.js's
-             saveExtraDrawing/renderCompositeAtFullResolution, fixed
-             September 2026 for the silent-hang case) or simply hasn't been
-             re-saved since a route was last drawn — meant the admin could
-             see their own route/extra-drawing content in the editor
-             forever while the public page kept showing stale or entirely
-             missing content, with no live fallback at all (fixed September
-             2026, reported as "sector routes and extra drawing... i have
-             it in the editor but it dont showable in viewer"). Falls back
-             to the old static gallery only when this sector has no route
-             drawings recorded at all (nothing for canvas-json-show to
-             fetch), keeping the lightbox/zoom gallery experience for pure
-             photo-only sectors. -->
+        <!-- Plain static gallery of the admin's saved composite file (photo +
+             any drawn routes/extra-info already baked in by the editor's own
+             save flow) — NOT a live canvas re-render. A prior version of this
+             block live-rendered every route's JSON straight onto the photo
+             here (to work around composites that had gone stale relative to
+             the editor), but that was the wrong fix for the wrong layer: it
+             duplicated the canvas modal's own job on a plain photo gallery,
+             at the cost of an extra per-image fetch for every sector on this
+             page. The actual staleness bug is now fixed at its source
+             (rebakeAfterReplace.js keeps the saved composite current after
+             any photo replace, and the extra-drawing-mode save race is
+             fixed) — so the plain saved image is reliably correct again, and
+             this sector-level view goes back to just showing it. Live
+             rendering stays where it belongs: SectorCanvasModalComponent.vue,
+             opened via the icon above, for the actual interactive canvas
+             viewer. Reported September 2026 as "for sector (not the drawing
+             modal) you use the canvas viewer, it's not correct, need just
+             show the saved drawing image." -->
         <div class="col-12 sector-images-wrap" v-if="sector.sector_imgs.length > 0">
-            <template v-if="sector.has_route_drawings">
-                <canvas-json-show
-                    v-for="image in sector.sector_imgs"
-                    :key="image.id"
-                    :fetch_url="'get_route/get_route_jsons_for_sector_image'"
-                    :fetch_id="image.id"
-                    :image_src="sectorImageSrc(image)"
-                    :show_all="true"
-                    :interactive="false"
-                    :extra_item="extraDrawingByImage[image.id]"
-                    refresh_event="route-drawing-updated"
-                />
-            </template>
-            <template v-else>
-                <openImg
-                    v-for="(image, image_index) in sector.sector_imgs"
-                    :key="image.id"
-                    :img="sector_gallery[image_index].src"
-                    :img_alt="image.image"
-                    :img_class="'sector_images sector_images_' + sector.sector_imgs.length"
-                    :gallery="sector_gallery"
-                    :gallery_index="image_index"
-                />
-            </template>
+            <openImg
+                v-for="(image, image_index) in sector.sector_imgs"
+                :key="image.id"
+                :img="sector_gallery[image_index].src"
+                :img_alt="image.image"
+                :img_class="'sector_images sector_images_' + sector.sector_imgs.length"
+                :gallery="sector_gallery"
+                :gallery_index="image_index"
+            />
         </div>
 
         <div class="col-12 table-responsive" v-if="sector.sport_routes.length > 0">
@@ -372,60 +355,11 @@ export default {
             set activ_grade(value) {
                 localStorage.setItem('grade', value);
             },
-            // Each sector image's "extra info" annotation layer (approach
-            // notes, hazards, landmarks) — keyed by sector_image id, fed to
-            // canvas-json-show's own `extra_item` prop above. Same shape/
-            // fetch as SectorCanvasModalComponent.vue's fetchExtraDrawing().
-            extraDrawingByImage: {},
         };
-    },
-    watch: {
-        'sector.sector_imgs': {
-            immediate: true,
-            handler(images) {
-                if (this.sector.has_route_drawings && images && images.length) {
-                    images.forEach(img => this.fetchExtraDrawingForImage(img));
-                }
-            },
-        },
     },
     mounted() {},
 
     methods: {
-        // Same has_original branching every other drawing viewer in this
-        // app uses — the clean origin_img backup once a drawing exists, so
-        // live-redrawn strokes aren't shown on top of a composite that
-        // already has them baked in. Cache-busted with ?v=updated_at (same
-        // convention as sector_gallery above) so a stale cached copy from
-        // before the latest resave doesn't linger indefinitely.
-        sectorImageSrc(image) {
-            const v = image.updated_at ? '?v=' + encodeURIComponent(image.updated_at) : '';
-            return (image.has_original
-                ? '/public/images/sector_img/origin_img/' + image.image
-                : '/public/images/sector_img/'            + image.image) + v;
-        },
-        async fetchExtraDrawingForImage(img) {
-            if (!img || !img.id) return;
-            try {
-                const res = await axios.get('/get_sector/get_sector_image_extra_drawing/get/' + img.id);
-                const drawing = res.data && res.data.extra_drawing;
-                if (!drawing || !drawing.json) return;
-                let parsed = typeof drawing.json === 'string' ? JSON.parse(drawing.json) : drawing.json;
-                if (typeof parsed === 'string') parsed = JSON.parse(parsed);
-                this.extraDrawingByImage = {
-                    ...this.extraDrawingByImage,
-                    [img.id]: {
-                        json: parsed,
-                        canvas_width: drawing.canvas_width || null,
-                        canvas_height: drawing.canvas_height || null,
-                        bg_left: drawing.bg_left ?? null,
-                        bg_top: drawing.bg_top ?? null,
-                        bg_width: drawing.bg_width || null,
-                        bg_height: drawing.bg_height || null,
-                    },
-                };
-            } catch (_) {}
-        },
         lead_grade_chart(grade_fr) {
             return this.lead(grade_fr)
         },
