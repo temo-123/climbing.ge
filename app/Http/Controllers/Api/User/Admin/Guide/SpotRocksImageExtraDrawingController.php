@@ -39,7 +39,7 @@ class SpotRocksImageExtraDrawingController extends Controller
             return response()->json(['error' => 'Spot rocks image not found'], 404);
         }
 
-        $json = $request->json;
+        $json = $request->input('json');
         if (!$json) {
             return response()->json(['error' => 'json is required'], 422);
         }

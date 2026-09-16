@@ -38,7 +38,7 @@ class SectorLocalImageExtraDrawingController extends Controller
             return response()->json(['error' => 'Sector local image not found'], 404);
         }
 
-        $json = $request->json;
+        $json = $request->input('json');
         if (!$json) {
             return response()->json(['error' => 'json is required'], 422);
         }
