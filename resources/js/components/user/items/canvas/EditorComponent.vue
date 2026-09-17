@@ -233,6 +233,10 @@
                     @cancel-editing-child-text="cancelEditingChildText"
                     @change-layer-color="changeLayerColor"
                     @change-layer-size="changeLayerSize"
+                    @change-layer-bold="changeLayerBold"
+                    @change-layer-italic="changeLayerItalic"
+                    @change-layer-strikethrough="changeLayerStrikethrough"
+                    @change-layer-highlight="changeLayerHighlight"
                     @change-child-color="changeChildColor"
                     @change-child-size="changeChildSize"
                     @highlight-layer="highlightLayerOnCanvas"
@@ -248,6 +252,7 @@ import ToolbarComponent from "./assets/toolbar/ToolbarComponent.vue";
 import LayersPanelComponent from "./assets/layers/LayersPanelComponent.vue";
 import CanvasContainerComponent from "./assets/canvas/CanvasContainerComponent.vue";
 import paper from 'paper';
+import * as textStyle from './assets/canvas/tools/textStyleHelpers.js';
 
 export default {
     components: {
@@ -789,13 +794,26 @@ export default {
                     || this._isTentContainer(item) || this._isParkingContainer(item)
                     || this._isPoiContainer(item) || this._isSectorLabelContainer(item);
             },
+            // A bare legacy PointText, OR a Group promoted to hold a
+            // strikethrough/highlight decoration alongside its text (see
+            // textStyleHelpers.js) — recognized by the same isTextGroup
+            // flag DrawingTools.vue's _isAtomicMarkerGroup checks.
             _isTextItem(item) {
-                return !!item && (item instanceof paper.PointText || (item.name && item.name.startsWith('text ')));
+                return !!item && (item instanceof paper.PointText
+                    || (item instanceof paper.Group && item.data && item.data.isTextGroup)
+                    || (item.name && item.name.startsWith('text ')));
             },
 
             // Returns the CSS hex color of a Paper.js item (or its first child for groups/arrows/rappel/bolt/pin/pendulum/crux markers).
             _getItemColor(item) {
                 if (!item) return '#999999';
+                // A promoted text group's meaningful "color" is its TEXT's
+                // own fill color, not children[0] (which could be the
+                // highlight rect, drawn first/behind so it doesn't cover
+                // the text).
+                if (item instanceof paper.Group && item.data && item.data.isTextGroup) {
+                    return this._getItemColor(textStyle.textNode(item));
+                }
                 if ((this._isGroupContainer(item) || this._isArrowContainer(item) || this._isRappelContainer(item) || this._isFixedMarkerContainer(item)) && item.children && item.children.length > 0) {
                     return this._getItemColor(item.children[0]);
                 }
@@ -806,6 +824,11 @@ export default {
 
             _getItemWidth(item) {
                 if (!item) return 3;
+                // A promoted text group's meaningful "size" is its TEXT's
+                // own font size, same reasoning as its color above.
+                if (item instanceof paper.Group && item.data && item.data.isTextGroup) {
+                    return this._getItemWidth(textStyle.textNode(item));
+                }
                 if (this._isGroupContainer(item) && item.children && item.children.length > 0) {
                     // The group-level control is labeled/behaves as the route LINE's stroke
                     // width (see LayersPanelComponent's "stroke_width_px_tooltip"), so it must
@@ -858,6 +881,19 @@ export default {
                 // LayersPanelComponent.vue, which disables this item's color
                 // swatch entirely for the same reason.
                 if (this._isColorLockedMarker(item)) return;
+                if (item instanceof paper.Group && item.data && item.data.isTextGroup) {
+                    // The main color swatch recolors the TEXT only — the
+                    // highlight rect (if any) keeps its own separate color,
+                    // edited via its own dedicated control (see
+                    // LayersPanelComponent's highlight color input), same
+                    // as a strikethrough line just following the text's
+                    // color automatically at creation time rather than
+                    // being independently recolorable.
+                    this._setItemColor(textStyle.textNode(item), color);
+                    const strike = item.children.find(c => c.data && c.data.isTextStrike);
+                    if (strike) strike.strokeColor = color;
+                    return;
+                }
                 if ((this._isTentContainer(item) || this._isSectorLabelContainer(item)) && item.children) {
                     // Recolor only the solid parts — skip the white hole/
                     // doorway/border/letter/icon/text (see DrawingTools.vue's
@@ -952,7 +988,13 @@ export default {
                     return;
                 }
                 if (this._isTextItem(item)) {
-                    item.fontSize = width;
+                    // textStyle.resizeTextGroup handles both a bare
+                    // PointText and a promoted text Group — for the group
+                    // case it also re-fits any highlight rect/strikethrough
+                    // line to the new size, which a plain `item.fontSize =`
+                    // (meaningless on a Group, which has no such property)
+                    // would silently fail to do.
+                    textStyle.resizeTextGroup(item, width);
                 } else if (item.strokeWidth !== undefined) {
                     item.strokeWidth = width;
                 }
@@ -972,6 +1014,52 @@ export default {
                 const item = this._itemById(layer.id);
                 if (!item) return;
                 this._setItemWidth(item, parseInt(width));
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+
+            // Text style toggles (Bold/Italic/Strikethrough/Highlight) —
+            // requested September 2026 as "main functions, not a lot" for
+            // the text tool, applied per saved item from the layers panel.
+            // Strikethrough/Highlight can REPLACE a bare legacy PointText
+            // with a new promoted Group (see textStyleHelpers.js), which
+            // gets a fresh id — no stale-reference issue since
+            // updateLayersList() below always rebuilds `this.layers` fresh
+            // from the live Paper.js project rather than patching layer.id
+            // in place.
+            changeLayerBold(layer) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                textStyle.toggleBold(item);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+            changeLayerItalic(layer) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                textStyle.toggleItalic(item);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+            changeLayerStrikethrough(layer) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                textStyle.toggleStrikethrough(item);
+                const scope = this.$refs.canvasContainer.getCanvasScope();
+                if (scope) scope.view.update();
+                this.updateLayersList();
+                this.saveCanvasData();
+            },
+            changeLayerHighlight(layer, color) {
+                const item = this._itemById(layer.id);
+                if (!item) return;
+                textStyle.toggleHighlight(item, color);
                 const scope = this.$refs.canvasContainer.getCanvasScope();
                 if (scope) scope.view.update();
                 this.updateLayersList();
@@ -1117,7 +1205,11 @@ export default {
                                     parentGroup: item.name,
                                     isLine: !!(child.data && child.data.isRouteLine) || (child.name && child.name.startsWith('line ')),
                                     isText: this._isTextItem(child),
-                                    textContent: (child instanceof paper.PointText) ? child.content : (child.name && child.name.startsWith('text ') ? child.content : null),
+                                    textContent: (() => { const t = textStyle.textNode(child); return t ? t.content : null; })(),
+                                    isBold: (() => { const t = textStyle.textNode(child); return !!t && t.fontWeight === 'bold'; })(),
+                                    isItalic: (() => { const t = textStyle.textNode(child); return !!(t && t.data && t.data.italic); })(),
+                                    hasStrikethrough: !!(child.children && child.children.some(c => c.data && c.data.isTextStrike)),
+                                    highlightColor: (() => { const h = child.children && child.children.find(c => c.data && c.data.isTextHighlight); return h ? this._getItemColor(h) : null; })(),
                                     isEditing: false,
                                     editText: ''
                                 }))
@@ -1146,7 +1238,11 @@ export default {
                                 isPoi: this._isColorLockedMarker(item),
                                 isSectorLabel: this._isSectorLabelContainer(item),
                                 isText: this._isTextItem(item),
-                                textContent: (item instanceof paper.PointText) ? item.content : (item.name && item.name.startsWith('text ') ? item.content : null),
+                                textContent: (() => { const t = textStyle.textNode(item); return t ? t.content : null; })(),
+                                isBold: (() => { const t = textStyle.textNode(item); return !!t && t.fontWeight === 'bold'; })(),
+                                isItalic: (() => { const t = textStyle.textNode(item); return !!(t && t.data && t.data.italic); })(),
+                                hasStrikethrough: !!(item.children && item.children.some(c => c.data && c.data.isTextStrike)),
+                                highlightColor: (() => { const h = item.children && item.children.find(c => c.data && c.data.isTextHighlight); return h ? this._getItemColor(h) : null; })(),
                                 isEditing: false,
                                 editText: ''
                             });
@@ -1582,8 +1678,9 @@ export default {
 
             finishEditingText(layer, newText) {
                 const foundItem = this._itemById(layer.id);
-                if (foundItem && foundItem instanceof paper.PointText) {
-                    foundItem.content = newText;
+                const text = textStyle.textNode(foundItem);
+                if (text) {
+                    text.content = newText;
                     this.saveCanvasData();
                     this.updateLayersList();
                 }
@@ -1595,8 +1692,9 @@ export default {
 
             finishEditingChildText(layer, child, newText) {
                 const foundItem = this._itemById(child.id);
-                if (foundItem && foundItem instanceof paper.PointText) {
-                    foundItem.content = newText;
+                const text = textStyle.textNode(foundItem);
+                if (text) {
+                    text.content = newText;
                     this.saveCanvasData();
                     this.updateLayersList();
                 }

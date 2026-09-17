@@ -244,10 +244,25 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
             if (minFontPx) fs = Math.max(fs, minFontPx / currentScale());
             ctx.save();
             ctx.fillStyle    = textFillStyle || paperColorToCss(data.fillColor) || '#cc2222';
-            ctx.font         = `bold ${fs}px Arial`;
+            // Defaults to bold, NOT the CSS-standard 'normal' — every text
+            // item ever saved before the Bold toggle existed (September
+            // 2026) was drawn bold-only here regardless of what the live
+            // editor showed, so an unset fontWeight must keep meaning bold
+            // or every pre-existing saved drawing's text would visibly
+            // thin out across the whole site the moment this shipped.
+            ctx.font = `${data.fontWeight || 'bold'} ${fs}px Arial`;
             ctx.textAlign    = data.justification === 'center' ? 'center' : 'left';
             ctx.textBaseline = 'alphabetic';
-            ctx.fillText(data.content, data.matrix[4], data.matrix[5]);
+            // Applies the FULL matrix (not just the translation component
+            // matrix[4]/[5], as before) — required so the Italic toggle's
+            // shear transform (see DrawingTools.vue's add_text/toggle
+            // methods) bakes correctly here too, matching how Group already
+            // applies its own full matrix above. A plain unrotated/unsheared
+            // text item's matrix reduces to exactly the old behavior, so
+            // this is a strict generalization, not a behavior change for
+            // anything already saved.
+            ctx.transform(data.matrix[0], data.matrix[1], data.matrix[2], data.matrix[3], data.matrix[4], data.matrix[5]);
+            ctx.fillText(data.content, 0, 0);
             ctx.restore();
 
         } else if (type === 'Layer') {

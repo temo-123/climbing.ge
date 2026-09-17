@@ -2,6 +2,7 @@
 import paper from 'paper';
 import { TOPO_SYMBOL_TYPES } from './topoSymbolTypes.js';
 import { findLegendMeta } from '../../../../../../../services/canvas/legendRenderer.js';
+import * as textStyle from './textStyleHelpers.js';
 
 export default {
     methods: {
@@ -28,7 +29,7 @@ export default {
                 item.data.isAnchorSymbol || item.data.isSummitMarker ||
                 item.data.isTentMarker || item.data.isParkingMarker ||
                 item.data.isPoiMarker || item.data.isLegend ||
-                item.data.isSectorLabel
+                item.data.isSectorLabel || item.data.isTextGroup
             ));
         },
 
@@ -355,12 +356,31 @@ export default {
                 fillColor: this._stroke(),
                 fontFamily: 'Arial',
                 fontSize: this._textSize(),
+                // Bold by default — matches paperJsonRenderer.js's own
+                // always-bold fallback (every text item saved before this
+                // toggle existed rendered bold in the baked composite
+                // regardless of the live editor, which showed normal
+                // weight; this makes new text WYSIWYG-consistent instead of
+                // perpetuating that mismatch).
+                fontWeight: 'bold',
                 justification: 'center',
                 name: `text ${this.layerCounters.text}`
             });
             if (this.group) this.group.addChild(text);
             return text;
         },
+
+        // Layers-panel per-item text style toggles (Bold/Italic/
+        // Strikethrough/Highlight), requested September 2026 as "main
+        // functions, not a lot" for the text tool. Logic lives in
+        // textStyleHelpers.js — shared with EditorComponent.vue's own
+        // changeLayer* handlers (a different component, no mixin in
+        // common), so there's exactly one copy of the tricky bits (bare vs.
+        // group-promoted text, the reversible italic shear).
+        toggleTextBold(item) { textStyle.toggleBold(item); },
+        toggleTextItalic(item) { textStyle.toggleItalic(item); },
+        toggleTextStrikethrough(item) { return textStyle.toggleStrikethrough(item); },
+        toggleTextHighlight(item, color) { return textStyle.toggleHighlight(item, color); },
 
         // Rappel/lower-off marker: a solid circle (the bolt/anchor the user
         // clicks on) with a downward shaft + open chevron below it — the

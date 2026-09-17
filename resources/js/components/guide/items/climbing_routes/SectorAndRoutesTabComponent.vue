@@ -32,7 +32,11 @@
         </div>
 
 
-        <div v-for="area in climbing_area" :key="area && area.sector && area.sector.id ? area.sector.id : 'area-' + Math.random()">
+        <div
+            v-for="area in climbing_area"
+            :key="area && area.sector && area.sector.id ? area.sector.id : 'area-' + Math.random()"
+            :id="area['local_images'] && area.local_images[0] ? 'local-image-' + area.local_images[0].id : null"
+        >
             <template v-if="area['local_images']">
                 <sector_and_local_area_images :sectors_and_images="area"/>
             </template>

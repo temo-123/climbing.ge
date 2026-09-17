@@ -883,18 +883,44 @@ export default {
         // invisible specks while the legend, correctly compensating, stayed
         // legible and ballooned into looking wildly oversized/inconsistent
         // by comparison).
+        // Sized relative to the PHOTO's own resolution, exactly like every
+        // route/sign/marker on it already is via itemScale() (canvas_width/
+        // bg_width — the admin editor's own canvas width at draw time, e.g.
+        // ~780px — never the raw native photo resolution or the CURRENT
+        // viewer's CSS width). Reported September 2026: "legend and signs
+        // size... looks like a fixed size and not a relative."
+        //
+        // A PREVIOUS version of this method boosted relative to the
+        // viewer's own rendered CSS width (imgW/cssWidth, clamped) — sized
+        // to counteract however much the CURRENT browser happened to shrink
+        // the canvas via CSS, INSTEAD of scaling with the photo. A second
+        // attempt kept that same viewer-width formula and only added a
+        // legibility floor — which turned out not to fix anything in
+        // practice: for any realistically large source photo (the common
+        // case — this app's own upload path allows up to ~3000px+) shown at
+        // any normal web content width (a few hundred to ~1400px), that
+        // floor is ALGEBRAICALLY ALWAYS the binding constraint (it only
+        // stops binding once cssWidth approaches ~85% of the photo's raw
+        // pixel width — i.e. nearly full-native-resolution display), which
+        // collapses right back to a constant on-screen size for virtually
+        // every real case — confirmed against two screenshots of the same
+        // image at very different display widths (~1370px and ~718px) still
+        // showing an effectively identical ~186px/~191px legend.
+        //
+        // Keying off canvas_width/bg_width instead — the SAME reference
+        // routes/signs/markers already use — sidesteps the viewer-width
+        // question entirely: the legend's DRAWN (bitmap-pixel) size becomes
+        // a fixed proportion of the photo, and the browser's own CSS scaling
+        // of the whole canvas (photo + everything baked onto it, together)
+        // is what makes it look bigger or smaller on screen — exactly like
+        // every sign label already correctly does, with no boost/floor
+        // logic needed at all.
         _cssScale() {
-            const canvasEl = this.$refs.canvas;
             const w = this.imgW;
-            const cssWidth = canvasEl ? canvasEl.getBoundingClientRect().width : 0;
-            // Clamp range widened from the original [0.5, 6] — a common large
-            // source photo (e.g. ~3000px, this app's own upload cap) shown at
-            // a normal narrow content-column CSS width (e.g. ~500-600px)
-            // already needs a ratio above 6, so the old ceiling was clipping
-            // in exactly the common case, making the legend land smaller than
-            // the editor's own ~13px-at-default-zoom baseline instead of
-            // matching it exactly.
-            return cssWidth > 0 ? Math.max(0.3, Math.min(10, w / cssWidth)) : 1;
+            if (!w) return 1;
+            const ref = this.parsedLayouts.map(l => l.rawMeta).find(m => m && (m.bg_width || m.canvas_width));
+            const refWidth = ref ? (ref.bg_width || ref.canvas_width) : w;
+            return refWidth > 0 ? (w / refWidth) : 1;
         },
 
         // Computes the legend's card layout AND its final effective scale
@@ -1290,12 +1316,30 @@ export default {
             this.$emit('sector-click', layout);
             // Close the expanded view first so the scroll animation is visible
             // against the real page instead of racing behind the fixed overlay.
-            if (this.open_img) this.close_image();
+            const wasOpen = this.open_img;
+            if (wasOpen) this.close_image();
             const sectorId = layout.sectorId;
-            if (sectorId) {
+            if (!sectorId) return;
+            // The expanded view is `position: fixed` (out of document flow) —
+            // close_image() only flips the JS flag synchronously, but Vue
+            // doesn't actually remove that class from the DOM until its next
+            // render tick. Scrolling in the same tick measured the page as if
+            // this element were still missing from the flow, landing short.
+            // Only matters right after closing; a plain click (never opened)
+            // needs no wait. Reported September 2026: "if i open it and after
+            // click to the sector it scroll not correctly."
+            // scrollIntoView's block:'start' aligns the target's top edge
+            // exactly to the viewport top, landing it right underneath (i.e.
+            // hidden behind) the fixed top navbar — same offset RightMenuComponent.vue's
+            // own scrollToSection() already applies for this same reason.
+            const doScroll = () => {
                 const el = document.querySelector('#sector-' + sectorId);
-                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
+                if (!el) return;
+                const y = el.getBoundingClientRect().top + window.pageYOffset - 80;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            };
+            if (wasOpen) this.$nextTick(doScroll);
+            else doScroll();
         },
     },
 };

@@ -197,6 +197,46 @@
                                @input="$emit('change-layer-size', layer, $event.target.value)"
                                class="layer-size-input me-1"
                                :title="(layer.isText || layer.isSectorLabel) ? $t('admin.articles.canvas_editor.font_size_pt_tooltip') : $t('admin.articles.canvas_editor.stroke_width_px_tooltip')" /></template>
+
+                    <!-- Text style toggles — Bold/Italic/Strikethrough/Highlight,
+                         requested September 2026 as "main functions, not a lot" for
+                         the text tool. Only a plain (non-sector-label) text item;
+                         a sector label's text is a fixed part of that composite
+                         symbol, not freely restylable. -->
+                    <div v-if="layer.isText && !layer.isSectorLabel && !layer.isEditing" class="btn-group btn-group-sm me-1 text-style-group">
+                        <button type="button"
+                                :class="['btn', 'text-style-btn', layer.isBold ? 'btn-secondary' : 'btn-outline-secondary']"
+                                @click="$emit('change-layer-bold', layer)"
+                                :title="$t('admin.articles.canvas_editor.text_bold_tooltip')">
+                            <b>B</b>
+                        </button>
+                        <button type="button"
+                                :class="['btn', 'text-style-btn', layer.isItalic ? 'btn-secondary' : 'btn-outline-secondary']"
+                                @click="$emit('change-layer-italic', layer)"
+                                :title="$t('admin.articles.canvas_editor.text_italic_tooltip')">
+                            <i>I</i>
+                        </button>
+                        <button type="button"
+                                :class="['btn', 'text-style-btn', layer.hasStrikethrough ? 'btn-secondary' : 'btn-outline-secondary']"
+                                @click="$emit('change-layer-strikethrough', layer)"
+                                :title="$t('admin.articles.canvas_editor.text_strikethrough_tooltip')">
+                            <s>S</s>
+                        </button>
+                    </div>
+                    <div v-if="layer.isText && !layer.isSectorLabel && !layer.isEditing" class="d-flex align-items-center me-1" :title="$t('admin.articles.canvas_editor.text_highlight_tooltip')">
+                        <input type="color"
+                               :value="layer.highlightColor || '#ffff00'"
+                               @input="$emit('change-layer-highlight', layer, $event.target.value)"
+                               class="layer-color-swatch"
+                               style="width:20px; height:20px;" />
+                        <button v-if="layer.highlightColor" type="button"
+                                class="btn btn-sm btn-outline-danger text-style-btn ms-1"
+                                @click="$emit('change-layer-highlight', layer, null)"
+                                :title="$t('admin.articles.canvas_editor.text_highlight_remove_tooltip')">
+                            <i class="fa fa-times"></i>
+                        </button>
+                    </div>
+
                     <!-- A group's own "size" is meaningless — it can mix lines, dots, text
                          and shapes at completely different scales, so showing any single
                          number here (previously the first/line child's width) was always
@@ -405,6 +445,7 @@ export default {
         'finish-editing-child-text', 'cancel-editing-child-text',
         'change-layer-color', 'change-layer-size',
         'change-child-color', 'change-child-size',
+        'change-layer-bold', 'change-layer-italic', 'change-layer-strikethrough', 'change-layer-highlight',
         'highlight-layer', 'unhighlight-layer',
     ],
     data() {
@@ -848,6 +889,20 @@ export default {
     border-radius: 3px;
     flex-shrink: 0;
     height: 22px;
+}
+
+.text-style-group {
+    flex-shrink: 0;
+}
+.text-style-btn {
+    width: 22px;
+    height: 22px;
+    padding: 0;
+    font-size: 11px;
+    line-height: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .layer-group-select {

@@ -1739,6 +1739,11 @@
                 "poi_fixed_color_tooltip": "საინტერესო ადგილების ნიშნები ყოველთვის ინარჩუნებენ ნაგულისხმევ ფერს",
                 "font_size_pt_tooltip": "შრიფტის ზომა (pt)",
                 "stroke_width_px_tooltip": "ხაზის სისქე (px)",
+                "text_bold_tooltip": "გამუქება",
+                "text_italic_tooltip": "დახრილი",
+                "text_strikethrough_tooltip": "ხაზგადასმული",
+                "text_highlight_tooltip": "მონიშვნის ფერი",
+                "text_highlight_remove_tooltip": "მონიშვნის მოხსნა",
                 "select_for_grouping_tooltip": "მონიშვნა დასაჯგუფებლად",
                 "group_selected_tooltip": "მონიშნული {count} ელემენტის დაჯგუფება",
                 "toggle_selected_visibility_tooltip": "მონიშნული {count} ელემენტის ჩვენება/დამალვა",
@@ -2255,7 +2260,11 @@
             "comments": "კომენტარები",
             "description": "@:common.description",
             "sectors": "სექტორები და მარშრუტები",
-            "recomended_services": "რეკომენდირებული სერვისები"
+            "recomended_services": "რეკომენდირებული სერვისები",
+            "local_image_group_fallback": "მისასვლელი გზის ფოტო",
+            "quick_stats_sectors": "სექტორი",
+            "quick_stats_routes": "მარშრუტი",
+            "quick_stats_mtps": "მრავალმონაკვეთიანი"
         },
         "title": {
             "news": "სიახლეები",

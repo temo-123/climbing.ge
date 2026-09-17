@@ -1739,6 +1739,11 @@
                 "poi_fixed_color_tooltip": "Points-of-interest signs always use their default color",
                 "font_size_pt_tooltip": "Font size (pt)",
                 "stroke_width_px_tooltip": "Stroke width (px)",
+                "text_bold_tooltip": "Bold",
+                "text_italic_tooltip": "Italic",
+                "text_strikethrough_tooltip": "Strikethrough",
+                "text_highlight_tooltip": "Highlight color",
+                "text_highlight_remove_tooltip": "Remove highlight",
                 "select_for_grouping_tooltip": "Select for grouping",
                 "group_selected_tooltip": "Group {count} selected items",
                 "toggle_selected_visibility_tooltip": "Show/hide {count} selected items",
@@ -2323,7 +2328,11 @@
             "comments": "Comments",
             "description": "@:common.description",
             "sectors": "Climbing Sectors & Routes",
-            "recomended_services": "Recommended Services"
+            "recomended_services": "Recommended Services",
+            "local_image_group_fallback": "Local approach photo",
+            "quick_stats_sectors": "Sectors",
+            "quick_stats_routes": "Routes",
+            "quick_stats_mtps": "Multi-pitches"
         },
         "title": {
             "news": "News",
