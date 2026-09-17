@@ -511,6 +511,7 @@ export default {
             if (name.startsWith('pin')) return 'fa-thumb-tack';
             if (name.startsWith('pendulum')) return 'fa-share';
             if (name.startsWith('crux')) return 'fa-key';
+            if (name.startsWith('trail')) return 'fa-minus';
             return 'fa-file-o';
         },
 

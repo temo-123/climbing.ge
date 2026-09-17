@@ -9,6 +9,8 @@
                 :redo-length="redoCount"
                 :has-drawing="hasDrawing"
                 :has-unlocked-drawing="hasUnlockedDrawing"
+                :has-resizable-shapes="hasResizableShapes"
+                :has-editable-lines="hasEditableLines"
                 :legend-position="legendPosition"
                 @legend-position-change="handleLegendPositionChange"
                 :legend-scale="legendScale"
@@ -39,6 +41,7 @@
                 @pendulum-left="handlePendulumLeft"
                 @pendulum-right="handlePendulumRight"
                 @crux="handleCrux"
+                @trail="handleTrail"
                 @anchor-good="handleAnchorGood"
                 @anchor-mid="handleAnchorMid"
                 @anchor-bad="handleAnchorBad"
@@ -65,6 +68,7 @@
                 @resize="handleResize"
                 @crop="handleCrop"
                 @edit-points="handleEditPoints"
+                @edit-line-points="handleEditLinePoints"
                 @export-png="handleExportPNG"
                 @export-svg="handleExportSVG"
                 @save-image="handleSaveImage"
@@ -416,6 +420,24 @@ export default {
             hasUnlockedDrawing() {
                 return this.layers.some(l => !l.isRelated && !l.locked);
             },
+            // Gates the Resize tool button (see ToolbarComponent's
+            // hasResizableShapes prop) — the tool only ever does anything for
+            // a rectangle/circle/ellipse/arrow (see CanvasHandlers.vue's
+            // _isResizableShape), so it stays disabled rather than let the
+            // admin switch into a tool that will silently do nothing no
+            // matter what they click.
+            hasResizableShapes() {
+                return this.layers.some(l =>
+                    !l.isGroup && !l.isRelated && !l.locked &&
+                    (l.isRectangle || l.isCircle || l.isEllipse || l.isArrow)
+                );
+            },
+            // Gates the Edit Line Points tool button — same reasoning as
+            // hasResizableShapes above, for CanvasHandlers.vue's
+            // _isEditableLineShape (a plain freehand line or trail only).
+            hasEditableLines() {
+                return this.layers.some(l => !l.isGroup && !l.isRelated && !l.locked && l.isEditableLine);
+            },
             // Effective fill color: null when disabled so canvas draws no fill
             fillColor() {
                 return this.fillEnabled ? this.currentFillColor || '#ffffff' : null;
@@ -508,6 +530,14 @@ export default {
 
             handleCrux() {
                 this.action = 27;
+            },
+
+            handleTrail() {
+                this.action = 48;
+            },
+
+            handleEditLinePoints() {
+                this.action = 49;
             },
 
             handleAnchorGood()           { this.action = 28; },
@@ -719,6 +749,31 @@ export default {
             _isArrowContainer(item) {
                 if (!item) return false;
                 return !!(item.data && item.data.isArrow) || !!(item.name && item.name.startsWith('arrow '));
+            },
+            // Same convention as _isArrowContainer above — used only to flag
+            // rows for hasResizableShapes below (the Resize tool's own type
+            // check, CanvasHandlers.vue's _isResizableShape, is the real
+            // source of truth at click time; this just mirrors it so the
+            // toolbar button can reflect "is there anything to resize" without
+            // reaching into the live Paper.js scope on every render).
+            _isRectangleContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isRectangle) || !!(item.name && item.name.startsWith('rectangle '));
+            },
+            _isCircleContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isCircle) || !!(item.name && item.name.startsWith('circle '));
+            },
+            _isEllipseContainer(item) {
+                if (!item) return false;
+                return !!(item.data && item.data.isEllipse) || !!(item.name && item.name.startsWith('ellipse '));
+            },
+            // Mirrors CanvasHandlers.vue's _isEditableLineShape — used only to
+            // flag rows for hasEditableLines below (see that computed).
+            _isEditableLineContainer(item) {
+                if (!item) return false;
+                return !!(item.data && (item.data.isTrail || item.data.isRouteLine)) ||
+                       !!(item.name && (item.name.startsWith('line ') || item.name.startsWith('trail ')));
             },
             _isRappelContainer(item) {
                 if (!item) return false;
@@ -1226,6 +1281,10 @@ export default {
                                 layerName: layer.name,
                                 isGroup: false,
                                 isArrow: this._isArrowContainer(item),
+                                isRectangle: this._isRectangleContainer(item),
+                                isCircle: this._isCircleContainer(item),
+                                isEllipse: this._isEllipseContainer(item),
+                                isEditableLine: this._isEditableLineContainer(item),
                                 isRappel: this._isRappelContainer(item),
                                 isBolt: this._isBoltContainer(item),
                                 isPin: this._isPinContainer(item),

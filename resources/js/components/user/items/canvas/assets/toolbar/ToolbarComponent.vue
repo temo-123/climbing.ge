@@ -85,6 +85,9 @@
                     <button type="button" :class="['btn', 'btn-primary', { active: action === 27 }]" @click.prevent="$emit('crux')" :title="$t('admin.articles.canvas_editor.crux_tooltip')">
                         <i class="fa fa-key"></i>
                     </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 48 }]" @click.prevent="$emit('trail')" :title="$t('admin.articles.canvas_editor.trail_tooltip')">
+                        <span class="trail-icon-glyph">┄┄</span>
+                    </button>
                 </div>
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.topo_symbols_group_label') }}</div>
             </div>
@@ -275,7 +278,7 @@
                     <button type="button" :class="['btn', 'btn-warning', { active: action === 14 }]" :disabled="!hasUnlockedDrawing" @click.prevent="$emit('selection')" :title="$t('admin.articles.canvas_editor.select_area_tooltip')">
                         <i class="fa fa-mouse-pointer"></i>
                     </button>
-                    <button type="button" :class="['btn', 'btn-warning', { active: action === 19 }]" :disabled="!hasUnlockedDrawing" @click.prevent="$emit('resize')" :title="$t('admin.articles.canvas_editor.resize_shape_tooltip')">
+                    <button type="button" :class="['btn', 'btn-warning', { active: action === 19 }]" :disabled="!hasResizableShapes" @click.prevent="$emit('resize')" :title="$t('admin.articles.canvas_editor.resize_shape_tooltip')">
                         <i class="fa fa-expand"></i>
                     </button>
                     <button type="button" :class="['btn', 'btn-warning', { active: action === 15 }]" @click.prevent="$emit('crop')" :title="$t('admin.articles.canvas_editor.crop_canvas_tooltip')">
@@ -283,6 +286,9 @@
                     </button>
                     <button type="button" :class="['btn', 'btn-warning', { active: action === 16 }]" :disabled="!hasDrawing" @click.prevent="$emit('edit-points')" :title="$t('admin.articles.canvas_editor.edit_path_points_tooltip')">
                         <i class="fa fa-share-alt"></i>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-warning', { active: action === 49 }]" :disabled="!hasEditableLines" @click.prevent="$emit('edit-line-points')" :title="$t('admin.articles.canvas_editor.edit_line_points_tooltip')">
+                        <span class="line-points-icon-glyph">●–●</span>
                     </button>
                 </div>
                 <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.edit_group_label') }}</div>
@@ -365,6 +371,23 @@ export default {
             default: false
         },
         hasUnlockedDrawing: {
+            type: Boolean,
+            default: true
+        },
+        // Gates the Resize button specifically — true only when at least one
+        // unlocked rectangle/circle/ellipse/arrow exists (see
+        // EditorComponent's hasResizableShapes and CanvasHandlers.vue's
+        // _isResizableShape, the tool's own real type check at click time).
+        // Defaults true so a host that never wires this up keeps the button
+        // enabled, same fallback convention as hasLegendSymbols below.
+        hasResizableShapes: {
+            type: Boolean,
+            default: true
+        },
+        // Gates the Edit Line Points button — true only when at least one
+        // unlocked freehand line/trail exists (see EditorComponent's
+        // hasEditableLines and CanvasHandlers.vue's _isEditableLineShape).
+        hasEditableLines: {
             type: Boolean,
             default: true
         },
@@ -698,5 +721,23 @@ export default {
 .parking-icon-glyph {
     font-size: 13px;
     line-height: 1;
+}
+/* Same reasoning as .tent-icon-glyph above — no FontAwesome 4 "dashed line"
+   icon exists, so a literal dash-leader glyph stands in for the button hint;
+   the real dashed line is drawn via Paper.js's own dashArray (see
+   DrawingTools.vue's add_trail), not this glyph. */
+.trail-icon-glyph {
+    font-size: 13px;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+/* Same reasoning as .trail-icon-glyph above — a "point—point" glyph stands in
+   for "edit a line's vector points" (no matching FontAwesome 4 icon); the
+   real draggable point handles are drawn by CanvasHandlers.vue's own
+   _drawLinePointHandles, not this glyph. */
+.line-points-icon-glyph {
+    font-size: 12px;
+    line-height: 1;
+    letter-spacing: -1px;
 }
 </style>

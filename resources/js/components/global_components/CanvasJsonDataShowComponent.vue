@@ -525,6 +525,7 @@ export default {
         drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1, realColors = false, legendOpts) {
             const minStrokePx = legendOpts && legendOpts.minStrokePx;
             const minFontPx = legendOpts && legendOpts.minFontPx;
+            const legendDashPx = legendOpts && legendOpts.dashPx;
             const currentScale = () => {
                 try {
                     const m = ctx.getTransform();
@@ -679,6 +680,25 @@ export default {
                             ctx.lineWidth = lw;
                             ctx.lineCap = 'round';
                             ctx.lineJoin = 'round';
+                            // Trail lines (add_trail, DrawingTools.vue) author
+                            // a real `dashArray` — see paperJsonRenderer.js's
+                            // drawItem for why this ctx-based replay needs to
+                            // read it explicitly, and why a legend icon
+                            // (legendDashPx set — this method IS invoked that
+                            // way, via drawCombinedLegendOverlay below →
+                            // drawCombinedLegend/drawLegendCard's drawItem
+                            // callback) needs the dash pattern OVERRIDDEN to a
+                            // fixed on-screen size rather than just scaled by
+                            // widthMul like strokeWidth above: a real trail
+                            // can span a big chunk of the photo, so shrinking
+                            // it down to icon-box size the same way a small
+                            // bolt/pin shrinks flattens its dashes to
+                            // sub-pixel, reading as a solid line.
+                            if (data.dashArray && data.dashArray.length) {
+                                ctx.setLineDash(legendDashPx
+                                    ? legendDashPx.map(v => v / currentScale())
+                                    : data.dashArray.map(v => v * widthMul));
+                            }
                             ctx.stroke();
                         }
                     }

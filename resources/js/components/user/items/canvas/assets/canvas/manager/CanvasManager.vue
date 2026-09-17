@@ -83,6 +83,7 @@ export default {
         groupCounter: 0,
         layerCounters: {
             line: 0,
+            trail: 0,
             point: 0,
             rectangle: 0,
             circle: 0,
@@ -209,6 +210,8 @@ export default {
         action(newVal, oldVal) {
             // When leaving resize mode, deselect the resize item
             if (oldVal === 19 && this.clearResizeSelection) this.clearResizeSelection();
+            // When leaving Edit Line Points mode, deselect the line + its point handles
+            if (oldVal === 49 && this.clearLineEditSelection) this.clearLineEditSelection();
             // When leaving selection mode, clear multi-selection highlight
             if (oldVal === 14) {
                 if (this._multiSelectedItems) this._multiSelectedItems.forEach(i => { try { i.selected = false; } catch(_){} });
@@ -503,9 +506,19 @@ export default {
         _getDrawingJson() {
             const bgLayer = this.scope.project.layers.find(l => l.name === 'background');
             const relatedLayers = this.scope.project.layers.filter(l => l.name && l.name.startsWith('related-'));
+            // The Resize tool's own visible handle squares (see
+            // CanvasHandlers.vue's _drawResizeHandles) — purely a live-editing
+            // affordance, never real drawn content, so excluded from the saved
+            // JSON the exact same way background/related already are.
+            const resizeOverlayLayer = this.scope.project.layers.find(l => l.name === 'resize-overlay');
+            // Same reasoning, for the Edit Line Points tool's own point-handle
+            // dots (see CanvasHandlers.vue's _drawLinePointHandles).
+            const lineEditOverlayLayer = this.scope.project.layers.find(l => l.name === 'line-edit-overlay');
 
             if (bgLayer) bgLayer.remove();
             relatedLayers.forEach(l => l.remove());
+            if (resizeOverlayLayer) resizeOverlayLayer.remove();
+            if (lineEditOverlayLayer) lineEditOverlayLayer.remove();
 
             // exportJSON() serializes each item's live `selected` flag verbatim.
             // Unlike the raster capture paths (which deselect right before
@@ -533,6 +546,8 @@ export default {
                 if (drawingLayers.length > 0) bgLayer.insertBelow(drawingLayers[0]);
             }
             relatedLayers.forEach(l => this.scope.project.addLayer(l));
+            if (resizeOverlayLayer) this.scope.project.addLayer(resizeOverlayLayer);
+            if (lineEditOverlayLayer) this.scope.project.addLayer(lineEditOverlayLayer);
 
             // Remember the last JSON we ourselves produced from the CURRENT canvas
             // state — see the jsonProp watcher, which uses this to recognize an
@@ -573,6 +588,13 @@ export default {
             if (!this.scope || !this.scope.project) return;
             if (this.history.length <= 1) return;
 
+            // project.clear() below discards every current item, including
+            // whatever the Resize tool has selected/handled — without this,
+            // _selectedResizeItem would keep pointing at a now-removed item
+            // and the next handle-drag would silently operate on nothing.
+            if (this.clearResizeSelection) this.clearResizeSelection();
+            if (this.clearLineEditSelection) this.clearLineEditSelection();
+
             // Move the most-recent state to the redo stack, then restore the one before it.
             const lastState = this.history.pop();
             this.redoStack.push(lastState);
@@ -606,6 +628,10 @@ export default {
         redoLastAction() {
             if (!this.scope || !this.scope.project) return;
             if (this.redoStack.length === 0) return;
+
+            // See undoLastAction's own comment above — same stale-reference risk.
+            if (this.clearResizeSelection) this.clearResizeSelection();
+            if (this.clearLineEditSelection) this.clearLineEditSelection();
 
             // Pop the next state from redo and push it onto history (it becomes the new current).
             const nextState = this.redoStack.pop();
@@ -707,6 +733,17 @@ export default {
                 // in sectorRouteDrawingsEditorComponent.vue and friends).
                 const previouslySelected = this.scope.project.selectedItems.slice();
                 this.scope.project.deselectAll();
+                // Same reasoning for the Resize tool's own visible handle
+                // squares (see CanvasHandlers.vue's _drawResizeHandles) — a
+                // real 'resize-overlay' Layer, not just Paper.js's native
+                // selection styling, so deselectAll() above doesn't touch it;
+                // must be removed (and restored after) the same way, or it
+                // bakes into the PNG and, worse, into the SVG's actual markup.
+                const resizeOverlayLayer = this.scope.project.layers.find(l => l.name === 'resize-overlay');
+                if (resizeOverlayLayer) resizeOverlayLayer.remove();
+                // Same for the Edit Line Points tool's own point-handle dots.
+                const lineEditOverlayLayer = this.scope.project.layers.find(l => l.name === 'line-edit-overlay');
+                if (lineEditOverlayLayer) lineEditOverlayLayer.remove();
                 this.scope.view.update();
 
                 if (format === 'png') {
@@ -725,6 +762,8 @@ export default {
                 }
 
                 previouslySelected.forEach(item => { try { item.selected = true; } catch (_) {} });
+                if (resizeOverlayLayer) this.scope.project.addLayer(resizeOverlayLayer);
+                if (lineEditOverlayLayer) this.scope.project.addLayer(lineEditOverlayLayer);
                 this.scope.view.update();
             }
         },

@@ -69,6 +69,33 @@ export default {
             return this.path;
         },
 
+        // Approach/hiking trail: a freehand line like add_line above, but
+        // dashed to read as a trail rather than a route line (see the
+        // example reference image: "----------" through the approach,
+        // called out with a "trailhead" label). The dash pattern is baked
+        // relative to the CURRENT stroke width at draw time (same one-shot
+        // convention as every other builder here, e.g. add_rappel's radius),
+        // not kept reactive to later width changes. `isTrail` is what
+        // topoSymbolTypes.js's registry matches on to give this its own
+        // Legend row, and paperJsonRenderer.js/CanvasJsonDataShowComponent.vue
+        // both read `dashArray` back off `.data` to replay the dash outside
+        // Paper.js's own (native dashArray-aware) live canvas rendering.
+        add_trail() {
+            this.layerCounters.trail = (this.layerCounters.trail || 0) + 1;
+            const width = this._width();
+            this.path = new paper.Path({
+                strokeColor: this._stroke(),
+                strokeWidth: width,
+                strokeJoin: 'round',
+                strokeCap: 'round',
+                dashArray: [width * 3, width * 2],
+                name: `trail ${this.layerCounters.trail}`
+            });
+            this.path.data = { isTrail: true };
+            if (this.group) this.group.addChild(this.path);
+            return this.path;
+        },
+
         createGroup() {
             this.groupCounter++;
             this.group = new paper.Group();
@@ -1865,7 +1892,24 @@ export default {
                 // though their skeletons measured the same.
                 const b = icon.strokeBounds || icon.bounds;
                 const maxDim = Math.max(b.width, b.height) || 1;
-                icon.scale(iconBox / maxDim);
+                const iconScale = iconBox / maxDim;
+                // A Trail sample is a real freehand line that can span a big
+                // chunk of the actual photo — unlike every other symbol here
+                // (authored at a roughly fixed, already-small absolute size),
+                // so the SAME uniform shrink that correctly fits a bolt/pin
+                // into this tiny box also crushes a trail's dashArray down to
+                // a fraction of a pixel, which Paper.js just renders as a
+                // plain solid line (reported as "legend not understandable").
+                // Pre-compensate by the inverse of the upcoming icon.scale()
+                // call below so the dash ends up a fixed, legible ~6/4px on
+                // screen regardless of how long the real line is — same
+                // "override, not just floor" fix as legendRenderer.js's
+                // drawLegendCard (dashPx) uses for the ctx-based version of
+                // this same legend.
+                if (icon.dashArray && icon.dashArray.length) {
+                    icon.dashArray = [6, 4].map(v => v / iconScale);
+                }
+                icon.scale(iconScale);
 
                 const label = new paper.PointText({
                     point: new paper.Point(0, 0),

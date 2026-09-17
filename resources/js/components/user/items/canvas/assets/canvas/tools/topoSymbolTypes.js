@@ -1,4 +1,4 @@
-// Registry of the "Topo symbols" toolbar group (Rappel/Bolt/Pin/Pendulum/Crux —
+// Registry of the "Topo symbols" toolbar group (Rappel/Bolt/Pin/Pendulum/Crux/Trail —
 // see ToolbarComponent.vue's "Topo symbols" tool-group) used to build the
 // auto-generated on-canvas Legend (see DrawingTools.vue's rebuildLegend).
 // Deliberately excludes the generic Arrow tool, which lives in the separate
@@ -26,6 +26,12 @@ export const TOPO_SYMBOL_TYPES = [
     { key: 'pendulum_left',  labelKey: 'legend_label_pendulum_left', category: 'topo', match: (d) => !!d.isPendulum && d.direction === -1 },
     { key: 'pendulum_right', labelKey: 'legend_label_pendulum_right',category: 'topo', match: (d) => !!d.isPendulum && d.direction === 1 },
     { key: 'crux',           labelKey: 'legend_label_crux',          category: 'topo', match: (d) => !!d.isCrux },
+    // Approach/hiking trail — a dashed freehand line (see DrawingTools.vue's
+    // add_trail), unlike every other row above which is a single click-placed
+    // glyph. Included here (unlike the plain Line/Arrow "Draw" tools, see this
+    // file's header comment) because it DOES have one fixed meaning wherever
+    // it's drawn, same as Rappel/Bolt/etc.
+    { key: 'trail',          labelKey: 'legend_label_trail',         category: 'topo', match: (d) => !!d.isTrail },
 
     // Anchor family (hollow-ring quality markers — see DrawingTools.vue's
     // add_anchor/_buildAnchorParts). `anchorKind` is 'anchor' (plain ring, no

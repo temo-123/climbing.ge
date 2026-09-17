@@ -19,6 +19,10 @@ export default {
         this._resizeHandle         = null;
         this._resizeStart          = null;
         this._resizeOriginalBounds = null;
+        this._resizeArrowOriginal  = null;
+        this._selectedLineItem     = null;
+        this._draggedLineHandle    = null;
+        this._draggedSegmentIndex  = null;
     },
 
     methods: {
@@ -154,11 +158,15 @@ export default {
                     this.add_poi_tent(event);
                 } else if (this.action == 47) {
                     this.add_poi_medical(event);
+                } else if (this.action == 48) {
+                    this.add_trail();
+                } else if (this.action == 49) {
+                    this.startEditLinePoints(event);
                 }
             };
 
             this.tool.onMouseDrag = (event) => {
-                if (this.action == 1 || this.action == 3) {
+                if (this.action == 1 || this.action == 3 || this.action == 48) {
                     if (this.path && this._shouldAddDragPoint(this.path, event.point)) this.path.add(event.point);
                 } else if (this.action == 4) {
                     if (this.path && this.path.data && this.path.data.isRectangle) {
@@ -350,6 +358,8 @@ export default {
                     if (this.path && this.path.data && this.path.data.isArrow) {
                         this.updateArrow(this.path, this.path.data.startPoint, event.point);
                     }
+                } else if (this.action == 49) {
+                    this.dragEditLinePoint(event);
                 }
             };
 
@@ -409,9 +419,15 @@ export default {
                 }
                 if (this.action == 19) {
                     if (this._resizeHandle) {
+                        // Deliberately does NOT clear _selectedResizeItem or
+                        // remove the handle overlay (see startResizeOrSelect) —
+                        // the item stays selected with its handles showing so a
+                        // follow-up drag on a DIFFERENT handle (e.g. widen, then
+                        // separately heighten) doesn't require reselecting it.
                         this._resizeHandle = null;
                         this._resizeStart = null;
                         this._resizeOriginalBounds = null;
+                        this._resizeArrowOriginal = null;
                         this.saveCanvasData();
                     }
                 }
@@ -420,23 +436,33 @@ export default {
                     this.path = null;
                     this.saveCanvasData();
                 }
+                if (this.action == 49) {
+                    // Same "stay selected, only clear the ACTIVE drag" pattern
+                    // as action 19 above — the line's handles stay visible so
+                    // the next point can be dragged without reselecting.
+                    if (this._draggedLineHandle) {
+                        this._draggedLineHandle   = null;
+                        this._draggedSegmentIndex = null;
+                        this.saveCanvasData();
+                    }
+                }
 
-                if (this.action == 1 || this.action == 3) {
+                if (this.action == 1 || this.action == 3 || this.action == 48) {
                     this._simplifyIfSmooth(this.path);
                 }
 
                 this.path = null;
 
-                // Placing a topo symbol (rappel/bolt/pin/pendulum/crux, one of
-                // the anchor-family markers, or a landmark marker) can change
-                // WHICH symbol types are present on canvas — refresh the
-                // legend before the auto-save below captures the state.
-                if (this.action >= 22 && this.action <= 47) {
+                // Placing a topo symbol (rappel/bolt/pin/pendulum/crux/trail,
+                // one of the anchor-family markers, or a landmark marker) can
+                // change WHICH symbol types are present on canvas — refresh
+                // the legend before the auto-save below captures the state.
+                if ((this.action >= 22 && this.action <= 47) || this.action == 48) {
                     this.rebuildLegend();
                 }
 
                 // Auto-save for drawing actions that don't handle it themselves
-                const noAutoSave = [5, 6, 8, 9, 15, 16, 17, 18, 19, 20];
+                const noAutoSave = [5, 6, 8, 9, 15, 16, 17, 18, 19, 20, 49];
                 if (!noAutoSave.includes(this.action)) {
                     if (this.action !== 3 && this.action !== 7) {
                         this.saveCanvasData();
@@ -697,17 +723,67 @@ export default {
         // (drag is handled inline in onMouseDrag; mouseUp sets _moveAllActive=false)
 
         // ── Resize (action 19) ───────────────────────────────────────────────
-        // Single click-drag: click anywhere on a shape and drag to resize.
-        // The quadrant of the shape the user clicks determines which corner moves.
+        // Two-step interaction (changed from the old single click-drag,
+        // reported as "not so understandable" — nothing on screen showed
+        // WHERE to grab, and clicking anywhere on the shape silently picked
+        // the nearest quadrant as an inferred corner):
+        //   1. Click a shape → it's selected and 8 visible square handles
+        //      (4 corners + 4 edge-midpoints; an Arrow gets just 2, one per
+        //      endpoint — see _drawResizeHandles) are drawn ON TOP of it.
+        //   2. Drag one specific handle → only that side/corner moves, same
+        //      "opposite edge/corner stays put" behavior as before.
+        // The handles live in their own always-on-top 'resize-overlay' Paper.js
+        // Layer (see _getResizeOverlayLayer) rather than as children of the
+        // shape or 'main' — kept OUT of every save/export/composite path
+        // (CanvasManager.vue's _getDrawingJson/undoLastAction/redoLastAction/
+        // exportCanvas, and this file's finishCrop) the exact same way the
+        // 'background'/'related-*' layers already are, so this purely-UI
+        // layer can never leak into a saved drawing, a baked composite, or a
+        // sibling sector's imported reference overlay.
         startResizeOrSelect(event) {
-            // Always clear previous state on each new click
+            // A click that lands on one of the CURRENTLY shown handles starts
+            // a drag targeting exactly that handle — checked before the
+            // generic hitTest below so grabbing a handle (which visually sits
+            // right on the shape's own edge) can never be misread as
+            // "select a different item".
+            if (this._selectedResizeItem) {
+                const role = this._hitResizeHandle(event.point);
+                if (role) {
+                    this._resizeHandle = role;
+                    this._resizeStart  = event.point;
+                    if (this._selectedResizeItem.data && this._selectedResizeItem.data.isArrow) {
+                        const shaft = this._selectedResizeItem.children[0];
+                        const head  = this._selectedResizeItem.children[1];
+                        // The true tip is the HEAD's own point, not the
+                        // shaft's last segment — updateArrow deliberately
+                        // pulls the shaft's end back short of the tip so it
+                        // doesn't poke through the arrowhead (see
+                        // DrawingTools.vue's resizeArrow, which reads the
+                        // same two points the same way).
+                        this._resizeArrowOriginal = {
+                            start: shaft.segments[0].point.clone(),
+                            end:   head.segments[0].point.clone(),
+                        };
+                        this._resizeOriginalBounds = null;
+                    } else {
+                        this._resizeOriginalBounds = this._selectedResizeItem.bounds.clone();
+                        this._resizeArrowOriginal  = null;
+                    }
+                    return;
+                }
+            }
+
+            // Otherwise: (re)select whatever shape was clicked, or clear the
+            // selection on empty canvas / a locked item.
             if (this._selectedResizeItem) {
                 try { this._selectedResizeItem.selected = false; } catch (_) {}
-                this._selectedResizeItem = null;
             }
-            this._resizeHandle        = null;
-            this._resizeStart         = null;
+            this._selectedResizeItem   = null;
+            this._resizeHandle         = null;
+            this._resizeStart          = null;
             this._resizeOriginalBounds = null;
+            this._resizeArrowOriginal  = null;
+            this._removeResizeOverlayLayer();
 
             const hitResult = this.scope.project.hitTest(event.point, {
                 fill: true, stroke: true, tolerance: 15
@@ -723,28 +799,145 @@ export default {
                 item = item.parent;
             }
             if (item.locked) return;
+            // This tool only changes SIZE for these 4 shape types — position
+            // is the Move tool's job (action 8), and every other item type
+            // (freehand lines/trails, text, topo/anchor/POI symbols, numbered
+            // routes, polygons...) was never designed for a bounding-box
+            // resize: the old generic fitBounds() fallback that used to catch
+            // "anything else" here visibly distorted or off-center-shifted
+            // them instead of cleanly resizing, which read as "this moved my
+            // shape instead of resizing it". Anything not one of these 4 is
+            // simply ignored — no selection, no handles.
+            if (!this._isResizableShape(item)) return;
 
             this._selectedResizeItem = item;
             item.selected = true;
+            this._drawResizeHandles(item);
+        },
 
-            // Pick the corner to move based on which quadrant of the item was clicked.
-            // The opposite corner acts as the fixed anchor during drag.
+        _isResizableShape(item) {
+            const d = item && item.data;
+            return !!(d && (d.isRectangle || d.isCircle || d.isEllipse || d.isArrow));
+        },
+
+        // Zoom-aware constant ON-SCREEN handle size (~9px), same convention
+        // as _shouldAddDragPoint's minDistance/_simplifyIfSmooth's tolerance
+        // above — so handles neither vanish when zoomed out on a big photo
+        // nor balloon to a huge square when zoomed in.
+        _handleSize() {
+            const zoom = (this.scope && this.scope.view && this.scope.view.zoom) || 1;
+            return 9 / zoom;
+        },
+
+        _getResizeOverlayLayer(create) {
+            if (!this.scope) return null;
+            let layer = this.scope.project.layers.find(l => l.name === 'resize-overlay');
+            if (!layer && create) {
+                // new Layer() auto-activates itself AND auto-inserts into the
+                // project (same note as CanvasManager.vue's own bgLayer
+                // creation) — reactivating 'main' right after is required, or
+                // the NEXT shape the admin draws with any other tool would
+                // silently get added to this throwaway overlay layer instead
+                // (createGroup()/add_line() etc. all add to
+                // project.activeLayer).
+                layer = new paper.Layer();
+                layer.name = 'resize-overlay';
+                if (this._activateMainLayer) this._activateMainLayer();
+            }
+            return layer;
+        },
+
+        _removeResizeOverlayLayer() {
+            const layer = this._getResizeOverlayLayer(false);
+            if (!layer) return;
+            layer.remove();
+            // Removing the active layer doesn't reactivate another one on its
+            // own — see _getResizeOverlayLayer's own note on why 'main' must
+            // stay (or become again) the active layer for every OTHER tool.
+            if (this._activateMainLayer) this._activateMainLayer();
+        },
+
+        // Draws (replacing any previous set) the visible square handles for
+        // `item`: 2 endpoint handles for an Arrow (see the tip/pulled-back-end
+        // note in startResizeOrSelect above), otherwise 8 handles at the 4
+        // corners + 4 edge-midpoints of its bounding box. Re-called on every
+        // drag frame (dragResize below) so the squares track the shape live.
+        _drawResizeHandles(item) {
+            this._removeResizeOverlayLayer();
+            if (!item) return;
+            const layer = this._getResizeOverlayLayer(true);
+            layer.bringToFront();
+
+            const hs = this._handleSize();
+            const addHandle = (point, role) => {
+                const h = new paper.Path.Rectangle({
+                    point: [point.x - hs / 2, point.y - hs / 2],
+                    size: [hs, hs],
+                    fillColor: '#ffffff',
+                    strokeColor: '#0d6efd',
+                    strokeWidth: Math.max(1, hs * 0.18),
+                    name: 'resize-handle'
+                });
+                h.data = { isResizeHandle: true, handleRole: role };
+                layer.addChild(h);
+            };
+
+            if (item.data && item.data.isArrow) {
+                const shaft = item.children && item.children[0];
+                const head  = item.children && item.children[1];
+                if (shaft && shaft.segments && shaft.segments.length && head && head.segments && head.segments.length) {
+                    addHandle(shaft.segments[0].point, 'start');
+                    addHandle(head.segments[0].point, 'end');
+                }
+                return;
+            }
+
             const b  = item.bounds;
-            const cx = (b.left + b.right)  / 2;
-            const cy = (b.top  + b.bottom) / 2;
-            const pt = event.point;
+            const cx = (b.left + b.right) / 2;
+            const cy = (b.top + b.bottom) / 2;
+            addHandle(new paper.Point(b.left, b.top), 'topLeft');
+            addHandle(new paper.Point(cx, b.top), 'topCenter');
+            addHandle(new paper.Point(b.right, b.top), 'topRight');
+            addHandle(new paper.Point(b.left, cy), 'leftCenter');
+            addHandle(new paper.Point(b.right, cy), 'rightCenter');
+            addHandle(new paper.Point(b.left, b.bottom), 'bottomLeft');
+            addHandle(new paper.Point(cx, b.bottom), 'bottomCenter');
+            addHandle(new paper.Point(b.right, b.bottom), 'bottomRight');
+        },
 
-            if (pt.x <= cx && pt.y <= cy)      this._resizeHandle = 'topLeft';
-            else if (pt.x > cx && pt.y <= cy)  this._resizeHandle = 'topRight';
-            else if (pt.x <= cx && pt.y > cy)  this._resizeHandle = 'bottomLeft';
-            else                               this._resizeHandle = 'bottomRight';
-
-            this._resizeStart          = event.point;
-            this._resizeOriginalBounds = item.bounds.clone();
+        // Nearest currently-drawn handle within tolerance, or null. Distance-
+        // based (not a strict bounds hitTest) so a slightly imprecise click
+        // still grabs the intended handle — same generous-tolerance spirit as
+        // startResizeOrSelect's own 15px hitTest.
+        _hitResizeHandle(point) {
+            const layer = this._getResizeOverlayLayer(false);
+            if (!layer) return null;
+            const tol = this._handleSize() * 1.5;
+            let best = null, bestDist = tol;
+            layer.children.forEach(h => {
+                const d = h.position.getDistance(point);
+                if (d < bestDist) { bestDist = d; best = h; }
+            });
+            return best && best.data ? best.data.handleRole : null;
         },
 
         dragResize(event) {
-            if (!this._selectedResizeItem || !this._resizeHandle || !this._resizeOriginalBounds) return;
+            if (!this._selectedResizeItem || !this._resizeHandle) return;
+
+            if (this._selectedResizeItem.data && this._selectedResizeItem.data.isArrow) {
+                const orig = this._resizeArrowOriginal;
+                if (!orig) return;
+                const delta = event.point.subtract(this._resizeStart);
+                const newStart = this._resizeHandle === 'start' ? orig.start.add(delta) : orig.start;
+                const newEnd   = this._resizeHandle === 'end'   ? orig.end.add(delta)   : orig.end;
+                this.updateArrow(this._selectedResizeItem, newStart, newEnd);
+                this._selectedResizeItem.data = { ...this._selectedResizeItem.data, startPoint: newStart };
+                this._drawResizeHandles(this._selectedResizeItem);
+                this.scope.view.update();
+                return;
+            }
+
+            if (!this._resizeOriginalBounds) return;
 
             let item    = this._selectedResizeItem;
             const orig  = this._resizeOriginalBounds;
@@ -777,9 +970,27 @@ export default {
                 const cy = (nt + nb) / 2;
                 const radius = Math.max(2, Math.min(nr - nl, nb - nt) / 2);
                 item = this._recreateCircle(item, new paper.Point(cx, cy), radius);
+            } else if (item.data && item.data.isEllipse) {
+                // fitBounds(rect, fill=true) — the `fill` flag is required
+                // here: Paper.js's DEFAULT fitBounds (fill=false) preserves
+                // the item's own aspect ratio and CENTERS it inside the given
+                // rectangle instead of stretching to match it exactly, so an
+                // asymmetric drag (any handle where the new width/height
+                // ratio differs from the ellipse's own) left it not quite
+                // touching the dragged handle and visibly re-centered inside
+                // [nl,nt,nr,nb] — reads as "this moved the shape" rather than
+                // "resized it" (reported as such; fixed September 2026).
+                // fill=true scales both axes independently to fill the exact
+                // target rectangle, matching the rectangle/circle branches'
+                // own "opposite corner/edge stays put" behavior.
+                item.fitBounds(new paper.Rectangle(nl, nt, nr - nl, nb - nt), true);
             } else {
-                // Generic: incremental fitBounds (ellipse, polygon, etc.)
-                item.fitBounds(new paper.Rectangle(nl, nt, nr - nl, nb - nt));
+                // _isResizableShape() in startResizeOrSelect only allows a
+                // rectangle/circle/ellipse/arrow to become _selectedResizeItem
+                // (arrow is handled in its own early-return branch above), so
+                // this is unreachable — kept as a safe no-op rather than
+                // silently mis-scaling a type this tool was never meant for.
+                return;
             }
 
             // Resizing the sector's rectangle/circle/ellipse also moves its
@@ -810,6 +1021,7 @@ export default {
                 }
             }
 
+            this._drawResizeHandles(item);
             this.scope.view.update();
         },
 
@@ -831,15 +1043,169 @@ export default {
             return newCircle;
         },
 
-        // Clear resize selection when switching away from action 19
+        // Clear resize selection when switching away from action 19 (also
+        // called defensively from CanvasManager.vue's undo/redo, since those
+        // replace the whole project and would otherwise leave this pointing
+        // at a removed item).
         clearResizeSelection() {
             if (this._selectedResizeItem) {
                 try { this._selectedResizeItem.selected = false; } catch (_) {}
                 this._selectedResizeItem  = null;
             }
-            this._resizeHandle        = null;
-            this._resizeStart         = null;
-            this._resizeOriginalBounds = null;
+            this._resizeHandle          = null;
+            this._resizeStart           = null;
+            this._resizeOriginalBounds  = null;
+            this._resizeArrowOriginal   = null;
+            this._removeResizeOverlayLayer();
+        },
+
+        // ── Edit line vector points (action 49) ────────────────────────────────
+        // Same two-step, visible-handle pattern as the Resize tool above, but
+        // for a freehand LINE or TRAIL's own individual points instead of a
+        // shape's bounding box: click a line to show a small dot at every one
+        // of its vector points, then drag one dot to move just that point.
+        // Deliberately its OWN new tool rather than reusing the older,
+        // generic "Edit Points" (action 16, selectSegmentPoint/editingSegment)
+        // — that one works blind (no visible handles until you already
+        // guessed right within 20px) and, being fully generic, will happily
+        // drag a single corner of a rectangle/circle into a jagged
+        // quadrilateral; this one only ever engages for a line/trail (see
+        // _isEditableLineShape) and shows every point up front.
+        //
+        // A freehand line can easily have 100-300+ segments (see
+        // _getDrawingJson's own comment on this same fact, re: selection
+        // clutter), so unlike _drawResizeHandles (always exactly 8 handles,
+        // cheap to fully remove+rebuild every drag frame) this draws all
+        // handles ONCE on selection and then just TRANSLATES the one dot
+        // actually being dragged — same efficient "translate the live dot"
+        // approach the older action-16 tool already used for its own single
+        // dot. For the same reason, the line itself is never given
+        // `.selected = true` here (unlike Resize's target shapes, which only
+        // ever have up to 4 segments) — Paper.js's native per-segment
+        // selection styling on a 200-point path renders as a dense dotted
+        // line in its own right (see _getDrawingJson's comment), which would
+        // just double up with — and visually fight — this tool's own dots.
+        _isEditableLineShape(item) {
+            if (!item || item.locked || !(item instanceof paper.Path)) return false;
+            const d = item.data || {};
+            if (d.isTrail || d.isRouteLine) return true;
+            return !!(item.name && (item.name.startsWith('line ') || item.name.startsWith('trail ')));
+        },
+
+        _lineHandleSize() {
+            const zoom = (this.scope && this.scope.view && this.scope.view.zoom) || 1;
+            return 8 / zoom;
+        },
+
+        _getLineEditOverlayLayer(create) {
+            if (!this.scope) return null;
+            let layer = this.scope.project.layers.find(l => l.name === 'line-edit-overlay');
+            if (!layer && create) {
+                // See _getResizeOverlayLayer's own note — new Layer() both
+                // auto-activates and auto-inserts, so 'main' must be
+                // reactivated right after or the next shape drawn with any
+                // other tool would silently land in this throwaway layer.
+                layer = new paper.Layer();
+                layer.name = 'line-edit-overlay';
+                if (this._activateMainLayer) this._activateMainLayer();
+            }
+            return layer;
+        },
+
+        _removeLineEditOverlayLayer() {
+            const layer = this._getLineEditOverlayLayer(false);
+            if (!layer) return;
+            layer.remove();
+            if (this._activateMainLayer) this._activateMainLayer();
+        },
+
+        _drawLinePointHandles(item) {
+            this._removeLineEditOverlayLayer();
+            if (!item || !item.segments) return;
+            const layer = this._getLineEditOverlayLayer(true);
+            layer.bringToFront();
+            const r = this._lineHandleSize() / 2;
+            item.segments.forEach((seg, index) => {
+                const dot = new paper.Path.Circle({
+                    center: seg.point,
+                    radius: r,
+                    fillColor: '#ffffff',
+                    strokeColor: '#0d6efd',
+                    strokeWidth: Math.max(1, r * 0.35),
+                    name: 'line-point-handle'
+                });
+                dot.data = { isLineEditHandle: true, segmentIndex: index };
+                layer.addChild(dot);
+            });
+        },
+
+        // Nearest currently-drawn point handle within tolerance, or null —
+        // same distance-based approach as the Resize tool's _hitResizeHandle.
+        _hitLinePointHandle(point) {
+            const layer = this._getLineEditOverlayLayer(false);
+            if (!layer) return null;
+            const tol = this._lineHandleSize() * 1.5;
+            let best = null, bestDist = tol;
+            layer.children.forEach(h => {
+                const d = h.position.getDistance(point);
+                if (d < bestDist) { bestDist = d; best = h; }
+            });
+            return best;
+        },
+
+        startEditLinePoints(event) {
+            // A click on one of the currently shown point handles begins
+            // dragging exactly that vector point — checked first for the same
+            // reason startResizeOrSelect checks its own handles first.
+            if (this._selectedLineItem) {
+                const handle = this._hitLinePointHandle(event.point);
+                if (handle) {
+                    this._draggedLineHandle   = handle;
+                    this._draggedSegmentIndex = handle.data.segmentIndex;
+                    return;
+                }
+            }
+
+            // Otherwise: (re)select whatever LINE/TRAIL was clicked, or clear
+            // the selection on empty canvas / an incompatible item.
+            if (this._selectedLineItem) {
+                try { this._selectedLineItem.selected = false; } catch (_) {}
+            }
+            this._selectedLineItem    = null;
+            this._draggedLineHandle   = null;
+            this._draggedSegmentIndex = null;
+            this._removeLineEditOverlayLayer();
+
+            const hitResult = this.scope.project.hitTest(event.point, {
+                stroke: true, tolerance: 15
+            });
+            if (!hitResult || !hitResult.item) return;
+            if (!this._isEditableLineShape(hitResult.item)) return;
+
+            this._selectedLineItem = hitResult.item;
+            this._drawLinePointHandles(this._selectedLineItem);
+        },
+
+        dragEditLinePoint(event) {
+            if (!this._selectedLineItem || !this._draggedLineHandle || this._draggedSegmentIndex == null) return;
+            const seg = this._selectedLineItem.segments[this._draggedSegmentIndex];
+            if (!seg) return;
+            seg.point = event.point;
+            this._draggedLineHandle.position = event.point;
+            this.scope.view.update();
+        },
+
+        // Clear line-point-edit selection when switching away from action 49
+        // (also called defensively from CanvasManager.vue's undo/redo — see
+        // clearResizeSelection's own note, same stale-reference risk).
+        clearLineEditSelection() {
+            if (this._selectedLineItem) {
+                try { this._selectedLineItem.selected = false; } catch (_) {}
+                this._selectedLineItem = null;
+            }
+            this._draggedLineHandle   = null;
+            this._draggedSegmentIndex = null;
+            this._removeLineEditOverlayLayer();
         },
 
         // ── Continue line (action 20) ────────────────────────────────────────

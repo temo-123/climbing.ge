@@ -1105,11 +1105,14 @@ export default {
                         ctx.translate(iconCenterX, rowCenterY);
                         ctx.scale(iconScale, iconScale);
                         ctx.translate(-localCenterX, -localCenterY);
-                        // minStrokePx/minFontPx — see paperJsonRenderer.js's
+                        // minStrokePx/minFontPx/dashPx — see paperJsonRenderer.js's
                         // drawItem for the full rationale: a fine authored
                         // stroke/font can otherwise shrink below a pixel
-                        // once fit into this small fixed icon box.
-                        try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11 }); } catch (_) {}
+                        // once fit into this small fixed icon box, and a long
+                        // real Trail line's dashArray shrinks to sub-pixel the
+                        // same way (kept in sync with legendRenderer.js's
+                        // drawLegendCard, see this file's own header comment).
+                        try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11, dashPx: [6, 4] }); } catch (_) {}
                         ctx.restore();
                     }
 

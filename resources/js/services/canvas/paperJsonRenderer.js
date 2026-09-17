@@ -80,6 +80,11 @@ function parseSeg(s) {
 function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul = 1, fontMul = 1, legendOpts, skipDataFlags) {
     const minStrokePx = legendOpts && legendOpts.minStrokePx;
     const minFontPx = legendOpts && legendOpts.minFontPx;
+    // [dashPx, gapPx] a legend icon's dash pattern should read as ON SCREEN,
+    // overriding the sample's own authored dashArray entirely rather than
+    // just flooring it like minStrokePx/minFontPx do — see the dashArray
+    // handling below for why a floor isn't enough here.
+    const legendDashPx = legendOpts && legendOpts.dashPx;
     const isSkipped = (d) => skipDataFlags && skipDataFlags.some(f => d[f]);
     const currentScale = () => {
         try {
@@ -216,6 +221,36 @@ function drawItem(ctx, json, strokeStyle, dotFillStyle, textFillStyle, widthMul 
                     ctx.lineWidth = lw;
                     ctx.lineCap = 'round';
                     ctx.lineJoin = 'round';
+                    // Trail lines (add_trail, DrawingTools.vue) author a real
+                    // `dashArray` — Paper.js itself renders that natively on
+                    // the live editing canvas, but this ctx-based replay
+                    // never read it, so every baked composite/legend icon
+                    // silently flattened a dashed trail back to a solid line.
+                    // Reset inside this Path's own save/restore (line 129) so
+                    // it can never bleed into a sibling path drawn right
+                    // after it.
+                    if (data.dashArray && data.dashArray.length) {
+                        if (legendDashPx) {
+                            // A legend icon fits the sample's WHOLE bounding
+                            // box into a small fixed box (drawLegendCard's
+                            // iconScale) — fine for a bolt/pin authored at a
+                            // near-constant absolute size, but a trail is a
+                            // real freehand line that can span a big chunk of
+                            // the actual photo, so the same shrink that
+                            // works for a bolt scales its dash pattern down
+                            // to a fraction of a pixel — invisible, reading
+                            // as a plain solid line (reported as "legend not
+                            // understandable", fixed September 2026). Divide
+                            // by currentScale() (same trick minStrokePx/
+                            // minFontPx use above) so the drawn dash is
+                            // exactly `legendDashPx` REAL SCREEN pixels once
+                            // the icon's own ctx.scale is applied, regardless
+                            // of how long the real sample line is.
+                            ctx.setLineDash(legendDashPx.map(v => v / currentScale()));
+                        } else {
+                            ctx.setLineDash(data.dashArray.map(v => v * widthMul));
+                        }
+                    }
                     ctx.stroke();
                 } else if (!(data.closed && data.fillColor)) {
                     // No real stroke color AND nothing was filled either —

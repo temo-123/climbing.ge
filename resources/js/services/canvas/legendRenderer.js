@@ -266,8 +266,11 @@ function drawLegendCard(ctx, entries, { x = 0, y = 0, scale = 1, drawItem, trans
                 // minStrokePx/minFontPx — see paperJsonRenderer.js's
                 // drawItem for the full rationale: a fine authored
                 // stroke/font can otherwise shrink below a pixel once
-                // fit into this small fixed icon box.
-                try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11 }); } catch (_) {}
+                // fit into this small fixed icon box. dashPx is the same
+                // idea for a dashed sample (currently only the Trail row) —
+                // without it a long real trail line's dash pattern shrinks
+                // to sub-pixel and reads as a plain solid line.
+                try { drawItem(ctx, r.sample, null, null, null, 1, 1, { minStrokePx: 1.8, minFontPx: 11, dashPx: [6, 4] }); } catch (_) {}
                 ctx.restore();
             }
 
