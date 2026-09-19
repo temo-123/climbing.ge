@@ -262,6 +262,10 @@ Route::group(['namespace'=>'Api\User\Admin\Shop', 'middleware'=>['auth:sanctum',
         // the CustomOrderController::store() warehouse-scoping this mirrors.
         Route::get('/get_products', 'get_products_for_order');
         Route::get('/get_product_options/{product_id}', 'get_options_for_order');
+        // Live partner-organization lookup while the admin fills in buyer info -
+        // store()/exportInvoicePdf() re-resolve this themselves server-side
+        // rather than trust whatever this preview returned.
+        Route::get('/check_partner_discount', 'check_partner_discount');
     });
 
     Route::controller(OrderController::class)->prefix('set_order')->group( function() {

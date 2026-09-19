@@ -37,6 +37,7 @@
                     <option value="Order has been sent">{{ $t('admin.orders.status_option_order_has_been_sent') }}</option>
                     <option value="Transferred to the delivery service">{{ $t('admin.orders.status_option_transferred_to_delivery') }}</option>
                     <option value="Delivered">{{ $t('admin.orders.status_option_delivered') }}</option>
+                    <option value="Order Complete">{{ $t('admin.orders.status_option_order_complete') }}</option>
                 </select>
             </div>
             <div v-if="order_status_updating_loader" class="d-flex justify-content-center p-4">

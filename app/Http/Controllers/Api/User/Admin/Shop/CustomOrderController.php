@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User\Admin\Shop;
 use App\Http\Controllers\Controller;
 use App\Services\PermissionService;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 use App\Models\User;
 use App\Models\Shop\Order;
@@ -12,6 +13,8 @@ use App\Models\Shop\Order_products;
 use App\Models\Shop\CustomOrderAddress;
 use App\Models\Shop\Product_option;
 use App\Models\Shop\Product;
+use App\Models\Shop\Shiped_region;
+use App\Models\PartnerOrganization\PartnerOrganizationMember;
 use App\Services\ProductService;
 
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -22,6 +25,10 @@ class CustomOrderController extends Controller
     {
         if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
 
+        // Pay Now orders skip address collection entirely - the buyer arranges
+        // delivery separately with the seller once they've paid.
+        $needsAddress = $request->delivery_type === 'delivery' && $request->payment_type !== 'online_payment';
+
         $request->validate([
             'name'               => 'required|string|max:100',
             'surname'            => 'required|string|max:100',
@@ -29,6 +36,8 @@ class CustomOrderController extends Controller
             'phone'              => 'nullable|string|max:50',
             'delivery_type'      => 'required|string',
             'payment_type'       => 'required|string',
+            'region_id'          => ['nullable', 'integer', 'exists:shiped_regions,id', Rule::requiredIf($needsAddress)],
+            'delivery_price'     => 'nullable|numeric|min:0',
             'order_product_list' => 'required|array|min:1',
             'order_product_list.*.product_option_id' => 'required|integer|exists:product_options,id',
             'order_product_list.*.product_id'        => 'required|integer|exists:products,id',
@@ -56,27 +65,50 @@ class CustomOrderController extends Controller
             }
         }
 
+        // For a delivery order, default the price to the region's own shipping
+        // price when the admin didn't type an override amount.
+        $delivery_price = null;
+        if ($needsAddress) {
+            $delivery_price = $request->filled('delivery_price')
+                ? (float) $request->delivery_price
+                : (float) (Shiped_region::find($request->region_id)->shiping_price ?? 0);
+        }
+
+        // Resolved from the buyer's own email/name+surname, never from a
+        // client-sent value - same reasoning as create_order()'s shipping cost:
+        // never trust the client for money.
+        $partner = $this->resolve_partner_discount($request->email, $request->name, $request->surname, $request->phone);
+        $discount = $partner['discount'] ?? 0;
+
+        // Pay Now orders are settled at creation time - no pending fulfillment
+        // step to track, so they go straight to "Order Complete" instead of
+        // sitting in "pending" like every other payment method.
+        $status = $request->payment_type === 'online_payment' ? 'Order Complete' : 'pending';
+
         // Create the order
         $order = Order::create([
             'is_custom'            => true,
             'warehouse_id'         => $warehouseId,
             'shiping'              => $request->delivery_type,
+            'delivery_price'       => $delivery_price,
             'payment'              => $request->payment_type,
+            'discount'             => $discount,
             'confirm'              => 1,
-            'status'               => 'pending',
+            'status'               => $status,
             'status_updating_data' => now(),
         ]);
 
         // Store buyer contact info
         $address = CustomOrderAddress::create([
-            'name'    => $request->name,
-            'surname' => $request->surname,
-            'email'   => $request->email,
-            'phone'   => $request->phone,
-            'address' => $request->address,
-            'map'     => $request->map,
-            'city'    => $request->city,
-            'country' => $request->country,
+            'name'      => $request->name,
+            'surname'   => $request->surname,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'address'   => $request->address,
+            'map'       => $request->map,
+            'city'      => $request->city,
+            'country'   => $request->country,
+            'region_id' => $needsAddress ? $request->region_id : null,
         ]);
 
         $order->buyerAddress()->attach($address->id);
@@ -116,10 +148,98 @@ class CustomOrderController extends Controller
         }
 
         return response()->json([
-            'message'       => 'Custom order created successfully',
-            'order_id'      => $order->id,
-            'matched_users' => $matchedUsers->values(),
+            'message'          => 'Custom order created successfully',
+            'order_id'         => $order->id,
+            'matched_users'    => $matchedUsers->values(),
+            'partner_discount' => $partner,
         ], 201);
+    }
+
+    /**
+     * Live lookup for the order-creation modal: does this buyer (by email, or
+     * by name+surname when no email is typed yet) belong to a partner
+     * organization, and - since the admin only ever types one of email vs.
+     * name+surname first - do we already know their other contact details
+     * from a matching User account or partner-member record? Preview only -
+     * store() and exportInvoicePdf() re-resolve the discount themselves from
+     * the buyer info they actually persist/print, never from a value this
+     * endpoint or the client returned. Autofill is harmless either way since
+     * the admin can freely overwrite whatever gets filled in.
+     */
+    public function check_partner_discount(Request $request)
+    {
+        if ($auth = PermissionService::authorizeAny([['order', 'add'], ['warehouse', 'sell_own']])) return $auth;
+
+        $email = $request->email;
+        $name = $request->name;
+        $surname = $request->surname;
+        $phone = $request->phone;
+
+        $user = null;
+        if ($email) {
+            $user = User::where('email', $email)->first();
+        }
+        if (!$user && $phone) {
+            $user = User::where('phone_number', $phone)->first();
+        }
+        if (!$user && $name && $surname) {
+            $user = User::where('name', $name)->where('surname', $surname)->first();
+        }
+
+        $member = $this->find_partner_member($email, $name, $surname, $phone);
+        $organization = $member?->organization;
+
+        return response()->json([
+            'discount'          => $organization ? (float) $organization->discount : 0,
+            'organization_name' => $organization?->name,
+            'name'              => $user->name ?? $member?->name,
+            'surname'           => $user->surname ?? $member?->surname,
+            'email'             => $user->email ?? $member?->email,
+            'phone'             => $user->phone_number ?? $member?->phone_number,
+        ]);
+    }
+
+    /**
+     * Matches a partner-organization member by email first (most reliable),
+     * then phone, falling back to name+surname - mirrors the matched_users
+     * lookup in store(), since a partner member here isn't necessarily a
+     * registered User account (partner_organization_members has its own
+     * name/surname/email/phone_number columns, independent of user_id).
+     */
+    private function find_partner_member(?string $email, ?string $name, ?string $surname, ?string $phone = null): ?PartnerOrganizationMember
+    {
+        if ($email) {
+            $member = PartnerOrganizationMember::with('organization')->where('email', $email)->first();
+            if ($member) return $member;
+        }
+
+        if ($phone) {
+            $member = PartnerOrganizationMember::with('organization')->where('phone_number', $phone)->first();
+            if ($member) return $member;
+        }
+
+        if ($name && $surname) {
+            return PartnerOrganizationMember::with('organization')
+                ->where('name', $name)
+                ->where('surname', $surname)
+                ->first();
+        }
+
+        return null;
+    }
+
+    private function resolve_partner_discount(?string $email, ?string $name, ?string $surname, ?string $phone = null): ?array
+    {
+        $member = $this->find_partner_member($email, $name, $surname, $phone);
+
+        if (!$member || !$member->organization) {
+            return null;
+        }
+
+        return [
+            'discount'           => (float) $member->organization->discount,
+            'organization_name'  => $member->organization->name,
+        ];
     }
 
     public function index()
@@ -127,7 +247,7 @@ class CustomOrderController extends Controller
         if ($auth = PermissionService::authorize('order', 'show')) return $auth;
 
         $orders = Order::where('is_custom', true)
-            ->with(['buyerAddress', 'relatedUsers', 'orderProducts.option'])
+            ->with(['buyerAddress.region', 'relatedUsers', 'orderProducts.option'])
             ->latest()
             ->get()
             ->map(function ($order) {
@@ -137,12 +257,14 @@ class CustomOrderController extends Controller
                     'status'        => $order->status,
                     'payment'       => $order->payment,
                     'shiping'       => $order->shiping,
+                    'delivery_price' => $order->delivery_price,
                     'confirm'       => $order->confirm,
                     'created_at'    => $order->created_at,
                     'buyer_name'    => $buyer?->name,
                     'buyer_surname' => $buyer?->surname,
                     'buyer_email'   => $buyer?->email,
                     'buyer_phone'   => $buyer?->phone,
+                    'region_name'   => $buyer?->region?->region,
                     'related_users' => $order->relatedUsers->map(fn($u) => [
                         'id'      => $u->id,
                         'name'    => $u->name,
@@ -166,7 +288,7 @@ class CustomOrderController extends Controller
 
         $order = Order::where('id', $order_id)
             ->where('is_custom', true)
-            ->with(['buyerAddress', 'relatedUsers', 'orderProducts'])
+            ->with(['buyerAddress.region', 'relatedUsers', 'orderProducts'])
             ->firstOrFail();
 
         $buyer = $order->buyerAddress->first();
@@ -176,6 +298,7 @@ class CustomOrderController extends Controller
             'status'        => $order->status,
             'payment'       => $order->payment,
             'shiping'       => $order->shiping,
+            'delivery_price' => $order->delivery_price,
             'confirm'       => $order->confirm,
             'created_at'    => $order->created_at,
             'buyer_name'    => $buyer?->name,
@@ -183,6 +306,7 @@ class CustomOrderController extends Controller
             'buyer_email'   => $buyer?->email,
             'buyer_phone'   => $buyer?->phone,
             'buyer_address' => $buyer?->address,
+            'region_name'   => $buyer?->region?->region,
             'related_users' => $order->relatedUsers->map(fn($u) => [
                 'id'      => $u->id,
                 'name'    => $u->name,
@@ -249,6 +373,12 @@ class CustomOrderController extends Controller
             return response()->json(['error' => 'No valid items in product list'], 400);
         }
 
+        $subtotal = $total;
+        $partner = $this->resolve_partner_discount($request->email, $request->name, $request->surname, $request->phone);
+        $discount_percent = $partner['discount'] ?? 0;
+        $discount_amount = $discount_percent > 0 ? round($subtotal * $discount_percent / 100, 2) : 0;
+        $total = $subtotal - $discount_amount;
+
         $invoiceNumber = 'INV-' . now()->format('Ymd-His');
 
         $company = [
@@ -274,13 +404,17 @@ class CustomOrderController extends Controller
                 'address' => $request->address,
                 'city'    => $request->city,
             ],
-            'company'        => $company,
-            'labels'         => $labels,
-            'locale'         => $locale,
-            'invoice_number' => $invoiceNumber,
-            'line_items'     => $line_items,
-            'total'          => $total,
-            'invoice_date'   => now()->format('Y-m-d'),
+            'company'          => $company,
+            'labels'           => $labels,
+            'locale'           => $locale,
+            'invoice_number'   => $invoiceNumber,
+            'line_items'       => $line_items,
+            'subtotal'         => $subtotal,
+            'discount_percent' => $discount_percent,
+            'discount_amount'  => $discount_amount,
+            'partner_name'     => $partner['organization_name'] ?? null,
+            'total'            => $total,
+            'invoice_date'     => now()->format('Y-m-d'),
         ]);
 
         return $pdf->download($invoiceNumber . '.pdf');
@@ -303,6 +437,8 @@ class CustomOrderController extends Controller
                 'qty'             => 'რაოდ.',
                 'unit_price'      => 'ერთეულის ფასი',
                 'line_total'      => 'ჯამი',
+                'subtotal'        => 'ჯამი (ფასდაკლების გარეშე)',
+                'discount'        => 'ფასდაკლება',
                 'total'           => 'გადასახდელი სულ',
                 'payment_details' => 'გადახდის დეტალები',
                 'bank'            => 'ბანკი',
@@ -329,6 +465,8 @@ class CustomOrderController extends Controller
             'qty'             => 'Qty',
             'unit_price'      => 'Unit Price',
             'line_total'      => 'Total',
+            'subtotal'        => 'Subtotal',
+            'discount'        => 'Discount',
             'total'           => 'Total Due',
             'payment_details' => 'Payment Details',
             'bank'            => 'Bank',

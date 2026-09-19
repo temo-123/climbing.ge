@@ -80,24 +80,37 @@ class OrderController extends Controller
     }
 
     public function castam_prodaction_message(Request $request) {
-        if ($auth = PermissionService::authorize('order', 'edit')) return $auth;
-        if(Auth::user()){
+        // Self-checkout style action, like create_order() - a customer sending a
+        // custom-order inquiry about their own product interest is not an admin
+        // action and must never be gated behind the 'order'>'edit' permission
+        // (the default 'user' role has zero permissions, so that gate 403'd this
+        // endpoint for every real customer).
+        $user = auth('sanctum')->user();
+        if($user){
             $actyve_product = Product::where('id', '=', $request->product_id)->first();
             $actyve_product_user = $actyve_product->user->first();
 
             $actyve_local_product = ProductService::get_locale_product_in_page_use_locale($actyve_product, 'us')['locale_product'];
 
+            // The variant the customer picked on the product page - previously
+            // never reached the backend at all, so sellers had no idea which
+            // option a custom-production request was actually about.
+            $selected_option = Product_option::where('id', '=', $request->option_id)
+                ->where('product_id', '=', $request->product_id)
+                ->first();
+
             $info = [
                 "product_name" => $actyve_local_product->title,
-                "messaged_user_name" => Auth::user()->name . ' ' . Auth::user()->surname,
-                "messaged_user_email" => Auth::user()->email,
+                "messaged_user_name" => $user->name . ' ' . $user->surname,
+                "messaged_user_email" => $user->email,
                 "product_id" => $request->product_id,
+                "option_name" => $selected_option->name ?? null,
                 "number" => $request->form_data['number'],
                 "message" => $request->form_data['text']
             ];
 
             Notification::route('mail', $actyve_product_user->email)->notify(new SelerCastamProdactionNotification($info));
-            Notification::route('mail', Auth::user()->email)->notify(new BuyerCastamProdactionNotification());
+            Notification::route('mail', $user->email)->notify(new BuyerCastamProdactionNotification());
 
             return 'Thank you for message!';
         }

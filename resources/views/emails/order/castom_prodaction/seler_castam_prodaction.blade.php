@@ -12,6 +12,9 @@
     <p>Buyer Email - {{$messaged_user_email}}</p>
     <p>Buyer Number - {{$buyer_number}}</p>
     <p>Product name (ID) - {{$product_name}} (#{{$product_id}})</p>
+    @if($option_name)
+        <p>Requested variant - {{$option_name}}</p>
+    @endif
     <hr>
     <h2>Buyer message</h2>
     <p>{{ $buyer_message }}</p>

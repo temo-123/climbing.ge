@@ -19,10 +19,16 @@ class CustomOrderAddress extends Model
         'zip',
         'address',
         'map',
+        'region_id',
     ];
 
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'custom_order_addresses_order', 'custom_order_address_id', 'order_id');
+    }
+
+    public function region()
+    {
+        return $this->belongsTo(Shiped_region::class, 'region_id');
     }
 }

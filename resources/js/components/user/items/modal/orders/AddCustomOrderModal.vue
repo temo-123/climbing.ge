@@ -2,10 +2,17 @@
     <StackModal
         v-model="showModal"
         :title="$t('admin.orders.add_custom_order_title')"
+        :size="'xxl'"
         @close="closeModal"
         @shown="() => { if (!submitted) this.$nextTick(() => this.$el.querySelector('input').focus()); }"
     >
         <form @submit.prevent="submitOrder" v-if="!submitted">
+
+            <div v-if="formErrors.length > 0" class="alert alert-danger">
+                <ul class="mb-0 pl-3">
+                    <li v-for="(err, i) in formErrors" :key="i">{{ err }}</li>
+                </ul>
+            </div>
 
             <!-- Buyer info -->
             <h6 class="text-muted mb-2">{{ $t('admin.orders.buyer_information_title') }}</h6>
@@ -38,6 +45,11 @@
                 </div>
             </div>
 
+            <div v-if="partnerInfo.discount > 0" class="alert alert-success">
+                <i class="fa fa-check-circle"></i>
+                {{ $t('admin.orders.partner_discount_detected', { org: partnerInfo.organization_name, discount: partnerInfo.discount }) }}
+            </div>
+
             <hr>
 
             <!-- Delivery & payment -->
@@ -46,10 +58,11 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.shipping_method_label') }} <span class="text-danger">*</span></label>
-                        <select class="form-control" v-model="form.delivery_type">
+                        <select class="form-control" v-model="form.delivery_type" :disabled="form.payment_type === 'online_payment'">
                             <option value="self_delivery">{{ $t('admin.orders.self_delivery_option') }}</option>
                             <option value="delivery">{{ $t('admin.orders.delivery_option') }}</option>
                         </select>
+                        <small v-if="form.payment_type === 'online_payment'" class="text-muted">{{ $t('admin.orders.pay_now_forces_self_delivery_hint') }}</small>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -58,13 +71,14 @@
                         <select class="form-control" v-model="form.payment_type" required>
                             <option value="deliverd_payment">{{ $t('admin.orders.payment_on_delivery_option') }}</option>
                             <option value="mony_transfer">{{ $t('admin.orders.money_transfer_option') }}</option>
-                            <option value="online_payment" disabled>{{ $t('admin.orders.online_payment_coming_soon_option') }}</option>
+                            <option value="online_payment">{{ $t('admin.orders.pay_now_option') }}</option>
                         </select>
+                        <small v-if="form.payment_type === 'online_payment'" class="text-muted">{{ $t('admin.orders.pay_now_hint') }}</small>
                     </div>
                 </div>
             </div>
 
-            <div class="row" v-if="form.delivery_type === 'delivery'">
+            <div class="row" v-if="needsAddress">
                 <div class="col-md-6">
                     <div class="form-group">
                         <label>{{ $t('admin.orders.address_label') }}</label>
@@ -75,6 +89,23 @@
                     <div class="form-group">
                         <label>{{ $t('admin.orders.city_label') }}</label>
                         <input type="text" class="form-control" v-model="form.city" :placeholder="$t('admin.orders.city_placeholder')">
+                    </div>
+                </div>
+            </div>
+            <div class="row" v-if="needsAddress">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ $t('admin.orders.region_label') }} <span class="text-danger">*</span></label>
+                        <select class="form-control" v-model="form.region_id" @change="onRegionChange">
+                            <option value="">{{ $t('admin.orders.select_region_placeholder') }}</option>
+                            <option v-for="r in regions" :key="r.id" :value="r.id">{{ r.region }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ $t('admin.orders.delivery_price_label') }}</label>
+                        <input type="number" class="form-control" v-model.number="form.delivery_price" min="0" step="0.01">
                     </div>
                 </div>
             </div>
@@ -174,6 +205,32 @@
                 <option value="en">English</option>
             </select>
             <div v-if="exportError" class="text-danger small mb-2">{{ exportError }}</div>
+
+            <hr>
+
+            <!-- Price breakdown -->
+            <h6 class="text-muted mb-2">{{ $t('admin.orders.price_breakdown_title') }}</h6>
+            <div class="card">
+                <div class="card-body py-2">
+                    <div class="d-flex justify-content-between">
+                        <span>{{ $t('admin.orders.subtotal_label') }}</span>
+                        <span>{{ subtotal.toFixed(2) }} ₾</span>
+                    </div>
+                    <div v-if="discountPercent > 0" class="d-flex justify-content-between text-success">
+                        <span>{{ $t('admin.orders.discount_label') }} ({{ partnerInfo.organization_name }}, -{{ discountPercent }}%)</span>
+                        <span>-{{ discountAmount.toFixed(2) }} ₾</span>
+                    </div>
+                    <div v-if="needsAddress" class="d-flex justify-content-between">
+                        <span>{{ $t('admin.orders.delivery_price_label') }}</span>
+                        <span>{{ deliveryPriceDisplay.toFixed(2) }} ₾</span>
+                    </div>
+                    <hr class="my-2">
+                    <div class="d-flex justify-content-between font-weight-bold" style="font-size:1.1em;">
+                        <span>{{ $t('admin.orders.grand_total_label') }}</span>
+                        <span>{{ grandTotal.toFixed(2) }} ₾</span>
+                    </div>
+                </div>
+            </div>
         </form>
 
         <!-- Success state -->
@@ -191,18 +248,22 @@
             <div v-else class="alert alert-secondary mt-3">
                 {{ $t('admin.orders.no_existing_account_matched') }}
             </div>
+            <div v-if="appliedDiscount && appliedDiscount.discount > 0" class="alert alert-success mt-3">
+                <i class="fa fa-check-circle"></i>
+                {{ $t('admin.orders.partner_discount_applied', { org: appliedDiscount.organization_name, discount: appliedDiscount.discount }) }}
+            </div>
         </div>
 
-        <!-- <template #footer>
+        <template #footer>
             <div class="d-flex gap-2 justify-content-end p-3">
                 <button v-if="!submitted" type="button" class="btn btn-primary" @click="submitOrder" :disabled="submitting">
-                    {{ submitting ? 'Saving...' : 'Create Order' }}
+                    {{ submitting ? $t('admin.orders.saving_btn') : $t('admin.orders.create_order_btn') }}
                 </button>
                 <button type="button" class="btn btn-secondary" @click="closeModal">
-                    {{ submitted ? 'Close' : 'Cancel' }}
+                    {{ submitted ? $t('common.close') : $t('common.cancel') }}
                 </button>
             </div>
-        </template> -->
+        </template>
     </StackModal>
 </template>
 
@@ -213,6 +274,7 @@ export default {
         return {
             showModal: false,
             products: [],
+            regions: [],
             form: {
                 name: '',
                 surname: '',
@@ -222,6 +284,8 @@ export default {
                 city: '',
                 delivery_type: 'self_delivery',
                 payment_type: 'deliverd_payment',
+                region_id: '',
+                delivery_price: null,
                 order_product_list: [],
             },
             create_production_task: false,
@@ -229,6 +293,10 @@ export default {
             submitted: false,
             createdOrderId: null,
             matchedUsers: [],
+            partnerInfo: { discount: 0, organization_name: null },
+            appliedDiscount: null,
+            partnerCheckTimeout: null,
+            formErrors: [],
             scanOpen: false,
             scanBarcode: '',
             scanLoading: false,
@@ -239,22 +307,118 @@ export default {
             invoiceLocale: 'ka',
         };
     },
+    computed: {
+        // Pay Now orders skip address collection entirely — the buyer sorts
+        // delivery out with the seller separately once they've paid.
+        needsAddress() {
+            return this.form.delivery_type === 'delivery' && this.form.payment_type !== 'online_payment';
+        },
+        subtotal() {
+            return this.form.order_product_list.reduce((sum, item) => {
+                const opt = item.options.find(o => o.id == item.product_option_id);
+                const price = opt ? parseFloat(opt.price) || 0 : 0;
+                return sum + price * (item.quantity || 0);
+            }, 0);
+        },
+        discountPercent() {
+            return this.partnerInfo.discount > 0 ? this.partnerInfo.discount : 0;
+        },
+        discountAmount() {
+            return this.discountPercent > 0 ? this.subtotal * this.discountPercent / 100 : 0;
+        },
+        deliveryPriceDisplay() {
+            return this.needsAddress ? (parseFloat(this.form.delivery_price) || 0) : 0;
+        },
+        grandTotal() {
+            return this.subtotal - this.discountAmount + this.deliveryPriceDisplay;
+        },
+        // Anything typed or added that isn't saved yet - checked before a
+        // close/cancel to decide whether to ask for confirmation.
+        hasUnsavedChanges() {
+            return !!(
+                this.form.name || this.form.surname || this.form.email || this.form.phone ||
+                this.form.address || this.form.city ||
+                this.form.order_product_list.length > 0
+            );
+        },
+    },
     mounted() {
         this.fetchProducts();
+        this.fetchRegions();
+    },
+    watch: {
+        'form.email'() { this.queuePartnerCheck(); },
+        'form.name'() { this.queuePartnerCheck(); },
+        'form.surname'() { this.queuePartnerCheck(); },
+        'form.phone'() { this.queuePartnerCheck(); },
+        'form.payment_type'(val) {
+            // Pay Now is always picked up in person / arranged directly with
+            // the seller - lock the shipping method to self-delivery so the
+            // (now-hidden) delivery address fields can't be half-filled.
+            if (val === 'online_payment') {
+                this.form.delivery_type = 'self_delivery';
+            }
+        },
     },
     methods: {
+        // Debounced so the lookup doesn't fire on every keystroke - only
+        // once the admin pauses typing in the name/surname/email fields.
+        queuePartnerCheck() {
+            clearTimeout(this.partnerCheckTimeout);
+            this.partnerCheckTimeout = setTimeout(() => this.checkPartnerDiscount(), 500);
+        },
+        checkPartnerDiscount() {
+            if (!this.form.email && !this.form.phone && !(this.form.name && this.form.surname)) {
+                this.partnerInfo = { discount: 0, organization_name: null };
+                return;
+            }
+            axios.get('/custom_order/check_partner_discount', {
+                params: {
+                    email: this.form.email || null,
+                    name: this.form.name || null,
+                    surname: this.form.surname || null,
+                    phone: this.form.phone || null,
+                },
+            })
+                .then(r => {
+                    this.partnerInfo = { discount: r.data.discount, organization_name: r.data.organization_name };
+                    // Fill in whichever contact fields the admin hasn't typed
+                    // yet from a matching account/partner record - never
+                    // overwrite something they already entered themselves.
+                    if (!this.form.email && r.data.email) this.form.email = r.data.email;
+                    if (!this.form.name && r.data.name) this.form.name = r.data.name;
+                    if (!this.form.surname && r.data.surname) this.form.surname = r.data.surname;
+                    if (!this.form.phone && r.data.phone) this.form.phone = r.data.phone;
+                })
+                .catch(() => { this.partnerInfo = { discount: 0, organization_name: null }; });
+        },
         fetchProducts() {
             axios.get('/custom_order/get_products')
                 .then(r => { this.products = r.data; })
                 .catch(() => {});
+        },
+        fetchRegions() {
+            axios.get('/get_shiped_region/get_all_shiped_regions')
+                .then(r => { this.regions = r.data; })
+                .catch(() => {});
+        },
+        onRegionChange() {
+            const region = this.regions.find(r => r.id == this.form.region_id);
+            this.form.delivery_price = region ? parseFloat(region.shiping_price) || 0 : null;
         },
         show_modal() {
             this.showModal = true;
             this.submitted = false;
             this.matchedUsers = [];
             this.createdOrderId = null;
+            this.formErrors = [];
         },
         closeModal() {
+            if (!this.submitted && this.hasUnsavedChanges) {
+                if (!confirm(this.$t('admin.orders.confirm_discard_unsaved'))) {
+                    return;
+                }
+            }
             this.showModal = false;
             this.resetForm();
         },
@@ -349,6 +513,8 @@ export default {
                 address: '', city: '',
                 delivery_type: 'self_delivery',
                 payment_type: 'deliverd_payment',
+                region_id: '',
+                delivery_price: null,
                 order_product_list: [],
             };
             this.create_production_task = false;
@@ -356,6 +522,9 @@ export default {
             this.submitting = false;
             this.matchedUsers = [];
             this.createdOrderId = null;
+            this.partnerInfo = { discount: 0, organization_name: null };
+            this.appliedDiscount = null;
+            this.formErrors = [];
             this.scanOpen = false;
             this.scanBarcode = '';
             this.scanError = null;
@@ -364,20 +533,29 @@ export default {
             this.exportError = null;
             this.invoiceLocale = 'ka';
         },
+        // Collects every message passed instead of alert()ing the first one,
+        // and shows them in the alert box at the top of the modal.
+        showFormErrors(...errors) {
+            this.formErrors = errors;
+            this.$nextTick(() => {
+                this.$el.querySelector('.modal-scrol')?.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        },
         exportInvoice() {
+            this.formErrors = [];
             if (!this.form.name || !this.form.surname) {
-                alert(this.$t('admin.orders.name_surname_required'));
+                this.showFormErrors(this.$t('admin.orders.name_surname_required'));
                 return;
             }
             if (this.form.order_product_list.length === 0) {
-                alert(this.$t('admin.orders.please_add_product'));
+                this.showFormErrors(this.$t('admin.orders.please_add_product'));
                 return;
             }
             const hasIncomplete = this.form.order_product_list.some(
                 i => !i.product_id || !i.product_option_id || !i.quantity
             );
             if (hasIncomplete) {
-                alert(this.$t('admin.orders.please_complete_product_selections'));
+                this.showFormErrors(this.$t('admin.orders.please_complete_product_selections'));
                 return;
             }
 
@@ -415,19 +593,24 @@ export default {
             });
         },
         submitOrder() {
+            this.formErrors = [];
             if (!this.form.name || !this.form.surname) {
-                alert(this.$t('admin.orders.name_surname_required'));
+                this.showFormErrors(this.$t('admin.orders.name_surname_required'));
                 return;
             }
             if (this.form.order_product_list.length === 0) {
-                alert(this.$t('admin.orders.please_add_product'));
+                this.showFormErrors(this.$t('admin.orders.please_add_product'));
                 return;
             }
             const hasIncomplete = this.form.order_product_list.some(
                 i => !i.product_id || !i.product_option_id || !i.quantity
             );
             if (hasIncomplete) {
-                alert(this.$t('admin.orders.please_complete_product_selections'));
+                this.showFormErrors(this.$t('admin.orders.please_complete_product_selections'));
+                return;
+            }
+            if (this.needsAddress && !this.form.region_id) {
+                this.showFormErrors(this.$t('admin.orders.region_required_for_delivery'));
                 return;
             }
 
@@ -439,12 +622,18 @@ export default {
             .then(res => {
                 this.createdOrderId = res.data.order_id;
                 this.matchedUsers = res.data.matched_users || [];
+                this.appliedDiscount = res.data.partner_discount || null;
                 this.submitted = true;
                 this.$emit('orderAdded');
             })
             .catch(error => {
-                const msg = error.response?.data?.error || error.response?.data?.message || this.$t('admin.orders.error_creating_order');
-                alert(msg);
+                const fieldErrors = error.response?.data?.errors;
+                if (fieldErrors) {
+                    this.showFormErrors(...Object.values(fieldErrors).flat());
+                } else {
+                    const msg = error.response?.data?.error || error.response?.data?.message || this.$t('admin.orders.error_creating_order');
+                    this.showFormErrors(msg);
+                }
             })
             .finally(() => {
                 this.submitting = false;

@@ -22,6 +22,7 @@ class SelerCastamProdactionNotification extends Notification
         $this->messaged_user_name = $info['messaged_user_name'];
         $this->messaged_user_email = $info['messaged_user_email'];
         $this->product_id = $info['product_id'];
+        $this->option_name = $info['option_name'] ?? null;
         $this->number = $info['number'];
         $this->message = $info['message'];
     }
@@ -50,6 +51,7 @@ class SelerCastamProdactionNotification extends Notification
             'message' => "Your have new order message. Please answer buyer as soon as possible!",
             'product_id' => $this->product_id,
             'product_name' => $this->product_name,
+            'option_name' => $this->option_name,
             'messaged_user_name' => $this->messaged_user_name,
             'messaged_user_email' => $this->messaged_user_email,
             'buyer_number' => $this->number,

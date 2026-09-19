@@ -20,6 +20,10 @@
                     <p>{{ $t('shop.product.message.form_alert') }}</p>
                 </div>
 
+                <div v-if="option_name_prop" class="alert alert-info" role="alert">
+                    <strong>{{ $t('shop.product.message.selected_variant_label') }}:</strong> {{ option_name_prop }}
+                </div>
+
                 <form v-on:submit.prevent="send_message" id="send_order_message">
                     <p>{{ $t('shop.product.message.form_number_area') }}</p>
                     <input type="text" name="name" v-model="form_data.number" class="form-control mb-3">
@@ -40,6 +44,8 @@
         components: {},
         props: [
             "product_id_prop",
+            "option_id_prop",
+            "option_name_prop",
         ],
         data() {
             return {
@@ -90,7 +96,8 @@
                 this.is_loader = true
                 axios
                 .post('/set_order/castam_prodaction_message/'+this.product_id_prop,{
-                    form_data: this.form_data
+                    form_data: this.form_data,
+                    option_id: this.option_id_prop,
                 })
                 .then(response => {
                     alert(response.data)

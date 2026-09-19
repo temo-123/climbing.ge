@@ -139,12 +139,25 @@
                                 </div>
 
                                 <label class="option-label">{{ $t('shop.product.select_variant') }}</label>
-                                <select class="form-control option-select mb-3" v-model="product_modification_for_cart" name="product_modification_for_cart" @change="select_option()">
-                                    <option value="All" disabled>{{ $t('shop.product.select_variant_placeholder') }}</option>
-                                    <option v-for="option in product.product_option" :key='option.option.id' :value="option.option.id">{{ option.option.name }}</option>
-                                </select>
+                                <div class="custom-option-grid">
+                                    <div
+                                        v-for="opt in product.product_option"
+                                        :key="opt.option.id"
+                                        class="custom-option-card"
+                                        :class="{ 'custom-option-card--selected': product_modification_for_cart == opt.option.id }"
+                                        @click="product_modification_for_cart = opt.option.id; select_option()"
+                                    >
+                                        <div class="custom-option-card-img">
+                                            <img v-if="opt.images && opt.images.length" :src="publicPath + '/public/images/product_option_img/' + opt.images[0].image" :alt="opt.option.name">
+                                            <i v-else class="fa fa-picture-o" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="custom-option-card-name">{{ opt.option.name }}</div>
+                                        <div class="custom-option-card-price">₾ {{ opt.option.price }}</div>
+                                    </div>
+                                </div>
+                                <div v-if="product_modification_for_cart == 'All'" class="text-muted small mb-3">{{ $t('shop.product.select_variant_placeholder') }}</div>
 
-                                <div v-if="user.length != 0 && (user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null)">
+                                <div v-if="product_modification_for_cart != 'All' && user.length != 0 && (user.name == null || user.surname == null || user.country == null || user.city == null || user.phone_number == null || user.email == null)">
                                     <div class="alert alert-warning alert-with-icon cursor-pointer" @click="goTo('/options')" role="alert">
                                         <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                         <div>
@@ -154,7 +167,12 @@
                                     </div>
                                 </div>
 
-                                <ProductProdaction v-else-if="user.length != 0" :product_id_prop="product.global_product.id" />
+                                <ProductProdaction
+                                    v-if="product_modification_for_cart != 'All' && user.length != 0 && user.name != null && user.surname != null && user.country != null && user.city != null && user.phone_number != null && user.email != null"
+                                    :product_id_prop="product.global_product.id"
+                                    :option_id_prop="product_modification_for_cart"
+                                    :option_name_prop="selectedCustomOptionName"
+                                />
                             </div>
 
                             <!-- Login prompt -->
@@ -386,6 +404,15 @@
                     option => option.option.id == this.product_modification_for_cart
                 );
                 return selectedOption && selectedOption.option.discount > 0;
+            },
+            selectedCustomOptionName() {
+                if (this.product_modification_for_cart == 'All' || !this.product.product_option) {
+                    return '';
+                }
+                const selectedOption = this.product.product_option.find(
+                    option => option.option && option.option.id == this.product_modification_for_cart
+                );
+                return selectedOption ? selectedOption.option.name : '';
             },
         },
         methods: {
@@ -841,6 +868,50 @@
     .spec-value { font-size: 0.95em; color: #333; font-weight: 500; }
 
     .mead_in_geo_img { width: 18%; height: auto; margin: 10px auto; display: block; }
+
+    /* ── Custom production option picker ── */
+    .custom-option-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        margin-bottom: 6px;
+    }
+    .custom-option-card {
+        border: 2px solid #e5e5e5;
+        border-radius: 8px;
+        padding: 10px;
+        cursor: pointer;
+        text-align: center;
+        background: #fff;
+        transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .custom-option-card:hover { border-color: #bbb; }
+    .custom-option-card--selected {
+        border-color: #28a745;
+        box-shadow: 0 0 0 1px #28a745;
+    }
+    .custom-option-card-img {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f7f7f7;
+        border-radius: 6px;
+        overflow: hidden;
+        margin-bottom: 8px;
+        font-size: 1.8em;
+        color: #ccc;
+    }
+    .custom-option-card-img img { width: 100%; height: 100%; object-fit: cover; }
+    .custom-option-card-name {
+        font-size: 0.9em;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 2px;
+        word-break: break-word;
+    }
+    .custom-option-card-price { font-size: 0.85em; color: #666; }
 
     /* ── All products link ── */
     .all-products-section { padding: 30px 0; }

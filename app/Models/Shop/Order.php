@@ -17,6 +17,7 @@ class Order extends Model
         'payment',
         'discount',
         'shiping',
+        'delivery_price',
         'is_custom',
         'warehouse_id',
         'status',

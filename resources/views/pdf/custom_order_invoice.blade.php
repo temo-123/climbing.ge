@@ -227,6 +227,16 @@
 
 <div class="totals">
     <table>
+        @if(($discount_percent ?? 0) > 0)
+        <tr>
+            <td>{{ $labels['subtotal'] }}</td>
+            <td class="num" style="text-align:right;">{{ number_format($subtotal, 2) }} {{ $currency }}</td>
+        </tr>
+        <tr>
+            <td>{{ $labels['discount'] }} ({{ $partner_name }}, -{{ rtrim(rtrim(number_format($discount_percent, 2), '0'), '.') }}%)</td>
+            <td class="num" style="text-align:right;">-{{ number_format($discount_amount, 2) }} {{ $currency }}</td>
+        </tr>
+        @endif
         <tr class="total-row">
             <td>{{ $labels['total'] }}</td>
             <td class="num" style="text-align:right;">{{ number_format($total, 2) }} {{ $currency }}</td>
