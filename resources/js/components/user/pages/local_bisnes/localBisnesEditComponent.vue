@@ -10,10 +10,11 @@
                 <button type="submit" class="btn btn-primary" v-on:click="edit_bisnes()" >{{ $t('admin.local_business.save_update_btn') }}</button>
             </div>
         </div>
-        <div class="row" v-show="validation_errors.length != 0">
-            <validator_alerts_component
-                :errors_prop="validation_errors"
-            />
+        <div v-if="validation_errors.length > 0" class="alert alert-danger" style="margin-top: 10px;">
+            <strong>{{ $t('admin.local_business.validation_failed_title') }}</strong>
+            <ul class="mb-0 pl-3">
+                <li v-for="(err, i) in validation_errors" :key="i">{{ err }}</li>
+            </ul>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -172,14 +173,12 @@
     import gallery_images_edit from '../../items/gallery/galleryImageEditComponent.vue'
 
     import article_bisnes_edit_relatione_tab from './items/articleBisnesEditRelationeTabComponent.vue'
-    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             ],
         components: {
             gallery_images_edit,
             article_bisnes_edit_relatione_tab,
-            // validator_alerts_component
         },
 
         props: [
@@ -360,53 +359,67 @@
                 }
             },
 
+            // Flattens the backend's { ka_info_validation: {field: [msgs]}, ... }
+            // shape into plain sentences ("Georgian text — Short description: ...")
+            // and jumps to the first tab that actually has a problem, instead of
+            // leaving the admin to guess which of the 3 tabs failed and why.
+            applyValidationErrors(raw) {
+                const sectionLabels = {
+                    global_info_validation: this.$t('admin.local_business.validation_section_general'),
+                    us_info_validation: this.$t('admin.local_business.validation_section_english'),
+                    ka_info_validation: this.$t('admin.local_business.validation_section_georgian'),
+                };
+                const sectionTabs = {
+                    global_info_validation: 1,
+                    us_info_validation: 2,
+                    ka_info_validation: 4,
+                };
+                const messages = [];
+                let firstTab = null;
+                for (const section of Object.keys(sectionLabels)) {
+                    const fields = raw?.[section];
+                    if (!fields) continue;
+                    if (firstTab === null) firstTab = sectionTabs[section];
+                    for (const msgs of Object.values(fields)) {
+                        (Array.isArray(msgs) ? msgs : [msgs]).forEach(msg => {
+                            messages.push(sectionLabels[section] + ' — ' + msg);
+                        });
+                    }
+                }
+                this.validation_errors = messages.length ? messages : [this.$t('admin.local_business.validation_error_prefix')];
+                if (firstTab !== null) this.tab_num = firstTab;
+            },
+
             // Handle validation errors from child component
             handleValidationError(error) {
-                if (error.response.status == 422) {
-                    this.validation_errors = error.response.data.validation;
+                if (error.response?.status == 422) {
+                    this.applyValidationErrors(error.response.data.content_validation_errors || error.response.data.validation);
                 } else {
-                    alert(this.$t('admin.local_business.validation_error_prefix') + ' ' + error);
+                    this.validation_errors = [this.$t('admin.local_business.validation_error_prefix') + ' ' + error];
                 }
             },
 
             // Proceed with actual save
             proceedWithSave(formData) {
-                console.log('=== PROCEEDING WITH SAVE ===');
-                console.log('Business ID:', this.business_id);
-                console.log('FormData contents:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, ':', value);
-                }
-
+                this.validation_errors = [];
                 axios
                     .post('/set_bisnes/edit_local_bisnes/' + this.business_id, formData)
                     .then(response => {
-                        console.log('=== SAVE SUCCESS ===');
-                        console.log('Response:', response);
-                        console.log('Response data:', response.data);
-                        
                         if (response.data.success) {
-                            console.log('Save was successful, redirecting...');
                             this.go_back(true);
                         } else {
-                            console.log('Save response indicates failure:', response.data);
-                            alert(this.$t('admin.local_business.save_completed_with_issues') + ' ' + JSON.stringify(response.data));
+                            this.validation_errors = [this.$t('admin.local_business.save_completed_with_issues') + ' ' + JSON.stringify(response.data)];
                         }
                     })
                     .catch(error => {
-                        console.log('=== SAVE ERROR ===');
-                        console.log('Error:', error);
-                        console.log('Error response:', error.response);
-                        
                         if (error.response) {
-                            console.log('Error response data:', error.response.data);
                             if (error.response.status == 422) {
-                                this.validation_errors = error.response.data.validation;
+                                this.applyValidationErrors(error.response.data.content_validation_errors || error.response.data.validation);
                             } else {
-                                alert(this.$t('admin.local_business.save_error_prefix') + ' ' + JSON.stringify(error.response.data));
+                                this.validation_errors = [this.$t('admin.local_business.save_error_prefix') + ' ' + JSON.stringify(error.response.data)];
                             }
                         } else {
-                            alert(this.$t('admin.local_business.network_error_prefix') + ' ' + error.message);
+                            this.validation_errors = [this.$t('admin.local_business.network_error_prefix') + ' ' + error.message];
                         }
                     });
             },

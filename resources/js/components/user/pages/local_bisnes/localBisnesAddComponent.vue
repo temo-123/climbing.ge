@@ -10,10 +10,11 @@
                 <button type="submit" class="btn btn-primary" v-on:click="add_bisnes()" >{{ $t('common.save') }}</button>
             </div>
         </div>
-        <div class="row" v-show="error.length != 0">
-            <validator_alerts_component
-                :errors_prop="error"
-            />
+        <div v-if="error.length > 0" class="alert alert-danger" style="margin-top: 10px;">
+            <strong>{{ $t('admin.local_business.validation_failed_title') }}</strong>
+            <ul class="mb-0 pl-3">
+                <li v-for="(err, i) in error" :key="i">{{ err }}</li>
+            </ul>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -253,14 +254,12 @@
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
     import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
 
-    // import validator_alerts_component from '../../items/validator_alerts_component.vue'
     export default {
         mixins: [
             ],
         components: {
             gallery_images_add,
             article_bisnes_add_relatione_tab,
-            // validator_alerts_component
         },
         props: [
             // 'back_url',
@@ -478,12 +477,43 @@
                 this.proceedWithSave(formData);
             },
 
+            // Flattens the backend's { ka_info_validation: {field: [msgs]}, ... }
+            // shape into plain sentences ("Georgian text — Short description: ...")
+            // and jumps to the first tab that actually has a problem, instead of
+            // leaving the admin to guess which of the 3 tabs failed and why.
+            applyValidationErrors(raw) {
+                const sectionLabels = {
+                    global_info_validation: this.$t('admin.local_business.validation_section_general'),
+                    us_info_validation: this.$t('admin.local_business.validation_section_english'),
+                    ka_info_validation: this.$t('admin.local_business.validation_section_georgian'),
+                };
+                const sectionTabs = {
+                    global_info_validation: 1,
+                    us_info_validation: 2,
+                    ka_info_validation: 4,
+                };
+                const messages = [];
+                let firstTab = null;
+                for (const section of Object.keys(sectionLabels)) {
+                    const fields = raw?.[section];
+                    if (!fields) continue;
+                    if (firstTab === null) firstTab = sectionTabs[section];
+                    for (const msgs of Object.values(fields)) {
+                        (Array.isArray(msgs) ? msgs : [msgs]).forEach(msg => {
+                            messages.push(sectionLabels[section] + ' — ' + msg);
+                        });
+                    }
+                }
+                this.error = messages.length ? messages : [this.$t('admin.local_business.validation_error_prefix')];
+                if (firstTab !== null) this.tab_num = firstTab;
+            },
+
             // Handle validation errors from child component
             handleValidationError(error) {
-                if (error.response.status == 422) {
-                    this.error = error.response.data.validation;
+                if (error.response?.status == 422) {
+                    this.applyValidationErrors(error.response.data.content_validation_errors || error.response.data.validation);
                 } else {
-                    alert(this.$t('admin.local_business.validation_error_prefix') + ' ' + error);
+                    this.error = [this.$t('admin.local_business.validation_error_prefix') + ' ' + error];
                 }
             },
 
@@ -514,16 +544,17 @@
 
             // Proceed with actual save
             proceedWithSave(formData) {
+                this.error = [];
                 axios
                     .post('/set_bisnes/add_local_bisnes', formData)
                     .then(response => {
                         this.go_back(true);
                     })
                     .catch(error => {
-                        if (error.response.status == 422) {
-                            this.error = error.response.data.validation;
+                        if (error.response?.status == 422) {
+                            this.applyValidationErrors(error.response.data.content_validation_errors || error.response.data.validation);
                         } else {
-                            alert(error);
+                            this.error = [String(error)];
                         }
                     });
             },
