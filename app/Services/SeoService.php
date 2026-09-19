@@ -13,6 +13,7 @@ use App\Models\Shop\Product_option;
 use App\Models\Shop\Service;
 use App\Models\Shop\Tour;
 use App\Models\Summit\Summit;
+use App\Models\Site_social_link;
 use App\Services\Seo\KeywordGeneratorService;
 
 class SeoService
@@ -852,16 +853,24 @@ class SeoService
         };
     }
 
+    /**
+     * Same @id as the standalone Organization node partials/seo.blade.php
+     * injects on every page, so an article's "publisher", a product's
+     * "brand", etc. all resolve to that one entity instead of each content
+     * page minting its own duplicate anonymous Organization.
+     */
     private function publisherSchema(): array
     {
         return [
-            '@type' => 'Organization',
-            'name'  => 'climbing.ge',
-            'url'   => 'https://climbing.ge',
-            'logo'  => [
+            '@type'  => 'Organization',
+            '@id'    => 'https://climbing.ge/#organization',
+            'name'   => 'Climbing.ge',
+            'url'    => 'https://climbing.ge',
+            'logo'   => [
                 '@type' => 'ImageObject',
-                'url'   => asset('images/site_img/x.png'),
+                'url'   => asset('images/site_img/site_logo/climbing.ge.png'),
             ],
+            'sameAs' => Site_social_link::pluck('url')->values()->all(),
         ];
     }
 

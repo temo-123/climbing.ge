@@ -90,3 +90,52 @@
     {!! json_encode($seoSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
     @endif
+
+    {{--
+        Sitewide entity identity — on EVERY page, independent of whatever
+        content-specific schema exists above. Search/AI engines otherwise
+        have no structured signal at all for the homepage or any listing/
+        default page (SeoService's defaultsFor() passes schema: null there),
+        and no way to recognize "climbing.ge" as the same Organization across
+        5 separate subdomains without a shared @id to correlate on.
+        SeoService::publisherSchema() (embedded as publisher/brand/author on
+        article/product/service pages) uses this exact same @id, so all of
+        it resolves to one entity instead of duplicate anonymous Organizations.
+    --}}
+    @php
+        $orgId = 'https://climbing.ge/#organization';
+        $siteInfo = \App\Models\Site::first();
+        $orgSchema = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'Organization',
+            '@id'      => $orgId,
+            'name'     => 'Climbing.ge',
+            'url'      => 'https://climbing.ge',
+            'logo'     => asset('images/site_img/site_logo/climbing.ge.png'),
+            'sameAs'   => \App\Models\Site_social_link::pluck('url')->values()->all(),
+        ];
+        if ($siteInfo?->email)  $orgSchema['email']     = $siteInfo->email;
+        if ($siteInfo?->number) $orgSchema['telephone'] = $siteInfo->number;
+
+        $subdomainNames = [
+            'site'   => 'Climbing.ge Guidebook',
+            'shop'   => 'Climbing.ge Shop',
+            'blog'   => 'Climbing.ge Blog',
+            'summit' => 'Climbing.ge Summit Log',
+            'films'  => 'Climbing.ge Films',
+        ];
+        $websiteSchema = [
+            '@context'   => 'https://schema.org',
+            '@type'      => 'WebSite',
+            'name'       => $subdomainNames[$seoSubdomain] ?? 'Climbing.ge',
+            'url'        => $seoBase ?? $seoUrl,
+            'inLanguage' => [$seoLocale === 'ka_GE' ? 'ka' : 'en', $seoLocale === 'ka_GE' ? 'en' : 'ka'],
+            'publisher'  => ['@id' => $orgId],
+        ];
+    @endphp
+    <script type="application/ld+json">
+    {!! json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>
+    <script type="application/ld+json">
+    {!! json_encode($websiteSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
+    </script>

@@ -14,6 +14,7 @@ climbing.ge is a bilingual (English / Georgian) platform covering:
 - A shop for climbing gear, guided tours, and services
 - A blog with community stories and partner content
 - A summit log where climbers record ascents
+- A films portal with climbing/mountaineering documentaries and videos
 
 ## Subdomains
 
@@ -21,6 +22,7 @@ climbing.ge is a bilingual (English / Georgian) platform covering:
 - https://shop.climbing.ge — Climbing gear, guided tours, climbing services
 - https://blog.climbing.ge — Climbing blog: news, stories, technical tips
 - https://summit.climbing.ge — Georgian summits: peak info, ascent records, coordinates
+- https://films.climbing.ge — Climbing and mountaineering films/documentaries
 
 ## Content types
 
@@ -54,6 +56,10 @@ Georgian language versions of all pages are at `/ka/{same-path}`.
 - **Summits** — `/summit/{slug}` — mountain peak pages with elevation, GPS coordinates, climbing routes, ascent history
 - Climbers can log ascents; ascent statistics are public
 
+### Films (films.climbing.ge)
+
+- **Films** — `/film/{slug}` — climbing and mountaineering films/documentaries, with country of origin
+
 ## Structured data
 
 All pages include JSON-LD structured data:
@@ -65,6 +71,7 @@ All pages include JSON-LD structured data:
 - Tours: `TouristTrip` schema
 - Summits: `Mountain` schema with `GeoCoordinates` and elevation
 - Local businesses: `LocalBusiness` schema
+- Films: `Movie` schema
 
 ## Sitemaps
 
@@ -73,6 +80,7 @@ All pages include JSON-LD structured data:
 - https://shop.climbing.ge/shop-sitemap.xml — All shop content
 - https://blog.climbing.ge/blog-sitemap.xml — All blog posts
 - https://summit.climbing.ge/summit-sitemap.xml — All summits
+- https://films.climbing.ge/films-sitemap.xml — All films
 
 ## Language
 

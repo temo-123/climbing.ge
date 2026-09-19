@@ -21,6 +21,8 @@ use App\Models\Shop\Tour;
 
 use App\Models\Summit\Summit;
 
+use App\Models\Films\Film;
+
 class GenerateSitemap extends Command
 {
     protected $signature   = 'app:generate-sitemap';
@@ -31,6 +33,7 @@ class GenerateSitemap extends Command
     private string $shopUrl;
     private string $blogUrl;
     private string $summitUrl;
+    private string $filmsUrl;
 
     public function handle(): void
     {
@@ -39,11 +42,13 @@ class GenerateSitemap extends Command
         $this->shopUrl   = env('SHOP_URL',   'shop.climbing.ge');
         $this->blogUrl   = env('BLOG_URL',   'blog.climbing.ge');
         $this->summitUrl = env('SUMMIT_URL', 'summit.climbing.ge');
+        $this->filmsUrl  = env('FILMS_URL',  'films.climbing.ge');
 
         $this->generateGuideSitemap();
         $this->generateShopSitemap();
         $this->generateBlogSitemap();
         $this->generateSummitSitemap();
+        $this->generateFilmsSitemap();
         $this->generateSitemapIndex();
 
         $this->info('All sitemaps generated successfully.');
@@ -227,6 +232,28 @@ class GenerateSitemap extends Command
         $sitemap->writeToFile(public_path('summit-sitemap.xml'));
     }
 
+    // ── Films (films.climbing.ge) ──────────────────────────────────────────
+
+    private function generateFilmsSitemap(): void
+    {
+        $sitemap = Sitemap::create();
+        $base    = $this->ssh . $this->filmsUrl;
+
+        Film::where('published', true)->get(['url_title', 'updated_at'])->each(function (Film $f) use ($sitemap, $base) {
+            $this->addBilingualUrl(
+                $sitemap,
+                $base . '/film/' . $f->url_title,
+                $base . '/ka/film/' . $f->url_title,
+                fn (string $url) => Url::create($url)
+                    ->setPriority(0.7)
+                    ->setChangeFrequency(Url::CHANGE_FREQUENCY_MONTHLY)
+                    ->setLastModificationDate($f->updated_at ?? Carbon::now())
+            );
+        });
+
+        $sitemap->writeToFile(public_path('films-sitemap.xml'));
+    }
+
     // ── Sitemap index (sitemap.xml) ───────────────────────────────────────
 
     private function generateSitemapIndex(): void
@@ -238,6 +265,7 @@ class GenerateSitemap extends Command
             ->add($this->ssh . $this->shopUrl   . '/shop-sitemap.xml')
             ->add($this->ssh . $this->blogUrl   . '/blog-sitemap.xml')
             ->add($this->ssh . $this->summitUrl . '/summit-sitemap.xml')
+            ->add($this->ssh . $this->filmsUrl  . '/films-sitemap.xml')
             ->writeToFile(public_path('sitemap.xml'));
     }
 

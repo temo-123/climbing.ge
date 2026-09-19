@@ -13,16 +13,28 @@ Allow: /
 User-agent: ChatGPT-User
 Allow: /
 
+User-agent: OAI-SearchBot
+Allow: /
+
 User-agent: ClaudeBot
 Allow: /
 
 User-agent: anthropic-ai
 Allow: /
 
+User-agent: Claude-Web
+Allow: /
+
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Googlebot-Extended
+User-agent: Perplexity-User
+Allow: /
+
+# Google's real AI-training-consent token is "Google-Extended", not
+# "Googlebot-Extended" - fixed since the old token never matched any real
+# crawler (harmless while `*` above has no site-wide Disallow, but dead).
+User-agent: Google-Extended
 Allow: /
 
 User-agent: Meta-ExternalAgent
@@ -31,9 +43,19 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
+User-agent: CCBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
 # Sitemaps
 Sitemap: https://climbing.ge/sitemap.xml
 Sitemap: https://climbing.ge/guide-sitemap.xml
 Sitemap: https://shop.climbing.ge/shop-sitemap.xml
 Sitemap: https://blog.climbing.ge/blog-sitemap.xml
 Sitemap: https://summit.climbing.ge/summit-sitemap.xml
+Sitemap: https://films.climbing.ge/films-sitemap.xml
