@@ -3,7 +3,7 @@
         <StackModal
             v-model="show"
             :title="bisnes_data?.locale_data?.title || ''"
-            :size="'xl'"
+            :size="'xxl'"
             :save-button="false"
             @close="close"
         >
@@ -47,13 +47,24 @@
                         </div>
                     </div>
                 </div>
+
+                <div v-if="bisnes_data.global_data && bisnes_data.global_data.enable_message_form" class="bisnes-message-form mt-3">
+                    <hr>
+                    <h4>{{ $t('guide.article_right_nabar.contact_service_title') }}</h4>
+                    <messageComponent />
+                </div>
             </div>
         </StackModal>
     </div>
 </template>
 
 <script>
+    import messageComponent from '../../../global_components/MessageComponent.vue'
+
     export default {
+        components: {
+            messageComponent
+        },
         name: 'LocalBisnesModalComponent',
         props: {
             urlTitle: {

@@ -67,6 +67,12 @@
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_bisnes.public_totaly" >
                             </div>
                         </div>
+                        <div class="form-group clearfix">
+                            <label for="enable_message_form" class='col-xs-2 control-label'> {{ $t('admin.local_business.enable_message_form_label') }} </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox" id="enable_message_form" name="enable_message_form" v-model="data.global_bisnes.enable_message_form" >
+                            </div>
+                        </div>
                     </form>
 
                     <article_bisnes_edit_relatione_tab
@@ -240,7 +246,15 @@
                     this.editing_bisnes = response.data
 
                     this.data = {
-                        global_bisnes: response.data.global_bisnes,
+                        global_bisnes: {
+                            ...response.data.global_bisnes,
+                            // DB stores these as integer 0/1, but a plain v-model
+                            // checkbox checks via `String(value) === String(true)` -
+                            // "1" !== "true", so an unconverted 1 renders unchecked
+                            // even though the data is really there.
+                            public_totaly: !!response.data.global_bisnes.public_totaly,
+                            enable_message_form: !!response.data.global_bisnes.enable_message_form,
+                        },
 
                         us_bisnes: response.data.us_bisnes,
                         // // ru_bisnes: response.data.ru_bisnes,
@@ -339,7 +353,10 @@
                     }
                 }
                 else{
-                    this.$router.go(-1)
+                    // After a successful save, always return to the list explicitly -
+                    // router.go(-1) is a no-op (stays on this page) when this page was
+                    // opened directly rather than navigated to from the list.
+                    this.$router.push({ name: 'localBisnesList' })
                 }
             },
 

@@ -34,6 +34,7 @@ class Product extends Model
       'made_in_georgia',
 
       'sale_type',
+      'condition',
 
       'subcategory_id',
       'brand_id',

@@ -67,6 +67,12 @@
                                 <input type="checkbox" id="scales" name="scales" @click="clear_published_time()" v-model="data.global_bisnes.public_totaly" >
                             </div>
                         </div>
+                        <div class="form-group clearfix">
+                            <label for="enable_message_form" class='col-xs-2 control-label'> {{ $t('admin.local_business.enable_message_form_label') }} </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox" id="enable_message_form" name="enable_message_form" v-model="data.global_bisnes.enable_message_form" >
+                            </div>
+                        </div>
                     </form>
 
                     <article_bisnes_add_relatione_tab
@@ -293,6 +299,7 @@
                         published: 0,
                         published_data: null,
                         public_totaly: 0,
+                        enable_message_form: 0,
                     },
 
                     us_bisnes: {
@@ -407,7 +414,10 @@
                     }
                 }
                 else{
-                    this.$router.go(-1)
+                    // After a successful save, always return to the list explicitly -
+                    // router.go(-1) is a no-op (stays on this page) when this page was
+                    // opened directly rather than navigated to from the list.
+                    this.$router.push({ name: 'localBisnesList' })
                 }
             },
 

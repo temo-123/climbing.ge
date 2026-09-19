@@ -43,6 +43,7 @@ class ProductController extends Controller
             'subcategory_id' => 'required',
             'brand_id' => 'required',
             'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
+            'condition' => 'nullable|in:new,like_new,open_box,used_good,used_fair,refurbished,damaged|required_if:sale_type,outlet',
             'equipment_type' => 'nullable|in:fingerboard,campus_board,climbing_wall,system_wall,pull_up_bar,weights',
         ]);
 
@@ -197,6 +198,7 @@ class ProductController extends Controller
             'subcategory_id' => 'required',
             'brand_id' => 'required',
             'sale_type' => 'required|in:online_order,produced_by_order,custom_production,donation,outlet',
+            'condition' => 'nullable|in:new,like_new,open_box,used_good,used_fair,refurbished,damaged|required_if:sale_type,outlet',
             'equipment_type' => 'nullable|in:fingerboard,campus_board,climbing_wall,system_wall,pull_up_bar,weights',
         ]);
 

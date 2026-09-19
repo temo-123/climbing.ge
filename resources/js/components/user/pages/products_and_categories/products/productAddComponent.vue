@@ -71,6 +71,22 @@
                             </div>
                         </div>
 
+                        <div class="form-group clearfix" v-if="data.global_product.sale_type == 'outlet'">
+                            <label for="condition" class='col-xs-2 control-label'> {{ $t('admin.shop.condition_label') }} </label>
+                            <div class="col-xs-8">
+                                <select class="form-control" v-model="data.global_product.condition" name="condition" >
+                                    <option v-bind:value="null" disabled>{{ $t('admin.shop.select_condition') }}</option>
+                                    <option value="new">{{ $t('admin.shop.condition_new') }}</option>
+                                    <option value="like_new">{{ $t('admin.shop.condition_like_new') }}</option>
+                                    <option value="open_box">{{ $t('admin.shop.condition_open_box') }}</option>
+                                    <option value="used_good">{{ $t('admin.shop.condition_used_good') }}</option>
+                                    <option value="used_fair">{{ $t('admin.shop.condition_used_fair') }}</option>
+                                    <option value="refurbished">{{ $t('admin.shop.condition_refurbished') }}</option>
+                                    <option value="damaged">{{ $t('admin.shop.condition_damaged') }}</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.shop.made_in_georgia_label') }} </label>
                             <div class="col-xs-8">
@@ -248,6 +264,7 @@
                         subcategory_id: 0,
                         brand_id: '',
                         sale_type: "",
+                        condition: null,
                         equipment_type: null,
 
                         made_in_georgia: null,

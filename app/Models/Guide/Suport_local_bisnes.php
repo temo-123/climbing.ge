@@ -21,7 +21,8 @@ class Suport_local_bisnes extends Model
 		'published',
 		'published_data',
 		'public_totaly',
-	
+		'enable_message_form',
+
 		'us_bisnes_id',
 		'ka_bisnes_id',
 		// 'ru_bisnes_id',

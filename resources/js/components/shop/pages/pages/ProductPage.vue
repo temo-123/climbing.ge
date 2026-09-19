@@ -179,7 +179,11 @@
                 </div>
             </div>
 
-            <div class="product-specs" v-if="product.global_product.material || product.global_product.weight">
+            <div class="product-specs" v-if="product.global_product.material || product.global_product.weight || product.global_product.condition">
+                <div class="spec-item" v-if="product.global_product.condition">
+                    <span class="spec-label">{{ $t('shop.product.product_desc.condition') }}</span>
+                    <span class="spec-value">{{ $t('shop.product.product_desc.condition_' + product.global_product.condition) }}</span>
+                </div>
                 <div class="spec-item" v-if="product.global_product.material">
                     <span class="spec-label">{{ $t('shop.product.product_desc.material') }}</span>
                     <span class="spec-value">{{ product.global_product.material }}</span>

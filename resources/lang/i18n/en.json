@@ -199,6 +199,7 @@
             "service_global_info_subtitle": "Service global information.",
             "published_before_label": "Published before (after this date it will not be public)",
             "totaly_public_label": "Totally public",
+            "enable_message_form_label": "Enable message form",
             "col_action": "Action",
             "no_category_fallback": "No Category",
             "skip_article_btn": "Skip Article",
@@ -1408,6 +1409,15 @@
             "custom_production": "Custom production",
             "donation_option": "Donation",
             "outlet_option": "Outlet",
+            "condition_label": "Condition",
+            "select_condition": "Select condition",
+            "condition_new": "New",
+            "condition_like_new": "Like New",
+            "condition_open_box": "Open Box",
+            "condition_used_good": "Used - Good",
+            "condition_used_fair": "Used - Fair",
+            "condition_refurbished": "Refurbished",
+            "condition_damaged": "Damaged / Defective",
             "made_in_georgia_label": "Made in Georgia",
             "brand_label": "Brand",
             "select_brand": "Select brand",
@@ -2332,6 +2342,7 @@
             "description": "@:common.description",
             "sectors": "Climbing Sectors & Routes",
             "recomended_services": "Recommended Services",
+            "contact_service_title": "Contact this service",
             "local_image_group_fallback": "Local approach photo",
             "quick_stats_sectors": "Sectors",
             "quick_stats_routes": "Routes",
@@ -2903,7 +2914,15 @@
             "product_desc": {
                 "category": "@:common.category",
                 "material": "Material",
-                "weight": "Weight"
+                "weight": "Weight",
+                "condition": "Condition",
+                "condition_new": "New",
+                "condition_like_new": "Like New",
+                "condition_open_box": "Open Box",
+                "condition_used_good": "Used - Good",
+                "condition_used_fair": "Used - Fair",
+                "condition_refurbished": "Refurbished",
+                "condition_damaged": "Damaged / Defective"
             }
         },
         "tour": {

@@ -199,6 +199,7 @@
             "service_global_info_subtitle": "სერვისის ზოგადი ინფორმაცია.",
             "published_before_label": "გამოქვეყნებულია მანამდე (ამ თარიღის შემდეგ აღარ იქნება საჯარო)",
             "totaly_public_label": "სრულად საჯარო",
+            "enable_message_form_label": "შეტყობინების ფორმის ჩართვა",
             "col_action": "მოქმედება",
             "no_category_fallback": "კატეგორიის გარეშე",
             "skip_article_btn": "სტატიის გამოტოვება",
@@ -1408,6 +1409,15 @@
             "custom_production": "ინდივიდუალური დამზადება",
             "donation_option": "დონაცია",
             "outlet_option": "აუთლეთი",
+            "condition_label": "მდგომარეობა",
+            "select_condition": "აირჩიეთ მდგომარეობა",
+            "condition_new": "ახალი",
+            "condition_like_new": "თითქმის ახალი",
+            "condition_open_box": "გახსნილი კოლოფი",
+            "condition_used_good": "მეორადი - კარგი",
+            "condition_used_fair": "მეორადი - საშუალო",
+            "condition_refurbished": "აღდგენილი",
+            "condition_damaged": "დაზიანებული",
             "made_in_georgia_label": "დამზადებულია საქართველოში",
             "brand_label": "ბრენდი",
             "select_brand": "აირჩიეთ ბრენდი",
@@ -2264,6 +2274,7 @@
             "description": "@:common.description",
             "sectors": "სექტორები და მარშრუტები",
             "recomended_services": "რეკომენდირებული სერვისები",
+            "contact_service_title": "დაუკავშირდით ამ სერვისს",
             "local_image_group_fallback": "მისასვლელი გზის ფოტო",
             "quick_stats_sectors": "სექტორი",
             "quick_stats_routes": "მარშრუტი",
@@ -2901,7 +2912,15 @@
             "product_desc": {
                 "category": "@:common.category",
                 "material": "მასალა",
-                "weight": "წონა"
+                "weight": "წონა",
+                "condition": "მდგომარეობა",
+                "condition_new": "ახალი",
+                "condition_like_new": "თითქმის ახალი",
+                "condition_open_box": "გახსნილი კოლოფი",
+                "condition_used_good": "მეორადი - კარგი",
+                "condition_used_fair": "მეორადი - საშუალო",
+                "condition_refurbished": "აღდგენილი",
+                "condition_damaged": "დაზიანებული"
             }
         },
         "tour": {
