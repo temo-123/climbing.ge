@@ -18,25 +18,36 @@
                         @delete_selected="bulk_delete_local_bisnes"
                         @publish_selected="bulk_publish_local_bisnes"
                         @unpublish_selected="bulk_unpublish_local_bisnes"
+                        @show_bisnes_modal="show_bisnes_modal"
                     />
                 </div>
             </div>
         </div>
+
+        <LocalBisnesModal
+            v-if="activeUrlTitle"
+            :url-title="activeUrlTitle"
+            v-model="showBisnesModal"
+        />
     </div>
 </template>
 
 <script>
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import LocalBisnesModal from '../../../guide/items/modals/LocalBisnesModalComponent.vue'
     export default {
         components: {
             tabsComponent ,
-            breadcrumb
+            breadcrumb,
+            LocalBisnesModal,
         },
-        
+
         data() {
             return {
                 data_for_tab:[],
+                showBisnesModal: false,
+                activeUrlTitle: null,
             }
         },
 
@@ -74,7 +85,7 @@
                                                     ],
                                                     'body': [
                                                         ['data', ['id']],
-                                                        ['data', ['url_title'],],
+                                                        ['data_action_id', ['url_title'], 'show_bisnes_modal'],
                                                         ['data', ['published'], 'bool'],
                                                         ['data', ['published_data']],
                                                         ['data', ['public_totaly'], 'bool'],
@@ -142,6 +153,24 @@
                     ){
                         return 'completed_event'
                     }
+            },
+            show_bisnes_modal(id){
+                let bisnes = null
+                this.data_for_tab.forEach(tab => {
+                    if (tab?.tab_data?.data) {
+                        const found = tab.tab_data.data.find(item => item?.id === id)
+                        if (found?.id !== undefined) {
+                            bisnes = found
+                        }
+                    }
+                })
+                if (!bisnes) return
+
+                this.showBisnesModal = false
+                this.activeUrlTitle = bisnes.url_title
+                this.$nextTick(() => {
+                    this.showBisnesModal = true
+                })
             },
             del_bisnes(id){
                 if(confirm(this.$t('admin.common.confirm_delete'))){

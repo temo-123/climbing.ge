@@ -5,7 +5,7 @@
 
             <div class="bar"><i class="fa fa-map-marker"></i></div>
 
-            <h3 class="article_list_short_description">{{ $t('guide.local_businesses_short_description') }}</h3>
+            <h3 class="article_list_short_description"> <span v-html="this.$siteData.data.local_bisnes_index_description"></span> </h3>
 
             <div class="bisnes-index-slider-container">
                 <div class="previes_bisnes_bottom" v-if="businesses.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previous">
