@@ -66,6 +66,8 @@
         <teamMembersSliderComponent />
 
         <productsSliderComponent />
+
+        <suportLocalBisnesIndexComponent />
         
         <metaData
             :title="$t('guide.meta.index')"
@@ -89,6 +91,7 @@
 
     import productsSliderComponent from '../items/shop_items_for_guide/ProductsSliderComponent'
     import teamMembersSliderComponent from '../items/TeamMembersSliderComponent'
+    import suportLocalBisnesIndexComponent from '../items/SuportLocalBisnesIndexComponent'
 
     import metaData from '../items/MetaDataComponent'
 
@@ -121,6 +124,7 @@
             specialArticleComponent,
             productsSliderComponent,
             teamMembersSliderComponent,
+            suportLocalBisnesIndexComponent,
         },
         mounted() {
             this.get_news()

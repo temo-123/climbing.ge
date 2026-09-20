@@ -200,6 +200,7 @@
             "published_before_label": "Published before (after this date it will not be public)",
             "totaly_public_label": "Totally public",
             "enable_message_form_label": "Enable message form",
+            "show_in_index_label": "Show on index & about-us",
             "col_action": "Action",
             "no_category_fallback": "No Category",
             "skip_article_btn": "Skip Article",
@@ -2388,7 +2389,8 @@
             "partner": "Partners",
             "message": "Send Message",
             "search": "Search Climbing Spots",
-            "donation_products": "Donation Products"
+            "donation_products": "Donation Products",
+            "local_businesses": "Recommended Local Businesses"
         },
         "route": {
             "name": "@:common.name",
@@ -2593,6 +2595,7 @@
         "new_flag_badge": "NEW",
         "view_more": "View More",
         "team_members_title": "Team Members",
+        "local_businesses_short_description": "Gear shops, huts, and accommodation recommended by the community near Georgian climbing areas.",
         "spot_rock_image_alt": "Spot Rock Image",
         "show_more": "Show more",
         "bouldering_route_quantity_title": "Bouldering route quantity",

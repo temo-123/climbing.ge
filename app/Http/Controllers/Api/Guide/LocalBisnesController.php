@@ -80,6 +80,38 @@ class LocalBisnesController extends Controller
         }
     }
 
+    /**
+     * Businesses opted into the index/about-us slider (show_in_index) -
+     * independent of any article relation, unlike get_local_bisnes_for_article().
+     * Same [global_data, local_data, image] shape so the front-end card
+     * component can be shared with the article-page list.
+     */
+    public function get_index_local_bisneses(Request $request)
+    {
+        $data = [];
+
+        $businesses = Suport_local_bisnes::where('published', '=', 1)
+            ->where('show_in_index', '=', 1)
+            ->get();
+
+        foreach ($businesses as $business) {
+            $local_data = $this->get_article_bisnes_local_data($request->locale, $business);
+
+            $bisnes_images = '';
+            if ($business->bisnes_images && $business->bisnes_images->isNotEmpty()) {
+                $bisnes_images = $business->bisnes_images->first()->image ?? '';
+            }
+
+            $data[] = [
+                'global_data' => $business,
+                'local_data'  => $local_data,
+                'image'       => $bisnes_images,
+            ];
+        }
+
+        return $data;
+    }
+
     private function get_article_bisnes_local_data($lang, $article_bisnes_global_data){
         $article_bisnes_local_data = [];
 

@@ -47,15 +47,10 @@
                         </div>
                     </div>
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
-                        <div class="form-group clearfix row">
-                            <label for="published" class='col-md-2 control-label '> {{ $t('admin.common.publish') }} </label>
-                            <div class="col-md-10">
-                                <select class="form-control" v-model="data.global_bisnes.published" name="published" >
-                                    <option value="0">{{ $t('admin.common.not_public') }}</option>
-                                    <option value="1">{{ $t('admin.common.public') }}</option>
-                                </select>
-                            </div>
-                        </div>
+                        <published_item
+                            :published_prop="data.global_bisnes.published"
+                            @item_data="data.global_bisnes.published = $event"
+                        />
                         <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.local_business.published_before_label') }} </label>
                             <div class="col-xs-8">
@@ -72,6 +67,12 @@
                             <label for="enable_message_form" class='col-xs-2 control-label'> {{ $t('admin.local_business.enable_message_form_label') }} </label>
                             <div class="col-xs-8">
                                 <input type="checkbox" id="enable_message_form" name="enable_message_form" v-model="data.global_bisnes.enable_message_form" >
+                            </div>
+                        </div>
+                        <div class="form-group clearfix">
+                            <label for="show_in_index" class='col-xs-2 control-label'> {{ $t('admin.local_business.show_in_index_label') }} </label>
+                            <div class="col-xs-8">
+                                <input type="checkbox" id="show_in_index" name="show_in_index" v-model="data.global_bisnes.show_in_index" >
                             </div>
                         </div>
                     </form>
@@ -252,6 +253,7 @@
 
 <script>
     import gallery_images_add from '../../items//gallery/galleryImageAddComponent.vue'
+    import published_item from '../../items/form/parts/PublishedValueComponent.vue'
     import article_bisnes_add_relatione_tab from './items/articleBisnesAddRelationeTabComponent.vue'
 
     export default {
@@ -259,6 +261,7 @@
             ],
         components: {
             gallery_images_add,
+            published_item,
             article_bisnes_add_relatione_tab,
         },
         props: [
@@ -299,6 +302,7 @@
                         published_data: null,
                         public_totaly: 0,
                         enable_message_form: 0,
+                        show_in_index: 0,
                     },
 
                     us_bisnes: {

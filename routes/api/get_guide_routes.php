@@ -108,6 +108,7 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         Route::get('/get_local_bisneses', 'get_local_bisneses');
         Route::get('/get_local_bisnes_for_article/{article_url_title}/{locale}', 'get_local_bisnes_for_article');
         Route::get('/get_local_bisnes_in_page/{url_title}/{locale}', 'get_local_bisnes_in_page');
+        Route::get('/get_index_local_bisneses/{locale}', 'get_index_local_bisneses');
 
         Route::get('/get_bisnes_images/{bisnes_id}', 'get_bisnes_images');
         Route::get('/get_local_bisneses_images/{bisnes_id}', 'get_local_bisneses_images');

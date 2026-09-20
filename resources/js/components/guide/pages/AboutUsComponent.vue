@@ -43,7 +43,9 @@
         <servicesListComponent />
 
         <serviceSliderComponent />
-        
+
+        <suportLocalBisnesIndexComponent />
+
         <messageComponent />
 
         <partnersComponent />
@@ -66,6 +68,7 @@
     import serviceSliderComponent from '../items/shop_items_for_guide/ServiceSliderComponent'
     import partnersComponent from '../items/PartnersComponent.vue'
     import Donation from '../items/DonationComponent.vue';
+    import suportLocalBisnesIndexComponent from '../items/SuportLocalBisnesIndexComponent'
 
     export default {
         components: {
@@ -75,7 +78,8 @@
             RoutesAutersModal,
             serviceSliderComponent,
             partnersComponent,
-            Donation
+            Donation,
+            suportLocalBisnesIndexComponent,
         },
         data() {
             return {
