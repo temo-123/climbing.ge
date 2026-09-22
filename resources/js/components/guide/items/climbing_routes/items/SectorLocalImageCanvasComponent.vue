@@ -51,7 +51,7 @@ import { TOPO_SYMBOL_TYPES, LEGEND_CATEGORIES } from '../../../../user/items/can
 // one while walking a layout's json (_collectMarkerGroups).
 const MARKER_FLAGS = [
     'isRappel', 'isBolt', 'isPin', 'isPendulum', 'isCrux', 'isAnchorSymbol',
-    'isSummitMarker', 'isTentMarker', 'isParkingMarker', 'isPoiMarker',
+    'isSummitMarker', 'isTentMarker', 'isParkingMarker', 'isPoiMarker', 'isZoneSign',
 ];
 // Anchored at their own bottom tip (a teardrop pin's point, or a tent's
 // ground line) rather than centered — see DrawingTools.vue's _buildPoiParts/

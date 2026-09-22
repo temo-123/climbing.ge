@@ -182,11 +182,16 @@
                          text and shapes with different colors, so one swatch here was always
                          misleading (it only ever reflected one arbitrary child). Each child
                          still gets its own correct color control when the group is expanded. -->
-                    <input v-if="!layer.isGroup" type="color" :value="layer.color || '#999999'"
-                           @change="!layer.isRelated && !layer.isPoi && $emit('change-layer-color', layer, $event.target.value)"
-                           :disabled="layer.isRelated || layer.isPoi"
+                    <!-- Only rendered when color is actually changeable — a
+                         fixed-color marker (isPoi) or a reference-route
+                         overlay (isRelated) never accepts a color change, so
+                         a disabled swatch here was just visual noise; the
+                         placeholder span keeps the row's other controls
+                         aligned in its place. -->
+                    <input v-if="!layer.isGroup && !layer.isRelated && !layer.isPoi" type="color" :value="layer.color || '#999999'"
+                           @change="$emit('change-layer-color', layer, $event.target.value)"
                            class="layer-color-swatch me-1"
-                           :title="layer.isPoi ? $t('admin.articles.canvas_editor.poi_fixed_color_tooltip') : (layer.isRelated ? $t('admin.articles.canvas_editor.reference_route_color_tooltip') : $t('admin.articles.canvas_editor.color_tooltip'))" />
+                           :title="$t('admin.articles.canvas_editor.color_tooltip')" />
                     <span v-else style="width:22px; flex-shrink:0;" class="me-1"></span>
 
                     <template v-if="!layer.isRelated && !layer.isGroup">

@@ -258,6 +258,16 @@ export default {
             }
         },
 
+        // Same reasoning as resizeAnchor above, for the yellow diamond
+        // climbing-zone sign (see DrawingTools.vue's resizeZoneSign) — a
+        // centered marker like anchor, not tip-anchored like the poi pins.
+        resizeZoneSign(signGroup, width) {
+            if (this.isCanvasManagerReady && this.$refs.canvasManager
+                && typeof this.$refs.canvasManager.resizeZoneSign === 'function') {
+                this.$refs.canvasManager.resizeZoneSign(signGroup, width);
+            }
+        },
+
         // Same reasoning as resizeSummit/resizeTent above, for the sector
         // name-label's font size (see DrawingTools.vue's resizeSectorLabel).
         resizeSectorLabel(labelGroup, width) {

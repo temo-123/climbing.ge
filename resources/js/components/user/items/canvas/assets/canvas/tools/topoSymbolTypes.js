@@ -65,6 +65,15 @@ export const TOPO_SYMBOL_TYPES = [
     { key: 'poi_food',    labelKey: 'legend_label_poi_food',    category: 'poi', match: (d) => !!d.isPoiMarker && d.poiKind === 'food' },
     { key: 'poi_tent',    labelKey: 'legend_label_poi_tent',    category: 'poi', match: (d) => !!d.isPoiMarker && d.poiKind === 'tent' },
     { key: 'poi_medical', labelKey: 'legend_label_poi_medical', category: 'poi', match: (d) => !!d.isPoiMarker && d.poiKind === 'medical' },
+
+    // Climbing-discipline zone signs (see DrawingTools.vue's add_zoneSign/
+    // _buildZoneSignParts) — a yellow diamond warning-sign shape, a
+    // separate marker family from the poi pins above (own `isZoneSign` +
+    // `zoneKind` data flags, own centered-not-tip-anchored resize), marking
+    // an area's climbing style rather than an amenity along the way.
+    { key: 'zone_dry_tooling',    labelKey: 'legend_label_zone_dry_tooling',    category: 'zone', match: (d) => !!d.isZoneSign && d.zoneKind === 'dry_tooling' },
+    { key: 'zone_sport_climbing', labelKey: 'legend_label_zone_sport_climbing', category: 'zone', match: (d) => !!d.isZoneSign && d.zoneKind === 'sport_climbing' },
+    { key: 'zone_bouldering',     labelKey: 'legend_label_zone_bouldering',     category: 'zone', match: (d) => !!d.isZoneSign && d.zoneKind === 'bouldering' },
 ];
 
 // Fixed section order + heading i18n key for the grouped combined legend
@@ -75,6 +84,7 @@ export const LEGEND_CATEGORIES = [
     { key: 'anchor',   labelKey: 'legend_category_anchor' },
     { key: 'landmark', labelKey: 'legend_category_landmark' },
     { key: 'poi',      labelKey: 'legend_category_poi' },
+    { key: 'zone',     labelKey: 'legend_category_zone' },
 ];
 
 // Toolbar position-picker options for the legend, plus "hidden" (don't show).

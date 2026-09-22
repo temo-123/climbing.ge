@@ -62,6 +62,9 @@
                 @poi-food="handlePoiFood"
                 @poi-tent="handlePoiTent"
                 @poi-medical="handlePoiMedical"
+                @zone-dry-tooling="handleZoneDryTooling"
+                @zone-sport-climbing="handleZoneSportClimbing"
+                @zone-bouldering="handleZoneBouldering"
                 @polygon="handlePolygon"
                 @text="handleText"
                 @selection="handleSelection"
@@ -560,6 +563,9 @@ export default {
             handlePoiFood()              { this.action = 45; },
             handlePoiTent()              { this.action = 46; },
             handlePoiMedical()           { this.action = 47; },
+            handleZoneDryTooling()        { this.action = 50; },
+            handleZoneSportClimbing()     { this.action = 51; },
+            handleZoneBouldering()        { this.action = 52; },
 
             // Toolbar legend-position picker — 'hidden' means "don't show it".
             // rebuildLegend() both applies the new position immediately and
@@ -817,6 +823,14 @@ export default {
             _isPoiContainer(item) {
                 return !!(item && item.data && item.data.isPoiMarker);
             },
+            // Yellow diamond climbing-zone sign (see DrawingTools.vue's
+            // add_zoneSign/_buildZoneSignParts) — dry tooling/sport
+            // climbing/bouldering. A centered marker like the anchor family
+            // (resizes around its own center, not a stored pin tip), but a
+            // fixed-color sign like the poi pins (see _isColorLockedMarker).
+            _isZoneSignContainer(item) {
+                return !!(item && item.data && item.data.isZoneSign);
+            },
             // True for any marker in the toolbar's "Points of Interest" group
             // — the 7 isPoiMarker pins above PLUS Summit and Parking (moved
             // into that same toolbar group; see ToolbarComponent.vue). All of
@@ -827,7 +841,7 @@ export default {
             // 100px size cap). Deliberately excludes Tent, which stayed in
             // the Anchors group and keeps its own selectable color.
             _isColorLockedMarker(item) {
-                return this._isPoiContainer(item) || this._isSummitContainer(item) || this._isParkingContainer(item);
+                return this._isPoiContainer(item) || this._isSummitContainer(item) || this._isParkingContainer(item) || this._isZoneSignContainer(item);
             },
             // Sector name-label (see sectorLocaleImageEditorComponent.vue's
             // _createSectorLabel) — a [bg, text] Group, children[0]=bg.
@@ -847,7 +861,8 @@ export default {
                     || this._isPendulumContainer(item) || this._isCruxContainer(item)
                     || this._isAnchorContainer(item) || this._isSummitContainer(item)
                     || this._isTentContainer(item) || this._isParkingContainer(item)
-                    || this._isPoiContainer(item) || this._isSectorLabelContainer(item);
+                    || this._isPoiContainer(item) || this._isZoneSignContainer(item)
+                    || this._isSectorLabelContainer(item);
             },
             // A bare legacy PointText, OR a Group promoted to hold a
             // strikethrough/highlight decoration alongside its text (see
@@ -1036,6 +1051,10 @@ export default {
                 }
                 if (this._isPoiContainer(item)) {
                     this.$refs.canvasContainer.resizePoi(item, width);
+                    return;
+                }
+                if (this._isZoneSignContainer(item)) {
+                    this.$refs.canvasContainer.resizeZoneSign(item, width);
                     return;
                 }
                 if (this._isSectorLabelContainer(item)) {

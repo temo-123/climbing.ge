@@ -373,7 +373,14 @@ function drawCombinedLegend(ctx, w, h, jsons, refWidth, { drawItem, translate })
     });
 
     const entries = TOPO_SYMBOL_TYPES.filter(t => samples[t.key]).map(t => ({ ...t, sample: samples[t.key] }));
-    const resolvedMeta = meta || hiddenMeta || { position: 'top-right', scale: 1 };
+    // A genuinely fresher "hidden" wins over an older non-hidden choice
+    // (see DrawingTools.vue's getDisplayedLegendMeta for the full
+    // rationale) — otherwise clicking "hidden" could never take visible
+    // effect on the public page once any sibling had EVER saved a real
+    // position, no matter how long ago.
+    const resolvedMeta = (meta && hiddenMeta)
+        ? ((hiddenMeta.updatedAt || 0) > (meta.updatedAt || 0) ? hiddenMeta : meta)
+        : (meta || hiddenMeta || { position: 'top-right', scale: 1 });
     if (!entries.length || resolvedMeta.position === 'hidden') return;
 
     const resScale = refWidth > 0 ? (w / refWidth) : 1;

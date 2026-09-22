@@ -567,7 +567,14 @@ export default {
             // resolved position happens to be "hidden" (the admin may well
             // want to use those very controls to un-hide it).
             this.hasLegendSymbols = entries.length > 0;
-            const resolvedMeta = meta || hiddenMeta || { position: 'top-right', scale: 1 };
+            // A genuinely fresher "hidden" wins over an older non-hidden
+            // choice (see DrawingTools.vue's getDisplayedLegendMeta for the
+            // full rationale) — otherwise clicking "hidden" here could
+            // never take visible effect once any sibling had EVER saved a
+            // real position, no matter how long ago.
+            const resolvedMeta = (meta && hiddenMeta)
+                ? ((hiddenMeta.updatedAt || 0) > (meta.updatedAt || 0) ? hiddenMeta : meta)
+                : (meta || hiddenMeta || { position: 'top-right', scale: 1 });
             if (!entries.length || resolvedMeta.position === 'hidden') {
                 this.legendPreviewStyle = { display: 'none' };
                 this.legendClipStyle = { display: 'none' };

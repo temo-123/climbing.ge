@@ -28,7 +28,7 @@ export default {
                 item.data.isPin || item.data.isPendulum || item.data.isCrux ||
                 item.data.isAnchorSymbol || item.data.isSummitMarker ||
                 item.data.isTentMarker || item.data.isParkingMarker ||
-                item.data.isPoiMarker || item.data.isLegend ||
+                item.data.isPoiMarker || item.data.isZoneSign || item.data.isLegend ||
                 item.data.isSectorLabel || item.data.isTextGroup
             ));
         },
@@ -1460,6 +1460,18 @@ export default {
             }[kind];
         },
 
+        // Same reasoning as _poiIconMethodName above, for the zone-sign
+        // family's pictogram (see _buildZoneSignParts) — a separate map
+        // since these 3 kinds are no longer part of the poi-pin family
+        // (see _buildZoneSignParts's header comment for why).
+        _zoneIconMethodName(kind) {
+            return {
+                dry_tooling:    '_drawZoneDryToolingIcon',
+                sport_climbing: '_drawZoneSportClimbingIcon',
+                bouldering:     '_drawZoneBoulderingIcon',
+            }[kind];
+        },
+
         // Redesigned again — the straight-limb stick figure read as flat/
         // lifeless. Bending the front leg at the knee (an actual walking
         // stride, not a straight splayed line) and adding a small backpack
@@ -1688,6 +1700,96 @@ export default {
             return [vBar, hBar];
         },
 
+        // Ice tool silhouette: a diagonal shaft with a grip band near the
+        // bottom, a curved pick hooking down from the head, and a small
+        // adze blade on the opposite side — the recognizable ice-axe/
+        // ice-tool shape used to mark a dry tooling zone.
+        _drawZoneDryToolingIcon(c, r, color, n) {
+            const SW = r * 0.16;
+            const gripBottom = new paper.Point(c.x - r * 0.35, c.y + r * 0.6);
+            const headPt      = new paper.Point(c.x + r * 0.15, c.y - r * 0.45);
+
+            const shaft = new paper.Path({ strokeColor: color, strokeWidth: SW, strokeCap: 'round', name: `zone-dt-shaft ${n}` });
+            shaft.add(gripBottom); shaft.add(headPt);
+
+            const pick = new paper.Path({ strokeColor: color, strokeWidth: SW * 0.85, strokeCap: 'round', strokeJoin: 'round', fillColor: null, name: `zone-dt-pick ${n}` });
+            pick.add(headPt);
+            pick.add(new paper.Point(c.x + r * 0.55, c.y - r * 0.35));
+            pick.add(new paper.Point(c.x + r * 0.5, c.y - r * 0.05));
+            pick.add(new paper.Point(c.x + r * 0.28, c.y + r * 0.05));
+
+            const adze = new paper.Path({ closed: true, fillColor: color, strokeColor: null, name: `zone-dt-adze ${n}` });
+            adze.add(new paper.Point(headPt.x - r * 0.05, headPt.y - r * 0.02));
+            adze.add(new paper.Point(headPt.x - r * 0.35, headPt.y - r * 0.22));
+            adze.add(new paper.Point(headPt.x - r * 0.22, headPt.y + r * 0.1));
+
+            const grip = new paper.Path({ strokeColor: color, strokeWidth: SW * 1.6, strokeCap: 'round', name: `zone-dt-grip ${n}` });
+            grip.add(new paper.Point(gripBottom.x - r * 0.02, gripBottom.y - r * 0.14));
+            grip.add(new paper.Point(gripBottom.x + r * 0.1, gripBottom.y - r * 0.02));
+
+            return [shaft, pick, adze, grip];
+        },
+
+        // Carabiner + bolt hanger (a "quickdraw clipped to a bolt") — a bare
+        // carabiner alone reads as generic climbing gear for any discipline,
+        // the hanger is what specifically reads as sport climbing (bolted
+        // protection) rather than trad/alpine.
+        _drawZoneSportClimbingIcon(c, r, color, n) {
+            const SW = r * 0.16;
+            const width = r * 0.58, height = r * 0.85;
+            const rect = new paper.Rectangle(
+                new paper.Point(c.x - width / 2, c.y - height * 0.62),
+                new paper.Size(width, height)
+            );
+            const body = new paper.Path.Rectangle({
+                rectangle: rect,
+                radius: width * 0.48,
+                strokeColor: color, strokeWidth: SW, fillColor: null, strokeJoin: 'round',
+                name: `zone-sc-body ${n}`
+            });
+
+            const gate = new paper.Path({ strokeColor: color, strokeWidth: SW * 0.7, strokeCap: 'round', name: `zone-sc-gate ${n}` });
+            gate.add(new paper.Point(c.x + width * 0.32, rect.top + height * 0.22));
+            gate.add(new paper.Point(c.x + width * 0.32, rect.top + height * 0.62));
+
+            const hangerC = new paper.Point(c.x, rect.bottom + r * 0.16);
+            const link = new paper.Path({ strokeColor: color, strokeWidth: SW * 0.6, strokeCap: 'round', name: `zone-sc-link ${n}` });
+            link.add(new paper.Point(c.x, rect.bottom)); link.add(hangerC);
+            const hanger = new paper.Path.Circle({ center: hangerC, radius: r * 0.1, strokeColor: color, strokeWidth: SW * 0.65, fillColor: null, name: `zone-sc-hanger ${n}` });
+
+            return [body, gate, link, hanger];
+        },
+
+        // Boulder + crash pad — an irregular rounded rock silhouette (not a
+        // neat circle, so it doesn't read as a ball) sitting on a flat pad
+        // rectangle; the pad is the detail that specifically reads as
+        // "bouldering" rather than the existing generic landmark rock/
+        // summit marker.
+        _drawZoneBoulderingIcon(c, r, color, n) {
+            const rock = new paper.Path({ closed: true, fillColor: color, strokeColor: null, name: `zone-boulder-rock ${n}` });
+            rock.add(new paper.Point(c.x - r * 0.55, c.y + r * 0.15));
+            rock.add(new paper.Point(c.x - r * 0.42, c.y - r * 0.38));
+            rock.add(new paper.Point(c.x - r * 0.05, c.y - r * 0.55));
+            rock.add(new paper.Point(c.x + r * 0.32, c.y - r * 0.4));
+            rock.add(new paper.Point(c.x + r * 0.5, c.y - r * 0.02));
+            rock.add(new paper.Point(c.x + r * 0.35, c.y + r * 0.3));
+            rock.add(new paper.Point(c.x - r * 0.1, c.y + r * 0.35));
+            rock.smooth({ type: 'continuous' });
+
+            const padW = r * 1.15, padH = r * 0.26;
+            const pad = new paper.Path.Rectangle({
+                rectangle: new paper.Rectangle(
+                    new paper.Point(c.x - padW / 2, c.y + r * 0.32),
+                    new paper.Size(padW, padH)
+                ),
+                radius: padH * 0.3,
+                fillColor: color, strokeColor: null,
+                name: `zone-boulder-pad ${n}`
+            });
+
+            return [rock, pad];
+        },
+
         // Shared shell for every POI pin: the same teardrop shape as
         // add_summit (headCircle + tail, both solid `color`, no stroke so
         // their shared edge is invisible), plus a white icon-background disc,
@@ -1759,6 +1861,106 @@ export default {
 
             [...poiGroup.children].forEach(child => child.remove());
             this._buildPoiParts(tip, R, color, kind, n).forEach(part => poiGroup.addChild(part));
+        },
+
+        // Shared shell for the yellow diamond climbing-zone sign (dry
+        // tooling / sport climbing / bouldering) — a real warning-sign
+        // look (rounded diamond, black border, two mounting-bolt holes,
+        // black pictogram, bold black two-line caption) per a real product
+        // photo reference, deliberately NOT the poi-pin family's red map-
+        // pin style (these read as "an area's climbing style", not "an
+        // amenity along the way"). Centered on `center` (see
+        // resizeZoneSign), unlike _buildPoiParts which anchors on a tip —
+        // a sign has no pointer, so it follows the anchor family's
+        // centered-marker convention instead (see _buildAnchorParts).
+        _buildZoneSignParts(center, R, kind, n) {
+            const side = R * 2.3;
+            const rect = new paper.Rectangle(
+                new paper.Point(center.x - side / 2, center.y - side / 2),
+                new paper.Size(side, side)
+            );
+            const diamond = new paper.Path.Rectangle({
+                rectangle: rect,
+                radius: side * 0.12,
+                fillColor: '#ffd500',
+                strokeColor: '#111111',
+                // Must equal `R * 0.4`, the exact inverse of resizeZoneSign's
+                // `R = (width / this._markerStroke()) * 30` (i.e.
+                // width = R / 2.5 = R * 0.4) — _getItemWidth reads this
+                // strokeWidth back as the marker's displayed "size", so any
+                // other constant here breaks the round-trip: reading the
+                // displayed size back and resizing to that SAME number must
+                // reproduce the SAME R, or every touch of the size slider
+                // silently drifts the sign smaller (this shipped broken:
+                // R * 0.1 made every resize collapse toward zero with no way
+                // back, since the slider's displayed value was ~4x smaller
+                // than what the size it actually needed to reproduce it).
+                strokeWidth: R * 0.4,
+                name: `zone-sign-diamond ${n}`
+            });
+            diamond.rotate(45, center);
+
+            const holeR = R * 0.08;
+            const holeTop = new paper.Path.Circle({
+                center: new paper.Point(center.x, center.y - side * 0.6),
+                radius: holeR, fillColor: '#111111', strokeColor: null, name: `zone-sign-hole-top ${n}`
+            });
+            const holeBottom = new paper.Path.Circle({
+                center: new paper.Point(center.x, center.y + side * 0.6),
+                radius: holeR, fillColor: '#111111', strokeColor: null, name: `zone-sign-hole-bottom ${n}`
+            });
+
+            // No baked-in caption text (the reference photo has one, but
+            // this codebase's shared legend-icon renderer floors any
+            // PointText to a minimum real pixel size once shrunk into the
+            // small legend icon — see paperJsonRenderer.js's `minFontPx` —
+            // so two lines of words there blow the icon's proportions out
+            // far beyond anything a single letter like the bed/parking "H"/
+            // "P" markers cause. The discipline name already reads
+            // correctly-sized from the legend row's own label text (see
+            // legend_label_zone_* in topoSymbolTypes.js) — the diamond +
+            // pictogram alone carries the on-canvas sign, same as every
+            // other marker family in this editor.
+            const methodName = this._zoneIconMethodName(kind);
+            const iconParts = methodName && this[methodName] ? this[methodName](center, R * 0.85, '#111111', n) : [];
+
+            return [diamond, holeTop, holeBottom, ...iconParts];
+        },
+
+        add_zoneSign(event, kind) {
+            this.layerCounters.zoneSign++;
+            const n = this.layerCounters.zoneSign;
+            const R = this._dotSize() * 4;
+            const sign = new paper.Group(this._buildZoneSignParts(event.point, R, kind, n));
+            sign.name = `zone-sign-${kind} ${n}`;
+            sign.data = { isZoneSign: true, zoneKind: kind };
+
+            if (this.group) this.group.addChild(sign);
+            this.path = sign;
+            return sign;
+        },
+
+        add_zone_dry_tooling(event)    { return this.add_zoneSign(event, 'dry_tooling'); },
+        add_zone_sport_climbing(event) { return this.add_zoneSign(event, 'sport_climbing'); },
+        add_zone_bouldering(event)     { return this.add_zoneSign(event, 'bouldering'); },
+
+        // Rescales an EXISTING zone sign around its own center — same
+        // pattern as resizeAnchor above, not resizePoi's tip-anchored one
+        // (a sign has no pointer/tip to preserve).
+        resizeZoneSign(signGroup, width) {
+            if (!signGroup.data) return;
+            const kind = signGroup.data.zoneKind;
+            if (!kind) return;
+            const diamond = signGroup.children[0];
+            if (!diamond) return;
+
+            const center = diamond.position;
+            const k = width / this._markerStroke();
+            const R = k * 30;
+            const n = (signGroup.name || '').split(' ').pop();
+
+            [...signGroup.children].forEach(child => child.remove());
+            this._buildZoneSignParts(center, R, kind, n).forEach(part => signGroup.addChild(part));
         },
 
         // Rescales an EXISTING sector name-label's font size, keeping the
@@ -2050,7 +2252,7 @@ export default {
             const consider = (position, scale, updatedAt) => {
                 if (!position) return;
                 if (position === 'hidden') {
-                    if (!hiddenMeta || (updatedAt || 0) > (hiddenMeta.updatedAt || 0)) hiddenMeta = { position, scale };
+                    if (!hiddenMeta || (updatedAt || 0) > (hiddenMeta.updatedAt || 0)) hiddenMeta = { position, scale, updatedAt };
                 } else if (!meta || (updatedAt || 0) > (meta.updatedAt || 0)) {
                     meta = { position, scale, updatedAt };
                 }
@@ -2068,7 +2270,20 @@ export default {
                 const m = findLegendMeta(json);
                 if (m) consider(m.position, m.scale, m.updatedAt);
             });
-            const resolved = meta || hiddenMeta;
+            // A genuinely fresher "hidden" wins over an older non-hidden
+            // choice — otherwise explicitly clicking "hidden" could never
+            // take effect once ANY sibling had EVER saved a real position,
+            // no matter how long ago (this shipped that way and was
+            // reported as "don't-show button is not working"). Only fall
+            // back to preferring the non-hidden one on an exact tie/no
+            // real timestamps — the scenario the original hiddenMeta
+            // split was actually protecting against (a stale, pre-combined-
+            // legend "hidden" with no real updatedAt silently blanking a
+            // shared legend other siblings still want — see this
+            // function's header comment).
+            const resolved = (meta && hiddenMeta)
+                ? ((hiddenMeta.updatedAt || 0) > (meta.updatedAt || 0) ? hiddenMeta : meta)
+                : (meta || hiddenMeta);
             return resolved ? { position: resolved.position, scale: resolved.scale || 1 } : fallback;
         },
 

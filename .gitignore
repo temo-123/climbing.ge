@@ -86,3 +86,6 @@ CLAUDE.md
 /docs/SOCIAL_LOGIN_GUIDE.md
 /docs/2cbee3e264d5ec97ea8f2ffe927f779c.pdf
 /docs/LIVE_CAMERA_A8_OPEN_API_PLAN.md
+
+# Scratch clone used to spike the P4P camera protocol — not project code
+/live-camera-test/

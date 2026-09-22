@@ -162,6 +162,12 @@ export default {
                     this.add_trail();
                 } else if (this.action == 49) {
                     this.startEditLinePoints(event);
+                } else if (this.action == 50) {
+                    this.add_zone_dry_tooling(event);
+                } else if (this.action == 51) {
+                    this.add_zone_sport_climbing(event);
+                } else if (this.action == 52) {
+                    this.add_zone_bouldering(event);
                 }
             };
 

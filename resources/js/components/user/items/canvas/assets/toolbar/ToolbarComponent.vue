@@ -263,6 +263,27 @@
 
             <div class="vr align-self-stretch my-1 mx-2"></div>
 
+            <!-- Climbing-zone signs — yellow diamond warning-sign markers
+                 (see DrawingTools.vue's add_zoneSign), a separate family
+                 from the Points of Interest pins above: they mark an
+                 area's climbing discipline, not an amenity. -->
+            <div class="tool-group">
+                <div class="btn-group btn-group-sm">
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 50 }]" @click.prevent="$emit('zone-dry-tooling')" :title="$t('admin.articles.canvas_editor.zone_dry_tooling_tooltip')">
+                        <span class="dry-tooling-icon-glyph">⛏</span>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 51 }]" @click.prevent="$emit('zone-sport-climbing')" :title="$t('admin.articles.canvas_editor.zone_sport_climbing_tooltip')">
+                        <span class="sport-climbing-icon-glyph">🧗</span>
+                    </button>
+                    <button type="button" :class="['btn', 'btn-primary', { active: action === 52 }]" @click.prevent="$emit('zone-bouldering')" :title="$t('admin.articles.canvas_editor.zone_bouldering_tooltip')">
+                        <span class="bouldering-icon-glyph">🪨</span>
+                    </button>
+                </div>
+                <div class="tool-group-label">{{ $t('admin.articles.canvas_editor.zone_group_label') }}</div>
+            </div>
+
+            <div class="vr align-self-stretch my-1 mx-2"></div>
+
             <!-- Edit tools -->
             <div class="tool-group">
                 <div class="btn-group btn-group-sm">
@@ -517,6 +538,9 @@ export default {
                 45: this.$t('admin.articles.canvas_editor.action_label_poi_food'),
                 46: this.$t('admin.articles.canvas_editor.action_label_poi_tent'),
                 47: this.$t('admin.articles.canvas_editor.action_label_poi_medical'),
+                50: this.$t('admin.articles.canvas_editor.action_label_zone_dry_tooling'),
+                51: this.$t('admin.articles.canvas_editor.action_label_zone_sport_climbing'),
+                52: this.$t('admin.articles.canvas_editor.action_label_zone_bouldering'),
             };
             return labels[this.action] || this.$t('admin.articles.canvas_editor.action_label_line');
         },
@@ -566,6 +590,9 @@ export default {
                 45: 'fa fa-cutlery',
                 46: 'fa fa-square',
                 47: 'fa fa-plus',
+                50: 'fa fa-square',
+                51: 'fa fa-link',
+                52: 'fa fa-circle',
             };
             return icons[this.action] || 'fa fa-pencil';
         },
@@ -739,5 +766,16 @@ export default {
     font-size: 12px;
     line-height: 1;
     letter-spacing: -1px;
+}
+/* Same reasoning as .tent-icon-glyph above — no matching FontAwesome 4
+   icons for these three zone types, so emoji glyphs stand in for the
+   button hints; the real on-canvas symbols are drawn precisely via
+   Paper.js (see DrawingTools.vue's _drawPoiDryToolingIcon/
+   _drawPoiSportClimbingIcon/_drawPoiBoulderingIcon). */
+.dry-tooling-icon-glyph,
+.sport-climbing-icon-glyph,
+.bouldering-icon-glyph {
+    font-size: 13px;
+    line-height: 1;
 }
 </style>

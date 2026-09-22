@@ -101,7 +101,8 @@ export default {
             summit: 0,
             tent: 0,
             parking: 0,
-            poi: 0
+            poi: 0,
+            zoneSign: 0
         },
         history: [],
         redoStack: [],
