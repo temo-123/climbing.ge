@@ -33,6 +33,7 @@
                         @show_live_camera_edit_medal="show_live_camera_edit_medal"
                         @show_live_camera_add_medal="show_live_camera_add_medal"
                         @show_live_camera_detail_modal="show_live_camera_detail_modal"
+                        @show_live_camera_photos_modal="show_live_camera_photos_modal"
                         @del_live_camera="del_live_camera"
                         @delete_selected="bulk_delete_live_cameras"
                         @publish_selected="bulk_publish_live_cameras"
@@ -53,6 +54,9 @@
         <live_camera_detail_modal
             ref="show_live_camera_detail_modal"
         />
+        <live_camera_photos_modal
+            ref="show_live_camera_photos_modal"
+        />
     </div>
 </template>
 
@@ -64,6 +68,7 @@
     import live_camera_add_medal from '../../items/modal/tab_modals/add/AddLiveCameraModalComponent.vue'
     import live_camera_edit_medal from '../../items/modal/tab_modals/edit/EditLiveCameraModalComponent.vue'
     import live_camera_detail_modal from '../../items/modal/LiveCameraDetailModal.vue'
+    import live_camera_photos_modal from '../../items/modal/LiveCameraPhotosModal.vue'
     export default {
         components: {
             tabsComponent,
@@ -72,6 +77,7 @@
             live_camera_add_medal,
             live_camera_edit_medal,
             live_camera_detail_modal,
+            live_camera_photos_modal,
         },
         
         data() {
@@ -114,6 +120,7 @@
                                                         this.$t('admin.live_camera.article_id_col'),
                                                         this.$t('admin.common.public'),
                                                         this.$t('admin.live_camera.details_col'),
+                                                        this.$t('admin.live_camera.photos_col'),
                                                         this.$t('common.edit'),
                                                         this.$t('common.delete'),
                                                     ],
@@ -124,6 +131,7 @@
                                                         ['data', ['article_id']],
                                                         ['data', ['published'], 'bool'],
                                                         ['action_fun_id', 'show_live_camera_detail_modal', 'btn btn-info', '<i aria-hidden="true" class="fa fa-eye"></i>'],
+                                                        ['action_fun_id', 'show_live_camera_photos_modal', 'btn btn-success', '<i aria-hidden="true" class="fa fa-camera"></i>'],
                                                         ['action_fun_id', 'show_live_camera_edit_medal', 'btn btn-primary', '<i aria-hidden="true" class="fa fa-pencil"></i>'],
                                                         ['action_fun_id', 'del_live_camera', 'btn btn-danger', '<i aria-hidden="true" class="fa fa-trash"></i>'],
                                                     ],
@@ -134,6 +142,7 @@
                                                         ['no'],
                                                         ['no'],
                                                         ['live_camera', 'show'],
+                                                        ['live_camera', 'edit'],
                                                         ['live_camera', 'edit'],
                                                         ['live_camera', 'del'],
                                                     ]
@@ -184,6 +193,10 @@
 
             show_live_camera_detail_modal(id){
                 this.$refs.show_live_camera_detail_modal.show_modal(id);
+            },
+
+            show_live_camera_photos_modal(id){
+                this.$refs.show_live_camera_photos_modal.show_modal(id);
             },
         }
     }

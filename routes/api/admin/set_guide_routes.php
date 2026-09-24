@@ -140,6 +140,7 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         Route::post('/add_slide', 'add_slide');
         Route::post('/edit_slide/{slide_id}', 'edit_slide');
         Route::get('/get_editing_slide/{slide_id}', 'get_editing_slide');
+        Route::post('/reorder_slides', 'reorder_slides');
         Route::delete('/del_slide/{slide_id}', 'del_slide');
     });
 

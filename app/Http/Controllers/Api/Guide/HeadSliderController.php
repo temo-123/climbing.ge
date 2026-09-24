@@ -14,13 +14,14 @@ use App\Models\Guide\Header_image;
 class HeadSliderController extends Controller
 {
     public function get_slides (Request $request){
-        return Header_image::where('published', '=', 1)->where('category', '=', $request->slide_category)->get();
+        return Header_image::where('published', '=', 1)->where('category', '=', $request->slide_category)
+            ->orderBy('sort_order')->orderBy('id')->get();
     }
 
     public function get_all_slides (){
         return $data = [
-            'guide_slides' => Header_image::where('category', '=', 'guide')->get(),
-            'shop_slides' => Header_image::where('category', '=', 'shop')->get(),
+            'guide_slides' => Header_image::where('category', '=', 'guide')->orderBy('sort_order')->orderBy('id')->get(),
+            'shop_slides' => Header_image::where('category', '=', 'shop')->orderBy('sort_order')->orderBy('id')->get(),
         ];
     }
 

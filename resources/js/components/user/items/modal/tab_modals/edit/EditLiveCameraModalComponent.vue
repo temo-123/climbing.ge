@@ -41,20 +41,7 @@
                     </div>
                 </template>
 
-                <div v-else>
-                    <gallery_images_edit
-                        :key="gallery_remount_key"
-                        ref="gallery_manager"
-                        @update_gallery_images="update_gallery_images"
-                        :item_id_prop="editing_camera_id"
-                        :image_path_prop="'images/live_cameras_img/'"
-                        :image_del_route_prop="'/set_live_camera/delete_live_camera_photo/'"
-                        :get_images_route_prop="'/set_live_camera/get_editing_live_camera_photos/'"
-                        :title_prop="$t('admin.live_camera.upload_photos_label')"
-                    />
-                    <p v-if="uploading_photos" class="text-muted">{{ $t('admin.live_camera.uploading_status') }}</p>
-                    <div v-else-if="upload_error" class="alert alert-danger">{{ upload_error }}</div>
-                </div>
+                <p v-else class="text-muted">{{ $t('admin.live_camera.upload_photos_hint') }}</p>
 
                 <select class="form-control" v-model="data.published" name="published" required>
                     <option :value="0">{{ $t('admin.common.not_public') }}</option>
@@ -89,13 +76,11 @@
 <script>
     import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexordexan/vue-slicksort
     // import StackModal from '@innologica/vue-stackable-modal'  // Global now
-    import gallery_images_edit from '../../../gallery/galleryImageEditComponent.vue'
     export default {
         components: {
             // StackModal,
             SlickItem,
             SlickList,
-            gallery_images_edit,
         },
         props: [
             'table_info',
@@ -123,49 +108,9 @@
                 preview_photos: null,
                 preview_loading: false,
                 validation_errors: null,
-
-                pending_gallery_images: [],
-                uploading_photos: false,
-                upload_error: null,
-                gallery_remount_key: 0,
             }
         },
         methods: {
-            update_gallery_images(images){
-                this.pending_gallery_images = images.map(image => image.image).filter(Boolean)
-
-                // Auto-upload as soon as files are staged — there used to be a
-                // separate manual "Upload" button here, but it went unnoticed
-                // (people expect "add" to mean "saved"), so nothing ever
-                // reached the server. Uploading immediately removes that gap.
-                if (this.pending_gallery_images.length && !this.uploading_photos) {
-                    this.upload_photos()
-                }
-            },
-            upload_photos(){
-                this.uploading_photos = true
-                this.upload_error = null
-
-                const formData = new FormData()
-                formData.append('live_camera_id', this.editing_camera_id)
-                this.pending_gallery_images.forEach(file => formData.append('photos[]', file))
-
-                axios
-                .post('/set_live_camera/upload_live_camera_photos', formData)
-                .then(() => {
-                    this.pending_gallery_images = []
-                    // Remounting the gallery manager clears its staged (now
-                    // persisted) files and re-fetches old_images from the server.
-                    this.gallery_remount_key++
-                })
-                .catch(error => {
-                    console.log(error)
-                    this.upload_error = (error.response && error.response.data && (error.response.data.message || JSON.stringify(error.response.data.errors))) || error.message || 'Upload failed'
-                })
-                .finally(() => {
-                    this.uploading_photos = false
-                })
-            },
             preview_ubia_camera(){
                 this.preview_loading = true
                 this.preview_photos = null
@@ -230,9 +175,6 @@
                 }
                 this.preview_photos = null
                 this.validation_errors = null
-                this.pending_gallery_images = []
-                this.upload_error = null
-                this.gallery_remount_key++
             },
             show_modal(id){
                 // this.is_live_camera_edit_model = true

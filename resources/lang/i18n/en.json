@@ -268,7 +268,7 @@
             "detail_device_uid": "UBIA device UID",
             "detail_photos": "Recent cloud photos (last 7 days)",
             "detail_loading": "Loading...",
-            "upload_photos_hint": "Save the camera first, then add photos below.",
+            "upload_photos_hint": "Photos for this source are managed in the Photos window — open it with the camera button in the table (save the camera first).",
             "upload_photos_label": "Upload photos",
             "upload_photos_button": "Upload",
             "uploading_status": "Uploading...",
@@ -281,7 +281,10 @@
             "period_all": "All time",
             "added_successfully": "Added successfully",
             "updated_successfully": "Updated successfully",
-            "confirm_close_form_discard": "Are you sure you want to close the form? All data will be lost!"
+            "confirm_close_form_discard": "Are you sure you want to close the form? All data will be lost!",
+            "photos_col": "Photos",
+            "photos_modal_title": "Camera photos",
+            "photos_source_warning": "This camera's source is not \"Manually uploaded photos\", so these photos won't show on the site until you switch its source in Edit."
         },
         "notifications": {
             "send_mail_notification_title": "Send mail notification",
@@ -4062,7 +4065,18 @@
         "not_public": "Not public",
         "no_public_label": "Not public",
         "save": "@:common.save",
-        "close": "@:common.close"
+        "close": "@:common.close",
+        "live_preview": "Live preview",
+        "live_preview_hint": "How the published slides look on the site. Switch the device to check the tablet and phone layouts.",
+        "device_desktop": "Desktop",
+        "device_tablet": "Tablet",
+        "device_phone": "Phone",
+        "no_published_slides": "No published slides yet",
+        "sequence": "Slide sequence",
+        "move_earlier": "Move earlier",
+        "move_later": "Move later",
+        "order_saved": "Slide order saved",
+        "order_save_failed": "Could not save the slide order. The list was refreshed, please try again."
     },
     "terms": {
         "title": "Terms of Use",

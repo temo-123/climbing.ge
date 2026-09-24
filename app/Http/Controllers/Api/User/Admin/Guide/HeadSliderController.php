@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Validator;
+use Illuminate\Support\Facades\DB;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\PermissionService;
@@ -45,6 +46,8 @@ class HeadSliderController extends Controller
             $new_gallery_image['category']=$data["category"];
             $new_gallery_image['link']=$data["link"];
             $new_gallery_image['text_position']=$data["text_position"] ?? 'center';
+            // New slides go to the end of their own category's sequence
+            $new_gallery_image['sort_order'] = Header_image::where('category', '=', $data['category'])->max('sort_order') + 1;
 
             if($request->hasFile('image')){
                 $new_gallery_image['image'] =  ImageControllService::image_upload('images/head_slider_img/'.$data['category'].'/', $request, 'image', 1);
@@ -97,6 +100,44 @@ class HeadSliderController extends Controller
                 ], 422);
             }
         }
+    }
+
+    /**
+     * Save a new slide sequence for one category.
+     * Body: { category: 'guide'|'shop', ids: [slide ids in the new order] }
+     */
+    public function reorder_slides (Request $request)
+    {
+        $auth = PermissionService::authorize('head_slider', 'edit');
+        if ($auth) return $auth;
+
+        $validator = Validator::make($request->all(), [
+            'category' => 'required|string|in:guide,shop',
+            'ids' => 'required|array',
+            'ids.*' => 'integer|distinct',
+        ]);
+        if ($validator->fails()) {
+            return response()->json($validator->messages(), 422);
+        }
+
+        $ids = array_map('intval', $request->ids);
+
+        // The list must be exactly this category's slides — no foreign or missing ids
+        $category_ids = Header_image::where('category', '=', $request->category)->pluck('id')->all();
+        sort($category_ids);
+        $sorted_ids = $ids;
+        sort($sorted_ids);
+        if ($sorted_ids !== $category_ids) {
+            return response()->json(['ids' => ['Slide list does not match this category, refresh and try again.']], 422);
+        }
+
+        DB::transaction(function () use ($ids) {
+            foreach ($ids as $index => $id) {
+                Header_image::where('id', '=', $id)->update(['sort_order' => $index + 1]);
+            }
+        });
+
+        return response()->json(['success' => true]);
     }
 
     public function del_slide (Request $request) 

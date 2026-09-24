@@ -5,6 +5,7 @@
         <swiperComponent 
             :category_prop="'guide'"
             :image_path_prop="'/images/head_slider_img/guide/'"
+            :full_width="true"
         />
 
         <whatWeDoComponent />

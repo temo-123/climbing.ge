@@ -4,6 +4,7 @@
         <swiperComponent 
             :category_prop="'shop'"
             :image_path_prop="'/images/head_slider_img/shop/'"
+            :full_width="true"
         />
 
         <div class="row">

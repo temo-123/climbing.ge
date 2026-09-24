@@ -26,6 +26,10 @@
                         <div class="row" v-show="tab_num == 1">
                             <div class="col-md-12">
                                 <h5>{{ $t('head_slider.guide_images') }}</h5>
+                                <slider_preview
+                                    :slides_prop="guide_slides"
+                                    :image_path_prop="'/images/head_slider_img/guide/'"
+                                />
                                 <images_tab
                                     :image_path_prop="'/images/head_slider_img/guide/'"
                                     :category_prop="'guide'"
@@ -38,6 +42,10 @@
                         <div class="row" v-show="tab_num == 2">
                             <div class="col-md-12">
                                 <h5>{{ $t('head_slider.shop_images') }}</h5>
+                                <slider_preview
+                                    :slides_prop="shop_slides"
+                                    :image_path_prop="'/images/head_slider_img/shop/'"
+                                />
                                 <images_tab
                                     :image_path_prop="'/images/head_slider_img/shop/'"
                                     :category_prop="'shop'"
@@ -56,15 +64,19 @@
 <script>
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
     import images_tab from './items/ImagesTab.vue';
+    import slider_preview from './items/SliderPreview.vue';
     export default {
         data(){
             return {
                 // headSliderImages: [],
-                tab_num: 1
+                tab_num: 1,
+                guide_slides: [],
+                shop_slides: [],
             }
         },
         components: {
             images_tab,
+            slider_preview,
             breadcrumb
         },
         mounted() {
@@ -80,6 +92,8 @@
                 axios
                 .get("/get_head_slider/get_all_slides/")
                 .then(response => {
+                    this.guide_slides = response.data.guide_slides
+                    this.shop_slides = response.data.shop_slides
                     this.$refs.guide_slides.update_images(response.data.guide_slides)
                     this.$refs.shop_slides.update_images(response.data.shop_slides)
                 })
