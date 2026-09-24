@@ -1,34 +1,38 @@
 <template>
-    <div class="container" v-if="local_businesses.length > 0">
-        <div class="row local_bisnes">
-            <h2 class="navbar_title">{{ $t('guide.article_right_nabar.recomended_services') }}</h2>
+    <div class="local_bisnes_block" v-if="local_businesses.length > 0">
+        <h2 class="navbar_title local_bisnes_title">{{ $t('guide.article_right_nabar.recomended_services') }}</h2>
 
-            <div
-                class="col-xs-6 col-sm-6 col-md-6 loc_bisnes_card"
-                v-for="bisnes in local_businesses"
-                :key="bisnes.global_data.id"
-                @click="openModal(bisnes.global_data.url_title)"
-            >
-                <div class="thumbnail bisnes-card">
+        <!-- arrows centred on the 190px card photo (8px track padding + 95px) -->
+        <card-slider
+            :items="local_businesses"
+            item-key="global_data.id"
+            :desktop="2"
+            :mobile="1"
+            :gap="12"
+            arrows="inside"
+            arrows-top="103px"
+        >
+            <template #default="{ item: bisnes }">
+                <div class="bisnes-card" @click="openModal(bisnes.global_data.url_title)">
                     <img
                         v-if="bisnes.image.length > 0"
+                        class="bisnes-card-img"
                         :src="'../../../images/suport_local_bisnes_img/' + bisnes.image"
                         :alt="bisnes.local_data.title"
                     />
                     <img
                         v-else
+                        class="bisnes-card-img"
                         :src="'/../public/images/site_img/image.png'"
                         :alt="bisnes.local_data.title"
                     />
-                    <div class="caption">
-                        <h3>{{ bisnes.local_data.title }}</h3>
-                    </div>
-                    <div class="caption">
-                        <span v-html="bisnes.local_data.short_description"></span>
+                    <div class="bisnes-card-body">
+                        <h3 class="bisnes-card-title">{{ bisnes.local_data.title }}</h3>
+                        <div class="bisnes-card-desc" v-html="bisnes.local_data.short_description"></div>
                     </div>
                 </div>
-            </div>
-        </div>
+            </template>
+        </card-slider>
 
         <LocalBisnesModal
             v-if="activeUrlTitle"
@@ -73,24 +77,53 @@
                 this.$nextTick(() => {
                     this.showModal = true
                 })
-            }
+            },
         }
     }
 </script>
 
 <style scoped>
-.loc_bisnes_card {
-    margin: 0 !important;
-    padding: 0 2px 0 0 !important;
+.local_bisnes_block {
+    margin: 10px 0 24px;
+}
+
+.local_bisnes_title {
+    margin: 0 0 10px;
 }
 
 .bisnes-card {
+    height: 100%;
+    border: 1px solid #e6e6e6;
+    border-radius: 10px;
+    background: #fff;
+    overflow: hidden;
     cursor: pointer;
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
-
-.bisnes-card:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    transform: translateY(-2px);
+@media (hover: hover) {
+    .bisnes-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        transform: translateY(-2px);
+    }
+}
+.bisnes-card-img {
+    display: block;
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+}
+.bisnes-card-body {
+    padding: 12px 14px;
+}
+.bisnes-card-title {
+    margin: 0 0 6px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: #333;
+}
+.bisnes-card-desc {
+    color: #555;
+    font-size: 0.95rem;
+    overflow-wrap: break-word;
 }
 </style>

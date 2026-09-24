@@ -1,12 +1,9 @@
 <template>
-    <div class="row" v-if="this.db_images.length > 0">
-      <div class="container">
-          <h2 id="gallery">{{ $t('guide.article.title.gallery')}}</h2>
-      </div>
+    <div class="article_gallery" v-if="this.db_images.length > 0">
+      <h2 id="gallery">{{ $t('guide.article.title.gallery')}}</h2>
 
       <articleImageGallery :images="db_images" :image_path="images_path"/>
-
-  </div>
+    </div>
 </template>
 
 <script>

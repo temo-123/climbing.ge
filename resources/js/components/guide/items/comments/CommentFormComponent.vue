@@ -1,7 +1,7 @@
 <template>
-    <div>
+    <div class="comments_block">
         <div>
-            <div class="col-md-12">
+            <div>
                 <h2 id='comments' class="section-title">{{ $t('guide.article.title.comments')}}</h2>
                 <form @submit.prevent id="js_form" class="contact-form" method="POST" enctype="multipart/form-data">
 
@@ -76,9 +76,9 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-md-8">
-                            <div class="col-md-6">
+                    <div class="comment_actions">
+                        <div class="comment_actions_main">
+                            <div>
                                 <div class="form-group">
                                     <div v-if="captcha_error" class="alert alert-warning mb-2">
                                         <i class="fa fa-exclamation-triangle"></i>
@@ -91,45 +91,39 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-md-4" v-if="user.length == 0">
+                            <div v-if="user.length == 0">
                                 <button type="button" class="btn btn-primary" @click="$bus.$emit('open-login-modal', get_user_info)">
                                     <i class="fa fa-sign-in"></i>
                                 </button>
                             </div>
                         </div>
-                        <div class="col-md-4">
-                            <div class="row" v-if="!comment_loader">
-                                <div class="col-xs-6 col-md-6 float-right">
-                                    <button type="button" @click="get_comments" class="btn btn-success pull-right" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
-                                    <span class="badge badge-primare mb-1 pull-right" v-if="is_refresh">Updating...</span>
-                                </div>
-                            </div>
-                            <div class="row" v-if="comment_loader">
-                                <div class="col-md-4 float-right">
-                                    <img :src="'/images/site_img/loading.gif'" alt="loading">
-                                </div>
-                            </div>
+                        <div class="comment_actions_side">
+                            <template v-if="!comment_loader">
+                                <button type="button" @click="get_comments" class="btn btn-success" v-if="!is_refresh">Refresh ({{refresh_id}})</button>
+                                <span class="badge badge-primare mb-1" v-if="is_refresh">Updating...</span>
+                            </template>
+                            <img v-else class="comment_loader_img" :src="'/images/site_img/loading.gif'" alt="loading">
                         </div>
                     </div>
                 </form>
             </div>
         </div>
 
-        <div class="row mt-1">
-            <div class="col-xs-12 col-md-12">
+        <div class="mt-1">
+            <div>
                 <div class="wrap">
-                    <ul>
+                    <ul class="comment_list">
                         <li v-for="comment in this.comments" :key="comment.comment.id" class="comment_board">
-                            <div class="row">
-                                <div class="col-xs-2 col-md-2" v-if="comment.user == null || comment.user.image == null">
+                            <div class="comment_row">
+                                <div class="comment_avatar" v-if="comment.user == null || comment.user.image == null">
                                     <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(comment.user)" />
                                 </div>
-                                <div class="col-xs-2 col-md-2" v-else>
+                                <div class="comment_avatar" v-else>
                                     <img :src="'/public/images/user_profil_img/' + comment.user.image" @click="handleUserImageClick(comment.user)" />
                                 </div>
 
-                                <div class="col-xs-10 col-md-10">
-                                    <div class="row">
+                                <div class="comment_body">
+                                    <div>
                                         <h3 class="comentator_name">
                                             <router-link v-if="comment.user && comment.user.id" :to="{ name: 'climberProfile', params: { id: comment.user.id } }">
                                                 <strong>{{comment.comment.name}} {{comment.comment.surname}}</strong>
@@ -137,20 +131,20 @@
                                             <strong v-else>{{comment.comment.name}} {{comment.comment.surname}}</strong>
                                         </h3>
                                     </div>
-                                    <div class="row">
-                                        <p>{{comment.comment.text}}</p>
+                                    <div>
+                                        <p class="comment_text">{{comment.comment.text}}</p>
                                     </div>
-                                    <div class="row" v-if="user.length != 0">
-                                        <div class="col-xs-6">
+                                    <div class="comment_row_actions" v-if="user.length != 0">
+                                        <div>
                                             <a @click="crete_comment_answer(comment.comment.id)"><i class="fa fa-reply"></i> Reply</a>
                                         </div>
-                                        <div class="col-xs-6 text-right" v-if="comment.user && comment.user.id == user.id">
+                                        <div v-if="comment.user && comment.user.id == user.id">
                                             <button @click="del_comment(comment.comment.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
                                                 <i aria-hidden="true" class="fa fa-trash"></i>
                                             </button>
                                         </div>
 
-                                        <div class="col-xs-6 text-right" v-else-if="user.length != 0">
+                                        <div v-else-if="user.length != 0">
                                             <button @click="show_complaint_modal(comment.comment.id)" v-if="!comment.user || comment.user.id != user.id || comment.comment.email != user.id"  class="btn btn-warning">
                                                 <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                             </button>
@@ -159,19 +153,19 @@
                                 </div>
                             </div>
 
-                            <ul class="" v-if="comment.answers.length != 0">
+                            <ul class="comment_answers" v-if="comment.answers.length != 0">
                                 <li v-for="answer in comment.answers" :key="answer.answer.id" class="comment_board coment_answer_modal">
-                                    <div class="row">
+                                    <div class="comment_row">
 
-                                        <div class="col-xs-2 col-md-2" v-if="answer.user == null || answer.user.image == null">
+                                        <div class="comment_avatar" v-if="answer.user == null || answer.user.image == null">
                                             <img :src="'/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="handleUserImageClick(answer.user)" />
                                         </div>
-                                        <div class="col-xs-2 col-md-2" v-else>
+                                        <div class="comment_avatar" v-else>
                                             <img :src="'/public/images/user_profil_img/' + answer.user.image" @click="handleUserImageClick(answer.user)" />
                                         </div>
 
-                                        <div class="col-xs-10 col-md-10">
-                                            <div class="row">
+                                        <div class="comment_body">
+                                            <div>
                                                 <h6>Answer</h6>
                                                 <h3 class="comentator_name">
                                                     <router-link v-if="answer.user && answer.user.id" :to="{ name: 'climberProfile', params: { id: answer.user.id } }">
@@ -187,11 +181,11 @@
                                                     </button>
                                                 </span>
                                             </div>
-                                            <div class="row">
-                                                <p>{{answer.answer.text}}</p>
+                                            <div>
+                                                <p class="comment_text">{{answer.answer.text}}</p>
                                             </div>
-                                            <div class="row" v-if="user.length != 0 && answer.user && answer.user.id == user.id">
-                                                <div class="col-xs-12 text-right">
+                                            <div class="comment_row_actions" v-if="user.length != 0 && answer.user && answer.user.id == user.id">
+                                                <div class="text-right" style="margin-left: auto;">
                                                     <button @click="del_comment(answer.answer.id)" onclick="return confirm('Are you sure? Do you want to delete this comment?')" class="btn btn-danger">
                                                         <i aria-hidden="true" class="fa fa-trash"></i>
                                                     </button>
@@ -478,11 +472,88 @@ import { SlickList, SlickItem } from 'vue-slicksort'; //https://github.com/Jexor
 </script>
 
 <style scoped>
+    .comments_block {
+        clear: both;
+    }
     .comentator_name{
         margin: 0px;
         /* margin-left: 18%; */
-        float: left;
         color: #000;
+        overflow-wrap: anywhere;
+    }
+
+    /* form bottom bar: send (+ login) on the left, refresh on the right */
+    .comment_actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 10px;
+    }
+    .comment_actions_main {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        gap: 10px;
+        min-width: 0;
+    }
+    .comment_actions_side {
+        margin-left: auto;
+    }
+    .comment_loader_img {
+        max-height: 40px;
+    }
+
+    /* browser default ul indent (40px, twice for answers) ate phone width */
+    .comment_list,
+    .comment_answers {
+        padding-left: 0;
+    }
+    .comment_answers {
+        margin-left: 24px !important;
+    }
+
+    /* fixed avatar + flexible text — col-xs-2 was ~20px wide on phones, so the 50px avatar spilled over the text */
+    .comment_row {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    .comment_avatar {
+        flex: 0 0 50px;
+    }
+    .comment_body {
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+    .comment_text {
+        margin: 4px 0 6px;
+        overflow-wrap: anywhere;
+    }
+    .comment_row_actions {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+    }
+
+    @media (max-width: 576px) {
+        .comment_board {
+            padding: 0.75rem;
+        }
+        .comment_answers {
+            margin-left: 10px !important;
+        }
+        .comment_row {
+            gap: 10px;
+        }
+        .comment_avatar {
+            flex-basis: 40px;
+        }
+        .comment_board .comment_avatar img {
+            width: 40px;
+            height: 40px;
+        }
     }
     .comment_board{
         /* background-color: #f8f9fa;     */

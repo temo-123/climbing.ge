@@ -243,4 +243,10 @@ export default {
     line-height: 1.6;
     color: #343a40;
 }
+
+@media (max-width: 576px) {
+    #sectors {
+        padding: 0.6rem;
+    }
+}
 </style>

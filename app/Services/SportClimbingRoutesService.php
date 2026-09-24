@@ -13,6 +13,7 @@ class SportClimbingRoutesService
 
         $sport_routes = [];
         $boulder_routes = [];
+        $route_type_counts = [];
 
         $route_5a = 0;
         $route_5b = 0;
@@ -105,7 +106,16 @@ class SportClimbingRoutesService
         foreach ($article_sectors as $sector) {
             $routes = Route::where('sector_id',strip_tags($sector->id))->get(['grade', 'category']);
 
+            $mtp_count = $sector->mtps()->count();
+            if($mtp_count > 0){
+                $route_type_counts['multi pitch'] = ($route_type_counts['multi pitch'] ?? 0) + $mtp_count;
+            }
+
             foreach ($routes as $route) {
+                if($route->category){
+                    $route_type_counts[$route->category] = ($route_type_counts[$route->category] ?? 0) + 1;
+                }
+
                 if($route->category == "sport climbing"){
                     array_push($sport_routes, $route->grade); 
                 }
@@ -305,6 +315,17 @@ class SportClimbingRoutesService
         // var_dump($route_quantyty);
         // echo '</pre>';
 
-        return $routes_quantyty = ['sport_routes' => $sport_routes_quantyty, 'bouldering' => $boulder_routes_quantyty];
+        $route_types_quantyty = [
+            ['Type', 'Quantity'],
+        ];
+        foreach ($route_type_counts as $category => $count) {
+            array_push($route_types_quantyty, [$category, $count]);
+        }
+
+        return $routes_quantyty = [
+            'sport_routes' => $sport_routes_quantyty,
+            'bouldering' => $boulder_routes_quantyty,
+            'route_types' => $route_types_quantyty,
+        ];
     }
 }

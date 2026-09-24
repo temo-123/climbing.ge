@@ -99,7 +99,10 @@
             },
             day_label(day, index) {
                 if (index === this.timeline_days.length - 1) return this.$t('guide.live_camera.today')
-                return this.$formatDate ? this.$formatDate(day.date) : day.date
+                // short "Sep 18" — seven full "September 18, 2026" labels can't fit in one row
+                const date = new Date(day.date)
+                if (isNaN(date)) return day.date
+                return date.toLocaleDateString(this.$i18n?.locale === 'ka' ? 'ka-GE' : 'en-US', { month: 'short', day: 'numeric' })
             },
         },
     }
@@ -149,5 +152,19 @@
     .timeline-tick.active {
         color: #7427bb;
         text-decoration: underline;
+    }
+
+    @media (max-width: 576px) {
+        .timeline-image {
+            height: 240px;
+        }
+        .timeline-tick {
+            flex: 1 1 0;
+            min-width: 0;
+            padding: 2px 1px;
+            font-size: 10px;
+            white-space: normal;
+            text-align: center;
+        }
     }
 </style>

@@ -33,12 +33,19 @@ class LocalBisnesController extends Controller
             }
 
             // Get businesses associated with the article that are published
-            $article_bisnes_global_data = $article->businesses()->where('published', '=', 1)->take(2)->get();
+            // limit is applied after the publication-date check below, so a
+            // not-yet-live scheduled business doesn't eat one of the slots
+            $article_bisnes_global_data = $article->businesses()->where('published', '=', 1)->get();
+            $limit = 4;
             
             if ($article_bisnes_global_data && $article_bisnes_global_data->isNotEmpty()) {
                 $currentDate = now();
                 
                 foreach($article_bisnes_global_data as $article_bisne_global_data){
+                    if (count($data) >= $limit) {
+                        break;
+                    }
+
                     $shouldShowBusiness = false;
                     
                     // Check if business should be shown based on publication settings

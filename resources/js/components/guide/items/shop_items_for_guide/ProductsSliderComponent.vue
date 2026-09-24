@@ -9,26 +9,14 @@
                 <span v-html="this.$siteData.data.donation_product_short_description"></span>
             </h3>
 
-            <div class="products-slider-container">
-                <div class="previes_products_bottom" v-if="products.length > visibleCount" :class="{ 'slider-btn-disabled': slider_index <= 0 }" @click="previous">
-                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                </div>
-
-                <div class="products-slider-wrapper">
-                    <div class="products-slider" :style="{ display: 'flex', width: (products.length * (100 / visibleCount)) + '%', transform: 'translateX(' + (-slider_index * 100 / products.length) + '%)', transition: 'transform 0.5s ease' }">
-                        <div class="product-slide-item" v-for="product in products" :key='product.id' :style="{ flex: '0 0 ' + (100 / products.length) + '%', boxSizing: 'border-box', padding: '0 8px' }">
-                            <catalogItem
-                                :product_data="product"
-                                @quick_view="$emit('quick_view', $event)"
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div class="next_products_bottom" v-if="products.length > visibleCount" @click="next">
-                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                </div>
-            </div>
+            <card-slider :items="products" item-key="id" :desktop="3" :mobile="1" :autoplay="5000" slide-class="product-slide-item">
+                <template #default="{ item }">
+                    <catalogItem
+                        :product_data="item"
+                        @quick_view="$emit('quick_view', $event)"
+                    />
+                </template>
+            </card-slider>
         </div>
     </div>
 </template>
@@ -42,60 +30,16 @@
         ],
         data: function () {
             return {
-                slider_index: 0,
-                visibleCount: window.innerWidth < 768 ? 1 : 3,
                 products: [],
-                autoScrollInterval: null
             };
         },
         components: {
             catalogItem
         },
         mounted() {
-            this.get_products().then(() => {
-                this.autoScrollInterval = setInterval(() => {
-                    this.next();
-                }, 5000);
-            });
-            window.addEventListener('resize', this.onResize)
-        },
-        beforeUnmount() {
-            if (this.autoScrollInterval) {
-                clearInterval(this.autoScrollInterval);
-            }
-            window.removeEventListener('resize', this.onResize)
+            this.get_products()
         },
         methods: {
-            next(){
-                clearInterval(this.autoScrollInterval);
-                if (this.slider_index < this.products.length - this.visibleCount) {
-                    this.slider_index += 1;
-                } else {
-                    this.slider_index = 0;
-                }
-                this.autoScrollInterval = setInterval(() => {
-                    this.next();
-                }, 3000);
-            },
-
-            previous(){
-                clearInterval(this.autoScrollInterval);
-                if (this.slider_index > 0) {
-                    this.slider_index -= 1;
-                }
-                this.autoScrollInterval = setInterval(() => {
-                    this.next();
-                }, 3000);
-            },
-
-            onResize() {
-                const count = window.innerWidth < 768 ? 1 : 3
-                if (count !== this.visibleCount) {
-                    this.visibleCount = count
-                    this.slider_index = 0
-                }
-            },
-
             get_products(){
                 return axios
                 .get('/get_product/get_donation_products/'+localStorage.getItem('lang'))
@@ -112,46 +56,8 @@
 </script>
 
 <style scoped>
-    .products-slider-container {
-        display: flex;
-        align-items: center;
-    }
-
-    .products-slider-wrapper {
-        flex: 1;
-        overflow: hidden;
-    }
-
-    .products-slider {
-        display: flex;
-    }
-
-    .product-slide-item :deep(.grid-tile) {
+    :deep(.product-slide-item .grid-tile) {
         width: 100%;
         max-width: 100%;
-    }
-
-    .slider-btn-disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-        pointer-events: none;
-    }
-
-    .previes_products_bottom, .next_products_bottom {
-        font-size: 150%;
-        cursor: pointer;
-        padding: 10px 15px;
-        background-color: rgba(255, 255, 255, 0.8);
-        border: 1px solid #dee2e6;
-        border-radius: 50%;
-        transition: all 0.3s ease;
-        color: #6c757d;
-        margin: 0 10px;
-    }
-
-    .previes_products_bottom:hover, .next_products_bottom:hover {
-        background-color: #7c7cfd;
-        color: white;
-        border-color: #7c7cfd;
     }
 </style>

@@ -461,6 +461,13 @@ export default {
     padding: 0;
 }
 
+/* col-12 blocks here aren't inside a .row, so their gutters just indented the
+   text/tables relative to the sector heading — drop them */
+.sector-block > [class*="col-"] {
+    padding-left: 0;
+    padding-right: 0;
+}
+
 /* Zero out column gutters so sector content aligns with page text */
 /* .sector-block .row.mx-0 > [class*="col"] { */
 .sector-block .mx-0 > [class*="col"] {
@@ -694,6 +701,18 @@ export default {
     }
     .show_sector_canvas_modal_icon {
         font-size: 2em;
+    }
+}
+
+/* Phones: tighter table cells so more of the route table fits without sideways scrolling */
+@media (max-width: 576px) {
+    .table > :not(caption) > * > * {
+        padding: 0.5rem 0.35rem;
+        font-size: 0.95rem;
+    }
+    .col-info {
+        padding-left: 0.6rem !important;
+        padding-right: 0.6rem !important;
     }
 }
 

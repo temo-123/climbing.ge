@@ -1,6 +1,6 @@
 <template>
-    <div class="row" v-if="images && images.length > 0">
-        <div class="col-xs-4 col-sm-4 col-md-3 gallery_thumb" v-for="(image, index) in images" :key="image.id">
+    <div class="row gallery_grid" v-if="images && images.length > 0">
+        <div class="col-xs-4 col-md-3 gallery_thumb" v-for="(image, index) in images" :key="image.id">
             <openImg
                 :img="image_path + image.image"
                 :img_alt="image.title || $t('global.gallery_image_alt')"
@@ -64,15 +64,28 @@ export default {
 </script>
 
 <style>
+/* the site runs Bootstrap 3 (float grid, 15px gutters) — tighten to 8px gaps */
+.gallery_grid {
+    margin: 0 -4px 20px;
+}
 .gallery_thumb {
     cursor: pointer;
-    padding-top: 15px;
+    padding: 4px;
 }
-.gallery_img {
+/* even square tiles — photos come in mixed ratios, which left a ragged grid.
+   Extra specificity beats ImageOpenComponent's scoped `.smal_img img { height: 100% }`;
+   the lightbox still opens the full uncropped photo. */
+.gallery_thumb .smal_img img.gallery_img {
+    display: block;
     width: 100%;
     height: auto;
-    max-width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 6px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: opacity 0.15s;
+}
+.gallery_thumb .smal_img img.gallery_img:hover {
+    opacity: 0.88;
 }
 </style>

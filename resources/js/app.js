@@ -76,6 +76,9 @@ app.component("mount-summits-map-modal", MountSummitsMapModal);
 import ShareButton from "./components/global_components/ShareButtonComponent.vue";
 app.component("share-button", ShareButton);
 
+import CardSlider from "./components/global_components/CardSliderComponent.vue";
+app.component("card-slider", CardSlider);
+
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
 import GlobalInfoFormBlock from "./components/user/items/form/parts/GlobalInfoFormBlockComponent.vue";
