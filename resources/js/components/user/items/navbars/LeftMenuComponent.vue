@@ -3,13 +3,13 @@
 
         <input type="checkbox" v-model="menu_position" @change="update_menu_position" id="check" class="menu-checkbox">
         
-        <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }" style="padding-bottom: 15%;">
+        <div class="sidebar left_sidebar" :class="{ 'open': menu_position, 'animate': animate_enabled }" style="padding-bottom: 24px;">
             <header>{{ $t('user.nav.menu_header') }}</header>
 
             <ul v-for="(item, index) in menu_items" :key="(item?.id || item?.title || index) + '-' + permissionsKey" style="padding-left: 0px; /*padding-bottom: 35%;*/" v-if="menu_items && menu_items.length">
                 <li v-if="item && item.routes && haveMenuBlockPermission(item)" :class="['menu_item', { active: isAnySubActive(item.routes) }]">
                   <a href="javascript:void(0)" @click.prevent="toggle_dropdown(item.title)" class="dropdown-toggle">
-                    <i class="fas fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>
+                    <i class="fa fa-chevron-right dropdown-icon" :class="{ 'rotated': is_dropdown_open(item.title) }"></i>
                     {{item.title}}
                   </a>
                   <ul style="background-color: #04354b;" v-show="is_dropdown_open(item.title)" :class="item.title">
@@ -218,6 +218,7 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   left: -22em;
   width: 22em;
   height: 100%;
+  height: 100dvh;           /* mobile browsers: don't let the last items hide under the URL bar */
   z-index: 1001;
   background: #042331;
   transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -229,7 +230,10 @@ import navbar_pages_mixin from '../../../../mixins/navbar_pages_mixin.js'
   left: 0;
 }
 .left_sidebar {
-    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;   /* scrolling the menu never scrolls the page behind it */
+    -webkit-overflow-scrolling: touch;
 }
 .sidebar header {
   font-size: 22px;

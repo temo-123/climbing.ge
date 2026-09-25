@@ -131,8 +131,11 @@
 </script>
 
 <style scoped>
+/* Sizes are px on purpose: this card is shared by the guide (Bootstrap 3, 10px root)
+   and the admin dashboard (16px root), so rem rendered 60% bigger in the admin. */
 .current-user-card {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: 18px;
     padding: 16px 20px;
@@ -159,15 +162,15 @@
     justify-content: center;
     background: #dfe7ea;
     color: #8a9aa1;
-    font-size: 2rem;
+    font-size: 20px;
 }
 .current-user-card__body {
-    flex: 1 1 auto;
+    flex: 1 1 220px;
     min-width: 0;
 }
 .current-user-card__name {
     cursor: pointer;
-    font-size: 1.9rem;
+    font-size: 19px;
     font-weight: 700;
     margin-bottom: 6px;
     overflow: hidden;
@@ -183,7 +186,7 @@
     display: inline-flex;
     align-items: center;
     gap: 5px;
-    font-size: 1.3rem;
+    font-size: 13px;
     font-weight: 600;
     padding: 4px 10px;
     border-radius: 999px;
@@ -208,7 +211,7 @@
 }
 .current-user-card__guest-icon {
     flex: 0 0 auto;
-    font-size: 3.4rem;
+    font-size: 34px;
     color: #b6c3c9;
 }
 .current-user-card__guest-body {
@@ -216,7 +219,7 @@
 }
 .current-user-card__guest-text {
     margin: 0 0 8px;
-    font-size: 1.5rem;
+    font-size: 15px;
     color: #555;
 }
 .current-user-card__guest-actions {

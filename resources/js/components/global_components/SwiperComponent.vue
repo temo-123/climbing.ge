@@ -82,14 +82,14 @@
             v-for="(slide, index) in slides"
             :key="'bar-' + slide.id"
             type="button"
-            class="bar"
+            class="hs_bar"
             :class="{ active: index === current_slider_index, seen: index < current_slider_index }"
             @click="goToSlide(index)"
             :aria-label="$t('global.slider.go_to_slide', { n: index + 1 })"
             :aria-current="index === current_slider_index ? 'true' : null"
           >
-            <span class="bar_track">
-              <span class="bar_fill" :key="'fill-' + index + '-' + timer_cycle"></span>
+            <span class="hs_bar_track">
+              <span class="hs_bar_fill" :key="'fill-' + index + '-' + timer_cycle"></span>
             </span>
           </button>
         </div>
@@ -426,7 +426,7 @@
 
 .slide_title {
   color: #fff;
-  font-size: clamp(1.5rem, 3.4cqi, 2.9rem);
+  font-size: clamp(24px, 3.4cqi, 46.4px);
   font-weight: 800;
   letter-spacing: 0.2px;
   line-height: 1.15;
@@ -436,7 +436,7 @@
 
 .slide_description {
   color: rgba(255,255,255,0.92);
-  font-size: clamp(1rem, 1.5cqi, 1.25rem);
+  font-size: clamp(16px, 1.5cqi, 20px);
   line-height: 1.55;
   margin-top: 10px;
   text-wrap: pretty;
@@ -452,7 +452,8 @@
   border-radius: 4px;
   background: transparent;
   color: #fff;
-  font-size: 0.85rem;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 13.6px;
   font-weight: 600;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -513,7 +514,7 @@
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   color: #fff;
-  font-size: 1rem;
+  font-size: 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -560,7 +561,7 @@
   align-items: center;
   gap: 10px;
   color: rgba(255,255,255,0.7);
-  font-size: 0.85rem;
+  font-size: 13.6px;
   font-weight: 600;
   letter-spacing: 1px;
   font-variant-numeric: tabular-nums;
@@ -568,7 +569,7 @@
 
 .counter_current {
   color: #fff;
-  font-size: 1.35rem;
+  font-size: 21.6px;
   font-weight: 800;
 }
 
@@ -589,20 +590,20 @@
   gap: 4px;
 }
 
-.bar {
+.hs_bar {
   padding: 12px 0;            /* tall invisible tap area around a thin line */
   border: 0;
   background: none;
   cursor: pointer;
 }
 
-.bar:focus-visible {
+.hs_bar:focus-visible {
   outline: 2px solid var(--sl-accent);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-.bar_track {
+.hs_bar_track {
   display: block;
   position: relative;
   width: 40px;
@@ -613,15 +614,15 @@
   transition: width 0.4s var(--sl-ease), background 0.2s;
 }
 
-.bar:hover .bar_track {
+.hs_bar:hover .hs_bar_track {
   background: rgba(255,255,255,0.6);
 }
 
-.bar.active .bar_track {
+.hs_bar.active .hs_bar_track {
   width: 64px;
 }
 
-.bar_fill {
+.hs_bar_fill {
   position: absolute;
   inset: 0;
   border-radius: inherit;
@@ -630,18 +631,18 @@
   transform: scaleX(0);
 }
 
-.bar.seen .bar_fill {
+.hs_bar.seen .hs_bar_fill {
   transform: scaleX(1);
   background: rgba(255,255,255,0.75);
 }
 
-.bar.active .bar_fill {
+.hs_bar.active .hs_bar_fill {
   background: var(--sl-accent);
   animation: bar_progress var(--slide-ms) linear forwards;
 }
 
 /* Hovering / touching holds the slide — show the line full so it's clear nothing is running */
-.swiper.is_paused .bar.active .bar_fill {
+.swiper.is_paused .hs_bar.active .hs_bar_fill {
   animation: none;
   transform: scaleX(1);
 }
@@ -658,10 +659,14 @@
 }
 
 /* Phone — portrait image, text panel across the bottom, progress lines under it */
+/* Phone — photo-first: no boxed panel, text sits directly on a deep bottom fade,
+   height capped so the slider never fills more than ~3/4 of the visible screen */
 @container head-slider (max-width: 768px) {
   .swiper {
-    aspect-ratio: 3 / 4;
-    max-height: 80vh;
+    aspect-ratio: 4 / 5;
+    max-height: 75vh;
+    max-height: 75svh;
+    min-height: 340px;
   }
 
   .nav_btn { display: none; }
@@ -669,8 +674,8 @@
   .slide_overlay,
   .slide_overlay[class*="shade-"] {
     background:
-      linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.25) 40%, rgba(0,0,0,0) 62%),
-      linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0) 15%);
+      linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.55) 26%, rgba(0,0,0,0.15) 52%, rgba(0,0,0,0) 66%),
+      linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 14%);
   }
 
   .slide_content,
@@ -680,49 +685,85 @@
   .pos-left-bottom,
   .pos-right-bottom {
     top: auto;
-    bottom: 48px;
-    left: 14px;
-    right: 14px;
+    bottom: 46px;
+    left: 20px;
+    right: 20px;
     max-width: none;
     transform: none;
     text-align: left;
-    padding: 16px 18px 18px;
-    border-radius: 12px;
-    /* On a phone the bottom fade already does most of the work — lighter panel */
-    background: rgba(12, 22, 28, 0.38);
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
   .slide_title {
-    font-size: clamp(1.3rem, 6.4cqi, 1.9rem);
+    font-size: clamp(21.6px, 6.8cqi, 30.4px);
+    line-height: 1.2;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.55);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
   .slide_description {
-    font-size: clamp(0.95rem, 4cqi, 1.05rem);
+    font-size: clamp(14.7px, 3.9cqi, 16.3px);
+    line-height: 1.45;
     margin-top: 6px;
+    color: rgba(255,255,255,0.88);
+    text-shadow: 0 1px 8px rgba(0,0,0,0.6);
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
   .slide_read_more_btn {
-    margin-top: 12px;
-    padding: 9px 18px;
-    font-size: 0.85rem;
+    margin-top: 14px;
+    padding: 9px 16px;
+    font-size: 12.5px;
+    letter-spacing: 1.2px;
+    /* no hover on touch — a faint fill so it still reads as a button */
+    background: rgba(255,255,255,0.08);
   }
 
   .progress_bars {
-    bottom: 10px;
+    left: 20px;
+    right: 20px;
+    bottom: 8px;
+    transform: none;
+    justify-content: flex-start;
   }
 
-  .bar_track { width: 26px; }
-  .bar.active .bar_track { width: 44px; }
+  .hs_bar {
+    flex: 1 1 0;
+    max-width: 56px;
+  }
+
+  .hs_bar_track,
+  .hs_bar.active .hs_bar_track {
+    width: 100%;
+  }
+}
+
+/* Phone turned sideways: a tall 4:5 slide would be taller than the screen — go wide instead */
+@media (orientation: landscape) and (max-height: 500px) {
+  .swiper {
+    aspect-ratio: 16 / 9;
+    min-height: 0;
+    max-height: 85vh;
+    max-height: 85svh;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .swiper_track { transition: none; }
   .head_slider.active :deep(.slider_img) { animation: none; }
   .head_slider.active .slide_content > * { animation: none; opacity: 1; transform: none; }
-  .bar.active .bar_fill { animation: none; transform: scaleX(1); }
+  .hs_bar.active .hs_bar_fill { animation: none; transform: scaleX(1); }
 }
 </style>

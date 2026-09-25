@@ -3,13 +3,14 @@
         <div class="preview_bar">
             <h5 class="preview_heading">{{ $t('head_slider.live_preview') }}</h5>
 
-            <div class="btn-group btn-group-sm" role="group">
+            <div class="device_switch" role="group">
                 <button
                     v-for="device in devices"
                     :key="device.key"
                     type="button"
-                    class="btn"
-                    :class="active_device === device.key ? 'btn-primary' : 'btn-outline-primary'"
+                    class="device_btn"
+                    :class="{ active: active_device === device.key }"
+                    :aria-pressed="active_device === device.key"
                     @click="active_device = device.key"
                 >
                     <i :class="'fa ' + device.icon"></i> {{ $t('head_slider.device_' + device.key) }}
@@ -81,6 +82,45 @@
 
 .preview_heading {
     margin: 0;
+}
+
+.device_switch {
+    display: inline-flex;
+    padding: 3px;
+    gap: 3px;
+    border-radius: 8px;
+    background: #ececf1;
+}
+
+.device_btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #444;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.device_btn:hover {
+    color: #111;
+}
+
+.device_btn.active {
+    background: #fff;
+    color: #7427bb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.device_btn:focus-visible {
+    outline: 2px solid #7427bb;
+    outline-offset: 1px;
 }
 
 .preview_hint {

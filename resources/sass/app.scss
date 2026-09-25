@@ -2368,6 +2368,12 @@ body .white-text .feature-details a:hover {
     // prevent horizontal overflow
     .container, .container-fluid { overflow-x: hidden; }
 
+    // A container holding the full-width head slider (SwiperComponent :full_width="true"):
+    // `hidden` also clips vertically, which cut off the top of the slider where it pulls
+    // itself up under the navbar. `clip` still stops sideways overflow but not vertical.
+    // (Browsers without `clip` keep the `hidden` line above.)
+    .container:has(.swiper_host.is_full) { overflow-x: clip; }
+
     // make bare tables inside rows scrollable
     .row table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
 

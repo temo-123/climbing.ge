@@ -69,7 +69,7 @@
             <ul v-else class="navbar-nav admin_navbar" style="min-height: 50px;"></ul>
         </div>
             
-        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2" v-if="user.length != 0 && hasLeftMenu">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2 left_menu_toggle_block" v-if="user.length != 0 && hasLeftMenu">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <label for="check" @click="toggle_menu">
@@ -286,6 +286,20 @@
             max-height: none;
             overflow-y: visible;
         }
+        /* The navbar is position:fixed, so an opened hamburger menu taller than the
+           screen used to run off the bottom with no way to reach the last items.
+           Cap the whole fixed bar (brand row + open menu) to the visible screen height and
+           let it scroll on its own; overscroll-behavior stops the page behind from scrolling.
+           (Capping #navbarNav itself doesn't work: app.scss forces
+           `.navbar-collapse { max-height: none !important }` for the BS3 sites.) */
+        .admin_page_header_navbar:has(#navbarNav.show),
+        .admin_page_header_navbar:has(#navbarNav.collapsing) {
+            max-height: 100vh;
+            max-height: 100dvh;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            -webkit-overflow-scrolling: touch;
+        }
         .mobali_menu .dropdown-menu {
             position: static !important;
             float: none;
@@ -361,6 +375,15 @@
             flex-basis: 100%;
             flex-grow: 1;
             align-items: center;
+        }
+    }
+
+    /* Same shared app.scss rule also hid the left-sidebar toggle (☰) between 993px and 1230px,
+       so the sidebar couldn't be opened/closed at those widths. Below 993px the sidebar is
+       forced closed and the hamburger menu covers navigation, so it stays hidden there. */
+    @media (min-width: 993px) {
+        .admin_page_header_navbar .navbar-collapse.left_menu_toggle_block {
+            display: flex !important;
         }
     }
 

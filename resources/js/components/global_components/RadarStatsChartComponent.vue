@@ -125,12 +125,12 @@
     align-items: center;
 }
 .radar-stats-chart__legend-count {
-    font-size: 1.6rem;
+    font-size: 16px;
     font-weight: 700;
     line-height: 1.2;
 }
 .radar-stats-chart__legend-label {
-    font-size: 1.1rem;
+    font-size: 11px;
     color: #8a9aa1;
 }
 </style>
