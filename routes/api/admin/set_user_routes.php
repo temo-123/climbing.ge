@@ -34,6 +34,14 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::delete('/del/{id}', 'delete');
     });
 
+    Route::controller(CoefficientController::class)->prefix('set_coefficient')->group(function() {
+        Route::get('/get_all', 'get_all');
+        Route::get('/get_coefficient/{id}', 'get_coefficient');
+        Route::post('/create', 'create');
+        Route::post('/update/{id}', 'update');
+        Route::delete('/del/{id}', 'delete');
+    });
+
     Route::controller(UsersController::class)->prefix('set_user')->group( function() {
         Route::get('/get_auth_user_permissions', 'get_auth_user_permissions');
         Route::get('/get_auth_user_data', 'get_auth_user_data');

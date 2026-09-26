@@ -20,6 +20,7 @@
     <link href="https://fonts.googleapis.com/css?family=Rokkitt" rel="stylesheet"> 
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    @include('partials.coefficients')
 </head>
 <body>
     <div id="app">

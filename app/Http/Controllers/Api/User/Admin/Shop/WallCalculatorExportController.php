@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User\Admin\Shop;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Services\CoefficientService;
 use App\Services\PdfTranslator;
 use App\Services\PermissionService;
 use App\Services\WallDrawingService;
@@ -81,11 +82,11 @@ class WallCalculatorExportController extends Controller
             $isStandFree = str_starts_with($data['structure'] ?? '', 'standfree');
             $isOutdoor = in_array($data['structure'] ?? '', ['outdoor', 'standfree_outdoor'], true);
             $isBouldering = ($data['discipline'] ?? '') === 'bouldering';
-            // Same 12%-of-height ratio the calculator's own price panel uses
-            // to describe the footing — re-derived here rather than trusted
+            // Same height ratio (wall_foundation_depth_ratio coefficient) the
+            // calculator's own price panel uses to describe the footing — re-derived here rather than trusted
             // blindly from the request, since a missing/stale value would
             // otherwise silently draw a footing of the wrong depth.
-            $foundationDepth = $isStandFree ? round($data['height'] * 0.12, 2) : 0;
+            $foundationDepth = $isStandFree ? round($data['height'] * CoefficientService::get('wall_foundation_depth_ratio', 0.12), 2) : 0;
 
             // Side 1 (width/depth/mat height as its own straight-base hint)
             // plus any extra sides — the exact same all_sides shape the 3D

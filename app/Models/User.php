@@ -32,6 +32,8 @@ use App\Models\Shop\Tour_reservation;
 use App\Models\Films\Favorite_film;
 use App\Models\Summit\SummitAscent;
 
+use App\Services\CoefficientService;
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     // use HasFactory;
@@ -316,15 +318,16 @@ class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Points are computed on the fly from existing activity — route reviews,
-     * MTP reviews, ascents and article comments — weighted by
-     * config/user_points.php, rather than tracked in a separate ledger table.
+     * MTP reviews, ascents and article comments — weighted by the admin-editable
+     * points_* coefficients (CoefficientService, defaults in
+     * config/coefficients.php), rather than tracked in a separate ledger table.
      */
     public function pointsTotal(): int
     {
-        return $this->sport_route_reviews()->count() * (int) config('user_points.route_review')
-            + $this->mtp_reviews()->count() * (int) config('user_points.mtp_review')
-            + $this->ascents()->count() * (int) config('user_points.ascent')
-            + $this->article_comments()->count() * (int) config('user_points.comment');
+        return $this->sport_route_reviews()->count() * (int) CoefficientService::get('points_route_review')
+            + $this->mtp_reviews()->count() * (int) CoefficientService::get('points_mtp_review')
+            + $this->ascents()->count() * (int) CoefficientService::get('points_ascent')
+            + $this->article_comments()->count() * (int) CoefficientService::get('points_comment');
     }
 
     /**
@@ -345,10 +348,10 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public static function pointsFromCounts($user): int
     {
-        return ($user->route_review_count ?? 0) * (int) config('user_points.route_review')
-            + ($user->mtp_review_count ?? 0) * (int) config('user_points.mtp_review')
-            + ($user->ascent_count ?? 0) * (int) config('user_points.ascent')
-            + ($user->comment_count ?? 0) * (int) config('user_points.comment');
+        return ($user->route_review_count ?? 0) * (int) CoefficientService::get('points_route_review')
+            + ($user->mtp_review_count ?? 0) * (int) CoefficientService::get('points_mtp_review')
+            + ($user->ascent_count ?? 0) * (int) CoefficientService::get('points_ascent')
+            + ($user->comment_count ?? 0) * (int) CoefficientService::get('points_comment');
     }
 
     /**
@@ -360,10 +363,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return sprintf(
             '(route_review_count * %d + mtp_review_count * %d + ascent_count * %d + comment_count * %d)',
-            (int) config('user_points.route_review'),
-            (int) config('user_points.mtp_review'),
-            (int) config('user_points.ascent'),
-            (int) config('user_points.comment')
+            (int) CoefficientService::get('points_route_review'),
+            (int) CoefficientService::get('points_mtp_review'),
+            (int) CoefficientService::get('points_ascent'),
+            (int) CoefficientService::get('points_comment')
         );
     }
 

@@ -188,15 +188,16 @@ Deliberately does **not** cover shop/purchase activity. Each notification links 
 
 ## The Points System
 
-Not a ledger table — computed on the fly from existing activity every time it's requested, weighted by `config/user_points.php`:
+Not a ledger table — computed on the fly from existing activity every time it's requested, weighted by four admin-editable **coefficients** (Site Options → Coefficients, read via `App\Services\CoefficientService`; see [COEFFICIENTS.md](COEFFICIENTS.md)):
 
-```php
-// config/user_points.php
-'route_review' => env('POINTS_ROUTE_REVIEW', 5),
-'mtp_review'   => env('POINTS_MTP_REVIEW', 5),
-'ascent'       => env('POINTS_ASCENT', 10),
-'comment'      => env('POINTS_COMMENT', 2),
-```
+| Slug | Default (`config/coefficients.php`) |
+|---|---|
+| `points_route_review` | `env('POINTS_ROUTE_REVIEW', 5)` |
+| `points_mtp_review` | `env('POINTS_MTP_REVIEW', 5)` |
+| `points_ascent` | `env('POINTS_ASCENT', 10)` |
+| `points_comment` | `env('POINTS_COMMENT', 2)` |
+
+A row in the `coefficients` table overrides the default. Weights are cast to `int`. (These replaced the old `config/user_points.php`, which has been removed.)
 
 On `App\Models\User`:
 
@@ -206,8 +207,6 @@ On `App\Models\User`:
 - `pointsOrderByExpression(): string` (static) — the same weighted sum as a raw SQL fragment, for `orderByRaw()` on "top active climbers" sorting (a weighted sum across joined counts can't be expressed as a plain Eloquent column).
 
 The four categories map exactly to the four axes of the profile's radar chart (`route_reviews_label` / `mtp_reviews_label` / `ascents_label` / `comments_label` in `resources/lang/i18n/en.json`, namespace `global.follow.*`).
-
-A code comment in `config/user_points.php` references reading these values "via `App\Services\UserPointsService`" — **that class does not exist**; the logic lives directly on the `User` model as shown above. Stale comment, not a missing file to go looking for.
 
 ---
 

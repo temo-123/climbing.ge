@@ -25,6 +25,7 @@ use App\Models\PartnerOrganization\PartnerOrganizationMember;
 
 use App\Services\ProductService;
 use App\Services\PermissionService;
+use App\Services\CoefficientService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 
@@ -68,7 +69,7 @@ class OrderController extends Controller
                 fn($op) => $op->option?->product?->sale_type === 'produced_by_order'
             );
             $data = $order->toArray();
-            $data['delivery_days'] = $has_produced ? '5-9' : '2-4';
+            $data['delivery_days'] = CoefficientService::deliveryDays($has_produced);
             return $data;
         });
     }

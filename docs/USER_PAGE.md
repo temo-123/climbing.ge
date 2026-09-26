@@ -176,6 +176,10 @@ View all database tables with row counts and detected integrity issues. Apply fi
 
 Charts and tables covering notification volume over time, breakdown by notification type and content type, per-preference adoption, and recent send activity. See [NOTIFICATIONS.md](NOTIFICATIONS.md).
 
+### Coefficients
+
+**Site Options → Coefficients** (`/coefficients`, permission `coefficient › show/add/edit/del`). A table of slug / value / description with add and edit modals. It controls the climbing wall calculator prices, shop delivery periods, and climber points weights. Changes apply on the next page load. Full guide: [COEFFICIENTS.md](COEFFICIENTS.md).
+
 ### Export
 
 Export guide articles by category to PDF.

@@ -68,8 +68,8 @@
                             <div class="col-xs-8">
                                 <select class="form-control" v-model="data.global_product.sale_type" name="sale_type" >
                                     <option value="" disabled>{{ $t('admin.shop.select_order_type') }}</option>
-                                    <option value="online_order">{{ $t('admin.shop.online_order') }}</option>
-                                    <option value="produced_by_order">{{ $t('admin.shop.produced_by_order') }}</option>
+                                    <option value="online_order">{{ $t('admin.shop.online_order', { days: deliveryDays(false) }) }}</option>
+                                    <option value="produced_by_order">{{ $t('admin.shop.produced_by_order', { days: deliveryDays(true) }) }}</option>
                                     <option value="custom_production">{{ $t('admin.shop.custom_production') }}</option>
                                     <option value="donation">{{ $t('admin.shop.donation_option') }}</option>
                                     <option value="outlet">{{ $t('admin.shop.outlet_option') }}</option>
@@ -252,6 +252,7 @@
 <script>
     // import validator_alerts_component from '../../../items/validator_alerts_component.vue'
     import published_item from '../../../items/form/parts/PublishedValueComponent.vue'
+    import { deliveryDays } from '../../../../../services/coefficients.js'
     import notify_subscribers from '../../../items/form/parts/NotifySubscribersComponent.vue'
     import productOptionsComponent from '../product_options/items/ProductOptionsComponent.vue'
 
@@ -316,6 +317,7 @@
             document.querySelector('.admin_page_header_navbar').style.marginLeft = '0';
         },
         methods: {
+            deliveryDays,
             showModal(){
                 this.myModal = !this.myModal
             },

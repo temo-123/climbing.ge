@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    @include('partials.coefficients')
 </head>
 <body>
     <div id="app">

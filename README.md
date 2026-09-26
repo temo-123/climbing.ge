@@ -434,6 +434,7 @@ All five sitemaps are referenced at the bottom so any crawler that reads `robots
 | [docs/USER_PAGE.md](docs/USER_PAGE.md) | User dashboard and admin CMS |
 | [docs/TRAINING.md](docs/TRAINING.md) | Training content management: workouts & plans for the companion mobile app |
 | [docs/TRAINING_SYNC.md](docs/TRAINING_SYNC.md) | Training mobile app account sync: custom workouts, plan state, history |
+| [docs/COEFFICIENTS.md](docs/COEFFICIENTS.md) | Admin-editable coefficients: wall calculator prices, delivery periods, points weights |
 | [docs/AUTH.md](docs/AUTH.md) | Authentication & authorization |
 | [docs/BACKEND/API.md](docs/BACKEND/API.md) | Full API reference |
 | [docs/FRONTEND/FRONTEND.md](docs/FRONTEND/FRONTEND.md) | Frontend architecture & components |

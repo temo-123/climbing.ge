@@ -123,6 +123,7 @@
 </template>
 
 <script>
+import { deliveryDays } from '../../../../../services/coefficients.js'
 export default {
     data() {
         return {
@@ -172,7 +173,7 @@ export default {
             return this.order?.confirm != 1 && (payment === 'deliverd payment' || payment === 'deliverd_payment')
         },
         delivery_days() {
-            return this.has_produced_by_order ? '5-9' : '2-4'
+            return deliveryDays(this.has_produced_by_order)
         },
         subtotal() {
             return this.order_products.reduce((sum, item) => {

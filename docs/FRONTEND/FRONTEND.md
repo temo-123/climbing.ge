@@ -182,6 +182,19 @@ this.go_to_service('guid')    // navigates to climbing.ge
 this.go_to_service('summit')  // navigates to summit.climbing.ge
 ```
 
+### `services/coefficients.js` — Admin-editable coefficients
+
+The server prints every coefficient into the page as `window.__COEFFICIENTS__`, so reading one is synchronous and needs no API call.
+
+```javascript
+import { coef, deliveryDays } from '../../services/coefficients.js'
+
+coef('wall_vat_percent', 18)  // value, or the fallback if missing
+deliveryDays(true)            // "5-9" (made to order) / deliveryDays(false) → "2-4"
+```
+
+Pass values into translations as parameters. Don't write the numbers into the i18n strings. See [COEFFICIENTS.md](../COEFFICIENTS.md).
+
 ---
 
 ## Mixins

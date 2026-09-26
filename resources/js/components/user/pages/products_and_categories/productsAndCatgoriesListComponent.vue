@@ -56,6 +56,7 @@
 <script>
     import tabsComponent  from '../../items/data_table/TabsComponent.vue'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import { deliveryDays } from '../../../../services/coefficients.js'
 
     import saleCodeEditModal from "../../items/modal/tab_modals/edit/EditSaleCodeModalComponen.vue";
     import saleCodeAddModal from "../../items/modal/tab_modals/add/AddSaleCodeModalComponen.vue";
@@ -314,8 +315,8 @@
                         'id': 'sale_type_filter',
                         'title': this.$t('admin.shop.filter_sale_type'),
                         'data': [
-                            { id: 'online_order', name: this.$t('admin.shop.online_order') },
-                            { id: 'produced_by_order', name: this.$t('admin.shop.produced_by_order') },
+                            { id: 'online_order', name: this.$t('admin.shop.online_order', { days: deliveryDays(false) }) },
+                            { id: 'produced_by_order', name: this.$t('admin.shop.produced_by_order', { days: deliveryDays(true) }) },
                             { id: 'custom_production', name: this.$t('admin.shop.custom_production') },
                             { id: 'donation', name: this.$t('admin.shop.donation_option') },
                             { id: 'outlet', name: this.$t('admin.shop.outlet_option') }

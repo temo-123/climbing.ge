@@ -20,6 +20,7 @@
     {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=UA-101870435-2"></script>
     <script src="{{ asset('assets/js/analitic/shop.climbing.ge_analitic.js') }}"></script> --}}
 
+    @include('partials.coefficients')
 </head>
 <body>
     <div id="app">

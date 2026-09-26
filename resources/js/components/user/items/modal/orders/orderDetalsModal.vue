@@ -180,6 +180,7 @@
 </template>
 
 <script>
+import { deliveryDays } from '../../../../../services/coefficients.js'
 export default {
     data() {
         return {
@@ -210,7 +211,7 @@ export default {
             const has_produced = this.order_product_items.some(
                 item => item.product && item.product.sale_type === 'produced_by_order'
             )
-            return has_produced ? '5-9' : '2-4'
+            return deliveryDays(has_produced)
         },
     },
     methods: {

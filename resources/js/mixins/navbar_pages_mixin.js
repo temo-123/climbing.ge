@@ -345,6 +345,13 @@ export default {
                             ]
                         },
                         {
+                            name: this.$t('user.nav.site_options_coefficients'),
+                            route: "/coefficients",
+                            permissions: [
+                                ['show', 'coefficient'],
+                            ]
+                        },
+                        {
                             name: this.$t('user.nav.site_options_head_sliders'),
                             route: "/head_sliders_images",
                             permissions: [

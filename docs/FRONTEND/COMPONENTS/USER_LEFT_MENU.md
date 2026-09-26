@@ -87,7 +87,7 @@ Defined in `navbar_pages_mixin.js`. Sections visible by permission:
 | **Shop Dashboard** | Shop task panel | `shop_task:*` |
 | **Blog** | Posts | `post:add/edit/del` |
 | **Summit** | Summits | `summit:add/edit/del` |
-| **Site Options** | About, Sliders, Followers, Users & Permissions, Comments, Gallery | `site_data:*`, `user:*`, `gallery:*`, etc. |
+| **Site Options** | About, Coefficients, Sliders, Followers, Users & Permissions, Comments, Gallery | `site_data:*`, `coefficient:show`, `user:*`, `gallery:*`, etc. |
 
 ---
 

@@ -52,6 +52,8 @@ Displays featured products, sale items, tours, and services.
 
 Full product page: images, description, options (size/color), price, add to cart, reviews.
 
+**Delivery badge:** shows "Delivery: 2–4 business days" for normal products, or "Made to order: 5–9 business days" when a made-to-order product has no stock for the selected option. The day ranges come from the `delivery_*` [coefficients](COEFFICIENTS.md#shop-delivery-period-business-days), not from the translation text.
+
 **API calls:**
 - `GET /api/get_product/get_local_product_in_page/{lang}/{url_title}`
 - `GET /api/get_product/get_product_options/{product_id}`
@@ -76,6 +78,8 @@ Two-step checkout, both API-driven by the same cart endpoints as the cart page (
 
 1. **`orderPaymentPageComponent.vue`** — address selection/entry (auto-selects the user's default address; "set as default" checkbox when adding a new one) and payment method, plus the same shipping/min-price/free-shipping/partner-discount preview and quantity-mismatch check as the cart page. "Next" is disabled while a mismatch or a sub-minimum subtotal exists. Sale code entry also lives here.
 2. **`orderDeclorationPageComponent.vue`** — final order review: line items (each flagged if its quantity now exceeds live stock), shipping cost, and the discount that will actually be charged — computed client-side as `max(partner_discount_percent, sale_code_percent)`, mirroring `OrderController::create_order()`'s server-side `max()` (discounts don't stack). "Place order" is disabled under the same conditions as the cart page.
+
+The estimated delivery period on the review step ("min-max" business days, longer if any item is made to order) comes from the `delivery_*` [coefficients](COEFFICIENTS.md#shop-delivery-period-business-days).
 
 Shipping cost, the minimum-order-price gate, and the partner/sale-code discount are always **recomputed and enforced server-side** in `OrderController::create_order()` — every client-side figure above is a preview only.
 
@@ -382,6 +386,8 @@ Shop content managed at `user.climbing.ge` under the **Shop** section.
 | **Warehouses** | Stock/inventory tracking |
 | **Sale Codes** | Discount code generation |
 | **Shipping Regions** | Shipping zone prices |
+
+Delivery periods (min/max business days) and the climbing wall calculator's prices are not in the Shop section. They're under **Site Options → Coefficients**, see [COEFFICIENTS.md](COEFFICIENTS.md).
 
 All admin tables use the `tabsComponent` pattern. See [FRONTEND/USER_PANEL_TABLE.md](FRONTEND/USER_PANEL_TABLE.md).
 

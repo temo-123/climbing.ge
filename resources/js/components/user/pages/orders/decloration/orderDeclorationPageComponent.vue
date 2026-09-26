@@ -202,6 +202,7 @@
 
 <script>
     import productDradcrumb from './items/BreadcrumbComponent.vue'
+    import { deliveryDays } from '../../../../../services/coefficients.js'
     export default {
         components: { productDradcrumb },
         data() {
@@ -227,7 +228,7 @@
                 return this.cart_items.some(item => item.product && item.product.sale_type === 'produced_by_order')
             },
             delivery_days() {
-                return this.has_produced_by_order ? '5-9' : '2-4'
+                return deliveryDays(this.has_produced_by_order)
             },
             min_ship_price_not_met() {
                 const min_price = this.shiping_country && this.shiping_country.ship_min_price ? parseFloat(this.shiping_country.ship_min_price) : 0

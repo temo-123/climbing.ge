@@ -31,6 +31,7 @@
             background: #7427bb;
         }
     </style>
+    @include('partials.coefficients')
 </head>
 <body>
     <div id="app">

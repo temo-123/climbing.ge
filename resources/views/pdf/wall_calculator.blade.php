@@ -257,7 +257,7 @@
                     <tr><td>{{ $tr->t('roof_price') }}</td><td class="num">${{ number_format($price['roof_price_sum'], 2) }}</td></tr>
                 @endif
                 @if(!empty($price['vat_price']))
-                    <tr><td>{{ $tr->t('vat_label') }} ({{ $price['vat_percent'] ?? 20 }}%)</td><td class="num">${{ number_format($price['vat_price'], 2) }}</td></tr>
+                    <tr><td>{{ $tr->t('vat_label') }} ({{ $price['vat_percent'] ?? \App\Services\CoefficientService::get('wall_vat_percent') }}%)</td><td class="num">${{ number_format($price['vat_price'], 2) }}</td></tr>
                 @endif
                 <tr class="total-row">
                     <td>{{ $tr->t('total_price') }}</td>

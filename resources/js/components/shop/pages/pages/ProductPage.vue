@@ -70,10 +70,10 @@
 
                             <!-- Delivery badge -->
                             <div class="delivery-badge" v-if="isOnlineOrderCartFlow && !isMadeToOrderPending">
-                                <i class="fa fa-truck" aria-hidden="true"></i> {{ $t('shop.product.delivery_online_order') }}
+                                <i class="fa fa-truck" aria-hidden="true"></i> {{ $t('shop.product.delivery_online_order', { days: deliveryDays(false) }) }}
                             </div>
                             <div class="delivery-badge delivery-badge--warning" v-if="isMadeToOrderPending">
-                                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('shop.product.delivery_produced_by_order') }}
+                                <i class="fa fa-clock-o" aria-hidden="true"></i> {{ $t('shop.product.delivery_produced_by_order', { days: deliveryDays(true) }) }}
                             </div>
 
                             <div class="product-divider"></div>
@@ -259,6 +259,7 @@
 <script>
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
+    import { deliveryDays } from '../../../../services/coefficients.js'
     import similarProduct from '../../items/SimilarProductComponent.vue'
     import feedbackForm from '../../items/FeedbacksComponent.vue'
     import ProductProdaction from '../../items/reservation_forms/ProductProdactionFormComponent.vue'
@@ -416,6 +417,7 @@
             },
         },
         methods: {
+            deliveryDays,
             get_user_info() {
                 axios
                 .get('auth_user')

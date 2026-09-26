@@ -90,6 +90,8 @@ const routes = [
             { path: 'site_info/add_general_info', name: 'GlobalInfoAdd', component: load('siteInfo/GeneralInfo/GlobalInfoAddFormComponent'), meta: {title: 'Add General Info', permissions: [['show', 'site_data']]}},
             { path: 'site_info/edit_general_info/:id', name: 'GlobalInfoEdit', component: load('siteInfo/GeneralInfo/GlobalInfoEditFormComponent'), meta: {title: 'Edit General Info', permissions: [['show', 'site_data']]}},
 
+            { path: 'coefficients', name: 'coefficients', component: load('siteInfo/Coefficients/CoefficientsListComponent'), meta: {title: 'Coefficients', permissions: [['show', 'coefficient']]}},
+
             { path: 'films', name: 'filmsList', component: load('films/filmsListComponent'), meta: {title: 'Films', permissions: [['show', 'film']]}},
             { path: 'films/add', name: 'filmsAdd', component: load('films/filmsAddComponent'), meta: {title: 'Add Film', permissions: [['show', 'film']]}},
             { path: 'films/edit/:id', name: 'filmsEdit', component: load('films/filmsEditComponent'), meta: {title: 'Edit Film', permissions: [['show', 'film']]}},

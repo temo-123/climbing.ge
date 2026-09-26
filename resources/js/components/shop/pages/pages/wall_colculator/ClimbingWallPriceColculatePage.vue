@@ -325,7 +325,7 @@
                         <div class="option-left">
                             <div class="option-icon"><i class="fa fa-tag"></i></div>
                             <div>
-                                <div class="option-label">{{ $t('shop.wall.include_vat') }}</div>
+                                <div class="option-label">{{ $t('shop.wall.include_vat', { vat: coepicients.vat.coepicient }) }}</div>
                                 <div class="option-sub">{{ coepicients.vat.coepicient }}% added to subtotal</div>
                             </div>
                         </div>
@@ -472,7 +472,7 @@
                                              :style="{width: pct(protection_price_sum)}"></div>
                                     </div>
                                     <div class="pr-sub-hint">
-                                        {{ $t('shop.wall.protection_hint', { anchors: protection_anchor_count, rope: protection_rope_length }) }}
+                                        {{ $t('shop.wall.protection_hint', { anchors: protection_anchor_count, rope: protection_rope_length, anchor_price: coepicients.protection_anchor_price.coepicient, rope_price: coepicients.protection_rope_price.coepicient }) }}
                                     </div>
                                 </template>
 
@@ -562,7 +562,7 @@
                         <ul class="hb-list">
                             <li><i class="fa fa-check-circle"></i> {{ $t('shop.wall.help_dimensions') }}</li>
                             <li><i class="fa fa-check-circle"></i> {{ $t('shop.wall.help_mat') }}</li>
-                            <li><i class="fa fa-check-circle"></i> {{ $t('shop.wall.help_holds') }}</li>
+                            <li><i class="fa fa-check-circle"></i> {{ $t('shop.wall.help_holds', { hold_price: coepicients.hold_midle_price.coepicient }) }}</li>
                         </ul>
                     </div>
                 </div>

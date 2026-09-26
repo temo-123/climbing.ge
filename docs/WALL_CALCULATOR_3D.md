@@ -13,6 +13,16 @@ it, and how to verify it after changes.
 
 ---
 
+## Prices are admin-editable coefficients
+
+Every price/multiplier in `coepicients_mixin.js` (and the VAT %, foundation
+depth ratio) comes from the `wall_*` coefficients (admin: Site Options →
+Coefficients), read synchronously from `window.__COEFFICIENTS__` via
+`resources/js/services/coefficients.js` — see the Coefficients section in
+[COEFFICIENTS.md](COEFFICIENTS.md). The `coepicients.*` keys used below are that mixin's shape.
+The hint texts (VAT %, $ per anchor/rope meter/hold) show the same live
+values, passed into the translations as parameters.
+
 ## Section 1 is a wizard, not a single picker
 
 Section 1 used to be one flat grid of 6 wall-type cards. It's now a 3-step
@@ -179,7 +189,7 @@ like real faceted pyramid/dome holds and snapped onto actual bolt holes
 ```
 wall_colculator/
 ├── ClimbingWallPriceColculatePage.vue   ← page; renders <WallViewer3D> with SVG fallback
-├── coepicients_mixin.js                 ← pricing coefficients (unchanged by the 3D work)
+├── coepicients_mixin.js                 ← pricing coefficients, filled from the admin-editable `wall_*` coefficients
 └── viewer3d/
     ├── WallViewer3D.vue       ← Vue wrapper: canvas lifecycle, dynamic three.js import, dispose
     ├── sceneSetup.js          ← Scene/Camera/Renderer/Lights/OrbitControls plumbing

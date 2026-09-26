@@ -481,6 +481,20 @@ Requires `auth:sanctum` + `banned`.
 | POST | `/api/set_permission/store` | Create permission |
 | DELETE | `/api/set_permission/destroy/{id}` | Delete permission |
 
+### Coefficients
+
+See [COEFFICIENTS.md](../COEFFICIENTS.md). Permission subject `coefficient`.
+
+| Method | Path | Description |
+|---|---|---|
+| GET | `/api/set_coefficient/get_all` | All coefficients (`id`, `slug`, `value`, `description`), ordered by slug |
+| GET | `/api/set_coefficient/get_coefficient/{id}` | Single coefficient |
+| POST | `/api/set_coefficient/create` | Create — `slug` (`[a-z0-9_]`, unique), `value` (numeric), `description?` |
+| POST | `/api/set_coefficient/update/{id}` | Update — same fields |
+| DELETE | `/api/set_coefficient/del/{id}` | Delete (the value falls back to its default in `config/coefficients.php`) |
+
+There's no public endpoint: pages get the values in `window.__COEFFICIENTS__`, printed into the HTML.
+
 ### Tasks
 
 | Method | Path | Description |
