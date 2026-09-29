@@ -1,4 +1,4 @@
-import { createApp, reactive } from "vue";
+import { createApp, reactive, watch } from "vue";
 import "./bootstrap";
 import { createHead } from "@unhead/vue/client";
 
@@ -438,23 +438,46 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
         next();
     });
 
-    // ── Per-page <title>/meta description ──────────────────────────────────
-    // UserRoutes.js gives every route a unique meta.title; the static
-    // "climbing.ge user" <title> in resources/views/user/layouts/app.blade.php
-    // is only the pre-hydration fallback. Each navigation replaces the
-    // previous head entry (rather than pushing a new one every time) so
-    // stale title/meta tags don't accumulate across an SPA session.
-    let titleHeadEntry = null;
-    router.afterEach((to) => {
-        if (titleHeadEntry) titleHeadEntry.dispose();
-        const pageTitle = to.meta?.title;
-        titleHeadEntry = head.push({
-            title: pageTitle ? `${pageTitle} — climbing.ge` : 'climbing.ge user',
+    // ── Per-page <title>/meta tags ──────────────────────────────────────────
+    // Same titles as the server-rendered ones (SeoService::forUser): translated from
+    // user.meta.titles.<route name>, falling back to the route's English meta.title.
+    // Each navigation replaces the previous head entry (instead of pushing a new one every
+    // time) so stale tags don't pile up; a page can still override its title/description
+    // with the user MetaDataComponent (e.g. for record-specific titles), which wins because
+    // it's pushed later.
+    let metaHeadEntry = null;
+    const applyUserMeta = (to) => {
+        if (metaHeadEntry) metaHeadEntry.dispose();
+
+        const t = i18n.global.t;
+        const te = i18n.global.te;
+        const siteName = t('user.meta.site_name');
+        const titleKey = to.name ? 'user.meta.titles.' + String(to.name) : null;
+        const pageTitle = titleKey && te(titleKey) ? t(titleKey) : to.meta?.title;
+        const title = pageTitle ? `${pageTitle} | ${siteName}` : t('user.meta.default_title');
+        const description = t('user.meta.default_description');
+        const url = window.location.href;
+
+        metaHeadEntry = head.push({
+            title,
             meta: [
-                { name: 'description', content: 'climbing.ge user dashboard — manage your account, orders, and content.' },
+                { name: 'description', content: description },
+                { name: 'robots', content: 'noindex, nofollow' },
+                { property: 'og:title', content: title },
+                { property: 'og:description', content: description },
+                { property: 'og:url', content: url },
+                { property: 'og:type', content: 'website' },
+                { property: 'og:site_name', content: siteName },
+                { name: 'twitter:card', content: 'summary_large_image' },
+                { name: 'twitter:title', content: title },
+                { name: 'twitter:description', content: description },
             ],
+            link: [{ rel: 'canonical', href: url }],
         });
-    });
+    };
+    router.afterEach((to) => applyUserMeta(to));
+    // Language switch without navigating — retitle the current page.
+    watch(() => i18n.global.locale.value, () => applyUserMeta(router.currentRoute.value));
 }
 // ─────────────────────────────────────────────────────────────────────────────
 

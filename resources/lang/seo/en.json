@@ -71,6 +71,11 @@
             "title": "films.climbing.ge — Climbing Films",
             "description": "Climbing and mountaineering films from Georgia and around the world.",
             "topic": ["climbing film", "documentary"]
+        },
+        "user": {
+            "title": "user.climbing.ge — Account & Dashboard",
+            "description": "climbing.ge user dashboard — manage your account, orders, trainings and site content.",
+            "topic": []
         }
     },
 

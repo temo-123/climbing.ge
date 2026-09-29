@@ -5,8 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    {{-- Private dashboard — never index user accounts/admin pages in search results --}}
-    <meta name="robots" content="noindex, nofollow">
 
     <link href="{{ asset('images/site_img/x.png') }}" rel="shortcut icon">
 
@@ -14,7 +12,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="ga-tag-id" content="{{ config('services.analytics.user') }}">
 
-    <title>climbing.ge user</title>
+    {{-- Per-page title/description/OG tags (SeoService::forUser). Private dashboard — always
+         noindex, including the error pages that render this layout without $seo. --}}
+    @include('partials.seo', ['subdomain' => 'user', 'seo' => array_merge($seo ?? [], ['robots' => 'noindex, nofollow'])])
 
     <link rel="stylesheet" href="{{ mix('assets/css/app.css') }}">
 

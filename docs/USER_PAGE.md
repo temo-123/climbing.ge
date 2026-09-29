@@ -14,6 +14,7 @@ The unified user dashboard and content management system for all climbing.ge sub
 - [Notifications & Queues](#notifications--queues)
 - [Frontend Components](#frontend-components)
 - [Backend API](#backend-api)
+- [Page Meta Tags](#page-meta-tags)
 
 ---
 
@@ -387,6 +388,23 @@ A user always has exactly one `is_default` address, used to preview shipping cos
 | GET | `/api/set_user_follow/follow_status/{user_id}` | `{ following, is_self }` |
 
 Full writeup — social graph, activity-email notifications, and the two other similarly-named-but-unrelated "follow" models this can be confused with — in [CLIMBER_PROFILE.md](CLIMBER_PROFILE.md#the-follow-system).
+
+---
+
+## Page Meta Tags
+
+Every user.climbing.ge page has its own `<title>`, description, Open Graph / Twitter tags and canonical link — same approach as the public sites (`SeoService` server-side + `@unhead/vue` client-side), but **always `noindex, nofollow`** since it's a private dashboard.
+
+| Layer | Where | What it does |
+|---|---|---|
+| Titles (one list for both layers) | `resources/lang/i18n/{en,ka}.json` → `user.meta` | `titles.<route name>` for every route in `UserRoutes.js`, plus `site_name`, `default_title`, `default_description` |
+| Server (first load, link previews) | `SeoService::forUser()` ← `User\IndexController` → `partials/seo.blade.php` in `user/layouts/app.blade.php` | Matches the URL against the route table parsed from `UserRoutes.js` (cached until the file changes), takes the title from `user.meta.titles` in the URL's locale (`/ka/...` → Georgian) |
+| Client (SPA navigation) | `router.afterEach` in `resources/js/app.js` | Same title/description/OG tags on every navigation and on language switch |
+| Per-page override | `components/user/items/MetaDataComponent.vue` | Optional — for record-specific titles (e.g. "Edit: <product name>"); wins over the route title |
+
+Title format: `<Page title> | user.climbing.ge` (unknown routes: `default_title`). `partials/seo.blade.php` takes `robots` from `$seo['robots']` (default `index, follow`) and skips the sitewide Organization/WebSite JSON-LD on noindex pages.
+
+**Adding a page:** add the route to `UserRoutes.js` with a `name` and an English `meta.title`, then add `user.meta.titles.<name>` to both `en.json` and `ka.json`. Nothing else — the server picks the route up automatically. Without a translation the English `meta.title` is used on the client and `default_title` on the server.
 
 ---
 

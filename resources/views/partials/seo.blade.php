@@ -9,6 +9,10 @@
         $seoSchema      = $seo['schema'] ?? null;
         $seoKeywords    = $seo['keywords'] ?? '';
         $seoPrice       = $seo['price'] ?? null;
+        // Private areas (user.climbing.ge) pass 'noindex, nofollow' — they also skip the
+        // sitewide Organization/WebSite schema below, which only makes sense on public pages.
+        $seoRobots      = $seo['robots'] ?? 'index, follow';
+        $seoNoindex     = str_contains($seoRobots, 'noindex');
         $seoLocale      = app()->getLocale() === 'ka' ? 'ka_GE' : 'en_US';
         $seoSubdomain   = $subdomain ?? 'site';
         $googleVerify   = config("services.seo.google_site_verification.{$seoSubdomain}");
@@ -20,7 +24,7 @@
     @if($seoKeywords)
     <meta name="keywords" content="{{ $seoKeywords }}">
     @endif
-    <meta name="robots" content="index, follow">
+    <meta name="robots" content="{{ $seoRobots }}">
 
     {{-- Search engine ownership verification --}}
     @if($googleVerify)
@@ -85,12 +89,13 @@
     <link rel="alternate" hreflang="x-default" href="{{ $hreflangEn }}">
 
     {{-- JSON-LD Structured Data --}}
-    @if($seoSchema)
+    @if($seoSchema && !$seoNoindex)
     <script type="application/ld+json">
     {!! json_encode($seoSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT) !!}
     </script>
     @endif
 
+    @if(!$seoNoindex)
     {{--
         Sitewide entity identity — on EVERY page, independent of whatever
         content-specific schema exists above. Search/AI engines otherwise
@@ -139,3 +144,4 @@
     <script type="application/ld+json">
     {!! json_encode($websiteSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}
     </script>
+    @endif

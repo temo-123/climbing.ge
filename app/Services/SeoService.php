@@ -156,6 +156,81 @@ class SeoService
         return $this->summitDefaults($locale);
     }
 
+    /**
+     * user.climbing.ge (account + admin panel) — private, so noindex, but every page still gets
+     * its own title/description/OG tags for browser tabs and shared-link previews. The page is
+     * resolved from the SPA's own route table (resources/js/routes/UserRoutes.js) and titled
+     * from the same Vue translations the client uses (user.meta.titles.<route name>), so there
+     * is one list of pages and one set of titles for both server and client.
+     */
+    public function forUser(Request $request): array
+    {
+        $segments = $this->segments($request);
+        $locale   = $this->locale($segments);
+        $meta     = $this->userMetaTranslations($locale);
+        $path     = implode('/', $segments);
+
+        $routeName = null;
+        foreach ($this->userRoutePatterns() as $pattern => $name) {
+            if (preg_match($pattern, $path)) {
+                $routeName = $name;
+                break;
+            }
+        }
+
+        $siteName = $meta['site_name'] ?? 'user.climbing.ge';
+        $page     = $routeName ? ($meta['titles'][$routeName] ?? null) : null;
+        $title    = $page ? $page . ' | ' . $siteName : ($meta['default_title'] ?? $siteName);
+        $desc     = $meta['default_description'] ?? '';
+
+        $seo = $this->build($title, $desc, $this->defaultImage(), 'website');
+        $seo['robots'] = 'noindex, nofollow';
+        return $seo;
+    }
+
+    // [regex => route name] from UserRoutes.js, rebuilt only when that file changes.
+    private function userRoutePatterns(): array
+    {
+        $file = resource_path('js/routes/UserRoutes.js');
+        if (!is_file($file)) return [];
+
+        return Cache::rememberForever('seo_user_routes_' . filemtime($file), function () use ($file) {
+            preg_match_all(
+                "/path:\s*[`'\"]([^`'\"]*)[`'\"]\s*,\s*name:\s*['\"]([^'\"]+)['\"]/",
+                file_get_contents($file),
+                $matches,
+                PREG_SET_ORDER
+            );
+
+            $patterns = [];
+            foreach ($matches as [, $routePath, $name]) {
+                $regex = '';
+                foreach (array_filter(explode('/', trim($routePath, '/')), 'strlen') as $part) {
+                    if (str_starts_with($part, ':')) {
+                        $regex .= str_ends_with($part, '?') ? '(?:/[^/]+)?' : '/[^/]+';
+                    } else {
+                        $regex .= '/' . preg_quote($part, '#');
+                    }
+                }
+                // Paths are matched without their leading slash.
+                $patterns['#^' . ltrim($regex, '/') . '/?$#'] = $name;
+            }
+            return $patterns;
+        });
+    }
+
+    // user.meta from the Vue translation file for this locale (en for 'us').
+    private function userMetaTranslations(string $locale): array
+    {
+        $file = resource_path('lang/i18n/' . ($locale === 'ka' ? 'ka' : 'en') . '.json');
+        if (!is_file($file)) return [];
+
+        return Cache::rememberForever('seo_user_meta_' . md5($file) . '_' . filemtime($file), function () use ($file) {
+            $data = json_decode(file_get_contents($file), true);
+            return $data['user']['meta'] ?? [];
+        });
+    }
+
     public function forFilms(Request $request): array
     {
         $segments = $this->segments($request);
