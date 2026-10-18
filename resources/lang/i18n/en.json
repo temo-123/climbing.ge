@@ -2646,6 +2646,11 @@
                 "temporarily_closed": "Temporarily closed",
                 "sport_session_closed": "Closed for a sport session",
                 "coming_soon": "Coming soon"
+            },
+            "work_status_text": {
+                "temporarily_closed": "The gym is temporarily closed. Check back later or contact the gym before visiting.",
+                "sport_session_closed": "The gym is closed to visitors during a sport session (competition or training camp).",
+                "coming_soon": "This gym hasn't opened yet — it will open soon."
             }
         },
         "breadcrumb home": "Home",

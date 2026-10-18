@@ -17,6 +17,7 @@
                         <h2 style="margin: 1.5em 0;"> {{ indoor.locale_data.title }}</h2>
                     <!-- </a> -->
                     </router-link>
+                    <IndoorWorkStatusAlert :status="indoor.global_data.work_status" />
                     <span v-html="indoor.locale_data.short_description"></span>
                 </div>
                 <div class='row'>
@@ -26,8 +27,9 @@
                     </div>
                     <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6'>
                         <b style="font-size: 120%;">{{ $t('guide.article.working_time')}}</b>
+                        <!-- Status is shown as an alert above; don't show hours / "open now" for a closed gym -->
                         <span v-if="indoor.global_data.work_status">
-                            <p class="deanger_text">{{ $t('guide.article.work_status.' + indoor.global_data.work_status) }}</p>
+                            <p>&mdash;</p>
                         </span>
                         <span v-else-if="indoor.global_data.open_time && indoor.global_data.closed_time">
                             <span v-if="!indoor.global_data.closed">
@@ -58,9 +60,11 @@
 
 <script>
     import moment from "moment"; // https://www.npmjs.com/package/vue-moment
+    import IndoorWorkStatusAlert from '../IndoorWorkStatusAlert.vue'
     export default {
         components: {
-            moment
+            moment,
+            IndoorWorkStatusAlert,
         },
         props: [
             'indoor',
