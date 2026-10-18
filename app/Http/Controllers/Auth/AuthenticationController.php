@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Blog\Post;
+use App\Models\Social_account;
+use App\Services\AccountDeletionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AuthenticationController extends Controller
 {
@@ -73,5 +77,37 @@ class AuthenticationController extends Controller
             'casl_permissions' => $allPermissions,
         ]));
     }
-}
 
+    /**
+     * Self-service account deletion (Google Play User Data policy).
+     * Used by the user page /delete-account and the mobile app.
+     */
+    public function deleteAccount(Request $request): JsonResponse
+    {
+        $user = $request->user();
+
+        // Social signups get a random password they never see — the token alone proves identity
+        $requires_password = !Social_account::where('user_id', $user->id)->exists();
+
+        $request->validate([
+            'confirm'  => 'required|in:DELETE',
+            'password' => $requires_password ? 'required|string' : 'nullable',
+        ]);
+
+        if ($requires_password && !Hash::check($request->password, $user->password)) {
+            return response()->json([
+                'message' => 'Validation failed',
+                'errors'  => ['password' => ['The password is incorrect.']],
+            ], 422);
+        }
+
+        // posts.user_id is NOT NULL — staff who authored blog posts are deleted by an admin
+        if (Post::where('user_id', $user->id)->exists()) {
+            return response()->json(['message' => 'This account owns blog posts. Please contact support to delete it.'], 409);
+        }
+
+        AccountDeletionService::delete($user);
+
+        return response()->json(['message' => 'Account deleted']);
+    }
+}

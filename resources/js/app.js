@@ -358,12 +358,12 @@ router.isReady().then(() => trackPageview(router.currentRoute.value));
 if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     const userPublicRoutes = [
         'login', 'register', 'forget_pass', 'reset_pass',
-        'callback', 'verify', 'create_pass',
+        'callback', 'verify', 'create_pass', 'delete_account',
     ];
     // Accessible whether logged in or not — must NOT bounce an authenticated
     // user away, since the verification link is normally opened by a user
     // who is already logged in (registration auto-logs them in).
-    const authNeutralRoutes = ['verify'];
+    const authNeutralRoutes = ['verify', 'delete_account'];
 
     let authVerified = false;
 

@@ -10,6 +10,7 @@
 - [Email Verification](#email-verification)
 - [Password Reset](#password-reset)
 - [Session & Token Management](#session--token-management)
+- [Account Deletion](#account-deletion)
 - [Middleware](#middleware)
 - [Role & Permission System (CASL + Spatie)](#role--permission-system)
 - [Frontend Auth Flow](#frontend-auth-flow)
@@ -295,6 +296,40 @@ Used on every page load to restore user state in Vue. Returns:
 ```
 
 Returns `401` if not authenticated — intercepted by axios to clear `localStorage` and redirect to login.
+
+---
+
+## Account Deletion
+
+Self-service, permanent account deletion — required by the Google Play User Data policy (in-app path + public web URL).
+
+**Endpoint:** `POST /api/account/delete` (`auth:sanctum` + `banned`)  
+**Controller:** `App\Http\Controllers\Auth\AuthenticationController@deleteAccount` → `App\Services\AccountDeletionService::delete($user)`
+
+### Request
+
+```json
+{ "confirm": "DELETE", "password": "secret123" }
+```
+
+`confirm` must be exactly `DELETE`. `password` is plain text (not RSA-encrypted like login) and is required unless the user has a `Social_account` row — social signups get a random password they never see (`SocialController`), so the Bearer token alone proves identity.
+
+### Responses
+
+- `200 {"message":"Account deleted"}` — all Sanctum tokens are revoked.
+- `422` — missing `confirm`, or `errors.password` = `"The password is incorrect."`.
+- `409` — the user authored blog `posts` (`posts.user_id` is NOT NULL); an admin must handle it.
+
+### What is deleted vs kept
+
+- **Deleted:** the user, tokens, social accounts, roles/permissions, notifications, unused addresses, favorites, cart, follows, training sync data, article comments, product feedbacks, route reviews, summit ascents, the `non_registered_commenters` row, profile image. Tables with an FK cascade to `users` are cleaned by the database.
+- **Kept, detached (`user_id = NULL`):** `orders`, `donations`, and addresses used by an order — accounting records. `2026_10_17_120000_make_user_adreses_user_id_nullable.php` makes `user_adreses.user_id` nullable (`ON DELETE SET NULL`) for this.
+
+No soft-delete or grace period — deletion is immediate. Admin `set_user/del_user` and `bulk_delete` do **not** use this service.
+
+### Public web page
+
+`https://user.climbing.ge/delete-account` (`DeleteAccountPage.vue`, route `delete_account`) — the URL for Play Console → App content → Data safety → Data deletion. Listed in both `userPublicRoutes` and `authNeutralRoutes` in `app.js`, so it shows the explanation logged out (login button redirects back) and the confirmation form logged in. Linked from `optionsPageComponent.vue`.
 
 ---
 

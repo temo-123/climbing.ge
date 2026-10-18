@@ -43,5 +43,6 @@ Route::middleware(['auth:sanctum', 'banned'])->group(function () {
         Route::get('email/resend', 'VerificationController@resend')->name('verification.resend');
         Route::get('auth_user', 'AuthenticationController@user')->name('auth_user');
         Route::post('logout', 'AuthenticationController@logout')->name('logout');
+        Route::post('account/delete', 'AuthenticationController@deleteAccount')->name('account.delete');
     });
 });

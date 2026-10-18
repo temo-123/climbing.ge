@@ -34,6 +34,11 @@
 
                             <div class="row" v-if="tab_num == 1">
                                 <userOptions />
+                                <div class="col-md-12 mt-4">
+                                    <router-link :to="{ name: 'delete_account' }" class="btn btn-outline-danger btn-sm">
+                                        {{ $t('user.delete_account.options_link') }}
+                                    </router-link>
+                                </div>
                             </div>
 
                             <div class="row" v-if="tab_num == 2">

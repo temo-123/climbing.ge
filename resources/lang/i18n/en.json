@@ -4036,6 +4036,28 @@
                 "forbidden": "Forbidden",
                 "server-error": "Server Error"
             }
+        },
+        "delete_account": {
+            "title": "Delete your climbing.ge account",
+            "intro": "This page lets you permanently delete your climbing.ge account. It applies to the climbing.ge website and the climbing.ge training mobile app, which share one account.",
+            "steps_title": "How to delete your account",
+            "step_login": "Log in to your account (button below).",
+            "step_confirm": "Enter your password (if you have one) and type DELETE to confirm.",
+            "step_done": "Your account is deleted immediately and you are logged out on all devices.",
+            "deleted_title": "What is deleted",
+            "deleted_text": "Your profile (name, email, phone, location, photo), login sessions and connected Google/Facebook logins, addresses, favorites, cart, follows, notification settings, training workouts, plans and history, comments, reviews, product feedback and summit ascents.",
+            "kept_title": "What is kept",
+            "kept_text": "Records of past orders and donations (and the delivery address used for an order) are kept for accounting and legal obligations. They are no longer linked to any account.",
+            "login_btn": "Log in to delete account",
+            "warning": "This action is permanent and cannot be undone.",
+            "password_label": "Password",
+            "password_hint": "Leave empty if you signed up with Google or Facebook and never set a password.",
+            "confirm_label": "Type DELETE to confirm",
+            "delete_btn": "Delete my account",
+            "deleting": "Deleting...",
+            "success": "Your account has been deleted.",
+            "error": "Something went wrong. Please try again.",
+            "options_link": "Delete my account"
         }
     },
     "global": {
