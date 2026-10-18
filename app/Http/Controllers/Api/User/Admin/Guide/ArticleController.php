@@ -74,12 +74,25 @@ class ArticleController extends Controller
         return $data;
     }
 
+    /**
+     * An indoor work_status (closed / coming soon / no info) replaces the working
+     * hours, so the hours are cleared whenever a status is set.
+     */
+    private function normalize_work_status(array $data): array
+    {
+        if (!empty($data['global_article']['work_status'])) {
+            $data['global_article']['open_time'] = null;
+            $data['global_article']['closed_time'] = null;
+        }
+        return $data;
+    }
+
     public function add_article(Request $request)
     {
         $auth = PermissionService::authorize('article', 'add');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
-        $data = $this->normalize_mount_grade($data);
+        $data = $this->normalize_work_status($this->normalize_mount_grade($data));
         $global_blocks = json_decode($request->global_blocks, true );
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';
@@ -116,7 +129,9 @@ class ArticleController extends Controller
         $auth = PermissionService::authorize('article', 'edit');
         if ($auth) return $auth;
         $data = json_decode($request->data, true );
-        $data = $this->normalize_mount_grade($data);
+        $data = $this->normalize_work_status($this->normalize_mount_grade($data));
+        // edit_content() re-reads $request->data itself — hand it the normalized version
+        $request->merge(['data' => json_encode($data)]);
         $global_blocks = json_decode($request->global_blocks, true );
 
         $image_path = 'images/'.$data['global_article']['category'].'_img/';

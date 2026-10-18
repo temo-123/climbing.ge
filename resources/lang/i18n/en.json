@@ -2107,7 +2107,8 @@
                 "working_time": "Working time",
                 "start_time_placeholder": "Start date/time",
                 "end_time_placeholder": "End date/time",
-                "work_status_normal": "Status: normal working hours"
+                "work_status_normal": "Status: normal working hours",
+                "optional": "optional"
             },
             "loading": "Loading articles...",
             "no_data": "No data available.",
@@ -2645,12 +2646,19 @@
             "work_status": {
                 "temporarily_closed": "Temporarily closed",
                 "sport_session_closed": "Closed for a sport session",
-                "coming_soon": "Coming soon"
+                "coming_soon": "Coming soon",
+                "no_info": "No information about working time"
             },
             "work_status_text": {
                 "temporarily_closed": "The gym is temporarily closed. Check back later or contact the gym before visiting.",
                 "sport_session_closed": "The gym is closed to visitors during a sport session (competition or training camp).",
                 "coming_soon": "This gym hasn't opened yet — it will open soon."
+            },
+            "open_status": {
+                "open_now": "Open now",
+                "closed_now": "Closed now",
+                "opens_in": "Opens in {min} min",
+                "closes_in": "Closes in {min} min"
             }
         },
         "breadcrumb home": "Home",

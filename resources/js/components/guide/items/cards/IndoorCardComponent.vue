@@ -1,113 +1,114 @@
 <template>
-    <div class='row featurette indoor-card'>
+    <!-- Whole card opens the gym page -->
+    <div class='row featurette indoor-card' role="link" @click="open_gym">
         <div class='col-md-6 indoor_img'>
             <div class="product-image" v-if="indoor.global_data.new_flag">
                 <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
+            <span v-if="alert_status" :class="['indoor_status_ribbon', 'indoor_status_ribbon_' + indoor.global_data.work_status]">
+                {{ $t('guide.article.work_status.' + indoor.global_data.work_status) }}
+            </span>
             <router-link :to="'indoor/'+indoor.global_data.url_title">
                 <site-img v-if="indoor.global_data.image" :src="'/public/images/indoor_img/'+indoor.global_data.image" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
             </router-link>
         </div>
         <div class='col-md-6 indoor_text indoot_text_for_mobile'>
-            <div class="container">
-                <div class='row'>
-                    <router-link :to="'indoor/'+indoor.global_data.url_title">
-                    <!-- <a href=" route('indoor_page', array('title'=>$indoor['url_title'])) }}"> -->
-                        <h2 style="margin: 1.5em 0;"> {{ indoor.locale_data.title }}</h2>
-                    <!-- </a> -->
-                    </router-link>
-                    <IndoorWorkStatusAlert :status="indoor.global_data.work_status" />
-                    <span v-html="indoor.locale_data.short_description"></span>
-                </div>
-                <div class='row'>
-                    <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6' v-if="indoor.global_data.price_from">
-                        <b style="font-size: 120%;">{{ $t('guide.article.prices_from')}}</b>
-                        <p style="font-size: 100%;"><strong>{{ indoor.global_data.price_from }} GEL </strong></p>
-                    </div>
-                    <div class='col-sm-12 col-xs-6 col-md-6 col-lg-6 col-xl-6'>
-                        <b style="font-size: 120%;">{{ $t('guide.article.working_time')}}</b>
-                        <!-- Status is shown as an alert above; don't show hours / "open now" for a closed gym -->
-                        <span v-if="indoor.global_data.work_status">
-                            <p>&mdash;</p>
-                        </span>
-                        <span v-else-if="indoor.global_data.open_time && indoor.global_data.closed_time">
-                            <span v-if="!indoor.global_data.closed">
-                                <p style="font-size: 100%;"> {{ indoor.global_data.open_time }} - {{indoor.global_data.closed_time}}</p>
-                                <p  class="deanger_text">{{ status(indoor.global_data.open_time, indoor.global_data.closed_time) }}</p>
-                            </span>
+            <router-link :to="'indoor/'+indoor.global_data.url_title">
+                <h2>{{ indoor.locale_data.title }}</h2>
+            </router-link>
 
-                            <p class="deanger_text" v-if="indoor.global_data.closed">{{ $t('guide.article.closed')}}</p>
-                        </span>
-                        <span v-else>
-                            <p class="deanger_text">{{ $t('guide.article.no_info_working_time')}}</p>
-                        </span>
-                    </div>
-                </div>
-                <!-- -- <div class='row'>
-                    <div class='col-xs-12' style='text-align: center; margin-left: -10px;'>
-                        @foreach($reviews as $review)
-                        @if($review['article_title'] == $indoor.locale_data->url_title)
-                        <input id="input-1" name="input-1" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" value="$review['review']}}">
-                        @endif
-                        @endforeach
-                    </div>
-                </div> --}} -->
-            </div>
+            <IndoorWorkStatusAlert :status="indoor.global_data.work_status" />
+
+            <span class="indoor_short_description" v-html="indoor.locale_data.short_description"></span>
+
+            <ul class="indoor_info_list">
+                <li v-if="indoor.global_data.price_from">
+                    <i class="fa fa-tag" aria-hidden="true"></i>
+                    <b>{{ $t('guide.article.prices_from') }}</b>
+                    <strong>{{ indoor.global_data.price_from }} GEL</strong>
+                </li>
+                <!-- Closed / coming soon: the alert above replaces the hours row -->
+                <li v-if="!alert_status">
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <b>{{ $t('guide.article.working_time') }}</b>
+                    <span v-if="indoor.global_data.work_status === 'no_info' || !has_hours" class="text-muted">
+                        {{ $t('guide.article.no_info_working_time') }}
+                    </span>
+                    <template v-else>
+                        <span>{{ short_time(indoor.global_data.open_time) }} &ndash; {{ short_time(indoor.global_data.closed_time) }}</span>
+                        <span :class="['indoor_open_badge', 'indoor_open_badge_' + open_state.state]">{{ open_state.label }}</span>
+                    </template>
+                </li>
+            </ul>
+
         </div>
     </div>
 </template>
 
 <script>
-    import moment from "moment"; // https://www.npmjs.com/package/vue-moment
     import IndoorWorkStatusAlert from '../IndoorWorkStatusAlert.vue'
+
+    // Minutes since midnight for "HH:mm" or "HH:mm:ss"
+    function to_minutes(time) {
+        const [h, m] = String(time).split(':').map(Number)
+        return h * 60 + (m || 0)
+    }
+
     export default {
         components: {
-            moment,
             IndoorWorkStatusAlert,
         },
         props: [
             'indoor',
         ],
+        data() {
+            return {
+                now: new Date(),
+                timer: null,
+            }
+        },
+        computed: {
+            alert_status() {
+                return ['temporarily_closed', 'sport_session_closed', 'coming_soon'].includes(this.indoor.global_data.work_status)
+            },
+            has_hours() {
+                return !!(this.indoor.global_data.open_time && this.indoor.global_data.closed_time)
+            },
+            // open / soon / closed, with "opens/closes in N min" inside the last hour
+            open_state() {
+                const open = to_minutes(this.indoor.global_data.open_time)
+                const close = to_minutes(this.indoor.global_data.closed_time)
+                const now = this.now.getHours() * 60 + this.now.getMinutes()
+                // Closing after midnight (e.g. 10:00 – 01:00)
+                const is_open = close > open ? (now >= open && now < close) : (now >= open || now < close)
+
+                if (is_open) {
+                    const left = (close - now + 1440) % 1440
+                    return left <= 60
+                        ? { state: 'soon', label: this.$t('guide.article.open_status.closes_in', { min: left }) }
+                        : { state: 'open', label: this.$t('guide.article.open_status.open_now') }
+                }
+                const until = (open - now + 1440) % 1440
+                return until <= 60
+                    ? { state: 'soon', label: this.$t('guide.article.open_status.opens_in', { min: until }) }
+                    : { state: 'closed', label: this.$t('guide.article.open_status.closed_now') }
+            },
+        },
         mounted() {
-            // alert(moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY"));
+            // keep the open/closed hint current while the page stays open
+            this.timer = setInterval(() => { this.now = new Date() }, 60000)
+        },
+        beforeUnmount() {
+            clearInterval(this.timer)
         },
         methods: {
-            // open(){
-            //     return moment( "2013-2-1 14:00:00" ).format( "H:MM:mma")
-            // },
-            // close(){
-            //     return moment( "2013-2-1 14:00:00" ).format( "dddd h:mma D MMM YYYY")
-            // }
-
-            status(open, close){
-                var open_hourse = moment(open, 'HH:mm').format( "HH")
-                var open_minits = moment(open, 'HH:mm').format( "mm")
-
-                var close_hourse = moment(close, 'HH:mm').format( "HH")
-                var close_minits = moment(close, 'HH:mm').format( "mm")
-
-                var today = new Date();
-                // var realy_time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds()
-
-                if(open_hourse < today.getHours() && close_hourse > today.getHours()){
-                    return 'Open at this moment'
-                }
-                else if(open_hourse > today.getHours() && close_hourse < today.getHours()){
-                    return 'Closed at this moment'
-                }
-                else if(open_hourse + 1 == today.getHours()){
-                    return 'Open in less than in hour'
-                }
-                else if(close_hourse -1 == today.getHours()){
-                    return 'Closes in less than in hour'
-                }
-
-                // <p class="deanger_text" >closes soon</p>
-                // <p class="deanger_text" >closes in less than an hour</p>
-                // <p class="deanger_text" >closes in less than 30 minutes</p>
-                // <p class="deanger_text" >now closed</p>
-            }
+            open_gym() {
+                this.$router.push((this.$i18n.locale === 'ka' ? '/ka' : '') + '/indoor/' + this.indoor.global_data.url_title)
+            },
+            short_time(time) {
+                return String(time).slice(0, 5)
+            },
         }
     }
 </script>
@@ -121,6 +122,10 @@
         transition: all 0.3s ease;
         margin-bottom: 7%;
         padding: 20px;
+    }
+
+    .indoor-card {
+        cursor: pointer;
     }
 
     .indoor-card:hover {
@@ -173,12 +178,13 @@
 
     .indoor_text h2 {
         font-size: 1.8em;
-        margin: 1.5em 0 1em 0;
+        margin: 0.6em 0 0.6em 0;
         color: #333;
         font-weight: bold;
     }
 
-    .indoor_text span {
+    .indoor_short_description {
+        display: block;
         font-size: 1em;
         line-height: 1.6;
         color: #666;
@@ -197,11 +203,62 @@
         margin: 0.5em 0;
     }
 
-    .deanger_text {
-        font-size: 1.2em;
-        color: #e74c3c;
-        font-weight: bold;
+    .indoor_text a:hover {
+        text-decoration: none;
     }
+
+    .indoor_info_list {
+        list-style: none;
+        padding: 0;
+        margin: 0.5em 0 1.2em;
+    }
+
+    .indoor_info_list li {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        color: #555;
+    }
+
+    .indoor_info_list .fa {
+        color: #279fbb;
+        width: 18px;
+        text-align: center;
+    }
+
+    .indoor_info_list b {
+        margin: 0;
+    }
+
+    .indoor_open_badge {
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 0.85em;
+        font-weight: bold;
+        color: #fff;
+    }
+    .indoor_open_badge_open   { background: #27ae60; }
+    .indoor_open_badge_soon   { background: #f39c12; }
+    .indoor_open_badge_closed { background: #e74c3c; }
+
+
+    .indoor_status_ribbon {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        z-index: 10;
+        padding: 5px 12px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 13px;
+        font-weight: bold;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .indoor_status_ribbon_temporarily_closed   { background: #e74c3c; }
+    .indoor_status_ribbon_sport_session_closed { background: #f39c12; }
+    .indoor_status_ribbon_coming_soon          { background: #279fbb; }
 
     .discount_percent_badge_for_indoor {
         margin: 5px 18px 0 0;

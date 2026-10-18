@@ -3,34 +3,18 @@
         <span v-html="this.article_prop.locale_data.text" id="description" class="article_text_block" v-if="this.article_prop.locale_data.text != null"></span>
 
         <!-- Best time for climbing block -->
-        <div>
-            <div v-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0">
-                <div v-if="(this.article_prop.global_data.weather == null && this.article_prop.locale_data.best_time != null)">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
+        <div v-if="has_best_time">
+            <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
 
-                    <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
-                </div>  
-                <div v-else-if="this.article_prop.global_data.weather != null && this.article_prop.locale_data.best_time != null">
-                    <h2 id="best_time_to_climb">{{ $t('guide.article.title.best time')}}</h2>
+            <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
+        </div>
 
-                    <generalInfo :global_info_prop="article_prop.general_info.best_time" :locale_data_prop="article_prop.locale_data.best_time"/>
-
-                    <div class="weather_widget_card">
-                        <div class="weather_widget_header">
-                            <i class="fa fa-cloud"></i> {{ $t('guide.weather_forecast') }}
-                        </div>
-                        <div class="weather_widget_body" v-html="this.article_prop.global_data.weather"></div>
-                    </div>
-                </div>
+        <!-- Weather forecast is optional — shown only when the admin added one -->
+        <div v-if="has_weather" class="weather_widget_card">
+            <div class="weather_widget_header">
+                <i class="fa fa-cloud"></i> {{ $t('guide.weather_forecast') }}
             </div>
-            <div v-else-if="this.article_prop.global_data.weather || this.article_prop.general_info.best_time.length != 0 || this.article_prop.global_data.weather != null">
-                <div class="weather_widget_card">
-                    <div class="weather_widget_header">
-                        <i class="fa fa-cloud"></i> {{ $t('guide.weather_forecast') }}
-                    </div>
-                    <div class="weather_widget_body" v-html="this.article_prop.global_data.weather"></div>
-                </div>
-            </div>
+            <div class="weather_widget_body" v-html="this.article_prop.global_data.weather"></div>
         </div>
 
         <!-- addres -->
@@ -101,6 +85,17 @@
             generalInfo,
             LocalBisnesListComponentComponent,
             Donation,
+        },
+        computed: {
+            has_best_time() {
+                return this.article_prop.locale_data.best_time != null
+                    || (this.article_prop.general_info?.best_time || []).length > 0
+            },
+            // Empty / whitespace-only / tag-only values don't count as a forecast
+            has_weather() {
+                const weather = this.article_prop.global_data.weather
+                return !!weather && String(weather).replace(/<[^>]*>|&nbsp;/g, '').trim() !== ''
+            },
         },
         mounted() {
             // this.get_local_bisnes_for_article()

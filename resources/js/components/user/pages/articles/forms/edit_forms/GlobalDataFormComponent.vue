@@ -81,7 +81,7 @@
 
 
                     <div class="form-group clearfix row" v-if="this.category == 'outdoor' || this.category == 'ice'">
-                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.weather_label') }} </label>
+                        <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.weather_label') }} <small class="text-muted">({{ $t('admin.articles.global_form.optional') }})</small></label>
                         <div class="col-md-10">
                             <!-- <input type="text" name="value name" value="old data" class="form-control"> -->
                             <input type="text" name="weather" v-model="data.weather" class="form-control"> 
@@ -104,10 +104,10 @@
                         <div class="col-md-10">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" :placeholder="$t('admin.articles.global_form.start_time_placeholder')">
+                                    <input type="time" name="open_time" class="form-control" v-model="data.open_time" :disabled="!!data.work_status" :placeholder="$t('admin.articles.global_form.start_time_placeholder')">
                                 </div>
                                 <div class="col-md-6">
-                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
+                                    <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :disabled="!!data.work_status" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
                                 </div>
                             </div>
                             <div class="row" style="margin-top: 8px;">
@@ -117,6 +117,7 @@
                                         <option value="temporarily_closed">{{ $t('guide.article.work_status.temporarily_closed') }}</option>
                                         <option value="sport_session_closed">{{ $t('guide.article.work_status.sport_session_closed') }}</option>
                                         <option value="coming_soon">{{ $t('guide.article.work_status.coming_soon') }}</option>
+                                        <option value="no_info">{{ $t('guide.article.work_status.no_info') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -174,6 +175,13 @@
             }
         },
         watch: {
+            // A status replaces the working hours — clear them (the server does the same)
+            'data.work_status': function(status) {
+                if (status) {
+                    this.data.open_time = null
+                    this.data.closed_time = null
+                }
+            },
             global_data_prop: function(newVal, oldVal) { 
                 // console.log('Prop changed: ', newVal, ' | was: ', oldVal)
                 this.data = this.global_data_prop

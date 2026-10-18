@@ -277,6 +277,22 @@ DONATION_TBC_ACCOUNT_NAME=
 DONATION_TBC_BANK_CODE=TBCBGE22
 DONATION_TBC_BANK_NAME="TBC Bank"
 
+# Organization that receives donations — donation terms + About page legal block
+# (config/organization.php, applied by migration 2026_10_19_110000_update_donation_legal_texts.php;
+# the migration refuses to run until the required ones are set). Quote values with spaces.
+ORGANIZATION_LEGAL_NAME_US=
+ORGANIZATION_LEGAL_NAME_KA=
+ORGANIZATION_LEGAL_FORM_US="Non-entrepreneurial (non-commercial) legal entity (NNLE)"
+ORGANIZATION_LEGAL_FORM_KA="არასამეწარმეო (არაკომერციული) იურიდიული პირი (ა(ა)იპ)"
+ORGANIZATION_REG_NUMBER=
+ORGANIZATION_ADDRESS_US=
+ORGANIZATION_ADDRESS_KA=
+# Optional — actual tax-exempt status and its legal basis; leave empty if none
+ORGANIZATION_TAX_STATUS_US=
+ORGANIZATION_TAX_STATUS_KA=
+# Optional — defaults to the site contact email (sites.email)
+ORGANIZATION_EMAIL=
+
 # Company info shown on custom order invoice PDFs (admin panel)
 COMPANY_LEGAL_NAME="climbing.ge"
 COMPANY_TAX_ID=
