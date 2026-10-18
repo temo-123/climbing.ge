@@ -10,14 +10,28 @@
                 {{this.$siteData.data.indoor_description}}
             </h2>
 
-            <div class="row" v-if="this.indoors.length > 0">
+            <div class="row" v-if="indoor_regions.length > 0">
+                <div class="container articles_filter_bar">
+                    <div class="col-md-6 col-sm-6">
+                        {{ $t('guide.article.region_filtr') }}
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <select class="form-control" v-model="filter_region" @change="on_filter_change()">
+                            <option value="All">{{ $t('all') }}</option>
+                            <option v-for="region in indoor_regions" :key="region.id" :value="region.id">{{ region.name }}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" v-if="filtered_indoors.length > 0">
                 <div v-if="indoor_article_loading">
                 <!--  -->
                 </div>
                 <div v-else>
                     <!-- <div> -->
                         <indoorCard 
-                            v-for="indoor in indoors"
+                            v-for="indoor in filtered_indoors"
                             :key='indoor.id'
                             :indoor="indoor"
                         />
@@ -54,8 +68,21 @@
         data: function () {
             return {
                 indoors: [],
-                indoor_article_loading: true
+                indoor_article_loading: true,
+                regions: [],
+                filter_region: this.$route.query.region ? Number(this.$route.query.region) : 'All',
             };
+        },
+        computed: {
+            // Only regions that have at least one indoor gym
+            indoor_regions() {
+                const ids = new Set(this.indoors.flatMap(indoor => (indoor.global_data.outdoor_region || []).map(region => region.id)))
+                return this.regions.filter(region => ids.has(region.id))
+            },
+            filtered_indoors() {
+                if (this.filter_region === 'All') return this.indoors
+                return this.indoors.filter(indoor => (indoor.global_data.outdoor_region || []).some(region => region.id === this.filter_region))
+            },
         },
         components: {
             indoorCard,
@@ -65,14 +92,31 @@
         },
         watch: {
             '$route' (to, from) {
+                // Region filter only changes the query — no refetch needed
+                if (to.path === from.path) return
                 this.get_indoors(),
                 window.scrollTo(0,0)
             }
         },
         mounted() {
             this.get_indoors()
+            this.get_regions()
         },
         methods: {
+            get_regions() {
+                axios
+                .get('/get_region/get_local_regions/' + localStorage.getItem('lang'))
+                .then(response => {
+                    this.regions = response.data
+                })
+                .catch(error => console.log(error))
+            },
+            on_filter_change() {
+                const query = { ...this.$route.query }
+                if (this.filter_region === 'All') delete query.region
+                else query.region = this.filter_region
+                this.$router.replace({ query })
+            },
             get_indoors(){
                 this.get_articles('indoor', localStorage.getItem('lang'),
                     (data) => {

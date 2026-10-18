@@ -99,8 +99,14 @@
             </div>
           </div>
           <div class="form-group">
-            <input type="checkbox" v-model="terms_of_use" name="terms_of_use" value="1">
-            I agree with the <span class="cursor_pointer text-warning" @click="open_term_of_use_modal()">terms of use</span>
+            <input type="checkbox" id="terms_of_use" v-model="terms_of_use" name="terms_of_use" value="1">
+            <label for="terms_of_use" style="display: inline; font-weight: normal;">{{ $t('auth.register.agree_with') }}</label>
+            <span class="cursor_pointer text-warning" @click="open_term_of_use_modal()">{{ $t('global.footer.terms_of_use') }}</span>
+          </div>
+          <div class="form-group">
+            <input type="checkbox" id="privacy_policy" v-model="privacy_policy" name="privacy_policy" value="1">
+            <label for="privacy_policy" style="display: inline; font-weight: normal;">{{ $t('auth.register.agree_with') }}</label>
+            <span class="cursor_pointer text-warning" @click="open_privacy_policy_modal()">{{ $t('global.footer.privacy_policy') }}</span>
           </div>
 
           <div class="alert alert-warning" v-if="captcha_error">
@@ -115,7 +121,7 @@
                   type="submit"
                   class="btn btn-default btn-send main-btn"
                   form="register_form"
-                  :disabled="!terms_of_use || captcha_error"
+                  :disabled="!terms_of_use || !privacy_policy || captcha_error"
                 >
                   Register
                 </button>
@@ -135,31 +141,44 @@
     </div>
 
     <stack-modal
-      :show="is_term_of_use_modal"
-      title="Terms of use"
+      v-model="is_term_of_use_modal"
+      :title="$t('global.footer.terms_of_use')"
+      size="lg"
       @close="close_term_of_use_modal()"
-      :modal-class="{ [ModalClass]: true }"
-      :saveButton="{ visible: true }"
+      :saveButton="{ visible: true, title: $t('auth.register.accept_btn') }"
+      @save="accept_term_of_use()"
       :cancelButton="{
-        title: 'Close',
+        title: $t('common.close'),
         btnClass: { 'btn btn-primary': true },
       }"
     >
-      <div class="model-body">
-        <div class="container">
-          <div class="row">
-            <span v-html="this.$siteData.data.terms_of_use"></span>
-          </div>
-        </div>
-      </div>
+      <legalDocument :slugs="['user_terms_of_use', 'terms_of_use']" />
+    </stack-modal>
+
+    <stack-modal
+      v-model="is_privacy_policy_modal"
+      :title="$t('global.footer.privacy_policy')"
+      size="lg"
+      @close="close_privacy_policy_modal()"
+      :saveButton="{ visible: true, title: $t('auth.register.accept_btn') }"
+      @save="accept_privacy_policy()"
+      :cancelButton="{
+        title: $t('common.close'),
+        btnClass: { 'btn btn-primary': true },
+      }"
+    >
+      <legalDocument :slugs="['user_privacy_policy', 'privacy_policy']" />
     </stack-modal>
 
   </div>
 </template>
 
 <script>
+import legalDocument from '../global_components/LegalDocumentComponent.vue'
+
 export default {
   name: 'Register page',
+  components: { legalDocument },
   data() {
     return {
       name: null,
@@ -179,6 +198,8 @@ export default {
       success_message: null,
       captcha_error: false,
       is_term_of_use_modal: false,
+      privacy_policy: false,
+      is_privacy_policy_modal: false,
     };
   },
   mounted() {
@@ -199,6 +220,20 @@ export default {
     },
     close_term_of_use_modal() {
       this.is_term_of_use_modal = false;
+    },
+    accept_term_of_use() {
+      this.terms_of_use = true;
+      this.is_term_of_use_modal = false;
+    },
+    open_privacy_policy_modal() {
+      this.is_privacy_policy_modal = true;
+    },
+    close_privacy_policy_modal() {
+      this.is_privacy_policy_modal = false;
+    },
+    accept_privacy_policy() {
+      this.privacy_policy = true;
+      this.is_privacy_policy_modal = false;
     },
     async get_recaptcha_token(action = 'register') {
         const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY

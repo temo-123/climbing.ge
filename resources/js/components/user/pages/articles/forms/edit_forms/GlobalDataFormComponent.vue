@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor'].includes(this.category)">
                         <label for="region" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.regions_label') }} </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.region_id" name="region" >
@@ -110,6 +110,16 @@
                                     <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
                                 </div>
                             </div>
+                            <div class="row" style="margin-top: 8px;">
+                                <div class="col-md-12">
+                                    <select class="form-control" v-model="data.work_status" name="work_status">
+                                        <option :value="null">{{ $t('admin.articles.global_form.work_status_normal') }}</option>
+                                        <option value="temporarily_closed">{{ $t('guide.article.work_status.temporarily_closed') }}</option>
+                                        <option value="sport_session_closed">{{ $t('guide.article.work_status.sport_session_closed') }}</option>
+                                        <option value="coming_soon">{{ $t('guide.article.work_status.coming_soon') }}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -170,7 +180,7 @@
             },
             category_prop: function(newVal, oldVal) { 
                 this.category = this.category_prop
-                if (this.category == 'outdoor') {
+                if (['outdoor', 'indoor'].includes(this.category)) {
                     this.get_regions()
                 }
                 if (this.category == 'mount_route') {
@@ -185,7 +195,7 @@
             // },
         },
         mounted() {
-            if (this.category == 'outdoor') {
+            if (['outdoor', 'indoor'].includes(this.category)) {
                 this.get_regions()
             }
             if (this.category == 'mount_route') {

@@ -27,6 +27,8 @@
             </div>
         </div>
 
+        <legalLinks />
+
         <messageComponent />
 
         <!-- summit.about.title already ends in "– Summit Climbing Georgia";
@@ -42,12 +44,14 @@
 <script>
     import metaData from '../items/MetaDataComponent.vue'
     import messageComponent from '../../global_components/MessageComponent.vue'
+    import legalLinks from '../../global_components/LegalLinksComponent.vue'
 
     import how_summit_works from '../items/how_summit_works.vue'
 
     export default {
         name: 'AboutUsPage',
-        components: { 
+        components: {
+            legalLinks,
             metaData, 
             messageComponent,
             how_summit_works

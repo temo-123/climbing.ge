@@ -252,7 +252,15 @@ Dual-flow — works for guests and logged-in users. If a valid Sanctum Bearer to
 Notably **not** client-submitted, despite what an earlier version of this doc implied:
 
 - **`is_gps_validated` is computed server-side**, never trusted from the client. The controller runs a Haversine great-circle distance between the submitted `user_latitude`/`user_longitude` and the summit's own stored `latitude`/`longitude`, and sets `is_gps_validated = true` only if the climber was within **20 meters** of the summit. A request that includes `is_gps_validated: true` directly is simply ignored — the field isn't even in the validation rules.
-- **`ascent_date`/`ascent_time` are always `now()`** (server clock) — not client-submitted at all, so there's no way to backdate an ascent through this endpoint.
+- **`ascent_date`/`ascent_time` are `now()`** (server clock) for a normal ascent — not client-submitted. The only way to backdate is an **archive ascent** (below).
+
+**Archive ascents** (`is_archive: 1`) — for an old ascent added afterwards ("Add archive ascent" button on `SummitPage.vue`, which opens `MakeAscentModal.vue` with `:archive="true"`):
+- **Logged-in only** — a guest request with `is_archive` gets `401 {"message":"Please log in to add an archive ascent."}` before validation.
+- `ascent_date` is **required** and must be `before_or_equal:today`; `ascent_time` (`H:i`) is optional (stored `NULL` if omitted).
+- Never GPS-validated: the Haversine check is skipped and `user_latitude`/`user_longitude` are stored `NULL`, whatever the client sends. The modal skips the geolocation step entirely.
+- reCAPTCHA, route (`article_id`/`other_route`), comment, photo and user linking work exactly like a normal ascent.
+- Shown with an **Archive** badge instead of the GPS badge (summit page table, ascent detail modals, `MyAscentsPage.vue`) and as a `bool` column in the user/admin ascent tables. `is_archive` is returned by every ascent list endpoint next to `is_gps_validated`.
+- Column added by `2026_10_18_100000_add_is_archive_to_summit_ascents_table.php`.
 - **`photo`** is a real file upload (`multipart/form-data`, `image|max:10240` = 10MB), stored via `ImageControllService::image_upload()` under `images/summit_ascents_img/`.
 - **`article_id`** (not "route selection" against the guide `Route` model directly, despite `SummitAscent` still having a legacy `route_id`/`route()` relation to `App\Models\Guide\Route` in its fillable/relations — that column is never actually written by `submit_ascent()` and appears to be dead/superseded) links the ascent to a guide-subdomain `Article` (validated `exists:articles,id`). If instead `other_route` (free text) is filled, a `SummitAscentRoute` row is still created but with `article_id = null`. The frontend's "route selection" dropdown described further down populates `article_id`.
 - **reCAPTCHA v3**: if `App\Services\ReCaptchaV3Service::isConfigured()` (i.e. the relevant `GOOGLE_CAPTCHA_V3_*` env vars are set for this flow — see [AUTH.md](AUTH.md)), a `recaptcha_token` is required and verified server-side (`verifySmart()`) before anything is saved; the request is rejected with 422 if it fails. If not configured, no reCAPTCHA check happens at all (dev/staging default).
@@ -373,10 +381,11 @@ Also carries a real (non-persisted) PHP property `public $notifyMode = 'none'` �
 | `other_route` | string\|null | Fillable but, like `route_id`, not actually populated by `submit_ascent()` — the real free-text route name lives on `SummitAscentRoute.other_route_name` instead |
 | `comment` | text\|null | Notes |
 | `photo` | string\|null | Photo path, under `images/summit_ascents_img/` |
-| `is_gps_validated` | boolean | Computed server-side (Haversine, ≤20m from the summit), never client-trusted |
+| `is_gps_validated` | boolean | Computed server-side (Haversine, ≤20m from the summit), never client-trusted; always `false` for archive ascents |
+| `is_archive` | boolean | Old ascent added afterwards by a logged-in user with their own date (default `false`) |
 | `user_latitude` / `user_longitude` | float\|null | The climber's submitted GPS position at ascent time (distinct from `summits.latitude`/`longitude`, the summit's own fixed position) |
-| `ascent_date` | date | Always `now()` at submission time, not client-submitted |
-| `ascent_time` | string | Always `now()->format('H:i')` at submission time |
+| `ascent_date` | date | `now()` at submission time; user-chosen (≤ today) only for archive ascents |
+| `ascent_time` | string\|null | `now()->format('H:i')` at submission time; optional user-chosen time for archive ascents |
 
 **Relationships:** `summit()` `BelongsTo(Summit)`, `users()` `HasMany(SummitAscentUser)` (0 or 1 rows in practice — see user-matching logic above, but modeled as hasMany not hasOne), `ascentRoutes()` `HasMany(SummitAscentRoute)` (0 or 1 rows in practice too — one ascent has at most one route entry, `submit_ascent()` only ever creates a single `SummitAscentRoute` per ascent), `route()` `BelongsTo(Route)` (see the dead-column note on `route_id` above).
 
@@ -485,7 +494,8 @@ comment, photo (camera capture on mobile), reCAPTCHA v3 token (if configured)
 POST /api/summit/ascent/:id
   - name/surname/email overridden from the authenticated user if a Sanctum token is present
   - is_gps_validated recomputed server-side (Haversine ≤ 20m), never trusts the client
-  - ascent_date/ascent_time always server clock (now()), never client-submitted
+  - ascent_date/ascent_time server clock (now()) — except archive ascents (logged-in only,
+    user-chosen past date, no GPS validation)
   - reCAPTCHA re-verified server-side if configured
          ↓
 SummitAscent record created

@@ -31,10 +31,11 @@
                         <div v-for="(review, index) in safeReviews" :key="review.id || index" class="review-item">
                             <div class="review-header">
                                 <h3 class="reviewer-name">
-                                    <router-link v-if="review.user.id" :to="{ name: 'climberProfile', params: { id: review.user.id } }">
+                                    <router-link v-if="review.user?.id" :to="{ name: 'climberProfile', params: { id: review.user.id } }">
                                         {{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}
                                     </router-link>
-                                    <span v-else>{{ review.user.name || 'Anonymous' }} {{ review.user.surname || '' }}</span>
+                                    <!-- user is null when the author deleted their account but kept their reviews -->
+                                <span v-else>{{ review.user ? (review.user.name || 'Anonymous') + ' ' + (review.user.surname || '') : $t('guide.route.deleted_user') }}</span>
                                 </h3>
                                 <starsReiting
                                     :reviews_count_prop="1"
@@ -74,7 +75,7 @@ export default {
     },
     computed: {
         safeReviews() {
-            return this.reviews.filter(review => review && review.user);
+            return this.reviews.filter(review => review);
         }
     },
     methods: {

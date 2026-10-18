@@ -11,7 +11,9 @@
                             
                             <hr>
 
-                            <h2>{{ $t('shop.seller.seller_contact') }}</h2>
+                            <h2>{{ $t('guide.about.organization_contacts') }}</h2>
+                            <!-- Legal name, form, identification code, address (site data; empty until filled in admin) -->
+                            <div v-if="this.$siteData.data.organization_legal_info" v-html="this.$siteData.data.organization_legal_info"></div>
                             <p v-if="this.$globalSiteData.data.email">{{ $t('shop.seller.email') }} - {{ this.$globalSiteData.data.email }}</p>
                             <p v-if="this.$globalSiteData.data.number">{{ $t('common.phone_number') }} - {{ this.$globalSiteData.data.number }}</p>
 
@@ -46,6 +48,8 @@
 
         <suportLocalBisnesIndexComponent />
 
+        <legalLinks />
+
         <messageComponent />
 
         <partnersComponent />
@@ -62,6 +66,7 @@
 <script>
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent'
+    import legalLinks from '../../global_components/LegalLinksComponent.vue'
     import metaData from '../items/MetaDataComponent'
     import RoutesAutersModal from '../items/climbing_routes/items/modals/statistic_modals/RoutesAutersListModal.vue'
     
@@ -72,6 +77,7 @@
 
     export default {
         components: {
+            legalLinks,
             metaData,
             messageComponent,
             servicesListComponent,

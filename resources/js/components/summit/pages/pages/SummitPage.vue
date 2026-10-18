@@ -70,6 +70,9 @@
                         <button @click="openAscentModal" class="btn btn-success btn-lg btn-send main-btn">
                             <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
                         </button>
+                        <button @click="openArchiveAscentModal" class="btn btn-default btn-lg" style="margin-left: 8px">
+                            <i class="fa fa-archive"></i> {{ $t('summit.summit_page.add_archive_ascent') }}
+                        </button>
                     </div>
 
                 </div>
@@ -219,7 +222,10 @@
                                                     <span v-else class="text-muted">—</span>
                                                 </td>
                                                 <td>
-                                                    <span v-if="a.is_gps_validated" class="label label-success">
+                                                    <span v-if="a.is_archive" class="label label-default">
+                                                        <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+                                                    </span>
+                                                    <span v-else-if="a.is_gps_validated" class="label label-success">
                                                         <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
                                                     </span>
                                                     <span v-else class="text-muted">—</span>
@@ -298,6 +304,7 @@
         <make-ascent-modal
             v-model="showAscentModal"
             :summit="summit"
+            :archive="archiveAscent"
             @submitted="fetchAscents"
         />
 
@@ -363,6 +370,7 @@ export default {
             loadingAscents: false,
             routes: [],
             showAscentModal: false,
+            archiveAscent: false,
             selectedAscent: null,
             showAscentDetail: false,
             filterYear: null,
@@ -468,6 +476,7 @@ export default {
     watch: {
         '$route.query.make_ascent'(val) {
             if (val !== undefined && this.summit) {
+                this.archiveAscent = false
                 this.showAscentModal = true
             }
         },
@@ -512,7 +521,12 @@ export default {
                 .then(r => { this.routes = r.data || [] })
                 .catch(() => {})
         },
+        openArchiveAscentModal() {
+            this.archiveAscent = true
+            this.showAscentModal = true
+        },
         openAscentModal() {
+            this.archiveAscent = false
             this.showAscentModal = true
             if (!('make_ascent' in this.$route.query)) {
                 this.$router.replace({ query: { ...this.$route.query, make_ascent: this.summit.id } })

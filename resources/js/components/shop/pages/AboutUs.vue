@@ -23,6 +23,8 @@
 
         <servicesListComponent />
         
+        <legalLinks />
+
         <messageComponent />
 
         <metaData 
@@ -36,10 +38,12 @@
 <script>
     import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import messageComponent from '../../global_components/MessageComponent.vue'
+    import legalLinks from '../../global_components/LegalLinksComponent.vue'
     
     import metaData from '../items/MetaDataComponent'
     export default {
         components: {
+            legalLinks,
             metaData,
             messageComponent,
             servicesListComponent,

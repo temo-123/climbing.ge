@@ -359,11 +359,13 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
     const userPublicRoutes = [
         'login', 'register', 'forget_pass', 'reset_pass',
         'callback', 'verify', 'create_pass', 'delete_account',
+        'user_terms', 'user_privacy',
     ];
     // Accessible whether logged in or not — must NOT bounce an authenticated
     // user away, since the verification link is normally opened by a user
     // who is already logged in (registration auto-logs them in).
-    const authNeutralRoutes = ['verify', 'delete_account'];
+    // forget_pass: the delete-account page links here for users who never set a password
+    const authNeutralRoutes = ['verify', 'delete_account', 'user_terms', 'user_privacy', 'forget_pass'];
 
     let authVerified = false;
 

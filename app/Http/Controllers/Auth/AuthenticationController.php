@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\Blog\Post;
-use App\Models\Social_account;
 use App\Services\AccountDeletionService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -86,15 +85,16 @@ class AuthenticationController extends Controller
     {
         $user = $request->user();
 
-        // Social signups get a random password they never see — the token alone proves identity
-        $requires_password = !Social_account::where('user_id', $user->id)->exists();
-
+        // Password is always required — social signups set one via create_password
+        // (or "forgot password" if they skipped it)
         $request->validate([
             'confirm'  => 'required|in:DELETE',
-            'password' => $requires_password ? 'required|string' : 'nullable',
+            'password' => 'required|string',
+            'keep'     => 'nullable|array',
+            'keep.*'   => 'in:' . implode(',', AccountDeletionService::KEEPABLE),
         ]);
 
-        if ($requires_password && !Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $user->password)) {
             return response()->json([
                 'message' => 'Validation failed',
                 'errors'  => ['password' => ['The password is incorrect.']],
@@ -106,7 +106,7 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'This account owns blog posts. Please contact support to delete it.'], 409);
         }
 
-        AccountDeletionService::delete($user);
+        AccountDeletionService::delete($user, $request->input('keep', []));
 
         return response()->json(['message' => 'Account deleted']);
     }

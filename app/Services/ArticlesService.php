@@ -125,7 +125,20 @@ class ArticlesService extends LocaleContentService
         $locale_article = (new static)->get_locale_content_in_page($article, Locale_article::class, '_article_id', $locale);
 
         $general_data = GeneralInfoService::getGeneralInfoForArticle($article, $locale);
-        
+
+        // Page "updated" date = latest edit across the general, us and ka rows;
+        // "created" stays the general article's own created_at
+        $locale_rows = Locale_article::whereIn('id', [$article->us_article_id, $article->ka_article_id]);
+        $last_update = (clone $locale_rows)->max('updated_at');
+        $first_create = (clone $locale_rows)->min('created_at');
+
+        if ($last_update && (!$article->updated_at || Carbon::parse($last_update)->gt($article->updated_at))) {
+            $locale_article['global_data']->updated_at = Carbon::parse($last_update);
+        }
+        if (!$article->created_at && $first_create) {
+            $locale_article['global_data']->created_at = Carbon::parse($first_create);
+        }
+
         $art_array = [
             "locale_data"=>$locale_article['locale_data'], 
             "global_data"=>$locale_article['global_data'], 

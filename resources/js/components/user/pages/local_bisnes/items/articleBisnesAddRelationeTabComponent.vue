@@ -51,20 +51,19 @@
                     <thead>
                         <tr>
                             <th>{{ $t('admin.comments.col_article') }}</th>
-                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
-                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
+                            <th v-for="n in maxRelations" :key="'slot_' + n">{{ $t('admin.local_business.relation_slot_label', { n: n }) }}</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="article in categoryArticlesOverview" :key="article.article_id">
                             <td>{{ article.article_title }}</td>
-                            <td v-for="slot in [0, 1]" :key="slot">
+                            <td v-for="(n, slot) in maxRelations" :key="slot">
                                 <span v-if="relationAt(article.related_businesses, slot)" class="label label-default">
                                     {{ relationAt(article.related_businesses, slot).bisnes_title }}
                                     <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(article.related_businesses, slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
                                 </span>
                                 <span v-else class="text-muted">&mdash;</span>
-                                <div v-if="slot === 1 && article.related_businesses.length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                <div v-if="slot === maxRelations - 1 && article.related_businesses.length > maxRelations" class="small text-danger" style="margin-top: 4px;">
                                     {{ $t('admin.local_business.extra_relations_note', { count: article.related_businesses.length - maxRelations }) }}
                                     <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(article.related_businesses).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
                                 </div>
@@ -90,8 +89,7 @@
                         <tr>
                             <th>{{ $t('admin.comments.col_article') }}</th>
                             <th>{{ $t('common.category') }}</th>
-                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 1 }) }}</th>
-                            <th>{{ $t('admin.local_business.relation_slot_label', { n: 2 }) }}</th>
+                            <th v-for="n in maxRelations" :key="'slot_' + n">{{ $t('admin.local_business.relation_slot_label', { n: n }) }}</th>
                             <th>{{ $t('admin.local_business.col_delete_item') }}</th>
                         </tr>
                     </thead>
@@ -106,13 +104,13 @@
                                 </select>
                             </td>
                             <td>{{ get_article_category(article.article_id) }}</td>
-                            <td v-for="slot in [0, 1]" :key="slot">
+                            <td v-for="(n, slot) in maxRelations" :key="slot">
                                 <span v-if="article.article_id && relationAt(getRelatedBusinesses(article.article_id), slot)" class="label label-default">
                                     {{ relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_title }}
                                     <a href="#" @click.prevent="deleteRelation(article.article_id, relationAt(getRelatedBusinesses(article.article_id), slot).bisnes_id)" :title="$t('admin.local_business.delete_relation_btn')" style="color: inherit; margin-left: 4px;">&times;</a>
                                 </span>
                                 <span v-else class="text-muted">&mdash;</span>
-                                <div v-if="slot === 1 && article.article_id && getRelatedBusinesses(article.article_id).length > maxRelations" class="small text-danger" style="margin-top: 4px;">
+                                <div v-if="slot === maxRelations - 1 && article.article_id && getRelatedBusinesses(article.article_id).length > maxRelations" class="small text-danger" style="margin-top: 4px;">
                                     {{ $t('admin.local_business.extra_relations_note', { count: getRelatedBusinesses(article.article_id).length - maxRelations }) }}
                                     <a href="#" @click.prevent="deleteRelation(article.article_id, lastRelation(getRelatedBusinesses(article.article_id)).bisnes_id)">{{ $t('admin.local_business.delete_last_relation_btn') }}</a>
                                 </div>
@@ -153,7 +151,7 @@
 
                 // Required for validation
                 article_categories: [],
-                maxRelations: 2,
+                maxRelations: 4,
 
                 // Relation overview (shows ALL current relations for the relevant articles,
                 // not just conflicts)

@@ -9,7 +9,8 @@ class SportClimbingRoutesService
 {
     public static function get_routes_quantity($request)
     {
-        $article_sectors = Article::where('id',strip_tags($request->article_id))->first()->sectors;
+        // Unpublished sectors are hidden from guests, so their routes/mtps/pitches must not be counted either
+        $article_sectors = Article::where('id',strip_tags($request->article_id))->first()->sectors()->where('published', '=', 1)->get();
 
         $sport_routes = [];
         $boulder_routes = [];

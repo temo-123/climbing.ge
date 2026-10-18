@@ -63,7 +63,10 @@
                                     <span v-else class="text-muted">—</span>
                                 </td>
                                 <td>
-                                    <span v-if="ascent.is_gps_validated" class="badge badge-success">
+                                    <span v-if="ascent.is_archive" class="badge badge-secondary">
+                                        <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+                                    </span>
+                                    <span v-else-if="ascent.is_gps_validated" class="badge badge-success">
                                         <i class="fa fa-check"></i> GPS
                                     </span>
                                     <span v-else class="badge badge-light text-muted">—</span>

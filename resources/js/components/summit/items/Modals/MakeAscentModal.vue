@@ -1,7 +1,7 @@
 <template>
   <StackModal
     :modelValue="modelValue"
-    :title="summit ? ($t('summit.summit_page.record_ascent') + ' — ' + summit.title) : $t('summit.summit_page.record_ascent')"
+    :title="(archive ? $t('summit.summit_page.add_archive_ascent') : $t('summit.summit_page.record_ascent')) + (summit ? ' — ' + summit.title : '')"
     size="lg"
     :saveButton="{ visible: false }"
     :cancelButton="{ visible: false }"
@@ -18,7 +18,10 @@
       </p>
       <div class="d-inline-block text-left mb-4 px-4 py-3 border rounded" style="min-width: 220px;">
         <div class="mb-2">
-          <span v-if="submitResult && submitResult.is_gps_validated" class="badge badge-success">
+          <span v-if="archive" class="badge badge-secondary">
+            <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+          </span>
+          <span v-else-if="submitResult && submitResult.is_gps_validated" class="badge badge-success">
             <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
           </span>
           <span v-else class="badge badge-warning">
@@ -48,7 +51,7 @@
            class="alert alert-light border mb-4 d-flex align-items-center justify-content-between flex-wrap">
         <span class="text-muted">
           <i class="fa fa-user-circle mr-1"></i>
-          Log in to record this ascent to your account.
+          {{ archive ? $t('summit.ascent_page.archive_login_required') : 'Log in to record this ascent to your account.' }}
         </span>
         <div class="mt-2 mt-sm-0">
           <button type="button" class="btn btn-primary btn-sm" @click="openLogin">
@@ -57,8 +60,8 @@
         </div>
       </div>
 
-      <!-- GPS status bar -->
-      <div class="mb-4">
+      <!-- GPS status bar (not for archive ascents — the climber isn't on the summit now) -->
+      <div class="mb-4" v-if="!archive">
 
         <!-- Checking -->
         <div v-if="checkingLocation" class="d-flex align-items-center text-muted py-2">
@@ -127,6 +130,18 @@
             <div>
               <strong>{{ authUser.name }} {{ authUser.surname }}</strong>
               <div v-if="authUser.email" class="small text-muted">{{ authUser.email }}</div>
+            </div>
+          </div>
+
+          <!-- Archive ascent date/time -->
+          <div v-if="archive" class="form-row">
+            <div class="form-group col-md-6">
+              <label>{{ $t('summit.ascent_page.archive_date') }} <span class="text-danger">*</span></label>
+              <input type="date" v-model="form.ascent_date" class="form-control" :max="today" required />
+            </div>
+            <div class="form-group col-md-6">
+              <label>{{ $t('summit.ascent_page.archive_time') }} <span class="text-muted small">({{ $t('summit.ascent_page.optional') }})</span></label>
+              <input type="time" v-model="form.ascent_time" class="form-control" />
             </div>
           </div>
 
@@ -230,6 +245,11 @@ export default {
       type: Object,
       default: null,
     },
+    // Old ascent added afterwards with a chosen date — logged-in users only, no GPS check
+    archive: {
+      type: Boolean,
+      default: false,
+    },
   },
   emits: ['update:modelValue', 'submitted'],
   data() {
@@ -254,6 +274,8 @@ export default {
         other_route: '',
         comment: '',
         photo: null,
+        ascent_date: '',
+        ascent_time: '',
       },
       showOtherRoute: false,
       photoPreview: null,
@@ -267,6 +289,7 @@ export default {
   },
   computed: {
     showForm() {
+      if (this.archive) return !this.authLoading && this.isLoggedIn
       return this.gpsChecked || this.skipGps || (this.gpsError !== null && !this.checkingLocation)
     },
     isLoggedIn() {
@@ -274,6 +297,9 @@ export default {
     },
     authUser() {
       return useAuthStore().user
+    },
+    today() {
+      return new Date().toISOString().slice(0, 10)
     },
   },
   watch: {
@@ -304,7 +330,9 @@ export default {
       })
       if (this.summit) {
         this.loadRoutes()
-        if (this.summit.latitude && this.summit.longitude) {
+        if (this.archive) {
+          this.skipGps = true
+        } else if (this.summit.latitude && this.summit.longitude) {
           this.checkLocation()
         } else {
           this.skipGps = true
@@ -323,7 +351,7 @@ export default {
       this.userLongitude = null
       this.routes = []
       this.selectedRoute = null
-      this.form = { name: '', surname: '', email: '', article_id: null, other_route: '', comment: '', photo: null }
+      this.form = { name: '', surname: '', email: '', article_id: null, other_route: '', comment: '', photo: null, ascent_date: '', ascent_time: '' }
       this.showOtherRoute = false
       this.photoPreview = null
       this.compressingPhoto = false
@@ -466,6 +494,11 @@ export default {
       if (this.showOtherRoute && this.form.other_route) formData.append('other_route', this.form.other_route)
       if (this.form.comment) formData.append('comment', this.form.comment)
       if (this.form.photo) formData.append('photo', this.form.photo)
+      if (this.archive) {
+        formData.append('is_archive', 1)
+        formData.append('ascent_date', this.form.ascent_date)
+        if (this.form.ascent_time) formData.append('ascent_time', this.form.ascent_time)
+      }
       if (this.userLatitude !== null) formData.append('user_latitude', this.userLatitude)
       if (this.userLongitude !== null) formData.append('user_longitude', this.userLongitude)
       formData.append('is_gps_validated', this.gpsValidated ? 1 : 0)
@@ -488,7 +521,7 @@ export default {
             this.$gtag.event('submit_ascent', {
               content_type: 'summit',
               item_id: String(this.summit.id),
-              method: this.isLoggedIn ? 'logged_in' : 'guest',
+              method: this.archive ? 'archive' : (this.isLoggedIn ? 'logged_in' : 'guest'),
             })
           }
         })

@@ -160,7 +160,7 @@ class ArticleController extends Controller
             }
         }
 
-        if($data['global_article']["category"] == 'outdoor'){
+        if(in_array($data['global_article']["category"], ['outdoor', 'indoor'])){
             if(isset($data['global_article']['region_id'])){
                 $article_region = Article_region::where('article_id', '=', $actyve_id)->first();
                 if($article_region){
@@ -328,7 +328,7 @@ class ArticleController extends Controller
             // "ru_article" => $ru_article,
         ];
         
-        if($global_article['category'] == 'outdoor'){
+        if(in_array($global_article['category'], ['outdoor', 'indoor'])){
             if(isset($global_article->outdoor_region[0]->id)){
                 $data['global_article']['region_id'] = $global_article->outdoor_region[0]->id;
             }

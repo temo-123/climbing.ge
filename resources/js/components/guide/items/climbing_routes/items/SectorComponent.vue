@@ -279,6 +279,18 @@
             ref="open_mtp_modal"
             @show_mtp_review_modal="show_mtp_review_modal"
             @show_mtp_all_review_modal="show_mtp_all_review_modal"
+            @show_mtp_ascent_modal="show_mtp_ascent_modal"
+            @show_mtp_ascents_list_modal="show_mtp_ascents_list_modal"
+        />
+
+        <create_mtp_ascent_modal
+            ref="open_mtp_ascent_modal"
+            @back_mtp_modal="show_mtp_madel"
+        />
+
+        <mtp_ascents_list_modal
+            ref="show_mtp_ascents_list_modal"
+            @back_mtp_modal="show_mtp_madel"
         />
 
         <create_mtp_review_modal
@@ -308,6 +320,8 @@ import route_all_reviews_modal from "./modals/feedbacks/RouteAllReviewsModal.vue
 import mtp_modal from "./modals/MTPModalComponent.vue";
 import create_mtp_review_modal from "./modals/feedbacks/CreateMtpReviewModal.vue";
 import mtp_all_reviews_modal from "./modals/feedbacks/MtpAllReviewsModal.vue";
+import create_mtp_ascent_modal from "./modals/ascents/CreateMtpAscentModal.vue";
+import mtp_ascents_list_modal from "./modals/ascents/MtpAscentsListModal.vue";
 import sector_canvas_modal from "./modals/SectorCanvasModalComponent.vue";
 import starsReiting from '../../../../global_components/StarReitingShowComponent.vue';
 import SectorIconTip from './SectorIconTip.vue';
@@ -327,6 +341,8 @@ export default {
         route_all_reviews_modal,
         create_mtp_review_modal,
         mtp_all_reviews_modal,
+        create_mtp_ascent_modal,
+        mtp_ascents_list_modal,
         sector_canvas_modal,
         starsReiting,
         SectorIconTip,
@@ -401,6 +417,12 @@ export default {
         },
         show_mtp_all_review_modal(mtp_id) {
             this.$refs.show_mtp_all_review_modal.show_mtp_all_review_modal(mtp_id)
+        },
+        show_mtp_ascent_modal(mtp_id) {
+            this.$refs.open_mtp_ascent_modal.show_mtp_ascent_modal(mtp_id)
+        },
+        show_mtp_ascents_list_modal(mtp_id) {
+            this.$refs.show_mtp_ascents_list_modal.show_mtp_ascents_list_modal(mtp_id)
         },
         show_sector_canvas_modal() {
             this.$refs.sector_canvas_modal.show_sector_modal(this.sector)

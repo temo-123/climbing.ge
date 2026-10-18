@@ -23,6 +23,10 @@ export default {
                             name: this.$t('user.nav.favorites_interested_events'),
                             route: "/interested_events"
                         },
+                        {
+                            name: this.$t('user.nav.my_mtp_ascents'),
+                            route: "/my_mtp_ascents"
+                        },
                     ],
                 },
                 {
@@ -48,6 +52,13 @@ export default {
                             route: "/routes_and_sectors",
                             permissions: [
                                 ['show', 'route'],
+                            ]
+                        },
+                        {
+                            name: this.$t('user.nav.guide_mtp_ascents'),
+                            route: "/mtp_ascents",
+                            permissions: [
+                                ['show', 'mtp'],
                             ]
                         },
                         {

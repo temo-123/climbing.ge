@@ -162,8 +162,16 @@ class SummitPublicController extends Controller
         $summit = Summit::findOrFail($summit_id);
 
         $authUser = auth('sanctum')->user();
+        $isArchive = $request->boolean('is_archive');
+
+        // Archive (backdated) ascents only for logged-in users
+        if ($isArchive && !$authUser) {
+            return response()->json(['message' => 'Please log in to add an archive ascent.'], 401);
+        }
 
         $request->validate([
+            'ascent_date'   => $isArchive ? 'required|date|before_or_equal:today' : 'nullable',
+            'ascent_time'   => 'nullable|date_format:H:i',
             'name'          => $authUser ? 'nullable|string|max:100' : 'required|string|max:100',
             'surname'       => $authUser ? 'nullable|string|max:100' : 'required|string|max:100',
             'email'         => 'nullable|email|max:255',
@@ -180,6 +188,7 @@ class SummitPublicController extends Controller
         // GPS validation via Haversine
         $isGpsValidated = false;
         if (
+            !$isArchive &&
             $request->user_latitude !== null &&
             $request->user_longitude !== null &&
             $summit->latitude !== null &&
@@ -208,10 +217,11 @@ class SummitPublicController extends Controller
             'comment'         => $request->comment,
             'photo'           => $photoPath,
             'is_gps_validated'=> $isGpsValidated,
-            'user_latitude'   => $request->user_latitude,
-            'user_longitude'  => $request->user_longitude,
-            'ascent_date'     => now()->toDateString(),
-            'ascent_time'     => now()->format('H:i'),
+            'is_archive'      => $isArchive,
+            'user_latitude'   => $isArchive ? null : $request->user_latitude,
+            'user_longitude'  => $isArchive ? null : $request->user_longitude,
+            'ascent_date'     => $isArchive ? $request->ascent_date : now()->toDateString(),
+            'ascent_time'     => $isArchive ? $request->ascent_time : now()->format('H:i'),
         ]);
 
         // Create ascent route record
@@ -297,6 +307,7 @@ class SummitPublicController extends Controller
                     'comment'           => $ascent->comment,
                     'photo'             => $ascent->photo,
                     'is_gps_validated'  => $ascent->is_gps_validated,
+                    'is_archive'    => $ascent->is_archive,
                     'ascent_date'       => $ascent->ascent_date,
                     'ascent_time'       => $ascent->ascent_time,
                     'route_name'        => $routeName,
@@ -344,6 +355,7 @@ class SummitPublicController extends Controller
                     'comment'          => $ascent->comment,
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
+                    'is_archive'   => $ascent->is_archive,
                     'ascent_date'      => $ascent->ascent_date,
                     'ascent_time'      => $ascent->ascent_time,
                     'route_name'       => $routeName,

@@ -231,6 +231,14 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         });
     });
 
+    Route::controller(MtpAscentController::class)->prefix('set_mtp_ascent')->group(function () {
+        Route::post('/create_mtp_ascent/{mtp_id}', 'create_mtp_ascent');
+        Route::get('/get_my_mtp_ascents', 'get_my_mtp_ascents');
+        Route::delete('/del_my_mtp_ascent/{ascent_id}', 'del_my_mtp_ascent');
+        Route::get('/get_all_mtp_ascents_admin', 'get_all_mtp_ascents_admin');
+        Route::delete('/del_mtp_ascent_admin/{ascent_id}', 'del_mtp_ascent_admin');
+    });
+
     Route::controller(MtpReitingController::class)->prefix('set_mtp_review')->group(function () {
         Route::get('/get_all_mtp_reviews_admin', 'get_all_mtp_reviews_admin');
         Route::get('/get_actyve_mtp_review/{review_id}', 'get_actyve_mtp_review');

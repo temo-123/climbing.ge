@@ -2,6 +2,9 @@
     <div class="login mt-5">
         <div class="card">
             <div class="card-header">
+                <button type="button" class="btn btn-primary btn-sm float-right" @click="go_back()">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.delete_account.back_btn') }}
+                </button>
                 <h1>{{ $t('user.delete_account.title') }}</h1>
             </div>
 
@@ -41,21 +44,33 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="password">{{ $t('user.delete_account.password_label') }}</label>
-                        <input type="password" class="form-control" id="password" v-model="password" autocomplete="current-password" />
-                        <small class="form-text text-muted">{{ $t('user.delete_account.password_hint') }}</small>
+                        <label>{{ $t('user.delete_account.content_title') }}</label>
+                        <div v-for="item in keepable" :key="item" class="form-check">
+                            <input type="checkbox" class="form-check-input" :id="'delete_' + item" :value="item" v-model="delete_content" />
+                            <label class="form-check-label" :for="'delete_' + item">{{ $t('user.delete_account.delete_' + item) }}</label>
+                        </div>
+                        <small class="form-text text-muted">{{ $t('user.delete_account.content_hint') }}</small>
                     </div>
 
-                    <div class="form-group mt-2">
-                        <label for="confirm">{{ $t('user.delete_account.confirm_label') }}</label>
-                        <input type="text" class="form-control" id="confirm" v-model="confirm" placeholder="DELETE" required />
+                    <div class="form-group">
+                        <label for="password">{{ $t('user.delete_account.password_label') }} <span class="text-danger">*</span></label>
+                        <input type="password" class="form-control" id="password" v-model="password" autocomplete="current-password" required />
+                        <small class="form-text text-muted">
+                            {{ $t('user.delete_account.password_hint') }}
+                            <router-link :to="{ name: 'forget_pass' }">{{ $t('user.delete_account.forgot_password') }}</router-link>
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_text">{{ $t('user.delete_account.confirm_label') }} <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="confirm_text" v-model="confirm_text" placeholder="DELETE" autocomplete="off" required />
                     </div>
 
                     <div class="alert alert-danger mt-2" role="alert" v-if="error.length">
                         {{ error }}
                     </div>
 
-                    <button type="submit" form="delete_account" class="btn btn-danger mt-2" :disabled="is_deleting || confirm !== 'DELETE'">
+                    <button type="submit" form="delete_account" class="btn btn-danger mt-2" :disabled="is_deleting || !password || confirm_text !== 'DELETE'">
                         {{ is_deleting ? $t('user.delete_account.deleting') : $t('user.delete_account.delete_btn') }}
                     </button>
                 </form>
@@ -71,18 +86,33 @@
             return {
                 is_logged_in: !!localStorage.getItem('auth_token'),
                 password: '',
-                confirm: '',
+                confirm_text: '',
+                // AccountDeletionService::KEEPABLE — checked = delete, unchecked = keep anonymized
+                keepable: ['ascents', 'reviews', 'product_feedbacks', 'comments'],
+                delete_content: ['ascents', 'reviews', 'product_feedbacks', 'comments'],
                 error: '',
                 is_deleting: false,
                 deleted: false,
             };
         },
+        mounted() {
+            // This page has no left menu — drop the sidebar margin left over from dashboard pages
+            document.body.classList.remove('sidebar-open')
+        },
         methods: {
+            go_back() {
+                if (window.history.length > 1) this.$router.back()
+                else this.$router.push({ name: this.is_logged_in ? 'home' : 'login' })
+            },
             on_submit() {
                 this.is_deleting = true
                 this.error = ''
                 axios
-                .post('account/delete', { confirm: this.confirm, password: this.password || null })
+                .post('account/delete', {
+                    confirm: this.confirm_text,
+                    password: this.password,
+                    keep: this.keepable.filter(item => !this.delete_content.includes(item)),
+                })
                 .then(() => {
                     localStorage.removeItem('auth_token')
                     localStorage.removeItem('x_xsrf_token')

@@ -129,6 +129,15 @@ articles
 
 ![Article structure](DEMO_IMAGES/Guidbook/Article_structure.svg)
 
+**Created / updated dates on the article page** (`ArticlesService::get_locale_article_in_page`, used by every `get_locale_article_on_page` call): "Created" is the general `articles.created_at` (falls back to the earliest `us`/`ka` `locale_articles.created_at` when the general row has none). "Updated" is the **latest** `updated_at` across the general row and both locale rows — editing only the Georgian text still moves the date. The values are overridden on the returned model only, never saved.
+
+**Indoor gyms** (`category = 'indoor'`):
+- `open_time` / `closed_time` (`time`) — working hours shown on `IndoorCardComponent.vue` with a live open/closed hint. `Article::$fillable` used to list `open_timen` (typo), so **editing** a gym never saved `open_time` — fixed October 2026.
+- `work_status` (`string`, nullable) — overrides the hours on the card: `temporarily_closed`, `sport_session_closed`, `coming_soon` (`null` = normal hours). Set in the admin form's working-time block; labels in `guide.article.work_status.*`. Migration `2026_10_18_110000_add_work_status_to_articles_table.php`.
+- **Region** — same `article_region` relation outdoor uses (`Article::outdoor_region()`), selected in the add/edit global form and saved by `Admin\Guide\ArticleController::description_img()` for both `outdoor` and `indoor`. The public indoor list (`IndoorListComponent.vue`) gets each gym's region ids (`article_list()` eager-loads `outdoor_region` for `indoor` only) and filters client-side via a region select that lists only regions with at least one gym (`?region=<id>` in the URL).
+
+The add form used to keep `region_id` outside the emitted `data` object, so **creating** an outdoor article never saved its region. It now lives in `data`; `LocaleContentControllService::addGlobalArticle()` filters its raw `insertGetId()` to real table columns so form-only keys like `region_id` can't break the insert. (`mount_id` on the add form still has the old problem.)
+
 ### General Info
 
 Reusable info blocks (contact details, warnings) that can be embedded in multiple articles.
@@ -156,6 +165,10 @@ article (outdoor)
 ![Climbing spot diagram](DEMO_IMAGES/Guidbook/Climbing_spot_overview.svg)  
 ![Sector images](DEMO_IMAGES/Guidbook/Sector_images_structure.svg)  
 ![Sector local images](DEMO_IMAGES/Guidbook/Sector_local_images_structure.svg)
+
+**Route quantity block** (`GET get_route/get_routes_quantity/{article_id}` → `SportClimbingRoutesService::get_routes_quantity`) counts only **published** sectors. Routes, MTPs and pitches have no publish flag of their own, so they're hidden with their sector — same rule as `get_sector_and_routes` and the outdoor list badges (`ArticlesService::get_route_quantity_for_outdoors(..., true)`).
+
+**Sector order** (`sectors.num`) is edited in the admin "Spot Sectors" modal (`ArticleSectorSequenceModalComponent.vue`, opened from the article list). `GET get_sector/get_spot_sectors_data_for_model/{article_id}` returns `{ groups: [{ image, sectors }], ungrouped: [] }` — one group per sector local image, in the same order and membership the public page uses (`SectorController::get_sector_and_routes`: a group's position is decided by its first sector by `num`). Sectors are dragged inside their own group; whole groups move with the up/down buttons; saving flattens all groups (then ungrouped sectors) into `POST set_sector/save_sector_sequence`, which renumbers `num` 1..n. `Sector_local_image::sectors()` / `allSectors()` are ordered by `num` — before October 2026 they weren't, so grouped sectors on the public page ignored the saved order.
 
 ### Routes
 
@@ -223,9 +236,33 @@ Authenticated climbers can leave a star rating + text review on a sport/boulderi
 
 ![Public vs admin comment/review data exposure](DEMO_IMAGES/Guidbook/Comment_public_vs_admin_exposure.svg)
 
+### MTP Ascents
+
+Climbers record their multi-pitch ascents — the guide-side counterpart of [summit ascents](SUMMIT.md). Unlike summits there is no GPS check (MTPs have no coordinates), so every ascent is self-reported with a date the climber picks (like a summit **archive** ascent). Login is required, same as MTP reviews.
+
+```
+mtp_ascents
+├── mtp_id   → mtps (cascade)
+├── user_id  → users (nullable, SET NULL — deleted with the account unless the user keeps ascents, see AUTH.md)
+├── ascent_date (required, ≤ today), ascent_time (optional)
+├── ascent_style  lead | second | alternate (MtpAscent::STYLES, optional)
+└── comment, photo (images/mtp_ascents_img/)
+```
+
+| Method | Path | Auth | Controller |
+|---|---|---|---|
+| GET | `get_mtp_ascent/get_mtp_ascents/{mtp_id}` | public | `Api\Guide\MtpAscentController` — user restricted to `id, name, surname, image` |
+| POST | `set_mtp_ascent/create_mtp_ascent/{mtp_id}` | `auth:sanctum` + reCAPTCHA (if configured) | `Api\User\Admin\Guide\MtpAscentController` (multipart) |
+| GET | `set_mtp_ascent/get_my_mtp_ascents` | `auth:sanctum` | own ascents |
+| DELETE | `set_mtp_ascent/del_my_mtp_ascent/{id}` | `auth:sanctum` | own ascent only |
+| GET | `set_mtp_ascent/get_all_mtp_ascents_admin` | `mtp › show` | all ascents |
+| DELETE | `set_mtp_ascent/del_mtp_ascent_admin/{id}` | `mtp › del` | any ascent |
+
+**Frontend:** the MTP modal (`MTPModalComponent.vue`) shows "Record ascent" and "Ascents (N)" (`ascents_count` from `get_mtp_for_modal`); both open modals in `climbing_routes/items/modals/ascents/` wired through `SectorComponent.vue`, the same way the review modals are. User page `/my_mtp_ascents` (`MyMtpAscentsListPage.vue`, left menu → Favorites) and admin page `/mtp_ascents` (`MtpAscentsAdminPage.vue`, left menu → Guide). MTP ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
+
 ### Local Businesses
 
-Businesses (guesthouses, shops, tour operators) linked to climbing areas.
+Businesses (guesthouses, shops, tour operators) linked to climbing areas. An article can be related to at most **4** businesses (`Admin\Guide\LocalBisnesController::MAX_RELATIONS_PER_ARTICLE`, returned to the admin relation tabs as `max_relations`; the slot columns follow it). On the article page they're shown by `LocaleBisnesListComponent.vue` as cards in a slider.
 
 ```
 suport_local_bisneses (global)
@@ -270,6 +307,7 @@ Guide content is managed at `user.climbing.ge` under the **Guide** section.
 | **Sectors** | Add sectors to outdoor spots |
 | **Routes** | Add climbing routes to sectors |
 | **Multi-pitch** | Add MTP routes and pitches |
+| **Multi-pitch ascents** | All recorded MTP ascents (`/mtp_ascents`, `mtp › show`; delete needs `mtp › del`) |
 | **Regions** | Outdoor climbing regions |
 | **Mount Massifs** | Mountain group definitions |
 | **Events** | Competitions and events |

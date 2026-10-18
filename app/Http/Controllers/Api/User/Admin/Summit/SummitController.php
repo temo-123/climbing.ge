@@ -464,6 +464,7 @@ class SummitController extends Controller
                     'comment'          => $ascent->comment,
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
+                    'is_archive'   => $ascent->is_archive,
                     'ascent_date'      => $ascent->ascent_date,
                     'other_route'      => $ascent->other_route,
                     'matched_users'    => $ascent->users->map(fn($u) => [
@@ -518,6 +519,7 @@ class SummitController extends Controller
                     'comment'          => $ascent->comment,
                     'photo'            => $ascent->photo,
                     'is_gps_validated' => $ascent->is_gps_validated,
+                    'is_archive'   => $ascent->is_archive,
                     'ascent_date'      => $ascent->ascent_date,
                     'ascent_time'      => $ascent->ascent_time,
                     'user_latitude'    => $ascent->user_latitude,

@@ -20,6 +20,7 @@ class SummitAscent extends Model
         'comment',
         'photo',
         'is_gps_validated',
+        'is_archive',
         'user_latitude',
         'user_longitude',
         'ascent_date',
@@ -28,6 +29,7 @@ class SummitAscent extends Model
 
     protected $casts = [
         'is_gps_validated' => 'boolean',
+        'is_archive'       => 'boolean',
         'user_latitude'    => 'float',
         'user_longitude'   => 'float',
         'ascent_date'      => 'date',

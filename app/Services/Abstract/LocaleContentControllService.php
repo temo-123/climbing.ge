@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Validator;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Schema;
 
 use App\Services\Abstract\ImageControllService;
 use App\Services\URLTitleService;
@@ -144,7 +145,9 @@ class LocaleContentControllService
         $global_data['ka'.$prefix.'_id']=$ka_info_id;
         // $global_data['ru'.$prefix.'_id']=$ru_info_id;
 
-        $saved = $global_model::insertGetId($global_data);
+        // Raw insert — drop form-only keys (region_id, mount_id...) that aren't real columns
+        $columns = Schema::getColumnListing((new $global_model)->getTable());
+        $saved = $global_model::insertGetId(array_intersect_key($global_data, array_flip($columns)));
 
         if(!$saved){
             // App::abort(500, 'Error');

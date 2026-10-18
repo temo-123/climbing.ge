@@ -81,6 +81,16 @@ This means a climber who logged ascents or left comments as a guest, then regist
 
 ---
 
+### Legal pages (Terms of Use, Privacy Policy)
+
+The registration form requires two checkboxes — Terms of Use and Privacy Policy — before **Register** is enabled; each label opens a modal with the full text and an "I agree" button that ticks the box. This is frontend-only: `POST /api/register` does not receive or store the consent (the mobile app uses the same endpoint).
+
+Texts live in `locale_sites` (site data, editable in the admin site-info page) under the slugs `terms_of_use` and `privacy_policy` (`us_data` / `ka_data`, HTML). Initial content: `privacy_policy` is added by migration `2026_10_18_130000_add_privacy_policy_to_locale_sites.php` (only if missing; contact email from `sites.email`); the full `terms_of_use` text is in `docs/BACKEND/sql-imports/legal_pages.sql` (set `@contact_email` first). They're rendered by `global_components/LegalDocumentComponent.vue`, which tries a subdomain-specific slug first (`shop_terms_of_use`, `user_privacy_policy`, …) and falls back to the shared one, and keeps line breaks for plain-text content. Every subdomain serves `/terms_of_use` and `/privacy_policy` with its own `TermsOfUsePage.vue` (`doc` route prop); both are linked from `FooterBottomTextComponent.vue` (guide, shop, blog, summit), the films footer and every About Us page (`global_components/LegalLinksComponent.vue`), and are public on `user.climbing.ge` (`userPublicRoutes` + `authNeutralRoutes` in `app.js`). Play Console privacy policy URL: `https://climbing.ge/privacy_policy`.
+
+**Donation legal texts** (`docs/BACKEND/sql-imports/donation_legal_texts.sql` — fill the variables first): `organization_legal_info` (legal name, NNLE / ა(ა)იპ form, identification code, address, email — shown under "Organization Contacts" on the guide About page, hidden while empty; row created empty by `2026_10_18_150000_add_organization_legal_info_to_locale_sites.php`), `donation_terms_of_use` (donation modal + mobile app: voluntary, gift with nothing in return, refund rule, TBC Bank handles card payments), and the privacy policy's "Donations" section (form fields name/surname/email/phone/country/age/comment + amount; card data only at TBC Bank). The section is already in the privacy migration's text; the SQL adds it only where that row was created earlier.
+
+---
+
 ## Login
 
 **Endpoint:** `POST /api/login`  
@@ -309,10 +319,10 @@ Self-service, permanent account deletion — required by the Google Play User Da
 ### Request
 
 ```json
-{ "confirm": "DELETE", "password": "secret123" }
+{ "confirm": "DELETE", "password": "secret123", "keep": ["reviews", "comments"] }
 ```
 
-`confirm` must be exactly `DELETE`. `password` is plain text (not RSA-encrypted like login) and is required unless the user has a `Social_account` row — social signups get a random password they never see (`SocialController`), so the Bearer token alone proves identity.
+`confirm` must be exactly `DELETE` — typed by the user on the web page (the Delete button stays disabled until the password is filled and the field equals `DELETE`). `password` is plain text (not RSA-encrypted like login) and **always required** — social signups set a password via `create_password`; anyone who skipped that uses "Forgot password" (linked on the page; `forget_pass` is in `authNeutralRoutes` so it works while logged in).
 
 ### Responses
 
@@ -322,7 +332,8 @@ Self-service, permanent account deletion — required by the Google Play User Da
 
 ### What is deleted vs kept
 
-- **Deleted:** the user, tokens, social accounts, roles/permissions, notifications, unused addresses, favorites, cart, follows, training sync data, article comments, product feedbacks, route reviews, summit ascents, the `non_registered_commenters` row, profile image. Tables with an FK cascade to `users` are cleaned by the database.
+- **Deleted:** the user, tokens, social accounts, roles/permissions, notifications, unused addresses, favorites, cart, follows, training sync data, the `non_registered_commenters` row, profile image. Tables with an FK cascade to `users` are cleaned by the database.
+- **User's choice — `keep`** (optional array, values from `AccountDeletionService::KEEPABLE`): `ascents` (summit + multi-pitch), `reviews` (route + MTP reviews), `product_feedbacks`, `comments` (article comments). Anything **not** in `keep` is deleted. Anything in `keep` stays public but anonymized: comments, product feedbacks and summit ascents get `name = "Deleted user"`, `surname = ""`, `email = NULL`; route reviews, MTP reviews and MTP ascents get `user_id = NULL` (made nullable, `ON DELETE SET NULL` for the two FK tables, by `2026_10_18_140000_make_review_and_ascent_user_id_nullable.php`). The delete page shows these as four "Delete my …" checkboxes, all checked by default; public review/ascent modals label user-less rows `guide.route.deleted_user`.
 - **Kept, detached (`user_id = NULL`):** `orders`, `donations`, and addresses used by an order — accounting records. `2026_10_17_120000_make_user_adreses_user_id_nullable.php` makes `user_adreses.user_id` nullable (`ON DELETE SET NULL`) for this.
 
 No soft-delete or grace period — deletion is immediate. Admin `set_user/del_user` and `bulk_delete` do **not** use this service.

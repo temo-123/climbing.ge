@@ -190,6 +190,10 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::latest('id')->where('category', '=', $category)->where('published', '=', 1)->get();
+            // Indoor gyms page filters by region client-side
+            if ($category == 'indoor') {
+                $global_articles->load('outdoor_region:regions.id');
+            }
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);
         }
         // dd($articles);

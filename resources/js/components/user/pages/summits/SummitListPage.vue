@@ -331,7 +331,7 @@ export default {
                     tab_data: {
                         data: this.ascents,
                         tab: {
-                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('admin.summits.col_comment'), this.$t('admin.summits.col_details'), this.$t('admin.summits.col_edit'), this.$t('admin.summits.col_delete_ascent')],
+                            head: [this.$t('common.id'), this.$t('common.name'), this.$t('admin.summits.col_surname'), this.$t('common.email'), this.$t('admin.summits.col_summit'), this.$t('common.date'), this.$t('common.route'), this.$t('common.grade'), 'GPS', this.$t('user.ascents.col_archive'), this.$t('admin.summits.col_comment'), this.$t('admin.summits.col_details'), this.$t('admin.summits.col_edit'), this.$t('admin.summits.col_delete_ascent')],
                             body: [
                                 ['data', ['id']],
                                 ['data', ['name']],
@@ -342,6 +342,7 @@ export default {
                                 ['data', ['route_name']],
                                 ['data', ['route_grade']],
                                 ['data', ['is_gps_validated'], 'bool'],
+                                ['data', ['is_archive'], 'bool'],
                                 ['data', ['comment']],
                                 ['action_fun_id', 'show_ascent_detail',   'btn btn-sm btn-info',    '<i class="fa fa-eye"></i>'],
                                 ['action_fun_id', 'open_edit_ascent',    'btn btn-sm btn-warning', '<i class="fa fa-pencil"></i>'],
@@ -349,7 +350,7 @@ export default {
                             ],
                             perm: [
                                 ['no'], ['no'], ['no'], ['no'], ['no'],
-                                ['no'], ['no'], ['no'], ['no'], ['no'],
+                                ['no'], ['no'], ['no'], ['no'], ['no'], ['no'],
                                 ['summit', 'show'],
                                 ['summit', 'edit'],
                                 ['summit', 'del'],

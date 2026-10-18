@@ -42,8 +42,9 @@ class Article extends Model
 
 		'price_from',
 
-		'open_timen',
-		'closed_time'
+		'open_time',
+		'closed_time',
+		'work_status'
 	];
 
 

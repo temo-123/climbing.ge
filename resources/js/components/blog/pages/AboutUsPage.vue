@@ -16,6 +16,8 @@
       </div>
     </main>
 
+    <legalLinks />
+
     <messageComponent />
 
     <metaData
@@ -29,10 +31,12 @@
 <script>
   import metaData from '../items/MetaDataComponent'
   import messageComponent from '../../global_components/MessageComponent.vue'
+  import legalLinks from '../../global_components/LegalLinksComponent.vue'
 
   export default {
     name: 'AboutUsPage',
     components: {
+      legalLinks,
       metaData,
       messageComponent,
     },

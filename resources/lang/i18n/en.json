@@ -550,7 +550,9 @@
             "assign_warehouse_select_label": "Sale-point warehouse",
             "assign_warehouse_none_option": "Not assigned",
             "assign_warehouse_hint": "Restricts this user to creating sales from this warehouse only.",
-            "assign_warehouse_saved_message": "Warehouse assignment saved."
+            "assign_warehouse_saved_message": "Warehouse assignment saved.",
+            "sector_local_image_group": "Local image #{id}",
+            "sectors_without_local_image": "Sectors without local image"
         },
         "orders": {
             "add_custom_order_title": "Add Custom Order",
@@ -2104,7 +2106,8 @@
                 "minimal_price": "Minimal price",
                 "working_time": "Working time",
                 "start_time_placeholder": "Start date/time",
-                "end_time_placeholder": "End date/time"
+                "end_time_placeholder": "End date/time",
+                "work_status_normal": "Status: normal working hours"
             },
             "loading": "Loading articles...",
             "no_data": "No data available.",
@@ -2508,7 +2511,8 @@
             "mtp": "Multi-Pitch",
             "routes": "@:common.routes",
             "no_feedbacks_message": "No feedbacks yet for this route",
-            "already_reviewed": "You already have a review for this route."
+            "already_reviewed": "You already have a review for this route.",
+            "deleted_user": "Deleted user"
         },
         "sector": {
             "name": "Sector Name",
@@ -2637,7 +2641,12 @@
                 "hard": "Hard"
             },
             "region_filtr": "Select Region and Filter Spots by Region",
-            "other_sites": "Other Resources"
+            "other_sites": "Other Resources",
+            "work_status": {
+                "temporarily_closed": "Temporarily closed",
+                "sport_session_closed": "Closed for a sport session",
+                "coming_soon": "Coming soon"
+            }
         },
         "breadcrumb home": "Home",
         "news_flag": "News",
@@ -2691,6 +2700,30 @@
             "lang_error": "@:common.search.lang_error",
             "did_you_mean": "@:common.search.did_you_mean",
             "you_searched": "@:common.search.you_searched"
+        },
+        "mtp_ascent": {
+            "create_title": "Record multi-pitch ascent",
+            "save_btn": "Save ascent",
+            "record_btn": "Record ascent",
+            "show_ascents_btn": "Ascents ({count})",
+            "date_label": "Ascent date",
+            "time_label": "Ascent time (optional)",
+            "style_label": "Style",
+            "style": {
+                "lead": "Led all pitches",
+                "second": "Seconded",
+                "alternate": "Swapped leads"
+            },
+            "comment_label": "Comment",
+            "photo_label": "Photo (optional)",
+            "success": "Your ascent has been recorded!",
+            "error": "Failed to record ascent. Please try again.",
+            "list_title": "Multi-pitch ascents",
+            "empty": "No ascents recorded yet.",
+            "col_climber": "Climber"
+        },
+        "about": {
+            "organization_contacts": "Organization Contacts"
         }
     },
     "shop": {
@@ -3252,7 +3285,8 @@
             "scan_to_record": "Scan to Record",
             "scan_instruction": "Scan this QR at the summit to record your ascent",
             "details_btn": "Details",
-            "ascent_btn": "Ascent"
+            "ascent_btn": "Ascent",
+            "add_archive_ascent": "Add archive ascent"
         },
         "ascent_page": {
             "loading": "Loading summit...",
@@ -3286,7 +3320,12 @@
             "submit": "Submit Ascent",
             "submitting": "Submitting...",
             "verified_badge": "Verified",
-            "not_at_summit_badge": "Not at summit"
+            "not_at_summit_badge": "Not at summit",
+            "archive_badge": "Archive",
+            "archive_login_required": "Log in to add an old ascent to the archive.",
+            "archive_date": "Ascent date",
+            "archive_time": "Ascent time",
+            "optional": "optional"
         },
         "search": {
             "placeholder": "Search summits...",
@@ -3491,7 +3530,8 @@
             "coordinates": "Coordinates",
             "comment": "Comment",
             "photo": "Photo",
-            "photo_alt": "Ascent photo"
+            "photo_alt": "Ascent photo",
+            "col_archive": "Archive"
         },
         "addresses": {
             "intro": "These addresses are used for your order details. Manage them here to ensure accurate delivery.",
@@ -3897,7 +3937,9 @@
             "training_workouts": "Workouts",
             "training_plans": "Training Plans",
             "partner_organizations": "Partner Organizations",
-            "partner_organizations_list": "Organizations & Members"
+            "partner_organizations_list": "Organizations & Members",
+            "my_mtp_ascents": "My multi-pitch ascents",
+            "guide_mtp_ascents": "Multi-pitch ascents"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -4042,22 +4084,37 @@
             "intro": "This page lets you permanently delete your climbing.ge account. It applies to the climbing.ge website and the climbing.ge training mobile app, which share one account.",
             "steps_title": "How to delete your account",
             "step_login": "Log in to your account (button below).",
-            "step_confirm": "Enter your password (if you have one) and type DELETE to confirm.",
+            "step_confirm": "Enter your password and type DELETE to approve the deletion.",
             "step_done": "Your account is deleted immediately and you are logged out on all devices.",
             "deleted_title": "What is deleted",
-            "deleted_text": "Your profile (name, email, phone, location, photo), login sessions and connected Google/Facebook logins, addresses, favorites, cart, follows, notification settings, training workouts, plans and history, comments, reviews, product feedback and summit ascents.",
+            "deleted_text": "Your profile (name, email, phone, location, photo), login sessions and connected Google/Facebook logins, addresses, favorites, cart, follows, notification settings and training workouts, plans and history. Your ascents, reviews, product feedback and comments are deleted too, unless you choose below to keep them anonymously.",
             "kept_title": "What is kept",
             "kept_text": "Records of past orders and donations (and the delivery address used for an order) are kept for accounting and legal obligations. They are no longer linked to any account.",
             "login_btn": "Log in to delete account",
             "warning": "This action is permanent and cannot be undone.",
             "password_label": "Password",
-            "password_hint": "Leave empty if you signed up with Google or Facebook and never set a password.",
-            "confirm_label": "Type DELETE to confirm",
+            "password_hint": "Signed up with Google or Facebook and never set a password?",
             "delete_btn": "Delete my account",
             "deleting": "Deleting...",
             "success": "Your account has been deleted.",
             "error": "Something went wrong. Please try again.",
-            "options_link": "Delete my account"
+            "options_link": "Delete my account",
+            "forgot_password": "Create one with Forgot password.",
+            "back_btn": "Back",
+            "content_title": "What to delete with your account",
+            "delete_ascents": "My summit and multi-pitch ascents",
+            "delete_reviews": "My route reviews",
+            "delete_product_feedbacks": "My product feedback",
+            "delete_comments": "My article comments",
+            "content_hint": "Unchecked items stay on the site anonymously, shown as \"Deleted user\", with no link to you.",
+            "confirm_label": "Type DELETE to confirm"
+        },
+        "mtp_ascents": {
+            "my_table_name": "My multi-pitch ascents",
+            "admin_table_name": "Multi-pitch ascents",
+            "col_mtp": "Multi-pitch",
+            "col_style": "Style",
+            "col_comment": "Comment"
         }
     },
     "global": {
@@ -4074,7 +4131,9 @@
             "guide_app_label": "Guidebook App",
             "training_app_label": "Training App",
             "app_store_alt": "@:user.training_summary.app_store_alt",
-            "google_play_alt": "@:user.training_summary.google_play_alt"
+            "google_play_alt": "@:user.training_summary.google_play_alt",
+            "terms_of_use": "Terms of Use",
+            "privacy_policy": "Privacy Policy"
         },
         "form": {
             "save": "@:common.save"
@@ -4157,6 +4216,11 @@
         },
         "menu": {
             "about us": "About Us"
+        },
+        "legal_links": {
+            "title": "Terms & Privacy",
+            "text": "Read how you can use climbing.ge and how we handle your personal data.",
+            "not_available": "This document is not available yet. Please try again later."
         }
     },
     "error": {
@@ -4289,5 +4353,15 @@
     "user add en article title": "English Title",
     "user add en article description": "English Description (SEO)",
     "user add ka article title": "Georgian Title",
-    "user add ka article description": "Georgian Description (SEO)"
+    "user add ka article description": "Georgian Description (SEO)",
+    "auth": {
+        "register": {
+            "agree_with": "I agree with the",
+            "accept_btn": "I agree"
+        }
+    },
+    "privacy": {
+        "title": "Privacy Policy",
+        "meta_description": "Privacy Policy — Climbing Georgia"
+    }
 }

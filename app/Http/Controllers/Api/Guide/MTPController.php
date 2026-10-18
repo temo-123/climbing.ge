@@ -57,6 +57,7 @@ class MTPController extends Controller
             'mtp_pitchs'    => $mtp_pitchs,
             'reviews_count' => $reviews_count,
             'reviews_stars' => $reviews_stars,
+            'ascents_count' => $mtp->ascents()->count(),
         ];
     }
 

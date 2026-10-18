@@ -29,4 +29,9 @@ class Mtp extends Model
     {
         return $this->hasMany(Mtp_review::class);
     }
+
+    public function ascents()
+    {
+        return $this->hasMany(MtpAscent::class, 'mtp_id');
+    }
 }

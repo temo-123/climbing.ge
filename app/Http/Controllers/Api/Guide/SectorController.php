@@ -50,9 +50,36 @@ class SectorController extends Controller
         return $sectors;
     }
 
+    /**
+     * Sector sequence modal: sectors grouped by sector local image, in the same
+     * group order the public article page uses (first sector by num decides),
+     * plus sectors with no local image.
+     */
     public function get_spot_sectors_data_for_model(Request $request)
     {
-        return Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
+        $sectors = Sector::where('article_id','=', $request->article_id)->orderBy('num')->get();
+
+        $groups = [];
+        $grouped_ids = [];
+        foreach ($sectors as $sector) {
+            $relation = Sector_local_image_sector::where('sector_id', '=', $sector->id)->first();
+            if (!$relation || isset($groups[$relation->image_id])) continue;
+
+            $image = Sector_local_image::where('id', '=', $relation->image_id)->first();
+            if (!$image) continue;
+
+            $image_sectors = $image->allSectors()->where('article_id', '=', $request->article_id)->get();
+            $groups[$relation->image_id] = [
+                'image' => $image->only(['id', 'title', 'image']),
+                'sectors' => $image_sectors,
+            ];
+            $grouped_ids = array_merge($grouped_ids, $image_sectors->pluck('id')->all());
+        }
+
+        return [
+            'groups' => array_values($groups),
+            'ungrouped' => $sectors->whereNotIn('id', $grouped_ids)->values(),
+        ];
     }
 
     public function add_sector(Request $request)

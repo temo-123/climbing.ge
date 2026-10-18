@@ -71,7 +71,7 @@
                 selected_bisnes_id: null,
                 loading: true,
                 saving: false,
-                max_relations: 2,
+                max_relations: 4,
             }
         },
         computed: {

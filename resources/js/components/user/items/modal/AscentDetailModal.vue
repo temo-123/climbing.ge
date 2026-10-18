@@ -58,7 +58,10 @@
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('user.ascents.gps_verified') }}</span>
                     <span class="detail-value">
-                        <span v-if="ascent.is_gps_validated" class="badge badge-success">
+                        <span v-if="ascent.is_archive" class="badge badge-secondary">
+                            <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+                        </span>
+                        <span v-else-if="ascent.is_gps_validated" class="badge badge-success">
                             <i class="fa fa-check"></i> {{ $t('user.ascents.verified') }}
                         </span>
                         <span v-else class="badge badge-light text-muted">{{ $t('user.ascents.not_verified') }}</span>

@@ -50,7 +50,10 @@
           <tr>
             <td class="text-muted">GPS</td>
             <td>
-              <span v-if="ascent.is_gps_validated" class="label label-success">
+              <span v-if="ascent.is_archive" class="label label-default">
+                <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+              </span>
+              <span v-else-if="ascent.is_gps_validated" class="label label-success">
                 <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
               </span>
               <span v-else class="text-muted">—</span>

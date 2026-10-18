@@ -33,6 +33,7 @@ const routes = [
             { path: '', name: "index", component: load("IndexPageComponent"), meta: { title: 'Site Index' } },
             { path: "about_us", name: "about_us", component: load("AboutUsComponent"), meta: { title: 'About Us' } },
             { path: "terms_of_use", name: "guide_terms", component: load("TermsOfUsePage"), meta: { title: 'Terms of Use' } },
+            { path: 'privacy_policy', name: 'guide_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
 
             { path: "donation-success", name: "donationSuccess", component: load("DonationSuccessPage"), meta: { title: 'Donation Success' } },
             { path: "donation-cancel",  name: "donationCancel",  component: load("DonationCancelPage"),  meta: { title: 'Donation Cancelled' } },

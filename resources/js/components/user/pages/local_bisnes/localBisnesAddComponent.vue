@@ -284,7 +284,7 @@
                 validationConflicts: [],
                 validationUserChoices: {},
                 pendingFormData: null,
-                maxRelations: 2,
+                maxRelations: 4,
                 editor_config: {
                     us_short_description: {},
                     us_text: {},

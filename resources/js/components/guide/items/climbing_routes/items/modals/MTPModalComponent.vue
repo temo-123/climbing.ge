@@ -130,6 +130,19 @@
                             {{ $t('guide.route.show_feedbacks') }}
                         </button>
                     </div>
+
+                    <div class="flex-row mt-3 w-100">
+                        <button class="btn btn-success" @click="open_ascent_modal">
+                            <i class="fa fa-flag-checkered"></i> {{ $t('guide.mtp_ascent.record_btn') }}
+                        </button>
+                        <button
+                            class="btn btn-primary float-right"
+                            v-if="mtp_detals.ascents_count > 0"
+                            @click="open_ascents_list_modal"
+                        >
+                            {{ $t('guide.mtp_ascent.show_ascents_btn', { count: mtp_detals.ascents_count }) }}
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -317,6 +330,14 @@ export default {
         open_all_reviews_modal() {
             this.is_show_mtp_modal = false;
             this.$emit('show_mtp_all_review_modal', this.mtp_detals.mtp.id);
+        },
+        open_ascent_modal() {
+            this.is_show_mtp_modal = false;
+            this.$emit('show_mtp_ascent_modal', this.mtp_detals.mtp.id);
+        },
+        open_ascents_list_modal() {
+            this.is_show_mtp_modal = false;
+            this.$emit('show_mtp_ascents_list_modal', this.mtp_detals.mtp.id);
         },
     },
 };

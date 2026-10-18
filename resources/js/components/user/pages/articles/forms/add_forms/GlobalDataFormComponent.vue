@@ -32,10 +32,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="this.category == 'outdoor'">
+                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor'].includes(this.category)">
                         <label for="region" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.regions_label') }} </label>
                         <div class="col-md-10">
-                            <select class="form-control" v-model="region_id" name="region" >
+                            <select class="form-control" v-model="data.region_id" name="region" >
                                 <option :value="0" disabled>{{ $t('admin.articles.global_form.select_region') }}</option>
                                 <option :value="null" style="color:red">{{ $t('admin.articles.global_form.without_region') }}</option>
                                 <option  v-for="region in regions" :key="region.id" :value="region.id">{{ region.us_name }}</option>
@@ -114,6 +114,16 @@
                                     <input type="time" name="closed_time" class="form-control" v-model="data.closed_time" :placeholder="$t('admin.articles.global_form.end_time_placeholder')">
                                 </div>
                             </div>
+                            <div class="row" style="margin-top: 8px;">
+                                <div class="col-md-12">
+                                    <select class="form-control" v-model="data.work_status" name="work_status">
+                                        <option :value="null">{{ $t('admin.articles.global_form.work_status_normal') }}</option>
+                                        <option value="temporarily_closed">{{ $t('guide.article.work_status.temporarily_closed') }}</option>
+                                        <option value="sport_session_closed">{{ $t('guide.article.work_status.sport_session_closed') }}</option>
+                                        <option value="coming_soon">{{ $t('guide.article.work_status.coming_soon') }}</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -160,6 +170,9 @@
                     // us_title_for_url_title: "",
                     published: 0,
                     show_donation: 0,
+                    // Not an articles column — saved as the article_region relation (ArticleController::description_img)
+                    region_id: null,
+                    work_status: null,
                     // completed: "",
                     // map: "",
                     // weather: "",
@@ -174,13 +187,12 @@
                     // inst_link: "",
                     // web_link: "",
                 },
-                    region_id: 0,
                     mount_id: 0,
             }
         },
         mounted() {
-            if (this.category == 'outdoor') {
-                this.get_regions('outdoor')
+            if (['outdoor', 'indoor'].includes(this.category)) {
+                this.get_regions(this.category)
             }
             if (this.category == 'mount_route') {
                 this.get_mount_massive_data('mount_route')
@@ -203,7 +215,7 @@
             },
 
             get_regions(category){
-                if(category == 'outdoor'){
+                if(['outdoor', 'indoor'].includes(category)){
                     axios
                     .get("/get_region/get_all_outdoor_regions/")
                     .then(response => {

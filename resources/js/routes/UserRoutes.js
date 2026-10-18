@@ -199,6 +199,8 @@ const routes = [
             { path: 'summits/add', name: 'summitAdd', component: load('summits/SummitAddPage'), meta: {title: 'Add Summit', permissions: [['show', 'summit']]}},
             { path: 'summits/edit/:id', name: 'summitEdit', component: load('summits/SummitEditPage'), meta: {title: 'Edit Summit', permissions: [['show', 'summit']]}},
             { path: 'my_ascents', name: 'myAscents', component: load('myAscents/MyAscentsListPage'), meta: {title: 'My Ascents'}},
+            { path: 'my_mtp_ascents', name: 'myMtpAscents', component: load('myAscents/MyMtpAscentsListPage'), meta: {title: 'My Multi-pitch Ascents'}},
+            { path: 'mtp_ascents', name: 'mtpAscents', component: load('routes_and_sectors/MtpAscentsAdminPage'), meta: {title: 'Multi-pitch Ascents', permissions: [['show', 'mtp']]}},
             { path: 'my_donations', name: 'myDonations', component: load('donations/MyDonationsPageComponent'), meta: {title: 'My Donations'}},
             { path: 'my_trainings', name: 'myTrainings', component: load('MyTrainingsPageComponent'), meta: {title: 'My Trainings'}},
             { path: 'my_organization', name: 'myOrganization', component: load('MyOrganizationPageComponent'), meta: {title: 'My Organization'}},
@@ -206,6 +208,7 @@ const routes = [
             { path: 'banned', name: 'banned', component: BannedPage, meta: { title: 'Account Suspended' } },
 
             { path: 'terms_of_use', name: 'user_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
+            { path: 'privacy_policy', name: 'user_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
             { path: 'delete-account', name: 'delete_account', component: load('DeleteAccountPage'), meta: { title: 'Delete Account' } },
 
             { path: 'login', name: 'login', component: login, meta: {title: 'Login'}},

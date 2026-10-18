@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\DB;
 
 class LocalBisnesController extends Controller
 {
-    const MAX_RELATIONS_PER_ARTICLE = 2;
+    const MAX_RELATIONS_PER_ARTICLE = 4;
 
     public function add_local_bisnes(Request $request)
     {
