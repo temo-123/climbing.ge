@@ -278,8 +278,9 @@ DONATION_TBC_BANK_CODE=TBCBGE22
 DONATION_TBC_BANK_NAME="TBC Bank"
 
 # Organization that receives donations — donation terms + About page legal block
-# (config/organization.php, applied by migration 2026_10_19_110000_update_donation_legal_texts.php;
-# the migration refuses to run until the required ones are set). Quote values with spaces.
+# (config/organization.php, applied by the set-aside migration in database/migrations_pending/ —
+# php artisan migrate --path=database/migrations_pending/2026_10_19_110000_update_donation_legal_texts.php
+# — which refuses to run until the required ones are set). Quote values with spaces.
 ORGANIZATION_LEGAL_NAME_US=
 ORGANIZATION_LEGAL_NAME_KA=
 ORGANIZATION_LEGAL_FORM_US="Non-entrepreneurial (non-commercial) legal entity (NNLE)"

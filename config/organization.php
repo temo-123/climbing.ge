@@ -2,8 +2,11 @@
 
 /**
  * Legal details of the organization that receives donations (shown in the donation
- * terms and the About page "Organization Contacts" block). Applied to site data by
- * migration 2026_10_19_110000_update_donation_legal_texts.php — set them before migrating.
+ * terms and the About page "Organization Contacts" block). Applied to site data by the
+ * set-aside migration database/migrations_pending/2026_10_19_110000_update_donation_legal_texts.php
+ * (not run by a plain `php artisan migrate`) — set them, then:
+ *   php artisan config:clear
+ *   php artisan migrate --path=database/migrations_pending/2026_10_19_110000_update_donation_legal_texts.php
  * Separate from COMPANY_* (shop invoice issuer), which may be a different entity.
  */
 return [
