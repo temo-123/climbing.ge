@@ -24,6 +24,10 @@ export default {
                             route: "/interested_events"
                         },
                         {
+                            name: this.$t('user.nav.my_route_ascents'),
+                            route: "/my_route_ascents"
+                        },
+                        {
                             name: this.$t('user.nav.my_mtp_ascents'),
                             route: "/my_mtp_ascents"
                         },
@@ -50,6 +54,13 @@ export default {
                         {
                             name: this.$t('user.nav.guide_sectors_and_routes'),
                             route: "/routes_and_sectors",
+                            permissions: [
+                                ['show', 'route'],
+                            ]
+                        },
+                        {
+                            name: this.$t('user.nav.guide_route_ascents'),
+                            route: "/route_ascents",
                             permissions: [
                                 ['show', 'route'],
                             ]

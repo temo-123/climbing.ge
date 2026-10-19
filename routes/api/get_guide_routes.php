@@ -212,6 +212,10 @@ Route::group(['namespace'=>'Api\Guide'], function() {
         });
     });
 
+    Route::controller(RouteAscentController::class)->prefix('get_route_ascent')->group(function () {
+        Route::get('/get_route_ascents/{route_id}', 'get_route_ascents');
+    });
+
     Route::controller(MtpAscentController::class)->prefix('get_mtp_ascent')->group(function () {
         Route::get('/get_mtp_ascents/{mtp_id}', 'get_mtp_ascents');
     });

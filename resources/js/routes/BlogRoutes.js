@@ -30,6 +30,7 @@ const routes = [
 { path: "about_us", name: "about_us", component: load("AboutUsPage"), meta: { title: 'About This Blog' } },
             { path: "terms_of_use", name: "blog_terms", component: load("TermsOfUsePage"), meta: { title: 'Terms of Use' } },
             { path: 'privacy_policy', name: 'blog_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
+            { path: 'donation_terms', name: 'blog_donation_terms', component: load('TermsOfUsePage'), props: { doc: 'donation_terms_of_use' }, meta: { title: 'Donation Terms' } },
 
             { path: "post/:url_title", name: "post", component: load("pages/PostPage"), meta: { title: 'Post' }},
             { path: "news/:url_title", name: "news", component: load("pages/NewsPage"), meta: { title: 'News' }},

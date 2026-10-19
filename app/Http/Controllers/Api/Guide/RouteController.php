@@ -238,6 +238,7 @@ class RouteController extends Controller
         $revs = $route->review->where('published', 1);
 
         $route['reviews_count'] = $revs->count();
+        $route['ascents_count'] = $route->ascents()->count();
 
         if($revs->count() > 0){
             $total = 0;

@@ -20,8 +20,6 @@
                         <ul class="footer_links">
                             <!-- <li><router-link :to="{name: 'services'}" exact> {{ $t('forum menu services') }} </router-link></li> -->
                             <li><router-link :to="{name: 'about_films'}" exact> {{ $t('global.footer.about us')}} </router-link></li>
-                            <li><router-link :to="{name: 'films_terms'}" exact> {{ $t('global.footer.terms_of_use') }} </router-link></li>
-                            <li><router-link :to="{name: 'films_privacy'}" exact> {{ $t('global.footer.privacy_policy') }} </router-link></li>
                         </ul>
                     </div>
                 </div>
@@ -36,6 +34,7 @@
                     <followComponent />
                 </div>
             </div>
+            <footerText />
         </div>
     </div>
 </template>
@@ -44,6 +43,7 @@
 <script>
     import share from "../../global_components/ShareComponent.vue";
     import followComponent from '../../global_components/FollowComponent.vue'
+    import footerText from '../../global_components/FooterBottomTextComponent.vue'
     export default {
         data: function () {
             return {
@@ -52,7 +52,8 @@
         },
         components: {
             followComponent,
-            share
+            share,
+            footerText,
         },
         mounted() {
             // this.num = Math.floor(Math.random() * 11);

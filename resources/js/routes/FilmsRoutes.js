@@ -28,6 +28,7 @@ const routes = [
         { path: 'about_us', name: 'about_films', component: load('AboutUsComponent') },
         { path: 'terms_of_use', name: 'films_terms', component: load('TermsOfUsePage') },
         { path: 'privacy_policy', name: 'films_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
+        { path: 'donation_terms', name: 'films_donation_terms', component: load('TermsOfUsePage'), props: { doc: 'donation_terms_of_use' }, meta: { title: 'Donation Terms' } },
         { path: 'search_films', name: 'search_films', component: load('SerchPageComponent') },
         { path: "404",    name: "not-found",    component: NotFound, meta: { title: 'Not Found' } },
         { path: "403",    name: "forbidden",    component: NotFound, meta: { title: 'Forbidden' } },

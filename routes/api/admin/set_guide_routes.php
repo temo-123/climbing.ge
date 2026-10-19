@@ -231,6 +231,14 @@ Route::group(['namespace'=>'Api\User\Admin\Guide', 'middleware'=>['auth:sanctum'
         });
     });
 
+    Route::controller(RouteAscentController::class)->prefix('set_route_ascent')->group(function () {
+        Route::post('/create_route_ascent/{route_id}', 'create_route_ascent');
+        Route::get('/get_my_route_ascents', 'get_my_route_ascents');
+        Route::delete('/del_my_route_ascent/{ascent_id}', 'del_my_route_ascent');
+        Route::get('/get_all_route_ascents_admin', 'get_all_route_ascents_admin');
+        Route::delete('/del_route_ascent_admin/{ascent_id}', 'del_route_ascent_admin');
+    });
+
     Route::controller(MtpAscentController::class)->prefix('set_mtp_ascent')->group(function () {
         Route::post('/create_mtp_ascent/{mtp_id}', 'create_mtp_ascent');
         Route::get('/get_my_mtp_ascents', 'get_my_mtp_ascents');

@@ -263,6 +263,18 @@
             ref="open_route_modal"
             @show_route_review_modal="show_route_review_modal"
             @show_route_all_review_modal="show_route_all_review_modal"
+            @show_route_ascent_modal="show_route_ascent_modal"
+            @show_route_ascents_modal="show_route_ascents_modal"
+        />
+
+        <create_route_ascent_modal
+            ref="open_route_ascent_modal"
+            @back_route_modal="show_route_modal"
+        />
+
+        <route_ascents_list_modal
+            ref="show_route_ascents_modal"
+            @back_route_modal="show_route_modal"
         />
 
         <create_route_review_modal 
@@ -322,6 +334,8 @@ import create_mtp_review_modal from "./modals/feedbacks/CreateMtpReviewModal.vue
 import mtp_all_reviews_modal from "./modals/feedbacks/MtpAllReviewsModal.vue";
 import create_mtp_ascent_modal from "./modals/ascents/CreateMtpAscentModal.vue";
 import mtp_ascents_list_modal from "./modals/ascents/MtpAscentsListModal.vue";
+import create_route_ascent_modal from "./modals/ascents/CreateRouteAscentModal.vue";
+import route_ascents_list_modal from "./modals/ascents/RouteAscentsListModal.vue";
 import sector_canvas_modal from "./modals/SectorCanvasModalComponent.vue";
 import starsReiting from '../../../../global_components/StarReitingShowComponent.vue';
 import SectorIconTip from './SectorIconTip.vue';
@@ -343,6 +357,8 @@ export default {
         mtp_all_reviews_modal,
         create_mtp_ascent_modal,
         mtp_ascents_list_modal,
+        create_route_ascent_modal,
+        route_ascents_list_modal,
         sector_canvas_modal,
         starsReiting,
         SectorIconTip,
@@ -405,6 +421,12 @@ export default {
         },
         show_route_review_modal(route_id){
             this.$refs.open_route_review_modal.show_route_review_modal(route_id)
+        },
+        show_route_ascent_modal(route_id, route) {
+            this.$refs.open_route_ascent_modal.show_route_ascent_modal(route_id, route)
+        },
+        show_route_ascents_modal(route_id) {
+            this.$refs.show_route_ascents_modal.show_route_ascents_modal(route_id)
         },
         show_route_modal(route_id) {
             this.$refs.open_route_modal.show_route_modal(route_id)

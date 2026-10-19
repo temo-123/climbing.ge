@@ -37,6 +37,11 @@ class Route extends Model
         return $this->hasMany(Sport_route_review::class);
     }
 
+    public function ascents()
+    {
+        return $this->hasMany(RouteAscent::class, 'route_id');
+    }
+
     public function sector()
     {
         return $this->belongsTo(Sector::class);

@@ -2734,6 +2734,40 @@
             "empty": "ასვლები ჯერ არ არის დაფიქსირებული.",
             "col_climber": "მცოცავი"
         },
+        "route_ascent": {
+            "create_title": "მარშრუტზე ასვლის დაფიქსირება",
+            "save_btn": "ასვლის შენახვა",
+            "record_btn": "ასვლის დაფიქსირება",
+            "show_ascents_btn": "ასვლები ({count})",
+            "date_label": "ასვლის თარიღი",
+            "style_label": "სტილი",
+            "style_required": "გთხოვთ, აირჩიოთ ასვლის სტილი.",
+            "style": {
+                "onsight": "ონსაითი",
+                "flash": "ფლეში",
+                "redpoint": "რედპოინტი",
+                "toprope": "ზედა დაზღვევით"
+            },
+            "style_hint": {
+                "onsight": "პირველივე ცდაზე, სუფთად, მარშრუტის შესახებ წინასწარი ინფორმაციის გარეშე.",
+                "flash": "პირველივე ცდაზე, სუფთად, წინასწარი ინფორმაციით (ნახეთ სხვისი ასვლა ან მიიღეთ რჩევები).",
+                "redpoint": "სუფთად, წინა მცდელობების ან მოძრაობების დამუშავების შემდეგ.",
+                "toprope": "ზედა დაზღვევით, არა წინამძღოლად."
+            },
+            "attempts_label": "მცდელობების რაოდენობა (არასავალდებულო)",
+            "attempts_short": "{count} ცდა",
+            "suggested_grade_label": "თქვენი შეფასება სირთულეზე",
+            "grade_agree": "ვეთანხმები გზამკვლევის სირთულეს",
+            "grade_consensus": "ყველაზე ხშირად შეთავაზებული სირთულე",
+            "comment_label": "კომენტარი",
+            "photo_label": "ფოტო (არასავალდებულო)",
+            "success": "თქვენი ასვლა დაფიქსირდა!",
+            "error": "ასვლის დაფიქსირება ვერ მოხერხდა. სცადეთ თავიდან.",
+            "list_title": "მარშრუტზე ასვლები",
+            "empty": "ასვლები ჯერ არ არის დაფიქსირებული.",
+            "col_climber": "მცოცავი",
+            "col_grade": "სირთულის შეფასება"
+        },
         "about": {
             "organization_contacts": "ორგანიზაციის კონტაქტები"
         }
@@ -3731,7 +3765,9 @@
             "partner_organizations": "პარტნიორი ორგანიზაციები",
             "partner_organizations_list": "ორგანიზაციები და წევრები",
             "my_mtp_ascents": "ჩემი მრავალპიჩიანი ასვლები",
-            "guide_mtp_ascents": "მრავალპიჩიანი ასვლები"
+            "my_route_ascents": "ჩემი ასვლები მარშრუტებზე (ლოგბუქი)",
+            "guide_mtp_ascents": "მრავალპიჩიანი ასვლები",
+            "guide_route_ascents": "მარშრუტებზე ასვლები"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -3907,6 +3943,20 @@
             "col_mtp": "მრავალპიჩიანი მარშრუტი",
             "col_style": "სტილი",
             "col_comment": "კომენტარი"
+        },
+        "route_ascents": {
+            "my_table_name": "ჩემი ასვლები მარშრუტებზე",
+            "admin_table_name": "მარშრუტებზე ასვლები",
+            "col_route": "მარშრუტი",
+            "col_grade": "სირთულე",
+            "col_sector": "სექტორი",
+            "col_style": "სტილი",
+            "col_attempts": "მცდელობები",
+            "col_suggested_grade": "სირთულის შეფასება",
+            "col_comment": "კომენტარი",
+            "total": "სულ ასვლები",
+            "hardest": "ყველაზე რთული ასვლა",
+            "hardest_boulder": "ყველაზე რთული ბოულდერი"
         }
     },
     "global": {
@@ -3925,7 +3975,9 @@
             "app_store_alt": "@:user.training_summary.app_store_alt",
             "google_play_alt": "@:user.training_summary.google_play_alt",
             "terms_of_use": "გამოყენების წესები",
-            "privacy_policy": "კონფიდენციალურობის პოლიტიკა"
+            "privacy_policy": "კონფიდენციალურობის პოლიტიკა",
+            "donation_terms": "შემოწირულობის პირობები",
+            "delete_account": "ანგარიშის წაშლა"
         },
         "form": {
             "save": "@:common.save"
@@ -4373,5 +4425,9 @@
     "privacy": {
         "title": "კონფიდენციალურობის პოლიტიკა",
         "meta_description": "კონფიდენციალურობის პოლიტიკა — Climbing Georgia"
+    },
+    "donation_terms": {
+        "title": "შემოწირულობის პირობები",
+        "meta_description": "შემოწირულობის პირობები — Climbing Georgia"
     }
 }

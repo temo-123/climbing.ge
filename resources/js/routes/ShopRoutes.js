@@ -47,6 +47,7 @@ const routes = [
             { path: 'about_us', name: 'about_store', component: load('AboutUs'), meta: { title: 'About Store' }, },
             { path: 'terms_of_use', name: 'shop_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
             { path: 'privacy_policy', name: 'shop_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
+            { path: 'donation_terms', name: 'shop_donation_terms', component: load('TermsOfUsePage'), props: { doc: 'donation_terms_of_use' }, meta: { title: 'Donation Terms' } },
             { path: 'search_products', name: 'search_products', component: load('SearchPage'), meta: { title: 'Search Products' }, },
 
             { path: "unfollow/:id", name: "unfollow", component: UnfollowComponent, meta: { title: 'Unfollow' } },

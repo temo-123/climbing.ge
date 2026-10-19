@@ -15,8 +15,8 @@
         <messageComponent />
 
         <metaData
-            :title="doc === 'privacy_policy' ? $t('privacy.title') : $t('terms.title')"
-            :description="doc === 'privacy_policy' ? $t('privacy.meta_description') : $t('terms.meta_description')"
+            :title="doc === 'privacy_policy' ? $t('privacy.title') : doc === 'donation_terms_of_use' ? $t('donation_terms.title') : $t('terms.title')"
+            :description="doc === 'privacy_policy' ? $t('privacy.meta_description') : doc === 'donation_terms_of_use' ? $t('donation_terms.meta_description') : $t('terms.meta_description')"
             :image="'/public/images/meta_img/shop.jpg'"
         />
     </div>

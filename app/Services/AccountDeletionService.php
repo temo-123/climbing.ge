@@ -65,9 +65,11 @@ class AccountDeletionService
             if (in_array('ascents', $keep)) {
                 DB::table('summit_ascents')->whereIn('id', $ascent_ids)->update($anonymous);
                 DB::table('mtp_ascents')->where('user_id', $id)->update(['user_id' => null]);
+                DB::table('route_ascents')->where('user_id', $id)->update(['user_id' => null]);
             } else {
                 DB::table('summit_ascents')->whereIn('id', $ascent_ids)->delete();
                 DB::table('mtp_ascents')->where('user_id', $id)->delete();
+                DB::table('route_ascents')->where('user_id', $id)->delete();
             }
 
             // Tables without a cascading FK

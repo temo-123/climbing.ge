@@ -27,6 +27,7 @@ const routes = [
             { path: 'about_us', name: 'about_us', component: load('AboutUsPage'), meta: { title: 'About Us' } },
             { path: 'terms_of_use', name: 'summit_terms', component: load('TermsOfUsePage'), meta: { title: 'Terms of Use' } },
             { path: 'privacy_policy', name: 'summit_privacy', component: load('TermsOfUsePage'), props: { doc: 'privacy_policy' }, meta: { title: 'Privacy Policy' } },
+            { path: 'donation_terms', name: 'summit_donation_terms', component: load('TermsOfUsePage'), props: { doc: 'donation_terms_of_use' }, meta: { title: 'Donation Terms' } },
             { path: 'make_ascent/:id', name: 'make_ascent', component: load('MakeSummitAscentPage'), meta: { title: 'Add Summit' } },
 
             { path: 'summit/:url_title', name: 'summit', component: load('pages/SummitPage'), meta: { title: 'Summit Detail' } },

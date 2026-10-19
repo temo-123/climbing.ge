@@ -9,6 +9,9 @@
                 <router-view />
             </div>
         </div>
+        <div class="container">
+            <footerText />
+        </div>
         <go_to_top />
         <toast-notification />
     </div>
@@ -17,6 +20,7 @@
 <script>
     import navbar from "./items/navbars/NavbarComponent.vue";
     import go_to_top from "../global_components/GoOnTopComponent.vue";
+    import footerText from "../global_components/FooterBottomTextComponent.vue";
 
     import preloader from "../global_components/loaders/PreloaderComponent.vue";
     import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
@@ -33,7 +37,8 @@
             navbar,
             preloader,
             routeloader,
-            go_to_top
+            go_to_top,
+            footerText,
         },
 
         mounted() {

@@ -260,6 +260,32 @@ mtp_ascents
 
 **Frontend:** the MTP modal (`MTPModalComponent.vue`) shows "Record ascent" and "Ascents (N)" (`ascents_count` from `get_mtp_for_modal`); both open modals in `climbing_routes/items/modals/ascents/` wired through `SectorComponent.vue`, the same way the review modals are. User page `/my_mtp_ascents` (`MyMtpAscentsListPage.vue`, left menu → Favorites) and admin page `/mtp_ascents` (`MtpAscentsAdminPage.vue`, left menu → Guide). MTP ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
 
+### Route Ascents (logbook)
+
+Climbers log ticks on sport / bouldering routes (`routes` table) — the single-pitch counterpart of [MTP ascents](#mtp-ascents), same login-only + reCAPTCHA flow and self-reported date.
+
+```
+route_ascents
+├── route_id  → routes (cascade)
+├── user_id   → users (nullable, SET NULL — deleted with the account unless the user keeps ascents, see AUTH.md)
+├── ascent_date (required, ≤ today)
+├── ascent_style  onsight | flash | redpoint | toprope (RouteAscent::STYLES, required)
+├── attempts (optional; forced to 1 server-side for onsight/flash)
+├── suggested_grade (optional "grade opinion"; empty = agrees with the topo grade)
+└── comment, photo (images/route_ascents_img/)
+```
+
+| Method | Path | Auth | Controller |
+|---|---|---|---|
+| GET | `get_route_ascent/get_route_ascents/{route_id}` | public | `Api\Guide\RouteAscentController` — user restricted to `id, name, surname, image` |
+| POST | `set_route_ascent/create_route_ascent/{route_id}` | `auth:sanctum` + reCAPTCHA (if configured) | `Api\User\Admin\Guide\RouteAscentController` (multipart) |
+| GET | `set_route_ascent/get_my_route_ascents` | `auth:sanctum` | own ascents (+ `route_name`, `route_grade`, `sector_name`) |
+| DELETE | `set_route_ascent/del_my_route_ascent/{id}` | `auth:sanctum` | own ascent only |
+| GET | `set_route_ascent/get_all_route_ascents_admin` | `route › show` | all ascents |
+| DELETE | `set_route_ascent/del_route_ascent_admin/{id}` | `route › del` | any ascent |
+
+**Frontend:** the route Info modal (`RouteModalComponent.vue`) shows "Log ascent" and "Ascents (N)" (`ascents_count` from `get_route_for_modal`), opening `CreateRouteAscentModal.vue` / `RouteAscentsListModal.vue` (in `climbing_routes/items/modals/ascents/`) through `SectorComponent.vue`. The create modal hides Onsight for boulders and offers grade opinions in the route's own scale (French for sport, V-scale for boulders). The list modal shows per-style counts and the most-suggested grade. User page `/my_route_ascents` (`MyRouteAscentsListPage.vue`, left menu → Favorites) is the climber's logbook with total / hardest send / hardest boulder (toprope excluded); admin page `/route_ascents` (`RouteAscentsAdminPage.vue`, left menu → Guide). Route ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
+
 ### Local Businesses
 
 Businesses (guesthouses, shops, tour operators) linked to climbing areas. An article can be related to at most **4** businesses (`Admin\Guide\LocalBisnesController::MAX_RELATIONS_PER_ARTICLE`, returned to the admin relation tabs as `max_relations`; the slot columns follow it). On the article page they're shown by `LocaleBisnesListComponent.vue` as cards in a slider.
@@ -307,6 +333,7 @@ Guide content is managed at `user.climbing.ge` under the **Guide** section.
 | **Sectors** | Add sectors to outdoor spots |
 | **Routes** | Add climbing routes to sectors |
 | **Multi-pitch** | Add MTP routes and pitches |
+| **Route ascents** | All logged sport/boulder ascents (`/route_ascents`, `route › show`; delete needs `route › del`) |
 | **Multi-pitch ascents** | All recorded MTP ascents (`/mtp_ascents`, `mtp › show`; delete needs `mtp › del`) |
 | **Regions** | Outdoor climbing regions |
 | **Mount Massifs** | Mountain group definitions |

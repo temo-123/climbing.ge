@@ -2735,6 +2735,40 @@
             "empty": "No ascents recorded yet.",
             "col_climber": "Climber"
         },
+        "route_ascent": {
+            "create_title": "Log route ascent",
+            "save_btn": "Save ascent",
+            "record_btn": "Log ascent",
+            "show_ascents_btn": "Ascents ({count})",
+            "date_label": "Ascent date",
+            "style_label": "Style",
+            "style_required": "Please choose an ascent style.",
+            "style": {
+                "onsight": "Onsight",
+                "flash": "Flash",
+                "redpoint": "Redpoint",
+                "toprope": "Top rope"
+            },
+            "style_hint": {
+                "onsight": "Led clean on the first try with no prior information about the route.",
+                "flash": "Sent clean on the first try, with beta (watched someone or got tips).",
+                "redpoint": "Sent clean after previous attempts or working the moves.",
+                "toprope": "Climbed on top rope, not led."
+            },
+            "attempts_label": "Number of attempts (optional)",
+            "attempts_short": "{count} tries",
+            "suggested_grade_label": "Your grade opinion",
+            "grade_agree": "Agree with the guidebook grade",
+            "grade_consensus": "Most suggested grade",
+            "comment_label": "Comment",
+            "photo_label": "Photo (optional)",
+            "success": "Your ascent has been logged!",
+            "error": "Failed to log ascent. Please try again.",
+            "list_title": "Route ascents",
+            "empty": "No ascents logged yet.",
+            "col_climber": "Climber",
+            "col_grade": "Grade opinion"
+        },
         "about": {
             "organization_contacts": "Organization Contacts"
         }
@@ -3952,7 +3986,9 @@
             "partner_organizations": "Partner Organizations",
             "partner_organizations_list": "Organizations & Members",
             "my_mtp_ascents": "My multi-pitch ascents",
-            "guide_mtp_ascents": "Multi-pitch ascents"
+            "my_route_ascents": "My route ascents (logbook)",
+            "guide_mtp_ascents": "Multi-pitch ascents",
+            "guide_route_ascents": "Route ascents"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -4128,6 +4164,20 @@
             "col_mtp": "Multi-pitch",
             "col_style": "Style",
             "col_comment": "Comment"
+        },
+        "route_ascents": {
+            "my_table_name": "My route ascents",
+            "admin_table_name": "Route ascents",
+            "col_route": "Route",
+            "col_grade": "Grade",
+            "col_sector": "Sector",
+            "col_style": "Style",
+            "col_attempts": "Attempts",
+            "col_suggested_grade": "Grade opinion",
+            "col_comment": "Comment",
+            "total": "Total ascents",
+            "hardest": "Hardest send",
+            "hardest_boulder": "Hardest boulder"
         }
     },
     "global": {
@@ -4146,7 +4196,9 @@
             "app_store_alt": "@:user.training_summary.app_store_alt",
             "google_play_alt": "@:user.training_summary.google_play_alt",
             "terms_of_use": "Terms of Use",
-            "privacy_policy": "Privacy Policy"
+            "privacy_policy": "Privacy Policy",
+            "donation_terms": "Donation Terms",
+            "delete_account": "Delete account"
         },
         "form": {
             "save": "@:common.save"
@@ -4376,5 +4428,9 @@
     "privacy": {
         "title": "Privacy Policy",
         "meta_description": "Privacy Policy — Climbing Georgia"
+    },
+    "donation_terms": {
+        "title": "Donation Terms",
+        "meta_description": "Donation Terms — Climbing Georgia"
     }
 }

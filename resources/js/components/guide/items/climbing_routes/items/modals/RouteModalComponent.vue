@@ -158,6 +158,19 @@
                                 {{ $t('guide.route.show_feedbacks') }}
                             </button>
                         </div>
+
+                        <div class="flex-row mt-3 w-100">
+                            <button class="btn btn-success" @click="create_route_ascent_modal">
+                                <i class="fa fa-flag-checkered"></i> {{ $t('guide.route_ascent.record_btn') }}
+                            </button>
+                            <button
+                                class="btn btn-primary float-right"
+                                v-if="route.ascents_count && route.ascents_count > 0"
+                                @click="show_route_ascents_modal(route.id)"
+                            >
+                                {{ $t('guide.route_ascent.show_ascents_btn', { count: route.ascents_count }) }}
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -302,6 +315,20 @@ getCategoryText(category) {
         show_route_all_review_modal(route_id) {
             this.is_show_route_modal = false;
             this.$emit('show_route_all_review_modal', route_id);
+        },
+
+        create_route_ascent_modal() {
+            this.is_show_route_modal = false;
+            this.$emit('show_route_ascent_modal', this.route.id, {
+                name: this.route.name,
+                grade: this.route.grade,
+                category: this.route.category,
+            });
+        },
+
+        show_route_ascents_modal(route_id) {
+            this.is_show_route_modal = false;
+            this.$emit('show_route_ascents_modal', route_id);
         },
 
         open_login_then_reopen() {
