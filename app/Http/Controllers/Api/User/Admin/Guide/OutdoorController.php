@@ -69,7 +69,12 @@ class OutdoorController extends Controller
 
         $region_article_count = Region::where('id', '=', $request->filter_id)->count();
         if($region_article_count > 0){
-            $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles;
+            // Regions are shared by outdoor, indoor and ice articles — keep only the table's category
+            $filtred_articles_by_region = Region::where('id', '=', $request->filter_id)->first()->articles()
+                ->when($request->category, fn($query) => $query->where('category', '=', $request->category))
+                ->with('global_article_us', 'outdoor_region:regions.id,regions.us_name')
+                ->latest('articles.id')
+                ->get();
             return $filtred_articles_by_region;
         }
     }

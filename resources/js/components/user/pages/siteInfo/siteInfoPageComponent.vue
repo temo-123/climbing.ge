@@ -86,8 +86,9 @@
                                     <tr>
                                         <td>{{ $t('admin.site_info.ad_block_row') }}</td>
                                         <td>|</td>
-                                        <td>
-                                            <span v-html="site_info && site_info.ad ? site_info.ad : ''"></span>
+                                        <td class="long_text_cell">
+                                            <div :class="{ 'long_text_collapsed': is_long_text(site_info && site_info.ad ? site_info.ad : '') && !expanded_texts['global_ad'] }" v-html="site_info && site_info.ad ? site_info.ad : ''"></div>
+                                            <button v-if="is_long_text(site_info && site_info.ad ? site_info.ad : '')" type="button" class="btn btn-link btn-sm p-0" @click="toggle_text('global_ad')">{{ expanded_texts['global_ad'] ? $t('admin.site_info.show_less') : $t('admin.site_info.show_more') }}</button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -183,7 +184,10 @@
                                 <tbody>
                                     <tr v-for="info in site_us_info" :key="info.id || info.slug">
                                         <td>{{ info && info.slug ? info.slug : '' }}</td>
-                                        <td v-html="info && info.us_data ? info.us_data : ''"></td>
+                                        <td class="long_text_cell">
+                                            <div :class="{ 'long_text_collapsed': is_long_text(info && info.us_data ? info.us_data : '') && !expanded_texts['us_' + (info.id || info.slug)] }" v-html="info && info.us_data ? info.us_data : ''"></div>
+                                            <button v-if="is_long_text(info && info.us_data ? info.us_data : '')" type="button" class="btn btn-link btn-sm p-0" @click="toggle_text('us_' + (info.id || info.slug))">{{ expanded_texts['us_' + (info.id || info.slug)] ? $t('admin.site_info.show_less') : $t('admin.site_info.show_more') }}</button>
+                                        </td>
                                         <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'us')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
@@ -211,7 +215,10 @@
                                 <tbody>
                                     <tr v-for="info in site_ka_info" :key="info.id || info.slug">
                                         <td>{{ info && info.slug ? info.slug : '' }}</td>
-                                        <td v-html="info && info.ka_data ? info.ka_data : ''"></td>
+                                        <td class="long_text_cell">
+                                            <div :class="{ 'long_text_collapsed': is_long_text(info && info.ka_data ? info.ka_data : '') && !expanded_texts['ka_' + (info.id || info.slug)] }" v-html="info && info.ka_data ? info.ka_data : ''"></div>
+                                            <button v-if="is_long_text(info && info.ka_data ? info.ka_data : '')" type="button" class="btn btn-link btn-sm p-0" @click="toggle_text('ka_' + (info.id || info.slug))">{{ expanded_texts['ka_' + (info.id || info.slug)] ? $t('admin.site_info.show_less') : $t('admin.site_info.show_more') }}</button>
+                                        </td>
                                         <td><button class="btn btn-primary pull-right" @click="open_edit_modal(info, 'ka')">{{ $t('common.edit') }}</button></td>
                                     </tr>
                                 </tbody>
@@ -363,6 +370,8 @@ components: {
 
                 showAddLinkModal: false,
 
+                expanded_texts: {},
+
                 action_tab: 1
             }
         },
@@ -385,6 +394,14 @@ components: {
         methods: {
             _getStorageKey(){
                 return `tab_num_${this.$route.name}`;
+            },
+            is_long_text(html){
+                if (!html) return false
+                const text = String(html).replace(/<[^>]*>/g, '').trim()
+                return text.length > 300 || (String(html).match(/<(p|br|li)\b/gi) || []).length > 6
+            },
+            toggle_text(key){
+                this.expanded_texts[key] = !this.expanded_texts[key]
             },
             from_user_site_url_get_domen(url){
                 return new URL(url).hostname;
@@ -539,3 +556,24 @@ components: {
         }
     }
 </script>
+
+<style scoped>
+    .long_text_cell {
+        max-width: 700px;
+        overflow-wrap: anywhere;
+    }
+    .long_text_collapsed {
+        max-height: 120px;
+        overflow: hidden;
+        position: relative;
+    }
+    .long_text_collapsed::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 40px;
+        background: linear-gradient(to bottom, rgba(255, 255, 255, 0), var(--bs-body-bg, #fff));
+    }
+</style>

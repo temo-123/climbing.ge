@@ -3,6 +3,23 @@
         <span v-if="article_loading">
             <articlePreloader />
         </span>
+        <!-- Coming soon gyms have no page yet — friendly placeholder instead of the article -->
+        <div v-else-if="is_coming_soon" class="indoor_coming_soon_page">
+            <i class="fa fa-clock-o indoor_coming_soon_icon" aria-hidden="true"></i>
+            <h1>{{ $t('guide.article.coming_soon_page_title') }}</h1>
+            <h2 v-if="indoors.locale_data">{{ indoors.locale_data.title }}</h2>
+            <p>{{ $t('guide.article.coming_soon_page_text') }}</p>
+            <router-link class="btn btn-primary" :to="($i18n.locale === 'ka' ? '/ka' : '') + '/indoor'">
+                {{ $t('guide.article.back_to_indoor_list') }}
+            </router-link>
+
+            <metaData
+                v-if="indoors.locale_data"
+                :title = "indoors.locale_data.title"
+                :description = "indoors.locale_data.description"
+                :image = "'/public/images/indoor_img/'+indoors.image"
+            />
+        </div>
         <span v-else-if="!article_loading">
             <IndoorWorkStatusAlert v-if="indoors.global_data" :status="indoors.global_data.work_status" style="margin-top: 20px;" />
             <articlePage
@@ -32,6 +49,11 @@
                 article_loading: true
             }
         },
+        computed: {
+            is_coming_soon() {
+                return !!(this.indoors.global_data && this.indoors.global_data.work_status === 'coming_soon')
+            },
+        },
         components: {
             IndoorWorkStatusAlert,
             articlePreloader,
@@ -55,7 +77,10 @@
                 .then(response => {
                     this.indoors = response.data
 
-                    this.$refs.article_page.update_similar_articles_component(this.indoors.id)
+                    // Not rendered for coming soon gyms
+                    if (this.$refs.article_page) {
+                        this.$refs.article_page.update_similar_articles_component(this.indoors.id)
+                    }
                 })
                 .catch(error =>{
                 })
@@ -64,3 +89,28 @@
         }
     }
 </script>
+
+<style scoped>
+    .indoor_coming_soon_page {
+        text-align: center;
+        padding: 60px 15px 80px;
+    }
+    .indoor_coming_soon_icon {
+        font-size: 4em;
+        color: #279fbb;
+        margin-bottom: 15px;
+    }
+    .indoor_coming_soon_page h1 {
+        font-weight: bold;
+    }
+    .indoor_coming_soon_page h2 {
+        color: #279fbb;
+        font-size: 1.5em;
+    }
+    .indoor_coming_soon_page p {
+        color: #666;
+        font-size: 1.1em;
+        max-width: 600px;
+        margin: 15px auto 25px;
+    }
+</style>

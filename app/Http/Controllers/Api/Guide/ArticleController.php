@@ -45,7 +45,12 @@ class ArticleController extends Controller
 {
     public function get_category_articles(Request $request)
     {
-        return Article::with('global_article_us')->latest('id')->where('category', '=', $request->category)->get();
+        $articles = Article::with('global_article_us')->latest('id')->where('category', '=', $request->category);
+        // Admin outdoor / indoor / ice tables show each article's region
+        if (in_array($request->category, ['outdoor', 'indoor', 'ice'])) {
+            $articles->with('outdoor_region:regions.id,regions.us_name');
+        }
+        return $articles->get();
     }
 
 
@@ -190,8 +195,8 @@ class ArticleController extends Controller
         $articles = [];
         if($article_count > 0){
             $global_articles = Article::latest('id')->where('category', '=', $category)->where('published', '=', 1)->get();
-            // Indoor gyms page filters by region client-side
-            if ($category == 'indoor') {
+            // Indoor and ice list pages filter by region client-side
+            if (in_array($category, ['indoor', 'ice'])) {
                 $global_articles->load('outdoor_region:regions.id');
             }
             $articles = ArticlesService::get_locale_article_use_locale($global_articles, $lang);

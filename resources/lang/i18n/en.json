@@ -1252,6 +1252,8 @@
             "failed_delete_ascent": "Failed to delete ascent."
         },
         "site_info": {
+            "show_more": "Show more",
+            "show_less": "Show less",
             "global_data_tab": "Global data",
             "georgian_data_tab": "Georgian data",
             "english_data_tab": "English data",
@@ -2120,7 +2122,10 @@
             "mount_masives_table": "Mount Masives",
             "filter_by_mount_masive": "Filter by Mount Masive",
             "col_sectors": "@:common.sectors",
-            "donation_col": "Donation"
+            "donation_col": "Donation",
+            "work_status_col": "Working status",
+            "work_status_normal_short": "Normal hours",
+            "region_col": "Region"
         },
         "common": {
             "id": "@:common.id",
@@ -2659,6 +2664,23 @@
                 "closed_now": "Closed now",
                 "opens_in": "Opens in {min} min",
                 "closes_in": "Closes in {min} min"
+            },
+            "coming_soon_click_notice": "The gym page will be available once it opens. Stay tuned!",
+            "coming_soon_page_title": "We're opening soon!",
+            "coming_soon_page_text": "This gym hasn't opened yet, so its page isn't available. Meanwhile, check out the other climbing gyms.",
+            "back_to_indoor_list": "See all climbing gyms",
+            "indoor_filter": {
+                "region": "Region",
+                "sort": "Sort by",
+                "status": "Status",
+                "sort_newest": "Newest first",
+                "sort_name": "Name (A–Z)",
+                "sort_open_now": "Open now first",
+                "sort_price": "Price (low to high)",
+                "status_all": "All gyms",
+                "status_open_now": "Open now",
+                "status_working": "Hide closed and coming soon",
+                "other_region": "Other"
             }
         },
         "breadcrumb home": "Home",

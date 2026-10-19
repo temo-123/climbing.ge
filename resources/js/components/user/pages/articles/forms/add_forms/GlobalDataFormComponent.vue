@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor'].includes(this.category)">
+                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor', 'ice'].includes(this.category)">
                         <label for="region" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.regions_label') }} </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.region_id" name="region" >
@@ -201,7 +201,7 @@
             },
         },
         mounted() {
-            if (['outdoor', 'indoor'].includes(this.category)) {
+            if (['outdoor', 'indoor', 'ice'].includes(this.category)) {
                 this.get_regions(this.category)
             }
             if (this.category == 'mount_route') {
@@ -225,7 +225,7 @@
             },
 
             get_regions(category){
-                if(['outdoor', 'indoor'].includes(category)){
+                if(['outdoor', 'indoor', 'ice'].includes(category)){
                     axios
                     .get("/get_region/get_all_outdoor_regions/")
                     .then(response => {

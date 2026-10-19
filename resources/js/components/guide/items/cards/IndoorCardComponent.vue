@@ -1,24 +1,32 @@
 <template>
-    <!-- Whole card opens the gym page -->
-    <div class='row featurette indoor-card' role="link" @click="open_gym">
-        <div class='col-md-6 indoor_img'>
+    <!-- Whole card opens the gym page (coming soon gyms have no page yet — show a notice instead) -->
+    <div :class="['row', 'featurette', 'indoor-card', { 'indoor-card-soon': is_coming_soon }]" :role="is_coming_soon ? null : 'link'" @click="open_gym">
+        <!-- error doesn't bubble — catch it in the capture phase to swap a missing image for the placeholder -->
+        <div class='col-md-6 indoor_img' @error.capture="image_failed = true">
             <div class="product-image" v-if="indoor.global_data.new_flag">
                 <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
             <span v-if="alert_status" :class="['indoor_status_ribbon', 'indoor_status_ribbon_' + indoor.global_data.work_status]">
                 {{ $t('guide.article.work_status.' + indoor.global_data.work_status) }}
             </span>
-            <router-link :to="'indoor/'+indoor.global_data.url_title">
-                <site-img v-if="indoor.global_data.image" :src="'/public/images/indoor_img/'+indoor.global_data.image" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
+            <component :is="is_coming_soon ? 'span' : 'router-link'" :to="is_coming_soon ? null : gym_path">
+                <site-img v-if="indoor.global_data.image && !image_failed" :src="'/public/images/indoor_img/'+indoor.global_data.image" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'m-image-hero--image'" :alt='indoor.locale_data.title'/>
-            </router-link>
+            </component>
         </div>
         <div class='col-md-6 indoor_text indoot_text_for_mobile'>
-            <router-link :to="'indoor/'+indoor.global_data.url_title">
+            <component :is="is_coming_soon ? 'span' : 'router-link'" :to="is_coming_soon ? null : gym_path">
                 <h2>{{ indoor.locale_data.title }}</h2>
-            </router-link>
+            </component>
 
             <IndoorWorkStatusAlert :status="indoor.global_data.work_status" />
+
+            <transition name="indoor_soon_notice">
+                <div v-if="show_soon_notice" class="indoor_soon_notice">
+                    <i class="fa fa-smile-o" aria-hidden="true"></i>
+                    {{ $t('guide.article.coming_soon_click_notice') }}
+                </div>
+            </transition>
 
             <span class="indoor_short_description" v-html="indoor.locale_data.short_description"></span>
 
@@ -66,9 +74,17 @@
             return {
                 now: new Date(),
                 timer: null,
+                show_soon_notice: false,
+                image_failed: false,
             }
         },
         computed: {
+            is_coming_soon() {
+                return this.indoor.global_data.work_status === 'coming_soon'
+            },
+            gym_path() {
+                return 'indoor/' + this.indoor.global_data.url_title
+            },
             alert_status() {
                 return ['temporarily_closed', 'sport_session_closed', 'coming_soon'].includes(this.indoor.global_data.work_status)
             },
@@ -104,6 +120,10 @@
         },
         methods: {
             open_gym() {
+                if (this.is_coming_soon) {
+                    this.show_soon_notice = true
+                    return
+                }
                 this.$router.push((this.$i18n.locale === 'ka' ? '/ka' : '') + '/indoor/' + this.indoor.global_data.url_title)
             },
             short_time(time) {
@@ -128,6 +148,22 @@
         cursor: pointer;
     }
 
+    .indoor-card-soon {
+        cursor: default;
+    }
+
+    .indoor_soon_notice {
+        background: #eaf6f9;
+        border-left: 4px solid #279fbb;
+        border-radius: 4px;
+        color: #1f7f96;
+        padding: 10px 14px;
+        margin-bottom: 1em;
+    }
+
+    .indoor_soon_notice-enter-active { transition: opacity 0.3s ease; }
+    .indoor_soon_notice-enter-from { opacity: 0; }
+
     .indoor-card:hover {
         box-shadow: 0 4px 16px rgba(0,0,0,0.2);
         transform: translateY(-5px);
@@ -137,6 +173,10 @@
         position: relative;
         border-radius: 8px;
         overflow: hidden;
+    }
+
+    .indoor_img {
+        min-height: 150px;
     }
 
     .indoor_img img {

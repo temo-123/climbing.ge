@@ -32,7 +32,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor'].includes(this.category)">
+                    <div class="form-group clearfix row" v-if="['outdoor', 'indoor', 'ice'].includes(this.category)">
                         <label for="region" class='col-md-2 control-label '> {{ $t('admin.articles.global_form.regions_label') }} </label>
                         <div class="col-md-10">
                             <select class="form-control" v-model="data.region_id" name="region" >
@@ -188,7 +188,7 @@
             },
             category_prop: function(newVal, oldVal) { 
                 this.category = this.category_prop
-                if (['outdoor', 'indoor'].includes(this.category)) {
+                if (['outdoor', 'indoor', 'ice'].includes(this.category)) {
                     this.get_regions()
                 }
                 if (this.category == 'mount_route') {
@@ -203,7 +203,7 @@
             // },
         },
         mounted() {
-            if (['outdoor', 'indoor'].includes(this.category)) {
+            if (['outdoor', 'indoor', 'ice'].includes(this.category)) {
                 this.get_regions()
             }
             if (this.category == 'mount_route') {

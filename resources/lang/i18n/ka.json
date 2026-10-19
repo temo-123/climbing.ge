@@ -1252,6 +1252,8 @@
             "failed_delete_ascent": "ასვლის წაშლა ვერ მოხერხდა."
         },
         "site_info": {
+            "show_more": "მეტის ჩვენება",
+            "show_less": "ნაკლების ჩვენება",
             "global_data_tab": "ზოგადი მონაცემები",
             "georgian_data_tab": "ქართული მონაცემები",
             "english_data_tab": "ინგლისური მონაცემები",
@@ -2120,7 +2122,10 @@
             "mount_masives_table": "მთის მასივები",
             "filter_by_mount_masive": "ფილტრი მთის მასივის მიხედვით",
             "col_sectors": "@:common.sectors",
-            "donation_col": "დონაცია"
+            "donation_col": "დონაცია",
+            "work_status_col": "სამუშაო სტატუსი",
+            "work_status_normal_short": "ჩვეულებრივი საათები",
+            "region_col": "რეგიონი"
         },
         "common": {
             "id": "@:common.id",
@@ -2657,6 +2662,23 @@
                 "closed_now": "ახლა დახურულია",
                 "opens_in": "გაიხსნება {min} წუთში",
                 "closes_in": "დაიხურება {min} წუთში"
+            },
+            "coming_soon_click_notice": "დარბაზის გვერდი ხელმისაწვდომი იქნება გახსნის შემდეგ. თვალი ადევნეთ სიახლეებს!",
+            "coming_soon_page_title": "მალე გავიხსნებით!",
+            "coming_soon_page_text": "ეს დარბაზი ჯერ არ გახსნილა, ამიტომ მისი გვერდი ხელმისაწვდომი არ არის. მანამდე გაეცანით სხვა საცოცავ დარბაზებს.",
+            "back_to_indoor_list": "ყველა საცოცი დარბაზი",
+            "indoor_filter": {
+                "region": "რეგიონი",
+                "sort": "დალაგება",
+                "status": "სტატუსი",
+                "sort_newest": "ჯერ ახალი",
+                "sort_name": "სახელი (ა–ჰ)",
+                "sort_open_now": "ჯერ ღია",
+                "sort_price": "ფასი (ზრდადობით)",
+                "status_all": "ყველა დარბაზი",
+                "status_open_now": "ახლა ღიაა",
+                "status_working": "დახურულის და მალე გახსნადის დამალვა",
+                "other_region": "სხვა"
             }
         },
         "breadcrumb home": "მთავარი",

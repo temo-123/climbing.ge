@@ -156,14 +156,26 @@ export default {
             }
             return validData;
         },
-        get_regions(category, tabs){
-            if(category != 'outdoor'){
+        // Plain text columns (TabBodyComponent has no relation cells) for region and indoor work status
+        prepare_article_rows(category, items){
+            items.forEach(item => {
+                item.region_name = (item.outdoor_region || []).map(region => region.us_name).join(', ') || '—'
+                if(category == 'indoor'){
+                    item.work_status_label = item.work_status
+                        ? this.$t('guide.article.work_status.' + item.work_status)
+                        : this.$t('admin.articles.work_status_normal_short')
+                }
+            })
+            return items
+        },
+        get_regions(category, tabs, tab_id = 2){
+            if(!['outdoor', 'ice'].includes(category)){
                 return Promise.resolve()
             }
             return axios.get("/get_region/get_all_outdoor_regions").then(response => {
                 const validData = this.validateData(response.data)
                 tabs.push({
-                    id: 2,
+                    id: tab_id,
                     table_name: this.$t('admin.articles.regions_table'),
                     add_action: {
                         action: 'route',
@@ -322,9 +334,10 @@ export default {
                 })
         },
         get_filtred_articles(id){
-            axios.get("/set_outdoor/get_filtred_outdoor_spots_for_admin/"+id, {category: this.$route.params.article_category})
+            const category = this.$route.params.article_category
+            axios.get("/set_outdoor/get_filtred_outdoor_spots_for_admin/"+id, { params: { category } })
                 .then(response => {
-                    const validData = this.validateData(response.data)
+                    const validData = this.prepare_article_rows(category, this.validateData(response.data))
                     if (this.data_for_tab[0]?.tab_data) {
                         this.data_for_tab[0].tab_data.data = validData
                     }
@@ -407,6 +420,12 @@ export default {
                         tabs[0].tab_data.tab.body.splice(3, 0, ['action_fun_id', 'show_spot_rock_images_modal', 'btn btn-warning', '<i aria-hidden="true" class="fa fa-pencil-square-o"></i>'])
                         tabs[0].tab_data.tab.perm.splice(3, 0, ['article', 'edit'])
                     }
+                    if(['outdoor', 'indoor', 'ice'].includes(category)){
+                        this.prepare_article_rows(category, tabs[0].tab_data.data)
+                        tabs[0].tab_data.tab.head.splice(2, 0, this.$t('admin.articles.region_col'))
+                        tabs[0].tab_data.tab.body.splice(2, 0, ['data', ['region_name']])
+                        tabs[0].tab_data.tab.perm.splice(2, 0, ['no'])
+                    }
                     if(category == 'outdoor'){
                         if (tabs[0].tab_data.data.length > 0) {
                             tabs[0].tab_data.tab.head.splice(3, 0, this.$t('common.sectors'))
@@ -416,10 +435,17 @@ export default {
                         return this.get_regions(category, tabs).then(() => tabs)
                     }
                     if(category == 'ice'){
-                        return this.get_ice_sectors(category, tabs).then(() => tabs)
+                        return this.get_ice_sectors(category, tabs)
+                            .then(() => this.get_regions(category, tabs, 4))
+                            .then(() => tabs)
                     }
                     if(category == 'mount_route'){
                         return this.get_mounts(tabs).then(() => tabs)
+                    }
+                    if(category == 'indoor'){
+                        tabs[0].tab_data.tab.head.splice(2, 0, this.$t('admin.articles.work_status_col'))
+                        tabs[0].tab_data.tab.body.splice(2, 0, ['data', ['work_status_label']])
+                        tabs[0].tab_data.tab.perm.splice(2, 0, ['no'])
                     }
                     return tabs
                 })
