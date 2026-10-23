@@ -30,15 +30,15 @@
 
                     <!-- Use Registered Email Option -->
                     <div class="form-group">
-                        <div class="custom-control custom-checkbox">
+                        <div class="form-check">
                             <input
                                 type="checkbox"
-                                class="custom-control-input"
+                                class="form-check-input"
                                 id="useRegisteredEmail"
                                 v-model="useRegisteredEmail"
                                 @change="toggleEmailInput"
                             >
-                            <label class="custom-control-label" for="useRegisteredEmail">
+                            <label class="form-check-label" for="useRegisteredEmail">
                                 {{ $t('admin.tour.use_registered_email_label') }}
                             </label>
                         </div>
@@ -74,7 +74,7 @@
                     <div class="form-group mt-4">
                         <button
                             @click="initiateGoogleAuth"
-                            class="btn btn-google btn-block"
+                            class="btn btn-google w-100"
                             :disabled="isLoading || (!useRegisteredEmail && !googleEmail)"
                         >
                             <i class="fa fa-google"></i>
@@ -336,7 +336,7 @@
 
     .form-group label {
         font-weight: 600;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .btn-google {
@@ -361,25 +361,25 @@
     }
 
     .advanced-settings {
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         padding: 15px;
         border-radius: 8px;
-        border: 1px solid #dee2e6;
+        border: 1px solid var(--cg-line);
     }
 
     .sync-status-section {
-        border-top: 1px solid #dee2e6;
+        border-top: 1px solid var(--cg-line);
         padding-top: 20px;
         margin-top: 20px;
     }
 
     .sync-status-section h5 {
         margin-bottom: 15px;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .sync-info {
-        background: #f8f9fa;
+        background: var(--cg-chalk);
         padding: 15px;
         border-radius: 8px;
     }
@@ -405,7 +405,7 @@
     }
 
     .text-secondary {
-        color: #6c757d;
+        color: var(--cg-stone);
     }
 </style>
 

@@ -56,7 +56,7 @@
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.common.publish') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_service.published" name="published" >
                                     <option value="0">{{ $t('admin.common.not_public') }}</option>
                                     <option value="1">{{ $t('admin.common.public') }}</option>
@@ -87,21 +87,21 @@
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_service.title"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <small_editor v-model="data.us_service.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_service.text" />
                             </div>
                         </div>
@@ -118,14 +118,14 @@
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="value name"  v-model="data.ka_service.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_service.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <small_editor v-model="data.ka_service.short_description" />
                             </div>
@@ -133,7 +133,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.ka_service.text" />
                             </div>
                         </div>

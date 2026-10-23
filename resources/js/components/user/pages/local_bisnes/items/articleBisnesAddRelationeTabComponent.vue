@@ -7,8 +7,8 @@
             </div>
 
             <div class="form-group clearfix">
-                <label class="col-xs-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
-                <div class="col-xs-8">
+                <label class="col-2 control-label">{{ $t('admin.local_business.select_option_label') }}</label>
+                <div class="col-8">
                     <div class="btn-group" role="group">
                         <button
                             type="button"
@@ -32,8 +32,8 @@
         <div class="col-md-12" v-if="use_category">
             <h4>{{ $t('admin.local_business.auto_category_relations_title') }}</h4>
             <div class="form-group clearfix">
-                <label for="selected_category" class="col-xs-2 control-label">{{ $t('admin.export.select_category_label') }}</label>
-                <div class="col-xs-8">
+                <label for="selected_category" class="col-2 control-label">{{ $t('admin.export.select_category_label') }}</label>
+                <div class="col-8">
 
                     <select class="form-control" v-model="selected_category" @change="onCategoryChange()">
                         <option value="">{{ $t('admin.local_business.select_a_category_placeholder') }}</option>
@@ -78,8 +78,8 @@
         <div class="row" v-if="use_individual">
 
             <div class="col-md-12">
-                <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
+                <div class="form-group">
+                    <button class="btn btn-primary float-start" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
                 </div>
             </div>
 
@@ -124,8 +124,8 @@
             </div>
 
             <div class="col-md-12">
-                <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
+                <div class="form-group">
+                    <button class="btn btn-primary float-start" @click="add_new_article_value()">{{ $t('admin.local_business.add_new_article_btn') }}</button>
                 </div>
             </div>
         </div>

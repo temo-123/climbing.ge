@@ -31,16 +31,16 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-groupe">
-                                <button @click="open_edit_modal()" class="btn btn-primary float-right">{{ $t('user.profile.edit_my_data') }}</button>
+                            <div class="form-group">
+                                <button @click="open_edit_modal()" class="btn btn-primary float-end">{{ $t('user.profile.edit_my_data') }}</button>
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-groupe">
-                                <button @click="get_user_data" class="btn btn-success float-right" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
-                                <span class="badge badge-primare mb-1 float-right" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
+                            <div class="form-group">
+                                <button @click="get_user_data" class="btn btn-success float-end" v-if="!user_is_refresh">{{ $t('common.refresh') }} ({{user_reset_id}})</button>
+                                <span class="badge text-bg-primary mb-1 float-end" v-if="user_is_refresh">{{ $t('common.updating') }}</span>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
             </div>
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                             <button @click="edit_password_model()" class="btn btn-primary">{{ $t('user.profile.edit_password_btn') }}</button>
                     </div>
                 </div>
@@ -67,14 +67,14 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                         <button class="btn btn-primary" @click="new_user_site_add_model()" >{{ $t('user.profile.add_new_site') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button @click="get_user_sites" class="btn btn-success float-right" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
+                    <div class="form-group">
+                        <button @click="get_user_sites" class="btn btn-success float-end" v-if="!is_user_site_refresh">{{ $t('common.refresh') }} ({{user_site_reset_id}})</button>
+                        <span class="badge text-bg-primary mb-1 float-end" v-if="is_user_site_refresh">{{ $t('common.updating') }}</span>
                     </div>
                 </div>
             </div>

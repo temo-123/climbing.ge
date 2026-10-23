@@ -9,7 +9,7 @@
         <form @submit.prevent="submitOrder" v-if="!submitted">
 
             <div v-if="formErrors.length > 0" class="alert alert-danger">
-                <ul class="mb-0 pl-3">
+                <ul class="mb-0 ps-3">
                     <li v-for="(err, i) in formErrors" :key="i">{{ err }}</li>
                 </ul>
             </div>
@@ -196,11 +196,11 @@
             <button type="button" class="btn btn-success btn-sm mb-3" @click="addProduct">
                 <i class="fa fa-plus"></i> {{ $t('admin.orders.add_product_btn') }}
             </button>
-            <button type="button" class="btn btn-outline-secondary btn-sm mb-3 ml-2" @click="exportInvoice" :disabled="exportingInvoice || form.order_product_list.length === 0">
+            <button type="button" class="btn btn-outline-secondary btn-sm mb-3 ms-2" @click="exportInvoice" :disabled="exportingInvoice || form.order_product_list.length === 0">
                 <span v-if="exportingInvoice" class="spinner-border spinner-border-sm"></span>
                 <i v-else class="fa fa-file-pdf-o"></i> {{ $t('admin.orders.export_invoice_btn') }}
             </button>
-            <select class="form-control form-control-sm d-inline-block ml-2 mb-3" style="width:auto;" v-model="invoiceLocale">
+            <select class="form-control form-control-sm d-inline-block ms-2 mb-3" style="width:auto;" v-model="invoiceLocale">
                 <option value="ka">ქართული</option>
                 <option value="en">English</option>
             </select>
@@ -225,7 +225,7 @@
                         <span>{{ deliveryPriceDisplay.toFixed(2) }} ₾</span>
                     </div>
                     <hr class="my-2">
-                    <div class="d-flex justify-content-between font-weight-bold" style="font-size:1.1em;">
+                    <div class="d-flex justify-content-between fw-bold" style="font-size:1.1em;">
                         <span>{{ $t('admin.orders.grand_total_label') }}</span>
                         <span>{{ grandTotal.toFixed(2) }} ₾</span>
                     </div>
@@ -237,7 +237,7 @@
         <div v-if="submitted" class="text-center p-4">
             <i class="fa fa-check-circle text-success" style="font-size:2.5em;"></i>
             <h5 class="mt-2">{{ $t('admin.orders.order_created_msg', { id: createdOrderId }) }}</h5>
-            <div v-if="matchedUsers.length > 0" class="alert alert-info mt-3 text-left">
+            <div v-if="matchedUsers.length > 0" class="alert alert-info mt-3 text-start">
                 <strong>{{ $t('admin.orders.linked_to_existing_accounts_prefix', { plural: matchedUsers.length > 1 ? 's' : '' }) }}</strong>
                 <ul class="mb-0 mt-1">
                     <li v-for="u in matchedUsers" :key="u.id">

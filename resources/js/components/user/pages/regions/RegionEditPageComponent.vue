@@ -51,7 +51,7 @@
                 <form >
                     <div class="form-group clearfix row" >
                         <label for="name" class='col-xs-2 control-label'> {{ $t('admin.regions.map_label') }} </label>
-                        <div class="col-xs-8">
+                        <div class="col-8">
                             <input type="text" v-model="data.map" name="map" class="form-control"> 
                         </div>
                     </div>
@@ -67,7 +67,7 @@
                 <form >
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> {{ $t('admin.regions.en_name_label') }} </label>
-                        <div class="col-xs-8">
+                        <div class="col-8">
                             <input type="text" v-model="data.us_name" name="us_name" class="form-control"> 
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                 <form >
                     <div class="form-group clearfix">
                         <label for="name" class='col-xs-2 control-label'> {{ $t('admin.regions.ka_name_label') }} </label>
-                        <div class="col-xs-8">
+                        <div class="col-8">
                             <input type="text" v-model="data.ka_name" name="ka_name" class="form-control"> 
                         </div>
                     </div>

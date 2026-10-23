@@ -2,13 +2,13 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="index_h2">{{ $t('guide.title.outdoor climbing')}}</h1>
-                        
-            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.outdoor_description}}
-            </h2>
+            <section class="cg-page-head cg-page-head--list cg-art-quickdraw">
+                <span class="cg-page-head__icon"><i class="fa fa-sun-o" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.outdoor climbing')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.outdoor_description}}</div>
+                </div>
+            </section>
 
             <sectorQuantyt :route_categories_prop="route_categories"/>
 

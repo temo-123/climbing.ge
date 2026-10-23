@@ -5,39 +5,29 @@
                 <div class="discount-percent-badge discount-badge-fourty">{{ $t('guide.new_flag_badge') }}</div>
             </div>
 
-            <site-img v-if="article.area.global_data.image" :src=" '/public/' + image_dir+article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
-            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
+            <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
+            <div class="cg-card-media">
+                <site-img v-if="article.area.global_data.image" :src=" '/public/' + image_dir+article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>
 
-            <div class="mask">
-                <router-link :to="'outdoor/'+article.area.global_data.url_title" class="info">
-                    <i class="fa fa-arrow-right"></i>
-                </router-link>
+                <div class="mask">
+                    <router-link :to="'outdoor/'+article.area.global_data.url_title" class="info">
+                        <i class="fa fa-arrow-right"></i>
+                    </router-link>
+                </div>
             </div>
-            
+
             <div class="isotope-item-dtls">
-                <h3>{{ article.area.locale_data.title }}</h3>
-                <div class="article_size text-center">
+                <h3>
+                    <router-link :to="'outdoor/'+article.area.global_data.url_title">{{ article.area.locale_data.title }}</router-link>
+                </h3>
+                <div class="article_size">
                     <span v-html="article.area.locale_data.short_description"></span>
-                    <div class="col text-center">
-                        
-                        <div class="row">
-                            {{ article.route_quantyty.sectors }} Sectors
-                            {{ article.route_quantyty.routes }} Routes
-                        </div>
-
-                        <div class="row" v-if="article.route_quantyty.mtps > 0">
-                            {{ article.route_quantyty.mtps }} Multy pitch
-                        </div>
-
-                        <hr class="region_likes_line" v-if="!true">
-
-                        <div class="row" v-if="!true">
-                            <span > 
-                                <i class="fa fa-heart-o " ></i> - 0
-                            </span>
-                        </div>
-
-                    </div>
+                </div>
+                <div class="cg-card-stats">
+                    <span class="cg-chip"><i class="fa fa-th-large" aria-hidden="true"></i> {{ article.route_quantyty.sectors }} {{ $t('guide.article_right_nabar.quick_stats_sectors') }}</span>
+                    <span class="cg-chip"><i class="fa fa-map-signs" aria-hidden="true"></i> {{ article.route_quantyty.routes }} {{ $t('guide.article_right_nabar.quick_stats_routes') }}</span>
+                    <span class="cg-chip" v-if="article.route_quantyty.mtps > 0"><i class="fa fa-sort-amount-asc" aria-hidden="true"></i> {{ article.route_quantyty.mtps }} {{ $t('guide.article_right_nabar.quick_stats_mtps') }}</span>
                 </div>
             </div>
         </div>
@@ -62,14 +52,3 @@
         }
     }
 </script>
-
-<style>
-.region_likes_line{
-    margin: 2%;
-    border-color: #eee;
-}
-/* .article_card{
-    display: flex;
-    flex-flow: row wrap;
-}    */
-</style>

@@ -651,7 +651,7 @@
         font-weight: 700;
         margin: 6px 0 0;
         line-height: 1.25;
-        color: #222;
+        color: var(--cg-ink-2);
     }
 
     .action-icons { display: flex; gap: 6px; flex-shrink: 0; }
@@ -663,10 +663,10 @@
         cursor: pointer;
         padding: 8px;
         border-radius: 50%;
-        color: #666;
+        color: var(--cg-stone);
         transition: background-color 0.2s, color 0.2s;
     }
-    .icon-btn:hover { background-color: #f0f0f0; color: #333; }
+    .icon-btn:hover { background-color: var(--cg-chalk); color: var(--cg-ink-2); }
     .favorite-btn:hover { color: #f54d5c; }
 
     /* ── Price block ── */
@@ -678,13 +678,15 @@
         margin: 8px 0 12px;
     }
     .price-current {
-        font-size: 1.8em;
+        font-family: var(--cg-font-display);
+        font-size: 2.4em;
         font-weight: 700;
-        color: #1a1a1a;
+        line-height: 1;
+        color: var(--cg-ink);
     }
     .price-old {
         font-size: 1.1em;
-        color: #999;
+        color: var(--cg-muted);
         text-decoration: line-through;
     }
     .price-discount-tag {
@@ -722,7 +724,7 @@
     .option-label {
         font-size: 0.85em;
         font-weight: 600;
-        color: #555;
+        color: var(--cg-stone);
         text-transform: uppercase;
         letter-spacing: 0.04em;
         margin-bottom: 5px;
@@ -750,7 +752,7 @@
         width: 38px;
         height: 38px;
         border: 1px solid #d0d0d0;
-        background: #f5f5f5;
+        background: var(--cg-chalk);
         font-size: 1.2em;
         cursor: pointer;
         border-radius: 6px;
@@ -776,7 +778,7 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        background: #27bb7d;
+        background: var(--cg-accent);
         color: #fff;
         border: none;
         border-radius: 8px;
@@ -832,9 +834,9 @@
         font-size: 1.4em;
         font-weight: 700;
         margin-bottom: 16px;
-        color: #222;
+        color: var(--cg-ink-2);
         padding-bottom: 8px;
-        border-bottom: 2px solid #27bb7d;
+        border-bottom: 2px solid var(--cg-accent);
         display: inline-block;
     }
     .description-content {
@@ -864,10 +866,10 @@
         font-size: 0.75em;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        color: #888;
+        color: var(--cg-muted);
         font-weight: 600;
     }
-    .spec-value { font-size: 0.95em; color: #333; font-weight: 500; }
+    .spec-value { font-size: 0.95em; color: var(--cg-ink-2); font-weight: 500; }
 
     .mead_in_geo_img { width: 18%; height: auto; margin: 10px auto; display: block; }
 
@@ -909,11 +911,11 @@
     .custom-option-card-name {
         font-size: 0.9em;
         font-weight: 600;
-        color: #333;
+        color: var(--cg-ink-2);
         margin-bottom: 2px;
         word-break: break-word;
     }
-    .custom-option-card-price { font-size: 0.85em; color: #666; }
+    .custom-option-card-price { font-size: 0.85em; color: var(--cg-stone); }
 
     /* ── All products link ── */
     .all-products-section { padding: 30px 0; }
@@ -922,8 +924,8 @@
         align-items: center;
         gap: 8px;
         padding: 10px 20px;
-        background: #f5f5f5;
-        border: 1px solid #ddd;
+        background: var(--cg-chalk);
+        border: 1px solid var(--cg-line);
         border-radius: 6px;
         text-decoration: none;
         color: #444;
@@ -931,7 +933,7 @@
         font-size: 0.95em;
         transition: background 0.2s, color 0.2s;
     }
-    .all-products-link:hover { background: #e8e8e8; color: #222; text-decoration: none; }
+    .all-products-link:hover { background: #e8e8e8; color: var(--cg-ink-2); text-decoration: none; }
 
     .disabled { pointer-events: none; opacity: 0.6; }
 

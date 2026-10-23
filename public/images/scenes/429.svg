@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-label="A queue of climbers on a fixed line">
+<!-- 429 "Queue on the route" (too many requests): climbers stand in line on a
+     fixed rope up a snow ridge; each one shuffles a step in turn and waits.
+     climbing.ge scene set. -->
+<style>
+  .c { animation: shuffle 3.2s ease-in-out infinite; }
+  .c2 { animation-delay: -.8s } .c3 { animation-delay: -1.6s } .c4 { animation-delay: -2.4s }
+  .flag { animation: wave 1.2s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 50%; }
+  @keyframes shuffle { 0%, 70%, 100% { transform: translate(0, 0) } 80% { transform: translate(2px, -3px) } 90% { transform: translate(3px, -2px) } }
+  @keyframes wave { 0%, 100% { transform: skewY(0) scaleX(1) } 50% { transform: skewY(-8deg) scaleX(.9) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bcdcef"/><stop offset="1" stop-color="#eef5f8"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="420" rx="22"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="420" fill="url(#sky)"/>
+  <path d="M0 260l60-50 40 26 70-80 60 40 50-30 80 70V420H0z" fill="#c9d6de"/>
+  <!-- the snow ridge rising to the right -->
+  <path d="M-10 420L300 70l70 70V420z" fill="#f4f7f9"/>
+  <path d="M300 70l70 70V420H250z" fill="#dfe7ec"/>
+  <path d="M-10 420L300 70l-20 60-200 230z" fill="#e8eef2"/>
+  <!-- summit flag -->
+  <path d="M300 70V40" stroke="#5b6670" stroke-width="2"/>
+  <path class="flag" d="M300 40h18l-5 6 5 6h-18z" fill="#d9343e"/>
+  <!-- fixed line along the ridge -->
+  <path d="M40 380L300 76" fill="none" stroke="#f07a3e" stroke-width="2.2"/>
+  <g fill="#6c757d"><circle cx="92" cy="319" r="2.6"/><circle cx="170" cy="228" r="2.6"/><circle cx="248" cy="137" r="2.6"/></g>
+</g>
+
+<!-- the queue: four climbers clipped to the fixed line -->
+<g stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(206 192)"><g class="c c1">
+    <path d="M0 0l-4 14M3 0l5 13" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-16 2-21h10c2 5 2 12 1 21z" fill="#1f93b0"/>
+    <path d="M7 -16l9 -6" stroke="#1f93b0" stroke-width="4.5"/>
+    <circle cx="3" cy="-27" r="5.5" fill="#e8b58f"/><path d="M-3 -27a6 6.4 0 0 1 12 0z" fill="#ffc233"/>
+  </g></g>
+  <g transform="translate(166 238)"><g class="c c2">
+    <path d="M0 0l-4 14M3 0l5 13" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-16 2-21h10c2 5 2 12 1 21z" fill="#c4532d"/>
+    <path d="M7 -16l9 -6" stroke="#c4532d" stroke-width="4.5"/>
+    <circle cx="3" cy="-27" r="5.5" fill="#e8b58f"/><path d="M-3 -27a6 6.4 0 0 1 12 0z" fill="#7a5bd6"/>
+  </g></g>
+  <g transform="translate(126 284)"><g class="c c3">
+    <path d="M0 0l-4 14M3 0l5 13" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-16 2-21h10c2 5 2 12 1 21z" fill="#2f9e8f"/>
+    <path d="M7 -16l9 -6" stroke="#2f9e8f" stroke-width="4.5"/>
+    <circle cx="3" cy="-27" r="5.5" fill="#e8b58f"/><path d="M-3 -27a6 6.4 0 0 1 12 0z" fill="#ff6a3d"/>
+  </g></g>
+  <g transform="translate(86 330)"><g class="c c4">
+    <path d="M0 0l-4 14M3 0l5 13" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-16 2-21h10c2 5 2 12 1 21z" fill="#6c45c4"/>
+    <path d="M7 -16l9 -6" stroke="#6c45c4" stroke-width="4.5"/>
+    <circle cx="3" cy="-27" r="5.5" fill="#e8b58f"/><path d="M-3 -27a6 6.4 0 0 1 12 0z" fill="#ffc233"/>
+  </g></g>
+</g>
+</svg>

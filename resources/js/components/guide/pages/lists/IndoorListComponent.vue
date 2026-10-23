@@ -2,13 +2,13 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="index_h2" >{{ $t('guide.title.indoor climbing')}}</h1>
-
-            <div class="bar"><i class="fa fa-exclamation-triangle"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.indoor_description}}
-            </h2>
+            <section class="cg-page-head cg-page-head--list cg-art-holds">
+                <span class="cg-page-head__icon"><i class="fa fa-building-o" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.indoor climbing')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.indoor_description}}</div>
+                </div>
+            </section>
 
             <div class="row" v-if="indoors.length > 0">
                 <div class="container articles_filter_bar indoor_filter_bar">
@@ -41,7 +41,7 @@
 
             <!-- Grouping toggle (only while all regions are shown), same as on the outdoor page -->
             <div class="row indoor_group_bar" v-if="filter_region === 'All' && indoor_regions.length > 0">
-                <div class="btn-group pull-right" role="group" aria-label="Group Mode">
+                <div class="btn-group float-end" role="group" aria-label="Group Mode">
                     <button type="button" class="btn btn-sm" :class="group_mode === 'grouped' ? 'btn-success' : 'btn-secondary'" @click="set_group_mode('grouped')">
                         <i class="fa fa-folder"></i> {{ $t('guide.group.by_region') }}
                     </button>
@@ -284,21 +284,7 @@
     }
 
     .indoor_group_bar {
+        justify-content: flex-end;
         margin: 0 0 1em;
-        padding: 0 15px;
-    }
-
-    .indoor_group_bar .btn {
-        color: #fff;
-    }
-
-    .indoor_group_bar .btn-success {
-        background-color: #28a745;
-        border-color: #28a745;
-    }
-
-    .indoor_group_bar .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
     }
 </style>

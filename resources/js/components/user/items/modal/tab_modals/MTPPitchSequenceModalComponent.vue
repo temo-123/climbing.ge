@@ -142,6 +142,6 @@
     }
     .drag-over {
         background: #d0e8ff;
-        outline: 2px dashed #0d6efd;
+        outline: 2px dashed var(--cg-accent);
     }
 </style>

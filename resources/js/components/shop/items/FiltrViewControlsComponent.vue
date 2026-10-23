@@ -17,7 +17,7 @@
                     {{ formatFilterLabel(key) }}: {{ formatFilterValue(key, value) }}
                     <i class="fa fa-times remove-icon"></i>
                 </span>
-                <button class="btn btn-xs btn-outline-danger clear-all" @click="$emit('clear-filters')">
+                <button class="btn btn-sm btn-outline-danger clear-all" @click="$emit('clear-filters')">
                     {{ $t('shop.filters.clear_all_btn') }}
                 </button>
             </div>
@@ -25,22 +25,12 @@
 
         <!-- View Mode Toggle -->
         <div class="filters-right">
-            <div class="btn-group" role="group" :aria-label="$t('shop.filters.view_mode_aria')">
-                <button
-                    type="button"
-                    class="btn"
-                    :class="[viewMode === 'grid' ? 'btn-success active' : 'btn-secondary-custom']"
-                    @click="$emit('update:viewMode', 'grid')"
-                >
-                    <i class="fa fa-th-large"></i>
+            <div class="cg-segmented" role="group" :aria-label="$t('shop.filters.view_mode_aria')">
+                <button type="button" :class="{ active: viewMode === 'grid' }" @click="$emit('update:viewMode', 'grid')">
+                    <i class="fa fa-th-large" aria-hidden="true"></i>
                 </button>
-                <button
-                    type="button"
-                    class="btn"
-                    :class="[viewMode === 'list' ? 'btn-success active' : 'btn-secondary-custom']"
-                    @click="$emit('update:viewMode', 'list')"
-                >
-                    <i class="fa fa-list-ul"></i>
+                <button type="button" :class="{ active: viewMode === 'list' }" @click="$emit('update:viewMode', 'list')">
+                    <i class="fa fa-list-ul" aria-hidden="true"></i>
                 </button>
             </div>
         </div>
@@ -189,8 +179,8 @@
     flex-wrap: wrap;
 }
 .filter-tag {
-    background: #e9ecef;
-    color: #495057;
+    background: var(--cg-line);
+    color: var(--cg-stone);
     padding: 5px 10px;
     border-radius: 20px;
     font-size: 13px;
@@ -201,11 +191,11 @@
     transition: all 0.2s;
 }
 .filter-tag:hover {
-    background: #dee2e6;
+    background: var(--cg-line);
 }
 .remove-icon {
     font-size: 11px;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 .filter-tag:hover .remove-icon {
     color: #dc3545;
@@ -219,7 +209,7 @@
     align-items: center;
 }
 .btn-secondary-custom {
-    background: #6c757d;
+    background: var(--cg-stone);
     color: white;
 }
 .btn-secondary-custom:hover {

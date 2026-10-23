@@ -23,7 +23,7 @@
                 </button>
                 <button
                     type="button"
-                    class="btn btn-primary ml-2"
+                    class="btn btn-primary ms-2"
                     @click="update_user_notification_data"
                     :disabled="notification_is_saving || notification_is_refresh"
                 >

@@ -2,10 +2,12 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="index_h2">{{ $t('summit.menu.my_ascents') }}</h1>
-            <div class="bar"><i class="fa fa-flag"></i></div>
-
-            <div v-if="loading" class="text-center py-5">
+            <section class="cg-page-head cg-page-head--list cg-art-summit">
+                <span class="cg-page-head__icon"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('summit.menu.my_ascents') }}</h1>
+                </div>
+            </section><div v-if="loading" class="text-center py-5">
                 <i class="fa fa-spinner fa-spin fa-3x text-muted"></i>
             </div>
 
@@ -59,17 +61,17 @@
                                     <span v-else class="text-muted">—</span>
                                 </td>
                                 <td>
-                                    <span v-if="ascent.route_grade" class="badge badge-secondary">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
+                                    <span v-if="ascent.route_grade" class="badge text-bg-secondary">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
                                     <span v-else class="text-muted">—</span>
                                 </td>
                                 <td>
-                                    <span v-if="ascent.is_archive" class="badge badge-secondary">
+                                    <span v-if="ascent.is_archive" class="badge text-bg-secondary">
                                         <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
                                     </span>
-                                    <span v-else-if="ascent.is_gps_validated" class="badge badge-success">
+                                    <span v-else-if="ascent.is_gps_validated" class="badge text-bg-success">
                                         <i class="fa fa-check"></i> GPS
                                     </span>
-                                    <span v-else class="badge badge-light text-muted">—</span>
+                                    <span v-else class="badge text-bg-light text-muted">—</span>
                                 </td>
                                 <td>
                                     <span v-if="ascent.comment" class="comment-cell" :title="ascent.comment">
@@ -84,7 +86,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
+                <router-link to="/summits/list" class="btn btn-primary main-btn">
                     <i class="fa fa-list"></i> {{ $t('summit.menu.list') }}
                 </router-link>
             </div>
@@ -145,7 +147,7 @@ export default {
 
 <style scoped>
 .ascent-table th {
-    background-color: #343a40;
+    background-color: var(--cg-ink-2);
     color: #fff;
     font-weight: 600;
     white-space: nowrap;
@@ -154,7 +156,7 @@ export default {
     vertical-align: middle;
 }
 .summit-link {
-    color: #007bff;
+    color: var(--cg-accent);
     text-decoration: none;
     font-weight: 600;
 }
@@ -163,6 +165,6 @@ export default {
 }
 .comment-cell {
     font-size: 0.88rem;
-    color: #555;
+    color: var(--cg-stone);
 }
 </style>

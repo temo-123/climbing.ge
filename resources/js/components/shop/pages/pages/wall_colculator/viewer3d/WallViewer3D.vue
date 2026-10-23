@@ -973,7 +973,7 @@ export default {
     align-items: center;
     justify-content: center;
     font-size: 13px;
-    color: #888;
+    color: var(--cg-muted);
     text-align: center;
     padding: 0 20px;
 }

@@ -63,30 +63,3 @@
         },
     }
 </script>
-
-<style scoped>
-    .top_menu {
-        background-color: #522f92 !important;
-    }
-
-    .preloader_background {
-        background: radial-gradient(circle, #522f92 0% 0%, #7B55B3 100%) !important;
-    }
-
-    .loader {
-        border-top-color: #522f92 !important;
-    }
-
-    .navbar {
-        background-color: #522f92 !important;
-        border-color: #6A3FA0;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #522f92 !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #522f92 !important;
-    }
-</style>

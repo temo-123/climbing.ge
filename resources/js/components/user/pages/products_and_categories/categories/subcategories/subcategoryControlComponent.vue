@@ -9,11 +9,11 @@
             </div>
 
             <div class="col-md-12">
-                <div class="form-groupe">
-                    <button class="btn btn-primary float-left" @click="openAddSubcategoryModal()">{{ $t('admin.shop.add_new_subcategory') }}</button>
+                <div class="form-group">
+                    <button class="btn btn-primary float-start" @click="openAddSubcategoryModal()">{{ $t('admin.shop.add_new_subcategory') }}</button>
                 </div>
-                <div class="form-groupe">
-                    <button class="btn btn-success float-right" @click="get_subcategories_for_category()">{{ $t('common.refresh') }}</button>
+                <div class="form-group">
+                    <button class="btn btn-success float-end" @click="get_subcategories_for_category()">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
         </div>

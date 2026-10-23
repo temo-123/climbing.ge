@@ -10,7 +10,7 @@
                                 <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.checkout.back') }}
                             </button>
                         </div>
-                        <div class="col text-right">
+                        <div class="col text-end">
                             <button class="btn btn-success" @click="create_order()" :disabled="create_order_loading || !cart_items.length || min_ship_price_not_met || has_quantity_mismatch">
                                 <i v-if="!create_order_loading" :class="selected_payment === 'online payment' ? 'fa fa-credit-card' : 'fa fa-check'" aria-hidden="true"></i>
                                 <i v-else class="fa fa-spinner fa-spin" aria-hidden="true"></i>
@@ -49,7 +49,7 @@
                         <div v-for="product in quantity_mismatch_items" :key="product.id">
                             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                             {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
-                            <button type="button" class="btn btn-link btn-sm p-0 ml-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
+                            <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@
                             <div class="alert alert-info">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                                 <strong> {{ $t('user.checkout.estimated_delivery', { days: delivery_days }) }}</strong>
-                                <span v-if="has_produced_by_order" class="ml-2 text-muted">{{ $t('user.checkout.includes_made_to_order') }}</span>
+                                <span v-if="has_produced_by_order" class="ms-2 text-muted">{{ $t('user.checkout.includes_made_to_order') }}</span>
                             </div>
                         </div>
                     </div>
@@ -89,7 +89,7 @@
                             <div class="card border-0 shadow-sm">
                                 <div class="card-body">
                                     <h5 class="card-title mb-3">
-                                        <i class="fa fa-credit-card mr-2"></i> {{ $t('user.checkout.payment_method') }}
+                                        <i class="fa fa-credit-card me-2"></i> {{ $t('user.checkout.payment_method') }}
                                     </h5>
 
                                     <div class="payment-options mb-3">
@@ -98,10 +98,10 @@
                                                 type="radio"
                                                 value="deliverd payment"
                                                 v-model="selected_payment"
-                                                class="sr-only"
+                                                class="visually-hidden"
                                             />
-                                            <i class="fa fa-truck mr-2 text-secondary"></i>
-                                            <span class="font-weight-bold">{{ $t('user.checkout.pay_on_delivery') }}</span>
+                                            <i class="fa fa-truck me-2 text-secondary"></i>
+                                            <span class="fw-bold">{{ $t('user.checkout.pay_on_delivery') }}</span>
                                             <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_on_delivery_desc') }}</small>
                                         </label>
 
@@ -110,20 +110,20 @@
                                                 type="radio"
                                                 value="online payment"
                                                 v-model="selected_payment"
-                                                class="sr-only"
+                                                class="visually-hidden"
                                             />
-                                            <span class="tbc-logo mr-2">TBC</span>
-                                            <span class="font-weight-bold">{{ $t('user.checkout.pay_online') }}</span>
+                                            <span class="tbc-logo me-2">TBC</span>
+                                            <span class="fw-bold">{{ $t('user.checkout.pay_online') }}</span>
                                             <small class="d-block text-muted mt-1">{{ $t('user.checkout.pay_online_desc') }}</small>
                                         </label>
                                     </div>
 
                                     <div v-if="selected_payment === 'online payment'" class="alert alert-info mb-0 py-2 small">
-                                        <i class="fa fa-lock mr-1"></i>
+                                        <i class="fa fa-lock me-1"></i>
                                         {{ $t('user.checkout.online_payment_notice') }}
                                     </div>
                                     <div v-else class="alert alert-warning mb-0 py-2 small">
-                                        <i class="fa fa-info-circle mr-1"></i>
+                                        <i class="fa fa-info-circle me-1"></i>
                                         {{ $t('user.checkout.cod_notice') }}
                                     </div>
                                 </div>
@@ -141,8 +141,8 @@
                                             <th>{{ $t('common.product') }}</th>
                                             <th>{{ $t('user.checkout.col_option') }}</th>
                                             <th class="text-center">{{ $t('user.checkout.col_qty') }}</th>
-                                            <th class="text-right">{{ $t('common.price') }}</th>
-                                            <th class="text-right">{{ $t('user.checkout.col_total') }}</th>
+                                            <th class="text-end">{{ $t('common.price') }}</th>
+                                            <th class="text-end">{{ $t('user.checkout.col_total') }}</th>
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -157,11 +157,11 @@
                                             </td>
                                             <td class="text-muted">{{ product.option && product.option.name || '—' }}</td>
                                             <td class="text-center">{{ product.quantity }}</td>
-                                            <td class="text-right">{{ product.option && product.option.price }} ₾</td>
-                                            <td class="text-right">
+                                            <td class="text-end">{{ product.option && product.option.price }} ₾</td>
+                                            <td class="text-end">
                                                 <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
                                             </td>
-                                            <td class="text-right">
+                                            <td class="text-end">
                                                 <button @click="del_from_cart(product.id)" class="btn btn-outline-danger btn-sm">
                                                     <i class="fa fa-trash" aria-hidden="true"></i>
                                                 </button>
@@ -170,18 +170,18 @@
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <td colspan="5" class="text-right text-muted">{{ $t('user.checkout.shipping') }}</td>
-                                            <td class="text-right">{{ shiping }} ₾</td>
+                                            <td colspan="5" class="text-end text-muted">{{ $t('user.checkout.shipping') }}</td>
+                                            <td class="text-end">{{ shiping }} ₾</td>
                                             <td></td>
                                         </tr>
                                         <tr v-if="effective_discount_percent > 0">
-                                            <td colspan="5" class="text-right text-success">{{ $t('user.checkout.discount', { percent: effective_discount_percent }) }}</td>
-                                            <td class="text-right text-success">−{{ discount_amount }} ₾</td>
+                                            <td colspan="5" class="text-end text-success">{{ $t('user.checkout.discount', { percent: effective_discount_percent }) }}</td>
+                                            <td class="text-end text-success">−{{ discount_amount }} ₾</td>
                                             <td></td>
                                         </tr>
-                                        <tr class="font-weight-bold">
-                                            <td colspan="5" class="text-right">{{ $t('user.checkout.total') }}</td>
-                                            <td class="text-right">{{ total_price }} ₾</td>
+                                        <tr class="fw-bold">
+                                            <td colspan="5" class="text-end">{{ $t('user.checkout.total') }}</td>
+                                            <td class="text-end">{{ total_price }} ₾</td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
@@ -404,7 +404,7 @@
 .payment-option {
     display: block;
     padding: 14px 16px;
-    border: 2px solid #dee2e6;
+    border: 2px solid var(--cg-line);
     border-radius: 8px;
     cursor: pointer;
     margin-bottom: 0;
@@ -412,13 +412,13 @@
 }
 
 .payment-option:hover {
-    border-color: #6c757d;
-    background-color: #f8f9fa;
+    border-color: var(--cg-stone);
+    background-color: var(--cg-chalk);
 }
 
 .payment-option.active {
-    border-color: #007bff;
-    background-color: #e8f0fe;
+    border-color: var(--cg-accent);
+    background-color: var(--cg-accent-soft);
 }
 
 .tbc-logo {

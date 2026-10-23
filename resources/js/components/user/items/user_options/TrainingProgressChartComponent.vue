@@ -122,7 +122,7 @@
         display: flex;
         gap: 20px;
         font-size: 0.9rem;
-        color: #6c757d;
+        color: var(--cg-stone);
     }
     .training-progress-chart__legend-item {
         display: inline-flex;

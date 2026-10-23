@@ -2166,7 +2166,8 @@
             "total_items": "Total items: {count}",
             "no_data": "No data to display.",
             "search_placeholder": "Search...",
-            "search": "Search"
+            "search": "Search",
+            "per_page": "Per page"
         },
         "training": {
             "trainings_table": "Trainings",
@@ -2427,7 +2428,8 @@
             "local_image_group_fallback": "Local approach photo",
             "quick_stats_sectors": "Sectors",
             "quick_stats_routes": "Routes",
-            "quick_stats_mtps": "Multi-pitches"
+            "quick_stats_mtps": "Multi-pitches",
+            "live_camera": "Live camera"
         },
         "title": {
             "news": "News",
@@ -2793,6 +2795,19 @@
         },
         "about": {
             "organization_contacts": "Organization Contacts"
+        },
+        "event_dates": {
+            "date": "Date",
+            "starts": "Starts",
+            "ends": "Ends",
+            "days": "{n} days",
+            "starts_in": "Starts in {n} days",
+            "starts_today": "Starts today",
+            "happening_now": "Happening now",
+            "finished": "Finished"
+        },
+        "side_scene": {
+            "ascent_verified": "Summit verified on climbing.ge ✓"
         }
     },
     "shop": {
@@ -3201,7 +3216,11 @@
         "most_liked_film_title": "Most liked film",
         "select_category_filter_hint": "Select category and filter films by category",
         "search_films_title": "Search films",
-        "search_query_notice": "Your search query is: \"{query}\". Please use only English text for your query!"
+        "search_query_notice": "Your search query is: \"{query}\". Please use only English text for your query!",
+        "menu": {
+            "all_films": "All films",
+            "about_us": "About us"
+        }
     },
     "blog": {
         "name": "Climbing Blog",
@@ -3890,7 +3909,9 @@
             "shop": "Shop",
             "blog": "Blog",
             "summits": "Summits",
-            "view_mail_alerts_btn": "View mail & alerts"
+            "view_mail_alerts_btn": "View mail & alerts",
+            "subtitle": "Your climbing at a glance — ascents, orders, trainings and everything you manage on climbing.ge.",
+            "quick_links": "Quick access"
         },
         "menu": {
             "favorite products": "My Favorite Products",
@@ -4010,7 +4031,9 @@
             "my_mtp_ascents": "My multi-pitch ascents",
             "my_route_ascents": "My route ascents (logbook)",
             "guide_mtp_ascents": "Multi-pitch ascents",
-            "guide_route_ascents": "Route ascents"
+            "guide_route_ascents": "Route ascents",
+            "find_page": "Find a page…",
+            "no_pages": "Nothing found"
         },
         "meta": {
             "site_name": "user.climbing.ge",
@@ -4308,13 +4331,45 @@
             "title": "Terms & Privacy",
             "text": "Read how you can use climbing.ge and how we handle your personal data.",
             "not_available": "This document is not available yet. Please try again later."
-        }
+        },
+        "menu_toggle": "Menu",
+        "brand_tagline": "Georgia climbing platform",
+        "brand": {
+            "guide": "Guidebook",
+            "shop": "Shop",
+            "blog": "Blog",
+            "summit": "Summits",
+            "films": "Films",
+            "user": "Dashboard"
+        },
+        "switcher": {
+            "title": "climbing.ge services",
+            "open": "Open climbing.ge services",
+            "current": "You are here",
+            "guide": "Guidebook",
+            "guide_desc": "Crags, routes & topos",
+            "shop": "Shop",
+            "shop_desc": "Gear, tours & climbing walls",
+            "blog": "Blog",
+            "blog_desc": "Stories & news",
+            "summit": "Summits",
+            "summit_desc": "Peaks & ascent log",
+            "films": "Films",
+            "films_desc": "Climbing films",
+            "account": "My account",
+            "account_desc": "Profile, orders & ascents"
+        },
+        "language": "Language",
+        "grade_system": "Grade system",
+        "search": "Search",
+        "top_out": "Top out — back to the top"
     },
     "error": {
         "404": {
             "title": "Oops! Error 404! Page Not Found",
             "description": "Sorry, an error has occurred. The requested page was not found!",
-            "go_home": "Go to Home Page"
+            "go_home": "Go to Home Page",
+            "off_route": "Off route!"
         },
         "host_error": {
             "title": "Oops! There is a site configuration or hosting error!",
@@ -4327,6 +4382,16 @@
             "blacklist": "Your email address has been added to our blacklist. You cannot create a new account using this email address.",
             "no_appeal": "This suspension cannot be reversed. Please do not attempt to contact support regarding this decision.",
             "email_banned": "This email address is banned and cannot be used to create a new account."
+        },
+        "403": {
+            "eyebrow": "Closed project",
+            "title": "Error 403: Access denied",
+            "description": "This route is closed to you. You don't have permission to open this page."
+        },
+        "500": {
+            "eyebrow": "Rope's stuck",
+            "title": "Error 500: Server error",
+            "description": "Something jammed on our side. We're on it. Please try again in a moment."
         }
     },
     "unfollow": {
@@ -4445,6 +4510,14 @@
         "register": {
             "agree_with": "I agree with the",
             "accept_btn": "I agree"
+        },
+        "aside": {
+            "title": "One account for all of climbing.ge",
+            "text": "Sign in once and climb on — the guidebook, shop, summits and training app all share the same account.",
+            "perk_guide": "Save crags, log route ascents and reviews",
+            "perk_summit": "Record your summit ascents",
+            "perk_shop": "Order gear and track purchases",
+            "perk_training": "Sync trainings with the mobile app"
         }
     },
     "privacy": {

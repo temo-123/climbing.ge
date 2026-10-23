@@ -56,7 +56,7 @@ export default {
 
 <style scoped>
 .mgb-root {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 12px;
     padding: 14px 18px 12px;
     margin: 16px 0;
@@ -76,7 +76,7 @@ export default {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.07em;
-    color: #868e96;
+    color: var(--cg-muted);
 }
 
 .mgb-badge {
@@ -130,6 +130,6 @@ export default {
     margin-top: 9px;
     font-size: 11px;
     font-weight: 500;
-    color: #868e96;
+    color: var(--cg-muted);
 }
 </style>

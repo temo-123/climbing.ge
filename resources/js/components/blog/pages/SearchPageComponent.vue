@@ -1,8 +1,12 @@
 <template>
     <div>
         <div class="container">
-            <h1 class="serch_title">{{ $t('blog.title.search') }}</h1>
-            <div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
+            <section class="cg-page-head cg-page-head--list cg-art-compass">
+                <span class="cg-page-head__icon"><i class="fa fa-map-signs" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('blog.title.search') }}</h1>
+                </div>
+            </section><div class="bar"><i class="fa fa-search" aria-hidden="true"></i></div>
 
             <div class="row">
                 <div class="col-md-12">
@@ -34,10 +38,10 @@
                                         <router-link :to="'/post/' + post.global_data.url_title">
                                             <img v-if="post.global_data.image"
                                                 :src="'/public/images/blog_img/' + post.global_data.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="post.locale_data.title" />
                                             <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="post.locale_data.title" />
                                             <h4>{{ post.locale_data.title }}</h4>
                                         </router-link>
@@ -56,10 +60,10 @@
                                         <router-link :to="'/news/' + item.global_data.url_title">
                                             <img v-if="item.global_data.image"
                                                 :src="'/public/images/news_img/' + item.global_data.image"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="item.locale_data.title" />
                                             <img v-else src="/public/images/site_img/image.png"
-                                                class="img-responsive search-card-img"
+                                                class="img-fluid search-card-img"
                                                 :alt="item.locale_data.title" />
                                             <h4>{{ item.locale_data.title }}</h4>
                                         </router-link>
@@ -151,6 +155,6 @@ export default {
 .search-card-desc {
     padding: 0 12px;
     font-size: 0.9em;
-    color: #555;
+    color: var(--cg-stone);
 }
 </style>

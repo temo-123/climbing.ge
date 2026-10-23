@@ -875,7 +875,7 @@ export default {
     display: inline-block;
     max-width: 100%;
     line-height: 0;
-    background: #111;
+    background: var(--cg-ink-2);
 }
 .canvas-bg-img {
     display: block;

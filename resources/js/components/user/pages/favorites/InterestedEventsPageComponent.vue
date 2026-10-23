@@ -152,7 +152,7 @@
     margin: 0;
 }
 .favorites_header_icon {
-    color: #279fbb;
+    color: var(--cg-accent);
     font-size: 1.3rem;
 }
 .favorites_header_actions {
@@ -168,15 +168,15 @@
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid #e9e9e9;
+    border: 1px solid var(--cg-line);
     background: #fff;
-    color: #606060;
+    color: var(--cg-stone);
     cursor: pointer;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 .btn_icon:hover {
-    background: #279fbb;
-    border-color: #279fbb;
+    background: var(--cg-accent);
+    border-color: var(--cg-accent);
     color: #fff;
 }
 .btn_icon.is_spinning i {
@@ -191,7 +191,7 @@
     display: flex;
     justify-content: center;
     padding: 60px 0;
-    color: #279fbb;
+    color: var(--cg-accent);
 }
 
 .event_list_inner {
@@ -238,7 +238,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: #279fbb;
+    background: var(--cg-accent);
     color: #fff;
     text-align: center;
     padding: 10px 6px;
@@ -261,7 +261,7 @@
 .event_img {
     flex: 0 0 110px;
     cursor: pointer;
-    background: #f4f4f4;
+    background: var(--cg-chalk);
 }
 .event_img img {
     width: 100%;
@@ -323,7 +323,7 @@
 .favorites_empty {
     text-align: center;
     padding: 60px 20px;
-    color: #606060;
+    color: var(--cg-stone);
 }
 .favorites_empty_icon {
     font-size: 2.5rem;

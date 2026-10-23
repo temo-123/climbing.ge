@@ -20,12 +20,12 @@
       <ul class="nav nav-tabs mb-4">
         <li class="nav-item">
           <a class="nav-link" :class="{ active: activeTab === 'card' }" href="#" @click.prevent="activeTab = 'card'">
-            <i class="fa fa-credit-card mr-1"></i> {{ $t('guide.donation.card_tab') }}
+            <i class="fa fa-credit-card me-1"></i> {{ $t('guide.donation.card_tab') }}
           </a>
         </li>
         <li class="nav-item">
           <a class="nav-link" :class="{ active: activeTab === 'bank' }" href="#" @click.prevent="switchToBank">
-            <i class="fa fa-bank mr-1"></i> {{ $t('guide.donation.bank_transfer_tab') }}
+            <i class="fa fa-bank me-1"></i> {{ $t('guide.donation.bank_transfer_tab') }}
           </a>
         </li>
       </ul>
@@ -35,13 +35,13 @@
 
         <!-- Donator Info -->
         <div class="bg-light p-3 rounded mb-4">
-          <h5 class="font-weight-bold mb-3">
-            <i class="fa fa-user mr-2 text-primary"></i>{{ $t('guide.donation.donator_info') }}
+          <h5 class="fw-bold mb-3">
+            <i class="fa fa-user me-2 text-primary"></i>{{ $t('guide.donation.donator_info') }}
           </h5>
 
           <!-- Logged-in user: show read-only summary -->
           <div v-if="authUser" class="alert alert-info mb-0">
-            <i class="fa fa-check-circle mr-2"></i>
+            <i class="fa fa-check-circle me-2"></i>
             {{ $t('guide.donation.donating_as_prefix') }} <strong>{{ authUser.name }} {{ authUser.surname }}</strong> ({{ authUser.email }})
           </div>
 
@@ -84,8 +84,8 @@
 
         <!-- Amount Selection -->
         <div class="bg-light p-3 rounded mb-4">
-          <h5 class="font-weight-bold mb-3 text-center">
-            <i class="fa fa-money mr-2 text-warning"></i>{{ $t('guide.donation.select_amount') }}
+          <h5 class="fw-bold mb-3 text-center">
+            <i class="fa fa-money me-2 text-warning"></i>{{ $t('guide.donation.select_amount') }}
           </h5>
 
           <div class="d-flex flex-wrap justify-content-center mb-3">
@@ -113,7 +113,7 @@
               :placeholder="$t('guide.donation.custom_amount_placeholder')"
               min="1"
             >
-            <span class="input-group-text bg-success text-white font-weight-bold">GEL</span>
+            <span class="input-group-text bg-success text-white fw-bold">GEL</span>
           </div>
 
           <div class="alert alert-success text-center mb-0">
@@ -131,18 +131,18 @@
         <button
           @click="processDonation"
           :disabled="!isValidAmount || loading"
-          class="btn btn-success btn-lg btn-block mb-3"
+          class="btn btn-success btn-lg w-100 mb-3"
         >
-          <span v-if="loading" class="spinner-border spinner-border-sm mr-2"></span>
-          <i v-else class="fa fa-heart mr-2"></i>
+          <span v-if="loading" class="spinner-border spinner-border-sm me-2"></span>
+          <i v-else class="fa fa-heart me-2"></i>
           {{ $t('guide.donation.donate_button') + ' ' + displayAmount + ' ' + $t('guide.donation.gel') }}
         </button>
 
         <div v-if="donationSuccess" class="alert alert-success text-center">
-          <i class="fa fa-check-circle mr-2"></i> {{ $t('guide.donation.success') }}
+          <i class="fa fa-check-circle me-2"></i> {{ $t('guide.donation.success') }}
         </div>
         <div v-if="errorMessage" class="alert alert-danger text-center">
-          <i class="fa fa-exclamation-circle mr-2"></i> {{ errorMessage }}
+          <i class="fa fa-exclamation-circle me-2"></i> {{ errorMessage }}
         </div>
       </div>
 
@@ -164,7 +164,7 @@
         <!-- Georgian user — show IBAN -->
         <div v-else-if="bankInfo && bankInfo.allowed">
           <div class="alert alert-info mb-4">
-            <i class="fa fa-info-circle mr-2"></i>
+            <i class="fa fa-info-circle me-2"></i>
             {{ $t('guide.donation.bank_transfer_instructions') }}
           </div>
 
@@ -184,7 +184,7 @@
             <div class="bank-detail-row iban-row">
               <span class="bank-detail-label">{{ $t('guide.donation.iban_label') }}</span>
               <span class="bank-detail-value iban-value">{{ bankInfo.iban }}</span>
-              <button class="btn btn-sm btn-outline-secondary ml-2 copy-btn" @click="copyIban" :class="{ 'btn-success text-white': ibanCopied }">
+              <button class="btn btn-sm btn-outline-secondary ms-2 copy-btn" @click="copyIban" :class="{ 'btn-success text-white': ibanCopied }">
                 <i class="fa" :class="ibanCopied ? 'fa-check' : 'fa-copy'"></i>
                 {{ ibanCopied ? $t('guide.donation.copied_label') : $t('guide.donation.copy_label') }}
               </button>
@@ -196,13 +196,13 @@
           </div>
 
           <div class="alert alert-warning mt-3 mb-0">
-            <i class="fa fa-exclamation-triangle mr-2"></i>
+            <i class="fa fa-exclamation-triangle me-2"></i>
             {{ $t('guide.donation.payment_description_prefix') }} <strong>donation</strong> {{ $t('guide.donation.payment_description_suffix') }}
           </div>
         </div>
 
         <div v-else-if="bankError" class="alert alert-danger text-center">
-          <i class="fa fa-exclamation-circle mr-2"></i> {{ bankError }}
+          <i class="fa fa-exclamation-circle me-2"></i> {{ bankError }}
         </div>
 
       </div>
@@ -358,15 +358,15 @@ export default {
 }
 
 .bank-detail-card {
-  background: #f8f9fa;
-  border: 1px solid #dee2e6;
+  background: var(--cg-chalk);
+  border: 1px solid var(--cg-line);
 }
 
 .bank-detail-row {
   display: flex;
   align-items: center;
   padding: 10px 0;
-  border-bottom: 1px solid #e9ecef;
+  border-bottom: 1px solid var(--cg-line);
 }
 .bank-detail-row:last-child {
   border-bottom: none;
@@ -375,13 +375,13 @@ export default {
 .bank-detail-label {
   width: 140px;
   font-weight: 600;
-  color: #495057;
+  color: var(--cg-stone);
   flex-shrink: 0;
 }
 
 .bank-detail-value {
   flex: 1;
-  color: #212529;
+  color: var(--cg-ink-2);
 }
 
 .iban-value {

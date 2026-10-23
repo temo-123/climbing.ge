@@ -27,7 +27,7 @@
           </tr>
           <tr>
             <td class="text-muted">{{ $t('common.date') }}</td>
-            <td>{{ formatDate(ascent.ascent_date) }}<span v-if="ascent.ascent_time" class="text-muted ml-2">{{ ascent.ascent_time }}</span></td>
+            <td>{{ formatDate(ascent.ascent_date) }}<span v-if="ascent.ascent_time" class="text-muted ms-2">{{ ascent.ascent_time }}</span></td>
           </tr>
           <tr>
             <td class="text-muted">{{ $t('common.route') }}</td>
@@ -37,12 +37,12 @@
                  target="_blank"
                  class="text-success">
                 {{ ascent.route_name }}
-                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
-                <i class="fa fa-external-link fa-xs ml-1"></i>
+                <span v-if="ascent.route_grade" class="label label-default ms-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
+                <i class="fa fa-external-link fa-xs ms-1"></i>
               </a>
               <span v-else-if="ascent.route_name">
                 {{ ascent.route_name }}
-                <span v-if="ascent.route_grade" class="label label-default ml-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
+                <span v-if="ascent.route_grade" class="label label-default ms-1">{{ formatMountGradeSlash(ascent.route_grade) }}</span>
               </span>
               <span v-else class="text-muted">—</span>
             </td>
@@ -63,7 +63,7 @@
             <td class="text-muted" style="vertical-align: top; padding-top: 10px">{{ $t('summit.ascent_page.comment_label') }}</td>
             <td>
               <div class="bg-light rounded px-3 py-2 small" style="font-style: italic; line-height: 1.6">
-                <i class="fa fa-quote-left mr-1 text-muted"></i>{{ ascent.comment }}
+                <i class="fa fa-quote-left me-1 text-muted"></i>{{ ascent.comment }}
               </div>
             </td>
           </tr>

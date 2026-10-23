@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-label="Order placed: the gear is packed">
+<!-- Order placed (one-shot, ~3s): the gear drops into the pack — rope coil,
+     climbing shoe, quickdraw — the lid closes, the buckle clicks and a
+     "ready" tag swings out. climbing.ge scene set. -->
+<style>
+  .drop { opacity: 0; animation: drop .6s cubic-bezier(.4,0,.8,.6) both; }
+  .d1 { animation-delay: .2s } .d2 { animation-delay: .75s } .d3 { animation-delay: 1.3s }
+  .lid { animation: lid .5s 1.95s ease-in-out both; transform-box: fill-box; transform-origin: 50% 0%; }
+  .buckle { opacity: 0; animation: pop .3s 2.4s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .tag { opacity: 0; animation: tag 1.4s 2.55s ease-out both; transform-box: fill-box; transform-origin: 50% 0%; }
+  .bounce { animation: bounce .4s 2.35s ease-out both; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes drop { from { opacity: 1; transform: translateY(-120px) } 85% { opacity: 1 } to { opacity: 0; transform: translateY(0) } }
+  @keyframes lid { from { transform: rotateX(0) translateY(-34px) scaleY(.4) } to { transform: translateY(0) scaleY(1) } }
+  @keyframes pop { from { opacity: 0; transform: scale(.2) } 70% { opacity: 1; transform: scale(1.3) } to { opacity: 1; transform: scale(1) } }
+  @keyframes tag { 0% { opacity: 0; transform: rotate(-60deg) } 30% { opacity: 1; transform: rotate(18deg) } 55% { transform: rotate(-10deg) } 75% { transform: rotate(5deg) } to { opacity: 1; transform: rotate(0) } }
+  @keyframes bounce { 0%, 100% { transform: scale(1) } 40% { transform: scale(1.04, .96) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } .buckle, .tag { opacity: 1 !important } .drop { opacity: 0 !important } }
+</style>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e6f4ee"/><stop offset="1" stop-color="#f4f2ec"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="240" rx="20"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="240" fill="url(#bg)"/>
+  <ellipse cx="180" cy="214" rx="90" ry="10" fill="#15212b" opacity=".08"/>
+</g>
+
+<!-- gear falling in (each disappears into the pack) -->
+<g class="drop d1" stroke-linecap="round">
+  <circle cx="180" cy="120" r="16" fill="none" stroke="#f07a3e" stroke-width="5"/>
+  <circle cx="180" cy="120" r="9" fill="none" stroke="#c25a36" stroke-width="4"/>
+</g>
+<g class="drop d2">
+  <path d="M160 128c0-8 8-12 18-12l16-2c8-1 12-6 14-10 4 2 10 3 14 2l4 6c4 6 10 8 14 11s2 9-4 9h-68c-5 0-8-2-8-4z" fill="#d1495b"/>
+</g>
+<g class="drop d3" fill="none" stroke-linecap="round">
+  <rect x="175" y="96" width="9" height="24" rx="4" fill="#2f9e8f"/>
+  <ellipse cx="179.5" cy="94" rx="6" ry="8" stroke="#7b858e" stroke-width="3"/>
+  <ellipse cx="179.5" cy="124" rx="6" ry="8" stroke="#7b858e" stroke-width="3"/>
+</g>
+
+<!-- the pack -->
+<g class="bounce">
+  <path d="M132 120c0-20 14-30 48-30s48 10 48 30v78c0 10-6 16-16 16h-64c-10 0-16-6-16-16z" fill="#18a06f"/>
+  <path d="M150 150h60v40c0 6-4 10-10 10h-40c-6 0-10-4-10-10z" fill="#13865d"/>
+  <path d="M140 118c-12 4-14 30-10 70M220 118c12 4 14 30 10 70" fill="none" stroke="#0f6e4c" stroke-width="5" stroke-linecap="round"/>
+  <!-- lid closing over the top -->
+  <path class="lid" d="M132 112c0-18 16-28 48-28s48 10 48 28v12c0 6-6 10-14 10h-68c-8 0-14-4-14-10z" fill="#1fb07c"/>
+  <rect class="buckle" x="172" y="128" width="16" height="12" rx="3" fill="#ffc233"/>
+</g>
+<!-- "ready" tag swinging from the strap -->
+<g class="tag">
+  <path d="M232 132v10" stroke="#15212b" stroke-width="1.6"/>
+  <path d="M222 142h20l4 6v20h-28v-20z" fill="#fff" stroke="#15212b" stroke-opacity=".2"/>
+  <path d="M226 158l4 4 8-9" fill="none" stroke="#18a06f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</svg>

@@ -2,7 +2,7 @@
     <div class="login mt-5">
         <div class="card">
             <div class="card-header">
-                <button type="button" class="btn btn-primary btn-sm float-right" @click="go_back()">
+                <button type="button" class="btn btn-primary btn-sm float-end" @click="go_back()">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> {{ $t('user.delete_account.back_btn') }}
                 </button>
                 <h1>{{ $t('user.delete_account.title') }}</h1>

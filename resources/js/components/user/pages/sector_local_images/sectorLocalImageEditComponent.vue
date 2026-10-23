@@ -9,13 +9,13 @@
         <div class="col-md-12" v-show="!is_loading">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                         <button type='submit' form="myForm" class="btn btn-primary">{{ $t('common.save') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button class="btn btn-success float-right" @click="go_back()">{{ $t('common.back') }}</button>
+                    <div class="form-group">
+                        <button class="btn btn-success float-end" @click="go_back()">{{ $t('common.back') }}</button>
                     </div>
                 </div>
             </div>
@@ -48,14 +48,14 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <div class="form-groupe">
+                    <div class="form-group">
                         <button class="btn btn-primary" @click="$refs.myChild.add_new_sector_model()">{{ $t('admin.articles.add_new_sector_btn') }}</button>
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-groupe">
-                        <button @click="get_editing_sectors" class="btn btn-success float-right" v-if="!sectors_refresh">{{ $t('common.refresh') }}</button>
-                        <span class="badge badge-primare mb-1 float-right" v-if="sectors_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
+                    <div class="form-group">
+                        <button @click="get_editing_sectors" class="btn btn-success float-end" v-if="!sectors_refresh">{{ $t('common.refresh') }}</button>
+                        <span class="badge text-bg-primary mb-1 float-end" v-if="sectors_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                     </div>
                 </div>
             </div>

@@ -3,25 +3,25 @@
     <form class="width_100">
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> {{ $t('common.email') }} </label>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <input type="email" name="email" v-model="global_editing_data.email" class="form-control">
             </div>
         </div>
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.site_info.phone_row') }} </label>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <input type="text" name="number" v-model="global_editing_data.number" class="form-control">
             </div>
         </div>
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.site_info.map_row') }} </label>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <input type="text" name="map" v-model="global_editing_data.map" class="form-control">
             </div>
         </div>
         <div class="form-group clearfix">
             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.site_info.ad_block_row') }}</label>
-            <div class="col-xs-8">
+            <div class="col-8">
                 <input type="text" name="ad" v-model="global_editing_data.ad" class="form-control"> 
             </div>
         </div>

@@ -1,0 +1,46 @@
+// ============================================================
+//  Runtime design tokens (CSS custom properties)
+//  Every service shares these; base/_themes.scss only swaps the
+//  --cg-accent* family per subdomain.
+// ============================================================
+
+:root {
+    --cg-ink: #{$cg-ink};
+    --cg-ink-2: #{$cg-ink-2};
+    --cg-stone: #{$cg-stone};
+    --cg-muted: #{$cg-muted};
+    --cg-chalk: #{$cg-chalk};
+    --cg-chalk-2: #{$cg-chalk-2};
+    --cg-line: #{$cg-line};
+    --cg-surface: #fff;
+    --cg-hold: #{$cg-hold};
+    --cg-rope: #{$cg-rope};
+    --cg-footer: #{$cg-footer};
+
+    --cg-accent: #{$cg-guide};
+    --cg-accent-rgb: #{to-rgb($cg-guide)};
+    --cg-accent-dark: #{shade-color($cg-guide, 25%)};
+    --cg-accent-soft: #{tint-color($cg-guide, 88%)};
+    --cg-accent-contrast: #fff;
+
+    --cg-font-body: #{inspect($font-family-sans-serif)};
+    --cg-font-display: #{inspect($cg-font-display)};
+
+    --cg-r-sm: .5rem;
+    --cg-r: .9rem;
+    --cg-r-lg: 1.25rem;
+    --cg-r-xl: 1.75rem;
+
+    --cg-shadow-sm: 0 1px 2px rgba(21, 33, 43, .06), 0 2px 6px rgba(21, 33, 43, .05);
+    --cg-shadow: 0 10px 28px -12px rgba(21, 33, 43, .28);
+    --cg-shadow-lg: 0 28px 60px -24px rgba(21, 33, 43, .42);
+
+    --cg-nav-h: 64px;
+    --cg-ease: cubic-bezier(.2, .7, .2, 1);
+
+    // Site-wide background pattern: the gear doodle wallpaper (carabiners,
+    // holds, ice tools…) from abstracts/_doodles.scss — white on dark
+    // surfaces (header, sidebar, page heads, preloader), ink on light ones.
+    --cg-topo: #{cg-gear-doodles("#fff", .1)};
+    --cg-topo-dark: #{cg-gear-doodles("#15212b", .07)};
+}

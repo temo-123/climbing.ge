@@ -1,7 +1,12 @@
 <template>
     <div v-if="tour" class="tour-container container h-recent-work">
         <div class="tour-header">
-            <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
+            <section class="cg-page-head cg-page-head--list cg-art-map">
+                <span class="cg-page-head__icon"><i class="fa fa-compass" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1 class="tour-title">{{ tour.locale_data.title }}</h1>
+                </div>
+            </section>
         </div>
 
         <!-- <breadcrumb /> -->
@@ -139,9 +144,7 @@
         margin-bottom: 20px;
     }
 
-    .tour-title {
-        text-align: center;
-    }
+    
 
     .tour-image-section {
         text-align: center;

@@ -1,10 +1,10 @@
 <template>
-    <div class="footer"> 
+    <div class="footer">
         <div class="container"> 
-            <div class="row">
+            <div class="cg-footer__grid">
 
-                <div class="col-md-4 display-none-720px">
-                    <div class="f-about" style='color: #fff;'>
+                <div class="cg-footer__col display-none-720px">
+                    <div class="f-about">
                         <h4 class="footer_title">{{ $t('global.footer.about us')}}</h4>
 
                         <div class="footer_description_block">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
+                <div class="cg-footer__col">
                     <div class="f-links">
                         <h4 class="footer_title">{{ $t("global.footer.links") }}</h4>
                         <ul class="footer_links">
@@ -24,8 +24,8 @@
                     </div>
                 </div>
 
-                <div class="col-md-4">
-                    <div class="row f-links container">
+                <div class="cg-footer__col">
+                    <div class="f-links">
                         <div class="flick">
                             <h4 class="footer_title">{{ $t("global.footer.share") }}</h4>
                             <share />

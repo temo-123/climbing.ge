@@ -219,9 +219,9 @@ export default {
 .section-title {
     font-weight: 600;
     font-size: 1.4rem;
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 1rem;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--cg-accent);
     padding-bottom: 0.5rem;
 }
 .form-label {
@@ -234,14 +234,14 @@ export default {
     font-size: 1.1rem;
     padding: 0.5rem;
     border-radius: 5px;
-    border: 1px solid #ced4da;
+    border: 1px solid var(--cg-line);
 }
 .modal-section {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--cg-line);
 }
 .form-group { margin-bottom: 1rem; }
 </style>

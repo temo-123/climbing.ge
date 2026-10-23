@@ -12,7 +12,7 @@
             <div v-for="issue in issues" :key="issue.key" class="d-flex align-items-center mt-2 gap-2">
                 <span class="badge bg-secondary">{{ issue.locale.toUpperCase() }}</span>
                 <span class="text-muted small">{{ entity_label(issue.table_name) }}</span>
-                <span class="badge badge-danger">{{ issue.count }}</span>
+                <span class="badge text-bg-danger">{{ issue.count }}</span>
                 <button class="btn btn-sm btn-warning ms-auto" @click="show_errors(issue)">
                     <i class="fa fa-eye"></i> {{ $t('admin.dashboards.view_btn') }}
                 </button>
@@ -39,7 +39,7 @@
                     <div v-if="error_modal_loading" class="text-center py-3">
                         <i class="fa fa-spinner fa-spin fa-2x"></i>
                     </div>
-                    <table v-else class="table table-condensed table-hover mb-0">
+                    <table v-else class="table table-sm table-hover mb-0">
                         <thead>
                             <tr>
                                 <th>{{ $t('common.id') }}</th>
@@ -175,7 +175,7 @@ export default {
 }
 .entity-error-modal-header {
     padding: 14px 18px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
     display: flex;
     justify-content: space-between;
     align-items: center;

@@ -1,78 +1,41 @@
 <template>
-    <div class="header navbar-expand-lg navbar-right bg-light">
-        <div class="row navbar-fixed-top top_menu">
-            
-            <div class="col-xs-12 col-sm-2 col-md-3 col-lg-3 navbar_title">
-                <div class="site_title">
-                    <router-link style="font-size: 1.5em;" :to="{name: 'studia'}" exact class="site_title">
-                        Climbing Films
-                    </router-link>
-                </div>
-            </div>
-            
-                <nav class="navbar navbar-default float-top films-navbar" role="navigation">
-                    <div class="container-fluid">
+    <header class="cg-nav films-navbar" :class="{ 'is-open': is_open }">
+        <div class="cg-nav__inner">
 
-                        <button type="button" class="navbar-toggle collapsed" @click="open_navbar()">
-                            <i class="fa fa-angle-down"></i>
-                        </button>
+            <cg-brand service="films" :to="{ name: 'studia' }" />
 
-                        <div class="dropdown">
-                            <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown" id="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-search" aria-hidden="true"></i>
-                            </button>
-                            <ul class="dropdown-menu shadows mobail_dropdown" aria-labelledby="dropdown">
-                                <form action="/search" id="searchForm" method="POST" role="search" @submit.prevent="search" class="monail_navbar_form">
-                                    <input class="form-control" name="request" v-model="search_query" placeholder="Search films" autocomplete="off" autofocus="autofocus" type="text">
-                                </form>
-                                <button type="submit" form="searchForm" class="monail_navbar_form_button"> 
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </ul>
+            <button type="button" class="cg-nav__toggle" :aria-expanded="is_open" :aria-label="$t('global.menu_toggle')" @click="open_navbar()">
+                <span></span><span></span><span></span>
+            </button>
+
+            <nav class="cg-nav__menu">
+                <ul class="cg-nav__links">
+                    <li><router-link :to="{name: 'studia'}" exact><i class="fa fa-film" aria-hidden="true"></i> <span>{{ $t('films.menu.all_films') }}</span></router-link></li>
+                    <li><router-link :to="{name: 'about_films'}" exact><span>{{ $t('films.menu.about_us') }}</span></router-link></li>
+                </ul>
+
+                <ul class="cg-nav__tools">
+                    <li class="dropdown">
+                        <a class="cg-icon-btn" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" :title="$t('global.search')">
+                            <i class="fa fa-search" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end cg-nav__search-menu">
+                            <form role="search" @submit.prevent="search">
+                                <div class="input-group">
+                                    <input class="form-control" name="request" v-model="search_query" :placeholder="$t('films.search_films_title')" autocomplete="off" type="text">
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i></button>
+                                </div>
+                            </form>
                         </div>
-                        
-                        <div class="dropdown">
-                            <button type="button" class="navbar-toggle margin_right" data-toggle="dropdown" id="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-language" aria-hidden="true"></i>
-                            </button>
+                    </li>
+                    <localeSwitcher />
+                    <services-switcher current="films" />
+                    <nav-badges />
+                </ul>
+            </nav>
 
-                            <ul class="dropdown-menu shadows mobail_dropdown" aria-labelledby="dropdown">
-                                <!-- <li v-if="activ_lang == 'ka' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'en', localization('en')"><countryFlagWrapper country='usa' size='big'/></a></li>
-                                <li v-if="activ_lang == 'en' || activ_lang == 'ru'"><a class="mobail_flag" @click="activ_lang = 'ka', localization('ka')"><countryFlagWrapper country='geo' size='big'/></a></li>
-                                <li v-if="activ_lang == 'ka' || activ_lang == 'en'"><a class="mobail_flag" @click="activ_lang = 'ru', localization('ru')"><countryFlagWrapper country='rus' size='big'/></a></li> -->
-                            </ul>
-                        </div>
-                        
-                        <button type="button" class="navbar-toggle margin_right" @click="goTo()">
-                            <i class="fa fa-user" ></i>
-                        </button>
-                    </div>
-
-                    <!-- <div class="collapse navbar-collapse mobile_nav_menu" id="bs-example-navbar-collapse-1"> -->
-                    <div :class='[navbar_class]'>
-                        <ul class="nav navbar-nav pull-right top_menu_buttons">
-
-                            <li class="display-none-720px serch_block" style="margin-top: 2.8%;">
-                                <form action="/search" method="POST" role="search" class="navbar-form"  @submit.prevent="search">
-                                    <div class="form-group">
-                                        <input type="text" id="searchForm" class="form-control" placeholder="Search films" v-model="search_query" >
-                                    </div>
-                                    <button type="submit" form="searchForm"  class="btn btn-primary" :style='"color: #FFFFFF;"'>
-                                        <i class="fa fa-search" aria-hidden="true"></i>
-                                    </button>
-                                </form>
-                            </li>
-                
-                            <li><router-link :to="{name: 'about_films',}" exact>        <span> {{ $t('menu about us') }}            </span> </router-link></li>
-
-                            <localeSwitcher />
-                            
-                            <nav-badges />
-                        </ul>
-                    </div>
-                </nav>
         </div>
-    </div>  
+    </header>
 </template>
 
 <script>
@@ -87,9 +50,7 @@
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
 
-                navbar_general_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_class: 'collapse navbar-collapse mobile_nav_menu',
-                navbar_open_class: 'collapse navbar-collapse mobile_nav_menu show',
+                is_open: false,
                 
                 get activ_lang() {
                     return localStorage.getItem('lang') || 'en';
@@ -107,7 +68,7 @@
         },
         watch: {
             '$route' (to, from) {
-                this.navbar_class = this.navbar_general_class
+                this.is_open = false
             }
         },
         methods: {
@@ -123,15 +84,7 @@
             },
             
             open_navbar(){
-                if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu'){
-                    this.navbar_class = this.navbar_open_class
-                }
-                else if(this.navbar_class == 'collapse navbar-collapse mobile_nav_menu show'){
-                    this.navbar_class = this.navbar_general_class
-                }
-                else{
-                    this.navbar_class = this.navbar_general_class
-                }
+                this.is_open = !this.is_open
             }
         }
     }

@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-3 col-6">
         <div class="similar_articles_img">
             <router-link :to="this.route">
                 <site-img v-if="article.area.global_data.image != null" :src="'/public/' + this.image_dir + '/' + article.area.global_data.image" :img_class="'img-responsive'" :alt='article.area.locale_data.title'/>

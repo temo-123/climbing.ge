@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-label="The rope is stuck at the anchor">
+<!-- 500 "Rope's stuck": the climber hangs under the top anchor, the belayer
+     keeps tugging the jammed rope — the climber bobs, but doesn't come down.
+     climbing.ge scene set (flat style shared with the 404 lead-climb scene). -->
+<style>
+  .tug { animation: tug 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  .bob { animation: bob 2.6s ease-in-out infinite; }
+  .rope-low { animation: ropeLow 2.6s ease-in-out infinite; }
+  .kink { animation: kink 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+  .head-look { animation: look 7.8s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+  @keyframes tug { 0%, 55%, 100% { transform: rotate(0) } 20% { transform: rotate(-11deg) translateX(-3px) } 32% { transform: rotate(-4deg) } }
+  @keyframes bob { 0%, 55%, 100% { transform: translateY(0) } 20% { transform: translateY(-5px) } 32% { transform: translateY(1px) } }
+  @keyframes ropeLow { 0%, 55%, 100% { transform: translateX(0) } 20% { transform: translateX(-4px) } }
+  @keyframes kink { 0%, 55%, 100% { transform: rotate(0) } 20% { transform: rotate(14deg) } }
+  @keyframes look { 0%, 40%, 100% { transform: rotate(0) } 50%, 80% { transform: rotate(-14deg) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ef"/><stop offset="1" stop-color="#eef3f1"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="420" rx="22"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="420" fill="url(#sky)"/>
+  <path d="M0 110l40-30 30 18 40-40 34 30 30-20 50 36 40-26 46 32 50-34V200H0z" fill="#b9cdd4"/>
+  <path d="M34 34l70-26 90 6 80-14 60 30 10 400H22z" fill="#c8bba6"/>
+  <path d="M34 34l70-26 30 120-60 70-40-20z" fill="#d6cbb8"/>
+  <path d="M194 14l80-14 60 30-40 110-90-20z" fill="#bcae96"/>
+  <path d="M254 230l90-40-10 200-80-60z" fill="#b3a58c"/>
+  <path d="M40 260l70 10 30 100-110 40z" fill="#bfb19b"/>
+  <g fill-opacity=".9">
+    <ellipse cx="190" cy="330" rx="6.5" ry="4.5" fill="#ffc233"/><ellipse cx="214" cy="292" rx="6.5" ry="4.5" fill="#ff6a3d"/>
+    <ellipse cx="196" cy="252" rx="6.5" ry="4.5" fill="#3fb59a"/><ellipse cx="222" cy="214" rx="6.5" ry="4.5" fill="#8a63e0"/>
+    <ellipse cx="200" cy="176" rx="6.5" ry="4.5" fill="#ffc233"/><ellipse cx="226" cy="140" rx="6.5" ry="4.5" fill="#ff6a3d"/>
+  </g>
+  <path d="M0 372c60-8 120-2 180-6s120 2 180-2V420H0z" fill="#7d8f63"/>
+  <path d="M0 384c80-6 160 2 240-4s80 2 120 0V420H0z" fill="#6a7c52"/>
+</g>
+
+<!-- top anchor: two bolts, chains, ring (with the jammed rope kinked in it) -->
+<g transform="translate(208 64)">
+  <circle cx="-9" cy="0" r="3.2" fill="#6c757d"/><circle cx="9" cy="-3" r="3.2" fill="#6c757d"/>
+  <path d="M-9 2l7 14M9 -1l-7 17" fill="none" stroke="#9aa3ab" stroke-width="2" stroke-dasharray="2.4 1.6"/>
+  <circle cx="0" cy="20" r="4.6" fill="none" stroke="#7b858e" stroke-width="2.4"/>
+  <path class="kink" d="M-5 26c-6-2-4-10 2-8s5 8-1 9" fill="none" stroke="#f07a3e" stroke-width="3" stroke-linecap="round"/>
+</g>
+
+<!-- rope: belayer ↔ anchor ring ↔ climber -->
+<g fill="none" stroke-linecap="round">
+  <g class="rope-low">
+    <path d="M128 336L206 86" stroke="#7a2e1d" stroke-width="4.4"/>
+    <path d="M128 336L206 86" stroke="#f07a3e" stroke-width="2.8"/>
+  </g>
+  <g class="bob">
+    <path d="M210 86L214 150" stroke="#7a2e1d" stroke-width="4.4"/>
+    <path d="M210 86L214 150" stroke="#f07a3e" stroke-width="2.8"/>
+  </g>
+</g>
+
+<!-- the climber, sitting in the harness under the anchor, feet on the wall -->
+<g class="bob" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M212 154l18 6 4 16M210 156l20 2 6 12" fill="none" stroke="#2b3440" stroke-width="7"/>
+  <path d="M234 176l4 3M236 170l4 3" stroke="#d1495b" stroke-width="6"/>
+  <path d="M206 154c-6-10-6-22-2-32h14c4 8 4 22 0 32z" fill="#1f93b0"/>
+  <path d="M207 152h12" stroke="#ffc233" stroke-width="5"/>
+  <path d="M206 128l8-10 2-18" fill="none" stroke="#1f93b0" stroke-width="6"/>
+  <circle cx="216" cy="100" r="3.4" fill="#e8b58f"/>
+  <path d="M218 132l10 8" fill="none" stroke="#1f93b0" stroke-width="6"/>
+  <g class="head-look">
+    <circle cx="210" cy="112" r="7.4" fill="#5a3d2b"/>
+    <path d="M201.6 113a8.4 8.8 0 0 1 16.8 0z" fill="#ffc233"/>
+  </g>
+</g>
+
+<!-- belayer, leaning back and tugging the rope -->
+<g class="tug" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M115 336l-4 16 2 16M120 336l5 15-1 17" fill="none" stroke="#2b3440" stroke-width="7"/>
+  <path d="M106 368h7M121 368h8" stroke="#2b3440" stroke-width="5"/>
+  <path d="M109 336c-1-11 0-20 3-27h12c3 7 3 16 1 27z" fill="#c4532d"/>
+  <path d="M121 314l9 10 5-5M116 314l5 14 8 2" fill="none" stroke="#c4532d" stroke-width="5"/>
+  <rect x="109" y="332" width="18" height="5" rx="2.4" fill="#ffc233"/>
+  <circle cx="119" cy="302" r="7.5" fill="#e8b58f"/>
+  <path d="M111.2 301a8.8 9 0 0 1 17.6 0z" fill="#7a5bd6"/>
+</g>
+</svg>

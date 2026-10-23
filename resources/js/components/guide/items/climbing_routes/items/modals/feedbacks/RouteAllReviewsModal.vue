@@ -16,7 +16,7 @@
                 <div class="row justify-content-center" v-show="is_loading">
                     <div class="col-md-4">
                         <div class="spinner-border text-primary" role="status">
-                            <span class="sr-only">Loading...</span>
+                            <span class="visually-hidden">Loading...</span>
                         </div>
                         <p class="mt-2 text-muted">{{ $t('global.loading') }}</p>
                     </div>
@@ -113,9 +113,9 @@ export default {
 }
 
 .review-item {
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--cg-line);
     padding: 1rem;
     margin-bottom: 1rem;
 }
@@ -131,7 +131,7 @@ export default {
 .reviewer-name {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #495057;
+    color: var(--cg-stone);
     margin: 0;
 }
 
@@ -139,12 +139,12 @@ export default {
     margin-bottom: 0.5rem;
     font-size: 1.1rem;
     line-height: 1.4;
-    color: #343a40;
+    color: var(--cg-ink-2);
 }
 
 .ascent-style {
     font-weight: 500;
-    color: #007bff;
+    color: var(--cg-accent);
     font-style: italic;
 }
 
@@ -155,11 +155,11 @@ export default {
 .no-reviews {
     text-align: center;
     padding: 2rem;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .no-reviews-title {
-    font-size: 1.5rem;
+    font-size: 0.938rem;
     margin-bottom: 0.5rem;
 }
 </style>

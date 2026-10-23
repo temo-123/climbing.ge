@@ -186,38 +186,32 @@ export default {
 .cms_filters {
     display: flex;
     align-items: center;
-    background-color: #c1c1c1;
+    gap: .75rem;
+    background-color: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
     margin-bottom: 10px;
-    padding: 10px 15px;
+    padding: .6rem 1rem;
     box-sizing: border-box;
 }
-/* Container for multiple filters - forces inline layout */
+.cms_filters strong {
+    font-size: .85rem;
+    color: var(--cg-stone);
+}
+/* Multiple filters: an even grid that always fits the content width */
 .multi-filter-container {
-    display: flex;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: .75rem;
     width: 100%;
-    gap: 10px;
 }
-.multi-filter-container .cms_filters {
+.multi-filter-container .cms_filters,
+.multi-filter-container .cms_filters[class*="col-md-"] {
+    flex: initial;
+    width: auto;
+    max-width: none;
     margin: 0;
-    flex-shrink: 0;
-}
-/* Responsive grid layout for multiple filters */
-.cms_filters.col-md-12 {
-    flex: 0 0 100%;
-    max-width: 100%;
-}
-.cms_filters.col-md-6 {
-    flex: 0 0 50%;
-    max-width: 50%;
-}
-.cms_filters.col-md-4 {
-    flex: 0 0 33.333%;
-    max-width: 33.333%;
-}
-.cms_filters.col-md-3 {
-    flex: 0 0 25%;
-    max-width: 25%;
+    padding: .6rem 1rem;
 }
 .cms_filters .filter-title {
     flex: 0 0 30%;
@@ -234,17 +228,6 @@ export default {
 }
 .cms_filters .col-md-9 {
     padding-left: 0;
-}
-@media (max-width: 768px) {
-    .multi-filter-container {
-        flex-wrap: wrap;
-    }
-    .cms_filters.col-md-6,
-    .cms_filters.col-md-4,
-    .cms_filters.col-md-3 {
-        flex: 0 0 100%;
-        max-width: 100%;
-    }
 }
 </style>
 

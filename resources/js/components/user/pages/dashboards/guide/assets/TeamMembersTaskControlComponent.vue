@@ -5,14 +5,14 @@
                 <button v-if="$can('add', 'task')" class="btn btn-primary btn-sm" @click="show_add_task_modal">
                     <i class="fa fa-plus"></i> {{ $t('admin.task.new_task_btn') }}
                 </button>
-                <button class="btn btn-outline-secondary btn-sm ml-2" @click="get_all_tasks" :disabled="is_loading">
+                <button class="btn btn-outline-secondary btn-sm ms-2" @click="get_all_tasks" :disabled="is_loading">
                     <i class="fa fa-refresh"></i> {{ $t('common.refresh') }}
                 </button>
-                <div class="task-legend ml-auto">
+                <div class="task-legend ms-auto">
                     <span class="legend-dot dot-yellow"></span> {{ $t('admin.task.status_created') }}
-                    <span class="legend-dot dot-green ml-2"></span> {{ $t('admin.task.status_in_progress') }}
-                    <span class="legend-dot dot-gray ml-2"></span> {{ $t('admin.task.status_finished') }}
-                    <span class="legend-dot dot-red ml-2"></span> {{ $t('admin.task.status_problem') }}
+                    <span class="legend-dot dot-green ms-2"></span> {{ $t('admin.task.status_in_progress') }}
+                    <span class="legend-dot dot-gray ms-2"></span> {{ $t('admin.task.status_finished') }}
+                    <span class="legend-dot dot-red ms-2"></span> {{ $t('admin.task.status_problem') }}
                 </div>
             </div>
 
@@ -31,20 +31,20 @@
                     <div class="task-card-top">
                         <div>
                             <span class="task-title">{{ task.title }}</span>
-                            <span class="task-badge ml-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
-                            <span v-if="task.category" class="badge badge-light ml-1">{{ task.category }}</span>
+                            <span class="task-badge ms-2" :class="task_badge_class(task.status)">{{ status_label(task.status) }}</span>
+                            <span v-if="task.category" class="badge text-bg-light ms-1">{{ task.category }}</span>
                         </div>
                         <div class="task-card-actions">
                             <button class="btn btn-sm btn-outline-info" @click="show_task_modal(task.id)" :title="$t('admin.task.details_tooltip')">
                                 <i class="fa fa-eye"></i>
                             </button>
-                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ml-1" @click="show_edit_task_modal(task.id)" :title="$t('admin.task.edit_tooltip')">
+                            <button v-if="$can('edit', 'task')" class="btn btn-sm btn-outline-primary ms-1" @click="show_edit_task_modal(task.id)" :title="$t('admin.task.edit_tooltip')">
                                 <i class="fa fa-pencil"></i>
                             </button>
-                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ml-1" @click="show_task_status_model(task.id)" :title="$t('admin.task.update_status_tooltip')">
+                            <button v-if="$can('edit_status', 'task')" class="btn btn-sm btn-outline-warning ms-1" @click="show_task_status_model(task.id)" :title="$t('admin.task.update_status_tooltip')">
                                 <i class="fa fa-exchange"></i>
                             </button>
-                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ml-1" @click="del_task(task.id)" :title="$t('common.delete')">
+                            <button v-if="$can('del', 'task')" class="btn btn-sm btn-outline-danger ms-1" @click="del_task(task.id)" :title="$t('common.delete')">
                                 <i class="fa fa-trash"></i>
                             </button>
                         </div>
@@ -54,7 +54,7 @@
                             <i class="fa fa-user"></i>
                             {{ task.for_user ? task.for_user.name + ' ' + task.for_user.surname : '—' }}
                         </span>
-                        <span class="text-muted ml-3" :class="is_overdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
+                        <span class="text-muted ms-3" :class="is_overdue(task.deadline) ? 'text-danger font-weight-bold' : ''">
                             <i class="fa fa-calendar"></i> {{ format_date(task.deadline) }}
                             <span v-if="is_overdue(task.deadline)"> {{ $t('admin.task.overdue_suffix') }}</span>
                         </span>
@@ -144,7 +144,7 @@
 
 <style scoped>
 .task-panel-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.task-legend { display: flex; align-items: center; font-size: 0.8em; color: #666; }
+.task-legend { display: flex; align-items: center; font-size: 0.8em; color: var(--cg-stone); }
 .legend-dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; }
 
 .task-card {
@@ -159,17 +159,17 @@
 .task-card-actions { display: flex; flex-shrink: 0; gap: 4px; }
 .task-problem-note { font-size: 0.85em; }
 
-.card-gray { background: #f8f9fa; }
+.card-gray { background: var(--cg-chalk); }
 .card-red  { background: #fff8f8; }
 
 .bar-yellow { background: #ffc107; }
 .bar-green  { background: #28a745; }
-.bar-gray   { background: #6c757d; }
+.bar-gray   { background: var(--cg-stone); }
 .bar-blue   { background: #17a2b8; }
 .bar-red    { background: #dc3545; }
 
 .dot-yellow { background: #ffc107; }
 .dot-green  { background: #28a745; }
-.dot-gray   { background: #6c757d; }
+.dot-gray   { background: var(--cg-stone); }
 .dot-red    { background: #dc3545; }
 </style>

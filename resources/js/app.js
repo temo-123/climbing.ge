@@ -1,5 +1,11 @@
 import { createApp, reactive, watch } from "vue";
 import "./bootstrap";
+
+// Climbing touches: chalk-dust puff on main buttons, climbing placeholder for missing images
+import { installChalkBurst } from "./services/fun/chalkBurst.js";
+import { installImageFallback } from "./services/fun/imageFallback.js";
+installChalkBurst();
+installImageFallback();
 import { createHead } from "@unhead/vue/client";
 
 const app = createApp({});
@@ -66,6 +72,8 @@ app.component("nav-badges", NavBadges);
 
 import NavbarSearch from "./components/global_components/NavbarSearchComponent.vue";
 app.component("navbar-search", NavbarSearch);
+import SceneImage from "./components/global_components/SceneImageComponent.vue";
+app.component("cg-scene", SceneImage);
 
 import CanvasJsonDataShow from "./components/global_components/CanvasJsonDataShowComponent.vue";
 app.component("canvas-json-show", CanvasJsonDataShow);
@@ -78,6 +86,12 @@ app.component("share-button", ShareButton);
 
 import CardSlider from "./components/global_components/CardSliderComponent.vue";
 app.component("card-slider", CardSlider);
+
+import CgBrand from "./components/global_components/CgBrandComponent.vue";
+app.component("cg-brand", CgBrand);
+
+import ServicesSwitcher from "./components/global_components/ServicesSwitcherComponent.vue";
+app.component("services-switcher", ServicesSwitcher);
 
 import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
@@ -511,6 +525,5 @@ app.mount("#app");
 
 window._ = require('lodash');
 
-try {
-    require('bootstrap');
-} catch (e) {}
+// (Bootstrap's JS is not required here: only its dropdown plugin is used,
+// and that is imported in ./bootstrap.js.)

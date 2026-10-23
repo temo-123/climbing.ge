@@ -86,17 +86,17 @@
         </div>
 
         <div class="col-12 table-responsive" v-if="sector.sport_routes.length > 0">
-        <table class="table table-hover">
+        <table class="table table-hover cg-route-table cg-route-table--cols">
             <thead>
                 <tr>
-                    <th>N</th>
-                    <th>{{ $t("common.name") }}</th>
-                    <th>{{ $t("common.height") }}</th>
-                    <th>{{ $t("guide.route.bolts") }}</th>
-                    <th>{{ $t("guide.route.grade fr") }}</th>
-                    <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
-                    <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
-                    <th class="col-info">Info</th>
+                    <th class="cg-col-num">N</th>
+                    <th class="cg-col-name">{{ $t("common.name") }}</th>
+                    <th class="cg-col-height">{{ $t("common.height") }}</th>
+                    <th class="cg-col-bolts">{{ $t("guide.route.bolts") }}</th>
+                    <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                    <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info cg-col-info">Info</th>
                 </tr>
             </thead>
             <tbody>
@@ -106,24 +106,24 @@
                     :data-route-id="route.id"
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
-                    <td>{{ route.num }}</td>
-                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
-                    <td>{{ route.height }}</td>
+                    <td class="cg-col-num">{{ route.num }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">{{ route.name }}</td>
+                    <td class="cg-col-height">{{ route.height }}</td>
 
-                    <td v-if="route.category == 'tred'">Tred</td>
-                    <td v-else-if="route.category == 'top'">Top Rope</td>
-                    <td v-else-if="route.category == 'sport climbing'">{{ route.bolts || '?' }}</td>
-                    <td v-else>?</td>
+                    <td class="cg-col-bolts" v-if="route.category == 'tred'">Tred</td>
+                    <td class="cg-col-bolts" v-else-if="route.category == 'top'">Top Rope</td>
+                    <td class="cg-col-bolts" v-else-if="route.category == 'sport climbing'">{{ route.bolts || '?' }}</td>
+                    <td class="cg-col-bolts" v-else>?</td>
 
-                    <td v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
-                    <td v-else>{{ route.grade }}</td>
+                    <td class="cg-col-grade" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
+                    <td class="cg-col-grade" v-else>{{ route.grade }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != null">
+                    <td class="display-none-720px cg-col-grade2" v-if="route.or_grade != null">
                         {{ lead_grade_chart(route.grade) }} / {{ lead_grade_chart(route.or_grade) }}
                     </td>
-                    <td class="display-none-720px" v-else>{{ lead_grade_chart(route.grade) }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-else>{{ lead_grade_chart(route.grade) }}</td>
 
-                    <td class="col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -142,15 +142,15 @@
         </div>
 
         <div class="col-12 table-responsive" v-if="sector.boulder_route.length > 0">
-        <table class="table table-hover">
+        <table class="table table-hover cg-route-table cg-route-table--cols">
             <thead>
                 <tr>
-                    <th>N</th>
-                    <th>{{ $t("common.name") }}</th>
-                    <th>{{ $t("common.height") }}</th>
-                    <th>{{ $t("guide.route.grade fr") }}</th>
-                    <th class="display-none-720px">{{ $t("guide.route.grade yds") }}</th>
-                    <th class="col-info">Info</th>
+                    <th class="cg-col-num">N</th>
+                    <th class="cg-col-name">{{ $t("common.name") }}</th>
+                    <th class="cg-col-height">{{ $t("common.height") }}</th>
+                    <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                    <th class="display-none-720px cg-col-grade2">{{ $t("guide.route.grade yds") }}</th>
+                    <th class="col-info cg-col-info">Info</th>
                 </tr>
             </thead>
             <tbody>
@@ -160,19 +160,19 @@
                     :data-route-id="route.id"
                     :class="isRouteActive(route.id) ? 'route-active' : ''"
                 >
-                    <td>{{ route.num }}</td>
-                    <td class="route-name-cell" @click="show_route_modal(route.id)">{{ route.name }}</td>
-                    <td>{{ route.height }}</td>
+                    <td class="cg-col-num">{{ route.num }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">{{ route.name }}</td>
+                    <td class="cg-col-height">{{ route.height }}</td>
 
-                    <td v-if="route.or_grade != null">
+                    <td class="cg-col-grade" v-if="route.or_grade != null">
                         {{ boulder_grade_chart(route.grade) }} / {{ boulder_grade_chart(route.or_grade) }}
                     </td>
-                    <td v-else>{{ boulder_grade_chart(route.grade) }}</td>
+                    <td class="cg-col-grade" v-else>{{ boulder_grade_chart(route.grade) }}</td>
 
-                    <td class="display-none-720px" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
-                    <td class="display-none-720px" v-else>{{ route.grade }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-if="route.or_grade != null">{{ route.grade }} / {{ route.or_grade }}</td>
+                    <td class="display-none-720px cg-col-grade2" v-else>{{ route.grade }}</td>
 
-                    <td class="col-info" @click="show_route_modal(route.id)">
+                    <td class="col-info cg-col-info" @click="show_route_modal(route.id)">
                         <i class="fa fa-arrow-right route-arrow" aria-hidden="true"></i>
                     </td>
 
@@ -210,8 +210,6 @@
                 <div class="col-12 col-md-4 d-flex align-items-center">
                     <a
                         @click="show_mtp_madel(mtp.mtp_id)"
-                        data-toggle="modal"
-                        data-target="#squarespaceModal_mtp_info_"
                         class="mtp-more-link"
                     >
                         More information <i class="fa fa-info-circle" aria-hidden="true"></i>
@@ -219,16 +217,16 @@
                 </div>
             </div>
             <div class="table-responsive">
-            <table class="table table-hover">
+            <table class="table table-hover cg-route-table cg-route-table--cols">
                 <thead>
                     <tr>
-                        <th>N</th>
-                        <th>{{ $t("common.name") }}</th>
-                        <th>{{ $t("common.height") }}</th>
-                        <th>{{ $t("guide.route.bolts") }}</th>
-                        <th>{{ $t("guide.route.grade fr") }}</th>
-                        <th class="display-none-720px" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
-                        <th class="display-none-720px" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
+                        <th class="cg-col-num">N</th>
+                        <th class="cg-col-name">{{ $t("common.name") }}</th>
+                        <th class="cg-col-height">{{ $t("common.height") }}</th>
+                        <th class="cg-col-bolts">{{ $t("guide.route.bolts") }}</th>
+                        <th class="cg-col-grade">{{ $t("guide.route.grade fr") }}</th>
+                        <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'UIAA' || activ_grade == 'uiaa'">{{ $t("guide.route.grade uiaa") }}</th>
+                        <th class="display-none-720px cg-col-grade2" v-if="activ_grade == 'YDS' || activ_grade == 'yds'">{{ $t("guide.route.grade yds") }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -238,21 +236,21 @@
                         :data-route-id="pitch.pitch_id"
                         :class="isRouteActive(pitch.pitch_id) ? 'route-active' : ''"
                     >
-                        <td>{{ pitch.num }}</td>
-                        <td>{{ pitch.name }}</td>
-                        <td>{{ pitch.height }}</td>
+                        <td class="cg-col-num">{{ pitch.num }}</td>
+                        <td class="cg-col-name">{{ pitch.name }}</td>
+                        <td class="cg-col-height">{{ pitch.height }}</td>
 
-                        <td v-if="pitch.category == 'tred'">Tred</td>
-                        <td v-else-if="pitch.category == 'sport climbing'">{{ pitch.bolts || '?' }}</td>
-                        <td v-else>?</td>
+                        <td class="cg-col-bolts" v-if="pitch.category == 'tred'">Tred</td>
+                        <td class="cg-col-bolts" v-else-if="pitch.category == 'sport climbing'">{{ pitch.bolts || '?' }}</td>
+                        <td class="cg-col-bolts" v-else>?</td>
 
-                        <td v-if="pitch.or_grade != null">{{ pitch.grade }} / {{ pitch.or_grade }}</td>
-                        <td v-else>{{ pitch.grade }}</td>
+                        <td class="cg-col-grade" v-if="pitch.or_grade != null">{{ pitch.grade }} / {{ pitch.or_grade }}</td>
+                        <td class="cg-col-grade" v-else>{{ pitch.grade }}</td>
 
-                        <td class="display-none-720px" v-if="pitch.or_grade != null">
+                        <td class="display-none-720px cg-col-grade2" v-if="pitch.or_grade != null">
                             {{ lead_grade_chart(pitch.grade) }} / {{ lead_grade_chart(pitch.or_grade) }}
                         </td>
-                        <td class="display-none-720px" v-else>{{ lead_grade_chart(pitch.grade) }}</td>
+                        <td class="display-none-720px cg-col-grade2" v-else>{{ lead_grade_chart(pitch.grade) }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -520,9 +518,9 @@ export default {
 }
 
 /* h2 {
-    font-size: 1.6rem;
+    font-size: 1rem;
     font-weight: 700;
-    color: #343a40;
+    color: var(--cg-ink-2);
     margin-bottom: 0.75rem;
     line-height: 1.3;
 } */
@@ -536,7 +534,7 @@ export default {
 .sector_walking_time {
     float: right;
     font-size: 1.5em;
-    color: #495057;
+    color: var(--cg-stone);
     font-weight: 500;
 }
 
@@ -557,7 +555,7 @@ export default {
     color: #000;
 }
 .show_sector_canvas_modal_icon:hover {
-    color: #007bff;
+    color: var(--cg-accent);
     cursor: pointer;
 }
 
@@ -636,7 +634,7 @@ export default {
 
 .walking-desc {
     font-size: 1rem;
-    color: #666;
+    color: var(--cg-stone);
     line-height: 1.3;
 }
 
@@ -652,17 +650,17 @@ export default {
     cursor: pointer;
 }
 .route-name-cell:hover {
-    color: #007bff;
+    color: var(--cg-accent);
 }
 
 /* Arrow icon in info column */
 .route-arrow {
     font-size: 1.2rem;
-    color: #6c757d;
+    color: var(--cg-stone);
     cursor: pointer;
 }
 .route-arrow:hover {
-    color: #007bff;
+    color: var(--cg-accent);
 }
 
 /* SEO column — in DOM for Google, hidden from users */
@@ -682,11 +680,11 @@ export default {
 .mtp-block {
     margin-top: 1.5rem;
     padding-top: 1rem;
-    border-top: 1px solid #dee2e6;
+    border-top: 1px solid var(--cg-line);
 }
 
 .mtp-name {
-    font-size: 1.8rem;
+    font-size: 1.125rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
 }
@@ -694,17 +692,17 @@ export default {
 .mtp-more-link {
     display: inline-block;
     cursor: pointer;
-    color: #007bff;
+    color: var(--cg-accent);
     text-decoration: none;
     font-weight: 600;
     font-size: 1rem;
     padding: 6px 14px;
-    border: 1px solid #007bff;
+    border: 1px solid var(--cg-accent);
     border-radius: 6px;
     transition: background 0.2s, color 0.2s;
 }
 .mtp-more-link:hover {
-    background: #007bff;
+    background: var(--cg-accent);
     color: #fff;
     text-decoration: none;
 }
@@ -768,11 +766,11 @@ export default {
 
 .route-active td {
     background-color: inherit !important;
-    color: #495057 !important;
+    color: var(--cg-stone) !important;
 }
 
 .route-active:hover {
-    background-color: #e6f3ff !important;
+    background-color: var(--cg-accent-soft) !important;
 }
 
 /* Table hover effects */

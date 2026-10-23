@@ -53,18 +53,18 @@
     border-radius: 50%;
     object-fit: cover;
     margin: 0 auto 10px;
-    border: 2px solid #f0f0f0;
+    border: 2px solid var(--cg-chalk);
 }
 .climber-card__avatar--placeholder {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eee;
-    font-size: 2.2rem;
-    color: #aaa;
+    background: var(--cg-line);
+    font-size: 1.375rem;
+    color: var(--cg-muted);
 }
 .climber-card__name {
-    font-size: 1.7rem;
+    font-size: 1.062rem;
     font-weight: 600;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -85,7 +85,7 @@
     padding: 3px 9px;
     border-radius: 999px;
     background: #f4f4f5;
-    color: #666;
+    color: var(--cg-stone);
 }
 .climber-card__badge--points {
     background: #fff7e0;

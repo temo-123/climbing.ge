@@ -55,7 +55,7 @@
         width: 100%;
         aspect-ratio: 16 / 9;
         overflow: hidden;
-        background: #f4f4f4;
+        background: var(--cg-chalk);
     }
 
     .bisnes-index-card-img img {

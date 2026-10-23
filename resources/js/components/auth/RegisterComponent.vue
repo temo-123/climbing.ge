@@ -1,5 +1,7 @@
 <template>
-  <div class="login mt-5">
+  <div class="login cg-auth">
+    <auth-aside />
+    <div class="cg-auth__main">
     <router-link :to="{name: 'login'}" exact class="btn btn-success" v-if="!is_loading">
       Login
     </router-link>
@@ -119,7 +121,7 @@
               <div class="form-group">
                 <button
                   type="submit"
-                  class="btn btn-default btn-send main-btn"
+                  class="btn btn-primary main-btn"
                   form="register_form"
                   :disabled="!terms_of_use || !privacy_policy || captcha_error"
                 >
@@ -170,15 +172,18 @@
       <legalDocument :slugs="['user_privacy_policy', 'privacy_policy']" />
     </stack-modal>
 
+    </div>
   </div>
 </template>
 
 <script>
+  import AuthAside from './AuthAsideComponent.vue'
 import legalDocument from '../global_components/LegalDocumentComponent.vue'
 
 export default {
   name: 'Register page',
-  components: { legalDocument },
+  components: {
+      AuthAside, legalDocument },
   data() {
     return {
       name: null,

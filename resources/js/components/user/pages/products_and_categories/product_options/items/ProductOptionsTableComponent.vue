@@ -152,7 +152,7 @@ export default {
 }
 
 .table th {
-    /* background-color: #f5f5f5; */
+    /* background-color: var(--cg-chalk); */
     font-weight: 600;
     text-align: center;
     vertical-align: middle;
@@ -169,7 +169,7 @@ export default {
 
 .price-display {
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
 }
 
 .badge {
@@ -199,8 +199,8 @@ export default {
     margin-top: 15px;
     margin-bottom: 15px;
     padding: 10px 15px;
-    background-color: #f8f9fa;
-    border: 1px solid #e9ecef;
+    background-color: var(--cg-chalk);
+    border: 1px solid var(--cg-line);
     border-radius: 4px;
 }
 
@@ -218,11 +218,11 @@ export default {
 }
 
 .text-muted {
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 .barcode-badge {
     display: inline-block;
-    background: #f0f4ff;
+    background: var(--cg-accent-soft);
     border: 1px solid #c0cfff;
     border-radius: 4px;
     padding: 2px 8px;

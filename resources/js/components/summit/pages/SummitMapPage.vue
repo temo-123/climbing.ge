@@ -2,10 +2,12 @@
     <div class="h-recent-work">
         <div class="container">
 
-            <h1 class="index_h2">{{ $t('summit.menu.map') }}</h1>
-            <div class="bar"><i class="fa fa-map-marker"></i></div>
-
-            <h3 class="article_list_short_description">
+            <section class="cg-page-head cg-page-head--list cg-art-map">
+                <span class="cg-page-head__icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('summit.menu.map') }}</h1>
+                </div>
+            </section><h3 class="article_list_short_description">
                 {{ $t('summit.summit_map_description') }}
             </h3>
 
@@ -43,7 +45,7 @@
             </div>
 
             <div class="text-center mt-4">
-                <router-link to="/summits/list" class="btn btn-default btn-send main-btn" style="margin: 10px 0;">
+                <router-link to="/summits/list" class="btn btn-primary main-btn" style="margin: 10px 0;">
                     <i class="fa fa-list"></i> {{ $t('summit.menu.list') }}
                 </router-link>
             </div>

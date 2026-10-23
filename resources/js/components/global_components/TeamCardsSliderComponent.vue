@@ -5,7 +5,7 @@
                 <div class="team-card" @click="show_user_modal(user.id)">
                     <div class="user_img_wrapper">
                         <div :style="'background-image: url(/public/images/site_img/demo_imgs/user_demo_img.gif);'" class='user_img' v-if='user.image == null'> </div>
-                        <div :style="'background-image: url(/public/images/user_profil_img/' + user.image + ');'" class='user_img' v-else> </div>
+                        <div :style="'background-image: url(/public/images/user_profil_img/' + user.image + '), var(--cg-topo-dark);'" class='user_img' v-else> </div>
                     </div>
                     <span class="user_name">{{ user.name }} {{ user.surname }}</span>
                     <span class="user_status" v-if="showStatus && user.member_status">{{ user.member_status }}</span>

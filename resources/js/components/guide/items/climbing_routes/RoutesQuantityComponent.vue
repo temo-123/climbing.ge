@@ -272,14 +272,14 @@
     .routes_quantity_title {
         font-size: 1rem;
         font-weight: 600;
-        color: #333;
+        color: var(--cg-ink-2);
     }
     .routes_quantity_total {
         min-width: 32px;
         padding: 2px 10px;
         border-radius: 999px;
         background: #f1f3f5;
-        color: #555;
+        color: var(--cg-stone);
         font-size: 0.85rem;
         font-weight: 600;
         text-align: center;
@@ -307,7 +307,7 @@
         gap: 8px;
         margin-top: 8px;
         padding-top: 10px;
-        border-top: 1px solid #f0f0f0;
+        border-top: 1px solid var(--cg-chalk);
     }
     .routes_quantity_nav_btn {
         display: inline-flex;
@@ -320,7 +320,7 @@
         border: 1px solid #d6d9dc;
         border-radius: 999px;
         background: #fff;
-        color: #333;
+        color: var(--cg-ink-2);
         font-size: 0.9rem;
         font-weight: 600;
         cursor: pointer;
@@ -335,8 +335,8 @@
     /* hover only on real pointers — on phones :hover sticks after a tap */
     @media (hover: hover) {
         .routes_quantity_nav_btn:hover {
-            background: #333;
-            border-color: #333;
+            background: var(--cg-ink-2);
+            border-color: var(--cg-ink-2);
             color: #fff;
         }
     }
@@ -354,7 +354,7 @@
     }
     .routes_quantity_counter {
         flex-shrink: 0;
-        color: #888;
+        color: var(--cg-muted);
         font-size: 0.85rem;
         font-weight: 600;
     }

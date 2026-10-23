@@ -315,11 +315,11 @@
     cursor: pointer;
 }
 .apply-btn {
-    background-color: #007bff;
+    background-color: var(--cg-accent);
     color: white;
 }
 .reset-btn {
-    background-color: #6c757d;
+    background-color: var(--cg-stone);
     color: white;
 }
 .menu_item {
@@ -375,7 +375,7 @@ ul li:hover a {
 }
 .price-input-group label {
     font-size: 12px;
-    color: #aaa;
+    color: var(--cg-muted);
     margin-bottom: 3px;
 }
 .price-input {
@@ -417,13 +417,13 @@ ul li:hover a {
 .price-range-slider::-webkit-slider-runnable-track {
     width: 100%;
     height: 8px;
-    background: #555;
+    background: var(--cg-stone);
     border-radius: 4px;
 }
 .price-range-slider::-moz-range-track {
     width: 100%;
     height: 8px;
-    background: #555;
+    background: var(--cg-stone);
     border-radius: 4px;
 }
 .price-range-slider::-webkit-slider-thumb {
@@ -432,7 +432,7 @@ ul li:hover a {
     width: 20px;
     height: 20px;
     background: #fff;
-    border: 3px solid #007bff;
+    border: 3px solid var(--cg-accent);
     border-radius: 50%;
     cursor: pointer;
     margin-top: -6px;
@@ -445,7 +445,7 @@ ul li:hover a {
     width: 20px;
     height: 20px;
     background: #fff;
-    border: 3px solid #007bff;
+    border: 3px solid var(--cg-accent);
     border-radius: 50%;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);

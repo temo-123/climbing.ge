@@ -1,0 +1,276 @@
+// ============================================================
+//  Legacy Bootstrap 3 / 4 compatibility
+//  Templates were migrated to Bootstrap 5 classes, but some class
+//  names are built dynamically (`:class`, admin table schemas sent
+//  from the API, HTML stored in the database). These shims keep that
+//  markup working on Bootstrap 5.
+// ============================================================
+
+// ---- Grid (BS3 xs + offsets) ----------------------------------
+@for $i from 1 through 12 {
+    .col-xs-#{$i} { @extend .col-#{$i} !optional; }
+    .col-xs-offset-#{$i} { margin-left: percentage(divide($i, 12)); }
+    .col-sm-offset-#{$i} { @extend .offset-sm-#{$i} !optional; }
+    .col-md-offset-#{$i} { @extend .offset-md-#{$i} !optional; }
+    .col-lg-offset-#{$i} { @extend .offset-lg-#{$i} !optional; }
+}
+.col-xs-offset-0, .col-sm-offset-0, .col-md-offset-0, .col-lg-offset-0 { margin-left: 0; }
+.no-gutters { @extend .g-0 !optional; }
+
+// ---- Helpers ---------------------------------------------------
+.pull-right { float: right !important; }
+.pull-left  { float: left !important; }
+.float-left  { float: left !important; }
+.float-right { float: right !important; }
+.center-block { display: block; margin-left: auto; margin-right: auto; }
+.img-responsive { display: block; max-width: 100%; height: auto; }
+.img-circle { border-radius: 50%; }
+.img-rounded { border-radius: var(--cg-r); }
+.text-left  { text-align: left !important; }
+.text-right { text-align: right !important; }
+.sr-only { @extend .visually-hidden !optional; }
+.caret {
+    display: inline-block;
+    width: 0; height: 0;
+    margin-left: .3em;
+    vertical-align: middle;
+    border-top: .35em solid;
+    border-right: .35em solid transparent;
+    border-left: .35em solid transparent;
+}
+.clearfix-legacy::after { content: ""; display: table; clear: both; }
+
+@media (max-width: 575.98px) {
+    .hidden-xs { display: none !important; }
+}
+@media (min-width: 576px) and (max-width: 991.98px) {
+    .hidden-sm { display: none !important; }
+}
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .hidden-md { display: none !important; }
+}
+@media (min-width: 1200px) {
+    .hidden-lg { display: none !important; }
+}
+.visible-xs, .visible-sm, .visible-md, .visible-lg { display: none !important; }
+@media (max-width: 575.98px) { .visible-xs { display: block !important; } }
+@media (min-width: 576px) and (max-width: 991.98px) { .visible-sm { display: block !important; } }
+@media (min-width: 992px) and (max-width: 1199.98px) { .visible-md { display: block !important; } }
+@media (min-width: 1200px) { .visible-lg { display: block !important; } }
+
+// BS4 spacing → BS5 logical spacing
+@each $i in (0, 1, 2, 3, 4, 5, auto) {
+    .ml-#{$i} { @extend .ms-#{$i} !optional; }
+    .mr-#{$i} { @extend .me-#{$i} !optional; }
+    @if $i != auto {
+        .pl-#{$i} { @extend .ps-#{$i} !optional; }
+        .pr-#{$i} { @extend .pe-#{$i} !optional; }
+    }
+}
+@each $bp in (sm, md, lg, xl) {
+    @each $i in (0, 1, 2, 3, 4, 5, auto) {
+        .ml-#{$bp}-#{$i} { @extend .ms-#{$bp}-#{$i} !optional; }
+        .mr-#{$bp}-#{$i} { @extend .me-#{$bp}-#{$i} !optional; }
+    }
+}
+
+// ---- Buttons ---------------------------------------------------
+.btn-default { @extend .btn-light !optional; border-color: var(--cg-line); }
+.btn-xs { @extend .btn-sm !optional; padding: .15rem .5rem; font-size: .75rem; }
+.btn-block { display: block; width: 100%; }
+
+// ---- Labels / badges (BS3 .label, BS4 .badge-*) ----------------
+.label {
+    display: inline-block;
+    padding: .3em .65em;
+    font-size: .78em;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .4rem;
+    background-color: $secondary;
+}
+.label-default   { background-color: $secondary; }
+.label-primary   { background-color: var(--cg-accent); }
+.label-success   { background-color: $success; }
+.label-info      { background-color: $info; }
+.label-warning   { background-color: $warning; color: $cg-ink; }
+.label-danger    { background-color: $danger; }
+
+@each $name, $color in (primary: var(--cg-accent), secondary: $secondary, success: $success, info: $info, warning: $warning, danger: $danger, light: $cg-chalk-2, dark: $cg-ink) {
+    .badge-#{$name} { background-color: $color; color: #fff; }
+}
+.badge-warning, .badge-light { color: $cg-ink; }
+.badge-primare { background-color: var(--cg-accent); color: #fff; }  // existing typo in templates
+
+// ---- Panels / wells / thumbnails / jumbotron -------------------
+.panel {
+    margin-bottom: 1.25rem;
+    background-color: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
+    box-shadow: var(--cg-shadow-sm);
+    overflow: hidden;
+}
+.panel-heading,
+.panel-header {
+    padding: .8rem 1.1rem;
+    border-bottom: 1px solid var(--cg-line);
+    background: var(--cg-chalk);
+    font-weight: 700;
+}
+.panel-title { margin: 0; font-size: 1.1rem; }
+.panel-body { padding: 1.1rem; }
+.panel-footer {
+    padding: .8rem 1.1rem;
+    border-top: 1px solid var(--cg-line);
+    background: var(--cg-chalk);
+}
+.panel-primary { border-color: rgba(var(--cg-accent-rgb), .4); }
+.panel-primary > .panel-heading,
+.panel-primary > .panel-footer {
+    background: var(--cg-accent);
+    color: #fff;
+    border-color: var(--cg-accent);
+    a, p { color: #fff; }
+}
+.panel-warning > .panel-heading { background: #fff4d6; color: #7a5300; }
+
+.well {
+    min-height: 20px;
+    padding: 1.1rem;
+    margin-bottom: 1.25rem;
+    background-color: var(--cg-chalk);
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
+}
+
+.thumbnail {
+    display: block;
+    padding: .4rem;
+    margin-bottom: 1.25rem;
+    background-color: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r);
+    > img { display: block; max-width: 100%; height: auto; border-radius: calc(var(--cg-r) - 4px); }
+    .caption { padding: .7rem; }
+}
+
+.jumbotron {
+    padding: 2rem 1.5rem;
+    margin-bottom: 1.5rem;
+    background-color: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r-lg);
+    box-shadow: var(--cg-shadow-sm);
+    @media (min-width: 768px) { padding: 2.5rem 2.25rem; }
+}
+.jumbotron-fluid { padding-left: 1.25rem; padding-right: 1.25rem; }
+
+.media {
+    display: flex;
+    align-items: flex-start;
+}
+.media-body { flex: 1; }
+
+// ---- Forms -----------------------------------------------------
+.form-group,
+.form-groupe { margin-bottom: 1rem; }
+.control-label,
+.col-form-label { font-weight: 600; color: var(--cg-ink); }
+.help-block,
+.form-text { display: block; margin-top: .3rem; font-size: .85rem; color: var(--cg-muted); }
+.input-group-addon { @extend .input-group-text !optional; }
+.custom-select { @extend .form-select !optional; }
+.custom-file-input { @extend .form-control !optional; }
+.form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+    gap: .5rem;
+}
+.has-error .form-control { border-color: $danger; }
+
+// ---- Tables ----------------------------------------------------
+.table-condensed > :not(caption) > * > * { padding: .35rem .5rem; }
+
+// ---- Bootstrap 3 glyphicons (only a couple were used) ----------
+.glyphicon {
+    display: inline-block;
+    font: normal normal normal 14px/1 FontAwesome;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+.glyphicon-home::before { content: "\f015"; }
+.glyphicon-search::before { content: "\f002"; }
+.glyphicon-star::before { content: "\f005"; }
+.glyphicon-remove::before { content: "\f00d"; }
+.glyphicon-ok::before { content: "\f00c"; }
+
+// BS3/4 modal & collapse state classes some components still toggle by hand
+.fade.in { opacity: 1; }
+.collapse.in { display: block; }
+
+// BS4 input-group wrappers (BS5 dropped them; keep their children joined)
+.input-group-append,
+.input-group-prepend { display: flex; }
+.input-group > .input-group-append > .btn { border-top-left-radius: 0; border-bottom-left-radius: 0; }
+.input-group > .input-group-prepend > .btn { border-top-right-radius: 0; border-bottom-right-radius: 0; }
+
+// BS3/4 close button
+.close {
+    float: right;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--cg-ink);
+    opacity: .5;
+    cursor: pointer;
+    &:hover { opacity: .85; }
+}
+
+// A few Tailwind-style utilities slipped into templates (Tailwind isn't compiled)
+.text-gray-700 { color: var(--cg-stone); }
+.text-gray-800 { color: var(--cg-ink-2); }
+.space-y-6 > * + * { margin-top: 1.5rem; }
+.rounded-xl { border-radius: var(--cg-r-lg); }
+
+// BS3 floated every column, so many templates put .col-* straight into a
+// plain <div> (no .row). Bootstrap 5 columns only lay out inside a flex .row;
+// outside one, real columns (col-*-1 … col-*-11, matched as exact class
+// tokens so "col-md-4 col-sm-12" counts) float like they did in BS3, with
+// BS3-style gutters. Inside a .row (flex) floats are ignored, so BS5 grids are
+// unaffected. Plain floats on purpose: no :has(), nothing for the browser to
+// re-check on every style change.
+$cg-legacy-cols: ();
+@each $bp in (sm, md, lg, xl) {
+    @for $n from 1 through 11 {
+        $cg-legacy-cols: append($cg-legacy-cols, unquote('[class~="col-#{$bp}-#{$n}"]'), comma);
+    }
+}
+:where(:not(.row):not(tr)) > :where(#{$cg-legacy-cols}):where(:not(td):not(th)) {
+    // zero specificity: Bootstrap's own .col-md-4 { width: 33.3% } still wins
+    float: left;
+    width: 100%;
+    min-height: 1px;
+    padding-left: .6rem;
+    padding-right: .6rem;
+    margin-bottom: 1.2rem;
+}
+.container::after,
+.container-fluid::after,
+.cols::after,
+[class~="col-sm-12"]::after,
+[class~="col-md-12"]::after,
+.h-recent-work::after {
+    content: "";
+    display: table;
+    clear: both;
+}

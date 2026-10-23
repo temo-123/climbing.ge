@@ -67,35 +67,35 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 a {
     color: #363636;
     text-decoration: none;
 }
 
 .btn {
-    /* // background-color: #787878de; */
-    /* // background-color: #8b8b8bc2; */
-    background-color : rgb(160 158 158 / 87%) !important;
-    background: transparent;
     margin: 5px;
-    border: 1px solid #eaeaea;
-    border-radius: 5px;
-    padding: 10px 15px;
-    font-size: 1em;
-    font-weight: bold;
+    padding: .55rem 1.2rem;
+    border: 0;
+    border-radius: 2rem;
+    background: var(--cg-accent);
+    color: #fff;
+    font-size: .9rem;
+    font-weight: 700;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.25s ease;
 }
 
 .btn:hover {
-    background: #dddddd;
-    color: black;
+    background: var(--cg-accent-dark);
+    color: #fff;
     transform: translateY(-2px);
 }
 
 .tours {
   display: flex;
+  height: calc(100% - 1.25rem);
+  margin-bottom: 1.25rem;
   padding: 0;
   flex-flow: row wrap;
   justify-content: center;
@@ -107,7 +107,10 @@ a {
   -o-transition: all .3s ease-in-out;
   transition: all .3s ease-in-out;
   background: #fff;
-  box-shadow: 0 2px 8px rgba(0,0,0,.1);
+  border: 1px solid var(--cg-line);
+  border-radius: var(--cg-r-lg);
+  overflow: hidden;
+  box-shadow: var(--cg-shadow-sm);
   flex: 0 1 100%;
   /* // margin: 20px; */
   padding: 0;

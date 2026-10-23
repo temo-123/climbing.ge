@@ -79,7 +79,7 @@ export default {
 }
 
 .news_flag {
-  background-color: #007bff;
+  background-color: var(--cg-accent);
   color: white;
   padding: 5px 10px;
   border-radius: 3px;

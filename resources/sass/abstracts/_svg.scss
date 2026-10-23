@@ -1,0 +1,22 @@
+// ============================================================
+//  cg-svg($svg) — turn readable inline SVG markup into a
+//  url("data:image/svg+xml,…") so artwork can live in the SCSS.
+//  Write attributes with single quotes.
+// ============================================================
+
+@function cg-str-replace($string, $search, $replace: "") {
+    $index: str-index($string, $search);
+    @if $index {
+        @return str-slice($string, 1, $index - 1) + $replace +
+            cg-str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    }
+    @return $string;
+}
+
+@function cg-svg($svg) {
+    $encoded: $svg;
+    @each $char, $code in ("%": "%25", "<": "%3C", ">": "%3E", "#": "%23", "\"": "'") {
+        $encoded: cg-str-replace($encoded, $char, $code);
+    }
+    @return url("data:image/svg+xml,#{$encoded}");
+}

@@ -64,7 +64,7 @@
             <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ auth_error }}
           </div>
 
-          <button type="submit" class="btn btn-primary btn-block mt-3">
+          <button type="submit" class="btn btn-primary w-100 mt-3">
             <i class="fa fa-sign-in" aria-hidden="true"></i> {{ $t('common.login') || 'Login' }}
           </button>
         </form>

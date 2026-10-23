@@ -63,25 +63,25 @@
                         <tr>
                             <th>{{ $t('admin.common.published') }}</th>
                             <td>
-                                <span v-if="product.global_product && product.global_product.published" class="badge badge-success">{{ $t('admin.export.yes_label') }}</span>
-                                <span v-else class="badge badge-secondary">{{ $t('admin.site_info.no_label') }}</span>
+                                <span v-if="product.global_product && product.global_product.published" class="badge text-bg-success">{{ $t('admin.export.yes_label') }}</span>
+                                <span v-else class="badge text-bg-secondary">{{ $t('admin.site_info.no_label') }}</span>
                             </td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.made_in_georgia">
                             <th>{{ $t('admin.shop.quick_view.made_in_georgia_label') }}</th>
-                            <td><span class="badge badge-info">{{ $t('admin.export.yes_label') }}</span></td>
+                            <td><span class="badge text-bg-info">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.is_sale_product">
                             <th>{{ $t('admin.shop.quick_view.sale_product_label') }}</th>
-                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
+                            <td><span class="badge text-bg-warning">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.sale_type === 'donation'">
                             <th>{{ $t('admin.shop.col_donation') }}</th>
-                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
+                            <td><span class="badge text-bg-warning">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                         <tr v-if="product.global_product && product.global_product.sale_type === 'outlet'">
                             <th>{{ $t('admin.shop.col_outlet') }}</th>
-                            <td><span class="badge badge-warning">{{ $t('admin.export.yes_label') }}</span></td>
+                            <td><span class="badge text-bg-warning">{{ $t('admin.export.yes_label') }}</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -217,7 +217,7 @@ export default {
     background: #ccc;
     cursor: pointer;
 }
-.qv-dot.active { background: #007bff; }
+.qv-dot.active { background: var(--cg-accent); }
 .qv-info {
     flex: 1;
 }
@@ -228,7 +228,7 @@ export default {
 .qv-price {
     font-size: 1.3em;
     font-weight: 600;
-    color: #007bff;
+    color: var(--cg-accent);
     margin-bottom: 12px;
 }
 .qv-discount {
@@ -244,7 +244,7 @@ export default {
     margin-top: 12px;
     max-height: 200px;
     overflow-y: auto;
-    color: #555;
+    color: var(--cg-stone);
     line-height: 1.6;
 }
 @media (max-width: 600px) {

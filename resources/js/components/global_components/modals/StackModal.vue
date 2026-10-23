@@ -2,14 +2,14 @@
   <Teleport to="body">
     <div
       v-if="modelValue || show"
-      class="stack-modal-overlay fixed inset-0 z-[99999] flex items-center justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md"
+      class="stack-modal-overlay"
       @click.self="$emit('close')"
       :class="overlayClass"
     >
       <Transition name="modal">
         <div
           ref="modalRef"
-          class="stack-modal bg-white rounded-2xl shadow-2xl ring-1 ring-black/10 flex flex-col mx-auto w-full max-w-6xl border border-gray-200/50"
+          class="stack-modal"
           :class="[modalClasses]"
           :style="{ zIndex: computedZIndex }"
           role="dialog"
@@ -17,35 +17,31 @@
           tabindex="-1"
         >
           <!-- Header -->
-          <div class="sticky top-0 z-20 flex-shrink-0 relative p-4 md:p-6 lg:p-8 pb-3 md:pb-4 lg:pb-6 bg-white border-b border-gray-200/50 rounded-2xl rounded-b-none shadow-sm">
-            <button 
+          <div class="stack-modal__header">
+            <h2 class="stack-modal__title">{{ title }}</h2>
+            <button
               @click="$emit('close')"
-              class="close absolute"
+              class="stack-modal__close"
               type="button"
               :aria-label="t('common.close')"
-              style="font-size: 3.75rem; opacity: 0.5; line-height: 2; margin-right: 15px;"
             >
-              <span aria-hidden="true">&times;</span>
+              <i class="fa fa-times" aria-hidden="true"></i>
             </button>
-
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight pr-20"
-              style="margin-left: 1cap;">{{ title }}</h2>
           </div>
 
           <!-- Content Slot -->
-          <div class="flex-1 w-full max-w-full overflow-x-auto overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-white hover:scrollbar-thumb-gray-400 p-4 md:p-6 lg:p-8 modal-scrol"
-            :class="{ 'modal-scrol--user': isUserPage }">
+          <div class="modal-scrol stack-modal__body" :class="{ 'modal-scrol--user': isUserPage }">
             <slot></slot>
           </div>
 
           <!-- Footer -->
-          <div v-if="hasButtons" class="sticky bottom-0 z-20 flex-shrink-0 bg-white border-t border-gray-200/50 rounded-2xl rounded-t-none shadow-sm">
+          <div v-if="hasButtons" class="stack-modal__footer">
             <slot name="footer">
-              <div class="modal-footer p-4 md:p-6 lg:p-8 pt-3 md:pt-4 lg:pt-6">
+              <div class="modal-footer">
                 <button
                   v-if="cancelButton?.visible"
                   type="button"
-                  class="btn btn-danger pull-left"
+                  class="btn btn-light me-auto"
                   @click="$emit('close')"
                 >
                   {{ cancelButton.title || t('common.cancel') }}
@@ -53,9 +49,10 @@
                 <button
                   v-if="saveButton?.visible"
                   type="button"
-                  class="btn btn-primary pull-right"
+                  class="btn btn-primary"
                   @click="$emit('save')"
                 >
+                  <i class="fa fa-check" aria-hidden="true"></i>
                   {{ saveButton.title || t('common.save') }}
                 </button>
               </div>
@@ -205,7 +202,9 @@
     height: 100svh;
     padding: 3vh 0;
     box-sizing: border-box;
-    background-color: #000000d9;
+    background-color: rgba(21, 33, 43, .72);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
   }
 
   .stack-modal {
@@ -219,9 +218,76 @@
     width: clamp(320px, 90vw, 1400px);
     max-width: var(--modal-max-width, 720px);
     margin: 0 auto;
-    background-color: #f4f4f4;
+    background-color: #fff;
+    border-radius: var(--cg-r-xl, 1.25rem);
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, .55);
     box-sizing: border-box;
     overflow: hidden;
+  }
+
+  /* Header: chalk strip with a topo texture + accent ridge, same family as the site header */
+  .stack-modal__header {
+    position: relative;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.1rem 1.25rem 1.1rem 1.5rem;
+    background-color: var(--cg-chalk, #f5f3ee);
+    background-image: var(--cg-topo-dark);
+    background-size: 380px;
+    border-bottom: 1px solid var(--cg-line, #e3ded4);
+  }
+  .stack-modal__header::after {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    bottom: -2px;
+    width: 56px;
+    height: 3px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--cg-accent) 0 72%, var(--cg-hold) 72% 100%);
+  }
+  .stack-modal__title {
+    flex: 1;
+    min-width: 0;
+    margin: 0;
+    font-size: clamp(1.35rem, 2.6vw, 1.8rem);
+    line-height: 1.15;
+    color: var(--cg-ink, #15212b);
+  }
+  .stack-modal__close {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--cg-line, #e3ded4);
+    border-radius: 50%;
+    background: #fff;
+    color: var(--cg-stone, #56646e);
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: transform .2s ease, color .2s ease, background-color .2s ease;
+  }
+  .stack-modal__close:hover {
+    transform: rotate(90deg);
+    color: var(--cg-ink, #15212b);
+    background: var(--cg-chalk-2, #ebe7df);
+  }
+  .stack-modal__footer {
+    flex-shrink: 0;
+    background: #fff;
+    border-top: 1px solid var(--cg-line, #e3ded4);
+  }
+  .stack-modal__footer .modal-footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: .5rem;
+    padding: .9rem 1.5rem;
+    border: 0;
   }
   .modal-scrol{
     flex: 1;
@@ -230,7 +296,10 @@
     overflow-x: hidden;
     scrollbar-width: thin;
     scrollbar-color: #9ca3af transparent;
-    padding: 3%;
+    padding: 1.5rem;
+  }
+  @media (max-width: 575.98px) {
+    .modal-scrol { padding: 1rem; }
   }
   .modal-scrol--user {
     font-size: 0.875rem;
@@ -320,7 +389,7 @@
       width: 100vw !important;
       max-height: calc(100vh - 16px) !important;
       max-height: calc(100svh - 16px) !important;
-      border-radius: 0 0 1rem 1rem !important;
+      border-radius: 0 0 1.25rem 1.25rem !important;
     }
     .modal-footer {
       padding-bottom: calc(1rem + env(safe-area-inset-bottom)) !important;

@@ -10,7 +10,7 @@
         </div>
 
         <div v-if="loading == false" class="form-group">
-            <button type="button" class="btn btn-default btn-send main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp || $t('global.verify_btn') }}</button>
+            <button type="button" class="btn btn-primary main-btn" @click="handleSubmit" :disabled="captcha_error">{{ buttonTextProp || $t('global.verify_btn') }}</button>
         </div>
         <div v-if="loading == true">
             <h4 class="footer_title">{{ $t('global.loading') }}</h4>

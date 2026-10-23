@@ -154,7 +154,7 @@
 
     .indoor_soon_notice {
         background: #eaf6f9;
-        border-left: 4px solid #279fbb;
+        border-left: 4px solid var(--cg-accent);
         border-radius: 4px;
         color: #1f7f96;
         padding: 10px 14px;
@@ -200,7 +200,7 @@
         top: 10px;
         right: 10px;
         margin: 0;
-        background: #279fbb;
+        background: var(--cg-accent);
         color: #fff;
         padding: 5px 10px;
         border-radius: 4px;
@@ -219,7 +219,7 @@
     .indoor_text h2 {
         font-size: 1.8em;
         margin: 0.6em 0 0.6em 0;
-        color: #333;
+        color: var(--cg-ink-2);
         font-weight: bold;
     }
 
@@ -227,19 +227,19 @@
         display: block;
         font-size: 1em;
         line-height: 1.6;
-        color: #666;
+        color: var(--cg-stone);
         margin-bottom: 1em;
     }
 
     .indoor_text b {
         font-size: 1.2em;
-        color: #279fbb;
+        color: var(--cg-accent);
         margin-bottom: 0.5em;
     }
 
     .indoor_text p {
         font-size: 1em;
-        color: #555;
+        color: var(--cg-stone);
         margin: 0.5em 0;
     }
 
@@ -259,11 +259,11 @@
         align-items: center;
         gap: 8px;
         margin-bottom: 8px;
-        color: #555;
+        color: var(--cg-stone);
     }
 
     .indoor_info_list .fa {
-        color: #279fbb;
+        color: var(--cg-accent);
         width: 18px;
         text-align: center;
     }
@@ -298,11 +298,11 @@
     }
     .indoor_status_ribbon_temporarily_closed   { background: #e74c3c; }
     .indoor_status_ribbon_sport_session_closed { background: #f39c12; }
-    .indoor_status_ribbon_coming_soon          { background: #279fbb; }
+    .indoor_status_ribbon_coming_soon          { background: var(--cg-accent); }
 
     .discount_percent_badge_for_indoor {
         margin: 5px 18px 0 0;
-        background: #279fbb;
+        background: var(--cg-accent);
         color: #fff;
         padding: 5px 10px;
         border-radius: 4px;

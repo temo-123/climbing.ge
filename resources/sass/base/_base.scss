@@ -1,0 +1,104 @@
+// ============================================================
+//  Base — elements on top of Bootstrap's reboot
+// ============================================================
+
+html {
+    -webkit-text-size-adjust: 100%;
+    touch-action: manipulation;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-padding-top: calc(var(--cg-nav-h) + 16px);
+}
+
+body {
+    font-family: var(--cg-font-body);
+    background-color: var(--cg-chalk);
+    color: var(--cg-ink-2);
+    transition: margin-left .4s var(--cg-ease);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: var(--cg-font-display);
+    letter-spacing: .005em;
+    color: var(--cg-ink);
+}
+
+p { color: inherit; }
+
+a {
+    color: var(--cg-accent);
+    transition: color .2s ease, background-color .2s ease, border-color .2s ease, opacity .2s ease;
+    -webkit-tap-highlight-color: transparent;
+
+    &:hover,
+    &:focus { color: var(--cg-accent-dark); }
+}
+
+img { max-width: 100%; }
+
+hr {
+    border: 0;
+    border-top: 1px solid var(--cg-line);
+    opacity: 1;
+}
+
+ul { list-style: none; }
+
+::selection {
+    background: rgba(var(--cg-accent-rgb), .2);
+}
+
+:focus-visible {
+    outline: 2px solid rgba(var(--cg-accent-rgb), .6);
+    outline-offset: 2px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { height: auto; }
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration { -webkit-appearance: none; }
+
+// Slim, warm scrollbars
+* {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(21, 33, 43, .25) transparent;
+}
+*::-webkit-scrollbar { width: 9px; height: 9px; }
+*::-webkit-scrollbar-thumb {
+    background: rgba(21, 33, 43, .22);
+    border-radius: 9px;
+    border: 2px solid transparent;
+    background-clip: padding-box;
+}
+*::-webkit-scrollbar-thumb:hover { background-color: rgba(21, 33, 43, .38); }
+
+// Global table defaults — readable on every service (the old global
+// striped yellow/brown <td> skin is gone).
+table {
+    border-collapse: collapse;
+    caption-side: bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+// Plain checkboxes / radios (many forms don't use .form-check-input)
+input[type="checkbox"],
+input[type="radio"],
+input[type="range"],
+progress {
+    accent-color: var(--cg-accent);
+}
+input[type="checkbox"]:not(.form-check-input) {
+    width: 1.05rem;
+    height: 1.05rem;
+    vertical-align: -.15em;
+    cursor: pointer;
+}

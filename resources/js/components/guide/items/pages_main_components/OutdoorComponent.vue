@@ -415,15 +415,15 @@
 
 /* Enhanced sector highlighting - friendly and subtle */
 .active-sector-highlight {
-    background-color: #f8f9fa !important;
-    border-left: 4px solid #6c757d !important;
+    background-color: var(--cg-chalk) !important;
+    border-left: 4px solid var(--cg-stone) !important;
     padding: 10px 15px !important;
     margin: 5px 0 !important;
     transition: all 0.3s ease !important;
 }
 
 .active-sector-highlight h2 {
-    color: #495057 !important;
+    color: var(--cg-stone) !important;
     margin-bottom: 0.5rem !important;
 }
 </style>

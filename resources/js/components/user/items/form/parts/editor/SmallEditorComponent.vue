@@ -104,14 +104,14 @@ const handleUpdate = (newContent) => {
 
 <style scoped>
 .source-container {
-  border: 1px solid #dee2e6;
+  border: 1px solid var(--cg-line);
   border-radius: 0.375rem;
-  background-color: #f8f9fa;
+  background-color: var(--cg-chalk);
 }
 
 .source-textarea {
-  background-color: #f8f9fa !important;
-  border: 1px solid #ced4da !important;
+  background-color: var(--cg-chalk) !important;
+  border: 1px solid var(--cg-line) !important;
   resize: none;
 }
 

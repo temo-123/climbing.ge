@@ -241,31 +241,31 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #eee;
-    font-size: 3.2rem;
-    color: #aaa;
+    background: var(--cg-line);
+    font-size: 2rem;
+    color: var(--cg-muted);
 }
 .climber-profile__info h1 {
-    font-size: 2.8rem;
+    font-size: 1.75rem;
     font-weight: 700;
     margin-bottom: 4px;
 }
 .climber-profile__bio {
-    color: #666;
+    color: var(--cg-stone);
     max-width: 600px;
-    font-size: 1.8rem;
+    font-size: 1.125rem;
 }
 .climber-profile__social-links {
     display: flex;
     gap: 16px;
     margin: 10px 0;
-    font-size: 2.2rem;
+    font-size: 1.375rem;
 }
 .climber-profile__social-links a {
-    color: #666;
+    color: var(--cg-stone);
 }
 .climber-profile__social-links a:hover {
-    color: #279fbb;
+    color: var(--cg-accent);
 }
 .climber-profile__sites {
     list-style: none;
@@ -274,10 +274,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 1.7rem;
+    font-size: 1.062rem;
 }
 .climber-profile__sites a {
-    color: #279fbb;
+    color: var(--cg-accent);
     text-decoration: none;
 }
 .climber-profile__sites a:hover {
@@ -287,7 +287,7 @@
     display: flex;
     gap: 22px;
     margin: 12px 0;
-    font-size: 2rem;
+    font-size: 1.25rem;
 }
 .climber-profile__counts a {
     color: inherit;
@@ -302,26 +302,26 @@
 .climber-profile__activity-chart {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid var(--cg-line);
 }
 .climber-profile__activity-chart h3 {
-    font-size: 1.6rem;
+    font-size: 1rem;
     margin-bottom: 10px;
 }
 .climber-profile__section {
     margin-bottom: 24px;
 }
 .climber-profile__section h3 {
-    font-size: 2.2rem;
+    font-size: 1.375rem;
 }
 .climber-profile__list {
     list-style: none;
     padding: 0;
-    font-size: 1.8rem;
+    font-size: 1.125rem;
 }
 .climber-profile__list li {
     padding: 12px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
 }
 .climber-profile__user-links {
     list-style: none;
@@ -330,10 +330,10 @@
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
-    font-size: 1.7rem;
+    font-size: 1.062rem;
 }
 .climber-profile__user-links li {
-    background: #f5f5f5;
+    background: var(--cg-chalk);
     border-radius: 20px;
     padding: 6px 14px 6px 6px;
 }
@@ -355,8 +355,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #ddd;
-    color: #999;
-    font-size: 1.8rem;
+    background: var(--cg-line);
+    color: var(--cg-muted);
+    font-size: 1.125rem;
 }
 </style>

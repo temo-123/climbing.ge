@@ -62,14 +62,14 @@
     .similar-title {
         font-size: 1.5em;
         font-weight: 700;
-        color: #222;
+        color: var(--cg-ink-2);
         margin-bottom: 10px;
         display: inline-block;
     }
     .similar-title-line {
         width: 50px;
         height: 3px;
-        background: #27bb7d;
+        background: var(--cg-accent);
         margin: 0 auto;
         border-radius: 2px;
     }
@@ -89,7 +89,7 @@
     }
     .skeleton-card {
         height: 260px;
-        background: linear-gradient(90deg, #f0f0f0 25%, #e4e4e4 50%, #f0f0f0 75%);
+        background: linear-gradient(90deg, var(--cg-chalk) 25%, #e4e4e4 50%, var(--cg-chalk) 75%);
         background-size: 200% 100%;
         animation: shimmer 1.4s infinite;
         border-radius: 8px;

@@ -70,7 +70,7 @@
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #111;
+    background: var(--cg-ink-2);
     overflow: hidden;
     border-radius: 6px;
 }
@@ -142,7 +142,7 @@
 
 .preview_btn:hover {
     background: #fff;
-    color: #222;
+    color: var(--cg-ink-2);
     text-decoration: none;
 }
 </style>

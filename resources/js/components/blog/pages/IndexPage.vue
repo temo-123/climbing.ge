@@ -1,11 +1,12 @@
 <template>
     <main role="main" class="container">
         <div class="container">
-            <h1 class='index_h2'>{{ $t('blog.title.index_title')}}</h1>
-
-            <div class="bar"><i class="fa fa-dribbble"></i></div>
-
-            <bigPost :items="items" />
+            <section class="cg-page-head cg-page-head--list cg-art-notebook">
+                <span class="cg-page-head__icon"><i class="fa fa-newspaper-o" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('blog.title.index_title')}}</h1>
+                </div>
+            </section><bigPost :items="items" />
 
             <button v-if="hasMorePages" @click="loadNextPage" class="show-older-button" :disabled="loadingMore">
                 {{ $t('blog.pagination_button.show_older_articles') }}
@@ -13,7 +14,7 @@
 
             <div v-if="loadingMore" class="loading-more">
                 <div class="spinner-border text-primary" role="status">
-                    <span class="sr-only">Loading...</span>
+                    <span class="visually-hidden">Loading...</span>
                 </div>
                 Loading...
             </div>
@@ -125,14 +126,14 @@
   text-align: center;
   padding: 20px;
   font-size: 16px;
-  color: #666;
+  color: var(--cg-stone);
 }
 
 .show-older-button {
   display: block;
   margin: 20px auto;
   padding: 10px 20px;
-  background-color: #007bff;
+  background-color: var(--cg-accent);
   color: white;
   border: none;
   border-radius: 5px;

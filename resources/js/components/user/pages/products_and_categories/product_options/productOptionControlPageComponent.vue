@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-md-12">
 
-            <div class="form-groupe float-right mb-2">
+            <div class="form-group float-end mb-2">
                 <button class="btn btn-success" @click="go_back()">{{ $t('admin.shop.go_back') }}</button>
             </div>
 

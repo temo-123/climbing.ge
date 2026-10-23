@@ -43,7 +43,7 @@
                             <tr>
                                 <th colspan="2"> </th>
                                 <th class="text-center">Total</th>
-                                <th class="text-right">25</th>
+                                <th class="text-end">25</th>
                             </tr>
                         </tfoot>
                     </table>

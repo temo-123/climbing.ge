@@ -379,7 +379,7 @@ export default {
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-    background: #f5f5f5;
+    background: var(--cg-chalk);
     cursor: zoom-in;
 }
 
@@ -393,7 +393,7 @@ export default {
 
 .pz-lens {
     position: absolute;
-    border: 2px solid #27bb7d;
+    border: 2px solid var(--cg-accent);
     background: rgba(39, 187, 125, 0.18);
     pointer-events: none;
     border-radius: 4px;
@@ -406,7 +406,7 @@ export default {
     margin-left: 16px;
     z-index: 20;
     border-radius: 10px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--cg-line);
     box-shadow: 0 8px 28px rgba(0,0,0,0.22);
     background-repeat: no-repeat;
     background-color: #fff;
@@ -464,7 +464,7 @@ export default {
     transition: border-color 0.2s, opacity 0.2s;
     opacity: 0.75;
 }
-.pz-thumb.active { border-color: #27bb7d; opacity: 1; }
+.pz-thumb.active { border-color: var(--cg-accent); opacity: 1; }
 .pz-thumb:hover { border-color: #1a9460; opacity: 1; }
 
 @media (max-width: 900px) {

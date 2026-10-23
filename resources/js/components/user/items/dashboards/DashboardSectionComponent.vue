@@ -35,7 +35,7 @@ export default {
 }
 
 .dashboard-section__header i {
-    color: #279fbb;
+    color: var(--cg-accent);
     font-size: 1.05em;
 }
 

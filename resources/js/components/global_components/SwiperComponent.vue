@@ -175,7 +175,7 @@
       update_top_gap() {
         const host = this.$refs.host;
         if (!this.full_width || !host) return;
-        const nav = document.querySelector('.navbar-fixed-top');
+        const nav = document.querySelector('.cg-nav');
         if (!nav) return;
         const natural_top = host.getBoundingClientRect().top + window.scrollY + this.top_gap;
         this.top_gap = Math.max(0, Math.round(natural_top - nav.offsetHeight));
@@ -296,8 +296,8 @@
    (via @container), so it's correct inside a narrow admin preview too, not just on real phones. */
 .swiper_host {
   --sl-accent: #ffc60b;          /* $accent-yellow — "hero slider highlight" */
-  --sl-primary: #279fbb;         /* $primary */
-  --sl-primary-hover: #1e8da8;   /* $primary-hover */
+  --sl-primary: var(--cg-accent);         /* $primary */
+  --sl-primary-hover: var(--cg-accent-dark);   /* $primary-hover */
   --sl-panel: rgba(12, 22, 28, 0.55);
   --sl-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 
@@ -413,7 +413,8 @@
   backdrop-filter: blur(10px) saturate(120%);
   -webkit-backdrop-filter: blur(10px) saturate(120%);
   border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 14px;
+  border-left: 4px solid var(--cg-accent);
+  border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   max-width: min(640px, 52%);
 }
@@ -426,9 +427,10 @@
 
 .slide_title {
   color: #fff;
-  font-size: clamp(24px, 3.4cqi, 46.4px);
-  font-weight: 800;
-  letter-spacing: 0.2px;
+  font-family: var(--cg-font-display);
+  font-size: clamp(28px, 4.2cqi, 58px);
+  font-weight: 700;
+  letter-spacing: 0.4px;
   line-height: 1.15;
   text-wrap: balance;
   text-shadow: 0 2px 10px rgba(0,0,0,0.35);
@@ -448,14 +450,14 @@
   gap: 10px;
   margin-top: 18px;
   padding: 10px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
-  border-radius: 4px;
-  background: transparent;
-  color: #fff;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-size: 13.6px;
-  font-weight: 600;
-  letter-spacing: 1.5px;
+  border: 1px solid var(--cg-hold);
+  border-radius: 2rem;
+  background: var(--cg-hold);
+  color: var(--cg-ink);
+  font-family: var(--cg-font-body);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   text-decoration: none;
   transition: background 0.25s, color 0.25s, border-color 0.25s;
@@ -469,7 +471,7 @@
 .slide_read_more_btn:focus-visible {
   background: #fff;
   border-color: #fff;
-  color: #111;
+  color: var(--cg-ink);
   text-decoration: none;
 }
 

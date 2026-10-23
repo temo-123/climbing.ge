@@ -1,0 +1,96 @@
+// ============================================================
+//  Article / detail pages (guide articles, events, blog posts…)
+// ============================================================
+
+.blog-header { position: relative; }
+
+.blog-title {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 0 .75rem;
+    font-size: clamp(2.1rem, 4.6vw, 3.2rem);
+    line-height: 1.05;
+}
+
+// favourite heart next to the title
+.add_to_favorite {
+    float: none;
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid var(--cg-line);
+    box-shadow: var(--cg-shadow-sm);
+    color: var(--cg-muted);
+    font-size: 1.35rem !important;
+    cursor: pointer;
+    transition: transform .2s ease, color .2s ease, border-color .2s ease;
+
+    &:hover { color: var(--cg-rope); border-color: rgba(255, 106, 61, .4); transform: scale(1.06); }
+    &.active { color: #e5484d !important; border-color: rgba(229, 72, 77, .35); }
+}
+
+.blog-post-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: .35rem;
+    margin: 0 .4rem .75rem 0;
+    padding: .3rem .8rem;
+    border-radius: 2rem;
+    background: #fff;
+    border: 1px solid var(--cg-line);
+    color: var(--cg-stone);
+    font-size: .8rem;
+    font-weight: 700;
+
+    &::before {
+        content: "\f073";
+        font-family: FontAwesome;
+        font-weight: normal;
+        color: var(--cg-accent);
+    }
+}
+
+.blog-main {
+    font-size: 1.02rem;
+    line-height: 1.75;
+    color: var(--cg-ink-2);
+
+    > h2,
+    > div > h2,
+    h2[id] {
+        position: relative;
+        margin: 2.5rem 0 1.1rem;
+        padding-left: .9rem;
+        font-size: clamp(1.6rem, 3vw, 2.1rem);
+
+        &::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: .15em;
+            bottom: .15em;
+            width: 4px;
+            border-radius: 4px;
+            background: linear-gradient(180deg, var(--cg-accent) 0 70%, var(--cg-hold) 70% 100%);
+        }
+    }
+
+    img { max-width: 100%; height: auto; border-radius: var(--cg-r); }
+
+    blockquote {
+        margin: 1.25rem 0;
+        padding: .9rem 1.2rem;
+        border-left: 4px solid var(--cg-accent);
+        background: var(--cg-accent-soft);
+        border-radius: 0 var(--cg-r) var(--cg-r) 0;
+    }
+
+    ul { list-style: disc; }
+    ol { list-style: decimal; }
+}

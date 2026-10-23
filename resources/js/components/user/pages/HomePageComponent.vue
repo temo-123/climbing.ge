@@ -1,69 +1,55 @@
 <template>
-    <div class="row">
-        
+    <div class="cg-dashboard">
+
         <left-menu />
 
-        <div class="col-sm-12">
+        <section class="cg-page-head cg-dashboard__hero cg-art-carabiners">
+            <span class="cg-eyebrow">{{ $t('global.brand.user') }}</span>
+            <h1>{{ $t('user.home.greeting', { name: this.user['name'] || '' }) }}</h1>
+            <p>{{ $t('user.home.subtitle') }}</p>
+        </section>
 
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="alert alert-success" role="alert">
-                        <h1>{{ $t('user.home.greeting', { name: this.user['name'] }) }}</h1>
-                    </div>
-                </div>
-            </div>
+        <current-user-climber-card>
+            <template #extra>
+                <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }}</a>
+            </template>
+        </current-user-climber-card>
 
-            <!-- <servicesListComponent /> -->
-
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <current-user-climber-card>
-                        <template #extra>
-                            <a href="#" class="user-follow-summary__all-users" @click.prevent="go_to_all_users()">{{ $t('global.follow.all_users_btn') }}</a>
-                        </template>
-                    </current-user-climber-card>
-                </div>
-            </div>
-
-            <div class="row justify-content-center" v-if="$can('show', 'mail')">
-                <div class="col-md-6 mb-3">
-                    <mail_notification_widget compact />
-                    <router-link :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
-                        {{ $t('user.home.view_mail_alerts_btn') }}
-                    </router-link>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <entity_locale_errors summary />
-                </div>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">{{ $t('user.home.sites_index') }}</div>
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_guid" @click="go_to_service('guid')">{{ $t('user.home.guidebook') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_shop" @click="go_to_service('shop')">{{ $t('user.home.shop') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_blog" @click="go_to_service('blog')">{{ $t('user.home.blog') }}</button>
-                                </div>
-                                <div class="col-sm-6 col-md-6 col-lg-3 text-center">
-                                    <button class="btn btn_service_summit" @click="go_to_service('summit')">{{ $t('user.home.summits') }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <user_notifications_list />
-
+        <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.quick_links') }}</h2>
+        <div class="cg-quick-grid">
+            <router-link v-for="link in quick_links" :key="link.route" :to="locale_prefix + link.route" class="cg-quick">
+                <span class="cg-quick__icon"><i :class="'fa ' + link.icon" aria-hidden="true"></i></span>
+                <span class="cg-quick__label">{{ $t(link.label) }}</span>
+                <i class="fa fa-angle-right cg-quick__arrow" aria-hidden="true"></i>
+            </router-link>
         </div>
+
+        <div class="row g-3 mb-2" v-if="$can('show', 'mail')">
+            <div class="col-lg-6">
+                <mail_notification_widget compact />
+                <router-link :to="{ name: 'notificationAnalytics' }" class="btn btn-primary btn-sm w-100 mt-2">
+                    {{ $t('user.home.view_mail_alerts_btn') }}
+                </router-link>
+            </div>
+            <div class="col-lg-6">
+                <entity_locale_errors summary />
+            </div>
+        </div>
+
+        <h2 class="cg-section-title cg-section-title--left cg-dashboard__title">{{ $t('user.home.sites_index') }}</h2>
+        <div class="cg-service-tiles">
+            <a v-for="item in services" :key="item.key" class="cg-service-tile" :class="'cg-service-' + item.theme" @click="go_to_service(item.key)">
+                <span class="cg-service-tile__icon"><i :class="'fa ' + item.icon" aria-hidden="true"></i></span>
+                <span class="cg-service-tile__text">
+                    <strong>{{ $t(item.label) }}</strong>
+                    <small>{{ $t('global.switcher.' + item.theme + '_desc') }}</small>
+                </span>
+                <i class="fa fa-external-link cg-service-tile__go" aria-hidden="true"></i>
+            </a>
+        </div>
+
+        <user_notifications_list />
+
     </div>
 </template>
 
@@ -72,7 +58,6 @@
     import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
     import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
 
-    import servicesListComponent from '../../global_components/ServicesListComponent.vue'
     import CurrentUserClimberCard from '../../global_components/CurrentUserClimberCardComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
 
@@ -82,13 +67,31 @@
             user_notifications_list,
             mail_notification_widget,
             entity_locale_errors,
-            servicesListComponent,
             'current-user-climber-card': CurrentUserClimberCard,
         },
         data(){
             return{
                 user: {},
+                quick_links: [
+                    { route: '/my_ascents', icon: 'fa-flag-checkered', label: 'user.menu.my ascents' },
+                    { route: '/purchases', icon: 'fa-shopping-bag', label: 'user.menu.my purchases' },
+                    { route: '/my_trainings', icon: 'fa-heartbeat', label: 'user.menu.my trainings' },
+                    { route: '/my_routes_review', icon: 'fa-star-half-o', label: 'user.menu.my routes reviews' },
+                    { route: '/my_comments_and_reviews', icon: 'fa-comments-o', label: 'user.menu.my comments' },
+                    { route: '/options', icon: 'fa-cog', label: 'user.menu.options' },
+                ],
+                services: [
+                    { key: 'guid', theme: 'guide', icon: 'fa-map-o', label: 'user.home.guidebook' },
+                    { key: 'shop', theme: 'shop', icon: 'fa-shopping-bag', label: 'user.home.shop' },
+                    { key: 'blog', theme: 'blog', icon: 'fa-newspaper-o', label: 'user.home.blog' },
+                    { key: 'summit', theme: 'summit', icon: 'fa-flag', label: 'user.home.summits' },
+                ],
             }
+        },
+        computed: {
+            locale_prefix() {
+                return this.$i18n.locale === 'ka' ? '/ka' : ''
+            },
         },
         mounted(){
             this.get_user_data();
@@ -111,23 +114,9 @@
 </script>
 
 <style>
-.btn_service_guid, .btn_service_shop, .btn_service_blog, .btn_service_summit{
-    margin: 2%;
-}
-.btn_service_guid{
-    background-color: #279fbb;
-}
-.btn_service_shop{
-    background-color: #27bb7d;
-}
-.btn_service_blog{
-    background-color: #777777;
-}
-.btn_service_summit{
-    background-color: #ff6b6b;
-}
 .user-follow-summary__all-users {
     font-size: .95rem;
+    font-weight: 700;
     margin-left: auto;
 }
 </style>

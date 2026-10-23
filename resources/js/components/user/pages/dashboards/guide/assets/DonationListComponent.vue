@@ -2,7 +2,7 @@
     <div class="donation-block">
 
         <div class="donation-controls mb-3 d-flex align-items-center gap-2 flex-wrap">
-            <label class="mb-0 font-weight-bold">{{ $t('admin.dashboards.period_label') }}</label>
+            <label class="mb-0 fw-bold">{{ $t('admin.dashboards.period_label') }}</label>
             <select class="form-control d-inline-block w-auto" v-model="selectedPeriod" @change="applyPeriod">
                 <option value="30days">{{ $t('admin.dashboards.period_last_30_days') }}</option>
                 <option value="3months">{{ $t('admin.dashboards.period_last_3_months') }}</option>
@@ -78,10 +78,10 @@
                             <td>{{ d.user ? d.user.name : '—' }}</td>
                             <td>{{ d.created_at ? d.created_at.substring(0, 10) : '—' }}</td>
                             <td class="text-nowrap">
-                                <button v-if="$can('edit', 'donation')" class="btn btn-xs btn-outline-primary mr-1" @click="show_status_modal(d)" :title="$t('admin.task.update_status_tooltip')">
+                                <button v-if="$can('edit', 'donation')" class="btn btn-sm btn-outline-primary me-1" @click="show_status_modal(d)" :title="$t('admin.task.update_status_tooltip')">
                                     <i class="fa fa-edit"></i>
                                 </button>
-                                <button v-if="$can('del', 'donation')" class="btn btn-xs btn-outline-danger" @click="del_donation(d.id)" :title="$t('common.delete')">
+                                <button v-if="$can('del', 'donation')" class="btn btn-sm btn-outline-danger" @click="del_donation(d.id)" :title="$t('common.delete')">
                                     <i class="fa fa-trash"></i>
                                 </button>
                             </td>

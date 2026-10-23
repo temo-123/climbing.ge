@@ -17,25 +17,25 @@
         <div v-else>
             <!-- Summary tiles -->
             <div class="row" style="margin-bottom: 24px;">
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-6 col-sm-3">
                     <div class="stat-tile">
                         <div class="stat-tile-label">{{ $t('admin.site_info.today_label') }}</div>
                         <div class="stat-tile-value">{{ stats.today }}</div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#9b59b6;">
                         <div class="stat-tile-label">{{ $t('admin.site_info.this_week_label') }}</div>
                         <div class="stat-tile-value" style="color:#9b59b6;">{{ stats.this_week }}</div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#27ae60;">
                         <div class="stat-tile-label">{{ $t('admin.site_info.this_month_label') }}</div>
                         <div class="stat-tile-value" style="color:#27ae60;">{{ stats.this_month }}</div>
                     </div>
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-6 col-sm-3">
                     <div class="stat-tile" style="border-color:#f39c12;">
                         <div class="stat-tile-label">{{ $t('admin.site_info.this_year_label') }}</div>
                         <div class="stat-tile-value" style="color:#f39c12;">{{ stats.this_year }}</div>
@@ -153,7 +153,7 @@
 .stat-tile-label {
     font-size: 12px;
     text-transform: uppercase;
-    color: #888;
+    color: var(--cg-muted);
     letter-spacing: 0.05em;
     margin-bottom: 6px;
 }

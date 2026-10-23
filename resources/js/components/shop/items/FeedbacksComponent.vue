@@ -3,7 +3,7 @@
 
         <div class="modal-section">
             <div class="row">
-                <div class="col-xs-12 col-md-12 text-center">
+                <div class="col-12 col-md-12 text-center">
                     <div class="wrap">
                         <h2>{{ $t('shop.product.feedback.title') }}</h2>
                         <span v-if="reviews_count_prop > 0">{{ $t('shop.product.feedback.average_rating', { stars: reviews_stars_prop, count: reviews_count_prop }) }}</span>
@@ -19,45 +19,45 @@
 
             <div class="row">
                 <div class="col-md-6">
-                    <button @click="show_feadbacks_action" v-if="show_feadbacks" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.close_list') }}</button>
-                    <button @click="show_feadbacks_action" v-if="!show_feadbacks" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.show_list') }}</button>
+                    <button @click="show_feadbacks_action" v-if="show_feadbacks" class="btn btn-primary main-btn">{{ $t('shop.product.feedback.close_list') }}</button>
+                    <button @click="show_feadbacks_action" v-if="!show_feadbacks" class="btn btn-primary main-btn">{{ $t('shop.product.feedback.show_list') }}</button>
                 </div>
             </div>
         </div>
 
         <div class="modal-section" v-if="show_feadbacks">
             <div class="row">
-                <div class="col-xs-6 col-md-6">
-                    <button @click="show_feedback_modal()" class="btn btn-default btn-send main-btn">{{ $t('shop.product.feedback.create') }}</button>
+                <div class="col-6 col-md-6">
+                    <button @click="show_feedback_modal()" class="btn btn-primary main-btn">{{ $t('shop.product.feedback.create') }}</button>
                 </div>
-                <div class="col-xs-6 col-md-6">
-                    <button @click="get_feedbacks" class="btn btn-success pull-right" v-if="!is_refresh">{{ $t('common.refresh') }} ({{refresh_id}})</button>
-                    <span class="badge badge-primary mb-1 pull-right" v-if="is_refresh">{{ $t('common.updating') }}</span>
+                <div class="col-6 col-md-6">
+                    <button @click="get_feedbacks" class="btn btn-success float-end" v-if="!is_refresh">{{ $t('common.refresh') }} ({{refresh_id}})</button>
+                    <span class="badge text-bg-primary mb-1 float-end" v-if="is_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>
 
         <div class="modal-section" v-if="show_feadbacks">
             <div class="row">
-                <div class="col-xs-12 col-md-8">
+                <div class="col-12 col-md-8">
                     <div class="wrap">
                         <ul>
                             <li v-for="feedback in this.feedbacks" :key="feedback.feedback.id" class="feedback-item">
                                 <div class="row">
                                     <span v-if="user.length != 0">
-                                        <button @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id"  class="btn btn btn-warning pull-right">
+                                        <button @click="show_complaint_modal(feedback.feedback.id)" v-if="!feedback.user || feedback.user.id != user.id"  class="btn btn-warning float-end">
                                             <i class="fa fa-thumbs-down" aria-hidden="true"></i>
                                         </button>
-                                        <button @click="confirm_delete_feedback(feedback.feedback.id)" v-else class="btn btn-danger pull-right">
+                                        <button @click="confirm_delete_feedback(feedback.feedback.id)" v-else class="btn btn-danger float-end">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
                                     </span>
 
-                                    <div class="col-xs-2 col-md-2">
+                                    <div class="col-2 col-md-2">
                                         <img :src="feedback.user && feedback.user.image ? '/public/images/user_profil_img/' + feedback.user.image : '/public/images/site_img/demo_imgs/user_demo_img.gif'" @click="showUserModal(feedback)" />
                                     </div>
 
-                                    <div class="col-xs-10 col-md-10">
+                                    <div class="col-10 col-md-10">
                                         <div class="row">
                                             <h3 class="comentator_name"><strong>{{feedback.feedback.name}} {{feedback.feedback.surname}}</strong> </h3>
 
@@ -243,8 +243,8 @@
         color: #000;
     }
     .feedback-item {
-        background-color: #f8f9fa;
-        border: 1px solid #e9ecef;
+        background-color: var(--cg-chalk);
+        border: 1px solid var(--cg-line);
         border-radius: 8px;
         padding: 1rem;
         margin-bottom: 1rem;

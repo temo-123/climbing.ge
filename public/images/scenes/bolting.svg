@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-label="Your donation bolts a new route: bolts appear up the wall to the anchor">
+<!-- Donation success (one-shot, ~3.5s): a new route gets bolted — bolts appear
+     one by one up the line with a puff of rock dust, then the lowering anchor
+     at the top glints. Donations fund exactly this. climbing.ge scene set. -->
+<style>
+  .b { opacity: 0; animation: bolt .35s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .p { opacity: 0; animation: puff .7s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .b1, .p1 { animation-delay: .2s } .b2, .p2 { animation-delay: .7s } .b3, .p3 { animation-delay: 1.2s }
+  .b4, .p4 { animation-delay: 1.7s } .b5, .p5 { animation-delay: 2.2s }
+  .anchor { opacity: 0; animation: bolt .45s 2.8s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .glint { opacity: 0; animation: glint 1s 3.2s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  .line { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 2.6s .2s ease-in-out both; }
+  @keyframes bolt { from { opacity: 0; transform: scale(.2) } 70% { opacity: 1; transform: scale(1.25) } to { opacity: 1; transform: scale(1) } }
+  @keyframes puff { from { opacity: .9; transform: translate(0, 0) scale(.4) } to { opacity: 0; transform: translate(-14px, 8px) scale(1.6) } }
+  @keyframes glint { from { opacity: 0; transform: scale(.3) rotate(0) } 40% { opacity: 1 } to { opacity: 0; transform: scale(1.4) rotate(45deg) } }
+  @keyframes draw { to { stroke-dashoffset: 0 } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; opacity: 1 !important; stroke-dashoffset: 0 !important } .p, .glint { opacity: 0 !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfe6ef"/><stop offset="1" stop-color="#eef3f1"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="240" rx="20"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="240" fill="url(#sky)"/>
+  <path d="M60 22l70-16 90 4 80-10 30 20 10 230H50z" fill="#c8bba6"/>
+  <path d="M60 22l70-16 20 80-50 40-40-20z" fill="#d6cbb8"/>
+  <path d="M220 10l80-10 30 20-30 80-80-20z" fill="#bcae96"/>
+  <path d="M0 214c60-6 120-2 180-4s120 2 180-2V240H0z" fill="#7d8f63"/>
+  <!-- the new line (chalked holds) -->
+  <g fill-opacity=".9">
+    <ellipse cx="168" cy="196" rx="5.5" ry="3.8" fill="#ffc233"/><ellipse cx="196" cy="166" rx="5.5" ry="3.8" fill="#ff6a3d"/>
+    <ellipse cx="172" cy="134" rx="5.5" ry="3.8" fill="#3fb59a"/><ellipse cx="200" cy="104" rx="5.5" ry="3.8" fill="#8a63e0"/>
+    <ellipse cx="176" cy="74" rx="5.5" ry="3.8" fill="#ffc233"/><ellipse cx="202" cy="46" rx="5.5" ry="3.8" fill="#ff6a3d"/>
+  </g>
+  <path class="line" pathLength="1" d="M186 200c-6-30 10-40 4-70s10-40 0-70 4-24 0-34" fill="none" stroke="#fff" stroke-width="2" stroke-dasharray="1" stroke-opacity=".6"/>
+</g>
+
+<!-- bolts (hangers) appearing bottom → top, with rock dust -->
+<g fill="#e8e1d4">
+  <circle class="p p1" cx="188" cy="180" r="6"/><circle class="p p2" cx="194" cy="148" r="6"/><circle class="p p3" cx="186" cy="116" r="6"/>
+  <circle class="p p4" cx="192" cy="84" r="6"/><circle class="p p5" cx="188" cy="54" r="6"/>
+</g>
+<g fill="#6c757d" stroke="#9aa3ab" stroke-width="1.6">
+  <circle class="b b1" cx="188" cy="180" r="3.6"/><circle class="b b2" cx="194" cy="148" r="3.6"/><circle class="b b3" cx="186" cy="116" r="3.6"/>
+  <circle class="b b4" cx="192" cy="84" r="3.6"/><circle class="b b5" cx="188" cy="54" r="3.6"/>
+</g>
+
+<!-- lowering anchor at the top, then a glint -->
+<g class="anchor">
+  <circle cx="182" cy="24" r="3.2" fill="#6c757d"/><circle cx="198" cy="22" r="3.2" fill="#6c757d"/>
+  <path d="M182 26l7 12M198 24l-7 14" fill="none" stroke="#9aa3ab" stroke-width="2" stroke-dasharray="2.4 1.6"/>
+  <circle cx="190" cy="42" r="4.2" fill="none" stroke="#7b858e" stroke-width="2.2"/>
+</g>
+<path class="glint" d="M190 30l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#ffd36b"/>
+</svg>

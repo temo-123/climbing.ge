@@ -1,17 +1,17 @@
 <template>
     <div v-if="donationEnabled" :class="['donation-section', 'my-4', 'donation-' + position]">
 
-        <h2 class="modal-title">
-            <i class="fa fa-heart text-danger mr-2"></i>
+        <h2 class="donation-title">
+            <i class="fa fa-heart me-2"></i>
             {{ $t('guide.donation.support_title') }}
         </h2>
 
         <button
             @click="showDonationModal"
-            class="btn btn-success donation-float-btn"
+            class="btn btn-hold donation-float-btn"
             :title="$t('guide.donation.support')"
         >
-            <i class="fa fa-heart mr-2"></i>
+            <i class="fa fa-heart me-2"></i>
             {{ $t('guide.donation.support') }}
         </button>
 
@@ -105,18 +105,23 @@
     text-align: right;
 }
 
+.donation-title {
+    margin-bottom: .9rem;
+    font-size: 1.6rem;
+}
+
+.donation-title i {
+    color: var(--cg-rope);
+}
+
 .donation-float-btn {
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: 600;
-    border-radius: 50px;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-    transition: all 0.3s ease;
+    padding: .75rem 1.75rem;
+    font-size: 1rem;
+    border-radius: 2rem;
 }
 
 .donation-float-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    transform: translateY(-2px);
 }
 
 .donation-float-btn i {
@@ -124,7 +129,7 @@
 }
 
 .donation-hint {
-    color: #6c757d;
+    color: var(--cg-stone);
     font-size: 12px;
 }
 

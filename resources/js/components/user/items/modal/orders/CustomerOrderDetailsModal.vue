@@ -11,11 +11,11 @@
 
             <!-- Status badge -->
             <div class="mb-3 d-flex align-items-center flex-wrap" style="gap:6px">
-                <span class="badge badge-secondary">{{ $t('user.orders.order_number', { id: order.id }) }}</span>
+                <span class="badge text-bg-secondary">{{ $t('user.orders.order_number', { id: order.id }) }}</span>
                 <span :class="statusBadgeClass">{{ statusLabel }}</span>
-                <span v-if="order.confirm == 1" class="badge badge-success">{{ $t('user.orders.confirmed_yes') }}</span>
-                <span v-else class="badge badge-warning">{{ $t('user.orders.confirmed_no') }}</span>
-                <span class="badge badge-info">
+                <span v-if="order.confirm == 1" class="badge text-bg-success">{{ $t('user.orders.confirmed_yes') }}</span>
+                <span v-else class="badge text-bg-warning">{{ $t('user.orders.confirmed_no') }}</span>
+                <span class="badge text-bg-info">
                     <i class="fa fa-clock-o"></i> {{ $t('user.orders.delivery_days', { days: delivery_days }) }}
                 </span>
             </div>
@@ -91,7 +91,7 @@
                         <small class="text-muted d-block">{{ $t('user.orders.qty') }}</small>
                         <span>{{ item.quantity }}</span>
                     </div>
-                    <div class="col-2 text-right">
+                    <div class="col-2 text-end">
                         <small class="text-muted d-block">{{ $t('user.orders.total') }}</small>
                         <strong>{{ item_total(item) }} ₾</strong>
                     </div>

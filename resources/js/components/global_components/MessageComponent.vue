@@ -66,7 +66,7 @@
 
                 <div class="col-md-6">
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <textarea rows="10" name="msg" id="msg" v-model="msg" :placeholder="$t('global.message.form.message text')" class="form-control textarea"></textarea>
                                 <div class="alert alert-danger" role="alert" v-if="error.msg">
@@ -96,7 +96,7 @@
 
         <div class="row" v-else-if="is_mail_sending && !fatal_error">
             <div class="text-center loader_margin">
-                <img :src="'/images/site_img/loading.gif'" class="img-responsive center-block" alt="loading">
+                <img :src="'/images/site_img/loading.gif'" class="img-fluid d-block mx-auto" alt="loading">
                 <p>{{ $t('user.notifications.please_wait') }}</p>
             </div>
         </div>

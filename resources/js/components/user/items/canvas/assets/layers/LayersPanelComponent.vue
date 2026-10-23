@@ -712,7 +712,7 @@ export default {
 }
 
 .layer-row:hover {
-    background: #f0f4ff !important;
+    background: var(--cg-accent-soft) !important;
 }
 
 /* Checked via the row's own "select for grouping" checkbox — a persistent,
@@ -724,20 +724,20 @@ export default {
    an immediate, impossible-to-miss confirmation right where the click
    happened, regardless of how the canvas itself renders selection. */
 .layer-row-selected {
-    background: #e7f1ff !important;
+    background: var(--cg-accent-soft) !important;
 }
 
 .drag-handle {
     width: 14px;
     flex-shrink: 0;
     text-align: center;
-    color: #adb5bd;
+    color: var(--cg-muted);
     font-size: 11px;
     cursor: grab;
 }
 
 .drag-handle:hover {
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .drag-handle:active {
@@ -755,7 +755,7 @@ export default {
 
 .layer-locked .layer-name {
     text-decoration: line-through;
-    text-decoration-color: #aaa;
+    text-decoration-color: var(--cg-muted);
 }
 
 .layer-child {
@@ -767,12 +767,12 @@ export default {
 }
 
 .layer-related {
-    background: #f5f5f5;
+    background: var(--cg-chalk);
     opacity: 0.85;
 }
 
 .layer-drop-target {
-    outline: 2px dashed #0d6efd;
+    outline: 2px dashed var(--cg-accent);
     outline-offset: -2px;
     background: #eaf2ff !important;
 }
@@ -794,12 +794,12 @@ export default {
     position: relative;
     z-index: 1;
     background-color: #fff;
-    border: 1px solid #999;
+    border: 1px solid var(--cg-muted);
     border-radius: 3px;
 }
 .layer-select-checkbox:checked {
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: var(--cg-accent);
+    border-color: var(--cg-accent);
 }
 
 .layer-icon-btn {
@@ -843,7 +843,7 @@ export default {
 
 .edit-point-btn {
     cursor: pointer;
-    color: #0d6efd;
+    color: var(--cg-accent);
     background: #eef2ff;
     border: 1px solid #cfe0ff;
     font-size: 10px;
@@ -855,8 +855,8 @@ export default {
 
 .edit-point-btn:hover {
     color: #fff;
-    background: #0d6efd;
-    border-color: #0d6efd;
+    background: var(--cg-accent);
+    border-color: var(--cg-accent);
 }
 
 .editable-name:focus {
@@ -873,7 +873,7 @@ export default {
 
 .layer-text-preview {
     font-size: 11px;
-    color: #555;
+    color: var(--cg-stone);
 }
 
 .layer-color-swatch {

@@ -90,7 +90,7 @@ export default {
     box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     margin-bottom: 1.5rem;
     padding: 0.5rem;
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -101,7 +101,7 @@ export default {
 h3 {
     font-size: 1.4rem;
     font-weight: 600;
-    color: #343a40;
+    color: var(--cg-ink-2);
     margin-bottom: 0.75rem;
 }
 </style>

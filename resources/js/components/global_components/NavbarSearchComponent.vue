@@ -1,24 +1,27 @@
 <template>
     <li class="nav-search-li" :class="{ open: is_open }" ref="root">
         <!-- Search icon toggle -->
-        <a class="margin_right cursor_pointer" @click.stop="toggle">
-            <span><i class="fa fa-search" aria-hidden="true"></i></span>
+        <a class="cg-icon-btn" @click.stop="toggle" :title="$t('global.search')">
+            <i class="fa fa-search" aria-hidden="true"></i>
         </a>
 
         <!-- Search panel -->
-        <div v-show="is_open" class="search-panel shadows" @click.stop>
-            <!-- Full-width input -->
-            <input
-                ref="input"
-                class="form-control search-input"
-                v-model="query"
-                @input="on_input"
-                @keyup.enter.prevent="submit"
-                @keydown.escape="close"
-                :placeholder="placeholder"
-                autocomplete="off"
-                type="text"
-            />
+        <div v-show="is_open" class="search-panel" @click.stop>
+            <div class="search-field">
+                <i class="fa fa-search search-field-icon" aria-hidden="true"></i>
+                <!-- Full-width input -->
+                <input
+                    ref="input"
+                    class="form-control search-input"
+                    v-model="query"
+                    @input="on_input"
+                    @keyup.enter.prevent="submit"
+                    @keydown.escape="close"
+                    :placeholder="placeholder"
+                    autocomplete="off"
+                    type="text"
+                />
+            </div>
 
             <!-- Language error -->
             <div v-if="lang_error" class="search-lang-error">
@@ -51,11 +54,11 @@
 
             <!-- Full-width search button -->
             <button
-                class="btn btn-success search-submit-btn"
+                class="btn btn-primary search-submit-btn"
                 @click.prevent="submit"
                 :disabled="query.trim().length < 2"
             >
-                <span class="glyphicon glyphicon-search"></span>
+                <i class="fa fa-search" aria-hidden="true"></i>
                 {{ $t(site + '.search.placeholder') || 'Search' }}
             </button>
         </div>
@@ -217,75 +220,98 @@ export default {
 .search-panel {
     position: absolute;
     right: 0;
-    top: 100%;
-    width: 340px;
-    background: #dfdfdf;
-    border-radius: 0 0 20px 20px;
-    padding: 12px;
-    z-index: 9999;
+    top: calc(100% + .55rem);
+    z-index: 1050;
+    width: 360px;
+    padding: .75rem;
+    background: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: 1rem;
+    box-shadow: var(--cg-shadow-lg);
 }
 
+.search-field {
+    position: relative;
+}
+.search-field-icon {
+    position: absolute;
+    left: .85rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cg-muted);
+    pointer-events: none;
+}
 .search-input {
     width: 100%;
-    box-sizing: border-box;
+    padding-left: 2.3rem;
+    border-radius: 2rem;
+    background: var(--cg-chalk);
 }
 
 .search-submit-btn {
-    display: block;
     width: 100%;
-    margin-top: 8px;
+    margin-top: .6rem;
+    border-radius: 2rem;
 }
 
 .search-suggestions-list {
     list-style: none;
-    margin: 8px 0 0;
-    padding: 0;
-    border-top: 1px solid #bbb;
+    margin: .5rem 0 0;
+    padding: .25rem 0 0;
+    border-top: 1px solid var(--cg-line);
 }
 
 .suggestion-item {
-    padding: 7px 10px;
-    cursor: pointer;
-    border-radius: 4px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.93em;
-    color: #333;
-    transition: background 0.15s;
+    gap: .6rem;
+    padding: .5rem .65rem;
+    border-radius: .6rem;
+    color: var(--cg-ink-2);
+    font-size: .92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color .15s ease;
 }
-
-.suggestion-item:hover {
-    background: #c8e6ed;
-}
-
-.suggestion-icon {
-    color: #278da5;
-    width: 14px;
+.suggestion-item i {
+    width: 16px;
     text-align: center;
+    color: var(--cg-accent);
+}
+.suggestion-item:hover {
+    background: var(--cg-accent-soft);
+    color: var(--cg-accent-dark);
 }
 
 .suggestion-loading {
+    padding: .5rem;
     text-align: center;
-    padding: 6px;
-    color: #888;
-    font-size: 0.9em;
+    color: var(--cg-muted);
 }
 
 .suggestion-empty {
-    margin-top: 8px;
-    padding: 6px 10px;
-    color: #666;
-    font-size: 0.88em;
+    margin-top: .5rem;
+    padding: .5rem;
     text-align: center;
+    color: var(--cg-muted);
+    font-size: .88rem;
 }
 
 .search-lang-error {
-    margin-top: 8px;
-    padding: 6px 10px;
-    background: #f8d7da;
-    color: #721c24;
-    border-radius: 4px;
-    font-size: 0.88em;
+    margin-top: .5rem;
+    padding: .5rem .75rem;
+    border-radius: .6rem;
+    background: #fdecea;
+    color: #a52a1f;
+    font-size: .86rem;
+    font-weight: 600;
+}
+
+@media (max-width: 1199.98px) {
+    .search-panel {
+        left: 0;
+        right: 0;
+        width: auto;
+    }
 }
 </style>

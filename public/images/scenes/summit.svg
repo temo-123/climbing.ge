@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 240" role="img" aria-label="Summit! The climber tops out and plants a flag">
+<!-- Summit "ascent recorded" (one-shot, ~3s): the climber steps up onto the
+     summit, plants the flag and raises an arm; afterwards only the flag keeps
+     waving in the wind. climbing.ge scene set. -->
+<style>
+  .climb { animation: climb 1.6s cubic-bezier(.3,.7,.3,1) both; }
+  .plant { animation: plant .5s 1.5s ease-out both; transform-box: fill-box; transform-origin: 50% 100%; }
+  .flag { animation: wave 1.4s 2s ease-in-out infinite; transform-box: fill-box; transform-origin: 0% 50%; }
+  .arm { animation: arm .5s 2.1s ease-out both; transform-box: fill-box; transform-origin: 0% 100%; }
+  .glow { animation: glow 1.2s 2s ease-out both; transform-box: fill-box; transform-origin: 50% 50%; }
+  @keyframes climb { from { transform: translate(-46px, 44px) } 50% { transform: translate(-18px, 14px) } to { transform: translate(0, 0) } }
+  @keyframes plant { from { transform: scaleY(0) } to { transform: scaleY(1) } }
+  @keyframes wave { 0%, 100% { transform: skewY(0) scaleX(1) } 50% { transform: skewY(-7deg) scaleX(.92) } }
+  @keyframes arm { from { transform: rotate(60deg) } to { transform: rotate(0) } }
+  @keyframes glow { from { transform: scale(.4); opacity: 0 } 40% { opacity: .9 } to { transform: scale(1.6); opacity: 0 } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8fbfdc"/><stop offset="1" stop-color="#e9f2f6"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="240" rx="20"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="240" fill="url(#sky)"/>
+  <circle cx="290" cy="56" r="20" fill="#ffd36b" opacity=".85"/>
+  <path d="M0 180l50-40 40 20 50-50 40 30 40-20 60 40 80-30V240H0z" fill="#c9d6de"/>
+  <!-- the summit -->
+  <path d="M40 240L176 96l144 144z" fill="#7d8b98"/>
+  <path d="M176 96l-36 38 18-4 10 10 8-14 12 8 14-6z" fill="#f4f7f9"/>
+  <path d="M176 96l144 144H240z" fill="#66737f"/>
+  <circle class="glow" cx="176" cy="96" r="26" fill="#fff"/>
+</g>
+
+<!-- climber, topping out -->
+<g class="climb" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M168 94l-4 -14M174 94l3 -14" fill="none" stroke="#2b3440" stroke-width="6"/>
+  <path d="M162 80c-1-10 0-17 2-22h12c2 5 2 12 1 22z" fill="#1f93b0"/>
+  <rect x="162" y="77" width="16" height="4.5" rx="2" fill="#ffc233"/>
+  <path d="M164 62l-8 10" fill="none" stroke="#1f93b0" stroke-width="5"/>
+  <path class="arm" d="M176 62l8 -10" fill="none" stroke="#1f93b0" stroke-width="5"/>
+  <circle cx="170" cy="50" r="6.4" fill="#e8b58f"/>
+  <path d="M162.8 50a7.2 7.6 0 0 1 14.4 0z" fill="#ffc233"/>
+</g>
+
+<!-- the flag -->
+<g class="plant">
+  <path d="M190 96V58" stroke="#5b6670" stroke-width="2.4" stroke-linecap="round"/>
+  <path class="flag" d="M190 58h26l-7 8 7 8h-26z" fill="#d9343e"/>
+</g>
+</svg>

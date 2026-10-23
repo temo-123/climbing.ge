@@ -1,0 +1,37 @@
+// ============================================================
+//  Gear doodle wallpaper — the site-wide background pattern
+//  (--cg-topo / --cg-topo-dark tokens: preloader, header, sidebar,
+//  tiles, modals…). Only clearly recognisable climbing gear, drawn
+//  in one consistent pencil line on a 360px tile:
+//  carabiner · quickdraw · climbing hold · ice axe · climbing shoe ·
+//  helmet · rope coil · chalk bag · peak with a summit flag.
+//  Colour/opacity are parameters.
+// ============================================================
+
+@function cg-gear-doodles($color: "#fff", $opacity: .11) {
+    @return cg-svg("<svg xmlns='http://www.w3.org/2000/svg' width='360' height='360' viewBox='0 0 360 360'>\
+<filter id='w'><feTurbulence type='fractalNoise' baseFrequency='.035' numOctaves='2' seed='9'/><feDisplacementMap in='SourceGraphic' scale='2.4' xChannelSelector='R' yChannelSelector='G'/></filter>\
+<g filter='url(#w)' fill='none' stroke='#{$color}' stroke-opacity='#{$opacity}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'>\
+<g transform='translate(26 22) rotate(-16)'>\
+<path d='M14 0C5 0 0 8 0 18v34c0 12 7 18 18 18h8c12 0 18-7 18-18L40 14C39 5 33 0 26 0z'/><path d='M34 6l6 40'/><path d='M30 46h12'/></g>\
+<g transform='translate(150 14) rotate(8)'>\
+<path d='M6 0C1 0-2 4-2 10v14c0 6 4 9 9 9h4c6 0 9-4 9-9l-2-16C17 3 14 0 10 0z'/><path d='M14 3l3 20'/>\
+<path d='M3 32h10v26H3z'/><path d='M3 40h10M3 48h10'/>\
+<path d='M6 58c-6 0-9 5-9 11v14c0 7 5 11 11 11h4c7 0 11-5 11-11l-2-16c-1-6-5-9-10-9z'/><path d='M16 62l3 22'/></g>\
+<g transform='translate(250 28) rotate(-8)'>\
+<path d='M6 44C0 22 16 4 40 4s42 14 38 36c-3 12-12 15-21 11s-21-4-30 3-21 12-21-10z'/><circle cx='42' cy='26' r='6'/><path d='M38 26h8M42 22v8'/></g>\
+<g transform='translate(40 130) rotate(-24)'>\
+<path d='M30 0v84'/><path d='M4 6c10-6 42-6 52 0'/><path d='M4 6c2 6 8 10 14 12M56 6c-4 6-12 10-22 12'/><path d='M26 84l4 10 4-10'/><path d='M26 66h8'/></g>\
+<g transform='translate(112 152) scale(.85)'>\
+<path d='M4 40c0-12 12-20 26-20l26-4c14-2 22-12 28-20 7 4 20 6 28 3l7 13c7 10 20 14 28 21s3 15-7 15H14C7 48 4 45 4 40z'/>\
+<path d='M4 46h140M52 18l14 24M70 14l14 24'/></g>\
+<g transform='translate(262 132)'>\
+<path d='M4 46C4 22 20 6 42 6s38 16 38 40z'/><path d='M0 46h84M16 46v10M68 46v10M16 56c10 8 42 8 52 0'/><path d='M24 18c10-6 26-6 36 0M30 6v10M54 6v10'/></g>\
+<g transform='translate(34 254)'>\
+<circle cx='44' cy='40' r='36'/><circle cx='44' cy='40' r='26'/><circle cx='44' cy='40' r='16'/><path d='M80 44c16 4 22 18 14 34'/><path d='M8 30c-8 2-12 10-10 18'/></g>\
+<g transform='translate(160 250) rotate(6)'>\
+<path d='M4 10h52v42c0 12-12 20-26 20S4 64 4 52z'/><path d='M4 20h52'/><path d='M14 10c-2-6 2-10 6-10M44 10c2-6-2-10-6-10'/><path d='M60 30l18-26M74 2l8 6'/></g>\
+<g transform='translate(250 250)'>\
+<path d='M0 86L38 30l18 22 22-40 30 74z'/><path d='M30 42l8-12 8 10-5-2-4 4zM78 12V-10l16 6-16 6'/></g>\
+</g></svg>");
+}

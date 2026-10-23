@@ -97,18 +97,18 @@
     }
     .indoor_coming_soon_icon {
         font-size: 4em;
-        color: #279fbb;
+        color: var(--cg-accent);
         margin-bottom: 15px;
     }
     .indoor_coming_soon_page h1 {
         font-weight: bold;
     }
     .indoor_coming_soon_page h2 {
-        color: #279fbb;
+        color: var(--cg-accent);
         font-size: 1.5em;
     }
     .indoor_coming_soon_page p {
-        color: #666;
+        color: var(--cg-stone);
         font-size: 1.1em;
         max-width: 600px;
         margin: 15px auto 25px;

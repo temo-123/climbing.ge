@@ -35,7 +35,7 @@
         margin-bottom: 8px;
     }
     .legal_links_text {
-        color: #666;
+        color: var(--cg-stone);
         margin-bottom: 16px;
     }
     .legal_links_buttons {
@@ -49,11 +49,11 @@
         padding: 10px 20px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        color: #333;
+        color: var(--cg-ink-2);
         text-decoration: none;
     }
     .legal_links_btn:hover {
-        background: #f5f5f5;
+        background: var(--cg-chalk);
         text-decoration: none;
     }
 </style>

@@ -7,11 +7,11 @@
         <div class="col-md-12 mb-3">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-center mb-2">
                 <div class="d-flex align-items-center mb-2 mb-md-0">
-                    <button class="btn btn-success mr-2" @click="go_back()">{{ $t('common.back') }}</button>
+                    <button class="btn btn-success me-2" @click="go_back()">{{ $t('common.back') }}</button>
                 </div>
                 <div class="d-flex align-items-center flex-column flex-md-row">
-                    <button class="btn btn-success mb-2 mb-md-0 mr-md-3" @click="get_data()">{{ $t('common.refresh') }}</button>
-                    <button class="btn btn-warning mb-2 mb-md-0 mr-md-3" @click="toggleScanMode()">
+                    <button class="btn btn-success mb-2 mb-md-0 me-md-3" @click="get_data()">{{ $t('common.refresh') }}</button>
+                    <button class="btn btn-warning mb-2 mb-md-0 me-md-3" @click="toggleScanMode()">
                         {{ scanMode ? $t('admin.warehouses.close_scanner_btn') : $t('admin.warehouses.scan_barcode_btn') }}
                     </button>
                     <button class="btn btn-primary" @click="showAddOptionModal()">
@@ -112,7 +112,7 @@
             <!-- Loading state -->
             <div v-if="loading" class="text-center">
                 <div class="spinner-border" role="status">
-                    <span class="sr-only">{{ $t('admin.export.loading_ellipsis') }}</span>
+                    <span class="visually-hidden">{{ $t('admin.export.loading_ellipsis') }}</span>
                 </div>
             </div>
 
@@ -121,9 +121,9 @@
                 <div v-for="productGroup in filtered_grouped_options" :key="productGroup.product_id" class="card mb-3">
                     <div class="card-header bg-light">
                         <h5 class="mb-0">
-                            <span class="badge badge-info mr-2">{{ $t('admin.warehouses.product_badge') }}</span>
+                            <span class="badge text-bg-info me-2">{{ $t('admin.warehouses.product_badge') }}</span>
                             {{ productGroup.product_name }}
-                            <span class="badge badge-secondary ml-2">{{ productGroup.options.length }} {{ $t('admin.warehouses.options_suffix') }}</span>
+                            <span class="badge text-bg-secondary ms-2">{{ productGroup.options.length }} {{ $t('admin.warehouses.options_suffix') }}</span>
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -181,12 +181,12 @@
                                             </div>
                                         </td>
                                         <td v-if="warehouse.general">
-                                            <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
+                                            <button class="btn btn-sm btn-success ms-1" @click="make_prodaction_task(option)">
                                                 {{ $t('admin.warehouses.make_task_btn') }}
                                             </button>
                                         </td>
                                         <td>
-                                            <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
+                                            <button class="btn btn-sm btn-warning ms-1" @click="openMigrateModal(option, option.pivot.quantity)">
                                                 {{ $t('admin.warehouses.migrate_btn') }}
                                             </button>
                                         </td>
@@ -260,12 +260,12 @@
                                 </div>
                             </td>
                             <td v-if="warehouse.general">
-                                <button class="btn btn-sm btn-success ml-1" @click="make_prodaction_task(option)">
+                                <button class="btn btn-sm btn-success ms-1" @click="make_prodaction_task(option)">
                                     {{ $t('admin.warehouses.make_task_btn') }}
                                 </button>
                             </td>
                             <td>
-                                <button class="btn btn-sm btn-warning ml-1" @click="openMigrateModal(option, option.pivot.quantity)">
+                                <button class="btn btn-sm btn-warning ms-1" @click="openMigrateModal(option, option.pivot.quantity)">
                                     {{ $t('admin.warehouses.migrate_btn') }}
                                 </button>
                             </td>

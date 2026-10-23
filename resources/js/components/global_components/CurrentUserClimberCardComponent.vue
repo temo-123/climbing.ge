@@ -154,7 +154,7 @@
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid #fff;
-    box-shadow: 0 0 0 2px #279fbb;
+    box-shadow: 0 0 0 2px var(--cg-accent);
 }
 .current-user-card__avatar--placeholder {
     display: flex;
@@ -191,7 +191,7 @@
     padding: 4px 10px;
     border-radius: 999px;
     background: #fff;
-    color: #555;
+    color: var(--cg-stone);
     border: 1px solid #e2e9ec;
 }
 .current-user-card__badge--points {
@@ -220,7 +220,7 @@
 .current-user-card__guest-text {
     margin: 0 0 8px;
     font-size: 15px;
-    color: #555;
+    color: var(--cg-stone);
 }
 .current-user-card__guest-actions {
     display: flex;

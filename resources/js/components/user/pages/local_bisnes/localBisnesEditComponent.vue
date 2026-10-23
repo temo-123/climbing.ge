@@ -12,7 +12,7 @@
         </div>
         <div v-if="validation_errors.length > 0" class="alert alert-danger" style="margin-top: 10px;">
             <strong>{{ $t('admin.local_business.validation_failed_title') }}</strong>
-            <ul class="mb-0 pl-3">
+            <ul class="mb-0 ps-3">
                 <li v-for="(err, i) in validation_errors" :key="i">{{ err }}</li>
             </ul>
         </div>
@@ -53,25 +53,25 @@
                         />
                         <div class="form-group clearfix" v-if="!data.global_bisnes.public_totaly">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.local_business.published_before_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="datetime-local" class="form-control" id="datemin" name="datemin" min="2000-01-02" v-model="data.global_bisnes.published_data" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.local_business.totaly_public_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="scales" name="scales" v-model="data.global_bisnes.public_totaly" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="enable_message_form" class='col-xs-2 control-label'> {{ $t('admin.local_business.enable_message_form_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="enable_message_form" name="enable_message_form" v-model="data.global_bisnes.enable_message_form" >
                             </div>
                         </div>
                         <div class="form-group clearfix">
                             <label for="show_in_index" class='col-xs-2 control-label'> {{ $t('admin.local_business.show_in_index_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="show_in_index" name="show_in_index" v-model="data.global_bisnes.show_in_index" >
                             </div>
                         </div>
@@ -106,28 +106,28 @@
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_bisnes.title"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_bisnes()">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <small_editor v-model="data.us_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_bisnes.text" />
                             </div>
                         </div>
@@ -144,21 +144,21 @@
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="value name"  v-model="data.ka_bisnes.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <small_editor v-model="data.ka_bisnes.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.ka_bisnes.text" />
                             </div>
                         </div>

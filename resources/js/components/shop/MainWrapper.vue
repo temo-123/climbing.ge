@@ -77,23 +77,3 @@
         methods: {},
     };
 </script>
-
-<style scoped>
-    .top_menu {
-        background-color: #27bb7d !important;
-    }
-
-    .preloader_background {
-        background: radial-gradient(circle, #27bb7d 0% 0%, #1d8a5d 100%) !important;
-    }
-
-    .loader {
-        border-top-color: #27bb7d;
-    }
-
-    .navbar {
-        background: linear-gradient(135deg, #1ba97a 0%, #158f66 100%) !important;
-        border-color: #6a8991;
-    }
-
-</style>

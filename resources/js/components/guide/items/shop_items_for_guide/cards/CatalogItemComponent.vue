@@ -192,7 +192,7 @@
     }
 
     .out-of-stock-shadow span {
-        color: #f0f0f0;
+        color: var(--cg-chalk);
         font-size: 18px;
         font-weight: bold;
         text-transform: uppercase;
@@ -295,18 +295,18 @@
         height: 10px;
         border-radius: 50%;
         border: none;
-        background: #ddd;
+        background: var(--cg-line);
         margin: 0 5px;
         cursor: pointer;
         transition: background 0.3s ease;
     }
 
     .dot.active {
-        background: #007bff;
+        background: var(--cg-accent);
     }
 
     .dot:hover {
-        background: #0056b3;
+        background: var(--cg-accent-dark);
     }
 
     .badge {
@@ -344,7 +344,7 @@
         font-size: 1.4em;
         margin: 0 0 10px 0;
         font-weight: bold;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .product-title a {
@@ -353,7 +353,7 @@
     }
 
     .product-title a:hover {
-        color: #007bff;
+        color: var(--cg-accent);
     }
 
     .product-price {
@@ -363,12 +363,12 @@
     .current-price {
         font-size: 1.1em;
         font-weight: bold;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .old-price {
         font-size: 0.9em;
-        color: #999;
+        color: var(--cg-muted);
         text-decoration: line-through;
         margin-left: 10px;
     }
@@ -390,7 +390,7 @@
     }
 
     .quick-view-btn:hover {
-        color: #007bff;
+        color: var(--cg-accent);
     }
 
     .favorite-btn {

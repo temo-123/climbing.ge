@@ -33,7 +33,7 @@
         <button class="btn btn-warning mt-2" @click="resend" :disabled="resending">
           {{ resending ? 'Sending...' : 'Resend verification email' }}
         </button>
-        <router-link :to="{ name: 'login' }" class="btn btn-secondary mt-2 ml-2">Back to login</router-link>
+        <router-link :to="{ name: 'login' }" class="btn btn-secondary mt-2 ms-2">Back to login</router-link>
       </div>
     </div>
   </div>

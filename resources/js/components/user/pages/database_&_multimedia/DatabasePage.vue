@@ -35,8 +35,8 @@
 
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <div class="db-summary">
-                        <span class="mr-3"><strong>{{ tables.length }}</strong> {{ $t('admin.database.tables_suffix') }}</span>
-                        <span class="mr-3"><strong>{{ totalRows.toLocaleString() }}</strong> {{ $t('admin.database.total_rows_suffix') }}</span>
+                        <span class="me-3"><strong>{{ tables.length }}</strong> {{ $t('admin.database.tables_suffix') }}</span>
+                        <span class="me-3"><strong>{{ totalRows.toLocaleString() }}</strong> {{ $t('admin.database.total_rows_suffix') }}</span>
                         <span><strong>{{ formatBytes(totalSize) }}</strong> {{ $t('admin.database.total_size_suffix') }}</span>
                     </div>
                     <a :href="phpmyadmin_url" target="_blank" class="btn btn-warning">
@@ -52,7 +52,7 @@
                 </div>
                 <div v-else-if="error" class="alert alert-danger">
                     {{ error }}
-                    <button class="btn btn-sm btn-default ml-2" @click="load">{{ $t('admin.database.retry_btn') }}</button>
+                    <button class="btn btn-sm btn-light ms-2" @click="load">{{ $t('admin.database.retry_btn') }}</button>
                 </div>
                 <div v-else>
                     <tabsComponent :table_data="db_tab_data" />
@@ -148,6 +148,6 @@ export default {
 <style scoped>
 .db-summary {
     font-size: 0.9em;
-    color: #555;
+    color: var(--cg-stone);
 }
 </style>

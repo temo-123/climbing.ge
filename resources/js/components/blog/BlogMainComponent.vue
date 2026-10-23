@@ -67,32 +67,3 @@
       }
   }
 </script>
-
-<style scoped>
-    .top_menu {
-        background-color: #005f43 !important;
-    }
-
-    .preloader_background {
-        background: radial-gradient(circle, #005f43 0% 0%, #018b62 100%) !important;
-    }
-
-    .loader {
-        border-top-color: #005f43 !important;
-    }
-
-    .navbar {
-        background-color: #005f43 !important;
-        border-color: #6a8991;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #005f43 !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #005f43 !important;
-    }
-
-
-</style>

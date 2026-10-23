@@ -16,7 +16,7 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-groupe">
+                        <div class="form-group">
                             <router-link v-if="product && product.id" class="btn btn-primary" :to="{ name: 'productEdit', params: { id: product.id } }">{{ $t('admin.shop.edit_product_link') }}</router-link>
                         </div>
                     </div>
@@ -30,12 +30,12 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="form-groupe">
+                        <div class="form-group">
                             <button class="btn btn-primary" @click="new_option_model()">{{ $t('admin.shop.add_new_option') }}</button>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-groupe float-right">
+                        <div class="form-group float-end">
                             <button class="btn btn-success" @click="get_activ_product_options()">{{ $t('common.refresh') }}</button>
                         </div>
                     </div>

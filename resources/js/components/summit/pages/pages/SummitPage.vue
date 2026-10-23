@@ -10,7 +10,7 @@
             <div class="container text-center py-5">
                 <i class="fa fa-exclamation-circle fa-3x text-muted mb-3"></i>
                 <h3>{{ $t('summit.summit_page.not_found') }}</h3>
-                <router-link to="/summits/list" class="btn btn-default btn-send main-btn">
+                <router-link to="/summits/list" class="btn btn-primary main-btn">
                     <i class="fa fa-arrow-left"></i> {{ $t('summit.summit_page.back_to_list') }}
                 </router-link>
             </div>
@@ -22,8 +22,13 @@
             <div class="h-recent-work">
                 <div class="container">
 
-                    <h1 class="index_h2">{{ summit.title }}</h1>
-                    <p v-if="summit.ka_title" class="text-muted text-center" style="font-size:1.1rem; margin-top:-10px; margin-bottom:10px">{{ summit.ka_title }}</p>
+                    <section class="cg-page-head cg-page-head--list cg-art-summit">
+                        <span class="cg-page-head__icon"><i class="fa fa-flag-checkered" aria-hidden="true"></i></span>
+                        <div class="cg-page-head__text">
+                            <h1>{{ summit.title }}</h1>
+                            <div v-if="summit.ka_title" class="cg-page-head__lead">{{ summit.ka_title }}</div>
+                        </div>
+                    </section>
 
                     <div class="text-center" style="margin-bottom:10px">
                         <share-button
@@ -58,7 +63,7 @@
 
                     <!-- Description -->
                     <div v-if="summit.description" class="row">
-                        <div class="col-md-8 col-md-offset-2">
+                        <div class="col-md-8 offset-md-2">
                             <p class="article_list_short_description" style="font-size:15px; line-height:1.8">
                                 {{ summit.description }}
                             </p>
@@ -67,10 +72,10 @@
 
                     <!-- CTA -->
                     <div class="text-center" style="margin: 20px 0 10px">
-                        <button @click="openAscentModal" class="btn btn-success btn-lg btn-send main-btn">
+                        <button @click="openAscentModal" class="btn btn-success btn-lg main-btn">
                             <i class="fa fa-flag-checkered"></i> {{ $t('summit.summit_page.record_ascent') }}
                         </button>
-                        <button @click="openArchiveAscentModal" class="btn btn-default btn-lg" style="margin-left: 8px">
+                        <button @click="openArchiveAscentModal" class="btn btn-light btn-lg" style="margin-left: 8px">
                             <i class="fa fa-archive"></i> {{ $t('summit.summit_page.add_archive_ascent') }}
                         </button>
                     </div>
@@ -82,28 +87,28 @@
             <div class="h-recent-work" v-if="!loadingAscents">
                 <div class="container">
                     <div class="row summit-stats-row">
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="summit-stat-card">
                                 <i class="fa fa-flag-checkered summit-stat-icon"></i>
                                 <div class="summit-stat-number">{{ allAscents.length }}</div>
                                 <div class="summit-stat-label">{{ $t('summit.summit_page.ascents') }}</div>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="summit-stat-card">
                                 <i class="fa fa-check-circle summit-stat-icon text-success"></i>
                                 <div class="summit-stat-number">{{ gpsVerifiedCount }}</div>
                                 <div class="summit-stat-label">{{ $t('summit.ascent_page.gps_verified') }}</div>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="summit-stat-card">
                                 <i class="fa fa-users summit-stat-icon"></i>
                                 <div class="summit-stat-number">{{ uniqueClimbersCount }}</div>
                                 <div class="summit-stat-label">Climbers</div>
                             </div>
                         </div>
-                        <div class="col-xs-6 col-md-3">
+                        <div class="col-6 col-md-3">
                             <div class="summit-stat-card">
                                 <i class="fa fa-calendar summit-stat-icon"></i>
                                 <div class="summit-stat-number" style="font-size:1rem">{{ peakMonth }}</div>
@@ -124,7 +129,7 @@
                         <div v-for="r in routes" :key="r.id" class="col-md-4 col-sm-6" style="margin-bottom:16px">
                             <div class="summit-route-card">
                                 <span class="summit-route-name">{{ r.name }}</span>
-                                <span v-if="r.grade" class="label label-success ml-1">{{ formatMountGrade(r.grade) }}</span>
+                                <span v-if="r.grade" class="label label-success ms-1">{{ formatMountGrade(r.grade) }}</span>
                                 <a v-if="r.url_title" :href="guideRouteUrl(r.url_title)" target="_blank" class="summit-route-link">
                                     <i class="fa fa-external-link"></i>
                                 </a>
@@ -162,7 +167,7 @@
                         <div class="col-md-8">
                             <h2 class="index_h2" style="font-size:180%">
                                 <i class="fa fa-list"></i> {{ $t('summit.summit_page.ascents') }}
-                                <span v-if="allAscents.length" class="badge" style="background:#1d7a48">{{ allAscents.length }}</span>
+                                <span v-if="allAscents.length" class="badge text-bg-primary">{{ allAscents.length }}</span>
                             </h2>
 
                             <div v-if="loadingAscents" class="text-center py-4">
@@ -217,20 +222,21 @@
                                                 <td>
                                                     <span v-if="a.route_name">
                                                         {{ a.route_name }}
-                                                        <span v-if="a.route_grade" class="label label-default ml-1">{{ a.route_grade }}</span>
+                                                        <span v-if="a.route_grade" class="label label-default ms-1">{{ a.route_grade }}</span>
                                                     </span>
                                                     <span v-else class="text-muted">—</span>
                                                 </td>
                                                 <td>
-                                                    <span v-if="a.is_archive" class="label label-default">
-                                                        <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
+                                                    <!-- phones: icon only, so the table fits the screen -->
+                                                    <span v-if="a.is_archive" class="label label-default" :title="$t('summit.ascent_page.archive_badge')">
+                                                        <i class="fa fa-archive"></i><span class="d-none d-sm-inline"> {{ $t('summit.ascent_page.archive_badge') }}</span>
                                                     </span>
-                                                    <span v-else-if="a.is_gps_validated" class="label label-success">
-                                                        <i class="fa fa-check-circle"></i> {{ $t('summit.ascent_page.gps_verified') }}
+                                                    <span v-else-if="a.is_gps_validated" class="label label-success" :title="$t('summit.ascent_page.gps_verified')">
+                                                        <i class="fa fa-check-circle"></i><span class="d-none d-sm-inline"> {{ $t('summit.ascent_page.gps_verified') }}</span>
                                                     </span>
                                                     <span v-else class="text-muted">—</span>
                                                 </td>
-                                                <td class="text-right">
+                                                <td class="text-end">
                                                     <i class="fa fa-chevron-right text-muted" style="font-size:11px"></i>
                                                 </td>
                                             </tr>
@@ -255,7 +261,7 @@
                                     <qrcode-vue :value="ascentUrl" :size="160" level="H" render-as="svg" />
                                 </div>
                                 <p class="text-muted small">{{ $t('summit.summit_page.scan_instruction') }}</p>
-                                <button @click="openAscentModal" class="btn btn-success btn-block btn-send main-btn">
+                                <button @click="openAscentModal" class="btn btn-success w-100 main-btn">
                                     <i class="fa fa-flag"></i> {{ $t('summit.summit_page.record_ascent_short') }}
                                 </button>
                             </div>
@@ -649,16 +655,16 @@ export default {
     font-size: 24px;
     margin-bottom: 8px;
     display: block;
-    color: #1d7a48;
+    color: var(--cg-accent);
 }
 .summit-stat-number {
-    font-size: 1.8rem;
+    font-size: 1.125rem;
     font-weight: bold;
     line-height: 1.1;
 }
 .summit-stat-label {
     font-size: 12px;
-    color: #888;
+    color: var(--cg-muted);
     text-transform: uppercase;
     letter-spacing: .04em;
     margin-top: 4px;
@@ -678,7 +684,7 @@ export default {
     font-weight: 500;
 }
 .summit-route-link {
-    color: #888;
+    color: var(--cg-muted);
     font-size: 12px;
 }
 
@@ -706,7 +712,7 @@ export default {
 }
 .summit-chart-bar-inner {
     width: 100%;
-    background: #1d7a48;
+    background: var(--cg-accent);
     border-radius: 3px 3px 0 0;
     min-height: 4px;
     display: flex;
@@ -721,7 +727,7 @@ export default {
 }
 .summit-chart-label {
     font-size: 9px;
-    color: #888;
+    color: var(--cg-muted);
     margin-top: 4px;
     text-align: center;
     white-space: nowrap;
@@ -749,7 +755,7 @@ export default {
     align-items: center;
     gap: 8px;
     padding: 5px 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--cg-line);
     font-size: 13px;
 }
 .summit-top-climber:last-child { border-bottom: none; }
@@ -758,7 +764,7 @@ export default {
     height: 20px;
     line-height: 20px;
     border-radius: 50%;
-    background: #1d7a48;
+    background: var(--cg-accent);
     color: #fff;
     font-size: 11px;
     text-align: center;
@@ -766,7 +772,7 @@ export default {
     flex-shrink: 0;
 }
 .summit-top-climber-name { flex: 1; }
-.summit-top-climber-count { color: #888; font-size: 12px; }
+.summit-top-climber-count { color: var(--cg-muted); font-size: 12px; }
 
 /* ── Photo grid ──
    Flexbox "justified row" gallery: each photo keeps its natural aspect

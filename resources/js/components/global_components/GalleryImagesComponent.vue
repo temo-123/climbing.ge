@@ -3,7 +3,7 @@
 
         <div class="container">
             <div class="row">
-                <div class="col-xs-4 col-sm-4 col-md-3 gallery_images" v-for="image in db_images" :key="image.id" @click="open_image(image)">
+                <div class="col-4 col-sm-4 col-md-3 gallery_images" v-for="image in db_images" :key="image.id" @click="open_image(image)">
                     <site-img v-if="image.title != null" :src="path + image.image" :alt="image.title" :img_class="'gallery_img'"/>
                     <site-img v-else :src="path + image.image" :alt="$t('global.gallery_image_alt')" :img_class="'gallery_img'"/>
                 </div>

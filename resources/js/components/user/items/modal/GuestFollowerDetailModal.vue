@@ -14,12 +14,12 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.email') }}</span>
-                    <span class="detail-value font-weight-bold">{{ follower.email }}</span>
+                    <span class="detail-value fw-bold">{{ follower.email }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('admin.notification_analytics.col_service') }}</span>
                     <span class="detail-value">
-                        <span class="badge badge-secondary">{{ follower.service }}</span>
+                        <span class="badge text-bg-secondary">{{ follower.service }}</span>
                     </span>
                 </div>
                 <div class="detail-row">
@@ -61,7 +61,7 @@ export default {
     margin-bottom: 5px;
 }
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -70,6 +70,6 @@ export default {
     flex-shrink: 0;
 }
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 </style>

@@ -2,17 +2,17 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h2 class='index_h2'>{{ $t('guide.title.other')}}</h2>
-
-            <div class="bar"><i class="fa fa-dribbble"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.other_activity_description}}
-            </h2>
+            <section class="cg-page-head cg-page-head--list cg-art-tent">
+                <span class="cg-page-head__icon"><i class="fa fa-bicycle" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.other')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.other_activity_description}}</div>
+                </div>
+            </section>
 
             <!-- View Controls -->
             <div class="row view_controls_bar">
-                <div class="col-md-12 text-left pull-left">
+                <div class="col-md-12 text-start float-start">
                     <div class="btn-group" role="group" aria-label="View Mode">
                         <button 
                             type="button" 

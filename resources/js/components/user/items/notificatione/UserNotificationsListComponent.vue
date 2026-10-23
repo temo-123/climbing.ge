@@ -2,10 +2,10 @@
     <div class="container user-alerts">
         <div class="row">
             <div class="col-md-12">
-                <div class="form-groupe d-flex justify-content-between align-items-center mb-2">
+                <div class="form-group d-flex justify-content-between align-items-center mb-2">
                     <h5 class="mb-0"><i class="fa fa-bell" aria-hidden="true"></i> {{ $t('user.notifications.title') }}</h5>
                     <button @click="refresh()" class="btn btn-success btn-sm" v-if="!is_admin_panel_refresh">{{ $t('user.notifications.refresh') }} ({{admin_refresh_id}})</button>
-                    <span class="badge badge-primare mb-1" v-if="is_admin_panel_refresh">{{ $t('common.updating') }}</span>
+                    <span class="badge text-bg-primary mb-1" v-if="is_admin_panel_refresh">{{ $t('common.updating') }}</span>
                 </div>
             </div>
         </div>
@@ -122,7 +122,7 @@
     gap: 8px;
     border-radius: 6px;
     border-left: 4px solid #ccc;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     padding: 10px 14px;
     margin-bottom: 8px;
 }

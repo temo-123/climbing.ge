@@ -3,38 +3,15 @@
         <span v-if="article_loading">
             <articlePreloader />
         </span>
-        <div class="row" v-if="!article_loading">
-            <div class="offset-md-3 col-md-offset-3" v-if="!(!end_day) && start_time_h > 0">
-                <p class="calendar start_calendar">
-                    <i class="fa fa-calendar"></i>
-                    {{ start_day }}
-                    <span class="calendar_monthe">{{ start_month }}</span>
-                    <span class="calendar_monthe">{{ start_time }}</span>
-                    <em>Start</em>
-                </p>
-                <p class="calendar end_calendar">
-                    <i class="fa fa-calendar"></i>
-                    {{ end_day }}
-                    <span class="calendar_monthe">{{ end_month }}</span>
-                    <span class="calendar_monthe">{{ end_time }}</span>
-                    <em>Finish</em>
-                </p>
-            </div>
-            <div class="offset-md-6 col-md-offset-6" v-else>
-                <p class="calendar start_calendar">
-                    <i class="fa fa-calendar"></i>
-                    {{ start_month }}
-                    <span class="calendar_monthe">{{ start_year }}</span>
-                    <em>Start</em>
-                </p>
-            </div>
-        </div>
-        <div class='row' v-if="!article_loading">
+        <div class='row' v-if="!article_loading && event.global_event">
             <div class="col-md-12">
                 
                 <breadcrumb />
                 
                 <h1>{{ event.locale_event.title }} <span @click="toggle_interested_status(event.global_event.id)"> <i :class="is_interested ? 'fa fa-heart favorite_icon add_to_favorite active' : 'fa fa-heart-o favorite_icon add_to_favorite'"></i> </span></h1>
+
+                <!-- when: status + start → finish -->
+                <event-dates :start="event.global_event.start_data" :end="event.global_event.end_data" />
                                             
                 <span v-html="event.locale_event.text" v-if="this.event.locale_event.text != null"></span>
 
@@ -72,9 +49,15 @@
 
             </div>
         </div>
+
+        <!-- under the content: the climbing-festival scene (speed race,
+             podium, cheering fans) -->
+        <div class="cg-event-footer-scene" v-if="!article_loading && event.global_event">
+            <cg-scene name="comp" wide />
+        </div>
         
         <metaData
-            v-if="!article_loading"
+            v-if="!article_loading && event.global_event"
             :title = "event.locale_event.title"
             :description = "event.locale_event.description"
             :image = "'/public/images/event_img/'+event.image"
@@ -84,6 +67,7 @@
 </template>
 
 <script>
+    import EventDates from '../../items/EventDatesComponent.vue'
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
     import metaData from '../../items/MetaDataComponent'
     import breadcrumb from '../../items/BreadcrumbComponent.vue'
@@ -118,26 +102,17 @@
             };
         },
         components: {
+            EventDates,
             articlePreloader,
             metaData,
             breadcrumb,
             moment
         },
         mounted() {
+            // dates and the "interested" status are set once the event has loaded
+            // (get_event) — reading event.global_event here, before the fetch,
+            // threw "Cannot read properties of undefined (reading 'start_data')"
             this.get_event()
-
-            this.start_day = moment(this.event.global_event.start_data).format("D")
-            this.end_day = moment(this.event.global_event.end_data).format("D")
-
-            this.start_month = moment(this.event.global_event.start_data).format("MMM")
-            this.end_month = moment(this.event.global_event.end_data).format("MMM")
-
-            // Check if event is in user's interested events
-            this.$nextTick(() => {
-                if (this.event.global_event && this.event.global_event.id) {
-                    this.check_interested_status(this.event.global_event.id);
-                }
-            });
         },
         watch: {
             '$route' (to, from) {
@@ -150,6 +125,9 @@
                 axios
                 .get('/get_event/get_event_on_site_page/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
+                    // unknown / unpublished event: nothing to show (no crash)
+                    if (!response.data || !response.data.global_event) return
+
                     this.event = response.data
 
                     this.start_day = moment(response.data.global_event.start_data).format("D")
@@ -161,8 +139,8 @@
                     this.start_year = moment(response.data.global_event.start_data).format("Y")
                     this.end_year = moment(response.data.global_event.end_data).format("Y")
 
-                    this.start_time = moment(this.event.global_event.start_data).format("H:MM A")
-                    this.end_time = moment(response.data.global_event.end_data).format("H:MM A")
+                    this.start_time = moment(this.event.global_event.start_data).format("h:mm A")
+                    this.end_time = moment(response.data.global_event.end_data).format("h:mm A")
 
                     this.start_time_h = moment(this.event.global_event.start_data).format("H")
 
@@ -236,13 +214,17 @@
 </script>
 
 <style scoped>
+/* festival scene as a wide banner at the bottom of the event content */
+.cg-event-footer-scene { margin: 2rem 0 1rem; }
+.cg-event-footer-scene :deep(.cg-scene-img) { max-width: 760px; width: 100%; margin: 0 auto; }
+
     .container {
         margin-top: 20px;
     }
 
     h1 {
         font-size: 2.5em;
-        color: #555;
+        color: var(--cg-stone);
         margin-bottom: 20px;
         font-weight: 300;
     }
@@ -256,7 +238,7 @@
     }
 
     .add_to_favorite:hover {
-        color: #999;
+        color: var(--cg-muted);
     }
 
     /* Active favorite heart styling */
@@ -279,12 +261,12 @@
 
     .calendar i {
         margin-right: 5px;
-        color: #6c757d;
+        color: var(--cg-stone);
         font-size: 16px;
     }
 
     .calendar em {
-        color: #6c757d;
+        color: var(--cg-stone);
         font-style: normal;
         font-weight: bold;
         font-size: 12px;
@@ -305,7 +287,7 @@
     }
 
     h2 {
-        color: #666;
+        color: var(--cg-stone);
         margin-top: 30px;
         font-size: 1.8em;
         font-weight: 300;
@@ -316,17 +298,17 @@
     }
 
     .btn-success {
-        background: #e9ecef;
-        border: 1px solid #ced4da;
+        background: var(--cg-line);
+        border: 1px solid var(--cg-line);
         border-radius: 5px;
         padding: 15px 30px;
         font-size: 18px;
-        color: #495057;
+        color: var(--cg-stone);
         transition: background-color 0.2s ease;
     }
 
     .btn-success:hover {
-        background: #dee2e6;
+        background: var(--cg-line);
     }
 
     span {

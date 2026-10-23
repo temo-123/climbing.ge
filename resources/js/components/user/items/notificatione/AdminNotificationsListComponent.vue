@@ -2,10 +2,10 @@
     <div class="container admin-alerts">
         <div class="row">
             <div class="col-md-12">
-                <div class="form-groupe d-flex justify-content-between align-items-center mb-2">
+                <div class="form-group d-flex justify-content-between align-items-center mb-2">
                     <h5 class="mb-0"><i class="fa fa-bell" aria-hidden="true"></i> {{ $t('admin.notifications.admin_panel.alerts.title') }}</h5>
                     <button @click="refresh()" class="btn btn-success btn-sm" v-if="!is_admin_panel_refresh">{{ $t('admin.notifications.admin_panel.refresh_notifications_btn', { id: admin_refresh_id }) }}</button>
-                    <span class="badge badge-primare mb-1" v-if="is_admin_panel_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
+                    <span class="badge text-bg-primary mb-1" v-if="is_admin_panel_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                 </div>
             </div>
 
@@ -33,7 +33,7 @@
 
                         <button
                             v-if="card.expandable"
-                            class="btn btn-outline-secondary btn-sm ml-2"
+                            class="btn btn-outline-secondary btn-sm ms-2"
                             @click="toggle_expanded(card.key)"
                         >
                             {{ expanded[card.key] ? $t('admin.notifications.admin_panel.alerts.show_less') : $t('admin.notifications.admin_panel.alerts.review_btn') }}
@@ -42,7 +42,7 @@
                         <template v-else-if="card.route">
                             <button
                                 v-if="card.key === 'db_relation_issues'"
-                                class="btn btn-danger btn-sm ml-2"
+                                class="btn btn-danger btn-sm ms-2"
                                 :disabled="fixing_relations"
                                 @click="fix_all_relations()"
                             >
@@ -52,7 +52,7 @@
                             <router-link
                                 v-if="card.key !== 'db_relation_issues'"
                                 :to="{ name: card.route }"
-                                class="btn btn-outline-secondary btn-sm ml-2"
+                                class="btn btn-outline-secondary btn-sm ms-2"
                                 @click="on_alert_link_click(card)"
                             >
                                 {{ $t('admin.notifications.admin_panel.alerts.view_all_btn') }}
@@ -379,7 +379,7 @@
 .admin-alerts .admin-alert-card {
     border-radius: 6px;
     border-left: 4px solid #ccc;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     padding: 10px 14px;
     margin-bottom: 8px;
 }

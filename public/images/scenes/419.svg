@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 420" role="img" aria-label="The weather window closed: clouds roll over the peak">
+<!-- 419 "Weather window closed" (session expired): you waited too long —
+     clouds roll in over the summit, snow starts, and the two climbers on the
+     ridge turn around and walk back down. climbing.ge scene set. -->
+<style>
+  .cloud1 { animation: drift 9s ease-in-out infinite alternate; }
+  .cloud2 { animation: drift2 11s ease-in-out infinite alternate; }
+  .snow { animation: snow 1.6s linear infinite; }
+  .snow2 { animation: snow 1.6s linear -.8s infinite; }
+  .walk { animation: walk .9s ease-in-out infinite; }
+  .walk2 { animation: walk .9s ease-in-out -.45s infinite; }
+  @keyframes drift { from { transform: translateX(-40px) } to { transform: translateX(26px) } }
+  @keyframes drift2 { from { transform: translateX(34px) } to { transform: translateX(-30px) } }
+  @keyframes snow { from { transform: translate(0, -30px); opacity: 0 } 15% { opacity: 1 } to { transform: translate(-10px, 60px); opacity: 0 } }
+  @keyframes walk { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-2px) } }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important } }
+</style>
+<defs>
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9fb2bf"/><stop offset="1" stop-color="#dfe6ea"/></linearGradient>
+  <clipPath id="card"><rect width="360" height="420" rx="22"/></clipPath>
+</defs>
+<g clip-path="url(#card)">
+  <rect width="360" height="420" fill="url(#sky)"/>
+  <!-- the peak and its snowy ridge -->
+  <path d="M-10 420L150 96l40 40 36-26 150 310z" fill="#7d8b98"/>
+  <path d="M150 96l40 40 36-26 34 70-30-12-26 22-24-30-36 26-28-6z" fill="#f4f7f9"/>
+  <path d="M150 96L120 160l22-4 14-28z" fill="#dfe7ec"/>
+  <path d="M-10 420L80 300l60 40 70-30 160 110z" fill="#66737f"/>
+  <!-- ridge path the climbers walk down -->
+  <path d="M60 330c40-20 80-34 130-50" fill="none" stroke="#f4f7f9" stroke-width="3" stroke-dasharray="4 5" opacity=".7"/>
+
+  <!-- clouds rolling over the summit -->
+  <g class="cloud1" fill="#eef2f5" opacity=".95">
+    <path d="M90 120c-2-18 20-26 32-14 6-16 34-16 40 2 16-6 30 6 26 20 12 2 14 18 0 20H96c-14 0-20-20-6-28z"/>
+  </g>
+  <g class="cloud2" fill="#dde4ea" opacity=".95">
+    <path d="M170 90c-2-14 16-20 26-10 6-14 30-12 34 4 14-4 26 6 22 18 10 2 10 14 0 16h-78c-12 0-16-16-4-28z"/>
+  </g>
+  <g class="cloud1" fill="#cfd8df" opacity=".9">
+    <path d="M220 160c-2-14 16-20 26-10 6-14 30-12 34 4 14-4 26 6 22 18 10 2 10 14 0 16h-78c-12 0-16-16-4-28z"/>
+  </g>
+
+  <!-- snow -->
+  <g fill="#fff">
+    <g class="snow"><circle cx="120" cy="190" r="2"/><circle cx="200" cy="170" r="2"/><circle cx="260" cy="210" r="2"/><circle cx="90" cy="250" r="2"/><circle cx="300" cy="260" r="2"/></g>
+    <g class="snow2"><circle cx="160" cy="220" r="2"/><circle cx="230" cy="250" r="2"/><circle cx="60" cy="200" r="2"/><circle cx="280" cy="180" r="2"/><circle cx="180" cy="290" r="2"/></g>
+  </g>
+</g>
+
+<!-- two climbers walking down the ridge (facing left = turning back) -->
+<g stroke-linecap="round" stroke-linejoin="round">
+  <g transform="translate(150 290)"><g class="walk">
+    <path d="M0 0l-6 12M2 0l4 12" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-15 2-20h10c2 5 2 11 1 20z" fill="#1f93b0"/>
+    <path d="M6 -20c6 0 9 4 9 10v10h-8z" fill="#c4532d"/>
+    <circle cx="2" cy="-26" r="5.5" fill="#e8b58f"/>
+    <path d="M-4 -26a6 6.4 0 0 1 12 0z" fill="#ffc233"/>
+  </g></g>
+  <g transform="translate(186 278)"><g class="walk2">
+    <path d="M0 0l-6 12M2 0l4 12" fill="none" stroke="#2b3440" stroke-width="5"/>
+    <path d="M-4 0c-1-9 0-15 2-20h10c2 5 2 11 1 20z" fill="#c4532d"/>
+    <path d="M6 -20c6 0 9 4 9 10v10h-8z" fill="#2f9e8f"/>
+    <circle cx="2" cy="-26" r="5.5" fill="#e8b58f"/>
+    <path d="M-4 -26a6 6.4 0 0 1 12 0z" fill="#7a5bd6"/>
+  </g></g>
+  <!-- rope between them -->
+  <path d="M154 282c10 8 20 4 30-6" fill="none" stroke="#f07a3e" stroke-width="2.2"/>
+</g>
+</svg>

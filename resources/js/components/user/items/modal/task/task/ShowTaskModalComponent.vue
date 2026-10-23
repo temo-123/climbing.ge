@@ -14,7 +14,7 @@
 
             <div v-else-if="task.id">
                 <div class="d-flex align-items-center mb-3">
-                    <span class="task-status-dot mr-2" :class="statusDotClass(task.status)"></span>
+                    <span class="task-status-dot me-2" :class="statusDotClass(task.status)"></span>
                     <h5 class="mb-0">{{ task.title }}</h5>
                 </div>
 
@@ -131,7 +131,7 @@
 }
 .dot-yellow { background: #ffc107; }
 .dot-green  { background: #28a745; }
-.dot-gray   { background: #6c757d; }
+.dot-gray   { background: var(--cg-stone); }
 .dot-blue   { background: #17a2b8; }
 .dot-red    { background: #dc3545; }
 </style>

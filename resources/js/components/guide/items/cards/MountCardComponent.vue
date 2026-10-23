@@ -5,29 +5,28 @@
                 <div class="discount-percent-badge discount-badge-fourty">{{ $t('guide.new_flag_badge') }}</div>
             </div>
                                 
-            <site-img v-if="mount.global_data.image != null" :src="'/images/mount_route_img/'+mount.global_data.image" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
-            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
+            <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
+            <div class="cg-card-media">
+                <site-img v-if="mount.global_data.image != null" :src="'/images/mount_route_img/'+mount.global_data.image" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
 
-            <div class="mask">
-                <router-link :to="this.route" class="info"><i class="fa fa-arrow-right"></i></router-link>
+                <div class="mask">
+                    <router-link :to="this.route" class="info"><i class="fa fa-arrow-right"></i></router-link>
+                </div>
             </div>
-            
+
             <div class="isotope-item-dtls">
-                <h3>{{ mount.locale_data.title }}</h3>
-                <div class="mount_size">
-
+                <h3>
+                    <router-link :to="this.route">{{ mount.locale_data.title }}</router-link>
+                </h3>
+                <div class="mount_size article_size">
                     <span v-html="mount.locale_data.short_description"></span>
-
-                    <div class="col text-center" v-if="mount.mount_masive">
-                        <div class="row">
-                            Mount system - {{ mount.mount_masive }}
-                        </div>
-                    </div>
-                    <div class="col text-center" v-if="mount.global_data.mount_grade">
-                        <div class="row">
-                            <mount-grade-bar-component :grade="mount.global_data.mount_grade" />
-                        </div>
-                    </div>
+                </div>
+                <div class="cg-card-stats" v-if="mount.mount_masive">
+                    <span class="cg-chip"><i class="fa fa-area-chart" aria-hidden="true"></i> {{ mount.mount_masive }}</span>
+                </div>
+                <div class="mt-2" v-if="mount.global_data.mount_grade">
+                    <mount-grade-bar-component :grade="mount.global_data.mount_grade" />
                 </div>
             </div>
         </div>
@@ -59,7 +58,7 @@
 
 <style scoped>
 .mount_size {
-    color: #666;
+    color: var(--cg-stone);
     line-height: 1.5;
 }
 </style>

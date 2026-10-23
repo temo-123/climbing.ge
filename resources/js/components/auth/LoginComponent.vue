@@ -1,5 +1,7 @@
 <template>
-  <div class="login mt-5">
+  <div class="login cg-auth">
+    <auth-aside />
+    <div class="cg-auth__main">
     <div class="card">
       <div class="card-header">
         <h1>Login</h1>
@@ -70,9 +72,9 @@
               Password is required
             </div>
           </div>
-          <div class="form-group">
-            <input type="checkbox" v-model="remember" name="One time code" value="One time code">
-            Remember me
+          <div class="form-check form-group">
+            <input type="checkbox" class="form-check-input" id="remember_me" v-model="remember" name="One time code" value="One time code">
+            <label class="form-check-label" for="remember_me">Remember me</label>
           </div>
           <div class="alert alert-danger" role="alert" v-if="auth_error">
             Invalid credentials
@@ -81,20 +83,22 @@
             <i class="fa fa-exclamation-triangle"></i>
             reCAPTCHA failed to load. Please reload the page and try again.
           </div>
-          <button type="button" @click.prevent="login" class="btn btn-primary" :disabled="captcha_error">
-            Login
+          <button type="button" @click.prevent="login" class="btn btn-primary btn-lg w-100" :disabled="captcha_error">
+            <i class="fa fa-sign-in" aria-hidden="true"></i> Login
           </button>
         </form>
         <hr>
-        <router-link :to="{name: 'register'}" exact class="btn btn-success mt-2">
-          Register
+        <router-link :to="{name: 'register'}" exact class="btn btn-outline-primary w-100">
+          <i class="fa fa-user-plus" aria-hidden="true"></i> Register
         </router-link>
       </div>
+    </div>
     </div>
   </div>
 </template>
 
 <script>
+  import AuthAside from './AuthAsideComponent.vue'
 // Dynamic import for JSEncrypt with CDN fallback for production environment
 let JSEncrypt = null;
 
@@ -134,6 +138,7 @@ async function loadJSEncrypt() {
 }
 
 export default {
+    components: { AuthAside },
     name: "Login",
     data: function() {
       return {

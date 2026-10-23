@@ -1,5 +1,7 @@
 <template>
-    <div class="login mt-5">
+    <div class="login cg-auth">
+      <auth-aside />
+      <div class="cg-auth__main">
       <div class="card">
         <div class="card-header">
           <h1>Create Password</h1>
@@ -56,11 +58,14 @@
         </div>
 
       </div>
+      </div>
     </div>
   </template>
 
   <script>
+  import AuthAside from '../AuthAsideComponent.vue'
     export default {
+    components: { AuthAside },
       data: function() {
         return {
           data: {

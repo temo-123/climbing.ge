@@ -54,7 +54,7 @@
     height: 40px;
     line-height: 40px;
     border-radius: 50%;
-    background: #1d7a48;
+    background: var(--cg-accent);
     color: #fff;
     font-size: 18px;
     font-weight: bold;

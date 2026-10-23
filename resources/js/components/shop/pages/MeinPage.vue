@@ -39,7 +39,7 @@
             <h3 class="article_list_short_description">
                 <span v-html="this.$siteData.data.services_description"></span>
             </h3>
-            <div class="col-sm-12">
+            <div class="row g-4">
                 <ServiceItem
                     v-for="service in services"
                     :key='service.id'

@@ -29,7 +29,7 @@
                                 this.start_time_for_check <= this.start_time
                             "
                     >
-                        <div class="col-sm-12 col-xs-12 nopadding" >
+                        <div class="col-sm-12 col-12 nopadding" >
                             <time class="end orange_red">
                                 <i class="fa fa-play-circle"></i>
                                 <span class="day underway_now">{{ $t('guide.events.underway_now') }}</span>
@@ -46,7 +46,7 @@
                                 new Date().getDate() == this.end_day
                             "
                     >
-                        <div class="col-sm-12 col-xs-12 nopadding" >
+                        <div class="col-sm-12 col-12 nopadding" >
                             <time class="end orange_red">
                                 <i class="fa fa-check-circle"></i>
                                 <span class="day underway_now">{{ $t('guide.events.finished_label') }}</span>
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="row nopadding" v-else>
-                        <div class="col-sm-6 col-xs-6 nopadding">
+                        <div class="col-sm-6 col-6 nopadding">
                             <time class="end green">
                                 <i class="fa fa-calendar-plus"></i>
                                 {{ $t('guide.events.start_label') }}
@@ -65,7 +65,7 @@
                                 <span class="month">{{this.start_time}}</span>
                             </time>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 nopadding">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-6 nopadding">
                             <time class="end rad_blue">
                                 <i class="fa fa-calendar-times"></i>
                                 {{ $t('guide.events.end_label') }}
@@ -80,7 +80,7 @@
                 </span>
                 <span v-else>
                     <div class="row nopadding">
-                        <div class="col-sm-12 col-xs-12 nopadding">
+                        <div class="col-sm-12 col-12 nopadding">
                             <time class="end green">
                                 <i class="fa fa-calendar-plus"></i>
                                 {{ $t('guide.events.start_label') }}
@@ -142,11 +142,11 @@
             this.start_year = moment(this.event.global_event.start_data).format("Y")
             this.end_year = moment(this.event.global_event.end_data).format("Y")
 
-            this.start_time = moment(this.event.global_event.start_data).format("H:MM A")
+            this.start_time = moment(this.event.global_event.start_data).format("h:mm A")
             this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
 
-            this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")
-            this.end_time_for_check = moment(this.event.global_event.end_data).format("H:MM")
+            this.start_time_for_check = moment(this.event.global_event.start_data).format("HH:mm")
+            this.end_time_for_check = moment(this.event.global_event.end_data).format("HH:mm")
 
             this.start_time_h = moment(this.event.global_event.end_data).format("H")
 
@@ -175,9 +175,9 @@
     }
 
     .panel-primary .panel-heading {
-        /* background-color: #e6f3ff; */
+        /* background-color: var(--cg-accent-soft); */
         background-color: #5b6a6d;
-        border-bottom: 0px solid #dee2e6;
+        border-bottom: 0px solid var(--cg-line);
         padding: 15px;
         border-radius: 10px 10px 0 0;
     }
@@ -185,7 +185,7 @@
     .panel-heading h2 {
         margin: 0;
         font-size: 1.5em;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .image-container {
@@ -226,10 +226,10 @@
     }
 
     .panel-footer {
-        /* background: #f9f9f9; */
+        /* background: var(--cg-chalk); */
         background: #5b6a6d;
         padding: 15px;
-        border-top: 0px solid #ddd;
+        border-top: 0px solid var(--cg-line);
     }
 
     .btn-success {
@@ -238,7 +238,7 @@
         border-radius: 5px;
         padding: 10px 20px;
         transition: transform 0.2s ease;
-        color: #333;
+        color: var(--cg-ink-2);
     }
 
     .btn-success:hover {
@@ -289,7 +289,7 @@
 
     .event_size {
         font-size: 14px;
-        color: #666;
+        color: var(--cg-stone);
         margin-bottom: 10px;
         line-height: 1.4;
     }

@@ -159,7 +159,7 @@
     }
 
     .btn-map-open {
-        background-color: #00b9e7;
+        background-color: var(--cg-accent);
         color: #fff;
         border: none;
         border-radius: 4px;
@@ -171,7 +171,7 @@
     }
 
     .btn-map-open:hover {
-        background-color: #009dc5;
+        background-color: var(--cg-accent);
         color: #fff;
     }
 
@@ -194,8 +194,8 @@
     }
 
     .mount-map-tabs .btn-secondary {
-        background-color: #6c757d;
-        border-color: #6c757d;
+        background-color: var(--cg-stone);
+        border-color: var(--cg-stone);
         color: #fff;
     }
 
@@ -223,11 +223,11 @@
 
     .mount-map-summits-list li {
         padding: 8px 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--cg-line);
     }
 
     .mount-map-summit-height {
-        color: #888;
+        color: var(--cg-muted);
         font-size: 0.85rem;
     }
 </style>

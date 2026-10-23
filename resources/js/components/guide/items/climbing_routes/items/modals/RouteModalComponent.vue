@@ -151,7 +151,7 @@
                             </div>
 
                             <button
-                                class="btn btn-primary float-right"
+                                class="btn btn-primary float-end"
                                 @click="show_route_all_review_modal(route.id)"
                                 v-if="route.reviews_count && route.reviews_count > 0"
                             >
@@ -164,7 +164,7 @@
                                 <i class="fa fa-flag-checkered"></i> {{ $t('guide.route_ascent.record_btn') }}
                             </button>
                             <button
-                                class="btn btn-primary float-right"
+                                class="btn btn-primary float-end"
                                 v-if="route.ascents_count && route.ascents_count > 0"
                                 @click="show_route_ascents_modal(route.id)"
                             >
@@ -417,31 +417,31 @@ getCategoryText(category) {
 .modal-section {
     margin-bottom: 1.5rem;
     padding: 1rem;
-    background-color: #f8f9fa;
+    background-color: var(--cg-chalk);
     border-radius: 8px;
-    border: 1px solid #e9ecef;
+    border: 1px solid var(--cg-line);
 }
 
 .section-title {
     font-weight: 600;
-    font-size: 1.8rem;
-    color: #495057;
+    font-size: 1.125rem;
+    color: var(--cg-stone);
     margin-bottom: 1rem;
-    border-bottom: 2px solid #007bff;
+    border-bottom: 2px solid var(--cg-accent);
     padding-bottom: 0.5rem;
 }
 
 .route-detail {
     margin-bottom: 0.5rem;
-    font-size: 1.6rem;
+    font-size: 1rem;
     line-height: 1.7;
-    color: #343a40;
+    color: var(--cg-ink-2);
 }
 
 .description-content {
-    font-size: 1.5rem;
+    font-size: 0.938rem;
     line-height: 1.8;
-    color: #495057;
+    color: var(--cg-stone);
 }
 
 .rating {
@@ -459,8 +459,8 @@ getCategoryText(category) {
 }
 
 .btn-primary {
-    background-color: #007bff;
-    border-color: #007bff;
+    background-color: var(--cg-accent);
+    border-color: var(--cg-accent);
 }
 
 .cursor_pointer {

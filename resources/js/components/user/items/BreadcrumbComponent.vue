@@ -80,16 +80,16 @@
     font-size: 0.9rem;
 }
 .user_breadcrumb .breadcrumb-item a {
-    color: #495057;
+    color: var(--cg-stone);
     text-decoration: none;
     transition: color 0.15s ease;
 }
 .user_breadcrumb .breadcrumb-item a:hover {
-    color: #7427bb;
+    color: var(--cg-accent);
     text-decoration: underline;
 }
 .user_breadcrumb .breadcrumb-item.active {
-    color: #7427bb;
+    color: var(--cg-accent);
     font-weight: 600;
     max-width: 40vw;
     overflow: hidden;

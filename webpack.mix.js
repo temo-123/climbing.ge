@@ -11,7 +11,15 @@ mix.js('resources/js/app.js', 'public/assets/js').vue({
   }
 });
 
-mix.sass('resources/sass/app.scss', 'public/assets/css');
+// Bootstrap 5 is compiled from node_modules inside app.scss (no CDN copies).
+// Its sources still use @import / global color functions, so silence those
+// deprecation warnings instead of flooding the watch output.
+mix.sass('resources/sass/app.scss', 'public/assets/css', {
+    sassOptions: {
+        quietDeps: true,
+        silenceDeprecations: ['import', 'global-builtin', 'color-functions'],
+    },
+});
 
 mix.override((webpackConfig) => {
     webpackConfig.plugins = webpackConfig.plugins.filter((plugin) => !(plugin instanceof webpack.ProgressPlugin));

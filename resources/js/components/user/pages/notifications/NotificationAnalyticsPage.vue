@@ -20,7 +20,7 @@
 
             <div class="row mb-3">
                 <div class="col-md-12 d-flex align-items-center flex-wrap" style="gap:10px;">
-                    <label class="mb-0 font-weight-bold">{{ $t('admin.dashboards.period_label') }}</label>
+                    <label class="mb-0 fw-bold">{{ $t('admin.dashboards.period_label') }}</label>
                     <select class="form-control d-inline-block w-auto" v-model="selectedPeriod" @change="fetchVolume">
                         <option v-for="p in periods" :key="p.value" :value="p.value">{{ p.label }}</option>
                     </select>

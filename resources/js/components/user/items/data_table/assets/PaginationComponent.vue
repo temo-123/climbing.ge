@@ -1,37 +1,34 @@
 <template>
-
-    <div class="row">
-        <div class="col-md-2">
-            <div class="form-group float-right d-flex align-items-center input-group mb-3">
-                <select id="itemsPerPage" v-model="localItemsPerPage" class="form-control" style="width: 100px;" @change="onItemsPerPageChange">
-                    <option v-for="option in itemsPerPageOptions" :key="option" :value="option">{{ option }}</option>
-                </select>
-            </div>
+    <!-- per-page select on the left, page links on the right -->
+    <div class="cg-dt-pager">
+        <div class="cg-dt-pager__size">
+            <span>{{ $t('admin.table.per_page') }}</span>
+            <select v-model="localItemsPerPage" class="form-select form-select-sm" :aria-label="$t('admin.table.per_page')" @change="onItemsPerPageChange">
+                <option v-for="option in itemsPerPageOptions" :key="option" :value="option">{{ option }}</option>
+            </select>
         </div>
 
-        <div class="col-md-10">
-            <nav aria-label="Page navigation example">
-                <ul class="pagination justify-content-end">
-                    <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                        <a class="page-link action" href="#" tabindex="-1" @click.prevent="privies_page_pagination()">
-                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
-                        </a>
-                    </li>
+        <nav :aria-label="$t('admin.table.per_page')">
+            <ul class="pagination mb-0">
+                <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                    <a class="page-link action" href="#" tabindex="-1" @click.prevent="privies_page_pagination()">
+                        <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                    </a>
+                </li>
 
-                    <li class="page-item" v-for="page in visiblePages" :key="page" :class="{ active: page === currentPage, disabled: page === '...' }">
-                        <a class="page-link action" href="#" :class="{ 'disabled-link': page === '...' }" @click.prevent="page !== '...' && nomber_page_pagination(page)">
-                            {{ page }}
-                        </a>
-                    </li>
+                <li class="page-item" v-for="page in visiblePages" :key="page" :class="{ active: page === currentPage, disabled: page === '...' }">
+                    <a class="page-link action" href="#" :class="{ 'disabled-link': page === '...' }" @click.prevent="page !== '...' && nomber_page_pagination(page)">
+                        {{ page }}
+                    </a>
+                </li>
 
-                    <li class="page-item" :class="{ disabled: currentPage === totalPages }">
-                        <a class="page-link action" href="#" @click.prevent="next_page_pagination()">
-                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <a class="page-link action" href="#" @click.prevent="next_page_pagination()">
+                        <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </template>
 
@@ -124,8 +121,30 @@ export default {
 </script>
 
 <style>
+.cg-dt-pager {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: .75rem;
+    margin: .75rem 0;
+}
+.cg-dt-pager__size {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin: 0;
+    color: var(--cg-stone);
+    font-size: .85rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+.cg-dt-pager__size .form-select {
+    width: auto;
+    min-width: 4.5rem;
+}
 .disabled-link {
     pointer-events: none;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 </style>

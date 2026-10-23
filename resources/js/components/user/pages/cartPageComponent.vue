@@ -15,7 +15,7 @@
                         <div class="card-header bg-dark text-light">
                             <i class="fa fa-shopping-cart" aria-hidden="true"></i>
                             {{ $t('user.cart.shopping_cart_title') }}
-                            <button class="btn btn-primary float-right" @click="goToShop()">{{ $t('user.cart.go_to_shop_btn') }}</button>
+                            <button class="btn btn-primary float-end" @click="goToShop()">{{ $t('user.cart.go_to_shop_btn') }}</button>
                         </div>
                         <div class="card-body">
                             <div v-if="!cart_items.length" class="text-center text-muted py-4">
@@ -41,13 +41,13 @@
                                     <div class="col-sm-12 col-md-2 text-center">
                                         <img
                                             v-if="product.product_image"
-                                            class="img-responsive cart-thumb"
+                                            class="img-fluid cart-thumb"
                                             :src="'/public/images/product_option_img/'+product.product_image"
                                             :alt="product.product && product.product.url_title || ''"
                                         >
                                         <img
                                             v-else
-                                            class="img-responsive cart-thumb"
+                                            class="img-fluid cart-thumb"
                                             :src="'/public/images/site_img/shop_demo.jpg'"
                                             :alt="product.product && product.product.url_title || ''"
                                         >
@@ -75,7 +75,7 @@
                                             <small>
                                                 <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                                                 {{ $t('user.cart.quantity_mismatch_message', { selected: product.quantity, available: product.stock_quantity }) }}
-                                                <button type="button" class="btn btn-link btn-sm p-0 ml-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
+                                                <button type="button" class="btn btn-link btn-sm p-0 ms-1 align-baseline" @click="update_to_max_quantity(product)">{{ $t('user.cart.update_to_max_btn', { available: product.stock_quantity }) }}</button>
                                             </small>
                                         </div>
                                         <div v-else-if="product.stock_quantity > 0 && product.stock_quantity <= 5" class="text-warning mt-1">
@@ -85,7 +85,7 @@
 
                                     <div class="col-sm-12 col-md-4">
                                         <div class="d-flex align-items-center justify-content-md-end">
-                                            <div class="cart-price mr-3" v-if="!product.is_out_of_stock">
+                                            <div class="cart-price me-3" v-if="!product.is_out_of_stock">
                                                 <div class="text-muted"><small>{{ product.option && product.option.price }} ₾ {{ $t('user.cart.price_each_suffix') }}</small></div>
                                                 <strong>{{ colculat_items_price(product.option && product.option.price, product.quantity) }} ₾</strong>
                                             </div>
@@ -107,7 +107,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-sm-12 col-md-2 text-right">
+                                    <div class="col-sm-12 col-md-2 text-end">
                                         <button @click="del_from_cart(product.id)" class="btn btn-danger btn-sm">
                                             <i class="fa fa-trash" aria-hidden="true"></i>
                                         </button>
@@ -116,11 +116,11 @@
                                 <hr>
                             </div>
 
-                            <div class="text-right mt-2" v-if="cart_items.length">
+                            <div class="text-end mt-2" v-if="cart_items.length">
                                 <button type="button" @click="get_products_cart" class="btn btn-secondary btn-sm" v-if="!is_products_refresh">
                                     <i class="fa fa-refresh" aria-hidden="true"></i> {{ $t('user.cart.refresh_count_btn', { id: products_reset_id }) }}
                                 </button>
-                                <span class="badge badge-secondary" v-if="is_products_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
+                                <span class="badge text-bg-secondary" v-if="is_products_refresh">{{ $t('admin.articles.updating_ellipsis') }}</span>
                             </div>
                         </div>
 
@@ -472,13 +472,13 @@
 .cart-item { padding: 12px 0; }
 .cart-item-unavailable { opacity: 0.6; background: #fff8f8; border-radius: 4px; }
 .cart-thumb { max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 4px; }
-.cart-product-name { font-size: 0.95rem; font-weight: 600; color: #333; text-decoration: none; }
-.cart-product-name:hover { color: #007bff; text-decoration: underline; cursor: pointer; }
+.cart-product-name { font-size: 0.95rem; font-weight: 600; color: var(--cg-ink-2); text-decoration: none; }
+.cart-product-name:hover { color: var(--cg-accent); text-decoration: underline; cursor: pointer; }
 .cart-option-name { font-size: 0.82rem; color: #777; margin-top: 2px; }
 .cart-price { text-align: right; min-width: 80px; }
 .quantity-wrap { display: flex; align-items: center; }
 .qty-btn {
-    width: 28px; height: 28px; border: 1px solid #ccc; background: #f8f9fa;
+    width: 28px; height: 28px; border: 1px solid #ccc; background: var(--cg-chalk);
     border-radius: 4px; cursor: pointer; font-size: 1rem; line-height: 1;
 }
 .qty-btn:disabled { opacity: 0.4; cursor: default; }

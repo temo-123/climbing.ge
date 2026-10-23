@@ -14,7 +14,7 @@
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.name') }}</span>
-                    <span class="detail-value font-weight-bold">{{ subscriber.name }}</span>
+                    <span class="detail-value fw-bold">{{ subscriber.name }}</span>
                 </div>
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.email') }}</span>
@@ -27,7 +27,7 @@
                         <span v-else style="color:red;">{{ $t('admin.tour.verification_failed') }}</span>
                         <button
                             v-if="!subscriber.email_verified && $can('manage', 'user_notification')"
-                            class="btn btn-sm btn-outline-success ml-2"
+                            class="btn btn-sm btn-outline-success ms-2"
                             :disabled="verifying"
                             @click="verify"
                         >
@@ -107,7 +107,7 @@ export default {
     font-size: 14px;
 }
 .detail-section {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
     padding: 10px 0;
 }
 .detail-section:last-child {
@@ -119,7 +119,7 @@ export default {
     margin-bottom: 5px;
 }
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -128,7 +128,7 @@ export default {
     flex-shrink: 0;
 }
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 .preference-list {
     list-style: none;

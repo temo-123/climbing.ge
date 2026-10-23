@@ -67,15 +67,15 @@ export default {
     transform: none;
 }
 
-.card-counter.primary { background-color: #007bff; color: #FFF; }
-.card-counter.secondary { background-color: #6c757d; color: #FFF; }
+.card-counter.primary { background-color: var(--cg-accent); color: #FFF; }
+.card-counter.secondary { background-color: var(--cg-stone); color: #FFF; }
 .card-counter.light { background-color: #a0a1a1; color: #FFF; }
 .card-counter.danger { background-color: #ef5350; color: #FFF; }
 .card-counter.success { background-color: #66bb6a; color: #FFF; }
-.card-counter.sectors { background-color: #279fbb; color: #FFF; }
+.card-counter.sectors { background-color: var(--cg-accent); color: #FFF; }
 .card-counter.warning { background-color: #ffc107; color: #FFF; }
 .card-counter.info { background-color: #26c6da; color: #FFF; }
-.card-counter.dark { background-color: #343a40; color: #FFF; }
+.card-counter.dark { background-color: var(--cg-ink-2); color: #FFF; }
 
 .card-counter i:first-child {
     font-size: 3.2em;

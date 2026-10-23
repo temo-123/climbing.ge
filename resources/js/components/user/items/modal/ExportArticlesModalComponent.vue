@@ -260,13 +260,13 @@ export default {
 
 <style scoped>
 .article-list {
-    border: 1px solid #dee2e6;
+    border: 1px solid var(--cg-line);
     border-radius: 0.375rem;
     padding: 1rem;
 }
 
 .article-item {
-    border-bottom: 1px solid #f8f9fa;
+    border-bottom: 1px solid var(--cg-chalk);
     padding-bottom: 0.5rem;
 }
 

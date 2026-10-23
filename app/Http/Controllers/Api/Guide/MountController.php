@@ -18,18 +18,25 @@ use Validator;
 
 class MountController extends Controller
 {
+    // Every mount massif (published or not): feeds the admin article forms'
+    // mount massif select, so it is intentionally not filtered.
     public function get_all_mount()
     {
         return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), 'us');
     }
 
+    // Public lists (guide mountaineering filter, summit filter): public only.
     public function get_locale_mounts(Request $request)
     {
-        return MountSystemService::get_local_mounts_use_locale(Mount::latest('id')->get(), $request->lang);
+        return MountSystemService::get_local_mounts_use_locale(Mount::where('published', 1)->latest('id')->get(), $request->lang);
     }
 
+    // One mount massif: public, or "public by URL" (published = 2).
     public function get_locale_mount(Request $request)
     {
+        if (!Mount::where('id', $request->mount_id)->whereIn('published', [1, 2])->exists()) {
+            return [];
+        }
         return MountSystemService::get_local_mount_use_locale($request->mount_id, $request->lang);
     }
 
@@ -40,7 +47,10 @@ class MountController extends Controller
         $mount_sys = $m_system->mount_masiv;
 
         if(count($mount_sys) > 0){
-            $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->first();
+            $mounts_system = Mount::where('id', '=', $mount_sys[0]->id)->whereIn('published', [1, 2])->first();
+            if (!$mounts_system) {
+                return null;
+            }
 
             $system = MountSystemService::get_local_mount_use_locale($mounts_system->id, $request->lang);
 

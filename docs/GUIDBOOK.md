@@ -100,9 +100,13 @@ All of the above fetch their record in `mounted()` and gate their whole content 
 | GET | `/api/get_sector/get_sector_and_routes/{article_id}` | Sectors + routes for climbing spot |
 | GET | `/api/get_route/get_route_for_modal/{route_id}` | Route detail |
 | GET | `/api/get_mount_route/get_mount_routes_by_maunt/{lang}` | Mountaineering routes grouped by mountain |
+| GET | `/api/get_mount/get_locale_mounts/{lang}` | Public mount massifs (`published = 1`), for the mountaineering and summit filters |
+| GET | `/api/get_mount/{lang}/{mount_id}` / `/api/get_mount/on_page/{lang}/{mount_route_id}` | One mount massif, only when `published` is 1 or 2 (public by URL) |
 | GET | `/api/get_event/get_event_on_site_list/{lang}` | Events list |
 | GET | `/api/get_region/get_all_outdoor_regions` | All outdoor regions |
 | GET | `/api/get_article/last_news/{lang}` | Latest news |
+
+**Mount massif visibility:** `mounts.published` (0 not public, 1 public, 2 public by URL), set in the admin mount massif form (first field) or by bulk publish. Lists only show 1. A mountaineering route whose massif isn't public still appears in the "other routes" group. `get_mount/get_all_mount` is unfiltered because it feeds the admin article forms.
 
 Full endpoint list in [BACKEND/API.md](BACKEND/API.md#guide--public).
 

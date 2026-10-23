@@ -117,13 +117,13 @@
 }
 .bisnes-card-title {
     margin: 0 0 6px;
-    font-size: 2.875rem;
+    font-size: 1.797rem;
     font-weight: 600;
-    color: #333;
+    color: var(--cg-ink-2);
 }
 .bisnes-card-desc {
-    color: #555;
-    font-size: 2.375rem;
+    color: var(--cg-stone);
+    font-size: 1.484rem;
     overflow-wrap: break-word;
 }
 </style>

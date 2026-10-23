@@ -55,7 +55,7 @@
             <div class="col-md-12" v-show="tab_num == 1">
 
                 <div class="alert alert-warning mode-warning-box">
-                    <label class="font-weight-bold">⚠ {{ $t('admin.training.mode_label') }}</label>
+                    <label class="fw-bold">⚠ {{ $t('admin.training.mode_label') }}</label>
                     <select v-model="trainingMode" class="form-control" @change="onModeChange">
                         <option value="custom">{{ $t('admin.training.mode_custom') }}</option>
                         <option value="shop_product">{{ $t('admin.training.mode_shop_product') }}</option>
@@ -96,7 +96,7 @@
                     <textarea v-model="form.description" class="form-control" rows="3"></textarea>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('admin.training.type_label') }} <span class="text-danger">*</span></label>
                         <select v-model="form.type" class="form-control">
@@ -129,7 +129,7 @@
                     />
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-3">
                         <label>{{ $t('admin.training.hang_time_label') }}</label>
                         <input type="number" min="0" v-model.number="form.hang_time" class="form-control">
@@ -180,7 +180,7 @@
                         <button type="button" class="btn btn-danger btn-sm" @click="removeStep(index)">{{ $t('admin.training.remove_step_btn') }}</button>
                     </div>
                     <div class="card-body">
-                        <div class="form-row">
+                        <div class="row g-2">
                             <div class="form-group col-md-4">
                                 <label>{{ $t('admin.training.step_phase_label') }}</label>
                                 <select v-model="step.phase" class="form-control">
@@ -523,7 +523,7 @@ export default {
     overflow: hidden;
 }
 .step-card .card-header {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
 }
 .options-list {
     max-height: 340px;
@@ -534,16 +534,16 @@ export default {
     transition: background .12s;
 }
 .opt-row:hover {
-    background: #f0f4ff;
+    background: var(--cg-accent-soft);
 }
 .opt-selected {
-    background: #e8f0fe;
+    background: var(--cg-accent-soft);
 }
 .opt-tag {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    background: #0d6efd;
+    background: var(--cg-accent);
     color: #fff;
     border-radius: 4px;
     padding: 3px 8px;

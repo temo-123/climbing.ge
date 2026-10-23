@@ -4,74 +4,31 @@
 
             <h2 class='index_h2'>{{ $t('guide.title.what we do') }}</h2>
 
-            <div class="bar"><i class="fa fa-book"></i></div>
-
             <h3 class="article_list_short_description" v-if="!isLoading">
                 {{ siteData.data.what_we_do_description || 'Explore climbing in Georgia - outdoor, indoor, ice & mountaineering adventures' }}
             </h3>
             <div v-else class="text-center py-3">
                 <i class="fa fa-spinner fa-spin"></i>
             </div>
-                
-            <div class="row">
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <ul class="right-text">
-                        <li class="friendly-item" @click="$router.push({name: 'outdoors'})" style="cursor: pointer;">
-                            <img alt='Outdoor climbing in Georgia' class="index_category_right what_we_do_title_image" src="/images/site_img/outdoor.png">
 
-                            <h4 class="what_we_do_title">
-                                <strong>{{ $t('guide.title.outdoor climbing')}}</strong>
-                            </h4>
-
-                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
-                                <span v-html="siteData.data.outdoor_description || ''"></span>
-                            </div>
-                        </li>
-                        
-                        <!-- <div class="clearfix"></div> -->
-
-                        <li class="friendly-item" @click="$router.push({name: 'indoors'})" style="cursor: pointer;">
-                            <img alt='Indoor climbing' class="index_category_right what_we_do_title_image" src="/images/site_img/indoor.png">
-
-                            <h4 class="what_we_do_title">
-                                <strong>{{ $t('guide.title.indoor climbing')}}</strong>
-                            </h4>
-
-                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
-                                <span v-html="siteData.data.indoor_description || ''"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-                    <ul class="left-text">
-                        <li class="friendly-item" @click="$router.push({name: 'ices'})" style="cursor: pointer;">
-                            <img alt='Mountaineering in Georgia' class="index_category_left what_we_do_title_image" src="/images/site_img/ice.png">
-
-                            <h4 class="what_we_do_title">
-                                <strong>{{ $t('guide.title.ice climbing')}}</strong>
-                            </h4>
-
-                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
-                                <span v-html="siteData.data.ice_description || ''"></span>
-                            </div>
-                        </li>
-
-                        <!-- <div class="clearfix"></div> -->
-
-                        <li class="friendly-item" @click="$router.push({name: 'mountaineerings'})" style="cursor: pointer;">
-                            <img alt='Ice climbing in Georgia' class="index_category_left what_we_do_title_image" src="/images/site_img/mount.png">
-
-                            <h4 class="what_we_do_title">
-                                <strong>{{ $t('guide.title.mountaineering')}}</strong>
-                            </h4>
-
-                            <div class="content-text what_we_do_text_description" v-if="siteData.data">
-                                <span v-html="siteData.data.mount_description || ''"></span>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
+            <div class="cg-disciplines">
+                <router-link
+                    v-for="item in disciplines"
+                    :key="item.route"
+                    :to="{ name: item.route, params: { locale: $i18n.locale === 'ka' ? 'ka' : undefined } }"
+                    class="cg-discipline"
+                >
+                    <span class="cg-discipline__icon">
+                        <img :alt="$t(item.title)" :src="item.image">
+                    </span>
+                    <h4 class="cg-discipline__title">{{ $t(item.title) }}</h4>
+                    <div class="cg-discipline__text" v-if="siteData.data">
+                        <span v-html="siteData.data[item.description] || ''"></span>
+                    </div>
+                    <span class="cg-discipline__go">
+                        {{ $t('global.footer.more') }} <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                    </span>
+                </router-link>
             </div>
         </div>
     </div>
@@ -83,7 +40,13 @@ export default {
             return {
                 siteData: { data: {}, loaded: false },
                 globalSiteData: { data: {}, loaded: false },
-                isLoading: true
+                isLoading: true,
+                disciplines: [
+                    { route: 'outdoors', title: 'guide.title.outdoor climbing', description: 'outdoor_description', image: '/images/site_img/outdoor.png' },
+                    { route: 'indoors', title: 'guide.title.indoor climbing', description: 'indoor_description', image: '/images/site_img/indoor.png' },
+                    { route: 'ices', title: 'guide.title.ice climbing', description: 'ice_description', image: '/images/site_img/ice.png' },
+                    { route: 'mountaineerings', title: 'guide.title.mountaineering', description: 'mount_description', image: '/images/site_img/mount.png' },
+                ],
             }
         },
         mounted() {
@@ -108,121 +71,79 @@ export default {
 </script>
 
 <style>
-    ul.right-text {
-        padding: 0;
-        text-align: right;
-        width: 100%;
-        height: auto;
+    .cg-disciplines {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1rem;
     }
-
-    .right-text h4 {
-        color: #4b4b4b;
-        line-height: 60px !important;
+    @media (max-width: 991.98px) {
+        .cg-disciplines { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
-
-    .right-text h4 i {
-        width: 60px;
-        height: 60px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        margin-top: 30px;
-        float: right;
-        margin-left: 20px;
-        margin-right: 0;
-        color: #279fbb;
-        border: 1px solid #279fbb;
-        line-height: 60px !important;
-        text-align: center;
+    @media (max-width: 479.98px) {
+        .cg-disciplines { grid-template-columns: 1fr; }
     }
-
-    ul.left-text {
-        padding: 0;
-        text-align: left;
-        width: 100%;
-        height: auto;
+    .cg-discipline {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 1.4rem 1.3rem 1.2rem;
+        overflow: hidden;
+        background: #fff;
+        border: 1px solid var(--cg-line);
+        border-radius: var(--cg-r-lg);
+        box-shadow: var(--cg-shadow-sm);
+        color: var(--cg-ink-2);
+        transition: transform .3s var(--cg-ease), box-shadow .3s ease, border-color .3s ease;
     }
-
-    .left-text h4 {
-        color: #4b4b4b;
-        line-height: 60px !important;
+    .cg-discipline::before {
+        content: "";
+        position: absolute;
+        inset: 0 0 auto 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--cg-accent) 0 75%, var(--cg-hold) 75%);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform .35s var(--cg-ease);
     }
-
-    .left-text h4 i {
-        width: 60px;
-        height: 60px;
-        -webkit-border-radius: 50%;
-        -moz-border-radius: 50%;
-        border-radius: 50%;
-        margin-top: 30px;
-        float: left;
-        margin-right: 20px;
-        margin-left: 0;
-        color: #279fbb;
-        border: 1px solid #279fbb;
-        line-height: 60px !important;
-        text-align: center;
-        transition: all 0.4s ease 0s;
+    .cg-discipline:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--cg-shadow);
+        border-color: rgba(var(--cg-accent-rgb), .35);
+        color: var(--cg-ink-2);
     }
-
-    .what_we_do_title {
-        font-size: 1.5em;
+    .cg-discipline:hover::before { transform: scaleX(1); }
+    .cg-discipline__icon {
+        display: grid;
+        place-items: center;
+        width: 72px;
+        height: 72px;
+        margin-bottom: 1rem;
+        border-radius: 20px;
+        background: var(--cg-accent-soft);
+        background-image: var(--cg-topo-dark);
+        background-size: 200px;
     }
-
-    .friendly-item {
-        background: #f9f9f9;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 20px;
-        min-height: 120px;
-        transition: background 0.3s ease, box-shadow 0.3s ease;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    .cg-discipline__icon img {
+        width: 48px;
+        height: 48px;
+        object-fit: contain;
     }
-
-    .friendly-item:hover {
-        background: #f0f0f0;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    .cg-discipline__title {
+        margin: 0 0 .4rem;
+        font-size: 1.4rem;
     }
-
-    .what_we_do_title a {
-        text-decoration: none;
-        color: inherit;
-        transition: color 0.3s ease;
+    .cg-discipline__text {
+        flex: 1;
+        font-size: .92rem;
+        line-height: 1.55;
+        color: var(--cg-stone);
     }
-
-    .what_we_do_title a:hover {
-        color: #279fbb;
+    .cg-discipline__go {
+        margin-top: 1rem;
+        font-size: .85rem;
+        font-weight: 800;
+        color: var(--cg-accent);
     }
-
-    @media (max-width: 765px) {
-        .what_we_do_title {
-            text-align: center;
-            float: none;
-        }
-        .what_we_do_title_image {
-            float: none !important;
-            margin-left: 40% !important;
-            margin-right: 40% !important;
-        }
-        .what_we_do_text_description {
-            text-align: center;
-            margin: 0;
-        }
-        .friendly-item {
-            padding: 10px;
-        }
-    }
-
-    .index_category_right {
-        width: 20%;
-        float: right;
-        margin: 5px;
-        border-radius: 5px;
-    }
-    .index_category_left {
-        width: 20%;
-        float: left;
-        margin: 5px;
-        border-radius: 5px;
-    }
+    .cg-discipline__go i { transition: transform .2s ease; }
+    .cg-discipline:hover .cg-discipline__go i { transform: translateX(4px); }
 </style>

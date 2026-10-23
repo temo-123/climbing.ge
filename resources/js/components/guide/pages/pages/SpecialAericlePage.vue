@@ -34,6 +34,7 @@
                     />
                 </div>
 
+                <!-- the menu shows the bolter on its side here (RightMenuComponent) -->
                 <articleRightMenu />
                 
             </div>

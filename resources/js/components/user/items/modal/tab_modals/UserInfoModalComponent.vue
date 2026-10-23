@@ -20,7 +20,7 @@
                 {{ $t('admin.tour.verification_failed') }}
                 <button
                     v-if="$can('edit', 'user')"
-                    class="btn btn-sm btn-outline-success ml-2"
+                    class="btn btn-sm btn-outline-success ms-2"
                     :disabled="verifying"
                     @click="verify"
                 >

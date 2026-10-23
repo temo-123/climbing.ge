@@ -54,7 +54,7 @@
                     <form class="width_100" name="contact-form" method="POST" id="global_form" ref="myForm" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.common.publish') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <select class="form-control" v-model="data.global_data.published" name="published" >
                                     <option value="0">{{ $t('admin.common.not_public') }}</option>
                                     <option value="1">{{ $t('admin.common.public') }}</option>
@@ -82,7 +82,7 @@
 
                         <div class="form-group clearfix" v-if="is_event_whithout_day">
                             <label for="start_datatle" class='col-xs-2 control-label'> {{ $t('admin.events.start_end_data_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <input type="month" name="start_datatle" class="form-control" v-model="data.global_data.start_data" :placeholder="$t('admin.events.start_data_placeholder')"> 
@@ -96,7 +96,7 @@
 
                         <div class="form-group clearfix" v-if="!is_event_whithout_day">
                             <label for="start_datatle" class='col-xs-2 control-label'> {{ $t('admin.events.start_end_data_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <div class="row">
                                     <div class="col-md-6">
                                         <input type="datetime-local" name="start_datatle" class="form-control" v-model="data.global_data.start_data" :placeholder="$t('admin.events.start_data_placeholder')"> 
@@ -110,7 +110,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.events.event_location_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.global_data.map"  class="form-control"> 
                             </div>
                         </div>
@@ -136,28 +136,28 @@
                     <form class="width_100" name="contact-form" method="POST" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="name" v-model="data.us_data.title"  class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.change_url_title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="checkbox" id="scales" name="scales" @click="change_url_title_in_global_event()">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_data.short_description" />
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.us_data.text" />
                             </div>
                         </div>
@@ -191,14 +191,14 @@
                     <form class="width_100" name="contact-form" method="POST" @submit.prevent="add_ka_article" style="margin-top: 5%;" enctyp ="multipart/form-data">
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('common.title') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <input type="text" name="value name"  v-model="data.ka_data.title" class="form-control">
                             </div>
                         </div>
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.short_description') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <!-- <textarea type="text"  name="short_description"  v-model="data.ka_data.short_description" rows="15" class="form-cotrol md-textarea form-control"></textarea> -->
                                 <big_editor v-model="data.ka_data.short_description" />
                             </div>
@@ -206,7 +206,7 @@
 
                         <div class="form-group clearfix">
                             <label for="name" class='col-xs-2 control-label'> {{ $t('admin.articles.locale_form.text_label') }} </label>
-                            <div class="col-xs-8">
+                            <div class="col-8">
                                 <big_editor v-model="data.ka_data.text" />
                             </div>
                         </div>

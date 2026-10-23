@@ -1,17 +1,17 @@
 <template>
-    <div>
+    <div class="cg-admin">
         <preloader />
         <routeloader />
         <navbar />
 
-        <div class="container top_menu_margin ">
-            <div class="bootstrap snippet mt-5">
+        <main class="cg-admin__main">
+            <div class="cg-admin__content">
                 <router-view />
             </div>
-        </div>
-        <div class="container">
-            <footerText />
-        </div>
+            <footer class="cg-admin__footer">
+                <footerText />
+            </footer>
+        </main>
         <go_to_top />
         <toast-notification />
     </div>
@@ -104,34 +104,3 @@
         },
     };
 </script>
-
-<style scoped>
-    .top_menu {
-        background-color: #7427bb !important;
-    }
-
-    .preloader_background {
-        background: radial-gradient(circle, #8c31e0 0% 0%, #4c1c7a 100%) !important;
-    }
-
-    .navbar {
-        background-color: #7427bb !important;
-        border-color: #6a8991;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a{
-        background-color: #7427bb !important;
-    }
-
-    .navbar-inverse .navbar-nav>.open>a, .navbar-inverse .navbar-nav>.open>a:hover{
-        background-color: #7427bb !important;
-    }
-
-    .navbar-inverse .navbar-collapse{
-        border-color: #838383 !important;
-    }
-
-    .navbar-collapse {
-        max-height: none !important;
-    }
-</style>

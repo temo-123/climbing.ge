@@ -220,12 +220,12 @@ export default {
 .form-label { font-weight: 500; margin-bottom: 4px; }
 .options-list { max-height: 340px; overflow-y: auto; }
 .opt-row { cursor: pointer; transition: background .12s; }
-.opt-row:hover { background: #f0f4ff; }
-.opt-selected { background: #e8f0fe; }
-.opt-tag { display:inline-flex; align-items:center; gap:4px; background:#0d6efd; color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
+.opt-row:hover { background: var(--cg-accent-soft); }
+.opt-selected { background: var(--cg-accent-soft); }
+.opt-tag { display:inline-flex; align-items:center; gap:4px; background:var(--cg-accent); color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
 .opt-tag-x { cursor:pointer; opacity:.8; }
 .opt-tag-x:hover { opacity:1; }
-.img-thumb { height:100px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:#f5f5f5; }
+.img-thumb { height:100px; overflow:hidden; display:flex; align-items:center; justify-content:center; background:var(--cg-chalk); }
 .lb-overlay { position:fixed; top:0; right:0; bottom:0; left:0; z-index:999999; background:#000000d9; display:flex; align-items:center; justify-content:center; }
 .lb-img { max-width:92%; max-height:85%; position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); }
 .lb-close { position:absolute; top:14px; right:18px; color:#ccc; font-size:2em; cursor:pointer; z-index:1000000; }

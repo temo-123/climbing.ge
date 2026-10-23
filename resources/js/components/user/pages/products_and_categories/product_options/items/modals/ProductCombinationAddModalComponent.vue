@@ -185,9 +185,9 @@ export default {
 .form-label { font-weight: 500; margin-bottom: 4px; }
 .options-list { max-height: 340px; overflow-y: auto; }
 .opt-row { cursor: pointer; transition: background .12s; }
-.opt-row:hover { background: #f0f4ff; }
-.opt-selected { background: #e8f0fe; }
-.opt-tag { display:inline-flex; align-items:center; gap:4px; background:#0d6efd; color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
+.opt-row:hover { background: var(--cg-accent-soft); }
+.opt-selected { background: var(--cg-accent-soft); }
+.opt-tag { display:inline-flex; align-items:center; gap:4px; background:var(--cg-accent); color:#fff; border-radius:4px; padding:3px 8px; font-size:12px; }
 .opt-tag-x { cursor:pointer; opacity:.8; }
 .opt-tag-x:hover { opacity:1; }
 </style>

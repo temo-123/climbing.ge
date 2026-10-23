@@ -1,10 +1,12 @@
 <template>
     <div>
-        <h1 class='index_h2'>{{ $t('guide.title.events')}}</h1>
-
-        <h2 class="article_list_short_description">
-            {{this.$siteData.data.event_description}}
-        </h2>
+        <section class="cg-page-head cg-page-head--list cg-art-trophy">
+            <span class="cg-page-head__icon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            <div class="cg-page-head__text">
+                <h1>{{ $t('guide.title.events')}}</h1>
+                <div class="cg-page-head__lead">{{this.$siteData.data.event_description}}</div>
+            </div>
+        </section>
 
         <div v-if="events == []">
             <content-loader
@@ -170,7 +172,7 @@ header h1{
   height: 35px;
   width: 60px;
   font-size: 22px;
-  background: #f0f0f0;
+  background: var(--cg-chalk);
   color: #3c3c3c;
   position: relative;
   margin-top: 15px;
@@ -182,7 +184,7 @@ header h1{
   left: 0; 
   width: 0; 
   height: 0;
-  border-bottom: 15px solid #f0f0f0;
+  border-bottom: 15px solid var(--cg-chalk);
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
   top: -15px;
@@ -196,7 +198,7 @@ header h1{
   height: 0;
   border-left: 30px solid transparent;
   border-right: 30px solid transparent;
-  border-top: 15px solid #f0f0f0;
+  border-top: 15px solid var(--cg-chalk);
   bottom: -15px;
 }
 
@@ -235,7 +237,7 @@ header h1{
   width: 16px;
   height: 10px;
   position: absolute;
-  background: #00c4f3;
+  background: var(--cg-accent);
   z-index: 5;
   left: 0;
   right: 0;
@@ -246,7 +248,7 @@ header h1{
 }
 
 .timeline .hexa:before {
-  border-bottom: 4px solid #00c4f3;
+  border-bottom: 4px solid var(--cg-accent);
   border-left-width: 8px;
   border-right-width: 8px;
   top: -4px;
@@ -255,7 +257,7 @@ header h1{
 .timeline .hexa:after {
   border-left-width: 8px;
   border-right-width: 8px;
-  border-top: 4px solid #00c4f3;
+  border-top: 4px solid var(--cg-accent);
   bottom: -4px;
 }
 
@@ -328,7 +330,7 @@ header h1{
 }
 
 .time {
-  background: #00c4f3;
+  background: var(--cg-accent);
   display: inline-block;
   padding: 8px;
 }
@@ -349,7 +351,7 @@ header h1{
 .event_timeline_title{
     margin-top: 4px !important;
     margin-bottom: 5px !important;
-    color: #333 !important;
+    color: var(--cg-ink-2) !important;
 }
 
 .direction-l .desc,
@@ -473,40 +475,40 @@ header h1{
 }
 
 .index_h2 {
-  color: #555;
+  color: var(--cg-stone);
   margin-bottom: 10px;
 }
 
 .article_list_short_description {
-  color: #666;
+  color: var(--cg-stone);
   margin-bottom: 20px;
 }
 
 .articles_filter_bar {
-  background: #e6f3ff;
+  background: var(--cg-accent-soft);
   padding: 15px;
   border-radius: 5px;
   margin-bottom: 20px;
 }
 
 .timeline:before {
-  background: linear-gradient(to bottom, rgba(39,159,187,0) 0%, #279fbb 8%, #279fbb 92%, rgba(39,159,187,0) 100%);
+  background: linear-gradient(to bottom, rgba(39,159,187,0) 0%, var(--cg-accent) 8%, var(--cg-accent) 92%, rgba(39,159,187,0) 100%);
 }
 
 .timeline .hexa {
-  background: #279fbb;
+  background: var(--cg-accent);
 }
 
 .timeline .hexa:before {
-  border-bottom-color: #279fbb;
+  border-bottom-color: var(--cg-accent);
 }
 
 .timeline .hexa:after {
-  border-top-color: #279fbb;
+  border-top-color: var(--cg-accent);
 }
 
 .desc {
-  background: #e6f3ff;
+  background: var(--cg-accent-soft);
   transition: box-shadow 0.3s ease;
 }
 
@@ -515,7 +517,7 @@ header h1{
 }
 
 .time {
-  background: #279fbb;
+  background: var(--cg-accent);
   color: #fff;
 }
 </style>

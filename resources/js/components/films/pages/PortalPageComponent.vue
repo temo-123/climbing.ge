@@ -25,7 +25,7 @@
                     />
                 </div>
                 <div class="col-lg-5">
-                    <h1 class="font-weight-light">day</h1>
+                    <h1 class="fw-light">day</h1>
                     <p>
                         This is a template that is great for small businesses. It
                         doesn't have too much fancy flare to it, but it makes a
@@ -46,7 +46,7 @@
                     />
                 </div>
                 <div class="col-lg-5">
-                    <h1 class="font-weight-light">week</h1>
+                    <h1 class="fw-light">week</h1>
                     <p>
                         This is a template that is great for small businesses. It
                         doesn't have too much fancy flare to it, but it makes a
@@ -67,7 +67,7 @@
                     />
                 </div>
                 <div class="col-lg-5">
-                    <h1 class="font-weight-light">monse</h1>
+                    <h1 class="fw-light">monse</h1>
                     <p>
                         This is a template that is great for small businesses. It
                         doesn't have too much fancy flare to it, but it makes a
@@ -88,7 +88,7 @@
                     />
                 </div>
                 <div class="col-lg-5">
-                    <h1 class="font-weight-light">all time</h1>
+                    <h1 class="fw-light">all time</h1>
                     <p>
                         This is a template that is great for small businesses. It
                         doesn't have too much fancy flare to it, but it makes a
@@ -108,10 +108,10 @@
                         secondaryColor="#777777"
                     />
                 </div>
-                <div class="row" v-else>
+                <div class="row" v-else-if="most_liked_film && most_liked_film.global_film">
                     <h2 class="text-center">{{ $t('films.most_liked_film_title') }}</h2>
                     <div class="row">
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <site-img
                                 v-if="!most_liked_film.global_film.image"
                                 :src="'../../../public/images/site_img/film poster demo.jpg'"
@@ -125,10 +125,10 @@
                                 :alt="most_liked_film.local_film.name"
                             />
                         </div>
-                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                        <div class="col-12 col-sm-12 col-md-6 col-lg-6">
                             <div class="row">
                                 <router-link :to="'film/'+most_liked_film.global_film.url_title">
-                                    <h1 class="font-weight-light">{{ most_liked_film.local_film.name }}</h1>
+                                    <h1 class="fw-light">{{ most_liked_film.local_film.name }}</h1>
                                 </router-link>
                             </div>
                             <div class="row" v-if=" most_liked_film.local_film.coutry || most_liked_film.local_film.issue_year">
@@ -151,11 +151,13 @@
         </div>
 
         <!-- Call to Action-->
-        <div class="card text-white bg-secondary my-5 py-4 text-center">
-            <div class="card-body">
-                <h2 class="text-white m-0">{{ $t('films.all_films_link') }}</h2>
+        <section class="cg-page-head cg-page-head--list cg-art-film">
+            <span class="cg-page-head__icon"><i class="fa fa-film" aria-hidden="true"></i></span>
+            <div class="cg-page-head__text">
+                <h1>{{ $t('films.all_films_link') }}</h1>
+                <div class="cg-page-head__lead">{{ $t('films.meta_description') }}</div>
             </div>
-        </div>
+        </section>
 
         <div class="row">
             <div class="container articles_filter_bar">

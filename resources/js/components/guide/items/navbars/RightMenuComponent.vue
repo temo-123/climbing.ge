@@ -1,5 +1,5 @@
 <template>
-    <div class="col-sm-3 col-md-3 col-xs-offset-1 display-biger-then-768px right_fixed_menu">
+    <div class="col-sm-3 col-md-3 offset-1 display-biger-then-768px right_fixed_menu" :class="{ 'cg-has-side-scene': sideScene, 'cg-has-mountain-top': sideScene === 'summit' }">
 
         <h3 class="navbar_title display-biger-then-768px">{{ $t('guide.article_right_nabar.menu_title') }}</h3>
 
@@ -7,7 +7,7 @@
              already fetched for the submenu below — no extra request. Was
              requested to fill out an otherwise sparse-looking menu with
              something genuinely useful rather than just decorative spacing. -->
-        <div v-if="this.$route.name == 'outdoor' && quickStats.sectorCount > 0" class="quick-stats display-biger-then-768px">
+        <div v-if="hasSectors && quickStats.sectorCount > 0" class="quick-stats display-biger-then-768px">
             <div class="quick-stats-item">
                 <span class="quick-stats-num">{{ quickStats.sectorCount }}</span>
                 <span class="quick-stats-label">{{ $t('guide.article_right_nabar.quick_stats_sectors') }}</span>
@@ -32,7 +32,8 @@
                 </li>
 
 
-                <li v-if="this.$route.name == 'outdoor'">
+                <!-- sectors: outdoor areas and ice climbing pages -->
+                <li v-if="hasSectors">
                     <a @click.prevent="scrollToSection('routes')">
                         <span class="text-primary cursor_pointer">{{ $t('guide.article_right_nabar.sectors') }}</span>
                     </a>
@@ -75,6 +76,13 @@
                     <div v-else class="text-muted" style="padding-left: 20px;">
                         <small>Loading sectors...</small>
                     </div>
+                </li>
+
+                <!-- live camera (only when the article has one) -->
+                <li v-if="hasCamera">
+                    <a @click.prevent="scrollToSection('live-camera')">
+                        <span class="text-primary cursor_pointer"><i class="fa fa-video-camera" aria-hidden="true"></i> {{ $t('guide.article_right_nabar.live_camera') }}</span>
+                    </a>
                 </li>
 
                 <li>
@@ -127,19 +135,48 @@
             </div>
         </div> -->
 
+        <!-- optional extra block under the menu -->
+        <slot name="below" />
+
+        <!-- climbing scene on the side of this card (the card edge is the "wall") -->
+        <img
+            v-if="sideScene === 'bolter'"
+            class="cg-card-bolter"
+            src="/images/scenes/bolter-solo.svg"
+            alt="" aria-hidden="true" loading="lazy" decoding="async"
+        />
+        <menu-side-scene
+            v-else-if="sideScene && cardSize.h"
+            :variant="sideScene"
+            :width="cardSize.w"
+            :height="cardSize.h"
+        />
     </div>
 </template>
 
 <script>
+    import { defineAsyncComponent } from 'vue'
+    // loaded only on pages that show a side scene
+    const MenuSideScene = defineAsyncComponent(() => import('./MenuSideSceneComponent.vue'))
+
     export default {
         name: "article-right-navigation-menu",
         props: ['article_id'],
+        components: { MenuSideScene },
         data(){
             return {
                 sectors: [],
+                // set once the sector request has finished (ok or failed): the
+                // outdoor side scene depends on it, so it waits for the data
+                sectorsLoaded: false,
+                hasCamera: false,
+                cardSize: { w: 0, h: 0 },
+                wideScreen: window.innerWidth >= 1200,
             }
         },
         computed: {
+            // pages that list climbing sectors in the menu (both use OutdoorComponent)
+            hasSectors() { return ['outdoor', 'ice'].includes(this.$route.name) },
             // Flattens both entry shapes get_sector_and_routes returns
             // ({sector: {...}} standalone, or {local_images, sectors: [...]}
             // grouped) into one list of real sector objects, so counting
@@ -161,9 +198,44 @@
                 });
                 return { sectorCount: this.flatSectors.length, routeCount, mtpCount };
             },
+            // which climbing scene hangs on the side of this card (wide screens
+            // only — it needs the gap between the article and the card):
+            // outdoor with several sectors → lead climbing pair, one sector →
+            // bolter; ice → lead ice climbing; indoor → gym lead; tech tips →
+            // practising a lead fall; mountaineering → rope team on the summit
+            sideScene() {
+                if (!this.wideScreen) return null;
+                switch (this.$route.name) {
+                    case 'special_article': return 'bolter';
+                    // wait for the sectors (they decide the menu height and the scene)
+                    case 'outdoor':
+                        if (!this.sectorsLoaded) return null;
+                        return this.quickStats.sectorCount > 1 ? 'lead' : 'bolter';
+                    case 'ice': return 'ice';
+                    case 'tech_tip': return 'safety';
+                    case 'other': return 'slackline';
+                    case 'indoor': return 'indoor';
+                    case 'mountaineering': return 'summit';
+                    default: return null;
+                }
+            },
         },
         mounted() {
             this.get_sectors_for_article();
+            // the side scene follows the card's size (sectors load, window resizes)
+            if (window.ResizeObserver) {
+                this.sizeObserver = new ResizeObserver(() => {
+                    const r = this.$el.getBoundingClientRect();
+                    this.cardSize = { w: Math.round(r.width), h: Math.round(r.height) };
+                });
+                this.sizeObserver.observe(this.$el);
+            }
+            this.onResize = () => { this.wideScreen = window.innerWidth >= 1200; };
+            window.addEventListener('resize', this.onResize, { passive: true });
+        },
+        beforeUnmount() {
+            if (this.sizeObserver) this.sizeObserver.disconnect();
+            window.removeEventListener('resize', this.onResize);
         },
         watch: {
             '$route'() {
@@ -199,85 +271,133 @@
                     window.scrollTo({ top: y, behavior: 'smooth' });
                 }
             },
+            // does this article have a live camera? (shown as a menu item)
+            check_camera() {
+                this.hasCamera = false;
+                if (!this.article_id || !this.hasSectors) return;
+                axios.get('/get_live_camera/get_camera_for_article/' + this.article_id)
+                    .then(r => { this.hasCamera = !!(r.data && r.data.id); })
+                    .catch(() => {});
+            },
             get_sectors_for_article() {
+                this.check_camera();
+                this.sectorsLoaded = false;
                 if (!this.article_id) { this.sectors = []; return; }
                 axios.get('/get_sector/get_sector_and_routes/' + this.article_id)
                     .then(response => {
                         this.sectors = Array.isArray(response.data) ? response.data : [];
                     })
-                    .catch(() => { this.sectors = []; });
+                    .catch(() => { this.sectors = []; })
+                    // the menu has its final height now → the side scene can start
+                    .finally(() => { this.$nextTick(() => { this.sectorsLoaded = true; }); });
             },
         },
     };
 </script> 
 
 <style scoped>
+    /* Article "on this page" card — sticky beside the article */
     .right_fixed_menu {
         position: sticky;
-        top: 80px;
+        top: calc(var(--cg-nav-h) + 16px);
         align-self: flex-start;
-        max-height: calc(100vh - 90px);
+        max-height: calc(100vh - var(--cg-nav-h) - 32px);
         overflow-y: auto;
-        padding-left: 1.5rem;
+        padding: 1.25rem 1.25rem 1rem;
+        background: #fff;
+        border: 1px solid var(--cg-line);
+        border-radius: var(--cg-r-lg);
+        box-shadow: var(--cg-shadow-sm);
     }
     .caption h3 {
         margin: 0;
     }
     .navbar_title {
-        font-size: 20px;
-        text-align: left;
-        margin: 0 0 8% 0;
+        margin: 0 0 1rem;
+        font-size: 1.15rem;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--cg-muted);
     }
     .quick-stats {
         display: flex;
         gap: 8px;
-        margin-bottom: 6%;
-        padding: 10px 4px;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
+        margin-bottom: 1rem;
     }
     .quick-stats-item {
         flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
+        padding: .6rem .25rem;
+        border-radius: var(--cg-r);
+        background: var(--cg-accent-soft);
         text-align: center;
     }
     .quick-stats-num {
-        font-size: 1.4em;
+        font-family: var(--cg-font-display);
+        font-size: 1.7rem;
         font-weight: 700;
-        line-height: 1.1;
-        color: #333;
+        line-height: 1;
+        color: var(--cg-accent-dark);
     }
     .quick-stats-label {
-        font-size: 0.72em;
-        color: #888;
+        margin-top: .2rem;
+        font-size: .68rem;
+        font-weight: 800;
+        color: var(--cg-stone);
         text-transform: uppercase;
-        letter-spacing: 0.03em;
+        letter-spacing: .06em;
     }
     .local_bisnes {
-        margin-top: 8%;
+        margin-top: 1.5rem;
     }
     .fading-side-menu {
-        margin-bottom: 4%;
+        margin-bottom: .5rem;
+    }
+    .fading-side-menu > ul > li > a {
+        display: block;
+        padding: .45rem .6rem;
+        border-radius: .55rem;
+        font-weight: 700;
+    }
+    .fading-side-menu > ul > li > a:hover {
+        background: var(--cg-chalk);
+    }
+    .fading-side-menu .text-primary {
+        color: var(--cg-ink-2) !important;
+    }
+    .fading-side-menu a:hover .text-primary {
+        color: var(--cg-accent) !important;
     }
     .submenu {
         list-style: none;
-        padding-left: 20px;
-        margin: 0;
+        margin: .1rem 0 .4rem .9rem;
+        padding-left: .75rem;
+        border-left: 2px dashed var(--cg-line);
     }
     .submenu li {
-        margin: 5px 0;
+        margin: 0;
+    }
+    .submenu li a {
+        display: block;
+        padding: .25rem .5rem;
+        font-size: .9rem;
+    }
+    .submenu li a .text-primary {
+        font-weight: 600;
+        color: var(--cg-stone) !important;
     }
     .submenu-group-title {
         display: block;
-        font-weight: 600;
-        color: #555;
-        font-size: 0.92em;
-        margin-top: 10px;
+        margin-top: .5rem;
+        font-weight: 800;
+        font-size: .8rem;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        color: var(--cg-muted) !important;
     }
     .submenu-nested {
-        padding-left: 14px;
-        margin-top: 2px;
+        margin-left: .4rem;
     }
 </style>

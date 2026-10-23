@@ -5,7 +5,13 @@
             :description="$t('global.follow.climbers_meta_description')"
         />
 
-        <h1>{{ $t('global.follow.all_climbers_title') }}</h1>
+        <section class="cg-page-head cg-page-head--list cg-art-rope">
+            <span class="cg-page-head__icon"><i class="fa fa-users" aria-hidden="true"></i></span>
+            <div class="cg-page-head__text">
+                <h1>{{ $t('global.follow.all_climbers_title') }}</h1>
+                <div class="cg-page-head__lead">{{ $t('global.follow.climbers_meta_description') }}</div>
+            </div>
+        </section>
 
         <current-user-climber-card />
 
@@ -139,7 +145,7 @@
     left: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #aaa;
+    color: var(--cg-muted);
 }
 .climber-list__search {
     padding-left: 34px;
@@ -160,15 +166,15 @@
     border-radius: 999px;
     font-size: 1.3rem;
     font-weight: 600;
-    color: #666;
+    color: var(--cg-stone);
     cursor: pointer;
     transition: background .15s, color .15s;
 }
 .climber-list__sort-btn:hover {
-    color: #279fbb;
+    color: var(--cg-accent);
 }
 .climber-list__sort-btn--active {
-    background: #279fbb;
+    background: var(--cg-accent);
     color: #fff;
 }
 .climber-list__grid {
@@ -179,8 +185,8 @@
 }
 .climber-list__empty {
     text-align: center;
-    color: #888;
+    color: var(--cg-muted);
     padding: 40px 0;
-    font-size: 1.6rem;
+    font-size: 1rem;
 }
 </style>

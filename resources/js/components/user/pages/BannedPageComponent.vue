@@ -37,7 +37,7 @@ export default {
 
 <style scoped>
 .banned-page {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     min-height: 100vh;
 }
 
@@ -56,12 +56,12 @@ export default {
 .banned-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 
 .banned-subtitle {
     font-size: 1.1rem;
-    color: #6c757d;
+    color: var(--cg-stone);
 }
 
 .banned-notice {

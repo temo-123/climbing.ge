@@ -39,7 +39,7 @@
                     </select>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('common.name') }} <span class="text-danger">*</span></label>
                         <input type="text" v-model="data.name" class="form-control">
@@ -50,7 +50,7 @@
                     </div>
                 </div>
 
-                <div class="form-row">
+                <div class="row g-2">
                     <div class="form-group col-md-6">
                         <label>{{ $t('common.email') }} <span class="text-danger">*</span></label>
                         <input type="email" v-model="data.email" class="form-control">

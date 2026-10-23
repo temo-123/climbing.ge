@@ -449,7 +449,7 @@ export default {
 .route-lines-wrapper {
     position: relative;
     line-height: 0;
-    background: #111;
+    background: var(--cg-ink-2);
 }
 .route-bg-img {
     display: block;

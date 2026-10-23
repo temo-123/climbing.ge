@@ -12,7 +12,7 @@
                     <button class="btn btn-primary" @click="open_add_modal">{{ $t('admin.shop.add_combination_btn') }}</button>
                 </div>
                 <div class="col-md-6">
-                    <button class="btn btn-success float-right" @click="load_combinations">{{ $t('common.refresh') }}</button>
+                    <button class="btn btn-success float-end" @click="load_combinations">{{ $t('common.refresh') }}</button>
                 </div>
             </div>
 

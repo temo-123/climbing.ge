@@ -1,7 +1,7 @@
 <template>
     <!-- <div class="col-md-12"> -->
         <div class="cms_filters">
-            <div class="input-group mb-3">
+            <div class="input-group">
                 <input
                     type="text"
                     class="form-control"

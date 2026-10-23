@@ -51,7 +51,7 @@
                       />
                       <label v-for="(image, index) in sector_images" :key="'label-' + image.id + '-' + index" :for="'input-' + image.id">
                           {{ $t('admin.routes_sectors.image_id_label') }} {{ image.id }}
-                          <span v-if="image.has_original" class="badge badge-success ml-1" style="font-size:10px;">{{ $t('admin.routes_sectors.original_saved') }}</span>
+                          <span v-if="image.has_original" class="badge text-bg-success ms-1" style="font-size:10px;">{{ $t('admin.routes_sectors.original_saved') }}</span>
                           <img
                               :src="getSectorImageThumb(image)"
                               :alt="'Sector Image ' + image.id"

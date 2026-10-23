@@ -18,7 +18,7 @@
 }
 .skeleton-pulse {
     height: 120px;
-    background: linear-gradient(90deg, #f3f3f3 25%, #e8e8e8 50%, #f3f3f3 75%);
+    background: linear-gradient(90deg, var(--cg-chalk) 25%, #e8e8e8 50%, var(--cg-chalk) 75%);
     background-size: 200% 100%;
     animation: skeleton-pulse 1.5s infinite;
     border-radius: 4px;

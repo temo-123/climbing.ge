@@ -170,11 +170,11 @@
             this.start_year = moment(this.event.global_event.start_data).format("Y")
             // this.end_year = moment(this.event.global_event.end_data).format("Y")
 
-            this.start_time = moment(this.event.global_event.start_data).format("H:MM A")
+            this.start_time = moment(this.event.global_event.start_data).format("h:mm A")
             this.start_time_h = moment(this.event.global_event.start_data).format("H")
             // this.end_time = moment(this.event.global_event.end_data).format( "H:MM A")
 
-            // this.start_time_for_check = moment(this.event.global_event.start_data).format("H:MM")
+            // this.start_time_for_check = moment(this.event.global_event.start_data).format("HH:mm")
             // this.end_time_for_check = moment(this.event.global_event.end_data).format( "H:MM")
 
             // this.realy_time()

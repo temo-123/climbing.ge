@@ -132,7 +132,7 @@ export default {
     justify-content: center;
     background: #f1f2f6;
     color: #b2b2ff;
-    font-size: 3.5rem;
+    font-size: 2.188rem;
 }
 
 .user-modal-status {

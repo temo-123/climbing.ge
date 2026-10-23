@@ -8,7 +8,12 @@
 
         <template v-else>
             <div class="service-header">
-                <h1 class="service-title">{{ service.locale_data.title }}</h1>
+                <section class="cg-page-head cg-page-head--list cg-art-carabiners">
+                    <span class="cg-page-head__icon"><i class="fa fa-wrench" aria-hidden="true"></i></span>
+                    <div class="cg-page-head__text">
+                        <h1 class="service-title">{{ service.locale_data.title }}</h1>
+                    </div>
+                </section>
             </div>
 
             <!-- <breadcrumb /> -->
@@ -122,9 +127,7 @@
         margin-bottom: 20px;
     }
 
-    .service-title {
-        text-align: center;
-    }
+    
 
     .service-image-section {
         text-align: center;

@@ -1,6 +1,13 @@
 import _ from 'lodash';
 window._ = _;
 
+// Bootstrap 5 JS — only the dropdown plugin is used (data-bs-toggle="dropdown"
+// in the headers). Importing the single plugin registers its delegated data
+// API on the document, so markup rendered later by Vue works too; the rest of
+// Bootstrap's JS (modal, carousel, tooltip, …) is not shipped.
+import Dropdown from 'bootstrap/js/dist/dropdown';
+window.bootstrap = { Dropdown };
+
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the

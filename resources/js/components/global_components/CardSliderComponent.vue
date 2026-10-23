@@ -380,7 +380,7 @@
     .card_slider_counter {
         min-width: 44px;
         text-align: center;
-        color: #888;
+        color: var(--cg-muted);
         font-size: 0.85rem;
         font-weight: 600;
     }

@@ -1,0 +1,651 @@
+// ============================================================
+//  User / admin panel shell (user.climbing.ge)
+//  top bar (.cg-topbar) + desktop sidebar (.cg-sidebar, pages opt in
+//  with <left-menu />) + mobile drawer (.cg-drawer) + content area.
+// ============================================================
+
+$cg-sidebar-w: 280px;
+
+// ---- Shell ------------------------------------------------------
+.cg-admin__main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: var(--cg-nav-h);
+}
+.cg-admin__content {
+    flex: 1;
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+    padding: 1.75rem 1.5rem 2.5rem;
+
+    @media (max-width: 575.98px) { padding: 1.1rem .85rem 2rem; }
+}
+.cg-admin__footer {
+    padding: 1.25rem 1.5rem;
+    background: var(--cg-footer);
+
+    .cg-footer__bottom { border-top: 0; padding-top: 0; }
+}
+
+// Sidebar open on desktop: shift the page and the fixed top bar
+body.sidebar-open { margin-left: $cg-sidebar-w; }
+body.sidebar-open .admin_page_header_navbar { margin-left: $cg-sidebar-w; }
+@media (max-width: 993px) {
+    body.sidebar-open,
+    body.sidebar-open .admin_page_header_navbar { margin-left: 0; }
+}
+
+// ---- Top bar ------------------------------------------------------
+.cg-topbar {
+    .cg-nav__inner { max-width: none; gap: .75rem; }
+    &::after {
+        background: linear-gradient(90deg, var(--cg-accent) 0 85%, var(--cg-hold) 85% 90%, var(--cg-accent) 90%);
+    }
+}
+.cg-topbar__toggle { flex-shrink: 0; }
+.cg-topbar__tools {
+    margin-left: auto;
+    padding-left: 0;
+    border-left: 0;
+    flex-wrap: nowrap;
+}
+// the sidebar already carries the brand
+.cg-topbar.has-sidebar .cg-topbar__brand { display: none; }
+@media (max-width: 993px) {
+    .cg-topbar.has-sidebar .cg-topbar__brand { display: inline-flex; }
+}
+@media (max-width: 575.98px) {
+    .cg-topbar .cg-brand__text { display: none; }
+    .cg-topbar__tools { gap: 0; }
+}
+
+// ---- Sidebar & drawer ----------------------------------------------
+.cg-sidebar,
+.cg-drawer {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: $cg-sidebar-w;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    background-color: var(--cg-ink);
+    background-image: var(--cg-topo);
+    background-size: 360px;
+    box-shadow: 12px 0 40px -24px rgba(0, 0, 0, .7);
+}
+
+.cg-sidebar {
+    z-index: 1031;
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform .4s var(--cg-ease), visibility .4s;
+
+    &.open {
+        transform: none;
+        visibility: visible;
+    }
+    @media (max-width: 993px) { display: none; }
+}
+
+.cg-drawer {
+    z-index: 1061;
+    width: min(320px, 88vw);
+    transform: translateX(-100%);
+    visibility: hidden;
+    transition: transform .35s var(--cg-ease), visibility .35s;
+
+    &.is-open {
+        transform: none;
+        visibility: visible;
+    }
+}
+.cg-drawer-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1060;
+    background: rgba(21, 33, 43, .55);
+    backdrop-filter: blur(2px);
+}
+
+.cg-sidebar__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: .5rem;
+    min-height: var(--cg-nav-h);
+    padding: 0 .75rem 0 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, .08);
+    flex-shrink: 0;
+}
+.cg-sidebar__close {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border: 0;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .06);
+    color: rgba(255, 255, 255, .75);
+    font-size: 1.1rem;
+    cursor: pointer;
+
+    &:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+}
+
+.cg-sidebar__user {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    margin: .9rem .85rem .25rem;
+    padding: .7rem .75rem;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .07);
+    color: #fff;
+    flex-shrink: 0;
+
+    &:hover { background: rgba(255, 255, 255, .1); color: #fff; }
+}
+.cg-sidebar__user-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.25;
+
+    strong {
+        font-size: .92rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    small {
+        font-size: .75rem;
+        color: rgba(255, 255, 255, .55);
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.cg-avatar {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    background: var(--cg-accent);
+    color: #fff;
+    font-weight: 800;
+    font-size: .9rem;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, .15);
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+}
+
+.cg-sidebar__body {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: .5rem .6rem 1.5rem;
+
+    scrollbar-color: rgba(255, 255, 255, .2) transparent;
+    &::-webkit-scrollbar-thumb { background-color: rgba(255, 255, 255, .18); }
+}
+
+// ---- Menu tree --------------------------------------------------------
+.cg-menu__search {
+    position: relative;
+    margin: .4rem .25rem .75rem;
+
+    i {
+        position: absolute;
+        left: .8rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: rgba(255, 255, 255, .45);
+        font-size: .85rem;
+        pointer-events: none;
+    }
+}
+.cg-menu__search-input {
+    width: 100%;
+    padding: .55rem .8rem .55rem 2.2rem;
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: .7rem;
+    background: rgba(255, 255, 255, .06);
+    color: #fff;
+    font-size: .88rem;
+
+    &::placeholder { color: rgba(255, 255, 255, .45); }
+    &:focus {
+        outline: 0;
+        border-color: rgba(var(--cg-accent-rgb), .8);
+        background: rgba(255, 255, 255, .09);
+    }
+}
+.cg-menu__empty {
+    padding: 1rem;
+    color: rgba(255, 255, 255, .55);
+    font-size: .88rem;
+    text-align: center;
+}
+.cg-menu__list,
+.cg-menu__sub {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.cg-menu__group,
+.cg-menu__single { margin-bottom: .15rem; }
+
+.cg-menu__group-btn {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+    width: 100%;
+    padding: .55rem .6rem;
+    border: 0;
+    border-radius: .7rem;
+    background: transparent;
+    color: rgba(255, 255, 255, .78);
+    font-size: .92rem;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color .2s ease, color .2s ease;
+
+    &:hover { background: rgba(255, 255, 255, .06); color: #fff; }
+    &.is-active {
+        background: var(--cg-accent);
+        color: #fff;
+        .cg-menu__icon { background: rgba(255, 255, 255, .18); color: #fff; }
+    }
+}
+.cg-menu__group.is-active > .cg-menu__group-btn,
+.cg-menu__group.is-open > .cg-menu__group-btn { color: #fff; }
+.cg-menu__group.is-active > .cg-menu__group-btn .cg-menu__icon {
+    background: var(--cg-accent);
+    color: #fff;
+}
+
+.cg-menu__icon {
+    display: inline-grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    background: rgba(255, 255, 255, .07);
+    color: rgba(255, 255, 255, .8);
+    font-size: .9rem;
+    transition: background-color .2s ease;
+}
+.cg-menu__label {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cg-menu__count {
+    padding: .05rem .45rem;
+    border-radius: 1rem;
+    background: rgba(255, 255, 255, .08);
+    color: rgba(255, 255, 255, .55);
+    font-size: .7rem;
+    font-weight: 800;
+}
+.cg-menu__caret {
+    color: rgba(255, 255, 255, .45);
+    transition: transform .25s var(--cg-ease);
+}
+.cg-menu__group.is-open > .cg-menu__group-btn .cg-menu__caret { transform: rotate(180deg); }
+
+.cg-menu__sub {
+    position: relative;
+    margin: .15rem 0 .45rem 1.35rem;
+    padding-left: .85rem;
+
+    // the "rope" the sub-items hang from
+    &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: .25rem;
+        bottom: .25rem;
+        width: 2px;
+        border-radius: 2px;
+        background: repeating-linear-gradient(180deg, rgba(255, 255, 255, .22) 0 6px, transparent 6px 10px);
+    }
+}
+.cg-menu__link {
+    position: relative;
+    display: block;
+    padding: .4rem .65rem;
+    border-radius: .55rem;
+    color: rgba(255, 255, 255, .66);
+    font-size: .86rem;
+    font-weight: 500;
+    text-decoration: none;
+
+    &:hover { color: #fff; background: rgba(255, 255, 255, .05); }
+    &.is-active {
+        color: #fff;
+        background: rgba(var(--cg-accent-rgb), .3);
+        font-weight: 700;
+
+        // a "hold" clipped onto the rope
+        &::before {
+            content: "";
+            position: absolute;
+            left: calc(-.85rem - 4px);
+            top: 50%;
+            width: 10px;
+            height: 10px;
+            transform: translateY(-50%);
+            border-radius: 50%;
+            background: var(--cg-hold);
+            box-shadow: 0 0 0 3px var(--cg-ink);
+        }
+    }
+}
+
+// ---- Panel page building blocks ------------------------------------------
+.cg-admin {
+    // Page heading used by panel pages
+    .cg-page-head { margin-bottom: 1.5rem; }
+
+    // Old "bootstrap snippet" wrapper & jumbotrons read as cards in the panel
+    .jumbotron {
+        padding: 1.5rem;
+        border-radius: var(--cg-r-lg);
+    }
+
+    .card { border-radius: var(--cg-r-lg); }
+
+    // Admin forms
+    .form-control,
+    .form-select { background-color: #fff; }
+
+    h1, .h1 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+    h2, .h2 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+}
+
+// Panel toolbar row: title + actions (used by list pages)
+.cg-admin-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: .75rem;
+    margin-bottom: 1.25rem;
+
+    h1, h2, h3 { margin: 0; }
+}
+
+// Full-width editors (canvas tools) toggle this while mounted
+.cg-admin__content.is-wide { max-width: none; }
+
+// ---- Dashboard (panel home) ------------------------------------------
+.cg-dashboard__hero h1 { font-size: clamp(2rem, 4vw, 2.8rem); }
+.cg-dashboard__title {
+    margin: 2rem 0 1.1rem;
+    font-size: 1.6rem;
+}
+
+.cg-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+    gap: .75rem;
+    margin-bottom: 1.5rem;
+}
+.cg-quick {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .85rem 1rem;
+    background: #fff;
+    border: 1px solid var(--cg-line);
+    border-radius: var(--cg-r-lg);
+    box-shadow: var(--cg-shadow-sm);
+    color: var(--cg-ink-2);
+    font-weight: 700;
+    transition: transform .25s var(--cg-ease), border-color .25s ease, box-shadow .25s ease;
+
+    &:hover {
+        transform: translateY(-2px);
+        border-color: rgba(var(--cg-accent-rgb), .4);
+        box-shadow: var(--cg-shadow);
+        color: var(--cg-ink);
+    }
+}
+.cg-quick__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--cg-accent-soft);
+    color: var(--cg-accent-dark);
+    font-size: 1.05rem;
+}
+.cg-quick__label { flex: 1; min-width: 0; line-height: 1.25; }
+.cg-quick__arrow { color: var(--cg-muted); transition: transform .2s ease; }
+.cg-quick:hover .cg-quick__arrow { transform: translateX(3px); color: var(--cg-accent); }
+
+.cg-service-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: .85rem;
+    margin-bottom: 2rem;
+}
+.cg-service-tile {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: .85rem;
+    padding: 1.1rem 1.15rem;
+    overflow: hidden;
+    border-radius: var(--cg-r-lg);
+    color: #fff;
+    background-color: var(--cg-accent);
+    background-image: var(--cg-topo), linear-gradient(135deg, var(--cg-accent) 0%, var(--cg-accent-dark) 100%);
+    background-size: 300px, cover;
+    box-shadow: var(--cg-shadow-sm);
+    cursor: pointer;
+    transition: transform .25s var(--cg-ease), box-shadow .25s ease;
+
+    &:hover { transform: translateY(-3px); box-shadow: var(--cg-shadow); color: #fff; }
+}
+.cg-service-tile__icon {
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 13px;
+    background: rgba(255, 255, 255, .18);
+    font-size: 1.15rem;
+}
+.cg-service-tile__text {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    line-height: 1.25;
+
+    strong { font-family: var(--cg-font-display); font-size: 1.3rem; letter-spacing: .02em; }
+    small { color: rgba(255, 255, 255, .78); font-size: .8rem; }
+}
+.cg-service-tile__go { opacity: .7; }
+
+// ---- Admin add / edit forms (shared markup across ~40 pages) ------------
+// Back / Save buttons each live in their own `.row > .form-group`: lay them
+// out side by side as a sticky action bar.
+.cg-admin .tabs > .row:has(> .form-group > .btn) {
+    display: inline-flex;
+    width: auto;
+    margin: 0 .5rem .75rem 0;
+    vertical-align: middle;
+
+    > .form-group { margin: 0; padding: 0; width: auto; }
+}
+
+// Radio "tabs" header (Global info / English text / Georgian text …)
+// (header columns are `.col` on most pages, `.col-md-3` / `.col-md-4` on some older ones)
+.cg-admin .tabs .row:has(> :is(.col, [class*="col-md-"]) > input[type="radio"] + label) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    width: fit-content;
+    max-width: 100%;
+    margin: .5rem 0 1.25rem;
+    padding: 4px;
+    border-radius: 2rem;
+    background: var(--cg-chalk-2);
+
+    > .col, > [class*="col-md-"] { flex: 0 0 auto; width: auto; padding: 0; }
+    > * > input[type="radio"] + label {
+        margin: 0;
+        padding: .55rem 1.2rem;
+        border: 0 !important;
+        border-radius: 2rem;
+        background: transparent;
+        color: var(--cg-stone);
+        font-size: .9rem;
+        white-space: nowrap;
+    }
+    > * > input[type="radio"]:checked + label {
+        background: #fff;
+        color: var(--cg-accent-dark);
+        box-shadow: var(--cg-shadow-sm);
+    }
+}
+
+// Form sections rendered inside those tabs read as panels
+.cg-admin .tabs .form-group > label,
+.cg-admin .tabs .form-label {
+    margin-bottom: .35rem;
+    font-size: .88rem;
+}
+
+// Many add/edit pages still carry a copied, scoped `.tabs label { gray bar }`
+// rule meant for the radio tab buttons; it also hits every ordinary field
+// label in the form. Reset plain labels (anything that isn't a radio tab).
+.cg-admin .tabs label:not(input[type="radio"] + label) {
+    order: initial;
+    display: block;
+    margin: 0 0 .35rem;
+    border: 0;
+    background: none;
+    color: var(--cg-ink);
+    font-size: .88rem;
+    font-weight: 700;
+    cursor: default;
+}
+// …but keep the width/gutter of grid labels (label.col-md-2 | .col-md-10 rows)
+.cg-admin .tabs label:not(input[type="radio"] + label):not([class*="col-"]) {
+    width: auto;
+    padding: 0;
+}
+.cg-admin .tabs .form-check label:not(input[type="radio"] + label),
+.cg-admin .tabs label:has(> input) {
+    display: inline-flex;
+    align-items: center;
+    gap: .45rem;
+    cursor: pointer;
+}
+
+// Horizontal "label | field" rows. Older forms mix `label.col-xs-2` /
+// `col-md-2` with `.col-8` / `.col-10` / `.col-md-10` wrappers (floats, rows,
+// different widths), so fields didn't line up. One grid for all of them:
+// label column + field column on desktop, stacked on phones.
+.cg-admin .form-group:has(> label.control-label + [class*="col-"]) {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: .35rem;
+    margin-inline: 0;
+
+    &::before, &::after { content: none; }   // clearfix pseudo-elements would take grid cells
+
+    > label.control-label,
+    > [class*="col-"] {
+        float: none;
+        width: auto;
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+}
+@media (min-width: 768px) {
+    .cg-admin .form-group:has(> label.control-label + [class*="col-"]) {
+        grid-template-columns: 11rem minmax(0, 1fr);
+        column-gap: 1.25rem;
+        align-items: start;
+
+        > label.control-label {
+            padding-top: .7rem;
+            line-height: 1.35;
+        }
+        // anything after the field (hints, alerts) stays in the field column
+        > :not(label.control-label) { grid-column: 2; }
+    }
+}
+
+// Section intro cards ("Article global information"…): the inner
+// .container added a centred max-width and a big side indent.
+.cg-admin .jumbotron {
+    padding: 1.1rem 1.4rem;
+    margin-bottom: 1.25rem;
+    border-radius: var(--cg-r);
+    border-left: 4px solid var(--cg-accent);
+
+    > .container,
+    > .container-fluid {
+        max-width: none;
+        margin: 0;
+        padding: 0;
+    }
+    .display-4,
+    h1, h2 {
+        margin: 0 0 .2rem;
+        font-family: var(--cg-font-display);
+        font-size: 1.45rem;
+        font-weight: 700;
+        line-height: 1.2;
+    }
+    .lead, p {
+        margin: 0;
+        color: var(--cg-stone);
+        font-size: .92rem;
+    }
+}
+
+// Data tables: the scrolling card is a .col inside a .row, so the row's
+// negative gutters pushed it 12px past the content edge on both sides.
+.cg-admin .row > .data_tab {
+    width: calc(100% - var(--bs-gutter-x));
+    margin-inline: calc(var(--bs-gutter-x) * .5);
+    padding: 0;
+}
+
+// Tab panels are `.row.width_100` wrappers around an intro card + a <form>;
+// their negative gutters pulled the content 12px left of the action buttons,
+// and several forms carry an inline `margin-top: 5%` gap under the card.
+.cg-admin .tabs .row.width_100 {
+    margin-inline: 0;
+
+    > .jumbotron,
+    > form { padding-inline: 0; }
+    > .jumbotron { padding-inline: 1.4rem; }
+}
+.cg-admin .jumbotron + form { margin-top: 0 !important; }

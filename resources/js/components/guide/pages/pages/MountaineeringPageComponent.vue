@@ -195,14 +195,14 @@
 .mount-grade-section {
     margin: 24px 0;
     padding: 16px 20px;
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 8px;
-    border-left: 4px solid #495057;
+    border-left: 4px solid var(--cg-stone);
 }
 .mount-grade-title {
     font-size: 1rem;
     font-weight: 600;
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 12px;
     text-transform: uppercase;
     letter-spacing: 0.05em;

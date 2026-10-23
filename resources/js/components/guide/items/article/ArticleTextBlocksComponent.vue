@@ -141,8 +141,8 @@
     }
     .weather_widget_header {
         padding: 10px 16px;
-        border-bottom: 1px solid #eee;
-        background: #f8f9fa;
+        border-bottom: 1px solid var(--cg-line);
+        background: var(--cg-chalk);
         font-size: 0.95rem;
         font-weight: 600;
         color: #444;
@@ -167,7 +167,7 @@
         margin-top: 2px;
         font-family: inherit;
         font-size: 0.75rem;
-        color: #999;
+        color: var(--cg-muted);
         text-align: right;
         text-decoration: none;
     }

@@ -2,13 +2,13 @@
     <div class="h-recent-work" id="other">
         <div class="container">
 
-            <h1 class='index_h2'>{{ $t('guide.title.mountaineering')}}</h1>
-
-            <div class="bar"><i class="fa fa-dribbble"></i></div>
-
-            <h2 class="article_list_short_description">
-                {{this.$siteData.data.mount_description}}
-            </h2>
+            <section class="cg-page-head cg-page-head--list cg-art-mountains">
+                <span class="cg-page-head__icon"><i class="fa fa-flag" aria-hidden="true"></i></span>
+                <div class="cg-page-head__text">
+                    <h1>{{ $t('guide.title.mountaineering')}}</h1>
+                    <div class="cg-page-head__lead">{{this.$siteData.data.mount_description}}</div>
+                </div>
+            </section>
 
             <div class="row" v-if="this.mounts.length > 0">
                 <div class="container articles_filter_bar">

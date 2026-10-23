@@ -2,7 +2,7 @@
     <div class="col-md-4 col-sm-6">
         <article class="service-box" role="article">
             <router-link :to="'../service/' + service_data.global_data.url_title" class="service-image-link" :aria-label="$t('guide.view_details_for_prefix') + ' ' + service_data.locale_data.title">
-                <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+');'">
+                <div v-if="service_data.image.length > 0" class="service-icon services-background-image" :style="'background-image: url(' + '/public/images/service_img/'+service_data.image+'), var(--cg-topo-dark);'">
                     <div class="front-content">
                         <h3 class="services-title">{{ service_data.locale_data.title }}</h3>
                     </div>
@@ -63,7 +63,7 @@
         background-size: cover !important;
         background-position: center !important;
         background-repeat: no-repeat !important;
-        background-color: #ddd;
+        background-color: var(--cg-chalk-2);
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
@@ -85,7 +85,7 @@
         transform: none !important;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.38) !important;
+        background: linear-gradient(180deg, rgba(21, 33, 43, 0) 45%, rgba(21, 33, 43, .35) 100%) !important;
         display: flex;
         align-items: flex-end;
         justify-content: center;
@@ -94,7 +94,12 @@
     }
 
     .service-box:hover .front-content {
-        background: rgba(0, 0, 0, 0.55) !important;
+        background: linear-gradient(180deg, rgba(21, 33, 43, 0) 30%, rgba(21, 33, 43, .5) 100%) !important;
+    }
+
+    /* the title is shown under the photo — don't repeat it on top */
+    .front-content .services-title {
+        display: none;
     }
 
     .services-title {
@@ -121,26 +126,26 @@
         font-size: 1rem;
         font-weight: 600;
         margin: 0 0 6px;
-        color: #222 !important;
+        color: var(--cg-ink-2) !important;
         line-height: 1.4;
     }
 
     .service-content a,
     .service-content h3 a {
-        color: #00b9e7 !important;
+        color: var(--cg-accent) !important;
         text-decoration: none;
         transition: color 0.2s ease;
     }
 
     .service-content a:hover,
     .service-content h3 a:hover {
-        color: #009dc5 !important;
+        color: var(--cg-accent) !important;
     }
 
     .service-description {
         font-size: 0.85rem;
         line-height: 1.5;
-        color: #666;
+        color: var(--cg-stone);
         margin-top: 4px;
     }
 

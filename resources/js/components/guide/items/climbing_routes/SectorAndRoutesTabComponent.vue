@@ -196,7 +196,7 @@ export default {
 <style scoped>
 #sectors {
     padding: 1rem;
-    background-color: #e9e9e9;
+    background-color: var(--cg-line);
     border-radius: 8px;
     margin: 1rem 0;
 }
@@ -235,13 +235,13 @@ export default {
 
 /* Improve readability */
 #sectors h1, #sectors h2, #sectors h3 {
-    color: #495057;
+    color: var(--cg-stone);
     margin-bottom: 1rem;
 }
 
 #sectors p {
     line-height: 1.6;
-    color: #343a40;
+    color: var(--cg-ink-2);
 }
 
 @media (max-width: 576px) {

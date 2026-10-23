@@ -6,18 +6,23 @@
                 <div class="discount-percent-badge discount-badge-fourty">{{ $t('guide.new_flag_badge') }}</div>
             </div>
 
-            <site-img v-if="article.global_data.image != null" :src=" '/public/' + this.image_dir+article.global_data.image" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
-            <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
+            <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
+            <div class="cg-card-media">
+                <site-img v-if="article.global_data.image != null" :src=" '/public/' + this.image_dir+article.global_data.image" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
+                <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
 
-            <div class="mask">
-                <router-link :to="this.route" class="info">
-                    <i class="fa fa-arrow-right"></i>
-                    <p style="display: none">{{article.locale_data.title}}</p>
-                </router-link>
+                <div class="mask">
+                    <router-link :to="this.route" class="info">
+                        <i class="fa fa-arrow-right"></i>
+                        <p style="display: none">{{article.locale_data.title}}</p>
+                    </router-link>
+                </div>
             </div>
-            
+
             <div class="isotope-item-dtls">
-                <h3>{{ article.locale_data.title }}</h3>
+                <h3>
+                    <router-link :to="this.route">{{ article.locale_data.title }}</router-link>
+                </h3>
                 <div class="article_size">
                     <span v-html="article.locale_data.short_description"></span>
                 </div>

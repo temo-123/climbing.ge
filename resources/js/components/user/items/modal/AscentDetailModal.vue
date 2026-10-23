@@ -11,7 +11,7 @@
             <div class="detail-section">
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('common.summit') }}</span>
-                    <span class="detail-value font-weight-bold">
+                    <span class="detail-value fw-bold">
                         {{ ascent.summit ? ascent.summit.title : '—' }}
                     </span>
                 </div>
@@ -38,7 +38,7 @@
                 <div class="detail-row" v-if="ascent.route_grade">
                     <span class="detail-label">{{ $t('common.grade') }}</span>
                     <span class="detail-value">
-                        <span class="badge badge-secondary">{{ ascent.route_grade }}</span>
+                        <span class="badge text-bg-secondary">{{ ascent.route_grade }}</span>
                     </span>
                 </div>
             </div>
@@ -58,13 +58,13 @@
                 <div class="detail-row">
                     <span class="detail-label">{{ $t('user.ascents.gps_verified') }}</span>
                     <span class="detail-value">
-                        <span v-if="ascent.is_archive" class="badge badge-secondary">
+                        <span v-if="ascent.is_archive" class="badge text-bg-secondary">
                             <i class="fa fa-archive"></i> {{ $t('summit.ascent_page.archive_badge') }}
                         </span>
-                        <span v-else-if="ascent.is_gps_validated" class="badge badge-success">
+                        <span v-else-if="ascent.is_gps_validated" class="badge text-bg-success">
                             <i class="fa fa-check"></i> {{ $t('user.ascents.verified') }}
                         </span>
-                        <span v-else class="badge badge-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
+                        <span v-else class="badge text-bg-light text-muted">{{ $t('user.ascents.not_verified') }}</span>
                     </span>
                 </div>
                 <div class="detail-row" v-if="ascent.user_latitude && ascent.user_longitude">
@@ -120,7 +120,7 @@ export default {
 }
 
 .detail-section {
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--cg-chalk);
     padding: 10px 0;
 }
 
@@ -135,7 +135,7 @@ export default {
 }
 
 .detail-label {
-    color: #868e96;
+    color: var(--cg-muted);
     font-size: 11px;
     font-weight: 600;
     text-transform: uppercase;
@@ -145,14 +145,14 @@ export default {
 }
 
 .detail-value {
-    color: #212529;
+    color: var(--cg-ink-2);
 }
 
 .detail-comment {
-    background: #f8f9fa;
+    background: var(--cg-chalk);
     border-radius: 6px;
     padding: 10px 12px;
-    color: #495057;
+    color: var(--cg-stone);
     font-size: 13px;
     line-height: 1.5;
 }

@@ -109,19 +109,19 @@ export default {
     overflow-x: scroll;
 }
 .cms_filters {
-    background-color: #c1c1c1;
-    margin-bottom: 2%;
+    background-color: #fff;
+    margin-bottom: 1rem;
 }
 .fa_check_color{
-    color: green;
-    font-size: 250%;
+    color: #1f9d63;
+    font-size: 150%;
 }
 .fa_times_color{
-    color: red;
-    font-size: 250%;
+    color: #e04848;
+    font-size: 150%;
 }
 .fa_exclamation_color{
-    color: orange;
-    font-size: 250%;
+    color: #f2a516;
+    font-size: 150%;
 }
 </style>

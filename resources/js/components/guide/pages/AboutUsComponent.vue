@@ -4,9 +4,15 @@
         <div class="aboutus-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-12 col-sm-12 col-xs-12">
-                        <div class="aboutus">
-                            <h1 v-html="this.$siteData.data.guid_short_description"></h1>
+                    <div class="col-md-12 col-sm-12 col-12">
+                        <section class="cg-page-head cg-page-head--list cg-art-rope">
+                            <span class="cg-page-head__icon"><i class="fa fa-users" aria-hidden="true"></i></span>
+                            <div class="cg-page-head__text">
+                                <h1>{{ $t('guide.menu.about us') }}</h1>
+                                <div class="cg-page-head__lead" v-html="this.$siteData.data.guid_short_description"></div>
+                            </div>
+                        </section>
+                        <div class="aboutus cg-panel">
                             <span v-html="this.$siteData.data.guid_description"></span>
                             
                             <hr>
