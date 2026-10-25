@@ -43,6 +43,8 @@ Full post/news page. Loads single post via:
 
 Content rendered from Quill editor HTML output.
 
+**Reading aids (`PostPage.vue`):** a thin reading-progress bar under the header, "N min read" (~200 words/min), and — when the post has 2+ `h2`/`h3` — a sticky table of contents in the right column on desktop. Headings without an id get one (`part-<slug>`), which also feeds the phone "On this page" sheet (`OnThisPageComponent`, mounted in `BlogMainComponent`). The created date now follows the site language (`$formatDate`).
+
 ### `PostModal.vue` — Quick Preview Modal
 
 **`resources/js/components/blog/items/Modals/PostModal.vue`**

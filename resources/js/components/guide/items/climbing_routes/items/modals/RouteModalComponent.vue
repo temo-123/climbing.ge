@@ -130,10 +130,11 @@
                             </div>
                         </div>
 
-                        <div class="modal-section rating" v-if="route.reviews_count && route.reviews_count > 0">
+                        <div class="modal-section rating" v-if="route.reviews_count > 0 || route.ascents_count > 0">
                             <starsReiting
                                 :reviews_count_prop="route.reviews_count"
                                 :reviews_stars_prop="route.reviews_stars"
+                                :ascents_count_prop="route.ascents_count || 0"
                             />
                         </div>
 

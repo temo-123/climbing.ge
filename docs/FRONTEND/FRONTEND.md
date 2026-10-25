@@ -238,7 +238,7 @@ In Vue use `<cg-scene name="403" />` (`<cg-scene name="summit" wide />` for the 
 
 ### Event dates
 
-`guide/items/EventDatesComponent.vue` (event page, under the title): a status pill (*Starts in N days*, *Starts today*, *Happening now* or *Finished*) and Start → End date tiles (weekday, big day number, month and year, time), with the duration between them, or one tile with a time range for single-day events. Names come from `Intl.DateTimeFormat` in the site language (`en-GB` / `ka-GE`); `00:00` times are hidden. Time formats elsewhere use `h:mm A` / `HH:mm` (moment's `MM` is the month, not minutes).
+`guide/items/EventDatesComponent.vue` (event page, under the title): a status pill (*Starts in N days*, *Starts today*, *Happening now* or *Finished*) and Start → End date tiles (weekday, big day number, month and year, time), with the duration between them, or one tile with a time range for single-day events. Names come from `Intl.DateTimeFormat` in the site language (`en-GB` / `ka-GE`); `00:00` times are hidden. Time formats elsewhere use `h:mm A` / `HH:mm` (moment's `MM` is the month, not minutes). Until the event has finished it also offers **Add to calendar**: a Google Calendar link (`ctz=Asia/Tbilisi`) and a generated `.ics` file (all-day events end the day after the last day; timed events use floating local time). Pass `title` and `details` (HTML is stripped).
 
 ### Galleries
 
@@ -274,6 +274,25 @@ Every page was audited at 390px wide (no horizontal overflow on any service). Ru
 - **Tap targets** ≥ 38–40px: card actions, segmented controls (`min-height: 2.5rem`), slider dots get an enlarged invisible hit area.
 - **Tables that must scroll** (admin data tables, summit ascents) sit in `.table-responsive` / `.data_tab`; trim them on phones (e.g. icon-only badges with `d-none d-sm-inline` text) before letting them scroll.
 - Test new pages at 390px: no horizontal overflow, nothing cut, the main action reachable with a thumb.
+
+### UX helpers (October 2026)
+
+Small, reusable pieces that make pages easier to use. Prefer reusing these over writing new ones.
+
+| Piece | Where | What |
+|---|---|---|
+| `$timeAgo(date)` | global mixin (`app.js`) | "3 days ago" / "3 დღის წინ" via `Intl.RelativeTimeFormat`; falls back to `$formatDate` after ~35 days. Use it for anything user-posted (reports, posts, ascents). |
+| `<html lang>` | `app.js` watcher | follows the i18n locale (`en` / `ka`). `_base.scss` uses `html[lang="ka"]` for Georgian heading line-height and wrapping. |
+| `.cg-skip-link` | guide `IndexComponent` + `_base.scss` | "Skip to content" on the first Tab, jumps to `#main-content`. |
+| `OnThisPageComponent` | `global_components/`, mounted in the guide and blog layouts | phones only (< 768px): floating "On this page" pill → bottom sheet listing every `h2[id]` (or `[id]` wrapper whose first heading is an h2) inside `.blog-main`; `sector-*` ids are nested. Re-scans after route changes (content loads late). Give new sections an `id` and they appear automatically. |
+| `NavbarSearchComponent` | every service navbar | **Ctrl/⌘+K** or **/** opens it; ↑/↓ + Enter pick a suggestion; the last 5 searches per service are kept in `localStorage` (`cg_recent_searches_<site>`). |
+| Toast actions | `ToastNotificationComponent` | `$bus.$emit('toast', { message, type, duration, action: { label, handler } })` adds a button (e.g. **Undo**). Use it instead of `confirm()`/`alert()` for reversible actions (see the favourite heart in `OutdoorComponent`). |
+| `services/guide/recentlyViewed.js` + `RecentlyViewedComponent` | article pages record; list pages + guide home show | per-browser "Recently viewed" strip (outdoor, ice, indoor, mountaineering), `localStorage` only. |
+| `services/fun/shareCard.js` | log-ascent modal | draws a 1080×1350 "Sent ✓" image on a canvas (grade tape, pencil skyline) and opens the native share sheet or downloads it. No network. |
+| Animation switch | `services/motion.js`, `<motion-toggle>` in every navbar | turns the **article-page animations** off completely (not frozen): the side scenes beside the article menu, the phone scene banner (`MobileSceneComponent`) and the rappel climber (the go-to-top button stays). Stored per device in `localStorage.cg_motion` (`on`/`off`, default = the OS reduced-motion setting), so it holds across reloads and page changes; also an account default (`users.animations`). Components read the reactive `motion.enabled` and use `v-if`. **Not affected:** the 404 scene, empty-state and other `<cg-scene>` illustrations, the bolter image, sliders, chalk puffs — those follow only the OS setting via `window.cgReducedMotion()`. |
+| Phone scene banner | `guide/items/MobileSceneComponent.vue` | under 1200px (where the right menu and its scene are hidden) the same `MenuSideSceneComponent` scene climbs a small "wall" card with the article's numbers and a jump button: outdoor (lead / bolter by sector count, after the sectors load via `SectorAndRoutesTabComponent`'s `loaded` event), ice, indoor, tech tip (safety), other (slackline), mountaineering (summit). |
+| Account defaults | `services/preferences.js` | applies the user's saved language, grade systems and animations once per device after login — see [USER_PAGE.md](../USER_PAGE.md#preferences--welcome-questions). |
+| Skeletons | component-local `cg-shimmer` keyframes | new async blocks (conditions, partners, crag picker) show shimmering placeholders instead of spinners; stop the animation under `prefers-reduced-motion`. |
 
 ### Performance rules
 

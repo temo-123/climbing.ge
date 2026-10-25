@@ -34,6 +34,13 @@
                 </div>
             </template>
         </div>
+
+        <!-- add to calendar: .ics file (Apple / Outlook / any app) + Google link -->
+        <div v-if="title && status.key !== 'finished'" class="cg-event-dates__cal d-print-none">
+            <span class="cg-event-dates__cal-label"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i> {{ $t('guide.event_dates.add_to_calendar') }}</span>
+            <a class="btn btn-sm btn-outline-secondary" :href="googleUrl" target="_blank" rel="noopener">Google</a>
+            <button type="button" class="btn btn-sm btn-outline-secondary" @click="downloadIcs">{{ $t('guide.event_dates.ics') }}</button>
+        </div>
     </div>
 </template>
 
@@ -46,14 +53,26 @@
         return isNaN(d) ? null : d;
     };
     const startOfDay = d => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+    const pad = n => String(n).padStart(2, '0');
+    // floating local time (no Z): calendars place it in the viewer's zone, like the page does
+    const icsDate = d => d.getFullYear() + pad(d.getMonth() + 1) + pad(d.getDate());
+    const icsDateTime = d => icsDate(d) + 'T' + pad(d.getHours()) + pad(d.getMinutes()) + '00';
+    const icsEscape = v => String(v || '').replace(/\\/g, '\\\\').replace(/[,;]/g, m => '\\' + m).replace(/\r?\n/g, '\\n');
 
     export default {
         name: 'EventDates',
         props: {
             start: { type: [String, Date], default: null },
             end: { type: [String, Date], default: null },
+            title: { type: String, default: '' },
+            details: { type: String, default: '' },
         },
         computed: {
+            googleUrl() {
+                const [from, to] = this.calRange();
+                const q = new URLSearchParams({ action: 'TEMPLATE', text: this.title, dates: from + '/' + to, details: this.calDetails(), ctz: 'Asia/Tbilisi' });
+                return 'https://calendar.google.com/calendar/render?' + q.toString();
+            },
             startDate() { return toDate(this.start); },
             endDate() { return toDate(this.end); },
             intlLocale() { return this.$i18n && this.$i18n.locale === 'ka' ? 'ka-GE' : 'en-GB'; },
@@ -80,6 +99,41 @@
             },
         },
         methods: {
+            // [start, end) for calendars: all-day events end the day after the last day
+            calRange() {
+                if (this.hasTime) {
+                    const end = this.endDate && this.endDate > this.startDate ? this.endDate : new Date(this.startDate.getTime() + 2 * 3600 * 1000);
+                    return [icsDateTime(this.startDate), icsDateTime(end)];
+                }
+                const last = this.endDate || this.startDate;
+                return [icsDate(this.startDate), icsDate(new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1))];
+            },
+            calDetails() {
+                const text = String(this.details || '').replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+                return [text, window.location.href].filter(Boolean).join('\n\n');
+            },
+            downloadIcs() {
+                const [from, to] = this.calRange();
+                const type = this.hasTime ? '' : ';VALUE=DATE';
+                const ics = [
+                    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//climbing.ge//events//EN', 'CALSCALE:GREGORIAN',
+                    'BEGIN:VEVENT',
+                    'UID:' + from + '-' + encodeURIComponent(this.title).slice(0, 40) + '@climbing.ge',
+                    'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, ''),
+                    'DTSTART' + type + ':' + from,
+                    'DTEND' + type + ':' + to,
+                    'SUMMARY:' + icsEscape(this.title),
+                    'DESCRIPTION:' + icsEscape(this.calDetails()),
+                    'URL:' + window.location.href,
+                    'END:VEVENT', 'END:VCALENDAR',
+                ].join('\r\n');
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(new Blob([ics], { type: 'text/calendar;charset=utf-8' }));
+                a.download = (this.title || 'event').replace(/[^\w\u10D0-\u10FF -]+/g, '').trim().slice(0, 60) + '.ics';
+                document.body.appendChild(a);
+                a.click();
+                setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+            },
             parts(d) {
                 const f = o => new Intl.DateTimeFormat(this.intlLocale, o).format(d);
                 return {
@@ -181,6 +235,9 @@
         color: var(--cg-stone);
         white-space: nowrap;
     }
+    .cg-event-dates__cal { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-top: .9rem; padding-top: .8rem; border-top: 1px dashed var(--cg-line); }
+    .cg-event-dates__cal-label { margin-right: .25rem; font-size: .85rem; font-weight: 800; color: var(--cg-ink-2); }
+    .cg-event-dates__cal-label .fa { color: var(--cg-accent); }
     @media (max-width: 575.98px) {
         .cg-date-tile { flex: 1 1 8rem; min-width: 0; }
         .cg-event-dates__arrow { flex: 0 0 auto; }

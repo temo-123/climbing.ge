@@ -7,7 +7,17 @@
             <span class="cg-eyebrow">{{ $t('global.brand.user') }}</span>
             <h1>{{ $t('user.home.greeting', { name: this.user['name'] || '' }) }}</h1>
             <p>{{ $t('user.home.subtitle') }}</p>
+            <div class="cg-dashboard__actions">
+                <a class="btn btn-hold btn-sm" :href="guide_url('/outdoor')" target="_blank" rel="noopener"><i class="fa fa-map-o" aria-hidden="true"></i> {{ $t('user.overview.actions.find_crag') }}</a>
+                <router-link class="btn btn-light btn-sm" :to="{ name: 'myRouteAscents' }"><i class="fa fa-book" aria-hidden="true"></i> {{ $t('user.overview.actions.logbook') }}</router-link>
+                <a class="btn btn-light btn-sm" :href="guide_url('/partners')" target="_blank" rel="noopener"><i class="fa fa-handshake-o" aria-hidden="true"></i> {{ $t('user.overview.actions.partner') }}</a>
+                <router-link class="btn btn-light btn-sm" :to="{ name: 'options' }"><i class="fa fa-sliders" aria-hidden="true"></i> {{ $t('user.overview.actions.preferences') }}</router-link>
+            </div>
         </section>
+
+        <admin_attention />
+
+        <my_overview />
 
         <current-user-climber-card>
             <template #extra>
@@ -57,6 +67,8 @@
     import user_notifications_list from '../items/notificatione/UserNotificationsListComponent.vue'
     import mail_notification_widget from '../items/dashboards/MailNotificationWidget.vue'
     import entity_locale_errors from '../items/dashboards/EntityLocaleErrorsComponent.vue'
+    import my_overview from '../items/dashboards/MyOverviewComponent.vue'
+    import admin_attention from '../items/dashboards/AdminAttentionComponent.vue'
 
     import CurrentUserClimberCard from '../../global_components/CurrentUserClimberCardComponent.vue'
     import go_to_service_mixin from '../../../mixins/go_to_service_mixin.js'
@@ -67,17 +79,18 @@
             user_notifications_list,
             mail_notification_widget,
             entity_locale_errors,
+            my_overview,
+            admin_attention,
             'current-user-climber-card': CurrentUserClimberCard,
         },
         data(){
             return{
                 user: {},
                 quick_links: [
-                    { route: '/my_ascents', icon: 'fa-flag-checkered', label: 'user.menu.my ascents' },
-                    { route: '/purchases', icon: 'fa-shopping-bag', label: 'user.menu.my purchases' },
                     { route: '/my_trainings', icon: 'fa-heartbeat', label: 'user.menu.my trainings' },
-                    { route: '/my_routes_review', icon: 'fa-star-half-o', label: 'user.menu.my routes reviews' },
                     { route: '/my_comments_and_reviews', icon: 'fa-comments-o', label: 'user.menu.my comments' },
+                    { route: '/favorite_products', icon: 'fa-shopping-bag', label: 'user.menu.favorite products' },
+                    { route: '/interested_events', icon: 'fa-calendar', label: 'user.nav.favorites_interested_events' },
                     { route: '/options', icon: 'fa-cog', label: 'user.menu.options' },
                 ],
                 services: [
@@ -104,6 +117,10 @@
                     this.user = response.data
                 })
             },
+            guide_url(path) {
+                const prefix = this.$i18n.locale === 'ka' ? '/ka' : ''
+                return (process.env.MIX_APP_SSH || 'http://') + process.env.MIX_SITE_URL + prefix + path
+            },
             go_to_all_users(){
                 const ssh = process.env.MIX_APP_SSH || 'http://'
                 const siteHost = process.env.MIX_GUIDBOOK_URL || process.env.MIX_SITE_URL || ''
@@ -114,6 +131,7 @@
 </script>
 
 <style>
+.cg-dashboard__actions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .9rem; position: relative; z-index: 1; }
 .user-follow-summary__all-users {
     font-size: .95rem;
     font-weight: 700;

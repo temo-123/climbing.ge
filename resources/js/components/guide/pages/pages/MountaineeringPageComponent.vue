@@ -8,6 +8,7 @@
                 <div class="col-sm-8 blog-header">
                     <h1 class="blog-title">
                         {{ this.mount_route.locale_data.title  }}
+                        <favoriteHeart variant="inline" :article_id="mount_route.global_data.id" />
                     </h1>
                 </div>
             </div>
@@ -72,6 +73,13 @@
 
                     <articleTextBlocks :article_prop="this.mount_route"/>
 
+                    <mobileScene
+                        variant="summit"
+                        :title="mount_route.locale_data.title"
+                        target="safety"
+                        :button="$t('guide.mobile_scene.before_you_go')"
+                    />
+
                     <!-- route -->
                     <div v-if="this.mount_route.locale_data.route">
                         <h2 id="routes">{{ $t('common.routes')}}</h2>
@@ -83,6 +91,14 @@
 
                         <span v-html="this.mount_route.locale_data.route"></span>
                     </div>
+
+                    <h2 id="safety">{{ $t('guide.mountain.section_title') }}</h2>
+                    <MountainSafety
+                        :grade="mount_route.global_data && mount_route.global_data.mount_grade"
+                        :article_id="mount_route.global_data.id"
+                        :title="mount_route.locale_data.title"
+                    />
+
 
                     <galleryComponent 
                         :images_prop="this.mount_route.gallery_images" 
@@ -118,6 +134,10 @@
 </template>
 
 <script>
+    import favoriteHeart from '../../items/FavoriteHeartComponent.vue'
+    import mobileScene from '../../items/MobileSceneComponent.vue'
+    import MountainSafety from '../../items/MountainSafetyComponent.vue'
+    import { remember_viewed } from '../../../../services/guide/recentlyViewed.js'
     import commentForm from '../../items/comments/CommentFormComponent'
     import galleryComponent from '../../items/galleries/GalleryComponent'
     import articleRightMenu from '../../items/navbars/RightMenuComponent'
@@ -150,6 +170,9 @@
             MountaineeringRouteImages,
             articleTextBlocks,
             MountGradeBar,
+            MountainSafety,
+            favoriteHeart,
+            mobileScene,
 
         },
         
@@ -172,10 +195,14 @@
                 .get('/get_article/get_locale_article_on_page/mount_route/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.mount_route = response.data
+                    this.remember(response.data)
                     this.get_mount_masiv()
                 })
                 .catch(error =>{
                 })
+            },
+            remember(a){
+                if (a && a.global_data && a.locale_data) remember_viewed({ category: 'mount_route', url_title: a.global_data.url_title, title: a.locale_data.title, image: a.image })
             },
             get_mount_masiv(){
                 axios 

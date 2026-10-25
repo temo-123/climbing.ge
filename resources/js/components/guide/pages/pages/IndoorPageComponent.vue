@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import { remember_viewed } from '../../../../services/guide/recentlyViewed.js'
     import articlePreloader from "../../items/article/ArticlePreloaderComponent.vue";
     import articlePage from '../../items/pages_main_components/ArticleComponent'
     import metaData from '../../items/MetaDataComponent'
@@ -76,6 +77,9 @@
                 .get('/get_article/get_locale_article_on_page/indoor/'+localStorage.getItem('lang')+'/'+this.$route.params.url_title)
                 .then(response => {
                     this.indoors = response.data
+                    if (response.data && response.data.global_data && response.data.locale_data) {
+                        remember_viewed({ category: 'indoor', url_title: response.data.global_data.url_title, title: response.data.locale_data.title, image: response.data.image })
+                    }
 
                     // Not rendered for coming soon gyms
                     if (this.$refs.article_page) {

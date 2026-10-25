@@ -1,7 +1,7 @@
 <template>
   <stack-modal
     :show="is_show_modal"
-    :title="$t('common.login') || 'Login'"
+:title="mode === 'register' ? $t('auth.quick_register.title') : ($t('common.login') || 'Login')"
     @close="close_modal"
     :saveButton="{ visible: false }"
     :cancelButton="{ visible: false }"
@@ -15,6 +15,13 @@
       </div>
 
       <div v-else>
+        <!-- log in / quick sign-up -->
+        <div class="cg-segmented w-100 mb-3" role="tablist">
+          <button type="button" role="tab" :class="{ active: mode === 'login' }" :aria-selected="mode === 'login'" @click="mode = 'login'">{{ $t('common.login') }}</button>
+          <button type="button" role="tab" :class="{ active: mode === 'register' }" :aria-selected="mode === 'register'" @click="mode = 'register'">{{ $t('auth.quick_register.tab') }}</button>
+        </div>
+        <p v-if="reason" class="login-reason"><i class="fa fa-info-circle" aria-hidden="true"></i> {{ reason }}</p>
+
         <div class="social-row mb-3 d-flex gap-2 justify-content-center" v-if="social_available.google || social_available.facebook">
           <button type="button" class="btn btn-social btn-google-outline" @click="social_login('google')" v-if="social_available.google">
             <i class="fa fa-google" aria-hidden="true"></i> Google
@@ -26,7 +33,46 @@
 
         <div class="divider-text"><span>or</span></div>
 
-        <form @submit.prevent="login" class="mt-3">
+        <!-- quick registration: only what's needed to start; the rest is asked in the welcome questions / profile -->
+        <form v-if="mode === 'register'" @submit.prevent="register" class="mt-3" novalidate>
+          <div class="row g-2">
+            <div class="col-6">
+              <input type="text" class="form-control" v-model="reg.name" :placeholder="$t('auth.quick_register.name')" autocomplete="given-name" maxlength="25" required />
+            </div>
+            <div class="col-6">
+              <input type="text" class="form-control" v-model="reg.surname" :placeholder="$t('auth.quick_register.surname')" autocomplete="family-name" maxlength="55" required />
+            </div>
+          </div>
+          <input type="email" class="form-control mt-2" v-model="reg.email" :placeholder="$t('auth.quick_register.email')" autocomplete="email" required />
+          <div class="mt-2" style="position: relative;">
+            <input :type="showPassword ? 'text' : 'password'" class="form-control" style="padding-right: 42px;" v-model="reg.password" :placeholder="$t('auth.quick_register.password')" autocomplete="new-password" minlength="8" required />
+            <button type="button" class="pwd-toggle-btn" tabindex="-1" @click="showPassword = !showPassword" :title="showPassword ? 'Hide password' : 'Show password'">
+              <i :class="showPassword ? 'fa fa-eye-slash' : 'fa fa-eye'"></i>
+            </button>
+          </div>
+          <div class="pwd-meter" :class="'is-' + password_strength" aria-hidden="true"><span></span></div>
+          <small class="text-muted">{{ $t('auth.quick_register.password_hint') }}</small>
+
+          <label class="form-check mt-2 login-terms">
+            <input type="checkbox" class="form-check-input" v-model="reg.accept" />
+            <span class="form-check-label">
+              {{ $t('auth.quick_register.accept_1') }}
+              <a :href="legal_url('terms_of_use')" target="_blank" rel="noopener">{{ $t('global.footer.terms_of_use') }}</a>
+              {{ $t('auth.quick_register.accept_2') }}
+              <a :href="legal_url('privacy_policy')" target="_blank" rel="noopener">{{ $t('global.footer.privacy_policy') }}</a>
+            </span>
+          </label>
+
+          <div class="alert alert-danger mt-2 mb-0 py-2" v-if="auth_error">
+            <i class="fa fa-exclamation-circle" aria-hidden="true"></i> {{ auth_error }}
+          </div>
+
+          <button type="submit" class="btn btn-hold w-100 mt-3" :disabled="!can_register">
+            <i class="fa fa-user-plus" aria-hidden="true"></i> {{ $t('auth.quick_register.submit') }}
+          </button>
+        </form>
+
+        <form v-else @submit.prevent="login" class="mt-3">
           <div class="form-group">
             <input
               type="email"
@@ -109,6 +155,9 @@ export default {
         return {
             is_show_modal: false,
             is_loading: false,
+            mode: 'login',
+            reason: '',
+            reg: { name: '', surname: '', email: '', password: '', accept: false },
             email: '',
             password: '',
             showPassword: false,
@@ -131,6 +180,11 @@ export default {
         this.$bus.$on('open-login-modal', (callback) => {
             this.show_modal(callback || null)
         })
+        // payload: { callback, reason } — e.g. the partner board
+        this.$bus.$on('open-register-modal', (payload) => {
+            const p = payload || {}
+            this.show_modal(p.callback || null, 'register', p.reason || '')
+        })
         if (!window.grecaptcha) {
             const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
             if (key) {
@@ -140,9 +194,67 @@ export default {
             }
         }
     },
+    computed: {
+        password_strength() {
+            const p = this.reg.password || ''
+            if (p.length < 8) return 'weak'
+            const kinds = [/[a-z]/, /[A-Z]/, /\d/, /[^\w]/].filter(r => r.test(p)).length
+            return kinds >= 3 && p.length >= 10 ? 'strong' : 'ok'
+        },
+        can_register() {
+            const r = this.reg
+            return r.name.trim() && r.surname.trim() && /\S+@\S+\.\S+/.test(r.email) && r.password.length >= 8 && r.accept
+        },
+    },
     methods: {
-        show_modal(callback = null) {
+        legal_url(page) {
+            const prefix = this.$i18n && this.$i18n.locale === 'ka' ? '/ka' : ''
+            return (process.env.MIX_APP_SSH || 'http://') + process.env.MIX_SITE_URL + prefix + '/' + page
+        },
+        async register() {
+            if (!this.can_register) return
+            this.auth_error = ''
+            this.is_loading = true
+            try {
+                const recaptcha_token = await this.get_recaptcha_token('register')
+                if (process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY && !recaptcha_token) {
+                    this.auth_error = 'reCAPTCHA verification failed. Please refresh and try again.'
+                    return
+                }
+                await axios.get(window.location.origin + '/sanctum/csrf-cookie')
+                const res = await axios.post('register', {
+                    name: this.reg.name.trim(),
+                    surname: this.reg.surname.trim(),
+                    email: this.reg.email.trim(),
+                    password: this.reg.password,
+                    password_confirmation: this.reg.password,
+                    lang: localStorage.getItem('lang') || 'us',
+                    recaptcha_token,
+                })
+                if (res.data && res.data.token) localStorage.setItem('auth_token', res.data.token)
+                const xsrf = res.config.headers['X-XSRF-TOKEN'] || (document.cookie.match(/XSRF-TOKEN=([^;]+)/) || [])[1]
+                localStorage.setItem('x_xsrf_token', xsrf || '1')
+                // the welcome questions (photo, interests, defaults) open right after sign-up on this site
+                try { sessionStorage.setItem('cg_just_registered', '1') } catch (e) {}
+                this.$bus.$emit('toast', { type: 'success', message: this.$t('auth.quick_register.done'), duration: 6000 })
+                this.$emit('logged-in')
+                this.$bus.$emit('logged-in')
+                this.$bus.$emit('registered')
+                if (this.after_login_callback) this.after_login_callback()
+                this.reg = { name: '', surname: '', email: '', password: '', accept: false }
+                this.close_modal()
+            } catch (error) {
+                const data = error.response && error.response.data
+                const first = data && data.errors && Object.values(data.errors)[0]
+                this.auth_error = (first && first[0]) || (data && data.message) || this.$t('auth.quick_register.error')
+            } finally {
+                this.is_loading = false
+            }
+        },
+        show_modal(callback = null, mode = 'login', reason = '') {
             this.after_login_callback = callback
+            this.mode = mode
+            this.reason = reason
             const token = localStorage.getItem('auth_token') || localStorage.getItem('x_xsrf_token')
             if (token) {
                 if (callback) callback()
@@ -260,3 +372,13 @@ export default {
     },
 }
 </script>
+
+<style scoped>
+.login-reason { margin: 0 0 .75rem; padding: .5rem .7rem; border-radius: var(--cg-r); background: var(--cg-accent-soft); color: var(--cg-accent-dark); font-weight: 700; font-size: .88rem; }
+.login-terms { display: flex; gap: .5rem; font-size: .85rem; }
+.login-terms .form-check-input { flex: 0 0 auto; margin-top: .2rem; }
+.pwd-meter { height: 4px; margin: .4rem 0 .2rem; border-radius: 4px; background: var(--cg-chalk-2); overflow: hidden; }
+.pwd-meter span { display: block; height: 100%; width: 15%; background: #c43c3c; transition: width .2s, background .2s; }
+.pwd-meter.is-ok span { width: 60%; background: #e0a800; }
+.pwd-meter.is-strong span { width: 100%; background: #2fa36b; }
+</style>

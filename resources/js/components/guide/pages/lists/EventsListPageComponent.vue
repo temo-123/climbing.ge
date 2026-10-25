@@ -1,523 +1,260 @@
 <template>
-    <div>
+    <!-- Events & competitions: every published event (get_event_on_site_list),
+         filtered client-side — when (upcoming / past / all), type
+         (competition / festival), "only mine" (interested) and a search —
+         all kept in the URL query. Upcoming: "happening now" first, then one
+         group per month; past: one group per year, newest first. -->
+    <div class="cg-events">
         <section class="cg-page-head cg-page-head--list cg-art-trophy">
             <span class="cg-page-head__icon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             <div class="cg-page-head__text">
-                <h1>{{ $t('guide.title.events')}}</h1>
-                <div class="cg-page-head__lead">{{this.$siteData.data.event_description}}</div>
+                <h1>{{ $t('guide.title.events') }}</h1>
+                <div class="cg-page-head__lead">{{ this.$siteData.data.event_description }}</div>
             </div>
         </section>
 
-        <div v-if="events == []">
-            <content-loader
-                viewBox="0 0"
-                primaryColor="#f3f3f3"
-                secondaryColor="#279fbbb0"
-            />
-        </div>
-
-        <div class="" v-if="events != []">
-            <div class="row">
-                <div class="container articles_filter_bar">
-                    <div class="col-md-6 col-sm-6">
-                        Select region and filtred spots by region
-                    </div>
-                    <div class="col-md-6 col-sm-6">
-                        <select class="form-control" v-model="event_filtrs" @change="on_filter_change()">
-                            <option value="all">All</option>
-                            <option value="next" disabled>In future</option>
-                            <option value="now" disabled>At the moment</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="cg-events__bar">
+            <div class="cg-segmented" role="tablist" :aria-label="$t('guide.events.when')">
+                <button v-for="w in whens" :key="w" type="button" role="tab" :class="{ active: when === w }" :aria-selected="when === w" @click="set('when', w)">
+                    {{ $t('guide.events.when_' + w) }} <small>{{ counts[w] }}</small>
+                </button>
             </div>
+            <div class="cg-events__chips">
+                <button v-for="c in categories" :key="c" type="button" class="cg-chip" :class="{ 'is-active': cat === c }" :aria-pressed="cat === c" @click="set('cat', c)">
+                    <i v-if="c !== 'all'" class="fa" :class="c === 'competition' ? 'fa-trophy' : 'fa-music'" aria-hidden="true"></i>
+                    {{ $t('guide.events.cat_' + c) }}
+                </button>
+                <button v-if="logged_in" type="button" class="cg-chip" :class="{ 'is-active': mine }" :aria-pressed="mine" @click="set('mine', !mine)">
+                    <i class="fa fa-heart" aria-hidden="true"></i> {{ $t('guide.events.only_mine') }}
+                </button>
+            </div>
+            <input type="search" class="form-control cg-events__search" v-model="query" :placeholder="$t('guide.events.search')" :aria-label="$t('guide.events.search')" />
         </div>
 
-        <div class="bar" v-if="events != []"><i class="fa fa-calendar"></i></div>
-
-        <ul class="timeline" v-if="filtred_events.length && events != []">
-            <eventListCard 
-                v-for="event in filtred_events"
-                :key='event.id'
-                :event="event"
-            />
-        </ul>
-
-        <div v-else>
-          <emptyPageComponent />
+        <div v-if="loading" class="row g-4">
+            <div v-for="n in 3" :key="n" class="col-md-6 col-lg-4"><div class="cg-events__skeleton"></div></div>
         </div>
-        
-        <metaData 
-            :title = "$t('guide.meta.events')"
-            :description = "this.$siteData.data.event_description"
-            :image = "'/public/images/meta_img/competition.jpg'"
+
+        <!-- the timeline: competitions on the left of the line, festivals on
+             the right; a hexagon marker and a date flag at the line for each
+             event, a label on the line for each month / year group -->
+        <template v-else-if="groups.length">
+            <div class="cg-tl-legend d-none d-md-flex" aria-hidden="true">
+                <span><i class="fa fa-trophy" aria-hidden="true"></i> {{ $t('guide.events.cat_competition') }}</span>
+                <span>{{ $t('guide.events.cat_event') }} <i class="fa fa-music" aria-hidden="true"></i></span>
+            </div>
+            <ol class="cg-tl">
+                <template v-for="group in groups" :key="group.key">
+                    <li class="cg-tl__group" :class="{ 'is-live': group.key === 'live' }">
+                        <h2>
+                            <i v-if="group.key === 'live'" class="fa fa-circle" aria-hidden="true"></i> {{ group.label }}
+                            <small>{{ group.items.length }}</small>
+                        </h2>
+                    </li>
+                    <li
+                        v-for="e in group.items"
+                        :key="e.global_event.id"
+                        class="cg-tl__item"
+                        :class="[e.global_event.category === 'competition' ? 'is-left' : 'is-right', 'is-' + status_of(e)]"
+                    >
+                        <span class="cg-tl__hexa" aria-hidden="true"></span>
+                        <span class="cg-tl__flag">
+                            <strong>{{ flag_date(e) }}</strong>
+                            <small v-if="flag_time(e)"><i class="fa fa-clock-o" aria-hidden="true"></i> {{ flag_time(e) }}</small>
+                        </span>
+                        <div class="cg-tl__card"><eventCard :event="e" /></div>
+                    </li>
+                </template>
+            </ol>
+        </template>
+
+        <div v-else class="cg-events__empty">
+            <emptyPageComponent />
+            <p v-if="when === 'upcoming' && counts.past" class="text-center">
+                <button type="button" class="btn btn-outline-secondary btn-sm" @click="set('when', 'past')">{{ $t('guide.events.see_past') }}</button>
+            </p>
+        </div>
+
+        <metaData
+            :title="$t('guide.meta.events')"
+            :description="this.$siteData.data.event_description"
+            :image="'/public/images/meta_img/competition.jpg'"
         />
     </div>
 </template>
 
 <script>
-// template -> https://codepen.io/krishnab/pen/OPwqbW
-// more template -> https://niemvuilaptrinh.medium.com/27-html-timeline-for-web-design-979b8e5d1c05
-
 import metaData from '../../items/MetaDataComponent'
-
 import emptyPageComponent from '../../../global_components/EmptyPageComponent'
+import eventCard from '../../items/cards/EventCardComponent.vue'
+import { to_date, event_status, fmt, intl_locale, has_time } from '../../../../services/guide/eventDates.js'
+import { interested, load_interested } from '../../../../services/guide/interested.js'
 
-import eventListCard from '../../items/cards/EventListCardComponent'
-
-import moment from "moment"; // https://www.npmjs.com/package/vue-moment
-    export default {
-        components: {
-            moment,
-        metaData,
-        eventListCard,
-        emptyPageComponent,
-    },
-    data(){
+export default {
+    components: { metaData, eventCard, emptyPageComponent },
+    data() {
         return {
             events: [],
-            filtred_events: [],
-            event_filtrs: 'all'
+            loading: true,
+            when: 'upcoming',
+            cat: 'all',
+            mine: false,
+            query: '',
+            whens: ['upcoming', 'past', 'all'],
+            categories: ['all', 'competition', 'event'],
+            logged_in: !!localStorage.getItem('auth_token'),
+            interested,
         }
     },
-    mounted() {
-        this.loadFiltersFromUrl()
-        this.get_event()
+    computed: {
+        with_status() {
+            return this.events.map(e => ({ e, s: event_status(e.global_event) }))
+        },
+        counts() {
+            const past = this.with_status.filter(x => x.s.key === 'finished').length
+            return { upcoming: this.with_status.length - past, past, all: this.with_status.length }
+        },
+        filtered() {
+            const q = this.query.trim().toLowerCase()
+            return this.with_status.filter(({ e, s }) =>
+                (this.when === 'all' || (this.when === 'past') === (s.key === 'finished')) &&
+                (this.cat === 'all' || e.global_event.category === this.cat) &&
+                (!this.mine || this.interested.ids.has(Number(e.global_event.id))) &&
+                (!q || [e.locale_event && e.locale_event.title, e.global_event.url_title].some(v => String(v || '').toLowerCase().includes(q)))
+            )
+        },
+        groups() {
+            const locale = intl_locale(this.$i18n)
+            const out = []
+            const add = (key, label, item) => {
+                let g = out.find(x => x.key === key)
+                if (!g) { g = { key, label, items: [] }; out.push(g) }
+                g.items.push(item)
+            }
+            const upcoming = this.filtered.filter(x => x.s.key !== 'finished')
+            const past = this.filtered.filter(x => x.s.key === 'finished')
+            upcoming.filter(x => x.s.key === 'live').forEach(x => add('live', this.$t('guide.events.happening_now'), x.e))
+            upcoming.filter(x => x.s.key !== 'live')
+                .sort((a, b) => to_date(a.e.global_event.start_data) - to_date(b.e.global_event.start_data))
+                .forEach(x => {
+                    const d = to_date(x.e.global_event.start_data)
+                    add('m' + d.getFullYear() + '-' + d.getMonth(), fmt(d, locale, { month: 'long', year: 'numeric' }), x.e)
+                })
+            past.sort((a, b) => to_date(b.e.global_event.start_data) - to_date(a.e.global_event.start_data))
+                .forEach(x => {
+                    const y = to_date(x.e.global_event.start_data).getFullYear()
+                    add('y' + y, this.$t('guide.events.past_year', { year: y }), x.e)
+                })
+            return out
+        },
     },
     watch: {
-        '$route' (to, from) {
-            this.loadFiltersFromUrl()
-            this.get_event()
-        }
+        '$route.query'() { this.from_url() },
+        query() { this.to_url() },
+    },
+    mounted() {
+        this.from_url()
+        this.get_events()
+        load_interested()
     },
     methods: {
-        loadFiltersFromUrl(){
-            const query = this.$route.query
-            this.event_filtrs = query.event_filtr || 'all'
+        from_url() {
+            const q = this.$route.query
+            this.when = this.whens.includes(q.when) ? q.when : 'upcoming'
+            this.cat = this.categories.includes(q.cat) ? q.cat : 'all'
+            this.mine = q.mine === '1'
+            if (typeof q.q === 'string' && q.q !== this.query) this.query = q.q
         },
-
-        updateUrl(){
-            let query = {}
-            if (this.event_filtrs !== 'all') query.event_filtr = this.event_filtrs
+        to_url() {
+            const query = {}
+            if (this.when !== 'upcoming') query.when = this.when
+            if (this.cat !== 'all') query.cat = this.cat
+            if (this.mine) query.mine = '1'
+            if (this.query.trim()) query.q = this.query.trim()
             this.$router.replace({ query }).catch(() => {})
         },
-
-        on_filter_change(){
-            this.updateUrl()
-            this.sortByTime()
+        status_of(e) { return event_status(e.global_event).key },
+        flag_date(e) {
+            return fmt(to_date(e.global_event.start_data), intl_locale(this.$i18n), { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' })
         },
-
-        get_event(){
-            axios
-            .get('/get_event/get_event_on_site_list/'+localStorage.getItem('lang'))
-            .then(response => {
-                this.events = response.data
-
-                this.sortByTime()
-            })
-            .catch(error =>{
-            })
+        flag_time(e) {
+            return has_time(e.global_event) ? fmt(to_date(e.global_event.start_data), intl_locale(this.$i18n), { hour: '2-digit', minute: '2-digit', hour12: false }) : ''
         },
-
-        sortByTime(){
-                let vm = this;
-                if (vm.event_filtrs == 'all') {  
-                  this.filtred_events = this.events
-                }
-                else if (vm.event_filtrs == 'next') {  
-                  this.filtred_events = []
-                    this.filtred_events = this.events.filter(function (item){
-                        return (
-                            (
-                              moment(item.global_event.start_data).format("D") > new Date().getDate() &&
-                              moment(item.global_event.end_data).format("M")-1 > new Date().getMonth()
-                            )
-                          ||
-                            (
-                              moment(item.global_event.start_data).format("D") == new Date().getDate() &&
-                              moment(item.global_event.end_data).format("M")-1 == new Date().getMonth()
-                            )
-                        )
-                    })
-                }
-                else if (vm.event_filtrs == 'now') {  
-                  this.filtred_events = []
-                    this.filtred_events = this.events.filter(function (item){
-                        return   moment(item.global_event.start_data).format("D") == new Date().getDate() 
-                            &&   moment(item.global_event.end_data).format("M")-1 == new Date().getMonth()
-                    })
-                }
-            },
-    }
+        set(key, value) {
+            this[key] = value
+            this.to_url()
+        },
+        get_events() {
+            this.loading = true
+            axios.get('/get_event/get_event_on_site_list/' + localStorage.getItem('lang'))
+                .then(r => { this.events = Array.isArray(r.data) ? r.data : [] })
+                .catch(() => { this.events = [] })
+                .finally(() => { this.loading = false })
+        },
+    },
 }
 </script>
 
-<style>
-
-header h1{
-  text-align: center;
-  font-weight: bold;
-  margin-top: 0;
+<style scoped>
+.cg-events__bar { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; margin-bottom: 1.5rem; }
+.cg-events__bar .cg-segmented small { margin-left: .3rem; opacity: .65; font-weight: 800; }
+.cg-events__chips { display: flex; flex-wrap: wrap; gap: .4rem; }
+.cg-events__chips .cg-chip { cursor: pointer; }
+.cg-events__chips .cg-chip.is-active { background: var(--cg-accent); border-color: var(--cg-accent); color: #fff; }
+.cg-events__chips .fa-heart { color: var(--cg-rope, #e0632a); }
+.cg-events__chips .is-active .fa { color: #fff; }
+.cg-events__search { flex: 1 1 14rem; max-width: 22rem; margin-left: auto; }
+/* ---- timeline ---------------------------------------------------- */
+.cg-tl-legend { justify-content: space-between; max-width: 1040px; margin: 0 auto .5rem; color: var(--cg-stone); font-weight: 800; font-size: .85rem; letter-spacing: .04em; text-transform: uppercase; }
+.cg-tl-legend .fa-trophy { color: #e0a800; }
+.cg-tl-legend .fa-music { color: #2a9d8f; }
+.cg-tl { position: relative; max-width: 1040px; margin: 0 auto 2rem; padding: 0; list-style: none; }
+/* the line */
+.cg-tl::before { content: ""; position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; margin-left: -2px; border-radius: 4px; background: linear-gradient(180deg, rgba(var(--cg-accent-rgb), 0), var(--cg-accent) 3%, var(--cg-accent) 97%, rgba(var(--cg-accent-rgb), 0)); }
+.cg-tl > li { position: relative; }
+/* group label sitting on the line */
+.cg-tl__group { display: flex; justify-content: center; margin: 1.5rem 0 1.25rem; }
+.cg-tl__group h2 { position: relative; z-index: 1; display: inline-flex; align-items: baseline; gap: .45rem; margin: 0 !important; padding: .4rem 1.1rem; border-radius: 2rem; background: var(--cg-ink); color: #fff !important; font-size: 1.2rem !important; text-transform: capitalize; box-shadow: var(--cg-shadow-sm); }
+.cg-tl__group h2 small { opacity: .65; font-size: .8rem; }
+.cg-tl__group.is-live h2 { background: #13865d; }
+.cg-tl__group.is-live .fa { font-size: .6rem; align-self: center; animation: cg-ev-live 1.4s ease-in-out infinite; }
+/* one event: card on its side, marker + date flag at the line */
+.cg-tl__item { display: grid; grid-template-columns: 1fr 4rem 1fr; align-items: start; margin-bottom: 1.75rem; }
+.cg-tl__card { grid-row: 1; }
+.cg-tl .cg-tl__card :deep(.cg-ev__img) { aspect-ratio: 16 / 9; }
+.cg-tl__item.is-left .cg-tl__card { grid-column: 1; }
+.cg-tl__item.is-right .cg-tl__card { grid-column: 3; }
+.cg-tl__hexa { grid-row: 1; grid-column: 2; justify-self: center; position: relative; z-index: 1; width: 1.6rem; height: 1.8rem; margin-top: 1.4rem; background: var(--cg-accent); clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); box-shadow: 0 0 0 4px var(--cg-chalk); }
+.cg-tl__hexa::after { content: ""; position: absolute; inset: 5px; background: #fff; clip-path: inherit; }
+.cg-tl__item.is-left .cg-tl__hexa { background: #e0a800; }
+.cg-tl__item.is-right .cg-tl__hexa { background: #2a9d8f; }
+.cg-tl__item.is-live .cg-tl__hexa { background: #13865d; animation: cg-tl-pulse 1.6s ease-in-out infinite; }
+.cg-tl__item.is-live .cg-tl__hexa::after { background: #13865d; }
+.cg-tl__item.is-finished .cg-tl__hexa { background: var(--cg-muted); }
+@keyframes cg-tl-pulse { 50% { transform: scale(1.18); } }
+/* date flag on the other side of the line, pointing at the marker */
+.cg-tl__flag { grid-row: 1; position: relative; display: inline-flex; flex-direction: column; margin-top: 1.25rem; padding: .45rem .85rem; border-radius: .6rem; background: #fff; border: 1px solid var(--cg-line); box-shadow: var(--cg-shadow-sm); line-height: 1.2; white-space: nowrap; }
+.cg-tl__flag strong { color: var(--cg-ink); font-size: .95rem; text-transform: capitalize; }
+.cg-tl__flag small { color: var(--cg-stone); font-weight: 700; }
+.cg-tl__flag::before { content: ""; position: absolute; top: .9rem; width: .7rem; height: .7rem; background: #fff; border: 1px solid var(--cg-line); transform: rotate(45deg); }
+.cg-tl__item.is-left .cg-tl__flag { grid-column: 3; justify-self: start; }
+.cg-tl__item.is-left .cg-tl__flag::before { left: -.4rem; border-top: 0; border-right: 0; }
+.cg-tl__item.is-right .cg-tl__flag { grid-column: 1; justify-self: end; }
+.cg-tl__item.is-right .cg-tl__flag::before { right: -.4rem; border-bottom: 0; border-left: 0; }
+.cg-tl__item.is-finished .cg-tl__flag { opacity: .75; }
+/* phones: line on the left, flag above the card */
+@media (max-width: 767.98px) {
+    .cg-tl::before { left: 1rem; }
+    .cg-tl__group { justify-content: flex-start; padding-left: 2.25rem; }
+    .cg-tl__item { grid-template-columns: 2rem 1fr; column-gap: .25rem; margin-bottom: 1.5rem; }
+    .cg-tl__hexa { grid-column: 1 !important; grid-row: 1; margin-top: .35rem; }
+    .cg-tl__item .cg-tl__flag { grid-column: 2 !important; grid-row: 1; justify-self: start !important; margin: 0 0 .6rem; }
+    .cg-tl__item .cg-tl__flag::before { left: -.4rem !important; right: auto !important; top: .7rem; border: 1px solid var(--cg-line) !important; border-top: 0 !important; border-right: 0 !important; }
+    .cg-tl__item .cg-tl__card { grid-column: 2 !important; grid-row: 2; }
 }
-  
- header p{
-   text-align: center;
-   margin-bottom: 0;
- }
-
-.hexa{
-  border: 0px;
-  float: left;
-  text-align: center;
-  height: 35px;
-  width: 60px;
-  font-size: 22px;
-  background: var(--cg-chalk);
-  color: #3c3c3c;
-  position: relative;
-  margin-top: 15px;
-}
-
-.hexa:before{
-  content: ""; 
-  position: absolute; 
-  left: 0; 
-  width: 0; 
-  height: 0;
-  border-bottom: 15px solid var(--cg-chalk);
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  top: -15px;
-}
-
-.hexa:after{
-  content: ""; 
-  position: absolute; 
-  left: 0; 
-  width: 0; 
-  height: 0;
-  border-left: 30px solid transparent;
-  border-right: 30px solid transparent;
-  border-top: 15px solid var(--cg-chalk);
-  bottom: -15px;
-}
-
-.timeline {
-  position: relative;
-  padding: 0;
-  width: 100%;
-  margin-top: 20px;
-  list-style-type: none;
-}
-
-.timeline:before {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  content: ' ';
-  display: block;
-  width: 2px;
-  height: 100%;
-  margin-left: -1px;
-  background: rgb(213,213,213);
-  background: -moz-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(30,87,153,1)), color-stop(100%,rgba(125,185,232,1)));
-  background: -webkit-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
-  background: -o-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
-  background: -ms-linear-gradient(top, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
-  background: linear-gradient(to bottom, rgba(213,213,213,0) 0%, rgb(213,213,213) 8%, rgb(213,213,213) 92%, rgba(213,213,213,0) 100%);
-  z-index: 5;
-}
-
-.timeline li {
-  padding: 2em 0;
-}
-
-.timeline .hexa{
-  width: 16px;
-  height: 10px;
-  position: absolute;
-  background: var(--cg-accent);
-  z-index: 5;
-  left: 0;
-  right: 0;
-  margin-left:auto;
-  margin-right:auto;
-  top: -30px;
-  margin-top: 0;
-}
-
-.timeline .hexa:before {
-  border-bottom: 4px solid var(--cg-accent);
-  border-left-width: 8px;
-  border-right-width: 8px;
-  top: -4px;
-}
-
-.timeline .hexa:after {
-  border-left-width: 8px;
-  border-right-width: 8px;
-  border-top: 4px solid var(--cg-accent);
-  bottom: -4px;
-}
-
-.direction-l,
-.direction-r {
-  float: none;
-  width: 100%;
-  text-align: center;
-}
-
-.flag-wrapper {
-  text-align: center;
-  position: relative;
-}
-
-.flag {
-  position: relative;
-  display: inline;
-  background: rgb(255,255,255);
-  font-weight: 600;
-  z-index: 15;
-  padding: 6px 10px;
-  text-align: left;
-  border-radius: 5px;
-}
-
-.direction-l .flag:after,
-.direction-r .flag:after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: -15px;
-  height: 0;
-  width: 0;
-  margin-left: -8px;
-  border: solid transparent;
-  border-bottom-color: rgb(255,255,255);
-  border-width: 8px;
-  pointer-events: none;
-}
-
-.direction-l .flag {
-  -webkit-box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-  box-shadow: -1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-}
-
-.direction-r .flag {
-  -webkit-box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-  -moz-box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-  box-shadow: 1px 1px 1px rgba(0,0,0,0.15), 0 0 1px rgba(0,0,0,0.15);
-}
-
-.time-wrapper {
-  display: block;
-  position: relative;
-  margin: 4px 0 0 0;
-  z-index: 14;
-  line-height: 1em;
-/* //   vertical-align: middle; */
-  color: #fff;
-}
-
-.direction-l .time-wrapper {
-  float: none;
-}
-
-.direction-r .time-wrapper {
-  float: none;
-}
-
-.time {
-  background: var(--cg-accent);
-  display: inline-block;
-  padding: 8px;
-}
-
-.desc {
-  position: relative;
-  margin: 1em 0 0 0;
-  padding: 1em;
-  /* // background: rgb(254,254,254); */
-  background: rgb(247 252 254);
-  -webkit-box-shadow: 0 0 1px rgba(0,0,0,0.20);
-  -moz-box-shadow: 0 0 1px rgba(0,0,0,0.20);
-  /* // box-shadow: 0 0 1px rgba(0,0,0,0.20); */
-  box-shadow: 0 0 1px rgb(0 0 0 / 76%);
-  z-index: 15;
-}
-
-.event_timeline_title{
-    margin-top: 4px !important;
-    margin-bottom: 5px !important;
-    color: var(--cg-ink-2) !important;
-}
-
-.direction-l .desc,
-.direction-r .desc {
-  position: relative;
-  margin: 1em 1em 0 1em;
-  padding: 1em;
-  z-index: 15;
-}
-
-@media(min-width: 768px){
-  .timeline {
-    width: 660px;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
-
-  .timeline li:after {
-    content: "";
-    display: block;
-    height: 0;
-    clear: both;
-    visibility: hidden;
-  }
-  
-  .timeline .hexa {
-    left: -28px;
-    right: auto;
-    top: 8px;
-  }
-
-  .timeline .direction-l .hexa {
-    left: auto;
-    right: -28px;
-  }
-
-  .direction-l {
-    position: relative;
-    width: 310px;
-    float: left;
-    text-align: right;
-  }
-
-  .direction-r {
-    position: relative;
-    width: 310px;
-    float: right;
-    text-align: left;
-  }
-
-  .flag-wrapper {
-    display: inline-block;
-  }
-  
-  .flag {
-    font-size: 18px;
-  }
-
-  .direction-l .flag:after {
-    left: auto;
-    right: -16px;
-    top: 50%;
-    margin-top: -8px;
-    border: solid transparent;
-    border-left-color: rgb(254,254,254);
-    border-width: 8px;
-  }
-
-  .direction-r .flag:after {
-    top: 50%;
-    margin-top: -8px;
-    border: solid transparent;
-    border-right-color: rgb(254,254,254);
-    border-width: 8px;
-    left: -8px;
-  }
-
-  .time-wrapper {
-    display: inline;
-    vertical-align: middle;
-    margin: 0;
-  }
-
-  .direction-l .time-wrapper {
-    float: left;
-  }
-
-  .direction-r .time-wrapper {
-    float: right;
-  }
-
-  .time {
-    padding: 5px 10px;
-  }
-
-  .direction-r .desc {
-    margin: 1em 0 0 0.75em;
-  }
-}
-
-@media(min-width: 992px){
-  .timeline {
-    width: 800px;
-    margin: 0 auto;
-    margin-top: 20px;
-  }
-
-  .direction-l {
-    position: relative;
-    width: 380px;
-    float: left;
-    text-align: right;
-  }
-
-  .direction-r {
-    position: relative;
-    width: 380px;
-    float: right;
-    text-align: left;
-  }
-}
-
-.index_h2 {
-  color: var(--cg-stone);
-  margin-bottom: 10px;
-}
-
-.article_list_short_description {
-  color: var(--cg-stone);
-  margin-bottom: 20px;
-}
-
-.articles_filter_bar {
-  background: var(--cg-accent-soft);
-  padding: 15px;
-  border-radius: 5px;
-  margin-bottom: 20px;
-}
-
-.timeline:before {
-  background: linear-gradient(to bottom, rgba(39,159,187,0) 0%, var(--cg-accent) 8%, var(--cg-accent) 92%, rgba(39,159,187,0) 100%);
-}
-
-.timeline .hexa {
-  background: var(--cg-accent);
-}
-
-.timeline .hexa:before {
-  border-bottom-color: var(--cg-accent);
-}
-
-.timeline .hexa:after {
-  border-top-color: var(--cg-accent);
-}
-
-.desc {
-  background: var(--cg-accent-soft);
-  transition: box-shadow 0.3s ease;
-}
-
-.desc:hover {
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-}
-
-.time {
-  background: var(--cg-accent);
-  color: #fff;
-}
+@keyframes cg-ev-live { 50% { opacity: .3; } }
+.cg-events__skeleton { height: 24rem; border-radius: var(--cg-r-lg); background: linear-gradient(90deg, var(--cg-chalk-2) 25%, var(--cg-chalk) 50%, var(--cg-chalk-2) 75%); background-size: 200% 100%; animation: cg-ev-shimmer 1.2s linear infinite; }
+@keyframes cg-ev-shimmer { to { background-position: -200% 0; } }
+@media (max-width: 767.98px) { .cg-events__search { max-width: none; margin-left: 0; } }
+@media (prefers-reduced-motion: reduce) { .cg-events__skeleton, .cg-tl__group.is-live .fa, .cg-tl__item.is-live .cg-tl__hexa { animation: none; } }
 </style>

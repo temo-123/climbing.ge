@@ -1,6 +1,6 @@
 <template>
     <div id="sectors">
-
+        <areaRouteToolbar :climbing_area="climbing_area" :tools="route_tools" />
 
         <div v-if="spot_images && spot_images.length > 0">
             <div
@@ -56,6 +56,11 @@ import sector_and_local_area_images from "./items/SectorsAndAreaLocalImageCompon
 import SectorLocalImageCanvas from "./items/SectorLocalImageCanvasComponent.vue"
 
 import openImg from "../ImageOpenComponent.vue";
+import areaRouteToolbar from "./AreaRouteToolbarComponent.vue";
+import { new_route_tools, flat_sectors, flat_routes } from '../../../../services/guide/routeFilters.js'
+
+// best style first, for the ✓ badge when a route was logged more than once
+const STYLE_ORDER = ['onsight', 'flash', 'redpoint', 'toprope'];
 
 import  grade_chart  from '../../../../mixins/grade_chart_mixin.js'
 
@@ -70,6 +75,11 @@ export default {
         SectorLocalImageCanvas,
 
         openImg,
+        areaRouteToolbar,
+    },
+    // one reactive filter/ticks object for every SectorComponent on the page
+    provide() {
+        return { route_tools: this.route_tools };
     },
     props: [
         "article_id_prop"
@@ -105,7 +115,9 @@ export default {
             route_detals: [],
 
             mtp_detals: [],
-            id: 0
+            id: 0,
+
+            route_tools: new_route_tools(),
         };
     },
     mounted() {
@@ -134,6 +146,24 @@ export default {
             this.id = id
             this.get_outdoor_routes();
             this.get_spot_rocks_images();
+            this.get_my_ticks();
+        },
+
+        // logged-in climbers see ✓ on routes they've logged + area progress
+        get_my_ticks() {
+            if (!localStorage.getItem('auth_token')) return;
+            axios
+                .get('/set_route_ascent/get_my_route_ascents')
+                .then((response) => {
+                    const ticked = {};
+                    (response.data || []).forEach(a => {
+                        const prev = ticked[a.route_id];
+                        if (!prev || STYLE_ORDER.indexOf(a.ascent_style) < STYLE_ORDER.indexOf(prev)) ticked[a.route_id] = a.ascent_style;
+                    });
+                    this.route_tools.ticked = ticked;
+                    this.route_tools.logged_in = true;
+                })
+                .catch(() => {});
         },
 
         lead_grade_chart(grade_fr) {
@@ -160,6 +190,9 @@ export default {
                 .get("/get_sector/get_sector_and_routes/" + this.id)
                 .then((response) => {
                     this.climbing_area = response.data;
+                    // counts for the page (mobile scene banner)
+                    const sectors = flat_sectors(response.data);
+                    this.$emit('loaded', { sectors: sectors.length, routes: flat_routes(response.data).length });
                 })
                 .catch((error) => {});
         },

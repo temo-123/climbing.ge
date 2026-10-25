@@ -8,6 +8,7 @@
 
             <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
             <div class="cg-card-media">
+                <favoriteHeart :article_id="article.global_data.id" :category="article.global_data.category" />
                 <site-img v-if="article.global_data.image != null" :src=" '/public/' + this.image_dir+article.global_data.image" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='article.locale_data.title'/>
 
@@ -32,6 +33,7 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     export default {
         props: [
             'article',
@@ -44,6 +46,7 @@
             };
         },
         components: {
+            favoriteHeart,
         },
         mounted() {
             // 

@@ -51,6 +51,25 @@ See [AUTH.md](AUTH.md) for full authentication flow and API details.
 
 After login, authenticated users access their personal dashboard.
 
+### Home page (`pages/HomePageComponent.vue`)
+
+Top to bottom: hero with quick actions (find a crag, logbook, find a partner, preferences) → **Needs attention** (`items/dashboards/AdminAttentionComponent.vue`, admins only) → **My climbing** (`items/dashboards/MyOverviewComponent.vue`) → climber card, quick links, mail / locale widgets, service tiles, notifications.
+
+- `GET get_dashboard/get_my_overview` (`Api\User\DashboardOverviewController`): counts (route / MTP / summit ascents, routes this year, reviews, favourite articles and products, orders, open partner posts), the last 5 route ascents, up to 3 upcoming interested events, the last order, and a profile checklist (email verified, photo, bio, city/country, social link, preferences, first ascent). The checklist card with a progress ring shows until everything is done; every number links to its page.
+- `GET get_dashboard/get_admin_overview`: blocks, each only with the permission of its admin page — `guide` (`article › show`: unpublished articles, hazard/closure reports 30 days, condition reports 7 days, open partner posts), `moderation` (`comment › show`: comment complaints, open user complaints, new comments and reviews 7 days), `shop` (`order › show`: orders to ship = status Treatment / Preparation for shipment / Ready to ship / empty in the last 90 days, orders and revenue 7 days, back-in-stock subscribers waiting), `users` (`user › show`: total, new and active 7 days) — plus 30-day daily series (new users, logged ascents, comments, orders) drawn as sparklines. Tiles with work waiting (complaints, orders to ship, hazards) are orange and sorted first. The same component, filtered with `:blocks`, sits at the top of the shop dashboard (`['shop']`) and the guide dashboard content tab (`['guide', 'moderation']`).
+- Guide dashboard → **Community** tab (`comment › show`, `dashboards/guide/assets/CommunityModerationComponent.vue`): condition reports and partner posts with Hide / Show (`set_area_report/get_area_reports_admin`, `set_partner_post/get_partner_posts_admin`; toggling needs `comment › del`).
+
+### Preferences & welcome questions
+
+Account defaults on `users`: `lang` (`us`/`ka`), `grade` (`yds`/`uiaa`), `mount_grade` (`russian`/`french`, which alpine scale is shown first — `formatMountGrade()`), `animations` (bool), `onboarded_at` (migration `2026_10_24_140000_add_preferences_to_users_table.php`).
+
+- Options page → **Preferences** tab (`items/preferences/UserPreferencesComponent.vue` + shared `PreferenceFieldsComponent.vue`).
+- **Quick sign-up**: the global login modal (`LoginModalComponent.vue`, mounted on every public site) has *Log in / Sign up* tabs; sign-up asks only name, surname, email, password (strength bar) and one terms + privacy checkbox (links to the guide's legal pages) and posts to `register` (reCAPTCHA as before). `country`, `city` and `phone_number` are optional in `RegisterController` since then. Open it with `$bus.$emit('open-register-modal', { callback, reason })` (`reason` shows a short note on top) or `open-login-modal`.
+- `user/user_image_update/{user_id}` now only accepts your own id (it used to let any logged-in user replace anyone's photo).
+- **Welcome questions** (`items/preferences/WelcomeQuestionsComponent.vue`, mounted in the user shell `HomeComponent.vue`, and with `public_site` in every public site root where it opens only right after the quick sign-up — `sessionStorage.cg_just_registered`): shown while `onboarded_at` is null. Step 1 profile photo (square-cropped to 600px JPEG in the browser, uploaded to `user/user_image_update/{id}`), step 2 "What are you into?" (outdoor, gyms, ice, mountaineering, shop, tours, blog, films → switches **on** the matching "new content" email notifications, never off), step 3 the defaults above. *Skip* only sets `onboarded_at`.
+- API (`get_options`): `GET get_preferences`, `POST update_preferences` (`lang`, `grade`, `mount_grade`, `animations`, `interests[]`, `onboarded`).
+- Applying: `services/preferences.js` runs after every `auth_user` fetch (`store/auth.js`) but only when the saved defaults differ from what this device last applied (`localStorage.cg_prefs_applied`), so later changes with the navbar switches stick on that device. It sets `grade` / `mount_grade` in localStorage (reloads once), the animation switch, and moves to/from the `/ka` URL for the language.
+
 ### Profile & Settings
 
 - Edit name, surname, email, avatar, bio
@@ -70,7 +89,7 @@ View past shop orders, order status, and download receipts.
 
 ### Favorites
 
-- Favorite outdoor climbing areas
+- Favorite articles of every guide type except news and special articles (`/my_favorite_outdoor_area`, filter by category) — see [GUIDBOOK.md](GUIDBOOK.md#favorite-articles)
 - Interested events
 - Favorite films
 
@@ -183,7 +202,13 @@ Charts and tables covering notification volume over time, breakdown by notificat
 
 ### Export
 
-Export guide articles by category to PDF.
+`/export_tips` (`export › show`, `pages/expoet/exportComponent.vue`): pick a category (chips), search / "only published", tick articles (titles in the site language, region, sector count, last update), then download:
+
+- **PDF** — the existing `set_export/articles_pdf` (language ka / us / both, optionally sectors + routes for outdoor / ice).
+- **Articles CSV** — `POST set_export/articles_csv`: one row per article (id, category, EN / KA titles, public URL, published, region, sector / route / multi-pitch counts, dates).
+- **Routes CSV** — `POST set_export/routes_csv` (outdoor / ice): every route and multi-pitch pitch with area, sector (+ published), number, name, type, grade, alternative grade, bolts, height, author, first ascent.
+
+CSV files are UTF-8 with a BOM so Excel shows Georgian correctly. The last category, format, language and options are remembered in `localStorage` (`cg_export_settings`). The old `ExportArticlesModalComponent.vue` was removed.
 
 ---
 

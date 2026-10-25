@@ -83,6 +83,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'last_seen_at' => 'datetime',
         'social_links' => 'array',
         'is_team_member' => 'boolean',
+        'animations' => 'boolean',
+        'onboarded_at' => 'datetime',
     ];
 
     /**

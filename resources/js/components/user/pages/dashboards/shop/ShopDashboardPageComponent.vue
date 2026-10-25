@@ -7,6 +7,7 @@
                     <breadcrumb />
                 </div>
             </div>
+            <admin_attention :blocks="['shop']" :title="$t('admin.overview.shop_title')" />
             <div class="row">
                 <div class="col-md-12">
                     <order_diagram />
@@ -29,8 +30,9 @@
     import breadcrumb from '../../../items/BreadcrumbComponent.vue'
     import order_diagram from '../../../items/dashboards/OrderDiogramComponent.vue'
     import orders_list from './assets/OrdersListComponent.vue'
+    import admin_attention from '../../../items/dashboards/AdminAttentionComponent.vue'
 
     export default {
-        components: { breadcrumb, order_diagram, orders_list },
+        components: { breadcrumb, order_diagram, orders_list, admin_attention },
     }
 </script>

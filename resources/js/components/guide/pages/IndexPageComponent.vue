@@ -8,6 +8,10 @@
             :full_width="true"
         />
 
+        <div class="container mt-4">
+            <recentlyViewed />
+        </div>
+
         <whatWeDoComponent />
 
         <div class="container h-recent-work" v-if="this.$globalSiteData.data.map && this.$globalSiteData.data.map != 'function map() { [native code] }'">
@@ -79,6 +83,7 @@
 </template>
 
 <script>
+    import recentlyViewed from '../items/RecentlyViewedComponent.vue'
     import indexGalleryComponent from '../items/galleries/IndexGalleryComponent'
     import techtipsComponent from '../items/TechtipsComponent'
     import otherArticlesComponent from '../items/OtherArticlesComponent'
@@ -113,6 +118,7 @@
             };
         },
         components: {
+            recentlyViewed,
             metaData,
             indexGalleryComponent,
             techtipsComponent,

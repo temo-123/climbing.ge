@@ -14,6 +14,10 @@ class Favorite_outdoor_area extends Model
 
     use HasApiTokens, HasFactory, Notifiable;
 
+    // Despite the table name this holds favourites for every guide article
+    // type except news / special articles (blog posts and films have their own)
+    const CATEGORIES = ['outdoor', 'ice', 'indoor', 'mount_route', 'other', 'tech_tip', 'partners', 'spot_projects'];
+
     protected $fillable = [
 	    'user_id',
 	    'article_id',

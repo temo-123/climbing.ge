@@ -51,6 +51,12 @@ class FaworitesController extends Controller
         return response()->json($articles);
     }
 
+    // ids of the events this user is interested in — hearts on event cards
+    public function get_interested_event_ids(Request $request)
+    {
+        return Interested_event::where('user_id', $request->user()->id)->pluck('event_id');
+    }
+
     public function del_interested_event(Request $request, $favoryte_ivent_if)
     {
         $user = $request->user();
@@ -66,6 +72,11 @@ class FaworitesController extends Controller
     public function add_to_favorite_outdoor_area(Request $request)
     {
         $user = $request->user();
+
+        $allowed = Article::where('id', $request->article_id)->whereIn('category', Favorite_outdoor_area::CATEGORIES)->exists();
+        if (!$allowed) {
+            return response()->json(['message' => 'This article can not be added to favorites'], 422);
+        }
 
         if (Favorite_outdoor_area::where('user_id', $user->id)->where('article_id', $request->article_id)->count() > 0) {
             return 'This area olredy are in faworite';
@@ -97,12 +108,14 @@ class FaworitesController extends Controller
         return response()->json($articles);
     }
 
-    public function del_favorite_outdoor_area(Request $request)
+    // the route parameter is {favorite_outdoor_id} (an article id) — reading
+    // $request->article_id here was always null, so nothing was ever removed
+    public function del_favorite_outdoor_area(Request $request, $article_id)
     {
         $user = $request->user();
 
         $fav_area = Favorite_outdoor_area::where('user_id', $user->id)
-            ->where('article_id', $request->article_id)
+            ->where('article_id', $article_id)
             ->first();
 
         if ($fav_area) {
@@ -110,6 +123,22 @@ class FaworitesController extends Controller
         }
 
         return response()->json(['message' => 'Removed from favorites']);
+    }
+
+    // every favourite article id of the user — list pages mark hearts with one request
+    public function get_favorite_article_ids(Request $request)
+    {
+        return Favorite_outdoor_area::where('user_id', $request->user()->id)->pluck('article_id');
+    }
+
+    // favourites of every guide article type, newest first, with their category
+    public function get_favorite_articles(Request $request)
+    {
+        $ids = Favorite_outdoor_area::where('user_id', $request->user()->id)->latest('id')->pluck('article_id');
+        $global_articles = Article::whereIn('id', $ids)->where('published', 1)->whereIn('category', Favorite_outdoor_area::CATEGORIES)->get()
+            ->sortBy(fn ($a) => $ids->search($a->id))->values();
+
+        return response()->json(ArticlesService::get_locale_article_use_locale($global_articles, $request->query('lang', 'us') === 'ka' ? 'ka' : 'us'));
     }
 
     public function check_favorite_status(Request $request, $article_id)

@@ -146,7 +146,7 @@
             alt="" aria-hidden="true" loading="lazy" decoding="async"
         />
         <menu-side-scene
-            v-else-if="sideScene && cardSize.h"
+            v-else-if="sideScene && cardSize.h && motion.enabled"
             :variant="sideScene"
             :width="cardSize.w"
             :height="cardSize.h"
@@ -156,6 +156,7 @@
 
 <script>
     import { defineAsyncComponent } from 'vue'
+    import { motion } from '../../../../services/motion.js'
     // loaded only on pages that show a side scene
     const MenuSideScene = defineAsyncComponent(() => import('./MenuSideSceneComponent.vue'))
 
@@ -171,10 +172,13 @@
                 sectorsLoaded: false,
                 hasCamera: false,
                 cardSize: { w: 0, h: 0 },
+                // navbar animation switch: off = no side scene at all
+                motion,
                 wideScreen: window.innerWidth >= 1200,
             }
         },
         computed: {
+
             // pages that list climbing sectors in the menu (both use OutdoorComponent)
             hasSectors() { return ['outdoor', 'ice'].includes(this.$route.name) },
             // Flattens both entry shapes get_sector_and_routes returns

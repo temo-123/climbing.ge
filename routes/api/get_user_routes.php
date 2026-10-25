@@ -44,8 +44,11 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
     Route::controller(FaworitesController::class)->prefix('get_faworite')->group( function() {
         Route::get('/get_faworite_outdoor_region', 'get_faworite_outdoor_region');
         Route::get('/get_interested_events', 'get_interested_events');
+        Route::get('/get_interested_event_ids', 'get_interested_event_ids');
         Route::get('/check_interested_status/{event_id}', 'check_interested_status');
         Route::get('/check_favorite_status/{article_id}', 'check_favorite_status');
+        Route::get('/get_favorite_article_ids', 'get_favorite_article_ids');
+        Route::get('/get_favorite_articles', 'get_favorite_articles');
     });
 
     Route::controller(FaworitesController::class)->prefix('set_faworite_by_user')->group( function() {
@@ -59,11 +62,18 @@ Route::group(['namespace'=>'Api\User', 'middleware'=>['auth:sanctum', 'banned']]
     });
 
 
+    Route::controller(DashboardOverviewController::class)->prefix('get_dashboard')->group( function() {
+        Route::get('/get_my_overview', 'get_my_overview');
+        Route::get('/get_admin_overview', 'get_admin_overview');
+    });
+
     Route::controller(UserOptionController::class)->prefix('get_options')->group( function() {
         Route::get('/get_selected_user_data/{user_id}', 'get_selected_user_data');
         Route::get('/get_user_notification_data', 'get_user_notification_data');
         Route::post('/user_info_update/{user_id}', 'user_info_update');
         Route::post('/update_user_notification_data', 'update_user_notification_data');
+        Route::get('/get_preferences', 'get_preferences');
+        Route::post('/update_preferences', 'update_preferences');
     });
 
     Route::get('/get_countries', [\App\Http\Controllers\Api\Shop\ShipedRegionController::class, 'get_all_shiped_regions']);

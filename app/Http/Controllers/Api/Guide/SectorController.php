@@ -15,6 +15,8 @@ use App\Models\Guide\Spot_rocks_image;
 use App\Models\Guide\Sector_local_image;
 use App\Models\Guide\Sector_local_image_sector;
 use App\Models\Guide\ClimbingRoutesJson;
+use App\Models\Guide\RouteAscent;
+use App\Models\Guide\MtpAscent;
 
 use App\Services\Abstract\ImageControllService;
 
@@ -266,31 +268,39 @@ class SectorController extends Controller
             $sport_routes->pluck('id')->merge($boulder_routes->pluck('id'))
         )->get(['route_id', 'sector_image_id'])->keyBy('route_id');
 
+        // logged ascents per route, shown as "★★★★☆ (12)" next to the rating
+        $ascent_counts = RouteAscent::whereIn('route_id', $sport_routes->pluck('id')->merge($boulder_routes->pluck('id')))
+            ->selectRaw('route_id, COUNT(*) as n')->groupBy('route_id')->pluck('n', 'route_id');
+
         if ($sport_routes->isNotEmpty()) {
-            $sport_route_info = $sport_routes->map(function ($route) use ($route_drawings) {
+            $sport_route_info = $sport_routes->map(function ($route) use ($route_drawings, $ascent_counts) {
                 $published = $route->review->where('published', 1);
                 $count = $published->count();
                 $route['reviews_count'] = $count;
                 $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
                 $route['sector_image_id'] = optional($route_drawings->get($route->id))->sector_image_id;
+                $route['ascents_count'] = (int) ($ascent_counts[$route->id] ?? 0);
                 return $route;
             });
         }
         else $sport_route_info = array();
 
         if ($boulder_routes->isNotEmpty()) {
-            $boulder_route_info = $boulder_routes->map(function ($route) use ($route_drawings) {
+            $boulder_route_info = $boulder_routes->map(function ($route) use ($route_drawings, $ascent_counts) {
                 $published = $route->review->where('published', 1);
                 $count = $published->count();
                 $route['reviews_count'] = $count;
                 $route['reviews_stars'] = $count > 0 ? round($published->avg('stars'), 1) : null;
                 $route['sector_image_id'] = optional($route_drawings->get($route->id))->sector_image_id;
+                $route['ascents_count'] = (int) ($ascent_counts[$route->id] ?? 0);
                 return $route;
             });
         }
         else $boulder_route_info = array();
 
         $mtps = $sector->mtps()->with('review')->get();
+        $mtp_ascent_counts = MtpAscent::whereIn('mtp_id', $mtps->pluck('id'))
+            ->selectRaw('mtp_id, COUNT(*) as n')->groupBy('mtp_id')->pluck('n', 'mtp_id');
         if ($mtps->isNotEmpty()){
             $mtp_info = array();
             foreach($mtps as $mtp){
@@ -315,6 +325,7 @@ class SectorController extends Controller
                         "mtp_pitchs"        => $mtp_pitch_info,
                         "reviews_count"     => $rev_count,
                         "reviews_stars"     => $rev_count > 0 ? round($published_reviews->avg('stars'), 1) : null,
+                        "ascents_count"     => (int) ($mtp_ascent_counts[$mtp->id] ?? 0),
                     ]
                 );
             }

@@ -17,6 +17,7 @@
 
                 <ul class="cg-nav__tools">
                     <navbar-search site="summit" search_route="search_summits" />
+                    <motion-toggle />
                     <locale-switcher />
                     <services-switcher current="summit" />
                     <nav-badges />

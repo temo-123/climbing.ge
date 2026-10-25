@@ -28,6 +28,7 @@
                             </form>
                         </div>
                     </li>
+                    <motion-toggle />
                     <localeSwitcher />
                     <services-switcher current="films" />
                     <nav-badges />

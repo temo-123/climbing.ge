@@ -196,7 +196,7 @@
                 return slide ? slide.offsetWidth + this.gap : 0
             },
             scrollBehavior() {
-                return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+                return window.cgReducedMotion() ? 'auto' : 'smooth'
             },
 
             next() {
@@ -242,7 +242,7 @@
             startAutoplay() {
                 this.stopAutoplay()
                 if (!this.autoplay || this.items.length < 2) return
-                if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+                if (window.cgReducedMotion()) return
 
                 this.autoplayTimer = setInterval(() => {
                     if (this.paused || document.hidden || !this.hasOverflow) return

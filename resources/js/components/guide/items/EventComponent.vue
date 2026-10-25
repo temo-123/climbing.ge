@@ -12,22 +12,24 @@
                 <div class="bar"><i class="fa fa-calendar"></i></div>
                 <h3 class='article_list_short_description'> {{this.$siteData.data.event_description}}</h3>
 
-                <div class="container">
-                    <div class="row event-list">
-                        <eventCard 
-                            v-for="event in events"
-                            :key='event.id'
-                            :event="event"
-                        />
+                <div class="row g-4 cg-home-events">
+                    <div v-for="event in events" :key="event.global_event.id" class="col-md-6 col-lg-4">
+                        <eventCard :event="event" />
                     </div>
                 </div>
+                <p class="text-center mt-4">
+                    <router-link class="btn btn-outline-secondary" :to="{name: 'events', params: {locale: this.$i18n.locale === 'ka' ? 'ka' : undefined}}">
+                        {{ $t('guide.events.all_events') }} <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    </router-link>
+                </p>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-    import eventCard from './cards/IndexEventCardComponent'
+    import eventCard from './cards/EventCardComponent.vue'
+    import { load_interested } from '../../../services/guide/interested.js'
     export default {
         data(){
             return {
@@ -40,6 +42,7 @@
         },
         mounted() {
             this.get_event()
+            load_interested()
         },
         watch: {
             '$route' (to, from) {

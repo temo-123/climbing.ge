@@ -8,12 +8,15 @@ protected function schedule(Schedule $schedule)
     $schedule->command('send_event_notificatione:users')->daily();  // event reminder emails
     $schedule->command('app:generate-sitemap')->daily();
     $schedule->command('app:generate-merchant-feed')->daily();
+    $schedule->command('app:send-back-in-stock')->hourly();      // shop back-in-stock emails
 }
 ```
 
 - **`send_event_notificatione:users`** (`App\Console\Commands\UserAutoNotificatione`) — finds events approaching in the next 1 month / 2 weeks / 1 week / 1 day and emails users who favorited them (see [Event Reminder Cron](NOTIFICATIONS.md#event-reminder-cron)). If this never runs, event reminder emails never go out — not a mail or queue problem, the notification is simply never dispatched in the first place.
 - **`app:generate-sitemap`** (`app/Console/Commands/GenerateSitemap.php`) — regenerates `guide-/shop-/blog-/summit-sitemap.xml` + the `sitemap.xml` index, all gitignored. Unrelated to notifications, but scheduled the same way, so it's covered by the same setup below.
 - **`app:generate-merchant-feed`** (`app/Console/Commands/GenerateMerchantFeed.php`) — regenerates `public/google-merchant-feed.xml` (also gitignored), the Google Merchant Center product feed. Same reasoning as the sitemap: content changes daily (new products, price/stock changes), and the feed needs to track that without a human remembering to re-run anything.
+
+- **`app:send-back-in-stock`** (`app/Console/Commands/SendBackInStockNotifications.php`, **hourly**) — emails users whose "notify me when back in stock" product option has stock again (see [SHOP.md](SHOP.md#productpagevue--product-detail)). Queues `UserNotifications` jobs, so it also needs the queue worker. Not part of `npm run build`.
 
 All three are also chained onto the end of `npm run build` (see `package.json`'s `build` script) — the schedule keeps them fresh day-to-day between deploys, the build step means a deploy doesn't have to wait for the next midnight run to reflect what just shipped.
 

@@ -3,7 +3,9 @@ import "./bootstrap";
 
 // Climbing touches: chalk-dust puff on main buttons, climbing placeholder for missing images
 import { installChalkBurst } from "./services/fun/chalkBurst.js";
+import { install_motion } from "./services/motion.js";
 import { installImageFallback } from "./services/fun/imageFallback.js";
+install_motion();
 installChalkBurst();
 installImageFallback();
 import { createHead } from "@unhead/vue/client";
@@ -73,7 +75,9 @@ app.component("nav-badges", NavBadges);
 import NavbarSearch from "./components/global_components/NavbarSearchComponent.vue";
 app.component("navbar-search", NavbarSearch);
 import SceneImage from "./components/global_components/SceneImageComponent.vue";
+import MotionToggle from "./components/global_components/MotionToggleComponent.vue";
 app.component("cg-scene", SceneImage);
+app.component("motion-toggle", MotionToggle);
 
 import CanvasJsonDataShow from "./components/global_components/CanvasJsonDataShowComponent.vue";
 app.component("canvas-json-show", CanvasJsonDataShow);
@@ -208,6 +212,21 @@ app.mixin({
                 month: 'long',
                 day: 'numeric'
             });
+        },
+        // "3 days ago" / "3 დღის წინ"; falls back to the full date after ~a month
+        $timeAgo(dateStr) {
+            if (!dateStr) return '';
+            const date = new Date(String(dateStr).replace(' ', 'T'));
+            if (isNaN(date)) return dateStr;
+            const sec = Math.round((date - Date.now()) / 1000);
+            const abs = Math.abs(sec);
+            if (abs > 35 * 86400) return this.$formatDate(date);
+            const locale = this.$i18n?.locale === 'ka' ? 'ka-GE' : 'en';
+            const rtf = new Intl.RelativeTimeFormat(locale, { numeric: 'auto' });
+            if (abs < 60) return rtf.format(0, 'second');
+            if (abs < 3600) return rtf.format(Math.round(sec / 60), 'minute');
+            if (abs < 86400) return rtf.format(Math.round(sec / 3600), 'hour');
+            return rtf.format(Math.round(sec / 86400), 'day');
         },
         get_site_data(force = false) {
             if (!force && this.$siteData.loaded && this.$globalSiteData.loaded) {
@@ -502,6 +521,11 @@ if (window.location.hostname == process.env.MIX_USER_PAGE_URL) {
 // this app instance via window.$bus / window.router (see assignments above).
 
 app.use(router);
+
+// <html lang> follows the site language (screen readers, hyphenation, :lang() typography)
+watch(() => i18n.global.locale.value, (value) => {
+    document.documentElement.lang = value === 'ka' ? 'ka' : 'en';
+}, { immediate: true });
 
 app.mount("#app");
 

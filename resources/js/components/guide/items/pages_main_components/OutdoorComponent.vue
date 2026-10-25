@@ -6,15 +6,15 @@
                 <h1 class="blog-title">
                     {{ this.article_prop.locale_data.title  }}
 
-                    <span @click="toggle_favorite_status(article_prop.global_data.id)"> 
-                        <i :class="is_favorite ? 'fa fa-heart favorite_icon add_to_favorite active' : 'fa fa-heart-o favorite_icon add_to_favorite'"></i> 
-                    </span>
+                    <favoriteHeart variant="inline" :article_id="article_prop.global_data.id" />
                 </h1>
             </div>
         </div>
         <div class="row">
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
+
+                <directionsButton :parking="article_prop.global_data.parking" />
 
                 <p v-if="this.article_prop.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.created_label') }}: {{ $formatDate(this.article_prop.global_data.created_at) }}</p>
                 <p v-if="this.article_prop.global_data.updated_at && this.article_prop.global_data.updated_at !== this.article_prop.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.updated_label') }}: {{ $formatDate(this.article_prop.global_data.updated_at) }}</p>
@@ -25,6 +25,19 @@
             <div class="col-sm-8 blog-main">
                 
                 <articleTextBlocks :article_prop="this.article_prop"/>
+
+                <mobileScene
+                    :variant="mobile_variant"
+                    :title="article_prop.locale_data.title"
+                    :lines="area_stats ? [$t('guide.mobile_scene.routes_sectors', { routes: area_stats.routes, sectors: area_stats.sectors })] : []"
+                    target="sectors"
+                    :button="$t('guide.mobile_scene.see_routes')"
+                />
+
+                <areaConditions
+                    :article_id="this.article_prop.global_data.id"
+                    :category="this.article_prop.global_data.category"
+                />
 
                 <!-- routes -->
                 <div v-if="this.article_prop.locale_data.route || this.article_prop.general_info.routes_info != []">
@@ -42,6 +55,7 @@
                 <liveCameraTimeline :article_id="this.article_prop.global_data.id" />
 
                 <routesTab
+                    @loaded="area_stats = $event"
                     :article_id_prop="this.article_prop.global_data.id"
                     ref="routes_tab"
                 />
@@ -85,6 +99,11 @@
     import liveCameraTimeline from '../live_camera/LiveCameraTimelineComponent'
 
     import generalInfo from '../article/GeneralInfoComponent'
+    import areaConditions from '../AreaConditionsComponent.vue'
+    import directionsButton from '../DirectionsButtonComponent.vue'
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
+    import mobileScene from '../MobileSceneComponent.vue'
+    import { remember_viewed } from '../../../../services/guide/recentlyViewed.js'
 
     export default {
         props: [
@@ -101,12 +120,16 @@
             articleTextBlocks,
             generalInfo,
             liveCameraTimeline,
+            areaConditions,
+            directionsButton,
+            favoriteHeart,
+            mobileScene,
         },
 
         data: function () {
             return {
                 posts: [],
-                is_favorite: false,
+                area_stats: null,
 
                 MIX_SITE_URL: process.env.MIX_SITE_URL,
                 MIX_APP_SSH: process.env.MIX_APP_SSH,
@@ -114,9 +137,23 @@
         },
 
 
+        computed: {
+            // same choice as the desktop side scene (RightMenuComponent.sideScene)
+            mobile_variant() {
+                if (this.article_prop.global_data.category === 'ice') return 'ice';
+                if (!this.area_stats || !this.area_stats.routes) return null;
+                return this.area_stats.sectors > 1 ? 'lead' : 'bolter';
+            },
+        },
+
         mounted() {
             this.update_similar_articles_component(this.article_prop.global_data.id)
-            this.check_favorite_status(this.article_prop.global_data.id)
+            remember_viewed({
+                category: this.article_prop.global_data.category,
+                url_title: this.article_prop.global_data.url_title,
+                title: this.article_prop.locale_data.title,
+                image: this.article_prop.image,
+            })
             
             // Check for sector and route parameters from navigation
             // Wait for routesTab to finish loading before attempting scroll
@@ -160,63 +197,6 @@
                 // this.$refs.gallery_component.update(id)
                 this.$refs.comments.update(id);
             },
-
-            check_favorite_status(article_id){
-                axios
-                .get('/get_faworite/check_favorite_status/' + article_id)
-                .then(response => {
-                    this.is_favorite = response.data.is_favorite;
-                })
-                .catch(error => {
-                    console.log('Error checking favorite status:', error);
-                    this.is_favorite = false;
-                });
-            },
-
-
-            toggle_favorite_status(article_id){
-                if(this.is_favorite) {
-                    if(confirm('Are you sure you want to remove this area from your favorites?')){
-                        // Remove from favorites
-                        axios
-                        .delete('/set_faworite/del_favorite_outdoor_area/' + article_id)
-                        .then(response => {
-                            this.is_favorite = false;
-                            // Show success message
-                            alert('Area removed from favorites successfully!');
-                        })
-                        .catch(error => {
-                            if(error.response.status === 401) {
-                                if(confirm('You are not login. Do you want log in?')){
-                                    window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL);
-                                }
-                            }
-                            else{
-                                alert("Error " + error.response.status);
-                            }
-                        });
-                    }
-                } else {
-                    // Add to favorites
-                    axios
-                    .post('/set_faworite_by_user/add_to_favorite_outdoor_area/' + article_id)
-                    .then(response => {
-                        this.is_favorite = true;
-                        alert(response.data);
-                    })
-                    .catch(error => {
-                        if(error.response.status === 401) {
-                            if(confirm('You are not login. Do you want log in?')){
-                                window.open(this.MIX_APP_SSH + 'user.' + this.MIX_SITE_URL);
-                            }
-                        }
-                        else{
-                            alert("Error " + error.response.status);
-                        }
-                    });
-                }
-            },
-
 
             handleRouteNavigation() {
                 // Get query parameters

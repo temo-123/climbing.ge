@@ -10,6 +10,9 @@
                 </div>
             </section>
 
+            <favoriteArticlesStrip category="indoor" />
+            <recentlyViewed category="indoor" />
+
             <div class="row" v-if="indoors.length > 0">
                 <div class="container articles_filter_bar indoor_filter_bar">
                     <div class="col-md-4 col-sm-4" v-if="indoor_regions.length > 0">
@@ -96,6 +99,8 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
     import indoorCard from '../../items/cards/IndoorCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
@@ -182,6 +187,8 @@
             },
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
             indoorCard,
             emptyPageComponent,
             RegionListHeader,

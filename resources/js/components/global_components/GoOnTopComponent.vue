@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import { motion } from '../../services/motion.js';
 // ---- small geometry helpers ---------------------------------------------------
 const P = (x, y) => ({ x, y })
 const f1 = n => n.toFixed(1)
@@ -126,12 +127,15 @@ export default {
         return {
             showButton: false,
             longPage: false,
+            motion,
         };
     },
 
     computed: {
-        // no rope on the user/admin panel or on the climbing wall calculator
+        // no rope on the user/admin panel or on the climbing wall calculator,
+        // nor when the navbar animation switch is off (the button stays)
         ropeEnabled() {
+            if (!this.motion.enabled) return false;
             if (window.location.hostname === process.env.MIX_USER_PAGE_URL) return false;
             return !(this.$route && this.$route.name === 'wall_price_colculator');
         },
@@ -140,7 +144,9 @@ export default {
     mounted() {
         window.addEventListener("scroll", this.handleScroll, { passive: true });
         window.addEventListener("resize", this.handleScroll, { passive: true });
-        this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        this.reduced = window.cgReducedMotion();
+        this.onMotion = () => this.handleScroll();
+        window.addEventListener('cg-motion-change', this.onMotion);
         this.lastScroll = window.pageYOffset;
         this.walk = 0;
         this.landedAt = 0;
@@ -157,6 +163,7 @@ export default {
     },
 
     beforeUnmount() {
+        window.removeEventListener('cg-motion-change', this.onMotion);
         window.removeEventListener("scroll", this.handleScroll);
         window.removeEventListener("resize", this.handleScroll);
         if (this.resizeObserver) this.resizeObserver.disconnect();

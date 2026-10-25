@@ -62,7 +62,7 @@
 
         <Donation v-if="!!article_prop.global_data.show_donation" position="left" :autoShow="false"/>
 
-        <LocalBisnesListComponentComponent />
+        <LocalBisnesListComponentComponent :article_id="article_prop.global_data && article_prop.global_data.id" />
 
     </div>
 </template>

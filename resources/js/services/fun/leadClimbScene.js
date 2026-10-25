@@ -351,10 +351,13 @@ export function bodyPoints(f) {
     }
 }
 
-// rope from the belay device through the clipped bolts to the harness, with sag
-export function ropePath(f) {
+// rope from the belay device (through the belayer's guide hand, when given)
+// through the clipped bolts to the harness, with sag
+export function ropePath(f, guide = null) {
     // the device moves with the belayer when they're pulled off the ground
-    const pts = [P(DEVICE.x + (f.bx || 0), DEVICE.y + (f.by || 0)), ...BOLTS.slice(0, Math.round(f.clipped))]
+    const pts = [P(DEVICE.x + (f.bx || 0), DEVICE.y + (f.by || 0))]
+    if (guide) pts.push(guide)
+    pts.push(...BOLTS.slice(0, Math.round(f.clipped)))
     // while clipping, the rope runs up through the climber's hand, then back to the knot
     if (f.ropeHold) pts.push(P(f[f.ropeHold].x, f[f.ropeHold].y))
     pts.push(P(f.hip.x, f.hip.y + 2))
@@ -362,7 +365,9 @@ export function ropePath(f) {
     for (let i = 1; i < pts.length; i++) {
         const a = pts[i - 1], b = pts[i]
         const last = i === pts.length - 1
-        const sag = last ? f.slack : (i === 1 ? f.slack * 0.6 : f.slack * 0.25)
+        // device → guide hand is short and taut; the slack loop hangs after the hand
+        const first = guide ? 2 : 1
+        const sag = guide && i === 1 ? 0 : (last ? f.slack : (i === first ? f.slack * (guide ? 1.4 : 0.6) : f.slack * 0.25))
         const cx = (a.x + b.x) / 2 + sag * 0.3
         const cy = (a.y + b.y) / 2 + sag
         d += ` Q${cx.toFixed(1)} ${cy.toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}`

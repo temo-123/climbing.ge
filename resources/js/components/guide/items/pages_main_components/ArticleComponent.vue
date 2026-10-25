@@ -5,6 +5,7 @@
                 <div class="article-title-row">
                     <h1 class="blog-title">
                         {{ this.article_prop.locale_data.title  }}
+                        <favoriteHeart variant="inline" :article_id="article_prop.global_data.id" :category="article_prop.global_data.category" />
                     </h1>
                     <share-button
                         :title="this.article_prop.locale_data.title"
@@ -19,6 +20,8 @@
             <div class="col-sm-8 blog-header">
                 <breadcrumb />
 
+                <directionsButton :parking="article_prop.global_data.parking" />
+
                 <p v-if="this.article_prop.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.created_label') }}: {{ $formatDate(this.article_prop.global_data.created_at) }}</p>
                 <p v-if="this.article_prop.global_data.updated_at && this.article_prop.global_data.updated_at !== this.article_prop.global_data.created_at" class="blog-post-meta">{{ $t('guide.article.updated_label') }}: {{ $formatDate(this.article_prop.global_data.updated_at) }}</p>
             </div>
@@ -28,6 +31,13 @@
             <div class="col-sm-8 blog-main">
            
                 <articleTextBlocks :article_prop="this.article_prop"/>
+
+                <mobileScene
+                    :variant="mobile_variant"
+                    :title="article_prop.locale_data.title"
+                    target="comments"
+                    :button="$t('guide.mobile_scene.comments')"
+                />
                 
                 <galleryComponent
                     :images_prop="this.article_prop.gallery_images"
@@ -56,6 +66,9 @@
 </template>
 
 <script>
+    import mobileScene from '../MobileSceneComponent.vue'
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
+    import directionsButton from '../DirectionsButtonComponent.vue'
     import commentForm from '../comments/CommentFormComponent'
     import galleryComponent from '../galleries/GalleryComponent'
     import articleRightMenu from '../navbars/RightMenuComponent'
@@ -67,7 +80,16 @@
         props: [
             'article_prop',
         ],
+        computed: {
+            // same choice as the desktop side scene (RightMenuComponent.sideScene)
+            mobile_variant() {
+                return { indoor: 'indoor', tech_tip: 'safety', other: 'slackline', special: 'bolter' }[this.article_prop.global_data.category] || null;
+            },
+        },
         components: {
+            mobileScene,
+            favoriteHeart,
+            directionsButton,
             commentForm,
             galleryComponent,
             articleRightMenu,

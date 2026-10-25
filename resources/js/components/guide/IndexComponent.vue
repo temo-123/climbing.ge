@@ -2,8 +2,9 @@
     <div>
         <preloader />
         <routeloader v-if="isRouteLoading"/>
+        <a class="cg-skip-link" href="#main-content">{{ $t('global.skip_to_content') }}</a>
         <navbar @grade="grade_action"/>
-        <div class="container top_menu_margin h-recent-work">
+        <div class="container top_menu_margin h-recent-work" id="main-content" tabindex="-1">
             <router-view />
         </div>
 
@@ -13,7 +14,9 @@
         ></div>
         <footter />
         <loginModal />
+        <welcomeQuestions public_site />
         <go_to_top />
+        <on_this_page />
         <toast-notification />
     </div>
 </template>
@@ -22,7 +25,9 @@
     import navbar from "./items/navbars/NavbarComponent";
     import footter from "./items/FooterComponent";
     import loginModal from "../global_components/modals/LoginModalComponent.vue";
+    import welcomeQuestions from "../user/items/preferences/WelcomeQuestionsComponent.vue";
     import go_to_top from "../global_components/GoOnTopComponent.vue";
+    import on_this_page from "../global_components/OnThisPageComponent.vue";
 
     import preloader from "../global_components/loaders/PreloaderComponent.vue";
     import routeloader from "../global_components/loaders/RouteloaderComponent.vue";
@@ -44,8 +49,10 @@
             navbar,
             footter,
             loginModal,
+            welcomeQuestions,
             preloader,
             go_to_top,
+            on_this_page,
             routeloader
         },
         async mounted() {

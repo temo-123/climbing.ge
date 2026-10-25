@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-5">
                 <div class="horizontal-card-image-wrapper">
+                    <favoriteHeart :article_id="article.area.global_data.id" :category="article.area.global_data.category" />
                     <div class="product-image" v-if="article.area.global_data.new_flag">
                         <div class="discount-percent-badge discount-badge-fourty">NEW</div>
                     </div>
@@ -59,6 +60,7 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     export default {
         props: [
             'article',
@@ -70,6 +72,7 @@
             };
         },
         components: {
+            favoriteHeart,
         },
         mounted() {
             //

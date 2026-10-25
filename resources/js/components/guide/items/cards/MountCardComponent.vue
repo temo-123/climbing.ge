@@ -7,6 +7,7 @@
                                 
             <!-- photo + hover mask in one box, so the mask covers exactly the photo -->
             <div class="cg-card-media">
+                <favoriteHeart :article_id="mount.global_data.id" :category="mount.global_data.category" />
                 <site-img v-if="mount.global_data.image != null" :src="'/images/mount_route_img/'+mount.global_data.image" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
                 <site-img v-else :src="'/public/images/site_img/image.png'" :img_class="'img-responsive'" :alt='mount.locale_data.title'/>
 
@@ -35,6 +36,7 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     import MountGradeBarComponent from '../MountGradeBarComponent.vue';
 
     export default {
@@ -47,6 +49,7 @@
             };
         },
         components: {
+            favoriteHeart,
             MountGradeBarComponent,
         },
         mounted() {

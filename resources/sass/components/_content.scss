@@ -1283,3 +1283,6 @@ ul.post-list {
     }
     .portfolio-img.view { height: 100%; margin-bottom: 0; }
 }
+
+// card photos hold the favourite heart (FavoriteHeartComponent, top-right)
+.cg-card-media, .horizontal-card-image-wrapper, .indoor_img { position: relative; }

@@ -30,6 +30,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('send_event_notificatione:users')->daily();
         $schedule->command('app:generate-sitemap')->daily();
         $schedule->command('app:generate-merchant-feed')->daily();
+        $schedule->command('app:send-back-in-stock')->hourly();
         // ->daily();
     }
 

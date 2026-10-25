@@ -246,7 +246,30 @@
             "extra_relations_note": "+{count} extra relation(s) beyond the limit.",
             "delete_last_relation_btn": "Delete last relation",
             "combine_modes_hint": "These can be used together — e.g. relate a whole category and add a few extra articles on top.",
-            "delete_relation_btn": "Remove this relation"
+            "delete_relation_btn": "Remove this relation",
+            "stats": {
+                "column": "Statistics",
+                "title": "Statistics",
+                "period": "Period",
+                "last_days": "{n} days",
+                "metric": {
+                    "impression": "Shown",
+                    "view": "Opened",
+                    "click": "Link clicks",
+                    "photo": "Photo views"
+                },
+                "unique": "{n} unique",
+                "all_time": "{n} all time",
+                "ctr": "Open rate",
+                "ctr_hint": "Opened ÷ shown",
+                "per_day": "Per day",
+                "by_article": "Shown on",
+                "category": "Category",
+                "no_data": "No data yet.",
+                "by_article_hint": "All-time card impressions per guide page (the homepage strip isn't listed).",
+                "fallback": "Redis is not reachable, these numbers come from the fallback cache.",
+                "error": "Could not load the statistics."
+            }
         },
         "live_camera": {
             "live_cameras_table": "Live Cameras",
@@ -961,7 +984,29 @@
             "please_select_category": "Please select a category.",
             "please_select_language": "Please select a language.",
             "please_select_article": "Please select at least one article to export.",
-            "export_error": "An error occurred while exporting the articles."
+            "export_error": "An error occurred while exporting the articles.",
+            "eyebrow": "Export",
+            "page_title": "Export articles",
+            "page_lead": "Download guide articles as a PDF, or their data and routes as spreadsheets (CSV, opens in Excel / Google Sheets).",
+            "step_articles": "Choose articles",
+            "step_format": "Format and options",
+            "search_placeholder": "Search by title, url or region…",
+            "only_published": "Only published",
+            "pick_category_hint": "Pick a category to see its articles.",
+            "select_visible": "Select all shown ({n})",
+            "selected_count": "{n} selected",
+            "sectors_n": "{n} sectors",
+            "summary": "{n} articles → {format}",
+            "download": "Download",
+            "done": "Downloaded {name}",
+            "formats": {
+                "pdf": "PDF",
+                "pdf_desc": "Texts, optionally with sectors and routes",
+                "articles_csv": "Articles CSV",
+                "articles_csv_desc": "One row per article: titles, link, status, counts",
+                "routes_csv": "Routes CSV",
+                "routes_csv_desc": "Every route and pitch of the areas (outdoor / ice)"
+            }
         },
         "multimedia": {
             "page_title": "Media Files Manager",
@@ -2110,7 +2155,9 @@
                 "start_time_placeholder": "Start date/time",
                 "end_time_placeholder": "End date/time",
                 "work_status_normal": "Status: normal working hours",
-                "optional": "optional"
+                "optional": "optional",
+                "parking_label": "Parking / directions",
+                "parking_help": "Coordinates of the parking or approach start (\"41.7151, 44.8271\") or a Google Maps link. Shows a \"Directions\" button on the page."
             },
             "loading": "Loading articles...",
             "no_data": "No data available.",
@@ -2297,6 +2344,47 @@
                 "points_ascent": "Climber points per summit ascent",
                 "points_comment": "Climber points per article comment"
             }
+        },
+        "overview": {
+            "title": "Needs attention",
+            "last_30": "last 30 days",
+            "items": {
+                "comment_complaints": "Comment complaints",
+                "user_complaints": "User complaints",
+                "open_orders": "Orders to ship",
+                "hazard_reports": "Hazard / closure reports",
+                "new_comments": "New comments (7 days)",
+                "new_reviews": "New reviews (7 days)",
+                "draft_articles": "Unpublished articles",
+                "condition_reports": "Condition reports (7 days)",
+                "partner_posts": "Open partner posts",
+                "orders_week": "Orders (7 days)",
+                "revenue_week": "Revenue (7 days)",
+                "back_in_stock_waiting": "Waiting for restock",
+                "new_week": "New users (7 days)",
+                "active_week": "Active users (7 days)"
+            },
+            "series": {
+                "users": "New users",
+                "ascents": "Logged ascents",
+                "comments": "Comments",
+                "orders": "Orders"
+            },
+            "shop_title": "Shop at a glance",
+            "guide_title": "Guide at a glance"
+        },
+        "community": {
+            "tab": "Community",
+            "reports": "Condition reports",
+            "posts": "Partner posts",
+            "empty": "Nothing here yet.",
+            "area": "Area / place",
+            "condition": "Condition",
+            "note": "Note",
+            "author": "Climber",
+            "show": "Show",
+            "hide": "Hide",
+            "error": "Could not change it. Do you have the delete permission for comments?"
         }
     },
     "guide": {
@@ -2414,7 +2502,8 @@
             "login": "@:common.login",
             "sitemap": "Sitemap",
             "spots projects": "Spots Project",
-            "shop": "Shop"
+            "shop": "Shop",
+            "partners": "Find a partner"
         },
         "article_right_nabar": {
             "menu_title": "Navigation Menu",
@@ -2520,7 +2609,9 @@
             "routes": "@:common.routes",
             "no_feedbacks_message": "No feedbacks yet for this route",
             "already_reviewed": "You already have a review for this route.",
-            "deleted_user": "Deleted user"
+            "deleted_user": "Deleted user",
+            "review_ascent_logged": "Your ascent was added to your logbook.",
+            "review_ascent_hint": "Ticking this also adds the ascent to your logbook."
         },
         "sector": {
             "name": "Sector Name",
@@ -2724,7 +2815,36 @@
             "finish_at_prefix": "Finish at -",
             "finished_label": "Finished",
             "start_label": "Start",
-            "end_label": "End"
+            "end_label": "End",
+            "interested_add": "I'm interested",
+            "interested_remove": "Not interested any more",
+            "interested_on": "You're interested",
+            "interested_count": "{n} interested",
+            "interested_login": "Sign up to save events and get a reminder before they start.",
+            "interested_added": "Saved. We'll remind you before it starts.",
+            "interested_removed": "Removed from your events",
+            "details": "Details",
+            "when": "When",
+            "when_upcoming": "Upcoming",
+            "when_past": "Past",
+            "when_all": "All",
+            "cat_all": "All types",
+            "cat_competition": "Competitions",
+            "cat_event": "Festivals & events",
+            "only_mine": "Only mine",
+            "search": "Search events…",
+            "happening_now": "Happening now",
+            "past_year": "{year}",
+            "see_past": "See past events",
+            "all_events": "All events",
+            "at_a_glance": "At a glance",
+            "dates": "Dates",
+            "type": "Type",
+            "interested_title": "Interested",
+            "be_first": "Be the first",
+            "reminder_hint": "Interested climbers get an email reminder before the event.",
+            "see_map": "Show on the map",
+            "more_upcoming": "More upcoming events"
         },
         "search_no_result_faild": "Nothing found! Try again! :)",
         "search_suggested": "@:common.search.suggested",
@@ -2791,7 +2911,9 @@
             "list_title": "Route ascents",
             "empty": "No ascents logged yet.",
             "col_climber": "Climber",
-            "col_grade": "Grade opinion"
+            "col_grade": "Grade opinion",
+            "share_card": "Share your send",
+            "share_sent": "Sent"
         },
         "about": {
             "organization_contacts": "Organization Contacts"
@@ -2804,10 +2926,183 @@
             "starts_in": "Starts in {n} days",
             "starts_today": "Starts today",
             "happening_now": "Happening now",
-            "finished": "Finished"
+            "finished": "Finished",
+            "add_to_calendar": "Add to calendar",
+            "ics": "Apple / Outlook (.ics)",
+            "tomorrow": "Starts tomorrow"
         },
         "side_scene": {
             "ascent_verified": "Summit verified on climbing.ge ✓"
+        },
+        "route_tools": {
+            "title": "Find a route",
+            "progress": "{n} of {total} routes climbed",
+            "search_placeholder": "Search routes by name…",
+            "grade": "Grade",
+            "all": "All",
+            "projects": "Projects",
+            "classics": "Classics",
+            "hide_climbed": "Hide climbed",
+            "showing": "Showing {n} of {total} routes",
+            "clear": "Clear filters",
+            "copy_link": "Copy link to this sector",
+            "climbed": "Climbed",
+            "none_in_sector": "No routes in this sector match the filter."
+        },
+        "conditions": {
+            "title": "Current conditions",
+            "report": "Report conditions",
+            "how_is_it": "How is it right now?",
+            "note_placeholder": "Optional: what did you see? (e.g. \"top of sector B still wet\")",
+            "send": "Post report",
+            "cancel": "Cancel",
+            "empty": "No recent reports. Been here lately? Tell others how it is.",
+            "show_all": "Show all {n} reports",
+            "show_less": "Show less",
+            "delete": "Delete",
+            "delete_confirm": "Delete this report?",
+            "login_needed": "Log in to report conditions. Open the login page?",
+            "error": "Could not save the report. Please try again.",
+            "types": {
+                "dry": "Dry",
+                "wet": "Wet",
+                "ice_good": "Ice is in",
+                "ice_poor": "Poor ice",
+                "crowded": "Crowded",
+                "hazard": "Hazard",
+                "closure": "Closed / no access",
+                "info": "Info"
+            }
+        },
+        "recently_viewed": {
+            "title": "Recently viewed",
+            "clear": "Clear",
+            "categories": {
+                "outdoor": "Outdoor",
+                "ice": "Ice",
+                "indoor": "Indoor",
+                "mount_route": "Mountaineering"
+            }
+        },
+        "mountain": {
+            "section_title": "Before you go",
+            "grade_title": "What does {grade} mean?",
+            "levels": {
+                "1": "Category 1 (F): an easy ascent, mostly walking and scrambling on simple terrain or a gentle glacier. Good fitness and basic mountain experience are enough, but altitude and weather still matter.",
+                "2": "Category 2 (PD): some easy climbing (II–III) and snow or ice slopes. Bring a rope for exposed parts and know how to use crampons and an ice axe.",
+                "3": "Category 3 (AD): sustained climbing with belayed pitches up to III–IV and steeper snow and ice. You need rope work, anchor building and experience from category 2 routes.",
+                "4": "Category 4 (D): technical rock (IV–V) or ice up to about 60°, long days and possibly a bivouac. For experienced alpine teams.",
+                "5": "Category 5 (TD): very difficult, sustained V–VI climbing or steep ice, sometimes aid. A multi-day commitment with serious objective danger.",
+                "6": "Category 6 (ED): extreme routes on the hardest faces and walls. Only for very experienced alpinists."
+            },
+            "gear_title": "Gear checklist",
+            "gear_reset": "Untick all",
+            "gear": {
+                "helmet": "Helmet",
+                "boots": "Mountain boots",
+                "layers": "Warm layers + waterproof jacket",
+                "headlamp": "Headlamp + spare batteries",
+                "first_aid": "First-aid kit",
+                "navigation": "Map / GPS track (offline)",
+                "water_food": "Water and food for the whole day",
+                "sun": "Sunglasses, sunscreen, hat",
+                "phone": "Charged phone + power bank",
+                "crampons_axe": "Crampons and ice axe (snow / glacier)",
+                "harness": "Harness",
+                "rope": "Rope",
+                "slings": "Slings and locking carabiners",
+                "belay_device": "Belay / rappel device",
+                "ice_screws": "Ice screws",
+                "rack": "Rock rack (cams, nuts)",
+                "bivy": "Bivouac gear"
+            },
+            "emergency_title": "Emergency",
+            "emergency_text": "112 is the single emergency number in Georgia (rescue, ambulance, police). Tell someone your route and when you'll be back before you start.",
+            "plan_title": "Share my trip plan",
+            "plan_start": "Start",
+            "plan_back": "Back by",
+            "plan_team": "Team",
+            "plan_share": "Share plan",
+            "plan_copied": "Copied",
+            "plan_message_intro": "My climbing plan:",
+            "plan_message_sos": "If I don't check in by the return time, call 112."
+        },
+        "partners": {
+            "title": "Find a climbing partner",
+            "lead": "Need a belayer for Saturday or a team for a mountain route? Post your plan and find people to climb with.",
+            "discipline": "Discipline",
+            "all": "All",
+            "new_post": "Post a plan",
+            "date": "Date",
+            "area": "Area",
+            "area_other": "Other place…",
+            "place": "Place",
+            "place_placeholder": "e.g. Dzama gorge, Kazbegi, a gym",
+            "grade_from": "Grade from",
+            "grade_to": "Grade to",
+            "note": "Note",
+            "note_placeholder": "Who are you looking for? Car, gear, experience…",
+            "contact": "Contact (optional)",
+            "contact_placeholder": "Phone, Instagram, Facebook…",
+            "contact_public": "Visible to everyone. Leave empty to be contacted through your profile.",
+            "publish": "Publish",
+            "empty": "No upcoming plans yet. Be the first to post one!",
+            "view_profile": "View profile",
+            "delete_confirm": "Delete this post?",
+            "login_needed": "Log in to post a plan. Open the login page?",
+            "disciplines": {
+                "sport": "Sport",
+                "boulder": "Bouldering",
+                "multipitch": "Multi-pitch",
+                "trad": "Trad",
+                "ice": "Ice",
+                "alpine": "Alpine",
+                "indoor": "Indoor"
+            },
+            "gate_title": "Log in to join in",
+            "gate_text": "Notes and contacts are visible to climbing.ge members. Signing up takes a minute.",
+            "gate_reason": "Sign up to post your plan and see how to reach other climbers.",
+            "locked": "Log in to see the note and contact"
+        },
+        "favorite": {
+            "added": "Added to your favourite areas",
+            "removed": "Removed from favourites",
+            "undo": "Undo",
+            "error": "Something went wrong. Please try again.",
+            "login_needed": "You're not logged in. Open the login page?",
+            "add_label": "Add to favorites",
+            "remove_label": "Remove from favorites",
+            "my_favorites": "My favorites"
+        },
+        "directions": {
+            "button": "Directions to parking"
+        },
+        "crag_picker": {
+            "title": "Crag for today",
+            "lead": "Tell us your grade and whether you want sun or shade, and we'll suggest an area.",
+            "grade": "Grade",
+            "any": "Any",
+            "sun": "Sun / shade",
+            "sun_any": "No preference",
+            "sun_sun": "Sunny",
+            "sun_shade": "Shady",
+            "sun_morning_shade": "Shade in the morning",
+            "sun_afternoon_shade": "Shade in the afternoon",
+            "family": "Family / kids friendly",
+            "family_short": "Family friendly",
+            "walk": "up to {n} min walk",
+            "routes": "routes",
+            "routes_in": "routes {band}",
+            "none": "No area matches all of that. Try a different grade or sun option.",
+            "hint_summer": "It's summer: shady walls are the better bet.",
+            "hint_winter": "It's winter: look for sunny walls."
+        },
+        "mobile_scene": {
+            "jump": "Jump in",
+            "routes_sectors": "{routes} routes · {sectors} sectors",
+            "see_routes": "See the routes",
+            "comments": "Read comments",
+            "before_you_go": "Before you go"
         }
     },
     "shop": {
@@ -3127,7 +3422,10 @@
                 "condition_used_fair": "Used - Fair",
                 "condition_refurbished": "Refurbished",
                 "condition_damaged": "Damaged / Defective"
-            }
+            },
+            "remove_from_favorites": "Remove from favorites",
+            "favorite_added": "Saved to your favorites",
+            "favorite_removed": "Removed from favorites"
         },
         "tour": {
             "warning": "@:common.warning",
@@ -3202,6 +3500,33 @@
             "lang_error": "@:common.search.lang_error",
             "did_you_mean": "@:common.search.did_you_mean",
             "you_searched": "@:common.search.you_searched"
+        },
+        "back_in_stock": {
+            "notify": "Notify me when it's back",
+            "choose_option": "Choose a variant to get notified",
+            "subscribed": "We'll email you when it's back",
+            "cancel": "Cancel",
+            "login_needed": "Log in to get a back-in-stock email. Open the login page?"
+        },
+        "product_card": {
+            "outlet": "Outlet",
+            "quick_view": "Quick view",
+            "photo": "Photo {n}",
+            "from": "from",
+            "variants": "{n} variants",
+            "from_price": "from {price} ₾",
+            "prev_photo": "Previous photo",
+            "next_photo": "Next photo"
+        },
+        "product_page": {
+            "you_save": "You save ₾ {amount}",
+            "sold_out": "sold out",
+            "left": "{n} left",
+            "secure_payment": "Secure card payment",
+            "reviews_n": "{n} reviews",
+            "details": "Details",
+            "reviews": "Reviews",
+            "similar": "Similar products"
         }
     },
     "films": {
@@ -3284,7 +3609,8 @@
         },
         "pagination_button": {
             "show_older_articles": "Show Older Article"
-        }
+        },
+        "reading_time": "{n} min read"
     },
     "summit": {
         "name": "Summit Ascents",
@@ -3802,9 +4128,9 @@
                 "view_product": "View product"
             },
             "outdoor": {
-                "tab_areas": "Favorite outdoor areas",
+                "tab_areas": "Favorite articles",
                 "tab_reviews": "Sport climbing route reviews",
-                "title": "Favorite climbing spots",
+                "title": "Favorite areas, routes and articles",
                 "go_to_list": "Go to outdoor spot list",
                 "empty": "You don't have any favorite climbing spots",
                 "confirm_delete": "Are you sure you want to remove this area from your favorites?",
@@ -3824,7 +4150,8 @@
                 "empty": "You don't have any interested events",
                 "finished": "Finished",
                 "confirm_delete": "Are you sure you want to remove this event from your favorites?",
-                "remove_tooltip": "Remove from favorites"
+                "remove_tooltip": "Remove from favorites",
+                "empty_past": "No past events in your list yet."
             },
             "films": {
                 "title": "Favorite climbing films",
@@ -3834,6 +4161,18 @@
                 "empty_hint": "Browse the film list and tap the heart on any film to save it here.",
                 "remove_tooltip": "Remove from favorites",
                 "view_film": "Watch film"
+            },
+            "categories": {
+                "outdoor": "Outdoor",
+                "ice": "Ice",
+                "indoor": "Indoor",
+                "mount_route": "Mountaineering",
+                "other": "Other",
+                "tech_tip": "Tech tips",
+                "partners": "Partners",
+                "spot_projects": "Projects",
+                "news": "News",
+                "special": "Special articles"
             }
         },
         "notifications": {
@@ -3971,7 +4310,7 @@
             "home": "Home",
             "favorites": "Favorites",
             "favorites_favorite_products": "Favorite products",
-            "favorites_favorite_outdoor_area": "Favorite outdoor area",
+            "favorites_favorite_outdoor_area": "Favorite articles",
             "favorites_interested_events": "Interested events",
             "guide": "Guide",
             "guide_indoor_climbing": "Indoor climbing",
@@ -4223,6 +4562,122 @@
             "total": "Total ascents",
             "hardest": "Hardest send",
             "hardest_boulder": "Hardest boulder"
+        },
+        "climbing_stats": {
+            "pyramid": "Grade pyramid",
+            "pyramid_empty": "Log a clean send (onsight, flash or redpoint) to start your pyramid.",
+            "per_month": "Ticks per month",
+            "this_year": "{n} ticks in the last 12 months",
+            "badges": "Badges",
+            "badge": {
+                "first_tick": "First tick",
+                "first_tick_desc": "Logged your first ascent",
+                "ten_routes": "Ten routes",
+                "ten_routes_desc": "Climbed 10 different routes",
+                "fifty_routes": "Fifty routes",
+                "fifty_routes_desc": "Climbed 50 different routes",
+                "grade_6a": "6a club",
+                "grade_6a_desc": "Sent a 6a or harder",
+                "grade_7a": "7a club",
+                "grade_7a_desc": "Sent a 7a or harder",
+                "grade_8a": "8a club",
+                "grade_8a_desc": "Sent an 8a or harder",
+                "onsight_5": "Sharp eye",
+                "onsight_5_desc": "Five onsights",
+                "explorer": "Explorer",
+                "explorer_desc": "Climbed in 5 different sectors",
+                "all_year": "All-season",
+                "all_year_desc": "Climbed in 6 of the last 12 months"
+            }
+        },
+        "preferences": {
+            "tab": "Preferences",
+            "title": "Your defaults",
+            "lead": "Applied on every device you log in on. You can still change them for one device with the switches in the header.",
+            "lang": "Language",
+            "grade": "Route grade system",
+            "grade_hint": "Shown next to the French grade in route tables.",
+            "mount_grade": "Mountaineering grade system",
+            "mount_grade_hint": "Which scale is shown first on mountaineering routes.",
+            "mount_russian": "Russian / Georgian",
+            "mount_french": "French alpine",
+            "animations": "Animations",
+            "animations_hint": "Climbing scenes, moving illustrations and transitions.",
+            "animations_on": "On",
+            "animations_off": "Off",
+            "saved": "Saved and applied",
+            "error": "Could not save your preferences."
+        },
+        "welcome": {
+            "title": "Welcome to climbing.ge, {name}!",
+            "lead": "Two quick questions so the site fits you. You can change everything later in your options.",
+            "q_interests": "What are you into?",
+            "q_interests_hint": "We'll email you when something new appears there. Pick as many as you like.",
+            "q_defaults": "How do you like it?",
+            "skip": "Skip",
+            "back": "Back",
+            "next": "Next",
+            "finish": "Save and start",
+            "done": "All set! Your preferences are saved.",
+            "interests": {
+                "outdoor": "Outdoor climbing",
+                "indoor": "Climbing gyms",
+                "ice": "Ice climbing",
+                "mountaineering": "Mountaineering",
+                "shop": "Gear & shop",
+                "tours": "Tours & guides",
+                "blog": "News & blog",
+                "films": "Films"
+            },
+            "q_photo": "Add a profile photo",
+            "q_photo_hint": "Climbers and partners recognise you faster with a photo.",
+            "photo_pick": "Choose a photo",
+            "photo_change": "Choose another",
+            "photo_hint_small": "We crop it to a square. JPG or PNG.",
+            "photo_bad": "This file isn't an image we can use.",
+            "photo_failed": "Upload failed. Try again or skip for now.",
+            "later": "Later"
+        },
+        "overview": {
+            "profile_title": "Finish your climber profile",
+            "profile_lead": "{done} of {total} done. A complete profile helps partners and other climbers find you.",
+            "profile_items": {
+                "verified": "Verify your email",
+                "photo": "Add a photo",
+                "bio": "Write a short bio",
+                "location": "Add your city",
+                "social": "Link Instagram / Facebook",
+                "preferences": "Set your preferences",
+                "first_ascent": "Log your first ascent"
+            },
+            "my_climbing": "My climbing",
+            "this_year": "{n} this year",
+            "stats": {
+                "route_ascents": "Routes climbed",
+                "mtp_ascents": "Multi-pitches",
+                "summit_ascents": "Summits",
+                "reviews": "Reviews",
+                "favorites": "Favorite articles",
+                "orders": "Orders"
+            },
+            "recent_ascents": "Recent ascents",
+            "see_all": "See all",
+            "no_ascents": "No ascents logged yet. Open a route on the guide and press \"Log ascent\".",
+            "find_routes": "Find routes",
+            "coming_up": "Coming up",
+            "no_events": "No upcoming events you're interested in.",
+            "browse_events": "Browse events",
+            "last_order": "Order #{id}",
+            "order_received": "Received",
+            "partner_posts": "You have {n} open partner posts",
+            "no_partner_posts": "Looking for a climbing partner?",
+            "open_board": "Partner board",
+            "actions": {
+                "find_crag": "Find a crag",
+                "logbook": "My logbook",
+                "partner": "Find a partner",
+                "preferences": "Preferences"
+            }
         }
     },
     "global": {
@@ -4362,7 +4817,20 @@
         "language": "Language",
         "grade_system": "Grade system",
         "search": "Search",
-        "top_out": "Top out — back to the top"
+        "top_out": "Top out — back to the top",
+        "on_this_page": "On this page",
+        "close": "Close",
+        "search_recent": "Recent searches",
+        "search_kbd_move": "move",
+        "search_kbd_open": "open",
+        "skip_to_content": "Skip to content",
+        "ascents_count": "{n} ascents logged",
+        "motion": {
+            "turn_off": "Turn animations off",
+            "turn_on": "Turn animations on",
+            "on_toast": "Animations are on",
+            "off_toast": "Animations are off"
+        }
     },
     "error": {
         "404": {
@@ -4518,6 +4986,20 @@
             "perk_summit": "Record your summit ascents",
             "perk_shop": "Order gear and track purchases",
             "perk_training": "Sync trainings with the mobile app"
+        },
+        "quick_register": {
+            "tab": "Sign up",
+            "title": "Create your account",
+            "name": "Name",
+            "surname": "Surname",
+            "email": "Email",
+            "password": "Password",
+            "password_hint": "At least 8 characters.",
+            "accept_1": "I agree with the",
+            "accept_2": "and the",
+            "submit": "Create account",
+            "done": "Welcome! Your account is ready. Check your email to verify it.",
+            "error": "Could not create the account. Please try again."
         }
     },
     "privacy": {

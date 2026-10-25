@@ -9,6 +9,7 @@ use App\Models\Guide\Sector;
 use App\Models\Guide\Route;
 use App\Models\Guide\Mtp;
 use App\Models\Guide\Locale_article;
+use App\Models\Guide\Mtp_pitch;
 use App\Services\ArticlesService;
 use App\Services\PermissionService;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -51,8 +52,105 @@ class ExportController extends Controller
         $auth = PermissionService::authorize('export', 'show');
         if ($auth) return $auth;
 
-        $articles = Article::where('category', $category)->get();
-        return response()->json($articles);
+        // titles in both languages + region and sector count, for the export page list
+        $articles = Article::where('category', $category)
+            ->with('outdoor_region:id,us_name')
+            ->withCount('sectors')
+            ->orderByDesc('updated_at')
+            ->get(['id', 'category', 'url_title', 'published', 'us_article_id', 'ka_article_id', 'created_at', 'updated_at']);
+        $titles = Locale_article::whereIn('id', $articles->pluck('us_article_id')->merge($articles->pluck('ka_article_id'))->filter())
+            ->pluck('title', 'id');
+
+        return response()->json($articles->map(fn ($a) => array_merge($a->only(['id', 'category', 'url_title', 'published', 'created_at', 'updated_at', 'sectors_count']), [
+            'us_title' => $titles[$a->us_article_id] ?? null,
+            'ka_title' => $titles[$a->ka_article_id] ?? null,
+            'region'   => optional($a->outdoor_region->first())->us_name,
+        ])));
+    }
+
+    /**
+     * CSV with one row per selected article: id, category, titles, public
+     * URL, published, region, sector / route / multi-pitch counts, dates.
+     */
+    public function exportArticlesCsv(Request $request)
+    {
+        $auth = PermissionService::authorize('export', 'show');
+        if ($auth) return $auth;
+
+        $request->validate(['article_ids' => 'required|array', 'article_ids.*' => 'integer']);
+
+        $articles = Article::whereIn('id', $request->article_ids)->with('outdoor_region:id,us_name')->get();
+        $titles = Locale_article::whereIn('id', $articles->pluck('us_article_id')->merge($articles->pluck('ka_article_id'))->filter())->pluck('title', 'id');
+        $sector_ids = Sector::whereIn('article_id', $articles->pluck('id'))->get(['id', 'article_id']);
+
+        $rows = [['id', 'category', 'title_en', 'title_ka', 'url', 'published', 'region', 'sectors', 'routes', 'multi_pitch', 'created_at', 'updated_at']];
+        foreach ($articles as $a) {
+            $own = $sector_ids->where('article_id', $a->id)->pluck('id');
+            $rows[] = [
+                $a->id, $a->category, $titles[$a->us_article_id] ?? '', $titles[$a->ka_article_id] ?? '',
+                $this->publicUrl($a), $a->published ? 'yes' : 'no', optional($a->outdoor_region->first())->us_name,
+                $own->count(), Route::whereIn('sector_id', $own)->count(), Mtp::whereIn('sector_id', $own)->count(),
+                optional($a->created_at)->toDateTimeString(), optional($a->updated_at)->toDateTimeString(),
+            ];
+        }
+
+        return $this->csvResponse($rows, 'articles_' . date('Y-m-d') . '.csv');
+    }
+
+    /**
+     * CSV with every route of the selected areas: area, sector, number,
+     * name, type, grade (+ alternative), bolts, height, author, first ascent,
+     * and every multi-pitch pitch as its own row.
+     */
+    public function exportRoutesCsv(Request $request)
+    {
+        $auth = PermissionService::authorize('export', 'show');
+        if ($auth) return $auth;
+
+        $request->validate(['article_ids' => 'required|array', 'article_ids.*' => 'integer']);
+
+        $articles = Article::whereIn('id', $request->article_ids)->get(['id', 'url_title', 'us_article_id']);
+        $titles = Locale_article::whereIn('id', $articles->pluck('us_article_id')->filter())->pluck('title', 'id');
+
+        $rows = [['area', 'sector', 'sector_published', 'num', 'name', 'type', 'grade', 'alt_grade', 'bolts', 'height', 'author', 'first_ascent', 'multi_pitch']];
+        foreach ($articles as $article) {
+            $area = $titles[$article->us_article_id] ?? $article->url_title;
+            foreach (Sector::where('article_id', $article->id)->orderBy('num')->get() as $sector) {
+                foreach (Route::where('sector_id', $sector->id)->orderBy('num')->get() as $r) {
+                    $rows[] = [$area, $sector->name, $sector->published ? 'yes' : 'no', $r->num, $r->name, $r->category, $r->grade, $r->or_grade, $r->bolts, $r->height, $r->author, $r->first_ascent, ''];
+                }
+                foreach (Mtp::where('sector_id', $sector->id)->orderBy('num')->get() as $mtp) {
+                    foreach (Mtp_pitch::where('mtp_id', $mtp->id)->orderBy('num')->get() as $p) {
+                        $rows[] = [$area, $sector->name, $sector->published ? 'yes' : 'no', $p->num, $p->name, $p->category, $p->grade, $p->or_grade, $p->bolts, $p->height, '', '', $mtp->name];
+                    }
+                }
+            }
+        }
+
+        return $this->csvResponse($rows, 'routes_' . date('Y-m-d') . '.csv');
+    }
+
+    // UTF-8 with BOM so Excel opens Georgian text correctly
+    private function csvResponse(array $rows, string $filename)
+    {
+        $out = fopen('php://temp', 'r+');
+        fwrite($out, "\xEF\xBB\xBF");
+        foreach ($rows as $row) fputcsv($out, array_map(fn ($v) => $v === null ? '' : $v, $row));
+        rewind($out);
+        $csv = stream_get_contents($out);
+        fclose($out);
+
+        return response($csv, 200, [
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ]);
+    }
+
+    private function publicUrl(Article $a): string
+    {
+        $paths = ['outdoor' => 'outdoor', 'ice' => 'ice', 'indoor' => 'indoor', 'mount_route' => 'mountaineering', 'other' => 'other',
+                  'tech_tip' => 'tech_tip', 'news' => 'news', 'partners' => 'partner', 'spot_projects' => 'spot_project', 'special' => 'special_article'];
+        return 'https://' . config('app.site_url') . '/' . ($paths[$a->category] ?? $a->category) . '/' . $a->url_title;
     }
 
     /**

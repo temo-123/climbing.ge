@@ -13,6 +13,7 @@
         ></div>
         <footter />
         <loginModal />
+        <welcomeQuestions public_site />
         <go_to_top />
         <toast-notification />
     </div>
@@ -22,6 +23,7 @@
     import navbar from "./items/NavbarComponent";
     import footter from "./items/FooterComponent";
     import loginModal from "../global_components/modals/LoginModalComponent.vue";
+    import welcomeQuestions from "../user/items/preferences/WelcomeQuestionsComponent.vue";
     import go_to_top from "../global_components/GoOnTopComponent.vue";
 
     import preloader from "../global_components/loaders/PreloaderComponent.vue";
@@ -38,6 +40,7 @@
             navbar,
             footter,
             loginModal,
+            welcomeQuestions,
             preloader,
             go_to_top,
             routeloader

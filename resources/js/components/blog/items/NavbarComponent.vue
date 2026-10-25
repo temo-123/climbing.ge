@@ -15,6 +15,7 @@
 
                 <ul class="cg-nav__tools">
                     <navbar-search site="blog" search_route="search_posts" />
+                    <motion-toggle />
                     <localeSwitcher />
                     <services-switcher current="blog" />
                     <nav-badges />

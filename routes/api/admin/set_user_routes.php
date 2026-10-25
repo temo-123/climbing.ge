@@ -130,6 +130,8 @@ Route::group(['namespace'=>'Api\User\Admin\User', 'middleware'=>['auth:sanctum',
         Route::get('/categories', 'getUniqueCategories');
         Route::get('/articles/{category}', 'getArticlesByCategory');
         Route::post('/articles_pdf', 'exportArticlesPdf');
+        Route::post('/articles_csv', 'exportArticlesCsv');
+        Route::post('/routes_csv', 'exportRoutesCsv');
     });
 });
 

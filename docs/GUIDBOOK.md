@@ -110,6 +110,47 @@ All of the above fetch their record in `mounted()` and gate their whole content 
 
 Full endpoint list in [BACKEND/API.md](BACKEND/API.md#guide--public).
 
+### Area page helpers (October 2026)
+
+All on `OutdoorComponent.vue` (outdoor **and** ice pages) unless noted.
+
+- **Route finder** (`climbing_routes/AreaRouteToolbarComponent.vue`, above the sectors): name search, grade-band chips (≤ 5c+, 6a–6b+, 6c–7a+, 7b+, projects, with counts), "Classics" (rated ≥ 4★ — `reviews_stars`, falling back to the admin `routes.stars`), "Hide climbed", and for logged-in climbers "N of M routes climbed" with a progress bar. The toolbar only edits one reactive `route_tools` object that `SectorAndRoutesTabComponent` **provides**; every `SectorComponent` **injects** it and hides rows with `route_matches()` (`services/guide/routeFilters.js` — grade ranking and bands live there). Ticks come from `set_route_ascent/get_my_route_ascents` (best style wins: onsight > flash > redpoint > toprope) and show as a green ✓ in the row; ratings show as stars next to the name. Sector headings get a copy-link button (`?sector=<id>`, which the page already scrolls to). Ratings in the row are followed by the number of logged ascents, e.g. ★★★★ (12).
+- **Current conditions** (`items/AreaConditionsComponent.vue`, `#conditions`): climbers post a short report — `dry`, `wet`, `crowded`, `hazard`, `closure`, `info`, and on ice pages `ice_good` / `ice_poor` — with an optional note. Latest 3 shown (all on demand), with relative time and the climber's name linking to their profile. `hazard` / `closure` reports from the last 30 days also appear as a warning banner above the card.
+- **Directions** (`items/DirectionsButtonComponent.vue`, also on `ArticleComponent` for indoor gyms): `articles.parking` holds `"lat, lng"` or a Google Maps link, entered in the admin global article form ("Parking / directions", outdoor / ice / indoor). Coordinates become a Google Maps directions link. Migration `2026_10_24_130000_add_parking_to_articles_table.php`.
+- **Recently viewed**: the page records itself in `localStorage` (`services/guide/recentlyViewed.js`); the outdoor / ice / indoor / mountaineering lists and the guide home show a "Recently viewed" strip.
+- **Favourite heart**: no more `confirm()` / `alert()` popups — adding or removing shows a toast, removing has **Undo**.
+
+**Condition reports API** (`area_condition_reports`, model `Guide\AreaConditionReport`, migration `2026_10_24_100000_create_area_condition_reports_table.php`; `user_id` SET NULL and handled with reviews in `AccountDeletionService`):
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `get_area_report/get_area_reports/{article_id}` | public | last 60 days, max 20, `admin_hidden = 0`; user restricted to `id, name, surname, image` |
+| POST | `set_area_report/create_area_report/{article_id}` | `auth:sanctum`, `throttle:10,1` | outdoor / ice articles only; one report per climber per area per 10 min |
+| DELETE | `set_area_report/del_my_area_report/{report_id}` | `auth:sanctum` | own report only |
+| POST | `set_area_report/hide_area_report_admin/{report_id}` | `comment › del` | toggles `admin_hidden` |
+
+### Crag for today (outdoor list)
+
+`items/CragPickerComponent.vue`, collapsed panel under the outdoor list head: pick a grade band, sun preference (any / sunny / shady / shade in the morning / in the afternoon) and "family / kids friendly"; it shows the three areas with the most routes in that band, with the reasons. In summer it pre-selects shade, in winter sun. Data: `GET get_outdoor/get_area_profiles` (`OutdoorController::get_area_profiles`) — per published outdoor area: route counts per band (same bands as the route finder), sun / shade flags from its published sectors, family flag and the longest walking time. **Cached for 1 hour** (`outdoor_area_profiles`); `php artisan cache:forget outdoor_area_profiles` after bulk sector edits if you need it immediately.
+
+`get_filtred_outdoor_spots` / `get_filtred_outdoor_spots_for_gest` now return `[]` for an unknown region id (a stale `?region=` link used to throw "Undefined variable $outdoors").
+
+### Mountaineering route helpers
+
+`items/MountainSafetyComponent.vue`, "Before you go" (`#safety`) on `MountaineeringPageComponent.vue`: the grade in plain words (Russian category 1–6, derived from `mount_grade` in either scale; hidden when no grade is set), a gear checklist that grows with the category and remembers ticks per route in `localStorage` (`cg_gear_<article id>`), and an emergency card — **112** (tap to call) plus "Share my trip plan" (start, back-by time, team → native share sheet or clipboard).
+
+### Find a partner (`/partners`)
+
+`pages/PartnersPageComponent.vue`, linked from the header "Rock climbing" menu. **Guests** see who goes where and when, but notes and contacts are only sent to logged-in users (`get_partner_posts` blanks them and sets `has_note` / `has_contact` when `auth('sanctum')` has no user); a banner and the locked cards open the login / quick sign-up modal, and posting a plan does too. Climbers post a day, discipline (`sport`, `boulder`, `multipitch`, `trad`, `ice`, `alpine`, `indoor`), an area (outdoor / ice / indoor article) or free-text place, grade range, note and an optional public contact. Posts are grouped by day and filtered by discipline; they disappear after their date. Table `partner_posts` (model `Guide\PartnerPost`, migration `2026_10_24_120000_create_partner_posts_table.php`; `user_id` cascades, `article_id` SET NULL).
+
+| Method | Path | Auth | Notes |
+|---|---|---|---|
+| GET | `get_partner_post/get_partner_posts` | public | upcoming, `admin_hidden = 0`, max 100; user restricted to `id, name, surname, image` |
+| POST | `set_partner_post/create_partner_post` | `auth:sanctum`, `throttle:10,1` | date today … +6 months; area **or** place required; max 5 open posts per climber |
+| GET | `set_partner_post/get_my_partner_posts` | `auth:sanctum` | ids, so the page can offer Delete |
+| DELETE | `set_partner_post/del_my_partner_post/{post_id}` | `auth:sanctum` | own post only |
+| POST | `set_partner_post/hide_partner_post_admin/{post_id}` | `comment › del` | toggles `admin_hidden` |
+
 ---
 
 ## Database Structure
@@ -297,6 +338,8 @@ route_ascents
 
 **Frontend:** the route Info modal (`RouteModalComponent.vue`) shows "Log ascent" and "Ascents (N)" (`ascents_count` from `get_route_for_modal`), opening `CreateRouteAscentModal.vue` / `RouteAscentsListModal.vue` (in `climbing_routes/items/modals/ascents/`) through `SectorComponent.vue`. The create modal hides Onsight for boulders and offers grade opinions in the route's own scale (French for sport, V-scale for boulders). The list modal shows per-style counts and the most-suggested grade. User page `/my_route_ascents` (`MyRouteAscentsListPage.vue`, left menu → Favorites) is the climber's logbook with total / hardest send / hardest boulder (toprope excluded); admin page `/route_ascents` (`RouteAscentsAdminPage.vue`, left menu → Guide). Route ascents don't count toward [climber points](CLIMBER_PROFILE.md#the-points-system) yet.
 
+**Logbook stats** (`user/items/ClimbingStatsComponent.vue` on `/my_route_ascents`, computed from the same ascents list): grade pyramid of distinct routes sent clean (onsight / flash / redpoint), ticks per month for the last 12 months, and nine milestone badges (first tick, 10 / 50 routes, 6a / 7a / 8a club, 5 onsights, 5 sectors, 6 active months). After logging a non-toprope ascent, the create modal offers **Share your send** (`services/fun/shareCard.js`) and buzzes the phone briefly.
+
 ### Local Businesses
 
 Businesses (guesthouses, shops, tour operators) linked to climbing areas. An article can be related to at most **4** businesses (`Admin\Guide\LocalBisnesController::MAX_RELATIONS_PER_ARTICLE`, returned to the admin relation tabs as `max_relations`; the slot columns follow it). On the article page they're shown by `LocaleBisnesListComponent.vue` as cards in a slider.
@@ -310,6 +353,8 @@ suport_local_bisneses (global)
 
 Visibility controlled by `published_date` — only show if still within date range.
 
+**Statistics** (Redis, `App\Services\BusinessStatsService`): the guide reports `impression` (card shown on an article page — with the article id — or on the homepage strip), `view` (business modal opened), `click` (a link in the business text) and `photo` (gallery photo opened) to `POST get_bisnes/track/{bisnes_id}` (public, `throttle:120,1`; nothing is sent from the user panel). Keys: `cg:biz:{id}:{metric}` and `…:uniq` (hashes of `Y-m-d` → count; unique = one per hashed IP + user agent per day via a 2-day `SET NX` marker) and `cg:biz:{id}:impression:art` (article id → count). Days older than 400 are trimmed on read. If Redis is down, the same structure goes to the default cache. Admin: chart button in the "Local businesses" table → `BisnesStatsModalComponent.vue` (7 / 30 / 90 / 365 days: totals with unique and all-time, open rate = opened ÷ shown, per-day bars with toggleable metrics, "shown on" table) from `GET set_bisnes/get_bisnes_stats/{id}?days=` (`local_bisnes › show`).
+
 ![Local business structure](DEMO_IMAGES/Guidbook/Local_business_structure.svg)
 
 ### Events
@@ -319,18 +364,33 @@ events (global)
 └── locale_events (locale: title, description, dates)
 ```
 
-Users can mark events as "interested" → stored in `interested_events`.
+Users can mark events as "interested" → stored in `interested_events` (the events favourite list; the daily reminder emails go to these users).
+
+**Frontend (October 2026 redesign):**
+- `items/cards/EventCardComponent.vue` — one card everywhere (events list, homepage block, "More upcoming events", user panel): photo with a tear-off date tag, category chip, status pill (starts in N days / tomorrow / today / happening now / finished), date range + time, short text (placeholder texts like "." hidden), interested heart + count. `external` prop = full guide URL in a new tab (user panel). Replaces `EventListCardComponent` (timeline) and `IndexEventCardComponent`.
+- `services/guide/eventDates.js` — `event_status()`, `range_label()`, `has_time()` on real dates (the old cards compared day and month numbers separately and were wrong across months / years).
+- `services/guide/interested.js` + `items/InterestedButtonComponent.vue` (`card` heart / `big` button with count) — one shared reactive set from `GET get_faworite/get_interested_event_ids`; counts are adjusted locally after a toggle; removing offers Undo; guests get the login / quick sign-up modal and the event is saved after sign-in.
+- `pages/lists/EventsListPageComponent.vue` — the **timeline**: a central line with competitions on the left and festivals on the right (legend above), a hexagon marker (green and pulsing while happening, grey when finished) and a date flag pointing at the line for each event, and a label on the line for each group. On phones the line moves to the left and the flag sits above the card. All published events, filters in the URL (`when` upcoming / past / all, `cat` competition / event, `mine=1`, `q`); upcoming grouped "Happening now" + per month, past per year (newest first).
+- `pages/pages/EventPageComponent.vue` — photo hero (category, dates, title, interested button with count, share), dates panel with add-to-calendar, text / info / map, sticky "At a glance" card, then up to three more upcoming events.
+- User panel `/interested_events` — the same cards with Upcoming / Past tabs.
+
+**API:** `get_event_on_site_list/{lang}` now returns **every** published event (past ones too) with `global_event.interested_count`; `get_event_on_index_page/{lang}` the next three that haven't finished (it used to compare month/day numbers and missed events ending next year); `get_event_on_site_page` 404s for unpublished events (they used to open by URL) and includes `interested_count`.
 
 ![Favorites diagram](DEMO_IMAGES/Guidbook/Favorites_and_events.svg)
 
-### Favorite Outdoor Areas
+### Favorite Articles
 
-Registered users can save favorite climbing areas:
-```
-favorite_outdoor_areas
-├── user_id
-└── article_id (outdoor spot)
-```
+Registered users can favourite **any guide article except news and special articles** (blog posts and films have their own favourites). Despite its name, `favorite_outdoor_areas` (`user_id`, `article_id`) holds all of them; allowed categories are `Favorite_outdoor_area::CATEGORIES` (outdoor, ice, indoor, mount_route, other, tech_tip, partners, spot_projects), checked when adding.
+
+- **Heart** (`items/FavoriteHeartComponent.vue`): next to the title on outdoor / ice, mountaineering and every `ArticleComponent` page, and over the photo of every list card (outdoor, article, indoor, mountaineering, horizontal variants). One shared reactive set (`services/guide/favorites.js`) loaded with `GET get_faworite/get_favorite_article_ids`, so a page with many cards makes one request. Removing shows a toast with **Undo**.
+- **"My favorites" strip** (`items/FavoriteArticlesStripComponent.vue`) at the top of the outdoor, ice, indoor, mountaineering and other lists, from `GET get_faworite/get_favorite_articles?lang=` (published only, newest first).
+- User page `/my_favorite_outdoor_area` ("Favorite articles") lists all types with category filters.
+- `DELETE set_faworite/del_favorite_outdoor_area/{article_id}` used to read `$request->article_id` (never set) and removed nothing — fixed to use the route parameter.
+- Favourite-area update notifications (`ArticleResolver`) now cover every favourited type.
+
+### Route reviews vs ascents
+
+Ascent data no longer lives on reviews: when a climber ticks "I climbed it" in the review form, `RoutesReitingController::log_ascent_from_review()` creates a `route_ascents` row (style mapped: onsite → onsight, flash, second_go → redpoint with 2 attempts, redpoint, top_rope → toprope; skipped if the same climber + route + day is already logged) and the review is saved without `climbed_data` / `ascent_style`. Old reviews are moved once with `docs/BACKEND/sql-imports/2026_10_24_review_ascents_to_route_ascents.sql` (idempotent). Star ratings everywhere (route row, route / MTP modals, MTP block) are followed by the **ascent count** — `ascents_count` in `get_sector_and_routes` (grouped counts of `route_ascents` / `mtp_ascents`) and in the modal endpoints; `StarReitingShowComponent` takes it as `ascents_count_prop`.
 
 ---
 

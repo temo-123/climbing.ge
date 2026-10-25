@@ -10,6 +10,8 @@
                 </div>
             </section>
 
+            <favoriteArticlesStrip category="other" />
+
             <!-- View Controls -->
             <div class="row view_controls_bar">
                 <div class="col-md-12 text-start float-start">
@@ -75,6 +77,7 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
     import articleComponent from '../../items/cards/ArticleCardComponent'
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
@@ -97,6 +100,7 @@
             };
         },
         components: {
+            favoriteArticlesStrip,
             articleComponent,
             articleHorithontalCardComponent,
             emptyPageComponent,

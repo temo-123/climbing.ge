@@ -6,6 +6,9 @@
                 <h2 :id="'sector-' + sector.sector.id">
                     {{ $t("guide.article.title.sector name") }} —
                     <strong>{{ sector.sector.name }}</strong>
+                    <button type="button" class="cg-copy-link d-print-none" :title="$t('guide.route_tools.copy_link')" :aria-label="$t('guide.route_tools.copy_link')" @click="copy_sector_link">
+                        <i class="fa" :class="link_copied ? 'fa-check' : 'fa-link'" aria-hidden="true"></i>
+                    </button>
                 </h2>
             </div>
             <div v-if="sector.has_route_drawings" class="sector-header-action">
@@ -102,12 +105,17 @@
             <tbody>
                 <tr
                     v-for="route in sector.sport_routes"
+                    v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
-                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                    :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
                 >
                     <td class="cg-col-num">{{ route.num }}</td>
-                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">{{ route.name }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                        {{ route.name }}
+                        <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
+                        <span v-if="stars(route) > 0 || route.ascents_count > 0" class="cg-route-stars" :title="(stars(route) ? stars(route) + ' / 5 · ' : '') + $t('global.ascents_count', { n: route.ascents_count || 0 })"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i><small v-if="route.ascents_count > 0" class="cg-route-ascents">({{ route.ascents_count }})</small></span>
+                    </td>
                     <td class="cg-col-height">{{ route.height }}</td>
 
                     <td class="cg-col-bolts" v-if="route.category == 'tred'">Tred</td>
@@ -156,12 +164,17 @@
             <tbody>
                 <tr
                     v-for="route in sector.boulder_route"
+                    v-show="route_visible(route)"
                     :key="route.id"
                     :data-route-id="route.id"
-                    :class="isRouteActive(route.id) ? 'route-active' : ''"
+                    :class="[isRouteActive(route.id) ? 'route-active' : '', ticked(route) ? 'route-ticked' : '']"
                 >
                     <td class="cg-col-num">{{ route.num }}</td>
-                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">{{ route.name }}</td>
+                    <td class="route-name-cell cg-col-name" @click="show_route_modal(route.id)">
+                        {{ route.name }}
+                        <span v-if="ticked(route)" class="cg-tick" :title="$t('guide.route_tools.climbed') + ' · ' + ticked(route)"><i class="fa fa-check" aria-hidden="true"></i><span class="visually-hidden">{{ $t('guide.route_tools.climbed') }}</span></span>
+                        <span v-if="stars(route) > 0" class="cg-route-stars" :title="stars(route) + ' / 5'" :aria-label="stars(route) + ' / 5'"><i v-for="n in Math.round(stars(route))" :key="n" class="fa fa-star" aria-hidden="true"></i></span>
+                    </td>
                     <td class="cg-col-height">{{ route.height }}</td>
 
                     <td class="cg-col-grade" v-if="route.or_grade != null">
@@ -190,6 +203,10 @@
         </table>
         </div>
 
+        <p v-if="filter_hides_all" class="cg-route-none">
+            <i class="fa fa-filter" aria-hidden="true"></i> {{ $t('guide.route_tools.none_in_sector') }}
+        </p>
+
         <div
             v-for="mtp in sector.mtps"
             :key="mtp.id"
@@ -202,9 +219,10 @@
                         <strong>{{ mtp.mtp_name }}</strong>
                     </h3>
                     <starsReiting
-                        v-if="mtp.reviews_count > 0"
+                        v-if="mtp.reviews_count > 0 || mtp.ascents_count > 0"
                         :reviews_count_prop="mtp.reviews_count"
                         :reviews_stars_prop="mtp.reviews_stars"
+                        :ascents_count_prop="mtp.ascents_count || 0"
                     />
                 </div>
                 <div class="col-12 col-md-4 d-flex align-items-center">
@@ -340,6 +358,7 @@ import SectorIconTip from './SectorIconTip.vue';
 
 import openImg from "../../ImageOpenComponent.vue";
 import grade_chart  from '../../../../../mixins/grade_chart_mixin.js'
+import { route_matches, route_stars, is_filtering } from '../../../../../services/guide/routeFilters.js'
 
 export default {
     mixins: [
@@ -364,8 +383,17 @@ export default {
     props: [
         "sector",
     ],
+    // filter + ticks from the area toolbar; absent where the sector is shown alone
+    inject: {
+        route_tools: { default: null },
+    },
 
     computed: {
+        filter_hides_all() {
+            if (!is_filtering(this.route_tools)) return false;
+            const rows = (this.sector.sport_routes || []).concat(this.sector.boulder_route || []);
+            return rows.length > 0 && !rows.some(r => route_matches(r, this.route_tools));
+        },
         // Every sector image as one list, so the lightbox can page through them
         // instead of forcing a close/reopen per photo.
         sector_gallery() {
@@ -379,6 +407,7 @@ export default {
 
     data: function () {
         return {
+            link_copied: false,
             get activ_grade() {
                 return localStorage.getItem('grade') || 'yds';
             },
@@ -399,6 +428,26 @@ export default {
         },
 
 
+
+        route_visible(route) {
+            return route_matches(route, this.route_tools);
+        },
+        ticked(route) {
+            return this.route_tools && this.route_tools.ticked[route.id];
+        },
+        stars(route) {
+            return route_stars(route);
+        },
+        // ?sector=<id> is what OutdoorComponent scrolls to on load
+        copy_sector_link() {
+            const url = new URL(window.location.href);
+            url.search = '';
+            url.hash = '';
+            url.searchParams.set('sector', this.sector.sector.id);
+            const done = () => { this.link_copied = true; setTimeout(() => { this.link_copied = false; }, 1800); };
+            if (navigator.clipboard) navigator.clipboard.writeText(url.toString()).then(done).catch(() => window.prompt('', url.toString()));
+            else window.prompt('', url.toString());
+        },
 
         isRouteActive(routeId) {
             // Check if the current route ID matches the route parameter from URL
@@ -496,6 +545,38 @@ export default {
 </style>
 
 <style scoped>
+/* toolbar extras: copy link, climbed ✓, stars, "nothing matches" */
+.cg-copy-link {
+    margin-left: .4rem;
+    padding: .1rem .35rem;
+    border: 0;
+    border-radius: var(--cg-r-sm, 6px);
+    background: transparent;
+    color: var(--cg-muted);
+    font-size: .8em;
+    vertical-align: middle;
+    opacity: .55;
+    transition: opacity .15s, color .15s;
+}
+.sector-header:hover .cg-copy-link, .cg-copy-link:focus-visible { opacity: 1; color: var(--cg-accent); }
+.cg-tick {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-left: .3rem;
+    border-radius: 50%;
+    background: #2fa36b;
+    color: #fff;
+    font-size: .65rem;
+    vertical-align: middle;
+}
+.route-ticked .cg-col-name { color: #1e7a4f; }
+.cg-route-stars { margin-left: .35rem; color: var(--cg-hold, #ffc233); font-size: .7rem; white-space: nowrap; vertical-align: middle; }
+.cg-route-stars .fa { text-shadow: 0 0 1px rgba(0,0,0,.35); }
+.cg-route-ascents { margin-left: .2rem; color: var(--cg-stone); font-weight: 700; font-size: .72rem; }
+.cg-route-none { margin: .5rem 0 1rem; padding: .6rem .8rem; border-radius: var(--cg-r); background: var(--cg-chalk); color: var(--cg-stone); font-weight: 700; font-size: .9rem; }
 /* Friendly styles for SectorComponent */
 
 .sector-block {

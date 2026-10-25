@@ -35,6 +35,7 @@
                     <div class="form-group">
                         <label class="form-label">{{ $t('guide.route.did_you_climb') }}</label>
                         <input type="checkbox" v-model="data.climbed" class="form-check-input">
+                        <small class="form-text text-muted d-block">{{ $t('guide.route.review_ascent_hint') }}</small>
                     </div>
                 </div>
 
@@ -196,6 +197,8 @@ export default {
             })
                 .then((response) => {
                     this.success_message = response.data.message || 'Thank you for your feedback!';
+                    // "I climbed it" now lands in the logbook as a route ascent
+                    if (response.data.ascent_logged) this.success_message += ' ' + this.$t('guide.route.review_ascent_logged');
                 })
                 .catch((error) => {
                     if (error.response?.data?.already_reviewed) {

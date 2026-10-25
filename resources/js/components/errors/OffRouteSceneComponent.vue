@@ -81,7 +81,12 @@
                 <path d="M-3 -32l-4 16 2 16M2 -32l5 15-1 17" fill="none" stroke="#2b3440" stroke-width="7" />
                 <path d="M-8 0h7M3 0h8" stroke="#2b3440" stroke-width="5" />
                 <path d="M-9 -32c-1-11 0-20 3-27h12c3 7 3 16 1 27z" fill="#c4532d" />
-                <path d="M3 -54l9 9 5-5M-2 -54l5 14 8 2" fill="none" stroke="#c4532d" stroke-width="5" />
+                <!-- arms move with the belaying (see belayArms): guide hand on the
+                     rope above the device, brake hand on the rope below it -->
+                <path ref="armGuide" d="M3 -54l9 9 5-5" fill="none" stroke="#c4532d" stroke-width="5" />
+                <path ref="armBrake" d="M-2 -54l5 14 8 2" fill="none" stroke="#c4532d" stroke-width="5" />
+                <circle ref="handGuide" cx="17" cy="-50" r="2.8" fill="#e8b58f" />
+                <circle ref="handBrake" cx="11" cy="-38" r="2.8" fill="#e8b58f" />
                 <rect x="-9" y="-36" width="18" height="5" rx="2.4" fill="#ffc233" />
                 <circle cx="1" cy="-66" r="7.5" fill="#e8b58f" />
                 <path d="M-7.8 -67a8.8 9 0 0 1 17.6 0z" fill="#7a5bd6" />
@@ -117,6 +122,9 @@
     import { SCENE, HOLDS, BOLTS, ANCHOR, BELAY, buildFrames, bodyPoints, ropePath } from '../../services/fun/leadClimbScene.js'
 
     const f1 = n => n.toFixed(1)
+    const P = (x, y) => ({ x, y })
+    const lerp = (a, b, t) => a + (b - a) * t
+    const smoothstep = t => t * t * (3 - 2 * t)
     const line = (...pts) => 'M' + pts.map(p => `${f1(p.x)} ${f1(p.y)}`).join(' L')
 
     export default {
@@ -133,42 +141,95 @@
         },
         mounted() {
             this.frames = buildFrames()
-            const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
-            if (reduced) {
-                // calm frame: hanging on the rope, a few seconds after the catch
-                const fall = this.frames.findIndex(f => f.stance === 'hang')
-                this.draw(this.frames[Math.min(this.frames.length - 1, fall + 4 * 60)])
-                return
-            }
-            this.start = null
-            const n = this.frames.length
-            const tick = (now) => {
-                // start the clock on the first frame: rAF timestamps can be a
-                // little earlier than performance.now() at mount (negative index)
-                if (this.start === null) this.start = now
-                const i = Math.max(0, Math.floor(((now - this.start) / 1000) * 60)) % n
-                this.draw(this.frames[i])
-                this.raf = requestAnimationFrame(tick)
-            }
-            this.raf = requestAnimationFrame(tick)
+            this.play()
         },
         beforeUnmount() {
             cancelAnimationFrame(this.raf)
         },
         methods: {
+            play() {
+                cancelAnimationFrame(this.raf)
+                const reduced = window.cgReducedMotion()
+                if (reduced) {
+                    // calm frame: hanging on the rope, a few seconds after the catch
+                    const fall = this.frames.findIndex(f => f.stance === 'hang')
+                    this.draw(this.frames[Math.min(this.frames.length - 1, fall + 4 * 60)])
+                    return
+                }
+                this.start = null
+                const n = this.frames.length
+                const tick = (now) => {
+                    // start the clock on the first frame: rAF timestamps can be a
+                    // little earlier than performance.now() at mount (negative index)
+                    if (this.start === null) this.start = now
+                    const i = Math.max(0, Math.floor(((now - this.start) / 1000) * 60)) % n
+                    this.draw(this.frames[i], (now - this.start) / 1000)
+                    this.raf = requestAnimationFrame(tick)
+                }
+                this.raf = requestAnimationFrame(tick)
+            },
             // test hook: render a given time (seconds) of the loop
             drawAt(sec) {
                 cancelAnimationFrame(this.raf)
-                this.draw(this.frames[Math.floor(sec * 60) % this.frames.length])
+                this.draw(this.frames[Math.floor(sec * 60) % this.frames.length], sec)
             },
-            draw(f) {
+            // Belayer's hands, in the belayer's own (mirrored) frame — +x points
+            // toward the wall. Pays out while the climber moves up, feeds fast
+            // while they pull rope up to clip, takes the slack back in for a
+            // moment after the clip, hands still for the catch / hang / lower.
+            // Returns the guide hand in scene coordinates (the rope runs
+            // through it) or null.
+            belayArms(f, t) {
+                const r = this.$refs
+                if (!r.armGuide) return null
+                const D = P(11, -36)                                     // device
+                const up = P(0.6, -0.8)                                  // rope toward bolt 1
+                let reach = 14, brake = 0.5, mode = 'hold'
+                if (f.stance === 'wall') {
+                    if (f.ropeHold) mode = 'feed'
+                    else if ((f.flash || 0) > 0.05) mode = 'take'
+                    else mode = 'pay'
+                }
+                if (mode === 'feed') {
+                    const c = (t * 2.6) % 1
+                    const k = c < 0.55 ? smoothstep(c / 0.55) : 1 - smoothstep((c - 0.55) / 0.45)
+                    reach = 5 + 21 * k; brake = k
+                } else if (mode === 'take') {
+                    const c = (t * 2.2) % 1
+                    const k = c < 0.6 ? smoothstep(c / 0.6) : 1 - smoothstep((c - 0.6) / 0.4)
+                    reach = 20 - 15 * k; brake = 1 - k
+                } else if (mode === 'pay') {
+                    const k = Math.pow(Math.sin(Math.PI * ((t * 1.1) % 1)), 2)
+                    reach = 4 + 6 * k; brake = k * 0.8
+                }
+                const g = P(D.x + up.x * reach, D.y + up.y * reach)
+                const b = P(lerp(4, 9, brake), lerp(-22, -31, brake))           // low by the thigh → up at the device
+                const arm = (sh, hand, bend) => {
+                    // elbow below the line shoulder → hand (12 + 11 px bones)
+                    const mx = (sh.x + hand.x) / 2, my = (sh.y + hand.y) / 2
+                    const d = Math.hypot(hand.x - sh.x, hand.y - sh.y)
+                    const h = Math.sqrt(Math.max(0, 11.5 * 11.5 - (d / 2) * (d / 2)))
+                    const nx = -(hand.y - sh.y) / (d || 1), ny = (hand.x - sh.x) / (d || 1)
+                    const e = P(mx + nx * h * bend, my + ny * h * bend)
+                    return `M${f1(sh.x)} ${f1(sh.y)} L${f1(e.x)} ${f1(e.y)} L${f1(hand.x)} ${f1(hand.y)}`
+                }
+                r.armGuide.setAttribute('d', arm(P(3, -54), g, 1))
+                r.armBrake.setAttribute('d', arm(P(-2, -54), b, -1))
+                r.handGuide.setAttribute('cx', f1(g.x)); r.handGuide.setAttribute('cy', f1(g.y))
+                r.handBrake.setAttribute('cx', f1(b.x)); r.handBrake.setAttribute('cy', f1(b.y))
+                if (mode === 'hold') return null
+                // mirrored around belay.x, then moved with the belayer
+                return P(BELAY.x - g.x + (f.bx || 0), BELAY.y + g.y + (f.by || 0))
+            },
+            draw(f, t = 0) {
                 const r = this.$refs
                 if (!r.climber) return
                 const b = bodyPoints(f)
                 const set = (el, attr, v) => el.setAttribute(attr, v)
 
                 // rope + belayer (lifted toward the first bolt when the rope comes tight)
-                const rope = ropePath(f)
+                const guide = this.belayArms(f, t)
+                const rope = ropePath(f, guide)
                 set(r.rope, 'd', rope); set(r.ropeShadow, 'd', rope)
                 // belayer pulled along the rope toward the first bolt, leaning into the wall
                 // brake strand: belay device (moves with the belayer) → spare-rope coil

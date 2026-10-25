@@ -33,6 +33,7 @@ class Article extends Model
 		'show_donation',
 		'url_title',
 		'map',
+		'parking',
 		'weather',
 
 		'image',

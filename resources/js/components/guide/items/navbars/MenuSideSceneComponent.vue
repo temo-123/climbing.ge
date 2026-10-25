@@ -360,7 +360,7 @@ export default {
         },
     },
     mounted() {
-        this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        this.reduced = window.cgReducedMotion()
         this.visible = true
         if (window.IntersectionObserver) {
             this.io = new IntersectionObserver(([e]) => { this.visible = e.isIntersecting; this.kick() })
@@ -514,6 +514,54 @@ export default {
         },
         harnessOf(pose) { return P(pose.hip.x, pose.hip.y + 2) },
 
+        // Belaying hands for a ground belayer facing the wall (device at the
+        // harness, rope going up toward `to`). The guide hand holds the rope
+        // above the device, the brake hand the rope below it:
+        //  'pay'   paying out steadily while the leader climbs
+        //  'feed'  fast arm-length pulls while the leader pulls rope up to clip
+        //  'take'  taking the slack back in after the clip
+        //  'lower' feeding slowly through the device while lowering
+        //  'hold'  hands still (catch, hanging)
+        // Returns the point the rope runs through in the guide hand (null =
+        // straight from the device).
+        belayHands(pose, mode, t, to) {
+            const dev = P(pose.hip.x + 9, pose.hip.y - 3)
+            if (mode === 'hold' || !to) return null
+            const d = Math.hypot(to.x - dev.x, to.y - dev.y) || 1
+            const ux = (to.x - dev.x) / d, uy = (to.y - dev.y) / d
+            const hi = P(dev.x - 1, dev.y + 5)                       // brake hand up at the device
+            const lo = P(pose.hip.x + 3, pose.hip.y + 14)            // brake hand down by the thigh
+            let reach, brake
+            if (mode === 'feed') {
+                const c = (t * 2.6) % 1                               // pull out quickly, slide back
+                const k = c < 0.55 ? smooth(c / 0.55) : 1 - smooth((c - 0.55) / 0.45)
+                reach = 5 + 15 * k; brake = k
+            } else if (mode === 'take') {
+                const c = (t * 2.2) % 1                               // guide hand pulls the rope down
+                const k = c < 0.6 ? smooth(c / 0.6) : 1 - smooth((c - 0.6) / 0.4)
+                reach = 15 - 11 * k; brake = 1 - k                    // …and the brake hand pulls it through
+            } else {
+                const speed = mode === 'lower' ? 0.7 : 1.1
+                const k = Math.pow(Math.sin(Math.PI * ((t * speed) % 1)), 2)
+                reach = 4 + 6 * k; brake = k * 0.8
+            }
+            const guide = P(dev.x + ux * reach, dev.y + uy * reach)
+            pose.rh = guide
+            pose.lh = lp(lo, hi, brake)
+            return guide
+        },
+        // rope from the device, through the guide hand, with a loop of slack
+        // (0…1) hanging before the next point
+        belayRope(device, guide, next, slack) {
+            const out = [device]
+            if (guide) out.push(guide)
+            if (slack > 0.02 && next) {
+                const a = guide || device
+                out.push(P((a.x + next.x) / 2 - 5 * slack, Math.max(a.y, (a.y + next.y) / 2) + 16 * slack))
+            }
+            return out
+        },
+
         // ropes --------------------------------------------------------------------
         rope(ref, ...pts) {
             const el = this.$refs[ref]
@@ -660,11 +708,22 @@ export default {
                 this.popDraws(pop, popK, u, s.clipped)
                 this.draw(C, pose, { tools: ice })
                 belayPose = belayer(spot)
-                this.draw(Bf, belayPose)
-                const pts = [device(spot), ...this.drawPts(s.clipped)]
+                const pts = [...this.drawPts(s.clipped)]
                 if (s.clip && s.clip.draw < 0 && s.p >= 0.75) pts.push(anchor)
                 if (hand) pts.push(hand)
                 const hp = this.harnessOf(pose)
+                // belayer: pays out while the leader climbs, feeds fast while
+                // they pull up rope to clip (a loop of slack forms), then takes
+                // the slack back in once the rope is in the draw
+                let mode = 'pay', slack = 0
+                if (s.clip && s.p > 0.15 && s.p < 0.75) { mode = 'feed'; slack = smooth((s.p - 0.15) / 0.6) }
+                else if (pop >= 0 || (s.clip && s.p >= 0.75)) {
+                    const since = pop >= 0 ? 1 - popK : (s.p - 0.75) * s.clip.dur
+                    if (since < 0.9) { mode = 'take'; slack = 1 - smooth(since / 0.9) }
+                }
+                const guide = this.belayHands(belayPose, mode, u, pts[0] || hp)
+                this.draw(Bf, belayPose)
+                pts.unshift(...this.belayRope(device(spot), guide, pts[0] || hp, slack))
                 if (popK > 0 && pts.length) {
                     // the rope swings out a little as it comes out of the clip
                     const last = pts[pts.length - 1]
@@ -682,8 +741,10 @@ export default {
                 this.popDraws(-1, 0, u, p < 0.97 ? this.draws.length : 0)
                 this.draw(C, pose)
                 belayPose = belayer(spot)
+                const first = this.drawPts(this.draws.length)[0] || anchor
+                const guide = this.belayHands(belayPose, p > 0 && p < 0.97 ? 'lower' : 'hold', u, first)
                 this.draw(Bf, belayPose)
-                this.rope('rope1', device(spot), ...this.drawPts(this.draws.length), anchor)
+                this.rope('rope1', ...this.belayRope(device(spot), guide, first, 0), ...this.drawPts(this.draws.length), anchor)
                 this.rope('rope2', anchor, this.harnessOf(pose))
                 pile(0, false)
             } else if (u < T3) {
@@ -745,8 +806,10 @@ export default {
             const Tin = 2.8
             if (!this.reduced && t < Tin) { this.spareRope(null); return this.walkIn(t, Tin, [-18, spot]) }
             t -= Tin
-            const n = Math.max(2, Math.min(this.draws.length, 3))
+            // short walls (phone banner) may only fit one draw: use what's there
+            const n = Math.max(1, Math.min(this.draws.length, 3))
             const di = n - 1                                 // the practice draw
+            if (!this.draws.length) return
             const D = this.draws[di]
             const device = P(spot + 9, ground - 40)
             const yHang = D + 64
@@ -783,9 +846,14 @@ export default {
             }
             this.popDraws(-1, 0, t, di + 1)
             this.draw(0, pose)
-            const bp = this.lifted(this.standPose(spot, ground, 0, true), lift)
+            // paying out while climbing, hands still for the fall and the catch
+            const stand = this.standPose(spot, ground, 0, true)
+            const firstDraw = this.drawPts(di + 1)[0]
+            const guide = this.belayHands(stand, u < Tclimb ? 'pay' : 'hold', t, firstDraw)
+            const bp = this.lifted(stand, lift)
             this.draw(1, bp)
-            this.rope('rope1', P(device.x + lift * 0.7, device.y - lift), ...this.drawPts(di + 1), this.harnessOf(pose))
+            const liftPt = q => q && P(q.x + lift * 0.7, q.y - lift)
+            this.rope('rope1', P(device.x + lift * 0.7, device.y - lift), ...(guide ? [liftPt(guide)] : []), ...this.drawPts(di + 1), this.harnessOf(pose))
             this.rope('rope2'); this.rope('rope3'); this.rope('tether2')
             this.rope('tether1')
             this.spareRope(bp)
@@ -893,12 +961,20 @@ export default {
             } else if (u < T1) {
                 const y = bottom - (bottom - top) * ((u - T0) / Tc)
                 L = this.climbPose(y); Lopts = {}
+                let placing = false, sincePlaced = 9
                 pieces.forEach((py, i) => {
                     if (y < py + 26) visible[i] = true
-                    if (y < py + 26 && y > py + 14) L.lh = P(-6, py + 1)        // placing the cam
+                    if (y < py + 26 && y > py + 14) { L.lh = P(-6, py + 1); placing = true }       // placing the cam
+                    if (y <= py + 14) sincePlaced = Math.min(sincePlaced, (py + 14 - y) / 20)      // seconds since clipped
                 })
                 S2 = this.standPose(spot, ground, 0, true); Sopts = {}
-                r1 = [P(spot + 9, ground - 40), ...pieces.filter(py => y < py + 26).map(pc), H_(L)]
+                // the belayer feeds while the leader clips the cam, then takes in the slack
+                const mode = placing ? 'feed' : (sincePlaced < 0.8 ? 'take' : 'pay')
+                const slack = placing ? 0.8 : (sincePlaced < 0.8 ? 0.8 * (1 - sincePlaced / 0.8) : 0)
+                const placed = pieces.filter(py => y < py + 26).map(pc)
+                const next = placed[0] || H_(L)
+                const guide = this.belayHands(S2, mode, u, next)
+                r1 = [...this.belayRope(P(spot + 9, ground - 40), guide, next, slack), ...placed, H_(L)]
                 groundBelayer = S2
             } else if (u < T2) {
                 const q = u - T1
@@ -913,8 +989,16 @@ export default {
                 r1 = [P(spot + 9, ground - 40), ...pieces.map(pc), edge, H_(L)]
                 groundBelayer = S2
             } else if (u < T3) {
-                // 3. second climbs, belayed through the anchor; removes the cams
+                // 3. second climbs, belayed through the anchor; removes the cams.
+                // The leader takes in rope hand over hand: the guide hand pulls
+                // the rope from the anchor, the brake hand pulls it through
                 L = topBelay(); Lopts = { flatShoes: true, mirror: true }
+                {
+                    const c = (u * 1.6) % 1
+                    const k = c < 0.6 ? smooth(c / 0.6) : 1 - smooth((c - 0.6) / 0.4)
+                    L.lh = P(xb + 14 - 8 * k, L.hip.y - 12 + 8 * k)          // toward the anchor, then in
+                    L.rh = P(xb + 8 - 6 * k, L.hip.y + 4 + 6 * k)             // brake hand pulls down / back
+                }
                 const y = bottom - (bottom - top) * ((u - T2) / Tc)
                 S2 = this.climbPose(y); Sopts = {}
                 const left = []
@@ -923,7 +1007,7 @@ export default {
                     if (y <= py + 36 && y > py + 26) S2.rh = P(-6, py + 2)          // taking it out
                 })
                 // brake strand: leader's hand → anchor carabiner → edge → cams → second
-                r1 = [P(2 * xb - (xb + 8), L.hip.y + 4), rapPt, edge, ...left.slice().reverse().map(pc), H_(S2)]
+                r1 = [P(2 * xb - L.rh.x, L.rh.y), P(2 * xb - L.lh.x, L.lh.y), rapPt, edge, ...left.slice().reverse().map(pc), H_(S2)]
                 t1 = [H_(L), rapPt]
             } else if (u < T4) {
                 L = topBelay(); Lopts = { flatShoes: true, mirror: true }

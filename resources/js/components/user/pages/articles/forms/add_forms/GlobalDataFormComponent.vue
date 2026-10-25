@@ -96,6 +96,15 @@
                     </div>
 
 
+                    <div class="form-group clearfix row" v-if="category == 'outdoor' || category == 'ice' || category == 'indoor'">
+                        <label class='col-md-2 control-label'> {{ $t('admin.articles.global_form.parking_label') }} <small class="text-muted">({{ $t('admin.articles.global_form.optional') }})</small></label>
+                        <div class="col-md-10">
+                            <input type="text" name="parking" v-model="data.parking" class="form-control" maxlength="500" placeholder="41.7151, 44.8271">
+                            <small class="form-text text-muted">{{ $t('admin.articles.global_form.parking_help') }}</small>
+                        </div>
+                    </div>
+
+
                     <div class="form-group clearfix row" v-if="this.category == 'indoor'">
                         <label for="name" class='col-md-2 control-label'> {{ $t('admin.articles.global_form.minimal_price') }} </label>
                         <div class="col-md-10">

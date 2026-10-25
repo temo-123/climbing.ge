@@ -10,6 +10,9 @@
                 </div>
             </section>
 
+            <favoriteArticlesStrip category="mount_route" />
+            <recentlyViewed category="mount_route" />
+
             <div class="row" v-if="this.mounts.length > 0">
                 <div class="container articles_filter_bar">
                     <div class="col-md-6">
@@ -207,6 +210,8 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
     import mountCard from '../../items/cards/MountCardComponent'
     import mountHorithontalCard from '../../items/cards/MountHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
@@ -235,6 +240,8 @@
             };
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
             mountCard,
             mountHorithontalCard,
             emptyPageComponent,

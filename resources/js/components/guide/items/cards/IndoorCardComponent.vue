@@ -3,6 +3,7 @@
     <div :class="['row', 'featurette', 'indoor-card', { 'indoor-card-soon': is_coming_soon }]" :role="is_coming_soon ? null : 'link'" @click="open_gym">
         <!-- error doesn't bubble — catch it in the capture phase to swap a missing image for the placeholder -->
         <div class='col-md-6 indoor_img' @error.capture="image_failed = true">
+            <favoriteHeart v-if="!is_coming_soon" :article_id="indoor.global_data.id" :category="indoor.global_data.category" />
             <div class="product-image" v-if="indoor.global_data.new_flag">
                 <div class="discount-percent-badge discount_percent_badge_for_indoor discount-badge-fourty">NEW</div>
             </div>
@@ -55,6 +56,7 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     import IndoorWorkStatusAlert from '../IndoorWorkStatusAlert.vue'
 
     // Minutes since midnight for "HH:mm" or "HH:mm:ss"
@@ -65,6 +67,7 @@
 
     export default {
         components: {
+            favoriteHeart,
             IndoorWorkStatusAlert,
         },
         props: [

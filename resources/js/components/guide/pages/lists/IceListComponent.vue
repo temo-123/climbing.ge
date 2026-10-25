@@ -28,6 +28,9 @@
                 </svg>
             </section>
 
+            <favoriteArticlesStrip category="ice" />
+            <recentlyViewed category="ice" />
+
             <sectorQuantyt :route_categories_prop="route_categories"/>
 
             <div class="row otdoor_buttoms">
@@ -174,6 +177,8 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
     import articleComponent from '../../items/cards/ArticleCardComponent'
     import articleHorithontalCardComponent from '../../items/cards/ArticleHorithontalCardComponent'
     // import emptyPageComponent from '../items/EmptyPageComponent'
@@ -242,6 +247,8 @@
             },
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
             RegionListHeader,
             articleComponent,
             articleHorithontalCardComponent,

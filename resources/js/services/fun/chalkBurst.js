@@ -29,10 +29,9 @@ export function installChalkBurst() {
     if (typeof window === 'undefined' || window.__cgChalk) return;
     window.__cgChalk = true;
 
-    const reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)');
 
     document.addEventListener('click', (event) => {
-        if (reduced && reduced.matches) return;
+        if (window.cgReducedMotion && window.cgReducedMotion()) return;
         const target = event.target.closest && event.target.closest(TARGETS);
         if (!target || target.disabled) return;
         // keyboard clicks report 0,0 — puff from the element's centre instead

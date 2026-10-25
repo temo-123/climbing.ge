@@ -10,6 +10,11 @@
                 </div>
             </section>
 
+            <favoriteArticlesStrip category="outdoor" />
+            <recentlyViewed category="outdoor" />
+
+            <cragPicker />
+
             <sectorQuantyt :route_categories_prop="route_categories"/>
 
             <div class="row otdoor_buttoms">
@@ -203,6 +208,9 @@
 </template>
 
 <script>
+    import favoriteArticlesStrip from '../../items/FavoriteArticlesStripComponent.vue'
+    import recentlyViewed from '../../items/RecentlyViewedComponent.vue'
+    import cragPicker from '../../items/CragPickerComponent.vue'
     import outdoorCard from '../../items/cards/OutdoorCardComponent'
     import outdoorHorizontalCard from '../../items/cards/OutdoorHorizontalCardComponent'
     import emptyPageComponent from '../../../global_components/EmptyPageComponent'
@@ -243,6 +251,9 @@
             };
         },
         components: {
+            favoriteArticlesStrip,
+            recentlyViewed,
+            cragPicker,
             outdoorCard,
             outdoorHorizontalCard,
             emptyPageComponent,

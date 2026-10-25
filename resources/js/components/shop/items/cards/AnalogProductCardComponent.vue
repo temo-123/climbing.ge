@@ -45,9 +45,7 @@
                 <button class="analog-btn eye-btn" @click="product_quick_view(product.global_product.id)" title="Quick view">
                     <i class="fa fa-eye"></i>
                 </button>
-                <button class="analog-btn fav-btn" @click="favorite_product(product.global_product.id)" title="Add to favorites">
-                    <i class="fa fa-heart-o"></i>
-                </button>
+                <favoriteProductButton :product_id="product.global_product.id" />
             </div>
         </div>
 
@@ -57,10 +55,11 @@
 
 <script>
     import ProductQuickViewModal from '../../../global_components/modals/ProductQuickViewModal'
+    import favoriteProductButton from '../FavoriteProductButtonComponent.vue'
 
     export default {
         props: ['product'],
-        components: { productQuickViewModal: ProductQuickViewModal },
+        components: { productQuickViewModal: ProductQuickViewModal, favoriteProductButton },
         data() {
             return {
                 publicPath: window.location.protocol + '//' + window.location.hostname
@@ -70,17 +69,6 @@
             product_quick_view(product_id) {
                 this.$refs.quick_view_modal.show_modal(product_id);
             },
-            favorite_product(product_id) {
-                axios.post('add_to_favorite/' + product_id)
-                    .then(() => { alert("Product added to your favorite list!"); })
-                    .catch(error => {
-                        if (error.response && error.response.status === 401) {
-                            this.$bus.$emit('open-login-modal', () => this.favorite_product(product_id));
-                        } else {
-                            alert("Error adding to favorites");
-                        }
-                    });
-            }
         }
     }
 </script>

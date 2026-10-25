@@ -25,6 +25,7 @@
             <cg-brand service="user" :to="{ name: 'home' }" class="cg-topbar__brand" />
 
             <ul class="cg-nav__tools cg-topbar__tools">
+                <motion-toggle />
                 <localeSwitcher />
                 <services-switcher current="user" />
                 <nav-badges />

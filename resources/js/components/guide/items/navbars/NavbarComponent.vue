@@ -18,6 +18,7 @@
                             <li><router-link :to="{name: 'indoors', params: {locale: locale_param}}" exact><i class="fa fa-building-o fa-fw" aria-hidden="true"></i> <span>{{ $t('guide.menu.indoor climbing') }}</span></router-link></li>
                             <li><router-link :to="{name: 'outdoors', params: {locale: locale_param}}" exact><i class="fa fa-tree fa-fw" aria-hidden="true"></i> <span>{{ $t('guide.menu.outdoor climbing') }}</span></router-link></li>
                             <li><router-link :to="{name: 'spot_projects', params: {locale: locale_param}}" exact><i class="fa fa-bullseye fa-fw" aria-hidden="true"></i> <span>{{ $t('guide.menu.spots projects') }}</span></router-link></li>
+                            <li><router-link :to="{name: 'partners', params: {locale: locale_param}}" exact><i class="fa fa-handshake-o fa-fw" aria-hidden="true"></i> <span>{{ $t('guide.menu.partners') }}</span></router-link></li>
                         </ul>
                     </li>
 
@@ -49,6 +50,8 @@
                             </li>
                         </ul>
                     </li>
+
+                    <motion-toggle />
 
                     <localeSwitcher />
                     <services-switcher current="guide" />
@@ -101,7 +104,7 @@
                 return (this.activ_grade || 'yds').toLowerCase() === 'yds';
             },
             is_climbing_active() {
-                return ['indoors', 'outdoors', 'spot_projects'].includes(this.$route.name);
+                return ['indoors', 'outdoors', 'spot_projects', 'partners'].includes(this.$route.name);
             },
         },
         mounted() {

@@ -23,10 +23,11 @@
                         <p class="route-detail">{{ $t("common.name") }} — {{ mtpName }}</p>
                         <p class="route-detail" v-if="mtp_detals.mtp && mtp_detals.mtp.height">{{ $t("common.height") }} — {{ mtp_detals.mtp.height }}</p>
                         <div v-if="mtpText" class="mtp-description mt-2" v-html="mtpText"></div>
-                        <div class="mt-3" v-if="mtp_detals.reviews_count > 0">
+                        <div class="mt-3" v-if="mtp_detals.reviews_count > 0 || mtp_detals.ascents_count > 0">
                             <starsReiting
                                 :reviews_count_prop="mtp_detals.reviews_count"
                                 :reviews_stars_prop="mtp_detals.reviews_stars"
+                                :ascents_count_prop="mtp_detals.ascents_count || 0"
                             />
                         </div>
                     </div>

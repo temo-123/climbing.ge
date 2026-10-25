@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-md-4 col-sm-5">
                 <div class="horizontal-card-image-wrapper">
+                    <favoriteHeart :article_id="mount.global_data.id" :category="mount.global_data.category" />
                     <div class="product-image" v-if="mount.global_data.new_flag">
                         <div class="discount-percent-badge discount-badge-fourty">NEW</div>
                     </div>
@@ -62,6 +63,7 @@
 </template>
 
 <script>
+    import favoriteHeart from '../FavoriteHeartComponent.vue'
     export default {
         props: [
             'mount',
@@ -73,6 +75,7 @@
             };
         },
         components: {
+            favoriteHeart,
         },
         mounted() {
             //

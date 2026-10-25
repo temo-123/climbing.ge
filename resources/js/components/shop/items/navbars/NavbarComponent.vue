@@ -33,6 +33,7 @@
 
                 <ul class="cg-nav__tools">
                     <navbar-search site="shop" search_route="search_products" />
+                    <motion-toggle />
                     <localeSwitcher />
                     <services-switcher current="shop" />
                     <nav-badges />

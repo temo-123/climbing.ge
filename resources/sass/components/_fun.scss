@@ -319,6 +319,9 @@ $cg-head-colors: (
     filter: drop-shadow(0 14px 24px rgba(21, 33, 43, .22));
 }
 .cg-scene-img--wide { max-width: 420px; margin-bottom: 1.25rem; }
+// "nothing here yet" pages show the scene ~55% bigger (420 → 650px)
+.cg-empty-scene .cg-scene-img--wide,
+.cg-empty .cg-scene-img--wide { max-width: 650px; }
 // Side scenes on the right menu card (RightMenuComponent): the bolter image
 // (public/images/scenes/bolter-solo.svg) or MenuSideSceneComponent hangs on
 // the card's left edge — the card is the "rock". The card must not clip it.

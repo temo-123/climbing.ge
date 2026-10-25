@@ -25,6 +25,13 @@ h1, h2, h3, h4, h5, h6,
     color: var(--cg-ink);
 }
 
+// Georgian falls back to Noto Sans Georgian: taller letters and long words,
+// so give headings more line height and let them wrap (html[lang] is kept in
+// sync with the site language in app.js)
+html[lang="ka"] {
+    h1, h2, h3, h4, .h1, .h2, .h3, .h4 { line-height: 1.3; letter-spacing: 0; overflow-wrap: break-word; hyphens: auto; }
+}
+
 p { color: inherit; }
 
 a {
@@ -49,6 +56,24 @@ ul { list-style: none; }
 ::selection {
     background: rgba(var(--cg-accent-rgb), .2);
 }
+
+// keyboard users: first Tab stop jumps past the header (guide layout)
+.cg-skip-link {
+    position: fixed;
+    top: .5rem;
+    left: .5rem;
+    z-index: 2000;
+    padding: .6rem 1rem;
+    border-radius: var(--cg-r);
+    background: var(--cg-hold);
+    color: var(--cg-ink);
+    font-weight: 800;
+    transform: translateY(-150%);
+    transition: transform .15s ease;
+
+    &:focus { transform: none; color: var(--cg-ink); }
+}
+#main-content:focus { outline: none; }
 
 :focus-visible {
     outline: 2px solid rgba(var(--cg-accent-rgb), .6);

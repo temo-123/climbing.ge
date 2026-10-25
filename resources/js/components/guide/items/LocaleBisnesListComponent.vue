@@ -43,9 +43,13 @@
 </template>
 
 <script>
+    import { track_business } from '../../../services/guide/businessStats.js'
     import LocalBisnesModal from './modals/LocalBisnesModalComponent.vue'
 
     export default {
+        props: {
+            article_id: { type: [Number, String], default: null },
+        },
         components: {
             LocalBisnesModal
         },
@@ -66,6 +70,8 @@
                     .get('/get_bisnes/get_local_bisnes_for_article/' + this.$route.params.url_title + '/' + lang)
                     .then(response => {
                         this.local_businesses = Array.isArray(response.data) ? response.data : []
+                        // statistics: these cards were shown on this article
+                        this.local_businesses.forEach(b => b.global_data && track_business(b.global_data.id, 'impression', this.article_id))
                     })
                     .catch(() => {
                         this.local_businesses = []
