@@ -38,6 +38,7 @@
         <productLeftMenu
             ref="left_menu"
             :activeFilters="filters"
+            :products="products"
             @apply-filters="$emit('apply-filters', $event)"
             @brands-loaded="brands = $event"
             @categories-loaded="categories = $event"
@@ -57,6 +58,11 @@
                 type: String,
                 required: true,
                 validator: (value) => ['grid', 'list'].includes(value)
+            },
+            // the page's product list (counts + price range in the filter panel)
+            products: {
+                type: Array,
+                default: () => []
             },
             filters: {
                 type: Object,
@@ -115,16 +121,16 @@
                     return '₾' + value
                 }
                 if (key === 'brand_id') {
-                    const brand = this.brands.find(b => b.id == value)
+                    const brand = this.brands.find(b => b.global_brand && b.global_brand.id == value)
                     return brand && brand.us_brand ? brand.us_brand.title : value
                 }
                 if (key === 'category_id') {
                     const category = this.categories.find(c => c.id == value)
-                    return category ? category.us_name : value
+                    return category ? ((this.$i18n.locale === 'ka' && category.ka_name) || category.us_name) : value
                 }
                 if (key === 'subcategory_id') {
                     const subcat = this.subcategories.find(s => s.id == value)
-                    return subcat ? subcat.us_name : value
+                    return subcat ? ((this.$i18n.locale === 'ka' && subcat.ka_name) || subcat.us_name) : value
                 }
                 if (key === 'sale_type') {
                     const types = {

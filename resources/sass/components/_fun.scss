@@ -123,6 +123,9 @@ $cg-head-colors: (
         animation: cg-rope-out linear both;
         animation-timeline: view();
         animation-range: entry 20% entry 70%;
+        // grow from the rope's own start: its centre for centred titles
+        // (after the translateX(-50%)), its left end for left-aligned ones
+        transform-origin: 0 50%;
     }
 }
 // individual translate/scale properties, so hover `transform` lifts still work
@@ -130,9 +133,11 @@ $cg-head-colors: (
     from { opacity: 0; translate: 0 28px; scale: .98; }
     to   { opacity: 1; translate: 0 0; scale: 1; }
 }
+// scale, not width: a composited property, so the scroll-linked rope runs
+// off the main thread (the gradient stops are %, so it looks the same)
 @keyframes cg-rope-out {
-    from { width: 0; }
-    to   { width: 64px; }
+    from { scale: 0 1; }
+    to   { scale: 1 1; }
 }
 
 // ---- Rappel rope (scroll progress + back to top) ------------------

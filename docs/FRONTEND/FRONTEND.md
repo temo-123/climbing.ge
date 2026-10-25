@@ -296,7 +296,7 @@ Small, reusable pieces that make pages easier to use. Prefer reusing these over 
 
 ### Performance rules
 
-Measured production build (gzip): `app.css` ≈ 52 KB, `app.js` ≈ 433 KB (most of the JS is Vue, editors, maps and CASL, not the design system). Keep it that way:
+Measured production build (gzip, 2026-10-25): `app.css` ≈ 53 KB, `app.js` ≈ 342 KB (1.3 MB minified; mostly Vue, vue-i18n with both locale files, axios, the six subdomain shells). Lazy chunks total ≈ 7.9 MB on disk. Keep it that way:
 
 | Rule | Why |
 |---|---|
@@ -308,6 +308,17 @@ Measured production build (gzip): `app.css` ≈ 52 KB, `app.js` ≈ 433 KB (most
 | Decoration is CSS / inline SVG data URIs built with `cg-svg()`. In a repeated SVG, draw the art once and reuse it with `<use>` | no extra HTTP requests, smaller CSS |
 | Fonts: one variable-font request through `partials/assets.blade.php`, `display=swap` | one CSS request, no FOIT |
 | The preloader must hide by `window.load` + 2 s at the latest and must never catch clicks | perceived speed, no "dead page" |
+| `webpack.mix.js`: `devtool` is `eval-source-map` **only outside production** | in production it wrapped every module in an eval string: app.js was ≈ 11 MB (2.5 MB gzipped) |
+| `webpack.mix.js`: `runtimeOnly: true`; the root is mounted with `render: () => h(rootComponent)` in `app.js`. Never use string `template:` options or in-DOM templates | the template compiler (~190 KB) isn't shipped; a string template would render nothing |
+| `webpack.mix.js`: async `splitChunks` groups `asyncVendors` / `asyncShared` (own names, since Mix re-merges `default`/`defaultVendors: false` after `mix.override`) | shared libraries (paper.js, cropper, image compression, moment…) were copied into up to 44 page chunks: 26 MB → 7.9 MB |
+| moment locales are ignored (`IgnorePlugin`) | no `moment.locale()` anywhere; saves ~160 locale files per chunk |
+| Heavy or rarely shown globals are `defineAsyncComponent` in `app.js` (Quill editors, `canvas-json-show`, `mount-summits-map-modal`), and so is the footer QR code | they and their libraries (Quill, Leaflet, qrcode + Buffer) stay out of the main bundle |
+| Nothing third-party at boot: Echo/pusher-js, jsencrypt and the reCAPTCHA script load through `when_idle()` (`services/idle.js`), or right away when they're actually needed (login modal opens) | the first paint and the first route's data don't compete with them |
+| No `window._` / full lodash: import single functions if you ever need them | full lodash was 533 KB raw and unused |
+| `<site-img>` (one component for all subdomains, `guide/items/ImageComponent.vue`) is `loading="lazy" decoding="async"` by default; pass `loading="eager"` for an above-the-fold hero | list pages don't download every card image at once |
+| Scroll-linked / rAF code: read layout (`getBoundingClientRect`, `getComputedStyle`, `scrollHeight`) **before** the first DOM write of the frame; cache values that don't change per frame (e.g. `--cg-nav-h`) | a read after a write forces a synchronous layout every frame (GoOnTop rappel) |
+| Frame-capped loops use slack (`now - last > 29` for ~30 fps), not the exact interval | an exact `> 33` judders: it skips a 3rd frame now and then at 60 Hz and drops to 24 fps at 120 Hz |
+| Scroll-driven (`animation-timeline: view()`) and infinite CSS animations: `transform` / `scale` / `translate` / `opacity` only. Move a drifting background onto a pseudo-element and translate it (see `.cg-preloader::before`) | composited animations stay smooth while the main thread is busy; `width` / `background-position` repaint every frame |
 | Global DOM listeners: one capturing listener per concern (see `imageFallback.js`, `chalkBurst.js`), installed once (`window.__cg*` guard) | no per-component listener leaks |
 
 ### Checklist for a new page or component
@@ -329,8 +340,8 @@ Measured production build (gzip): `app.css` ≈ 52 KB, `app.js` ≈ 433 KB (most
 
 On load the boot sequence:
 
-1. Creates Vue app
-2. Registers global components (editors, modals, nav-badges, etc.)
+1. Creates Vue app (root = render function of the subdomain's main component)
+2. Registers global components (modals, nav-badges, etc.; editors / canvas / map modal as async components)
 3. Installs plugins: Pinia, Vue Router (subdomain-matched), i18n, CASL, `@unhead/vue`
 4. Sets `axios.defaults.baseURL` for the active subdomain
 5. Attaches axios interceptors (401/419 → logout)

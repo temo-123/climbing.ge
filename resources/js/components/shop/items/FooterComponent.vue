@@ -116,7 +116,9 @@
     import followComponent from '../../global_components/FollowComponent.vue'
     import footerLogo from "../../global_components/FooterLogoBlockComponent.vue";
     import footerText from "../../global_components/FooterBottomTextComponent.vue";
-    import QrcodeVue from 'qrcode.vue'
+    import { defineAsyncComponent } from 'vue'
+    // the QR code (+ its Buffer polyfill) is far down the page: own chunk
+    const QrcodeVue = defineAsyncComponent(() => import('qrcode.vue'))
 
     export default {
         data: function () {

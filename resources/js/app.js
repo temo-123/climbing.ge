@@ -1,4 +1,4 @@
-import { createApp, reactive, watch } from "vue";
+import { createApp, defineAsyncComponent, h, reactive, watch } from "vue";
 import "./bootstrap";
 
 // Climbing touches: chalk-dust puff on main buttons, climbing placeholder for missing images
@@ -10,7 +10,11 @@ installChalkBurst();
 installImageFallback();
 import { createHead } from "@unhead/vue/client";
 
-const app = createApp({});
+// The root renders the subdomain's main component directly (set below), so
+// the blade's in-DOM <x-component /> tag never needs compiling and the
+// runtime-only Vue build is enough (no template compiler in the bundle).
+let rootComponent = null;
+const app = createApp({ render: () => (rootComponent ? h(rootComponent) : null) });
 const head = createHead();
 app.use(head);
 
@@ -20,14 +24,11 @@ app.use(createPinia());
 import i18n from "./services/localization/i18n";
 app.use(i18n);
 
-import big_editor from './components/user/items/form/parts/editor/BigEditorComponent.vue'
-app.component("big_editor", big_editor);
-
-import small_editor from './components/user/items/form/parts/editor/SmallEditorComponent.vue'
-app.component("small_editor", small_editor);
-
-import mini_editor from './components/user/items/form/parts/editor/MiniEditorComponent.vue'
-app.component("mini_editor", mini_editor);
+// Heavy, rarely-shown globals (Quill editors, canvas topo viewer, Leaflet map
+// modal) are loaded on first use, in their own chunks.
+app.component("big_editor", defineAsyncComponent(() => import('./components/user/items/form/parts/editor/BigEditorComponent.vue')));
+app.component("small_editor", defineAsyncComponent(() => import('./components/user/items/form/parts/editor/SmallEditorComponent.vue')));
+app.component("mini_editor", defineAsyncComponent(() => import('./components/user/items/form/parts/editor/MiniEditorComponent.vue')));
 
 import { abilityDefaults, updateAbility } from "./services/ability/ability.js"
 import { abilitiesPlugin } from '@casl/vue'
@@ -79,11 +80,8 @@ import MotionToggle from "./components/global_components/MotionToggleComponent.v
 app.component("cg-scene", SceneImage);
 app.component("motion-toggle", MotionToggle);
 
-import CanvasJsonDataShow from "./components/global_components/CanvasJsonDataShowComponent.vue";
-app.component("canvas-json-show", CanvasJsonDataShow);
-
-import MountSummitsMapModal from "./components/global_components/modals/MountSummitsMapModalComponent.vue";
-app.component("mount-summits-map-modal", MountSummitsMapModal);
+app.component("canvas-json-show", defineAsyncComponent(() => import("./components/global_components/CanvasJsonDataShowComponent.vue")));
+app.component("mount-summits-map-modal", defineAsyncComponent(() => import("./components/global_components/modals/MountSummitsMapModalComponent.vue")));
 
 import ShareButton from "./components/global_components/ShareButtonComponent.vue";
 app.component("share-button", ShareButton);
@@ -101,8 +99,8 @@ import leftmenu from "./components/user/items/navbars/LeftMenuComponent.vue";
 import validator_alerts_component from "./components/user/items/form/validator_alerts_component.vue";
 import GlobalInfoFormBlock from "./components/user/items/form/parts/GlobalInfoFormBlockComponent.vue";
 
+// one image component for every subdomain (shop/items/ImageComponent.vue was an identical copy)
 import guide_img from "./components/guide/items/ImageComponent.vue";
-import shop_img from "./components/shop/items/ImageComponent.vue";
 import MainWrapper from "./components/shop/MainWrapper.vue";
 import Index from "./components/guide/IndexComponent.vue";
 import Summit from "./components/summit/SummitMainComponent.vue";
@@ -132,8 +130,8 @@ if (window.location.hostname == process.env.MIX_SITE_URL) {
 }
 else if (window.location.hostname == process.env.MIX_SHOP_URL) {
     app.component("main-wrapper-component", MainWrapper);
-    app.component("shop-img", shop_img);
-    app.component("site-img", shop_img);
+    app.component("shop-img", guide_img);
+    app.component("site-img", guide_img);
 
     homeComponent = MainWrapper;
     serviceRoutes = shop_routes.options ? shop_routes.options.routes : shop_routes;
@@ -177,6 +175,8 @@ else {
     homeComponent = Error;
     serviceRoutes = error_routes.options ? error_routes.options.routes : error_routes;
 }
+// (an unknown host used to mount the blade's unregistered tag, i.e. nothing)
+if (homeComponent !== Error) rootComponent = homeComponent;
 
 // The GA tag ID is read from a server-rendered <meta> tag (set from config('services.analytics.*'),
 // itself backed by MIX_*_ANALITICS_ID in .env) rather than process.env.MIX_*_ANALITICS_ID directly.
@@ -546,8 +546,6 @@ app.mount("#app");
             });
     }
 }
-
-window._ = require('lodash');
 
 // (Bootstrap's JS is not required here: only its dropdown plugin is used,
 // and that is imported in ./bootstrap.js.)

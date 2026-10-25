@@ -3488,7 +3488,14 @@
             "view_mode_aria": "View Mode",
             "sale_type_label": "Sale Type",
             "min_price_label": "Min Price",
-            "max_price_label": "Max Price"
+            "max_price_label": "Max Price",
+            "close": "Close filters",
+            "all_categories": "All categories",
+            "brand_label": "Brand",
+            "search_brands": "Search brands…",
+            "price_label": "Price",
+            "show_n": "Show {n} products",
+            "no_matches": "No products match"
         },
         "search_suggested": "@:common.search.suggested",
         "search": {

@@ -10,14 +10,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
     background-color: var(--cg-ink);
-    background-image: var(--cg-topo), radial-gradient(circle at 50% 40%, rgba(var(--cg-accent-rgb), .45) 0%, transparent 60%);
-    background-size: 360px, cover;
-    animation: cg-doodle-drift 40s linear infinite;
+    background-image: radial-gradient(circle at 50% 40%, rgba(var(--cg-accent-rgb), .45) 0%, transparent 60%);
+    background-size: cover;
+
+    // the topo doodles drift one tile (360px) right and up. They sit on an
+    // oversized layer that is translated, so the drift runs on the compositor
+    // and stays smooth while the main thread is busy loading the page
+    // (animating background-position repainted the whole screen every frame).
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -360px;
+        right: 0;
+        bottom: -360px;
+        z-index: -1;
+        background-image: var(--cg-topo);
+        background-size: 360px;
+        animation: cg-doodle-drift 40s linear infinite;
+        will-change: transform;
+    }
 }
 @keyframes cg-doodle-drift {
-    from { background-position: 0 0, 0 0; }
-    to   { background-position: 360px -360px, 0 0; }
+    from { transform: translate(0, 0); }
+    to   { transform: translate(360px, -360px); }
 }
 .cg-preloader__inner { text-align: center; }
 
@@ -172,5 +190,5 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .cg-preloader { animation: none; }
+    .cg-preloader::before { animation: none; }
 }

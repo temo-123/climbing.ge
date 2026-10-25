@@ -3486,7 +3486,14 @@
             "view_mode_aria": "ხედის რეჟიმი",
             "sale_type_label": "გაყიდვის ტიპი",
             "min_price_label": "მინ. ფასი",
-            "max_price_label": "მაქს. ფასი"
+            "max_price_label": "მაქს. ფასი",
+            "close": "ფილტრების დახურვა",
+            "all_categories": "ყველა კატეგორია",
+            "brand_label": "ბრენდი",
+            "search_brands": "ბრენდის ძებნა…",
+            "price_label": "ფასი",
+            "show_n": "{n} პროდუქტის ჩვენება",
+            "no_matches": "პროდუქტი ვერ მოიძებნა"
         },
         "search_suggested": "@:common.search.suggested",
         "search": {

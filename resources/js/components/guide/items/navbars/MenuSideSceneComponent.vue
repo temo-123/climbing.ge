@@ -384,7 +384,10 @@ export default {
             const loop = now => {
                 this.raf = null
                 if (!this.visible || document.hidden) return
-                if (now - this.last > 33) {                 // ~30 fps is plenty here
+                // ~30 fps is plenty here. The 4 ms slack absorbs rAF timestamp
+                // jitter, so it's an even every-2nd frame at 60 Hz (every 4th
+                // at 120 Hz) instead of now and then skipping a 3rd (judder)
+                if (now - this.last > 29) {
                     this.last = now
                     this.render((now - this.t0) / 1000)
                 }

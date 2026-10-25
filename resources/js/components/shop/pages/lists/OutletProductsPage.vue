@@ -25,6 +25,7 @@
                     <filtrViewControlsComponent
                         :viewMode="viewMode"
                         :filters="currentFilters"
+                        :products="products"
                         @update:viewMode="viewMode = $event"
                         @apply-filters="applyFilters"
                         @remove-filter="removeFilter"

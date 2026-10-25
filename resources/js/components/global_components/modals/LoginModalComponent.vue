@@ -121,9 +121,12 @@
 </template>
 
 <script>
+import { when_idle } from '../../../services/idle.js'
+
 let JSEncrypt = null;
 
 async function loadJSEncrypt() {
+    if (typeof JSEncrypt === 'function') return JSEncrypt;
     try {
         const module = await import('jsencrypt');
         JSEncrypt = module.default || module.JSEncrypt || module;
@@ -170,8 +173,10 @@ export default {
             },
         };
     },
-    async created() {
-        try { await loadJSEncrypt(); } catch (e) {}
+    created() {
+        // encryption lib + reCAPTCHA are only needed to submit: fetch them
+        // when the browser is idle (or right away when the modal opens)
+        when_idle(() => this.load_assets())
         axios.get('login/status')
             .then(response => {
                 this.social_available = response.data
@@ -185,14 +190,6 @@ export default {
             const p = payload || {}
             this.show_modal(p.callback || null, 'register', p.reason || '')
         })
-        if (!window.grecaptcha) {
-            const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
-            if (key) {
-                const s = document.createElement('script')
-                s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
-                document.head.appendChild(s)
-            }
-        }
     },
     computed: {
         password_strength() {
@@ -251,7 +248,19 @@ export default {
                 this.is_loading = false
             }
         },
+        load_assets() {
+            loadJSEncrypt().catch(() => {})
+            if (!window.grecaptcha && !document.querySelector('script[src*="recaptcha/api.js"]')) {
+                const key = process.env.MIX_GOOGLE_CAPTCHA_V3_SITE_KEY
+                if (key) {
+                    const s = document.createElement('script')
+                    s.src = `https://www.google.com/recaptcha/api.js?render=${key}`
+                    document.head.appendChild(s)
+                }
+            }
+        },
         show_modal(callback = null, mode = 'login', reason = '') {
+            this.load_assets()
             this.after_login_callback = callback
             this.mode = mode
             this.reason = reason

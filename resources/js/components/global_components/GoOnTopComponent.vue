@@ -171,7 +171,8 @@ export default {
     },
 
     methods: {
-        handleScroll() {
+        handleScroll(e) {
+            if (e && e.type === 'resize') this.navH = 0;
             // Show once the user has scrolled down 100px
             this.showButton = window.pageYOffset > 100;
             const scrollable = document.documentElement.scrollHeight - window.innerHeight;
@@ -221,14 +222,14 @@ export default {
         render(now) {
             const r = this.$refs;
             if (!r.svg || !this.showButton || !this.longPage || window.innerWidth < 768) return false;
+            // all layout reads happen before the first DOM write of the frame
+            // (a read after a write forces a synchronous layout every frame)
             // visible viewport (without the scrollbar), so the climber's feet touch the page edge
             const vw = document.documentElement.clientWidth, vh = window.innerHeight;
             const t = now / 1000;
-            r.svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
 
             const x = vw - 30;      // rope line, a little in from the "wall" (page edge)
-            const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cg-nav-h')) || 64;
-            const top = navH + 34;
+            const top = this.navHeight() + 34;
             const max = document.documentElement.scrollHeight - vh;
             const progress = max > 0 ? Math.min(1, window.pageYOffset / max) : 0;
 
@@ -246,9 +247,9 @@ export default {
             this.walk += Math.min(1, Math.abs(dy) / 40) * 0.35;
             const moving = Math.abs(dy) > 0.5;
 
-            r.anchor.setAttribute('transform', `translate(${x} ${top - 18})`);
-
             const ground = this.groundAt(x - 14);
+            r.svg.setAttribute('viewBox', `0 0 ${vw} ${vh}`);
+            r.anchor.setAttribute('transform', `translate(${x} ${top - 18})`);
             const free = top + 40 + progress * (vh - 150 - top);
             const landed = ground !== null && ground < free + 40;
             if (landed && !this.landedAt) this.landedAt = t;
@@ -349,9 +350,15 @@ export default {
             r.climber.style.opacity = 1;
         },
 
+        // --cg-nav-h, read once (and again after a resize) instead of a
+        // getComputedStyle() in the middle of every frame's writes
+        navHeight() {
+            if (!this.navH) this.navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cg-nav-h')) || 64;
+            return this.navH;
+        },
+
         ropeTop() {
-            const navH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--cg-nav-h')) || 64;
-            return navH + 34 - 12;   // the quickdraw ring the rope runs through
+            return this.navHeight() + 34 - 12;   // the quickdraw ring the rope runs through
         },
 
         setRope(d) {
